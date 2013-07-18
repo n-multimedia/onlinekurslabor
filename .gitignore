@@ -10,3 +10,7 @@ sites/*/files
 !sites/*/default_images
 
 sites/*/private
+
+# imb specific
+.bash*
+.profile
