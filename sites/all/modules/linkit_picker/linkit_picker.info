@@ -1,0 +1,17 @@
+name = Linkit Picker
+description = Linkit Picker adds the possibility to "browse" links like Node Picker had.
+core = 7.x
+package = Linkit
+dependencies[] = "linkit"
+dependencies[] = "views"
+files[] = "includes/linkit_picker.views.inc"
+files[] = "includes/linkit_picker.views_default.inc"
+files[] = "includes/linkit_picker_handler_field_node_info.inc"
+files[] = "includes/linkit_picker_handler_field_term_info.inc"
+files[] = "includes/linkit_picker_handler_field_user_info.inc"
+; Information added by drupal.org packaging script on 2011-11-08
+version = "7.x-1.0"
+core = "7.x"
+project = "linkit_picker"
+datestamp = "1320746435"
+

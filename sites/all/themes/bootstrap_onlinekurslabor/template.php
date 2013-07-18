@@ -1,0 +1,129 @@
+<?php
+
+/**
+ * @file template.php
+ */
+function bootstrap_onlinekurslabor_panels_flexible($vars) {
+
+  $css_id = $vars['css_id'];
+  $content = $vars['content'];
+  $settings = $vars['settings'];
+  $display = $vars['display'];
+  $layout = $vars['layout'];
+  $handler = $vars['renderer'];
+ 
+  $layout_temp = $layout;
+  
+  //needed for course text section
+  //span3span8span1 layout contains a row wich is used to display admin tools
+  //normal users do'n have to see it,so it gets hided here
+  //in case we don't need the last 1-span row, we swtich from span3span8span1 tp span4span8 layout
+  
+  //dpm($content);
+  //3-8-1 Layouts wich need to be switched
+  if (!section_courses_instructors_tools_visible() && $layout['name'] == 'flexible:span3span8span1') {
+    //override here
+    $layout = panels_get_layout('flexible:span4span8');
+    $content['navigation'] = $content['outline'];
+    //dpm($layout_temp['layout']->settings['items']['outline']);
+    //$layout['layout']->settings['items']['outline'] = $layout_temp['layout']->settings['items']['outline'];
+    //dpm($layout['layout']->settings['items']);
+  }
+
+  panels_flexible_convert_settings($settings, $layout);
+
+
+  $renderer = panels_flexible_create_renderer(FALSE, $css_id, $content, $settings, $display, $layout, $handler);
+
+
+  // CSS must be generated because it reports back left/middle/right
+  // positions.
+  $css = panels_flexible_render_css($renderer);
+
+  if (!empty($renderer->css_cache_name) && empty($display->editing_layout)) {
+    ctools_include('css');
+    // Generate an id based upon rows + columns:
+    $filename = ctools_css_retrieve($renderer->css_cache_name);
+    if (!$filename) {
+      $filename = ctools_css_store($renderer->css_cache_name, $css, FALSE);
+    }
+
+    // Give the CSS to the renderer to put where it wants.
+    if ($handler) {
+      $handler->add_css($filename, 'module', 'all', FALSE);
+    }
+    else {
+      drupal_add_css($filename);
+    }
+  }
+  else {
+    // If the id is 'new' we can't reliably cache the CSS in the filesystem
+    // because the display does not truly exist, so we'll stick it in the
+    // head tag. We also do this if we've been told we're in the layout
+    // editor so that it always gets fresh CSS.
+    drupal_add_css($css, array('type' => 'inline', 'preprocess' => FALSE));
+  }
+
+  // Also store the CSS on the display in case the live preview or something
+  // needs it
+  $display->add_css = $css;
+
+  $output = "<div class=\"panel-flexible " . $renderer->base['canvas'] . " clearfix\" $renderer->id_str>\n";
+  $output .= "<div class=\"panel-flexible-inside " . $renderer->base['canvas'] . "-inside\">\n";
+
+  $output .= panels_flexible_render_items($renderer, $settings['items']['canvas']['children'], $renderer->base['canvas']);
+
+  // Wrap the whole thing up nice and snug
+  $output .= "</div>\n</div>\n";
+
+  return $output;
+}
+
+function bootstrap_onlinekurslabor_menu_tree(&$variables) {
+  return '<ul class="menu nav nav-list">' . $variables['tree'] . '</ul>';
+}
+
+function bootstrap_onlinekurslabor_menu_link(array $variables) {
+  $element = $variables['element'];
+  $sub_menu = '';
+
+  if ($element['#below']) {
+
+    // Prevent dropdown functions from being added to management menu as to not affect navbar module.
+    if (($element['#original_link']['menu_name'] == 'management') && (module_exists('navbar'))) {
+      $sub_menu = drupal_render($element['#below']);
+    }
+    else {
+      // Add our own wrapper
+      unset($element['#below']['#theme_wrappers']);
+      //$sub_menu = '<ul class="dropdown-menu">' . drupal_render($element['#below']) . '</ul>';
+      $sub_menu = '<ul class="nav nav-list">' . drupal_render($element['#below']) . '</ul>';
+      //$element['#localized_options']['attributes']['class'][] = 'dropdown-toggle';
+      //$element['#localized_options']['attributes']['data-toggle'] = 'dropdown';
+      // Check if this element is nested within another
+      if ((!empty($element['#original_link']['depth'])) && ($element['#original_link']['depth'] > 1)) {
+        // Generate as dropdown submenu
+        //$element['#attributes']['class'][] = 'dropdown-submenu';
+        //$element['#localized_options']['html'] = TRUE;
+        //$element['#title'] .= '<i class="icon-chevron-right"></i>';
+      }
+      else {
+        // Generate as standard dropdown
+        //$element['#attributes']['class'][] = 'dropdown';
+        $element['#localized_options']['html'] = TRUE;
+        //$element['#title'] .= ' <span class="caret"></span>';
+        //$element['#title'] .= '<i class="icon-chevron-right"></i>';
+      }
+
+      // Set dropdown trigger element to # to prevent inadvertant page loading with submenu click
+      $element['#localized_options']['attributes']['data-target'] = '#';
+    }
+  }
+  // Issue #1896674 - On primary navigation menu, class 'active' is not set on active menu item.
+  // @see http://drupal.org/node/1896674
+  if (($element['#href'] == $_GET['q'] || ($element['#href'] == '<front>' && drupal_is_front_page())) && (empty($element['#localized_options']['language']) || $element['#localized_options']['language']->language == $language_url->language)) {
+    $element['#attributes']['class'][] = 'active';
+  }
+  $output = l($element['#title'], $element['#href'], $element['#localized_options']);
+  return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
+}

@@ -1,0 +1,377 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the workflow module.
+ *
+ */
+
+/**
+ * Implements hook_install().
+ */
+function workflow_install() {
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function workflow_uninstall() {
+  variable_del('workflow_states_per_page');
+  // Delete type-workflow mapping variables.
+  foreach (node_type_get_types() as $type => $name) {
+    variable_del('workflow_' . $type);
+  }
+}
+
+/**
+ * Implements hook_schema().
+ */
+function workflow_schema() {
+  $schema['workflows'] = array(
+    'description' => 'Workflows',
+    'fields' => array(
+      'wid' => array(
+        'description' => 'The primary identifier for a node.',
+        'type' => 'serial',
+        'not null' => TRUE
+      ),
+      'name' => array(
+        'description' => 'The name of the workflow (used as machine name for features intergration).',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+        'default' => ''
+      ),
+      'tab_roles' => array(
+        'description' => 'The role IDs that can access the workflow tabs on node pages.',
+        'type' => 'varchar',
+        'length' => '60',
+        'not null' => TRUE,
+        'default' => ''
+      ),
+      'options' => array(
+        'description' => 'Additional settings for the workflow.',
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE
+      ),
+    ),
+    'primary key' => array('wid'),
+    'unique keys' => array('name' => array('name')),
+  );
+  $schema['workflow_type_map'] = array(
+    'fields' => array(
+      'type' => array(
+        'description' => 'The {node_type}.type the workflow is used on.',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+        'default' => ''
+      ),
+      'wid' => array(
+        'description' => 'The {workflows}.wid this record affects.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '10'
+      ),
+    ),
+    'indexes' => array(
+      'type' => array('type', 'wid'),
+    ),
+  );
+  $schema['workflow_transitions'] = array(
+    'fields' => array(
+      'tid' => array(
+        'description' => 'The primary identifier for a workflow transition.',
+        'type' => 'serial',
+        'not null' => TRUE
+      ),
+      'sid' => array(
+        'description' => 'The {workflow_states}.sid start state.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '10'
+      ),
+      'target_sid' => array(
+        'description' => 'The {workflow_states}.sid target state.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '10'
+      ),
+      'roles' => array(
+        'description' => 'The {role}.sid that a user must have to perform transition.',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+    ),
+    'primary key' => array('tid'),
+    'indexes' => array(
+      'sid' => array('sid'),
+      'target_sid' => array('target_sid'),
+    ),
+  );
+  $schema['workflow_states'] = array(
+    'fields' => array(
+      'sid' => array(
+        'description' => 'The primary identifier for a workflow state.',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'wid' => array(
+        'description' => 'The {workflows}.wid this state is part of.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '10'
+      ),
+      'state' => array(
+        'description' => 'The name of the state.',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'weight' => array(
+        'description' => 'The weight (order) of the state.',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '4',
+      ),
+      'sysid' => array(
+        'description' => 'The type of state, usually either WORKFLOW_CREATION or empty.',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '4',
+      ),
+      'status' => array(
+        'description' => 'Whether the current state is active still.',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 1,
+        'disp-width' => '4',
+      ),
+    ),
+    'primary key' => array('sid'),
+    'indexes' => array(
+      'sysid' => array('sysid'),
+      'wid' => array('wid')
+    ),
+  );
+  $schema['workflow_scheduled_transition'] = array(
+    'fields' => array(
+      'nid' => array(
+        'description' => 'The {node}.nid this transition is scheduled for.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '10',
+      ),
+      'old_sid' => array(
+        'description' => 'The {workflow_states}.sid this state starts at.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '10',
+      ),
+      'sid' => array(
+        'description' => 'The {workflow_states}.sid this state transitions to.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '10',
+      ),
+      'scheduled' => array(
+        'description' => 'The date this transition is scheduled for.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '10',
+      ),
+      'comment' => array(
+        'description' => 'The comment explaining this transition.',
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      ),
+    ),
+    'indexes' => array(
+      'nid' => array('nid')
+    ),
+  );
+  $schema['workflow_node_history'] = array(
+    'fields' => array(
+      'hid' => array(
+        'description' => 'The unique ID for this record.',
+        'type' => 'serial',
+        'not null' => TRUE
+      ),
+      'nid' => array(
+        'description' => 'The {node}.nid this record is for.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '10',
+      ),
+      'old_sid' => array(
+        'description' => 'The {workflow_states}.sid this transition started as.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE, '
+        default' => 0,
+        'disp-width' => '10',
+      ),
+      'sid' => array(
+        'description' => 'The {workflow_states}.sid this transition transitioned to.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '10',
+      ),
+      'uid' => array(
+        'description' => 'The {users}.uid who made this transition.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '10',
+      ),
+      'stamp' => array(
+        'description' => 'The unique stamp for this transition.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '10',
+      ),
+      'comment' => array(
+        'description' => 'The comment explaining this transition.',
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      ),
+    ),
+    'primary key' => array('hid'),
+    'indexes' => array(
+      'nid' => array('nid', 'sid'),
+    ),
+  );
+  $schema['workflow_node'] = array(
+    'fields' => array(
+      'nid' => array(
+        'description' => 'The {node}.nid this record is for.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '10',
+      ),
+      'sid' => array(
+        'description' => 'The {workflow_states}.sid that this node is currently in.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '10',
+      ),
+      'uid' => array(
+        'description' => 'The {users}.uid who triggered this state.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '10',
+      ),
+      'stamp' => array(
+        'description' => 'The unique stamp for the transition.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'disp-width' => '11',
+      ),
+    ),
+    'primary key' => array('nid'),
+    'indexes' => array(
+      'nid' => array('nid', 'sid'),
+    ),
+  );
+  return $schema;
+}
+
+/**
+ * D6 and D7 are the only versions still under support.
+ */
+function workflow_update_last_removed() {
+  return 5204;
+}
+
+// Add a general data field for storing workflow options.
+function workflow_update_6100() {
+  $ret = array();
+  db_add_field($ret, 'workflows', 'options', array('type' => 'text', 'size' => 'big', 'not null' => FALSE));
+  // Seed existing workflows with the behavior of showing the comment field.
+  $default = serialize(array('comment_log_node' => 1, 'comment_log_tab' => 1));
+  $query_result = db_query("UPDATE {workflows} SET options = '%s'", $default);
+  $ret[] = array('success' => $query_result !== FALSE, 'query' => "UPDATE {workflows} SET options = '$default'");
+  return $ret;
+}
+
+// Tables upgraded from 5.x needs AUTOINCREMENT set.
+function workflow_update_6101() {
+  $ret = array();
+  $workflows = $workflow_states = $workflow_transitions = FALSE;
+  // Test to see if the autoincrement attribute is present.
+  switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+      $workflows = db_result(db_query("SHOW COLUMNS FROM {workflows} WHERE field = 'wid' and extra REGEXP 'auto_increment'"));
+      $workflow_states = db_result(db_query("SHOW COLUMNS FROM {workflow_states} WHERE field = 'sid' and extra REGEXP 'auto_increment'"));
+      $workflow_transitions = db_result(db_query("SHOW COLUMNS FROM {workflow_transitions} WHERE field = 'tid' and extra REGEXP 'auto_increment'"));
+      break;
+    case 'pgsql':
+      // Not sure how determine if a PostgreSQL field has a sequence.
+      break;
+  }
+  if ($workflows === FALSE) {
+    db_drop_primary_key($ret, 'workflows');
+    db_change_field($ret, 'workflows', 'wid', 'wid', array('type' => 'serial', 'not null' => TRUE), array('primary key' => array('wid')));
+  }
+  if ($workflow_states === FALSE) {
+    db_drop_primary_key($ret, 'workflow_states');
+    db_change_field($ret, 'workflow_states', 'sid', 'sid', array('type' => 'serial', 'not null' => TRUE), array('primary key' => array('sid')));
+  }
+  if ($workflow_transitions === FALSE) {
+    db_drop_primary_key($ret, 'workflow_transitions');
+    db_change_field($ret, 'workflow_transitions', 'tid', 'tid', array('type' => 'serial', 'not null' => TRUE), array('primary key' => array('tid')));
+  }
+  return $ret;
+}
+
+// Table update from 6 to 7. Adding a unique key for fields (already held unique in code).
+function workflow_update_7000() {
+  if (!db_index_exists('workflows', 'name')) {
+    db_add_unique_key('workflows', 'name', array('name'));
+  }
+  if (!db_index_exists('workflows', 'wid_state')) {
+    db_add_unique_key('workflow_states', 'wid_state', array('wid', 'state'));
+  }
+}

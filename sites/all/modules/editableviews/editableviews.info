@@ -1,0 +1,18 @@
+name = Editable Views
+description = Allows entity data in a view to be edited.
+package = Views
+dependencies[] = views
+dependencies[] = entity
+dependencies[] = ctools
+dependencies[] = field_ui
+core = 7.x
+files[] = editableviews_plugin_style_row_edit_table.inc
+files[] = handlers/editableviews_handler_field_field_edit.inc
+files[] = handlers/editableviews_handler_field_node_title_edit.inc
+
+; Information added by drupal.org packaging script on 2013-05-21
+version = "7.x-1.0-beta6"
+core = "7.x"
+project = "editableviews"
+datestamp = "1369152012"
+

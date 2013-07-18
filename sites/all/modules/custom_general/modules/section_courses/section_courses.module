@@ -1,0 +1,1537 @@
+<?php
+
+module_load_include('inc', 'section_courses', 'inc/blocks');
+module_load_include('inc', 'section_courses', 'inc/realms');
+
+//add course header 
+//16.07.2013 - 11:58 - SN - now done by context module
+function section_courses_preprocess_panels_pane(&$variables) {
+  /*
+    if (_section_courses_get_active_course()) {
+    $block = module_invoke('section_courses', 'block_view', 'course_header_section');
+
+    $variables['page']['content']['course_header_section']['#weight'] = -20;
+    $variables['page']['content']['course_header_section']['#markup'] = $block['content'];
+
+
+    } */
+
+  // Update the history table, stating that this user viewed this node.
+
+
+  /*
+   * History Table
+   */
+  //news and nodes that are completely rendered in panels
+  if (is_array($variables['content']) && isset($variables['content']['node'])) {
+    $node = node_load(key($variables['content']['node']));
+    node_tag_new($node);
+  }
+}
+
+function section_courses_preprocess_views_view_fields(&$variables) {
+  global $user;
+  if (isset($variables['view']) && $variables['view']->name == 'courses_course_news') {
+    $nid = $variables['view']->result[$variables['id'] - 1]->nid;
+    if (_section_courses_course_get_num_unread_by_type($user->uid, NM_COURSE_NEWS, $nid)) {
+      $variables['row']->nm_classes = 'view-row-unread';
+      //$variables['fields']['nm_classes'] = 'view-row-unread';
+    }
+    else {
+      $variables['row']->nm_classes = 'view-row-read';
+      //$variables['fields']['nm_classes'] = 'view-row-read';
+    }
+  }
+}
+
+/*
+  function section_courses_preprocess_views_view_field(&$variables) {
+
+  //$variables['row']->nid
+
+  if ($variables['field']->real_field == 'nid') {
+  $variables['field']->classes = array('test123');
+
+  }
+
+  return;
+  if (isset($variables['view']) && $variables['view']->name == 'courses_course_news') {
+  if (isset($variables['view']->field['nid'])) {
+  dpm($variables);
+  dpm($variables['view']->field['nid']->original_value);
+  }
+  }
+  }
+  /*
+  function section_courses_preprocess_user_picture(&$variables) {
+
+  $variables['user_picture'] = '';
+  $account = $variables['account'];
+
+  $profile = profile2_load_by_user($account, 'master');
+  if (isset($profile->field_photo)) {
+  $field_view = field_view_field('profile2', $profile, 'field_photo', array('settings' => array('image_style' => 'profile_mini_thumbnail')));
+  $field_view['#label_display'] = 'hidden';
+  $variables['user_picture'] = drupal_render($field_view);
+  }
+  }
+
+  /**
+ * Implements hook_block_info().
+ */
+
+function section_courses_block_info() {
+  $blocks = array();
+  $blocks['course_top_navigation'] = array(
+    'info' => t('Course Top Navigation'),
+  );
+  $blocks['course_header_section'] = array(
+    'info' => t('Course Header Secton'),
+  );
+  $blocks['course_tasks_generic_description'] = array(
+    'info' => t('Course Tasks Generic Description'),
+  );
+  $blocks['course_tasks_generic_tips'] = array(
+    'info' => t('Course Tasks Generic Tips'),
+  );
+  $blocks['course_tasks_generic_solution'] = array(
+    'info' => t('Course Tasks Generic Solution Form'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function section_courses_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'course_header_section' :
+      $block['content'] = _course_header_section_view();
+      break;
+    case 'course_top_navigation' :
+      $block['content'] = _course_top_navigation_view();
+      break;
+    case 'course_tasks_generic_description' :
+      $block['content'] = _course_tasks_generic_description_view();
+      break;
+    case 'course_tasks_generic_tips' :
+      $block['content'] = _course_tasks_generic_tips_view();
+      break;
+    case 'course_tasks_generic_solution' :
+      $block['content'] = _course_tasks_generic_solution_form_view();
+      break;
+  }
+
+  return $block;
+}
+
+function _course_tasks_generic_init_view() {
+  $tasks_nid = _course_tasks_generic_get_task_nid();
+
+  $field_val = NULL;
+  if (!empty($tasks_nid)) {
+    $node_wrapper = entity_metadata_wrapper('node', $tasks_nid);
+
+    $field_val = $node_wrapper->field_generic_task_entry->value();
+  }
+
+  return $field_val;
+}
+
+function _course_tasks_generic_get_task_nid() {
+  $tasks_nid = arg(3);
+  if (empty($tasks_nid) || !is_numeric($tasks_nid)) {
+    return array();
+  }
+  return $tasks_nid;
+}
+
+function _course_tasks_generic_tips_view() {
+
+  global $user;
+
+  $field_val = _course_tasks_generic_init_view();
+
+  if (empty($field_val))
+    return;
+
+  $output = "";
+  $output .= _course_tasks_generic_section_view($field_val, NM_COURSES_TASK_TIPS);
+
+  //get workflow form
+  $task_nid = _course_tasks_generic_get_task_nid();
+  $solutions = custom_general_get_task_solutions($task_nid, $user->uid);
+  if (count($solutions) > 0) {
+    $solution = current($solutions);
+    $solution_node = node_load($solution->nid);
+
+    $output .=_course_tasks_generic_solution_workflow_form($solution_node);
+  }
+
+  return $output;
+}
+
+function _course_tasks_generic_solution_workflow_form($node) {
+
+  $output = "";
+
+  $workflow = workflow_get_workflow_type_map_by_type($node->type);
+  if (!$workflow) {
+    return;
+  }
+
+  $states = array();
+  foreach (workflow_get_workflow_states() as $data) {
+    $states[$data->sid] = check_plain(t($data->state));
+  }
+
+  $current = workflow_node_current_state($node);
+
+  // Show current state at the top of the node display.
+  $markup = theme('workflow_current_state', array('state' => $states[$current]));
+
+  $output .= $markup;
+
+  // If we are at the terminal state, then don't show the change form.
+  $choices = workflow_field_choices($node);
+  if (count($choices) == 1) {
+    if ($current == key($choices)) {
+      return;
+    }
+  }
+  // Show state change form at the bottom of the node display.
+  $form_state = array('cache' => TRUE);
+  form_load_include($form_state, 'inc', 'workflow', 'workflow.pages');
+  $form = drupal_get_form('workflow_tab_form', $node, $workflow->wid, $states, $current);
+  $form['#weight'] = 99;
+
+
+
+  $output .= drupal_render($form);
+
+  return $output;
+}
+
+/**
+ * checks if a solution is editable
+ * a solution is not editable any more when the node reaches a special workflow state
+ * 
+ * @param type $node
+ * @return boolean
+ */
+function _courses_tasks_generic_solution_is_editable($node) {
+
+  $current = workflow_node_current_state($node);
+  //if state >= Entwurf
+  if ($current >= 3) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+/**
+ * Description section of a taks on the top of the content
+ * 
+ * @return type
+ */
+function _course_tasks_generic_description_view() {
+
+  $field_val = _course_tasks_generic_init_view();
+
+  if (empty($field_val))
+    return;
+
+  $output = "";
+  $output .= _course_tasks_generic_section_view($field_val, NM_COURSES_TASK_DESCRIPTION);
+  $output .= _course_tasks_generic_section_view($field_val, NM_COURSES_TASK_TASK);
+
+
+  return $output;
+}
+
+function _course_tasks_generic_solution_form_view() {
+
+  global $user;
+  //attach needed feeds here only
+  //module_load_include('inc', 'node', 'node.pages');
+  //$form2 = node_add('courses_generic_task_solution');
+  //$output = "";
+  //$form['#title_display'] = 'invisible';
+  //$form['title']['#type'] = 'hidden';
+  //dpm($form2);
+
+  $output = "";
+  $task_nid = arg(3);
+
+  if (!$task_nid || !is_numeric($task_nid))
+    return;
+
+  $solutions = custom_general_get_task_solutions($task_nid, $user->uid);
+  //check workflow state
+  if (count($solutions) > 0 && !_courses_tasks_generic_solution_is_editable(current($solutions))) {
+    $solution = current($solutions);
+    $solution_node = node_load($solution->nid);
+
+    $node_wrapper = entity_metadata_wrapper('node', $task_nid);
+
+    $field_val = $node_wrapper->field_generic_task_entry->value();
+    $description_items = _course_tasks_generic_get_section($field_val, NM_COURSES_TASK_FORM);
+
+    //$solution_wrapper = entity_metadata_wrapper('node', $solution_node->nid);
+    //$solutions_field_vals = $solution_wrapper->field_generic_solution_entry->value();
+    $solutions_field_vals = field_get_items('node', $solution_node, 'field_generic_solution_entry');
+    $fview = field_view_field('node', $solution_node, 'field_generic_solution_entry', $solutions_field_vals);
+
+    dpm($solutions_field_vals);
+    foreach ($description_items as $key => $item) {
+      $output .= "<h2>" . $item['second'] . "</h2>";
+      //$output .= $solutions_field_vals[$key]['value'];
+
+      $output .= render($fview[$key]);
+    }
+    //allow assessment if node is in state 3
+    $current = workflow_node_current_state($solution_node);
+    if ($current == 3) {
+      //add bewertung feld
+      $form = drupal_get_form('_section_courses_task_solution_assesment_form', $solution_node->nid);
+      $form['assessment']['format']['#attributes']['style'] = 'display:none';
+      $output .= drupal_render($form);
+    }
+    //Bewertet
+    else if (($current == 4)) {
+      $output .= "<h2>Bewertung</h2>";
+      //$assessment_field = ($solution_wrapper->field_generic_task_assessment->value());
+      $fview = field_view_field('node', $solution_node, 'field_generic_task_assessment');
+      //hide field label
+      $fview['#label_display'] = 'hidden';
+      $output .= render($fview);
+      //$output .= $assessment_field['value'];
+    }
+  }
+  else {
+    //check if a solution has already been submitted
+    if (count($solutions) > 0) {
+      $solution = current($solutions);
+      $solution_node = node_load($solution->nid);
+
+      $solution__wrapper = entity_metadata_wrapper('node', $solution_node->nid);
+      $solutions_field_vals = $solution__wrapper->field_generic_solution_entry->value();
+    }
+
+    $form = drupal_get_form('_section_courses_task_solution_form', $task_nid);
+    //unset input format fieldset
+    foreach ($form['solutions'] as $key => &$item) {
+      if (is_array($item) && isset($item['format'])) {
+        //hide available input formats
+        $item['format']['#attributes']['style'] = 'display:none';
+        //prefill fields
+        if (count($solutions) > 0) {
+          $item['value']['#value'] = $solutions_field_vals[$key]['value'];
+        }
+      }
+    }
+
+    $output .= drupal_render($form);
+  }
+
+  return $output;
+}
+
+function _section_courses_task_solution_assesment_form($form, &$form_state, $solution_nid) {
+  $node_wrapper = entity_metadata_wrapper('node', $solution_nid);
+
+  $field_val = $node_wrapper->field_generic_task_assessment->value();
+
+  $form = array();
+
+  $form['assessment'] = array(
+    '#type' => 'text_format',
+    '#title' => 'Bewertung',
+    '#base_type' => 'textarea',
+    '#default_value' => $field_val['value'],
+    '#format' => NM_FILTER_FORMAT_FILTERED_HTML,
+  );
+
+  $form['solution_nid'] = array(
+    '#type' => 'hidden',
+    '#value' => $solution_nid,
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#attributes' => array('class' => array('btn-primary')),
+    '#value' => 'Bewertung speichern',
+  );
+
+  return $form;
+}
+
+function _section_courses_task_solution_assesment_form_submit($form, &$form_state) {
+  global $user;
+
+  $solution_nid = $form_state['values']['solution_nid'];
+
+  $node = node_load($solution_nid);
+
+  $node->field_generic_task_assessment[LANGUAGE_NONE][0]['value'] = $form_state['values']['assessment']['value'];
+  $node->field_generic_task_assessment[LANGUAGE_NONE][0]['format'] = NM_FILTER_FORMAT_FILTERED_HTML;
+
+  // 'node' is default,
+  // Other possible values are "user" and  "taxonomy_term" 
+  $node = node_submit($node); // Prepare node for saving
+
+  node_save($node);
+}
+
+function _section_courses_task_solution_form($form, &$form_state, $task_nid) {
+  $node_wrapper = entity_metadata_wrapper('node', $task_nid);
+
+  $field_val = $node_wrapper->field_generic_task_entry->value();
+  $description_items = _course_tasks_generic_get_section($field_val, NM_COURSES_TASK_FORM);
+
+  $form['solutions']['#tree'] = TRUE;
+  foreach ($description_items as $item) {
+    $form['solutions'][] = array(
+      '#type' => 'text_format',
+      '#title' => $item['second'],
+      '#base_type' => 'textarea',
+      '#format' => NM_FILTER_FORMAT_FILTERED_HTML,
+    );
+  }
+
+  $form['task_nid'] = array(
+    '#type' => 'hidden',
+    '#value' => $task_nid,
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#attributes' => array('class' => array('btn-primary')),
+    '#value' => 'Speichern',
+  );
+
+  return $form;
+}
+
+function _section_courses_task_solution_form_submit($form, &$form_state) {
+  global $user;
+
+  $task_nid = $form_state['values']['task_nid'];
+  $solutions = custom_general_get_task_solutions($task_nid, $user->uid);
+  $new_node = FALSE;
+  if (count($solutions) > 0) {
+    $solution = current($solutions);
+    $node = node_load($solution->nid);
+
+    $node->field_generic_solution_entry[LANGUAGE_NONE] = array();
+  }
+  else {
+    $active_course = _section_courses_get_active_course();
+    $tas_nid = $form_state['values']['task_nid'];
+    $task = node_load($tas_nid);
+    $node->title = 'Lösung: ' . $task->title;
+    $node->type = NM_COURSE_GENERIC_TASK_SOLUTION;
+    node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
+    $node->language = 'de'; // Or e.g. 'en' if locale is enabled
+    $node->uid = $user->uid;
+    $node->status = 1; //(1 or 0): published or not
+    $node->promote = 0; //(1 or 0): promoted to front page
+    $node->comment = 0; // 0 = comments disabled, 1 = read only, 2 = read/write
+    $node->og_group_ref[LANGUAGE_NONE][0] = array('target_id' => $active_course->nid);
+    $node->field_generic_task[LANGUAGE_NONE][]['target_id'] = $form_state['values']['task_nid'];
+  }
+
+  foreach ($form_state['values']['solutions'] as $item) {
+    $val = $item['value'];
+    $node->field_generic_solution_entry[LANGUAGE_NONE][] = array('value' => $val, 'format' => NM_FILTER_FORMAT_FILTERED_HTML);
+  }
+
+
+  $node = node_submit($node); // Prepare node for saving
+
+
+  node_save($node);
+}
+
+function _course_tasks_generic_section_view($field_val, $id) {
+  $title = "";
+  switch ($id) {
+    case NM_COURSES_TASK_DESCRIPTION:
+      $title = "Beschreibung";
+      break;
+    case NM_COURSES_TASK_TASK:
+      $title = "Aufgabenstellung";
+      break;
+    case NM_COURSES_TASK_TIPS:
+      $title = "Leitfragen";
+      break;
+    case NM_COURSES_TASK_FORM:
+      $title = "Formular";
+      break;
+    default:
+  }
+  $description_items = _course_tasks_generic_get_section($field_val, $id);
+  $output = '<div id="task_general_' . $id . '">';
+  $output .= '<h2>' . $title . '</h2>';
+  foreach ($description_items as $item) {
+    $output .= $item['second'];
+  }
+
+  $output .= '</div>';
+
+  return $output;
+}
+
+function _course_tasks_generic_get_section($fields, $id) {
+  $result = array();
+  foreach ($fields as $field) {
+    if ($field['first'] == $id) {
+      $result[] = $field;
+    }
+  }
+
+  return $result;
+}
+
+/**
+ * 
+ * Implements hook_menu_breadcrumb_alter
+ * 
+ * @global type $user
+ * @param type $active_trail
+ * @param type $item
+ * @return type
+ */
+function section_courses_menu_breadcrumb_alter(&$active_trail, $item) {
+  module_load_include('inc', 'section_courses', 'inc/breadcrumb');
+
+  _section_courses_breadcrumb_alter($active_trail, $item);
+}
+
+//condition for context to be not set on domain overview page
+function section_courses_context_load_alter(&$context) {
+//todo
+  if ($context->name == "section_courses_course") {
+//block should only be shown to subscribed users, so check for it
+    $active_course = _section_courses_get_active_course();
+    if ($active_course) {
+//unset condition, so context gets active
+      unset($context->conditions['context_og_condition_member_status']);
+    }
+  }
+}
+
+/**
+ * Determins which course is beeing active/selected
+ * 
+ * @return active course object or FALSE
+ */
+function _section_courses_get_active_course($reset = FALSE) {
+  static $course;
+
+  $context = context_get("context", "section_courses");
+  if (empty($context))
+    return FALSE;
+
+
+  if (!isset($course) || $reset) {
+//proof if user is in course section
+//not proofing causes an infinite loop here (menu_get_object(); on /comment/%/edit)
+    $node = NULL;
+
+    if ((arg(0) != "course" && arg(0) != "node") || (arg(0) == "course" && arg(5) == "reply" || arg(5) == "edit")) {
+      $course = FALSE;
+      $node = node_load(arg(2));
+    }
+    else {
+      $node = menu_get_object();
+    }
+
+
+    if ($node) {
+      $course = $node;
+    }
+
+    if (is_object($node) && in_array($node->type, array(NM_COURSE_DOCS, NM_COURSE_NEWS, NM_COURSE, NM_COURSE_GROUP))) {
+      if ($node->type == NM_COURSE_GROUP) {
+        //get course which this group is assigned to
+        if (isset($node->og_group_ref)) {
+          //$lang_og = field_language('node', $node, 'og_group_ref');
+          $group_tmp = node_load($node->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+          $course = node_load(_custom_general_get_group($group_tmp));
+        }
+      }
+      else {
+        $course = node_load(_custom_general_get_group($node));
+      }
+    }
+    if (!isset($course)) {
+      $c_nid = check_plain(arg(2));
+      $course = is_numeric($c_nid) ? node_load($c_nid) : NULL;
+    }
+
+    if (!empty($course) && $course->type == NM_COURSE) {
+
+      return $course;
+    }
+
+    $course = FALSE;
+  }
+
+  return $course;
+}
+
+/**
+ * gets the Lehrtext domain id
+ */
+function _section_courses_course_get_domain_id($course) {
+  $domain_ref = NULL;
+
+  if (!empty($course->field_domain_ref)) {
+    //$lang = field_language('node', $course, 'field_domain_ref');
+    $domain_ref = $course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
+  }
+  return $domain_ref;
+}
+
+function _section_courses_get_forum_href($course, $forum_term_id = NULL) {
+  if (!$forum_term_id) {
+    $forum_term = _section_courses_get_forum_term($course);
+    $forum_term_id = $forum_term->tid;
+  }
+  return "course/forum/" . $course->nid . '/' . $forum_term_id;
+}
+
+/**
+ * Assign og administrator role for instructors (dozenten)
+ * 
+ * Implements hook_entity_insert
+ * 
+ */
+function section_courses_entity_insert($entity, $type) {
+  if ($type == 'og_membership' && isset($entity) && $entity->is_new && isset($entity->entity_type) && $entity->entity_type == 'user') {
+    $a_user = user_load($entity->etid);
+    //Assign admin og role for instructors
+    if (in_array(NM_ROLE_DOZENT, $a_user->roles)) {
+      og_role_grant($entity->group_type, $entity->gid, $a_user->uid, NM_OG_ROLE_COURSE_ADMINISTRATOR);
+    }
+  }
+}
+
+//solved with context module
+/**
+ * Remove Outline Tabs from various sites.
+ * 
+ * Implements hook_preprocess_page
+ * 
+ * @global type $user
+ * @param type $vars
+ * @return type
+ */
+/*
+  function section_courses_preprocess_page(&$vars) {
+
+  global $user;
+
+  //check if node object is available
+  if (!isset($vars['node']))
+  return;
+
+  //flags
+  $hide_outline = in_array(NM_ROLE_STUDENT, $user->roles);
+
+
+  if ($hide_outline) {
+  //hide all tabs
+  unset($vars['tabs']['#primary']);
+  }
+
+  return;
+  } */
+
+/**
+ * Implementation of hook_query_alter().
+ */
+/*
+  function section_courses_query_alter(QueryAlterableInterface $query) {
+
+  dpm($query->getMetaData('node'));
+  } */
+
+function _section_courses_book_get_parents(&$subtree_pointer, $active_mlid) {
+  $parents = array();
+  if (!is_array($subtree_pointer))
+    return $parents;
+  foreach (array_keys($subtree_pointer) as $key) {
+    if ($subtree_pointer[$key]['link']['mlid'] == $active_mlid) {
+      $parents[] = $subtree_pointer[$key]['link']['p1'];
+      $parents[] = $subtree_pointer[$key]['link']['p2'];
+      $parents[] = $subtree_pointer[$key]['link']['p3'];
+      $parents[] = $subtree_pointer[$key]['link']['p4'];
+      $parents[] = $subtree_pointer[$key]['link']['p5'];
+      $parents[] = $subtree_pointer[$key]['link']['p6'];
+      $parents[] = $subtree_pointer[$key]['link']['p7'];
+      $parents[] = $subtree_pointer[$key]['link']['p8'];
+      $parents[] = $subtree_pointer[$key]['link']['p9'];
+      break;
+    }
+    $res = _section_courses_book_get_parents($subtree_pointer[$key]['below'], $active_mlid);
+    $parents = !empty($res) ? $res : $parents;
+  }
+
+  return $parents;
+}
+
+function _section_courses_book_add_active_path(&$subtree_pointer, $active_mlid, $parents) {
+  if (in_array($active_mlid, $parents)) {
+    foreach (array_keys($subtree_pointer) as $key) {
+//alter link for course section
+      $match = "";
+      preg_match("|\d+|", $subtree_pointer[$key]['link']['href'], $match);
+
+//todo course ref
+      $active_course = _section_courses_get_active_course();
+      $subtree_pointer[$key]['link']['href'] = 'course/text/' . $active_course->nid . '/' . $match[0];
+//$subtree_pointer[$key]['link']['localized_options']['query'] = '?og_group_ref';
+
+      if (in_array($subtree_pointer[$key]['link']['mlid'], $parents)) {
+        $subtree_pointer[$key]['link']['in_active_trail'] = TRUE;
+        if ($active_mlid == $subtree_pointer[$key]['link']['mlid']) {
+//active
+          $subtree_pointer[$key]['link']['options']['attributes']['class'] = array('active');
+        }
+      }
+      _section_courses_book_add_active_path($subtree_pointer[$key]['below'], $active_mlid, $parents);
+    }
+  }
+}
+
+function _section_courses_text_outline_add_active_path(&$subtree_pointer) {
+
+  $parents = array();
+
+//Get active MLID from url structure
+  $active_mlid = NULL;
+  $course_text_active_nid = NULL;
+
+  $course_text_active = (arg(0) == 'course' && arg(1) == 'text');
+  if ($course_text_active) {
+    $course_text_active_nid = arg(3);
+
+    $domain_node = node_load($course_text_active_nid);
+    if ($domain_node->book) {
+      $active_mlid = $domain_node->book['mlid'];
+    }
+  }
+
+  $parents = _section_courses_book_get_parents($subtree_pointer, $active_mlid);
+
+  _section_courses_book_add_active_path(&$subtree_pointer, $active_mlid, $parents);
+}
+
+function section_courses_text_outline() {
+
+  $active_course = _section_courses_get_active_course();
+  //$lang = field_language('node', $active_course, 'field_domain_ref');
+  $domain_ref = $active_course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
+
+  $menu_name = 'book-toc-' . $domain_ref;
+  $tree = menu_tree_all_data($menu_name);
+// And add the active trail data back to the full tree.
+//menu_tree_add_active_path($tree);
+
+  $config = array();
+  $config['title_link'] = "test";
+  $config['delta'] = "0";
+  $config['menu_name'] = $menu_name;
+  $config['title_link'] = '';
+  $config['parent_mlid'] = 0;
+  $config['level'] = 2;
+
+  _section_courses_text_outline_add_active_path($tree);
+
+// Allow alteration of the tree and config before we begin operations on it.
+  drupal_alter('menu_block_tree', $tree, $config);
+
+
+// Prune the tree along the active trail to the specified level.
+  if ($config['level'] > 1 || $config['parent_mlid']) {
+    if ($config['parent_mlid']) {
+      $parent_item = menu_link_load($config['parent_mlid']);
+      menu_tree_prune_tree($tree, $config['level'], $parent_item);
+    }
+    else {
+      menu_tree_prune_tree($tree, $config['level']);
+    }
+  }
+  /*
+
+    // Prune the tree to the active menu item.
+    if ($config['follow']) {
+    menu_tree_prune_active_tree($tree, $config['follow']);
+    }
+
+    // If the menu-item-based tree is not "expanded", trim the tree to the active path.
+    if ($config['parent_mlid'] && !$config['expanded']) {
+    menu_tree_trim_active_path($tree);
+    }
+
+    // Trim the branches that extend beyond the specified depth.
+    if ($config['depth'] > 0) {
+    menu_tree_depth_trim($tree, $config['depth']);
+    }
+   * 
+   */
+
+// Render the tree.
+  $data = array();
+  $title = menu_block_get_title($config['title_link'], $config);
+  //$data['subject_array'] = $title;
+  $data['subject'] = drupal_render($title);
+  $data['content']['#content'] = menu_block_tree_output($tree, $config);
+  if (!empty($data['content']['#content'])) {
+    $data['content']['#theme'] = array(
+      'menu_block_wrapper__' . str_replace('-', '_', $config['delta']),
+      'menu_block_wrapper__' . str_replace('-', '_', $config['menu_name']),
+      'menu_block_wrapper'
+    );
+    $data['content']['#config'] = $config;
+    $data['content']['#delta'] = $config['delta'];
+  }
+  else {
+    $data['content'] = '';
+  }
+
+  return drupal_render($data);
+}
+
+function MY_MODULE_submenu_tree_all_data($path, $menu = 'main-menu', $curr_level = 0, $rebuilt_path = '', $childtree = array()) {
+  $tree = menu_tree_all_data($menu);
+  $args = explode('/', $path);
+
+  $rebuilt_path = empty($rebuilt_path) ? $args[$curr_level] : $rebuilt_path . '/' . $args[$curr_level];
+
+  foreach ($tree as $branch) {
+    if ($branch['link']['link_path'] == $rebuilt_path) {
+      $childtree = $branch['below'];
+      if ($rebuilt_path != $path) {
+        $curr_level++;
+        MY_MODULE_submenu_tree_all_data($path, $menu, $curr_level, $rebuilt_path, $childtree);
+      }
+    }
+  }
+
+  $items = array();
+  foreach ($childtree as $child) {
+    $items[] = l($child['link']['title'], $child['link']['link_path']);
+  }
+
+  return theme('item_list', array('items' => $items, 'attributes' => array(), 'type' => 'ul'));
+}
+
+function section_content_node_presave($node) {
+  if ($node->type == NM_COURSE) {
+//Add Form Container for the Course, if form feature is set
+    //$lang = field_language('node', $node, 'field_collaborative_features');
+    foreach ($node->field_collaborative_features[LANGUAGE_NONE] as $feature) {
+      if ($feature['value'] == 'forum') {
+        /* $vid = db_query("SELECT vid FROM {taxonomy_vocabulary} WHERE machine_name = 'forums'")->fetchField();
+          taxonomy_term_save((object) array(
+          'name' => check_plain($node->title) . '_' . $node->nid,
+          'vid' => $vid,
+          )); */
+//$voc = taxonomy_vocabulary_machine_name_load('forums');
+//dpm($voc);
+        $term = current(taxonomy_get_term_by_name('Kursforen'));
+        $term_exists = current(taxonomy_get_term_by_name(_section_courses_get_forum_name($node)));
+
+        if (!$term_exists) {
+          taxonomy_term_save((object) array(
+                'name' => _section_courses_get_forum_name($node),
+                'vid' => $term->vid,
+                'parent' => array($term->tid),
+          ));
+
+          $new_term = _section_courses_get_forum_term($node);
+
+//add taxibiny to og
+//Set the values
+          $values = array(
+            'entity_type' => 'taxonomy_term',
+            'entity' => $new_term,
+            'state' => OG_STATE_ACTIVE,
+          );
+
+          $og_membership_entity = og_group('node', $node->nid, $values);
+//
+//mark the forum as container
+          $containers = variable_get('forum_containers', array());
+          $containers[] = $new_term->tid;
+          variable_set('forum_containers', $containers);
+        }
+      }
+    }
+  }
+}
+
+function _section_courses_get_forum_name($course_node) {
+  return "Kursforum" . '-(' . $course_node->nid . ')';
+}
+
+function _section_courses_get_forum_term($course_node) {
+  $term = current(taxonomy_get_term_by_name(_section_courses_get_forum_name($course_node)));
+  return $term;
+}
+
+function _section_courses_feature_active($course, $feature) {
+  switch ($feature) {
+    case NM_COURSE_FEATURE_FORUM:
+      //$lang = field_language('node', $course, 'field_collaborative_features');
+      if (!empty($course->field_collaborative_features)) {
+        foreach ($course->field_collaborative_features[LANGUAGE_NONE] as $feature) {
+          if ($feature['value'] == NM_COURSE_FEATURE_FORUM) {
+            return TRUE;
+          }
+        }
+      }
+
+      break;
+    default:
+  }
+
+  return FALSE;
+}
+
+/*
+ *  FORUM
+ */
+
+/*
+ * alter links in forum section
+ */
+
+function section_courses_url_outbound_alter(&$path, &$options, &$original_path) {
+
+  $course = _section_courses_get_active_course();
+
+  if ($course) {
+    /*
+     * 
+     * forum node links
+     */
+
+//[todo] refactoring needed
+    if (strstr($path, "comment/") && strstr($path, "/edit")) {
+      $regex = '#^comment/([0-9]+)/edit$#s';
+      preg_match($regex, $path, $matches);
+      if (!empty($matches)) {
+        $tid = $matches[1];
+        $comment = comment_load($tid);
+        $path = "course/forumcontent/" . $course->nid . '/' . $comment->nid . '/' . $tid . '/edit';
+      }
+    }
+//comment reply
+    else if (strstr($path, "comment/reply/")) {
+      $regex = '#^comment/reply/([0-9]+/*[0-9]*)#s';
+      preg_match($regex, $path, $matches);
+      if (!empty($matches)) {
+        $tid = $matches[1];
+        $path = "course/forumcontent/" . $course->nid . '/' . $tid . '/reply';
+      }
+    }
+//delete
+    else if (strstr($path, "comment/") && strstr($path, "/delete")) {
+      $regex = '#^comment/([0-9]+)/delete$#s';
+      preg_match($regex, $path, $matches);
+      if (!empty($matches)) {
+        $tid = $matches[1];
+        $comment = comment_load($tid);
+        $path = "course/forumcontent/" . $course->nid . '/' . $comment->nid . '/' . $tid . '/delete';
+      }
+    }
+    else if (strstr($path, "node/add/forum/")) {
+      $regex = '#^node/add/forum/([0-9]+)$#s';
+      preg_match($regex, $path, $matches);
+      if (!empty($matches)) {
+        $tid = arg(3);
+        $path = "course/forumcontent/" . $course->nid . '/' . $tid . '/add';
+      }
+    }
+    else if (strstr($path, "forum/")) {
+      $regex = '#^forum/([0-9]+)$#s';
+      preg_match($regex, $path, $matches);
+      if (!empty($matches)) {
+        $tid = $matches[1];
+        $path = _section_courses_get_forum_href($course, $tid);
+        $original_path = $path;
+      }
+    }
+
+    /*
+     * 13.06.2013 - 15:12 - SN
+     * unsauber . todo fix
+     */
+    /* replace links for book navigation and titles
+     * [todo] Solution to avoid this overkill!
+     *  Probably a performance killing thing....
+     * 
+     */
+    else if (strstr($path, "node/")) {
+      $regex = '#^node/([0-9]+)$#s';
+      preg_match($regex, $path, $matches);
+      if (!empty($matches)) {
+        $nid = $matches[1];
+//solution for biblio and course text needed
+        $type = _custom_general_get_node_type($nid);
+
+
+        if ($type == NM_COURSE_FORUMTOPIC) {
+          $path = "course/forumcontent/" . $course->nid . '/' . $nid;
+        }
+        else if ($type == NM_COURSE_GROUP) {
+          $path = "course/groups/" . $course->nid . '/' . $nid;
+        }
+        else if ($type == NM_COURSE) {
+          $path = "course/home/" . $nid;
+        }
+        else if ($type == NM_COURSE_NEWS) {
+          $path = "course/news/" . $course->nid . '/' . $nid;
+        }
+        else if ($type == NM_COURSE_DOCS) {
+          $path = "course/doc/" . $course->nid . '/' . $nid;
+        }
+
+        $original_path = $path;
+      }
+      $regex = '#^node/([0-9]+)/edit$#s';
+      preg_match($regex, $path, $matches);
+      if (!empty($matches)) {
+        $nid = $matches[1];
+//solution for biblio and course text needed
+        $type = _custom_general_get_node_type($nid);
+
+        if ($type == NM_COURSE_FORUMTOPIC) {
+          $path = "course/forumcontent/" . $course->nid . '/' . $nid . '/edit';
+        }
+        $original_path = $path;
+      }
+    }
+
+    /*
+
+      if (strstr($path, "node/")) {
+      $regex = '#^node/([0-9]+)#s';
+      preg_match($regex, $path, $matches);
+      if (!empty($matches)) {
+      $nid = $matches[1];
+      //solution for biblio and course text needed
+      $type = _custom_general_get_node_type($nid);
+
+      if (in_array($type, array(NM_CHAPTER, NM_DOMAIN))) {
+      $path = "course/text/" . $course->nid . '/' . $nid;
+      }
+      else if ($type == NM_BIBLIO) {
+      $path = "course/text/biblio/" . $course->nid . '/' . $nid;
+      }
+      $original_path = $path;
+      }
+      } */
+  }
+}
+
+/*
+ *  NODE ACCESS
+ */
+
+/**
+ * Allow access to domain-content, when its part of the course
+ */
+function section_courses_node_access($node, $op, $account) {
+
+  /*
+    if (!is_object($node) || !in_array($node->type, array(NM_CHAPTER, NM_DOMAIN))) {
+    return NODE_ACCESS_IGNORE;
+    }
+
+    switch ($op) {
+
+    case 'view':
+    $active_course = _section_courses_get_active_course();
+
+    $access = NODE_ACCESS_DENY;
+
+    if ($active_course) {
+    $access = NODE_ACCESS_ALLOW;
+    }
+
+    return $access;
+    }
+
+    // Returning nothing from this function would have the same effect.
+    return NODE_ACCESS_IGNORE;
+   * 
+   */
+}
+
+/*
+  function section_courses_field_access($op, $field, $entity_type, $entity, $account) {
+  $context = context_get("context", "section_courses");
+  if (empty($context))
+  return;
+
+  if (isset($entity->type) && in_array($entity->type, array(NM_CHAPTER, NM_DOMAIN))) {
+  if ($op == "view") {
+  $group = _custom_general_get_group($entity);
+  $active_course = _section_courses_get_active_course();
+  $domain_ref = _section_courses_course_get_domain_id($active_course);
+  if ($domain_ref == $group) {
+  return TRUE;
+  }
+  }
+  }
+  }
+ * 
+ * */
+
+/**
+ * 
+ * 
+ * @param type $implementations
+ * @param type $hook
+ */
+function section_courses_module_implements_alter(&$implementations, $hook) {
+
+  //[todo] BIG TODO HERE
+  //Prove correctness - hacked really badly
+  $context = context_get("context", "section_courses");
+  if (empty($context))
+    return;
+
+  //hack for showing the node menu items! deactivates node_access!!!! need more legitimation checks here  
+
+  if ($hook == 'field_access') {
+    //unset($implementations['og']);
+    unset($implementations['og_field_access']);
+
+    // Move mymodule_field_access() to the top of the list. module_implements()
+    // iterates through $implementations with a foreach loop which PHP iterates
+    // in the order that the items were added, so to move an item to the end of
+    // the array, we remove it and then add it.
+    //$group = $implementations['mymodule'];
+    //unset();
+    //$implementations = array('mymodule' => $group) + $implementations;
+  }
+}
+
+/*
+ * =================
+ * Statuses
+ * Status Stream
+ */
+
+function section_courses_statuses_context_info() {
+  /* $path = drupal_get_path('module', 'statuses') . '/includes/utility/statuses.contexts.inc'; */
+  return array(
+    'course_group' => array(
+      'title' => t('Course groups'),
+      'description' => t('The stream belongs to the currently viewed course group, if applicable.'),
+      'handler' => 'statuses_course_group_context',
+      'dependencies' => array('og', 'og_context'),
+      'view' => 'statuses_stream',
+      //'parent' => 'statuses_og_context',
+      'weight' => 0,
+    // 'file' => $path,
+    ),
+  );
+}
+
+/**
+ * The group context.
+ */
+class statuses_course_group_context extends statuses_og_context {
+
+  function type() {
+    return 'course_group';
+  }
+
+  function is_applicable() {
+    $g_ctx = node_load(arg(3));
+    return !empty($g_ctx);
+  }
+
+  function find_recipient() {
+    $obj = menu_get_object();
+    if (empty($obj) && is_numeric(arg(3))) {
+      $obj = node_load(arg(3));
+    }
+    return $obj;
+  }
+
+  function access_add($recipient, $sender) {
+    // Only group members can add content of any kind.
+    if (function_exists('og_get_group_ids')) { // OG 7.x-1.x
+      $group_ids = og_get_group_ids('node', array($recipient->nid));
+      if (!empty($group_ids)) {
+        return parent::access_add($recipient, $sender) && og_is_member(current($group_ids), 'user', $sender);
+      }
+    }
+    else { // OG 7.x-2.x
+      if (og_is_group('node', $recipient->nid)) {
+        return parent::access_add($recipient, $sender) && og_is_member('node', $recipient->nid, 'user', $sender);
+      }
+    }
+    return FALSE;
+  }
+
+  function access_delete($status, $account) {
+    // Only group administrators can delete others' content in their group.
+    if (function_exists('og_get_group_ids')) { // OG 7.x-1.x
+      $group_ids = og_get_group_ids('node', array($status->recipient));
+      if (!empty($group_ids)) {
+        return parent::access_delete($status, $account) || in_array(OG_ADMINISTRATOR_ROLE, og_get_user_roles(current($group_ids), $account->uid, FALSE));
+      }
+    }
+    else { // OG 7.x-2.x
+      if (og_is_group('node', $status->recipient)) {
+        return parent::access_delete($status, $account) || og_user_access('node', $status->recipient, 'administer group', $account);
+      }
+    }
+    return parent::access_delete($status, $account);
+  }
+
+  function access_view($status, $account) {
+    // Only group members can view group statuses if the group is private.
+    if (function_exists('og_get_group_ids')) { // OG 7.x-1.x
+      $group_ids = og_get_group_ids('node', array($status->recipient));
+      if (!empty($group_ids)) {
+        return parent::access_view($status, $account) &&
+            (og_is_member(current($group_ids), 'user', $account) || empty($this->load_recipient($status->recipient)->og_private));
+      }
+      return parent::access_view($status, $account) && empty($this->load_recipient($status->recipient)->og_private);
+    }
+    else { // OG 7.x-2.x
+      if (og_is_group('node', $status->recipient)) {
+        $recipient = entity_metadata_wrapper('node', $this->load_recipient($status->recipient));
+        // Definition of a public group taken from og_access.module function og_access_og_fields_info()
+        $public_group = !empty($recipient->{OG_ACCESS_FIELD}) && $recipient->{OG_ACCESS_FIELD}->value() ? FALSE : TRUE;
+        return parent::access_view($status, $account) &&
+            (og_is_member('node', $status->recipient, 'user', $account) || $public_group);
+      }
+      return parent::access_view($status, $account);
+    }
+  }
+
+  function access_stream($recipient, $account) {
+    return parent::access_stream($recipient, $account) && $this->access_add($recipient, $account);
+  }
+
+}
+
+/*
+ * =================
+ * END Statuses
+ * Status Stream
+ */
+
+/**
+ * get the student's course group of the active course
+ * 
+ * @global type $user
+ * @return Group ID of the first course group that matched
+ * 
+ */
+function _section_courses_student_get_coursegroup_gid() {
+  global $user;
+  //we want to redirect students directly to their course group
+  //check fo role
+  if (in_array(NM_ROLE_STUDENT, $user->roles)) {
+    //get all gids the user belongs to
+    $groups = og_get_groups_by_user();
+    $groups = $groups['node'] ? $groups['node'] : array();
+    foreach ($groups as $gid) {
+      //check if group's type is a course group
+      if (_custom_general_get_node_type($gid) == NM_COURSE_GROUP) {
+        //get active course
+        $active_course = _section_courses_get_active_course();
+        //check if course group is part of the active course
+        if (og_is_member('node', $active_course->nid, 'node', node_load($gid))) {
+          return $gid;
+        }
+      }
+    }
+  }
+  return NULL;
+}
+
+/**
+ * Add students form
+ * 
+ * @param type $form
+ * @param type $form_state
+ * @return type
+ */
+function section_courses_student_registration_form($form, &$form_state) {
+
+  // Creation of a phone field and its container, hidden by default.
+
+
+  $form['#tree'] = TRUE;
+  $form['users_container'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Student(en) hinzufügen',
+    // Set up the wrapper so that AJAX will be able to replace the fieldset.
+    '#prefix' => '<div id="students-add-wrapper">',
+    '#suffix' => '</div>',
+  );
+
+  /* if a count set, create a number of user fields */
+  if (isset($form_state['users_num'])) {
+    $users_num = $form_state['users_num'];
+  }
+  else {
+    $form_state['users_num'] = 1;
+    $users_num = 1;
+  }
+
+  // Add the current choices to the form.
+  for ($i = 0; $i < $users_num; $i++) {
+    $form['users_container']['items'][$i . 'prefix'] = array(
+      '#prefix' => '<span class="badge badge-info">#' . ($i + 1) . '</span>',
+    );
+    $form['users_container']['items'][$i] = section_courses_student_registration_fields();
+  }
+
+  $form['users_container']['add_user_num'] = array(
+    //'#prefix' => '<div class="controls"><div class="input-prepend"><span class="add-on">#</span>',
+    //'#suffix' => '</div></div>',
+    //'#title' => 'Anzahl',
+    //'#description' => 'choose a username',
+    '#type' => 'textfield',
+    '#default_value' => '1',
+    '#attributes' => array('class' => array('input-small')),
+    '#maxlength' => 2,
+  );
+
+  $form['users_container']['add_user'] = array(
+    '#type' => 'submit',
+    '#value' => '<i class="icon-plus icon-white"></i> Zeilen',
+    '#submit' => array('section_courses_student_registration_fields_add_one'),
+    '#attributes' => array('class' => array('btn-success')),
+    // See the examples in ajax_example.module for more details on the
+    // properties of #ajax.
+    '#ajax' => array(
+      'callback' => 'section_courses_student_registration_fields_callback',
+      'wrapper' => 'students-add-wrapper',
+    ),
+  );
+
+
+  /*
+    $form['users_container']['#tree'] = TRUE;
+    $form['users_container'][] = section_courses_student_registration_fields();
+   */
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+  );
+
+  /*
+    $type_name = 'student';
+    $form_state['profiles'][$type_name] = profile2_create(array('type' => $type_name));
+    profile2_attach_form($form, $form_state);
+   * 
+   */
+
+  return $form;
+}
+
+/**
+ * Callback for both ajax-enabled buttons.
+ *
+ * Selects and returns the fieldset with the names in it.
+ */
+function section_courses_student_registration_fields_callback($form, $form_state) {
+  return $form['users_container'];
+}
+
+/**
+ * Submit handler for the "add-one-more" button.
+ *
+ * Increments the max counter and causes a rebuild.
+ */
+function section_courses_student_registration_fields_add_one($form, &$form_state) {
+  if ($form['users_container']['add_user_num']['#value'] &&
+      $form['users_container']['add_user_num']['#value'] > 0 &&
+      $form['users_container']['add_user_num']['#value'] <= 99) {
+
+    $form_state['users_num'] += $form['users_container']['add_user_num']['#value'];
+  }
+  else {
+    $form_state['users_num']++;
+  }
+  $form_state['rebuild'] = TRUE;
+}
+
+function section_courses_student_registration_fields() {
+
+  $form['users_item_container'] = array(
+    '#prefix' => '<div id="users_item_container">',
+    '#suffix' => '</div>',
+  );
+
+  $form['users_item_container']['name'] = array(
+    '#prefix' => '<div class="input-prepend"><span class="add-on"><i class="icon-user"></i></span>',
+    '#suffix' => '</div>',
+    //'#title' => t('Username'),
+    '#attributes' => array('placeholder' => t('Username'), 'class' => array('input-small')),
+    //'#description' => 'choose a username',
+    '#type' => 'textfield',
+  );
+
+
+  //master data
+  $form['users_item_container']['mail'] = array(
+    '#prefix' => '<div class="input-prepend"><span class="add-on">@</span>',
+    '#suffix' => '</div>',
+    //'#title' => t('Email'),
+    '#attributes' => array('placeholder' => t('Email'), 'class' => array('input-large')),
+    //'#description' => 'enter a valid email address',
+    '#type' => 'textfield',
+  );
+
+  $form['users_item_container']['first_name'] = array(
+    //'#prefix' => '<div class="input-prepend"><span class="add-on"></span>',
+    //'#suffix' => '</div>',
+    //'#title' => t('Email'),
+    '#attributes' => array('placeholder' => 'Vorname', 'class' => array('input-small')),
+    //'#description' => 'enter a valid email address',
+    '#type' => 'textfield',
+  );
+
+  //drupal
+  $form['users_item_container']['last_name'] = array(
+    //'#prefix' => '<div class="input-prepend"><span class="add-on"></span>',
+    //'#suffix' => '</div>',
+    //'#title' => t('Email'),
+    '#attributes' => array('placeholder' => 'Nachname', 'class' => array('input-small')),
+    //'#description' => 'enter a valid email address',
+    '#type' => 'textfield',
+  );
+
+
+
+
+  return $form;
+}
+
+function section_courses_student_registration_form_validate($form, &$form_state) {
+  $account = drupal_anonymous_user();
+
+  $name = "";
+  $mail = "";
+  // Random example, if the title is 'test' throw an error
+  if ($form_state['values']['users_container']['items'] > 0) {
+    foreach ($form_state['values']['users_container']['items'] as $key => $ci) {
+      $name = check_plain($ci['users_item_container']['name']);
+      $mail = check_plain($ci['users_item_container']['mail']);
+      if ((bool) db_select('users')->fields('users', array('uid'))->condition('uid', $account->uid, '<>')->condition('name', db_like($ci['users_item_container']['name']), 'LIKE')->range(0, 1)->execute()->fetchField()) {
+        form_set_error('users_container][items][' . $key, t('The name %name is already taken.', array('%name' => $name)));
+      }
+      $uname_check = user_validate_name($name);
+      if (!empty($uname_check)) {
+        form_set_error('users_container][items][' . $key, $uname_check);
+      }
+
+      // Validate the e-mail address, and check if it is taken by an existing user.
+      $error = user_validate_mail($mail);
+      if ($error) {
+        form_set_error('users_container][items][', $error);
+      }
+      elseif ((bool) db_select('users')->fields('users', array('uid'))->condition('uid', $account->uid, '<>')->condition('mail', db_like($mail), 'LIKE')->range(0, 1)->execute()->fetchField()) {
+        form_set_error('users_container][items][', t('The e-mail address %email is already taken.', array('%email' => $mail)));
+      }
+    }
+  }
+}
+
+/**
+ * Final submit handler.
+ *
+ * Reports what values were finally set.
+ */
+function section_courses_student_registration_form_submit($form, &$form_state) {
+
+
+  if (count($form_state['values']['users_container']['items']) > 0) {
+    foreach ($form_state['values']['users_container']['items'] as $key => $ci) {
+      if (!empty($ci['users_item_container']['name']) && !empty($ci['users_item_container']['mail'])) {
+        $role = user_role_load_by_name(NM_ROLE_STUDENT);
+        $edit = array(
+          'name' => check_plain($ci['users_item_container']['name']),
+          'pass' => user_password(),
+          'mail' => check_plain($ci['users_item_container']['mail']),
+          'init' => check_plain($ci['users_item_container']['mail']),
+          'status' => 1,
+          'access' => REQUEST_TIME,
+          'roles' => array($role->rid => $role->name),
+        );
+
+        if (!user_load_by_name($edit['name'])) {
+
+          //save and notify the user
+          $account = user_save(drupal_anonymous_user(), $edit);
+
+          //student profile
+          $profile2 = profile2_create(array('type' => 'student'));
+          $profile2->setUser($account);
+          profile2_save($profile2);
+
+          //master profile
+          $profile2 = profile2_create(array('type' => 'master'));
+          $profile2->setUser($account);
+          profile2_save($profile2);
+          //Populate profile fields
+          $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+          $wrapper->field_first_name->set(check_plain($ci['users_item_container']['first_name']));
+          $wrapper->field_last_name->set(check_plain($ci['users_item_container']['last_name']));
+          $wrapper->save();
+
+
+          if (!$account) {
+            drupal_set_message("Account konnte nicht gespeichert werden.", 'error');
+            return;
+          }
+          drupal_set_message('Student ' . $edit['name'] . ' wurde angelegt.');
+
+          //assign user to active group
+          $active_course = _section_courses_get_active_course();
+          $values = array(
+            'entity type' => 'user',
+            'entity' => $account,
+          );
+          og_group('node', $active_course->nid, $values);
+
+
+          _user_mail_notify('register_admin_created', $account);
+          //profile2_load_by_user($account);
+          //profile2_save();
+        }
+        else {
+          drupal_set_message('Im System gibt es bereits einen Benutzer mit dem Namen ' . $edit['name'], 'error');
+        }
+      }
+      else {
+        drupal_set_message('Benutzer ' . ($key + 1) . ' konnte nicht hinzugefügt werden, da eines der Formularfelder leer war.', 'error');
+      }
+    }
+  }
+  else {
+    drupal_set_message("Es wurde kein neuer Benutzer erstellt", 'error');
+  }
+}
+

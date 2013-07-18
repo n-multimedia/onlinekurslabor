@@ -1,0 +1,575 @@
+<?php
+
+//System
+define("NM_FILTER_FORMAT_FILTERED_HTML", 'filtered_html');
+
+//Blocks
+define("NM_BLOCK_AUTOREN", 53);
+
+//Content
+define("NM_DOMAIN_OVERVIEW_ID", 7);
+define("NM_MEDIA_PATH", "domain/media");
+define("NM_BIBLIO_PATH", "domain/biblio");
+define("NM_TASKS_PATH", "domain/tasks");
+define("NM_DOMAIN_ACCESS_REALM", "NM_DOMAIN_ACCESS_REALM");
+
+
+//Contentcontent_multiple_choice
+//Content Types
+define("NM_DOMAIN", "content_domain");
+define("NM_CHAPTER", "content_chapter");
+define("NM_MULTIPLE_CHOICE", "content_multiple_choice");
+define("NM_QUESTION_AND_ANSWER", "content_question_and_answer");
+define("NM_BIBLIO", "biblio");
+define("NM_FILE", "file");
+
+//Course
+//Content Types
+define("NM_COURSE_NEWS", "courses_news");
+define("NM_COURSE_DOCS", "courses_docs");
+define("NM_COURSE_GROUP", "courses_group");
+define("NM_COURSE", "courses_course");
+define("NM_COURSE_FORUMTOPIC", "forum");
+define("NM_COURSE_GENERIC_TASK", "courses_generic_task");
+define("NM_COURSE_GENERIC_TASK_SOLUTION", "courses_generic_task_solution");
+define("NM_COURSES_OVERVIEW_ID", 49);
+
+define("NM_COURSE_DOCS_PATH", "course/docs");
+define("NM_COURSE_HOME_PATH", "course/home");
+define("NM_COURSE_NEWS_PATH", "course/news");
+define("NM_COURSE_INFO_PATH", "course/info");
+define("NM_COURSE_GROUPS_PATH", "course/groups");
+define("NM_COURSE_TEXT_PATH", "course/text");
+define("NM_COURSE_MEMBERS_PATH", "course/members");
+define("NM_COURSE_FORUM_PATH", "course/forum");
+define("NM_COURSE_FORUMCONTENT_PATH", "course/forumcontent");
+define("NM_COURSE_ADMIN_PREFIX_PATH", "course/admin");
+
+//Tasks
+define("NM_COURSES_TASK_DESCRIPTION", "0");
+define("NM_COURSES_TASK_TASK", "1");
+define("NM_COURSES_TASK_TIPS", "2");
+define("NM_COURSES_TASK_CRITERIA", "3");
+define("NM_COURSES_TASK_FORM", "4");
+
+
+//Features..
+//define('NM_COURSE_FEATURE_WIKI', $value)
+define('NM_COURSE_FEATURE_FORUM', 'forum');
+
+define("NM_OG_ROLE_COURSE_ADMINISTRATOR", "3");
+
+//Roles
+define("NM_ROLE_AUTOR", "Autor");
+define("NM_ROLE_ADMIN", "administrator");
+define("NM_ROLE_DOZENT", "Dozent");
+define("NM_ROLE_STUDENT", "Student");
+
+//Content
+//Views
+define("NM_VIEW_DOMAIN_MEDIA", "domain_media");
+
+
+//Content
+define("NM_CHAPTER_SEPARATOR", ".");
+
+
+module_load_include('inc', 'custom_general', 'inc/functions');
+module_load_include('inc', 'custom_general', 'inc/blocks');
+
+/*
+ * Context
+ */
+
+function custom_general_ctools_plugin_api($module, $api) {
+  if ($module == 'context' && $api == 'plugins') {
+    return array('version' => 3);
+  }
+}
+
+/**
+ * CTools plugin API hook for Context. Note that a proper entry in
+ * hook_ctools_plugin_api() must exist for this hook to be called.
+ */
+function custom_general_context_plugins() {
+  $plugins = array();
+  $plugins['custom_general_condition_section_content'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'custom_general') . '/context_plugins',
+      'file' => 'custom_general_condition_section_content.inc',
+      'class' => 'custom_general_condition_section_content',
+      'parent' => 'context_condition',
+    ),
+  );
+  $plugins['custom_general_condition_section_courses'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'custom_general') . '/context_plugins',
+      'file' => 'custom_general_condition_section_courses.inc',
+      'class' => 'custom_general_condition_section_courses',
+      'parent' => 'context_condition',
+    )
+  );
+
+  return $plugins;
+}
+
+/**
+ * Registry hook for conditions & reactions.
+ *
+ * Each entry associates a condition or reaction with the CTools plugin to be
+ * used as its plugin class.
+ */
+function custom_general_context_registry() {
+  return array(
+    'conditions' => array(
+      'custom_general_condition_section_content' => array(
+        'title' => t('Section Content is active'),
+        'description' => t("Set this context when viewing parts of the <em>Content Section</em>"),
+        'plugin' => 'custom_general_condition_section_content',
+      ),
+      'custom_general_condition_section_courses' => array(
+        'title' => t('Section Courses is active'),
+        'description' => t("Set this context when viewing parts of the <em>Courses Section</em>"),
+        'plugin' => 'custom_general_condition_section_courses',
+      ),
+    ),
+  );
+}
+
+/*
+  function custom_general_context_page_reaction() {
+
+  } */
+
+function custom_general_init() {
+  // Execute the group type context condition all the time because we want
+  // to use that condition to be able to check for "no group context."
+  $plugin = context_get_plugin('condition', 'custom_general_condition_section_content');
+  if ($plugin) {
+    $plugin->execute2();
+  }
+
+  $plugin = context_get_plugin('condition', 'custom_general_condition_section_courses');
+  if ($plugin) {
+    $plugin->execute2();
+  }
+
+  $group = og_context();
+  if ($group) {
+    // Execute the group type context condition all the time because we want
+    // to use that condition to be able to check for "no group context."
+    $plugin = context_get_plugin('condition', 'custom_general_condition_section_content');
+    if ($plugin) {
+      $plugin->execute($group);
+    }
+
+    $plugin = context_get_plugin('condition', 'custom_general_condition_section_courses');
+    if ($plugin) {
+      $plugin->execute($group);
+    }
+
+    //30.04.2013 - 18:19 - SN
+    //todo optimization needed ?
+    //needs to be executed once again, because one context is set too late
+    $plugin = context_get_plugin('condition', 'context_og_condition_member_status');
+    if ($plugin) {
+      $plugin->execute($group);
+    }
+  }
+}
+
+function custom_general_context_page_reaction() {
+  
+}
+
+function custom_general_form_alter($form, $form_state, $form_id) {
+  if ($form_id != "book_admin_edit")
+    return;
+
+  $plugin = context_get_plugin('condition', 'custom_general_condition_section_content');
+  if ($plugin) {
+
+    $plugin->execute2();
+  }
+}
+
+/**
+ * Get the group id the node belongs to
+ * 
+ * @param type $referer_node
+ * @return nid
+ */
+function _custom_general_get_group($referer_node) {
+  $domain_id = NULL;
+  //passed value can be FALSE
+  if (!isset($referer_node) || $referer_node === FALSE) {
+    return $domain_id;
+  }
+
+  //if referer is group -> nid == gid, else look up the gid
+  if (og_is_group('node', $referer_node)) {
+    $domain_id = $referer_node->nid;
+  }
+  else {
+    $entities = og_get_entity_groups('node', $referer_node->nid);
+    if (!empty($entities)) {
+      $domain_id = current(current($entities));
+    }
+  }
+
+  return $domain_id;
+}
+
+//get breadcrumb items for domain by group id
+function _section_content_get_domain_breadcrumb_items($group_get_id = NULL) {
+
+  //get active group id, passed as get param
+  $tmp_gid = isset($_GET['og_group_ref']) ? $_GET['og_group_ref'] : NULL;
+  $group_get_id = isset($group_get_id) ? $group_get_id : $tmp_gid;
+
+
+  if (!isset($group_get_id))
+    return NULL;
+
+  //build query items for breadcrumb items, to keep important get information in the url
+  $item_options = array(
+    'absolute' => TRUE,
+    'query' => array(
+      'og_group_ref' => $group_get_id,
+    )
+  );
+  $node_overview = node_load(NM_DOMAIN_OVERVIEW_ID);
+  $node_domain = node_load($group_get_id);
+
+  $domain_overview_item = array(
+    'title' => $node_overview->title,
+    'href' => check_url(url('node/' . NM_DOMAIN_OVERVIEW_ID, $item_options)),
+    'localized_options' => array(),
+  );
+  $active_domain_item = array(
+    'title' => $node_domain->title,
+    'href' => check_url(url('node/' . $group_get_id, $item_options)),
+    'localized_options' => array(),
+  );
+
+  return array('domain_overview_item' => $domain_overview_item, 'active_domain_item' => $active_domain_item);
+}
+
+/**
+ *  Implementation of hook_field_attach_form 
+ */
+/*
+ * get og fields for file entities
+ */
+
+function _custom_general_get_file_og_fields($form, $form_state, $form_id) {
+  $file = new stdClass();
+  $file->type = 'video';
+
+  $options = array(
+    //specify the language, or use like this for the default language.
+    'language' => field_valid_language(NULL),
+    //IMPORTANT : the field you want to attach to the form
+    'field_name' => 'og_group_ref'
+  );
+
+  $tmpform = array();
+  $tmpform_state = array();
+
+  field_attach_form('file', $file, $tmpform, $tmpform_state);
+  $og_field = array('og_group_ref' => $tmpform['og_group_ref']);
+
+  //add og_group_ref field to the upload form
+  //$og_field = (array) _field_invoke_default('form', 'file', $file, $form, $form_state, $options);
+
+  return $og_field;
+}
+
+/**
+ * get referer nid in Mediabrowser
+ * 
+ */
+function _media_browser_get_referer_nid() {
+  $referer_args = array();
+
+  $url_data = drupal_parse_url($_SERVER['HTTP_REFERER']);
+  $referer_args['path'] = substr(parse_url($url_data['path'], PHP_URL_PATH), 1);
+  //if no nid is set, a new node is being created, so we need the passed og_group_ref
+  if (isset($url_data['query']['og_group_ref']) && is_numeric($url_data['query']['og_group_ref'])) {
+    $referer_args['nid'] = $url_data['query']['og_group_ref'];
+  }
+  else {
+    $referer_args['nid'] = arg(1, $referer_args['path']);
+    $referer_args['nid'] = is_numeric($referer_args['nid']) ? $referer_args['nid'] : NULL;
+  }
+
+  return $referer_args['nid'];
+}
+
+function _custom_general_theme_tools_block($tool_links, $id = "", $class = "section_nav_tools", $span_grouping = 12) {
+
+  //$output = '<div id="' . $id . '-container">';
+  //$output = '<div id="' . $id . '-container" class="navbar">';
+  //built up group arary
+  $groups = array();
+  foreach ($tool_links as $tl) {
+    if (isset($tl['group']) && (isset($tl['group']['root']) && $tl['group']['root'])) {
+      $groups[$tl['group']['gid']] = $tl['group'];
+    }
+  }
+
+  $span_class = 'span' . $span_grouping;
+
+  //$output .= '<div class="navbar-inner">';
+  $output = '<div id="' . $id . '-container" class="' . $class . ' row-fluid">';
+  //$output .= '<div id="' . $id . '-icon"></div>';
+  //$output .= '<ul id="' . $id . '" class="' . $class . ' nav">';
+
+
+  $span_counter = 0;
+
+  if (!empty($groups)) {
+    foreach ($groups as &$group) {
+      $group['items'][] = _section_courses_get_group_root($group, $tool_links);
+      $sub_items = _section_courses_get_group_others($group, $tool_links);
+      foreach ($sub_items as $su) {
+        $group['items'][] = $su;
+      }
+    }
+  }
+
+  //if group is set - assume that we want to have a vertical toolbar
+  if (!empty($groups)) {
+    //$output .= '<div class="span12"></div>';
+    //$output .= '<div class="span4">';
+    foreach ($groups as $g) {
+      $group_items = ($g['items']);
+      $output .= '<div class="row-fluid">';
+      $output .= '<div class="span12">';
+      $output .= '<ul>';
+      $depth = 0;
+      foreach ($group_items as $gi) {
+        if ($depth > 0) {
+          if (isset($gi['attributes']['class'])) {
+            $gi['attributes']['class'][] = 'toolbar_hidden';
+          }
+          else {
+            $gi['attributes']['class'] = array('toolbar_hidden');
+          }
+        }
+        $attributes = "";
+        if (isset($gi['attributes'])) {
+          $attributes = drupal_attributes($gi['attributes']);
+        }
+
+        //$output .= '<li '.$attributes.'>' . $tl['link'] . '</li>';
+        $output .= '<li ' . $attributes . '>' . $gi['link'] . '</button>';
+
+        $depth++;
+      }
+      $output .= '</ul>';
+      $output .= '</div>';
+      $output .= '</div>';
+    }
+    //$output .= '</div>';
+    $output .= '</div>';
+  }
+  //no groups configured - render horizontal toolbar
+  else {
+    foreach ($tool_links as $tl) {
+      $append = "";
+      $prepend = "";
+
+      if ($span_counter % ($span_grouping) == 0) {
+        $prepend = '<ul class="' . $span_class . '">';
+      }
+      if ((($span_counter % $span_grouping) == $span_grouping - 1) || $span_counter == count($tool_links) - 1) {
+        $append = '</ul>';
+      }
+
+      $output .= $prepend;
+      $attributes = "";
+      if (isset($tl['attributes'])) {
+        $attributes = drupal_attributes($tl['attributes']);
+      }
+
+      if ($span_counter == 0) {
+        $output .= '<div id="' . $id . '-icon"></div>';
+      }
+      //$output .= '<li '.$attributes.'>' . $tl['link'] . '</li>';
+      $output .= '<li ' . $attributes . '>' . $tl['link'] . '</li>';
+
+      $output .= $append;
+
+      $span_counter++;
+    }
+  }
+
+  //$output .= '</ul>';
+  //$output .= '<div id="'.$id.'-toolbar"></div>';
+  //
+  //$output .= '</div>';
+  //$output .= '</div>';
+  $output .= '</div>';
+
+  return $output;
+}
+
+function _section_courses_get_group_root($group, $tool_links) {
+  foreach ($tool_links as $tl) {
+    if (!empty($tl['group']) && (isset($tl['group']['root']) && $tl['group']['root']) && $tl['group']['gid'] == $group['gid']) {
+      return $tl;
+    }
+  }
+  return NULL;
+}
+
+function _section_courses_get_group_others($group, $tool_links) {
+  $result = array();
+
+  foreach ($tool_links as $tl) {
+    if (!empty($tl['group']) && (!isset($tl['group']['root']) || !$tl['group']['root']) && $tl['group']['gid'] == $group['gid']) {
+      $result[] = $tl;
+    }
+  }
+  return $result;
+}
+
+/**
+ * Implements hook_wysiwyg_plugin
+ * @param type $editor
+ * @param type $version
+ * @return type
+ */
+function custom_general_wysiwyg_plugin($editor, $version) {
+
+  _linkit_add_settings($editor);
+
+  switch ($editor) {
+    case 'ckeditor':
+      return array(
+        'custom_general_plugin' => array(
+          'path' => drupal_get_path('module', 'custom_general') . '/wysiwyg_plugin',
+          'buttons' => array(
+            'biblio_button' => t('Biblio'),
+          ),
+          'load' => TRUE,
+        ),
+      );
+      break;
+  }
+}
+
+/**
+ * Implements hook_menu
+ * 
+ * @return array
+ */
+function custom_general_menu() {
+
+  $items = array();
+
+  $items['admin/biblio_dashboard'] = array(
+    'title' => 'Biblio',
+    'description' => 'Biblio Auswahl',
+    'page callback' => '_custom_general_biblio_dashboard',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'page arguments' => array(2),
+      //'theme callback' => '_linkit_dashboard_theme',
+  );
+
+  return $items;
+}
+
+function _custom_general_biblio_dashboard() {
+  /**
+   * Creates the dashboard.
+   */
+  $form = drupal_get_form('_custom_general_biblio_dashboard_form');
+  print drupal_render($form);
+  drupal_exit();
+}
+
+/**
+ * Implements hook_form().
+ */
+function _custom_general_biblio_dashboard_form($form, &$form_state) {
+  $profile = linkit_profile_load("biblio");
+
+  if (is_null($profile)) {
+    drupal_set_message(t('You need a linkit profile named <em>biblio</em> to continue!'), 'error');
+    return $form;
+  }
+
+  $form['biblio_search'] = array(
+    '#prefix' => '<div>' . l('Biblio hinzufügen', 'node/add/biblio', array('attributes' => array('target' => '_blank'))) . '</div>',
+    '#type' => 'textfield',
+    '#title' => t('Search Biblio'),
+    '#description' => t('Start typing to find a biblio entry. Use the arrow keys to navigate.'),
+    '#maxlength' => 255,
+    '#size' => 60,
+    '#default_value' => '',
+    '#weight' => -10,
+  );
+
+  $form['biblio_tag'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Biblio-ID (nid)'),
+    '#required' => TRUE,
+    '#maxlength' => NULL,
+    '#size' => 60,
+    '#default_value' => '',
+    '#weight' => -1,
+  );
+
+  $form['biblio_insert'] = array(
+    '#type' => 'button',
+    '#value' => t('Insert Biblio'),
+    '#suffix' => '<a id="biblio-cancel" href="#">' . t('Cancel') . '</a>',
+    '#weight' => 100,
+  );
+
+  return $form;
+}
+
+function custom_general_preprocess_page(&$variables) {
+  //include js needed for every page
+  drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/custom_general.js");
+
+  drupal_add_library('system', 'ui.progressbar');
+}
+
+function custom_general_addpend_active_class($path, &$options) {
+  // Append active class.
+  if (($path == $_GET['q'] || ($path == '<front>' && drupal_is_front_page())) && (empty($options['language']) || $options['language']->language == $language_url->language)) {
+    $options['attributes']['class'][] = 'active';
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function custom_general_block_info() {
+  $blocks = array();
+  $blocks['custom_general_top_nav'] = array(
+    'info' => t('Top navigation items'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function custom_general_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'custom_general_top_nav' :
+      $block['content'] = _custom_general_theme_top_nav();
+      break;
+  }
+
+  return $block;
+}

@@ -1,0 +1,17 @@
+name = Statuses Domain Access
+description = "Integrates Domain Access with Statuses."
+package = Statuses
+dependencies[] = domain
+dependencies[] = statuses
+core = 7.x
+files[] = fbss_domain.module
+files[] = fbss_domain.install
+files[] = fbss_domain.rules.inc
+files[] = fbss_domain.views.inc
+
+; Information added by drupal.org packaging script on 2013-02-10
+version = "7.x-1.0-beta2"
+core = "7.x"
+project = "statuses"
+datestamp = "1360540534"
+

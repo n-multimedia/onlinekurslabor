@@ -1,0 +1,15 @@
+name = OG Forum
+description = Provide integration of OG with the core Forum Module
+core = 7.x
+package = "Organic groups"
+
+dependencies[] = og
+dependencies[] = og_access
+dependencies[] = forum
+
+; Information added by drupal.org packaging script on 2012-09-18
+version = "7.x-2.0-alpha1"
+core = "7.x"
+project = "og_forum_D7"
+datestamp = "1347954000"
+

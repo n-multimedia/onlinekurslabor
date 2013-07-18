@@ -1,0 +1,948 @@
+<?php
+
+module_load_include('inc', 'custom_general', 'inc/bookchapter');
+module_load_include('inc', 'section_content', 'inc/blocks');
+
+/*
+  BOOK - Chapters
+ */
+
+
+/**
+ * Implements hook_block_info().
+ */
+function section_content_block_info() {
+  $blocks = array();
+  $blocks['content_node_tabs'] = array(
+    'info' => t('Node Tabs'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function section_content_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'content_node_tabs' :
+      $block['content'] = _section_content_node_tabs_view();
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Implementation of hook_node_view().
+ *
+ * Dynamically modify book titles, adding numbering to the beginning.
+ */
+function section_content_node_view($node, $view_mode, $langcode) {
+
+//test todo remove
+//dpm(section_author($node->nid));
+  if ($node->type == NM_CHAPTER) {
+//disable book navigation
+    unset($node->content['book_navigation']);
+
+//TOC functionality. Numbering Chapters
+//check if numbering is enabled in domain settings
+    if (_custom_general_toc_enabled($node->nid)) {
+      $order_number = nm_bookchapters_get_chapter_numbering($node->nid);
+
+      $new_title = $order_number . NM_CHAPTER_SEPARATOR . ' ' . $node->title;
+      if (drupal_get_title() == $node->title) {
+        drupal_set_title($new_title);
+      }
+      $node->title = $new_title;
+    }
+  }
+}
+
+/**
+ * Alter the menu tree and its configuration before the tree is rendered.
+ *
+ * This uses a hook from module menu_block
+ * 
+ * @param $tree
+ *   An array containing the unrendered menu tree.
+ * @param $config
+ *   An array containing the configuration of the tree.
+ */
+function section_content_menu_block_tree_alter(&$tree, &$config) {
+
+//TOC functionality. Numbering Chapters
+  $top_leaf = current($tree);
+  $top_leaf_link = $top_leaf['link']['link_path'];
+  $node_id = substr($top_leaf_link, strpos($top_leaf_link, '/') + 1);
+  $node = node_load($node_id);
+
+//Only apply when top_leaf is of type 'domain'
+  if ($node->type == NM_DOMAIN) {
+//TOC functionality. Numbering Chapters
+//check if numbering is enabled in domain settings
+    if (!_custom_general_toc_enabled($node->nid))
+      return;
+
+    $book_menus = array();
+    $result = db_query("SELECT menu_name FROM {menu_links} WHERE module = 'book' GROUP BY menu_name");
+    while ($menu_name = $result->fetchField()) {
+      $book_menus[] = $menu_name;
+    }
+
+    if (!empty($tree) && in_array($config['menu_name'], $book_menus)) {
+      $root_index = key($tree);
+      if (!empty($tree[$root_index]['below'])) {
+        foreach ($tree[$root_index]['below'] as $key => $value) {
+          nm_bookchapters_rewrite_menu_link_title($tree[$root_index]['below'][$key]);
+        }
+      }
+    }
+  }
+}
+
+//toc - book navigation
+function book_preprocess(&$variables, $hook) {
+
+  if ($hook == 'book_navigation') {
+
+//TOC functionality. Numbering Chapters
+//check if numbering is enabled in domain settings
+    if (!_custom_general_toc_enabled($variables['book_id']))
+      return;
+
+    $book_link = $variables['book_link'];
+
+    $flat = book_get_flat_menu($book_link);
+
+// DO THE WHOLE TREE
+    if ($book_link['has_children']) {
+// Walk through the array until we find the current page.
+      do {
+        $link = array_shift($flat);
+      } while ($link && ($link['mlid'] != $book_link['mlid']));
+// Continue though the array and collect the links whose parent is this page.
+      while (($link = array_shift($flat)) && $link['plid'] == $book_link['mlid']) {
+        $numbering = nm_bookchapters_get_chapter_numbering_mlid($link['mlid']);
+        $link['title'] = $link['link_title'] = $numbering . NM_CHAPTER_SEPARATOR . ' ' . $link['title'];
+        $data['link'] = $link;
+        $data['below'] = '';
+        $children[] = $data;
+      }
+    }
+
+    if (isset($children)) {
+      $elements = menu_tree_output($children);
+      $variables['tree'] = drupal_render($elements);
+    }
+
+// DO PREV
+    if ($variables['prev_url']) {
+      $prev = book_prev($book_link);
+      $pnumbering = nm_bookchapters_get_chapter_numbering_mlid($prev['mlid']);
+      $variables['prev_title'] = $pnumbering . NM_CHAPTER_SEPARATOR . " " . $variables['prev_title'];
+    }
+
+// DO NEXT
+    if ($variables['next_url']) {
+      $next = book_next($book_link);
+      $nnumbering = nm_bookchapters_get_chapter_numbering_mlid($next['mlid']);
+      $variables['next_title'] = $nnumbering . NM_CHAPTER_SEPARATOR . " " . $variables['next_title'];
+    }
+  }
+}
+
+/**
+ * Modify Book links
+ *
+ */
+function section_content_node_view_alter(&$build) {
+//disable book links
+  if (isset($build['links']['book'])) {
+    unset($build['links']['book']);
+  }
+}
+
+/*
+  Remove Outline Tabs from various sites.
+ */
+/*
+  function section_content_preprocess_page(&$vars) {
+  global $user;
+  //check if node object is available
+  if (!isset($vars['node']))
+  return;
+
+  $hide_outline = in_array(NM_ROLE_AUTOR, $user->roles);
+
+  //Domain/Media overview: nid = 7
+  if (in_array($vars['node']->nid, array(NM_DOMAIN_OVERVIEW_ID)) && $hide_outline) {
+  $tabs = $vars['tabs']['#primary'];
+  //hide all tabs
+  unset($vars['tabs']['#primary']);
+  return;
+
+  foreach ($vars['tabs']['#primary'] as $key => $tab) {
+  if ($tab['#link']['path'] == 'node/%/outline') {
+  unset($vars['tabs']['#primary'][$key]);
+  }
+  }
+  }
+  } */
+
+function section_content_preprocess_node(&$variables) {
+  //04.06.2013 - 11:34 - SN testing todo
+  if (in_array($variables['type'], array(NM_MULTIPLE_CHOICE, NM_QUESTION_AND_ANSWER))) {
+    drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/tasks.js");
+  }
+}
+
+/*
+  BREADCRUMB
+ */
+
+//condition for context to be not set on domain overview page
+function section_content_context_load_alter(&$context) {
+//todo
+  if ($context->name == "section_content_domain_blocks") {
+//block should only be shown to subscribed users, so check for it
+    $group = og_context();
+    if (!$group && _section_domain_active($group)) {
+//unset condition, so context gets active
+      unset($context->conditions['context_og_condition_member_status']);
+    }
+  }
+}
+
+function section_content_menu_breadcrumb_alter(&$active_trail, $item) {
+
+//Check if the proper context is set first:
+//Abort if context is wrong
+  $context = context_get("context", "section_content");
+  if (empty($context))
+    return;
+
+  global $user;
+
+  $active_node = menu_get_object();
+  $active_node = !empty($active_node) ? $active_node : menu_get_object('file');
+  $type = isset($active_node) ? $active_node->type : NULL;
+  //adaption for every user
+  //set type to file, if file id (fid) is set
+  $entity_type = (isset($type) && !isset($active_node->fid)) ? 'node' : (isset($active_node->fid) ? 'file' : NULL);
+
+  //&& (in_array($type, array(NM_DOMAIN, NM_CHAPTER, NM_BIBLIO)) || $entity_type == 'file') // redundant
+  if (!empty($active_node)) {
+    //for every user
+    _section_content_breadcrumb_append_from_entity_data($entity_type, $active_trail, $active_node);
+  }
+  else {
+    //check if adaption any user role is necessary 
+    _section_content_alter_breadcrumb_for_role($active_trail);
+  }
+}
+
+//add domain overview as first breadcrumb item
+function _section_content_breadcrumb_append_from_entity_data($entity_type, &$active_trail, $active_entity = NULL) {
+  global $user;
+
+  //adapt breadcrumb if content type domain or chapter are selected
+  $d_node = node_load(NM_DOMAIN_OVERVIEW_ID);
+
+  //when Biblio node is selected
+  //For authors and admins, breadcrumb leading to source domain
+  //todo: for students.. breadcrumb leading to their course
+  if (isset($active_entity) && (in_array($active_entity->type, array(NM_BIBLIO, NM_MULTIPLE_CHOICE, NM_QUESTION_AND_ANSWER)) || $entity_type == 'file') && isset($active_entity->og_group_ref)) {
+
+    $author_or_admin = in_array(NM_ROLE_AUTOR, $user->roles) || in_array(NM_ROLE_ADMIN, $user->roles);
+    if ($author_or_admin) {
+      $lang_og = field_language($entity_type, $active_entity, 'og_group_ref');
+
+      if (!empty($active_entity->og_group_ref)) {
+        $og_ref_val = $active_entity->og_group_ref[$lang_og][0]['target_id'];
+        $b_items = _section_content_get_domain_breadcrumb_items($og_ref_val);
+
+        $active_trail = array_merge(array($b_items['domain_overview_item']), array($b_items['active_domain_item'])/* , array_slice($active_trail, -1) */);
+      }
+    }
+  }
+  else {
+
+    $new_breadcrumb_item = array(
+      'title' => $d_node->title,
+      'href' => 'node/' . $d_node->nid,
+      'localized_options' => array(),
+    );
+
+    $active_trail = array_merge(/* array_slice($active_trail, 0, 1), */ array($new_breadcrumb_item), array_slice($active_trail, 1));
+  }
+}
+
+function _section_content_alter_breadcrumb_for_role(&$active_trail) {
+  global $user;
+
+//Check if user has role Autor or a certain path is beeing viewd (e.g. domain media)
+  $path_match = strpos(request_uri(), NM_MEDIA_PATH);
+  $path_match = strpos(request_uri(), NM_BIBLIO_PATH) || $path_match;
+  $path_match = strpos(request_uri(), NM_TASKS_PATH) || $path_match;
+
+  if ((in_array(NM_ROLE_AUTOR, $user->roles) || $path_match)) {
+
+    $b_items = _section_content_get_domain_breadcrumb_items();
+
+    if ($b_items) {
+      $active_trail = array_merge(array($b_items['domain_overview_item']), array($b_items['active_domain_item'])/* , array_slice($active_trail, -1) */);
+    }
+  }
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+
+/**
+ * Assign media files to domains
+ * Automatically create a Book when creating a domain (Gebiet)
+ */
+function section_content_form_alter(&$form, &$form_state, $form_id) {
+
+  global $user;
+  static $form_og;
+
+
+
+//Assign files to active groups when uploaded
+//dependency: file entity, og, media
+
+  if ($form_id == 'file_entity_add_upload' || $form_id == 'media_internet_add') {
+//add submit handler to upload form  
+//attach file fields
+//form_load_include($form_state, 'inc', 'file_entity', 'file_entity.pages');
+//dpm("attaching form...");
+//dpm("...cancelling");
+//return;
+//hack, og fields were not loaded for internet media in media browser
+    if (!isset($form_og)) {
+      $form_og = _custom_general_get_file_og_fields($form, $form_state, $form_id);
+    }
+
+    $form += $form_og;
+
+//dpm($form['og_group_ref']);
+//$form_state['build_info']['args']['files'] += array('file_entity', file_entity.pages.inc);
+//needed for og widget
+//$form['#entity_type'] = 'file';
+//image as an example.. every file type needs to have og_group_ref field.
+//$form['#bundle'] = 'image';
+//Media Brower - Get Arguments from referer data, to assign file to a group 
+    $referer_args['nid'] = _media_browser_get_referer_nid();
+    $referer_args['node'] = isset($referer_args['nid']) ? node_load($referer_args['nid']) : NULL;
+    $referer_args['gid'] = isset($referer_args['node']) ? _custom_general_get_group($referer_args['node']) : NULL;
+
+//check if referer is a node
+    if (isset($referer_args['gid']) && is_numeric($referer_args['gid'])) {
+//set node object by referer nid
+//$referer_args['node'] = node_load($referer_args['nid']);
+//get language settings for fields
+//$lang_gg = field_language('node', $referer_args['node'], 'group_group');
+      $file = new stdClass();
+      $file->type = 'image';
+
+      $lang_ref = field_language('file', $file, 'og_group_ref');
+
+//get data if node is group, group member or both
+//$referer_args['is_group'] = og_is_group('node', $referer_args['node']);
+//$referer_args['is_group_member'] = isset($referer_args['node']->og_group_ref) && $referer_args['node']->og_group_ref[$lang_ref][0]['target_id'] > 0;
+//set ref to group if node is group - otherwise get group id from group member nodes
+//respect topmost condition. don't look for group of subgroups 
+//$referer_args['og_group_ref'] = (!$referer_args['is_group'] ? $referer_args['node']->og_group_ref[$lang_ref][0]['target_id'] : NULL);
+//$referer_args['language'] = $lang_ref;
+//if (!isset($referer_args['og_group_ref'])) {
+//$referer_args['og_group_ref'] = ($referer_args['is_group'] ? $referer_args['nid'] : NULL);
+//$referer_args['language'] = $lang_gg;
+//}
+//set value which is given by the referer
+      $form['og_group_ref'][$lang_ref][0]['default']['#default_value']['value'] = $referer_args['gid'];
+
+//$form['og_group_ref']['#type'] = 'hidden';
+//edit submit handles/saves additional fields - normal file upload doesn't
+    }
+//rearrange submit functions in order to prevent redirect
+    $form['#submit'] = array_diff($form['#submit'], array('media_browser_form_submit'));
+    $form['#submit'][] = 'file_entity_edit_submit';
+    $form['#submit'][] = 'media_browser_form_submit';
+  }
+  /**
+   *  BOOK
+   */
+//automatically create a Book when creating a domain (Gebiet)
+  if (!empty($form['#node_edit_form'])) {
+    $node = $form['#node'];
+    $type = $form['type']['#value'];
+// Not a book || not a domain => Nothing to do
+    if (($type != NM_DOMAIN) || !isset($node->book)) {
+      
+    }
+    else {
+      $nid = empty($node->nid) ? 'new' : $node->nid;
+      $form['book']['bid']['#default_value'] = $nid;
+//$form['book']['#type'] = 'hidden';
+    }
+  }
+//Only hide book options for authors, so admin has all fields available
+  $hide_book_options = in_array(NM_ROLE_AUTOR, $user->roles);
+//remove book settings from biblio content type for authors (Role Autor)
+  if (!empty($form['#node_edit_form']) && $hide_book_options) {
+    $node = $form['#node'];
+    $type = $form['type']['#value'];
+// Not a book || not a domain => Nothing to do
+    if (($type != NM_BIBLIO) || !isset($node->book)) {
+      
+    }
+    else {
+      $form['book']['#type'] = 'hidden';
+    }
+  }
+
+  return $form;
+}
+
+/*
+  M E D I A    -   S T A R T
+ */
+
+
+/*
+ *  Disable Domainoverview browsertab for non chapter or domain contenttypes
+ */
+
+function section_content_media_browser_plugins_alter(&$info) {
+  if (isset($info['domain_media--media_browser_1'])) {
+    $node = node_load(_media_browser_get_referer_nid());
+    if ($node && !in_array($node->type, array(NM_DOMAIN, NM_CHAPTER))) {
+      unset($info['domain_media--media_browser_1']);
+    }
+  }
+}
+
+/**
+ * pass argument (node's group id) to media browser
+ * 
+ */
+function section_content_views_pre_build(&$view) {
+
+  if ($view->name == NM_VIEW_DOMAIN_MEDIA && $view->current_display == 'media_browser_1') {
+    $referer_nid = _media_browser_get_referer_nid();
+    $referer_node = node_load($referer_nid);
+
+    $domain_id = _custom_general_get_group($referer_node);
+    if (isset($domain_id))
+      $view->set_arguments(array($domain_id));
+  }
+}
+
+/*
+  M E D I A    -   E N D
+ */
+
+/**
+ * Implements hook_og_user_access_alter().
+ *
+ * 
+ * Permit group-subscription for content type domain (Gebiet) for all roles other than "Autor" and "administrator"
+ * 
+ */
+function section_content_og_user_access_alter(&$perm, $context) {
+  global $user;
+
+  $group_type = $context['group_type'];
+  $group = $context['group'];
+
+  if ($group_type == 'node' && $group->type == NM_DOMAIN) {
+
+    $access_perm = in_array(NM_ROLE_AUTOR, $user->roles) || in_array(NM_ROLE_ADMIN, $user->roles);
+//var_dump($access_perm);
+//if(isset($perm["subscribe without approval"]) && !$access_perm)
+
+    if (isset($perm["subscribe"]) && !$access_perm) {
+      //$perm["subscribe without approval"] = FALSE;
+      $perm["subscribe"] = FALSE;
+    }
+    else {
+      $perm["subscribe without approval"] = TRUE;
+    }
+  }
+
+  return;
+}
+
+/**
+ * Implements hook_wysiwyg_plugin
+ * @param type $editor
+ * @param type $version
+ * @return type
+ */
+function section_content_wysiwyg_plugin($editor, $version) {
+
+  _linkit_add_settings($editor);
+
+  switch ($editor) {
+    case 'ckeditor':
+      return array(
+        'section_content_task_plugin' => array(
+          'path' => drupal_get_path('module', 'section_content') . '/wysiwyg_plugin',
+          'buttons' => array(
+            'tasks_button' => t('Tasks'),
+          ),
+          'load' => TRUE,
+        ),
+      );
+      break;
+  }
+}
+
+/**
+ * Implements hook_menu
+ * 
+ * @return array
+ */
+function section_content_menu() {
+
+  $items = array();
+
+  $items['admin/tasks_dashboard'] = array(
+    'title' => 'Tasks',
+    'description' => 'Aufgaben Auswahl',
+    'page callback' => '_section_content_tasks_dashboard',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'page arguments' => array(2),
+      //'theme callback' => '_linkit_dashboard_theme',
+  );
+  $items['section_content/tasks/autocomplete'] = array(
+    'title' => 'Content autocomplete response function',
+    'page callback' => '_section_content_tasks_autocomplete',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+function _section_content_tasks_autocomplete($search = NULL) {
+
+  $search = $_GET['s'];
+  $enabled_plugins = linkit_get_profile_plugins();
+
+  // Absolute URL
+  if ($result = _linkit_result_from_url($search, $enabled_plugins)) {
+    $results = array($result);
+  }
+  elseif (!$results = _section_content_tasks_autocomplete_search($search, $enabled_plugins)) {
+    $results = array(array(
+        'title' => t('No results'),
+        'addClass' => 'status-notice',
+        'disabled' => TRUE,
+        ));
+  }
+  drupal_json_output($results);
+  drupal_exit();
+}
+
+/**
+ * Perform internal autocomplete search.
+ *
+ * @param $search_string
+ *   The search string.
+ * @return $results
+ *   An array with the result objects.
+ */
+function _section_content_tasks_autocomplete_search($search_string, $enabled_plugins) {
+  $matches = array();
+  if ($search_string) {
+    $profile = linkit_profile_load("tasks");
+    ;
+
+    foreach ($enabled_plugins as $plugin) {
+      // Get an instance of the handler for this plugin.
+      $handler = linkit_get_plugin_handler($plugin, $profile);
+      // If the handler is broken, just continue.
+      if ($handler->broken()) {
+        continue;
+      }
+      // Add the search string.
+      $handler->setSearchString($search_string);
+      // Call the plugin search metod.
+      $results = $handler->autocomplete_callback();
+      // Merge the results.
+      $matches = array_merge($matches, $results);
+    }
+    // Special for link to frontpage.
+    if (strpos($search_string, 'front') !== FALSE) {
+      $results = array(
+        array(
+          'title' => t('Frontpage'),
+          'description' => 'The frontpage for this site.',
+          'path' => url('<front>'),
+          'group' => t('System'),
+        )
+      );
+      $matches = array_merge($matches, $results);
+    }
+  }
+  if (!empty($matches)) {
+    return $matches;
+  }
+  return FALSE;
+}
+
+function _section_content_tasks_dashboard() {
+  /**
+   * Creates the dashboard.
+   */
+  $form = drupal_get_form('_section_content_tasks_dashboard_form');
+  print drupal_render($form);
+  drupal_exit();
+}
+
+/**
+ * Implements hook_form().
+ */
+function _section_content_tasks_dashboard_form($form, &$form_state) {
+  $profile = linkit_profile_load("tasks");
+
+  if (is_null($profile)) {
+    drupal_set_message(t('You need a linkit profile named <em>biblio</em> to continue!'), 'error');
+    return $form;
+  }
+
+  $form['tasks_search'] = array(
+//'#prefix' => '<div>' . l('Aufgabe hinzufügen', 'node/add/biblio', array('attributes' => array('target'=>'_blank'))). '</div>',
+    '#type' => 'textfield',
+    '#title' => t('Search Tasks'),
+    '#description' => t('Start typing to find a tasks entry. Use the arrow keys to navigate.'),
+    '#maxlength' => 255,
+    '#size' => 60,
+    '#default_value' => '',
+    '#weight' => -10,
+  );
+
+  $form['tasks_tag'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Task-ID (nid)'),
+    '#required' => TRUE,
+    '#maxlength' => NULL,
+    '#size' => 60,
+    '#default_value' => '',
+    '#weight' => -1,
+  );
+
+  $form['tasks_insert'] = array(
+    '#type' => 'button',
+    '#value' => t('Insert Task'),
+    '#suffix' => '<a id="tasks-cancel" href="#">' . t('Cancel') . '</a>',
+    '#weight' => 100,
+  );
+
+  return $form;
+}
+
+/**
+ *  FILTER
+ */
+
+/**
+ * Implements hook_filter_info().
+ *
+ */
+function section_content_filter_info() {
+  $filters['filter_content_tasks'] = array(
+    'title' => t('Content - Tasks Filter'),
+    'description' => t('Every [task](node_id)[/task] pattern is beeing replaced by its content.'),
+    'process callback' => '_section_content_filter_tasks_process',
+    'tips callback' => '_section_content_filter_tasks_tips',
+    'cache' => FALSE,
+  );
+  return $filters;
+}
+
+/**
+ * Content - Tasks Filter  process callback.
+ *
+ * The actual filtering is performed here. The supplied text should be returned,
+ * once any necessary substitutions have taken place. The example just replaces
+ * foo with our custom defined string in the settings page.
+ */
+function _section_content_filter_tasks_process($text, $filter, $format) {
+  //$replacement = isset($filter->settings['filter_example_foo']) ? $filter->settings['filter_example_foo'] : 'bar';
+  //return str_replace('foo', $replacement, $text);
+  $regex = '#\[task\]([0-9]+)\[\/task\]#s';
+
+  return preg_replace_callback($regex, '_section_content_task_replacements', $text);
+}
+
+function _section_content_task_replacements($matches) {
+  //preg_match($regex, $text, $matches);
+  //$match = $matches[0];
+  $text = "";
+
+  if (!empty($matches) && count($matches) > 1) {
+    $nid = $matches[1];
+    $node = node_load($nid);
+
+    if ($node != FALSE && node_access('view', $node) && $node->status) {
+      $node_view = node_view($node, 'task', NULL);
+
+      //28.05.2013 - 12:22 - SN hack, title must be unset on an other place (template)
+      if (isset($node_view['#node']->title)) {
+        $node_view['#node']->title = "";
+      }
+      //dpm($node_view);
+      $node_output = drupal_render($node_view);
+      //$text = preg_replace($regex, $node_output, $text);
+      $text = $node_output;
+    }
+  }
+  return $text;
+}
+
+/**
+ * Filter tips callback for foo filter.
+ *
+ * The tips callback allows filters to provide help text to users during the
+ * content editing process. Short tips are provided on the content editing
+ * screen, while long tips are provided on a separate linked page. Short tips
+ * are optional, but long tips are highly recommended.
+ */
+function _section_content_filter_tasks_tips($filter, $format, $long = FALSE) {
+
+  return t('Every [task](node_id)[/task] pattern is beeing replaced by its content.');
+}
+
+function _section_content_multiple_choice_form() {
+  $form['description'] = array(
+    '#type' => 'item',
+    '#title' => t('Form example wich is going to be replaced by multiple choice logics'),
+  );
+
+  $form['test'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Test'),
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Test',
+  );
+  return $form;
+}
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function section_content_field_formatter_info() {
+  return array(
+    'double_field_mc_answers' => array(
+      'label' => t('Multiple Choice'),
+      'field types' => array('double_field'),
+    ),
+  );
+}
+
+function section_content_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  if (!$items) {
+    return;
+  }
+
+  $element = array();
+
+  switch ($display['type']) {
+    case 'double_field_mc_answers':
+      foreach ($items as $delta => $item) {
+        $element[$delta] = array(
+          '#display' => $display,
+          '#item' => $item,
+          '#theme' => 'multiple_choice_field',
+        );
+      }
+      break;
+  }
+
+  return $element;
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function section_content_preprocess_field(&$vars) {
+  if ($vars['element']['#field_name'] == 'field_answer' && $vars['element']['#bundle'] == 'content_multiple_choice') {
+    $vars['theme_hook_suggestions'][] = 'multiple_choice_field_group';
+  }
+  else
+  if ($vars['element']['#field_name'] == 'field_qaa_answer' && $vars['element']['#bundle'] == 'content_question_and_answer') {
+    $vars['theme_hook_suggestions'][] = 'question_and_answer_field';
+  }
+}
+
+/**
+ * Implements theme_multiple_choice_field().
+ */
+function theme_multiple_choice_field($vars) {
+  $element = $vars['element'];
+  $settings = $element['#display']['settings'];
+
+  $uniqueid = uniqid();
+
+  $cb = array(
+    '#type' => 'checkbox',
+    '#suffix' => '<label for="' . $uniqueid . '">' . $element['#item']['second'] . '</label>',
+    '#default_value' => FALSE,
+    '#attributes' => array('id' => array($uniqueid)),
+  );
+
+  $class = 'container-inline';
+  $output = '<div class="' . $class . '">';
+  $output .= '<div class="double-field-first-sectond">' . drupal_render($cb) . '</div>';
+//$output .= '<div class="double-field-second"> ' . $element['#item']['second'] . '</div>';
+  $output .= '</div>';
+
+  return $output;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function section_content_theme() {
+  return array(
+    'multiple_choice_field' => array('render element' => 'element'),
+    'multiple_choice_field_group' => array('render element' => 'element'),
+    'question_and_answer_field' => array('render element' => 'element'),
+  );
+}
+
+/**
+ * Replaces theme_field() for removing all markup around single-item fields.
+ */
+function theme_multiple_choice_field_group($vars) {
+
+  //$output = drupal_render($vars['items']);
+  $output = drupal_get_form('section_content_mc_form', $vars);
+  $output = drupal_render($output);
+
+  return $output;
+}
+
+/**
+ * 
+ */
+function theme_question_and_answer_field($vars) {
+
+  $output = '<div class="qaa_solution_button field-label"><button class="btn">Lösung</button></div>';
+  $output .= '<div class="solution" style="display:none;">';
+  $output .= drupal_render($vars['items']);
+  $output .= '</div>';
+  //$output = drupal_get_form('section_content_mc_form', $vars);
+  //$output = drupal_render($output);
+
+  return $output;
+}
+
+function section_content_mc_form($form, $form_state, $vars = NULL) {
+
+  $form = array();
+
+  $form['mc_prefix'] = array(
+    '#markup' => '<div id="mc_form">',
+  );
+
+  if (!empty($vars)) {
+    foreach ($vars['items'] as $delta => $question) {
+      $uniqueid = uniqid();
+      $form['question_' . $delta] = array(
+        '#type' => 'checkbox',
+        '#prefix' => '<div>',
+        '#suffix' => '<label for="' . $uniqueid . '">' . $question['#item']['second'] . '</label></div>',
+        '#default_value' => FALSE,
+        '#attributes' => array('id' => array($uniqueid)),
+      );
+    }
+  }
+
+  //$mc_node = menu_get_object();
+
+  $form['mc_id'] = array(
+    '#type' => 'hidden',
+    '#value' => 63,
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Eingabe',
+    //'#attributes' => array('class' => array('btn')),
+    '#ajax' => array(
+      'callback' => 'section_content_mc_submit_form',
+      'wrapper' => 'mc_form',
+      'effect' => 'fade',
+    ),
+  );
+
+  $form['suffix'] = array(
+    '#markup' => '</div>',
+  );
+
+  return $form;
+}
+
+function section_content_mc_submit_form($form, $form_state) {
+
+  $mc_node = node_load($form_state['values']['mc_id']);
+  $right = section_content_mc_check_correctness($mc_node, $form_state['values']);
+
+  //solution / explanation
+  $lang = field_language('node', $mc_node, 'field_mc_solution');
+  $output_solution = drupal_render(field_view_field('node', $mc_node, 'field_mc_solution'));
+
+  //$output .= $tmp['value'];
+  //04.06.2013 - 23:56 - SN
+  //todo Save intput - user and course contexed!
+  if ($right) {
+    $output = "Richtig!";
+    $output .= $output_solution;
+    return $output;
+  }
+  else {
+    $output = "Die Lösung war leider falsch.";
+    $output .= $output_solution;
+    return $output;
+  }
+}
+
+function section_content_mc_check_correctness($mc_node, $items) {
+  $answers = array_search_i("question", $items);
+  $lang = field_language('node', $mc_node, 'field_answer');
+
+  foreach ($mc_node->field_answer[$lang] as $key => $val) {
+    //return false if at least one answer is wrong
+
+    if ($val['first'] == NULL)
+      $val['first'] = 0;
+    if ($val['first'] != current($answers[$key])) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
+
+function array_search_i($str, $array) {
+  $result = array();
+  foreach ($array as $key => $value) {
+    if (stristr($key, $str))
+      $result[] = array($key => $value);
+  }
+  return $result;
+}
+

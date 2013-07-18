@@ -1,0 +1,16 @@
+name = Statuses Userpoints
+description = "Integrates Userpoints with Statuses."
+package = Statuses
+dependencies[] = statuses
+dependencies[] = userpoints
+core = 7.x
+
+files[] = fbss_userpoints.install
+files[] = fbss_userpoints.module
+
+; Information added by drupal.org packaging script on 2013-02-10
+version = "7.x-1.0-beta2"
+core = "7.x"
+project = "statuses"
+datestamp = "1360540534"
+

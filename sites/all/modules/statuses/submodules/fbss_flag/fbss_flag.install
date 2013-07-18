@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ *   (Un)installs the Statuses Flag module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function fbss_flag_install() {
+  // Lower weight so that the Flag module's classes are available to us.
+  // We take precautions in fbss_flag.inc to make sure this isn't strictly
+  // necessary, but it (probably) doesn't hurt.
+  db_update('system')
+    ->fields(array('weight' => 2))
+    ->condition('name', 'fbss_flag')
+    ->execute();
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function fbss_flag_update_7100(&$sandbox) {
+  db_update('flags')
+    ->expression('content_type', "REPLACE(content_type, 'facebook_status', 'statuses')")
+    ->execute();
+  db_update('flag_content')
+    ->expression('content_type', "REPLACE(content_type, 'facebook_status', 'statuses')")
+    ->execute();
+  db_update('flag_counts')
+    ->expression('content_type', "REPLACE(content_type, 'facebook_status', 'statuses')")
+    ->execute();
+}

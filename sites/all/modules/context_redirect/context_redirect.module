@@ -1,0 +1,52 @@
+<?php
+/**
+ * @file
+ * Provides a context reaction that redirects the user.
+ */
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function context_redirect_ctools_plugin_api($module, $api) {
+  if ($module == 'context' && $api == 'plugins') {
+    return array('version' => 3);
+  }
+}
+
+/**
+ * Implements hook_context_plugins().
+ */
+function context_redirect_context_plugins() {
+  $plugins = array();
+  $plugins['context_redirect_reaction'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'context_redirect'),
+      'file' => 'context_redirect_reaction.inc',
+      'class' => 'context_redirect_reaction',
+      'parent' => 'context_reaction',
+    ),
+  );
+  return $plugins;
+}
+
+/**
+ * Implements hook_context_registry().
+ */
+function context_redirect_context_registry() {
+  $registry['reactions'] = array(
+    'context_redirect' => array(
+      'title' => t('Context redirect'),
+      'plugin' => 'context_redirect_reaction',
+    ),
+  );
+  return $registry;
+}
+
+/**
+ * Implements hook_context_page_reaction().
+ */
+function context_redirect_context_page_reaction() {
+  if ($plugin = context_get_plugin('reaction', 'context_redirect')) {
+    $plugin->execute();
+  }
+}

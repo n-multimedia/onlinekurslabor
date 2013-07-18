@@ -1,0 +1,169 @@
+<?php
+
+/**
+ * @file
+ *   (Un)installs the Statuses Tags module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function statuses_tags_schema() {
+  $schema = array();
+  $schema['statuses_tags'] = array(
+    'description' => 'Stores term-to-status relationships.',
+    'fields' => array(
+      'sid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Status ID',
+      ),
+      'rid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+        'description' => 'Reference ID (Term ID or User ID)',
+      ),
+      'type' => array(
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Reference type',
+      ),
+      'name' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Reference name',
+      ),
+    ),
+    'indexes' => array(
+      'sid' => array('sid'),
+      'rid' => array('rid'),
+    ),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function statuses_tags_install() {
+  /**
+   * When upgrading from facebook_status a normal update hook won't register
+   * because we are installing the "statuses" module for the first time. To get
+   * around this, we force the update hook to run during installation.
+   */
+  $sandbox = array();
+  $result = _statuses_tags_update_7100($sandbox);
+  if ($result) {
+    drupal_set_message($result);
+  }
+  if (module_exists('taxonomy')) {
+    // Check to see if the vocabulary already existed (i.e. from a previous installation).
+    $already_exists = db_query("SELECT vid, name FROM {taxonomy_vocabulary} WHERE module = 'statuses_tags'")->fetchObject();
+    if (!empty($already_exists) && !empty($already_exists->vid)) {
+      variable_set('statuses_tags_vid', $already_exists->vid);
+      drupal_set_message(st('The vocabulary "@name" has been configured for use with the Statuses Tags module.', array('@name' => $already_exists->name)));
+      return;
+    }
+    // Create a default vocabulary for use with hashtags.
+    $vocabulary = (object) array(
+      'name' => st('Hashtags'),
+      'machine_name' => 'hashtags',
+      'description' => st('Contains #hashtags used in Statuses.'),
+      'hierarchy' => 0,
+      'module' => 'statuses_tags',
+      'weight' => 0,
+    );
+    taxonomy_vocabulary_save($vocabulary);
+    $vid = isset($vocabulary->vid) ? $vocabulary->vid :
+    db_query("SELECT vid FROM {taxonomy_vocabulary} WHERE machine_name = 'hashtags' AND module = 'statuses_tags'")->fetchField();
+    variable_set('statuses_tags_vid', $vid);
+    drupal_set_message(st('The vocabulary "Hashtags" has been created and configured for use with the Statuses Tags module.'));
+  }
+  else {
+    drupal_set_message(st('Statuses Tags only allows using #hashtags when the Taxonomy module is installed.'));
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function statuses_tags_uninstall() {
+  if (variable_get('statuses_tags_vid', -1) != -1) {
+    $vocabulary = taxonomy_vocabulary_load(variable_get('statuses_tags_vid', -1));
+    if (isset($vocabulary->name)) {
+      drupal_set_message(
+        st('The Statuses Tags module has been uninstalled.') . ' ' .
+        st(
+          'The vocabulary @name was previously used to store #hashtags for the Statuses Tags module.',
+          array('@name' => $vocabulary->name)
+        ) . ' ' .
+        st(
+          'If you are not using this vocabulary for anything else, you may want to <a href="!delete_url">delete it</a> now.',
+          array('!delete_url' => url('admin/structure/taxonomy/hashtags/edit', array('absolute' => TRUE)))
+        )
+      );
+    }
+  }
+
+  variable_del('statuses_tags_url');
+  variable_del('statuses_tags_vid');
+  variable_del('statuses_tags_time');
+  variable_del('statuses_tags_count');
+  // Although not deleting this leaves an unnecessary row in the variable
+  // table, it's a PITA for site admin to change its value, so it stays in case
+  // FBSST is ever installed again.
+  //variable_del('statuses_tags_alt_pattern');
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function _statuses_tags_update_7100(&$sandbox) {
+  if (db_table_exists('facebook_status_tags')) {
+    // Transfer data.
+    // This might take a long time, but it should be manageable.
+    // See https://drupal.org/node/1501978 for discussion of alternatives.
+    db_query("
+      INSERT INTO {statuses_tags} (sid, rid, type, name)
+      SELECT f.sid, f.rid, f.type, f.name
+      FROM {facebook_status_tags} f
+      ORDER BY f.sid ASC
+    ");
+
+    // Delete old tables.
+    db_drop_table('facebook_status_tags');
+
+    // Update the vocabulary.
+    if (variable_get('facebook_status_tags_vid', -1) != -1 && db_table_exists('taxonomy_vocabulary')) {
+      db_update('taxonomy_vocabulary')
+        ->fields(array(
+          'machine_name' => 'hashtags',
+          'description' => t('Contains #hashtags used in Statuses.'),
+          'module' => 'statuses_tags',
+        ))
+        ->condition('module', 'facebook_status_tags')
+        ->condition('vid', variable_get('facebook_status_tags_vid', -1))
+        ->execute();
+    }
+
+    // Convert old settings.
+    variable_set('statuses_tags_url', variable_get('facebook_status_tags_url', 'statuses/term'));
+    variable_set('statuses_tags_vid', variable_get('facebook_status_tags_vid', -1));
+    variable_set('statuses_tags_time', variable_get('facebook_status_tags_time', 'all'));
+    variable_set('statuses_tags_count', variable_get('facebook_status_tags_count', 5));
+    variable_del('facebook_status_tags_url');
+    variable_del('facebook_status_tags_vid');
+    variable_del('facebook_status_tags_time');
+    variable_del('facebook_status_tags_count');
+
+    return t('The Statuses Tags module for Drupal 7 was upgraded from Facebook-style Statuses Tags module for Drupal 6.');
+  }
+}

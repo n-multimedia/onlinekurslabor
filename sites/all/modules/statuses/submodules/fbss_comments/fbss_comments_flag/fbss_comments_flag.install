@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ *   (Un)installs the Statuses Flag module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function fbss_comments_flag_install() {
+  // Lower weight so that the Flag module's classes are available to us.
+  // We take precautions in fbss_flag.inc to make sure this isn't strictly
+  // necessary, but it (probably) doesn't hurt.
+  db_update('system')
+    ->fields(array('weight' => 2))
+    ->condition('name', 'fbss_comments_flag')
+    ->execute();
+}

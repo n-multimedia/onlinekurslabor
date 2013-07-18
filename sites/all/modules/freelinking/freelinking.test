@@ -1,0 +1,153 @@
+<?php
+
+/**
+ * @file
+ * Unit tests for the freelinking Module.
+ */
+
+class FreelinkingTest extends DrupalWebTestCase {
+  /*
+   * The getInfo() method provides information about the test.
+   * In order for the test to be run, the getInfo() method needs
+   * to be implemented.
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('Feelinking tests'),
+      'description' => t('Tests main module functionality.'),
+      'group' => t('Freelinking'),
+    );
+  }
+
+  /**
+   * Prepares the testing environment enabling modules, creating a user and some test content.
+   */
+  function setUp() {
+    parent::setUp('freelinking', 'search');
+
+    // Create user
+    $this->privileged_user = $this->drupalCreateUser(array(
+      'bypass node access',
+      'administer filters',
+    ));
+    $this->drupalLogin($this->privileged_user);
+
+    // Activate freelinking input filter
+    $edit = array(
+      'filters[freelinking][status]' => 1,
+      'filters[freelinking][weight]' => 0,
+      'filters[filter_url][weight]' => 1,
+      'filters[filter_html][weight]' => 2,
+      'filters[filter_autop][weight]' => 3,
+      'filters[filter_htmlcorrector][weight]' => 4,
+    );
+    $this->drupalPost('admin/config/content/formats/filtered_html', $edit, t('Save configuration'));
+    $this->assertText(t('The text format Filtered HTML has been updated.'));
+    $this->drupalGet('admin/config/content/formats/filtered_html');
+    $this->assertFieldChecked('edit-filters-freelinking-status',
+                              t('Freelinking input filter has been activated'));
+
+    // Create a couple of pages which will be freelinked
+    $edit = array();
+    $edit['title'] = t('First page');
+    $edit['body[und][0][value]'] = t('Body of first page');
+    $this->drupalPost('node/add/page', $edit, t('Save'));
+    $this->assertText(t('Basic page @title has been created.', array('@title' => $edit['title'])));
+
+    $edit = array();
+    $edit['title'] = t('Second page');
+    $edit['body[und][0][value]'] = t('Body of second page');
+    $this->drupalPost('node/add/page', $edit, t('Save'));
+    $this->assertText(t('Basic page @title has been created.', array('@title' => $edit['title'])));
+
+    $edit = array();
+    $edit['title'] = t('Third page');
+    $edit['body[und][0][value]'] = t('Body of third page');
+    $this->drupalPost('node/add/page', $edit, t('Save'));
+    $this->assertText(t('Basic page @title has been created.', array('@title' => $edit['title'])));
+
+    // Upload Drupal logo to files directory to test file and image plugins
+    $root_path = $_SERVER['DOCUMENT_ROOT'];
+    $image = new stdClass();
+    $image->uri = $root_path . '/themes/bartik/logo.png';
+    file_copy($image);
+    $this->assertTrue(is_string(drupal_realpath('public://logo.png')),
+                      t('Image @image was saved successfully',
+                        array('@image' => $image->uri)));
+  }
+
+  /**
+   * Tests all plugins
+   */
+  public function testFreelinkingPlugins() { 
+    // Create node that will contain a sample of each plugin
+    $edit = array();
+    $edit['title'] = t('Testing all freelinking plugins');
+    $edit['body[und][0][value]'] = '<ul>' .
+                    '  <li>Default plugin (nodetitle):  [[First page]]</li>' .
+                    '  <li>Drupalproject:  [[drupalproject:freelinking]]</li>' .
+                    '  <li>Drupalorgnid:   [[drupalorgnid:1]]</li>' .
+                    '  <li>One inch frame: [[oif:about-one-inch-frame]]</li>' .
+                    '  <li>Nodetitle:      [[nodetitle:First page]]</li>' .
+                    '  <li>Search:         [[search:test]]</li>' .
+                    '  <li>Nid:            [[nid:2]]</li>' .
+                    '  <li>Google:         [[google:drupal]]</li>' .
+                    '  <li>File:           [[file:logo.png]]</li>' .
+                    '  <li>Wikipedia:      [[wikipedia:Main_Page]]</li>' .
+                    '  <li>Wikiquote:      [[wikiquote:Main Page]]</li>' .
+                    '  <li>Wiktionary:     [[wiktionary:Main Page]]</li>' .
+                    '  <li>Wikinews:       [[wikinews:Main Page]]</li>' .
+                    '  <li>Wikisource:     [[wikisource:Main Page]]</li>' .
+                    '  <li>Wikibooks:      [[wikibooks:Main Page]]</li>' .
+                    '  <li>User:           [[u:' . $this->privileged_user->uid . ']]</li>' .
+                    '  <li>Path:           [[path:/node/3]]</li>' .
+                    '</ul>' .
+                    '<p>Testing compatibility with other modules</p>' .
+                    '<ul>' .
+                    '  <li>Respects [[drupalproject:media]] tags, such as:' .
+                    '  [[{"type":"media","view_mode":"media_large","fid":"286","attributes":{"alt":"","class":"media-image","typeof":"foaf:Image"}}]]</li>' .
+                    '</ul>';
+
+    $this->drupalPost('node/add/page', $edit, t('Save'));
+    $this->assertText(t('Basic page @title has been created.', array('@title' => $edit['title'])));
+
+    // Verify each freelink plugin
+    $this->assertLink(t('First page'), 0, t('Default plugin (nodetitle) freelink was generated successfully without 
+      specifying plugin name between brackets.'));
+    $this->assertLinkByHref('http://drupal.org/project/freelinking', 0,
+                            t('Drupalproject freelink was generated successfully.'));
+    $this->assertLinkByHref('http://drupal.org/node/1', 0,
+                            t('Drupalorgnid freelink was generated successfully.'));
+    $this->assertLinkByHref('http://oif.eafarris.com/wiki/about-one-inch-frame', 0,
+                            t('One inch frame freelink was generated successfully.'));
+    $this->assertLink(t('First page'), 1, t('Nodetitle freelink was generated successfully.'));
+    $this->assertLinkByHref('/search/node/test', 0,
+                            t('Search freelink was generated successfully.'));
+    $this->assertLink(t('Second page'), 0, t('Nid freelink was generated successfully.'));
+    $this->assertLinkByHref('http://www.google.com/search?q=drupal&hl=en', 0,
+                            t('Google freelink was generated successfully.'));
+    $this->assertLink('logo.png', 0, t('File freelink was generated successfully.'));
+    $this->assertLinkByHref('http://en.wikisource.org/wiki/Main_Page', 0,
+                            t('Wikisource freelink was generated successfully.'));
+    $this->assertLinkByHref('http://en.wiktionary.org/wiki/Main_Page', 0,
+                            t('Wiktionary freelink was generated successfully.'));
+    $this->assertLinkByHref('http://en.wikiquote.org/wiki/Main_Page', 0,
+                            t('Wikiquote freelink was generated successfully.'));
+    $this->assertLinkByHref('http://en.wikibooks.org/wiki/Main_Page', 0,
+                            t('Wikibooks freelink was generated successfully.'));
+    $this->assertLinkByHref('http://en.wikinews.org/wiki/Main_Page', 0,
+                            t('Wikinews freelink was generated successfully.'));
+    $this->assertLink($this->privileged_user->name, 0,
+                      t('User freelink was generated successfully.'));
+    $this->assertLink(t('Third page'), 0, t('Path freelink was generated successfully.'));
+    $this->assertLinkByHref('http://en.wikipedia.org/wiki/Main_Page', 0,
+                            t('Wikipedia freelink was generated successfully.'));
+    $this->pass(t('Verifying compatibility with other modules...'));
+    if (module_exists('media')) {
+      $this->assertNoPattern(t('/Plugin .* Not Found/'), t('Media tag was not parsed by freelinking module.'));
+    }
+    else {
+      $this->pass(t('Media module is not intalled: ignoring.'));
+    }
+  }
+}

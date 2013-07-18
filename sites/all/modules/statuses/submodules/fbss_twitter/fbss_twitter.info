@@ -1,0 +1,18 @@
+name = Statuses Twitter
+description = Integrates Twitter with Statuses.
+package = Statuses
+dependencies[] = statuses
+dependencies[] = twitter
+dependencies[] = oauth_common
+core = 7.x
+
+files[] = fbss_twitter.admin.inc
+files[] = fbss_twitter.install
+files[] = fbss_twitter.module
+
+; Information added by drupal.org packaging script on 2013-02-10
+version = "7.x-1.0-beta2"
+core = "7.x"
+project = "statuses"
+datestamp = "1360540534"
+

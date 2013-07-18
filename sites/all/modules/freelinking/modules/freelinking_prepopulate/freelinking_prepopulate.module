@@ -1,0 +1,136 @@
+<?php
+/**
+ * Freelinking Create
+ *
+ * @file
+ * A Freelinking 3 module for the creation of Prepopulate-based plugins.
+ * Current provides node/add links via the Create Node plugin
+ * Intended for use primarily as a "failover" plugin when others fail.
+ */
+
+require DRUPAL_ROOT . '/' . drupal_get_path('module', 'freelinking_prepopulate')
+  . '/freelinking_prepopulate.utilities.inc';
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function freelinking_prepopulate_freelinking() {
+  $freelinking['createnode'] = array(
+    'indicator' => '/^create(node)?$/',
+    'callback' => 'freelinking_prepopulate_node_callback',
+    'settings' => 'freelinking_prepopulate_node_settings',
+    'failover' => array('search'),
+    'tip' => t('Links to a prepopulated node/add form.'),
+  );
+  return $freelinking;
+}
+
+/**
+ * Node Create replacement callback
+ * Ultimate default: [[create:pagetitle]] =>
+ * <a href="node/add/page?edit[title]=pagetitle>pagetitle</a>
+ */
+function freelinking_prepopulate_node_callback($target, $plugin) {
+  // Use specified node type or fallback to configuration.
+  if (isset($target['type'])) {
+    $node_type = check_plain($target['type']);
+  }
+  else {
+    $node_type = variable_get('freelinking_prepopulate_node_type',
+      _freelinking_prepopulate_default_node_type());
+  }
+
+  // If the cache is disabled, check to see if the current user can create this content type.
+  if (!freelinking_get_conf('cache') && !user_access('create ' . $node_type . ' content')) {
+    switch (variable_get('freelinking_createnode_failover', 'none')) {
+      case 'search':
+        return array('failover' => 'search');
+      case 'error':
+        return array(
+          'failover' => 'error',
+          'message' => t('Access Denied to Create Missing Content'),
+        );
+    }
+  }
+
+  // Generate basic link elements.
+  $url = 'node/add/' . str_replace('_', '-', $node_type);
+  $title = $target['text'] ? $target['text'] : $target['dest'];
+  // This title is default for createnode, anything else (such as target['title']) will override it.
+  $query['edit[title]'] = check_plain($target['dest']);
+
+  // Use arguments targeted for Prepopulate or get values from current node/page.
+  if (isset($target['other']['prepopulate']) && is_array($target['other']['prepopulate'])) {
+    foreach ($target['other']['prepopulate'] as $field => $value) {
+      $query[$field] = $value;
+    }
+  }
+  else {
+    $query = array_merge($query, freelinking_prepopulate_fields_from_page(
+      variable_get('freelinking_prepopulate_node_advanced', array())
+    ));
+  }
+
+  // Override query string from syntax.
+  // This is not currently restricted by advanced settings, just by the ability
+  // of the FL_P API to recognize arguments from $target
+  $query_override = freelinking_prepopulate_fields_from_array('nodecreate', $target);
+  if (isset($query_override)) {
+    foreach ($query_override as $key => $value) {
+      if ($value) {
+        $query[$key] = $value;
+      }
+    }
+  }
+  return array($title, $url, array(
+      'query' => $query,
+      'attributes' => array(
+        'title' => t('Create node') . ' "' . $target['dest'] . '"',
+      ),
+    ));
+}
+
+/**
+ * Settings callback for "Create Node"
+ */
+function freelinking_prepopulate_node_settings() {
+  $form['freelinking_prepopulate_node_type'] = array(
+    '#type' => 'select',
+    '#title' => t('Default Type to Create'),
+    '#default_value' => variable_get('freelinking_prepopulate_node_type',
+      _freelinking_prepopulate_default_node_type()),
+    '#options' => node_type_get_names(),
+    '#description' => t('Which content type should be created by Freelinking?'),
+  );
+
+  $nodecreate[] = freelinking_prepopulate_list_fields('nodecreate');
+  if (isset($nodecreate)) {
+    foreach ($nodecreate as $key => $value) {
+      $options[$key] = $value['title'];
+    }
+  }
+  if (empty($options)) {
+    return $form;
+  }
+
+  $form['freelinking_prepopulate_node_advanced'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Advanced Options'),
+    '#default_value' => variable_get('freelinking_prepopulate_node_advanced', array()),
+    '#options' => $options,
+    '#description' => t('Use the <em>Linking Node</em> for Create Node presets.'),
+  );
+  return $form;
+}
+
+/**
+ * Identify an existing node type as default
+ * Gets the first available type
+ */
+function _freelinking_prepopulate_default_node_type() {
+  $types = array();
+  $types = node_type_get_names();
+  $types = array_keys($types);
+  return array_shift($types);
+}

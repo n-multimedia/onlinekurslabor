@@ -1,0 +1,11 @@
+
+#linkit-picker-container,
+#linkit-picker-container .view .view-content { margin:1em 0; }
+#linkit-picker-container .view-container { display:none; }
+#linkit-picker-container .view-linkit-picker-node { display:block; }
+
+#linkit-picker-container .view-container td { cursor:pointer; }
+
+#linkit-picker-container .views-field-linkit-picker { display:none; }
+
+

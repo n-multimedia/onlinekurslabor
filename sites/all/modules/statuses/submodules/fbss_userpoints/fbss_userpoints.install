@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ *   (Un)installs the Statuses Userpoints module.
+ */
+
+/**
+ * Implements hook_update_N().
+ */
+function fbss_userpoints_update_7100(&$sandbox) {
+  db_update('userpoints_txn')
+    ->expression('operation', "REPLACE(operation, 'facebook_status', 'statuses')")
+    ->execute();
+
+  // Convert old settings.
+  variable_set('statuses_userpoints_other', variable_get('facebook_status_userpoints_other', 0));
+  variable_set('statuses_userpoints_max', variable_get('facebook_status_userpoints_max', 0));
+  variable_set('statuses_userpoints_own', variable_get('facebook_status_userpoints_own', 0));
+  variable_del('facebook_status_userpoints_other');
+  variable_del('facebook_status_userpoints_max');
+  variable_del('facebook_status_userpoints_own');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function fbss_userpoints_uninstall() {
+  variable_del('statuses_userpoints_other');
+  variable_del('statuses_userpoints_max');
+  variable_del('statuses_userpoints_own');
+  variable_del('fbss_comments_userpoints_max');
+  variable_del('fbss_comments_userpoints');
+}

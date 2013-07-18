@@ -1,0 +1,20 @@
+<?php
+/**
+ * Implements hook_linkit_attributes().
+ */
+function linkit_target_linkit_attributes($profile) {
+  $attributes['target'] = array(
+    '#type' => 'select',
+    '#title' => t('Target'),
+    '#default_value' => '',
+    '#options' => array(
+      '' => t('None'),
+      '_blank' => t('New window (_blank)'),
+      '_top' => t('Top window (_top)'),
+      '_self' => t('Same window (_self)'),
+      '_parent' => t('Parent window (_parent)'),
+    ),
+    '#weight' => 1,
+  );
+  return $attributes;
+}

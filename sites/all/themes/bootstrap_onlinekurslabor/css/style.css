@@ -1,0 +1,482 @@
+/**
+ * This file should get overwritten if Method 1 is used. If Method 2 is chosen,
+ * remove this comment and start adding your styles to this file.
+*/
+
+/*
+ADAPING BOOTSTRAP
+*/
+
+/*
+admin menu bar is not high enough to dock to the top navbar - fix
+*/
+/*
+TOP
+*/
+
+#admin-menu{
+  min-height: 28px;
+}
+#navbar,  #navbar .navbar-inner
+{
+  background: none;
+}
+
+body{
+  padding-top:50px;
+}
+body.cke_show_borders{
+  padding-top:0px;
+}
+
+#navbar .navbar-inner{
+  background-color: #29323D;
+  text-shadow: none ;
+  min-height:50px;
+  border: 0;
+}
+
+#navbar {
+  position:fixed;
+}
+.navbar .btn-navbar {
+  padding:3;
+}
+
+.navbar .nav>li>a{
+  text-shadow: none;
+  color: #ffffff;
+}
+
+
+#navbar li.dropdown.open a
+{
+  background-color:transparent;
+}
+
+.navbar .nav li.dropdown.open>.dropdown-toggle, #navbar .nav li a:hover
+{
+  color: #ccc;
+}
+
+#navbar #custom-top-nav .field-type-image{
+  display:inline-block;
+  margin-right:10px;
+}
+
+#navbar #custom-top-nav>li>a
+{
+  padding:5px 10px;
+  margin-top: 12px;
+}
+
+#navbar #custom-top-nav li.dropdown>a:hover .caret
+{
+  border-top-color: #fff;
+  border-bottom-color: #fff;
+}
+
+
+/*
+#navbar #custom-top-nav{
+  position:relative;
+}
+#navbar #custom-top-nav ul li{
+  display:inline-block;
+  color: #fff;
+
+  margin-left:15px;
+}
+
+#navbar #custom-top-nav ul li a{
+  color: #fff;
+}
+
+
+#navbar #custom-top-nav li.lock a
+{
+  background-image: url(../images/icons/lock.jpg);
+  padding-left:20px;
+  background-repeat: no-repeat;
+}
+
+#navbar #custom-top-nav .border-left{
+  border-left:1px solid #fff;
+  padding-left: 15px;
+}
+#navbar .btn-group
+{
+  margin: 0;
+}
+#navbar .btn-group a{
+  padding:2px 10px;
+
+}
+*/
+#navbar #custom-top-nav li.lock a:before
+{
+  content: ' ';
+  background-image: url(../images/icons/lock.jpg);
+  padding-left:20px;
+  background-repeat: no-repeat;
+}
+#navbar #custom-top-nav .btn-group .dropdown-menu {
+  min-width:100px;
+}
+#navbar #custom-top-nav .btn-group .dropdown-menu a{
+  color: #333333;
+}
+#navbar #custom-top-nav .btn-group .dropdown-menu a:hover{
+  color:#fff;
+  background:none;
+  background-color: #29323D;
+}
+#navbar #custom-top-nav .btn-group .dropdown-menu li{
+  margin:0;
+}
+#navbar #custom-top-nav .btn-group .dropdown-menu li a{
+  padding: 3px 20px;
+}
+#navbar #custom-top-nav .btn-group li
+{
+  display:block;
+}
+
+
+
+/*
+top Nav
+*/
+#course_top_navigation
+{
+  position:relative;
+  background-color: #467DBD;
+  margin-top:0;
+  z-index:40;
+}
+
+#navbar .logo {
+  position: relative;
+  z-index: 1;
+}
+
+
+#course_top_navigation .btn a{
+  background-color: #426DA0;
+  text-shadow:none;
+  color: #fff;
+
+}
+
+#course_top_navigation .btn a:hover{
+  background-color: #46596B;
+}
+#course_top_navigation .btn a.active{
+  background-color: #374555;
+}
+
+/*
+Course Header
+*/
+#course_header
+{
+  position:relative;
+  overflow:hidden;
+}
+
+#course_header #course_header_title {
+  position: absolute;
+  color: #ffffff;
+  right: 50px;
+  top: 20px;
+  overflow:hidden;
+}
+
+#course_header #course_header_title h1 {
+  font-weight: normal;
+}
+
+
+
+/*
+Margin between content and navigation
+*/
+
+#course_top_navigation
+{
+  margin-bottom: 25px;
+}
+
+
+/*
+VIEWS
+*/
+
+
+/*
+News
+*/
+
+.view-courses-course-news
+{
+}
+
+.view-courses-course-news .views-row {
+  position:relative;
+  margin-left:40px;
+
+}
+.view-courses-course-news .view-row-read:before, .view-courses-course-news .view-row-unread:before
+{
+  content: ' ';
+  position:absolute;
+  display:block;
+  width: 30px;
+  height:30px;
+  left:-40px;
+  top:2px;
+  background-image: url(../../../modules/custom_general/images/icons/transparent-icons---text.gif);
+  background-repeat: no-repeat;
+}
+.view-courses-course-news .view-row-unread:before{
+  background-position: 0 -30px;
+}
+
+.view-courses-course-news h3
+{
+  font-weight:normal;
+  margin-bottom: 0;
+}
+.view-courses-course-news .views-field-name, .view-courses-course-news .views-field-name a, .view-courses-course-news .views-field-created
+{
+  display: inline-block;
+  color: #999999;
+  margin-bottom: 10px;
+}
+
+.view-courses-course-news .views-field-name{
+  font-weight:bold;
+}
+
+.view-courses-course-news .views-field-created:before
+{
+  content: '-';
+}
+
+.view-courses-course-news .views-row
+{
+  margin-bottom: 30px;
+}
+
+
+
+/*
+Docs
+*/
+
+.view-courses-course-docs .file img
+{
+  width: 30px
+}
+
+
+
+
+
+
+
+/*
+Responsive Features
+*/
+
+@media (min-width: 1200px) { 
+  #course_top_navigation .btn a
+  {
+    font-size:12px;
+  }
+}
+
+@media (max-width: 1200px) { 
+  #course_top_navigation .btn a
+  {
+    font-size:12px;
+  }
+}
+
+/* Landscape phone to portrait tablet */
+@media (min-width: 768px) and (max-width: 979px) {
+  #course_top_navigation .btn a
+  {
+    font-size:10px;
+    padding:11px 4px;
+  }
+
+  .navbar-fixed-top .navbar-inner
+  {
+    padding:0 20px 0 20px;
+  }
+
+}
+
+/* collapsed navbar colors*/
+@media (max-width: 979px) {
+
+  #navbar .dropdown-menu
+  {
+    display: block;
+  }
+  #navbar .nav li.dropdown a:hover
+  {
+    background-color: #f2f2f2;
+    color:#333;
+  }
+  #navbar .nav li.dropdown a:hover [class^="icon-"]
+  {
+    background-image: url("../img/glyphicons-halflings.png");
+  }
+
+  #navbar .nav li.dropdown a:hover {
+    background:none;
+    background-color: #f2f2f2;
+  }
+
+  #navbar .nav li a:hover
+  {
+    color: #333;
+  }
+  #navbar .nav-collapse .dropdown-menu a
+  {
+    color: #fff;
+  }
+  #navbar .dropdown-menu>li>a>[class^="icon-"]{
+    background-image: url("../img/glyphicons-halflings-white.png");
+  }
+
+  #navbar #custom-top-nav li.dropdown>a:hover .caret
+  {
+    border-top-color: #333;
+    border-bottom-color: #333;
+
+  }
+}
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) { 
+  #course_top_navigation .btn a
+  {
+    font-size:11px;
+    padding:11px 7px;
+  }
+  .navbar-fixed-top .navbar-inner
+  {
+    padding:0 20px 0 20px;
+  }
+
+  #course_top_navigation .btn a
+  {
+    width: 90px;
+  }
+
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) { 
+  #course_top_navigation .btn a
+  {
+    font-size:11px;
+    padding:11px 7px;
+  }
+  .navbar-fixed-top .navbar-inner
+  {
+    padding:0 20px 0 20px;
+  }
+
+  #course_top_navigation .btn a
+  {
+    width: 74px;
+  }
+}
+
+@media (max-width: 340px) { 
+  #course_top_navigation .btn a
+  {
+    font-size:7px;
+    padding:11px 3px;
+  }
+
+
+  #course_top_navigation .btn a
+  {
+    width: 46px;
+  }
+}
+
+
+
+/*
+FORUM
+*/
+
+.row-fluid .forum-table-wrap .forum-table-superheader, .row-fluid .forum-table-topics thead tr  {
+  background:none;
+  background-color: #eee;
+  border-top: 1px solid #ccc;
+}
+
+.row-fluid .forum-table-wrap .forum-table-name {
+  display:none;
+}
+
+.row-fluid .forum-table-wrap thead tr
+{
+  border: 1px solid #aaa;
+}
+
+.row-fluid .forum-table {
+  border: 1px solid #ddd;
+}
+.row-fluid .forum-table tr.even {
+  background:none;
+  background-color: #ddd;
+}
+
+.row-fluid .forum-table tr.odd {
+  background:none;
+  background-color: #eee;
+}
+
+.row-fluid .af-button-large, .row-fluid .af-button-small {
+  background:none;
+  background-color: #ccc;
+  color: #000;
+  border-top: 1px solid #aaa;
+}
+
+.row-fluid a.af-button-large:hover, .row-fluid a.af-button-small:hover {
+  background-color: #eee;
+}
+
+.row-fluid div.forum-post {
+  border: 1px solid #aaa;
+}
+
+.row-fluid .forum-post-info {
+  background:none;
+  background-color: #666666;
+  border: none;
+}
+
+.row-fluid .forum-post-title {
+  border-bottom: 1px solid #666;
+}
+.row-fluid .forum-post-panel-main {
+  border-left: 1px solid #666;
+}
+.row-fluid .forum-post-footer {
+  border-top: 1px solid #666;
+}
+.row-fluid .view-advanced-forum-topic-list .view-empty {
+  border: 1px solid #aaa;
+}
+.row-fluid .forum-in-reply-to a {
+  color: #fff;
+}

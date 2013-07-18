@@ -1,0 +1,29 @@
+name = Freelinking
+description = A filter that allows flexible linking of content
+package = Input filters
+core = 7.x
+dependencies[] = filter
+
+files[] = freelinking.api.php
+files[] = freelinking.forms.inc
+files[] = freelinking.module
+files[] = freelinking.test
+files[] = freelinking.utilities.inc
+files[] = plugins/freelinking_dev.inc
+files[] = plugins/freelinking_file.inc
+files[] = plugins/freelinking_nid.inc
+files[] = plugins/freelinking_nodetitle.inc
+files[] = plugins/freelinking_oneinchframe.inc
+files[] = plugins/freelinking_path.inc
+files[] = plugins/freelinking_search.inc
+files[] = plugins/freelinking_user.inc
+files[] = plugins/freelinking_wiki.inc
+
+configure = admin/config/content/freelinking
+
+; Information added by drupal.org packaging script on 2012-07-10
+version = "7.x-3.2"
+core = "7.x"
+project = "freelinking"
+datestamp = "1341937899"
+

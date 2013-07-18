@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * @file
+ *   Installs comments for Statuses.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function fbss_comments_schema() {
+  $schema = array();
+  $schema['fbss_comments'] = array(
+    'description' => 'Comments on statuses.',
+    'fields' => array(
+      'cid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'description' => 'The Comment ID.',
+      ),
+      'sid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The Status ID.',
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The User ID of the poster of the comment.',
+      ),
+      'created' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The time the comment was submitted.',
+      ),
+      'comment' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'description' => 'The comment text.',
+      ),
+    ),
+    'indexes' => array(
+      'sid' => array('sid'),
+      'uid' => array('uid'),
+      'created' => array('created'),
+    ),
+    'primary key' => array('cid'),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function fbss_comments_uninstall() {
+  variable_del('fbss_comments_user_pictures');
+  variable_del('fbss_comments_hide_small');
+  variable_del('fbss_comments_show_all');
+  variable_del('fbss_comments_enter');
+  variable_del('fbss_comments_ahah');
+}
