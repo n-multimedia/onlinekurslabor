@@ -51,31 +51,6 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:content_domain:create courses_docs content'
-  $permissions['node:content_domain:create courses_docs content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:create courses_generic_task content'
-  $permissions['node:content_domain:create courses_generic_task content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:create courses_generic_task_solution content'
-  $permissions['node:content_domain:create courses_generic_task_solution content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:create courses_group content'
-  $permissions['node:content_domain:create courses_group content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:create courses_news content'
-  $permissions['node:content_domain:create courses_news content'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:content_domain:create forum content'
   $permissions['node:content_domain:create forum content'] = array(
     'roles' => array(),
@@ -107,31 +82,6 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:content_domain:delete any courses_docs content'
-  $permissions['node:content_domain:delete any courses_docs content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:delete any courses_generic_task content'
-  $permissions['node:content_domain:delete any courses_generic_task content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:delete any courses_generic_task_solution content'
-  $permissions['node:content_domain:delete any courses_generic_task_solution content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:delete any courses_group content'
-  $permissions['node:content_domain:delete any courses_group content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:delete any courses_news content'
-  $permissions['node:content_domain:delete any courses_news content'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:content_domain:delete any forum content'
   $permissions['node:content_domain:delete any forum content'] = array(
     'roles' => array(),
@@ -161,31 +111,6 @@ function nm_section_content_features_og_features_default_permissions() {
     'roles' => array(
       'member' => 'member',
     ),
-  );
-
-  // Exported og permission: 'node:content_domain:delete own courses_docs content'
-  $permissions['node:content_domain:delete own courses_docs content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:delete own courses_generic_task content'
-  $permissions['node:content_domain:delete own courses_generic_task content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:delete own courses_generic_task_solution content'
-  $permissions['node:content_domain:delete own courses_generic_task_solution content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:delete own courses_group content'
-  $permissions['node:content_domain:delete own courses_group content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:delete own courses_news content'
-  $permissions['node:content_domain:delete own courses_news content'] = array(
-    'roles' => array(),
   );
 
   // Exported og permission: 'node:content_domain:delete own forum content'
@@ -263,31 +188,6 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:content_domain:update any courses_docs content'
-  $permissions['node:content_domain:update any courses_docs content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update any courses_generic_task content'
-  $permissions['node:content_domain:update any courses_generic_task content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update any courses_generic_task_solution content'
-  $permissions['node:content_domain:update any courses_generic_task_solution content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update any courses_group content'
-  $permissions['node:content_domain:update any courses_group content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update any courses_news content'
-  $permissions['node:content_domain:update any courses_news content'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:content_domain:update any forum content'
   $permissions['node:content_domain:update any forum content'] = array(
     'roles' => array(),
@@ -319,21 +219,6 @@ function nm_section_content_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:content_domain:update field_collaborative_features field'
   $permissions['node:content_domain:update field_collaborative_features field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update field_course_docs field'
-  $permissions['node:content_domain:update field_course_docs field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update field_course_header field'
-  $permissions['node:content_domain:update field_course_header field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update field_course_picture field'
-  $permissions['node:content_domain:update field_course_picture field'] = array(
     'roles' => array(),
   );
 
@@ -506,31 +391,6 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:content_domain:update own courses_docs content'
-  $permissions['node:content_domain:update own courses_docs content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update own courses_generic_task content'
-  $permissions['node:content_domain:update own courses_generic_task content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update own courses_generic_task_solution content'
-  $permissions['node:content_domain:update own courses_generic_task_solution content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update own courses_group content'
-  $permissions['node:content_domain:update own courses_group content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update own courses_news content'
-  $permissions['node:content_domain:update own courses_news content'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:content_domain:update own forum content'
   $permissions['node:content_domain:update own forum content'] = array(
     'roles' => array(),
@@ -579,21 +439,6 @@ function nm_section_content_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:content_domain:view field_collaborative_features field'
   $permissions['node:content_domain:view field_collaborative_features field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:view field_course_docs field'
-  $permissions['node:content_domain:view field_course_docs field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:view field_course_header field'
-  $permissions['node:content_domain:view field_course_header field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:view field_course_picture field'
-  $permissions['node:content_domain:view field_course_picture field'] = array(
     'roles' => array(),
   );
 

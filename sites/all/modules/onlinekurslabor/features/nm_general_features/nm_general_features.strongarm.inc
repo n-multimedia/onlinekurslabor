@@ -557,22 +557,6 @@ function nm_general_features_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'og_group_manager_default_rids_node_course';
-  $strongarm->value = array(
-    3 => '3',
-  );
-  $export['og_group_manager_default_rids_node_course'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'og_group_manager_default_rids_node_course_group';
-  $strongarm->value = array();
-  $export['og_group_manager_default_rids_node_course_group'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'og_group_manager_full_access';
   $strongarm->value = 1;
   $export['og_group_manager_full_access'] = $strongarm;
