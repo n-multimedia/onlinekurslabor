@@ -1152,81 +1152,85 @@ function section_courses_statuses_context_info() {
 /**
  * The group context.
  */
-class statuses_course_group_context extends statuses_og_context {
+if (class_exists('statuses_og_context')) {
 
-  function type() {
-    return 'course_group';
-  }
+  class statuses_course_group_context extends statuses_og_context {
 
-  function is_applicable() {
-    $g_ctx = node_load(arg(3));
-    return !empty($g_ctx);
-  }
-
-  function find_recipient() {
-    $obj = menu_get_object();
-    if (empty($obj) && is_numeric(arg(3))) {
-      $obj = node_load(arg(3));
+    function type() {
+      return 'course_group';
     }
-    return $obj;
-  }
 
-  function access_add($recipient, $sender) {
-    // Only group members can add content of any kind.
-    if (function_exists('og_get_group_ids')) { // OG 7.x-1.x
-      $group_ids = og_get_group_ids('node', array($recipient->nid));
-      if (!empty($group_ids)) {
-        return parent::access_add($recipient, $sender) && og_is_member(current($group_ids), 'user', $sender);
+    function is_applicable() {
+      $g_ctx = node_load(arg(3));
+      return !empty($g_ctx);
+    }
+
+    function find_recipient() {
+      $obj = menu_get_object();
+      if (empty($obj) && is_numeric(arg(3))) {
+        $obj = node_load(arg(3));
+      }
+      return $obj;
+    }
+
+    function access_add($recipient, $sender) {
+      // Only group members can add content of any kind.
+      if (function_exists('og_get_group_ids')) { // OG 7.x-1.x
+        $group_ids = og_get_group_ids('node', array($recipient->nid));
+        if (!empty($group_ids)) {
+          return parent::access_add($recipient, $sender) && og_is_member(current($group_ids), 'user', $sender);
+        }
+      }
+      else { // OG 7.x-2.x
+        if (og_is_group('node', $recipient->nid)) {
+          return parent::access_add($recipient, $sender) && og_is_member('node', $recipient->nid, 'user', $sender);
+        }
+      }
+      return FALSE;
+    }
+
+    function access_delete($status, $account) {
+      // Only group administrators can delete others' content in their group.
+      if (function_exists('og_get_group_ids')) { // OG 7.x-1.x
+        $group_ids = og_get_group_ids('node', array($status->recipient));
+        if (!empty($group_ids)) {
+          return parent::access_delete($status, $account) || in_array(OG_ADMINISTRATOR_ROLE, og_get_user_roles(current($group_ids), $account->uid, FALSE));
+        }
+      }
+      else { // OG 7.x-2.x
+        if (og_is_group('node', $status->recipient)) {
+          return parent::access_delete($status, $account) || og_user_access('node', $status->recipient, 'administer group', $account);
+        }
+      }
+      return parent::access_delete($status, $account);
+    }
+
+    function access_view($status, $account) {
+      // Only group members can view group statuses if the group is private.
+      if (function_exists('og_get_group_ids')) { // OG 7.x-1.x
+        $group_ids = og_get_group_ids('node', array($status->recipient));
+        if (!empty($group_ids)) {
+          return parent::access_view($status, $account) &&
+              (og_is_member(current($group_ids), 'user', $account) || empty($this->load_recipient($status->recipient)->og_private));
+        }
+        return parent::access_view($status, $account) && empty($this->load_recipient($status->recipient)->og_private);
+      }
+      else { // OG 7.x-2.x
+        if (og_is_group('node', $status->recipient)) {
+          $recipient = entity_metadata_wrapper('node', $this->load_recipient($status->recipient));
+          // Definition of a public group taken from og_access.module function og_access_og_fields_info()
+          $public_group = !empty($recipient->{OG_ACCESS_FIELD}) && $recipient->{OG_ACCESS_FIELD}->value() ? FALSE : TRUE;
+          return parent::access_view($status, $account) &&
+              (og_is_member('node', $status->recipient, 'user', $account) || $public_group);
+        }
+        return parent::access_view($status, $account);
       }
     }
-    else { // OG 7.x-2.x
-      if (og_is_group('node', $recipient->nid)) {
-        return parent::access_add($recipient, $sender) && og_is_member('node', $recipient->nid, 'user', $sender);
-      }
-    }
-    return FALSE;
-  }
 
-  function access_delete($status, $account) {
-    // Only group administrators can delete others' content in their group.
-    if (function_exists('og_get_group_ids')) { // OG 7.x-1.x
-      $group_ids = og_get_group_ids('node', array($status->recipient));
-      if (!empty($group_ids)) {
-        return parent::access_delete($status, $account) || in_array(OG_ADMINISTRATOR_ROLE, og_get_user_roles(current($group_ids), $account->uid, FALSE));
-      }
+    function access_stream($recipient, $account) {
+      return parent::access_stream($recipient, $account) && $this->access_add($recipient, $account);
     }
-    else { // OG 7.x-2.x
-      if (og_is_group('node', $status->recipient)) {
-        return parent::access_delete($status, $account) || og_user_access('node', $status->recipient, 'administer group', $account);
-      }
-    }
-    return parent::access_delete($status, $account);
-  }
 
-  function access_view($status, $account) {
-    // Only group members can view group statuses if the group is private.
-    if (function_exists('og_get_group_ids')) { // OG 7.x-1.x
-      $group_ids = og_get_group_ids('node', array($status->recipient));
-      if (!empty($group_ids)) {
-        return parent::access_view($status, $account) &&
-            (og_is_member(current($group_ids), 'user', $account) || empty($this->load_recipient($status->recipient)->og_private));
-      }
-      return parent::access_view($status, $account) && empty($this->load_recipient($status->recipient)->og_private);
-    }
-    else { // OG 7.x-2.x
-      if (og_is_group('node', $status->recipient)) {
-        $recipient = entity_metadata_wrapper('node', $this->load_recipient($status->recipient));
-        // Definition of a public group taken from og_access.module function og_access_og_fields_info()
-        $public_group = !empty($recipient->{OG_ACCESS_FIELD}) && $recipient->{OG_ACCESS_FIELD}->value() ? FALSE : TRUE;
-        return parent::access_view($status, $account) &&
-            (og_is_member('node', $status->recipient, 'user', $account) || $public_group);
-      }
-      return parent::access_view($status, $account);
-    }
-  }
-
-  function access_stream($recipient, $account) {
-    return parent::access_stream($recipient, $account) && $this->access_add($recipient, $account);
   }
 
 }
