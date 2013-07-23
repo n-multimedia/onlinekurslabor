@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * section_content_features.features.field_base.inc
+ * nm_section_content_features.features.field_base.inc
  */
 
 /**
  * Implements hook_field_default_field_bases().
  */
-function section_content_features_field_default_field_bases() {
+function nm_section_content_features_field_default_field_bases() {
   $field_bases = array();
 
   // Exported field_base: 'field_answer'

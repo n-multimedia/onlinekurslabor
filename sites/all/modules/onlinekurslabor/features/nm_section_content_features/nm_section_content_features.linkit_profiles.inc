@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * section_content_features.linkit_profiles.inc
+ * nm_section_content_features.linkit_profiles.inc
  */
 
 /**
  * Implements hook_default_linkit_profiles().
  */
-function section_content_features_default_linkit_profiles() {
+function nm_section_content_features_default_linkit_profiles() {
   $export = array();
 
   $linkit_profile = new stdClass();

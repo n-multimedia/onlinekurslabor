@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the nm_general_features feature.
+ */
+
+include_once 'nm_general_features.features.inc';

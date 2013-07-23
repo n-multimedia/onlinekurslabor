@@ -1,14 +1,42 @@
 <?php
 /**
  * @file
- * section_content_features.strongarm.inc
+ * nm_section_content_features.strongarm.inc
  */
 
 /**
  * Implements hook_strongarm().
  */
-function section_content_features_strongarm() {
+function nm_section_content_features_strongarm() {
   $export = array();
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'additional_settings__active_tab_content_chapter';
+  $strongarm->value = 'edit-submission';
+  $export['additional_settings__active_tab_content_chapter'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'additional_settings__active_tab_content_domain';
+  $strongarm->value = 'edit-submission';
+  $export['additional_settings__active_tab_content_domain'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'additional_settings__active_tab_content_multiple_choice';
+  $strongarm->value = 'edit-og';
+  $export['additional_settings__active_tab_content_multiple_choice'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'additional_settings__active_tab_content_question_and_answer';
+  $strongarm->value = 'edit-display';
+  $export['additional_settings__active_tab_content_question_and_answer'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -205,6 +233,20 @@ function section_content_features_strongarm() {
   $strongarm->name = 'comment_subject_field_content_question_and_answer';
   $strongarm->value = 1;
   $export['comment_subject_field_content_question_and_answer'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'field_bundle_settings_comment__comment_node_content_chapter';
+  $strongarm->value = array();
+  $export['field_bundle_settings_comment__comment_node_content_chapter'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'field_bundle_settings_comment__comment_node_content_domain';
+  $strongarm->value = array();
+  $export['field_bundle_settings_comment__comment_node_content_domain'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */

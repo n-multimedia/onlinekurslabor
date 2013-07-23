@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * section_content_features.ds.inc
+ * nm_section_content_features.ds.inc
  */
 
 /**
  * Implements hook_ds_view_modes_info().
  */
-function section_content_features_ds_view_modes_info() {
+function nm_section_content_features_ds_view_modes_info() {
   $export = array();
 
   $ds_view_mode = new stdClass();

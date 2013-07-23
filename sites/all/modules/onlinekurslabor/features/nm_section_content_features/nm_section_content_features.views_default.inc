@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * section_content_features.views_default.inc
+ * nm_section_content_features.views_default.inc
  */
 
 /**
  * Implements hook_views_default_views().
  */
-function section_content_features_views_default_views() {
+function nm_section_content_features_views_default_views() {
   $export = array();
 
   $view = new view();

@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * section_content_features.features.user_permission.inc
+ * nm_section_content_features.features.user_permission.inc
  */
 
 /**
  * Implements hook_user_default_permissions().
  */
-function section_content_features_user_default_permissions() {
+function nm_section_content_features_user_default_permissions() {
   $permissions = array();
 
   // Exported permission: create biblio content.

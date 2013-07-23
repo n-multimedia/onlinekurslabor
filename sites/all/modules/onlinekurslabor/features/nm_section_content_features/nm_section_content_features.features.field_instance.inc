@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * section_content_features.features.field_instance.inc
+ * nm_section_content_features.features.field_instance.inc
  */
 
 /**
  * Implements hook_field_default_field_instances().
  */
-function section_content_features_field_default_field_instances() {
+function nm_section_content_features_field_default_field_instances() {
   $field_instances = array();
 
   // Exported field_instance: 'node-content_chapter-field_attachments'

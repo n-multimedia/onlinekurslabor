@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * section_content_features.context.inc
+ * nm_section_content_features.context.inc
  */
 
 /**
  * Implements hook_context_default_contexts().
  */
-function section_content_features_context_default_contexts() {
+function nm_section_content_features_context_default_contexts() {
   $export = array();
 
   $context = new stdClass();

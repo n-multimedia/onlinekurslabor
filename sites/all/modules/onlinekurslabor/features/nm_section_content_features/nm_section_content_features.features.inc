@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * section_content_features.features.inc
+ * nm_section_content_features.features.inc
  */
 
 /**
  * Implements hook_ctools_plugin_api().
  */
-function section_content_features_ctools_plugin_api() {
+function nm_section_content_features_ctools_plugin_api() {
   list($module, $api) = func_get_args();
   if ($module == "context" && $api == "context") {
     return array("version" => "3");
@@ -29,14 +29,14 @@ function section_content_features_ctools_plugin_api() {
 /**
  * Implements hook_views_api().
  */
-function section_content_features_views_api() {
+function nm_section_content_features_views_api() {
   return array("api" => "3.0");
 }
 
 /**
  * Implements hook_node_info().
  */
-function section_content_features_node_info() {
+function nm_section_content_features_node_info() {
   $items = array(
     'content_chapter' => array(
       'name' => t('Content - Kapitel'),

@@ -1,0 +1,589 @@
+<?php
+/**
+ * @file
+ * nm_general_features.layouts.inc
+ */
+
+/**
+ * Implements hook_default_panels_layout().
+ */
+function nm_general_features_default_panels_layout() {
+  $export = array();
+
+  $layout = new stdClass();
+  $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
+  $layout->api_version = 1;
+  $layout->name = 'course_information';
+  $layout->admin_title = 'Course Information';
+  $layout->admin_description = 'Layout for not-enrolled users and anonymous users.';
+  $layout->category = '';
+  $layout->plugin = 'flexible';
+  $layout->settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+        ),
+        'parent' => NULL,
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+          1 => 1,
+          2 => 2,
+        ),
+        'parent' => 'canvas',
+        'class' => 'course span11',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'links',
+          1 => 'rechts',
+        ),
+        'parent' => 'main',
+        'class' => 'header',
+      ),
+      'links' => array(
+        'type' => 'region',
+        'title' => 'header_left',
+        'width' => '65.40245299300852',
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'header_left',
+      ),
+      'rechts' => array(
+        'type' => 'region',
+        'title' => 'header_right',
+        'width' => '34.597547006991476',
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'header_right',
+      ),
+      1 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'links_',
+          1 => 'rechts_',
+        ),
+        'parent' => 'main',
+        'class' => 'subheader',
+      ),
+      'links_' => array(
+        'type' => 'region',
+        'title' => 'subheader_left',
+        'width' => '65.40245205837297',
+        'width_type' => '%',
+        'parent' => '1',
+        'class' => 'subheader_left',
+      ),
+      'rechts_' => array(
+        'type' => 'region',
+        'title' => 'subheader_right',
+        'width' => '34.59754794162703',
+        'width_type' => '%',
+        'parent' => '1',
+        'class' => 'subheader_right',
+      ),
+      2 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'content',
+        ),
+        'parent' => 'main',
+        'class' => 'content',
+      ),
+      'content' => array(
+        'type' => 'region',
+        'title' => 'Content',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '2',
+        'class' => '',
+      ),
+    ),
+  );
+  $export['course_information'] = $layout;
+
+  $layout = new stdClass();
+  $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
+  $layout->api_version = 1;
+  $layout->name = 'span11span1';
+  $layout->admin_title = 'span11span1';
+  $layout->admin_description = '';
+  $layout->category = '';
+  $layout->plugin = 'flexible';
+  $layout->settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+          1 => 1,
+        ),
+        'parent' => NULL,
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+        'class' => 'span11',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'center',
+        ),
+        'parent' => 'main',
+      ),
+      'center' => array(
+        'type' => 'region',
+        'title' => 'main',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => '',
+      ),
+      1 => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'parent' => 'canvas',
+        'children' => array(
+          0 => 2,
+        ),
+        'class' => 'span1',
+      ),
+      2 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'tools',
+        ),
+        'parent' => '1',
+        'class' => '',
+      ),
+      'tools' => array(
+        'type' => 'region',
+        'title' => 'tools',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '2',
+        'class' => '',
+      ),
+    ),
+  );
+  $export['span11span1'] = $layout;
+
+  $layout = new stdClass();
+  $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
+  $layout->api_version = 1;
+  $layout->name = 'span3span6span3';
+  $layout->admin_title = 'span3span6span3';
+  $layout->admin_description = '';
+  $layout->category = '';
+  $layout->plugin = 'flexible';
+  $layout->settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 1,
+          1 => 'main',
+          2 => 2,
+        ),
+        'parent' => NULL,
+        'class' => 'row-fluid',
+        'column_class' => '',
+        'row_class' => '',
+        'region_class' => '',
+        'no_scale' => FALSE,
+        'fixed_width' => '',
+        'column_separation' => '0.5em',
+        'region_separation' => '0.5em',
+        'row_separation' => '0.5em',
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => '52.17311397788196',
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+        'class' => 'span6',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'center',
+        ),
+        'parent' => 'main',
+      ),
+      'center' => array(
+        'type' => 'region',
+        'title' => 'main',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => '',
+      ),
+      1 => array(
+        'type' => 'column',
+        'width' => '25.13203096959442',
+        'width_type' => '%',
+        'parent' => 'canvas',
+        'children' => array(
+          0 => 3,
+        ),
+        'class' => 'left span3',
+      ),
+      2 => array(
+        'type' => 'column',
+        'width' => '22.694855052523614',
+        'width_type' => '%',
+        'parent' => 'canvas',
+        'children' => array(
+          0 => 4,
+        ),
+        'class' => 'right span3',
+      ),
+      3 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'left',
+        ),
+        'parent' => '1',
+        'class' => '',
+      ),
+      'left' => array(
+        'type' => 'region',
+        'title' => 'left',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '3',
+        'class' => '',
+      ),
+      4 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'right',
+        ),
+        'parent' => '2',
+        'class' => '',
+      ),
+      'right' => array(
+        'type' => 'region',
+        'title' => 'right',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '4',
+        'class' => '',
+      ),
+    ),
+  );
+  $export['span3span6span3'] = $layout;
+
+  $layout = new stdClass();
+  $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
+  $layout->api_version = 1;
+  $layout->name = 'span3span8span1';
+  $layout->admin_title = 'span3span8span1';
+  $layout->admin_description = '';
+  $layout->category = '';
+  $layout->plugin = 'flexible';
+  $layout->settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 1,
+          1 => 'main',
+          2 => 3,
+        ),
+        'parent' => NULL,
+        'class' => 'row-fluid',
+        'column_class' => '',
+        'row_class' => '',
+        'region_class' => '',
+        'no_scale' => FALSE,
+        'fixed_width' => '',
+        'column_separation' => '0.5em',
+        'region_separation' => '0.5em',
+        'row_separation' => '0.5em',
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => '62.562595933139804',
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+        'class' => 'span8',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'center',
+        ),
+        'parent' => 'main',
+      ),
+      'center' => array(
+        'type' => 'region',
+        'title' => 'main',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => '',
+      ),
+      1 => array(
+        'type' => 'column',
+        'width' => '25.513982085512044',
+        'width_type' => '%',
+        'parent' => 'canvas',
+        'children' => array(
+          0 => 2,
+        ),
+        'class' => 'span3',
+      ),
+      2 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'outline',
+        ),
+        'parent' => '1',
+        'class' => '',
+      ),
+      'outline' => array(
+        'type' => 'region',
+        'title' => 'outline',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '2',
+        'class' => '',
+      ),
+      3 => array(
+        'type' => 'column',
+        'width' => '11.923421981422717',
+        'width_type' => '%',
+        'parent' => 'canvas',
+        'children' => array(
+          0 => 4,
+        ),
+        'class' => 'span1',
+      ),
+      4 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'tools',
+        ),
+        'parent' => '3',
+        'class' => '',
+      ),
+      'tools' => array(
+        'type' => 'region',
+        'title' => 'tools',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '4',
+        'class' => '',
+      ),
+    ),
+  );
+  $export['span3span8span1'] = $layout;
+
+  $layout = new stdClass();
+  $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
+  $layout->api_version = 1;
+  $layout->name = 'span4span8';
+  $layout->admin_title = 'span4span8';
+  $layout->admin_description = '';
+  $layout->category = '';
+  $layout->plugin = 'flexible';
+  $layout->settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 1,
+          1 => 'main',
+        ),
+        'parent' => NULL,
+        'class' => 'row-fluid',
+        'column_class' => '',
+        'row_class' => '',
+        'region_class' => '',
+        'no_scale' => FALSE,
+        'fixed_width' => '',
+        'column_separation' => '0.5em',
+        'region_separation' => '0.5em',
+        'row_separation' => '0.5em',
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => '63.62016668139117',
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+        'class' => 'span8',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'center',
+        ),
+        'parent' => 'main',
+      ),
+      'center' => array(
+        'type' => 'region',
+        'title' => 'main',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => '',
+      ),
+      1 => array(
+        'type' => 'column',
+        'width' => '36.37983331860883',
+        'width_type' => '%',
+        'parent' => 'canvas',
+        'children' => array(
+          0 => 2,
+        ),
+        'class' => 'span4',
+      ),
+      2 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'navigation',
+        ),
+        'parent' => '1',
+        'class' => '',
+      ),
+      'navigation' => array(
+        'type' => 'region',
+        'title' => 'outline',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '2',
+        'class' => '',
+      ),
+    ),
+  );
+  $export['span4span8'] = $layout;
+
+  $layout = new stdClass();
+  $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
+  $layout->api_version = 1;
+  $layout->name = 'span8span4';
+  $layout->admin_title = 'span8span4';
+  $layout->admin_description = '';
+  $layout->category = '';
+  $layout->plugin = 'flexible';
+  $layout->settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+          1 => 1,
+        ),
+        'parent' => NULL,
+        'class' => 'row-fluid',
+        'column_class' => '',
+        'row_class' => '',
+        'region_class' => '',
+        'no_scale' => FALSE,
+        'fixed_width' => '',
+        'column_separation' => '0.5em',
+        'region_separation' => '0.5em',
+        'row_separation' => '0.5em',
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+        'class' => 'span8',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'news',
+        ),
+        'parent' => 'main',
+      ),
+      'news' => array(
+        'type' => 'region',
+        'title' => 'main',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => '',
+      ),
+      1 => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'parent' => 'canvas',
+        'children' => array(
+          0 => 2,
+        ),
+        'class' => 'span4',
+      ),
+      2 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'tools',
+        ),
+        'parent' => '1',
+        'class' => '',
+      ),
+      'tools' => array(
+        'type' => 'region',
+        'title' => 'tools',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '2',
+        'class' => '',
+      ),
+    ),
+  );
+  $export['span8span4'] = $layout;
+
+  return $export;
+}

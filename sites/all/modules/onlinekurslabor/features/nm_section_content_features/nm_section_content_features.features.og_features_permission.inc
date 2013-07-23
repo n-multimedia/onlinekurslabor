@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * section_content_features.features.og_features_permission.inc
+ * nm_section_content_features.features.og_features_permission.inc
  */
 
 /**
  * Implements hook_og_features_default_permissions().
  */
-function section_content_features_og_features_default_permissions() {
+function nm_section_content_features_og_features_default_permissions() {
   $permissions = array();
 
   // Exported og permission: 'node:content_domain:add user'
