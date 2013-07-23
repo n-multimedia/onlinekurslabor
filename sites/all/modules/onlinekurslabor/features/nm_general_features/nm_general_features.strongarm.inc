@@ -320,7 +320,7 @@ function nm_general_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'biblio_orphan_clean_next_execution';
-  $strongarm->value = 1374577208;
+  $strongarm->value = 1374667208;
   $export['biblio_orphan_clean_next_execution'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -480,6 +480,48 @@ function nm_general_features_strongarm() {
   $strongarm->name = 'clean_url';
   $strongarm->value = TRUE;
   $export['clean_url'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date_api_version';
+  $strongarm->value = '7.2';
+  $export['date_api_version'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date_default_timezone';
+  $strongarm->value = 'Europe/Berlin';
+  $export['date_default_timezone'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date_first_day';
+  $strongarm->value = '1';
+  $export['date_first_day'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date_format_long';
+  $strongarm->value = 'l, F j, Y - H:i';
+  $export['date_format_long'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date_format_medium';
+  $strongarm->value = 'j. F Y - G:i';
+  $export['date_format_medium'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date_format_short';
+  $strongarm->value = 'd.m.Y';
+  $export['date_format_short'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
