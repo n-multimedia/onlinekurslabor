@@ -533,6 +533,34 @@ function nm_general_features_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'file_default_scheme';
+  $strongarm->value = 'public';
+  $export['file_default_scheme'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'file_private_path';
+  $strongarm->value = '';
+  $export['file_private_path'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'file_public_path';
+  $strongarm->value = 'sites/default/files';
+  $export['file_public_path'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'file_temporary_path';
+  $strongarm->value = '/tmp';
+  $export['file_temporary_path'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'language_count';
   $strongarm->value = 2;
   $export['language_count'] = $strongarm;
@@ -552,7 +580,7 @@ function nm_general_features_strongarm() {
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => '3A5ZqUqHWKv1ehcgBM8zSUy3Hj2z7QP6Gamhv9pHJSI',
+    'javascript' => '3-qDORxzSxMX40SN-A38alzBym3LZ5HN5KqeQQR71TY',
   );
   $export['language_default'] = $strongarm;
 
@@ -661,6 +689,13 @@ function nm_general_features_strongarm() {
   $strongarm->name = 'og_use_queue';
   $strongarm->value = 0;
   $export['og_use_queue'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'realname_pattern';
+  $strongarm->value = '[user:profile-master:field-first-name] [user:profile-master:field-last-name]';
+  $export['realname_pattern'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
