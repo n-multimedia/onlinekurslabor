@@ -13,6 +13,13 @@ function nm_general_features_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'admin_theme';
+  $strongarm->value = 'seven';
+  $export['admin_theme'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'anonymous';
   $strongarm->value = 'Gast';
   $export['anonymous'] = $strongarm;
@@ -545,7 +552,7 @@ function nm_general_features_strongarm() {
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => 'nzTJUlSIPF9TcI4WyZ9ZGm28B3-d5sp5utnBDPHUzN0',
+    'javascript' => '',
   );
   $export['language_default'] = $strongarm;
 
@@ -581,6 +588,13 @@ function nm_general_features_strongarm() {
     'language_url' => FALSE,
   );
   $export['language_types'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'node_admin_theme';
+  $strongarm->value = '1';
+  $export['node_admin_theme'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -1210,6 +1224,13 @@ Ihr Benutzerkonto auf [site:name] wurde gelöscht.
   $strongarm->name = 'user_signatures';
   $strongarm->value = 0;
   $export['user_signatures'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'views_ui_custom_theme';
+  $strongarm->value = '_default';
+  $export['views_ui_custom_theme'] = $strongarm;
 
   return $export;
 }
