@@ -276,13 +276,6 @@ function nm_section_content_features_og_features_default_permissions() {
     'roles' => array(),
   );
 
-  // Exported og permission: 'node:content_domain:update field_long_description field'
-  $permissions['node:content_domain:update field_long_description field'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
   // Exported og permission: 'node:content_domain:update field_mc_solution field'
   $permissions['node:content_domain:update field_mc_solution field'] = array(
     'roles' => array(),
@@ -496,14 +489,6 @@ function nm_section_content_features_og_features_default_permissions() {
   // Exported og permission: 'node:content_domain:view field_instructor field'
   $permissions['node:content_domain:view field_instructor field'] = array(
     'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:view field_long_description field'
-  $permissions['node:content_domain:view field_long_description field'] = array(
-    'roles' => array(
-      'member' => 'member',
-      'non-member' => 'non-member',
-    ),
   );
 
   // Exported og permission: 'node:content_domain:view field_mc_solution field'
