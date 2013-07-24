@@ -16,10 +16,10 @@ define("NM_DOMAIN_ACCESS_REALM", "NM_DOMAIN_ACCESS_REALM");
 
 //Contentcontent_multiple_choice
 //Content Types
-define("NM_DOMAIN", "content_domain");
-define("NM_CHAPTER", "content_chapter");
-define("NM_MULTIPLE_CHOICE", "content_multiple_choice");
-define("NM_QUESTION_AND_ANSWER", "content_question_and_answer");
+define("NM_CONTENT_DOMAIN", "content_domain");
+define("NM_CONTENT_CHAPTER", "content_chapter");
+define("NM_CONTENT_MULTIPLE_CHOICE", "content_multiple_choice");
+define("NM_CONTENT_QUESTION_AND_ANSWER", "content_question_and_answer");
 define("NM_BIBLIO", "biblio");
 define("NM_FILE", "file");
 
@@ -377,6 +377,7 @@ function _custom_general_theme_tools_block($tool_links, $id = "", $class = "sect
   //no groups configured - render horizontal toolbar
   else {
     foreach ($tool_links as $tl) {
+
       $append = "";
       $prepend = "";
 
@@ -555,6 +556,10 @@ function custom_general_block_info() {
   $blocks['custom_general_top_nav'] = array(
     'info' => t('Top navigation items'),
   );
+  $blocks['custom_general_space'] = array(
+    'info' => t('Custom General - Space'),
+  );
+
 
   return $blocks;
 }
@@ -568,6 +573,9 @@ function custom_general_block_view($delta = '') {
   switch ($delta) {
     case 'custom_general_top_nav' :
       $block['content'] = _custom_general_theme_top_nav();
+      break;
+    case 'custom_general_space' :
+      $block['content'] = _custom_general_theme_space();
       break;
   }
 

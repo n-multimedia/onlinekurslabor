@@ -204,7 +204,7 @@ Margin between content and navigation
 
 #course_top_navigation
 {
-  margin-bottom: 25px;
+  margin-bottom:0;
 }
 
 
@@ -235,7 +235,7 @@ News
   height:30px;
   left:-40px;
   top:2px;
-  background-image: url(../../../modules/custom_general/images/icons/transparent-icons---text.gif);
+  background-image: url(../images/icons/transparent-icons---text.gif);
   background-repeat: no-repeat;
 }
 .view-courses-course-news .view-row-unread:before{
@@ -479,4 +479,24 @@ FORUM
 }
 .row-fluid .forum-in-reply-to a {
   color: #fff;
+}
+
+
+/*
+SECTION CONTENT
+*/
+
+/*
+Outline left sidebar
+*/
+
+.nav-list>.active>a, .nav-list>.active>a:hover{
+  background-color: #dee9ef;
+  text-shadow:none;
+  color: #005580;
+}
+
+
+#custom_general_space{
+  height:25px;
 }

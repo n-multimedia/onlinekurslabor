@@ -21,7 +21,7 @@ function bootstrap_onlinekurslabor_panels_flexible($vars) {
   
   //dpm($content);
   //3-8-1 Layouts wich need to be switched
-  if (!section_courses_instructors_tools_visible() && $layout['name'] == 'flexible:span3span8span1') {
+  if ((!section_courses_instructors_tools_access() && !section_content_authors_tools_access()) && $layout['name'] == 'flexible:span3span8span1') {
     //override here
     $layout = panels_get_layout('flexible:span4span8');
     $content['navigation'] = $content['outline'];

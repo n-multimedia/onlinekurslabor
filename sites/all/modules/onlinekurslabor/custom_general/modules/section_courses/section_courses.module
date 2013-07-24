@@ -97,6 +97,9 @@ function section_courses_block_info() {
   $blocks['course_tasks_generic_solution'] = array(
     'info' => t('Course Tasks Generic Solution Form'),
   );
+  $blocks['course_instructors_tools'] = array(
+    'info' => t('Course - Instructors Tools'),
+  );
 
   return $blocks;
 }
@@ -122,6 +125,9 @@ function section_courses_block_view($delta = '') {
       break;
     case 'course_tasks_generic_solution' :
       $block['content'] = _course_tasks_generic_solution_form_view();
+      break;
+    case 'course_instructors_tools' :
+      $block['content'] = _section_courses_theme_instructor_tools();
       break;
   }
 
@@ -539,8 +545,8 @@ function _section_courses_get_active_course($reset = FALSE) {
 
 
   if (!isset($course) || $reset) {
-//proof if user is in course section
-//not proofing causes an infinite loop here (menu_get_object(); on /comment/%/edit)
+//proove if user is in course section
+//not prooving causes an infinite loop here (menu_get_object(); on /comment/%/edit)
     $node = NULL;
 
     if ((arg(0) != "course" && arg(0) != "node") || (arg(0) == "course" && arg(5) == "reply" || arg(5) == "edit")) {
@@ -556,7 +562,7 @@ function _section_courses_get_active_course($reset = FALSE) {
       $course = $node;
     }
 
-    if (is_object($node) && in_array($node->type, array(NM_COURSE_DOCS, NM_COURSE_NEWS, NM_COURSE, NM_COURSE_GROUP))) {
+    if (is_object($node) && in_array($node->type, array(NM_COURSE_DOCS, NM_COURSE_NEWS, NM_COURSE, NM_COURSE_GROUP, NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION))) {
       if ($node->type == NM_COURSE_GROUP) {
         //get course which this group is assigned to
         if (isset($node->og_group_ref)) {
@@ -662,53 +668,7 @@ function section_courses_entity_insert($entity, $type) {
   dpm($query->getMetaData('node'));
   } */
 
-function _section_courses_book_get_parents(&$subtree_pointer, $active_mlid) {
-  $parents = array();
-  if (!is_array($subtree_pointer))
-    return $parents;
-  foreach (array_keys($subtree_pointer) as $key) {
-    if ($subtree_pointer[$key]['link']['mlid'] == $active_mlid) {
-      $parents[] = $subtree_pointer[$key]['link']['p1'];
-      $parents[] = $subtree_pointer[$key]['link']['p2'];
-      $parents[] = $subtree_pointer[$key]['link']['p3'];
-      $parents[] = $subtree_pointer[$key]['link']['p4'];
-      $parents[] = $subtree_pointer[$key]['link']['p5'];
-      $parents[] = $subtree_pointer[$key]['link']['p6'];
-      $parents[] = $subtree_pointer[$key]['link']['p7'];
-      $parents[] = $subtree_pointer[$key]['link']['p8'];
-      $parents[] = $subtree_pointer[$key]['link']['p9'];
-      break;
-    }
-    $res = _section_courses_book_get_parents($subtree_pointer[$key]['below'], $active_mlid);
-    $parents = !empty($res) ? $res : $parents;
-  }
 
-  return $parents;
-}
-
-function _section_courses_book_add_active_path(&$subtree_pointer, $active_mlid, $parents) {
-  if (in_array($active_mlid, $parents)) {
-    foreach (array_keys($subtree_pointer) as $key) {
-//alter link for course section
-      $match = "";
-      preg_match("|\d+|", $subtree_pointer[$key]['link']['href'], $match);
-
-//todo course ref
-      $active_course = _section_courses_get_active_course();
-      $subtree_pointer[$key]['link']['href'] = 'course/text/' . $active_course->nid . '/' . $match[0];
-//$subtree_pointer[$key]['link']['localized_options']['query'] = '?og_group_ref';
-
-      if (in_array($subtree_pointer[$key]['link']['mlid'], $parents)) {
-        $subtree_pointer[$key]['link']['in_active_trail'] = TRUE;
-        if ($active_mlid == $subtree_pointer[$key]['link']['mlid']) {
-//active
-          $subtree_pointer[$key]['link']['options']['attributes']['class'] = array('active');
-        }
-      }
-      _section_courses_book_add_active_path($subtree_pointer[$key]['below'], $active_mlid, $parents);
-    }
-  }
-}
 
 function _section_courses_text_outline_add_active_path(&$subtree_pointer) {
 
@@ -728,7 +688,7 @@ function _section_courses_text_outline_add_active_path(&$subtree_pointer) {
     }
   }
 
-  $parents = _section_courses_book_get_parents($subtree_pointer, $active_mlid);
+  $parents = _custom_general_book_get_parents($subtree_pointer, $active_mlid);
 
   _section_courses_book_add_active_path(&$subtree_pointer, $active_mlid, $parents);
 }
@@ -808,7 +768,7 @@ function section_courses_text_outline() {
 
   return drupal_render($data);
 }
-
+/*
 function MY_MODULE_submenu_tree_all_data($path, $menu = 'main-menu', $curr_level = 0, $rebuilt_path = '', $childtree = array()) {
   $tree = menu_tree_all_data($menu);
   $args = explode('/', $path);
@@ -832,7 +792,7 @@ function MY_MODULE_submenu_tree_all_data($path, $menu = 'main-menu', $curr_level
 
   return theme('item_list', array('items' => $items, 'attributes' => array(), 'type' => 'ul'));
 }
-
+*/
 function section_content_node_presave($node) {
   if ($node->type == NM_COURSE) {
 //Add Form Container for the Course, if form feature is set
@@ -1539,3 +1499,26 @@ function section_courses_student_registration_form_submit($form, &$form_state) {
   }
 }
 
+function _section_courses_book_add_active_path(&$subtree_pointer, $active_mlid, $parents) {
+  if (in_array($active_mlid, $parents)) {
+    foreach (array_keys($subtree_pointer) as $key) {
+//alter link for course section
+      $match = "";
+      preg_match("|\d+|", $subtree_pointer[$key]['link']['href'], $match);
+
+//todo course ref
+      $active_course = _section_courses_get_active_course();
+      $subtree_pointer[$key]['link']['href'] = 'course/text/' . $active_course->nid . '/' . $match[0];
+//$subtree_pointer[$key]['link']['localized_options']['query'] = '?og_group_ref';
+
+      if (in_array($subtree_pointer[$key]['link']['mlid'], $parents)) {
+        $subtree_pointer[$key]['link']['in_active_trail'] = TRUE;
+        if ($active_mlid == $subtree_pointer[$key]['link']['mlid']) {
+//active
+          $subtree_pointer[$key]['link']['options']['attributes']['class'] = array('active');
+        }
+      }
+      _custom_general_book_add_active_path($subtree_pointer[$key]['below'], $active_mlid, $parents);
+    }
+  }
+}

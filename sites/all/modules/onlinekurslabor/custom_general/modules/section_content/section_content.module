@@ -7,14 +7,16 @@ module_load_include('inc', 'section_content', 'inc/blocks');
   BOOK - Chapters
  */
 
-
 /**
  * Implements hook_block_info().
  */
 function section_content_block_info() {
   $blocks = array();
   $blocks['content_node_tabs'] = array(
-    'info' => t('Node Tabs'),
+    'info' => t('Content - Node Tabs'),
+  );
+  $blocks['content_authors_tools'] = array(
+    'info' => t('Content - Authors Tools'),
   );
 
   return $blocks;
@@ -30,7 +32,11 @@ function section_content_block_view($delta = '') {
     case 'content_node_tabs' :
       $block['content'] = _section_content_node_tabs_view();
       break;
+    case 'content_authors_tools' :
+      $block['content'] = _section_content_theme_authors_tools();
+      break;
   }
+
 
   return $block;
 }
@@ -44,20 +50,21 @@ function section_content_node_view($node, $view_mode, $langcode) {
 
 //test todo remove
 //dpm(section_author($node->nid));
-  if ($node->type == NM_CHAPTER) {
+  if (in_array($node->type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN))) {
 //disable book navigation
     unset($node->content['book_navigation']);
 
-//TOC functionality. Numbering Chapters
-//check if numbering is enabled in domain settings
+    //TOC functionality. Numbering Chapters
+    //check if numbering is enabled in domain settings
     if (_custom_general_toc_enabled($node->nid)) {
       $order_number = nm_bookchapters_get_chapter_numbering($node->nid);
-
-      $new_title = $order_number . NM_CHAPTER_SEPARATOR . ' ' . $node->title;
-      if (drupal_get_title() == $node->title) {
-        drupal_set_title($new_title);
+      if (!empty($order_number)) {
+        $new_title = $order_number . NM_CHAPTER_SEPARATOR . ' ' . $node->title;
+        if (drupal_get_title() == $node->title) {
+          drupal_set_title($new_title);
+        }
+        $node->title = $new_title;
       }
-      $node->title = $new_title;
     }
   }
 }
@@ -81,7 +88,7 @@ function section_content_menu_block_tree_alter(&$tree, &$config) {
   $node = node_load($node_id);
 
 //Only apply when top_leaf is of type 'domain'
-  if ($node->type == NM_DOMAIN) {
+  if ($node->type == NM_CONTENT_DOMAIN) {
 //TOC functionality. Numbering Chapters
 //check if numbering is enabled in domain settings
     if (!_custom_general_toc_enabled($node->nid))
@@ -194,9 +201,45 @@ function section_content_node_view_alter(&$build) {
   } */
 
 function section_content_preprocess_node(&$variables) {
+
   //04.06.2013 - 11:34 - SN testing todo
-  if (in_array($variables['type'], array(NM_MULTIPLE_CHOICE, NM_QUESTION_AND_ANSWER))) {
+  if (in_array($variables['type'], array(NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER))) {
     drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/tasks.js");
+  }
+}
+
+/*
+ * alter links in forum section
+ */
+
+function section_content_url_outbound_alter(&$path, &$options, &$original_path) {
+
+  $domain = _section_content_get_active_domain();
+
+  if ($domain) {
+    /*
+     * 13.06.2013 - 15:12 - SN
+     * unsauber . todo fix
+     */
+    /* replace links for book navigation and titles
+     * [todo] Solution to avoid this overkill!
+     *  Probably a performance killing thing....
+     * 
+     */
+    if (strstr($path, "node/")) {
+      $regex = '#^node/([0-9]+)$#s';
+      preg_match($regex, $path, $matches);
+      if (!empty($matches)) {
+        $nid = $matches[1];
+        //solution for biblio and course text needed
+        $type = _custom_general_get_node_type($nid);
+
+        if (in_array($type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN, NM_BIBLIO))) {
+          $path = 'domain/text/' . $nid;
+        }
+        $original_path = $path;
+      }
+    }
   }
 }
 
@@ -234,7 +277,7 @@ function section_content_menu_breadcrumb_alter(&$active_trail, $item) {
   //set type to file, if file id (fid) is set
   $entity_type = (isset($type) && !isset($active_node->fid)) ? 'node' : (isset($active_node->fid) ? 'file' : NULL);
 
-  //&& (in_array($type, array(NM_DOMAIN, NM_CHAPTER, NM_BIBLIO)) || $entity_type == 'file') // redundant
+  //&& (in_array($type, array(NM_CONTENT_DOMAIN, NM_CONTENT_CHAPTER, NM_BIBLIO)) || $entity_type == 'file') // redundant
   if (!empty($active_node)) {
     //for every user
     _section_content_breadcrumb_append_from_entity_data($entity_type, $active_trail, $active_node);
@@ -255,7 +298,7 @@ function _section_content_breadcrumb_append_from_entity_data($entity_type, &$act
   //when Biblio node is selected
   //For authors and admins, breadcrumb leading to source domain
   //todo: for students.. breadcrumb leading to their course
-  if (isset($active_entity) && (in_array($active_entity->type, array(NM_BIBLIO, NM_MULTIPLE_CHOICE, NM_QUESTION_AND_ANSWER)) || $entity_type == 'file') && isset($active_entity->og_group_ref)) {
+  if (isset($active_entity) && (in_array($active_entity->type, array(NM_BIBLIO, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER)) || $entity_type == 'file') && isset($active_entity->og_group_ref)) {
 
     $author_or_admin = in_array(NM_ROLE_AUTOR, $user->roles) || in_array(NM_ROLE_ADMIN, $user->roles);
     if ($author_or_admin) {
@@ -383,7 +426,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     $node = $form['#node'];
     $type = $form['type']['#value'];
 // Not a book || not a domain => Nothing to do
-    if (($type != NM_DOMAIN) || !isset($node->book)) {
+    if (($type != NM_CONTENT_DOMAIN) || !isset($node->book)) {
       
     }
     else {
@@ -422,7 +465,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
 function section_content_media_browser_plugins_alter(&$info) {
   if (isset($info['domain_media--media_browser_1'])) {
     $node = node_load(_media_browser_get_referer_nid());
-    if ($node && !in_array($node->type, array(NM_DOMAIN, NM_CHAPTER))) {
+    if ($node && !in_array($node->type, array(NM_CONTENT_DOMAIN, NM_CONTENT_CHAPTER))) {
       unset($info['domain_media--media_browser_1']);
     }
   }
@@ -461,7 +504,7 @@ function section_content_og_user_access_alter(&$perm, $context) {
   $group_type = $context['group_type'];
   $group = $context['group'];
 
-  if ($group_type == 'node' && $group->type == NM_DOMAIN) {
+  if ($group_type == 'node' && $group->type == NM_CONTENT_DOMAIN) {
 
     $access_perm = in_array(NM_ROLE_AUTOR, $user->roles) || in_array(NM_ROLE_ADMIN, $user->roles);
 //var_dump($access_perm);
@@ -703,7 +746,7 @@ function _section_content_task_replacements($matches) {
       //dpm($node_view);
       $node_output = drupal_render($node_view);
       //$text = preg_replace($regex, $node_output, $text);
-      $text = $node_output;
+      $text = '<div class="embeded_task">'  . $node_output  . '</div>';
     }
   }
   return $text;
@@ -936,7 +979,6 @@ function section_content_mc_check_correctness($mc_node, $items) {
   return TRUE;
 }
 
-
 function array_search_i($str, $array) {
   $result = array();
   foreach ($array as $key => $value) {
@@ -946,3 +988,165 @@ function array_search_i($str, $array) {
   return $result;
 }
 
+function section_content_text_outline() {
+  $active_domain = _section_content_get_active_domain();
+
+  if (!$active_domain)
+    return;
+  $domain_ref = $active_domain->nid;
+
+  $menu_name = 'book-toc-' . $domain_ref;
+  $tree = menu_tree_all_data($menu_name);
+
+// And add the active trail data back to the full tree.
+//menu_tree_add_active_path($tree);
+
+  $config = array();
+  $config['title_link'] = "test";
+  $config['delta'] = "0";
+  $config['menu_name'] = $menu_name;
+  $config['title_link'] = '';
+  $config['parent_mlid'] = 0;
+  $config['level'] = 2;
+
+  _section_content_text_outline_add_active_path($tree);
+
+// Allow alteration of the tree and config before we begin operations on it.
+  drupal_alter('menu_block_tree', $tree, $config);
+
+// Prune the tree along the active trail to the specified level.
+  if ($config['level'] > 1 || $config['parent_mlid']) {
+    if ($config['parent_mlid']) {
+      $parent_item = menu_link_load($config['parent_mlid']);
+      menu_tree_prune_tree($tree, $config['level'], $parent_item);
+    }
+    else {
+      menu_tree_prune_tree($tree, $config['level']);
+    }
+  }
+
+// Render the tree.
+  $data = array();
+  $title = menu_block_get_title($config['title_link'], $config);
+  //$data['subject_array'] = $title;
+  $data['subject'] = drupal_render($title);
+  $data['content']['#content'] = menu_block_tree_output($tree, $config);
+  if (!empty($data['content']['#content'])) {
+    $data['content']['#theme'] = array(
+      'menu_block_wrapper__' . str_replace('-', '_', $config['delta']),
+      'menu_block_wrapper__' . str_replace('-', '_', $config['menu_name']),
+      'menu_block_wrapper'
+    );
+    $data['content']['#config'] = $config;
+    $data['content']['#delta'] = $config['delta'];
+  }
+  else {
+    $data['content'] = '';
+  }
+  
+  $output = drupal_render($data);
+
+
+  $output = '<div><h5><u>'. l($active_domain->title, 'domain/text/'.$active_domain->nid) .'</u></h5></div>' . $output;
+
+
+  return $output;
+}
+
+/**
+ * Determins which domain is beeing active/selected
+ * 
+ * @return active domain object or FALSE
+ */
+function _section_content_get_active_domain($reset = FALSE) {
+  static $domain;
+
+  $context = context_get("context", "section_content");
+  if (empty($context))
+    return FALSE;
+
+  if (!isset($domain) || $reset) {
+    //proove if user is in course section
+    //not prooving causes an infinite loop here (menu_get_object(); on /comment/%/edit)
+    $node = NULL;
+
+    $node = menu_get_object();
+
+    if ($node) {
+      $domain = $node;
+    }
+
+    if (is_object($node) && in_array($node->type, array(NM_FILE, NM_CONTENT_CHAPTER, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_DOMAIN))) {
+      if ($node->type == NM_CONTENT_DOMAIN) {
+        //get course which this group is assigned to
+        if (isset($node->og_group_ref)) {
+          //$lang_og = field_language('node', $node, 'og_group_ref');
+          $group_tmp = node_load($node->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+          $domain = node_load(_custom_general_get_group($group_tmp));
+        }
+      }
+      else {
+        $domain = node_load(_custom_general_get_group($node));
+      }
+    }
+    if (!isset($domain)) {
+      $c_nid = check_plain(arg(2));
+      $domain_tmp = is_numeric($c_nid) ? node_load($c_nid) : NULL;
+
+      //arg 2 may be a chapter
+      $domain = node_load(_custom_general_get_group($domain_tmp));
+    }
+
+    if (!empty($domain) && $domain->type == NM_CONTENT_DOMAIN) {
+
+      return $domain;
+    }
+
+    $domain = FALSE;
+  }
+
+  return $domain;
+}
+
+function _section_content_text_outline_add_active_path(&$subtree_pointer) {
+
+//Get active MLID from url structure
+  $active_mlid = NULL;
+  $content_text_active_nid = NULL;
+
+  $content_text_active = (arg(0) == 'domain');
+  if ($content_text_active) {
+    $content_text_active_nid = arg(2);
+
+    $domain_node = node_load($content_text_active_nid);
+    if (isset($domain_node->book)) {
+      $active_mlid = $domain_node->book['mlid'];
+    }
+  }
+
+  $parents = _custom_general_book_get_parents($subtree_pointer, $active_mlid);
+
+  _section_content_book_add_active_path(&$subtree_pointer, $active_mlid, $parents);
+}
+
+function _section_content_book_add_active_path(&$subtree_pointer, $active_mlid, $parents) {
+  if (in_array($active_mlid, $parents)) {
+    foreach (array_keys($subtree_pointer) as $key) {
+//alter link for course section
+      $match = "";
+      preg_match("|\d+|", $subtree_pointer[$key]['link']['href'], $match);
+//todo course ref
+      $subtree_pointer[$key]['link']['href'] = 'domain/text/' . $match[0];
+//$subtree_pointer[$key]['link']['localized_options']['query'] = '?og_group_ref';
+
+      if (in_array($subtree_pointer[$key]['link']['mlid'], $parents)) {
+        $subtree_pointer[$key]['link']['in_active_trail'] = TRUE;
+        if ($active_mlid == $subtree_pointer[$key]['link']['mlid']) {
+//active
+          $subtree_pointer[$key]['link']['options']['attributes']['class'] = array('active');
+        }
+      }
+      _section_content_book_add_active_path($subtree_pointer[$key]['below'], $active_mlid, $parents);
+    }
+  }
+}

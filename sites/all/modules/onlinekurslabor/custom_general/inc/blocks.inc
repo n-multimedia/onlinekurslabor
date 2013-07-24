@@ -11,8 +11,8 @@ function _custom_general_theme_top_nav($variables = NULL) {
 
   $user_link = "#";
   $user_link_classes = "";
-  
-  
+
+
   if ($user->uid) {
     $profile = profile2_load_by_user($user, 'master');
     $user_pic = "";
@@ -22,7 +22,7 @@ function _custom_general_theme_top_nav($variables = NULL) {
       $user_pic = drupal_render($field_view);
     }
     $realname = realname_load($user);
-    
+
     //user menu here
     //$user_link = '<div class="btn-group">';
     //$user_link .= '<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">';
@@ -37,21 +37,36 @@ function _custom_general_theme_top_nav($variables = NULL) {
     $user_link .='<li><a href="/user/logout"><i class="icon-lock"></i> Abmelden</a></li>';
     //$user_link .='</ul>';
     //$user_link .='</div>';
-    
     //$user_link .= l("Abmelden", "user/logout");
   }
   else {
-    $user_link= l("Anmelden", "user/");
+    $user_link = l("Anmelden", "user/");
     $user_link_classes = " lock";
   }
 
   $output = "";
   $output .= '<ul id="custom-top-nav" class="nav pull-right">';
-  $output .= '<li><a href="/node/49">Kurseübersicht</a></li>';
-  $output .= '<li class="border-left"><a href="#">Hilfe</a></li>';
-  $output .= '<li class="border-left '.$user_link_classes.'">' . $user_link . '</li>';
+
+  if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_STUDENT, NM_ROLE_ADMIN), $user->roles)) {
+    $output .= '<li><a href="/courses">Kurseübersicht</a></li>';
+  }
+  if(array_intersect(array(NM_ROLE_AUTOR, NM_ROLE_ADMIN), $user->roles)) {
+    $output .= '<li><a href="/domains">Themenübersicht</a></li>';
+  }
+
+  $output .= '<li class="border-left"><a href="/help">Hilfe</a></li>';
+  $output .= '<li class="border-left ' . $user_link_classes . '">' . $user_link . '</li>';
   $output .= '</ul>';
 
 
+  return $output;
+}
+
+function _custom_general_theme_space()
+{
+  $output = '';
+  
+  $output .= '<div id="custom_general_space" class=".clearfix"></div>';
+  
   return $output;
 }

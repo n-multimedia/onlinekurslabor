@@ -38,7 +38,7 @@ function _section_courses_theme_instructor_tools($variables = NULL) {
 
   $output = "";
 
-  if (section_courses_instructors_tools_visible()) {
+  if (section_courses_instructors_tools_access()) {
 
     $tool_links = _section_courses_get_instructor_tools();
 
@@ -50,7 +50,7 @@ function _section_courses_theme_instructor_tools($variables = NULL) {
   return $output;
 }
 
-function section_courses_instructors_tools_visible() {
+function section_courses_instructors_tools_access() {
   global $user;
   $one_of_needed_roles = array_intersect($user->roles, array(NM_ROLE_ADMIN, NM_ROLE_DOZENT));
 
@@ -83,7 +83,7 @@ function _section_courses_get_instructor_tools() {
 
   $node = menu_get_object();
 
-  $news_options = array(
+  $default_options = array(
     'query' => array(
       'og_group_ref' => $group_id,
     ),
@@ -91,14 +91,15 @@ function _section_courses_get_instructor_tools() {
       'title' => '',
       ));
 
-  $members_overview_options = $news_options;
+  /*
+  $members_overview_options = $default_options;
   $groups_overview_options = $news_options;
 
   $docs_options = $news_options;
   $members_options = $news_options;
   $groups_options = $news_options;
   $forums_overview_options = $news_options;
-  $course_settings_options = $news_options;
+  $course_settings_options = $news_options;*/
 
 
   $links = array();
@@ -171,49 +172,50 @@ function _section_courses_get_instructor_tools() {
     $path = 'course/admin/' . $group_id . '/settings';
     $id = 'instr_course_settings';
     $label = $links[$id]['label'];
-    $links[$id] += _section_courses_get_structered_tool_link($id, $label, $path);
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
     $path = 'course/admin/' . $group_id . '/forums';
     $id = 'instr_overview_forums';
     $label = $links[$id]['label'];
-    $links[$id] += _section_courses_get_structered_tool_link($id, $label, $path);
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
     //overviews
     $path = 'course/admin/' . $group_id . '/members';
     $id = 'instr_overview_members';
     $label = $links[$id]['label'];
-    $links[$id] += _section_courses_get_structered_tool_link($id, $label, $path);
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
     $path = 'course/admin/' . $group_id . '/groups';
     $id = 'instr_overview_groups';
     $label = $links[$id]['label'];
-    $links[$id] += _section_courses_get_structered_tool_link($id, $label, $path);
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
     $path = "";
     $id = 'instr_overview_content';
     $label = $links[$id]['label'];
-    $links[$id] += _section_courses_get_structered_tool_link($id, $label, $path);
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
     //adds
     $path = 'course/admin/' . $group_id . '/add/courses-news';
     $id = 'instr_add_news';
     $label = $links[$id]['label'];
-    $links[$id] += _section_courses_get_structered_tool_link($id, $label, $path);
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
     $path = 'course/admin/' . $group_id . '/add/courses-docs';
     $id = 'instr_add_docs';
     $label = $links[$id]['label'];
-    $links[$id] += _section_courses_get_structered_tool_link($id, $label, $path);
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
     $path = 'course/admin/' . $group_id . '/members/add';
     $id = 'instr_add_members';
     $label = $links[$id]['label'];
-    $links[$id] += _section_courses_get_structered_tool_link($id, $label, $path);
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
     $path = 'course/admin/' . $group_id . '/add/courses-group';
     $id = 'instr_add_groups';
     $label = $links[$id]['label'];
-    $links[$id] += _section_courses_get_structered_tool_link($id, $label, $path);
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+    
   }
 
   $result = array();
@@ -231,25 +233,6 @@ function _section_courses_get_instructor_tools() {
   return $result;
 }
 
-function _section_courses_get_structered_tool_link($id, $label, $path) {
-  $result = array();
-
-  $item_options = array();
-
-  $item_options['attributes']['title'] = ($label);
-
-  if (!empty($path)) {
-    //convert label to upper case
-    $link = l($label, $path, $item_options);
-  }
-  else {
-    $link = $label;
-  }
-  $result['path'] = $path;
-  $result['link'] = $link;
-
-  return $result;
-}
 
 /**
  * Custom function to assemble renderable array for block content.

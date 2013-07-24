@@ -50,11 +50,11 @@ class custom_general_condition_section_content extends context_condition {
    * Additional execute without param
    */
   function execute2() {
-    $context = current($this->get_contexts(NM_DOMAIN));
+    $context = current($this->get_contexts(NM_CONTENT_DOMAIN));
 
     //22.04.2013 - 17:21 - SN additional check
     if ($this->_section_content_active()) {
-      $this->condition_met($context, NM_DOMAIN);
+      $this->condition_met($context, NM_CONTENT_DOMAIN);
     }
   }
   

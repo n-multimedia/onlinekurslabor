@@ -44,8 +44,14 @@ function _section_domain_author_section_active() {
   $media_active = (arg(0) == 'domain' && arg(1) == 'media');
   $biblio_overview_active = (arg(0) == 'domain' && arg(1) == 'biblio');
   $tasks_overview_active = (arg(0) == 'domain' && arg(1) == 'tasks');
+  $domain_text_active = (arg(0) == 'domain' && arg(1) == 'text');
+  $domain_add_active = (arg(0) == 'domain' && arg(1) == 'add');
+  $domain_edit_active = (arg(0) == 'domain' && arg(1) == 'edit');
 
-  return $biblio_active || $biblio_overview_active || $media_active || $book_active || $tasks_overview_active;
+  return $biblio_active || $biblio_overview_active ||
+      $media_active || $book_active ||
+      $tasks_overview_active || $domain_text_active ||
+      $domain_add_active || $domain_edit_active;
 }
 
 /**
@@ -123,7 +129,6 @@ function _section_course_course_tasks_visible() {
   $text_visible = (arg(0) == 'course' && arg(1) == 'tasks');
   return $text_visible;
 }
-
 
 /**
  * Get node type from the Database without overhead
@@ -204,7 +209,7 @@ function _section_courses_advanced_forum_get_num_unread($uid, $tid) {
   return $num_total;
 }
 
-function _section_courses_course_get_num_unread_by_type($uid, $type, $nid=NULL) {
+function _section_courses_course_get_num_unread_by_type($uid, $type, $nid = NULL) {
 
   static $result_cache = array();
 
@@ -212,8 +217,8 @@ function _section_courses_course_get_num_unread_by_type($uid, $type, $nid=NULL) 
     //get group's news entities
     //$query = db_select("node", "n");
     $active_course = _section_courses_get_active_course();
-    if(!$active_course)
-       return $result_cache;
+    if (!$active_course)
+      return $result_cache;
     $query = db_select("og_membership", "ogm");
     $query->condition("ogm.gid", $active_course->nid, "=");
     //$query->fields("ogm", array("entity_type", "etid"));
@@ -222,9 +227,8 @@ function _section_courses_course_get_num_unread_by_type($uid, $type, $nid=NULL) 
     //$query->addField("ogm", "gid");
     //$query->addField("n", "nid");
     $query->condition('n.type', $type);
-    
-    if($nid && is_numeric($nid))
-    {
+
+    if ($nid && is_numeric($nid)) {
       $query->condition('n.nid', $nid);
     }
     //history
@@ -287,18 +291,61 @@ function custom_general_get_task_solutions_by_uid($tid, $uid) {
  */
 function custom_general_get_task_solutions($tid, $uid) {
   $uid_tmp = arg(5);
-  if(!empty($uid_tmp) && is_numeric($uid_tmp))
-  {
+  if (!empty($uid_tmp) && is_numeric($uid_tmp)) {
     $user = user_load($uid_tmp);
-    if($user)
-    {
+    if ($user) {
       $uid = $user->uid;
     }
   }
-  
+
   //check if group task or not
-  
-  
+
+
   return custom_general_get_task_solutions_by_uid($tid, $uid);
-  
+}
+
+function _custom_general_get_structered_tool_link($id, $label, $path, $options = array()) {
+  $result = array();
+
+  $item_options = $options;
+
+  if (empty($item_options['attributes']['title'])) {
+    $item_options['attributes']['title'] = ($label);
+  }
+
+  if (!empty($path)) {
+    //convert label to upper case
+    $link = l($label, $path, $item_options);
+  }
+  else {
+    $link = $label;
+  }
+  $result['path'] = $path;
+  $result['link'] = $link;
+
+  return $result;
+}
+
+function _custom_general_book_get_parents(&$subtree_pointer, $active_mlid) {
+  $parents = array();
+  if (!is_array($subtree_pointer))
+    return $parents;
+  foreach (array_keys($subtree_pointer) as $key) {
+    if ($subtree_pointer[$key]['link']['mlid'] == $active_mlid) {
+      $parents[] = $subtree_pointer[$key]['link']['p1'];
+      $parents[] = $subtree_pointer[$key]['link']['p2'];
+      $parents[] = $subtree_pointer[$key]['link']['p3'];
+      $parents[] = $subtree_pointer[$key]['link']['p4'];
+      $parents[] = $subtree_pointer[$key]['link']['p5'];
+      $parents[] = $subtree_pointer[$key]['link']['p6'];
+      $parents[] = $subtree_pointer[$key]['link']['p7'];
+      $parents[] = $subtree_pointer[$key]['link']['p8'];
+      $parents[] = $subtree_pointer[$key]['link']['p9'];
+      break;
+    }
+    $res = _custom_general_book_get_parents($subtree_pointer[$key]['below'], $active_mlid);
+    $parents = !empty($res) ? $res : $parents;
+  }
+
+  return $parents;
 }

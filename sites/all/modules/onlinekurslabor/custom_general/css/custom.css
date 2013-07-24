@@ -156,8 +156,6 @@ Instructor's Tools
   margin-left:-1px;
   left:1px;
 
-
-
 }
 
 #instructors_tools-container .one_item_toobar
@@ -170,8 +168,18 @@ Instructor's Tools
 
 }
 
+#content_node_tabs-container li {
+  display: inline-block;
+  margin-right: 5px;
+}
 
-#block-block-4, .pane-block-4
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+  color: #333;
+}
+
+.span1 .pane-block
 {
   width:100%;
   position:relative;
@@ -284,138 +292,178 @@ Settings
   background-position: -360px -50px;
 }
 
+#instructors_tools-toolbar 
+{
+  display:none;
+  position:absolute;
+  background-color: #aaa;
+  color:#fff;
+  bottom:55px;
+  left:0;  
+}
+
 
 /*
-#instructors_tools li a:hover
-{
-    background-color: transparent;
-}
-
-#instructors_tools li{
-
-    display:inline-block;
-}
-#instructors_tools li:hover{
-
-}
-
-#instructors_tools li a
-{
-    margin:auto;
-    height: 30px;
-    width: 30px;
-    display:block;
-    overflow:hidden;
-    color: transparent;
-    border:0;
-    padding:5px;
-    background-color: #808080;
-
-}
-#instructors_tools li a:hover, #instructors_tools li a.active
-{  
-    background-color: #666666;
-}
-
-#instructors_tools li a:before {
-    content: ' ';
-    display: block;
-    width: 30px;
-    height: 30px;    
-    background-image: url(../images/icons/transparent-icons---instructor.gif);
-    background-repeat: no-repeat;
-}
-
+Authors's Tools
 */
 
-/*
-#instructors_tools li a:before
+#authors_tools
 {
-    transition-duration: 0.25s;
-    -webkit-transition-duration: 0.25s; 
-}*/
-/*
-Instructors toolbar items
-*/
-/*
-#instructors_tools li#instr_add_news a:before
-{
-    background-position: 0px 0px;
+  display:inline-block;
+  position:relative;
 }
-#instructors_tools li#instr_add_news a:hover:before, #instructors_tools li#instr_add_news a.active:before
-{
-    background-position: 0px -30px;
-}
-#instructors_tools li#instr_add_docs a:before
-{
-    background-position: -30px 0px;
-}
-#instructors_tools li#instr_add_docs a:hover:before, #instructors_tools li#instr_add_docs a.active:before
-{
-    background-position: -30px -30px;
-}
-#instructors_tools li#instr_add_groups a:before
-{
-    background-position: -60px 0px;
-}
-#instructors_tools li#instr_add_groups a:hover:before, #instructors_tools li#instr_add_groups a.active:before
-{
-    background-position: -60px -30px;
-}
-#instructors_tools li#instr_add_members a:before
-{
-    background-position: -90px 0px;
-}
-#instructors_tools li#instr_add_members a:hover:before, #instructors_tools li#instr_add_members a.active:before
-{
-    background-position: -90px -30px;
-}
-*/
-/*
-Lists / Overviews
-*/
-/*
 
-#instructors_tools li#instr_overview_members a:before
+#authors_tools-container .row-fluid:hover 
 {
-    background-position: -120px 0px;
+  background-color: rgba(0,136,204, 0.03);
 }
-#instructors_tools li#instr_overview_members a:hover:before, #instructors_tools li#instr_overview_members a.active:before
-{
-    background-position: -120px -30px;
-}
-#instructors_tools li#instr_overview_groups a:before
-{
-    background-position: -150px 0px;
-}
-#instructors_tools li#instr_overview_groups a:hover:before, #instructors_tools li#instr_overview_groups a.active:before
-{
-    background-position: -150px -30px;
-}
-#instructors_tools li#instr_course_settings a:before
-{
-    background-position: 0px -60px;
-}
-#instructors_tools li#instr_course_settings a:hover:before, #instructors_tools li#instr_course_settings a.active:before
-{
-    background-position: 0px -90px;
-}*/
 
-/*
-Settings
-*/
-
-/*
-#instructors_tools li#instr_overview_forums a:before
+#authors_tools-container
 {
-    background-position: -180px 0px;
+  width:60px;
+  overflow: hidden;
+  display: block;
+  padding:0;
+  direction:rtl;
+  text-align: right;
+  position:absolute;
+  right:0;
+  background-color: rgba(200,200,200, 0.3);
 }
-#instructors_tools li#instr_overview_forums a:hover:before, #instructors_tools li#instr_overview_forums a.active:before
-{
-    background-position: -180px -30px;
-}
-*/
 
+#authors_tools-container .btn
+{
+  display: inline-block;
+  width: 58px;
+  white-space: normal;
+  font-size:  10px;
+  word-wrap: break-word;
+  height: 65px;
+  padding:0;
+  font-weight: bold;
+  line-height: 8px;
+  margin-left:-1px;
+  left:1px;
+
+}
+
+#authors_tools-container .one_item_toobar
+{
+  overflow:hidden;
+}
+
+#authors_tools-container .btn:not(:last-child) 
+{
+
+}
+
+#block-block-4, .pane-block-4
+{
+  width:100%;
+  position:relative;
+  height: 300px;
+}
+
+#authors_tools-container .btn a
+{
+  display:block;
+}
+
+
+#authors_tools-container .btn a:before {
+  content: ' ';
+  display: block;
+  width: 60px;
+  height: 45px;  
+  position:relative;
+  margin: auto;
+  background-image: url(../images/icons/transparent-icons---author.gif);
+  background-repeat: no-repeat;
+  margin-bottom:1px;
+}
+
+
+#authors_tools-container .btn#author_biblio_overview a:before
+{
+  background-position: 0px 0px;
+}
+#authors_tools-container .btn#author_biblio_overview a:hover:before, #authors_tools-container .btn#author_biblio_overview a.active:before
+{
+  background-position: 0px -50px;
+}
+
+#authors_tools-container .btn#author_biblio_add a:before
+{
+  background-position: -60px 0px;
+}
+#authors_tools-container .btn#author_biblio_add a:hover:before, #authors_tools-container .btn#author_biblio_add a.active:before
+{
+  background-position: -60px -50px;
+}
+
+#authors_tools-container .btn#author_media_overview a:before
+{
+  background-position: -120px 0px;
+}
+#authors_tools-container .btn#author_media_overview a:hover:before, #authors_tools-container .btn#author_biblio_add a.active:before
+{
+  background-position: -120px -50px;
+}
+
+
+#authors_tools-container .btn#author_chapter_add a:before
+{
+  background-position: -240px 0px;
+}
+#authors_tools-container .btn#author_chapter_add a:hover:before, #authors_tools-container .btn#author_chapter_add a.active:before
+{
+  background-position: -240px -50px;
+}
+
+#authors_tools-container .btn#author_subchapter_add a:before
+{
+  background-position: -300px 0px;
+}
+#authors_tools-container .btn#author_subchapter_add a:hover:before, #authors_tools-container .btn#author_subchapter_add a.active:before
+{
+  background-position: -300px -50px;
+}
+
+#authors_tools-container .btn#author_chapter_order a:before
+{
+  background-position: -360px 0px;
+}
+#authors_tools-container .btn#author_chapter_order a:hover:before, #authors_tools-container .btn#author_chapter_order a.active:before
+{
+  background-position: -360px -50px;
+}
+
+#authors_tools-container .btn#author_tasks_overview a:before
+{
+  background-position: 0px -100px;
+}
+#authors_tools-container .btn#author_tasks_overview a:hover:before, #authors_tools-container .btn#author_tasks_overview a.active:before
+{
+  background-position: 0px -150px;
+}
+
+#authors_tools-container .btn#author_tasks_mc_add a:before
+{
+  background-position: -60px -100px;
+}
+#authors_tools-container .btn#author_tasks_mc_add a:hover:before, #authors_tools-container .btn#author_tasks_mc_add a.active:before
+{
+  background-position: -60px -150px;
+}
+
+#authors_tools-container .btn#author_tasks_qaa_add a:before
+{
+  background-position: -120px -100px;
+}
+#authors_tools-container .btn#author_tasks_qaa_add a:hover:before, #authors_tools-container .btn#author_tasks_qaa_add a.active:before
+{
+  background-position: -120px -150px;
+}
 
 #instructors_tools-toolbar 
 {
@@ -426,6 +474,11 @@ Settings
   bottom:55px;
   left:0;  
 }
+
+/*
+END  - Authors's Tools
+*/
+
 
 /*
 Course Toolbar items
@@ -445,9 +498,9 @@ Course Toolbar items
 
 #course_top_nav_collab-icon
 {
-  
+
   background-position: -65px 0px;
-  
+
 }
 
 /*
@@ -577,6 +630,41 @@ Editor
   display: none !important;
 }
 
+
+/*
+Embeded Tasks
+*/
+
+.embeded_task {
+  padding: 20px 20px 0px 80px;
+  border-radius: 5px; 
+  -moz-border-radius: 5px; 
+  -webkit-border-radius: 5px; 
+  background-color: #f3fafe;
+  border: 2px solid #58a5cc;
+  margin: 15px 0 15px 0;
+  position:relative;
+  min-height:70px;
+
+}
+
+.embeded_task:before
+{
+  content: ' ';
+  position:absolute;
+  display:block;
+  width: 60px;
+  height:50px;
+  left:10px;
+  top:20px;
+  background-image: url(../images/icons/transparent-icons---author.gif);
+  background-repeat: no-repeat;
+  background-position: -420px 0;
+}
+
+.embeded_task .solution{
+  margin-top:15px;
+}
 
 /*
   Questions
