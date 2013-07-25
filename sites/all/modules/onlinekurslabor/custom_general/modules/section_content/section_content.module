@@ -973,10 +973,10 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
     }
 
     //$mc_node = menu_get_object();
-
+    
     $form['mc_id'] = array(
       '#type' => 'hidden',
-      '#value' => 63,
+      '#value' => check_plain($vars['element']['#object']->nid),
     );
 
     $form['submit'] = array(
