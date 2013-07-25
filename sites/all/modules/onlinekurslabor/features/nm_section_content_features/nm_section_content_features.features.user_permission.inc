@@ -10,6 +10,42 @@
 function nm_section_content_features_user_default_permissions() {
   $permissions = array();
 
+  // Exported permission: administer file types.
+  $permissions['administer file types'] = array(
+    'name' => 'administer file types',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'file_entity',
+  );
+
+  // Exported permission: administer files.
+  $permissions['administer files'] = array(
+    'name' => 'administer files',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'file_entity',
+  );
+
+  // Exported permission: administer filters.
+  $permissions['administer filters'] = array(
+    'name' => 'administer filters',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'filter',
+  );
+
+  // Exported permission: bypass file access.
+  $permissions['bypass file access'] = array(
+    'name' => 'bypass file access',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'file_entity',
+  );
+
   // Exported permission: create biblio content.
   $permissions['create biblio content'] = array(
     'name' => 'create biblio content',
@@ -49,6 +85,16 @@ function nm_section_content_features_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: create files.
+  $permissions['create files'] = array(
+    'name' => 'create files',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'file_entity',
+  );
+
   // Exported permission: delete any biblio content.
   $permissions['delete any biblio content'] = array(
     'name' => 'delete any biblio content',
@@ -84,6 +130,15 @@ function nm_section_content_features_user_default_permissions() {
     'name' => 'delete any content_question_and_answer content',
     'roles' => array(),
     'module' => 'node',
+  );
+
+  // Exported permission: delete any files.
+  $permissions['delete any files'] = array(
+    'name' => 'delete any files',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'file_entity',
   );
 
   // Exported permission: delete own biblio content.
@@ -123,6 +178,16 @@ function nm_section_content_features_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: delete own files.
+  $permissions['delete own files'] = array(
+    'name' => 'delete own files',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'file_entity',
+  );
+
   // Exported permission: edit any biblio content.
   $permissions['edit any biblio content'] = array(
     'name' => 'edit any biblio content',
@@ -158,6 +223,15 @@ function nm_section_content_features_user_default_permissions() {
     'name' => 'edit any content_question_and_answer content',
     'roles' => array(),
     'module' => 'node',
+  );
+
+  // Exported permission: edit any files.
+  $permissions['edit any files'] = array(
+    'name' => 'edit any files',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'file_entity',
   );
 
   // Exported permission: edit own biblio content.
@@ -197,6 +271,220 @@ function nm_section_content_features_user_default_permissions() {
     'name' => 'edit own content_question_and_answer content',
     'roles' => array(),
     'module' => 'node',
+  );
+
+  // Exported permission: edit own files.
+  $permissions['edit own files'] = array(
+    'name' => 'edit own files',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'file_entity',
+  );
+
+  // Exported permission: import media.
+  $permissions['import media'] = array(
+    'name' => 'import media',
+    'roles' => array(),
+    'module' => 'media',
+  );
+
+  // Exported permission: show format selection for comment.
+  $permissions['show format selection for comment'] = array(
+    'name' => 'show format selection for comment',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'better_formats',
+  );
+
+  // Exported permission: show format selection for file.
+  $permissions['show format selection for file'] = array(
+    'name' => 'show format selection for file',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'better_formats',
+  );
+
+  // Exported permission: show format selection for message.
+  $permissions['show format selection for message'] = array(
+    'name' => 'show format selection for message',
+    'roles' => array(),
+    'module' => 'better_formats',
+  );
+
+  // Exported permission: show format selection for message_type.
+  $permissions['show format selection for message_type'] = array(
+    'name' => 'show format selection for message_type',
+    'roles' => array(),
+    'module' => 'better_formats',
+  );
+
+  // Exported permission: show format selection for message_type_category.
+  $permissions['show format selection for message_type_category'] = array(
+    'name' => 'show format selection for message_type_category',
+    'roles' => array(),
+    'module' => 'better_formats',
+  );
+
+  // Exported permission: show format selection for node.
+  $permissions['show format selection for node'] = array(
+    'name' => 'show format selection for node',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'better_formats',
+  );
+
+  // Exported permission: show format selection for og_membership.
+  $permissions['show format selection for og_membership'] = array(
+    'name' => 'show format selection for og_membership',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'better_formats',
+  );
+
+  // Exported permission: show format selection for og_membership_type.
+  $permissions['show format selection for og_membership_type'] = array(
+    'name' => 'show format selection for og_membership_type',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'better_formats',
+  );
+
+  // Exported permission: show format selection for profile2.
+  $permissions['show format selection for profile2'] = array(
+    'name' => 'show format selection for profile2',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'better_formats',
+  );
+
+  // Exported permission: show format selection for relation.
+  $permissions['show format selection for relation'] = array(
+    'name' => 'show format selection for relation',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'better_formats',
+  );
+
+  // Exported permission: show format selection for rules_config.
+  $permissions['show format selection for rules_config'] = array(
+    'name' => 'show format selection for rules_config',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'better_formats',
+  );
+
+  // Exported permission: show format selection for taxonomy_term.
+  $permissions['show format selection for taxonomy_term'] = array(
+    'name' => 'show format selection for taxonomy_term',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'better_formats',
+  );
+
+  // Exported permission: show format selection for user.
+  $permissions['show format selection for user'] = array(
+    'name' => 'show format selection for user',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'better_formats',
+  );
+
+  // Exported permission: show format tips.
+  $permissions['show format tips'] = array(
+    'name' => 'show format tips',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'better_formats',
+  );
+
+  // Exported permission: show more format tips link.
+  $permissions['show more format tips link'] = array(
+    'name' => 'show more format tips link',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'better_formats',
+  );
+
+  // Exported permission: use text format ds_code.
+  $permissions['use text format ds_code'] = array(
+    'name' => 'use text format ds_code',
+    'roles' => array(),
+    'module' => 'filter',
+  );
+
+  // Exported permission: use text format filtered_html.
+  $permissions['use text format filtered_html'] = array(
+    'name' => 'use text format filtered_html',
+    'roles' => array(
+      'anonymous user' => 'anonymous user',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'filter',
+  );
+
+  // Exported permission: use text format full_html.
+  $permissions['use text format full_html'] = array(
+    'name' => 'use text format full_html',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'filter',
+  );
+
+  // Exported permission: use text format php_code.
+  $permissions['use text format php_code'] = array(
+    'name' => 'use text format php_code',
+    'roles' => array(),
+    'module' => 'filter',
+  );
+
+  // Exported permission: view files.
+  $permissions['view files'] = array(
+    'name' => 'view files',
+    'roles' => array(
+      'Autor' => 'Autor',
+      'Dozent' => 'Dozent',
+      'Moderator' => 'Moderator',
+      'Student' => 'Student',
+      'administrator' => 'administrator',
+      'anonymous user' => 'anonymous user',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'file_entity',
+  );
+
+  // Exported permission: view own files.
+  $permissions['view own files'] = array(
+    'name' => 'view own files',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'file_entity',
+  );
+
+  // Exported permission: view own private files.
+  $permissions['view own private files'] = array(
+    'name' => 'view own private files',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'file_entity',
   );
 
   return $permissions;
