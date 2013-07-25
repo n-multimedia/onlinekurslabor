@@ -129,11 +129,6 @@ function nm_section_content_features_og_features_default_permissions() {
     'roles' => array(),
   );
 
-  // Exported og permission: 'node:content_domain:edit any student profile'
-  $permissions['node:content_domain:edit any student profile'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:content_domain:manage members'
   $permissions['node:content_domain:manage members'] = array(
     'roles' => array(),
@@ -217,7 +212,9 @@ function nm_section_content_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:content_domain:update field_attachments field'
   $permissions['node:content_domain:update field_attachments field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:update field_chapter_text field'
@@ -225,11 +222,6 @@ function nm_section_content_features_og_features_default_permissions() {
     'roles' => array(
       'member' => 'member',
     ),
-  );
-
-  // Exported og permission: 'node:content_domain:update field_collaborative_features field'
-  $permissions['node:content_domain:update field_collaborative_features field'] = array(
-    'roles' => array(),
   );
 
   // Exported og permission: 'node:content_domain:update field_domain_description field'
@@ -246,44 +238,18 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:content_domain:update field_domain_ref field'
-  $permissions['node:content_domain:update field_domain_ref field'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:content_domain:update field_file_image_alt_text field'
   $permissions['node:content_domain:update field_file_image_alt_text field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:update field_file_image_title_text field'
   $permissions['node:content_domain:update field_file_image_title_text field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update field_generic_solution_entry field'
-  $permissions['node:content_domain:update field_generic_solution_entry field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update field_generic_task field'
-  $permissions['node:content_domain:update field_generic_task field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update field_generic_task_assessment field'
-  $permissions['node:content_domain:update field_generic_task_assessment field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update field_generic_task_entry field'
-  $permissions['node:content_domain:update field_generic_task_entry field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update field_instructor field'
-  $permissions['node:content_domain:update field_instructor field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:update field_mc_solution field'
@@ -314,16 +280,6 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:content_domain:update field_short_description field'
-  $permissions['node:content_domain:update field_short_description field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update field_subtitle field'
-  $permissions['node:content_domain:update field_subtitle field'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:content_domain:update field_tableofcontents field'
   $permissions['node:content_domain:update field_tableofcontents field'] = array(
     'roles' => array(
@@ -331,29 +287,11 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:content_domain:update field_task_handling_period field'
-  $permissions['node:content_domain:update field_task_handling_period field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update field_task_type field'
-  $permissions['node:content_domain:update field_task_type field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update field_time_span field'
-  $permissions['node:content_domain:update field_time_span field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:update field_workload field'
-  $permissions['node:content_domain:update field_workload field'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:content_domain:update group'
   $permissions['node:content_domain:update group'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:update group_access field'
@@ -368,7 +306,9 @@ function nm_section_content_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:content_domain:update og_group_ref field'
   $permissions['node:content_domain:update og_group_ref field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:update og_user_node field'
@@ -419,11 +359,6 @@ function nm_section_content_features_og_features_default_permissions() {
     'roles' => array(),
   );
 
-  // Exported og permission: 'node:content_domain:view any student profile'
-  $permissions['node:content_domain:view any student profile'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:content_domain:view body field'
   $permissions['node:content_domain:view body field'] = array(
     'roles' => array(
@@ -456,11 +391,6 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:content_domain:view field_collaborative_features field'
-  $permissions['node:content_domain:view field_collaborative_features field'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:content_domain:view field_domain_description field'
   $permissions['node:content_domain:view field_domain_description field'] = array(
     'roles' => array(
@@ -477,44 +407,18 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:content_domain:view field_domain_ref field'
-  $permissions['node:content_domain:view field_domain_ref field'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:content_domain:view field_file_image_alt_text field'
   $permissions['node:content_domain:view field_file_image_alt_text field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:view field_file_image_title_text field'
   $permissions['node:content_domain:view field_file_image_title_text field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:view field_generic_solution_entry field'
-  $permissions['node:content_domain:view field_generic_solution_entry field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:view field_generic_task field'
-  $permissions['node:content_domain:view field_generic_task field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:view field_generic_task_assessment field'
-  $permissions['node:content_domain:view field_generic_task_assessment field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:view field_generic_task_entry field'
-  $permissions['node:content_domain:view field_generic_task_entry field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:view field_instructor field'
-  $permissions['node:content_domain:view field_instructor field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:view field_mc_solution field'
@@ -549,41 +453,11 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:content_domain:view field_short_description field'
-  $permissions['node:content_domain:view field_short_description field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:view field_subtitle field'
-  $permissions['node:content_domain:view field_subtitle field'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:content_domain:view field_tableofcontents field'
   $permissions['node:content_domain:view field_tableofcontents field'] = array(
     'roles' => array(
       'member' => 'member',
     ),
-  );
-
-  // Exported og permission: 'node:content_domain:view field_task_handling_period field'
-  $permissions['node:content_domain:view field_task_handling_period field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:view field_task_type field'
-  $permissions['node:content_domain:view field_task_type field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:view field_time_span field'
-  $permissions['node:content_domain:view field_time_span field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:view field_workload field'
-  $permissions['node:content_domain:view field_workload field'] = array(
-    'roles' => array(),
   );
 
   // Exported og permission: 'node:content_domain:view group_access field'
