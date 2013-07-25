@@ -822,6 +822,9 @@ function nm_section_content_features_strongarm() {
       'task' => array(
         'custom_settings' => TRUE,
       ),
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(

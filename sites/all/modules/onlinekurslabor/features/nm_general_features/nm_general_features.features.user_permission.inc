@@ -10,6 +10,17 @@
 function nm_general_features_user_default_permissions() {
   $permissions = array();
 
+  // Exported permission: access contextual links.
+  $permissions['access contextual links'] = array(
+    'name' => 'access contextual links',
+    'roles' => array(
+      'Autor' => 'Autor',
+      'Dozent' => 'Dozent',
+      'administrator' => 'administrator',
+    ),
+    'module' => 'contextual',
+  );
+
   // Exported permission: edit any master profile.
   $permissions['edit any master profile'] = array(
     'name' => 'edit any master profile',

@@ -177,7 +177,7 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['label'] = 'Aufgabe';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   /* Feld: Inhalt: Delete link */
@@ -247,6 +247,7 @@ function nm_section_content_features_views_default_views() {
     t('nächste Seite ›'),
     t('letzte Seite »'),
     t('OG membership from node'),
+    t('Aufgabe'),
     t('Delete link'),
     t('Edit link'),
     t('Alle'),
@@ -280,8 +281,7 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
   $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['style_plugin'] = 'default';
-  $handler->display->display_options['row_plugin'] = 'node';
-  $handler->display->display_options['row_options']['links'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -293,6 +293,12 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
+  /* Feld: Biblio: Biblio Citation */
+  $handler->display->display_options['fields']['citation']['id'] = 'citation';
+  $handler->display->display_options['fields']['citation']['table'] = 'biblio';
+  $handler->display->display_options['fields']['citation']['field'] = 'citation';
+  $handler->display->display_options['fields']['citation']['label'] = '';
+  $handler->display->display_options['fields']['citation']['element_label_colon'] = FALSE;
   /* Sort criterion: Inhalt: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';

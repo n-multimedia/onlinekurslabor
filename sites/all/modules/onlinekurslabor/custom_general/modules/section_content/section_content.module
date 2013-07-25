@@ -382,6 +382,13 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     array_push($form['#submit'], 'section_content_node_form_delete_confirm_submit');
     }
    */
+
+
+  if ($form_id == 'og_ui_confirm_subscribe' || $form_id == 'og_ui_confirm_unsubscribe') {
+    array_push($form['#submit'], 'section_content_subscribe_submit');
+  }
+
+
   if (stristr($form_id, '_node_form')) {
 
     $form['actions']['delete']['#submit'] = array('section_content_node_form_delete_submit');
@@ -508,6 +515,12 @@ function section_content_node_form_delete_submit($form, &$form_state) {
     )
       ,
   );
+}
+
+function section_content_subscribe_submit($form, &$form_state) {
+  
+  //todo fix - ugly
+  $form_state['redirect'] = 'domains';
 }
 
 function section_content_node_form_submit($form, &$form_state) {
@@ -1072,12 +1085,13 @@ function section_content_text_outline() {
   $config['menu_name'] = $menu_name;
   $config['title_link'] = '';
   $config['parent_mlid'] = 0;
-  $config['level'] = 2;
+  $config['level'] = 1;
 
   _section_content_text_outline_add_active_path($tree);
 
 // Allow alteration of the tree and config before we begin operations on it.
   drupal_alter('menu_block_tree', $tree, $config);
+
 
 // Prune the tree along the active trail to the specified level.
   if ($config['level'] > 1 || $config['parent_mlid']) {
@@ -1112,7 +1126,7 @@ function section_content_text_outline() {
   $output = drupal_render($data);
 
 
-  $output = '<div><h5><u>' . l($active_domain->title, 'domain/text/' . $active_domain->nid) . '</u></h5></div>' . $output;
+  //$output = '<div><h5><u>' . l($active_domain->title, 'domain/text/' . $active_domain->nid) . '</u></h5></div>' . $output;
 
 
   return $output;

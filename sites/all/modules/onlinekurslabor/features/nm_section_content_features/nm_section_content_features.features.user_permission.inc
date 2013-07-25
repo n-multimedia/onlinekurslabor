@@ -10,6 +10,77 @@
 function nm_section_content_features_user_default_permissions() {
   $permissions = array();
 
+  // Exported permission: access biblio content.
+  $permissions['access biblio content'] = array(
+    'name' => 'access biblio content',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'biblio',
+  );
+
+  // Exported permission: access content.
+  $permissions['access content'] = array(
+    'name' => 'access content',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'anonymous user' => 'anonymous user',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'node',
+  );
+
+  // Exported permission: access printer-friendly version.
+  $permissions['access printer-friendly version'] = array(
+    'name' => 'access printer-friendly version',
+    'roles' => array(
+      'Autor' => 'Autor',
+      'administrator' => 'administrator',
+    ),
+    'module' => 'book',
+  );
+
+  // Exported permission: add content to books.
+  $permissions['add content to books'] = array(
+    'name' => 'add content to books',
+    'roles' => array(
+      'Autor' => 'Autor',
+      'administrator' => 'administrator',
+    ),
+    'module' => 'book',
+  );
+
+  // Exported permission: add media from remote sources.
+  $permissions['add media from remote sources'] = array(
+    'name' => 'add media from remote sources',
+    'roles' => array(
+      'Autor' => 'Autor',
+      'Dozent' => 'Dozent',
+      'administrator' => 'administrator',
+    ),
+    'module' => 'media_internet',
+  );
+
+  // Exported permission: administer biblio.
+  $permissions['administer biblio'] = array(
+    'name' => 'administer biblio',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'biblio',
+  );
+
+  // Exported permission: administer book outlines.
+  $permissions['administer book outlines'] = array(
+    'name' => 'administer book outlines',
+    'roles' => array(
+      'Autor' => 'Autor',
+      'administrator' => 'administrator',
+    ),
+    'module' => 'book',
+  );
+
   // Exported permission: administer file types.
   $permissions['administer file types'] = array(
     'name' => 'administer file types',
@@ -35,6 +106,22 @@ function nm_section_content_features_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'filter',
+  );
+
+  // Exported permission: administer linkit.
+  $permissions['administer linkit'] = array(
+    'name' => 'administer linkit',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'linkit',
+  );
+
+  // Exported permission: administer media browser.
+  $permissions['administer media browser'] = array(
+    'name' => 'administer media browser',
+    'roles' => array(),
+    'module' => 'media',
   );
 
   // Exported permission: bypass file access.
@@ -93,6 +180,16 @@ function nm_section_content_features_user_default_permissions() {
       'authenticated user' => 'authenticated user',
     ),
     'module' => 'file_entity',
+  );
+
+  // Exported permission: create new books.
+  $permissions['create new books'] = array(
+    'name' => 'create new books',
+    'roles' => array(
+      'Autor' => 'Autor',
+      'administrator' => 'administrator',
+    ),
+    'module' => 'book',
   );
 
   // Exported permission: delete any biblio content.
@@ -188,6 +285,15 @@ function nm_section_content_features_user_default_permissions() {
     'module' => 'file_entity',
   );
 
+  // Exported permission: delete revisions.
+  $permissions['delete revisions'] = array(
+    'name' => 'delete revisions',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: edit any biblio content.
   $permissions['edit any biblio content'] = array(
     'name' => 'edit any biblio content',
@@ -232,6 +338,24 @@ function nm_section_content_features_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'file_entity',
+  );
+
+  // Exported permission: edit biblio authors.
+  $permissions['edit biblio authors'] = array(
+    'name' => 'edit biblio authors',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'biblio',
+  );
+
+  // Exported permission: edit by all biblio authors.
+  $permissions['edit by all biblio authors'] = array(
+    'name' => 'edit by all biblio authors',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'biblio',
   );
 
   // Exported permission: edit own biblio content.
@@ -283,11 +407,56 @@ function nm_section_content_features_user_default_permissions() {
     'module' => 'file_entity',
   );
 
+  // Exported permission: import from file.
+  $permissions['import from file'] = array(
+    'name' => 'import from file',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'biblio',
+  );
+
   // Exported permission: import media.
   $permissions['import media'] = array(
     'name' => 'import media',
     'roles' => array(),
     'module' => 'media',
+  );
+
+  // Exported permission: revert revisions.
+  $permissions['revert revisions'] = array(
+    'name' => 'revert revisions',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'node',
+  );
+
+  // Exported permission: show download links.
+  $permissions['show download links'] = array(
+    'name' => 'show download links',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'biblio',
+  );
+
+  // Exported permission: show export links.
+  $permissions['show export links'] = array(
+    'name' => 'show export links',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'biblio',
+  );
+
+  // Exported permission: show filter tab.
+  $permissions['show filter tab'] = array(
+    'name' => 'show filter tab',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'biblio',
   );
 
   // Exported permission: show format selection for comment.
@@ -419,6 +588,24 @@ function nm_section_content_features_user_default_permissions() {
     'module' => 'better_formats',
   );
 
+  // Exported permission: show own download links.
+  $permissions['show own download links'] = array(
+    'name' => 'show own download links',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'biblio',
+  );
+
+  // Exported permission: show sort links.
+  $permissions['show sort links'] = array(
+    'name' => 'show sort links',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'biblio',
+  );
+
   // Exported permission: use text format ds_code.
   $permissions['use text format ds_code'] = array(
     'name' => 'use text format ds_code',
@@ -467,6 +654,15 @@ function nm_section_content_features_user_default_permissions() {
     'module' => 'file_entity',
   );
 
+  // Exported permission: view full text.
+  $permissions['view full text'] = array(
+    'name' => 'view full text',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'biblio',
+  );
+
   // Exported permission: view own files.
   $permissions['view own files'] = array(
     'name' => 'view own files',
@@ -485,6 +681,25 @@ function nm_section_content_features_user_default_permissions() {
       'authenticated user' => 'authenticated user',
     ),
     'module' => 'file_entity',
+  );
+
+  // Exported permission: view own unpublished content.
+  $permissions['view own unpublished content'] = array(
+    'name' => 'view own unpublished content',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'node',
+  );
+
+  // Exported permission: view revisions.
+  $permissions['view revisions'] = array(
+    'name' => 'view revisions',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'node',
   );
 
   return $permissions;

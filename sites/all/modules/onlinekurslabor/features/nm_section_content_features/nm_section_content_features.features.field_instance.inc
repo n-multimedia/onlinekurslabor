@@ -1586,9 +1586,8 @@ function nm_section_content_features_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
+        'type' => 'hidden',
         'weight' => 2,
       ),
       'node_embed' => array(
