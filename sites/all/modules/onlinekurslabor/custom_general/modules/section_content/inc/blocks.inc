@@ -271,7 +271,7 @@ function _section_courses_get_authors_tools() {
       $links[$id] += _custom_general_get_structered_tool_link($id, $label, "/", array('attributes' => array('class' => array('disabled'))));
     }
 
-    $path = 'admin/content/book/' . $group_id;
+    $path = 'domain/text/' . $group_id. '/rearrange';
     $id = 'author_chapter_order';
     $label = $links[$id]['label'];
     $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);

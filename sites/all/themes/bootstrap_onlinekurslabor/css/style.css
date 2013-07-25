@@ -500,3 +500,22 @@ Outline left sidebar
 #custom_general_space{
   height:25px;
 }
+
+
+/*
+BIBLIO
+*/
+
+/*
+Large form. smaller widht for input fields
+*/
+
+.span8 input.form-autocomplete
+{
+  max-width:160px;
+}
+
+.span8 select
+{
+  max-width:125px;
+}

@@ -11,6 +11,10 @@ define("NM_DOMAIN_OVERVIEW_ID", 7);
 define("NM_MEDIA_PATH", "domain/media");
 define("NM_BIBLIO_PATH", "domain/biblio");
 define("NM_TASKS_PATH", "domain/tasks");
+define("NM_CONTENT_DOMAIN_PATH", "domain");
+define("NM_CONTENT_TEXT_PATH", "domain/text");
+define("NM_CONTENT_ADD_CONTENT_PATH", "domain/add");
+define("NM_CONTENT_DELETE_CONTENT_PATH", "domain/delete");
 define("NM_DOMAIN_ACCESS_REALM", "NM_DOMAIN_ACCESS_REALM");
 
 

@@ -1242,7 +1242,6 @@ function section_courses_student_registration_form($form, &$form_state) {
 
   // Creation of a phone field and its container, hidden by default.
 
-
   $form['#tree'] = TRUE;
   $form['users_container'] = array(
     '#type' => 'fieldset',
@@ -1502,23 +1501,23 @@ function section_courses_student_registration_form_submit($form, &$form_state) {
 function _section_courses_book_add_active_path(&$subtree_pointer, $active_mlid, $parents) {
   if (in_array($active_mlid, $parents)) {
     foreach (array_keys($subtree_pointer) as $key) {
-//alter link for course section
+      //alter link for course section
       $match = "";
       preg_match("|\d+|", $subtree_pointer[$key]['link']['href'], $match);
 
-//todo course ref
+      //todo course ref
       $active_course = _section_courses_get_active_course();
       $subtree_pointer[$key]['link']['href'] = 'course/text/' . $active_course->nid . '/' . $match[0];
-//$subtree_pointer[$key]['link']['localized_options']['query'] = '?og_group_ref';
+      //$subtree_pointer[$key]['link']['localized_options']['query'] = '?og_group_ref';
 
       if (in_array($subtree_pointer[$key]['link']['mlid'], $parents)) {
         $subtree_pointer[$key]['link']['in_active_trail'] = TRUE;
         if ($active_mlid == $subtree_pointer[$key]['link']['mlid']) {
-//active
+          //active
           $subtree_pointer[$key]['link']['options']['attributes']['class'] = array('active');
         }
       }
-      _custom_general_book_add_active_path($subtree_pointer[$key]['below'], $active_mlid, $parents);
+      _section_courses_book_add_active_path($subtree_pointer[$key]['below'], $active_mlid, $parents);
     }
   }
 }

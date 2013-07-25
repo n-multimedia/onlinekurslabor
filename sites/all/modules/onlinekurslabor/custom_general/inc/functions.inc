@@ -47,11 +47,13 @@ function _section_domain_author_section_active() {
   $domain_text_active = (arg(0) == 'domain' && arg(1) == 'text');
   $domain_add_active = (arg(0) == 'domain' && arg(1) == 'add');
   $domain_edit_active = (arg(0) == 'domain' && arg(1) == 'edit');
+  $domain_delete_active = (arg(0) == 'domain' && arg(1) == 'delete');
 
   return $biblio_active || $biblio_overview_active ||
       $media_active || $book_active ||
       $tasks_overview_active || $domain_text_active ||
-      $domain_add_active || $domain_edit_active;
+      $domain_add_active || $domain_edit_active ||
+      $domain_delete_active;
 }
 
 /**
