@@ -30,7 +30,7 @@ function nm_section_content_features_context_default_contexts() {
   );
   $context->reactions = array(
     'context_redirect' => array(
-      'redirect_path' => 'node/7',
+      'redirect_path' => 'domains',
       'enable_message' => 0,
       'redirect_message' => '',
       'qsa' => 1,
@@ -98,28 +98,6 @@ function nm_section_content_features_context_default_contexts() {
     ),
   );
   $context->reactions = array(
-    'block' => array(
-      'blocks' => array(
-        'section_content-content_node_tabs' => array(
-          'module' => 'section_content',
-          'delta' => 'content_node_tabs',
-          'region' => 'content',
-          'weight' => '-9',
-        ),
-        'block-2' => array(
-          'module' => 'block',
-          'delta' => '2',
-          'region' => 'sidebar_first',
-          'weight' => '-16',
-        ),
-        'menu_block-1' => array(
-          'module' => 'menu_block',
-          'delta' => '1',
-          'region' => 'sidebar_first',
-          'weight' => '-10',
-        ),
-      ),
-    ),
     'debug' => array(
       'debug' => 1,
     ),

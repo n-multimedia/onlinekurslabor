@@ -278,6 +278,12 @@ function nm_section_content_features_strongarm() {
       'revision' => array(
         'custom_settings' => FALSE,
       ),
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'task' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -324,6 +330,12 @@ function nm_section_content_features_strongarm() {
         'custom_settings' => FALSE,
       ),
       'revision' => array(
+        'custom_settings' => FALSE,
+      ),
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'task' => array(
         'custom_settings' => FALSE,
       ),
     ),

@@ -12,10 +12,10 @@ function nm_section_content_features_views_default_views() {
 
   $view = new view();
   $view->name = 'content_gebiete_bersicht';
-  $view->description = 'Übersicht aller verfügbaren Gebiete';
+  $view->description = 'Übersicht aller verfügbaren Themen';
   $view->tag = 'default';
   $view->base_table = 'node';
-  $view->human_name = 'Content - Gebiete Übersicht';
+  $view->human_name = 'Content - Themen Übersicht';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -58,13 +58,23 @@ function nm_section_content_features_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* Feld: Inhalt: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   /* Feld: Inhalt: Titel */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = 'Name';
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['path'] = 'domain/text/[nid]';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
   /* Feld: Inhalt: Gruppe */
   $handler->display->display_options['fields']['group_group']['id'] = 'group_group';
   $handler->display->display_options['fields']['group_group']['table'] = 'field_data_group_group';

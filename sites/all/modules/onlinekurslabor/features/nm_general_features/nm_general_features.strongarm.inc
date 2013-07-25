@@ -327,7 +327,7 @@ function nm_general_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'biblio_orphan_clean_next_execution';
-  $strongarm->value = 1374667208;
+  $strongarm->value = 1374757207;
   $export['biblio_orphan_clean_next_execution'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -580,7 +580,7 @@ function nm_general_features_strongarm() {
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => '3-qDORxzSxMX40SN-A38alzBym3LZ5HN5KqeQQR71TY',
+    'javascript' => 'ncdD2qk82TscFGi1D6hpwOgUcqyRpfq8SamMM5y4maU',
   );
   $export['language_default'] = $strongarm;
 
