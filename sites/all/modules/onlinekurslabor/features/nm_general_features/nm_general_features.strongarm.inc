@@ -60,6 +60,13 @@ function nm_general_features_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'comment_page';
+  $strongarm->value = 0;
+  $export['comment_page'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'date_api_version';
   $strongarm->value = '7.2';
   $export['date_api_version'] = $strongarm;
@@ -192,6 +199,22 @@ function nm_general_features_strongarm() {
   $strongarm->name = 'node_admin_theme';
   $strongarm->value = '1';
   $export['node_admin_theme'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'node_options_page';
+  $strongarm->value = array(
+    0 => 'status',
+  );
+  $export['node_options_page'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'node_submitted_page';
+  $strongarm->value = FALSE;
+  $export['node_submitted_page'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
