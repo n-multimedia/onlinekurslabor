@@ -137,6 +137,7 @@ function nm_section_content_features_user_default_permissions() {
   $permissions['create biblio content'] = array(
     'name' => 'create biblio content',
     'roles' => array(
+      'Autor' => 'Autor',
       'administrator' => 'administrator',
     ),
     'module' => 'node',
@@ -196,6 +197,7 @@ function nm_section_content_features_user_default_permissions() {
   $permissions['delete any biblio content'] = array(
     'name' => 'delete any biblio content',
     'roles' => array(
+      'Autor' => 'Autor',
       'administrator' => 'administrator',
     ),
     'module' => 'node',
@@ -242,6 +244,7 @@ function nm_section_content_features_user_default_permissions() {
   $permissions['delete own biblio content'] = array(
     'name' => 'delete own biblio content',
     'roles' => array(
+      'Autor' => 'Autor',
       'administrator' => 'administrator',
     ),
     'module' => 'node',
@@ -298,6 +301,7 @@ function nm_section_content_features_user_default_permissions() {
   $permissions['edit any biblio content'] = array(
     'name' => 'edit any biblio content',
     'roles' => array(
+      'Autor' => 'Autor',
       'administrator' => 'administrator',
     ),
     'module' => 'node',
@@ -362,6 +366,7 @@ function nm_section_content_features_user_default_permissions() {
   $permissions['edit own biblio content'] = array(
     'name' => 'edit own biblio content',
     'roles' => array(
+      'Autor' => 'Autor',
       'administrator' => 'administrator',
     ),
     'module' => 'node',
