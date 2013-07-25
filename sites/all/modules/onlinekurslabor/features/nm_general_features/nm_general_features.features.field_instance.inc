@@ -264,7 +264,7 @@ function nm_general_features_field_default_field_instances() {
     'settings' => array(
       'alt_field' => 0,
       'default_image' => 184,
-      'file_directory' => '',
+      'file_directory' => 'profile',
       'file_extensions' => 'png gif jpg jpeg',
       'max_filesize' => '2 MB',
       'max_resolution' => '1024x1024',
