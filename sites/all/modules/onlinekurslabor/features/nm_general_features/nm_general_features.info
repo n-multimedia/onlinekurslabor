@@ -35,6 +35,7 @@ features[image][] = profile_main_thumbnail
 features[image][] = profile_mini_thumbnail
 features[image][] = profile_nano_thumbnail
 features[language][] = de
+features[language][] = en
 features[panels_layout][] = span11span1
 features[panels_layout][] = span3span6span3
 features[panels_layout][] = span3span8span1

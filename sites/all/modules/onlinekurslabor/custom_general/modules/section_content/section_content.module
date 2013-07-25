@@ -998,7 +998,7 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
   }
 
   function section_content_mc_submit_form($form, $form_state) {
-
+    
     $mc_node = node_load($form_state['values']['mc_id']);
     $right = section_content_mc_check_correctness($mc_node, $form_state['values']);
 
