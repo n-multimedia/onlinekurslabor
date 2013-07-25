@@ -269,69 +269,72 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
     }
   }
 
-  function section_content_menu_breadcrumb_alter(&$active_trail, $item) {
-
-//Check if the proper context is set first:
-//Abort if context is wrong
-    $context = context_get("context", "section_content");
-    if (empty($context))
-      return;
-
-    global $user;
-
-    $active_node = menu_get_object();
-    $active_node = !empty($active_node) ? $active_node : menu_get_object('file');
-    $type = isset($active_node) ? $active_node->type : NULL;
-    //adaption for every user
-    //set type to file, if file id (fid) is set
-    $entity_type = (isset($type) && !isset($active_node->fid)) ? 'node' : (isset($active_node->fid) ? 'file' : NULL);
-
-    //&& (in_array($type, array(NM_CONTENT_DOMAIN, NM_CONTENT_CHAPTER, NM_BIBLIO)) || $entity_type == 'file') // redundant
-    if (!empty($active_node)) {
-      //for every user
-      _section_content_breadcrumb_append_from_entity_data($entity_type, $active_trail, $active_node);
-    }
-    else {
-      //check if adaption any user role is necessary 
-      _section_content_alter_breadcrumb_for_role($active_trail);
-    }
-  }
+//  function section_content_menu_breadcrumb_alter(&$active_trail, $item) {
+//
+////Check if the proper context is set first:
+////Abort if context is wrong
+//    $context = context_get("context", "section_content");
+//    if (empty($context))
+//      return;
+//
+//    global $user;
+//
+//    $active_node = menu_get_object();
+//    $active_node = !empty($active_node) ? $active_node : menu_get_object('file');
+//    $type = isset($active_node) ? $active_node->type : NULL;
+//    //adaption for every user
+//    //set type to file, if file id (fid) is set
+//    $entity_type = (isset($type) && !isset($active_node->fid)) ? 'node' : (isset($active_node->fid) ? 'file' : NULL);
+//
+//    //&& (in_array($type, array(NM_CONTENT_DOMAIN, NM_CONTENT_CHAPTER, NM_BIBLIO)) || $entity_type == 'file') // redundant
+//    if (!empty($active_node)) {
+//      //for every user
+//      _section_content_breadcrumb_append_from_entity_data($entity_type, $active_trail, $active_node);
+//    }
+//    else {
+//      //check if adaption any user role is necessary 
+//      _section_content_alter_breadcrumb_for_role($active_trail);
+//    }
+//  }
 
 //add domain overview as first breadcrumb item
-  function _section_content_breadcrumb_append_from_entity_data($entity_type, &$active_trail, $active_entity = NULL) {
-    global $user;
+  
+//  function _section_content_breadcrumb_append_from_entity_data($entity_type, &$active_trail, $active_entity = NULL) {
+//    global $user;
+//
+//    //adapt breadcrumb if content type domain or chapter are selected
+//    $d_node = node_load(NM_DOMAIN_OVERVIEW_ID);
+//
+//    //when Biblio node is selected
+//    //For authors and admins, breadcrumb leading to source domain
+//    //todo: for students.. breadcrumb leading to their course
+//    if (isset($active_entity) && (in_array($active_entity->type, array(NM_BIBLIO, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER)) || $entity_type == 'file') && isset($active_entity->og_group_ref)) {
+//
+//      $author_or_admin = in_array(NM_ROLE_AUTOR, $user->roles) || in_array(NM_ROLE_ADMIN, $user->roles);
+//      if ($author_or_admin) {
+//        $lang_og = field_language($entity_type, $active_entity, 'og_group_ref');
+//
+//        if (!empty($active_entity->og_group_ref)) {
+//          $og_ref_val = $active_entity->og_group_ref[$lang_og][0]['target_id'];
+//          $b_items = _section_content_get_domain_breadcrumb_items($og_ref_val);
+//
+//          $active_trail = array_merge(array($b_items['domain_overview_item']), array($b_items['active_domain_item'])/* , array_slice($active_trail, -1) */);
+//        }
+//      }
+//    }
+//    else {
+//
+//      $new_breadcrumb_item = array(
+//        'title' => $d_node->title,
+//        'href' => 'node/' . $d_node->nid,
+//        'localized_options' => array(),
+//      );
+//
+//      $active_trail = array_merge(/* array_slice($active_trail, 0, 1), */ array($new_breadcrumb_item), array_slice($active_trail, 1));
+//    }
+//  }
+  
 
-    //adapt breadcrumb if content type domain or chapter are selected
-    $d_node = node_load(NM_DOMAIN_OVERVIEW_ID);
-
-    //when Biblio node is selected
-    //For authors and admins, breadcrumb leading to source domain
-    //todo: for students.. breadcrumb leading to their course
-    if (isset($active_entity) && (in_array($active_entity->type, array(NM_BIBLIO, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER)) || $entity_type == 'file') && isset($active_entity->og_group_ref)) {
-
-      $author_or_admin = in_array(NM_ROLE_AUTOR, $user->roles) || in_array(NM_ROLE_ADMIN, $user->roles);
-      if ($author_or_admin) {
-        $lang_og = field_language($entity_type, $active_entity, 'og_group_ref');
-
-        if (!empty($active_entity->og_group_ref)) {
-          $og_ref_val = $active_entity->og_group_ref[$lang_og][0]['target_id'];
-          $b_items = _section_content_get_domain_breadcrumb_items($og_ref_val);
-
-          $active_trail = array_merge(array($b_items['domain_overview_item']), array($b_items['active_domain_item'])/* , array_slice($active_trail, -1) */);
-        }
-      }
-    }
-    else {
-
-      $new_breadcrumb_item = array(
-        'title' => $d_node->title,
-        'href' => 'node/' . $d_node->nid,
-        'localized_options' => array(),
-      );
-
-      $active_trail = array_merge(/* array_slice($active_trail, 0, 1), */ array($new_breadcrumb_item), array_slice($active_trail, 1));
-    }
-  }
 
   function _section_content_alter_breadcrumb_for_role(&$active_trail) {
     global $user;

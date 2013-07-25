@@ -225,6 +225,7 @@ function _custom_general_get_group($referer_node) {
 }
 
 //get breadcrumb items for domain by group id
+/*
 function _section_content_get_domain_breadcrumb_items($group_get_id = NULL) {
 
   //get active group id, passed as get param
@@ -258,6 +259,9 @@ function _section_content_get_domain_breadcrumb_items($group_get_id = NULL) {
 
   return array('domain_overview_item' => $domain_overview_item, 'active_domain_item' => $active_domain_item);
 }
+
+ */
+
 
 /**
  *  Implementation of hook_field_attach_form 
