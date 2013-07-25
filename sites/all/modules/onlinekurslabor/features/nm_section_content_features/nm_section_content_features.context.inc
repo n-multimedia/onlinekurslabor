@@ -58,11 +58,7 @@ function nm_section_content_features_context_default_contexts() {
       ),
     ),
   );
-  $context->reactions = array(
-    'debug' => array(
-      'debug' => 1,
-    ),
-  );
+  $context->reactions = array();
   $context->condition_mode = 0;
 
   // Translatables
@@ -97,11 +93,7 @@ function nm_section_content_features_context_default_contexts() {
       ),
     ),
   );
-  $context->reactions = array(
-    'debug' => array(
-      'debug' => 1,
-    ),
-  );
+  $context->reactions = array();
   $context->condition_mode = 1;
 
   // Translatables
