@@ -986,8 +986,12 @@ echo section_content_text_outline();
     $pane->configuration = array(
       'admin_title' => '',
       'title' => '',
-      'body' => '<a href="/node/add/content-domain" class="btn">Neues Thema anlegen</a>',
-      'format' => 'filtered_html',
+      'body' => '<?php
+if(section_content_authors_tools_access())
+echo \'<p><a class="btn" href="/node/add/content-domain">Neues Thema anlegen</a></p>\';
+
+?>',
+      'format' => 'php_code',
       'substitute' => TRUE,
     );
     $pane->cache = array();

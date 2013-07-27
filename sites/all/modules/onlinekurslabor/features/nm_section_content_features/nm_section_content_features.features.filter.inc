@@ -29,7 +29,7 @@ function nm_section_content_features_filter_default_formats() {
         'weight' => -44,
         'status' => 1,
         'settings' => array(
-          'allowed_html' => '<h1> <h2> <h3> <h4> <h5> <h6> <a> <p> <em> <strong> <cite> <blockquote> <code> <ul> <ol> <li> <dl> <dt> <dd> <bib> <ibib> <img>',
+          'allowed_html' => '<h1> <h2> <h3> <h4> <h5> <h6> <a> <p> <em> <strong> <cite> <blockquote> <code> <ul> <ol> <li> <dl> <dt> <dd> <bib> <ibib> <img> <br>',
           'filter_html_help' => 1,
           'filter_html_nofollow' => 0,
         ),

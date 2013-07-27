@@ -518,7 +518,7 @@ function section_content_node_form_delete_submit($form, &$form_state) {
 }
 
 function section_content_subscribe_submit($form, &$form_state) {
-  
+
   //todo fix - ugly
   $form_state['redirect'] = 'domains';
 }
@@ -1231,4 +1231,40 @@ function _section_content_book_add_active_path(&$subtree_pointer, $active_mlid, 
       _section_content_book_add_active_path($subtree_pointer[$key]['below'], $active_mlid, $parents);
     }
   }
+}
+
+/*
+ * check if user is has access to see the author's tools on current page
+ */
+
+function section_content_authors_tools_access() {
+
+  $active_domain = _section_content_get_active_domain();
+  if (!$active_domain) {
+    //if we are not in domain context, but domain overview page
+    if (strpos(request_uri(), NM_DOMAIN_OVERVIEW_PATH)) {
+      if (section_content_authors_tools_role_access()) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  //check if user is member of active domain
+  if (!og_is_member('node', $active_domain->nid)) {
+    return FALSE;
+  }
+
+  $role_access = _section_content_authors_tools_role_access();
+  
+  return $role_access;
+}
+/*
+ * check if active user's role has access to author tools
+ */
+function _section_content_authors_tools_role_access() {
+  global $user;
+  $one_of_needed_roles = array_intersect($user->roles, array(NM_ROLE_ADMIN, NM_ROLE_AUTOR));
+
+  return !empty($one_of_needed_roles);
 }

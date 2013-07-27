@@ -7,7 +7,8 @@ define("NM_FILTER_FORMAT_FILTERED_HTML", 'filtered_html');
 define("NM_BLOCK_AUTOREN", 53);
 
 //Content
-define("NM_DOMAIN_OVERVIEW_ID", 7);
+define("NM_DOMAIN_OVERVIEW_ID", 7); //deprecated
+define("NM_DOMAIN_OVERVIEW_PATH", "domains");
 define("NM_MEDIA_PATH", "domain/media");
 define("NM_BIBLIO_PATH", "domain/biblio");
 define("NM_TASKS_PATH", "domain/tasks");
@@ -489,6 +490,11 @@ function custom_general_menu() {
   );
 
   return $items;
+}
+
+function custom_general_menu_alter(&$items) {
+  // Example - disable the page at node/add
+  $items['node']['access callback'] = FALSE;
 }
 
 function _custom_general_biblio_dashboard() {

@@ -371,7 +371,6 @@ function file_entity_edit_submit($form, &$form_state) {
   );
   watchdog('file', '@type: updated %title.', $args);
   drupal_set_message(t('@type %title has been updated.', $args));
-  dpm($form_state['redirect']);
   $form_state['redirect'] = 'file/' . $file->fid;
 }
 

@@ -119,22 +119,6 @@ function _section_content_theme_authors_tools($variables = NULL) {
   return $output;
 }
 
-function section_content_authors_tools_access() {
-  global $user;
-  $active_domain = _section_content_get_active_domain();
-  if (!$active_domain) {
-    return FALSE;
-  }
-
-  if (!og_is_member('node', $active_domain->nid)) {
-    return FALSE;
-  }
-
-  $one_of_needed_roles = array_intersect($user->roles, array(NM_ROLE_ADMIN, NM_ROLE_AUTOR));
-
-  return !empty($one_of_needed_roles);
-}
-
 /**
  * get link Items for Author's Tools Block
  * 
