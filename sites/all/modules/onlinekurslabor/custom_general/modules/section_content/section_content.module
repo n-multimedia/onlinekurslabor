@@ -1243,7 +1243,7 @@ function section_content_authors_tools_access() {
   if (!$active_domain) {
     //if we are not in domain context, but domain overview page
     if (strpos(request_uri(), NM_DOMAIN_OVERVIEW_PATH)) {
-      if (section_content_authors_tools_role_access()) {
+      if (_section_content_authors_tools_role_access()) {
         return TRUE;
       }
     }
