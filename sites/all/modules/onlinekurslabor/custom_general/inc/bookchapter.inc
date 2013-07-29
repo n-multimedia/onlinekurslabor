@@ -101,7 +101,7 @@ function nm_bookchapters_get_chapter_numbering_recursive($menu_name, $plid, $mli
           $parent_order_number = nm_bookchapters_get_chapter_numbering_recursive($menu_name, $parent['plid'], $parent['mlid']);
         }
         if (isset($parent_order_number) && !empty($parent_order_number)) {
-          $order_number = "$parent_order_number" . NM_CHAPTER_SEPARATOR . "$order_number";
+          $order_number = $parent_order_number . NM_CHAPTER_SEPARATOR . $order_number;
         }
       }
       return $order_number;

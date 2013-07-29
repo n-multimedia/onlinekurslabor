@@ -512,37 +512,41 @@ function _custom_general_biblio_dashboard() {
 function _custom_general_biblio_dashboard_form($form, &$form_state) {
   $profile = linkit_profile_load("biblio");
 
+  
   if (is_null($profile)) {
     drupal_set_message(t('You need a linkit profile named <em>biblio</em> to continue!'), 'error');
     return $form;
   }
 
   $form['biblio_search'] = array(
-    '#prefix' => '<div>' . l('Biblio hinzufügen', 'node/add/biblio', array('attributes' => array('target' => '_blank'))) . '</div>',
+    //'#prefix' => '<div>' . l('Biblio hinzufügen', 'node/add/biblio', array('attributes' => array('target' => '_blank'))) . '</div>',
     '#type' => 'textfield',
-    '#title' => t('Search Biblio'),
-    '#description' => t('Start typing to find a biblio entry. Use the arrow keys to navigate.'),
+    //'#title' => t('Search Biblio'),
+    //'#description' => t('Start typing to find a biblio entry. Use the arrow keys to navigate.'),
     '#maxlength' => 255,
     '#size' => 60,
     '#default_value' => '',
     '#weight' => -10,
+    '#attributes' => array('placeholder' => 'Suche - Biblio Titel'),
   );
 
   $form['biblio_tag'] = array(
     '#type' => 'textfield',
-    '#title' => t('Biblio-ID (nid)'),
+    //'#title' => t('Biblio-ID (nid)'),
     '#required' => TRUE,
     '#maxlength' => NULL,
     '#size' => 60,
     '#default_value' => '',
     '#weight' => -1,
+    '#attributes' => array('placeholder' => 'Biblio ID (nid)'),
   );
 
   $form['biblio_insert'] = array(
-    '#type' => 'button',
-    '#value' => t('Insert Biblio'),
-    '#suffix' => '<a id="biblio-cancel" href="#">' . t('Cancel') . '</a>',
+    '#type' => 'submit',
+    '#value' => 'Biblio einfügen',
+    '#suffix' => '<a id="biblio-cancel" class="btn" href="#">' . t('Cancel') . '</a>',
     '#weight' => 100,
+    '#attributes' => array('class' => array('btn', 'btn-primary')),
   );
 
   return $form;

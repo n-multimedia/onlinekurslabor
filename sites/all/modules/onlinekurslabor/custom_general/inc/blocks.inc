@@ -22,6 +22,8 @@ function _custom_general_theme_top_nav($variables = NULL) {
       $user_pic = drupal_render($field_view);
     }
     $realname = realname_load($user);
+    if(empty($realname))
+      $realname = $user->name;
 
     //user menu here
     //$user_link = '<div class="btn-group">';

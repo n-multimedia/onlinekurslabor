@@ -447,20 +447,20 @@ Authors's Tools
   background-position: 0px -150px;
 }
 
-#authors_tools-container .btn#author_tasks_mc_add a:before
+#authors_tools-container .btn#author_tasks_qaa_add a:before
 {
   background-position: -60px -100px;
 }
-#authors_tools-container .btn#author_tasks_mc_add a:hover:before, #authors_tools-container .btn#author_tasks_mc_add a.active:before
+#authors_tools-container .btn#author_tasks_qaa_add a:hover:before, #authors_tools-container .btn#author_tasks_qaa_add a.active:before
 {
   background-position: -60px -150px;
 }
 
-#authors_tools-container .btn#author_tasks_qaa_add a:before
+#authors_tools-container .btn#author_tasks_mc_add a:before
 {
   background-position: -120px -100px;
 }
-#authors_tools-container .btn#author_tasks_qaa_add a:hover:before, #authors_tools-container .btn#author_tasks_qaa_add a.active:before
+#authors_tools-container .btn#author_tasks_mc_add a:hover:before, #authors_tools-container .btn#author_tasks_mc_add a.active:before
 {
   background-position: -120px -150px;
 }
@@ -625,6 +625,14 @@ Editor
   margin:auto;
 }
 
+#linkit-modal .form-item {
+  margin-bottom: 15px;
+}
+#linkit-modal .btn
+{
+  margin-right: 5px;
+}
+
 #wysiwyg-toggle-edit-assessment-value
 {
   display: none !important;
@@ -717,6 +725,12 @@ body.cke_show_borders
   padding:0;
 }
 
+
+span.cke_skin_kama
+{
+  padding:0 !important;
+}
+
 /*
 Admin Add 
 */
@@ -741,4 +755,12 @@ Student
 }
 #section-courses-student-registration-form #edit-submit {
   margin-top:40px;
+}
+
+/*
+* Video Embed
+*/
+
+.row-fluid .span12 .node iframe{
+  margin: 10px 10px;
 }

@@ -1,6 +1,56 @@
 <?php
 
 /**
+ * Returns HTML for an image using a specific image style.
+ *
+ * @param $variables
+ *   An associative array containing:
+ *   - style_name: The name of the style to be used to alter the original image.
+ *   - path: The path of the image file relative to the Drupal files directory.
+ *     This function does not work with images outside the files directory nor
+ *     with remotely hosted images. This should be in a format such as
+ *     'images/image.jpg', or using a stream wrapper such as
+ *     'public://images/image.jpg'.
+ *   - width: The width of the source image (if known).
+ *   - height: The height of the source image (if known).
+ *   - alt: The alternative text for text-based browsers.
+ *   - title: The title text is displayed when the image is hovered in some
+ *     popular browsers.
+ *   - attributes: Associative array of attributes to be placed in the img tag.
+ *
+ * @ingroup themeable
+ */
+function bootstrap_onlinekurslabor_image_style($variables) {
+  // Determine the dimensions of the styled image.
+  $dimensions = array(
+    'width' => $variables['width'],
+    'height' => $variables['height'],
+  );
+
+  image_style_transform_dimensions($variables['style_name'], $dimensions);
+
+  $variables['width'] = $dimensions['width'];
+  $variables['height'] = $dimensions['height'];
+
+  //29.07.2013 - 16:37 - SN
+  if (stristr($variables['style_name'], 'media_')) {
+    $num = str_replace('media_', '', $variables['style_name']);
+    if (is_numeric($num)) {
+      if (isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'][] = 'span' . $num;
+      }
+      else {
+        $variables['attributes']['class'] = array('span' . str_replace('media_', '', $variables['style_name']));
+      }
+    }
+  }
+
+  // Determine the URL for the styled image.
+  $variables['path'] = image_style_url($variables['style_name'], $variables['path']);
+  return theme('image', $variables);
+}
+
+/**
  * @file template.php
  */
 function bootstrap_onlinekurslabor_panels_flexible($vars) {
@@ -11,14 +61,13 @@ function bootstrap_onlinekurslabor_panels_flexible($vars) {
   $display = $vars['display'];
   $layout = $vars['layout'];
   $handler = $vars['renderer'];
- 
+
   $layout_temp = $layout;
-  
+
   //needed for course text section
   //span3span8span1 layout contains a row wich is used to display admin tools
   //normal users do'n have to see it,so it gets hided here
   //in case we don't need the last 1-span row, we swtich from span3span8span1 tp span4span8 layout
-  
   //dpm($content);
   //3-8-1 Layouts wich need to be switched
   if ((!section_courses_instructors_tools_access() && !section_content_authors_tools_access()) && $layout['name'] == 'flexible:span3span8span1') {

@@ -46,7 +46,7 @@ Drupal.custom_general.biblioDialogButtons = Drupal.custom_general.biblioDialogBu
           // Save the selection.
           Drupal.linkit.setEditorSelection(selection);
 
-          var linkitCache = Drupal.linkit.getLinkitCache();
+          //var linkitCache = Drupal.linkit.getLinkitCache();
 
           // Lock the selecton for IE.
           if (CKEDITOR.env.ie) {
@@ -79,6 +79,7 @@ Drupal.custom_general.biblioDialogButtons = Drupal.custom_general.biblioDialogBu
       });
       
       function insertBiblioTag(data, editor) {
+
         var linkitCache = Drupal.linkit.getLinkitCache(),
         selection = editor.getSelection();
 
@@ -101,8 +102,8 @@ Drupal.custom_general.biblioDialogButtons = Drupal.custom_general.biblioDialogBu
   
   Drupal.behaviors.biblioDialogButtons = {
     attach: function (context, settings) {
-      $('#linkit-modal #-custom-general-biblio-dashboard-form', context).submit(function() {
-        //console.log("hihi");
+      $('#linkit-modal #-custom-general-biblio-dashboard-form #edit-biblio-insert', context).bind('click', function() {
+        
         var linkitCache = Drupal.linkit.getLinkitCache();
         //console.log(linkitCache);
         // Call the insertLink() function.

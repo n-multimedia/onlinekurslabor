@@ -52,8 +52,8 @@ function section_content_node_view($node, $view_mode, $langcode) {
 //dpm(section_author($node->nid));
   if (in_array($node->type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN))) {
 //disable book navigation
-    unset($node->content['book_navigation']);
-
+    //unset($node->content['book_navigation']);
+    $node->content['book_navigation']['#markup'] = '<hr>' . $node->content['book_navigation']['#markup'];
     //TOC functionality. Numbering Chapters
     //check if numbering is enabled in domain settings
     if (_custom_general_toc_enabled($node->nid)) {
@@ -134,10 +134,19 @@ function book_preprocess(&$variables, $hook) {
 // Continue though the array and collect the links whose parent is this page.
       while (($link = array_shift($flat)) && $link['plid'] == $book_link['mlid']) {
         $numbering = nm_bookchapters_get_chapter_numbering_mlid($link['mlid']);
-        $link['title'] = $link['link_title'] = $numbering . NM_CHAPTER_SEPARATOR . ' ' . $link['title'];
-        $data['link'] = $link;
-        $data['below'] = '';
-        $children[] = $data;
+
+        if (!empty($numbering)) {
+          $chapter_numbering = '<table><tr valign="top"><td><span class="badge badge-info">' . $numbering . '</span></td>';
+          $title = $link['title'];
+          //wrap title
+          $title = '<td style="padding-left:5px;">' . $title . '</td></tr></table>';
+          $link['link_title'] = $chapter_numbering . ' ' . $title;
+          $link['title'] = $link['link_title'];
+          $link['localized_options']['html'] = TRUE;
+          $data['link'] = $link;
+          $data['below'] = '';
+          $children[] = $data;
+        }
       }
     }
 
@@ -150,14 +159,28 @@ function book_preprocess(&$variables, $hook) {
     if ($variables['prev_url']) {
       $prev = book_prev($book_link);
       $pnumbering = nm_bookchapters_get_chapter_numbering_mlid($prev['mlid']);
-      $variables['prev_title'] = $pnumbering . NM_CHAPTER_SEPARATOR . " " . $variables['prev_title'];
+      if (!empty($pnumbering)) {
+
+        $chapter_numbering = '<table><tr valign="top"><td><span class="badge badge-info">' . $pnumbering . '</span></td>';
+        $title = $variables['prev_title'];
+        //wrap title
+        $title = '<td style="padding-left:5px;">' . $title . '</td></tr></table>';
+        $variables['prev_title'] = $chapter_numbering . " " . $title;
+      }
     }
 
 // DO NEXT
     if ($variables['next_url']) {
       $next = book_next($book_link);
       $nnumbering = nm_bookchapters_get_chapter_numbering_mlid($next['mlid']);
-      $variables['next_title'] = $nnumbering . NM_CHAPTER_SEPARATOR . " " . $variables['next_title'];
+
+      if (!empty($nnumbering)) {
+        $chapter_numbering = '<table><tr valign="top"><td><span class="badge badge-info">' . $nnumbering . '</span></td>';
+        $title = $variables['next_title'];
+        //wrap title
+        $title = '<td style="padding-left:5px;">' . $title . '</td></tr></table>';
+        $variables['next_title'] = $chapter_numbering . " " . $title;
+      }
     }
   }
 }
@@ -177,27 +200,9 @@ function section_content_node_view_alter(&$build) {
   Remove Outline Tabs from various sites.
  */
 /*
-  function section_content_preprocess_page(&$vars) {
-  global $user;
-  //check if node object is available
-  if (!isset($vars['node']))
+  function section_content_preprocess(&$variables, $hook){
+
   return;
-
-  $hide_outline = in_array(NM_ROLE_AUTOR, $user->roles);
-
-  //Domain/Media overview: nid = 7
-  if (in_array($vars['node']->nid, array(NM_DOMAIN_OVERVIEW_ID)) && $hide_outline) {
-  $tabs = $vars['tabs']['#primary'];
-  //hide all tabs
-  unset($vars['tabs']['#primary']);
-  return;
-
-  foreach ($vars['tabs']['#primary'] as $key => $tab) {
-  if ($tab['#link']['path'] == 'node/%/outline') {
-  unset($vars['tabs']['#primary'][$key]);
-  }
-  }
-  }
   } */
 
 function section_content_preprocess_node(&$variables) {
@@ -742,30 +747,38 @@ function _section_content_tasks_dashboard_form($form, &$form_state) {
   $form['tasks_search'] = array(
 //'#prefix' => '<div>' . l('Aufgabe hinzufügen', 'node/add/biblio', array('attributes' => array('target'=>'_blank'))). '</div>',
     '#type' => 'textfield',
-    '#title' => t('Search Tasks'),
-    '#description' => t('Start typing to find a tasks entry. Use the arrow keys to navigate.'),
+    //'#title' => t('Search Tasks'),
+    //'#description' => t('Start typing to find a tasks entry. Use the arrow keys to navigate.'),
     '#maxlength' => 255,
     '#size' => 60,
     '#default_value' => '',
     '#weight' => -10,
+    '#attributes' => array('placeholder' => 'Suche - Aufgaben Titel'),
   );
 
   $form['tasks_tag'] = array(
     '#type' => 'textfield',
-    '#title' => t('Task-ID (nid)'),
+    //'#title' => t('Task-ID (nid)'),
     '#required' => TRUE,
     '#maxlength' => NULL,
     '#size' => 60,
     '#default_value' => '',
     '#weight' => -1,
+    '#attributes' => array('placeholder' => 'Task ID (nid)'),
   );
 
+
+
+
   $form['tasks_insert'] = array(
-    '#type' => 'button',
-    '#value' => t('Insert Task'),
-    '#suffix' => '<a id="tasks-cancel" href="#">' . t('Cancel') . '</a>',
+    '#type' => 'submit',
+    '#value' => 'Aufgabe einfügen',
+    '#suffix' => '<a id="tasks-cancel" class="btn" href="#">' . t('Cancel') . '</a>',
     '#weight' => 100,
+    '#attributes' => array('class' => array('btn', 'btn-primary')),
   );
+
+
 
   return $form;
 }
@@ -799,7 +812,7 @@ function section_content_filter_info() {
 function _section_content_filter_tasks_process($text, $filter, $format) {
   //$replacement = isset($filter->settings['filter_example_foo']) ? $filter->settings['filter_example_foo'] : 'bar';
   //return str_replace('foo', $replacement, $text);
-  $regex = '#\[task\]([0-9]+)\[\/task\]#s';
+  $regex = '#\[task\]([0-9]+)(:*.*?)\[\/task\]#s';
 
   return preg_replace_callback($regex, '_section_content_task_replacements', $text);
 }
@@ -810,6 +823,7 @@ function _section_content_task_replacements($matches) {
   $text = "";
 
   if (!empty($matches) && count($matches) > 1) {
+
     $nid = $matches[1];
     $node = node_load($nid);
 
@@ -913,7 +927,7 @@ function section_content_preprocess_field(&$vars) {
  */
 function theme_multiple_choice_field($vars) {
   $element = $vars['element'];
-  $settings = $element['#display']['settings'];
+  //$settings = $element['#display']['settings'];
 
   $uniqueid = uniqid();
 
@@ -950,8 +964,8 @@ function section_content_theme() {
 function theme_multiple_choice_field_group($vars) {
 
   //$output = drupal_render($vars['items']);
-  $output = drupal_get_form('section_content_mc_form', $vars);
-  $output = drupal_render($output);
+  $form = drupal_get_form('section_content_mc_form', $vars);
+  $output = drupal_render($form);
 
   return $output;
 }
@@ -1256,12 +1270,14 @@ function section_content_authors_tools_access() {
   }
 
   $role_access = _section_content_authors_tools_role_access();
-  
+
   return $role_access;
 }
+
 /*
  * check if active user's role has access to author tools
  */
+
 function _section_content_authors_tools_role_access() {
   global $user;
   $one_of_needed_roles = array_intersect($user->roles, array(NM_ROLE_ADMIN, NM_ROLE_AUTOR));

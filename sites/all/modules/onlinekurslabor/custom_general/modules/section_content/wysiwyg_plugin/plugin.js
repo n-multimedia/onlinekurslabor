@@ -100,7 +100,7 @@ Drupal.section_content.tasksDialogButtons = Drupal.section_content.tasksDialogBu
   
   Drupal.behaviors.tasksDialogButtons = {
     attach: function (context, settings) {
-      $('#linkit-modal #-section-content-tasks-dashboard-form', context).submit(function() {
+      $('#linkit-modal #-section-content-tasks-dashboard-form #edit-tasks-insert', context).bind('click', function() {
         //console.log("hihi");
         var linkitCache = Drupal.linkit.getLinkitCache();
         //console.log(linkitCache);
@@ -144,7 +144,7 @@ Drupal.section_content.tasksDialogButtons = Drupal.section_content.tasksDialogBu
            */
           $('#linkit-modal #edit-tasks-search').val(result.title);
           //23.05.2013 - 19:20 - SN : extract nid and embed with bib tags
-          $('#linkit-modal #edit-tasks-tag').val(result.path.match(/\d+/));
+          $('#linkit-modal #edit-tasks-tag').val(result.path.match(/\d+/) + ':' + result.title);
 
           // Store the result title (Used when no selection is made bythe user).
           Drupal.linkitCache.link_tmp_title = result.title;

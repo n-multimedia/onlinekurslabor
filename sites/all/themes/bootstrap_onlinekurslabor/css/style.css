@@ -29,6 +29,15 @@ body.cke_show_borders{
   padding-top:0px;
 }
 
+.cke_skin_kama input.cke_dialog_ui_input_text {
+  height:20px !important;
+  border: 1px solid;
+}
+.cke_skin_kama div.cke_dialog_ui_input_text {
+  border:0  !important;
+  background-color: transparent  !important;
+}
+
 #navbar .navbar-inner{
   background-color: #29323D;
   text-shadow: none ;
@@ -518,4 +527,47 @@ Large form. smaller widht for input fields
 .span8 select
 {
   max-width:125px;
+}
+
+
+/*
+Book Navigation
+*/
+
+.book-navigation {
+  margin-top: 15px;
+}
+
+.book-navigation .menu {
+  margin-bottom: 35px;
+}
+/*
+.book-navigation .page-links a.page-previous
+{
+  display: inline-block;
+  text-align: left;
+  width: 42%;
+}
+.book-navigation .page-links a.page-next
+{
+  display: inline-block;
+  text-align: right;
+  width: 42%;
+}
+*/
+.book-navigation .page-links {
+    padding: 20px 0;
+    border: 0;
+    border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+}
+
+
+.row-fluid img[class*='file-'] {
+  float: none;
+  display: inline-block;
+}
+
+p {
+  vertical-align: top;
 }
