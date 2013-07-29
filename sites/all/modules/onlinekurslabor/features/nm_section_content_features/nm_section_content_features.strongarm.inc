@@ -363,7 +363,7 @@ function nm_section_content_features_strongarm() {
         'custom_settings' => FALSE,
       ),
       'full' => array(
-        'custom_settings' => TRUE,
+        'custom_settings' => FALSE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
@@ -372,6 +372,21 @@ function nm_section_content_features_strongarm() {
         'custom_settings' => TRUE,
       ),
       'file_icon' => array(
+        'custom_settings' => TRUE,
+      ),
+      'media_12' => array(
+        'custom_settings' => TRUE,
+      ),
+      'media_3' => array(
+        'custom_settings' => TRUE,
+      ),
+      'media_6' => array(
+        'custom_settings' => TRUE,
+      ),
+      'media_9' => array(
+        'custom_settings' => TRUE,
+      ),
+      'media_4' => array(
         'custom_settings' => TRUE,
       ),
     ),
@@ -402,6 +417,26 @@ function nm_section_content_features_strongarm() {
             'weight' => '0',
             'visible' => TRUE,
           ),
+          'media_12' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'media_3' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'media_6' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'media_9' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'media_4' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
         ),
       ),
     ),
@@ -421,7 +456,7 @@ function nm_section_content_features_strongarm() {
         'custom_settings' => FALSE,
       ),
       'full' => array(
-        'custom_settings' => TRUE,
+        'custom_settings' => FALSE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
@@ -430,6 +465,21 @@ function nm_section_content_features_strongarm() {
         'custom_settings' => TRUE,
       ),
       'file_icon' => array(
+        'custom_settings' => TRUE,
+      ),
+      'media_12' => array(
+        'custom_settings' => TRUE,
+      ),
+      'media_3' => array(
+        'custom_settings' => FALSE,
+      ),
+      'media_4' => array(
+        'custom_settings' => FALSE,
+      ),
+      'media_6' => array(
+        'custom_settings' => TRUE,
+      ),
+      'media_9' => array(
         'custom_settings' => TRUE,
       ),
     ),
@@ -450,6 +500,26 @@ function nm_section_content_features_strongarm() {
             'visible' => TRUE,
           ),
           'full' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'media_12' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'media_3' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'media_4' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'media_6' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'media_9' => array(
             'weight' => '0',
             'visible' => TRUE,
           ),

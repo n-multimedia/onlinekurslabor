@@ -292,6 +292,7 @@ function nm_section_content_features_user_default_permissions() {
   $permissions['delete revisions'] = array(
     'name' => 'delete revisions',
     'roles' => array(
+      'Autor' => 'Autor',
       'administrator' => 'administrator',
     ),
     'module' => 'node',
@@ -432,6 +433,7 @@ function nm_section_content_features_user_default_permissions() {
   $permissions['revert revisions'] = array(
     'name' => 'revert revisions',
     'roles' => array(
+      'Autor' => 'Autor',
       'administrator' => 'administrator',
     ),
     'module' => 'node',
@@ -702,6 +704,7 @@ function nm_section_content_features_user_default_permissions() {
   $permissions['view revisions'] = array(
     'name' => 'view revisions',
     'roles' => array(
+      'Autor' => 'Autor',
       'administrator' => 'administrator',
     ),
     'module' => 'node',

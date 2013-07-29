@@ -16,7 +16,22 @@ function nm_section_content_features_default_page_manager_pages() {
   $page->admin_title = 'content-domain-media';
   $page->admin_description = '';
   $page->path = 'domain/media/%1';
-  $page->access = array();
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_access',
+        'settings' => array(
+          'type' => 'view',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
   $page->menu = array();
   $page->arguments = array(
     1 => array(
@@ -198,7 +213,22 @@ echo section_content_text_outline();
   $page->admin_title = 'content-domain-biblio';
   $page->admin_description = '';
   $page->path = 'domain/biblio/%1';
-  $page->access = array();
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_access',
+        'settings' => array(
+          'type' => 'view',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
   $page->menu = array();
   $page->arguments = array(
     1 => array(
@@ -349,7 +379,22 @@ echo section_content_text_outline();
   $page->admin_title = 'content-domain-add-node';
   $page->admin_description = '';
   $page->path = 'domain/add/%1/%2';
-  $page->access = array();
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_access',
+        'settings' => array(
+          'type' => 'create',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_node_add_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
   $page->menu = array();
   $page->arguments = array(
     1 => array(
@@ -486,7 +531,19 @@ echo section_content_text_outline();
   $page->admin_title = 'content-domain-book-rearrange';
   $page->admin_description = '';
   $page->path = 'domain/text/%1/rearrange';
-  $page->access = array();
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer book outlines',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
   $page->menu = array();
   $page->arguments = array(
     1 => array(
@@ -647,7 +704,22 @@ echo section_content_text_outline();
   $page->admin_title = 'content-domain-delete-node';
   $page->admin_description = '';
   $page->path = 'domain/delete/%1';
-  $page->access = array();
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_access',
+        'settings' => array(
+          'type' => 'delete',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
   $page->menu = array();
   $page->arguments = array(
     1 => array(
@@ -785,7 +857,22 @@ echo section_content_text_outline();
   $page->admin_title = 'content-domain-edit-node';
   $page->admin_description = '';
   $page->path = 'domain/edit/%1';
-  $page->access = array();
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_access',
+        'settings' => array(
+          'type' => 'update',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_node_edit_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
   $page->menu = array();
   $page->arguments = array(
     1 => array(
@@ -1051,7 +1138,22 @@ echo \'<p><a class="btn" href="/node/add/content-domain">Neues Thema anlegen</a>
   $page->admin_title = 'content-domain-text';
   $page->admin_description = '';
   $page->path = 'domain/text/%1';
-  $page->access = array();
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_access',
+        'settings' => array(
+          'type' => 'view',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
   $page->menu = array();
   $page->arguments = array(
     1 => array(
@@ -1204,7 +1306,22 @@ echo section_content_text_outline();
   $page->admin_title = 'Content - Thema - Aufgaben';
   $page->admin_description = '';
   $page->path = 'domain/tasks/%1';
-  $page->access = array();
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_access',
+        'settings' => array(
+          'type' => 'view',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
   $page->menu = array();
   $page->arguments = array(
     1 => array(
