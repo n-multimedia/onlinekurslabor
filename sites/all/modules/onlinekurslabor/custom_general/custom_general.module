@@ -599,3 +599,62 @@ function custom_general_block_view($delta = '') {
 
   return $block;
 }
+
+/**
+ * Implements hook_field_default_fields_alter().
+ *
+ * Alter the default fields right before they are cached into the database.
+ *
+ * @param &$fields
+ *   By reference. The fields that have been declared by another feature.
+ */
+function custom_general_field_default_fields_alter(&$fields) {
+  $source_dir = drupal_get_path('module', 'custom_general') . '/images/default_images';
+
+  $field_default_images = array(
+    'profile2-master-field_photo' => 'noprofile.jpg',
+    //'field_collection_item-field_people-field_people_photo' => 'avatar.png',
+    // etc...
+  );
+
+  foreach ($field_default_images as $field_name => $filename) {
+    $source = $source_dir . '/' . $filename;
+    $destination = 'default_images/' . $filename;
+    if (isset($fields[$field_name])) {
+      mymodule_set_default_image($fields[$field_name], $filename, $source, $destination);
+    }
+  }
+}
+
+function custom_general_set_default_image(&$field, $filename, $source, $destination) {
+  // See if a default image hasn't been set for this field yet
+  if (empty($field['field_config']['settings']['default_image'])) {
+    // Dynamically set the user default image on the field
+    $destination = file_default_scheme() . '://' . $destination;
+
+    // Check to see if it exists already
+    $result = db_select('file_managed', 'f')
+      ->fields('f', array('fid'))
+      ->condition('f.uri', $destination)
+      ->execute();
+
+    $fid = $result->fetchField();
+
+    // Simulate an upload of the default user image
+    if (!$fid && file_exists($source)) {
+      $file = new stdClass;
+      $file->filename = $filename;
+      $file->timestamp = REQUEST_TIME;
+      $file->uri = $source;
+      $file->filemime = file_get_mimetype($source);
+      $file->uid = 1;
+      $file->status = 1;
+
+      $file = file_copy($file, 'public://', FILE_EXISTS_REPLACE);
+
+      $fid = $file->fid;
+    }
+
+    $field['field_config']['settings']['default_image'] = (string) $fid;
+  }
+}
