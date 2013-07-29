@@ -609,10 +609,11 @@ function custom_general_block_view($delta = '') {
  *   By reference. The fields that have been declared by another feature.
  */
 function custom_general_field_default_fields_alter(&$fields) {
+
   $source_dir = drupal_get_path('module', 'custom_general') . '/images/default_images';
 
   $field_default_images = array(
-    'profile2-master-field_photo' => 'noprofile.jpg',
+    'field_photo' => 'noprofile.jpg',
     //'field_collection_item-field_people-field_people_photo' => 'avatar.png',
     // etc...
   );
