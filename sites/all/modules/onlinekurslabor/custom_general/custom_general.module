@@ -608,6 +608,7 @@ function custom_general_block_view($delta = '') {
  * @param &$fields
  *   By reference. The fields that have been declared by another feature.
  */
+/*
 function custom_general_field_default_fields_alter(&$fields) {
 
   $source_dir = drupal_get_path('module', 'custom_general') . '/images/default_images';
@@ -658,4 +659,4 @@ function custom_general_set_default_image(&$field, $filename, $source, $destinat
 
     $field['field_config']['settings']['default_image'] = (string) $fid;
   }
-}
+}*/
