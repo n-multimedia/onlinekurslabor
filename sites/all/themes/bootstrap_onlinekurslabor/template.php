@@ -54,6 +54,7 @@ function bootstrap_onlinekurslabor_image_style($variables) {
  * @file template.php
  */
 function bootstrap_onlinekurslabor_panels_flexible($vars) {
+  global $user;
 
   $css_id = $vars['css_id'];
   $content = $vars['content'];
@@ -77,6 +78,26 @@ function bootstrap_onlinekurslabor_panels_flexible($vars) {
     //dpm($layout_temp['layout']->settings['items']['outline']);
     //$layout['layout']->settings['items']['outline'] = $layout_temp['layout']->settings['items']['outline'];
     //dpm($layout['layout']->settings['items']);
+    //need check if task section is active
+    //change layout for feedback stage
+  }
+  else if ($layout['name'] == 'flexible:span8span4') {
+    if (arg(1) == 'tasks' && arg(4) == 'solution') {
+      //get active task
+      $task_nid = is_numeric(arg(3)) ? arg(3) : 0;
+      if ($task_nid) {
+        $solutions = custom_general_get_task_solutions($task_nid, $user->uid);
+        if (count($solutions) > 0) {
+          $solution = current($solutions);
+          $current_state = workflow_node_current_state($solution);
+          if ($current_state >= NM_COURSES_TASK_WORKFLOW_SUBMITTED) {
+            $content['left'] = $content['news'];
+            $content['center'] = $content['tools'];
+            $layout = panels_get_layout('flexible:span6span6');
+          }
+        }
+      }
+    }
   }
 
   panels_flexible_convert_settings($settings, $layout);

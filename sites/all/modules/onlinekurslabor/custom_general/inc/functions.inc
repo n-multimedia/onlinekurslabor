@@ -292,18 +292,75 @@ function custom_general_get_task_solutions_by_uid($tid, $uid) {
  * @param type $uid
  */
 function custom_general_get_task_solutions($tid, $uid) {
-  $uid_tmp = arg(5);
-  if (!empty($uid_tmp) && is_numeric($uid_tmp)) {
-    $user = user_load($uid_tmp);
-    if ($user) {
-      $uid = $user->uid;
+  static $result = array();
+
+  if (!$result || !isset($result[$tid][$uid])) {
+    $uid_tmp = arg(5);
+    if (!empty($uid_tmp) && is_numeric($uid_tmp)) {
+      $user = user_load($uid_tmp);
+      if ($user) {
+        $uid = $user->uid;
+      }
     }
+
+    $user = user_load($uid);
+
+    /*
+     * differentiate between single and group tasks
+     */
+    $node_wrapper = entity_metadata_wrapper('node', $tid);
+    $task_type = $node_wrapper->field_task_type->value();
+
+    //0 single | 1 group
+    //if group task and student
+    if ($task_type == 1 && in_array(NM_ROLE_STUDENT, $user->roles)) {
+      //get course group
+      $cg_gid = _section_courses_get_coursegroup_gid($uid);
+      
+      //get all group members
+      $cg_members = custom_general_get_users_in_group($cg_gid);
+      
+
+      $solutions = array();
+
+      // Loop through and load each user
+      foreach ($cg_members AS $member) {        
+        // Load the user object if necessary
+        $user = user_load($member->uid);
+        
+        if(!in_array(NM_ROLE_STUDENT, $user->roles))
+            continue;
+
+        // Do whatever else you need to
+        $tmp_sol = custom_general_get_task_solutions_by_uid($tid, $user->uid);
+
+        if ($tmp_sol) {
+          $solutions[] = $tmp_sol;
+        }
+
+      }
+
+      if (!empty($solutions)) {
+        $result[$tid][$uid] = current($solutions);
+        return $result[$tid][$uid];
+      }
+      else {
+        $result[$tid][$uid] = $solutions;
+        return $result[$tid][$uid];
+      }
+
+      //collect solutions
+      //return solutions
+    }//single
+    else {
+      $solutions = custom_general_get_task_solutions_by_uid($tid, $uid);
+      $result[$tid][$uid] = $solutions;
+      return $result[$tid][$uid];
+    }
+  }else
+  {
+    return $result[$tid][$uid];
   }
-
-  //check if group task or not
-
-
-  return custom_general_get_task_solutions_by_uid($tid, $uid);
 }
 
 function _custom_general_get_structered_tool_link($id, $label, $path, $options = array()) {
@@ -350,4 +407,20 @@ function _custom_general_book_get_parents(&$subtree_pointer, $active_mlid) {
   }
 
   return $parents;
+}
+
+/**
+ * Get all users of a group
+ */
+function custom_general_get_users_in_group($gid) {
+  $query = db_select('users', 'u');
+
+  $query->condition('u.uid', 0, '<>')
+      ->condition('u.status', 1, '=')
+      ->fields('u', array('uid', 'name'))
+      ->join('og_membership', 'ogm', "ogm.gid = :gid AND u.uid = ogm.etid AND ogm.entity_type = 'user'", array(':gid' => $gid));
+
+  $result = $query->execute();
+
+  return $result->fetchAll();
 }

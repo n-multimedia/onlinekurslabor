@@ -571,3 +571,16 @@ Book Navigation
 p {
   vertical-align: top;
 }
+
+
+/*
+TASKS ALERT BOXES
+*/
+
+.page-course-tasks  .main-container div.alert{
+    color: inherit;
+}
+
+.view-courses-task-solutions {
+    
+}

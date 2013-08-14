@@ -2,6 +2,7 @@
 
 module_load_include('inc', 'section_courses', 'inc/blocks');
 module_load_include('inc', 'section_courses', 'inc/realms');
+module_load_include('inc', 'section_courses', 'inc/tasks');
 
 //add course header 
 //16.07.2013 - 11:58 - SN - now done by context module
@@ -17,7 +18,6 @@ function section_courses_preprocess_panels_pane(&$variables) {
     } */
 
   // Update the history table, stating that this user viewed this node.
-
 
   /*
    * History Table
@@ -100,6 +100,9 @@ function section_courses_block_info() {
   $blocks['course_instructors_tools'] = array(
     'info' => t('Course - Instructors Tools'),
   );
+  $blocks['course_node_tabs'] = array(
+    'info' => t('Course - Node Tabs'),
+  );
 
   return $blocks;
 }
@@ -129,379 +132,15 @@ function section_courses_block_view($delta = '') {
     case 'course_instructors_tools' :
       $block['content'] = _section_courses_theme_instructor_tools();
       break;
+    case 'course_node_tabs' :
+      $block['content'] = _section_courses_node_tabs_view();
+      break;
   }
 
   return $block;
 }
 
-function _course_tasks_generic_init_view() {
-  $tasks_nid = _course_tasks_generic_get_task_nid();
 
-  $field_val = NULL;
-  if (!empty($tasks_nid)) {
-    $node_wrapper = entity_metadata_wrapper('node', $tasks_nid);
-
-    $field_val = $node_wrapper->field_generic_task_entry->value();
-  }
-
-  return $field_val;
-}
-
-function _course_tasks_generic_get_task_nid() {
-  $tasks_nid = arg(3);
-  if (empty($tasks_nid) || !is_numeric($tasks_nid)) {
-    return array();
-  }
-  return $tasks_nid;
-}
-
-function _course_tasks_generic_tips_view() {
-
-  global $user;
-
-  $field_val = _course_tasks_generic_init_view();
-
-  if (empty($field_val))
-    return;
-
-  $output = "";
-  $output .= _course_tasks_generic_section_view($field_val, NM_COURSES_TASK_TIPS);
-
-  //get workflow form
-  $task_nid = _course_tasks_generic_get_task_nid();
-  $solutions = custom_general_get_task_solutions($task_nid, $user->uid);
-  if (count($solutions) > 0) {
-    $solution = current($solutions);
-    $solution_node = node_load($solution->nid);
-
-    $output .=_course_tasks_generic_solution_workflow_form($solution_node);
-  }
-
-  return $output;
-}
-
-function _course_tasks_generic_solution_workflow_form($node) {
-
-  $output = "";
-
-  $workflow = workflow_get_workflow_type_map_by_type($node->type);
-  if (!$workflow) {
-    return;
-  }
-
-  $states = array();
-  foreach (workflow_get_workflow_states() as $data) {
-    $states[$data->sid] = check_plain(t($data->state));
-  }
-
-  $current = workflow_node_current_state($node);
-
-  // Show current state at the top of the node display.
-  $markup = theme('workflow_current_state', array('state' => $states[$current]));
-
-  $output .= $markup;
-
-  // If we are at the terminal state, then don't show the change form.
-  $choices = workflow_field_choices($node);
-  if (count($choices) == 1) {
-    if ($current == key($choices)) {
-      return;
-    }
-  }
-  // Show state change form at the bottom of the node display.
-  $form_state = array('cache' => TRUE);
-  form_load_include($form_state, 'inc', 'workflow', 'workflow.pages');
-  $form = drupal_get_form('workflow_tab_form', $node, $workflow->wid, $states, $current);
-  $form['#weight'] = 99;
-
-
-
-  $output .= drupal_render($form);
-
-  return $output;
-}
-
-/**
- * checks if a solution is editable
- * a solution is not editable any more when the node reaches a special workflow state
- * 
- * @param type $node
- * @return boolean
- */
-function _courses_tasks_generic_solution_is_editable($node) {
-
-  $current = workflow_node_current_state($node);
-  //if state >= Entwurf
-  if ($current >= 3) {
-    return FALSE;
-  }
-
-  return TRUE;
-}
-
-/**
- * Description section of a taks on the top of the content
- * 
- * @return type
- */
-function _course_tasks_generic_description_view() {
-
-  $field_val = _course_tasks_generic_init_view();
-
-  if (empty($field_val))
-    return;
-
-  $output = "";
-  $output .= _course_tasks_generic_section_view($field_val, NM_COURSES_TASK_DESCRIPTION);
-  $output .= _course_tasks_generic_section_view($field_val, NM_COURSES_TASK_TASK);
-
-
-  return $output;
-}
-
-function _course_tasks_generic_solution_form_view() {
-
-  global $user;
-  //attach needed feeds here only
-  //module_load_include('inc', 'node', 'node.pages');
-  //$form2 = node_add('courses_generic_task_solution');
-  //$output = "";
-  //$form['#title_display'] = 'invisible';
-  //$form['title']['#type'] = 'hidden';
-  //dpm($form2);
-
-  $output = "";
-  $task_nid = arg(3);
-
-  if (!$task_nid || !is_numeric($task_nid))
-    return;
-
-  $solutions = custom_general_get_task_solutions($task_nid, $user->uid);
-  //check workflow state
-  if (count($solutions) > 0 && !_courses_tasks_generic_solution_is_editable(current($solutions))) {
-    $solution = current($solutions);
-    $solution_node = node_load($solution->nid);
-
-    $node_wrapper = entity_metadata_wrapper('node', $task_nid);
-
-    $field_val = $node_wrapper->field_generic_task_entry->value();
-    $description_items = _course_tasks_generic_get_section($field_val, NM_COURSES_TASK_FORM);
-
-    //$solution_wrapper = entity_metadata_wrapper('node', $solution_node->nid);
-    //$solutions_field_vals = $solution_wrapper->field_generic_solution_entry->value();
-    $solutions_field_vals = field_get_items('node', $solution_node, 'field_generic_solution_entry');
-    $fview = field_view_field('node', $solution_node, 'field_generic_solution_entry', $solutions_field_vals);
-
-    dpm($solutions_field_vals);
-    foreach ($description_items as $key => $item) {
-      $output .= "<h2>" . $item['second'] . "</h2>";
-      //$output .= $solutions_field_vals[$key]['value'];
-
-      $output .= render($fview[$key]);
-    }
-    //allow assessment if node is in state 3
-    $current = workflow_node_current_state($solution_node);
-    if ($current == 3) {
-      //add bewertung feld
-      $form = drupal_get_form('_section_courses_task_solution_assesment_form', $solution_node->nid);
-      $form['assessment']['format']['#attributes']['style'] = 'display:none';
-      $output .= drupal_render($form);
-    }
-    //Bewertet
-    else if (($current == 4)) {
-      $output .= "<h2>Bewertung</h2>";
-      //$assessment_field = ($solution_wrapper->field_generic_task_assessment->value());
-      $fview = field_view_field('node', $solution_node, 'field_generic_task_assessment');
-      //hide field label
-      $fview['#label_display'] = 'hidden';
-      $output .= render($fview);
-      //$output .= $assessment_field['value'];
-    }
-  }
-  else {
-    //check if a solution has already been submitted
-    if (count($solutions) > 0) {
-      $solution = current($solutions);
-      $solution_node = node_load($solution->nid);
-
-      $solution__wrapper = entity_metadata_wrapper('node', $solution_node->nid);
-      $solutions_field_vals = $solution__wrapper->field_generic_solution_entry->value();
-    }
-
-    $form = drupal_get_form('_section_courses_task_solution_form', $task_nid);
-    //unset input format fieldset
-    foreach ($form['solutions'] as $key => &$item) {
-      if (is_array($item) && isset($item['format'])) {
-        //hide available input formats
-        $item['format']['#attributes']['style'] = 'display:none';
-        //prefill fields
-        if (count($solutions) > 0) {
-          $item['value']['#value'] = $solutions_field_vals[$key]['value'];
-        }
-      }
-    }
-
-    $output .= drupal_render($form);
-  }
-
-  return $output;
-}
-
-function _section_courses_task_solution_assesment_form($form, &$form_state, $solution_nid) {
-  $node_wrapper = entity_metadata_wrapper('node', $solution_nid);
-
-  $field_val = $node_wrapper->field_generic_task_assessment->value();
-
-  $form = array();
-
-  $form['assessment'] = array(
-    '#type' => 'text_format',
-    '#title' => 'Bewertung',
-    '#base_type' => 'textarea',
-    '#default_value' => $field_val['value'],
-    '#format' => NM_FILTER_FORMAT_FILTERED_HTML,
-  );
-
-  $form['solution_nid'] = array(
-    '#type' => 'hidden',
-    '#value' => $solution_nid,
-  );
-
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#attributes' => array('class' => array('btn-primary')),
-    '#value' => 'Bewertung speichern',
-  );
-
-  return $form;
-}
-
-function _section_courses_task_solution_assesment_form_submit($form, &$form_state) {
-  global $user;
-
-  $solution_nid = $form_state['values']['solution_nid'];
-
-  $node = node_load($solution_nid);
-
-  $node->field_generic_task_assessment[LANGUAGE_NONE][0]['value'] = $form_state['values']['assessment']['value'];
-  $node->field_generic_task_assessment[LANGUAGE_NONE][0]['format'] = NM_FILTER_FORMAT_FILTERED_HTML;
-
-  // 'node' is default,
-  // Other possible values are "user" and  "taxonomy_term" 
-  $node = node_submit($node); // Prepare node for saving
-
-  node_save($node);
-}
-
-function _section_courses_task_solution_form($form, &$form_state, $task_nid) {
-  $node_wrapper = entity_metadata_wrapper('node', $task_nid);
-
-  $field_val = $node_wrapper->field_generic_task_entry->value();
-  $description_items = _course_tasks_generic_get_section($field_val, NM_COURSES_TASK_FORM);
-
-  $form['solutions']['#tree'] = TRUE;
-  foreach ($description_items as $item) {
-    $form['solutions'][] = array(
-      '#type' => 'text_format',
-      '#title' => $item['second'],
-      '#base_type' => 'textarea',
-      '#format' => NM_FILTER_FORMAT_FILTERED_HTML,
-    );
-  }
-
-  $form['task_nid'] = array(
-    '#type' => 'hidden',
-    '#value' => $task_nid,
-  );
-
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#attributes' => array('class' => array('btn-primary')),
-    '#value' => 'Speichern',
-  );
-
-  return $form;
-}
-
-function _section_courses_task_solution_form_submit($form, &$form_state) {
-  global $user;
-
-  $task_nid = $form_state['values']['task_nid'];
-  $solutions = custom_general_get_task_solutions($task_nid, $user->uid);
-  $new_node = FALSE;
-  if (count($solutions) > 0) {
-    $solution = current($solutions);
-    $node = node_load($solution->nid);
-
-    $node->field_generic_solution_entry[LANGUAGE_NONE] = array();
-  }
-  else {
-    $active_course = _section_courses_get_active_course();
-    $tas_nid = $form_state['values']['task_nid'];
-    $task = node_load($tas_nid);
-    $node->title = 'Lösung: ' . $task->title;
-    $node->type = NM_COURSE_GENERIC_TASK_SOLUTION;
-    node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
-    $node->language = 'de'; // Or e.g. 'en' if locale is enabled
-    $node->uid = $user->uid;
-    $node->status = 1; //(1 or 0): published or not
-    $node->promote = 0; //(1 or 0): promoted to front page
-    $node->comment = 0; // 0 = comments disabled, 1 = read only, 2 = read/write
-    $node->og_group_ref[LANGUAGE_NONE][0] = array('target_id' => $active_course->nid);
-    $node->field_generic_task[LANGUAGE_NONE][]['target_id'] = $form_state['values']['task_nid'];
-  }
-
-  foreach ($form_state['values']['solutions'] as $item) {
-    $val = $item['value'];
-    $node->field_generic_solution_entry[LANGUAGE_NONE][] = array('value' => $val, 'format' => NM_FILTER_FORMAT_FILTERED_HTML);
-  }
-
-
-  $node = node_submit($node); // Prepare node for saving
-
-
-  node_save($node);
-}
-
-function _course_tasks_generic_section_view($field_val, $id) {
-  $title = "";
-  switch ($id) {
-    case NM_COURSES_TASK_DESCRIPTION:
-      $title = "Beschreibung";
-      break;
-    case NM_COURSES_TASK_TASK:
-      $title = "Aufgabenstellung";
-      break;
-    case NM_COURSES_TASK_TIPS:
-      $title = "Leitfragen";
-      break;
-    case NM_COURSES_TASK_FORM:
-      $title = "Formular";
-      break;
-    default:
-  }
-  $description_items = _course_tasks_generic_get_section($field_val, $id);
-  $output = '<div id="task_general_' . $id . '">';
-  $output .= '<h2>' . $title . '</h2>';
-  foreach ($description_items as $item) {
-    $output .= $item['second'];
-  }
-
-  $output .= '</div>';
-
-  return $output;
-}
-
-function _course_tasks_generic_get_section($fields, $id) {
-  $result = array();
-  foreach ($fields as $field) {
-    if ($field['first'] == $id) {
-      $result[] = $field;
-    }
-  }
-
-  return $result;
-}
 
 /**
  * 
@@ -768,31 +407,33 @@ function section_courses_text_outline() {
 
   return drupal_render($data);
 }
+
 /*
-function MY_MODULE_submenu_tree_all_data($path, $menu = 'main-menu', $curr_level = 0, $rebuilt_path = '', $childtree = array()) {
+  function MY_MODULE_submenu_tree_all_data($path, $menu = 'main-menu', $curr_level = 0, $rebuilt_path = '', $childtree = array()) {
   $tree = menu_tree_all_data($menu);
   $args = explode('/', $path);
 
   $rebuilt_path = empty($rebuilt_path) ? $args[$curr_level] : $rebuilt_path . '/' . $args[$curr_level];
 
   foreach ($tree as $branch) {
-    if ($branch['link']['link_path'] == $rebuilt_path) {
-      $childtree = $branch['below'];
-      if ($rebuilt_path != $path) {
-        $curr_level++;
-        MY_MODULE_submenu_tree_all_data($path, $menu, $curr_level, $rebuilt_path, $childtree);
-      }
-    }
+  if ($branch['link']['link_path'] == $rebuilt_path) {
+  $childtree = $branch['below'];
+  if ($rebuilt_path != $path) {
+  $curr_level++;
+  MY_MODULE_submenu_tree_all_data($path, $menu, $curr_level, $rebuilt_path, $childtree);
+  }
+  }
   }
 
   $items = array();
   foreach ($childtree as $child) {
-    $items[] = l($child['link']['title'], $child['link']['link_path']);
+  $items[] = l($child['link']['title'], $child['link']['link_path']);
   }
 
   return theme('item_list', array('items' => $items, 'attributes' => array(), 'type' => 'ul'));
-}
-*/
+  }
+ */
+
 function section_content_node_presave($node) {
   if ($node->type == NM_COURSE) {
 //Add Form Container for the Course, if form feature is set
@@ -1210,12 +851,26 @@ if (class_exists('statuses_og_context')) {
  */
 function _section_courses_student_get_coursegroup_gid() {
   global $user;
+
+  return _section_courses_get_coursegroup_gid($user->uid);
+}
+
+/**
+ * get the users's course group in the active course
+ * 
+ * @param type $uid
+ * @return Group ID of the first course group that matched
+ */
+function _section_courses_get_coursegroup_gid($uid) {
+  $user = user_load($uid);
+
   //we want to redirect students directly to their course group
   //check fo role
   if (in_array(NM_ROLE_STUDENT, $user->roles)) {
     //get all gids the user belongs to
-    $groups = og_get_groups_by_user();
+    $groups = og_get_groups_by_user($user);
     $groups = $groups['node'] ? $groups['node'] : array();
+
     foreach ($groups as $gid) {
       //check if group's type is a course group
       if (_custom_general_get_node_type($gid) == NM_COURSE_GROUP) {

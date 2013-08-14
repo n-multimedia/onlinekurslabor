@@ -1,5 +1,43 @@
 <?php
 
+/**
+ * Custom function to assemble renderable array for block content.
+ * Returns a renderable array with the block content.
+ * @return
+ *   returns a renderable array of block content.
+ */
+function _section_courses_node_tabs_view() {
+
+  $block = "";
+  if (section_courses_instructors_tools_access()) {
+    $nav_items_single = array();
+    $nav_items_single['overview'] = "Ansicht";
+    $nav_items_single['course'] = "Bearbeiten";
+
+    $single_links = array();
+
+    $group = _section_courses_get_active_course();
+
+    foreach ($nav_items_single as $si) {
+      $text_link = _section_courses_navtext_to_link($group, $si);
+      if ($si != $text_link) {
+        $single_links[] = array('link' => $text_link);
+      }
+    }
+
+    if (count($single_links) < 1)
+      return array();
+
+    $output_single = _custom_general_theme_tools_block($single_links, "content_node_tabs", "btn-grop");
+
+
+    // Block output in HTML with div wrapper
+    $block = $output_single;
+  }
+
+  return $block;
+}
+
 function _course_header_section_view() {
 
   $active_course = _section_courses_get_active_course();
@@ -89,17 +127,17 @@ function _section_courses_get_instructor_tools() {
     ),
     'attributes' => array(
       'title' => '',
-      ));
+  ));
 
   /*
-  $members_overview_options = $default_options;
-  $groups_overview_options = $news_options;
+    $members_overview_options = $default_options;
+    $groups_overview_options = $news_options;
 
-  $docs_options = $news_options;
-  $members_options = $news_options;
-  $groups_options = $news_options;
-  $forums_overview_options = $news_options;
-  $course_settings_options = $news_options;*/
+    $docs_options = $news_options;
+    $members_options = $news_options;
+    $groups_options = $news_options;
+    $forums_overview_options = $news_options;
+    $course_settings_options = $news_options; */
 
 
   $links = array();
@@ -111,6 +149,7 @@ function _section_courses_get_instructor_tools() {
   $links['instr_overview_content']['label'] = "Inhalte";
   $links['instr_add_news']['label'] = "Nachricht";
   $links['instr_add_docs']['label'] = "Dokument";
+  $links['instr_add_task']['label'] = "Aufgabe";
 
   $links['instr_overview_groups']['label'] = "Gruppe";
   $links['instr_add_groups']['label'] = "Gruppe";
@@ -130,6 +169,7 @@ function _section_courses_get_instructor_tools() {
   $links['instr_overview_content']['group']['root'] = TRUE;
   $links['instr_add_news']['group']['gid'] = 2;
   $links['instr_add_docs']['group']['gid'] = 2;
+  $links['instr_add_task']['group']['gid'] = 2;
 
   $links['instr_overview_groups']['group']['gid'] = 3;
   $links['instr_overview_groups']['group']['root'] = TRUE;
@@ -205,6 +245,11 @@ function _section_courses_get_instructor_tools() {
     $id = 'instr_add_docs';
     $label = $links[$id]['label'];
     $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+    
+    $path = 'course/admin/' . $group_id . '/add/courses-generic-task';
+    $id = 'instr_add_task';
+    $label = $links[$id]['label'];
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
     $path = 'course/admin/' . $group_id . '/members/add';
     $id = 'instr_add_members';
@@ -215,7 +260,6 @@ function _section_courses_get_instructor_tools() {
     $id = 'instr_add_groups';
     $label = $links[$id]['label'];
     $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-    
   }
 
   $result = array();
@@ -232,7 +276,6 @@ function _section_courses_get_instructor_tools() {
 
   return $result;
 }
-
 
 /**
  * Custom function to assemble renderable array for block content.
@@ -333,13 +376,27 @@ function _section_courses_navtext_to_link($course, $text) {
   $result = array();
   $result['link'] = $text;
 
+  if (!$course)
+    return $result;
+
   $course_nid = $course->nid;
 
   $options = array(
     'attributes' => array(),
     'query' => array(
       'og_group_ref' => $course_nid,
-      ));
+  ));
+
+  $active_node = NULL;
+  if ((arg(0) == 'course') && (is_numeric(arg(3)))) {
+    $active_node = node_load(arg(3));
+  }
+
+  $active_node_nid = 0;
+  if ($active_node) {
+    $active_node_nid = $active_node->nid;
+  }
+
 
   $text_temp = $text;
   $text = ($text);
@@ -361,7 +418,7 @@ function _section_courses_navtext_to_link($course, $text) {
     case "Kursdokumente":
 
       $num_unread = _section_courses_course_get_num_unread_by_type($user->uid, NM_COURSE_DOCS);
-      
+
       if (_section_course_course_docs_visible()) {
         $options['attributes'] = array('class' => array('active'));
       }
@@ -430,6 +487,24 @@ function _section_courses_navtext_to_link($course, $text) {
 
       $path = "course/tasks/" . $course_nid;
       $result['link'] = l($text, $path, $options);
+      break;
+    case "Ansicht":
+      if (is_numeric($active_node_nid)) {
+        //active link not set properly, using url() function to avoid this probplem
+        $options['attributes']['class'] = array('btn');
+        if (substr(url('node/' . $active_node_nid), 0, 1) == '/') {
+          $result = l($text, substr(url('node/' . $active_node_nid), 1), $options);
+        }
+        else {
+          $result = l($text, url('node/' . $active_node_nid), $options);
+        }
+      }
+      break;
+    case "Bearbeiten":
+      if (is_numeric($active_node_nid)) {
+        $options['attributes']['class'] = array('btn');
+        $result = l($text, 'course/admin/' . $course_nid . '/' . $active_node_nid . '/edit', $options);
+      }
       break;
     default:
   }
