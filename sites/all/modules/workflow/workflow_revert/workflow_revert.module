@@ -88,10 +88,19 @@ function workflow_revert_form_submit($form, $form_state) {
  */
 function workflow_revert_workflow_history_alter(&$variables) {
   static $first = TRUE;
+  // Only mark the first row.
   if ($first) {
-    $options = array('query' => array('token' => drupal_get_token('workflow_revert ' . $variables['old_sid'])));
-    $path = 'workflow_revert/' . $variables['history']->nid . '/' . $variables['old_sid'];
-    $variables['extra'] = l('Revert state change', $path, $options);
+    // Let's ask other modules if the reversion is allowed.
+    $node = node_load($variables['history']->nid);
+    $result = module_invoke_all('workflow', 'transition permitted', $variables['sid'], $variables['old_sid'], $node);
+    // Did anybody veto this choice?
+    if (!in_array(FALSE, $result)) {
+      // If not vetoed, mark it.
+      $options = array('query' => array('token' => drupal_get_token('workflow_revert ' . $variables['old_sid'])));
+      $path = 'workflow_revert/' . $variables['history']->nid . '/' . $variables['old_sid'];
+      $variables['extra'] = l('Revert state change', $path, $options);
+    }
+    // That was your one chance...
     $first = FALSE;
   }
 }

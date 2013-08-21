@@ -265,4 +265,41 @@ class MediaFileUsageTest extends MediaTestHelper {
     $this->assertTrue(empty($file), t('File no longer exists after delete.'));
   }
 
+
+  /**
+   * Tests if node still remains updatable if file was deleted.
+   */
+  public function testFileUsageForcedDelete() {
+    // Create a node with file markup in the body field with a new file.
+    $files = $this->drupalGetTestFiles('image');
+    $file = file_save($files[1]);
+    $fid = $file->fid;
+    $file_uses = file_usage_list($file);
+
+    $this->assertEqual(empty($file_uses), TRUE, t('Created a new file with zero uses.'));
+
+    // Create a new node with file markup.
+    $nid = $this->createNode($fid);
+    $file_uses = file_usage_list($file);
+
+    $this->assertEqual($file_uses['media']['node'][$nid], 1, t('Incremented file usage on node save.'));
+
+    // Force the file to delete.
+    $deleted = file_delete($file, TRUE);
+    $this->assertTrue($deleted, t('File was deleted although in use sice we forced it.'));
+
+    // Try to update the node that uses broken file.
+    $account = $this->drupalCreateUser(array('edit any article content'));
+    $node = node_load($nid);
+    $this->drupalLogin($account);
+    $this->drupalGet('node/' . $nid . '/edit');
+    $this->assertRaw(check_plain($node->body['und'][0]['value']), t('Reference to deleted file found in node body.'));
+    $edit = array(
+      'body[und][0][value]' => '',
+    );
+    $this->drupalPost(NULL, $edit, t('Save'));
+    $type = node_type_load($node->type);
+    $this->assertRaw(t('@type %title has been updated.', array('@type' => $type->name, '%title' => $node->title)), t('Node without reference to deleted file saved successfully.'));
+  }
+
 }

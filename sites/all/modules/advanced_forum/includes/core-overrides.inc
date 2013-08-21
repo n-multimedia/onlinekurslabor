@@ -28,9 +28,6 @@ function advanced_forum_page($forum_term = NULL) {
   }
   else {
     $topics = '';
-    // this is one ugly workaround to reload forums when container is displayed
-    // and should probably be done another way.
-    $forum_term = advanced_forum_forum_load($forum_term->tid);
   }
 
   $vid = variable_get('forum_nav_vocabulary', 0);
@@ -65,13 +62,13 @@ function advanced_forum_page($forum_term = NULL) {
   drupal_set_title($title);
 
   return theme('forums', array(
-        'forums' => $forum_term->forums,
-        'topics' => $topics,
-        'parents' => $forum_term->parents,
-        'tid' => $forum_term->tid,
-        'sortby' => $sortby,
-        'forums_per_page' => $forum_per_page
-      ));
+    'forums' => $forum_term->forums,
+    'topics' => $topics,
+    'parents' => $forum_term->parents,
+    'tid' => $forum_term->tid,
+    'sortby' => $sortby,
+    'forums_per_page' => $forum_per_page
+  ));
 }
 
 /**
@@ -89,12 +86,8 @@ function advanced_forum_page($forum_term = NULL) {
  *    - 'forums': An array of child forums
  */
 function advanced_forum_forum_load($tid = NULL) {
-
-  // Find out from the style's .info how many posts per forum to collect.
-  $info = advanced_forum_style_info();
-  $post_count = isset($info['forum list post count']) ? intval($info['forum list post count']) : 1;
-
   $cache = &drupal_static(__FUNCTION__, array());
+
 
   // Return a cached forum tree if available.
   if (!isset($tid)) {
@@ -104,15 +97,19 @@ function advanced_forum_forum_load($tid = NULL) {
     return $cache[$tid];
   }
 
+  // Find out from the style's .info how many posts per forum to collect.
+  $info = advanced_forum_style_info();
+  $post_count = isset($info['forum list post count']) ? intval($info['forum list post count']) : 1;
+
   $vid = variable_get('forum_nav_vocabulary', 0);
 
   // Load and validate the parent term.
   if ($tid) {
     $forum_term = taxonomy_term_load($tid);
 
-    if (module_exists('i18n_taxonomy'))
+    if (module_exists('i18n_taxonomy')) {
       $forum_term = i18n_taxonomy_localize_terms($forum_term);
-
+    }
     if (!$forum_term || ($forum_term->vid != $vid)) {
       return $cache[$tid] = FALSE;
     }
@@ -136,14 +133,15 @@ function advanced_forum_forum_load($tid = NULL) {
   $forums = array();
   $_forums = taxonomy_get_tree($vid, $tid);
 
-  if (module_exists('i18n_taxonomy'))
+  if (module_exists('i18n_taxonomy')) {
     $_forums = i18n_taxonomy_localize_terms($_forums);
+  }
 
   if (count($_forums)) {
     $query = db_select('node', 'n');
     $query->join('node_comment_statistics', 'ncs', 'n.nid = ncs.nid');
     $query->join('forum_index', 'f', 'n.nid = f.nid');
-    $query->addExpression('COUNT(f.nid)', 'topic_count');
+    $query->addExpression('COUNT(DISTINCT(f.nid))', 'topic_count');
     $query->addExpression('SUM(f.comment_count)', 'comment_count');
 
     // Limit the query to only node types that can actually be associated with
@@ -235,6 +233,20 @@ function advanced_forum_forum_load($tid = NULL) {
   $forum_term->forums = $forums;
   $cache[$tid] = $forum_term;
   return $forum_term;
+}
+
+function _advanced_forum_update_parent_post_count(&$forums, $forum) {
+  foreach ($forum->parents as $parent_tid) {
+    if (!empty($forums[$parent_tid])) {
+      $forums[$parent_tid]->num_topics += $forum->num_topics;
+      $forums[$parent_tid]->num_posts += $forum->num_posts;
+
+      // recursive loop to update all parents
+      if (!empty($forums[$parent_tid]->parents)) {
+        _advanced_forum_update_parent_post_count($forums, $forums[$parent_tid]);
+      }
+    }
+  }
 }
 
 /**

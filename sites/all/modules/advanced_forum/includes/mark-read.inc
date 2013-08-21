@@ -62,7 +62,7 @@ function advanced_forum_markasread($tid = NULL) {
 
   // Now insert the nids into the history table.
   $query_history_insert->addExpression(':uid', 'uid', array(':uid' => $user->uid));
-  $query_history_insert->addExpression(':time', 'timestamp', array(':time' => time()));
+  $query_history_insert->addExpression(':time', 'timestamp', array(':time' => REQUEST_TIME));
 
   db_insert('history')
     ->fields(array('nid', 'uid', 'timestamp'))

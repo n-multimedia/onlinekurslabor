@@ -68,6 +68,23 @@ function workflow_rules_rules_condition_info() {
         ),
       ),
     ),
+    'workflow_check_previous_state' => array(
+      'group' => t('Workflow'),
+      'label' => t('Content has a previous workflow state'),
+      'parameter' => array(
+        'node' => array(
+          'type' => 'node',
+          'label' => t('Node'),
+          'description' => t('The node to compare the previous workflow state of.'),
+        ),
+        'workflow_state' => array(
+          'type' => 'list<integer>',
+          'label' => t('Compare workflow state'),
+          'options list' => '_workflow_rules_condition_select',
+          'description' => t('The possible workflow states to compare against.'),
+        ),
+      ),
+    ),
   );
 }
 
@@ -154,6 +171,21 @@ function workflow_check_transition($node, $old_states, $new_states) {
  */
 function workflow_check_state($node, $states) {
   $node_state = workflow_node_current_state($node);
+  return workflow_check_given_state($node, $states, $node_state);
+}
+
+/**
+ * Condition implementation: check previous state.
+ */
+function workflow_check_previous_state($node, $states) {
+  $node_state = workflow_node_previous_state($node);
+  return workflow_check_given_state($node, $states, $node_state);
+}
+
+/**
+ * Condition implementation helper function: check given state.
+ */
+function workflow_check_given_state($node, $states, $node_state) {
   if (in_array('ANY', $states)) {
     return TRUE;
   }

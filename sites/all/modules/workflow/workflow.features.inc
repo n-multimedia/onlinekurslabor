@@ -122,7 +122,7 @@ function workflow_update_workflows_full_object($workflow) {
   foreach ($states as $state) {
     $state = (object) $state;
     $state->wid = $workflow->wid;
-    if ($orig_state = workflow_get_workflow_states_by_wid_state($state->wid, $state->state)) {
+    if ($orig_state = reset(workflow_get_workflow_states_by_wid_state($state->wid, $state->state))) {
       $state->sid = $orig_state->sid;
     }
     workflow_update_workflow_states($state);
@@ -137,6 +137,7 @@ function workflow_update_workflows_full_object($workflow) {
   }
 
   // Then make transitions with the state mapping.
+  $active_transitions = array();
   foreach ($transitions as $transition) {
     $transition = (object) $transition;
     $transition->sid = $active_states[$transition->state];
@@ -144,8 +145,15 @@ function workflow_update_workflows_full_object($workflow) {
     // Roles are exported by rolename, so need to translate to RID.
     $transition->roles = !empty($transition->roles) ? _workflow_roles_to_rids($transition->roles) : '';
     workflow_update_workflow_transitions($transition);
+    $active_transitions[] = $transition->tid;
   }
 
+  // Delete any transitions in our workflow that are *not* in our original construction.
+  foreach (workflow_get_workflow_transitions_by_wid($workflow->wid) as $transition) {
+    if (!in_array($transition->tid, $active_transitions)) {
+      workflow_delete_workflow_transitions_by_tid($transition->tid);
+    }
+  }
   // Then add the node_type mapping.
   foreach ($node_types as $node_type) {
     $node_type = (object) array(

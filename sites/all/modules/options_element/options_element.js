@@ -25,7 +25,7 @@ Drupal.optionsElement = function(element) {
 
   // Find the original "manual" fields.
   this.element = element;
-  this.manualElement = $(element).find('fieldset.options, div.fieldset.options').get(0);
+  this.manualElement = $(element).find('div.options').get(0);
   this.manualOptionsElement = $(element).find('textarea').get(0);
   this.manualDefaultValueElement = $(element).find('input.form-text').get(0);
   this.keyTypeToggle = $(element).find('input.key-type-toggle').get(0);

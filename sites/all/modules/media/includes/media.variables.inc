@@ -125,17 +125,16 @@ function media_variable_default($name = NULL) {
       // Directory to store media uploaded via WYSIWYG.
       'wysiwyg_upload_directory' => '',
       // Types which can be selected when embedding media vs wysiwyg.
-      'wysiwyg_allowed_types' => array('audio', 'image', 'video'),
+      'wysiwyg_allowed_types' => array('audio', 'image', 'video', 'document'),
       // Attributes which can be modified via the wysiwyg and persist.
-      'wysiwyg_allowed_attributes' => array('height', 'width', 'hspace', 'vspace', 'border', 'align', 'style', 'alt', 'title', 'class', 'id', 'usemap'),
+      'wysiwyg_allowed_attributes' => array('height', 'width', 'hspace', 'vspace', 'border', 'align', 'style', 'class', 'id', 'usemap', 'data-picture-group', 'data-picture-align'),
       // WYSIWYG browser plugins in WYSIWYG config page.
       'wysiwyg_browser_plugins' => array(),
 
       // Name of the theme to use in the media popup dialog, defaults to
       // admin_theme.
       'dialog_theme' => '',
-      // @TODO: Make a configuration form with this.
-      'file_extensions' => variable_get('file_entity_default_allowed_extensions', 'jpg jpeg gif png txt doc docx xls xlsx pdf ppt pptx pps ppsx odt ods odp') . ' mp3 mov mp4 m4a m4v mpeg avi ogg oga ogv wmv ico',
+
       'max_filesize' => '',
       'debug' => FALSE,
 
@@ -160,6 +159,7 @@ function media_variable_default($name = NULL) {
       'browser_library_empty_message' => NULL,
       'browser_pager_limit' => NULL,
       'browser_viewtype_default' => NULL,
+      'display_types_migration_mess' => TRUE,
     );
   }
 

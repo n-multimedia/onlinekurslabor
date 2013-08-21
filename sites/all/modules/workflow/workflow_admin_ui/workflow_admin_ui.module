@@ -43,6 +43,14 @@ function workflow_admin_ui_permission() {
 }
 
 /**
+ * Implements hook_user_role_insert().
+ * Make sure new roles are allowed to participate in workflows by default.
+ */
+function workflow_admin_ui_user_role_insert($role) {
+  user_role_change_permissions($role->rid, array('participate in workflow' => 1));
+}
+
+/**
  * Implements hook_menu().
  */
 function workflow_admin_ui_menu() {
@@ -363,6 +371,8 @@ function workflow_admin_ui_edit_form($form, $form_state, $workflow = NULL) {
     // Create breadcrumbs.
     workflow_admin_ui_breadcrumbs($workflow);
 
+    $noyes = array(t('No'), t('Yes'));
+
     $form['wid'] = array('#type' => 'value', '#value' => $workflow->wid);
     $form['#workflow'] = $workflow;
 
@@ -380,8 +390,10 @@ function workflow_admin_ui_edit_form($form, $form_state, $workflow = NULL) {
       );
 
     $form['basic']['name_as_title'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Use the workflow name as the title of the workflow form.'),
+      '#type' => 'radios',
+      '#options' => $noyes,
+      '#attributes' => array('class' => array('container-inline')),
+      '#title' => t('Use the workflow name as the title of the workflow form?'),
       '#default_value' => isset($workflow->options['name_as_title']) ? $workflow->options['name_as_title'] : 0,
       '#description' => t('The workflow section of the editing form is in its own fieldset. Checking the box will add the workflow ' .
         'name as the title of workflow section of the editing form.'),
@@ -393,19 +405,37 @@ function workflow_admin_ui_edit_form($form, $form_state, $workflow = NULL) {
       );
 
     $form['comment']['comment_log_node'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Show a comment field in the workflow section of the editing form.'),
+      '#type' => 'radios',
+      '#options' => $noyes,
+      '#attributes' => array('class' => array('container-inline')),
+      '#title' => t('Show a comment field in the workflow section of the editing form?'),
       '#default_value' => isset($workflow->options['comment_log_node']) ? $workflow->options['comment_log_node'] : 0,
       '#description' => t('On the node editing form, a Comment form can be shown so that the person making the state change can record ' .
         'reasons for doing so. The comment is then included in the node\'s workflow history.'),
       );
 
     $form['comment']['comment_log_tab'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Show a comment field in the workflow section of the workflow tab form.'),
+      '#type' => 'radios',
+      '#options' => $noyes,
+      '#attributes' => array('class' => array('container-inline')),
+      '#title' => t('Show a comment field in the workflow section of the workflow tab form?'),
       '#default_value' => isset($workflow->options['comment_log_tab']) ? $workflow->options['comment_log_tab'] : 0,
       '#description' => t('On the workflow tab, a Comment form can be shown so that the person making the state change can record ' .
         'reasons for doing so. The comment is then included in the node\'s workflow history.'),
+      );
+
+    $form['watchdog'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Watchdog Logging for Workflow'),
+      );
+
+    $form['watchdog']['watchdog_log'] = array(
+      '#type' => 'radios',
+      '#options' => $noyes,
+      '#attributes' => array('class' => array('container-inline')),
+      '#title' => t('Log informational watchdog messages when a transition is executed (state of a node is changed)?'),
+      '#default_value' => isset($workflow->options['watchdog_log']) ? $workflow->options['watchdog_log'] : 0,
+      '#description' => t('Optionally log transition state changes to watchdog.'),
       );
 
     $form['tab'] = array(
@@ -488,6 +518,7 @@ function workflow_admin_ui_edit_form_submit($form, &$form_state) {
     'comment_log_node' => $form_state['values']['comment_log_node'],
     'comment_log_tab' => $form_state['values']['comment_log_tab'],
     'name_as_title' => $form_state['values']['name_as_title'],
+    'watchdog_log' => $form_state['values']['watchdog_log'],
     );
 
   $workflow = array(
@@ -552,7 +583,7 @@ function workflow_admin_ui_transitions_form_validate($form, $form_state) {
   $state_count = db_query('SELECT COUNT(sid) FROM {workflow_states} WHERE wid = :wid', array(':wid' => $wid))->fetchField();
   if (empty($author_has_permission) && $state_count > 1) {
     form_set_error('transitions', t('Please give the author permission to go from %creation to at least one state!',
-      array('%creation' => '(creation)')));
+      array('%creation' => t('(creation)'))));
   }
 }
 
@@ -780,7 +811,7 @@ function workflow_admin_ui_overview_form($form, $form_state, $workflow) {
   $states = array_combine($sids, $states);
 
   // Save the list in the form for later.
-  $form['#states'] = $states;
+  $form['#workflow_states'] = $states;
 
   // Allow modules to insert their own workflow operations.
   $links = module_invoke_all('workflow_operations', 'workflow', $workflow);
@@ -813,7 +844,7 @@ function workflow_admin_ui_overview_form($form, $form_state, $workflow) {
   $states[] = (object) array(
     'sid' => 0,
     'state' => '',
-    'status' => 0,
+    'status' => 1,
     'sysid' => 0,
     'weight' => 99,
     );
@@ -866,14 +897,15 @@ function workflow_admin_ui_overview_form($form, $form_state, $workflow) {
 
       'sysid' => array(
         '#type' => 'value',
-        '#value' => 0,
+        '#value' => $state->sysid,
         ),
       );
 
-    // Don't let the creation state change weight or status.
-    if ($state->state == '(creation)') {
+    // Don't let the creation state change weight or status or name.
+    if ($state->sid == $workflow->creation_state) {
       $form['states'][$state->sid]['weight']['#value'] = -50;
       $form['states'][$state->sid]['sysid']['#value'] = 1;
+      $form['states'][$state->sid]['state']['#disabled'] = TRUE;
       $form['states'][$state->sid]['status']['#disabled'] = TRUE;
       $form['states'][$state->sid]['reassign']['#disabled'] = TRUE;
      }
@@ -973,7 +1005,7 @@ function workflow_admin_ui_overview_form_validate($form, &$form_state) {
   $wid = $form_state['values']['wid'];
 
   // Get the state objects.
-  $states = $form['#states'];
+  $states = $form['#workflow_states'];
 
   // Because the form elements were keyed with the item ids from the database,
   // we can simply iterate through the submitted values.
@@ -1006,7 +1038,7 @@ function workflow_admin_ui_overview_form_submit($form, &$form_state) {
   $wf_name = $form['#wf_name'];
 
   // Get the state objects.
-  $states = $form['#states'];
+  $states = $form['#workflow_states'];
 
   // Because the form elements were keyed with the item ids from the database,
   // we can simply iterate through the submitted values.
@@ -1069,7 +1101,7 @@ function workflow_admin_ui_types_form($form) {
   $form = array();
 
   // Allow modules to insert their own action links.
-  $links = module_invoke_all('workflow_operations', 'top_actions');
+  $links = module_invoke_all('workflow_operations', 'top_actions', NULL);
   $links_args = array(
     'links' => $links,
     'attributes' => array('class' => array('inline', 'action-links')),
@@ -1148,6 +1180,7 @@ function workflow_admin_ui_types_form($form) {
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save workflow mapping'),
+    '#weight' => 100,
     );
 
   return $form;
@@ -1175,7 +1208,11 @@ function theme_workflow_admin_ui_types_form($variables) {
   }
 
   $output .= drupal_render($form['help']);
-  $output .= theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('style' => 'width: auto;')));
+  $output .= theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+    'attributes' => array('style' => 'width: auto; clear: both;'),
+    ));
 
   return $output . drupal_render_children($form);
 }

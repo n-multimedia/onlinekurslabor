@@ -3,7 +3,7 @@ div.options-widget .draggable a.tabledrag-handle {
   padding-right: .3em /* RTL */
 }
 
-div.form-options fieldset.options {
+div.form-options div.options {
   margin-bottom: 0;
 }
 

@@ -228,6 +228,9 @@ function workflow_actions_get_actions_by_tid($tid) {
  */
 function workflow_actions_action_info_alter(&$info) {
   $transitions = workflow_actions_trigger_info();
+  if (empty($transitions)) {
+    return;
+  }
   foreach ((array)$transitions['workflow'] as $transition => $data) {
     // Loop through all available node actions and add them as triggers.
     // But not if this has been flagged as a creation state.

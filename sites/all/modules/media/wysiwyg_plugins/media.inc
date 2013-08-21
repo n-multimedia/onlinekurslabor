@@ -15,6 +15,9 @@ function media_media_plugin() {
   // @see http://drupal.org/node/1039076
   media_include_browser_js();
 
+  // Add the filter handling.
+  drupal_add_js(drupal_get_path('module', 'media') . '/js/media.filter.js');
+
   // Plugin definition.
   $plugins['media'] = array(
     'title' => media_variable_get('wysiwyg_title'),

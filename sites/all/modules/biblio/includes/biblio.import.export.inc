@@ -180,7 +180,6 @@ function biblio_import_form($form, &$form_state) {
   }
   else {
     drupal_set_message(t("You are not authorized to access the biblio import page"), 'error');
-    print theme('page', '');
   }
 }
 
@@ -377,8 +376,8 @@ function biblio_import_finalize($success, $results) {
       watchdog($format, $message, array('@count' => $count), WATCHDOG_INFO);
       foreach ($dups as $nid) {
         $message = '';
-        $message = t('The item you are trying to import already exists in the database, see ');
-        $message .= l('node/'. $nid, 'node/'. $nid);
+        $message = t('The item you are trying to import already exists in the database, see');
+        $message .= ' ' . l('node/' . $nid, 'node/' . $nid);
 
         drupal_set_message($message, 'status');
         watchdog($format, $message, array(), WATCHDOG_ERROR);
@@ -387,7 +386,7 @@ function biblio_import_finalize($success, $results) {
   }
   else {
     $count = count($nids);
-    $message = t('Import finished with an error!  ') . format_plural($count, 'One node imported.', '@count nodes imported.');
+    $message = t('Import finished with an error!') . '  ' .  format_plural($count, 'One node imported.', '@count nodes imported.');
     drupal_set_message($message, 'error');
     watchdog($format, $message, array('@count' => $count), WATCHDOG_ERROR);
   }

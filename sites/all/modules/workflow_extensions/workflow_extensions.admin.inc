@@ -43,13 +43,13 @@ function workflow_extensions_admin_configure($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => t('Label for the button on the edit form that saves content without changing the workflow state'),
     '#default_value' => variable_get('workflow_extensions_default_save_button_label', ''),
-    '#description' => t('Applies only when <strong>Single-action buttons</strong> is selected above. Example: <em>Save, don\'t change state</em>. If left blank, the label will be the <strong>Workflow</strong> module default, i.e. <em>Save</em>. Your text may contain replacement tokens, e.g. <em>Save "[title]" to drafts</em>. Tokens require the <strong>Token</strong> module to be enabled.'),
+    '#description' => t('Applies only when <strong>Single-action buttons</strong> is selected above. Example: <em>Save, don\'t change state</em>. If left blank, the label will be the <strong>Workflow</strong> module default, i.e. <em>Save</em>. Your text may contain replacement tokens, e.g. <em>Save this draft of "[node:title]"</em>. Tokens require the <strong>Token</strong> module to be enabled.'),
   );
   $form['workflow_extensions_buttons']['workflow_extensions_change_state_button_label'] = array(
     '#type' => 'textfield',
-    '#title' => t('Label pattern for button (or buttons) for transitioning workflow state'),
+    '#title' => t('Label pattern for buttons for transitioning workflow state'),
     '#default_value' => variable_get('workflow_extensions_change_state_button_label', ''),
-    '#description' => t('Example: <em>Update [workflow-name] state</em>. If <strong>Single-action buttons</strong> is selected above, use replacement tokens or leave blank. When left blank in single-action mode, the pattern applied is <em>Move to "[workflow-new-state-name]"</em>. For the others styles the default is <em>Submit</em>. Other useful tokens you may want to use are <em>[workflow-name]</em>, <em>[workflow-current-state-name]</em> and <em>[author-name]</em>. Note that your entry applies only to transitions for which no label is already supplied via module <strong>Workflow Named Transitions</strong>, if enabled.'),
+    '#description' => t('If <strong>Single-action buttons</strong> is selected above, use replacement tokens or leave blank. When left blank in single-action mode, the pattern applied is <em>Move to "[workflow:workflow-new-state-name]"</em>. For the others styles the default is <em>Submit</em>. Other useful tokens you may want to use are <em>[workflow:workflow-name]</em>, <em>[workflow:workflow-current-state-name]</em> and <em>[node:author]</em>.'),
   );
   // Comments
   $form['workflow_extensions_comments'] = array(

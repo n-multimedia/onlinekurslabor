@@ -18,6 +18,9 @@ class HumanNameParser_Parser {
   private $middle;
   private $last;
   private $suffix;
+  private $category;
+  private $type;
+  private $literal;
 
   private $suffixes;
   private $prefixes;
@@ -36,9 +39,18 @@ class HumanNameParser_Parser {
   }
 
   public function parseName($name = NULL, $category = NULL) {
+    $this->literal = 0;
+    $this->category = 1;
+    $this->type = 1;
     if (is_array($name) && isset($name['name'])) {
       if (isset($name['auth_category']) && !empty($name['auth_category']) && empty($category)) {
-        $category = $name['auth_category'];
+        $this->category = $name['auth_category'];
+      }
+      elseif (!empty($category)) {
+        $this->category = $category;
+      }
+      if (isset($name['auth_type']) && !empty($name['auth_type'])) {
+        $this->type = $name['auth_type'];
       }
       $this->nameParts = $name;
       $this->setName($name['name'], $category);
@@ -59,6 +71,7 @@ class HumanNameParser_Parser {
    */
   public function setName($name = NULL, $category = NULL){
     if ($name) {
+      $this->category == $category;
 
       if (is_object($name) && get_class($name) == "HumanNameParser_Name") { // this is mostly for testing
         $this->name = $name;
@@ -78,8 +91,9 @@ class HumanNameParser_Parser {
       $this->last = "";
       $this->suffix = "";
 
-      if ($category == 5) {
+      if ($this->category == 5 || $this->type == 5) {
         $this->last = $name;
+        $this->literal = TRUE;
       }
       else {
         $this->parse();
@@ -128,6 +142,7 @@ class HumanNameParser_Parser {
     $arr['lastname']  = $this->last;
     $arr['suffix']    = $this->suffix;
     $arr['md5']       = md5(json_encode($arr));
+    $arr['literal']   = $this->literal;
 
     if ($arrType == 'assoc') {
       return array_merge($this->nameParts, $arr);
@@ -182,7 +197,7 @@ class HumanNameParser_Parser {
 
     // get the first name
     $this->first = $this->name->chopWithRegex($firstRegex, 0);
-    if (!$this->first){
+    if (!$this->first && $this->category != 5){
       throw new Exception("Couldn't find a first name in '{$this->name->getStr()}'");
     }
 

@@ -10,20 +10,25 @@
 function workflow_tab_page($node = NULL) {
   drupal_set_title($node->title);
   $workflow = workflow_get_workflow_type_map_by_type($node->type);
+  $states = array();
+  $state_system_names = array();
   foreach (workflow_get_workflow_states() as $data) {
     $states[$data->sid] = check_plain(t($data->state));
+    $state_system_names[$data->sid] = check_plain($data->state);
   }
   $deleted_states = array();
+  $deleted_state_system_names = array();
   $options = array('status' => 0);
   foreach (workflow_get_workflow_states($options) as $data) {
     $deleted_states[$data->sid] = check_plain(t($data->state));
+    $deleted_state_system_names[$data->sid] = check_plain($data->state);
   }
   $current = workflow_node_current_state($node);
 
   // theme_workflow_history_current_state() must run state through check_plain().
-  $current_state = theme('workflow_history_current_state', array('state_name' => $states[$current]));
+  $current_state = theme('workflow_history_current_state', array('state_name' => $states[$current], 'state_system_name' => $state_system_names[$current], 'sid' => $current));
 
-  $output = theme('workflow_current_state', array('state' => $states[$current]));
+  $output = theme('workflow_current_state', array('state' => $states[$current], 'state_system_name' => $state_system_names[$current], 'sid' => $current));
 
   // Show the form to allow state changing.
   // But only if we are not at the terminal state.
@@ -37,14 +42,14 @@ function workflow_tab_page($node = NULL) {
   foreach (workflow_get_workflow_node_history_by_nid($node->nid) as $history) {
     if ($history->sid == $current && !isset($deleted_states[$history->sid]) && !isset($current_themed)) {
       // Theme the current state differently so it stands out.
-      $state_name = theme('workflow_history_current_state',  array('state_name' => $states[$history->sid]));
+      $state_name = theme('workflow_history_current_state',  array('state_name' => $states[$history->sid], 'state_system_name' => $state_system_names[$history->sid], 'sid' => $history->sid));
       // Make a note that we have themed the current state; other times in the history
       // of this node where the node was in this state do not need to be specially themed.
       $current_themed = TRUE;
     }
     elseif (isset($deleted_states[$history->sid])) {
       // The state has been deleted, but we include it in the history.
-      $state_name = theme('workflow_deleted_state', array('deleted_state' => $deleted_states[$history->sid]));
+      $state_name = theme('workflow_deleted_state', array('state_name' => $deleted_states[$history->sid], 'state_system_name' => $deleted_state_system_names[$history->sid], 'sid' => $history->sid));
       $footer_needed = TRUE;
     }
     else {
@@ -52,7 +57,7 @@ function workflow_tab_page($node = NULL) {
       $state_name = check_plain(t($states[$history->sid]));
     }
     if (isset($deleted_states[$history->old_sid])) {
-      $old_state_name = theme('workflow_deleted_state', array('deleted_state' => $deleted_states[$history->old_sid]));
+      $old_state_name = theme('workflow_deleted_state', array('state_name' => $deleted_states[$history->old_sid], 'state_system_name' => $deleted_state_system_names[$history->old_sid], 'sid' => $history->old_sid));
       $footer_needed = TRUE;
     }
     elseif (isset($states[$history->old_sid])) {
@@ -67,6 +72,7 @@ function workflow_tab_page($node = NULL) {
         'old_sid' => $history->old_sid,
         'old_state_name' => $old_state_name,
         'sid' => $history->sid,
+        'uid' => $history->uid,
         'state_name' => $state_name,
         );
 
@@ -100,13 +106,14 @@ function theme_workflow_history_table_row($variables) {
   $old_state_name = $variables['old_state_name'];
   $state_name = $variables['state_name'];
   $history = $variables['history'];
+  $account = user_load($variables['uid']);
   $row = array(
     'data' => array(
-      format_date($history->stamp),
-      $old_state_name,
-      $state_name,
-      theme('username', array('account' => $history)),
-      check_markup($history->comment, filter_default_format()),
+      array('data' => format_date($history->stamp), 'class' => array('timestamp')),
+      array('data' => $old_state_name, 'class' => array('previous-state-name')),
+      array('data' => $state_name, 'class' => array('state-name')),
+      array('data' => theme('username', array('account' => $account)), 'class' => array('user-name')),
+      array('data' => filter_xss($history->comment), 'class' => array('log-comment')),
       ),
     'class' => array('workflow_history_row'),
     );
@@ -136,7 +143,7 @@ function theme_workflow_history_table($variables) {
  * Theme the current state in the workflow history table.
  */
 function theme_workflow_history_current_state($variables) {
-  return '<strong>' . check_plain(t($variables['state_name'])) . '</strong>';
+  return check_plain(t($variables['state_name']));
 }
 
 /**
@@ -161,6 +168,9 @@ function theme_workflow_deleted_state($variables) {
  *   Form definition array.
  */
 function workflow_tab_form($form, $form_state, $node, $wid, $states, $current) {
+  // Tell FAPI where this form is.
+  form_load_include($form_state, 'inc', 'workflow', 'workflow.pages');
+
   // Let's make sure we should be here.
   if (workflow_node_tab_access($node) === FALSE) {
     return;
@@ -168,26 +178,7 @@ function workflow_tab_form($form, $form_state, $node, $wid, $states, $current) {
 
   $form['#tab'] = TRUE;
   $choices = workflow_field_choices($node);
-  $min = $states[$current] == t('(creation)') ? 1 : 2;
-
-  // Invoke a callback indicating a transition is about to occur. Modules
-  // may veto the transition by returning FALSE.
-  // In this case, the transition is not about to occur, but we want to
-  // know if it should be dropped from the list of choices.
-  if (empty($choices)) {
-    return;
-  };
-  foreach ($choices as $sid => $name) {
-    if ($current == $sid) {
-      continue;
-    }
-    $result = module_invoke_all('workflow', 'transition pre', $current, $sid, $node);
-    // Stop if a module says so.
-    if (in_array(FALSE, $result)) {
-      // if vetoed, remove from list.
-      unset($choices[$sid]);
-    }
-  }
+  $min = ($states[$current] == t('(creation)') ? 1 : 2);
 
   // Only build form if user has possible target state(s).
   if (count($choices) >= $min) {
@@ -197,7 +188,7 @@ function workflow_tab_form($form, $form_state, $node, $wid, $states, $current) {
     $form['#wf'] = $workflow;
     $form['#choices'] = $choices;
 
-    $name = check_plain((t($workflow->name)));
+    $name = t($workflow->name);
     $timestamp = '';
     $comment = '';
 
@@ -218,7 +209,7 @@ function workflow_tab_form($form, $form_state, $node, $wid, $states, $current) {
 
     // Include the same form elements here that are included on a
     // regular node editing page. $form is modified by reference.
-    workflow_node_form($form, $form_state, t('Change @name state', array('@name' => $name)), $name, $current, $choices, $timestamp, $comment);
+    workflow_node_form($form, $form_state, t('Change !name state', array('!name' => $name)), $name, $current, $choices, $timestamp, $comment);
 
     $form['node'] = array(
       '#type' => 'value',

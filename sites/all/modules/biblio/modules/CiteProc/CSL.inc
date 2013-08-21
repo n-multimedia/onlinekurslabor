@@ -336,9 +336,9 @@ class csl_format extends csl_rendering_element {
     }
 
     if (!empty($this->format) || !empty($this->span_class)) {
-      $style = (!empty($this->format)) ? 'style="' . $this->format . '" ' : '';
+      $style = (!empty($this->format)) ? 'style="' . $this->format . '"' : '';
       $class = (!empty($this->span_class)) ? 'class="' . $this->span_class . '"' : '';
-      $text = '<span ' . $class . $style . '>' . $text . '</span>';
+      $text = '<span ' . implode(' ', array($class, $style)) . '>' . $text . '</span>';
     }
     $div_class = $div_style = '';
     if (!empty($this->div_class)) {
@@ -562,6 +562,7 @@ class csl_name extends csl_format {
     if (!$this->attr_init || $this->attr_init != $mode) $this->init_attrs($mode);
 
     $initialize_with = $this->{'initialize-with'};
+    $options = array('html' => FALSE);
 
     foreach ($names as $rank => $name) {
       if (empty($name['literal'])) {
@@ -617,7 +618,7 @@ class csl_name extends csl_format {
           }
           else {
             switch ($this->{'name-as-sort-order'}) {
-              case 'first':
+              case 'first' && $rank == 0:
               case 'all':
                 $text = $name['lastname'] . $this->sort_separator . $given;
                 break;
@@ -990,15 +991,19 @@ class csl_date extends csl_format {
 
   function render($data, $mode = NULL) {
     $date_parts = array();
-    $date = '';
     $text = '';
 
     if (($var = $this->variable) && isset($data->{$var})) {
-      $date[] = $data->{$var};
+      if (is_array($data->{$var})) {
+        $date = $data->{$var};
+      }
+      else {
+        $date = array($data->{$var});
+      }
       foreach ($this->elements as $element) {
         $date_parts[] = $element->render($date, $mode);
       }
-      $text = implode('', $date_parts);
+      $text = implode($this->delimiter, $date_parts);
     }
 //    else {
 //      $text = $this->citeproc->get_locale('term', 'no date');
@@ -1165,7 +1170,7 @@ class csl_text extends csl_format {
 
     switch ($this->source) {
       case 'variable':
-        if (!isset($data->{$this->variable}) || empty($data->{$this->variable})) return;
+        if (!isset($data->{$this->variable}) || empty($data->{$this->variable}) || trim($data->{$this->variable}) == FALSE) return;
         if ($this->variable == 'biblio_url') {
           $text = l($data->{$this->variable},  $data->{$this->variable});
         }
@@ -1713,14 +1718,6 @@ class csl_mapper {
   function map_field($field) {
     if (!isset($this->field_map)) {
       $this->field_map = biblio_get_map('field_map', 'csl');
-      $this->field_map = array_merge($this->field_map, array(
-          'author'                      => 'biblio_contributors:1',
-          'editor'                      => 'biblio_contributors:2',
-          'translator'                  => 'biblio_contributors:3',
-          'recipient'                   => ':',
-          'interviewer'                 => ':',
-          'composer'                    => ':',
-      ));
     }
 
     $vars = explode(' ', $field);

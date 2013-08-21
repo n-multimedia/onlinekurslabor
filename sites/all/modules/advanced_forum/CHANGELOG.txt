@@ -1,9 +1,71 @@
 
 ****************************** DRUPAL 7 - 2.x BRANCH ********************************
 
+July 07, 2013
+-------------
+7.x-2.3 RELEASE
+
+July 07, 2013
+-------------
+by troky: Code cleanup.
+Issue #2035217 by BertjeC: Reverting commit #5047fcb.
+
+July 04, 2013
+-------------
+7.x-2.2 RELEASE
+
+June 28, 2013
+-------------
+Issue #1948652 by EuroDomenii: Fixed wrong topics and posts count - removed recursive call.
+
+June 04, 2013
+-------------
+Issue #2011380 by pc-wurm: Fixed forum contextual links.
+
+May 20, 2013
+------------
+Issue #1998300 by inventlogic: Comment edit does not use the post_preview template file when previewing edited comments.
+
+May 07, 2013
+------------
+Issue #1946386 by troky: Fixed incorrect number of new replies when node has more revisions v2.
+
+May 04, 2013
+------------
+Issue #1982030 by rooby: Added labels to select fields on forum topic sort form.
+Issue #1975746 by troky: Fixed notice in advanced_forum_settings_page().
+
+March 19, 2013
+--------------
+Issue #1946386 by troky: Fixed incorrect number of new replies when node has more revisions.
+
+March 18, 2013
+--------------
+Issue #1941338 by troky: Fixed AF menu alteration. Changed forum/%forum_forum to forum/%advanced_forum_forum.
+
+March 17, 2013
+--------------
+Issue #1944162 by nsalyzyn: Added check for $view->style_plugin existance.
+
+March 07, 2013
+--------------
+Issue #1936476 by troky: Fixed query (added table reference) in advanced_forum_post_position()
+
+February 24, 2013
+-----------------
+by troky: Fixed forum topic preview display.
+Issue #720118 ny troky: Fixed forum hierarchy rendering on forum frontpage. Fixed subforum/subcontainer post count.
+by troky: Decreased forum description font size.
+Issue #1906536 by troky: Fixed forum styled comment numbering for non-forum nodes.
+
+February 20, 2013
+-----------------
+Issue #1921238 by regilero: Class attribute should be an array in comment_preprocess
+Issue #1635800 by troky: Removed anonymous/guest user count since it isn't supported by Drupal core.
+
 February 19, 2013
 -----------------
-7.x-2.1
+7.x-2.1 RELEASE
 
 October 26, 2012
 ----------------

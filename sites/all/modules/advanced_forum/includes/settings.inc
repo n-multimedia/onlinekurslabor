@@ -120,7 +120,10 @@ function advanced_forum_settings_page() {
   $collapsed_list_name = variable_get('forum_containers', array());
   $collapsed_list_description = array();
   foreach ($collapsed_list_name as $id) {
-    $collapsed_list_description[$id] = taxonomy_term_load($id)->name;
+    $term = taxonomy_term_load($id);
+    if (!empty($term)) {
+      $collapsed_list_description[$id] = empty($term->name) ? '' : $term->name;
+    }
   }
   $form['advanced_forum_lists']['advanced_forum_default_collapsed_list'] = array(
     '#type' => 'select',

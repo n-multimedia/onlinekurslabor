@@ -41,7 +41,7 @@ function ds_layout_list() {
           continue;
         }
 
-        $row[] = $bundle['label'];
+        $row[] = check_plain($bundle['label']);
         $links = array(l(t('Manage display'), $path . '/display'));
         // Add Mangage Form link if this entity type is supported by ds_forms.
         if (module_exists('ds_forms') && _ds_forms_is_entity_type_supported($entity_type)) {

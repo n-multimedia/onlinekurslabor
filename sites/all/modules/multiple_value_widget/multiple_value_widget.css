@@ -1,0 +1,38 @@
+.mvw-type-blocks .mvw-group {
+  margin: .5em 0;
+}
+.mvw-type-blocks.ui-sortable .mvw-group {
+  cursor: move;
+}
+.mvw-type-blocks .mvw-group .mvw-group-title {
+  margin: .25em;
+  padding: .25em .5em; 
+}
+.mvw-type-blocks .mvw-group .mvw-group-title .ui-icon {
+  float: right;
+  cursor: pointer;
+  margin-top: 1px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+}
+.mvw-type-blocks .mvw-group .mvw-group-title .ui-icon:hover {
+  background-color: #EEE;
+  border: 1px solid #999;
+}
+.mvw-type-blocks .mvw-group .mvw-group-content {
+  padding: 0.5em;
+}
+.mvw-type-blocks .ui-sortable-placeholder {
+  border: 1px dashed black;
+  visibility: visible !important;
+  background: #F5F5F5;
+}
+.mvw-type-blocks .ui-sortable-placeholder * {
+ visibility: hidden;
+}
+.mvw-type-accordion .mvw-group-title .ui-icon-arrowthick-2-n-s {
+  position: static ;
+  float: right;
+  cursor: pointer;
+  margin-top: 1px;
+}

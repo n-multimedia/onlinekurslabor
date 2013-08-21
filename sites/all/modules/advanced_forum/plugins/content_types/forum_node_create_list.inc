@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Callback function to supply a list of content types.
  */
@@ -26,7 +25,8 @@ function advanced_forum_forum_node_create_list_content_type_render($subtype, $co
 
   if (empty($context)) {
     $tid = 0;
-  } else {
+  }
+  else {
     $tid = $context->data->tid;
   }
 

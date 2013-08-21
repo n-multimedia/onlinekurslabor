@@ -68,11 +68,17 @@ function advanced_forum_cron() {
 function advanced_forum_menu_alter(&$items) {
   // Take over the forum page creation so we can add more information.
   $items['forum']['page callback'] = 'advanced_forum_page';
-  // Turn 'forum' into a normal menu item so it appears in navigation.
-  $items['forum']['type'] = MENU_NORMAL_ITEM;
+  $items['forum']['module'] = 'advanced_forum';
+  unset($items['forum']['file']);
 
-  // Take over forum/%forum_forum page also
-  $items['forum/%forum_forum']['page callback'] = 'advanced_forum_page';
+
+  // Take over forum/%forum_forum page because we want advanced_forum_forum_load
+  // is called instead of core forum_forum_load
+  $items['forum/%advanced_forum_forum'] = $items['forum/%forum_forum'];
+  $items['forum/%advanced_forum_forum']['page callback'] = 'advanced_forum_page';
+  $items['forum/%advanced_forum_forum']['module'] = 'advanced_forum';
+  unset($items['forum/%advanced_forum_forum']['file']);
+  unset($items['forum/%forum_forum']);
 }
 
 /**
@@ -532,7 +538,7 @@ module_load_include('inc', 'advanced_forum', 'includes/mark-read');
  * Post render a view and replace any advanced forum tokens.
  */
 function advanced_forum_views_post_render(&$view, &$output) {
-  if (!$view->style_plugin->uses_row_plugin()) {
+  if (empty($view->style_plugin) || !$view->style_plugin->uses_row_plugin()) {
     return;
   }
 
@@ -558,7 +564,7 @@ function advanced_forum_views_post_render(&$view, &$output) {
             'context' => NULL,
             'disable_css' => TRUE,
             'join_date_type' => variable_get('advanced_forum_author_pane_join_date_type', 'short'),
-              ));
+          ));
         }
       }
     }
@@ -575,7 +581,7 @@ function advanced_forum_views_post_render(&$view, &$output) {
               'who' => $row->uid,
               'when' => $row->timestamp,
               'why' => $row->log
-                ));
+            ));
           }
           else {
             // No access; remove token.
@@ -649,12 +655,16 @@ function advanced_forum_forum_topic_list_sort_form($form_state) {
   );
   $form['inline']['order'] = array(
     '#type' => 'select',
+    '#title' => t('Order by'),
+    '#title_display' => 'invisible',
     '#options' => $options,
     '#default_value' => $handler->options['default'],
   );
 
   $form['inline']['sort'] = array(
     '#type' => 'select',
+    '#title' => t('Sort'),
+    '#title_display' => 'invisible',
     '#options' => array(
       'asc' => t('Up'),
       'desc' => t('Down'),
@@ -805,16 +815,16 @@ function advanced_forum_get_reply_link($node) {
 
   if ($comment_setting == COMMENT_NODE_OPEN) {
 
-    $allowed = false;
+    $allowed = FALSE;
     if (module_exists('forum_access')) {
       // get tid
       if (!empty($node->taxonomy_forums)) {
         reset($node->taxonomy_forums);
         $langcode = key($node->taxonomy_forums);
         if (!empty($node->taxonomy_forums[$langcode])) {
-          $tid =  $node->taxonomy_forums[$langcode][0]['tid'];
+          $tid = $node->taxonomy_forums[$langcode][0]['tid'];
           if (forum_access_access('create', $tid)) {
-            $allowed = true;
+            $allowed = TRUE;
           }
         }
       }
@@ -887,11 +897,11 @@ function advanced_forum_last_post_link($node) {
   );
 
   return theme('advanced_forum_l', array(
-        'text' => t('Last post'),
-        'path' => "node/$node->nid",
-        'options' => $options,
-        'button_class' => 'large'
-      ));
+    'text' => t('Last post'),
+    'path' => "node/$node->nid",
+    'options' => $options,
+    'button_class' => 'large'
+  ));
 }
 
 /**
@@ -926,11 +936,11 @@ function advanced_forum_first_new_post_link($node, $comment_count) {
     );
 
     return theme('advanced_forum_l', array(
-          'text' => t('First unread'),
-          'path' => "node/$nid",
-          'options' => $options,
-          'button_class' => 'large'
-        ));
+      'text' => t('First unread'),
+      'path' => "node/$nid",
+      'options' => $options,
+      'button_class' => 'large'
+    ));
   }
 }
 
@@ -1136,8 +1146,8 @@ function advanced_forum_node_type_create_list($tid) {
     // The user is not logged-in; and denied access to create any new forum content type.
     else {
       return t('<a href="@login">Log in</a> to post new content in the forum.', array(
-            '@login' => url('user/login', array('query' => drupal_get_destination())),
-          ));
+        '@login' => url('user/login', array('query' => drupal_get_destination())),
+      ));
     }
   }
   else {
@@ -1150,6 +1160,8 @@ function advanced_forum_node_type_create_list($tid) {
  */
 function advanced_forum_forum_tools($tid = 0) {
   global $user;
+  $options = array();
+
   ctools_include('jump-menu');
   if ($tid > 0) {
     $select[url("forum/active", array('query' => array('forum[]' => $tid)))] = t("View active posts in this forum");
@@ -1300,7 +1312,7 @@ function advanced_forum_unread_replies_in_forum($tid, $uid) {
     $f_alias = $query->join("forum", "f", "c.nid = f.nid");
     //$n_alias = $query->join("node", "n", "f.vid = n.vid");
     $h_alias = $query->leftJoin("history", "h", "c.nid = h.nid AND h.uid = :uid", array(":uid" => $uid));
-    $query->addExpression("COUNT(c.cid)", "count");
+    $query->addExpression("COUNT(DISTINCT(c.cid))", "count");
     $query->addField($f_alias, "tid");
 
     $query->condition("c.status", COMMENT_PUBLISHED)
@@ -1342,7 +1354,7 @@ function advanced_forum_post_position($node, $comment) {
     // revisit in the future if there are requests for newest first.
     $query = db_select('comment', 'c')
         ->fields('c', array('cid'))
-        ->condition('nid', $node_id)
+        ->condition('c.nid', $node_id)
         ->addTag('node_access')
         ->addTag('comment_filter');
 

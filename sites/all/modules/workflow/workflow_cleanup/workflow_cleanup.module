@@ -89,7 +89,7 @@ function workflow_cleanup_form($form, $form_state) {
     $inactive[0] = $states[0] = t('None');
   }
 
-  $form['#states'] = $states;
+  $form['#workflow_states'] = $states;
 
   $form['no_workflow'] = array(
     '#type' => 'container',
@@ -181,7 +181,7 @@ function theme_workflow_cleanup_form($variables) {
  * Submission handler for main cleanup form.
  */
 function workflow_cleanup_form_submit($form, $form_state) {
-  $states = $form['#states'];
+  $states = $form['#workflow_states'];
   foreach (array('no_workflow', 'inactive') as $section) {
     foreach ($form_state['values'][$section] as $sid => $data) {
       // FAPI returns either a 0 or the sid.

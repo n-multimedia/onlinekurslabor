@@ -12,12 +12,10 @@
 function theme_options($variables) {
   $element = $variables['element'];
 
-  $classes = array();
-  if (isset($element['#attributes']['class'])) {
-    $classes = $element['#attributes']['class'];
-  }
+  element_set_attributes($element, array('id'));
+  _form_set_class($element, array('form-options'));
 
-  $classes[] = 'form-options';
+  $classes = &$element['#attributes']['class'];
   $classes[] = 'options-key-type-'. $element['#key_type'];
 
   if ($element['#key_type_toggled']) {
@@ -53,8 +51,8 @@ function theme_options($variables) {
   }
 
   $output = '';
-  $output .= '<div class="' . implode(' ', $classes) .'">';
-  $output .= theme('fieldset', array('element' => array(
+  $output .= '<div' . drupal_attributes($element['#attributes']) . '>';
+  $output .= theme('container', array('element' => array(
     '#title' => t('Options'),
     '#collapsible' => FALSE,
     '#children' => $options,

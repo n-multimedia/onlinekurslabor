@@ -51,14 +51,14 @@ function advanced_forum_forum_list_content_type_render($subtype, $conf, $panel_a
       $block->admin_links['administer_forums'] = array(
         'title' => t('Administer forums'),
         'alt' => t("Add, delete or modify forums"),
-        'href' => "admin/content/forum",
+        'href' => "admin/structure/forum",
       );
 
       if ($tid) {
         $block->admin_links['edit_forum'] = array(
           'title' => t('Edit forum'),
           'alt' => t("Modify this forum"),
-          'href' => "admin/content/forum/edit/" . ($context->data->container ? 'container/' : 'forum/') . $tid,
+          'href' => "admin/structure/forum/edit/" . ($context->data->container ? 'container/' : 'forum/') . $tid,
           'query' => drupal_get_destination(),
         );
       }

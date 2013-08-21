@@ -318,6 +318,8 @@ function _biblio_pm_create_node_from_xml($xml, $terms, $batch, $session_id) {
       }
       if ($dup < 0 && $action == 'replace') { //entry has be imported before, but may have changed
         $node->nid = -$dup;
+        $existing_node = db_query("SELECT * FROM {node} WHERE nid=:nid", array(':nid' => $node->nid))->fetchObject();
+        $node = (object) array_merge((array)$existing_node, (array)$node);
         $dup = NULL;
       }
       if (!$dup) {

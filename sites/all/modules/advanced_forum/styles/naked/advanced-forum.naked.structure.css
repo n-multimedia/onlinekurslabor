@@ -129,6 +129,7 @@ td.forum-details {
 
 td.forum-details .forum-description {
   margin: 0;
+  font-size: 0.9em;
 }
 
 td.forum-details .forum-subforums,
@@ -460,4 +461,10 @@ div.forum-post {
 
 .forum-search-result {
   margin-bottom: 10px;
+}
+
+/*** PREVIEW MODE ****************************************************************/
+/* override inline-block */
+.preview {
+  display: block;
 }

@@ -50,13 +50,10 @@ Workflow Named Transitions.
 
 CONFIGURATION
 =============
-If you have Workflow Named Transitions installed (highly recommended for full
-flexibility), visit Administer >> Site building >> Workflow and click the
-"Edit labels" tab at the top of the page to enter your custom labels.
 With the Token module installed you may use replacement tokens in your custom
 labels, for instance:
-  "Reject submission, return to [author-name]" or
-  "Transition to [workflow]:[workflow-new-state-name]"
+  "Reject submission, return to [node:author]" or
+  "Transition to [workflow:workflow-name]: [workflow:workflow-new-state-name]"
 
 In addition, there are a couple of self-explanatory configuration options at
 Administer >> Site configuration >> Workflow extensions and one permission
@@ -78,7 +75,7 @@ block tick "Show if the following PHP code returns TRUE" and enter:
 
   <?php return !arg(2); ?>
 
-If your theme does not have any block regions to suit your estethic
+If your theme does not have any block regions to suit your esthetic
 requirements, you can instead insert the line below in the node.tpl.php file of
 your theme, for instance immediately above (or below) the line containing
 "print $content;":

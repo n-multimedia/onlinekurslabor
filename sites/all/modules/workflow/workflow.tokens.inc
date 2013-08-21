@@ -30,7 +30,9 @@ function workflow_tokens($type, $tokens, array $data = array(), array $options =
           // so we set the token values from the workflow form fields.
           $sid = $node->workflow;
           $old_sid = isset($last_history->old_sid) ? $last_history->old_sid : workflow_get_creation_state_by_wid($workflow->wid);
-          $user_name = $node->uid ? $node->name : variable_get('anonymous', 'Anonymous');
+          $user_name = $node->uid ? (isset($node->name) ? $node->name
+            : variable_get('anonymous', 'Anonymous'))
+            : variable_get('anonymous', 'Anonymous');
           $uid = $node->uid;
           $account = user_load($node->uid);
           $mail = ($node->uid && isset($node->user_mail)) ? $node->user_mail : '';
@@ -41,12 +43,18 @@ function workflow_tokens($type, $tokens, array $data = array(), array $options =
             // If the node has no workflow history,
             // the node is being inserted and will soon be transitioned to the first valid state.
             // We find this state using the same logic as workflow_nodeapi().
-            $choices = workflow_field_choices($node);
-            // @TODO: Some users, like anonymous, may not be allowed
-            // to cause transitions, so there will be no choices.
-            $keys = array_keys($choices);
-            $sid = array_shift($keys);
-            $old_sid = workflow_get_creation_state_by_wid($workflow->wid);
+            if ($choices = workflow_field_choices($node)) {
+              // @TODO: Some users, like anonymous, may not be allowed
+              // to cause transitions, so there will be no choices.
+              $keys = array_keys($choices);
+              $sid = array_shift($keys);
+              $old_sid = workflow_get_creation_state_by_wid($workflow->wid);
+            }
+            else {
+              // What to choose?
+              $sid = $node->workflow;
+              $old_sid = $workflow->creation_state;
+            }
             $sid = workflow_get_workflow_states_by_sid($sid)->sid;
             $old_sid = workflow_get_workflow_states_by_sid($old_sid)->sid;
             $user_name = $node->uid ? $node->name : variable_get('anonymous', 'Anonymous');

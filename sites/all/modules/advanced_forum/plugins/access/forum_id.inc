@@ -77,8 +77,6 @@ function advanced_forum_forum_id_ctools_access_check($conf, $context) {
  * Provide a summary description based upon the checked term_vocabularys.
  */
 function advanced_forum_forum_id_ctools_acesss_summary($conf, $context) {
-  if (empty($context->identifier))
-    dpm($conf);
   $vocabulary = taxonomy_vocabulary_load(variable_get('forum_nav_vocabulary', ''));
   if (empty($conf['tids'])) {
     return t('@identifier is any forum', array('@identifier' => $context->identifier));

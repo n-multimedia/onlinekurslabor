@@ -563,6 +563,7 @@ function theme_biblio_format_authors($variables) {
 }
 
 function theme_biblio_author_link($variables) {
+  $base  = variable_get('biblio_base', 'biblio');
   $author = $variables['author'];
   $options = isset($variables['options']) ? $variables['options'] : array();
 

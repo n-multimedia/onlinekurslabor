@@ -264,7 +264,7 @@ class views_plugin_ds_entity_view extends views_plugin_row {
       '#description' => t('Select fields which "delta" value should be added to the result row. On the manage display of an entity you can decide to look for this delta value to only print that row.'),
       '#options' => $delta_fields,
       '#multiple' => TRUE,
-      '#default_value' => $this->options['delta_fields'],
+      '#default_value' => !empty($this->options['delta_fields']) ? $this->options['delta_fields'] : '',
     );
 
     // Advanced function.
@@ -297,7 +297,7 @@ class views_plugin_ds_entity_view extends views_plugin_row {
   function options_submit(&$form, &$form_state) {
     $form_state['values']['row_options']['load_comments'] = $form_state['values']['row_options']['default_fieldset']['load_comments'];
     $form_state['values']['row_options']['view_mode'] = $form_state['values']['row_options']['default_fieldset']['view_mode'];
-    $form_state['values']['row_options']['switch'] = $form_state['values']['row_options']['switch_fieldset']['switch'];
+    $form_state['values']['row_options']['switch'] = isset($form_state['values']['row_options']['switch_fieldset']) ? $form_state['values']['row_options']['switch_fieldset']['switch'] : FALSE;
     $form_state['values']['row_options']['alternating'] = $form_state['values']['row_options']['alternating_fieldset']['alternating'];
     $form_state['values']['row_options']['grouping'] = $form_state['values']['row_options']['grouping_fieldset']['grouping'];
     $form_state['values']['row_options']['advanced'] = $form_state['values']['row_options']['advanced_fieldset']['advanced'];

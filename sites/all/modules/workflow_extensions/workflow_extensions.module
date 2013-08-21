@@ -309,7 +309,6 @@ function workflow_extensions_form_submit($form, &$form_state) {
   // In the original form_submit handler that we pass control to next, the
   // selected workflow state is taken from form_state['values']['workflow']. So
   // that's the entry we need to set here in accordance with the clicked button.
-  // See node_form_submit() -> node_submit() for the edit form.
   // See workflow_tab_form_submit() for the Workflow tab.
   if (isset($form_state['clicked_button']['#to_state'])) {
     $form_state['values']['workflow'] = $form_state['clicked_button']['#to_state'];
@@ -318,9 +317,8 @@ function workflow_extensions_form_submit($form, &$form_state) {
   if (isset($form['#node'])) {
     $form_state['values']['node'] = $form['#node'];
   }
-  // [#1786346] I believe this is superfluous, though not harmful
+  // [#1786346]
   form_load_include($form_state, 'inc', 'workflow', 'workflow.pages');
-  // ... now proceed to next handler, e.g. node_form_submit for a normal save
 }
 
 /**
@@ -398,8 +396,10 @@ function _workflow_extensions_replace_with_buttons(&$form, $workflow_name) {
 }
 
 function _workflow_extensions_replace_with_dropdown(&$form, $workflow_name) {
-  $form['workflow'][$workflow_name]['#type'] = 'select';
-  $form['workflow'][$workflow_name]['#name'] = 'workflow';
+  if ($form['workflow'][$workflow_name]['#type'] != 'value') {
+    $form['workflow'][$workflow_name]['#type'] = 'select';
+    $form['workflow'][$workflow_name]['#name'] = 'workflow';
+  }
 }
 
 /**
@@ -420,7 +420,11 @@ function workflow_extensions_block_view($delta) {
   if (arg(0) == 'node') {
     $node = node_load(arg(1));
     $block['content'] = workflow_extensions_change_state_form($node);
-    $block['subject'] = '';
+    if ($block['content']) {
+      $workflow = workflow_get_workflow_type_map_by_type($node->type);
+      $workflow = workflow_get_workflows_by_wid($workflow->wid);
+      $block['subject'] = t('Change @name state', array('@name' => $workflow->name));
+    }
     return $block;
   }
 }
@@ -495,11 +499,31 @@ function workflow_extensions_extract_workflow_name($form) {
   return isset($form['#wf']->name) ? $form['#wf']->name : $form['workflow']['#title'];
 }
 
+/**
+ * Sets up an array of handlers appropriate for the form we're on.
+ *
+ * Called only from _workflow_extensions_replace_with_buttons().
+ * Add 'workflow_tab_form_submit' if is not a handler for the form already.
+ * Also make sure we go through 'workflow_extensions_form_submit' first.
+ *
+ * @param array $form
+ *   the form
+ * 
+ * @return array
+ *   an arrray of form handler functions
+ */
 function _workflow_extensions_assign_handlers($form) {
-  $original_handlers = $form['#submit']; // e.g. 'workflow_tab_form_submit' or 'menu_node_form_submit'
-  $handlers = ($form['#id'] == 'node-form') // 'menu_node_form_submit', 'upload_node_form_submit'
-    ? array('workflow_extensions_form_submit', 'node_form_submit') // node_form_submit() will add original handlers
-    : array_merge(array('workflow_extensions_form_submit'), $original_handlers);
+  $handlers = empty($form['#submit']) ? array() : $form['#submit'];
+  if (!in_array('workflow_tab_form_submit', $handlers)) {
+    // We arrive here, for instance, when the Locale modules is enabled.
+    $handlers[] = 'workflow_tab_form_submit';
+  }
+  if (!in_array('workflow_extensions_form_submit', $handlers)) {
+    array_unshift($handlers, 'workflow_extensions_form_submit');
+  }
+  // Append a redirect handler. It will not affect the original redirection
+  // when on /node/%/..., but will redirect back to the original page if on any
+  // other page.
   $handlers[] = 'workflow_extensions_form_redirect';
   return $handlers;
 }

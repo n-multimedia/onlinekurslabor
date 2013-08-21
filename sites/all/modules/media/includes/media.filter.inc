@@ -69,9 +69,7 @@ function _media_filter_add_file_usage_from_fields($entity_type, $entity) {
         $deprecate = $old_file_count - $entity_files[$fid];
         // Now deprecate this usage
         $file = file_load($fid);
-        //22.03.2013 - 16:21 - SN
-        if(!empty($file))
-        {
+        if ($file) {
           file_usage_delete($file, 'media', $entity_type, $entity_id, $deprecate);
         }
         // Usage is deleted, nothing more to do with this file
@@ -96,8 +94,9 @@ function _media_filter_add_file_usage_from_fields($entity_type, $entity) {
   // the file_usage table will have no entries for this because of the delete
   // query above.
   foreach ($entity_files as $fid => $entity_count) {
-    $file = file_load($fid);
-    file_usage_add($file, 'media', $entity_type, $entity_id, $entity_count);
+    if ($file = file_load($fid)) {
+      file_usage_add($file, 'media', $entity_type, $entity_id, $entity_count);
+    }
   }
 
 }
@@ -267,6 +266,11 @@ function media_token_to_markup($match, $wysiwyg = FALSE) {
       throw new Exception('No file Id');
     }
 
+    // Ensure the 'link_text' key is always defined.
+    if (!isset($tag_info['link_text'])) {
+      $tag_info['link_text'] = NULL;
+    }
+
     // Ensure a valid view mode is being requested.
     if (!isset($tag_info['view_mode'])) {
       $tag_info['view_mode'] = media_variable_get('wysiwyg_default_view_mode');
@@ -305,16 +309,18 @@ function media_token_to_markup($match, $wysiwyg = FALSE) {
       $tag_info['attributes']['class'] = explode(" ", $tag_info['attributes']['class']);
     }
 
-    // Track the fid of this file in the {media_filter_usage} table.
-    media_filter_track_usage($file->fid);
+    // Grab the potentially overrided fields from the file.
+    $fields = media_filter_field_parser($tag_info);
 
     $attributes = is_array($tag_info['attributes']) ? $tag_info['attributes'] : array();
     $attribute_whitelist = media_variable_get('wysiwyg_allowed_attributes');
     $settings['attributes'] = array_intersect_key($attributes, array_flip($attribute_whitelist));
+    $settings['fields'] = $fields;
 
     if (!empty($tag_info['attributes']) && is_array($tag_info['attributes'])) {
       $attribute_whitelist = media_variable_get('wysiwyg_allowed_attributes');
       $settings['attributes'] = array_intersect_key($tag_info['attributes'], array_flip($attribute_whitelist));
+      $settings['fields'] = $fields;
 
       // Many media formatters will want to apply width and height independently
       // of the style attribute or the corresponding HTML attributes, so pull
@@ -341,6 +347,17 @@ function media_token_to_markup($match, $wysiwyg = FALSE) {
     return '';
   }
 
+  // If the tag has link text stored with it, override the filename with it for
+  // the rest of this function, so that if the file is themed as a link, the
+  // desired text will be used (see, for example, theme_file_link()).
+  // @todo: Try to find a less hacky way to do this.
+  if (isset($tag_info['link_text'])) {
+    // The link text will have characters such as "&" encoded for HTML, but the
+    // filename itself needs the raw value when it is used to build the link,
+    // in order to avoid double encoding.
+    $file->filename = decode_entities($tag_info['link_text']);
+  }
+
   if ($wysiwyg) {
     $settings['wysiwyg'] = $wysiwyg;
     // If sending markup to a WYSIWYG, we need to pass the file infomation so
@@ -353,6 +370,7 @@ function media_token_to_markup($match, $wysiwyg = FALSE) {
       'type' => 'media',
       'fid' => $file->fid,
       'view_mode' => $tag_info['view_mode'],
+      'link_text' => $tag_info['link_text'],
     ));
     $element['#attributes']['data-file_info'] = urlencode($data);
     $element['#attributes']['class'][] = 'media-element';
@@ -373,15 +391,7 @@ function media_token_to_markup($match, $wysiwyg = FALSE) {
     }
     field_attach_prepare_view('file', array($file->fid => $file), $tag_info['view_mode']);
     entity_prepare_view('file', array($file->fid => $file));
-
-    //return;
-    //$element['content'] += field_attach_view('node', $file, $tag_info['view_mode']);
-    //
-    //og ref field causes infinite loop here
-    unset($file->og_group_ref);
-    
     $element['content'] += field_attach_view('file', $file, $tag_info['view_mode']);
-    
     if (count(element_children($element['content'])) > 1) {
       // Add surrounding divs to group them together.
       // We dont want divs when there are no additional fields to allow files
@@ -398,6 +408,29 @@ function media_token_to_markup($match, $wysiwyg = FALSE) {
   return drupal_render($element);
 }
 
+/**
+ * Parse the field array from the collapsed AJAX string.
+ */
+function media_filter_field_parser($tag_info) {
+  $fields = array();
+  if (isset($tag_info['fields'])) {
+    foreach($tag_info['fields'] as $field_name => $field_value) {
+      if (strpos($field_name, 'field_') === 0) {
+        $parsed_field = explode('[', str_replace(']', '', $field_name));
+        if(isset($parsed_field[2])) {
+          if(isset($parsed_field[3])) {
+            $fields[$parsed_field[0]][$parsed_field[1]][$parsed_field[2]][$parsed_field[3]] = $field_value;
+          } else {
+            $fields[$parsed_field[0]][$parsed_field[1]][$parsed_field[2]] = $field_value;
+          }
+        } else {
+          $fields[$parsed_field[0]][$parsed_field[1]] = $field_value;
+        }
+      }
+    }
+  }
+  return $fields;
+}
 /**
  * Builds a map of media tags in the element.
  *
@@ -525,6 +558,10 @@ function media_format_form($form, $form_state, $file) {
   $form = array();
   $form['#media'] = $file;
 
+  // Allow for overrides to the fields.
+  $query_fields = isset($_GET['fields']) ? drupal_json_decode($_GET['fields']) : array();
+  $fields = media_filter_field_parser(array('fields' => $query_fields), $file);
+
   $view_modes = media_get_wysiwyg_allowed_view_modes($file);
   $formats = $options = array();
   foreach ($view_modes as $view_mode => $view_mode_info) {
@@ -545,7 +582,8 @@ function media_format_form($form, $form_state, $file) {
     return;
   }
 
-  $default_view_mode = media_variable_get('wysiwyg_default_view_mode');
+  // Allow for overrides to the display format.
+  $default_view_mode = is_array($query_fields) && isset($query_fields['format']) ? $query_fields['format'] : media_variable_get('wysiwyg_default_view_mode');
   if (!isset($formats[$default_view_mode])) {
     $default_view_mode = key($formats);
   }
@@ -588,23 +626,17 @@ function media_format_form($form, $form_state, $file) {
       they are insterted into an editor.')
   );
 
-  if ($file->type === 'image') {
-    $form['options']['alt'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Alternate text'),
-      '#description' => t('Alternative text is used by screen readers, search
-        engines, and when the image cannot be loaded. By adding alt text you
-        improve accesibility and search engine optimization.'),
-      '#default_value' => isset($file->field_file_image_alt_text['und'][0]['safe_value']) ? $file->field_file_image_alt_text['und'][0]['safe_value'] : '',
-    );
-    $form['options']['title'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Title text'),
-      '#description' => t('Title text is used in the tool tip when a user hovers
-        their mouse over the image. Adding title text makes it easier to
-        understand the context of an image and improves usability.'),
-      '#default_value' => isset($file->field_file_image_title_text['und'][0]['safe_value']) ? $file->field_file_image_title_text['und'][0]['safe_value'] : '',
-    );
+  // Add fields from the file, so that we can override them if neccesary.
+  $form['options']['fields'] = array();
+  foreach ($fields as $field_name => $field_value) {
+    $file->{$field_name} = $field_value;
+  }
+  field_attach_form('file', $file, $form['options']['fields'], $form_state);
+  $instance = field_info_instances('file', $file->type);
+  foreach ($instance as $field_name => $field_value) {
+    if (isset($instance[$field_name]['settings']) && isset($instance[$field_name]['settings']['wysiwyg_override']) && !$instance[$field_name]['settings']['wysiwyg_override']) {
+      unset($form['options']['fields'][$field_name]);
+    }
   }
 
   // Similar to a form_alter, but we want this to run first so that
@@ -655,65 +687,96 @@ function media_get_file_without_label($file, $view_mode, $settings = array()) {
 }
 
 /**
- * Clears caches that may be affected by the media filter.
- *
- * The media filter calls file_load(). This means that if a file object
- * is updated, the check_markup() and field caches could return stale content.
- * There are several possible approaches to deal with this:
- *  - Disable filter caching in media_filter_info(), this was found to cause a
- *    30% performance hit from profiling four node teasers, due to both the
- *    media filter itself, and other filters that can't be cached.
- *  - Clear the filter and field caches whenever any media node is updated, this
- *    would ensure cache coherency but would reduce the effectiveness of those
- *    caches on high traffic sites with lots of media content updates.
- *  - The approach taken here: Record the fid of all media objects that are
- *    referenced by the media filter. Only clear the filter and field caches
- *    when one of these is updated, as opposed to all media objects.
- *  - @todo: consider an EntityFieldQuery to limit cache clearing to only those
- *    entities that use a text format with the media filter, possibly checking
- *    the contents of those fields to further limit this to fields referencing
- *    the media object being updated. This would need to be implemented
- *    carefully to avoid scalability issues with large result sets, and may
- *    not be worth the effort.
- *
- * @param int $fid
- *   Optional media fid being updated. If not given, the cache will be cleared
- *   as long as any file is referenced.
+ * Implements hook_entity_dependencies().
  */
-function media_filter_invalidate_caches($fid = FALSE) {
-  // If fid is passed, confirm that it has previously been referenced by the
-  // media filter. If not, clear the cache if the {media_filter_usage} has any
-  // valid records.
-  if (($fid && db_query('SELECT fid FROM {media_filter_usage} WHERE fid = :fid', array(':fid' => $fid))->fetchField()) || (!$fid && media_filter_usage_has_records())) {
-    // @todo: support entity cache, either via a hook, or using module_exists().
-    cache_clear_all('*', 'cache_filter', TRUE);
-    cache_clear_all('*', 'cache_field', TRUE);
+function media_entity_dependencies($entity, $entity_type) {
+  // Go through all the entity's text fields and add a dependency on any files
+  // that are referenced there.
+  $dependencies = array();
+  foreach (media_filter_parse_from_fields($entity_type, $entity) as $file_reference) {
+    $dependencies[] = array('type' => 'file', 'id' => $file_reference['fid']);
+  }
+  return $dependencies;
+}
+
+/**
+ * Implements hook_entity_uuid_load().
+ */
+function media_entity_uuid_load(&$entities, $entity_type) {
+  // Go through all the entity's text fields and replace file IDs in media
+  // tokens with the corresponding UUID.
+  foreach ($entities as $entity) {
+    media_filter_replace_tokens_in_all_text_fields($entity_type, $entity, 'media_token_fid_to_uuid');
   }
 }
 
 /**
- * Determines if the {media_filter_usage} table has any entries.
+ * Implements hook_entity_uuid_presave().
  */
-function media_filter_usage_has_records() {
-  return (bool) db_query_range('SELECT 1 FROM {media_filter_usage} WHERE fid > :fid', 0, 1, array(':fid' => 0))->fetchField();
+function media_entity_uuid_presave(&$entity, $entity_type) {
+  // Go through all the entity's text fields and replace UUIDs in media tokens
+  // with the corresponding file ID.
+  media_filter_replace_tokens_in_all_text_fields($entity_type, $entity, 'media_token_uuid_to_fid');
 }
 
 /**
- * Tracks usage of media fids by the media filter.
- *
- * @param int $fid
- *   The media fid.
+ * Replaces media tokens in an entity's text fields, using the specified callback function.
  */
-function media_filter_track_usage($fid) {
-  // This function only tracks when fids are found by the media filter.
-  // It would be impractical to check when formatted text is edited to remove
-  // references to fids, however by keeping a timestamp, we can implement
-  // rudimentary garbage collection in hook_flush_caches().
-  // However we only need to track that an fid has ever been referenced,
-  // not every time, so avoid updating this table more than once per month,
-  // per fid.
-  $timestamp = db_query('SELECT timestamp FROM {media_filter_usage} WHERE fid = :fid', array(':fid' => $fid))->fetchField();
-  if (!$timestamp || $timestamp <= REQUEST_TIME - 86400 * 30) {
-    db_merge('media_filter_usage')->key(array('fid' => $fid))->fields(array('fid' => $fid, 'timestamp' => REQUEST_TIME))->execute();
+function media_filter_replace_tokens_in_all_text_fields($entity_type, $entity, $callback) {
+  $text_field_names = _media_filter_fields_with_text_filtering($entity_type, $entity);
+  foreach ($text_field_names as $field_name) {
+    if (!empty($entity->{$field_name})) {
+      $field = field_info_field($field_name);
+      $all_languages = field_available_languages($entity_type, $field);
+      $field_languages = array_intersect($all_languages, array_keys($entity->{$field_name}));
+      foreach ($field_languages as $language) {
+        if (!empty($entity->{$field_name}[$language])) {
+          foreach ($entity->{$field_name}[$language] as &$item) {
+            $item['value'] = preg_replace_callback(MEDIA_TOKEN_REGEX, $callback, $item['value']);
+          }
+        }
+      }
+    }
   }
+}
+
+/**
+ * Callback to replace file IDs with UUIDs in a media token.
+ */
+function media_token_fid_to_uuid($matches) {
+  return _media_token_uuid_replace($matches, 'entity_get_uuid_by_id');
+}
+
+/**
+ * Callback to replace UUIDs with file IDs in a media token.
+ */
+function media_token_uuid_to_fid($matches) {
+  return _media_token_uuid_replace($matches, 'entity_get_id_by_uuid');
+}
+
+/**
+ * Helper function to replace UUIDs with file IDs or vice versa.
+ *
+ * @param array $matches
+ *   An array of matches for media tokens, from a preg_replace_callback()
+ *   callback function.
+ * @param string $entity_uuid_function
+ *   Either 'entity_get_uuid_by_id' (to replace file IDs with UUIDs in the
+ *   token) or 'entity_get_id_by_uuid' (to replace UUIDs with file IDs).
+ *
+ * @return string
+ *   A string representing the JSON-encoded token, with the appropriate
+ *   replacement between file IDs and UUIDs.
+ */
+function _media_token_uuid_replace($matches, $entity_uuid_function) {
+  $tag = $matches[0];
+  $tag = str_replace(array('[[', ']]'), '', $tag);
+  $tag_info = drupal_json_decode($tag);
+  if (isset($tag_info['fid'])) {
+    if ($new_ids = $entity_uuid_function('file', array($tag_info['fid']))) {
+      $new_id = reset($new_ids);
+      $tag_info['fid'] = $new_id;
+    }
+  }
+  return '[[' . drupal_json_encode($tag_info) . ']]';
 }

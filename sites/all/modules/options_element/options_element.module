@@ -96,6 +96,7 @@ function options_element_element_info() {
     '#default_value_allowed' => TRUE,
     '#default_value_pattern' => '',
     '#element_validate' => array('form_options_validate'),
+    '#theme_wrappers' => array('form_element'),
   );
 
   return $type;

@@ -161,7 +161,7 @@ function advanced_forum_find_style_templates($style = NULL) {
         $theme_path = $theme_path . "/$key";
       }
       // 2. check for <theme>/advanced-forum-<template>.tpl.php
-      else if (file_exists($theme_path . "/" . $theme_base_file . $extension)) {
+      elseif (file_exists($theme_path . "/" . $theme_base_file . $extension)) {
         $theme_file = $theme_base_file;
       }
       // 3. check for advanced_forum/styles/<style>/... template

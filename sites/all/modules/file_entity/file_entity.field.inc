@@ -14,6 +14,40 @@ function file_entity_field_formatter_info() {
     'description' => t('Display the file in a specific view mode'),
     'field types' => array('file', 'image'),
     'settings' => array('file_view_mode' => 'default'),
+    'hidden file formatter' => TRUE,
+  );
+  $info['file_download_link'] = array(
+    'label' => t('Download link'),
+    'description' => t('Displays a link that will force the browser to download the file.'),
+    'field types' => array('file', 'image'),
+    'settings' => array(
+      'text' => t('Download [file:name]'),
+    ),
+  );
+  $info['file_audio'] = array(
+    'label' => t('Audio'),
+    'description' => t('Render the file using an HTML5 audio tag.'),
+    'field types' => array('file'),
+    'settings' => array(
+      'controls' => TRUE,
+      'autoplay' => FALSE,
+      'loop' => FALSE,
+      'multiple_file_behavior' => 'tags',
+    ),
+  );
+  $info['file_video'] = array(
+    'label' => t('Video'),
+    'description' => t('Render the file using an HTML5 video tag.'),
+    'field types' => array('file'),
+    'settings' => array(
+      'controls' => TRUE,
+      'autoplay' => FALSE,
+      'loop' => FALSE,
+      'muted' => FALSE,
+      'width' => NULL,
+      'height' => NULL,
+      'multiple_file_behavior' => 'tags',
+    ),
   );
   return $info;
 }
@@ -35,6 +69,88 @@ function file_entity_field_formatter_settings_form($field, $instance, $view_mode
       // Never empty, so no #empty_option
     );
   }
+  elseif ($display['type'] == 'file_download_link') {
+    $element['text'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Link text'),
+      '#description' => t('This field support tokens.'),
+      '#default_value' => $settings['text'],
+      '#required' => TRUE,
+    );
+  }
+  elseif ($display['type'] == 'file_audio') {
+    $element['controls'] = array(
+      '#title' => t('Show audio controls'),
+      '#type' => 'checkbox',
+      '#default_value' => $settings['controls'],
+    );
+    $element['autoplay'] = array(
+      '#title' => t('Autoplay'),
+      '#type' => 'checkbox',
+      '#default_value' => $settings['autoplay'],
+    );
+    $element['loop'] = array(
+      '#title' => t('Loop'),
+      '#type' => 'checkbox',
+      '#default_value' => $settings['loop'],
+    );
+    $element['multiple_file_behavior'] = array(
+      '#title' => t('Display of multiple files'),
+      '#type' => 'radios',
+      '#options' => array(
+        'tags' => t('Use multiple @tag tags, each with a single source', array('@tag' => '<audio>')),
+        'sources' => t('Use multiple sources within a single @tag tag', array('@tag' => '<audio>')),
+      ),
+      '#default_value' => $settings['multiple_file_behavior'],
+      // Hide this setting in the manage file display configuration.
+      '#access' => !empty($field),
+    );
+
+  }
+  elseif ($display['type'] == 'file_video') {
+    $element['controls'] = array(
+      '#title' => t('Show video controls'),
+      '#type' => 'checkbox',
+      '#default_value' => $settings['controls'],
+    );
+    $element['autoplay'] = array(
+      '#title' => t('Autoplay'),
+      '#type' => 'checkbox',
+      '#default_value' => $settings['autoplay'],
+    );
+    $element['loop'] = array(
+      '#title' => t('Loop'),
+      '#type' => 'checkbox',
+      '#default_value' => $settings['loop'],
+    );
+    $element['width'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Width'),
+      '#default_value' => $settings['width'],
+      '#size' => 5,
+      '#maxlength' => 5,
+      '#field_suffix' => t('pixels'),
+    );
+    $element['height'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Height'),
+      '#default_value' => $settings['height'],
+      '#size' => 5,
+      '#maxlength' => 5,
+      '#field_suffix' => t('pixels'),
+    );
+    $element['multiple_file_behavior'] = array(
+      '#title' => t('Display of multiple files'),
+      '#type' => 'radios',
+      '#options' => array(
+        'tags' => t('Use multiple @tag tags, each with a single source', array('@tag' => '<video>')),
+        'sources' => t('Use multiple sources within a single @tag tag', array('@tag' => '<video>')),
+      ),
+      '#default_value' => $settings['multiple_file_behavior'],
+      // Hide this setting in the manage file display configuration.
+      '#access' => !empty($field),
+    );
+  }
 
   return $element;
 }
@@ -45,14 +161,53 @@ function file_entity_field_formatter_settings_form($field, $instance, $view_mode
 function file_entity_field_formatter_settings_summary($field, $instance, $view_mode) {
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
-  $summary = NULL;
+  $summary = array();
 
   if ($display['type'] === 'file_rendered') {
     $view_mode_label = file_entity_view_mode_label($settings['file_view_mode'], t('Unknown'));
-    $summary = t('View mode: %mode', array('%mode' => $view_mode_label));
+    $summary[] = t('View mode: %mode', array('%mode' => $view_mode_label));
+  }
+  elseif ($display['type'] == 'file_download_link') {
+    $summary[] = t('Link text: %text', array('%text' => $settings['text']));
+  }
+  elseif ($display['type'] === 'file_audio') {
+    if (isset($settings['controls'])) {
+      $summary[] = t('Controls: %controls', array('%controls' => $settings['controls'] ? 'visible' : 'hidden'));
+    }
+    if (isset($settings['autoplay'])) {
+      $summary[] = t('Autoplay: %autoplay', array('%autoplay' => $settings['autoplay'] ? t('yes') : t('no')));
+    }
+    if (isset($settings['loop'])) {
+      $summary[] = t('Loop: %loop', array('%loop' => $settings['loop'] ? t('yes') : t('no')));
+    }
+    if (isset($settings['multiple_file_behavior'])) {
+      $summary[] = t('Multiple files: %multiple', array('%multiple' => $settings['multiple_file_behavior']));
+    }
+
+  }
+  elseif ($display['type'] === 'file_video') {
+    $summary_items = array();
+    if (isset($settings['controls'])) {
+      $summary[] = t('Controls: %controls', array('%controls' => $settings['controls'] ? 'visible' : 'hidden'));
+    }
+    if (isset($settings['autoplay'])) {
+      $summary[] = t('Autoplay: %autoplay', array('%autoplay' => $settings['autoplay'] ? t('yes') : t('no')));
+    }
+    if (isset($settings['loop'])) {
+      $summary[] = t('Loop: %loop', array('%loop' => $settings['loop'] ? t('yes') : t('no')));
+    }
+    if (isset($settings['muted'])) {
+      $summary[] = t('Muted: %muted', array('%muted' => $settings['muted'] ? t('yes') : t('no')));
+    }
+    if ($settings['width'] && $settings['height']) {
+      $summary[] = t('Size: %width x %height', array('%width' => $settings['width'], '%height' => $settings['height']));
+    }
+    if (isset($settings['multiple_file_behavior'])) {
+      $summary[] = t('Multiple files: %multiple', array('%multiple' => $settings['multiple_file_behavior']));
+    }
   }
 
-  return $summary;
+  return implode('<br />', $summary);
 }
 
 /**
@@ -102,7 +257,9 @@ function file_entity_field_formatter_view($entity_type, $entity, $field, $instan
         $files_display[$fid]->referencing_entity = $entity;
         $files_display[$fid]->referencing_field = $field['field_name'];
       }
-      $files_built = file_view_multiple($files_display, $view_mode);
+      $output = file_view_multiple($files_display, $view_mode);
+      // Remove the first level from the output array.
+      $files_built = reset($output);
     }
 
     // Assemble the render array.
@@ -110,6 +267,91 @@ function file_entity_field_formatter_view($entity_type, $entity, $field, $instan
       if (isset($files_built[$item['fid']])) {
         $element[$delta] = $files_built[$item['fid']];
       }
+    }
+  }
+  elseif ($display['type'] == 'file_download_link') {
+    foreach ($items as $delta => $item) {
+      $file = (object) $item;
+      if (file_entity_access('download', $file)) {
+        $element[$delta] = array(
+          '#theme' => 'file_entity_download_link',
+          '#file' => $file,
+          '#text' => $settings['text'],
+        );
+      }
+    }
+  }
+  elseif ($display['type'] == 'file_audio') {
+    $multiple_file_behavior = $settings['multiple_file_behavior'];
+
+    // Prevent 'empty' fields from causing a WSOD.
+    $items = array_filter($items);
+
+    // Build an array of sources for each <audio> element.
+    $source_lists = array();
+    if ($multiple_file_behavior == 'tags') {
+      foreach ($items as $delta => $item) {
+        if ($item['type'] == 'audio') {
+          $source_lists[] = array($item);
+        }
+      }
+    }
+    else {
+      foreach ($items as $delta => $item) {
+        if ($item['type'] == 'audio') {
+          $source_lists[0][] = $item;
+        }
+      }
+    }
+
+    // render each source list as an <audio> element
+    foreach ($source_lists as $delta => $sources) {
+      $element[$delta] = array(
+        '#theme' => 'file_entity_file_audio',
+        '#files' => $sources,
+        '#controls' => $settings['controls'],
+        '#autoplay' => $settings['autoplay'],
+        '#loop' => $settings['loop'],
+      );
+    }
+  }
+  elseif ($display['type'] == 'file_video') {
+    $multiple_file_behavior = $settings['multiple_file_behavior'];
+
+    // Prevent 'empty' fields from causing a WSOD.
+    $items = array_filter($items);
+
+    // Build an array of sources for each <video> element.
+    $source_lists = array();
+    if ($multiple_file_behavior == 'tags') {
+      foreach ($items as $delta => $item) {
+        if ($item['type'] == 'video') {
+          $source_lists[] = array($item);
+        }
+      }
+    }
+    else {
+      foreach ($items as $delta => $item) {
+        if ($item['type'] == 'video') {
+          $source_lists[0][] = $item;
+        }
+      }
+    }
+
+    // render each source list as an <video> element
+    foreach ($source_lists as $delta => $sources) {
+      $width = $settings['width'];
+      $height = $settings['height'];
+      $element[$delta] = array(
+        '#theme' => 'file_entity_file_video',
+        '#files' => $sources,
+        '#controls' => $settings['controls'],
+        '#autoplay' => $settings['autoplay'],
+        '#loop' => $settings['loop'],
+        '#muted' => $settings['muted'],
+        '#width' => ($width && $height) ? $width : NULL,
+        '#height' => ($width && $height) ? $height : NULL,
+      );
     }
   }
 

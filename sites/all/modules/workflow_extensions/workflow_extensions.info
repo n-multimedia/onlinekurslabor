@@ -6,9 +6,9 @@ configure = admin/config/workflow/workflow_extensions
 files[] = views/workflow_extensions_handler_field_state_change_form.inc
 files[] = views/workflow_extensions_handler_field_workflow_comment_link_edit.inc
 
-; Information added by drupal.org packaging script on 2013-05-31
-version = "7.x-1.0-beta4"
+; Information added by drupal.org packaging script on 2013-07-23
+version = "7.x-1.0"
 core = "7.x"
 project = "workflow_extensions"
-datestamp = "1370038252"
+datestamp = "1374541185"
 

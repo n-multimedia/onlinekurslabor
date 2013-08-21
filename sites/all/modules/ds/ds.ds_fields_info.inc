@@ -383,6 +383,24 @@ function ds_ds_fields_info($entity_type) {
     }
   }
 
+  // Support for fieldable panels panes.
+  if (module_exists('fieldable_panels_panes')) {
+    $fields['fieldable_panels_pane']['title_ds'] = array(
+      'title' => t('Display Suite Title'),
+      'field_type' => DS_FIELD_TYPE_FUNCTION,
+      'function' => 'ds_render_field',
+      'properties' => array(
+        'entity_render_key' => 'title',
+        'settings' => array(
+          'link' => array('type' => 'select', 'options' => array('no', 'yes')),
+          'wrapper' => array('type' => 'textfield', 'description' => t('Eg: h1, h2, p')),
+          'class' => array('type' => 'textfield', 'description' => t('Put a class on the wrapper. Eg: block-title')),
+        ),
+        'default' => array('wrapper' => 'h2', 'link' => 0, 'class' => ''),
+      )
+    );
+  }
+
   if (isset($fields[$entity_type])) {
     return array($entity_type => $fields[$entity_type]);
   }

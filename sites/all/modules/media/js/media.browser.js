@@ -7,6 +7,7 @@
 namespace('Drupal.media.browser');
 
 Drupal.media.browser.selectedMedia = [];
+Drupal.media.browser.activeTab = 0;
 Drupal.media.browser.mediaAdded = function () {};
 Drupal.media.browser.selectionFinalized = function (selectedMedia) {
   // This is intended to be overridden if a callee wants to be triggered
@@ -16,7 +17,7 @@ Drupal.media.browser.selectionFinalized = function (selectedMedia) {
 
 Drupal.behaviors.MediaBrowser = {
   attach: function (context) {
-    if (Drupal.settings.media.selectedMedia) {
+    if (Drupal.settings.media && Drupal.settings.media.selectedMedia) {
       Drupal.media.browser.selectMedia(Drupal.settings.media.selectedMedia);
       // Fire a confirmation of some sort.
       Drupal.media.browser.finalizeSelection();
@@ -28,8 +29,13 @@ Drupal.behaviors.MediaBrowser = {
       show: Drupal.media.browser.resizeIframe
     });
 
+    $('.ui-tabs-nav li').mouseup(function() {
+      Drupal.media.browser.activeTab = $(this).index();
+    });
+
     $('.media-browser-tab').each( Drupal.media.browser.validateButtons );
 
+    Drupal.media.browser.selectActiveTab();
     Drupal.media.browser.selectErrorTab();
 
   }
@@ -122,5 +128,13 @@ Drupal.media.browser.selectErrorTab = function() {
     $('#media-browser-tabset').tabs('select', index)
   }
 }
+
+Drupal.media.browser.selectActiveTab = function() {
+  // Find the index of the last active tab.
+  setTimeout(function() {
+    $('#media-browser-tabset').tabs('select', Drupal.media.browser.activeTab);
+    Drupal.media.browser.resizeIframe();
+  }, 10);
+};
 
 }(jQuery));
