@@ -20,7 +20,7 @@
     <caption><?php print $title; ?></caption>
   <?php endif; ?>
 
-  <table width="100%" class="table-hover <?php print $classes; ?>">
+  <table width="100%" class="<?php print $classes; ?>">
     <thead>
       <tr>
         <?php foreach ($header as $field => $label): ?>

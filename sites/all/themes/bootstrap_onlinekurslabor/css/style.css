@@ -285,7 +285,7 @@ Docs
 
 .view-courses-course-docs .file img
 {
-  width: 30px
+  /*width: 30px*/
 }
 
 
@@ -424,7 +424,7 @@ Responsive Features
 /*
 FORUM
 */
-
+/*
 .row-fluid .forum-table-wrap .forum-table-superheader, .row-fluid .forum-table-topics thead tr  {
   background:none;
   background-color: #eee;
@@ -489,7 +489,7 @@ FORUM
 .row-fluid .forum-in-reply-to a {
   color: #fff;
 }
-
+*/
 
 /*
 SECTION CONTENT

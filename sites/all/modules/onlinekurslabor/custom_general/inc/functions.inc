@@ -214,6 +214,10 @@ function _section_courses_advanced_forum_get_num_unread($uid, $tid) {
 function _section_courses_course_get_num_unread_by_type($uid, $type, $nid = NULL) {
 
   static $result_cache = array();
+  if(!$uid){
+    global $user;
+    $uid = $user->uid;
+  }
 
   if (empty($result_cache[$type]) || $nid != NULL) {
     //get group's news entities
@@ -293,6 +297,11 @@ function custom_general_get_task_solutions_by_uid($tid, $uid) {
  */
 function custom_general_get_task_solutions($tid, $uid) {
   static $result = array();
+  if(!$uid){
+    global $user;
+    $uid = $user->uid;
+  }
+    
 
   if (!$result || !isset($result[$tid][$uid])) {
     $uid_tmp = arg(5);

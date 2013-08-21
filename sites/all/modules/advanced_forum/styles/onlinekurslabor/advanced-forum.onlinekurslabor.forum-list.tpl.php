@@ -49,7 +49,7 @@
 
   <div class="">
     <div id="forum-table-<?php print $table_info->tid; ?>">
-      <table class="table-hover" width="100%">
+      <table class="forum-table-okl" width="100%">
         <thead class="">
           <tr>
             <th class="forum-icon">&nbsp;</th>

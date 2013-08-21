@@ -830,7 +830,7 @@ function _section_content_task_replacements($matches) {
     if ($node != FALSE && node_access('view', $node) && $node->status) {
       $node_view = node_view($node, 'task', NULL);
 
-      //28.05.2013 - 12:22 - SN hack, title must be unset on an other place (template)
+      //28.05.2013 - 12:22 - SN hack, title must be unset at another place (template)
       if (isset($node_view['#node']->title)) {
         $node_view['#node']->title = "";
       }
@@ -966,7 +966,7 @@ function theme_multiple_choice_field_group($vars) {
   //$output = drupal_render($vars['items']);
   $form = drupal_get_form('section_content_mc_form', $vars);
   $output = drupal_render($form);
-
+ 
   return $output;
 }
 

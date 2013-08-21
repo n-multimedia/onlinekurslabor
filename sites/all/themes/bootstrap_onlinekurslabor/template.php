@@ -81,6 +81,10 @@ function bootstrap_onlinekurslabor_panels_flexible($vars) {
     //need check if task section is active
     //change layout for feedback stage
   }
+  else if ((!section_courses_instructors_tools_access() && !section_content_authors_tools_access()) && $layout['name'] == 'flexible:span11span1') {
+    $layout = panels_get_layout('flexible:span12');
+    //$content['test'] = $content['center'];
+  }
   else if ($layout['name'] == 'flexible:span8span4') {
     if (arg(1) == 'tasks' && arg(4) == 'solution') {
       //get active task

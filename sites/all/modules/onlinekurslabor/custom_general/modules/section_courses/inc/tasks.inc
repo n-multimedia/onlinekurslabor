@@ -8,7 +8,12 @@ function _course_tasks_generic_init_view() {
     $node_wrapper = entity_metadata_wrapper('node', $tasks_nid);
 
     $field_val = $node_wrapper->field_generic_task_entry->value();
+
+    // Update the history table, stating that this user viewed this node.
+    node_tag_new(node_load($tasks_nid));
   }
+
+
 
   return $field_val;
 }
@@ -315,11 +320,11 @@ function _course_tasks_generic_solution_form_view() {
 
     $output .= drupal_render($form);
   }
-  
-  $output = '<div class="alert alert-warning">'.$output;
+
+  $output = '<div class="alert alert-warning">' . $output;
   $output .= '</div>';
-  
-  
+
+
   return $output;
 }
 

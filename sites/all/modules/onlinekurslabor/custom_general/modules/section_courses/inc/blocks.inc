@@ -481,12 +481,17 @@ function _section_courses_navtext_to_link($course, $text) {
       }
       break;
     case "Aufgaben":
+      
+      $num_unread = _section_courses_course_get_num_unread_by_type($user->uid, NM_COURSE_GENERIC_TASK);
+
       if (_section_course_course_tasks_visible()) {
         $options['attributes'] = array('class' => array('active'));
       }
 
       $path = "course/tasks/" . $course_nid;
       $result['link'] = l($text, $path, $options);
+      
+      _section_courses_theme_tiny_unread_box($result['link'], $num_unread);
       break;
     case "Ansicht":
       if (is_numeric($active_node_nid)) {

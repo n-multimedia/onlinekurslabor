@@ -115,6 +115,40 @@ div ul.section_nav_tools li a
 }
 
 /*
+Course Info
+*/
+
+.panels-flexible-row.course-info-header .panel-separator {
+    display:none;
+}
+.panels-flexible-row.course-info-header .panels-flexible-row-inside, .panels-flexible-row.course-info-subheader .panels-flexible-row-inside, .panels-flexible-region.course-info-content {
+    padding: 15px;
+}
+
+.panels-flexible-row.course-info-header h2, .panels-flexible-region.course-info-content h2 {
+    font-size: 25px;
+}
+.panels-flexible-row.course-info-header h2 {
+    margin-bottom:5px;
+}
+
+
+.panels-flexible-row.course-info-header .field-name-field-subtitle, .panels-flexible-row.course-info-header .pane-node-field-instructor {
+    margin-bottom: 15px;
+}
+.panels-flexible-row.course-info-subheader .pane-entity-field {
+    margin-bottom: 10px;
+}
+
+.panels-flexible-row.course-info-header, .panels-flexible-region.course-info-content {
+    background-color: #f2f2f2;
+}
+
+.panels-flexible-row.course-info-header .pane-node-field-instructor {
+   font-weight: bold;
+}
+
+/*
 Instructor's Tools
 */
 
@@ -645,11 +679,8 @@ Embeded Tasks
 
 .embeded_task {
   padding: 20px 20px 0px 80px;
-  border-radius: 5px; 
-  -moz-border-radius: 5px; 
-  -webkit-border-radius: 5px; 
-  background-color: #f3fafe;
-  border: 2px solid #58a5cc;
+  background-color: #e6f2fc;
+  border:1px solid #ccc;
   margin: 15px 0 15px 0;
   position:relative;
   min-height:70px;
