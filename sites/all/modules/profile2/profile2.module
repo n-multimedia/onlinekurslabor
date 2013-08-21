@@ -879,3 +879,11 @@ function profile2_user_get_properties($account, array $options, $name) {
   return $profile ? $profile : NULL;
 }
 
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function profile2_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner == 'ctools' && !empty($plugin_type)) {
+    return 'plugins/' . $plugin_type;
+  }
+}
