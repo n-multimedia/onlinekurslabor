@@ -49,8 +49,8 @@ function _custom_general_theme_top_nav($variables = NULL) {
   $output = "";
   $output .= '<ul id="custom-top-nav" class="nav pull-right">';
 
-  if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_STUDENT, NM_ROLE_ADMIN), $user->roles)) {
-    $output .= '<li><a href="/courses">Kurseübersicht</a></li>';
+  if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_STUDENT, NM_ROLE_ADMIN), $user->roles) || $user->uid == 0) {
+    $output .= '<li><a href="/courses">Kursübersicht</a></li>';
   }
   if(array_intersect(array(NM_ROLE_AUTOR, NM_ROLE_ADMIN), $user->roles)) {
     $output .= '<li><a href="/domains">Themenübersicht</a></li>';

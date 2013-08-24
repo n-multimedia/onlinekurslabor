@@ -50,6 +50,9 @@ define("NM_COURSE_FORUM_PATH", "course/forum");
 define("NM_COURSE_FORUMCONTENT_PATH", "course/forumcontent");
 define("NM_COURSE_ADMIN_PREFIX_PATH", "course/admin");
 
+define("NM_COURSE_DEMO_LABEL", "[DEMO MODUS]");
+
+
 //Tasks
 define("NM_COURSES_TASK_DESCRIPTION", "0");
 define("NM_COURSES_TASK_TASK", "1");

@@ -413,7 +413,7 @@ function media_token_to_markup($match, $wysiwyg = FALSE) {
  */
 function media_filter_field_parser($tag_info) {
   $fields = array();
-  if (isset($tag_info['fields'])) {
+  if (isset($tag_info['fields']) && is_array($tag_info['fields'])) {
     foreach($tag_info['fields'] as $field_name => $field_value) {
       if (strpos($field_name, 'field_') === 0) {
         $parsed_field = explode('[', str_replace(']', '', $field_name));

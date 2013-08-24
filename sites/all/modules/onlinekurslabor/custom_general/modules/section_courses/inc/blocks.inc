@@ -20,8 +20,8 @@ function _section_courses_node_tabs_view() {
 
     foreach ($nav_items_single as $si) {
       $text_link = _section_courses_navtext_to_link($group, $si);
-      if ($si != $text_link) {
-        $single_links[] = array('link' => $text_link);
+      if ($si != $text_link['link']) {
+        $single_links[] = array('link' => $text_link['link']);
       }
     }
 
@@ -40,16 +40,32 @@ function _section_courses_node_tabs_view() {
 
 function _course_header_section_view() {
 
+  $block = array();
   $active_course = _section_courses_get_active_course();
 
-  $output = '';
+  if (!isset($active_course) || empty($active_course))
+    return array();
 
   if ($active_course) {
+    $output = "";
     $output .= '<div id="course_header" class="row-fluid">';
     $output .= '<div class="span12">';
-    $output .= '<div id="course_header_title"><h1>';
+    $output .= '<div id="course_header_title">';
+    
+
+    if(section_courses_demo_mode()) {
+       $output .=  '<div class="alert alert-info"><h5>' . NM_COURSE_DEMO_LABEL . '</h5>';
+       $output .=  '<p>Im Demo-Modus haben Sie ausschließlich Zugriff auf den Lehrtext und die allgemeinen Kursinformationen.</p> ';
+       $output .=  '<p>Melden Sie sich am Kurs an, um weitere Werkzeuge freizuschalten.</p></div> ';
+    }
+    
+    $output .= '<h1>';
     $output .= $active_course->title;
-    $output .= '</h1></div>';
+    $output .= '</h1>';
+    
+    $output .= '</div>';
+   
+    
     //header here
     $header_pic = '';
     if (isset($active_course->field_course_header)) {
@@ -61,9 +77,31 @@ function _course_header_section_view() {
 
     $output .= '</div>';
     $output .= '</div>';
+
+    $block = array(
+      'content' => array(
+        '#type' => 'markup',
+        '#markup' => $output,
+        ));
   }
 
-  return $output;
+  return $block;
+}
+
+/*
+ * check if we are in course demo mode
+ * 
+ * return boolean
+ */
+function section_courses_demo_mode(){
+  
+  $active_course = _section_courses_get_active_course();
+
+  if ($active_course && !drupal_valid_path(NM_COURSE_HOME_PATH.'/'.$active_course->nid)) {
+    return TRUE;
+  }
+  
+  return FALSE;
 }
 
 /**
@@ -127,7 +165,7 @@ function _section_courses_get_instructor_tools() {
     ),
     'attributes' => array(
       'title' => '',
-  ));
+      ));
 
   /*
     $members_overview_options = $default_options;
@@ -245,7 +283,7 @@ function _section_courses_get_instructor_tools() {
     $id = 'instr_add_docs';
     $label = $links[$id]['label'];
     $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-    
+
     $path = 'course/admin/' . $group_id . '/add/courses-generic-task';
     $id = 'instr_add_task';
     $label = $links[$id]['label'];
@@ -265,8 +303,9 @@ function _section_courses_get_instructor_tools() {
   $result = array();
   foreach ($links as $name => $link) {
     $attributes = array('attributes' => array('id' => $name, 'class' => array('btn')));
-    if (isset($link['path']))
+    if (isset($link['path'])) {
       custom_general_addpend_active_class(($link['path']), $attributes);
+    }
 
     $group = isset($link['group']) ? $link['group'] : NULL;
     $link = isset($link['link']) ? $link['link'] : NULL;
@@ -312,7 +351,17 @@ function _course_top_navigation_view() {
 //$output_single .= '<ul class="links inline clearfix">';
   foreach ($nav_items_single as $si) {
     $text_link = _section_courses_navtext_to_link($course, $si);
-    $single_links[] = array('link' => $text_link['link'], 'attributes' => array('class' => array('btn')));
+
+    $options = array('link' => $text_link['link'], 'path' => $text_link['path'], 'attributes' => array('class' => array('btn')));
+    //disable path buttons where user doen't have access to
+    if (!drupal_valid_path($options['path'])) {
+      $options['path'] = '#';
+      $options['link'] = '<a href="#">' . $si . '</a>';
+      $options['attributes']['class'][] = 'disabled';
+    }
+
+
+    $single_links[] = $options;
 //$si_link = _section_courses_navtext_to_link($course, $si);
 //$output_single .= "<li>" . $si_link . "</li>";
   }
@@ -324,7 +373,16 @@ function _course_top_navigation_view() {
   foreach ($nav_items_collab as $si) {
     $text_link = _section_courses_navtext_to_link($course, $si);
     if (strtolower($si) != strtolower($text_link['link'])) {
-      $collab_links[] = array('link' => $text_link['link'], 'attributes' => array('class' => array('btn')));
+      $options = array('link' => $text_link['link'], 'path' => $text_link['path'], 'attributes' => array('class' => array('btn')));
+
+      //disable path buttons where user doen't have access to
+      if (!drupal_valid_path($options['path'])) {
+        $options['path'] = '#';
+        $options['link'] = '<a href="#">' . $si . '</a>';
+        $options['attributes']['class'][] = 'disabled';
+      }
+
+      $collab_links[] = $options;
     }
 //$si_link = _section_courses_navtext_to_link($course, $si);
 //$output_collab .= '<li>' . $si_link . '</li>';
@@ -375,6 +433,7 @@ function _section_courses_navtext_to_link($course, $text) {
   global $user;
   $result = array();
   $result['link'] = $text;
+  $result['path'] = "";
 
   if (!$course)
     return $result;
@@ -385,7 +444,7 @@ function _section_courses_navtext_to_link($course, $text) {
     'attributes' => array(),
     'query' => array(
       'og_group_ref' => $course_nid,
-  ));
+      ));
 
   $active_node = NULL;
   if ((arg(0) == 'course') && (is_numeric(arg(3)))) {
@@ -410,6 +469,7 @@ function _section_courses_navtext_to_link($course, $text) {
       }
 
       $path = "course/home/" . $course_nid;
+      $result['path'] = $path;
       $result['link'] = l($text, $path, $options);
 
       _section_courses_theme_tiny_unread_box($result['link'], $num_unread);
@@ -423,6 +483,7 @@ function _section_courses_navtext_to_link($course, $text) {
         $options['attributes'] = array('class' => array('active'));
       }
       $path = "course/docs/" . $course_nid;
+      $result['path'] = $path;
       $result['link'] = l($text, $path, $options);
 
       _section_courses_theme_tiny_unread_box($result['link'], $num_unread);
@@ -430,6 +491,7 @@ function _section_courses_navtext_to_link($course, $text) {
       break;
     case "Kursinfo":
       $path = "course/info/" . $course_nid;
+      $result['path'] = $path;
       $result['link'] = l($text, $path, $options);
 
       break;
@@ -445,10 +507,12 @@ function _section_courses_navtext_to_link($course, $text) {
       }
 
       $path = "course/groups/" . $course_nid . '/' . $course_group_nid;
+      $result['path'] = $path;
       $result['link'] = l($text, $path, $options);
       break;
     case "Teilnehmer":
       $path = "course/members/" . $course_nid;
+      $result['path'] = $path;
       $result['link'] = l($text, $path, $options);
       break;
     case "Forum":
@@ -463,6 +527,7 @@ function _section_courses_navtext_to_link($course, $text) {
         $num_unread = _section_courses_advanced_forum_get_num_unread($user->uid, $term->tid);
 
         $path = $forum_link;
+        $result['path'] = $path;
         $result['link'] = l($text, $path, $options);
 
         if ($num_unread > 0) {
@@ -477,11 +542,12 @@ function _section_courses_navtext_to_link($course, $text) {
       if ($domain_ref = _section_courses_course_get_domain_id($course)) {
 
         $path = "course/text/" . $course_nid . '/' . $domain_ref;
+        $result['path'] = $path;
         $result['link'] = l($text, $path, $options);
       }
       break;
     case "Aufgaben":
-      
+
       $num_unread = _section_courses_course_get_num_unread_by_type($user->uid, NM_COURSE_GENERIC_TASK);
 
       if (_section_course_course_tasks_visible()) {
@@ -489,8 +555,9 @@ function _section_courses_navtext_to_link($course, $text) {
       }
 
       $path = "course/tasks/" . $course_nid;
+      $result['path'] = $path;
       $result['link'] = l($text, $path, $options);
-      
+
       _section_courses_theme_tiny_unread_box($result['link'], $num_unread);
       break;
     case "Ansicht":
@@ -498,24 +565,30 @@ function _section_courses_navtext_to_link($course, $text) {
         //active link not set properly, using url() function to avoid this probplem
         $options['attributes']['class'] = array('btn');
         if (substr(url('node/' . $active_node_nid), 0, 1) == '/') {
-          $result = l($text, substr(url('node/' . $active_node_nid), 1), $options);
+          $path = substr(url('node/' . $active_node_nid), 1);
+          $result['path'] = $path;
+          $result['link'] = l($text, $path, $options);
         }
         else {
-          $result = l($text, url('node/' . $active_node_nid), $options);
+          $path = url('node/' . $active_node_nid);
+          $result['path'] = $path;
+          $result['link'] = l($text, $path, $options);
         }
       }
       break;
     case "Bearbeiten":
       if (is_numeric($active_node_nid)) {
         $options['attributes']['class'] = array('btn');
-        $result = l($text, 'course/admin/' . $course_nid . '/' . $active_node_nid . '/edit', $options);
+        $path = 'course/admin/' . $course_nid . '/' . $active_node_nid . '/edit';
+        $result['path'] = $path;
+        $result['link'] = l($text, $path, $options);
       }
       break;
     default:
   }
 
   //link to upper case
-  $result['link'] = ($result['link']);
+  //$result['link'] = ($result['link']);
 
   return $result;
 }

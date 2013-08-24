@@ -1,0 +1,211 @@
+<?php
+
+// dieser Saltwert muß mit dem in der vhb-DB übereinstimmen
+define('NM_LOGIN_VHB_SALT', "testSALTweRt");
+
+function nm_login_vhb_menu() {
+  $items['login/vhb/test'] = array(
+    'title' => '[Testpage] - Login Interface VHB',
+    'page callback' => 'nm_login_vhb_test',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['login/vhb'] = array(
+    'title' => 'Login Interface VHB',
+    'page callback' => 'nm_login_vhb',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function nm_login_vhb() {
+  $output = '';
+
+  //[Hash] =md5( [LOGIN]+[PASSWORT]+[LVNR]+[BEZEICHNUNG]+[VORNAME]+[NACHNAME]+[STRASSE]+[PLZ]+[ORT]+[EMAIL]+[HOCHSCHULE]+[STUDIENFACH]+[ABSCHLUSS]+Salt)
+
+  if (empty($_POST)) {
+    drupal_set_message("Requestvariablen sind leer!", 'error');
+
+    return $output;
+  }
+
+  //UTF-8 konvertierte Parameter: diese werden im System weiterverwendet
+  $params = array();
+  foreach ($_POST as $key => $value) {
+    $params[$key] = utf8_encode($value);
+  }
+
+  $attribute = $_POST['LOGIN'] . $_POST['PASSWORT'] . $_POST['LVNR'] . $_POST['BEZEICHNUNG'] . $_POST['VORNAME'] . $_POST['NACHNAME'] . $_POST['STRASSE'] . $_POST['PLZ'] . $_POST['ORT'] . $_POST['EMAIL'] . $_POST['HOCHSCHULE'] . $_POST['STUDIENFACH'] . $_POST['ABSCHLUSS'] . NM_LOGIN_VHB_SALT;
+
+  $hash = md5($attribute);
+
+  if ($hash == $_POST['HASH']) {
+    //sign in logic for students
+    if (nm_login_vhb_user_is_new($params)) {
+      //user is new -> create new account and subscribe for course
+      drupal_set_message("Benutzer ist neu -> Neuen Account anlegen");
+      nm_login_vhb_add_user($params);
+    }
+    else {
+      //user account exists -> login and redirect to course
+      drupal_set_message("Benutzer existiert -> einloggen");
+    }
+  }
+  else {
+    drupal_set_message("Hashes stimmen <strong>nicht</strong> überein.", 'error');
+  }
+
+
+  return $output;
+}
+
+function nm_login_vhb_user_is_new($params) {
+  $mail = $params['EMAIL'];
+  $user = user_load_by_mail($mail);
+
+  //todo Matrikelnummer prüfen
+
+  if ($user) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+function nm_login_vhb_add_user($params) {
+
+  //some redundand aspects
+  //refactor new generic function
+  //course/admin/%1/members/add
+  $role = user_role_load_by_name(NM_ROLE_STUDENT);
+  $edit = array(
+    'name' => check_plain($params['VORNAME'] . ' ' . $params['NACHNAME']),
+    'pass' => user_password(),
+    'mail' => check_plain($params['EMAIL']),
+    'init' => check_plain($params['EMAIL']),
+    'status' => 1,
+    'access' => REQUEST_TIME,
+    'roles' => array($role->rid => $role->name),
+  );
+
+  //increment until we get an unused user name
+  $count = 1;
+  $user_name = $edit['name'];
+  while (user_load_by_name($edit['name'])) {
+    $user_name = $edit['name'] . ' ' . $count++;
+  }
+  $edit['name'] = $user_name;
+
+  //save and notify the user
+  $account = user_save(drupal_anonymous_user(), $edit);
+
+  //student profile
+  $profile2 = profile2_create(array('type' => 'student'));
+  $profile2->setUser($account);
+  profile2_save($profile2);
+  //Populate profile fields
+  $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+  $wrapper->field_matrikelnummer->set(check_plain($params['MATRIKELNUMMER']));
+  $wrapper->field_studienfach->set(check_plain($params['STUDIENFACH']));
+  //load term id and set hochschule field
+
+  $wrapper->save();
+
+  //master profile
+  $profile2 = profile2_create(array('type' => 'master'));
+  $profile2->setUser($account);
+  profile2_save($profile2);
+  //Populate profile fields
+  $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+  $wrapper->field_first_name->set(check_plain($params['VORNAME']));
+  $wrapper->field_last_name->set(check_plain($params['NACHNAME']));
+  $wrapper->field_birthday->set(strtotime(check_plain($params['GEBDAT'])));
+  //not knowing which SEX options posiible
+  //weiblich = female so everything !female will be male 
+  if ($params['SEX'] == 'weiblich') {
+    $wrapper->field_gender->set('female');
+  }
+  else {
+    $wrapper->field_gender->set('male');
+  }
+  $wrapper->save();
+
+  if (!$account) {
+    drupal_set_message("Account konnte nicht gespeichert werden.", 'error');
+    return;
+  }
+  drupal_set_message('Student ' . $edit['name'] . ' wurde angelegt.');
+
+  //assign user to defined course
+  //load course by LVNR
+  $course = nm_login_vhb_get_course($params['LVNR']);
+  $values = array(
+    'entity type' => 'user',
+    'entity' => $account,
+  );
+  og_group('node', $course->nid, $values);
+
+
+  dpm("Bestätigungsmail verschicken todo");
+  //_user_mail_notify('register_admin_created', $account);
+}
+
+function nm_login_vhb_get_course($lvnr) {
+
+  //todo load course by lvnr
+  return node_load(1);
+}
+
+function nm_login_vhb_test() {
+
+  $output = '';
+  //[Hash] =md5( [LOGIN]+[PASSWORT]+[LVNR]+[BEZEICHNUNG]+[VORNAME]+[NACHNAME]+[STRASSE]+[PLZ]+[ORT]+[EMAIL]+[HOCHSCHULE]+[STUDIENFACH]+[ABSCHLUSS]+Salt)
+
+  if (empty($_POST)) {
+    drupal_set_message("Requestvariablen sind leer!", 'error');
+
+    drupal_set_message('<a href="/sites/all/modules/onlinekurslabor/login/vhb/vhb_test_formularcheck.html"> VHB - formularcheck.php </a> : Umleitung auf unverändertes Formular der VHB. Form Submit erfolg an die mitgelieferte formcheck.php', 'warning');
+    drupal_set_message('<a href="/sites/all/modules/onlinekurslabor/login/vhb/vhb_test_interface.html">Onlinekurslabor - Interface Check</a> : Umleitung auf unser angepasstes Formular. Formularauswertung erfolg auf unserem System.', 'warning');
+
+    return $output;
+  }
+
+  //UTF-8 konvertierte Parameter: diese werden im System weiterverwendet
+  $params = array();
+  foreach ($_POST as $key => $value) {
+    $params[$key] = utf8_encode($value);
+  }
+
+  dpm($_POST);
+  //dpm(PHP_EOL); // Ausgabe aller POST-Elemente 
+
+  $output .= "<p><b>UTF-8 konvertierte Parameter: diese werden im System weiterverwendet</b></p>";
+  $output .= print_r($params, true);
+  //$output .= var_dump($params). PHP_EOL;
+
+  dpm("UTF-8 konvertierte Parameter: diese werden im System weiterverwendet");
+  dpm($params);
+
+  $output .= "Attribute, die von der vhb übertragen werden: <em>(mit SALT aus vhb-DB)!)</em><br>";
+
+  $output .= "<br /><br /> vhb-Hash:" . $_POST['HASH'] . "<br /><br />";
+
+  $attribute = $_POST['LOGIN'] . $_POST['PASSWORT'] . $_POST['LVNR'] . $_POST['BEZEICHNUNG'] . $_POST['VORNAME'] . $_POST['NACHNAME'] . $_POST['STRASSE'] . $_POST['PLZ'] . $_POST['ORT'] . $_POST['EMAIL'] . $_POST['HOCHSCHULE'] . $_POST['STUDIENFACH'] . $_POST['ABSCHLUSS'] . NM_LOGIN_VHB_SALT;
+  $output .= "Attribute, die der LMS Anbieter zum Hash verwendet: <em>(Hier SALT aus Quellcode!)</em><br>" . $attribute . "<br/><br />";
+
+  $hash = md5($attribute);
+  $output .= "LMS-Hash:" . $hash . "<br /><br /><br />";
+  if ($hash == $_POST['HASH']) {
+    $output .= "<strong>Hashes identisch!</strong>";
+  }
+  else {
+    $output .= "Hashes stimmen <strong>nicht</strong> überein." . "<br>";
+    $output .= "Ist der Saltwert " . NM_LOGIN_VHB_SALT . " im formularcheck.php identisch zu dem in der vhb-DB?" . "<br>";
+    $output .= "Gibt es evtl. Probleme mit Umlauten?" . "<br>";
+  }
+
+
+  return $output;
+}

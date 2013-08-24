@@ -63,7 +63,7 @@ body.cke_show_borders{
   background-color:transparent;
 }
 
-.navbar .nav li.dropdown.open>.dropdown-toggle, #navbar .nav li a:hover
+.navbar .nav li.dropdown.open>.dropdown-toggle, #navbar .nav li a:hover, #navbar .nav li a:focus
 {
   color: #ccc;
 }
@@ -135,7 +135,7 @@ body.cke_show_borders{
 #navbar #custom-top-nav .btn-group .dropdown-menu a{
   color: #333333;
 }
-#navbar #custom-top-nav .btn-group .dropdown-menu a:hover{
+#navbar #custom-top-nav .btn-group .dropdown-menu a:hover, #navbar #custom-top-nav .btn-group .dropdown-menu a:focus{
   color:#fff;
   background:none;
   background-color: #29323D;
@@ -235,6 +235,10 @@ News
   margin-left:40px;
 
 }
+.view-courses-course-news .views-row h3 {
+    margin:0;
+}
+
 .view-courses-course-news .view-row-read:before, .view-courses-course-news .view-row-unread:before
 {
   content: ' ';
