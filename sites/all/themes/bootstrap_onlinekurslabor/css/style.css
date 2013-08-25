@@ -7,6 +7,15 @@
 ADAPING BOOTSTRAP
 */
 
+
+/*
+CONTENT IMAGES FLOAT
+*/
+
+.row-fluid img[class*="span"]{
+  float:none;
+}
+
 /*
 admin menu bar is not high enough to dock to the top navbar - fix
 */

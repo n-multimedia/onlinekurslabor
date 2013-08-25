@@ -318,7 +318,7 @@ function _media_browser_get_referer_nid() {
     $referer_args['nid'] = $url_data['query']['og_group_ref'];
   }
   else {
-    $referer_args['nid'] = arg(1, $referer_args['path']);
+    $referer_args['nid'] = arg(2, $referer_args['path']);
     $referer_args['nid'] = is_numeric($referer_args['nid']) ? $referer_args['nid'] : NULL;
   }
 

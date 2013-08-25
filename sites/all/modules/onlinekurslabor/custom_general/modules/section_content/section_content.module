@@ -401,68 +401,55 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
   }
 
 
+  //Assign files to active groups when uploaded
+  //dependency: file entity, og, media
+  if ($form_id == 'file_entity_add_upload' || $form_id == 'media_internet_add' || $form_id == 'media_format_form') {
 
-//Assign files to active groups when uploaded
-//dependency: file entity, og, media
-
-  if ($form_id == 'file_entity_add_upload' || $form_id == 'media_internet_add') {
-//add submit handler to upload form  
-//attach file fields
-//form_load_include($form_state, 'inc', 'file_entity', 'file_entity.pages');
-//dpm("attaching form...");
-//dpm("...cancelling");
-//return;
-//hack, og fields were not loaded for internet media in media browser
-    if (!isset($form_og)) {
-      $form_og = _custom_general_get_file_og_fields($form, $form_state, $form_id);
-    }
-
-    $form += $form_og;
-
-//dpm($form['og_group_ref']);
-//$form_state['build_info']['args']['files'] += array('file_entity', file_entity.pages.inc);
-//needed for og widget
-//$form['#entity_type'] = 'file';
-//image as an example.. every file type needs to have og_group_ref field.
-//$form['#bundle'] = 'image';
-//Media Brower - Get Arguments from referer data, to assign file to a group 
+    //Media Brower - Get Arguments from referer data, to assign file to a group 
     $referer_args['nid'] = _media_browser_get_referer_nid();
     $referer_args['node'] = isset($referer_args['nid']) ? node_load($referer_args['nid']) : NULL;
     $referer_args['gid'] = isset($referer_args['node']) ? _custom_general_get_group($referer_args['node']) : NULL;
 
-//check if referer is a node
-    if (isset($referer_args['gid']) && is_numeric($referer_args['gid'])) {
-//set node object by referer nid
-//$referer_args['node'] = node_load($referer_args['nid']);
-//get language settings for fields
-//$lang_gg = field_language('node', $referer_args['node'], 'group_group');
-      $file = new stdClass();
-      $file->type = 'image';
+    $options = drupal_parse_url($form['#action']);
 
-      $lang_ref = field_language('file', $file, 'og_group_ref');
-
-//get data if node is group, group member or both
-//$referer_args['is_group'] = og_is_group('node', $referer_args['node']);
-//$referer_args['is_group_member'] = isset($referer_args['node']->og_group_ref) && $referer_args['node']->og_group_ref[$lang_ref][0]['target_id'] > 0;
-//set ref to group if node is group - otherwise get group id from group member nodes
-//respect topmost condition. don't look for group of subgroups 
-//$referer_args['og_group_ref'] = (!$referer_args['is_group'] ? $referer_args['node']->og_group_ref[$lang_ref][0]['target_id'] : NULL);
-//$referer_args['language'] = $lang_ref;
-//if (!isset($referer_args['og_group_ref'])) {
-//$referer_args['og_group_ref'] = ($referer_args['is_group'] ? $referer_args['nid'] : NULL);
-//$referer_args['language'] = $lang_gg;
-//}
-//set value which is given by the referer
-      $form['og_group_ref'][$lang_ref][0]['default']['#default_value']['value'] = $referer_args['gid'];
-
-//$form['og_group_ref']['#type'] = 'hidden';
-//edit submit handles/saves additional fields - normal file upload doesn't
+    if (isset($form['og_group_ref']) && isset($options['query']['og_group_ref'])) {
+      $form['og_group_ref'][LANGUAGE_NONE][0]['default']['#default_value']['value'] = $options['query']['og_group_ref'];
     }
-//rearrange submit functions in order to prevent redirect
+
+    if (isset($referer_args['gid']) && is_numeric($referer_args['gid'])) {
+      if (strpos('?', $form['#action']) >= 0) {
+        $form['#action'] .= "&og_group_ref=" . $referer_args['gid'];
+      }
+      else {
+        $form['#action'] .= "?og_group_ref=" . $referer_args['gid'];
+      }
+
+    }
+  }
+
+  /*
+    //hack, og fields were not loaded for internet media in media browser
+    if (!isset($form_og)) {
+    $form_og = _custom_general_get_file_og_fields($form, $form_state, $form_id);
+    }
+
+    $form += $form_og;
+
+    if (isset($referer_args['gid']) && is_numeric($referer_args['gid'])) {
+
+    $file = new stdClass();
+    $file->type = 'image';
+
+    $lang_ref = field_language('file', $file, 'og_group_ref');
+
+
+    $form['og_group_ref'][$lang_ref][0]['default']['#default_value']['value'] = $referer_args['gid'];
+
+    //rearrange submit functions in order to prevent redirect
     $form['#submit'] = array_diff($form['#submit'], array('media_browser_form_submit'));
     $form['#submit'][] = 'file_entity_edit_submit';
     $form['#submit'][] = 'media_browser_form_submit';
-  }
+    } */
   /**
    *  BOOK
    */
@@ -966,7 +953,7 @@ function theme_multiple_choice_field_group($vars) {
   //$output = drupal_render($vars['items']);
   $form = drupal_get_form('section_content_mc_form', $vars);
   $output = drupal_render($form);
- 
+
   return $output;
 }
 
