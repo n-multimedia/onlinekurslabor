@@ -130,6 +130,7 @@ function nm_general_features_default_panels_layout() {
           0 => 'center',
         ),
         'parent' => 'main',
+        'class' => 'span12',
       ),
       'center' => array(
         'type' => 'region',
@@ -137,6 +138,7 @@ function nm_general_features_default_panels_layout() {
         'width' => 100,
         'width_type' => '%',
         'parent' => 'main-row',
+        'class' => 'span12',
       ),
     ),
   );
@@ -452,6 +454,91 @@ function nm_general_features_default_panels_layout() {
     ),
   );
   $export['span4span8'] = $layout;
+
+  $layout = new stdClass();
+  $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
+  $layout->api_version = 1;
+  $layout->name = 'span6span6';
+  $layout->admin_title = 'span6span6';
+  $layout->admin_description = '';
+  $layout->category = '';
+  $layout->plugin = 'flexible';
+  $layout->settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 1,
+          1 => 'main',
+        ),
+        'parent' => NULL,
+        'class' => 'row-fluid',
+        'column_class' => '',
+        'row_class' => '',
+        'region_class' => '',
+        'no_scale' => FALSE,
+        'fixed_width' => '',
+        'column_separation' => '0.5em',
+        'region_separation' => '0.5em',
+        'row_separation' => '0.5em',
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+        'class' => 'span6',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'center',
+        ),
+        'parent' => 'main',
+      ),
+      'center' => array(
+        'type' => 'region',
+        'title' => 'right',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => '',
+      ),
+      1 => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'parent' => 'canvas',
+        'children' => array(
+          0 => 2,
+        ),
+        'class' => 'span6',
+      ),
+      2 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'left',
+        ),
+        'parent' => '1',
+        'class' => '',
+      ),
+      'left' => array(
+        'type' => 'region',
+        'title' => 'left',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '2',
+        'class' => '',
+      ),
+    ),
+  );
+  $export['span6span6'] = $layout;
 
   $layout = new stdClass();
   $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */

@@ -1,7 +1,8 @@
 <?php
 
-// dieser Saltwert muß mit dem in der vhb-DB übereinstimmen
 define('NM_LOGIN_VHB_DATAVERSION', "2.0");
+//define real salt in private file
+//define('NM_LOGIN_VHB_SALT', "testSALTweRt");
 
 function nm_login_vhb_menu() {
   $items['login/vhb/test'] = array(

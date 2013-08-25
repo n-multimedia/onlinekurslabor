@@ -513,6 +513,7 @@ function _section_courses_task_solution_form_submit($form, &$form_state) {
 
 function _course_tasks_generic_section_view($field_val, $id) {
   $title = "";
+  $class = "";
   switch ($id) {
     case NM_COURSES_TASK_DESCRIPTION:
       $title = "Beschreibung";
@@ -522,6 +523,7 @@ function _course_tasks_generic_section_view($field_val, $id) {
       break;
     case NM_COURSES_TASK_TIPS:
       $title = "Leitfragen";
+      $class = "alert alert-success";
       break;
     case NM_COURSES_TASK_FORM:
       $title = "Formular";
@@ -531,7 +533,7 @@ function _course_tasks_generic_section_view($field_val, $id) {
   $description_items = _course_tasks_generic_get_section($field_val, $id);
   $output = "";
   if (count($description_items) > 0) {
-    $output = '<div id="task_general_' . $id . '">';
+    $output .= '<div id="task_general_' . $id . '" class="'.$class.'">';
     $output .= '<h3>' . $title . '</h3>';
     foreach ($description_items as $item) {
       $output .= $item['second'];

@@ -7,16 +7,13 @@
 /**
  * Implements hook_ctools_plugin_api().
  */
-function nm_general_features_ctools_plugin_api() {
-  list($module, $api) = func_get_args();
+function nm_general_features_ctools_plugin_api($module = NULL, $api = NULL) {
   if ($module == "ds" && $api == "ds") {
     return array("version" => "1");
   }
-  list($module, $api) = func_get_args();
   if ($module == "panels" && $api == "layouts") {
     return array("version" => "1");
   }
-  list($module, $api) = func_get_args();
   if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => "1");
   }
@@ -25,7 +22,7 @@ function nm_general_features_ctools_plugin_api() {
 /**
  * Implements hook_views_api().
  */
-function nm_general_features_views_api() {
+function nm_general_features_views_api($module = NULL, $api = NULL) {
   return array("api" => "3.0");
 }
 
@@ -38,6 +35,7 @@ function nm_general_features_image_default_styles() {
   // Exported image style: profile_main_thumbnail.
   $styles['profile_main_thumbnail'] = array(
     'name' => 'profile_main_thumbnail',
+    'label' => 'profile_main_thumbnail',
     'effects' => array(
       2 => array(
         'label' => 'Skalieren und zuschneiden',
@@ -60,6 +58,7 @@ function nm_general_features_image_default_styles() {
   // Exported image style: profile_mini_thumbnail.
   $styles['profile_mini_thumbnail'] = array(
     'name' => 'profile_mini_thumbnail',
+    'label' => 'profile_mini_thumbnail',
     'effects' => array(
       1 => array(
         'label' => 'Skalieren und zuschneiden',
@@ -82,6 +81,7 @@ function nm_general_features_image_default_styles() {
   // Exported image style: profile_nano_thumbnail.
   $styles['profile_nano_thumbnail'] = array(
     'name' => 'profile_nano_thumbnail',
+    'label' => 'profile_nano_thumbnail',
     'effects' => array(
       4 => array(
         'label' => 'Skalieren und zuschneiden',
@@ -113,6 +113,14 @@ function nm_general_features_node_info() {
       'name' => t('Basic page'),
       'base' => 'node_content',
       'description' => t('Use <em>basic pages</em> for your static content, such as an \'About us\' page.'),
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'help' => '',
+    ),
+    'plattform_log' => array(
+      'name' => t('Plattform Log'),
+      'base' => 'node_content',
+      'description' => '',
       'has_title' => '1',
       'title_label' => t('Title'),
       'help' => '',

@@ -111,8 +111,6 @@ function _section_courses_get_course_breadcrumb_items($group_get_id = NULL) {
       $forum_term = taxonomy_term_load($active_topic->forum_tid);
     }
 
-
-    dpm($forum_term);
     $forum_term->parents = taxonomy_get_parents_all($forum_term->tid);
     $breadcrumb = array();
     $breadcrumb[] = array(

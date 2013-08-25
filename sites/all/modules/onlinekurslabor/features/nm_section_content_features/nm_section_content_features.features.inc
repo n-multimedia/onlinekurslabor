@@ -7,28 +7,22 @@
 /**
  * Implements hook_ctools_plugin_api().
  */
-function nm_section_content_features_ctools_plugin_api() {
-  list($module, $api) = func_get_args();
+function nm_section_content_features_ctools_plugin_api($module = NULL, $api = NULL) {
   if ($module == "context" && $api == "context") {
     return array("version" => "3");
   }
-  list($module, $api) = func_get_args();
   if ($module == "ds" && $api == "ds") {
     return array("version" => "1");
   }
-  list($module, $api) = func_get_args();
   if ($module == "file_entity" && $api == "file_default_displays") {
     return array("version" => "1");
   }
-  list($module, $api) = func_get_args();
   if ($module == "linkit" && $api == "linkit_profiles") {
     return array("version" => "1");
   }
-  list($module, $api) = func_get_args();
   if ($module == "page_manager" && $api == "pages_default") {
     return array("version" => "1");
   }
-  list($module, $api) = func_get_args();
   if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => "1");
   }
@@ -37,7 +31,7 @@ function nm_section_content_features_ctools_plugin_api() {
 /**
  * Implements hook_views_api().
  */
-function nm_section_content_features_views_api() {
+function nm_section_content_features_views_api($module = NULL, $api = NULL) {
   return array("api" => "3.0");
 }
 
@@ -50,6 +44,7 @@ function nm_section_content_features_image_default_styles() {
   // Exported image style: media_12.
   $styles['media_12'] = array(
     'name' => 'media_12',
+    'label' => 'media_12',
     'effects' => array(
       7 => array(
         'label' => 'Skalierung',
@@ -73,6 +68,7 @@ function nm_section_content_features_image_default_styles() {
   // Exported image style: media_3.
   $styles['media_3'] = array(
     'name' => 'media_3',
+    'label' => 'media_3',
     'effects' => array(
       8 => array(
         'label' => 'Skalierung',
@@ -96,6 +92,7 @@ function nm_section_content_features_image_default_styles() {
   // Exported image style: media_4.
   $styles['media_4'] = array(
     'name' => 'media_4',
+    'label' => 'media_4',
     'effects' => array(
       11 => array(
         'label' => 'Skalierung',
@@ -119,6 +116,7 @@ function nm_section_content_features_image_default_styles() {
   // Exported image style: media_6.
   $styles['media_6'] = array(
     'name' => 'media_6',
+    'label' => 'media_6',
     'effects' => array(
       9 => array(
         'label' => 'Skalierung',
@@ -142,6 +140,7 @@ function nm_section_content_features_image_default_styles() {
   // Exported image style: media_9.
   $styles['media_9'] = array(
     'name' => 'media_9',
+    'label' => 'media_9',
     'effects' => array(
       10 => array(
         'label' => 'Skalierung',

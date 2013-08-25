@@ -10,6 +10,24 @@
 function nm_section_courses_features_user_default_permissions() {
   $permissions = array();
 
+  // Exported permission: 'administer advanced forum'.
+  $permissions['administer advanced forum'] = array(
+    'name' => 'administer advanced forum',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'advanced_forum',
+  );
+
+  // Exported permission: 'administer forums'.
+  $permissions['administer forums'] = array(
+    'name' => 'administer forums',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'forum',
+  );
+
   // Exported permission: 'create courses_course content'.
   $permissions['create courses_course content'] = array(
     'name' => 'create courses_course content',
@@ -247,6 +265,24 @@ function nm_section_courses_features_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'profile2',
+  );
+
+  // Exported permission: 'view forum statistics'.
+  $permissions['view forum statistics'] = array(
+    'name' => 'view forum statistics',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'advanced_forum',
+  );
+
+  // Exported permission: 'view last edited notice'.
+  $permissions['view last edited notice'] = array(
+    'name' => 'view last edited notice',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'advanced_forum',
   );
 
   // Exported permission: 'view own student profile'.

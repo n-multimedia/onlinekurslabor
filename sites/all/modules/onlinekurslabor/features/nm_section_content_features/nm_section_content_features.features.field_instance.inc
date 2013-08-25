@@ -283,10 +283,9 @@ function nm_section_content_features_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 0,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'file_icon' => array(
         'label' => 'above',
@@ -296,10 +295,9 @@ function nm_section_content_features_field_default_field_instances() {
       ),
       'filename' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 0,
+        'type' => 'hidden',
+        'weight' => 2,
       ),
       'full' => array(
         'label' => 'above',
@@ -367,10 +365,9 @@ function nm_section_content_features_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 0,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'file_icon' => array(
         'label' => 'above',
@@ -380,10 +377,9 @@ function nm_section_content_features_field_default_field_instances() {
       ),
       'filename' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 0,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'full' => array(
         'label' => 'above',
@@ -447,13 +443,13 @@ function nm_section_content_features_field_default_field_instances() {
     'bundle' => 'image',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Alternative text is used by screen readers, search engines, and when the image cannot be loaded. By adding alt text you improve accessibility and search engine optimization.',
     'display' => array(
       'default' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 2,
       ),
       'file_icon' => array(
         'label' => 'above',
@@ -465,7 +461,7 @@ function nm_section_content_features_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 2,
       ),
       'full' => array(
         'label' => 'above',
@@ -477,31 +473,31 @@ function nm_section_content_features_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 1,
       ),
       'media_4' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 2,
       ),
       'media_6' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 1,
       ),
       'media_9' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 2,
       ),
       'media_12' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 2,
       ),
       'preview' => array(
         'label' => 'above',
@@ -540,13 +536,13 @@ function nm_section_content_features_field_default_field_instances() {
     'bundle' => 'image',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Title text attribute',
+    'description' => 'Title text is used in the tool tip when a user hovers their mouse over the image. Adding title text makes it easier to understand the context of an image and improves usability.',
     'display' => array(
       'default' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 1,
+        'weight' => 3,
       ),
       'file_icon' => array(
         'label' => 'above',
@@ -558,7 +554,7 @@ function nm_section_content_features_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 1,
+        'weight' => 3,
       ),
       'full' => array(
         'label' => 'above',
@@ -570,31 +566,31 @@ function nm_section_content_features_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 1,
+        'weight' => 3,
       ),
       'media_4' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 1,
+        'weight' => 3,
       ),
       'media_6' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 1,
+        'weight' => 3,
       ),
       'media_9' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 1,
+        'weight' => 3,
       ),
       'media_12' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 1,
+        'weight' => 3,
       ),
       'preview' => array(
         'label' => 'above',
@@ -638,10 +634,9 @@ function nm_section_content_features_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 2,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'file_icon' => array(
         'label' => 'above',
@@ -651,10 +646,9 @@ function nm_section_content_features_field_default_field_instances() {
       ),
       'filename' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 2,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'full' => array(
         'label' => 'above',
@@ -664,38 +658,33 @@ function nm_section_content_features_field_default_field_instances() {
       ),
       'media_3' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
+        'type' => 'hidden',
         'weight' => 2,
       ),
       'media_4' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 2,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'media_6' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
+        'type' => 'hidden',
         'weight' => 2,
       ),
       'media_9' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 2,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'media_12' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 2,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'preview' => array(
         'label' => 'above',
@@ -760,10 +749,9 @@ function nm_section_content_features_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 0,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'file_icon' => array(
         'label' => 'above',
@@ -773,10 +761,9 @@ function nm_section_content_features_field_default_field_instances() {
       ),
       'filename' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 0,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'full' => array(
         'label' => 'above',
@@ -800,24 +787,21 @@ function nm_section_content_features_field_default_field_instances() {
       ),
       'media_6' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 0,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'media_9' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 0,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'media_12' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 0,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'preview' => array(
         'label' => 'above',
@@ -860,7 +844,7 @@ function nm_section_content_features_field_default_field_instances() {
       'module' => 'og',
       'settings' => array(),
       'type' => 'og_complex',
-      'weight' => -4,
+      'weight' => 3,
     ),
   );
 
@@ -2032,6 +2016,7 @@ function nm_section_content_features_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Alt Text');
+  t('Alternative text is used by screen readers, search engines, and when the image cannot be loaded. By adding alt text you improve accessibility and search engine optimization.');
   t('Anhang');
   t('Antwort');
   t('Aufgabenstellung');
@@ -2048,7 +2033,7 @@ function nm_section_content_features_field_default_field_instances() {
   t('Lösung');
   t('Text des Kapitels');
   t('Title Text');
-  t('Title text attribute');
+  t('Title text is used in the tool tip when a user hovers their mouse over the image. Adding title text makes it easier to understand the context of an image and improves usability.');
 
   return $field_instances;
 }

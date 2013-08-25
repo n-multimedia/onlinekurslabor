@@ -282,6 +282,27 @@ News
 }
 
 
+/*
+plattform logs
+*/
+
+
+.view-plattform-log-view .views-field-name, .view-plattform-log-view .views-field-name a, .view-plattform-log-view .views-field-created
+{
+  display: inline-block;
+  color: #999999;
+  margin-bottom: 10px;
+}
+
+.view-plattform-log-view .views-field-created:before
+{
+  content: '-';
+}
+
+.view-plattform-log-view .views-field-name{
+  font-weight:bold;
+}
+
 
 /*
 Docs

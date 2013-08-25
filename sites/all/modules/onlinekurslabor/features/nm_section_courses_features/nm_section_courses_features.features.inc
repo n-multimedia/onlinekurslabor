@@ -17,6 +17,9 @@ function nm_section_courses_features_ctools_plugin_api($module = NULL, $api = NU
   if ($module == "field_group" && $api == "field_group") {
     return array("version" => "1");
   }
+  if ($module == "page_manager" && $api == "pages_default") {
+    return array("version" => "1");
+  }
   if ($module == "panels" && $api == "layouts") {
     return array("version" => "1");
   }
@@ -55,6 +58,29 @@ function nm_section_courses_features_image_default_styles() {
         'data' => array(
           'width' => 1170,
           'height' => 200,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
+  // Exported image style: course_overview_image.
+  $styles['course_overview_image'] = array(
+    'name' => 'course_overview_image',
+    'label' => 'course_overview_image',
+    'effects' => array(
+      12 => array(
+        'label' => 'Skalieren und zuschneiden',
+        'help' => 'Skalieren und zuschneiden wird das Seitenverhältnis des ursprünglichen Bildes erhalten, und dann die überstehenden Ränder entfernen. Dies ist besonders nützlich für die Erstellung von perfekt quadratischen Vorschaubildern ohne Verzerrung des Bildes.',
+        'effect callback' => 'image_scale_and_crop_effect',
+        'dimensions callback' => 'image_resize_dimensions',
+        'form callback' => 'image_resize_form',
+        'summary theme' => 'image_resize_summary',
+        'module' => 'image',
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 200,
+          'height' => 131,
         ),
         'weight' => 1,
       ),

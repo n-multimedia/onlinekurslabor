@@ -1389,6 +1389,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
   $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['row_class'] = 'row-fluid';
   $handler->display->display_options['row_plugin'] = 'fields';
   /* Relationship: OG membership: OG membership from Beitrag */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
@@ -1523,7 +1524,7 @@ function nm_section_courses_features_views_default_views() {
   $view->description = 'Übersicht aller verfügbaren Kurse';
   $view->tag = 'default';
   $view->base_table = 'node';
-  $view->human_name = 'Courses - Kurse Übersicht';
+  $view->human_name = 'Courses - Kursübersicht';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -1535,6 +1536,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'full';
@@ -1545,11 +1547,30 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
+    'nid' => 'nid',
+    'field_course_picture' => 'field_course_picture',
     'title' => 'title',
-    'group_group' => 'group_group',
+    'field_subtitle' => 'title',
+    'field_short_description' => 'field_short_description',
+    'group_group' => 'field_short_description',
+    'nid_1' => 'nid_1',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
+    'nid' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_course_picture' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'title' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
@@ -1557,7 +1578,28 @@ function nm_section_courses_features_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'field_subtitle' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_short_description' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'group_group' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'nid_1' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -1572,25 +1614,68 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Feld: Inhalt: Bild */
+  $handler->display->display_options['fields']['field_course_picture']['id'] = 'field_course_picture';
+  $handler->display->display_options['fields']['field_course_picture']['table'] = 'field_data_field_course_picture';
+  $handler->display->display_options['fields']['field_course_picture']['field'] = 'field_course_picture';
+  $handler->display->display_options['fields']['field_course_picture']['label'] = '';
+  $handler->display->display_options['fields']['field_course_picture']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_course_picture']['alter']['path'] = 'course/home/[nid]';
+  $handler->display->display_options['fields']['field_course_picture']['element_class'] = 'span3';
+  $handler->display->display_options['fields']['field_course_picture']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_course_picture']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_course_picture']['settings'] = array(
+    'image_style' => 'course_overview_image',
+    'image_link' => '',
+  );
   /* Feld: Inhalt: Titel */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Name';
+  $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['title']['alter']['path'] = 'course/home/[nid]';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_type'] = 'h4';
+  $handler->display->display_options['fields']['title']['element_class'] = 'span4';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Feld: Inhalt: Untertitel */
+  $handler->display->display_options['fields']['field_subtitle']['id'] = 'field_subtitle';
+  $handler->display->display_options['fields']['field_subtitle']['table'] = 'field_data_field_subtitle';
+  $handler->display->display_options['fields']['field_subtitle']['field'] = 'field_subtitle';
+  $handler->display->display_options['fields']['field_subtitle']['label'] = '';
+  $handler->display->display_options['fields']['field_subtitle']['element_label_colon'] = FALSE;
+  /* Feld: Inhalt: Kurzbeschreibung */
+  $handler->display->display_options['fields']['field_short_description']['id'] = 'field_short_description';
+  $handler->display->display_options['fields']['field_short_description']['table'] = 'field_data_field_short_description';
+  $handler->display->display_options['fields']['field_short_description']['field'] = 'field_short_description';
+  $handler->display->display_options['fields']['field_short_description']['label'] = '';
+  $handler->display->display_options['fields']['field_short_description']['element_class'] = 'span5';
+  $handler->display->display_options['fields']['field_short_description']['element_label_colon'] = FALSE;
   /* Feld: Inhalt: Gruppe */
   $handler->display->display_options['fields']['group_group']['id'] = 'group_group';
   $handler->display->display_options['fields']['group_group']['table'] = 'field_data_group_group';
   $handler->display->display_options['fields']['group_group']['field'] = 'group_group';
-  $handler->display->display_options['fields']['group_group']['label'] = 'Status';
+  $handler->display->display_options['fields']['group_group']['label'] = '';
+  $handler->display->display_options['fields']['group_group']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['group_group']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['group_group']['type'] = 'og_group_subscribe';
   $handler->display->display_options['fields']['group_group']['settings'] = array(
     'field_name' => '0',
   );
+  /* Feld: Inhalt: Nid */
+  $handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
+  $handler->display->display_options['fields']['nid_1']['table'] = 'node';
+  $handler->display->display_options['fields']['nid_1']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid_1']['label'] = '';
+  $handler->display->display_options['fields']['nid_1']['element_label_colon'] = FALSE;
+  /* Sort criterion: Inhalt: Gruppe (group_group) */
+  $handler->display->display_options['sorts']['group_group_value']['id'] = 'group_group_value';
+  $handler->display->display_options['sorts']['group_group_value']['table'] = 'field_data_group_group';
+  $handler->display->display_options['sorts']['group_group_value']['field'] = 'group_group_value';
+  $handler->display->display_options['sorts']['group_group_value']['order'] = 'DESC';
   /* Sort criterion: Inhalt: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -1629,8 +1714,6 @@ function nm_section_courses_features_views_default_views() {
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
-    t('Name'),
-    t('Status'),
     t('Content pane'),
     t('View panes'),
   );

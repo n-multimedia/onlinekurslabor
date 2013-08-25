@@ -37,6 +37,7 @@ function nm_section_content_features_wysiwyg_default_profiles() {
           'Image' => 1,
           'Source' => 1,
           'PasteFromWord' => 1,
+          'RemoveFormat' => 1,
           'Format' => 1,
           'Table' => 1,
         ),
@@ -48,7 +49,6 @@ function nm_section_content_features_wysiwyg_default_profiles() {
         ),
         'drupal' => array(
           'media' => 1,
-          'node_embed' => 1,
         ),
       ),
       'toolbar_loc' => 'top',
