@@ -5,7 +5,7 @@
  * including "Watermark"
  *
  * Based on first draft of the code by Dimm (imagecache.module 5--1)
- * http://drupal.org/node/184816
+ * https://drupal.org/node/184816
  *
  * Rewritten and ported to Imagecache actions API (imagecache.module 5--2) by
  * dman http://coders.co.nz/

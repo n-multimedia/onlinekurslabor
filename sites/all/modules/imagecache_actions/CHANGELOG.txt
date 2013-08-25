@@ -5,6 +5,24 @@ Imagecache Actions 7.x-1.x-dev
 ------------------------------
 
 
+Imagecache Actions 7.x-1.4 2013-08-24
+-------------------------------------
+- [#1778214]: Remove project from image_effects_text_test.info
+- [#1854270]: Posterize action for file size/bandwidth saving on PNGs.
+- [#2060173]: Support image labels (introduced by D7.23).
+- Cleaned up the output of image style export. Id's and help texts are not used
+  on import, so don't have to be exported.
+- Repaired farbtastic colorpicker. It seems the library invocation changed
+  sometime in history. Rebuilt the color picker form to use #attached libraries
+  and simpler inline script instead. REMOVED the theme function that is now
+  redundant as #attached is a better way than drupal_add_js.
+- [#1152736]: Support tokens in text actions for images.
+- [#2025631]: Imagecache Testsuite refers to non-existent permissions.
+- Drupal.org went from http to https: changed all links in our documentation and
+  code.
+- Added ImageEffects as other image effect providing module.
+
+
 Imagecache Actions 7.x-1.3 2013-06-04
 -------------------------------------
 - Removed some errors and warnings from the test suite code (but not all).
@@ -93,6 +111,6 @@ coverage".
 
 Current and past maintainers for Imagecache Actions
 ---------------------------------------------------
-- dman (http://drupal.org/user/33240)
-- sidneyshan (http://drupal.org/user/652426)
-- fietserwin (http://drupal.org/user/750928)
+- dman (https://drupal.org/user/33240)
+- sidneyshan (https://drupal.org/user/652426)
+- fietserwin (https://drupal.org/user/750928)

@@ -11,9 +11,9 @@ Hard Dependencies
 Hard dependencies:
 - Imagecache actions (canvas_actions and image_effects_text).
 - Image (Drupal core).
-- System stream wrapper (http://drupal.org/project/system_stream_wrapper)
+- System stream wrapper (https://drupal.org/project/system_stream_wrapper)
 
 Soft Dependencies
 -----------------
-- Imagemagick (preferred toolkit, http://drupal.org/project/imagemagick).
+- Imagemagick (preferred toolkit, https://drupal.org/project/imagemagick).
 - GD

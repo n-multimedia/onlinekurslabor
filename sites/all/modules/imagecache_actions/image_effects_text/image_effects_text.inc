@@ -58,7 +58,7 @@ function image_effects_text_form_inc(array $data) {
   module_load_include('inc', 'imagecache_actions', 'utility-color');
 
   // Note: we also need to check for the existence of the module: admin has
-  //   all rights, so user_acccess(...) returns TRUE even if the module is not
+  //   all rights, so user_access(...) returns TRUE even if the module is not
   //   enabled and the permission does not exist.
   // A user without the 'use PHP for settings' permission (defined by the core
   // PHP filter module) may not:
@@ -90,6 +90,8 @@ if ($field) {
 ',
   );
   $data += $defaults;
+  $tokens = token_info();
+  $tokens = array_keys($tokens['types']);
   $form = array(
     'size' => array(
       '#type' => 'textfield',
@@ -117,14 +119,22 @@ if ($field) {
       '#title' => t('Horizontal alignment'),
       '#default_value' => $data['halign'],
       '#description' => t('The horizontal alignment of the text around the given %xpos.', array('%xpos' => t('X offset'))),
-      '#options' => array('left' => t('Left'), 'center' => t('Center'), 'right' => t('Right')),
+      '#options' => array(
+        'left' => t('Left'),
+        'center' => t('Center'),
+        'right' => t('Right')
+      ),
     ),
     'valign' => array(
       '#type' => 'select',
       '#title' => t('Vertical alignment'),
       '#default_value' => $data['valign'],
       '#description' => t('The vertical alignment of the text around the given %ypos.', array('%ypos' => t('Y offset'))),
-      '#options' => array('top' => t('Top'), 'center' => t('Center'), 'bottom' => t('Bottom')),
+      '#options' => array(
+        'top' => t('Top'),
+        'center' => t('Center'),
+        'bottom' => t('Bottom')
+      ),
     ),
     'RGB' => imagecache_rgb_form($data['RGB']),
     'alpha' => array(
@@ -156,7 +166,7 @@ if ($field) {
 <ul>
 <li><strong>Image alt</strong>: the alt text of an image field referring to this image is taken.</li>
 <li><strong>Image title</strong>: the title text of an image field referring to this image is taken.</li>
-<li><strong>Static text</strong>: a text that will be the same for each image, e.g. a copyright message. You can define the text in the text field below the drop down.</li>
+<li><strong>Text (with token replacement)</strong>: A text with optional token replacement. Line breaks can be inserted with \n (\\\\n for a literal \n). You can define the text in the text field below the drop down.</li>
 <li><strong>PHP code</strong>: a piece of PHP code that returns the text to display. You can define the PHP code in the text area below the drop down. You will need the \'%use_php\' permission, defined by the \'PHP filter\' module.</li>
 </ul>
 <p>See the help in README.txt for an extensive explanation of the possibilities.</p>',
@@ -166,12 +176,36 @@ if ($field) {
       '#type' => 'select',
       '#title' => t('Text source'),
       '#default_value' => $data['text_source'],
-      '#options' => array('alt' => t('Image alt'), 'title' => t('Image title'), 'text' => t('Static text'), 'php' => t('PHP code')),
+      '#options' => array(
+        'alt' => t('Image alt'),
+        'title' => t('Image title'),
+        'text' => t('Text (with token replacement)'),
+        'php' => t('PHP code'),
+      ),
     ),
     'text' => array(
       '#type' => 'textfield',
       '#title' => t('Text'),
       '#default_value' => $data['text'],
+      '#states' => array(
+        'visible' => array(':input[name="data[text_source]"]' => array('value' => 'text')),
+      ),
+    ),
+    'token_help' => array(
+      '#type' => 'fieldset',
+      '#title' => t('Token replacement patterns'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      'tree' => array(
+        '#theme' => 'token_tree',
+        '#token_types' => $tokens,
+      ),
+      'token_module_notice' => array(
+        '#markup' => !module_exists('token') ? t('You might want to enable the token module to view token replacement patterns.') : '',
+      ),
+      'entity_token_module_notice' => array(
+        '#markup' => !module_exists('entity_token') ? t('You might want to enable the entity_token module to get token options for all entities and field properties.') : '',
+      ),
       '#states' => array(
         'visible' => array(':input[name="data[text_source]"]' => array('value' => 'text')),
       ),
@@ -292,17 +326,17 @@ function image_effects_text_effect_inc(stdClass $image, array $data) {
     return FALSE;
   }
 
-  // Parse offsets
+  // Parse offsets.
   $params['xpos'] = image_effects_text_get_offset($data['xpos'], $image->info['width'], $image->info['height'], $image->info['width']);
   $params['ypos'] = image_effects_text_get_offset($data['ypos'], $image->info['width'], $image->info['height'], $image->info['height']);
 
   // Convert color from hex (as it is stored in the UI).
   $params['RGB'] = $data['RGB'];
-  if($params['RGB']['HEX'] && $deduced = imagecache_actions_hex2rgba($params['RGB']['HEX'])) {
+  if ($params['RGB']['HEX'] && $deduced = imagecache_actions_hex2rgba($params['RGB']['HEX'])) {
     $params['RGB'] += $deduced;
   }
 
-  // Make int's of various parameters
+  // Make integers of various parameters.
   $params['size'] = (int) $params['size'];
   $params['xpos'] = (int) $params['xpos'];
   $params['ypos'] = (int) $params['ypos'];
@@ -340,14 +374,14 @@ function image_gd_image_effects_text(stdClass $image, array $params) {
         // Get height of bounding box.
         $height = $bounds[1] - $bounds[7];
         // Shift ypos down (full height on bottom, half the height on center).
-        $params['ypos'] += $params['valign'] === 'center' ? (int) ($height/2) : $height;
+        $params['ypos'] += $params['valign'] === 'center' ? (int) ($height / 2) : $height;
       }
     }
     // Adjust X position for horizontal alignment (if different from left).
     if ($params['halign'] !== 'left') {
-      // Get bounding box.
-      // PHP Manual: "This function requires both the GD library and the » FreeType library."
-      // So it is not more demanding than imagettftext, which we need anyway.
+      // Get bounding box. PHP Manual: "This function requires both the GD
+      // library and the » FreeType library.", so it is not more demanding than
+      // imagettftext(), which we need anyway.
       if ($bounds === NULL) {
         $bounds = imagettfbbox($params['size'], 0, $params['fontpath'], $params['text']);
         if ($bounds === FALSE) {
@@ -358,7 +392,7 @@ function image_gd_image_effects_text(stdClass $image, array $params) {
         // Get width of bounding box.
         $width = $bounds[2] - $bounds[0];
         // Shift xpos to the left (full width on right, half the width on center).
-        $params['xpos'] -= $params['halign'] === 'center' ? (int) ($width/2) : $width;
+        $params['xpos'] -= $params['halign'] === 'center' ? (int) ($width / 2) : $width;
       }
     }
 
@@ -462,7 +496,7 @@ function image_imagemagick_image_effects_text(stdClass $image, array $params) {
 
   // Convert color and alpha to Imagemagick rgba color argument.
   $alpha = $params['alpha'] / 100;
-  $color = 'rgba(' . $params['RGB']['red']. ',' . $params['RGB']['green'] . ',' . $params['RGB']['blue'] . ','. $alpha . ')';
+  $color = 'rgba(' . $params['RGB']['red'] . ',' . $params['RGB']['green'] . ',' . $params['RGB']['blue'] . ',' . $alpha . ')';
 
   // Set gravity for the alignment and calculate the translation to the
   // requested x and y offset as starting from the gravity point.
@@ -592,7 +626,7 @@ function image_effects_text_get_offset($position, $width, $height, $length) {
         break;
       case 'center':
         // half the current dimension as provided by $length.
-        $value += $sign * $length/2;
+        $value += $sign * $length / 2;
         $sign = 1;
         break;
       default:
@@ -623,46 +657,62 @@ function image_effects_text_get_offset($position, $width, $height, $length) {
  *   Plain text to be placed on the image.
  */
 function image_effects_text_get_text(stdClass $image, array $data) {
+  // Get context about the image.
+  $image_context = imagecache_actions_get_image_context($image, $data);
+
   if ($data['text_source'] === 'text') {
+    // Replace \n with a newline character, except when preceded by a \.
     $text = preg_replace('/([^\\\\])\\\\n/', "$1\n", $data['text']);
+    // Replace \\n by \n.
     $text = preg_replace('/\\\\\\\\n/', '\n', $text);
+
+    // Replace tokens.
+    $token_data = array();
+    foreach ($image_context['referring_entities'] as /*$field_name =>*/ $field_referring_entities) {
+      foreach ($field_referring_entities as $entity_type => $entities) {
+        // We can pass only 1 entity per given type to token_replace(), we take
+        // the first.
+        $token_data[$entity_type] = reset($entities);
+      }
+    }
+    if ($image_context['managed_file']) {
+      $token_data['file'] = $image_context['managed_file'];
+    }
+    // We should not sanitize the text as it will not be rendered in the browser
+    // but is rendered on the image canvas on the server.
+    $text = token_replace($text, $token_data, array('clear' => TRUE, 'sanitize' => FALSE));
   }
-  else {
-    // Get context about the image.
-    $image_context = imagecache_actions_get_image_context($image, $data);
-
-    if ($data['text_source'] === 'alt' || $data['text_source'] === 'title') {
-      $text = '';
-      // We have 2 possible sources for the alt or title text:
-      // - Image field.
-      // - Media module (7.x-2.x) with file_entity: the alt and title come as
-      // fields of the file entity, stored in 'managed_file'. The names of the
-      // fields are field_file_image_alt_text resp. field_file_image_title_text.
-      // BTW: these fields are also available in the 'image_field' entry, but as
-      // a managed file may be existing without any image field referring to it,
-      // we do the lookup in the managed_file entry.
-      if (!empty($image_context['image_field'][$data['text_source']])) {
-        $text = $image_context['image_field'][$data['text_source']];
-      }
-      else if (!empty($image_context['managed_file'])) {
-        $field = field_get_items('file', $image_context['managed_file'], "field_file_image_{$data['text_source']}_text");
-        if ($field) {
-          $text = $field[0]['value'];
-        }
+  else if ($data['text_source'] === 'alt' || $data['text_source'] === 'title') {
+    $text = '';
+    // We have 2 possible sources for the alt or title text:
+    // - Image field.
+    // - Media module (7.x-2.x) with file_entity: the alt and title come as
+    // fields of the file entity, stored in 'managed_file'. The names of the
+    // fields are field_file_image_alt_text resp. field_file_image_title_text.
+    // BTW: these fields are also available in the 'image_field' entry, but as
+    // a managed file may be existing without any image field referring to it,
+    // we do the lookup in the managed_file entry.
+    if (!empty($image_context['image_field'][$data['text_source']])) {
+      $text = $image_context['image_field'][$data['text_source']];
+    }
+    else if (!empty($image_context['managed_file'])) {
+      $field = field_get_items('file', $image_context['managed_file'], "field_file_image_{$data['text_source']}_text");
+      if ($field) {
+        $text = $field[0]['value'];
       }
     }
-    else { // $data['text_source'] === 'php'
-      // Process the php using php_eval (rather than eval), but with GLOBAL
-      // variables, so they can be passed successfully.
-      $GLOBALS['image_context'] = $image_context;
-      $GLOBALS['image'] = $image;
-      // We don't need to check_plain() the resulting text, as the text is not
-      // rendered in a browser but processed on the server.
-      $text = module_exists('php') ? php_eval('<'.'?php global $image, $image_context; ' . $data['php'] . ' ?'.'>') : '';
+  }
+  else { // $data['text_source'] === 'php'
+    // Process the php using php_eval (rather than eval), but with GLOBAL
+    // variables, so they can be passed successfully.
+    $GLOBALS['image_context'] = $image_context;
+    $GLOBALS['image'] = $image;
+    // We don't need to check_plain() the resulting text, as the text is not
+    // rendered in a browser but processed on the server.
+    $text = module_exists('php') ? php_eval('<' . '?php global $image, $image_context; ' . $data['php'] . ' ?' . '>') : '';
 
-      unset($GLOBALS['image']);
-      unset($GLOBALS['image_context']);
-    }
+    unset($GLOBALS['image']);
+    unset($GLOBALS['image_context']);
   }
   return $text;
 }

@@ -89,6 +89,15 @@ function imagecache_coloractions_image_effect_info() {
     'summary theme' => 'coloractions_alpha_summary',
   );
 
+  $effects['coloractions_posterize'] = array(
+    'label' => t('Posterize'),
+    'help' => t('Reduce the image to a limited number of color levels per channel.'),
+    'effect callback' => 'coloractions_posterize_image',
+    'dimensions passthrough' => TRUE,
+    'form callback' => 'coloractions_posterize_form',
+    'summary theme' => 'coloractions_posterize_summary',
+  );
+
   return $effects;
 }
 
@@ -110,6 +119,9 @@ function imagecache_coloractions_theme() {
       'variables' => array('data' => NULL),
     ),
     'coloractions_convert_summary' => array(
+      'variables' => array('data' => NULL),
+    ),
+    'coloractions_posterize_summary' => array(
       'variables' => array('data' => NULL),
     ),
   );
@@ -497,3 +509,82 @@ function coloractions_file_formats() {
   return array('image/jpeg' => 'jpg', 'image/gif' => 'gif', 'image/png' => 'png');
 }
 
+/**
+ * Implementation of theme_hook() for imagecache_ui.module
+ */
+function theme_coloractions_posterize_summary($variables) {
+  return t(': Reduce to @colors color levels per channel', array('@colors' => $variables['data']['colors']));
+}
+
+function coloractions_posterize_image(&$image, $data) {
+  if (!image_toolkit_invoke('posterize', $image, array($data['colors']))) {
+    watchdog('image_posterize', 'Image posterize failed using the %toolkit toolkit on %path (%mimetype, %dimensions)', array(
+      '%toolkit' => $image->toolkit,
+      '%path' => $image->source,
+      '%mimetype' => $image->info['mime_type'],
+      '%dimensions' => $image->info['height'] . 'x' . $image->info['height'],
+    ), WATCHDOG_ERROR);
+    return FALSE;
+  }
+  return TRUE;
+}
+
+function coloractions_posterize_form($data) {
+  $form = array();
+
+  $form['colors'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Color levels per channel'),
+    '#default_value' => isset($data['colors']) ? $data['colors'] : '',
+    '#required' => TRUE,
+    '#size' => 10,
+    '#element_validate' => array('image_effect_integer_validate'),
+    '#allow_negative' => FALSE,
+    '#description' => t('Number of unique values per color channel to reduce this image to. The transparency channel is left unchanged. This effect can be used to reduce file size on png images.'),
+  );
+
+  return $form;
+}
+
+/**
+ * Posterize action for GD.
+ *
+ * @see http://www.qtcentre.org/threads/36385-Posterizes-an-image-with-results-identical-to-Gimp-s-Posterize-command?p=167712#post167712
+ */
+function image_gd_posterize(stdClass $image, $colors) {
+  // Value step for colors per channel.
+  $round_to = 255 / ($colors - 1);
+
+  for ($x = imagesx($image->resource); $x--; ) {
+    for ($y = imagesy($image->resource); $y--; ) {
+      $rgb = imagecolorat($image->resource, $x, $y);
+
+      // Use bitmasks to extract numbers we want, faster equivalent to imagecolorsforindex().
+      $a = $rgb >> 24 & 255; // Alpha
+      $r = $rgb >> 16 & 255; // Red
+      $g = $rgb >> 8  & 255; // Green
+      $b = $rgb       & 255; // Blue
+
+      // (int) (value + 0.5) faster equivalent to round() and already an int.
+      $new_r = (int) (((int) ($r / $round_to + 0.5)) * $round_to  + 0.5);
+      $new_g = (int) (((int) ($g / $round_to + 0.5)) * $round_to  + 0.5);
+      $new_b = (int) (((int) ($b / $round_to + 0.5)) * $round_to  + 0.5);
+
+      // Faster equivalent to imagecolorallocatealpha().
+      $color_combined = ($a << 24) | ($new_r << 16) | ($new_g << 8) | $new_b;
+      imagesetpixel($image->resource, $x, $y, $color_combined);
+    }
+  }
+
+  return TRUE;
+}
+
+/**
+ * Posterize action for ImageMagick.
+ */
+function image_imagemagick_posterize(stdClass $image, $colors) {
+  // In newer versions of ImageMagick dithering has no effect on posterize.
+  // Turn dithering off on older versions of ImageMagick for consistency.
+  $image->ops[] = ' +dither -posterize ' . (int) $colors;
+  return TRUE;
+}

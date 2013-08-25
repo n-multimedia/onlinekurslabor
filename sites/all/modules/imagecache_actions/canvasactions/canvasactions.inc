@@ -5,10 +5,10 @@
  * @author Dan Morrison http://coders.co.nz
  *
  * Individually configurable rounded corners logic contributed by canaryMason
- * 2009 03 http://drupal.org/node/402112
+ * 2009 03 https://drupal.org/node/402112
  *
  * Better algorithm for trimming rounded corners from donquixote
- * 2009 09 http://drupal.org/node/564036
+ * 2009 09 https://drupal.org/node/564036
  *
  */
 
@@ -797,8 +797,8 @@ function canvasactions_source2canvas_effect(stdClass $image, array $data = array
 function canvasactions_aspect_form(array $data) {
   $defaults = array(
     'ratio_adjustment' => 1,
-    'portrait' => NULL,
-    'landscape' => NULL,
+    'portrait' => '',
+    'landscape' => '',
   );
   $data = array_merge($defaults, (array) $data);
 
@@ -808,7 +808,10 @@ function canvasactions_aspect_form(array $data) {
     )
   );
 
-  $styles = image_style_options(TRUE);
+  // The PASS_THROUGH parameter is new as of D7.23, and is added here to prevent
+  // image_style_options() from double-encoding the human-readable image style
+  // name, since the form API will already sanitize options in a select list.
+  $styles = image_style_options(TRUE, PASS_THROUGH);
   // @todo: remove the current style to prevent (immediate) recursion?
 
   $form['portrait'] = array(
@@ -856,11 +859,15 @@ If n < 1 then blunt portraits will be treated as landscape.
  */
 function theme_canvasactions_aspect_summary(array $variables) {
   $data = $variables['data'];
-  $ratio_adjustment = '';
+
+  $label = imagecache_actions_get_style_label($data['portrait']);
+  $output = t('Portrait size: %label', array('%label' => $label));
+  $label = imagecache_actions_get_style_label($data['landscape']);
+  $output .= ', ' . t('Landscape size: %label', array('%label' => $label));
   if ($data['ratio_adjustment'] != 1) {
-    $ratio_adjustment = " (switch at 1:{$data['ratio_adjustment']})";
+    $output .= ', ' . t("(switch at 1:@ratio_adjustment)", array('@ratio_adjustment' => $data['ratio_adjustment']));
   }
-  return 'Portrait size: <strong>' . $data['portrait'] . '</strong>. Landscape size: <strong>' . $data['landscape'] . '</strong>' . $ratio_adjustment;
+  return trim($output);
 }
 
 /**

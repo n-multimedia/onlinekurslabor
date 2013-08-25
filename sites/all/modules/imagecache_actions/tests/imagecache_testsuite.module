@@ -23,7 +23,7 @@ function imagecache_testsuite_menu() {
   $items['admin/config/media/image-styles/testsuite'] = array(
     'title' => 'Test Suite',
     'page callback' => 'imagecache_testsuite_generate',
-    'access arguments' => array('administer imagecache'),
+    'access arguments' => array('administer image styles'),
     'type' => MENU_LOCAL_TASK,
     'weight' => 10,
   );
@@ -31,13 +31,13 @@ function imagecache_testsuite_menu() {
     'title' => 'Test Suite Image',
     'page callback' => 'imagecache_testsuite_generate',
     'page arguments' => array(5, 6),
-    'access arguments' => array('administer imagecache'),
+    'access arguments' => array('administer image styles'),
     'type' => MENU_CALLBACK,
   );
   $items['admin/config/media/image-styles/testsuite/positioning_test'] = array(
     'title' => 'Positioning Test',
     'page callback' => 'imagecache_testsuite_positioning',
-    'access arguments' => array('administer imagecache'),
+    'access arguments' => array('administer image styles'),
     'type' => MENU_LOCAL_TASK,
   );
   return $items;
@@ -48,6 +48,7 @@ function imagecache_testsuite_menu() {
  */
 function imagecache_testsuite_help($path, $arg) {
   switch ($path) {
+    // @todo: this path does not exist anymore.
     case 'admin/build/imagecache/test' :
       $output = file_get_contents(drupal_get_path('module', 'imagecache_testsuite') ."/README.txt");
       return _filter_autop($output);

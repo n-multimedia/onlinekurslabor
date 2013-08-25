@@ -2,7 +2,7 @@ README
 ------
 README for the Image effect text module.
 
-Author Erwin Derksen (fietserwin: http://drupal.org/user/750928)
+Author Erwin Derksen (fietserwin: https://drupal.org/user/750928)
 
 
 Dependencies
@@ -12,10 +12,10 @@ Hard dependencies:
 - Image (Drupal core).
 
 Soft dependencies/recommended modules:
-- Imagemagick (preferred toolkit, http://drupal.org/project/imagemagick).
+- Imagemagick (preferred toolkit, https://drupal.org/project/imagemagick).
 - PHP filter (Drupal core, if yuo want to use PHP to create the text to render).
-- System stream wrapper (http://drupal.org/project/system_stream_wrapper)
-- Remote stream wrapper (http://drupal.org/project/remote_stream_wrapper)
+- System stream wrapper (https://drupal.org/project/system_stream_wrapper)
+- Remote stream wrapper (https://drupal.org/project/remote_stream_wrapper)
 The latter 2 provide additional stream wrappers. Especially the system stream
 wrapper is very handy as it provides, among others, a module:// and theme://
 wrapper.
@@ -109,37 +109,36 @@ results.
 
 Text source
 -----------
-Note: this module can handle multi line texts. Not when the text
-contains new lines and/or carriage returns, and not to split a given text over
-multiple lines given an available width. Using "\n" in GD seems to work though.
-
 The text to place on the image may come from different sources:
-- Static: the text to place on the image is static and is defined in the image
-  effect data. Use this e.g. for a fixed copyright notice.
+- Text (with token replacement): the text to place on the image has to be
+  entered on the image effect form. Use this e.g. for a copyright notice.
+  notes:
+  * Token replacement: you can use all global tokens, the file tokens, and
+    tokens from entities referring to the image via an image field. Example: if
+    you know that the image style is only used for article nodes, you can use
+    [node:field-image:alt] to get the alt text of the image. Note: this specific
+    example requires the entity_token module.
+  * New lines: you can add a new line by adding \n to your text. To get a
+    literal \n, use \\n.
 - PHP: the text to place on the image comes from a piece of PHP code that should
   return the text to place on the image. Only users with the 'use PHP for
   settings' permission are allowed to use this source. This permission and the
   evaluation of the PHP code come from the PHP filter module which is part of
   Drupal core and thus needs to be enabled, also during image generation.
-- To alleviate the need to enable the PHP filter module, 2 commonly used sources
-  for dynamic texts are directly available without any coding: the alt and title
-  properties of the image field linked to the image at hand. Note that multiple
-  image fields, possibly in different languages, may be referring to the image
-  that is being processed. This module will take the first image field it finds
-  to extract the alt and title. If the field in itself is multi-lingual, thus
-  not a synced field, the current language will be taken, which is the language
-  of the user that happens to request this styled image first.
-
-
-Multiple text lines
--------------------
-You can add multiple lines of text to an image.
-- Static text: use \n to insert a line break, use \\n to insert \n literally
-  into your text.
-- PHP: Use normal PHP string handling to create a string with multiple lines.
-  Normally,this means using "\n" (thus with double quotes) in your code.
+  To add new lines to your text add them literally to the string you return,
+  normally by using "\n" in your PHP code.
+- Image Alt or Title: to alleviate the need to enable the PHP filter module, 2
+  commonly used sources for dynamic texts are directly available without any
+  coding: the alt and title properties of an image field linked to the image at
+  hand.
 
 Notes:
+- When using token replacement or the image alt or title, multiple image fields,
+  possibly in different languages, may be referring to the image that is being
+  processed. This module will take the first image field it finds to extract the
+  alt and title. If the field in itself is multi-lingual, thus not a synced
+  field, the current language will be taken, which is the language of the user
+  that happens to request this image derivative first.
 - This module will not automatically break text based on available space.
 - Due to the way that GD text box positioning works it is quite difficult to
   correctly position multiple lines of text with GD. If you have a working

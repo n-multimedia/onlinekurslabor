@@ -1,10 +1,10 @@
 README for the Image styleds admin Drupal module
 ------------------------------------------------
 
-Project page: http://drupal.org/project/imagecache_actions
+Project page: https://drupal.org/project/imagecache_actions
 
 Current and past maintainers for Image styles admin:
-- fietserwin (http://drupal.org/user/750928)
+- fietserwin (https://drupal.org/user/750928)
 
 
 Release notes for 7.x-1.x-dev
@@ -24,12 +24,12 @@ a test/showcase sute of styles. Finally, it allows everybody to test D8 image
 module features in real life.
 
 This module is not a replacement for the features module
-(http://drupal.org/project/features). If you are serious about configuration
+(https://drupal.org/project/features). If you are serious about configuration
 management and want to distribute styles to other systems, use features.
 
 Use this module for 1 time export/imports between different sites, "copy &
 paste" reuse within a site, and when reporting issues to the imagecache_actions
-issue queue.  
+issue queue.
 
 
 TODO

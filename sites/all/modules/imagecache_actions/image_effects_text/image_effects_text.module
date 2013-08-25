@@ -3,7 +3,7 @@
  * @file Provide text manipulation effects for image styles.
  *
  * Ported by dman
- * from http://drupal.org/node/264862#comment-865490 by patrickharris
+ * from https://drupal.org/node/264862#comment-865490 by patrickharris
  *
  * Ported to D7 by fietserwin
  * from imagecache_textactions 6.x-1.8.

@@ -17,7 +17,7 @@ function imagecache_coloractions_install() {
 
 /**
  * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * @see https://drupal.org/node/1354
  */
 function imagecache_coloractions_uninstall() {
   if (function_exists('imagecache_action_definitions') ) {

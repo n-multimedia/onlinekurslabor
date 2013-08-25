@@ -9,10 +9,6 @@
  */
 function imagecache_actions_theme() {
   return array(
-    'imagecacheactions_rgb_form' => array(
-      'file' => 'utility-color.inc',
-      'render element' => 'form',
-    ),
     'imagecacheactions_rgb' => array(
       'file' => 'utility-color.inc',
       'variables' => array('rgb' => NULL),

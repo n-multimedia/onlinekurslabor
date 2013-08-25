@@ -16,7 +16,9 @@
  */
 function image_styles_admin_duplicate_page_callback($style) {
   $duplicate_style = image_styles_admin_duplicate($style);
-  drupal_set_message(t('Style %name has been duplicated to %new_name.', array('%name' => $style['name'], '%new_name' => $duplicate_style['name'])));
+  drupal_set_message(t('Style %name has been duplicated to %new_name.', array(
+    '%name' => isset($style['label']) ? $style['label'] : $style['name'],
+    '%new_name' =>  isset($duplicate_style['label']) ? $duplicate_style['label'] : $duplicate_style['name'])));
   drupal_goto('admin/config/media/image-styles');
 }
 
@@ -29,14 +31,19 @@ function image_styles_admin_duplicate_page_callback($style) {
  *   The preferred name for the new style. If left empty, the new name will be
  *   based on the name of the style to duplicate. In both cases and when
  *   necessary, the new name will be made unique by adding some suffix to it.
+ * @param string|null $new_style_label
+ *   The preferred label for the new style. If left empty, the new label will be
+ *   based on the label of the style to duplicate. If that one is also empty,
+ *   no label will be defined for the new style, so Drupal (>=7.23) will create
+ *   one.
  *
  * @return array
  *   An image style array with the newly created copy of the given style.
  *
  * @see image_style_name_validate()
  */
-function image_styles_admin_duplicate($style, $new_style_name = NULL) {
-  // Find a unique name for copy.
+function image_styles_admin_duplicate($style, $new_style_name = NULL, $new_style_label = NULL) {
+  // Find a unique name for the copy.
   // Step 1: Find the base: name without things like '-copy' or '-copy-1'
   $style_name_base = empty($new_style_name) ? $style['name'] : $new_style_name;
   if (preg_match('/-copy(-\d+)?$/', $style_name_base)) {
@@ -58,6 +65,25 @@ function image_styles_admin_duplicate($style, $new_style_name = NULL) {
   }
   $style['name'] = $style_name;
 
+  // Step 4: Find a new label for the copy.
+  if (isset($new_style_label) || isset($style['label'])) {
+    $style_label = empty($new_style_label) ? $style['label'] : $new_style_label;
+    $copy = t('copy');
+    if (preg_match("/ $copy( \d+)?$/", $style_label)) {
+      $style_label = substr($style_label, 0, strpos($style_label, " $copy"));
+    }
+
+    // Step 4a: Add " copy" to it (if the name comes from the current style).
+    if (empty($new_style_label)) {
+      $style_label .= " $copy";
+    }
+
+    // Step 4b: Make "unique" (based on the number added to the name)
+    if ($i > 0) {
+      $style['label'] .= " $i";
+    }
+  }
+
   // Unset isid to save it as a new style.
   unset($style['isid']);
   $style = image_style_save($style);
@@ -74,31 +100,35 @@ function image_styles_admin_duplicate($style, $new_style_name = NULL) {
 }
 
 /**
-* drupal_get_form callback: form to export an image style.
-*
-* @param array $style
-*   An image style array.
-*/
+ * drupal_get_form callback: form to export an image style.
+ *
+ * @param array $form
+ * @param array $form_state
+ * @param array $style
+ *   An image style array.
+ *
+ * @return array
+ */
 function image_styles_admin_export_form($form, $form_state, $style) {
-  drupal_set_title(format_string('%page_name @style_name', array('%page_name' => t('Export image style'), '@style_name' => $style['name'])), PASS_THROUGH);
+  drupal_set_title(format_string('%page_name @style_name',
+    array('%page_name' => t('Export image style'), '@style_name' => isset($style['label']) ? $style['label'] : $style['name'])),
+    PASS_THROUGH);
   $form['serialized_style'] = array(
     '#type' => 'textarea',
   	'#rows' => 5,
   	'#title' => t('Image style export data'),
-  	'#default_value' => serialize($style),
+  	'#default_value' => image_styles_admin_export_serialize($style),
   	'#attributes' => array('readonly' =>'readonly'),
-  	'#description' => t('Copy the contents of this field to the clipboard and, on another site, paste it in the textarea of an %page_title page.', array('%page_title' => t('Import image style'))),
+  	'#description' => t('Copy the contents of this field to the clipboard and, on another site, paste it in the textarea of an %page_title page.',
+      array('%page_title' => t('Import image style'))),
   );
   return $form;
 }
 
 /**
 * drupal_get_form callback: form to import an image style.
-*
-* @param array $style
-*   An image style array.
 */
-function image_styles_admin_import_form($form, $form_state) {
+function image_styles_admin_import_form($form/*, $form_state*/) {
   $form['serialized_style'] = array(
     '#type' => 'textarea',
   	'#rows' => 5,
@@ -132,15 +162,35 @@ function image_styles_admin_import_form_validate($form, &$form_state) {
 function image_styles_admin_import_form_submit($form, &$form_state) {
   $style = image_styles_admin_import_extract_style($form_state['values']['serialized_style']);
   // Import the style by "duplicating" it, but prevent adding the -copy suffix
-  // by passing the requested name as 2nd parameter.
-  $new_style = image_styles_admin_duplicate($style, $style['name']);
+  // by passing the requested name and label as 2nd and 3rd parameter.
+  $new_style = image_styles_admin_duplicate($style, $style['name'], isset($style['label']) ? $style['label'] : NULL);
   if ($new_style['name'] === $style['name']) {
     drupal_set_message(t('Style %name has been imported.', array('%name' => $style['name'])));
   }
   else {
-    drupal_set_message(t('Style %name has been imported as %new_name.', array('%name' => $style['name'], '%new_name' => $new_style['name'])));
+    drupal_set_message(t('Style %name has been imported as %new_name.', array(
+      '%name' => isset($style['label']) ? $style['label'] : $style['name'],
+      '%new_name' => isset($new_style['label']) ? $new_style['label'] : $new_style['name'])));
   }
   drupal_goto('admin/config/media/image-styles');
+}
+
+/**
+ * Serializes image style data so it can be exported.
+ *
+ * @param array $style
+ *   An image style array.
+ *
+ * @return string
+ *   The serialized image style. Keys that are not needed for import are not
+ *   serialized.
+ */
+function image_styles_admin_export_serialize($style) {
+  $style = array_intersect_key($style, array('name' => 0, 'label' => 0, 'effects' => 0));
+  foreach ($style['effects'] as &$effect) {
+    $effect = array_intersect_key($effect, array('weight' => 0, 'name' => 0, 'data' => 0));
+  }
+  return serialize($style);
 }
 
 /**
@@ -160,19 +210,25 @@ function image_styles_admin_import_extract_style($import) {
   if (!is_array($style)) {
     return FALSE;
   }
-  // Check if the required keys are available, we will ignore the other.
-  $style = array_intersect_key($style, array('name' => 0, 'effects' => 0));
-  if (count($style) !== 2) {
+
+  // Filter out keys that we do not process.
+  $style = array_intersect_key($style, array('name' => 0, 'label' => 0, 'effects' => 0));
+
+  // 'name' is required and must be "machine name" string.
+  if (!isset($style['name']) || !is_string($style['name']) || preg_match('/[0-9a-z_\-]+/', $style['name']) !== 1) {
     return FALSE;
   }
-  // 'name' must be "machine name" string
-  if (!is_string($style['name']) || preg_match('/[0-9a-z_\-]+/', $style['name']) !== 1) {
+
+  // Optional 'label' must be a string.
+  if (isset($style['label']) && !is_string($style['label'])) {
     return FALSE;
   }
-  // 'effects' must be an array
-  if (!is_array($style['effects'])) {
+
+  // 'effects' is required and must be an array.
+  if (!isset($style['effects']) || !is_array($style['effects'])) {
     return FALSE;
   }
+
   // Check effects elements
   foreach ($style['effects'] as &$effect) {
     // an effect must be an array.
@@ -197,6 +253,7 @@ function image_styles_admin_import_extract_style($import) {
       return FALSE;
     }
   }
+
   // @todo: are there any security implications for creating styles like this?
   // - Unserialize() is save in itself: it only creates data (except possibly
   //   for__wakeup(), but that can only be in already existing code: safe
@@ -209,14 +266,14 @@ function image_styles_admin_import_extract_style($import) {
   //   contain invalid values. This is acceptable as it can also be done by
   //   operating directly on the database. In Drupal this is not normally
   //   checked for during processing: error messages will make clear that the
-  //   data has been played with. Can incorrect dat be abused? It may contain:
+  //   data has been played with. Can incorrect data be abused? It may contain:
   //   - incorrect types: we do not know the data structure of the various
   //     effects, so we cannot check that and have to accept it as it comes.
   //     Effects should check_plain in summary theme and convert to int/float
-  //     whenever possible befoire using it in commands.
+  //     whenever possible before using it in commands.
   //   - PHP code, but that may be valid content for the text or custom effects:
   //     Effects should check_plain in summary theme and convert to int/float
-  //     whenever possible befoire using it in commands.
+  //     whenever possible before using it in commands.
   //     @todo: if the style contains an effect that contains PHP code, the user
   //     should need the 'use PHP for settings' permission.
   //   - HTML and or JS code: when used as parameter, this normally won't hurt.
