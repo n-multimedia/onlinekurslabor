@@ -1,0 +1,247 @@
+<?php
+
+/**
+ * @file
+ * Drupal Module: Email Logging and Alerts
+ *
+ * Sends logs and alerts to email addresses.
+ *
+ * @Author: Khalid Baheyeldin http://2bits.com (version 6.x-1.x)
+ * @Author: Maciej Zgadzaj http://zgadzaj.com (versions x.x-2.x)
+ */
+
+/**
+ * Implements hook_help().
+ */
+function emaillog_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#emaillog':
+      return '<p>' . t('Sends logs and alerts to email addresses, with different severity going to different emails.') . '</p>';
+    case 'admin/reports/dblog':
+      return '<p>' . t('Sends logs and alerts to email addresses, with different severity going to different emails.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function emaillog_menu() {
+  $items['admin/config/system/emaillog'] = array(
+    'title'             => 'Email logging and alerts',
+    'description'       => 'Settings for logging and alerts to email addresses.',
+    'page callback'     => 'drupal_get_form',
+    'page arguments'    => array('emaillog_admin_settings'),
+    'access arguments'  => array('administer site configuration'),
+    'type'              => MENU_NORMAL_ITEM,
+    'file'              => 'emaillog.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function emaillog_theme() {
+  return array(
+    'emaillog' => array(
+      'render element' => 'elements',
+      'template' => 'emaillog',
+      'variables' => array('log' => NULL),
+    ),
+    'emaillog_admin_settings' => array(
+      'render element' => 'form',
+      'file' => 'emaillog.admin.inc',
+    ),
+  );
+}
+
+/**
+ * Implements hook_watchdog().
+ */
+function emaillog_watchdog($log) {
+  global $language;
+
+  // Send email only if there is an email address.
+  // Otherwise the message is ignored by this module.
+  if (!$to = variable_get('emaillog_' . $log['severity'])) {
+    return;
+  }
+
+  // Assume that current message is not a repetition.
+  $message_count = 1;
+
+  // Check if main email repetition restricting options are set.
+  // It's enough to check only emaillog_max_similar_emails variable,
+  // as setting it requires emaillog_max_similarity_level to be set as well.
+  // Saving few unnecessary database queries this way if it's not set.
+  $max_similar_emails = variable_get('emaillog_max_similar_emails');
+  if ($max_similar_emails) {
+    $max_similarity_level = variable_get('emaillog_max_similarity_level');
+
+    // Get previously sent message data and compare its content with current one.
+    $last_message = variable_get('emaillog_last_message');
+    $max_length = isset($last_message['message']) ? max(strlen($log['message']), strlen($last_message['message'])) : strlen($log['message']);
+    $similarity = 0;
+    if ($max_length > 0) {
+      similar_text($log['type'] . $log['message'], $last_message['message'], $similarity);
+      $similarity /= 100;
+    }
+
+    // If similarity level is higher than allowed in module configuration,
+    // and if maximum number of similar messages to sent was reached,
+    // stop execution and return - no email should be sent in such case.
+    if ($similarity > $max_similarity_level) {
+      if ($last_message['count'] >= $max_similar_emails) {
+        // Also make sure that those similar emails are consecutive,
+        // ie. were sent during a specific period of time (if defined).
+        $max_consecutive_timespan = variable_get('emaillog_max_consecutive_timespan');
+        if (!$max_consecutive_timespan || $last_message['time'] >= time() - $max_consecutive_timespan * 60) {
+          // No email should be sent - stop function execution.
+          return;
+        }
+        // Reset last message count if max consecutive time has already passed.
+        $last_message['count'] = 0;
+      }
+      // Email should and will be sent, so increase counter for this message.
+      $message_count = ++$last_message['count'];
+    }
+  }
+
+  // Add additional debug info (PHP predefined variables, debug backtrace etc.)
+  $log['debug_info'] = array();
+  $debug_info_settings = variable_get('emaillog_debug_info');
+  foreach (_emaillog_get_debug_info_callbacks() as $debug_info_key => $debug_info_callback) {
+    if (isset($debug_info_settings[$log['severity']][$debug_info_key]) && $debug_info_settings[$log['severity']][$debug_info_key]) {
+      eval('$log[\'debug_info\'][\'' . $debug_info_callback . '\'] = ' . $debug_info_callback . ';');
+    }
+  }
+  drupal_alter('emaillog_debug_info', $log['debug_info']);
+
+  // Make sure that $log['variables'] is always an array to avoid
+  // errors like in issue http://drupal.org/node/1325938
+  if (!is_array($log['variables'])) {
+    $log['variables'] = array();
+  }
+  // Send email alert.
+  drupal_mail('emaillog', 'alert', $to, $language->language, $log);
+
+  // Update email repetition restricting variables if needed.
+  if ($max_similar_emails) {
+    $last_message = array(
+      'message' => $log['type'] . $log['message'],
+      'time'    => time(),
+      'count'   => $message_count,
+    );
+    variable_set('emaillog_last_message', $last_message);
+  }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function emaillog_mail($key, &$message, $params) {
+  if ($key == 'alert') {
+    $severity_levels = watchdog_severity_levels();
+    $vars = array(
+      '@site_name'      => variable_get('site_name', 'Drupal'),
+      '@severity_desc'  => drupal_ucfirst($severity_levels[$params['severity']]),
+      '@dblog_message'  => truncate_utf8(strip_tags(t($params['message'], $params['variables'])), 60, TRUE, TRUE),
+    );
+    // Legacy email subject.
+    if (variable_get('emaillog_legacy_subject')) {
+      $message['subject'] = t('[@site_name] @severity_desc: Alert from your web site', $vars);
+    }
+    // New version of email subject, with beginning of Watchdog message.
+    else {
+      $message['subject'] = t('[@site_name] @severity_desc: @dblog_message', $vars);
+    }
+    $message['body'][] = theme('emaillog', array('log' => $params));
+  }
+}
+
+/**
+ * Process variables for emaillog.tpl.php.
+ */
+function template_preprocess_emaillog(&$variables) {
+  global $base_url;
+  $variables['base_url'] = $base_url;
+
+  $severity_list                     = watchdog_severity_levels();
+  $variables['log']['severity_desc'] = drupal_ucfirst($severity_list[$variables['log']['severity']]);
+  $variables['log']['datetime']      = date('Y-m-d H:i:s', $variables['log']['timestamp']);
+  $variables['log']['uid']           = $variables['log']['user']->uid;
+  $variables['log']['name']          = format_username($variables['log']['user']);
+  $variables['log']['link']          = strip_tags($variables['log']['link']);
+  $variables['log']['message']       = strip_tags(t($variables['log']['message'], $variables['log']['variables']));
+
+  $severity = _emaillog_system_string($severity_list[$variables['log']['severity']]);
+  $variables['theme_hook_suggestions'][] = 'emaillog__' . $severity;
+  $variables['theme_hook_suggestions'][] = 'emaillog__' . _emaillog_system_string($variables['log']['type']);
+  $variables['theme_hook_suggestions'][] = 'emaillog__' . $severity . '__' . _emaillog_system_string($variables['log']['type']);
+}
+
+/**
+ * Formats string as safe system string.
+ */
+function _emaillog_system_string($string, $replacement = '_') {
+  return preg_replace('/[^a-z0-9]+/', $replacement, drupal_strtolower($string));
+}
+
+/**
+ * Returns array of available additional debug information for email alerts.
+ */
+function _emaillog_get_debug_info_callbacks() {
+  return array(
+    'server'    => '$_SERVER',
+    'env'       => '$_ENV',
+    'request'   => '$_REQUEST',
+    'cookie'    => '$_COOKIE',
+    'get'       => '$_GET',
+    'post'      => '$_POST',
+    'session'   => '$_SESSION',
+    'backtrace' => 'debug_backtrace()',
+  );
+}
+
+/**
+ * Replaces backtrace argument values with their types.
+ */
+function emaillog_emaillog_debug_info_alter(&$debug_info) {
+  if (
+    isset($debug_info['debug_backtrace()'])
+    && is_array($debug_info['debug_backtrace()'])
+    && variable_get('emaillog_backtrace_replace_args', TRUE)
+  ) {
+    foreach ($debug_info['debug_backtrace()'] as $trace_key => $trace) {
+      $args = array();
+      if (isset($trace['args']) && is_array($trace['args'])) {
+        foreach ($trace['args'] as $key => $value) {
+          $args[$key] = sprintf('%s(%s)', gettype($value), _emaillog_get_variable_size($value));
+        }
+        $debug_info['debug_backtrace()'][$trace_key]['args'] = implode(', ', $args);
+      }
+    }
+  }
+}
+
+/**
+ * Returns size of a variable.
+ */
+function _emaillog_get_variable_size($variable) {
+  switch (gettype($variable)) {
+    case 'array':
+    case 'object':
+      return count((array)$variable);
+    case 'integer':
+    case 'int':
+    case 'boolean':
+    case 'bool':
+    case 'float':
+    case 'double':
+    case 'real':
+    case 'string':
+      return strlen((string)$variable);
+    default:
+      return '?';
+  }
+}

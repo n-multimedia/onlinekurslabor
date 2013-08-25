@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the emaillog module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ * Deletes all emaillog variables and clears variable cache.
+ */
+function emaillog_uninstall() {
+  db_query("DELETE FROM {variable} WHERE name LIKE 'emaillog_%'");
+  cache_clear_all('variables', 'cache');
+}

@@ -1,7 +1,7 @@
 <?php
 
 // dieser Saltwert muß mit dem in der vhb-DB übereinstimmen
-define('NM_LOGIN_VHB_SALT', "testSALTweRt");
+define('NM_LOGIN_VHB_DATAVERSION', "2.0");
 
 function nm_login_vhb_menu() {
   $items['login/vhb/test'] = array(
@@ -31,10 +31,13 @@ function nm_login_vhb() {
     return $output;
   }
 
+  //[todo] check DATAVERSION if needed
+  //$_POST['DATAVERSION'] >= NM_LOGIN_VHB_DATAVERSION
   //UTF-8 konvertierte Parameter: diese werden im System weiterverwendet
+  //safe checked plain text values
   $params = array();
   foreach ($_POST as $key => $value) {
-    $params[$key] = utf8_encode($value);
+    $params[$key] = check_plain(utf8_encode($value));
   }
 
   $attribute = $_POST['LOGIN'] . $_POST['PASSWORT'] . $_POST['LVNR'] . $_POST['BEZEICHNUNG'] . $_POST['VORNAME'] . $_POST['NACHNAME'] . $_POST['STRASSE'] . $_POST['PLZ'] . $_POST['ORT'] . $_POST['EMAIL'] . $_POST['HOCHSCHULE'] . $_POST['STUDIENFACH'] . $_POST['ABSCHLUSS'] . NM_LOGIN_VHB_SALT;
@@ -45,12 +48,36 @@ function nm_login_vhb() {
     //sign in logic for students
     if (nm_login_vhb_user_is_new($params)) {
       //user is new -> create new account and subscribe for course
-      drupal_set_message("Benutzer ist neu -> Neuen Account anlegen");
-      nm_login_vhb_add_user($params);
+      //drupal_set_message("Benutzer ist neu -> Neuen Account anlegen");
+      $account = nm_login_vhb_add_user($params);
+
+      global $user;
+      //check if user is not already logged in
+      if (!$user->uid) {
+        $user = user_load($account->uid);
+        drupal_session_regenerate();
+      }
     }
-    else {
+    else {      
       //user account exists -> login and redirect to course
-      drupal_set_message("Benutzer existiert -> einloggen");
+      //drupal_set_message("Benutzer existiert -> einloggen");
+      //assuming that we don't need the transfered VHB - password 
+      $account = user_load_by_mail($params['EMAIL']);
+      //check if user is set and has role student, dismiss else
+      if ($account && count($account->roles) == 2 && in_array(NM_ROLE_STUDENT, $account->roles)) {
+        global $user;
+        //check if user is not already logged in
+        if (!$user->uid) {
+          $user = user_load($account->uid);
+          drupal_session_regenerate();
+          $course = nm_login_vhb_get_course($params['LVNR']);
+          drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
+        }
+      }else
+      {
+        //redirect to user login page
+        drupal_goto('user');
+      }
     }
   }
   else {
@@ -65,15 +92,50 @@ function nm_login_vhb_user_is_new($params) {
   $mail = $params['EMAIL'];
   $user = user_load_by_mail($mail);
 
-  //todo Matrikelnummer prüfen
-
   if ($user) {
+    return FALSE;
+  }
+
+  //check if matrikelnummer is already set for any other account
+  if (nm_login_vhb_load_count_matrikelnummer($params['MATRIKELNUMMER']) > 0) {
+    //if so - we need to solve the conflict manually
+    //inform the user
+    $message = '
+                <p>(' . $params['EMAIL'] . ' - ' . $params['MATRIKELNUMMER'] . ").</p>
+                <p>Matrikelnummer stimmt nicht mit der Emailadresse überein.</p>
+                
+                ";
+
+    //drupal_set_message("Matrikelnummer stimmt nicht mit der Emailadresse überein.", 'error');
+    watchdog("LOGIN VHB", $message, array(), WATCHDOG_ALERT);
+
     return FALSE;
   }
 
   return TRUE;
 }
 
+function nm_login_vhb_load_count_matrikelnummer($matrikelnummer) {
+  $query = new EntityFieldQuery();
+
+  $query->entityCondition('entity_type', 'profile2')
+      ->entityCondition('bundle', 'student')
+      ->fieldCondition('field_matrikelnummer', 'value', $matrikelnummer, '=');
+
+  $result = $query->count()->execute();
+
+  return $result;
+}
+
+/**
+ * Create a new user account by using attributes submitted
+ * by a VHB POST request
+ * 
+ * @param $params VHB encoded POST parameters
+ * 
+ * @return $account user account object
+ * 
+ */
 function nm_login_vhb_add_user($params) {
 
   //some redundand aspects
@@ -81,10 +143,10 @@ function nm_login_vhb_add_user($params) {
   //course/admin/%1/members/add
   $role = user_role_load_by_name(NM_ROLE_STUDENT);
   $edit = array(
-    'name' => check_plain($params['VORNAME'] . ' ' . $params['NACHNAME']),
+    'name' => $params['VORNAME'] . ' ' . $params['NACHNAME'],
     'pass' => user_password(),
-    'mail' => check_plain($params['EMAIL']),
-    'init' => check_plain($params['EMAIL']),
+    'mail' => $params['EMAIL'],
+    'init' => $params['EMAIL'],
     'status' => 1,
     'access' => REQUEST_TIME,
     'roles' => array($role->rid => $role->name),
@@ -107,9 +169,14 @@ function nm_login_vhb_add_user($params) {
   profile2_save($profile2);
   //Populate profile fields
   $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
-  $wrapper->field_matrikelnummer->set(check_plain($params['MATRIKELNUMMER']));
-  $wrapper->field_studienfach->set(check_plain($params['STUDIENFACH']));
+  $wrapper->field_matrikelnummer->set($params['MATRIKELNUMMER']);
+  $wrapper->field_studienfach->set($params['STUDIENFACH']);
   //load term id and set hochschule field
+  $terms = taxonomy_get_term_by_name($params['HOCHSCHULE']);
+
+  if (!empty($terms)) {
+    $wrapper->field_hochschule->set(current($terms)->tid);
+  }
 
   $wrapper->save();
 
@@ -119,9 +186,9 @@ function nm_login_vhb_add_user($params) {
   profile2_save($profile2);
   //Populate profile fields
   $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
-  $wrapper->field_first_name->set(check_plain($params['VORNAME']));
-  $wrapper->field_last_name->set(check_plain($params['NACHNAME']));
-  $wrapper->field_birthday->set(strtotime(check_plain($params['GEBDAT'])));
+  $wrapper->field_first_name->set($params['VORNAME']);
+  $wrapper->field_last_name->set($params['NACHNAME']);
+  $wrapper->field_birthday->set(strtotime($params['GEBDAT']));
   //not knowing which SEX options posiible
   //weiblich = female so everything !female will be male 
   if ($params['SEX'] == 'weiblich') {
@@ -141,21 +208,33 @@ function nm_login_vhb_add_user($params) {
   //assign user to defined course
   //load course by LVNR
   $course = nm_login_vhb_get_course($params['LVNR']);
-  $values = array(
-    'entity type' => 'user',
-    'entity' => $account,
-  );
-  og_group('node', $course->nid, $values);
+  if ($course) {
+    $values = array(
+      'entity type' => 'user',
+      'entity' => $account,
+    );
+    og_group('node', $course->nid, $values);
+  }
 
+  _user_mail_notify('register_admin_created', $account);
 
-  dpm("Bestätigungsmail verschicken todo");
-  //_user_mail_notify('register_admin_created', $account);
+  return $account;
 }
-
+/**
+ * get course by LVNR
+ * 
+ * @param type $lvnr
+ * @return 
+ * $node object or NULL if no result was found
+ */
 function nm_login_vhb_get_course($lvnr) {
 
-  //todo load course by lvnr
-  return node_load(1);
+  $result = custom_general_get_course_by_lvnr($lvnr);
+  if (!empty($result)) {
+    return node_load(current($result)->nid);
+  }
+
+  return NULL;
 }
 
 function nm_login_vhb_test() {

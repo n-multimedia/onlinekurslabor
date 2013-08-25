@@ -214,7 +214,7 @@ function _section_courses_advanced_forum_get_num_unread($uid, $tid) {
 function _section_courses_course_get_num_unread_by_type($uid, $type, $nid = NULL) {
 
   static $result_cache = array();
-  if(!$uid){
+  if (!$uid) {
     global $user;
     $uid = $user->uid;
   }
@@ -269,6 +269,18 @@ function custom_general_node_ids_by_type($type) {
   return (array_keys($results['node']));
 }
 
+function custom_general_get_course_by_lvnr($lvnr) {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', NM_COURSE)
+      ->propertyCondition('status', 1)
+      ->fieldCondition('field_vhb_lvnr', 'value', $lvnr, '=');
+
+  $result = $query->execute();
+
+  return isset($result['node']) ? $result['node'] : NULL;
+}
+
 /**
  * get user's solution of a tasks
  * @param type $tid
@@ -297,11 +309,11 @@ function custom_general_get_task_solutions_by_uid($tid, $uid) {
  */
 function custom_general_get_task_solutions($tid, $uid) {
   static $result = array();
-  if(!$uid){
+  if (!$uid) {
     global $user;
     $uid = $user->uid;
   }
-    
+
 
   if (!$result || !isset($result[$tid][$uid])) {
     $uid_tmp = arg(5);
@@ -325,20 +337,20 @@ function custom_general_get_task_solutions($tid, $uid) {
     if ($task_type == 1 && in_array(NM_ROLE_STUDENT, $user->roles)) {
       //get course group
       $cg_gid = _section_courses_get_coursegroup_gid($uid);
-      
+
       //get all group members
       $cg_members = custom_general_get_users_in_group($cg_gid);
-      
+
 
       $solutions = array();
 
       // Loop through and load each user
-      foreach ($cg_members AS $member) {        
+      foreach ($cg_members AS $member) {
         // Load the user object if necessary
         $user = user_load($member->uid);
-        
-        if(!in_array(NM_ROLE_STUDENT, $user->roles))
-            continue;
+
+        if (!in_array(NM_ROLE_STUDENT, $user->roles))
+          continue;
 
         // Do whatever else you need to
         $tmp_sol = custom_general_get_task_solutions_by_uid($tid, $user->uid);
@@ -346,7 +358,6 @@ function custom_general_get_task_solutions($tid, $uid) {
         if ($tmp_sol) {
           $solutions[] = $tmp_sol;
         }
-
       }
 
       if (!empty($solutions)) {
@@ -366,8 +377,8 @@ function custom_general_get_task_solutions($tid, $uid) {
       $result[$tid][$uid] = $solutions;
       return $result[$tid][$uid];
     }
-  }else
-  {
+  }
+  else {
     return $result[$tid][$uid];
   }
 }

@@ -1,0 +1,283 @@
+<?php
+
+/**
+ * @file
+ * Provides a Trigger and Action integration for watchdog events.
+ */
+
+/**
+ * Implements hook_trigger_info().
+ *
+ * Register triggered hooks used by this module.
+ */
+function watchdog_triggers_trigger_info() {
+  return array(
+    'watchdog_triggers' => array(
+      'watchdog_logged' => array(
+        'label' => t('Watchdog logs an event'),
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_watchdog_triggers().
+ */
+function watchdog_triggers_watchdog_triggers($op, $user) {
+  if (!in_array($op, array('watchdog_logged'))) {
+    return;
+  }
+  $aids = trigger_get_assigned_actions('watchdog_logged', $op);
+  $context = array(
+    'hook' => 'watchdog_logged',
+    'op' => $op,
+    'user' => $user,
+  );
+  actions_do(array_keys($aids), $user, $context);
+}
+
+/**
+ * Implements hook_action_info_alter().
+ */
+function watchdog_triggers_action_info_alter(&$info) {
+  foreach ($info as $type => $data) {
+    if (stripos($type, "user_") === 0 || stripos($type, "system_") === 0) {
+      if (isset($info[$type]['hooks']['application'])) {
+        $info[$type]['hooks']['watchdog_logged'] = array_merge($info[$type]['hooks']['watchdog_logged'], array('watchdog_logged'));
+      }
+      else {
+        $info[$type]['hooks']['watchdog_logged'] = array('watchdog_logged');
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_watchdog().
+ */
+function watchdog_triggers_watchdog($watchdog_message) {
+  global $user;
+
+  $types = trim(variable_get('watchdog_triggers_type', ''));
+  $users = trim(variable_get('watchdog_triggers_user', ''));
+  $request_uris = trim(variable_get('watchdog_triggers_request_uri', ''));
+  $referers = trim(variable_get('watchdog_triggers_referer', ''));
+  $ips = trim(variable_get('watchdog_triggers_ip', ''));
+  $severities = variable_get('watchdog_triggers_severity', array(WATCHDOG_CRITICAL, WATCHDOG_ALERT, WATCHDOG_EMERGENCY));
+  if (array_key_exists('-100', $severities)) {
+    unset($severities['-100']);
+  }
+  if ($found_key = array_search('-100', $severities)) {
+    unset($severities[$found_key]);
+  }
+  $messages = trim(variable_get('watchdog_triggers_message', ''));
+
+  // Check each value.
+  // These are cumulative filters, so if one fails - all fail.
+  $triggered = TRUE;
+
+  if (!empty($types)) {
+    $types = _watchdog_triggers_clean_array(explode(',', $types));
+    if (!in_array($watchdog_message['type'], $types)) {
+      $triggered = FALSE;
+    }
+  }
+
+  if (!empty($users)) {
+    $users = _watchdog_triggers_clean_array(explode(',', $users));
+    if (!in_array($watchdog_message['user']->name, $users)) {
+      $triggered = FALSE;
+    }
+  }
+  if (!empty($request_uris)) {
+    $request_uris = _watchdog_triggers_clean_array(explode(',', $request_uris));
+    $match_results = _watchdog_triggers_preg_match_patterns($request_uris, $watchdog_message['request_uri']);
+    if ($match_results == FALSE) {
+      $triggered = FALSE;
+    }
+  }
+  if (!empty($referers)) {
+    $referers = _watchdog_triggers_clean_array(explode(',', $referers));
+    $match_results = _watchdog_triggers_preg_match_patterns($referers, $watchdog_message['referer']);
+    if ($match_results == FALSE) {
+      $triggered = FALSE;
+    }
+  }
+  if (!empty($ips)) {
+    $ips = _watchdog_triggers_clean_array(explode(',', $ips));
+    $match_results = _watchdog_triggers_preg_match_patterns($ips, $watchdog_message['ip']);
+    if ($match_results == FALSE) {
+      $triggered = FALSE;
+    }
+  }
+  if (count($severities) > 0) {
+    $severities = _watchdog_triggers_clean_array($severities);
+    if (!in_array($watchdog_message['severity'], $severities)) {
+      $triggered = FALSE;
+    }
+  }
+  if (!empty($messages)) {
+    $messages = _watchdog_triggers_clean_array(explode(',', $messages));
+    $match_results = _watchdog_triggers_preg_match_patterns($messages, $watchdog_message['message']);
+    if ($match_results == FALSE) {
+      $triggered = FALSE;
+    }
+  }
+
+  if ($triggered === TRUE) {
+    module_invoke_all('watchdog_triggers', 'watchdog_logged', $user);
+  }
+}
+
+/**
+ * Implements hook_menu_alter().
+ *
+ * Work around loss of menu local task inheritance.
+ */
+function onthisdate_menu_alter(&$callbacks) {
+  if (module_exists('trigger') & isset($callbacks['admin/structure/trigger/watchdog_triggers'])) {
+    $callbacks['admin/structure/trigger/watchdog_triggers']['access callback'] = 'trigger_access_check';
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function watchdog_triggers_permission() {
+  return array(
+    'administer watchdog triggers' => array(
+      'title' => t('administer watchdog triggers'),
+      'description' => t('Administer triggers for watchdog events.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function watchdog_triggers_menu() {
+  $items = array();
+  $items['admin/config/system/watchdog_triggers'] = array(
+    'title' => 'Watchdog triggers',
+    'description' => 'Configure watchdog triggers settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('watchdog_triggers_admin_settings'),
+    'access arguments' => array('administer watchdog triggers'),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements form page callback for module admin settings page
+ */
+function watchdog_triggers_admin_settings($form, &$form_state) {
+  $form = array();
+  // Check against the following features of watchdog.
+  $form['watchdog_triggers_info'] = array(
+    '#type' => 'item',
+    '#description' => t('The settings set here apply to all watchdog actions. These are cumulative filters. ' .
+    'The more filters you set the narrower your selection of watchdog events will be. If you need more fine ' .
+    'control or multiple configurations then you need to upgrade to the Rules integration for Watchdog.'),
+  );
+
+  // type (module name)
+  $form['watchdog_triggers_type'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Message type'),
+    '#default_value' => variable_get('watchdog_triggers_type', ''),
+    '#description' => t('Enter each type to trigger against, usually the module of origin, separated by a comma.'),
+  );
+
+  // user
+  $form['watchdog_triggers_user'] = array(
+    '#type' => 'textarea',
+    '#title' => t('User generating message'),
+    '#default_value' => variable_get('watchdog_triggers_user', ''),
+    '#description' => t('Enter each user name to trigger against, separated by a comma.'),
+  );
+
+  // request uri
+  $form['watchdog_triggers_request_uri'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Message request uri'),
+    '#default_value' => variable_get('watchdog_triggers_request_uri', ''),
+    '#description' => t('Enter each regular expression to match the requesting uri against, separated by a comma.'),
+  );
+
+  // referer
+  $form['watchdog_triggers_referer'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Message referer'),
+    '#default_value' => variable_get('watchdog_triggers_referer', ''),
+    '#description' => t('Enter each regular expression to match the refering page against, separated by a comma.'),
+  );
+
+  // ip
+  $form['watchdog_triggers_ip'] = array(
+    '#type' => 'textarea',
+    '#title' => t('IP generating message'),
+    '#default_value' => variable_get('watchdog_triggers_ip', ''),
+    '#description' => t('Enter each regular expression to match the IP against, separated by a comma.'),
+  );
+
+  // severity
+  $array_options = array(
+    -100 => 'none',
+    WATCHDOG_EMERGENCY => 'Emergency: system is unusable',
+    WATCHDOG_ALERT => 'Alert: action must be taken immediately',
+    WATCHDOG_CRITICAL => 'Critical: critical conditions',
+    WATCHDOG_ERROR => 'Error: error conditions',
+    WATCHDOG_WARNING => 'Warning: warning conditions',
+    WATCHDOG_NOTICE => 'Notice: normal but significant condition',
+    WATCHDOG_INFO => 'Informational: informational messages',
+    WATCHDOG_DEBUG => 'Debug: debug-level messages',
+  );
+
+  $form['watchdog_triggers_severity'] = array(
+    '#type' => 'select',
+    '#title' => t('Message severity'),
+    '#default_value' => variable_get('watchdog_triggers_severity', array(WATCHDOG_CRITICAL, WATCHDOG_ALERT, WATCHDOG_EMERGENCY)),
+    '#options' => $array_options,
+    '#description' => t('Select each severity to trigger against.'),
+    '#multiple' => TRUE,
+  );
+
+  // message
+  $form['watchdog_triggers_message'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Message pattern'),
+    '#default_value' => variable_get('watchdog_triggers_message', ''),
+    '#description' => t('Enter each regular expression to match the message against, separated by a comma.'),
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Helper function, prepares user data in an array for matching.
+ */
+function _watchdog_triggers_clean_array($this_array) {
+  foreach ($this_array as $key => $value) {
+    $this_array[$key] = trim($value);
+  }
+  return $this_array;
+}
+
+/**
+ * Helper function, preg_matches contents of an array.
+ */
+function _watchdog_triggers_preg_match_patterns($array, $target) {
+  $match_results = FALSE;
+  foreach ($array as $pattern) {
+    $pattern = trim($pattern);
+    $matches = array();
+    if (!empty($pattern)) {
+      $number_matches = preg_match_all($pattern, $target, $matches);
+      if ($number_matches > 0 && $number_matches !== FALSE) {
+        $match_results = TRUE;
+      }
+    }
+  }
+  return $match_results;
+}

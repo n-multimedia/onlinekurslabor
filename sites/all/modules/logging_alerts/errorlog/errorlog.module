@@ -1,0 +1,91 @@
+<?php
+
+/**
+ * @file
+ * Drupal Module: Web Server Logging and Alerts
+ *
+ * Sends logs and alerts to the web server's log.
+ *
+ * @Author: Khalid Baheyeldin http://2bits.com (version 6.x)
+ * @Author: Maciej Zgadzaj http://zgadzaj.com (version 7.x)
+ */
+
+/**
+ * Implements hook_help().
+ */
+function errorlog_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#errorlog':
+    case 'admin/reports/errorlog':
+      return '<p>' . t('Sends logs and alerts to the web server\'s error log.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function errorlog_menu() {
+  $items['admin/config/system/errorlog'] = array(
+    'title'             => 'Web server logging and alerts',
+    'description'       => "Settings for logging and alerts to server's error log.",
+    'page callback'     => 'drupal_get_form',
+    'page arguments'    => array('errorlog_admin_settings'),
+    'access arguments'  => array('administer site configuration'),
+    'type'              => MENU_NORMAL_ITEM,
+    'file'              => 'errorlog.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_watchdog().
+ */
+function errorlog_watchdog($log) {
+  if (variable_get('errorlog_' . $log['severity'], FALSE)) {
+    // Make sure that $log['variables'] is always an array to avoid
+    // errors like in issue http://drupal.org/node/1325938
+    if (!is_array($log['variables'])) {
+      $log['variables'] = array();
+    }
+
+    // Send themed alert to the web server's log.
+    if (drupal_get_bootstrap_phase() >= DRUPAL_BOOTSTRAP_FULL) {
+      $message = theme('errorlog_format', $log);
+    }
+    // On earlier bootstrap stages not all theme functions are available.
+    else {
+      $message = theme_errorlog_format($log);
+    }
+    error_log($message);
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function errorlog_theme() {
+  return array(
+    'errorlog_format' => array(
+      'arguments' => array('log_msg' => NULL),
+    ),
+  );
+}
+
+/**
+ * Themes error log message.
+ */
+function theme_errorlog_format($log_msg = array()) {
+  global $base_root;
+  $severity_list = watchdog_severity_levels();
+  $message  = variable_get('site_name', 'Drupal');
+  $message .= '|' . $base_root;
+  $message .= '|severity=' . $severity_list[$log_msg['severity']];
+  $message .= '|type=' . $log_msg['type'];
+  $message .= '|ip=' . $log_msg['ip'];
+  $message .= '|uri=' . $log_msg['request_uri'];
+  $message .= '|referer=' . $log_msg['referer'];
+  $message .= '|uid=' . $log_msg['user']->uid;
+  $message .= '|link=' . strip_tags($log_msg['link']);
+  $message .= '|message=' . strip_tags(t($log_msg['message'], $log_msg['variables']));
+  return $message;
+}
