@@ -278,6 +278,7 @@ function nm_section_content_features_field_default_field_instances() {
   $field_instances['file-audio-og_group_ref'] = array(
     'bundle' => 'audio',
     'default_value' => NULL,
+    'default_value_function' => 'entityreference_prepopulate_field_default_value',
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -321,7 +322,7 @@ function nm_section_content_features_field_default_field_instances() {
     'entity_type' => 'file',
     'field_name' => 'og_group_ref',
     'label' => 'Groups audience',
-    'required' => FALSE,
+    'required' => 0,
     'settings' => array(
       'behaviors' => array(
         'og_widget' => array(
@@ -333,8 +334,17 @@ function nm_section_content_features_field_default_field_instances() {
           ),
           'status' => TRUE,
         ),
+        'prepopulate' => array(
+          'action' => 'none',
+          'action_on_edit' => 0,
+          'fallback' => 'none',
+          'og_context' => 0,
+          'skip_perm' => 0,
+          'status' => 1,
+        ),
       ),
       'user_register_form' => FALSE,
+      'wysiwyg_override' => 1,
     ),
     'view modes' => array(
       'full' => array(
@@ -349,8 +359,11 @@ function nm_section_content_features_field_default_field_instances() {
       ),
     ),
     'widget' => array(
+      'active' => 0,
       'module' => 'og',
-      'settings' => array(),
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+      ),
       'type' => 'og_complex',
       'weight' => -4,
     ),
@@ -360,6 +373,7 @@ function nm_section_content_features_field_default_field_instances() {
   $field_instances['file-document-og_group_ref'] = array(
     'bundle' => 'document',
     'default_value' => NULL,
+    'default_value_function' => 'entityreference_prepopulate_field_default_value',
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -403,7 +417,7 @@ function nm_section_content_features_field_default_field_instances() {
     'entity_type' => 'file',
     'field_name' => 'og_group_ref',
     'label' => 'Groups audience',
-    'required' => FALSE,
+    'required' => 0,
     'settings' => array(
       'behaviors' => array(
         'og_widget' => array(
@@ -415,8 +429,17 @@ function nm_section_content_features_field_default_field_instances() {
           ),
           'status' => TRUE,
         ),
+        'prepopulate' => array(
+          'action' => 'none',
+          'action_on_edit' => 0,
+          'fallback' => 'none',
+          'og_context' => 0,
+          'skip_perm' => 0,
+          'status' => 1,
+        ),
       ),
       'user_register_form' => FALSE,
+      'wysiwyg_override' => 1,
     ),
     'view modes' => array(
       'full' => array(
@@ -431,8 +454,11 @@ function nm_section_content_features_field_default_field_instances() {
       ),
     ),
     'widget' => array(
+      'active' => 0,
       'module' => 'og',
-      'settings' => array(),
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+      ),
       'type' => 'og_complex',
       'weight' => -4,
     ),
@@ -718,6 +744,7 @@ function nm_section_content_features_field_default_field_instances() {
         ),
       ),
       'user_register_form' => FALSE,
+      'wysiwyg_override' => 1,
     ),
     'view modes' => array(
       'full' => array(
@@ -734,7 +761,9 @@ function nm_section_content_features_field_default_field_instances() {
     'widget' => array(
       'active' => 0,
       'module' => 'og',
-      'settings' => array(),
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+      ),
       'type' => 'og_complex',
       'weight' => -2,
     ),
@@ -744,6 +773,7 @@ function nm_section_content_features_field_default_field_instances() {
   $field_instances['file-video-og_group_ref'] = array(
     'bundle' => 'video',
     'default_value' => NULL,
+    'default_value_function' => 'entityreference_prepopulate_field_default_value',
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -813,7 +843,7 @@ function nm_section_content_features_field_default_field_instances() {
     'entity_type' => 'file',
     'field_name' => 'og_group_ref',
     'label' => 'Groups audience',
-    'required' => FALSE,
+    'required' => 0,
     'settings' => array(
       'behaviors' => array(
         'og_widget' => array(
@@ -825,8 +855,17 @@ function nm_section_content_features_field_default_field_instances() {
           ),
           'status' => TRUE,
         ),
+        'prepopulate' => array(
+          'action' => 'none',
+          'action_on_edit' => 0,
+          'fallback' => 'none',
+          'og_context' => 0,
+          'skip_perm' => 0,
+          'status' => 1,
+        ),
       ),
       'user_register_form' => FALSE,
+      'wysiwyg_override' => 1,
     ),
     'view modes' => array(
       'full' => array(
@@ -841,8 +880,11 @@ function nm_section_content_features_field_default_field_instances() {
       ),
     ),
     'widget' => array(
+      'active' => 0,
       'module' => 'og',
-      'settings' => array(),
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+      ),
       'type' => 'og_complex',
       'weight' => 3,
     ),
