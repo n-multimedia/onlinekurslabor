@@ -242,7 +242,8 @@ function nm_login_vhb_test() {
 
   $output = '';
   //[Hash] =md5( [LOGIN]+[PASSWORT]+[LVNR]+[BEZEICHNUNG]+[VORNAME]+[NACHNAME]+[STRASSE]+[PLZ]+[ORT]+[EMAIL]+[HOCHSCHULE]+[STUDIENFACH]+[ABSCHLUSS]+Salt)
-
+  $salt = "testSALTweRt";
+  
   if (empty($_POST)) {
     drupal_set_message("Requestvariablen sind leer!", 'error');
 
@@ -272,7 +273,7 @@ function nm_login_vhb_test() {
 
   $output .= "<br /><br /> vhb-Hash:" . $_POST['HASH'] . "<br /><br />";
 
-  $attribute = $_POST['LOGIN'] . $_POST['PASSWORT'] . $_POST['LVNR'] . $_POST['BEZEICHNUNG'] . $_POST['VORNAME'] . $_POST['NACHNAME'] . $_POST['STRASSE'] . $_POST['PLZ'] . $_POST['ORT'] . $_POST['EMAIL'] . $_POST['HOCHSCHULE'] . $_POST['STUDIENFACH'] . $_POST['ABSCHLUSS'] . NM_LOGIN_VHB_SALT;
+  $attribute = $_POST['LOGIN'] . $_POST['PASSWORT'] . $_POST['LVNR'] . $_POST['BEZEICHNUNG'] . $_POST['VORNAME'] . $_POST['NACHNAME'] . $_POST['STRASSE'] . $_POST['PLZ'] . $_POST['ORT'] . $_POST['EMAIL'] . $_POST['HOCHSCHULE'] . $_POST['STUDIENFACH'] . $_POST['ABSCHLUSS'] . $salt;
   $output .= "Attribute, die der LMS Anbieter zum Hash verwendet: <em>(Hier SALT aus Quellcode!)</em><br>" . $attribute . "<br/><br />";
 
   $hash = md5($attribute);
@@ -282,7 +283,7 @@ function nm_login_vhb_test() {
   }
   else {
     $output .= "Hashes stimmen <strong>nicht</strong> überein." . "<br>";
-    $output .= "Ist der Saltwert " . NM_LOGIN_VHB_SALT . " im formularcheck.php identisch zu dem in der vhb-DB?" . "<br>";
+    $output .= "Ist der Saltwert " . $salt . " im formularcheck.php identisch zu dem in der vhb-DB?" . "<br>";
     $output .= "Gibt es evtl. Probleme mit Umlauten?" . "<br>";
   }
 
