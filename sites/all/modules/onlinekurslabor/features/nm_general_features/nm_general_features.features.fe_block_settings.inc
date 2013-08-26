@@ -12,32 +12,6 @@ function nm_general_features_default_fe_block_settings() {
 
   $export['version'] = '2.0';
 
-  $export['book-navigation'] = array(
-    'cache' => 5,
-    'custom' => 0,
-    'delta' => 'navigation',
-    'module' => 'book',
-    'node_types' => array(),
-    'pages' => '',
-    'roles' => array(),
-    'themes' => array(
-      'bartik' => array(
-        'region' => '',
-        'status' => 0,
-        'theme' => 'bartik',
-        'weight' => -13,
-      ),
-      'bootstrap_onlinekurslabor' => array(
-        'region' => '',
-        'status' => 0,
-        'theme' => 'bootstrap_onlinekurslabor',
-        'weight' => -20,
-      ),
-    ),
-    'title' => '',
-    'visibility' => 0,
-  );
-
   $export['custom_general-custom_general_space'] = array(
     'cache' => 1,
     'custom' => 0,

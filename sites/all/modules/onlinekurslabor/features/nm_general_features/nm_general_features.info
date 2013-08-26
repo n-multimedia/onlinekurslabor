@@ -29,7 +29,6 @@ features[ctools][] = strongarm:strongarm:1
 features[ctools][] = views:views_default:3.0
 features[ds_view_modes][] = file_icon
 features[ds_view_modes][] = filename
-features[fe_block_settings][] = book-navigation
 features[fe_block_settings][] = custom_general-custom_general_space
 features[fe_block_settings][] = custom_general-custom_general_top_nav
 features[features_api][] = api:2
