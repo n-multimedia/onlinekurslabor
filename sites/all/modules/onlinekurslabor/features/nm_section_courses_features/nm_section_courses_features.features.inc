@@ -222,17 +222,17 @@ function nm_section_courses_features_workflow_default_workflows() {
         'target_state' => 'Bewertet',
       ),
       3 => array(
-        'roles' => 'workflow_features_author_name',
+        'roles' => 'workflow_features_author_name,Dozent,Moderator,administrator',
         'state' => 'Entwurf',
         'target_state' => 'Eingereicht',
       ),
       4 => array(
-        'roles' => '',
+        'roles' => 'Dozent,Moderator,administrator',
         'state' => 'Entwurf',
         'target_state' => 'Bewertet',
       ),
       5 => array(
-        'roles' => '',
+        'roles' => 'Dozent,Moderator,administrator',
         'state' => 'Eingereicht',
         'target_state' => 'Entwurf',
       ),
@@ -242,12 +242,12 @@ function nm_section_courses_features_workflow_default_workflows() {
         'target_state' => 'Bewertet',
       ),
       7 => array(
-        'roles' => '',
+        'roles' => 'Dozent,Moderator,administrator',
         'state' => 'Bewertet',
         'target_state' => 'Entwurf',
       ),
       8 => array(
-        'roles' => '',
+        'roles' => 'Dozent,Moderator,administrator',
         'state' => 'Bewertet',
         'target_state' => 'Eingereicht',
       ),
