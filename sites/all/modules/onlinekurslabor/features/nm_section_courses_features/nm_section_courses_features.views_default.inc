@@ -88,7 +88,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
   $handler->display->display_options['filters']['rid']['field'] = 'rid';
   $handler->display->display_options['filters']['rid']['value'] = array(
-    4 => '4',
+    66784200 => '66784200',
   );
 
   /* Display: Block */
@@ -714,7 +714,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
   $handler->display->display_options['filters']['rid']['field'] = 'rid';
   $handler->display->display_options['filters']['rid']['value'] = array(
-    4 => '4',
+    66784200 => '66784200',
   );
   /* Filter criterion: Benutzer: Name (raw) */
   $handler->display->display_options['filters']['name']['id'] = 'name';
@@ -1291,7 +1291,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
   $handler->display->display_options['filters']['rid']['field'] = 'rid';
   $handler->display->display_options['filters']['rid']['value'] = array(
-    4 => '4',
+    66784200 => '66784200',
   );
 
   /* Display: Block */
@@ -2363,12 +2363,8 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
   $handler->display->display_options['filters']['rid']['field'] = 'rid';
   $handler->display->display_options['filters']['rid']['value'] = array(
-    5 => '5',
+    106505419 => '106505419',
   );
-
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'page');
-  $handler->display->display_options['path'] = 'dozenten';
 
   /* Display: Entity Reference */
   $handler = $view->new_display('entityreference', 'Entity Reference', 'entityreference_1');
@@ -2399,7 +2395,6 @@ function nm_section_courses_features_views_default_views() {
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
-    t('Page'),
     t('Entity Reference'),
   );
   $export['instructors'] = $view;
