@@ -1335,11 +1335,12 @@ function workflow_update_workflow_transitions(&$data) {
     }
     $transition->roles = implode(',', $roles);
     drupal_write_record('workflow_transitions', $transition, 'tid');
+    $data = $transition;
   }
   else {
     drupal_write_record('workflow_transitions', $data);
   }
-  $data = $transition;
+  
 }
 
 /**

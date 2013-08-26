@@ -30,7 +30,7 @@ function nm_section_courses_features_context_default_contexts() {
   );
   $context->reactions = array(
     'context_redirect' => array(
-      'redirect_path' => 'node/49',
+      'redirect_path' => 'domains',
       'enable_message' => 0,
       'redirect_message' => '',
       'qsa' => 1,
