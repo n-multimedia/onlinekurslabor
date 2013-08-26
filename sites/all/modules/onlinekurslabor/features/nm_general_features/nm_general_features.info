@@ -19,6 +19,7 @@ dependencies[] = node
 dependencies[] = options
 dependencies[] = panels
 dependencies[] = profile2
+dependencies[] = role_export
 dependencies[] = strongarm
 dependencies[] = text
 dependencies[] = views

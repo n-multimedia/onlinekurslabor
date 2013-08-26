@@ -351,9 +351,9 @@ function nm_section_courses_features_default_page_manager_pages() {
         'name' => 'role',
         'settings' => array(
           'rids' => array(
-            0 => 5,
-            1 => 6,
-            2 => 3,
+            0 => 106505419,
+            1 => 197637936,
+            2 => 30037204,
           ),
         ),
         'context' => 'logged-in-user',
@@ -552,9 +552,9 @@ function nm_section_courses_features_default_page_manager_pages() {
         'name' => 'role',
         'settings' => array(
           'rids' => array(
-            0 => 5,
-            1 => 6,
-            2 => 3,
+            0 => 106505419,
+            1 => 197637936,
+            2 => 30037204,
           ),
         ),
         'context' => 'logged-in-user',
@@ -1935,9 +1935,9 @@ echo section_courses_render_course_link($course);
         'name' => 'role',
         'settings' => array(
           'rids' => array(
-            0 => 5,
-            1 => 6,
-            2 => 3,
+            0 => 106505419,
+            1 => 197637936,
+            2 => 30037204,
           ),
         ),
         'context' => 'logged-in-user',
@@ -2138,9 +2138,9 @@ echo section_courses_render_course_link($course);
         'name' => 'role',
         'settings' => array(
           'rids' => array(
-            0 => 5,
-            1 => 6,
-            2 => 3,
+            0 => 106505419,
+            1 => 197637936,
+            2 => 30037204,
           ),
         ),
         'context' => 'logged-in-user',
@@ -2298,9 +2298,9 @@ echo section_courses_render_course_link($course);
         'name' => 'role',
         'settings' => array(
           'rids' => array(
-            0 => 5,
-            1 => 6,
-            2 => 3,
+            0 => 106505419,
+            1 => 197637936,
+            2 => 30037204,
           ),
         ),
         'context' => 'logged-in-user',
@@ -2433,9 +2433,9 @@ echo section_courses_render_course_link($course);
         'name' => 'role',
         'settings' => array(
           'rids' => array(
-            0 => 5,
-            1 => 6,
-            2 => 3,
+            0 => 106505419,
+            1 => 197637936,
+            2 => 30037204,
           ),
         ),
         'context' => 'logged-in-user',
@@ -2644,9 +2644,9 @@ echo section_courses_render_course_link($course);
         'name' => 'role',
         'settings' => array(
           'rids' => array(
-            0 => 5,
-            1 => 6,
-            2 => 3,
+            0 => 106505419,
+            1 => 197637936,
+            2 => 30037204,
           ),
         ),
         'context' => 'logged-in-user',
@@ -3368,9 +3368,9 @@ echo section_courses_theme_progressbar();
         'name' => 'role',
         'settings' => array(
           'rids' => array(
-            0 => 5,
-            1 => 6,
-            2 => 3,
+            0 => 106505419,
+            1 => 197637936,
+            2 => 30037204,
           ),
         ),
         'context' => 'logged-in-user',

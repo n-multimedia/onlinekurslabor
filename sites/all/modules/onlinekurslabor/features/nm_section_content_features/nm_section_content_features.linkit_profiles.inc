@@ -41,14 +41,19 @@ function nm_section_content_features_default_linkit_profiles() {
         'article' => 0,
         'page' => 0,
         'book' => 0,
+        'content_question_and_answer' => 0,
         'content_chapter' => 0,
         'content_multiple_choice' => 0,
         'content_domain' => 0,
         'courses_news' => 0,
+        'courses_generic_task' => 0,
+        'courses_generic_task_solution' => 0,
         'courses_course' => 0,
         'courses_docs' => 0,
         'courses_group' => 0,
+        'forum' => 0,
         'panel' => 0,
+        'plattform_log' => 0,
       ),
       'group_by_bundle' => 0,
       'reverse_menu_trail' => 0,
@@ -61,6 +66,7 @@ function nm_section_content_features_default_linkit_profiles() {
         'video' => 0,
         'audio' => 0,
         'document' => 0,
+        'application' => 0,
       ),
       'group_by_bundle' => 0,
       'reverse_menu_trail' => 0,
@@ -73,6 +79,12 @@ function nm_section_content_features_default_linkit_profiles() {
     ),
     'entity:taxonomy_term' => array(
       'result_description' => '',
+      'bundles' => array(
+        'tags' => 0,
+        'forums' => 0,
+        'hochschulen' => 0,
+      ),
+      'group_by_bundle' => 0,
       'reverse_menu_trail' => 0,
     ),
     'entity:user' => array(
@@ -108,10 +120,7 @@ function nm_section_content_features_default_linkit_profiles() {
     ),
   );
   $linkit_profile->role_rids = array(
-    5 => 1,
-    6 => 1,
-    3 => 1,
-    7 => 1,
+    2 => 1,
   );
   $linkit_profile->weight = 0;
   $export['biblio'] = $linkit_profile;

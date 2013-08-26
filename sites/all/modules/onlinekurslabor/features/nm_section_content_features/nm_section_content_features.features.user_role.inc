@@ -14,6 +14,7 @@ function nm_section_content_features_user_default_roles() {
   $roles['Autor'] = array(
     'name' => 'Autor',
     'weight' => 6,
+    'machine_name' => 'autor',
   );
 
   return $roles;

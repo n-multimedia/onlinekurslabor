@@ -207,47 +207,47 @@ function nm_section_courses_features_workflow_default_workflows() {
     ),
     'transitions' => array(
       0 => array(
-        'roles' => 'workflow_features_author_name,administrator',
+        'roles' => 'workflow_features_author_name',
         'state' => '(creation)',
         'target_state' => 'Entwurf',
       ),
       1 => array(
-        'roles' => 'workflow_features_author_name,administrator',
+        'roles' => 'workflow_features_author_name',
         'state' => '(creation)',
         'target_state' => 'Eingereicht',
       ),
       2 => array(
-        'roles' => 'administrator',
+        'roles' => '',
         'state' => '(creation)',
         'target_state' => 'Bewertet',
       ),
       3 => array(
-        'roles' => 'workflow_features_author_name,administrator',
+        'roles' => 'workflow_features_author_name',
         'state' => 'Entwurf',
         'target_state' => 'Eingereicht',
       ),
       4 => array(
-        'roles' => 'administrator',
+        'roles' => '',
         'state' => 'Entwurf',
         'target_state' => 'Bewertet',
       ),
       5 => array(
-        'roles' => 'Dozent,Moderator,administrator',
+        'roles' => '',
         'state' => 'Eingereicht',
         'target_state' => 'Entwurf',
       ),
       6 => array(
-        'roles' => 'Dozent,Moderator,administrator',
+        'roles' => '',
         'state' => 'Eingereicht',
         'target_state' => 'Bewertet',
       ),
       7 => array(
-        'roles' => 'Dozent,Moderator,administrator',
+        'roles' => '',
         'state' => 'Bewertet',
         'target_state' => 'Entwurf',
       ),
       8 => array(
-        'roles' => 'Dozent,Moderator,administrator',
+        'roles' => '',
         'state' => 'Bewertet',
         'target_state' => 'Eingereicht',
       ),

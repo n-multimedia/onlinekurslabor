@@ -14,12 +14,14 @@ function nm_general_features_user_default_roles() {
   $roles['Moderator'] = array(
     'name' => 'Moderator',
     'weight' => 4,
+    'machine_name' => 'moderator',
   );
 
   // Exported role: administrator.
   $roles['administrator'] = array(
     'name' => 'administrator',
     'weight' => 5,
+    'machine_name' => 'administrator',
   );
 
   return $roles;
