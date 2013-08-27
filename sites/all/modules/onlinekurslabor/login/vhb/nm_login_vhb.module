@@ -1,6 +1,7 @@
 <?php
 
 define('NM_LOGIN_VHB_DATAVERSION', "2.0");
+
 //define real salt in private file
 //define('NM_LOGIN_VHB_SALT', "testSALTweRt");
 
@@ -57,9 +58,13 @@ function nm_login_vhb() {
       if (!$user->uid) {
         $user = user_load($account->uid);
         drupal_session_regenerate();
+        
+        //redirect to course page
+        $course = nm_login_vhb_get_course($params['LVNR']);
+        drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
       }
     }
-    else {      
+    else {
       //user account exists -> login and redirect to course
       //drupal_set_message("Benutzer existiert -> einloggen");
       //assuming that we don't need the transfered VHB - password 
@@ -71,11 +76,13 @@ function nm_login_vhb() {
         if (!$user->uid) {
           $user = user_load($account->uid);
           drupal_session_regenerate();
+
+          //redirect to course page
           $course = nm_login_vhb_get_course($params['LVNR']);
           drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
         }
-      }else
-      {
+      }
+      else {
         //redirect to user login page
         drupal_goto('user');
       }
@@ -221,6 +228,7 @@ function nm_login_vhb_add_user($params) {
 
   return $account;
 }
+
 /**
  * get course by LVNR
  * 
@@ -243,7 +251,7 @@ function nm_login_vhb_test() {
   $output = '';
   //[Hash] =md5( [LOGIN]+[PASSWORT]+[LVNR]+[BEZEICHNUNG]+[VORNAME]+[NACHNAME]+[STRASSE]+[PLZ]+[ORT]+[EMAIL]+[HOCHSCHULE]+[STUDIENFACH]+[ABSCHLUSS]+Salt)
   $salt = "testSALTweRt";
-  
+
   if (empty($_POST)) {
     drupal_set_message("Requestvariablen sind leer!", 'error');
 
