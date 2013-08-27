@@ -114,6 +114,15 @@ div ul.section_nav_tools li a
   margin:0;
 }
 
+
+/*
+AUTHOR AND INSTRUCOT'S TOOLS
+*/
+
+.row-fluid .panels-flexible-column {
+  position:relative;
+}
+
 /*
 Course Info
 */
