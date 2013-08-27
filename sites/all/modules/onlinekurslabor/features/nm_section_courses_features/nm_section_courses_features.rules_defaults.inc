@@ -34,7 +34,7 @@ function nm_section_courses_features_default_rules_configuration() {
         { "mail" : {
             "to" : [ "node:author:mail" ],
             "subject" : "[node:title] - wurde bewertet",
-            "message" : "Hallo,\\u000D\\u000AIhre Lösung für die Aufgabe [node:title] wurde bewertet. \\u000D\\u000A\\u000D\\u000AViele Grüße\\u000D\\u000ADas Team vom [site:name]",
+            "message" : "Hallo,\\u000D\\u000AIhre Lösung für die Aufgabe [node:title] wurde bewertet. \\u000D\\u000A\\u000D\\u000AViele Grüße\\u000D\\u000ADas Team von [site:name]",
             "language" : [ "" ]
           }
         }
@@ -69,7 +69,7 @@ function nm_section_courses_features_default_rules_configuration() {
           }
         },
         { "mail_to_users_of_role" : {
-            "roles" : { "value" : { "5" : "5" } },
+            "roles" : { "value" : { "106505419" : "106505419" } },
             "subject" : "[node:title] - wurde eingereicht",
             "message" : "Hallo,\\u000D\\u000Aeine Lösung für die Aufgabe [node:title] wurde eingereicht. \\u000D\\u000A\\u000D\\u000AViele Grüße\\u000D\\u000ADas Team vom [site:name]"
           }
@@ -89,6 +89,11 @@ function nm_section_courses_features_default_rules_configuration() {
                 "node" : [ "og-membership:group" ],
                 "type" : { "value" : { "courses_course" : "courses_course" } }
               }
+            },
+            { "user_has_role" : {
+                "account" : [ "account" ],
+                "roles" : { "value" : { "66784200" : "66784200" } }
+              }
             }
           ]
         }
@@ -102,7 +107,7 @@ function nm_section_courses_features_default_rules_configuration() {
         { "mail" : {
             "to" : [ "account:mail" ],
             "subject" : "[site:name] - Anmeldung für [entity-course:title]",
-            "message" : "Hallo [account:name],\\u000D\\u000Adanke für deine Anmeldung. Du bist nun für den Kurs [entity-course:title] eingetragen.\\u000D\\u000A\\u000D\\u000AViele Grüße\\u000D\\u000ADas Team vom [site:name]",
+            "message" : "Hallo [account:name],\\u000D\\u000Adanke für deine Anmeldung. Du bist nun für den Kurs [entity-course:title] eingetragen.\\u000D\\u000A\\u000D\\u000AViele Grüße\\u000D\\u000ADas Team von [site:name]",
             "language" : [ "account:language" ]
           }
         },
@@ -112,9 +117,9 @@ function nm_section_courses_features_default_rules_configuration() {
           }
         },
         { "mail_to_users_of_role" : {
-            "roles" : { "value" : { "5" : "5" } },
+            "roles" : { "value" : { "106505419" : "106505419" } },
             "subject" : "[entity-course:title] - Anmeldung - [account:name]",
-            "message" : "Hallo,\\u000D\\u000Aein Benutzer hat sich für den Kurs [entity-course:title] angemeldet.\\u000D\\u000A\\u000D\\u000AViele Grüße\\u000D\\u000ADas Team vom [site:name]"
+            "message" : "Hallo,\\u000D\\u000Aein Benutzer hat sich für den Kurs [entity-course:title] angemeldet.\\u000D\\u000A\\u000D\\u000AViele Grüße\\u000D\\u000ADas Team von [site:name]"
           }
         }
       ]

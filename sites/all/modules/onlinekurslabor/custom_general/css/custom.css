@@ -234,7 +234,7 @@ a.disabled {
   height: 45px;  
   position:relative;
   margin: auto;
-  background-image: url(../images/icons/transparent-icons---instructor.gif);
+  background-image: url(../images/icons/transparent-icons---instructor.png);
   background-repeat: no-repeat;
 }
 
@@ -273,6 +273,15 @@ a.disabled {
 #instructors_tools-container .btn#instr_add_members a:hover:before, #instructors_tools-container .btn#instr_add_members a.active:before
 {
   background-position: -180px -50px;
+}
+
+#instructors_tools-container .btn#instr_add_task a:before
+{
+  background-position: -240px -100px;
+}
+#instructors_tools-container .btn#instr_add_task a:hover:before, #instructors_tools-container .btn#instr_add_task a.active:before
+{
+  background-position: -240px -150px;
 }
 
 /*
@@ -411,7 +420,7 @@ Authors's Tools
   height: 45px;  
   position:relative;
   margin: auto;
-  background-image: url(../images/icons/transparent-icons---author.gif);
+  background-image: url(../images/icons/transparent-icons---author.png);
   background-repeat: no-repeat;
   margin-bottom:1px;
 }
@@ -524,7 +533,7 @@ Course Toolbar items
   display:inline-block;
   width: 45px;
   height:42px;
-  background-image:  url(../images/icons/transparent-icons---course.gif);
+  background-image:  url(../images/icons/transparent-icons---course.png);
   background-repeat: no-repeat;
   vertical-align: middle;
   width: 65px;
@@ -696,7 +705,7 @@ Embeded Tasks
   height:50px;
   left:10px;
   top:20px;
-  background-image: url(../images/icons/transparent-icons---author.gif);
+  background-image: url(../images/icons/transparent-icons---author.png);
   background-repeat: no-repeat;
   background-position: -420px 0;
 }
