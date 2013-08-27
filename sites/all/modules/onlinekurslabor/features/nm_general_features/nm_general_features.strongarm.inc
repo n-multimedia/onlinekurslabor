@@ -599,14 +599,15 @@ function nm_general_features_strongarm() {
     'toggle_main_menu' => 0,
     'toggle_secondary_menu' => 0,
     'default_logo' => 0,
-    'logo_path' => 'sites/all/themes/bootstrap_onlinekurslabor/images/onlinekurslabor-logo-header.jpg',
+    'logo_path' => 'sites/all/themes/bootstrap_onlinekurslabor/images/onlinekurslabor-logo-header.png',
     'logo_upload' => '',
-    'default_favicon' => 1,
-    'favicon_path' => '',
+    'default_favicon' => 0,
+    'favicon_path' => 'sites/all/themes/bootstrap_onlinekurslabor/favicon.ico',
     'favicon_upload' => '',
     'bootstrap_rebuild_registry' => 0,
     'cdn_bootstrap' => 1,
     'cdn_bootstrap_version' => '2.3.2',
+    'favicon_mimetype' => 'image/vnd.microsoft.icon',
   );
   $export['theme_bootstrap_onlinekurslabor_settings'] = $strongarm;
 
