@@ -618,3 +618,13 @@ TASKS ALERT BOXES
 .view-courses-task-solutions {
     
 }
+
+
+/*
+Footer
+*/
+
+.footer a {
+  color: #999;
+  float:right;
+}
