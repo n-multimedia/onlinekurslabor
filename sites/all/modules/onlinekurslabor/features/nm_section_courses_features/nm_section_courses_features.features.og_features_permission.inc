@@ -49,7 +49,10 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:create forum content'
   $permissions['node:courses_course:create forum content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:delete any courses_docs content'
@@ -83,7 +86,9 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:delete any forum content'
   $permissions['node:courses_course:delete any forum content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:delete own courses_docs content'
@@ -117,12 +122,16 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:delete own forum content'
   $permissions['node:courses_course:delete own forum content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:moderate'
   $permissions['node:courses_course:moderate'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:update any courses_docs content'
@@ -156,7 +165,9 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:update any forum content'
   $permissions['node:courses_course:update any forum content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:update field_attachments field'
@@ -168,7 +179,9 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:update field_course_docs field'
   $permissions['node:courses_course:update field_course_docs field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:update field_course_header field'
@@ -234,12 +247,16 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:update field_time_span field'
   $permissions['node:courses_course:update field_time_span field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:update field_vhb_lvnr field'
   $permissions['node:courses_course:update field_vhb_lvnr field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:update field_workload field'
@@ -309,7 +326,10 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:update own forum content'
   $permissions['node:courses_course:update own forum content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:update taxonomy_forums field'
@@ -344,6 +364,7 @@ function nm_section_courses_features_og_features_default_permissions() {
   // Exported og permission: 'node:courses_course:view field_course_docs field'
   $permissions['node:courses_course:view field_course_docs field'] = array(
     'roles' => array(
+      'course-administrator' => 'course-administrator',
       'member' => 'member',
     ),
   );
@@ -395,6 +416,7 @@ function nm_section_courses_features_og_features_default_permissions() {
   // Exported og permission: 'node:courses_course:view field_task_handling_period field'
   $permissions['node:courses_course:view field_task_handling_period field'] = array(
     'roles' => array(
+      'course-administrator' => 'course-administrator',
       'member' => 'member',
     ),
   );
@@ -409,12 +431,18 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:view field_time_span field'
   $permissions['node:courses_course:view field_time_span field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:view field_vhb_lvnr field'
   $permissions['node:courses_course:view field_vhb_lvnr field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:view field_workload field'
@@ -544,6 +572,13 @@ function nm_section_courses_features_og_features_default_permissions() {
   // Exported og permission: 'node:courses_group:delete own forum content'
   $permissions['node:courses_group:delete own forum content'] = array(
     'roles' => array(),
+  );
+
+  // Exported og permission: 'node:courses_group:moderate'
+  $permissions['node:courses_group:moderate'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
   );
 
   // Exported og permission: 'node:courses_group:update any courses_docs content'
