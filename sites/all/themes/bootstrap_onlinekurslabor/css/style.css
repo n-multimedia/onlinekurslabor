@@ -200,6 +200,7 @@ Course Header
 {
   position:relative;
   overflow:hidden;
+  height:200px;
 }
 
 #course_header #course_header_title {
