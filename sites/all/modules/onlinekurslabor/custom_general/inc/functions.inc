@@ -174,20 +174,24 @@ function _section_courses_advanced_forum_get_num_unread($uid, $tid) {
   static $result_cache = NULL;
   $num_total = 0;
 
+  //sum up
+  $child_forums = array_keys(taxonomy_get_children($tid));
 
   if (is_null($result_cache)) {
     $result_cache = array();
 
+    //comments
     $query = db_select("comment", "c");
     $f_alias = $query->join("forum", "f", "c.nid = f.nid");
     //$n_alias = $query->join("node", "n", "f.vid = n.vid");
     $h_alias = $query->leftJoin("history", "h", "c.nid = h.nid AND h.uid = :uid", array(":uid" => $uid));
-    $query->addExpression("COUNT(c.cid)", "count");
+    $query->addExpression("COUNT(DISTINCT(c.cid))", "count");
     $query->addField($f_alias, "tid");
 
     //forum name here...
     $query->condition("c.status", COMMENT_PUBLISHED)
         //fid
+        ->condition("f.tid", $child_forums, 'IN')
         ->condition("c.changed", NODE_NEW_LIMIT, ">")
         ->condition(db_or()->where("c.changed > {$h_alias}.timestamp")->isNull("h.timestamp"))
         ->groupBy("{$f_alias}.tid")
@@ -197,10 +201,36 @@ function _section_courses_advanced_forum_get_num_unread($uid, $tid) {
     foreach ($result as $row) {
       $result_cache[$row->tid] = $row->count;
     }
-  }
 
-  //sum up
-  $child_forums = array_keys(taxonomy_get_children($tid));
+
+    //topics
+    $query = db_select("node", "n");
+    $f_alias = $query->join("forum", "f", "n.nid = f.nid");
+    //$n_alias = $query->join("node", "n", "f.vid = n.vid");
+    $h_alias = $query->leftJoin("history", "h", "n.nid = h.nid AND h.uid = :uid", array(":uid" => $uid));
+    $query->addExpression("COUNT(DISTINCT(n.nid))", "count");
+    $query->addField($f_alias, "tid");
+
+    //forum name here...
+    $query->condition("n.status", NODE_PUBLISHED)
+        //fid
+        ->condition("f.tid", $child_forums, 'IN')
+        ->condition("n.changed", NODE_NEW_LIMIT, ">")
+        ->condition(db_or()->where("n.changed > {$h_alias}.timestamp")->isNull("{$h_alias}.timestamp"))
+        ->groupBy("{$f_alias}.tid")
+        ->addTag("node_access");
+
+    $result = $query->execute();
+
+    foreach ($result as $row) {
+      if (isset($result_cache[$row->tid])) {
+        $result_cache[$row->tid] += $row->count;
+      }
+      else {
+        $result_cache[$row->tid] = $row->count;
+      }
+    }
+  }
 
   foreach ($result_cache as $key => $row) {
     if (in_array($key, $child_forums)) {
@@ -347,13 +377,13 @@ function custom_general_get_task_solutions($tid, $uid) {
       // Loop through and load each user
       foreach ($cg_members AS $member) {
         // Load the user object if necessary
-        $user = user_load($member->uid);
+        $account = user_load($member->uid);
 
-        if (!in_array(NM_ROLE_STUDENT, $user->roles))
+        if (!in_array(NM_ROLE_STUDENT, $account->roles))
           continue;
 
         // Do whatever else you need to
-        $tmp_sol = custom_general_get_task_solutions_by_uid($tid, $user->uid);
+        $tmp_sol = custom_general_get_task_solutions_by_uid($tid, $account->uid);
 
         if ($tmp_sol) {
           $solutions[] = $tmp_sol;

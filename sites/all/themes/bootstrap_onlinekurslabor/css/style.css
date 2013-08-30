@@ -625,7 +625,7 @@ TASKS ALERT BOXES
 Footer
 */
 
-.footer a {
+.footer .menu.nav-list {
   color: #999;
   float:right;
 }
