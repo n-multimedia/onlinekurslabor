@@ -222,6 +222,7 @@ function _section_courses_advanced_forum_get_num_unread($uid, $tid) {
 
     $result = $query->execute();
 
+    //sum up
     foreach ($result as $row) {
       if (isset($result_cache[$row->tid])) {
         $result_cache[$row->tid] += $row->count;
