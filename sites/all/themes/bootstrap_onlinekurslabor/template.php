@@ -69,6 +69,7 @@ function bootstrap_onlinekurslabor_image_style($variables) {
  * @file template.php
  */
 function bootstrap_onlinekurslabor_panels_flexible($vars) {
+  dpm($vars);
   global $user;
 
   $css_id = $vars['css_id'];
