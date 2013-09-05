@@ -642,6 +642,6 @@ panels
 .panels-flexible-span4span8,
 .panels-flexible-span6span6,
 .panels-flexible-span8span4 {
-    margin:0;
-    padding:0;
+    margin:0 !important;
+    padding:0 !important;
 }
