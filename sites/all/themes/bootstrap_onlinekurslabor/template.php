@@ -1,5 +1,20 @@
 <?php
 
+function bootstrap_onlinekurslabor_mark($variables) {
+  $output = "";
+  switch ($variables['type']) {
+    case 1:
+      $output = ' <span class="badge badge-important">'.t('new').'</span>';
+      break;
+    case 2:
+      $output = ' <span class="badge badge-important">'.t('updated').'</span>';
+      break;
+  }
+
+
+  return $output;
+}
+
 /**
  * Returns HTML for an image using a specific image style.
  *

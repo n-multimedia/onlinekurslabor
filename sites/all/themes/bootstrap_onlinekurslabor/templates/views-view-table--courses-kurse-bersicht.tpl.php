@@ -22,6 +22,11 @@ foreach($rows as &$rowitem){
   $nid = array_pop($rowitem);
   $node = node_load($nid);
   $rowitem['field_short_description'] .= section_courses_render_course_link($node);
+
+  //rewrite title, if user has no access to course -> demo mode
+  if(section_courses_demo_mode($nid)){
+    $rowitem['title'] =  '<h4>'. l($node->title, 'course/info/'.$node->nid).'</h4>';
+  }
 }
 
 ?>

@@ -172,6 +172,7 @@ function _custom_general_get_node_type($nid) {
  */
 function _section_courses_advanced_forum_get_num_unread($uid, $tid) {
   static $result_cache = NULL;
+
   $num_total = 0;
 
   //sum up
@@ -189,15 +190,18 @@ function _section_courses_advanced_forum_get_num_unread($uid, $tid) {
     $query->addField($f_alias, "tid");
 
     //forum name here...
-    $query->condition("c.status", COMMENT_PUBLISHED)
-        //fid
-        ->condition("f.tid", $child_forums, 'IN')
-        ->condition("c.changed", NODE_NEW_LIMIT, ">")
+    $query->condition("c.status", COMMENT_PUBLISHED);
+    //fid
+    if (!empty($child_forums)) {
+      $query->condition("f.tid", $child_forums, 'IN');
+    }
+    $query->condition("c.changed", NODE_NEW_LIMIT, ">")
         ->condition(db_or()->where("c.changed > {$h_alias}.timestamp")->isNull("h.timestamp"))
-        ->groupBy("{$f_alias}.tid")
-        ->addTag("node_access");
+        ->groupBy("{$f_alias}.tid");
+    //->addTag("node_access");
 
     $result = $query->execute();
+
     foreach ($result as $row) {
       $result_cache[$row->tid] = $row->count;
     }
@@ -212,10 +216,13 @@ function _section_courses_advanced_forum_get_num_unread($uid, $tid) {
     $query->addField($f_alias, "tid");
 
     //forum name here...
-    $query->condition("n.status", NODE_PUBLISHED)
-        //fid
-        ->condition("f.tid", $child_forums, 'IN')
-        ->condition("n.changed", NODE_NEW_LIMIT, ">")
+    $query->condition("n.status", NODE_PUBLISHED);
+    //fid
+    if (!empty($child_forums)) {
+      $query->condition("f.tid", $child_forums, 'IN');
+    }
+
+    $query->condition("n.changed", NODE_NEW_LIMIT, ">")
         ->condition(db_or()->where("n.changed > {$h_alias}.timestamp")->isNull("{$h_alias}.timestamp"))
         ->groupBy("{$f_alias}.tid")
         ->addTag("node_access");

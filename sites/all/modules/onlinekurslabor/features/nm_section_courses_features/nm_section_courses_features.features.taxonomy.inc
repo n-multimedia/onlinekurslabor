@@ -9,9 +9,9 @@
  */
 function nm_section_courses_features_taxonomy_default_vocabularies() {
   return array(
-    'hochschulen' => array(
-      'name' => 'Hochschulen',
-      'machine_name' => 'hochschulen',
+    'sponsors' => array(
+      'name' => 'Sponsoren',
+      'machine_name' => 'sponsors',
       'description' => '',
       'hierarchy' => 0,
       'module' => 'taxonomy',

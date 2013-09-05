@@ -479,7 +479,7 @@ function nm_section_courses_features_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '0',
+          'weight' => '7',
         ),
         'path' => array(
           'weight' => '13',

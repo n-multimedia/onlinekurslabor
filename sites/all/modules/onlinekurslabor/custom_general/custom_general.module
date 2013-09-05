@@ -39,6 +39,7 @@ define("NM_COURSE_GENERIC_TASK", "courses_generic_task");
 define("NM_COURSE_GENERIC_TASK_SOLUTION", "courses_generic_task_solution");
 define("NM_COURSES_OVERVIEW_ID", 49);
 
+
 define("NM_COURSE_DOCS_PATH", "course/docs");
 define("NM_COURSE_HOME_PATH", "course/home");
 define("NM_COURSE_NEWS_PATH", "course/news");
@@ -72,7 +73,7 @@ define("NM_COURSES_TASK_WORKFLOW_ASSESSED", "4");
 //define('NM_COURSE_FEATURE_WIKI', $value)
 define('NM_COURSE_FEATURE_FORUM', 'forum');
 
-define("NM_OG_ROLE_COURSE_ADMINISTRATOR", "3");
+define("NM_COURSES_ROLE_ADMINISTRATOR", "course-administrator");
 
 //Roles
 define("NM_ROLE_AUTOR", "Autor");

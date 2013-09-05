@@ -206,8 +206,8 @@ Course Header
 #course_header #course_header_title {
   position: absolute;
   color: #ffffff;
-  right: 50px;
-  top: 20px;
+  left: 10px;
+  bottom: 0;
   overflow:hidden;
 }
 
@@ -215,7 +215,11 @@ Course Header
   font-weight: normal;
 }
 
-
+#course_header #course_demo_info{
+  position:absolute;
+  left:10px;
+  top: 20px;
+}
 
 /*
 Margin between content and navigation

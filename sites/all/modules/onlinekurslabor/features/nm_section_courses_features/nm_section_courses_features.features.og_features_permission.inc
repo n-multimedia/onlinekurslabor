@@ -374,6 +374,7 @@ function nm_section_courses_features_og_features_default_permissions() {
     'roles' => array(
       'course-administrator' => 'course-administrator',
       'member' => 'member',
+      'non-member' => 'non-member',
     ),
   );
 

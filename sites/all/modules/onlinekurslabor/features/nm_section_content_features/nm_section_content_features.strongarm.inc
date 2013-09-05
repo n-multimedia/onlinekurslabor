@@ -170,6 +170,7 @@ function nm_section_content_features_strongarm() {
   $strongarm->name = 'biblio_export_links';
   $strongarm->value = array(
     'bibtex' => 'bibtex',
+    'marc' => 'marc',
     'xml' => 'xml',
   );
   $export['biblio_export_links'] = $strongarm;
@@ -341,7 +342,7 @@ function nm_section_content_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'biblio_orphan_clean_next_execution';
-  $strongarm->value = 1377860410;
+  $strongarm->value = 1378393208;
   $export['biblio_orphan_clean_next_execution'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -383,7 +384,7 @@ function nm_section_content_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'biblio_settings__active_tab';
-  $strongarm->value = 'edit-biblio-profile';
+  $strongarm->value = 'edit-style';
   $export['biblio_settings__active_tab'] = $strongarm;
 
   $strongarm = new stdClass();

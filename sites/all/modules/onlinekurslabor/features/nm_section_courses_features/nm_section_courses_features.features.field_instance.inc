@@ -509,6 +509,45 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-courses_course-field_field_courses_sponsors'
+  $field_instances['node-courses_course-field_field_courses_sponsors'] = array(
+    'bundle' => 'courses_course',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 14,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_field_courses_sponsors',
+    'label' => 'Sponsoren',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+      ),
+      'type' => 'options_buttons',
+      'weight' => 7,
+    ),
+  );
+
   // Exported field_instance: 'node-courses_course-field_instructor'
   $field_instances['node-courses_course-field_instructor'] = array(
     'bundle' => 'courses_course',
@@ -557,7 +596,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'multiple_value_widget' => 'table',
       ),
       'type' => 'options_select',
-      'weight' => 4,
+      'weight' => 3,
     ),
   );
 
@@ -632,7 +671,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'rows' => 9,
       ),
       'type' => 'text_textarea',
-      'weight' => 10,
+      'weight' => 9,
     ),
   );
 
@@ -707,7 +746,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 2,
+      'weight' => 8,
     ),
   );
 
@@ -747,7 +786,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 1,
+      'weight' => 10,
     ),
   );
 
@@ -801,7 +840,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'year_range' => '-3:+3',
       ),
       'type' => 'date_popup',
-      'weight' => 7,
+      'weight' => 11,
     ),
   );
 
@@ -876,7 +915,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 3,
+      'weight' => 2,
     ),
   );
 
@@ -916,7 +955,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 8,
+      'weight' => 12,
     ),
   );
 
@@ -2442,6 +2481,101 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'taxonomy_term-sponsors-field_sponsors_image'
+  $field_instances['taxonomy_term-sponsors-field_sponsors_image'] = array(
+    'bundle' => 'sponsors',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => '',
+          'image_style' => '',
+        ),
+        'type' => 'image',
+        'weight' => 1,
+      ),
+      'sponsors_logo' => array(
+        'label' => 'above',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => '',
+          'image_style' => '',
+        ),
+        'type' => 'image',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_sponsors_image',
+    'label' => 'Bild',
+    'required' => 0,
+    'settings' => array(
+      'alt_field' => 0,
+      'default_image' => 0,
+      'file_directory' => 'sponsors',
+      'file_extensions' => 'png gif jpg jpeg',
+      'max_filesize' => '',
+      'max_resolution' => '',
+      'min_resolution' => '',
+      'title_field' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'image',
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+        'preview_image_style' => 'thumbnail',
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'image_image',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'taxonomy_term-sponsors-field_sponsors_url'
+  $field_instances['taxonomy_term-sponsors-field_sponsors_url'] = array(
+    'bundle' => 'sponsors',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+      'sponsors_logo' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_sponsors_url',
+    'label' => 'URL',
+    'required' => FALSE,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 1,
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Anhang');
@@ -2467,10 +2601,12 @@ function nm_section_courses_features_field_default_field_instances() {
   t('Laufzeit');
   t('Matrikelnummer');
   t('Platzhalter');
+  t('Sponsoren');
   t('Studienfach');
   t('Thema');
   t('Titel');
   t('Typ');
+  t('URL');
   t('Untertitel');
   t('VHB-LVNR');
 

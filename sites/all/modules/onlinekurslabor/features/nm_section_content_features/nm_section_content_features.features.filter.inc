@@ -30,13 +30,8 @@ function nm_section_content_features_filter_default_formats() {
         'status' => 1,
         'settings' => array(),
       ),
-      'biblio_filter_reference' => array(
-        'weight' => -42,
-        'status' => 1,
-        'settings' => array(),
-      ),
       'htmlpurifier_advanced' => array(
-        'weight' => -40,
+        'weight' => -42,
         'status' => 1,
         'settings' => array(
           'htmlpurifier_help' => 1,
@@ -185,6 +180,11 @@ news',
             'Null_URI.SafeIframeRegexp' => 1,
           ),
         ),
+      ),
+      'biblio_filter_reference' => array(
+        'weight' => -41,
+        'status' => 1,
+        'settings' => array(),
       ),
       'filter_content_tasks' => array(
         'weight' => -39,

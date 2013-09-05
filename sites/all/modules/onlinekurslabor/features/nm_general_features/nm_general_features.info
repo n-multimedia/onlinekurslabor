@@ -22,6 +22,7 @@ dependencies[] = relation
 dependencies[] = role_export
 dependencies[] = rules
 dependencies[] = taxonomy
+dependencies[] = workflow
 features[ctools][] = ds:ds:1
 features[ctools][] = panels:layouts:1
 features[ctools][] = strongarm:strongarm:1
