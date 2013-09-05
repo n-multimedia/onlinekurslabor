@@ -43,7 +43,7 @@ function nm_section_courses_features_default_page_manager_handlers() {
           'name' => 'role',
           'settings' => array(
             'rids' => array(
-              0 => 4,
+              0 => 66784200,
             ),
           ),
           'context' => 'argument_entity_id:user_1',
@@ -288,6 +288,62 @@ function nm_section_courses_features_default_page_manager_handlers() {
     $pane->pid = 'new-6';
     $pane->panel = 'right';
     $pane->type = 'entity_field';
+    $pane->subtype = 'profile2:field_hochschule';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => 'inline',
+      'formatter' => 'taxonomy_term_reference_plain',
+      'delta_limit' => 0,
+      'delta_offset' => '0',
+      'delta_reversed' => FALSE,
+      'formatter_settings' => array(),
+      'context' => 'relationship_profile2_1',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $display->content['new-6'] = $pane;
+    $display->panels['right'][1] = 'new-6';
+    $pane = new stdClass();
+    $pane->pid = 'new-7';
+    $pane->panel = 'right';
+    $pane->type = 'entity_field';
+    $pane->subtype = 'profile2:field_studienfach';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => 'inline',
+      'formatter' => 'text_default',
+      'delta_limit' => 0,
+      'delta_offset' => '0',
+      'delta_reversed' => FALSE,
+      'formatter_settings' => array(),
+      'context' => 'relationship_profile2_1',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $display->content['new-7'] = $pane;
+    $display->panels['right'][2] = 'new-7';
+    $pane = new stdClass();
+    $pane->pid = 'new-8';
+    $pane->panel = 'right';
+    $pane->type = 'entity_field';
     $pane->subtype = 'profile2:field_about_me';
     $pane->shown = TRUE;
     $pane->access = array();
@@ -308,10 +364,10 @@ function nm_section_courses_features_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 3;
     $pane->locks = array();
-    $display->content['new-6'] = $pane;
-    $display->panels['right'][1] = 'new-6';
+    $display->content['new-8'] = $pane;
+    $display->panels['right'][3] = 'new-8';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

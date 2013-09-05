@@ -213,9 +213,9 @@ function _course_tasks_generic_description_view() {
   }
 
   $output = "";
-  $output .= '<div class="alert alert-info">';
+  //$output .= '<div class="alert alert-info">';
   $output .= "<h1>" . $task->title . ' ' . $label . "</h1>";
-  $output .= '</div>';
+  //$output .= '</div>';
   $output .= '<div class="alert alert-info">';
   $output .= _course_tasks_generic_section_view($field_val, NM_COURSES_TASK_DESCRIPTION);
   $output .= _course_tasks_generic_section_view($field_val, NM_COURSES_TASK_TASK);
