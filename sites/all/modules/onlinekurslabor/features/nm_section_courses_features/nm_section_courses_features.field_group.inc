@@ -157,6 +157,60 @@ function nm_section_courses_features_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_user_account_tab|user|user|form';
+  $field_group->group_name = 'group_user_account_tab';
+  $field_group->entity_type = 'user';
+  $field_group->bundle = 'user';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_user_tabs';
+  $field_group->data = array(
+    'label' => 'Zugangsdaten',
+    'weight' => '18',
+    'children' => array(
+      0 => 'account',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_user_account_tab|user|user|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_user_master_tab|user|user|form';
+  $field_group->group_name = 'group_user_master_tab';
+  $field_group->entity_type = 'user';
+  $field_group->bundle = 'user';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_user_tabs';
+  $field_group->data = array(
+    'label' => 'Stammdaten',
+    'weight' => '19',
+    'children' => array(
+      0 => 'profile_master',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_user_master_tab|user|user|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_user_personal_info|profile2|student|default';
   $field_group->group_name = 'group_user_personal_info';
   $field_group->entity_type = 'profile2';
@@ -186,6 +240,38 @@ function nm_section_courses_features_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_user_settings_tab|user|user|form';
+  $field_group->group_name = 'group_user_settings_tab';
+  $field_group->entity_type = 'user';
+  $field_group->bundle = 'user';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_user_tabs';
+  $field_group->data = array(
+    'label' => 'Einstellungen',
+    'weight' => '21',
+    'children' => array(
+      0 => 'og_user_node',
+      1 => 'timezone',
+      2 => 'overlay_control',
+      3 => 'locale',
+      4 => 'wysiwyg',
+      5 => 'biblio_fieldset',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_user_settings_tab|user|user|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_user_stream|profile2|student|default';
   $field_group->group_name = 'group_user_stream';
   $field_group->entity_type = 'profile2';
@@ -209,6 +295,61 @@ function nm_section_courses_features_field_group_info() {
     ),
   );
   $export['group_user_stream|profile2|student|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_user_student_tab|user|user|form';
+  $field_group->group_name = 'group_user_student_tab';
+  $field_group->entity_type = 'user';
+  $field_group->bundle = 'user';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_user_tabs';
+  $field_group->data = array(
+    'label' => 'Studentendaten',
+    'weight' => '20',
+    'children' => array(
+      0 => 'profile_student',
+    ),
+    'format_type' => 'tab',
+    'format_settings' => array(
+      'formatter' => 'closed',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_user_student_tab|user|user|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_user_tabs|user|user|form';
+  $field_group->group_name = 'group_user_tabs';
+  $field_group->entity_type = 'user';
+  $field_group->bundle = 'user';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Tab Container',
+    'weight' => '0',
+    'children' => array(
+      0 => 'group_user_settings_tab',
+      1 => 'group_user_master_tab',
+      2 => 'group_user_account_tab',
+      3 => 'group_user_student_tab',
+    ),
+    'format_type' => 'tabs',
+    'format_settings' => array(
+      'formatter' => '',
+      'instance_settings' => array(
+        'classes' => '',
+      ),
+    ),
+  );
+  $export['group_user_tabs|user|user|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
