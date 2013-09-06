@@ -19,10 +19,10 @@
  */
 
 
-foreach ($rows as &$row) {
-  if (isset($row['nid'])) {
+foreach ($rows as &$row_item) {
+  if (isset($row_item['nid'])) {
     //check if task is new
-    $new = _section_courses_course_get_num_unread_by_type(NULL, NM_COURSE_GENERIC_TASK, $row['nid']);
+    $new = _section_courses_course_get_num_unread_by_type(NULL, NM_COURSE_GENERIC_TASK, $row_item['nid']);
     $new_label = "";
     if($new) {
       $new_label = '<small class="badge badge-important">neu</small>';
@@ -30,26 +30,27 @@ foreach ($rows as &$row) {
       
     
     //check solution state for that task
-    $solutions = custom_general_get_task_solutions($row['nid'], NULL);
+    $solutions = custom_general_get_task_solutions($row_item['nid'], NULL);
     if(count($solutions) > 0)
     {
       $solution = current($solutions);
-      $row['nid'] = _courses_tasks_solution_workflow_label($solution->nid);
+      $row_item['nid'] = _courses_tasks_solution_workflow_label($solution->nid);
     }else
     {
-      $row['nid'] = _courses_tasks_solution_workflow_label();
+      $row_item['nid'] = _courses_tasks_solution_workflow_label();
     }
     
-    $row['nid_1'] = $new_label;
+    $row_item['nid_1'] = $new_label;
   }
   
+  
   //Group or Single task
-  if(isset($row['field_task_type']) && is_numeric($row['field_task_type'])) {
-    if($row['field_task_type'] == NM_COURSES_TASK_TYPE_SINGLE) {
-      $row['field_task_type'] = '<i class="icon-user" title="Einzelaufgabe"></i>';
+  if(isset($row_item['field_task_type']) && is_numeric($row_item['field_task_type'])) {
+    if($row_item['field_task_type'] == NM_COURSES_TASK_TYPE_SINGLE) {
+      $row_item['field_task_type'] = '<i class="icon-user" title="Einzelaufgabe"></i>';
     } else
     {
-      $row['field_task_type'] = '<i class="icon-user" title="Gruppenaufgabe"></i><i class="icon-user" title="Gruppenaufgabe"></i>';
+      $row_item['field_task_type'] = '<i class="icon-user" title="Gruppenaufgabe"></i><i class="icon-user" title="Gruppenaufgabe"></i>';
     }
   }
 }

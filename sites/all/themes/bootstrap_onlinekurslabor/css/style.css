@@ -16,6 +16,10 @@ CONTENT IMAGES FLOAT
   float:none;
 }
 
+.main-content {
+  min-height:350px;
+}
+
 /*
 admin menu bar is not high enough to dock to the top navbar - fix
 */
@@ -632,19 +636,4 @@ Footer
 .footer .menu.nav-list {
   color: #999;
   float:right;
-}
-
-/*
-panels 
-*/
-
-.panels-flexible-span11span1,
-.panels-flexible-span12,
-.panels-flexible-span3span6span3,
-.panels-flexible-span3span8span1,
-.panels-flexible-span4span8,
-.panels-flexible-span6span6,
-.panels-flexible-span8span4 {
-    margin:0 !important;
-    padding:0 !important;
 }

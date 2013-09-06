@@ -8,20 +8,45 @@
  */
 function _section_courses_node_tabs_view() {
 
-  $block = "";
+  $block = '';
+
+  /* refactor this
+   * rename function could also be possible
+   */
+  
+  /*
+   * user controls
+   */
+  if (arg(0) == 'user' && is_numeric(arg(1))) {
+    $nav_items_single = array();
+    $nav_items_single['edit'] = "Profil bearbeiten";
+
+    $path = 'user/' . arg(1) . '/edit';
+    if (drupal_valid_path($path)) {
+      $block .= l($nav_items_single['edit'], $path);
+    }
+    return $block;
+  }
+  
+  /*
+   * node controls
+   */
+
   if (section_courses_instructors_tools_access()) {
     $nav_items_single = array();
     $nav_items_single['overview'] = "Ansicht";
-    $nav_items_single['course'] = "Bearbeiten";
+    $nav_items_single['edit'] = "Bearbeiten";
 
     $single_links = array();
 
     $group = _section_courses_get_active_course();
 
-    foreach ($nav_items_single as $si) {
-      $text_link = _section_courses_navtext_to_link($group, $si);
-      if ($si != $text_link['link']) {
-        $single_links[] = array('link' => $text_link['link']);
+    if ($group) {
+      foreach ($nav_items_single as $si) {
+        $text_link = _section_courses_navtext_to_link($group, $si);
+        if ($si != $text_link['link']) {
+          $single_links[] = array('link' => $text_link['link']);
+        }
       }
     }
 
@@ -63,14 +88,14 @@ function _course_header_section_view() {
       $count_sponsors = 0;
       //simulate more
       /*
-      $tt = array_pop($sponsors_tids);
-      $sponsors_tids[] = $tt;
-      $sponsors_tids[] = $tt;
-      $sponsors_tids[] = $tt;
-      $sponsors_tids[] = $tt;
-      $sponsors_tids[] = $tt;
-      */
-      
+        $tt = array_pop($sponsors_tids);
+        $sponsors_tids[] = $tt;
+        $sponsors_tids[] = $tt;
+        $sponsors_tids[] = $tt;
+        $sponsors_tids[] = $tt;
+        $sponsors_tids[] = $tt;
+       */
+
       $output .= '<div class="courses_sponsors_cols">';
       foreach (($sponsors_tids) as $tid_array) {
         $term = taxonomy_term_load($tid_array['tid']);
@@ -82,11 +107,11 @@ function _course_header_section_view() {
         $sponsor_img = drupal_render($field_view);
 
         $sponsors_out .= l($sponsor_img, $url, array('html' => TRUE, 'target' => '_blank', 'attributes' => array('target' => '_blank')));
-        
+
         $count_sponsors++;
 
         //new row every %1 logos
-        if($count_sponsors % 4 == 0 && $count_sponsors < count($sponsors_tids)) {
+        if ($count_sponsors % 4 == 0 && $count_sponsors < count($sponsors_tids)) {
           $output .= '<div class="courses_sponsors_col">';
           $sponsors_out = '<div class="courses_sponsors">' . $sponsors_out . '</div>';
           $output .= $sponsors_out;
@@ -98,10 +123,10 @@ function _course_header_section_view() {
       $sponsors_out = '<div class="courses_sponsors">' . $sponsors_out . '</div>';
       $output .= $sponsors_out;
       $output .= '</div>';
-      
+
       $output .= '</div>';
     }
-        
+
     $output .= '<div id="course_header_title">';
     $output .= '<h1>';
     $output .= $active_course->title;
@@ -125,7 +150,7 @@ function _course_header_section_view() {
       'content' => array(
         '#type' => 'markup',
         '#markup' => $output,
-    ));
+        ));
   }
 
   return $block;
@@ -218,7 +243,7 @@ function _section_courses_get_instructor_tools() {
     ),
     'attributes' => array(
       'title' => '',
-  ));
+      ));
 
   /*
     $members_overview_options = $default_options;
@@ -497,7 +522,7 @@ function _section_courses_navtext_to_link($course, $text) {
     'attributes' => array(),
     'query' => array(
       'og_group_ref' => $course_nid,
-  ));
+      ));
 
   $active_node = NULL;
   if ((arg(0) == 'course') && (is_numeric(arg(3)))) {
