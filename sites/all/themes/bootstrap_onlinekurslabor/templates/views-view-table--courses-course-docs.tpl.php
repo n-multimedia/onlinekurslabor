@@ -19,16 +19,16 @@
  */
 
 
-foreach ($rows as &$row) {
-  if (isset($row['nid_1'])) {
+foreach ($rows as &$row_item) {
+  if (isset($row_item['nid_1'])) {
     //check if task is new
-    $new = _section_courses_course_get_num_unread_by_type(NULL, NM_COURSE_DOCS, $row['nid_1']);
+    $new = _section_courses_course_get_num_unread_by_type(NULL, NM_COURSE_DOCS, $row_item['nid_1']);
     $new_label = "";
     if($new) {
       $new_label = '<small class="badge badge-important">neu</small>';
     }
           
-    $row['nid_1'] = $new_label;
+    $row_item['nid_1'] = $new_label;
   }
 }
 

@@ -1259,46 +1259,66 @@ function section_courses_og_membership_insert(OgMembership $og_membership) {
   }
 }
 
-/*
- * user Student edit form
+/**
+ * add WYSIWYG Editor to Task Fields
  * 
- * 
+ * @param string $form
+ * @param type $form_state
+ * @param type $form_id
  */
-
 function section_courses_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id == 'user_profile_form') {
-    global $user;
 
-    if (!isset($form_state['profiles'])) {
-      if (profile2_category_access($user, 'master')) {
-        $profile = profile2_load_by_user($user, 'master');
-        if (!$profile) {
-          $profile = profile_create(array(
-            'type' => 'master',
-            'uid' => $user->uid
-              ));
-        }
-        $form_state['profiles'][$profile->type] = $profile;
+
+  if ($form_id == 'courses_generic_task_node_form') {
+
+    $field_items = &$form['field_generic_task_entry'][LANGUAGE_NONE];
+    foreach ($field_items as &$f_item) {
+      if (is_array($f_item) && isset($f_item['second'])) {
+        $f_item['second']['#type'] = 'text_format';
+        $f_item['second']['#base_type'] = 'textarea';
+        $f_item['second']['#format'] = NM_FILTER_FORMAT_FILTERED_HTML;
       }
+    }
+    $form['#submit'][] = 'section_courses_courses_generic_task_node_form_submit';
+    $form['#after_build'][] = 'section_courses_courses_generic_task_node_form_after_build';
+  }
+}
 
-      if (profile2_category_access($user, 'student')) {
-        $profile = profile2_load_by_user($user, 'student');
-        if (!$profile) {
-          $profile = profile_create(array(
-            'type' => 'student',
-            'uid' => $user->uid
-              ));
-        }
-        $form_state['profiles'][$profile->type] = $profile;
-      }
+/**
+ * Unset field format values to avoid db errors
+ * 
+ * @param type $form
+ * @param type $form_state
+ */
+function section_courses_courses_generic_task_node_form_submit($form, &$form_state) {
 
 
-      // Or use profile2 API which is simpler
-      profile2_attach_form($form, $form_state);
-      if (isset($form['profile_master']))
-        $form['profile_master']['#type'] = 'fieldset';
-      if (isset($form['profile_student']))
-        $form['profile_student']['#type'] = 'fieldset';
+  $field_items = &$form_state['values']['field_generic_task_entry'][LANGUAGE_NONE];
+  foreach ($field_items as &$f_item) {
+    if (is_array($f_item) && isset($f_item['second'])) {
+      unset($f_item['second']['format']);
+      unset($f_item['second']['format']);
     }
   }
+
+  $field_items2 = &$form_state['input']['field_generic_task_entry'][LANGUAGE_NONE];
+  foreach ($field_items2 as &$f_item2) {
+    if (is_array($f_item) && isset($f_item2['second'])) {
+      unset($f_item2['second']['format']);
+      unset($f_item2['second']['format']);
+    }
+  }
+}
+
+function section_courses_courses_generic_task_node_form_after_build($form) {
+
+
+  $field_items = &$form['field_generic_task_entry'][LANGUAGE_NONE];
+  foreach ($field_items as &$f_item) {
+    if (is_array($f_item) && isset($f_item['second'])) {
+      $f_item['second']['format']['#attributes']['style'] = 'display:none';
+    }
+  }
+  
+  return $form;
 }

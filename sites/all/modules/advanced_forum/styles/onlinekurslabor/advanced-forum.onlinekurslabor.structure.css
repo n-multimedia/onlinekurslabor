@@ -308,6 +308,10 @@ div.forum-post {
     font-size: .8em;
 }
 
+.forum-post {
+  position:relative;
+}
+
 .forum-post .new {
     float: none;
 }
@@ -318,7 +322,13 @@ div.forum-post {
 }
 
 .forum-post-title {
-    padding: 1px 1px 1px 10px;
+    /*padding: 1px 1px 1px 10px;*/
+    padding:0;
+    margin:0;
+    display:inline;
+    font-weight:bold;
+    position:absolute;
+    left:160px;
 }
 
 /* Author information pane */
@@ -601,9 +611,6 @@ posts
     padding:10px;
 }
 
-.forum-post .forum-post-title{
-    margin-top: 10px;
-}
 
 
 .af-button-large {

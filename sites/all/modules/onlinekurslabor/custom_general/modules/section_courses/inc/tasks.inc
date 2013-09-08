@@ -70,15 +70,15 @@ function _course_tasks_generic_tips_view() {
     }
     else {
       $output .= '<div class="alert alert-warning">';
-      $output .= "<h2>Bewertung</h2>";
-      $output .= "Sie haben Ihre Lösung eingereicht. <br /> Bisher wurde wurde noch kein Feedback abgegeben.";
+      $output .= "<h3>Bewertung</h3>";
+      $output .= "Sie haben Ihre Lösung eingereicht. <br /> Bisher wurde noch kein Feedback abgegeben.";
       $output .= '</div>';
     }
   }
   //Bewertet
   else if (($current == 4)) {
     $output .= '<div class="alert alert-success">';
-    $output .= "<h2>Bewertung</h2>";
+    $output .= "<h3>Bewertung</h3>";
     //$assessment_field = ($solution_wrapper->field_generic_task_assessment->value());
     $fview = field_view_field('node', $solution_node, 'field_generic_task_assessment');
     //hide field label
@@ -153,7 +153,7 @@ function _courses_tasks_solution_workflow_label($sid = 0) {
 
   $markup = "";
   if ($current == NM_COURSES_TASK_WORKFLOW_DRAFT || $sid == 0) {
-    $markup = '<span class="label">Entwurf</span>';
+    $markup = '<span class="label">Offen</span>';
   }
   elseif ($current == NM_COURSES_TASK_WORKFLOW_SUBMITTED) {
     $markup = '<span class="label label-info">Eingereicht</span>';

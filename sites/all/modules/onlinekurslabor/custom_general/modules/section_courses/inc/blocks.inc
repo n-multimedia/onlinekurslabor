@@ -26,6 +26,7 @@ function _section_courses_node_tabs_view() {
       $block .= l($nav_items_single['edit'], $path);
     }
     return $block;
+    
   }
   
   /*

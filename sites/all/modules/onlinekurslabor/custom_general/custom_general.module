@@ -566,6 +566,7 @@ function _custom_general_biblio_dashboard_form($form, &$form_state) {
 function custom_general_preprocess_page(&$variables) {
   //include js needed for every page
   drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/custom_general.js");
+  drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/jquery.autogrow-textarea.js");
 
   drupal_add_library('system', 'ui.progressbar');
 }

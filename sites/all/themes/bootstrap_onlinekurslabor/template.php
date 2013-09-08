@@ -1,13 +1,42 @@
 <?php
 
+/**
+ * 08.09.2013 - 14:23 - SN
+ * remove fieldset from date fields
+ * @param type $variables
+ * @return type
+ */
+function bootstrap_onlinekurslabor_combo($variables) {
+  return theme('form_element', $variables);
+}
+
+function bootstrap_onlinekurslabor_date_combo($variables) {
+  $element = $variables['element'];
+  $field = field_info_field($element['#field_name']);
+  $instance = field_info_instance($element['#entity_type'], $element['#field_name'], $element['#bundle']);
+
+  // Group start/end items together in fieldset.
+  /* $fieldset = array(
+    '#title' => t($element['#title']) . ' ' . ($element['#delta'] > 0 ? intval($element['#delta'] + 1) : ''),
+    '#value' => '',
+    '#description' => !empty($element['#fieldset_description']) ? $element['#fieldset_description'] : '',
+    '#attributes' => array(),
+    '#children' => $element['#children'],
+    ); */
+
+  $output = '<label for="' . $element["#id"] . '" class="control-label">' . $element['#title'] . '</label>';
+  $output .= $element['#children'];
+  return $output;
+}
+
 function bootstrap_onlinekurslabor_mark($variables) {
   $output = "";
   switch ($variables['type']) {
     case 1:
-      $output = ' <span class="badge badge-important">'.t('new').'</span>';
+      $output = ' <span class="badge badge-important">' . t('new') . '</span>';
       break;
     case 2:
-      $output = ' <span class="badge badge-important">'.t('updated').'</span>';
+      $output = ' <span class="badge badge-important">' . t('updated') . '</span>';
       break;
   }
 

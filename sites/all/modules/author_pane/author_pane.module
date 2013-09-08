@@ -1,0 +1,388 @@
+<?php
+
+/**
+ * @file
+ * Gathers information from user related modules into one template.
+ */
+
+// DRUPAL HOOKS **************************************************************/
+
+/**
+ * Implements hook_theme().
+ */
+function author_pane_theme() {
+  author_pane_include('author-pane.inc');
+
+  $items['author_pane'] = array(
+    'template' => 'author-pane',
+    'variables' => array(
+      'account' => NULL,
+      'caller' => NULL,
+      'picture_preset' => NULL,
+      'context' => NULL,
+      'disable_css' => NULL,
+      'join_date_type' => NULL,
+    ),
+  );
+
+  $items['author_pane_user_picture'] = array(
+    'template' => 'author-pane-user-picture',
+    'variables' => array(
+      'account' => NULL,
+      'caller' => NULL,
+      'picture_preset' => NULL,
+    ),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function author_pane_block_info() {
+  // TODO Rename block deltas (e.g. delta-0) to readable strings.
+  $blocks['delta-0']['info'] = t('Author Pane');
+
+  // We don't want the block to cache since what is displayed depends on
+  // both the user viewing and the user being viewed.
+  $blocks['delta-0']['cache'] = DRUPAL_NO_CACHE;
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function author_pane_block_configure($delta) {
+  // Get a list of all node types.
+  $types = node_type_get_types();
+  $options = array();
+  foreach ($types as $type) {
+    $options[$type->type] = $type->name;
+  }
+
+  // Allow user to choose which node types will display the block.
+  $form['author_pane_block_display_types'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Node types to display on'),
+    '#options' => $options,
+    '#default_value' => variable_get('author_pane_block_display_types', array()),
+  );
+
+  // Settings for which date type to use to format the join date.
+  $join_date_options = array();
+  foreach (system_get_date_types() as $date_type) {
+    $join_date_options[$date_type['type']] = $date_type['title'];
+  }
+
+  $form['author_pane_block_join_date_type'] = array(
+    '#type' => 'select',
+    '#title' => t('Join date, date type'),
+    '#options' => $join_date_options,
+    '#default_value' => variable_get('author_pane_block_join_date_type', 'short'),
+    '#description' => t('Select which <a href="@date-type-url">date type</a> to use for displaying the join date.', array('@date-type-url' => url('admin/config/regional/date-time'))),
+  );
+
+  if (module_exists('image')) {
+    // Get all the imagecache presets on the site.
+    $options = array('' => '');
+    $styles = image_styles();
+    foreach ($styles as $style) {
+      $options[$style['name']] = $style['name'];
+    }
+
+    // Allow the user to choose a preset to use.
+    $form['author_pane_block_user_picture_preset'] = array(
+      '#type' => 'select',
+      '#title' => t('User picture preset'),
+      '#options' => $options,
+      '#description' => t('Imagecache preset to use for the user picture on this block. Leave blank to not use this feature.'),
+      '#default_value' => variable_get('author_pane_block_user_picture_preset', ''),
+    );
+  }
+
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function author_pane_block_save($delta, $edit) {
+  variable_set('author_pane_block_display_types', $edit['author_pane_block_display_types']);
+  variable_set('author_pane_block_join_date_type', $edit['author_pane_block_join_date_type']);
+
+  if (isset($edit['author_pane_block_user_picture_preset'])) {
+    variable_set('author_pane_block_user_picture_preset', $edit['author_pane_block_user_picture_preset']);
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function author_pane_block_view($delta) {
+  $block = array();
+  $block['subject'] = t('Author Information');
+  $block['content'] = author_pane_get_block();
+
+  return $block;
+}
+
+/**
+ * Load Author Pane files on behalf of modules.
+ *
+ * This function, taken from the views include system, allows us to include
+ * an appropriately named include file bundled with any enabled module.
+ * It is currently used only to load the MODULE.author-pane.inc files which
+ * allow other modules to add to the author pane.
+ */
+function author_pane_include($file) {
+  $includes = array();
+  $author_pane_path = drupal_get_path('module', 'author_pane') . '/modules';
+
+  foreach (module_list() as $module) {
+    $module_path = drupal_get_path('module', $module);
+
+    if (file_exists("$module_path/$module.$file")) {
+      $includes[] = "./$module_path/$module.$file";
+    }
+    elseif (file_exists("$module_path/includes/$module.$file")) {
+      $includes[] = "./$module_path/includes/$module.$file";
+    }
+    elseif (file_exists("$author_pane_path/$module.$file")) {
+      $includes[] = "./$author_pane_path/$module.$file";
+    }
+  }
+
+  if (!empty($includes)) {
+    foreach ($includes as $include) {
+      require_once DRUPAL_ROOT . '/' . $include;
+    }
+  }
+}
+
+/**
+ * Process variables for author-pane.tpl.php.
+ *
+ * The $variables array contains the following arguments:
+ * - $variables['account']: User account object.
+ * - $variables['caller']: (optional) String identifying who called the theme
+ *   function. Usually the name of the module but doesn't have to be.
+ * - $variables['picture_preset']: (optional) Imagecache preset to use to format
+ *   the user picture.
+ * - $variables['context']: Information about where the Author Pane will be
+ *   appearing. For nodes, this will be the node object. For comments,
+ *   the comment object. For users, the user object.
+ * - $variables['disable_css']: TRUE if the preprocess should skip loading the
+ *   default CSS. This is used by modules such as AF that has its own CSS.
+ * - $variables['join_date_type']: The date type the join date should be
+ *   formated with.
+ *
+ * @see author-pane.tpl.php
+ */
+function template_preprocess_author_pane(&$variables) {
+  $static = &drupal_static(__FUNCTION__);
+  // Indicates who called the theme function.
+  $caller = (!empty($variables['caller'])) ? $variables['caller'] : '';
+
+  /* Add CSS */
+  if (empty($variables['disable_css'])) {
+    // Some modules have their own Author Pane CSS. Because Author Pane is
+    // called in a theme function, this CSS would get added after and clobber
+    // the CSS in those modules. So we don't load the CSS in that case.
+    drupal_add_css(drupal_get_path('module', 'author_pane') . '/author_pane.css');
+  }
+
+  /* Account ID & Name */
+  // This $account refers to the user whose info is in the pane.
+  $variables['account']->uid = (empty($variables['account']->uid)) ? 0 : $variables['account']->uid;
+  $account = $variables['account'];
+  $account_id = $account->uid;
+
+  $variables['account_name'] =  theme('username', array('account' => $account));
+  $variables['account_id'] = $account_id;
+
+  /* Avatar */
+  $image_style = (!empty($variables['picture_preset'])) ? $variables['picture_preset'] : '';
+  $storage_key = $account_id . ':' . $caller . ':' . $image_style;
+  // Use array with a key with account_id:caller:style as storage for the
+  // picture, because this function could be called from different callers or
+  // with different styles in the same run-time.
+  if (!empty($static['user_pictures'][$storage_key])) {
+    $variables['picture'] = $static['user_pictures'][$storage_key];
+  }
+  else {
+    $variables['picture'] = theme('author_pane_user_picture', array('account' => $variables['account'], 'caller' => $caller, 'picture_preset' => $image_style));
+    $static['user_pictures'][$storage_key] = $variables['picture'];
+  }
+
+  /* Join date & online status */
+  if ($account_id != 0) {
+    $date_type = !empty($variables['join_date_type']) ? $variables['join_date_type'] : 'short';
+    $variables['joined'] = format_date($account->created, $date_type);
+    $variables['joined_ago'] = format_interval(REQUEST_TIME - $account->created);
+
+    // Online status - uses the settings for the who's online block.
+    $variables['last_active'] = ($account->access) ? format_interval(REQUEST_TIME - $account->access) : t("Never");
+
+    if ((REQUEST_TIME -$account->access) < variable_get('user_block_seconds_online', 900)) {
+      $variables['online_status'] = t('Online');
+      $variables['online_status_class'] = 'author-online';
+    }
+    else {
+      $variables['online_status'] = t('Offline');
+      $variables['online_status_class'] = 'author-offline';
+    }
+  }
+  else {
+    // Set the variables to empty to avoid notices when the template is displayed.
+    $variables['joined'] = $variables['joined_ago'] = $variables['online_class'] = $variables['online_status'] = '';
+  }
+
+  // This variable is no longer used, but previous integrations are expecting
+  // it. Pass it the path to the images so they don't break.
+  $variables['image_path'] = drupal_get_path('module', 'author_pane') . '/images';
+
+  // Load up all the integration files from other modules.
+  author_pane_include('author-pane.inc');
+}
+
+
+/**
+ * Process variables for author-pane-user-picture.tpl.php.
+ *
+ * The $variables array contains the following arguments:
+ * - $variables['account']: User account object.
+ * - $variables['caller']: (optional) String identifying who called the theme
+ *   function. Usually the name of the module but doesn't have to be.
+ * - $variables['picture_preset']: (optional) Imagecache preset to use to format
+ *   the user picture.
+ *
+ * @see author-pane-user-picture.tpl.php
+ */
+function template_preprocess_author_pane_user_picture(&$variables) {
+  $variables['picture'] = '';
+
+  if (variable_get('user_pictures', 0)) {
+    $account = $variables['account'];
+
+    if (!empty($account->picture) && !empty($account->picture->uri)) {
+      $filepath = $account->picture->uri;
+    }
+    elseif (variable_get('user_picture_default', '')) {
+      $filepath = variable_get('user_picture_default', '');
+    }
+
+    if (isset($filepath)) {
+      $alt = t("@user's picture", array('@user' => format_username($account)));
+
+      // If the image does not have a valid Drupal scheme (for eg. HTTP),
+      // don't load image styles.
+      if (module_exists('image') && file_valid_uri($filepath) && $style = ((!empty($variables['picture_preset'])) ? $variables['picture_preset'] : '')) {
+        $variables['picture'] = theme('image_style', array('style_name' => $style, 'path' => $filepath, 'alt' => $alt, 'title' => $alt));
+        $variables['imagecache_used'] = TRUE;
+      }
+      else {
+        $variables['picture'] = theme('image', array('path' => $filepath, 'alt' => $alt, 'title' => $alt));
+        $variables['imagecache_used'] = FALSE;
+      }
+
+      if (!empty($account->uid) && user_access('access user profiles')) {
+        $options = array(
+          'attributes' => array('title' => t('View user profile.')),
+          'html' => TRUE,
+        );
+        $variables['picture_link_profile'] = l($variables['picture'], "user/$account->uid", $options);
+      }
+      else {
+        $variables['picture_link_profile'] = FALSE;
+      }
+    }
+  }
+}
+
+// PANELS / CTOOLS **********************************************************/
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function author_pane_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools') {
+    return 'plugins/' . $plugin;
+  }
+}
+
+// GENERAL FUNCTIONS ********************************************************/
+
+/**
+ * Defines an API version.
+ */
+function author_pane_api() {
+  return "2";
+}
+
+/**
+ * Creates the contents of the block. Called from author_pane_block().
+ */
+function author_pane_get_block() {
+  $area = arg(0);
+  $context = NULL;
+
+  // Check that we're in the right area. The block only works on the user pages,
+  // node full view pages, and the blog listing pages. It also does not work on
+  // the "edit" subpath.
+  if (!($area == 'user' || $area == 'node' || $area == 'blog') || !is_numeric(arg(1)) || arg(2) == 'edit') {
+    return;
+  }
+
+  if ($area == 'user' || $area == 'blog') {
+    // On the user page or the user's blog listing. Get the UID from the URL.
+    $uid = arg(1);
+  }
+  else {
+    // We're on a node page so load the node.
+    $node = menu_get_object();
+
+    $allowed_types = variable_get('author_pane_block_display_types', array());
+    if (!$node || empty($allowed_types[$node->type])) {
+      // Not a type we want to show on.
+      return;
+    }
+
+    $uid = $node->uid;
+
+    // When we're displaying along with a node, we'll want to send the node
+    // object into the theme function.
+    $context = $node;
+  }
+
+  // Load up the user object
+  $account = user_load($uid);
+
+  // Theming variables for the author pane.
+  $variables = array(
+    'account' => $account,
+    'caller' => 'author_pane_block',
+    'picture_preset' => variable_get('author_pane_block_user_picture_preset', ''),
+    'context' => $context,
+    'join_date_type' => variable_get('author_pane_block_join_date_type', 'short'),
+  );
+
+  // Build and return the author pane.
+  return theme('author_pane', $variables);
+}
+
+/**
+ * Determines if a given preprocess should run for a given caller.
+ */
+function author_pane_run_preprocess($module, $caller) {
+  $caller_disabled_list = variable_get("author_pane_disable_for_$caller", NULL);
+  if (!is_null($caller_disabled_list) && isset($caller_disabled_list[$module])) {
+    // If this caller has a list of disabled modules and if this module
+    // is listed, then return the opposite of the value for this caller.
+    // (The variable is TRUE to disable and we want to return TRUE to run it)
+    return !$caller_disabled_list[$module];
+  }
+
+  return TRUE;
+}

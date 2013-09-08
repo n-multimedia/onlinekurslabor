@@ -314,11 +314,11 @@ a.disabled {
 
 #instructors_tools-container .btn#instr_add_task a:before
 {
-  background-position: -240px -100px;
+  background-position: -180px -100px;
 }
 #instructors_tools-container .btn#instr_add_task a:hover:before, #instructors_tools-container .btn#instr_add_task a.active:before
 {
-  background-position: -240px -150px;
+  background-position: -180px -150px;
 }
 
 /*

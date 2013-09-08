@@ -1,0 +1,263 @@
+
+------------------------ D7 2.x BRANCH --------------------------------------------------
+
+May 12, 2012
+------------
+by Scyther: Changed from time() to REQUEST_TIME.
+by Scyther: Rewritten static handler for the user picture. Now uses drupal_static() function.
+Issue #1549194 by opmz, Scyther: Update documentation in header of AP template.
+
+Februari 29, 2012
+-----------------
+Issue #1451498 by davidcsonka, Scyther: AP requires different path for default image than Nodes/Comments.
+Issue #1217780 by Scyther: Trying to get property of non-object ...
+Issue #1217908 by mannejkumar: add friend not displaying in authorpane block.
+Issue #1067294 by Scyther: Make date extraction smarter.
+by Scyther: Added description for 'Join date, date type' settings field.
+by Scyther: Added t() to text string.
+by Scyther: Added .install file with uninstall function to delete all variables.
+
+December 20, 2011
+-----------------
+Issue #1376608 by dberror, Scyther: Check whether the user has access to view userpoints or not.
+
+October 11, 2011
+----------------
+by Michelle, Scyther: Changed category for Author Pane content pane.
+by Scyther: Changed name for APs content pane for easier understand which one is the content pane and which one is the block in panels.
+
+October 10, 2011
+----------------
+Issue #1304856 by Scyther: Fixed Author Pane doesn't display in panel.
+
+September 15, 2011
+------------------
+by Scyther: Updated User Badges integration.
+by Scyther: Updated User Points integration.
+by Scyther: Removed Location integration because it is unsupported.
+by Scyther: Removed Profile integration because it is an deprecated module.
+by Scyther: Removed Troll integration because it is a abandoned project.
+
+September 14, 2011
+------------------
+by Scyther: Updated Fasttoggle integration.
+
+September 13, 2011
+------------------
+by Scyther: Fixed minor Coder warning.
+Issue #1234572 by jbova, Scyther: Fixed Contact integration.
+
+March 8, 2011
+-------------
+Port all changes from 6.x-2.x
+
+November 13, 2010
+-----------------
+Issue #917762 by gordon, Michelle: Initial Drupal 7 port.
+
+
+------------------------ D6 2.x BRANCH --------------------------------------------------
+
+January 12, 2011
+----------------
+NOISSUE by Michelle: Minor template changes to keep in synch with AF changes.
+
+December 20, 2010
+----------------
+#868942 by Michelle: Synch up contact module code to AF's image changes.
+
+December 5, 2010
+----------------
+#941382 by recrit: Fixed broken caching on user points.
+#985742 by carlthuringer, Michelle: Make last access 'Never' when the user has never accessed the site.
+
+October 4, 2010 -- 2.0
+---------------
+#851656 by Michelle, gapple: Added Real Name support to the included content type.
+NOISSUE by Michelle: Coder clean up.
+NOISSUE by Michelle: Documentation tweaks.
+
+September 21, 2010
+------------------
+NOISSUE by Michelle: Made width of items with icons wider so words don't wrap.
+NOISSUE by Michelle: Added label to title and added 'last seen' section.
+
+September 20, 2010
+------------------
+#904928 by mr.j: Fixed broken Troll integration.
+
+September 16, 2010
+------------------
+#880740 by Jay Matwichuk: Fixed caching on User Badges integration.
+
+August 9, 2010 -- RC 1
+-------------
+#819764 by Michelle: Removed User Relationships integration.
+NOISSUE by Michelle: Minor commenting improvements.
+NOISSUE by Michelle: Cleaned up Contact module integration.
+#853538 by Michelle: Link to full sized avatar only when imagecache is used.
+
+July 12, 2010
+-------------
+NOISSUE by Michelle: Changed API function to return a string instead of an array because it makes checking it easier.
+
+July 08, 2010
+-------------
+NOISSUE by Michelle: Fixed notices.
+
+July 04, 2010 -- BETA 1
+-------------
+#824620 by leon85321, larskleiner: Removed typo'd parenthesis.
+NOISSUE by Michelle: Fixed bug in user title caching.
+#525190 by Michelle: Added logic for disabling modules. Still no UI.
+
+June 08, 2010
+-------------
+NOISSUE by Michelle: Updated README.txt.
+#706930 by Michelle: Added caching to integrations handled by AP that have queries.
+
+June 07, 2010
+-------------
+NOISSUE by Michelle: Added more commenting, especially to the template preprocess.
+#747864 by Michelle: Added new 'context' parameter for passing in the node or comment object.
+NOISSUE by Michelle: Removed the hack to make AP 2.x to work with AF 1.x and added an API version function instead.
+NOISSUE by Michelle: Added parameter to disable CSS rather than checking the caller.
+#784846 by locomo: Generate alt text for user picture if imagecache is used.
+#552694 by Michelle: Changed block to specifically avoid /edit rather than all other subpaths of /user /node and /blog.
+#535428 by Michelle: Popup full sized avatar when clicking on thumbnail.
+NOISSUE by Michelle: Added user icon from CTools to content type directory.
+NOISSUE by Michelle: Coder fixes.
+
+March 14, 2010
+--------------
+NOISSUE by Michelle: Added some variable switching that should allow AP 2.x to work with AF 1.x. Untested.
+NOISSUE by Michelle: Added code to template to print the path/name of the current template. 
+#716056 by Michelle: Documented that user titles images are not shown by default.
+
+November 12, 2009
+-----------------
+NOISSUE by Michelle: Removed APK from list of exceptions to CSS loading.
+#525190 by Michelle: Some preliminary work on allowing module integration to be selectively turned off.
+#576750 by alex.k: Relationship link shouldn't be displayed if the relation is not allowed.
+#624648 by dkrueger: Added German translation.
+
+September 19, 2009 -- ALPHA 2
+------------------
+#566750 by abaddonsun, Michelle: Added check for private groups and also added ability to disable the preprocess entirely.
+#525190 by Michelle: Added dummy function to define API for disabling preprocesses.
+NOISSUE by Michelle: Updated README.txt to reflect latest changes.
+
+September 6, 2009
+-----------------
+#542998 by Michelle: More work on processing the user picture image.
+#542998 by Michelle: Changed the included Panels content type to use the new theme function format.
+#542998 by Michelle: Missed changing the default configuration variables in the Panels content type.
+
+August 18, 2009
+--------------
+#548438 by introfini: Added check to see if user can add a given relationship type.
+#537462 by dafeder: Corrected UR variable docs.
+
+July 21, 2009 -- ALPHA 1
+-------------
+#523422 by Michelle: Fixed wrong location variable name.
+#500978 by Michelle: Finished moving images to CSS, including removing image path from config.
+NOISSUE by Michelle: Updated .tpls to reflect changes from AF.
+NOISSUE by Michelle: Removed block template file & setting to simplify UI.
+NOISSUE by Michelle: Updated README.txt to reflect recent changes.
+NOISSUE by Michelle: General clean up and organization.
+
+July 10, 2009
+-------------
+#500978 Some work on moving images to CSS. Incomplete.
+#500982 Initialized some variables to avoid notices.
+#491800 Changed from passing in the template filename to passing in the name of the caller.
+
+May 22, 2009 -- BRANCH TO 2.x
+------------
+#445192 by Jo Wouters: Turned caching of AP block off completely.
+
+May 11, 2009
+--------------
+NOISSUE by Michelle: Syncing up to dev copy because some things are missing.
+#445192 by Jo Wouters: Fixed block caching issue.
+
+April 23, 2009
+--------------
+NOISSUE by Michelle: Made changes to content type to follow changes to CTools / Panels 3.
+
+March 31, 2009
+--------------
+NOISSUE by Michelle: Converted Panels content type to Panels 3
+
+March 31, 2009 -- 6.x-1.x
+--------------
+#390914 by alex.k: Added user relationships popup support.
+
+March 21, 2009
+--------------
+NOISSUE by Michelle: Added imagecache support to Author Pane block.
+NOISSUE by Michelle: Made author-pane-block.tpl.php template for the block version.
+#379694 by Michelle: twist3r: Double check that arg(1) is numeric.
+#402352 by Michelle: Removed logic to print user title image. Variable is still there.
+#408006 by Michelle: Changed online/offline default to be small icon plus words.
+
+March 4, 2009
+-------------
+#382082 by Michelle: Added check for existance of location_display() to avoid errors with older versions of location.
+#380942 by Kripsy: Added support for Troll module.
+#380942 by Kripsy: Don't show fasttoggle user block on own Author Pane.
+NOISSUE by Michelle: Added custom path_to_theme() function that falls back to the default theme if $theme not set.
+NOISSUE by Michelle: Trimmed down default CSS to just some basic positioning.
+NOISSUE by Michelle: Cleaned up template file.
+
+February 9, 2009
+----------------
+#362958 by Michelle: Changed userpoints integration to default to total points instead of default category.
+#363706 by Michelle: New feature: User Titles image support.
+
+January 23, 2009
+----------------
+NOISSUE by Michelle: Renamed template_file argument to template_suggestion for clarity.
+#363393 by Michelle: Fixed instructions on image directory override and made it more flexible.
+
+January 17, 2009 -- BETA 2
+----------------
+NOISSUE by Michelle: New feature: Author Pane as a block on node/user/blog pages.
+NOISSUE by Michelle: Added option to select what node types to display block on.
+NOISSUE by Michelle: Updated readme to describe new block. (missed beta 2)
+
+January 16, 2009
+----------------
+NOISSUE by Michelle: Removed caching of inc files to avoid problems when integration modules are added / removed.
+
+January 12, 2009 -- BETA 1
+----------------
+#348897 by Michelle: Fixed lack of title text on user online/offline image.
+
+January 7, 2009
+---------------
+#355737 by Michelle: Removed user stats integration as it's already in the user stats module. Reported by Jason Ruyle.
+
+January 4, 2009
+---------------
+NOISSUE by Michelle: Minor fixes to UR integration, added OG groups back to the template.
+#349194 by mr.andrey: Added location integration (untested).
+NOISSUE by Michelle: Added a README.txt.
+NOISSUE by Michelle: Updated CSS to match changes to template structure.
+
+January 3, 2009
+---------------
+NOISSUE by Michelle: Pulled author pane content type out of APK and into here.
+NOISSUE by Michelle: Added configuration to panels content type to put in image directory and template file so the APK ones could be used.
+NOISSUE by Michelle: Updated template to match the APK version except for the user name.
+
+December 27, 2008
+-----------------
+VARIOUS by Michelle: Committed integration code for og, user badges, user relationships, and user titles.
+NOISSUE by Michelle: Updated author pane template.
+
+December 21, 2008
+-----------------
+Initial dev release.
+

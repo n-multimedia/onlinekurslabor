@@ -256,13 +256,13 @@ function _section_courses_course_get_num_unread_by_type($uid, $type, $nid = NULL
     global $user;
     $uid = $user->uid;
   }
-
-  if (empty($result_cache[$type]) || $nid != NULL) {
+  
+  if (empty($result_cache[$type][$nid])) {
     //get group's news entities
     //$query = db_select("node", "n");
     $active_course = _section_courses_get_active_course();
     if (!$active_course)
-      return $result_cache;
+      return $result_cache[$type][$nid];
     $query = db_select("og_membership", "ogm");
     $query->condition("ogm.gid", $active_course->nid, "=");
     //$query->fields("ogm", array("entity_type", "etid"));
@@ -290,10 +290,10 @@ function _section_courses_course_get_num_unread_by_type($uid, $type, $nid = NULL
     $result = $query->execute();
 
     //dpm($result->fetchAll());
-    $result_cache[$type] = current($result->fetchAll())->count;
+    $result_cache[$type][$nid] = current($result->fetchAll())->count;
   }
 
-  return $result_cache[$type];
+  return $result_cache[$type][$nid];
 
   //check history entries for every entity found
   //return unread

@@ -27,6 +27,16 @@ admin menu bar is not high enough to dock to the top navbar - fix
 TOP
 */
 
+label {
+  font-weight: bold;
+}
+.form-checkboxes label{
+  font-weight: normal;
+}
+.form-checkboxes label,.form-radios label, .date-float label {
+  font-weight: normal;
+}
+
 #admin-menu{
   min-height: 28px;
 }
@@ -38,6 +48,8 @@ TOP
 body{
   padding-top:50px;
 }
+
+
 body.cke_show_borders{
   padding-top:0px;
 }
@@ -52,10 +64,14 @@ body.cke_show_borders{
 }
 
 #navbar .navbar-inner{
-  background-color: #29323D;
+  background-color: #333;
   text-shadow: none ;
   min-height:50px;
   border: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+
 }
 
 #navbar {
@@ -204,7 +220,6 @@ Course Header
 {
   position:relative;
   overflow:hidden;
-  height:200px;
 }
 
 #course_header #course_header_title {
@@ -254,7 +269,7 @@ News
 
 }
 .view-courses-course-news .views-row h3 {
-    margin:0;
+  margin:0;
 }
 
 .view-courses-course-news .view-row-read:before, .view-courses-course-news .view-row-unread:before
@@ -599,10 +614,10 @@ Book Navigation
 }
 */
 .book-navigation .page-links {
-    padding: 20px 0;
-    border: 0;
-    border-top: 1px solid #eeeeee;
-    border-bottom: 1px solid #eeeeee;
+  padding: 20px 0;
+  border: 0;
+  border-top: 1px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;
 }
 
 
@@ -621,11 +636,11 @@ TASKS ALERT BOXES
 */
 
 .page-course-tasks  .main-container div.alert{
-    color: inherit;
+  color: inherit;
 }
 
 .view-courses-task-solutions {
-    
+
 }
 
 
@@ -637,3 +652,16 @@ Footer
   color: #999;
   float:right;
 }
+
+.form-required {
+  color: #f20000;
+}
+
+.help-block {
+  clear:both;
+}
+
+/*
+Stream
+*/
+
