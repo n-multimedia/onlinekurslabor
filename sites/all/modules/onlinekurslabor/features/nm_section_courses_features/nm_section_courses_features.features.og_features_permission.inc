@@ -251,6 +251,14 @@ function nm_section_courses_features_og_features_default_permissions() {
     ),
   );
 
+  // Exported og permission: 'node:courses_course:update body field'
+  $permissions['node:courses_course:update body field'] = array(
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+      'member' => 'member',
+    ),
+  );
+
   // Exported og permission: 'node:courses_course:update field_attachments field'
   $permissions['node:courses_course:update field_attachments field'] = array(
     'roles' => array(

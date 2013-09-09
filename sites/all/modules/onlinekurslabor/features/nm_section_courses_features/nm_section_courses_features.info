@@ -175,6 +175,7 @@ features[og_features_permission][] = node:courses_course:update any courses_gene
 features[og_features_permission][] = node:courses_course:update any courses_group content
 features[og_features_permission][] = node:courses_course:update any courses_news content
 features[og_features_permission][] = node:courses_course:update any forum content
+features[og_features_permission][] = node:courses_course:update body field
 features[og_features_permission][] = node:courses_course:update field_attachments field
 features[og_features_permission][] = node:courses_course:update field_course_docs field
 features[og_features_permission][] = node:courses_course:update field_course_header field
