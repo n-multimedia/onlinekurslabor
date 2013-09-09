@@ -111,6 +111,18 @@ function ds_ds_fields_info($entity_type) {
     'function' => 'ds_render_date_field',
     'properties' => array(
       'formatters' => $date_formatters,
+      'entity_render_key' => 'created',
+    ),
+  );
+
+  // Updated time.
+  $fields['node']['changed_date'] = array(
+    'title' => t('Last modified'),
+    'field_type' => DS_FIELD_TYPE_FUNCTION,
+    'function' => 'ds_render_date_field',
+    'properties' => array(
+      'formatters' => $date_formatters,
+      'entity_render_key' => 'changed',
     ),
   );
 
@@ -200,6 +212,7 @@ function ds_ds_fields_info($entity_type) {
       'function' => 'ds_render_date_field',
       'properties' => array(
         'formatters' => $date_formatters,
+        'entity_render_key' => 'created',
       ),
     );
 

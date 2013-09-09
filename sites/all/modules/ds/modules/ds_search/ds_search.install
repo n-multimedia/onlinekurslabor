@@ -12,6 +12,7 @@ function ds_search_uninstall() {
   variable_del('ds_search_type');
   variable_del('ds_search_path');
   variable_del('ds_search_view_mode');
+  variable_del('ds_search_file_render');
   variable_del('ds_search_variables');
   variable_del('ds_search_show_title');
   variable_del('ds_search_language');

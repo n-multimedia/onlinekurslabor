@@ -649,6 +649,9 @@ function ds_extras_is_entity_page_view($build, $entity_type) {
       $page_term = menu_get_object('taxonomy_term', 2);
       return (!empty($page_term) ? $page_term->tid == $build['#term']->tid : FALSE);
       break;
+    case 'profile2':
+      return $build['#view_mode'] == 'page';
+      break;
   }
 
   return FALSE;

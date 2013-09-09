@@ -6,6 +6,139 @@
  */
 
 /**
+ * Implements hook_menu().
+ */
+function _ds_menu() {
+  $items = array();
+
+  // Layout overview.
+  $items['admin/structure/ds'] = array(
+    'title' => 'Display Suite',
+    'description' => 'Manage layouts for entities and configure fields, view modes etc.',
+    'page callback' => 'ds_layout_list',
+    'file' => 'includes/ds.displays.inc',
+    'access arguments' => array('admin_display_suite'),
+  );
+
+  // Layout overview, primary tab.
+  $items['admin/structure/ds/list'] = array(
+    'title' => 'Displays',
+    'weight' => -10,
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+
+  // Layout overview, secondary tab.
+  $items['admin/structure/ds/list/list'] = array(
+    'title' => 'List',
+    'weight' => -10,
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+
+  // Emergency page
+  $items['admin/structure/ds/list/emergency'] = array(
+    'title' => 'Emergency',
+    'description' => 'In case you have errors via Display Suite, visit this page.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ds_emergency'),
+    'access arguments' => array('admin_display_suite'),
+    'file' => 'includes/ds.displays.inc',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 100,
+  );
+
+  // Change layout.
+  $items['admin/structure/ds/change-layout'] = array(
+    'title' => 'Change layout',
+    'description' => 'Act on layout change to move fields elsewhere',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ds_field_ui_layout_change'),
+    'access arguments' => array('admin_display_suite'),
+    'file' => 'includes/ds.field_ui.inc',
+    'type' => MENU_VISIBLE_IN_BREADCRUMB,
+  );
+
+  // Revert layout.
+  $items['admin/structure/ds/revert-layout'] = array(
+    'title' => 'Revert layout',
+    'description' => 'Revert layout and field settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ds_revert_layout_field_settings_form'),
+    'file' => 'includes/ds.field_ui.inc',
+    'access arguments' => array('admin_display_suite'),
+    'type' => MENU_VISIBLE_IN_BREADCRUMB,
+  );
+
+  // Disable layout.
+  $items['admin/structure/ds/disable'] = array(
+    'title' => 'Disable layout',
+    'description' => 'Disable layout and field settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ds_disable_layout_field_settings_form'),
+    'file' => 'includes/ds.field_ui.inc',
+    'access arguments' => array('admin_display_suite'),
+    'type' => MENU_VISIBLE_IN_BREADCRUMB,
+  );
+
+  // Enable layout.
+  $items['admin/structure/ds/enable'] = array(
+    'title' => 'Enable layout',
+    'description' => 'Enable layout and field settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ds_enable_layout_field_settings_form'),
+    'file' => 'includes/ds.field_ui.inc',
+    'access arguments' => array('admin_display_suite'),
+    'type' => MENU_VISIBLE_IN_BREADCRUMB,
+  );
+
+  // CTools content.
+  $items['admin/structure/ds/fields/manage_ctools/content'] = array(
+    'title' => 'Ctools field content',
+    'page callback' => 'ds_ctools_content',
+    'file' => 'includes/ds.field_ui.inc',
+    'access arguments' => array('admin_display_suite'),
+    'type' => MENU_CALLBACK,
+  );
+
+  // Contextual links.
+  if (module_exists('contextual') && module_exists('field_ui')) {
+    $items['node/%node/display'] = array(
+      'title' => 'Manage display',
+      'description' => 'Manage display of this content.',
+      'page callback' => 'ds_contextual_page_tab',
+      'page arguments' => array(1, 'node'),
+      'file' => 'includes/ds.contextual.inc',
+      'access arguments' => array('administer content types'),
+      'type' => MENU_LOCAL_TASK,
+    );
+
+    $items['user/%user/display'] = array(
+      'title' => 'Manage display',
+      'description' => 'Manage display of this user profile.',
+      'page callback' => 'ds_contextual_page_tab',
+      'page arguments' => array(1, 'user'),
+      'file' => 'includes/ds.contextual.inc',
+      'access arguments' => array('administer users'),
+      'type' => MENU_LOCAL_TASK,
+    );
+
+    if (module_exists('taxonomy')) {
+      $items['taxonomy/term/%taxonomy_term/display'] = array(
+        'title' => 'Manage display',
+        'description' => 'Manage display of this term.',
+        'page callback' => 'ds_contextual_page_tab',
+        'page arguments' => array(2, 'taxonomy_term'),
+        'access arguments' => array('administer taxonomy'),
+        'type' => MENU_LOCAL_TASK,
+        'weight' => 11,
+        'file' => 'includes/ds.contextual.inc',
+      );
+    }
+  }
+
+  return $items;
+}
+
+/**
  * Implements hook_theme().
  */
 function _ds_theme() {
@@ -189,15 +322,22 @@ function _ds_entity_info_alter(&$entity_info) {
   $ds_layout_settings = ctools_export_crud_load_all('ds_layout_settings');
   foreach ($ds_layout_settings as $row) {
 
-    // Don't store any configurations with layouts that don't exist anymore.
+    // Don't store any configuration if the layout is disabled.
+    if (!empty($row->disabled)) {
+      continue;
+    }
+
+    // Don't store any configuration with layouts that don't exist anymore.
     if (!isset($ds_layouts[$row->layout])) {
       continue;
     }
 
+    // Don't store any configuration if the entity type is not defined.
     if (!isset($entity_info[$row->entity_type])) {
       continue;
     }
 
+    // Don't store any configuration if the bundle doesn't exist.
     if (!isset($entity_info[$row->entity_type]['bundles'][$row->bundle])) {
       continue;
     }
@@ -225,6 +365,14 @@ function _ds_ds_layout_info() {
     'ds_1col' => array(
       'label' => t('One column'),
       'path' => $path . '/layouts/ds_1col',
+      'regions' => array(
+        'ds_content' => t('Content'),
+      ),
+      'image' => TRUE,
+    ),
+    'ds_1col_wrapper' => array(
+      'label' => t('One column + wrapper'),
+      'path' => $path . '/layouts/ds_1col_wrapper',
       'regions' => array(
         'ds_content' => t('Content'),
       ),

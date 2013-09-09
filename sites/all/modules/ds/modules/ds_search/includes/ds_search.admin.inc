@@ -51,6 +51,13 @@ function ds_search_settings($form, $form_state) {
     '#options' => $view_mode_options,
   );
 
+  $form['general']['ds_search_file_render'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use default search theming for files'),
+    '#description' => t('File/attachment results are best supported when the file entity module is enabled. Toggle the checkbox in case it is not available or you want to use default search theming.'),
+    '#default_value' => variable_get('ds_search_file_render', FALSE),
+  );
+
   $form['general']['ds_search_variables'] = array(
     '#type' => 'radios',
     '#options' => array(
@@ -100,7 +107,7 @@ function ds_search_settings($form, $form_state) {
   $form['general']['ds_search_group_by_type'] = array(
     '#type' => 'checkbox',
     '#title' => t('Group by type.'),
-    '#description' => t('Group the search results per page by type.'),
+    '#description' => t('Group the search results per page by type. Note that this only works if you only display nodes on the search result page.'),
     '#default_value' => variable_get('ds_search_group_by_type'),
   );
 

@@ -32,7 +32,7 @@ function nm_section_courses_features_field_group_info() {
       'formatter' => 'closed',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-course-design field-group-htab',
         'required_fields' => 1,
       ),
     ),
@@ -59,7 +59,7 @@ function nm_section_courses_features_field_group_info() {
       'formatter' => 'closed',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-course-features field-group-htab',
         'required_fields' => 1,
       ),
     ),
@@ -91,7 +91,7 @@ function nm_section_courses_features_field_group_info() {
       'label' => 'Allgemein / Kursinfo',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-course-general-data field-group-htab',
         'description' => '',
       ),
       'formatter' => 'closed',
@@ -121,7 +121,7 @@ function nm_section_courses_features_field_group_info() {
     'format_settings' => array(
       'formatter' => '',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-course-general field-group-htabs',
       ),
     ),
   );
@@ -147,7 +147,7 @@ function nm_section_courses_features_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-courses-vhb field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -174,7 +174,7 @@ function nm_section_courses_features_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-user-account-tab field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -201,7 +201,7 @@ function nm_section_courses_features_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-user-master-tab field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -229,7 +229,7 @@ function nm_section_courses_features_field_group_info() {
     'format_settings' => array(
       'label' => 'Persönliche Informationen',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-user-personal-info field-group-fieldset',
         'description' => '',
       ),
       'formatter' => 'open',
@@ -262,7 +262,7 @@ function nm_section_courses_features_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-user-settings-tab field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -288,7 +288,7 @@ function nm_section_courses_features_field_group_info() {
     'format_settings' => array(
       'label' => 'Stream',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-user-stream field-group-fieldset',
         'description' => '',
       ),
       'formatter' => 'open',
@@ -316,7 +316,7 @@ function nm_section_courses_features_field_group_info() {
       'formatter' => 'closed',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-user-student-tab field-group-tab',
         'required_fields' => 1,
       ),
     ),
@@ -345,7 +345,7 @@ function nm_section_courses_features_field_group_info() {
     'format_settings' => array(
       'formatter' => '',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-user-tabs field-group-tabs',
       ),
     ),
   );
@@ -370,7 +370,7 @@ function nm_section_courses_features_field_group_info() {
     'format_settings' => array(
       'label' => 'Meine Kurse',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-users-courses field-group-fieldset',
         'description' => '',
       ),
       'formatter' => 'open',
