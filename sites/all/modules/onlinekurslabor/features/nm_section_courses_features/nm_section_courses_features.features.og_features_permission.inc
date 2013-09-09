@@ -429,7 +429,10 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:update taxonomy_forums field'
   $permissions['node:courses_course:update taxonomy_forums field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:view body field'
@@ -568,7 +571,10 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:view taxonomy_forums field'
   $permissions['node:courses_course:view taxonomy_forums field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:courses_group:add user'
