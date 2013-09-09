@@ -10,8 +10,22 @@
 function nm_section_courses_features_og_features_default_permissions() {
   $permissions = array();
 
+  // Exported og permission: 'node:courses_course:add user'
+  $permissions['node:courses_course:add user'] = array(
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
+  );
+
   // Exported og permission: 'node:courses_course:administer group'
   $permissions['node:courses_course:administer group'] = array(
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
+  );
+
+  // Exported og permission: 'node:courses_course:approve and deny subscription'
+  $permissions['node:courses_course:approve and deny subscription'] = array(
     'roles' => array(
       'course-administrator' => 'course-administrator',
     ),
@@ -145,10 +159,53 @@ function nm_section_courses_features_og_features_default_permissions() {
     ),
   );
 
+  // Exported og permission: 'node:courses_course:manage members'
+  $permissions['node:courses_course:manage members'] = array(
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
+  );
+
+  // Exported og permission: 'node:courses_course:manage permissions'
+  $permissions['node:courses_course:manage permissions'] = array(
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
+  );
+
+  // Exported og permission: 'node:courses_course:manage roles'
+  $permissions['node:courses_course:manage roles'] = array(
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
+  );
+
   // Exported og permission: 'node:courses_course:moderate'
   $permissions['node:courses_course:moderate'] = array(
     'roles' => array(
       'course-administrator' => 'course-administrator',
+    ),
+  );
+
+  // Exported og permission: 'node:courses_course:subscribe'
+  $permissions['node:courses_course:subscribe'] = array(
+    'roles' => array(
+      'non-member' => 'non-member',
+    ),
+  );
+
+  // Exported og permission: 'node:courses_course:subscribe without approval'
+  $permissions['node:courses_course:subscribe without approval'] = array(
+    'roles' => array(
+      'non-member' => 'non-member',
+    ),
+  );
+
+  // Exported og permission: 'node:courses_course:unsubscribe'
+  $permissions['node:courses_course:unsubscribe'] = array(
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+      'member' => 'member',
     ),
   );
 
@@ -506,8 +563,22 @@ function nm_section_courses_features_og_features_default_permissions() {
     'roles' => array(),
   );
 
+  // Exported og permission: 'node:courses_group:add user'
+  $permissions['node:courses_group:add user'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
   // Exported og permission: 'node:courses_group:administer group'
   $permissions['node:courses_group:administer group'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:courses_group:approve and deny subscription'
+  $permissions['node:courses_group:approve and deny subscription'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
     ),
@@ -605,10 +676,53 @@ function nm_section_courses_features_og_features_default_permissions() {
     'roles' => array(),
   );
 
+  // Exported og permission: 'node:courses_group:manage members'
+  $permissions['node:courses_group:manage members'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:courses_group:manage permissions'
+  $permissions['node:courses_group:manage permissions'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:courses_group:manage roles'
+  $permissions['node:courses_group:manage roles'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+    ),
+  );
+
   // Exported og permission: 'node:courses_group:moderate'
   $permissions['node:courses_group:moderate'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
+    ),
+  );
+
+  // Exported og permission: 'node:courses_group:subscribe'
+  $permissions['node:courses_group:subscribe'] = array(
+    'roles' => array(
+      'non-member' => 'non-member',
+    ),
+  );
+
+  // Exported og permission: 'node:courses_group:subscribe without approval'
+  $permissions['node:courses_group:subscribe without approval'] = array(
+    'roles' => array(
+      'non-member' => 'non-member',
+    ),
+  );
+
+  // Exported og permission: 'node:courses_group:unsubscribe'
+  $permissions['node:courses_group:unsubscribe'] = array(
+    'roles' => array(
+      'administrator member' => 'administrator member',
+      'member' => 'member',
     ),
   );
 

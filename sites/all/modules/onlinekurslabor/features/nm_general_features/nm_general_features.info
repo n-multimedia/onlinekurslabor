@@ -185,6 +185,7 @@ features[variable][] = realname_pattern
 features[variable][] = site_403
 features[variable][] = site_404
 features[variable][] = site_default_country
+features[variable][] = site_frontpage
 features[variable][] = site_mail
 features[variable][] = site_name
 features[variable][] = site_slogan

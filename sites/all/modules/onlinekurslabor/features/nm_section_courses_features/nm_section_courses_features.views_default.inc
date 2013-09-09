@@ -1977,7 +1977,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['rid']['field'] = 'rid';
   $handler->display->display_options['filters']['rid']['relationship'] = 'uid';
   $handler->display->display_options['filters']['rid']['value'] = array(
-    4 => '4',
+    66784200 => '66784200',
   );
 
   /* Display: Content pane */
