@@ -19,7 +19,9 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:create courses_docs content'
   $permissions['node:courses_course:create courses_docs content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:create courses_generic_task content'
@@ -39,12 +41,16 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:create courses_group content'
   $permissions['node:courses_course:create courses_group content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:create courses_news content'
   $permissions['node:courses_course:create courses_news content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:create forum content'
@@ -57,7 +63,9 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:delete any courses_docs content'
   $permissions['node:courses_course:delete any courses_docs content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:delete any courses_generic_task content'
@@ -76,12 +84,16 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:delete any courses_group content'
   $permissions['node:courses_course:delete any courses_group content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:delete any courses_news content'
   $permissions['node:courses_course:delete any courses_news content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:delete any forum content'
@@ -93,7 +105,9 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:delete own courses_docs content'
   $permissions['node:courses_course:delete own courses_docs content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:delete own courses_generic_task content'
@@ -112,12 +126,16 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:delete own courses_group content'
   $permissions['node:courses_course:delete own courses_group content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:delete own courses_news content'
   $permissions['node:courses_course:delete own courses_news content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:delete own forum content'
@@ -136,7 +154,9 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:update any courses_docs content'
   $permissions['node:courses_course:update any courses_docs content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:update any courses_generic_task content'
@@ -155,12 +175,16 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:update any courses_group content'
   $permissions['node:courses_course:update any courses_group content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:update any courses_news content'
   $permissions['node:courses_course:update any courses_news content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:update any forum content'
@@ -296,7 +320,9 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:update own courses_docs content'
   $permissions['node:courses_course:update own courses_docs content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:update own courses_generic_task content'
@@ -316,12 +342,16 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:update own courses_group content'
   $permissions['node:courses_course:update own courses_group content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:update own courses_news content'
   $permissions['node:courses_course:update own courses_news content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'course-administrator' => 'course-administrator',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:update own forum content'
