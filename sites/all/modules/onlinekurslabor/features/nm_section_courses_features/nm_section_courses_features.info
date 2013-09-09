@@ -269,6 +269,7 @@ features[og_features_permission][] = node:courses_group:view og_group_ref field
 features[og_features_permission][] = node:courses_group:view taxonomy_forums field
 features[og_features_role][] = node:courses_course:course-administrator
 features[page_manager_handlers][] = user_view_panel_context
+features[page_manager_handlers][] = user_view_panel_context_2
 features[page_manager_pages][] = course_admin_add_member
 features[page_manager_pages][] = course_admin_settings
 features[page_manager_pages][] = course_groups_in_course
