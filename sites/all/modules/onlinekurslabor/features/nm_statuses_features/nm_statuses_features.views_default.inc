@@ -139,7 +139,8 @@ function nm_statuses_features_views_default_views() {
     <div class="statuses-details">
       <div class="statuses-links">[edit] [delete] [repost]</div> [created]
     </div>
-    <!-- meta -->[comment-box]
+    <!-- meta -->
+   [comment-box]
   </div>
 </div>';
   $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
@@ -194,7 +195,8 @@ function nm_statuses_features_views_default_views() {
     <div class="statuses-details">
       <div class="statuses-links">[edit] [delete] [repost]</div> [created]
     </div>
-    <!-- meta -->[comment-box]
+    <!-- meta -->
+   [comment-box]
   </div>
 </div>'),
     t('Block'),
