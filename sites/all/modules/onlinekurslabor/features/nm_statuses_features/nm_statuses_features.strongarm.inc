@@ -91,7 +91,7 @@ function nm_statuses_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'statuses_user_other_view';
-  $strongarm->value = 'statuses_stream';
+  $strongarm->value = 'onlinekurslabor_statuses_stream';
   $export['statuses_user_other_view'] = $strongarm;
 
   return $export;

@@ -46,4 +46,5 @@ features[variable][] = statuses_refresh
 features[variable][] = statuses_reply_type
 features[variable][] = statuses_tags_vid
 features[variable][] = statuses_user_other_view
+features[views_view][] = onlinekurslabor_statuses_stream
 features_exclude[dependencies][ctools] = ctools
