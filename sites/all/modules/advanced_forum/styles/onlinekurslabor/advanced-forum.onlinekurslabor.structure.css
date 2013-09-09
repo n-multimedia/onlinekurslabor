@@ -598,15 +598,19 @@ posts
     color: #0088cc;
     font-weight: bold;
 }
+.forum-post .forum-post-content, .forum-post .forum-post-title, .forum-post .post-edited{
+    
+    margin: 0;
+}
+
 .forum-post .forum-post-content {
     min-height: 230px;
     color: #333333;
+    margin-top: 10px;
+    padding-top:0;
 }
 
-.forum-post .forum-post-content, .forum-post .forum-post-title, .forum-post .post-edited{
-    
-    margin:0;
-}
+
 .forum-post .post-edited {
     padding:10px;
 }

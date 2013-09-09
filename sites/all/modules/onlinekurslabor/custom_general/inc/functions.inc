@@ -256,7 +256,7 @@ function _section_courses_course_get_num_unread_by_type($uid, $type, $nid = NULL
     global $user;
     $uid = $user->uid;
   }
-  
+
   if (empty($result_cache[$type][$nid])) {
     //get group's news entities
     //$query = db_select("node", "n");
@@ -356,13 +356,13 @@ function custom_general_get_task_solutions($tid, $uid) {
   if (!$result || !isset($result[$tid][$uid])) {
     $uid_tmp = arg(5);
     if (!empty($uid_tmp) && is_numeric($uid_tmp)) {
-      $user = user_load($uid_tmp);
-      if ($user) {
-        $uid = $user->uid;
+      $account = user_load($uid_tmp);
+      if ($account) {
+        $uid = $account->uid;
       }
     }
 
-    $user = user_load($uid);
+    $account = user_load($uid);
 
     /*
      * differentiate between single and group tasks
@@ -372,14 +372,18 @@ function custom_general_get_task_solutions($tid, $uid) {
 
     //0 single | 1 group
     //if group task and student
-    if ($task_type == 1 && in_array(NM_ROLE_STUDENT, $user->roles)) {
+    if ($task_type == 1 && in_array(NM_ROLE_STUDENT, $account->roles)) {
       //get course group
       $cg_gid = _section_courses_get_coursegroup_gid($uid);
 
       //get all group members
       $cg_members = custom_general_get_users_in_group($cg_gid);
 
-
+      //if user is not in a course group, fill array with his uid to get a solution
+      if (empty($cg_members)) {
+        $cg_members = array((object) array('uid' => $uid));
+      }
+      
       $solutions = array();
 
       // Loop through and load each user
