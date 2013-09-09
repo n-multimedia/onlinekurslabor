@@ -44,7 +44,6 @@ function onlinekurslabor_user_form_alter(&$form, &$form_state, $form_id) {
     // Or use profile2 API which is simpler
     profile2_attach_form($form, $form_state);
 
-
     if (isset($form['profile_master']))
       $form['profile_master']['#type'] = 'tab';
     if (isset($form['profile_student']))

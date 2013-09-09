@@ -8,6 +8,9 @@
  * Implements hook_ctools_plugin_api().
  */
 function nm_general_features_ctools_plugin_api($module = NULL, $api = NULL) {
+  if ($module == "context" && $api == "context") {
+    return array("version" => "3");
+  }
   if ($module == "ds" && $api == "ds") {
     return array("version" => "1");
   }
