@@ -30,8 +30,20 @@ function nm_section_content_features_filter_default_formats() {
         'status' => 1,
         'settings' => array(),
       ),
-      'htmlpurifier_advanced' => array(
+      'biblio_filter_reference' => array(
         'weight' => -42,
+        'status' => 1,
+        'settings' => array(),
+      ),
+      'filter_footnotes' => array(
+        'weight' => -41,
+        'status' => 1,
+        'settings' => array(
+          'footnotes_collapse' => 0,
+        ),
+      ),
+      'htmlpurifier_advanced' => array(
+        'weight' => -40,
         'status' => 1,
         'settings' => array(
           'htmlpurifier_help' => 1,
@@ -40,12 +52,12 @@ function nm_section_content_features_filter_default_formats() {
             'Attr.AllowedFrameTargets' => '',
             'Attr.AllowedRel' => '',
             'Attr.AllowedRev' => '',
-            'Attr.ClassUseCDATA' => 1,
+            'Null_Attr.ClassUseCDATA' => 1,
             'Null_Attr.DefaultImageAlt' => 1,
             'Attr.DefaultInvalidImage' => '',
             'Attr.DefaultInvalidImageAlt' => 'Invalid image',
             'Attr.DefaultTextDir' => 'ltr',
-            'Attr.EnableID' => 0,
+            'Attr.EnableID' => 1,
             'Attr.ForbiddenClasses' => '',
             'Attr.IDBlacklist' => '',
             'Null_Attr.IDBlacklistRegexp' => 1,
@@ -181,18 +193,13 @@ news',
           ),
         ),
       ),
-      'biblio_filter_reference' => array(
-        'weight' => -41,
-        'status' => 1,
-        'settings' => array(),
-      ),
       'filter_content_tasks' => array(
-        'weight' => -39,
+        'weight' => -38,
         'status' => 1,
         'settings' => array(),
       ),
       'media_filter' => array(
-        'weight' => -38,
+        'weight' => -37,
         'status' => 1,
         'settings' => array(),
       ),

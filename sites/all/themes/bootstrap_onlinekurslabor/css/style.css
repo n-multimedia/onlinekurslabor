@@ -21,6 +21,37 @@ CONTENT IMAGES FLOAT
 }
 
 /*
+Panels reset - homepage
+*/
+
+.panels-flexible-region-inside {
+  padding:0;
+}
+
+
+/*
+HOME PAGE HOMEPAGE
+*/
+
+.home-layout-container {
+  margin-top:30px;
+}
+
+.home-layout-container h3 {
+  margin:0;
+  margin-bottom:5px;
+}
+
+.home-layout-container h2 {
+  margin-top:0;
+  margin-bottom:30px;
+}
+
+.okl-home-container {
+  background-image: url(../images/homepage/background-onlinekurslabor.jpg);
+}
+
+/*
 admin menu bar is not high enough to dock to the top navbar - fix
 */
 /*

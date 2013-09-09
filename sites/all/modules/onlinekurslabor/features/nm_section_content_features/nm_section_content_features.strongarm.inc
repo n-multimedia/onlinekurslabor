@@ -193,7 +193,7 @@ function nm_section_content_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'biblio_footnotes_integration';
-  $strongarm->value = 0;
+  $strongarm->value = 1;
   $export['biblio_footnotes_integration'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -342,7 +342,7 @@ function nm_section_content_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'biblio_orphan_clean_next_execution';
-  $strongarm->value = 1378483207;
+  $strongarm->value = 1378742410;
   $export['biblio_orphan_clean_next_execution'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -384,7 +384,7 @@ function nm_section_content_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'biblio_settings__active_tab';
-  $strongarm->value = 'edit-style';
+  $strongarm->value = 'edit-footnotes';
   $export['biblio_settings__active_tab'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -990,6 +990,9 @@ function nm_section_content_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
+      'media_600px' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -1035,6 +1038,10 @@ function nm_section_content_features_strongarm() {
             'visible' => TRUE,
           ),
           'media_4' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'media_600px' => array(
             'weight' => '0',
             'visible' => TRUE,
           ),

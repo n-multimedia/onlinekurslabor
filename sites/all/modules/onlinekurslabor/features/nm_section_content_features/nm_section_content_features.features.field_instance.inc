@@ -525,6 +525,12 @@ function nm_section_content_features_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 2,
       ),
+      'media_600px' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
       'preview' => array(
         'label' => 'above',
         'settings' => array(),
@@ -613,6 +619,12 @@ function nm_section_content_features_field_default_field_instances() {
         'weight' => 3,
       ),
       'media_12' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+      'media_600px' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -707,6 +719,12 @@ function nm_section_content_features_field_default_field_instances() {
         'weight' => 1,
       ),
       'media_12' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
+      'media_600px' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',

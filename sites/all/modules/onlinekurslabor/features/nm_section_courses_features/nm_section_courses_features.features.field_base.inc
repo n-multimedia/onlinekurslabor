@@ -253,8 +253,9 @@ function nm_section_courses_features_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
-        'male' => 'Männlich',
         'female' => 'Weiblich',
+        'male' => 'Männlich',
+        'fa' => 'freiwillige Angabe',
       ),
       'allowed_values_function' => '',
       'profile2_private' => 0,

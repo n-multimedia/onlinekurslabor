@@ -245,3 +245,25 @@ function bootstrap_onlinekurslabor_menu_link(array $variables) {
   $output = l($element['#title'], $element['#href'], $element['#localized_options']);
   return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
 }
+
+function bootstrap_onlinekurslabor_theme(&$existing, $type, $theme, $path) {
+  // If we are auto-rebuilding the theme registry, warn about the feature.
+  return array(
+    'nm_fancy_box' => array(
+      'variables' => array(
+        'image' => NULL,
+        'description' => NULL,
+        'middle' => NULL,
+        'bottom' => NULL
+      ),
+      'template' => 'nm_fancy_box',
+      'path' => drupal_get_path('theme', 'bootstrap_onlinekurslabor') . '/templates/onlinekurslabor'
+    )
+  );
+}
+
+function bootstrap_onlinekurslabor_preprocess_html(&$vars) {
+  if (drupal_is_front_page()) {
+    $vars['classes_array'][] = 'okl-home-container';
+  }
+}
