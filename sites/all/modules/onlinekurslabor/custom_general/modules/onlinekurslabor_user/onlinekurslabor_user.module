@@ -8,17 +8,15 @@
 
 function onlinekurslabor_user_form_alter(&$form, &$form_state, $form_id) {
 
-
   if ($form_id == 'user_profile_form') {
 
+    return;
     if (isset($form_state['user'])) {
       $user = $form_state['user'];
     }
     else {
       return FALSE;
     }
-    
-    
 
     if (!isset($form_state['profiles'])) {
 
@@ -44,16 +42,14 @@ function onlinekurslabor_user_form_alter(&$form, &$form_state, $form_id) {
         $form_state['profiles'][$profile->type] = $profile;
       }
     }
-    
-    
     // Or use profile2 API which is simpler
     profile2_attach_form($form, $form_state);
 
-    
+    /*
     if (isset($form['profile_master']))
       $form['profile_master']['#type'] = 'tab';
     if (isset($form['profile_student']))
-      $form['profile_student']['#type'] = 'tab';
+      $form['profile_student']['#type'] = 'tab';*/
   }
 }
 
