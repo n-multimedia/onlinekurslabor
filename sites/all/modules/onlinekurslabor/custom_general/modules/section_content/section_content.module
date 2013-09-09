@@ -512,7 +512,7 @@ function section_content_node_form_delete_submit($form, &$form_state) {
 function section_content_subscribe_submit($form, &$form_state) {
 
   //todo fix - ugly
-  $form_state['redirect'] = 'domains';
+  //$form_state['redirect'] = 'domains';
 }
 
 function section_content_node_form_submit($form, &$form_state) {

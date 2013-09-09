@@ -34,6 +34,7 @@ features[user_permission][] = use PHP for context visibility
 features[user_permission][] = view all status comments
 features[user_permission][] = view all statuses
 features[user_permission][] = view own status comments
+features[variable][] = context_status
 features[variable][] = statuses_ahah
 features[variable][] = statuses_box_rows
 features[variable][] = statuses_default_text
