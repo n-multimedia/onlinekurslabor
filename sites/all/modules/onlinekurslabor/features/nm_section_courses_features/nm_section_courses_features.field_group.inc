@@ -169,13 +169,12 @@ function nm_section_courses_features_field_group_info() {
     'children' => array(
       0 => 'account',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'formatter' => 'closed',
       'instance_settings' => array(
         'description' => '',
-        'classes' => ' group-user-account-tab field-group-fieldset',
-        'required_fields' => 1,
+        'classes' => '',
       ),
     ),
   );
@@ -196,13 +195,12 @@ function nm_section_courses_features_field_group_info() {
     'children' => array(
       0 => 'profile_master',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'formatter' => 'closed',
       'instance_settings' => array(
         'description' => '',
-        'classes' => ' group-user-master-tab field-group-fieldset',
-        'required_fields' => 1,
+        'classes' => '',
       ),
     ),
   );
@@ -257,13 +255,12 @@ function nm_section_courses_features_field_group_info() {
       4 => 'wysiwyg',
       5 => 'biblio_fieldset',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'tab',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'formatter' => 'closed',
       'instance_settings' => array(
         'description' => '',
-        'classes' => ' group-user-settings-tab field-group-fieldset',
-        'required_fields' => 1,
+        'classes' => '',
       ),
     ),
   );
@@ -316,8 +313,7 @@ function nm_section_courses_features_field_group_info() {
       'formatter' => 'closed',
       'instance_settings' => array(
         'description' => '',
-        'classes' => ' group-user-student-tab field-group-tab',
-        'required_fields' => 1,
+        'classes' => '',
       ),
     ),
   );
@@ -345,7 +341,7 @@ function nm_section_courses_features_field_group_info() {
     'format_settings' => array(
       'formatter' => '',
       'instance_settings' => array(
-        'classes' => ' group-user-tabs field-group-tabs',
+        'classes' => '',
       ),
     ),
   );

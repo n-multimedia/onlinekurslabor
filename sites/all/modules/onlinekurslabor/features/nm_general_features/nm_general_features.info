@@ -23,6 +23,7 @@ dependencies[] = relation
 dependencies[] = role_export
 dependencies[] = rules
 dependencies[] = taxonomy
+dependencies[] = workflow
 features[context][] = roles_hide_actions
 features[ctools][] = context:context:3
 features[ctools][] = ds:ds:1

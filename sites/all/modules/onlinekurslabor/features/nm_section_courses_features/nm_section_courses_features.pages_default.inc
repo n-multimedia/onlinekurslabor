@@ -1108,7 +1108,7 @@ function nm_section_courses_features_default_page_manager_pages() {
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible';
+  $display->layout = 'flexible:span8span4';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -1159,6 +1159,7 @@ function nm_section_courses_features_default_page_manager_pages() {
       'default' => NULL,
       'center' => NULL,
       'tools' => NULL,
+      'news' => NULL,
     ),
   );
   $display->cache = array();
@@ -1167,7 +1168,7 @@ function nm_section_courses_features_default_page_manager_pages() {
   $display->panels = array();
     $pane = new stdClass();
     $pane->pid = 'new-5';
-    $pane->panel = 'center';
+    $pane->panel = 'news';
     $pane->type = 'block';
     $pane->subtype = 'statuses-statuses';
     $pane->shown = TRUE;
@@ -1185,7 +1186,7 @@ function nm_section_courses_features_default_page_manager_pages() {
     $pane->position = 0;
     $pane->locks = array();
     $display->content['new-5'] = $pane;
-    $display->panels['center'][0] = 'new-5';
+    $display->panels['news'][0] = 'new-5';
     $pane = new stdClass();
     $pane->pid = 'new-6';
     $pane->panel = 'tools';
