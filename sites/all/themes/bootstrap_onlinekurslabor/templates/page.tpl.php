@@ -99,6 +99,7 @@
       <a href="http://www.uni-augsburg.de/projekte/bildung-durch-verantwortung" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logo_bdv.png" /></a>
       <a href="http://www.imb-uni-augsburg.de/medienlabor/team" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logo_ml.png" /></a>
     </div>
+    <?php print render($page['footer']); ?>
   </div>
-  <?php print render($page['footer']); ?>
+  
 </footer>
