@@ -8,20 +8,46 @@
  */
 function _section_courses_node_tabs_view() {
 
-  $block = "";
+  $block = '';
+
+  /* refactor this
+   * rename function could also be possible
+   */
+  
+  /*
+   * user controls
+   */
+  if (arg(0) == 'user' && is_numeric(arg(1))) {
+    $nav_items_single = array();
+    $nav_items_single['edit'] = "Profil bearbeiten";
+
+    $path = 'user/' . arg(1) . '/edit';
+    if (drupal_valid_path($path)) {
+      $block .= l($nav_items_single['edit'], $path);
+    }
+    return $block;
+    
+  }
+  
+  /*
+   * node controls
+   */
+
   if (section_courses_instructors_tools_access()) {
     $nav_items_single = array();
     $nav_items_single['overview'] = "Ansicht";
-    $nav_items_single['course'] = "Bearbeiten";
+    $nav_items_single['edit'] = "Bearbeiten";
 
     $single_links = array();
 
     $group = _section_courses_get_active_course();
 
-    foreach ($nav_items_single as $si) {
-      $text_link = _section_courses_navtext_to_link($group, $si);
-      if ($si != $text_link['link']) {
-        $single_links[] = array('link' => $text_link['link']);
+    if ($group) {
+      foreach ($nav_items_single as $si) {
+        $text_link = _section_courses_navtext_to_link($group, $si);
+        if ($si != $text_link['link']) {
+          $single_links[] = array('link' => $text_link['link']);
+        }
       }
     }
 
@@ -50,22 +76,65 @@ function _course_header_section_view() {
     $output = "";
     $output .= '<div id="course_header" class="row-fluid">';
     $output .= '<div class="span12">';
-    $output .= '<div id="course_header_title">';
-    
 
-    if(section_courses_demo_mode()) {
-       $output .=  '<div class="alert alert-info"><h5>' . NM_COURSE_DEMO_LABEL . '</h5>';
-       $output .=  '<p>Im Demo-Modus haben Sie ausschließlich Zugriff auf den Lehrtext und die allgemeinen Kursinformationen.</p> ';
-       $output .=  '<p>Melden Sie sich am Kurs an, um weitere Werkzeuge freizuschalten.</p></div> ';
+    if (section_courses_demo_mode()) {
+      $output .= '<div id="course_demo_info" class="alert alert-info"><h5>' . NM_COURSE_DEMO_LABEL . '</h5>';
+      $output .= '<p>Im Demo-Modus haben Sie ausschließlich Zugriff auf den Lehrtext und die allgemeinen Kursinformationen.</p> ';
+      $output .= '<p>Melden Sie sich am Kurs an, um weitere Werkzeuge freizuschalten.</p></div> ';
     }
-    
+
+    $sponsors_out = '';
+    $sponsors_tids = field_get_items('node', $active_course, 'field_field_courses_sponsors');
+    if ($sponsors_tids) {
+      $count_sponsors = 0;
+      //simulate more
+      /*
+        $tt = array_pop($sponsors_tids);
+        $sponsors_tids[] = $tt;
+        $sponsors_tids[] = $tt;
+        $sponsors_tids[] = $tt;
+        $sponsors_tids[] = $tt;
+        $sponsors_tids[] = $tt;
+       */
+
+      $output .= '<div class="courses_sponsors_cols">';
+      foreach (($sponsors_tids) as $tid_array) {
+        $term = taxonomy_term_load($tid_array['tid']);
+        $url = $term->field_sponsors_url[LANGUAGE_NONE][0]['value'];
+
+        $field_view = field_view_field('taxonomy_term', $term, 'field_sponsors_image', array('settings' => array('image_style' => 'course_sponsor_logo')));
+
+        $field_view['#label_display'] = 'hidden';
+        $sponsor_img = drupal_render($field_view);
+
+        $sponsors_out .= l($sponsor_img, $url, array('html' => TRUE, 'target' => '_blank', 'attributes' => array('target' => '_blank')));
+
+        $count_sponsors++;
+
+        //new row every %1 logos
+        if ($count_sponsors % 4 == 0 && $count_sponsors < count($sponsors_tids)) {
+          $output .= '<div class="courses_sponsors_col">';
+          $sponsors_out = '<div class="courses_sponsors">' . $sponsors_out . '</div>';
+          $output .= $sponsors_out;
+          $sponsors_out = "";
+          $output .= '</div>';
+        }
+      }
+      $output .= '<div class="courses_sponsors_col">';
+      $sponsors_out = '<div class="courses_sponsors">' . $sponsors_out . '</div>';
+      $output .= $sponsors_out;
+      $output .= '</div>';
+
+      $output .= '</div>';
+    }
+
+    $output .= '<div id="course_header_title">';
     $output .= '<h1>';
     $output .= $active_course->title;
     $output .= '</h1>';
-    
+
     $output .= '</div>';
-   
-    
+
     //header here
     $header_pic = '';
     if (isset($active_course->field_course_header)) {
@@ -93,14 +162,24 @@ function _course_header_section_view() {
  * 
  * return boolean
  */
-function section_courses_demo_mode(){
-  
-  $active_course = _section_courses_get_active_course();
 
-  if ($active_course && !drupal_valid_path(NM_COURSE_HOME_PATH.'/'.$active_course->nid)) {
-    return TRUE;
+function section_courses_demo_mode($nid = 0) {
+
+  if ($nid) {
+    $active_course = node_load($nid);
+    if ($active_course && !drupal_valid_path(NM_COURSE_HOME_PATH . '/' . $active_course->nid)) {
+      return TRUE;
+    }
   }
-  
+  else {
+    $active_course = _section_courses_get_active_course();
+
+    if ($active_course && !drupal_valid_path(NM_COURSE_HOME_PATH . '/' . $active_course->nid)) {
+      return TRUE;
+    }
+  }
+
+
   return FALSE;
 }
 

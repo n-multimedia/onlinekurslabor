@@ -77,16 +77,6 @@ function nm_general_features_user_default_permissions() {
     'module' => 'dashboard',
   );
 
-  // Exported permission: 'access devel information'.
-  $permissions['access devel information'] = array(
-    'name' => 'access devel information',
-    'roles' => array(
-      'administrator' => 'administrator',
-      'authenticated user' => 'authenticated user',
-    ),
-    'module' => 'devel',
-  );
-
   // Exported permission: 'access overlay'.
   $permissions['access overlay'] = array(
     'name' => 'access overlay',
@@ -137,6 +127,7 @@ function nm_general_features_user_default_permissions() {
     'name' => 'access user profiles',
     'roles' => array(
       'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
     ),
     'module' => 'user',
   );
@@ -519,15 +510,6 @@ function nm_general_features_user_default_permissions() {
     'module' => 'workflow_extensions',
   );
 
-  // Exported permission: 'execute php code'.
-  $permissions['execute php code'] = array(
-    'name' => 'execute php code',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'devel',
-  );
-
   // Exported permission: 'export relation types'.
   $permissions['export relation types'] = array(
     'name' => 'export relation types',
@@ -617,15 +599,6 @@ function nm_general_features_user_default_permissions() {
     'module' => 'comment',
   );
 
-  // Exported permission: 'switch users'.
-  $permissions['switch users'] = array(
-    'name' => 'switch users',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'devel',
-  );
-
   // Exported permission: 'use PHP for settings'.
   $permissions['use PHP for settings'] = array(
     'name' => 'use PHP for settings',
@@ -651,15 +624,6 @@ function nm_general_features_user_default_permissions() {
       'authenticated user' => 'authenticated user',
     ),
     'module' => 'profile2',
-  );
-
-  // Exported permission: 'view devel_node_access information'.
-  $permissions['view devel_node_access information'] = array(
-    'name' => 'view devel_node_access information',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'devel_node_access',
   );
 
   // Exported permission: 'view own master profile'.

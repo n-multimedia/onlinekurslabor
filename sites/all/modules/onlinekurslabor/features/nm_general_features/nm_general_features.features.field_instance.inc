@@ -103,7 +103,7 @@ function nm_general_features_field_default_field_instances() {
     'bundle' => 'master',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Beschreiben Sie sich und Themen, die Sie besonders interessieren.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -192,7 +192,7 @@ function nm_general_features_field_default_field_instances() {
     'label' => 'Geburtstag',
     'required' => 0,
     'settings' => array(
-      'default_value' => 'now',
+      'default_value' => 'blank',
       'default_value2' => 'same',
       'default_value_code' => '',
       'default_value_code2' => '',
@@ -205,12 +205,14 @@ function nm_general_features_field_default_field_instances() {
         'increment' => 15,
         'input_format' => 'custom',
         'input_format_custom' => 'd.m.Y',
-        'label_position' => 'above',
+        'label_position' => 'within',
         'multiple_value_widget' => 'table',
-        'text_parts' => array(),
-        'year_range' => '-3:+3',
+        'text_parts' => array(
+          0 => 'year',
+        ),
+        'year_range' => '1920:+0',
       ),
-      'type' => 'date_text',
+      'type' => 'date_select',
       'weight' => 4,
     ),
   );
@@ -289,7 +291,7 @@ function nm_general_features_field_default_field_instances() {
     'bundle' => 'master',
     'default_value' => array(
       0 => array(
-        'value' => 'not_set',
+        'value' => 'fa',
       ),
     ),
     'deleted' => 0,
@@ -306,7 +308,7 @@ function nm_general_features_field_default_field_instances() {
     'entity_type' => 'profile2',
     'field_name' => 'field_gender',
     'label' => 'Geschlecht',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -316,7 +318,7 @@ function nm_general_features_field_default_field_instances() {
       'settings' => array(
         'multiple_value_widget' => 'table',
       ),
-      'type' => 'options_buttons',
+      'type' => 'options_select',
       'weight' => 0,
     ),
   );
@@ -416,7 +418,7 @@ function nm_general_features_field_default_field_instances() {
       'default_image' => 184,
       'file_directory' => 'profile',
       'file_extensions' => 'png gif jpg jpeg',
-      'max_filesize' => '2 MB',
+      'max_filesize' => '3 MB',
       'max_resolution' => '1024x1024',
       'min_resolution' => '',
       'title_field' => 0,
@@ -437,6 +439,7 @@ function nm_general_features_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Beschreiben Sie sich und Themen, die Sie besonders interessieren.');
   t('Body');
   t('Foto');
   t('Geburtstag');

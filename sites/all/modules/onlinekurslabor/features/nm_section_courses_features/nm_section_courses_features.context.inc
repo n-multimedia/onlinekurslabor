@@ -30,7 +30,7 @@ function nm_section_courses_features_context_default_contexts() {
   );
   $context->reactions = array(
     'context_redirect' => array(
-      'redirect_path' => 'domains',
+      'redirect_path' => 'courses',
       'enable_message' => 0,
       'redirect_message' => '',
       'qsa' => 1,
@@ -59,11 +59,7 @@ function nm_section_courses_features_context_default_contexts() {
       ),
     ),
   );
-  $context->reactions = array(
-    'debug' => array(
-      'debug' => 1,
-    ),
-  );
+  $context->reactions = array();
   $context->condition_mode = 1;
 
   // Translatables
@@ -83,20 +79,8 @@ function nm_section_courses_features_context_default_contexts() {
         'section_courses' => 'section_courses',
       ),
     ),
-    'context_og_condition_member_status' => array(
-      'values' => array(
-        1 => 1,
-      ),
-      'options' => array(
-        'node_form' => 1,
-      ),
-    ),
   );
-  $context->reactions = array(
-    'debug' => array(
-      'debug' => 1,
-    ),
-  );
+  $context->reactions = array();
   $context->condition_mode = 1;
 
   // Translatables
@@ -123,11 +107,7 @@ function nm_section_courses_features_context_default_contexts() {
       ),
     ),
   );
-  $context->reactions = array(
-    'debug' => array(
-      'debug' => 1,
-    ),
-  );
+  $context->reactions = array();
   $context->condition_mode = 1;
 
   // Translatables
@@ -147,11 +127,6 @@ function nm_section_courses_features_context_default_contexts() {
         'section_courses_course' => 'section_courses_course',
       ),
     ),
-    'user' => array(
-      'values' => array(
-        'authenticated user' => 'authenticated user',
-      ),
-    ),
   );
   $context->reactions = array(
     'block' => array(
@@ -169,9 +144,6 @@ function nm_section_courses_features_context_default_contexts() {
           'weight' => '-9',
         ),
       ),
-    ),
-    'debug' => array(
-      'debug' => 1,
     ),
   );
   $context->condition_mode = 1;

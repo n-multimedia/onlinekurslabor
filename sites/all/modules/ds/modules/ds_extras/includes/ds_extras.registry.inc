@@ -81,6 +81,14 @@ function _ds_extras_theme_registry_alter(&$theme_registry) {
   if (variable_get('ds_extras_hide_page_title', FALSE)) {
     $theme_registry['page']['process functions'][] = 'ds_extras_process_page_title';
   }
+
+  // Remove ds_preprocess_field in case field templates is not enabled.
+  if (!variable_get('ds_extras_field_template', FALSE)) {
+    $key = array_search('ds_extras_preprocess_field', $theme_registry['field']['preprocess functions']);
+    if (!empty($key)) {
+      unset($theme_registry['field']['preprocess functions'][$key]);
+    }
+  }
 }
 
 /**

@@ -64,14 +64,14 @@
         $(this).parents('form').find('.fbss-comments-submit').show();
       });
       // Enable the save button if there is text in the textarea.
-      ctxt.find('.fbss-comments-textarea').keypress(function(key){
+      ctxt.find('.fbss-comments-textarea').bind('input', function(key){
         var th = $(this);
         setTimeout(function(){
           if (th.val().length > 0) {
-            th.parents('form').find('input').attr('disabled', false);
+            th.parents('form').find('button').attr('disabled', false);
           }
           else {
-            th.parents('form').find('input').attr('disabled', true);
+            th.parents('form').find('button').attr('disabled', true);
           }
         }, 10);
       });

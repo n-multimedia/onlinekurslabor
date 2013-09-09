@@ -1,0 +1,87 @@
+/* 
+    Document   : nm_fancy_box
+    Created on : 08.09.2013, 22:22:03
+    Author     : Nm
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.column-region {
+  margin-top:20px;
+}
+.panels-flexible-region-home-layout-container-left {
+  font-size:14px;
+  line-height:1.5em;
+}
+.panels-flexible-region-home-layout-container-left .nm_fancy_box_bottom a {
+  display:inline;
+}
+
+.nm_fancy_box_container{
+  position:relative;
+}
+.nm_fancy_box_container:hover{
+  background-color: #333;
+  opacity:0.95;
+  transition: 0.4s;
+}
+.nm_fancy_box_top{
+  position:relative;
+  width:100%;
+}
+
+.nm_fancy_box_top_image{
+
+}
+
+.nm_fancy_box_top_desc{
+  background-color:#333;
+  position:absolute;
+  color:#fff;
+  font-size:18px;
+  padding:15px;
+  opacity:0.9;
+  bottom:0px;
+}
+
+.nm_fancy_box_midddle{
+  background-color: #ccc;
+  margin-top:5px;
+  margin-bottom: 5px;
+  padding:15px 15px 15px 25px;
+  line-height:1.5em;
+  position:relative;
+}
+.nm_fancy_box_midddle_icon{
+  background-image: url(../images/icons/hackchen.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  position:absolute;
+  width:20px;
+  height:21px;
+  left:-15px;
+  top:0;
+  background-color: #ccc;
+  padding:7px;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+
+}
+
+.nm_fancy_box_bottom a{
+  background-color: #467DBD;
+  padding: 15px 20px 15px 50px;
+  color: #fff;
+  font-weight:bold;
+  display:block;
+  background-image: url(../images/icons/pfeil.gif);
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: 20px;
+}
+
+.nm_fancy_box_bottom a:hover{
+  background-color: #426DA0 ;
+  transition:0.4s;
+
+}

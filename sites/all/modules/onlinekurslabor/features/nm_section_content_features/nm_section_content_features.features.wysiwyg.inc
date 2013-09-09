@@ -35,14 +35,17 @@ function nm_section_content_features_wysiwyg_default_profiles() {
           'Link' => 1,
           'Unlink' => 1,
           'Image' => 1,
-          'Source' => 1,
+          'Blockquote' => 1,
           'PasteFromWord' => 1,
           'RemoveFormat' => 1,
-          'Format' => 1,
+          'Styles' => 1,
           'Table' => 1,
         ),
         'custom_general_plugin' => array(
           'biblio_button' => 1,
+        ),
+        'footnotes' => array(
+          'footnotes' => 1,
         ),
         'section_content_task_plugin' => array(
           'tasks_button' => 1,
@@ -61,7 +64,7 @@ function nm_section_content_features_wysiwyg_default_profiles() {
       'remove_linebreaks' => 1,
       'apply_source_formatting' => 0,
       'paste_auto_cleanup_on_paste' => 0,
-      'block_formats' => 'p,address,pre,h2,h3,h4,h5,h6,div',
+      'block_formats' => 'p,h2,h3,h4,h5,h6,div,address,pre',
       'css_setting' => 'theme',
       'css_path' => '',
       'css_classes' => '',

@@ -172,35 +172,73 @@ function _custom_general_get_node_type($nid) {
  */
 function _section_courses_advanced_forum_get_num_unread($uid, $tid) {
   static $result_cache = NULL;
+
   $num_total = 0;
 
+  //sum up
+  $child_forums = array_keys(taxonomy_get_children($tid));
 
   if (is_null($result_cache)) {
     $result_cache = array();
 
+    //comments
     $query = db_select("comment", "c");
     $f_alias = $query->join("forum", "f", "c.nid = f.nid");
     //$n_alias = $query->join("node", "n", "f.vid = n.vid");
     $h_alias = $query->leftJoin("history", "h", "c.nid = h.nid AND h.uid = :uid", array(":uid" => $uid));
-    $query->addExpression("COUNT(c.cid)", "count");
+    $query->addExpression("COUNT(DISTINCT(c.cid))", "count");
     $query->addField($f_alias, "tid");
 
     //forum name here...
-    $query->condition("c.status", COMMENT_PUBLISHED)
-        //fid
-        ->condition("c.changed", NODE_NEW_LIMIT, ">")
+    $query->condition("c.status", COMMENT_PUBLISHED);
+    //fid
+    if (!empty($child_forums)) {
+      $query->condition("f.tid", $child_forums, 'IN');
+    }
+    $query->condition("c.changed", NODE_NEW_LIMIT, ">")
         ->condition(db_or()->where("c.changed > {$h_alias}.timestamp")->isNull("h.timestamp"))
+        ->groupBy("{$f_alias}.tid");
+    //->addTag("node_access");
+
+    $result = $query->execute();
+
+    foreach ($result as $row) {
+      $result_cache[$row->tid] = $row->count;
+    }
+
+
+    //topics
+    $query = db_select("node", "n");
+    $f_alias = $query->join("forum", "f", "n.nid = f.nid");
+    //$n_alias = $query->join("node", "n", "f.vid = n.vid");
+    $h_alias = $query->leftJoin("history", "h", "n.nid = h.nid AND h.uid = :uid", array(":uid" => $uid));
+    $query->addExpression("COUNT(DISTINCT(n.nid))", "count");
+    $query->addField($f_alias, "tid");
+
+    //forum name here...
+    $query->condition("n.status", NODE_PUBLISHED);
+    //fid
+    if (!empty($child_forums)) {
+      $query->condition("f.tid", $child_forums, 'IN');
+    }
+
+    $query->condition("n.changed", NODE_NEW_LIMIT, ">")
+        ->condition(db_or()->where("n.changed > {$h_alias}.timestamp")->isNull("{$h_alias}.timestamp"))
         ->groupBy("{$f_alias}.tid")
         ->addTag("node_access");
 
     $result = $query->execute();
+
+    //sum up
     foreach ($result as $row) {
-      $result_cache[$row->tid] = $row->count;
+      if (isset($result_cache[$row->tid])) {
+        $result_cache[$row->tid] += $row->count;
+      }
+      else {
+        $result_cache[$row->tid] = $row->count;
+      }
     }
   }
-
-  //sum up
-  $child_forums = array_keys(taxonomy_get_children($tid));
 
   foreach ($result_cache as $key => $row) {
     if (in_array($key, $child_forums)) {
@@ -219,12 +257,12 @@ function _section_courses_course_get_num_unread_by_type($uid, $type, $nid = NULL
     $uid = $user->uid;
   }
 
-  if (empty($result_cache[$type]) || $nid != NULL) {
+  if (empty($result_cache[$type][$nid])) {
     //get group's news entities
     //$query = db_select("node", "n");
     $active_course = _section_courses_get_active_course();
     if (!$active_course)
-      return $result_cache;
+      return $result_cache[$type][$nid];
     $query = db_select("og_membership", "ogm");
     $query->condition("ogm.gid", $active_course->nid, "=");
     //$query->fields("ogm", array("entity_type", "etid"));
@@ -252,10 +290,10 @@ function _section_courses_course_get_num_unread_by_type($uid, $type, $nid = NULL
     $result = $query->execute();
 
     //dpm($result->fetchAll());
-    $result_cache[$type] = current($result->fetchAll())->count;
+    $result_cache[$type][$nid] = current($result->fetchAll())->count;
   }
 
-  return $result_cache[$type];
+  return $result_cache[$type][$nid];
 
   //check history entries for every entity found
   //return unread
@@ -318,13 +356,13 @@ function custom_general_get_task_solutions($tid, $uid) {
   if (!$result || !isset($result[$tid][$uid])) {
     $uid_tmp = arg(5);
     if (!empty($uid_tmp) && is_numeric($uid_tmp)) {
-      $user = user_load($uid_tmp);
-      if ($user) {
-        $uid = $user->uid;
+      $account = user_load($uid_tmp);
+      if ($account) {
+        $uid = $account->uid;
       }
     }
 
-    $user = user_load($uid);
+    $account = user_load($uid);
 
     /*
      * differentiate between single and group tasks
@@ -334,26 +372,30 @@ function custom_general_get_task_solutions($tid, $uid) {
 
     //0 single | 1 group
     //if group task and student
-    if ($task_type == 1 && in_array(NM_ROLE_STUDENT, $user->roles)) {
+    if ($task_type == 1 && in_array(NM_ROLE_STUDENT, $account->roles)) {
       //get course group
       $cg_gid = _section_courses_get_coursegroup_gid($uid);
 
       //get all group members
       $cg_members = custom_general_get_users_in_group($cg_gid);
 
-
+      //if user is not in a course group, fill array with his uid to get a solution
+      if (empty($cg_members)) {
+        $cg_members = array((object) array('uid' => $uid));
+      }
+      
       $solutions = array();
 
       // Loop through and load each user
       foreach ($cg_members AS $member) {
         // Load the user object if necessary
-        $user = user_load($member->uid);
+        $account = user_load($member->uid);
 
-        if (!in_array(NM_ROLE_STUDENT, $user->roles))
+        if (!in_array(NM_ROLE_STUDENT, $account->roles))
           continue;
 
         // Do whatever else you need to
-        $tmp_sol = custom_general_get_task_solutions_by_uid($tid, $user->uid);
+        $tmp_sol = custom_general_get_task_solutions_by_uid($tid, $account->uid);
 
         if ($tmp_sol) {
           $solutions[] = $tmp_sol;

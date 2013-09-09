@@ -1,0 +1,22 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the Node Revision module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function cck_multiple_field_remove_install() {
+  // Ensure the blog node type is available.
+  node_types_rebuild();
+  $types = node_type_get_types();
+  variable_set('cck_multiple_field_remove_field_name', null);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function cck_multiple_field_remove_uninstall() {
+  variable_del('cck_multiple_field_remove_field_name');
+}

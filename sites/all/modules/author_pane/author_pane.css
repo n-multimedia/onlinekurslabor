@@ -1,0 +1,64 @@
+
+/* POSITIONING **************************************************************/
+.author-pane-section {
+  margin-bottom: 10px;
+}
+
+.author-pane-line {
+  padding-bottom: 5px;
+}
+
+.author-pane .picture {
+  float: none;
+  padding-left: 0px;
+  margin-bottom: 10px;
+}
+
+/* IMAGES ******************************************************************/
+.author-online {
+  background: transparent url(images/user-online.png) no-repeat;
+  padding-left: 20px;
+  height: 20px;
+  width: 200px;
+  display: block;
+}
+
+.author-offline {
+  background: transparent url(images/user-offline.png) no-repeat;
+  padding-left: 20px;
+  height: 20px;
+  width: 200px;
+  display: block;
+}
+
+.author-email-icon {
+  background: transparent url(images/contact.png) no-repeat;
+  padding-left: 26px;
+  height: 20px;
+  width: 200px;
+  display: block;
+}
+
+.author-privatemsg-icon {
+  background: transparent url(images/private-message.png) no-repeat;
+  padding-left: 26px;
+  height: 20px;
+  width: 200px;
+  display: block;
+}
+
+.author-relationship-add-icon {
+  background: transparent url(images/buddy-add.png) no-repeat;
+  padding-left: 26px;
+  height: 20px;
+  width: 200px;
+  display: block;
+}
+
+.author-relationship-remove-icon {
+  background: transparent url(images/buddy-remove.png) no-repeat;
+  padding-left: 26px;
+  height: 20px;
+  width: 100px;
+  display: block;
+}

@@ -39,6 +39,7 @@
   </div>
 </header>
 
+
 <div class="main-container container">
 
   <header role="banner" id="page-header">
@@ -61,25 +62,27 @@
       <?php if (!empty($page['highlighted'])): ?>
         <div class="highlighted hero-unit"><?php print render($page['highlighted']); ?></div>
       <?php endif; ?>
-        
-      <?php /*if (!empty($breadcrumb)): print $breadcrumb; endif;*/ ?>
+
+      <?php /* if (!empty($breadcrumb)): print $breadcrumb; endif; */ ?>
       <a id="main-content"></a>
-      <?php print render($title_prefix); ?>
-      <?php if (!empty($title)): ?>
-        <h1 class="page-header"><?php print $title; ?></h1>
-      <?php endif; ?>
-      <?php print render($title_suffix); ?>
-      <?php print $messages; ?>
-      <?php if (!empty($tabs)): ?>
-        <?php print render($tabs); ?>
-      <?php endif; ?>
-      <?php if (!empty($page['help'])): ?>
-        <div class="well"><?php print render($page['help']); ?></div>
-      <?php endif; ?>
-      <?php if (!empty($action_links)): ?>
-        <ul class="action-links"><?php print render($action_links); ?></ul>
-      <?php endif; ?>
-      <?php print render($page['content']); ?>
+      <div class="main-content">
+        <?php print render($title_prefix); ?>
+        <?php if (!empty($title)): ?>
+          <h1 class="page-header"><?php print $title; ?></h1>
+        <?php endif; ?>
+        <?php print render($title_suffix); ?>
+        <?php print $messages; ?>
+        <?php if (!empty($tabs)): ?>
+          <?php print render($tabs); ?>
+        <?php endif; ?>
+        <?php if (!empty($page['help'])): ?>
+          <div class="well"><?php print render($page['help']); ?></div>
+        <?php endif; ?>
+        <?php if (!empty($action_links)): ?>
+          <ul class="action-links"><?php print render($action_links); ?></ul>
+        <?php endif; ?>
+        <?php print render($page['content']); ?>
+      </div>
     </section>
 
     <?php if (!empty($page['sidebar_second'])): ?>
@@ -91,5 +94,12 @@
   </div>
 </div>
 <footer class="footer container">
-  <?php print render($page['footer']); ?>
+  <div class="footer_powered_by_wrapper">
+    <div id="footer_powered_by_container">
+      <a href="http://www.uni-augsburg.de/projekte/bildung-durch-verantwortung" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logo_bdv.png" /></a>
+      <a href="http://www.imb-uni-augsburg.de/medienlabor/team" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logo_ml.png" /></a>
+    </div>
+    <?php print render($page['footer']); ?>
+  </div>
+  
 </footer>

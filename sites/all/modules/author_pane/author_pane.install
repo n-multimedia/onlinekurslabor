@@ -1,0 +1,14 @@
+<?php
+/**
+ * @file
+ * Uninstall function for Author Pane module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function author_pane_uninstall() {
+  variable_del('author_pane_block_display_types');
+  variable_del('author_pane_block_join_date_type');
+  variable_del('author_pane_block_user_picture_preset');
+}

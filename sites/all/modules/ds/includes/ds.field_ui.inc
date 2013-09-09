@@ -109,6 +109,105 @@ function ds_field_ui_create_vertical_tabs(&$form) {
 }
 
 /**
+ * Menu callback: Disable layout and field settings form.
+ */
+function ds_disable_layout_field_settings_form($form, &$form_state, $id = '') {
+  $layout = new stdClass();
+  ctools_include('export');
+  $ds_layout_settings = ctools_export_crud_load_all('ds_layout_settings');
+  if (isset($ds_layout_settings[$id])) {
+    $layout = $ds_layout_settings[$id];
+  }
+
+  if (isset($layout) && $layout->export_type != 1 && empty($layout->disable)) {
+    $form['#layout'] = $layout;
+    $form['#export_id'] = $id;
+    return confirm_form($form,
+      t('Are you sure you want to disable the layout and field settings for %layout?', array('%layout' => implode(', ', explode('|', $layout->id)))),
+      drupal_get_destination(),
+      t('This action cannot be undone.'),
+      t('Disable'),
+      t('Cancel')
+    );
+  }
+  else {
+    drupal_set_message(t('This operation is not possible.'));
+  }
+}
+
+/**
+ * Submit callback: disable layout and field settings.
+ */
+function ds_disable_layout_field_settings_form_submit(&$form, &$form_state) {
+  $layout = $form['#layout'];
+
+  ctools_include('export');
+  ctools_export_crud_disable('ds_layout_settings', $form['#export_id']);
+  ctools_export_crud_disable('ds_field_settings', $form['#export_id']);
+  // @todo layout fields
+
+  // Clear the ds_fields cache.
+  cache_clear_all('ds_fields:', 'cache', TRUE);
+  cache_clear_all('ds_field_settings', 'cache');
+
+  // Clear entity info cache.
+  cache_clear_all('entity_info', 'cache', TRUE);
+
+  drupal_set_message(t('Layout has been disabled.'));
+
+  $form_state['redirect'] = isset($_GET['destination']) ? $_GET['destination'] : drupal_get_destination();
+}
+
+/**
+ * Menu callback: Enable layout and field settings form.
+ */
+function ds_enable_layout_field_settings_form($form, &$form_state, $id = '') {
+  $layout = new stdClass();
+  ctools_include('export');
+  $ds_layout_settings = ctools_export_crud_load_all('ds_layout_settings');
+  if (isset($ds_layout_settings[$id])) {
+    $layout = $ds_layout_settings[$id];
+  }
+
+  if (isset($layout) && $layout->export_type != 1 && !empty($layout->disabled)) {
+    $form['#layout'] = $layout;
+    $form['#export_id'] = $id;
+    return confirm_form($form,
+      t('Are you sure you want to enable the layout and field settings for %layout?', array('%layout' => implode(', ', explode('|', $layout->id)))),
+      drupal_get_destination(),
+      t('This action cannot be undone.'),
+      t('Enable'),
+      t('Cancel')
+    );
+  }
+  else {
+    drupal_set_message(t('This operation is not possible.'));
+  }
+}
+
+/**
+ * Submit callback: enable layout and field settings.
+ */
+function ds_enable_layout_field_settings_form_submit(&$form, &$form_state) {
+  $layout = $form['#layout'];
+
+  ctools_include('export');
+  ctools_export_crud_enable('ds_layout_settings', $form['#export_id']);
+  ctools_export_crud_enable('ds_field_settings', $form['#export_id']);
+
+  // Clear the ds_fields cache.
+  cache_clear_all('ds_fields:', 'cache', TRUE);
+  cache_clear_all('ds_field_settings', 'cache');
+
+  // Clear entity info cache.
+  cache_clear_all('entity_info', 'cache', TRUE);
+
+  drupal_set_message(t('Layout has been enabled'));
+
+  $form_state['redirect'] = isset($_GET['destination']) ? $_GET['destination'] : drupal_get_destination();
+}
+
+/**
  * Menu callback: Revert layout and field settings form.
  */
 function ds_revert_layout_field_settings_form($form, &$form_state, $id = '') {
@@ -581,6 +680,8 @@ function ds_field_ui_layouts_save($form, &$form_state) {
     $record->settings['layout_wrapper'] = 'div';
     $record->settings['layout_attributes'] = '';
     $record->settings['layout_attributes_merge'] = variable_get('ds_layout_attributes_merge', TRUE);
+    $record->settings['layout_link_attribute'] = FALSE;
+    $record->settings['layout_link_custom'] = '';
     $fields = _ds_sort_fields($form_state['values']['fields'], 'weight');
     foreach ($fields as $field_key => $field) {
 
@@ -664,6 +765,10 @@ function ds_field_ui_layouts_save($form, &$form_state) {
     $record->settings['layout_wrapper'] = $form_state['values']['additional_settings']['region_wrapper']['layout_wrapper'];
     $record->settings['layout_attributes'] = filter_xss_admin($form_state['values']['additional_settings']['region_wrapper']['layout_attributes']);
     $record->settings['layout_attributes_merge'] = $form_state['values']['additional_settings']['region_wrapper']['layout_attributes_merge'];
+
+    // Link attribute.
+    $record->settings['layout_link_attribute'] = $form_state['values']['additional_settings']['region_wrapper']['layout_link_attribute'];
+    $record->settings['layout_link_custom'] = $form_state['values']['additional_settings']['region_wrapper']['layout_link_custom'];
 
     $record->settings = $record->settings;
 
@@ -1097,7 +1202,7 @@ function ds_ds_field_format_summary($field) {
   }
 
   if (empty($summary) && ($field['field_type'] == DS_FIELD_TYPE_CTOOLS)) {
-    $summary .= t('Not configured yet.');
+    $summary .= t('Not configured yet.') . '<br />';
   }
 
   return $summary;
@@ -1471,17 +1576,34 @@ function _ds_field_ui_table_layouts($entity_type, $bundle, $view_mode, &$form, $
     $layout = $ds_layout_settings[$form['#export_id']];
   }
 
-  if (!empty($layout) && isset($layout->layout) && isset($ds_layouts[$layout->layout])) {
+  if (!empty($layout) && isset($layout->layout) && isset($ds_layouts[$layout->layout]) && empty($layout->disabled)) {
     $layout->settings = $layout->settings;
     $layout->regions = $ds_layouts[$layout->layout]['regions'];
     $form['#ds_layout'] = $layout;
   }
 
-  if (isset($layout->export_type) && $layout->export_type == 3) {
-    $form['additional_settings']['ds_layouts']['revert'] = array(
-      '#markup' => l(t('This layout is overridden. Click to revert to default settings.'), 'admin/structure/ds/revert-layout/' . $form['#export_id'], array('query' => drupal_get_destination())),
-      '#weight' => 1,
+
+  // The layout is defined in code.
+  if (isset($layout->export_type)) {
+    // Enabled/disable the layout.
+    if (empty($layout->disabled)) {
+      $link = t('This layout is defined in code') . ': ' . l(t('disable layout.'), 'admin/structure/ds/disable/' . $form['#export_id'], array('query' => drupal_get_destination()));
+    }
+    else {
+      $link = t('A layout is defined in code but has been disabled') . ': ' . l(t('enable layout.'), 'admin/structure/ds/enable/' . $form['#export_id'], array('query' => drupal_get_destination()));
+    }
+    $form['additional_settings']['ds_layouts']['enable_disable'] = array(
+      '#markup' => $link,
+      '#weight' => 2,
     );
+
+    // Overridden in database.
+    if ($layout->export_type == 3) {
+      $form['additional_settings']['ds_layouts']['revert'] = array(
+        '#markup' => l(t('This layout is overridden. Click to revert to default settings.'), 'admin/structure/ds/revert-layout/' . $form['#export_id'], array('query' => drupal_get_destination())),
+        '#weight' => 1,
+      );
+    }
   }
 
   // Load the layout preview form
@@ -1534,6 +1656,54 @@ function _ds_field_ui_table_layouts($entity_type, $bundle, $view_mode, &$form, $
       '#default_value' => isset($layout->settings['layout_attributes_merge']) ? $layout->settings['layout_attributes_merge'] : variable_get('ds_layout_attributes_merge', TRUE),
       '#weight' => 12,
     );
+
+    $form['additional_settings']['region_wrapper']['layout_link_attribute'] = array(
+      '#type' => 'select',
+      '#options' => array(
+        '' => t('No link'),
+        'content' => t('Link to content'),
+        'custom' => t('Custom'),
+        'tokens' => t('Tokens')
+      ),
+      '#title' => t('Add link'),
+      '#description' => t('This will add an onclick attribute on the layout wrapper.'),
+      '#default_value' => isset($layout->settings['layout_link_attribute']) ? $layout->settings['layout_link_attribute'] : FALSE,
+      '#weight' => 12,
+    );
+
+    $form['additional_settings']['region_wrapper']['layout_link_custom'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Custom link'),
+      '#description' => t('You may use tokens for this link if you selected tokens.'),
+      '#default_value' => isset($layout->settings['layout_link_custom']) ? $layout->settings['layout_link_custom'] : FALSE,
+      '#weight' => 13,
+      '#states' => array(
+        'visible' => array(array(
+          ':input[name="additional_settings[region_wrapper][layout_link_attribute]"]' => array(array("value" => "tokens"), array("value" => "custom")),
+        )),
+      ),
+    );
+
+    if (module_exists('token')) {
+      $form['additional_settings']['region_wrapper']['tokens'] = array(
+        '#title' => t('Tokens'),
+        '#type' => 'container',
+        '#weight' => 14,
+        '#states' => array(
+          'visible' => array(
+            ':input[name="additional_settings[region_wrapper][layout_link_attribute]"]' => array("value" => "tokens"),
+          ),
+        ),
+      );
+      $form['additional_settings']['region_wrapper']['tokens']['help'] = array(
+        '#theme' => 'token_tree',
+        '#token_types' => 'all',
+        '#global_types' => FALSE,
+        '#dialog' => TRUE,
+      );
+    }
+
+
 
     // Add extra classes for the regions to have more control while theming.
     $form['additional_settings']['ds_classes'] = array(
@@ -1591,7 +1761,11 @@ function _ds_field_ui_table_layouts($entity_type, $bundle, $view_mode, &$form, $
           continue;
         }
         if ($row->entity_type == $entity_type && $row->bundle == $bundle) {
-          $options[$row->id] = drupal_ucfirst(str_replace('_', ' ', $row->entity_type)) . ' > ' . drupal_ucfirst(str_replace('_', ' ', $row->bundle)) . ' > ' . drupal_ucfirst(str_replace('_', ' ', $row->view_mode));
+          $name = drupal_ucfirst(str_replace('_', ' ', $row->entity_type)) . ' > ' . drupal_ucfirst(str_replace('_', ' ', $row->bundle)) . ' > ' . drupal_ucfirst(str_replace('_', ' ', $row->view_mode));
+          if (!empty($row->disabled)) {
+            $name .= ' ' . t('(disabled)');
+          }
+          $options[$row->id] = $name;
         }
       }
 
@@ -1664,7 +1838,7 @@ function _ds_field_ui_table_layouts_preview(&$form, &$form_state, $ds_layouts, $
     '#type' => 'select',
     '#title' => t('Select a layout'),
     '#options' => $layout->layout_options,
-    '#default_value' => isset($layout->layout) ? $layout->layout : '',
+    '#default_value' => isset($layout->layout) && empty($layout->disabled) ? $layout->layout : '',
     '#prefix' => '<div class="ds-select-layout">',
     '#suffix' => '</div>',
     '#weight' => -1,
@@ -1673,6 +1847,9 @@ function _ds_field_ui_table_layouts_preview(&$form, &$form_state, $ds_layouts, $
       'wrapper' => 'ds_layout_wrapper',
     ),
   );
+  if (!isset($layout->layout)) {
+    $form['additional_settings']['ds_layouts']['layout']['#description'] = t("A layout must be selected to enable Display Suite functionality.");
+  }
 
   $form['additional_settings']['ds_layouts']['preview'] = array(
     '#type' => 'container',

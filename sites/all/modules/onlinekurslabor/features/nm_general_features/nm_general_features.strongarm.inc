@@ -158,6 +158,93 @@ function nm_general_features_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'field_bundle_settings_profile2__master';
+  $strongarm->value = array(
+    'view_modes' => array(
+      'account' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
+    ),
+    'extra_fields' => array(
+      'form' => array(),
+      'display' => array(),
+    ),
+  );
+  $export['field_bundle_settings_profile2__master'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'field_bundle_settings_user__user';
+  $strongarm->value = array(
+    'view_modes' => array(
+      'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
+    ),
+    'extra_fields' => array(
+      'form' => array(
+        'profile_main' => array(
+          'weight' => '3',
+        ),
+        'profile_student' => array(
+          'weight' => '12',
+        ),
+        'account' => array(
+          'weight' => '15',
+        ),
+        'timezone' => array(
+          'weight' => '3',
+        ),
+        'profile_master' => array(
+          'weight' => '10',
+        ),
+        'overlay_control' => array(
+          'weight' => '5',
+        ),
+        'locale' => array(
+          'weight' => '4',
+        ),
+        'wysiwyg' => array(
+          'weight' => '6',
+        ),
+        'biblio_fieldset' => array(
+          'weight' => '1',
+        ),
+      ),
+      'display' => array(
+        'profile_main' => array(
+          'default' => array(
+            'weight' => '2',
+            'visible' => FALSE,
+          ),
+        ),
+        'profile_student' => array(
+          'default' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+        ),
+        'summary' => array(
+          'default' => array(
+            'weight' => '2',
+            'visible' => FALSE,
+          ),
+        ),
+      ),
+    ),
+  );
+  $export['field_bundle_settings_user__user'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'file_default_scheme';
   $strongarm->value = 'public';
   $export['file_default_scheme'] = $strongarm;
@@ -212,7 +299,7 @@ function nm_general_features_strongarm() {
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => 'vNkiC66wyG1DdEwD8Tn5KH2U3a9emJ_TVZloBaGyRSI',
+    'javascript' => 'ur36b-8eUlV1_AqvcRVx1s1gEc4kGqxDOLt_xqPweeA',
   );
   $export['language_default'] = $strongarm;
 
@@ -406,8 +493,15 @@ function nm_general_features_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'site_frontpage';
+  $strongarm->value = 'onlinekurslabor';
+  $export['site_frontpage'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'site_mail';
-  $strongarm->value = 'sergej.naumenko@phil.uni-augsburg.de';
+  $strongarm->value = 'info@onlinekurslabor.de';
   $export['site_mail'] = $strongarm;
 
   $strongarm = new stdClass();

@@ -87,6 +87,30 @@ function nm_section_courses_features_image_default_styles() {
     ),
   );
 
+  // Exported image style: course_sponsor_logo.
+  $styles['course_sponsor_logo'] = array(
+    'name' => 'course_sponsor_logo',
+    'label' => 'course_sponsor_logo',
+    'effects' => array(
+      13 => array(
+        'label' => 'Skalierung',
+        'help' => 'Eine Skalierung behält das Seitenverhältnis des Originalbildes bei. Sofern nur eine Seitenlänge angegeben ist, wird die andere berechnet.',
+        'effect callback' => 'image_scale_effect',
+        'dimensions callback' => 'image_scale_dimensions',
+        'form callback' => 'image_scale_form',
+        'summary theme' => 'image_scale_summary',
+        'module' => 'image',
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => 85,
+          'height' => '',
+          'upscale' => 0,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
   return $styles;
 }
 

@@ -15,6 +15,8 @@ regions[footer]         = 'Footer'
 
 ; Stylesheets
 stylesheets[all][] = css/style.css
+stylesheets[all][] = css/user.css
+stylesheets[all][] = css/nm_fancy_box.css
 stylesheets[all][] = css/flat-ui.css
 
 ;**********************************

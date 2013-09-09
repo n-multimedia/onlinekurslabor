@@ -35,7 +35,7 @@ function _custom_general_theme_top_nav($variables = NULL) {
     $user_link .='<span class="caret"></span>';
     $user_link .='</a>';
     $user_link .='<ul class="dropdown-menu">';
-    $user_link .='<li><a href="/user/"><i class="icon-user"></i> Mein Profil</a></li>';
+    $user_link .='<li><a href="/user/'.$user->uid.'"><i class="icon-user"></i> Mein Profil</a></li>';
     $user_link .='<li><a href="/user/logout"><i class="icon-lock"></i> Abmelden</a></li>';
     //$user_link .='</ul>';
     //$user_link .='</div>';

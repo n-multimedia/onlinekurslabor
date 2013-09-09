@@ -55,6 +55,32 @@ Content-Section
 */
 
 /*
+Sponsors
+*/
+
+.courses_sponsors_cols {
+
+  height:185px;
+  overflow:hidden;
+  padding:7px 10px;
+  position:absolute;
+  top:0;
+  right:1px;
+
+}
+.courses_sponsors_col {
+   display:inline-block;
+   vertical-align: top;
+   margin-left:10px;
+   float:right;
+}
+
+.courses_sponsors a {
+  margin-bottom:7px;
+  display:block;
+}
+
+/*
 div ul.section_nav_tools
 {
   padding: 0;
@@ -128,49 +154,39 @@ Course Info
 */
 
 .panels-flexible-row.course-info-header .panel-separator {
-    display:none;
+  display:none;
 }
 .panels-flexible-row.course-info-header .panels-flexible-row-inside, .panels-flexible-row.course-info-subheader .panels-flexible-row-inside, .panels-flexible-region.course-info-content {
-    padding: 15px 0 15px 15px;
+  padding: 15px 0 15px 15px;
 }
 
 .panels-flexible-row.course-info-header h2, .panels-flexible-region.course-info-content h2 {
-    font-size: 25px;
+  font-size: 25px;
 }
 .panels-flexible-row.course-info-header h2 {
-    margin-bottom:5px;
+  margin-bottom:5px;
 }
 
 
 .panels-flexible-row.course-info-header .field-name-field-subtitle, .panels-flexible-row.course-info-header .pane-node-field-instructor {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 .panels-flexible-row.course-info-subheader .pane-entity-field {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .panels-flexible-row.course-info-header, .panels-flexible-region.course-info-content {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 .panels-flexible-row.course-info-header .pane-node-field-instructor {
-   font-weight: bold;
+  font-weight: bold;
 }
 
 /*
 Instructor's Tools
 */
 
-#instructors_tools
-{
-  display:inline-block;
-  position:relative;
-}
-
-#instructors_tools-container .row-fluid:hover 
-{
-  background-color: rgba(0,136,204, 0.03);
-}
 
 #instructors_tools-container
 {
@@ -183,6 +199,18 @@ Instructor's Tools
   position:absolute;
   right:0;
   background-color: rgba(200,200,200, 0.3);
+  z-index: 1;
+}
+
+#instructors_tools
+{
+  display:inline-block;
+  position:relative;
+}
+
+#instructors_tools-container .row-fluid:hover 
+{
+  background-color: rgba(0,136,204, 0.03);
 }
 
 #instructors_tools-container .btn
@@ -286,11 +314,11 @@ a.disabled {
 
 #instructors_tools-container .btn#instr_add_task a:before
 {
-  background-position: -240px -100px;
+  background-position: -180px -100px;
 }
 #instructors_tools-container .btn#instr_add_task a:hover:before, #instructors_tools-container .btn#instr_add_task a.active:before
 {
-  background-position: -240px -150px;
+  background-position: -180px -150px;
 }
 
 /*
@@ -811,5 +839,5 @@ Student
 */
 
 .row-fluid .span12 .node iframe{
-  margin: 10px 10px;
+  margin: 0;
 }

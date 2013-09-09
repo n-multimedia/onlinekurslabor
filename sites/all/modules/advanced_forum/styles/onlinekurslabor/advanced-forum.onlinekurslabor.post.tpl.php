@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  *
@@ -18,7 +17,6 @@
  * - $name: User name of post author.
  * - $author_pane: Entire contents of the Author Pane template.
  */
-
 ?>
 
 <?php if ($top_post): ?>
@@ -27,8 +25,8 @@
 
 <div id="<?php print $post_id; ?>" class="<?php print $classes; ?>" <?php print $attributes; ?>>
   <div class="forum-post-info clearfix">
-    <div class="forum-posted-on">
-      <?php print $date ?>
+    <div class="forum-posted-on">[
+<?php print $date ?>
 
       <?php
       // This whole section is for printing the "new" marker. With core comment
@@ -49,57 +47,60 @@
           <?php print $new_output; ?>
         <?php endif; ?>
       <?php endif; ?>
-    </div>  <?php // End of posted on div ?>
+      ]</div>  <?php // End of posted on div ?>
 
-    <?php if (!empty($in_reply_to)): ?>
-   	 <span class="forum-in-reply-to"><?php print $in_reply_to; ?></span>
-    <?php endif; ?>
 
-    <?php // Add a note when a post is unpublished so it doesn't rely on theming. ?>
+<?php if (!empty($title)): ?>
+      <div class="forum-post-title">
+      <?php print $title ?>
+        <?php if (!empty($in_reply_to)): ?>
+          <span class="forum-in-reply-to"><?php print $in_reply_to; ?></span>
+        <?php endif; ?>
+      </div>
+      <?php endif; ?>
+
+
+
+<?php // Add a note when a post is unpublished so it doesn't rely on theming.  ?>
     <?php if (!$node->status): ?>
       <span class="unpublished-post-note"><?php print t("Unpublished post") ?></span>
     <?php endif; ?>
 
     <span class="forum-post-number"><?php print $permalink; ?></span>
-  </div> <?php // End of post info div ?>
+  </div> <?php // End of post info div  ?>
 
   <div class="forum-post-wrapper">
     <div class="forum-post-panel-sub">
-      <?php if (!empty($author_pane)): ?>
+<?php if (!empty($author_pane)): ?>
         <?php print $author_pane; ?>
       <?php endif; ?>
     </div>
 
     <div class="forum-post-panel-main clearfix">
-      <?php if (!empty($title)): ?>
-        <div class="forum-post-title">
-          <?php print $title ?>
-        </div>
-      <?php endif; ?>
 
       <div class="forum-post-content">
-        <?php
-          // We hide the comments and links now so that we can render them later.
-          hide($content['taxonomy_forums']);
-          hide($content['comments']);
-          hide($content['links']);
-          if (!$top_post)
-            hide($content['body']);
-          print render($content);
-        ?>
+<?php
+// We hide the comments and links now so that we can render them later.
+hide($content['taxonomy_forums']);
+hide($content['comments']);
+hide($content['links']);
+if (!$top_post)
+  hide($content['body']);
+print render($content);
+?>
       </div>
 
-      <?php if (!empty($post_edited)): ?>
+<?php if (!empty($post_edited)): ?>
         <div class="post-edited">
-          <?php print $post_edited ?>
+        <?php print $post_edited ?>
         </div>
-      <?php endif; ?>
+        <?php endif; ?>
 
       <?php if (!empty($signature)): ?>
         <div class="author-signature">
-          <?php print $signature ?>
+        <?php print $signature ?>
         </div>
-      <?php endif; ?>
+        <?php endif; ?>
     </div>
   </div> <?php // End of post wrapper div ?>
 
@@ -109,9 +110,9 @@
     </div>
 
     <div class="forum-post-links">
-      <?php print render($content['links']); ?>
+<?php print render($content['links']); ?>
     </div>
   </div> <?php // End of footer div ?>
-</div> <?php // End of main wrapping div ?>
+</div> <?php // End of main wrapping div  ?>
 
 <?php print render($content['comments']); ?>

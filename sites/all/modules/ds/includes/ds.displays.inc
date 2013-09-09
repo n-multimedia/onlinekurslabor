@@ -117,7 +117,7 @@ function ds_emergency() {
 
       $form['region_to_block']['submit'] = array(
         '#type' => 'submit',
-        '#value' => t('Update block regions'),
+        '#value' => t('Remove block regions'),
         '#submit' => array('ds_emergency_region_to_block_submit'),
         '#weight' => 1,
       );

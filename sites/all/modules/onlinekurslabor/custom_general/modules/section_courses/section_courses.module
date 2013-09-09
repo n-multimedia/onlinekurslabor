@@ -36,6 +36,7 @@ function section_courses_preprocess_panels_pane(&$variables) {
  */
 
 function section_courses_render_course_link($course, $account = NULL) {
+
   $result = NULL;
   global $user;
 
@@ -59,18 +60,18 @@ function section_courses_render_course_link($course, $account = NULL) {
     if ($course->type == NM_COURSE) {
       //check if user is member
       if (og_is_member('node', $course->nid, 'user', $account, array(OG_STATE_ACTIVE, OG_STATE_PENDING))) {
-        $url = '/group/node/'.$course->nid.'/unsubscribe?destination=courses';
-        $url_course = '/course/home/'.$course->nid;
+        $url = '/group/node/' . $course->nid . '/unsubscribe?destination=courses';
+        $url_course = '/course/home/' . $course->nid;
         $result = '<div class="btn-group">';
-        $result .= '<a href="'.$url_course.'" class="btn btn-success">Zum Kurs</a>';
-        $result .= '<a href="'.$url.'" class="btn btn-inverse">Abmelden</a>';
+        $result .= '<a href="' . $url_course . '" class="btn btn-success">Zum Kurs</a>';
+        $result .= '<a href="' . $url . '" class="btn btn-inverse">Abmelden</a>';
         $result .= '</div>';
       }
       else {
-        $url = 'group/node/'.$course->nid.'/subscribe';
-        $subscribe_link = l('Anmelden', $url, array('query' => array('destination' => 'course/home/'.$course->nid), 'attributes'=>array('class' => array('btn', 'btn-primary'))));
-        $info_link = l('Kursinfo', 'course/info/'.$course->nid, array('attributes'=>array('class' => array('btn', 'btn-info'))));
-        
+        $url = 'group/node/' . $course->nid . '/subscribe';
+        $subscribe_link = l('Anmelden', $url, array('query' => array('destination' => 'course/home/' . $course->nid), 'attributes' => array('class' => array('btn', 'btn-primary'))));
+        $info_link = l('Kursinfo', 'course/info/' . $course->nid, array('attributes' => array('class' => array('btn', 'btn-info'))));
+
         $result = '<div class="btn-group">';
         $result .= $info_link;
         $result .= $subscribe_link;
@@ -308,15 +309,16 @@ function _section_courses_get_forum_href($course, $forum_term_id = NULL) {
  * Implements hook_entity_insert
  * 
  */
-function section_courses_entity_insert($entity, $type) {
+/*
+  function section_courses_entity_insert($entity, $type) {
   if ($type == 'og_membership' && isset($entity) && $entity->is_new && isset($entity->entity_type) && $entity->entity_type == 'user') {
-    $a_user = user_load($entity->etid);
-    //Assign admin og role for instructors
-    if (in_array(NM_ROLE_DOZENT, $a_user->roles)) {
-      og_role_grant($entity->group_type, $entity->gid, $a_user->uid, NM_OG_ROLE_COURSE_ADMINISTRATOR);
-    }
+  $a_user = user_load($entity->etid);
+  //Assign admin og role for instructors
+  if (in_array(NM_ROLE_DOZENT, $a_user->roles)) {
+  og_role_grant($entity->group_type, $entity->gid, $a_user->uid, NM_OG_ROLE_COURSE_ADMINISTRATOR);
   }
-}
+  }
+  } */
 
 //solved with context module
 /**
@@ -1228,4 +1230,95 @@ function _section_courses_book_add_active_path(&$subtree_pointer, $active_mlid, 
       _section_courses_book_add_active_path($subtree_pointer[$key]['below'], $active_mlid, $parents);
     }
   }
+}
+
+/*
+ *  Assign og administrator role for instructors (dozenten)
+ * 
+ *  Implements hook_og_membership_insert
+ *  Add OG-Role automatically when instructors join a group
+ */
+
+function section_courses_og_membership_insert(OgMembership $og_membership) {
+
+  if ('user' == $og_membership->entity_type && is_numeric($og_membership->etid)) {
+
+    //user has role instructor
+    $account = user_load($og_membership->etid);
+    if (in_array(NM_ROLE_DOZENT, $account->roles)) {
+      $roles = og_roles('node', NM_COURSE, $og_membership->gid);
+
+      foreach ($roles as $key => $value) {
+
+        if (NM_COURSES_ROLE_ADMINISTRATOR == $value) {
+
+          og_role_grant('node', $og_membership->gid, $og_membership->etid, $key);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * add WYSIWYG Editor to Task Fields
+ * 
+ * @param string $form
+ * @param type $form_state
+ * @param type $form_id
+ */
+function section_courses_form_alter(&$form, &$form_state, $form_id) {
+
+
+  if ($form_id == 'courses_generic_task_node_form') {
+
+    $field_items = &$form['field_generic_task_entry'][LANGUAGE_NONE];
+    foreach ($field_items as &$f_item) {
+      if (is_array($f_item) && isset($f_item['second'])) {
+        $f_item['second']['#type'] = 'text_format';
+        $f_item['second']['#base_type'] = 'textarea';
+        $f_item['second']['#format'] = NM_FILTER_FORMAT_FILTERED_HTML;
+      }
+    }
+    $form['#submit'][] = 'section_courses_courses_generic_task_node_form_submit';
+    $form['#after_build'][] = 'section_courses_courses_generic_task_node_form_after_build';
+  }
+}
+
+/**
+ * Unset field format values to avoid db errors
+ * 
+ * @param type $form
+ * @param type $form_state
+ */
+function section_courses_courses_generic_task_node_form_submit($form, &$form_state) {
+
+
+  $field_items = &$form_state['values']['field_generic_task_entry'][LANGUAGE_NONE];
+  foreach ($field_items as &$f_item) {
+    if (is_array($f_item) && isset($f_item['second'])) {
+      unset($f_item['second']['format']);
+      unset($f_item['second']['format']);
+    }
+  }
+
+  $field_items2 = &$form_state['input']['field_generic_task_entry'][LANGUAGE_NONE];
+  foreach ($field_items2 as &$f_item2) {
+    if (is_array($f_item) && isset($f_item2['second'])) {
+      unset($f_item2['second']['format']);
+      unset($f_item2['second']['format']);
+    }
+  }
+}
+
+function section_courses_courses_generic_task_node_form_after_build($form) {
+
+
+  $field_items = &$form['field_generic_task_entry'][LANGUAGE_NONE];
+  foreach ($field_items as &$f_item) {
+    if (is_array($f_item) && isset($f_item['second'])) {
+      $f_item['second']['format']['#attributes']['style'] = 'display:none';
+    }
+  }
+  
+  return $form;
 }

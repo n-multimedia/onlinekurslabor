@@ -57,6 +57,7 @@ function nm_section_content_features_user_default_permissions() {
     'roles' => array(
       'Autor' => 'Autor',
       'Dozent' => 'Dozent',
+      'Student' => 'Student',
       'administrator' => 'administrator',
     ),
     'module' => 'media_internet',

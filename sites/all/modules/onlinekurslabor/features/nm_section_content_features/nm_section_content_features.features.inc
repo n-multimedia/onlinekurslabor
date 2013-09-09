@@ -140,6 +140,30 @@ function nm_section_content_features_image_default_styles() {
     ),
   );
 
+  // Exported image style: media_600px.
+  $styles['media_600px'] = array(
+    'name' => 'media_600px',
+    'label' => 'Media_600px',
+    'effects' => array(
+      14 => array(
+        'label' => 'Skalierung',
+        'help' => 'Eine Skalierung behält das Seitenverhältnis des Originalbildes bei. Sofern nur eine Seitenlänge angegeben ist, wird die andere berechnet.',
+        'effect callback' => 'image_scale_effect',
+        'dimensions callback' => 'image_scale_dimensions',
+        'form callback' => 'image_scale_form',
+        'summary theme' => 'image_scale_summary',
+        'module' => 'image',
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => 600,
+          'height' => '',
+          'upscale' => 1,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
   // Exported image style: media_9.
   $styles['media_9'] = array(
     'name' => 'media_9',

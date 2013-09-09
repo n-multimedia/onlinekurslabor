@@ -1,0 +1,147 @@
+<?php
+/**
+ * @file
+ * CCK Multiple Field Remove Module
+ */
+/**
+ * Implements hook_help()
+ * @param $path
+ * @param $arg
+ */
+function cck_multiple_field_remove_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#cck_multiple_field_remove':
+      $output = '';
+      $output .= '<h3>' . t('CCK Multiple Field Remove Module') . '</h3>';
+      $output .= '<p>' . t('The CCK Multiple Field Remove Module allows you to add the "Remove" button with CCK Multi-Valued Fields. Yet Now when we add the CCK Multi Valued Fields then, there is no procedure to Remove the Field, If you want to delete the field then you have to Delete the Content first and then after save that field is removed. But this module facilates you to add the Remove button after the Field. It also facilates you to choosing the Multiple Value Field where you want to Add the "Remove" button and where not to. Normally this module will add the "Remove" button only with the Textboxes and the Textareas, because when we create the Select box as a multiple field then it is converted into the Listbox and the Radio Button is converted into the Checkboxes. You can manage your settings from the <a href="@cck_multiple_field_remove">CCK Multiple Field Remove Administration Page</a>', array('@cck_multiple_field_remove' => url('admin/config/content/cck_multiple_field_remove'))) . '</p>';
+      $output .= '<h3>' . t('Uses') . '</h3>';
+      $output .= '<dl>';
+      $output .= '<dd>' . t('Add the Remove Button with Multi Valued CCK Field') . '</dd>';
+      $output .= '<dd>' . t('Facilates you to add the Remove Button on your selected Fields') . '</dd>';
+      $output .= '</dl>';
+      $output .= '<h3>' . t('Restrictions') . '</h3>';
+      $output .= '<dl>';
+      $output .= '<dd>' . t('You cannot add the Remove button with Dropdown, Checkboxes, Radio Buttons') . '</dd>';
+      $output .= '</dl>';
+      return $output;
+      break;
+  }
+}
+/**
+ * Implements hook_menu()
+ */
+function cck_multiple_field_remove_menu() {
+  $items = array();
+  $items['admin/config/content/cck_multiple_field_remove'] = array(
+    'title' => 'CCK Multiple Field Remove Module Configuration',
+    'description' => 'Configuration for CCK Multiple Field Remove',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cck_multiple_field_remove_form'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+/**
+ * Implements hook_form().
+ * @param unknown_type $form
+ * @param unknown_type $form_state
+ */
+function cck_multiple_field_remove_form($form, &$form_state) {
+  $fields = field_info_fields();
+  	
+  $form['heading'] = array(
+    '#markup' => '<div class="cck_multiple_field_remove_desc">Choose your fields where you want to add the "Remove" button.</div>',
+  );
+  $cck_multiple_field_remove_fields = explode("|",variable_get("cck_multiple_field_remove_field_name"));
+  $acceptable_fields = array("number_decimal","number_float","number_integer","text_long","text_with_summary","taxonomy_term_reference","text");
+  foreach($fields as $key => $field){
+    if($field['cardinality'] == -1 && in_array($field['type'],$acceptable_fields)){
+    	$form[$key] = array(
+        '#type' => 'checkbox',
+        '#title' => $key,
+        '#default_value' => (in_array($key,$cck_multiple_field_remove_fields))?1:0,
+      );
+    }
+  }
+  
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save Settings'),
+  );
+  return $form;
+}
+/**
+ * implements hook_form_submit()
+ * FormAPI submission to Save the Settings
+ * @param $form
+ * @param $form_state
+ */
+function cck_multiple_field_remove_form_submit($form, &$form_state) {
+	foreach($form_state['values'] as $field_name => $value){
+		if($value === 1){
+			$cck_multiple_field_remove_fields[] = $field_name;
+		}
+	}
+	$cck_multiple_field_remove_fields = implode("|",$cck_multiple_field_remove_fields);
+	variable_set('cck_multiple_field_remove_field_name', $cck_multiple_field_remove_fields);
+	drupal_set_message('Your settings have been saved.', 'status'); 
+}
+/**
+ * Implements hook_field_widget_form_alter()
+ * @param $element
+ * @param $form_state
+ * @param $context
+ */
+function cck_multiple_field_remove_field_widget_form_alter(&$element, &$form_state, $context)
+{
+ 	$cck_multiple_field_remove_fields = explode("|",variable_get("cck_multiple_field_remove_field_name"));
+	$found = false;
+	if(isset($element['#field_name'])){
+		$details = $element;
+		$found = true;
+	} else {
+		foreach($element as $key => $value){
+			if(isset($value['#field_name'])){
+				$found = true;
+				$details = $value;
+				break;
+			}
+		}
+	}
+	if(!isset($element['value']['#type'])){
+		$element['value']['#type']="";
+	}
+	if($found && in_array($details['#field_name'],$cck_multiple_field_remove_fields) && ($element['value']['#type'] == "textarea" || $element['value']['#type'] == "textfield" || $element['#type']=="text_format" || $element['#type']=="textfield"))
+	{
+		drupal_add_js(drupal_get_path('module','cck_multiple_field_remove').'/js/cck_multiple_field_remove.js');
+		$margin_class = "";
+		$weight = -100;
+		if($element['value']['#type']=="textfield"){
+			$weight = -100;
+		}
+		if($element['value']['#type']=="textarea" ||  $element['#type']=="text_format"){
+			$weight = 100;
+			$margin_class = "textarea_margin_class";
+		}
+		$remove_button = array(
+				'#name' => $details['#field_name'].'_'.$details['#delta'].'_remove_button',
+				'#type' => 'markup',
+				'#value' => t('Remove'),
+				'#validate' => array(),
+				'#markup' => '<div class="cck_multiple_field_remove_button '.$margin_class.'">Remove</div>',
+				'#weight' => $weight,
+		);
+		$element['remove_button'] = $remove_button;
+	}
+}
+/**
+ * Impelements hook_form_alter()
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ */
+function cck_multiple_field_remove_form_alter(&$form, &$form_state, $form_id){
+	$cck_multiple_field_remove_fields = variable_get("cck_multiple_field_remove_field_name");
+	$form['cck_multiple_field_remove_fields'] = array('#type' => 'hidden', '#value' => $cck_multiple_field_remove_fields);
+}

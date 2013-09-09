@@ -1,0 +1,17 @@
+name = CCK Multiple Field Remove
+description = Add the "Remove" button with CCK Multi-valued fields
+package = Content
+core = 7.x
+configure = admin/config/content/cck_multiple_field_remove
+php = 5.3
+stylesheets[all][] = css/cck_multiple_field_remove.css
+
+
+
+
+; Information added by drupal.org packaging script on 2012-10-02
+version = "7.x-1.1"
+core = "7.x"
+project = "cck_multiple_field_remove"
+datestamp = "1349165167"
+

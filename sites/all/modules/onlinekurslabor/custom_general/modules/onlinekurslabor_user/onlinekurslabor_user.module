@@ -1,0 +1,107 @@
+<?php
+
+/*
+ * user Student edit form
+ * 
+ * 
+ */
+
+function onlinekurslabor_user_form_alter(&$form, &$form_state, $form_id) {
+
+  if ($form_id == 'user_profile_form') {
+
+    if (isset($form_state['user'])) {
+      $user = $form_state['user'];
+    }
+    else {
+      return FALSE;
+    }
+
+    if (!isset($form_state['profiles'])) {
+
+      if (profile2_category_access($user, 'master')) {
+        $profile = profile2_load_by_user($user, 'master');
+        if (!$profile) {
+          $profile = profile_create(array(
+            'type' => 'master',
+            'uid' => $user->uid
+              ));
+        }
+        $form_state['profiles'][$profile->type] = $profile;
+      }
+
+      if (profile2_category_access($user, 'student')) {
+        $profile = profile2_load_by_user($user, 'student');
+        if (!$profile) {
+          $profile = profile_create(array(
+            'type' => 'student',
+            'uid' => $user->uid
+              ));
+        }
+        $form_state['profiles'][$profile->type] = $profile;
+      }
+    }
+    // Or use profile2 API which is simpler
+    profile2_attach_form($form, $form_state);
+
+    if (isset($form['profile_master']))
+      $form['profile_master']['#type'] = 'tab';
+    if (isset($form['profile_student']))
+      $form['profile_student']['#type'] = 'tab';
+  }
+}
+
+/**
+ * Editor settings
+ * change block formats
+ */
+function onlinekurslabor_user_wysiwyg_editor_settings_alter(&$settings, $context) {
+
+  // The $context variable contains information about the wysiwyg profile we're using
+  // In this case we just need to check that the editor being used is ckeditor
+
+  if ($context['profile']->editor == 'ckeditor') {
+
+    // The $settings variable contains all the config options ckeditor uses. 
+    // The array keys correspond directly with any setting that can be applied 
+    // to CKEditor - as outlined in the CKEditor docs: 
+    // http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html 
+    // Another way to override configuration is to use your own configuration javascript
+    // file. In this case, we're going to add our own configuration file that will
+    // Hold our stylesSet customizations... 
+    $settings['customConfig'] = base_path() . drupal_get_path('module', 'onlinekurslabor_user') .
+        '/js/ckeditor_config.js';
+
+    // We are also going to specify a custom body id and class
+    $settings['bodyId'] = 'onlinekurslabor_user_id';
+    $settings['bodyClass'] = 'onlinekurslabor_user_class';
+  }
+}
+
+
+
+/**
+ * Process variables for author-pane-user-picture.tpl.php.
+ *
+ * The $variables array contains the following arguments:
+ * - $variables['account']: User account object.
+ * - $variables['caller']: (optional) String identifying who called the theme
+ *   function. Usually the name of the module but doesn't have to be.
+ * - $variables['picture_preset']: (optional) Imagecache preset to use to format
+ *   the user picture.
+ *
+ * @see author-pane-user-picture.tpl.php
+ */
+function onlinekurslabor_user_preprocess_author_pane_user_picture(&$variables) {
+
+    $account = $variables['account'];
+    $profile = profile2_load_by_user($account, 'master');
+    $user_pic = "";
+    if (isset($profile->field_photo)) {
+      $field_view = field_view_field('profile2', $profile, 'field_photo', array('settings' => array('image_style' => 'profile_main_thumbnail')));
+      $field_view['#label_display'] = 'hidden';
+      $user_pic = drupal_render($field_view);
+    }
+    
+    $variables['picture'] = $user_pic;
+}
