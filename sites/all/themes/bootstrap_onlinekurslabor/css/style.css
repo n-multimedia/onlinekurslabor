@@ -714,3 +714,8 @@ powered by
 Stream
 */
 
+.alert{
+-webkit-border-radius: 0px;
+-moz-border-radius:0px;
+border-radius: 0px;
+}
