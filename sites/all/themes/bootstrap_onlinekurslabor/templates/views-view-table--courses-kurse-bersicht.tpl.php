@@ -19,7 +19,6 @@
  */
 
 
-
 foreach($rows as &$row_item){
   $nid = array_pop($row_item);
   $node = node_load($nid);

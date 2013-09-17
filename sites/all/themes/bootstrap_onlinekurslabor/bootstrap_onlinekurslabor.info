@@ -12,6 +12,8 @@ regions[content]        = 'Content'
 regions[sidebar_first]  = 'Primary'
 regions[sidebar_second] = 'Secondary'
 regions[footer]         = 'Footer'
+regions[footer_region_left]         = 'Footer Region Left'
+regions[footer_region_right]         = 'Footer Region Right'
 
 ; Stylesheets
 stylesheets[all][] = css/style.css
