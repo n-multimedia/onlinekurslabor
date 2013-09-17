@@ -459,6 +459,56 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-courses_course-field_domain_demo_ref'
+  $field_instances['node-courses_course-field_domain_demo_ref'] = array(
+    'bundle' => 'courses_course',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 15,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_domain_demo_ref',
+    'label' => 'Thema (Demo)',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'multiple_value_widget' => 'table',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete_tags',
+      'weight' => 3,
+    ),
+  );
+
   // Exported field_instance: 'node-courses_course-field_domain_ref'
   $field_instances['node-courses_course-field_domain_ref'] = array(
     'bundle' => 'courses_course',
@@ -505,7 +555,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete_tags',
-      'weight' => 11,
+      'weight' => 2,
     ),
   );
 
@@ -596,7 +646,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'multiple_value_widget' => 'table',
       ),
       'type' => 'options_select',
-      'weight' => 3,
+      'weight' => 1,
     ),
   );
 
@@ -1005,7 +1055,7 @@ function nm_section_courses_features_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 14,
+      'weight' => 6,
     ),
     'widget_type' => 'options_select',
   );
@@ -1064,7 +1114,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'og_hide' => TRUE,
       ),
       'type' => 'options_onoff',
-      'weight' => 12,
+      'weight' => 4,
     ),
   );
 
@@ -2636,6 +2686,7 @@ function nm_section_courses_features_field_default_field_instances() {
   t('Sponsoren');
   t('Studienfach');
   t('Thema');
+  t('Thema (Demo)');
   t('Titel');
   t('Typ');
   t('URL');
