@@ -89,8 +89,7 @@ function nm_login_vhb() {
         if ($course) {
           //user might not be signed up for that course yet!
           //check first
-          $account_entity = og_load_entity('user', $account);
-          if (!og_is_member($course, 'user', $account_entity)) {
+          if (!og_is_member('node', $course->nid, 'user', $account)) {
             //subscribe
             nm_login_vhb_user_subscribe($account, $course);
           }
