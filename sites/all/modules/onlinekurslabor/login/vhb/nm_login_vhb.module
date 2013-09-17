@@ -58,7 +58,7 @@ function nm_login_vhb() {
       if (!$user->uid) {
         $user = user_load($account->uid);
         drupal_session_regenerate();
-        
+
         //redirect to course page
         $course = nm_login_vhb_get_course($params['LVNR']);
         drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
@@ -76,11 +76,19 @@ function nm_login_vhb() {
         if (!$user->uid) {
           $user = user_load($account->uid);
           drupal_session_regenerate();
-
-          //redirect to course page
-          $course = nm_login_vhb_get_course($params['LVNR']);
-          drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
+          $account = clone $user;
         }
+        
+        $course = nm_login_vhb_get_course($params['LVNR']);
+
+        //user might not be signed up for that course yet!
+        //check first
+        if (!og_is_member($course, 'user', $account)) {
+          //subscribe
+          nm_login_vhb_user_subscribe($account, $course);
+        }
+        //redirect to course page
+        drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
       }
       else {
         //redirect to user login page
@@ -216,6 +224,21 @@ function nm_login_vhb_add_user($params) {
   //assign user to defined course
   //load course by LVNR
   $course = nm_login_vhb_get_course($params['LVNR']);
+  //subscribe
+  nm_login_vhb_user_subscribe($account, $course);
+
+  _user_mail_notify('register_admin_created', $account);
+
+  return $account;
+}
+
+/**
+ * subscribe user for a course
+ * 
+ * @param type $account
+ * @param type $course
+ */
+function nm_login_vhb_user_subscribe($account, $course) {
   if ($course) {
     $values = array(
       'entity type' => 'user',
@@ -223,10 +246,6 @@ function nm_login_vhb_add_user($params) {
     );
     og_group('node', $course->nid, $values);
   }
-
-  _user_mail_notify('register_admin_created', $account);
-
-  return $account;
 }
 
 /**
@@ -242,6 +261,10 @@ function nm_login_vhb_get_course($lvnr) {
   if (!empty($result)) {
     return node_load(current($result)->nid);
   }
+
+  $message = "LVNR: " . $lvnr . " could not be found.";
+  //drupal_set_message("Matrikelnummer stimmt nicht mit der Emailadresse überein.", 'error');
+  watchdog("LOGIN VHB", $message, array(), WATCHDOG_ALERT);
 
   return NULL;
 }
