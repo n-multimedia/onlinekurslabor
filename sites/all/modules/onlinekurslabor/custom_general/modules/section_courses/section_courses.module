@@ -248,12 +248,11 @@ function _section_courses_get_active_course($reset = FALSE) {
       $node = menu_get_object();
     }
 
-
     if ($node) {
       $course = $node;
     }
 
-    if (is_object($node) && in_array($node->type, array(NM_COURSE_DOCS, NM_COURSE_NEWS, NM_COURSE, NM_COURSE_GROUP, NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION))) {
+    if (is_object($node) && in_array($node->type, array(NM_COURSE_DOCS, NM_COURSE_NEWS, NM_COURSE, NM_COURSE_GROUP, NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION, NM_COURSE_FORUMTOPIC))) {
       if ($node->type == NM_COURSE_GROUP) {
         //get course which this group is assigned to
         if (isset($node->og_group_ref)) {
@@ -288,10 +287,26 @@ function _section_courses_get_active_course($reset = FALSE) {
 function _section_courses_course_get_domain_id($course) {
   $domain_ref = NULL;
 
-  if (!empty($course->field_domain_ref)) {
-    //$lang = field_language('node', $course, 'field_domain_ref');
-    $domain_ref = $course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
+  //check if demo mode is set
+  //take demo text
+  if (section_courses_demo_mode()) {
+    if (!empty($course->field_domain_demo_ref)) {
+      //$lang = field_language('node', $course, 'field_domain_ref');
+      $domain_ref = $course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id'];
+    }
+    //fallback to normal text if no demo text is set
+    else if (!empty($course->field_domain_ref)) {
+      //$lang = field_language('node', $course, 'field_domain_ref');
+      $domain_ref = $course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
+    }
   }
+  else {
+    if (!empty($course->field_domain_ref)) {
+      //$lang = field_language('node', $course, 'field_domain_ref');
+      $domain_ref = $course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
+    }
+  }
+
   return $domain_ref;
 }
 
@@ -1319,6 +1334,6 @@ function section_courses_courses_generic_task_node_form_after_build($form) {
       $f_item['second']['format']['#attributes']['style'] = 'display:none';
     }
   }
-  
+
   return $form;
 }

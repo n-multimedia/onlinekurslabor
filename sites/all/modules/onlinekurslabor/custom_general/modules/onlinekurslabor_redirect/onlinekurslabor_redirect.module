@@ -1,0 +1,70 @@
+<?
+
+/*
+ * Redirecting from node view to specific panel view
+ * 
+ */
+
+function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
+
+  $active_course = _section_courses_get_active_course();
+
+
+  if (arg(0) != 'node' || !$active_course) {
+    return;
+  }
+
+  switch ($node->type) {
+    case NM_COURSE:
+      //course
+      drupal_goto(NM_COURSE_HOME_PATH . '/' . $active_course->nid);
+      break;
+    case NM_COURSE_NEWS:
+      //news
+      drupal_goto(NM_COURSE_NEWS_PATH . '/' . $active_course->nid . '/' . $node->nid);
+      break;
+    case NM_COURSE_DOCS:
+      //docs
+      drupal_goto(NM_COURSE_DOC_PATH . '/' . $active_course->nid . '/' . $node->nid);
+      break;
+    case NM_COURSE_GENERIC_TASK:
+      //Task
+      drupal_goto(NM_COURSE_GENERIC_TASK_PATH . '/' . $active_course->nid . '/' . $node->nid . '/solution');
+      break;
+    case NM_COURSE_GENERIC_TASK_SOLUTION:
+      //Solution
+      $tid = $node->field_generic_task[LANGUAGE_NONE][0]['target_id'];
+      drupal_goto(NM_COURSE_GENERIC_TASK_PATH . '/' . $active_course->nid . '/' . $tid . '/solution');
+      //drupal_access_denied();
+      break;
+    case NM_COURSE_GROUP:
+      //Course Group
+      drupal_goto(NM_COURSE_GROUPS_PATH . '/' . $active_course->nid . '/' . $node->nid);
+      break;
+    case NM_COURSE_FORUMTOPIC:
+      //forum 
+      drupal_goto(NM_COURSE_FORUMCONTENT_PATH . '/' . $active_course->nid . '/' . $node->nid);
+      break;
+  }
+}
+
+/*
+ * 
+ */
+
+function onlinekurslabor_redirect_preprocess_page($variables) {
+  //assuming viewing a panel page
+  if (page_manager_get_current_page()) {
+    //user is in course group section
+    if (strstr(current_path(), NM_COURSE_GROUPS_PATH)) {
+      //viewing group overview
+      if (arg(2) == arg(3)) {
+        //get course group if available, else show overview
+        $course_group_nid = _section_courses_student_get_coursegroup_gid();
+        if ($course_group_nid) {
+          drupal_goto(NM_COURSE_GROUPS_PATH . '/' . arg(2) . '/' . $course_group_nid);
+        }
+      }
+    }
+  }
+}

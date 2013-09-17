@@ -71,7 +71,7 @@ function nm_general_features_default_page_manager_pages() {
       'title' => '',
       'body' => '<?php
 $vars = array();
-$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/1_lehrende_oT.png" />\';
+$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/1_lehrende_oT.png" class="span12"  />\';
 $vars[\'description\'] = "für Hochschullehrende";
 $vars[\'middle\'] = "Nutzen Sie unseren KursCreator<sup>&trade;</sup>, um Kurse mit innovativer Didaktik anzubieten, die Studierenden wertvolle Erfahrungen in Projekten ermöglichen!";
 $vars[\'bottom\'] = \'<a href="/courses">Eigenen Kurs gestalten</a>\';
@@ -104,7 +104,7 @@ return theme(\'nm_fancy_box\', $vars);
       'title' => '',
       'body' => '<?php
 $vars = array();
-$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/2_studierende_oT.png" />\';
+$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/2_studierende_oT.png"  class="span12" />\';
 $vars[\'description\'] = \'für Studierende\';
 $vars[\'middle\'] = \'Belegen Sie Kurse, in denen Sie konkrete Projekte machen, die Ihren Kompetenzerwerb mit gesellschaftlichem Engagement verbinden!\';
 $vars[\'bottom\'] = \'<a href="/courses">Kürsübersicht anzeigen</a>\';
@@ -137,7 +137,7 @@ return theme(\'nm_fancy_box\', $vars);
       'title' => '',
       'body' => '<?php
 $vars = array();
-$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/3_partner_oT.png" />\';
+$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/3_partner_oT.png" class="span12" />\';
 $vars[\'description\'] = "für Partner vor Ort";
 $vars[\'middle\'] = "Gewinnen Sie Studierende für Ihre gemeinwohlorientierten Projekte, um von deren Ideen und fachlichem Know-How zu profitieren!";
 $vars[\'bottom\'] = \'<a href="#">Projektvorschlag einreichen</a>\';
@@ -168,7 +168,7 @@ return theme(\'nm_fancy_box\', $vars);
     $pane->configuration = array(
       'admin_title' => '',
       'title' => '',
-      'body' => '<h3>Werden Sie Teil des</h3><h2><a href="/">Online-Kurslabors!</a></h2><p>Das Online-Kurslabor ist ein Ort zur Förderung von Engagement in Studium und Lehre. Zeitgemäße Hochschullehre nutzt digitale Medien und ermöglicht den Studierenden erfahrungsorientiertes Lernen in echten Projekten.</p><p>Wir bieten Ihnen ein einfach zu bedienendes Werkzeug zur Erstellung und Nutzung von Online-Kursen, das für verschiedene Zielgruppen optimiert ist.</p><p>&nbsp;</p><div class="nm_fancy_box_bottom"><a href="/user/register">Jetzt kostenlos anmelden</a></div>',
+      'body' => '<h3>Werden Sie Teil des</h3><h2><a href="/">Online-Kurslabors!</a></h2><p>Das Online-Kurslabor ist ein Ort zur Förderung von Engagement in Studium und Lehre. Zeitgemäße Hochschullehre nutzt digitale Medien und ermöglicht den Studierenden erfahrungsorientiertes Lernen in echten Projekten.</p><p>Wir bieten Ihnen ein einfach zu bedienendes Werkzeug zur Erstellung und Nutzung von Online-Kursen, das für <a class="nm_home_sh" href="#"> verschiedene Zielgruppen </a> optimiert ist.</p><p>&nbsp;</p><div class="nm_fancy_box_bottom"><a href="/user/register">Jetzt kostenlos anmelden</a></div>',
       'format' => 'filtered_html',
       'substitute' => TRUE,
     );
@@ -192,7 +192,7 @@ return theme(\'nm_fancy_box\', $vars);
     $pane->configuration = array(
       'admin_title' => '',
       'title' => '',
-      'body' => '<p><img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo.png" /></p>',
+      'body' => '<p><img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo.png"  class="span12"/></p>',
       'format' => 'filtered_html',
       'substitute' => TRUE,
     );

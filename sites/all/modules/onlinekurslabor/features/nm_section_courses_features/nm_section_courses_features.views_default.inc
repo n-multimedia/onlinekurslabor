@@ -1622,7 +1622,7 @@ function nm_section_courses_features_views_default_views() {
     'title' => 'title',
     'field_subtitle' => 'title',
     'field_short_description' => 'field_short_description',
-    'group_group' => 'field_short_description',
+    'group_group' => 'group_group',
     'nid_1' => 'nid_1',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
@@ -1722,9 +1722,11 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['field_short_description']['table'] = 'field_data_field_short_description';
   $handler->display->display_options['fields']['field_short_description']['field'] = 'field_short_description';
   $handler->display->display_options['fields']['field_short_description']['label'] = '';
+  $handler->display->display_options['fields']['field_short_description']['alter']['max_length'] = '450';
+  $handler->display->display_options['fields']['field_short_description']['alter']['trim'] = TRUE;
+  $handler->display->display_options['fields']['field_short_description']['alter']['html'] = TRUE;
   $handler->display->display_options['fields']['field_short_description']['element_class'] = 'span5';
   $handler->display->display_options['fields']['field_short_description']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_short_description']['type'] = 'text_trimmed';
   $handler->display->display_options['fields']['field_short_description']['settings'] = array(
     'trim_length' => '450',
   );

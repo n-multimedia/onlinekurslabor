@@ -685,14 +685,19 @@ Footer
 /*
 powered by
 */
-#footer_powered_by_container {
-    position:absolute;
-    right:0;
-    z-index:1;
+.footer_powered_by_container{
+    position:relative;
 }
 
-#footer_powered_by_container img {
-    margin-left: 20px;
+.footer_region_left {
+    text-align:left;
+}
+
+.footer_region_right {
+    text-align:right;
+}
+.footer_region_right a{
+    margin-left:20px;
 }
 
 .footer .menu.nav-list {
@@ -714,3 +719,8 @@ powered by
 Stream
 */
 
+.alert{
+    -webkit-border-radius: 0px;
+    -moz-border-radius:0px;
+    border-radius: 0px;
+}

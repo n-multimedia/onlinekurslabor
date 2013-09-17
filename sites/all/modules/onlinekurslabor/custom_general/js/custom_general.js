@@ -46,7 +46,7 @@
             /*
              * Video resizing
              */
-            var iframe = $('.row-fluid .span12 .node iframe');
+            var iframe = $('.row-fluid .span12 iframe');
 
             if (iframe.length > 1) {
                 for (var i = 0; i < iframe.length; i++) {

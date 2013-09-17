@@ -94,12 +94,19 @@
   </div>
 </div>
 <footer class="footer container">
-  <div class="footer_powered_by_wrapper">
-    <div id="footer_powered_by_container">
-      <a href="http://www.uni-augsburg.de/projekte/bildung-durch-verantwortung" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logo_bdv.png" /></a>
-      <a href="http://www.imb-uni-augsburg.de/medienlabor/team" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logo_ml.png" /></a>
+  <div class="footer_powered_by_wrapper row-fluid">
+    <div id="footer_regions_container span12">
+      <div class="span6 footer_region_left">
+         <?php print render($page['footer_region_left']); ?>
+      </div>
+      <div class="span6 footer_region_right">
+        <?php print render($page['footer_region_right']); ?>
+        <a href="http://www.uni-augsburg.de/projekte/bildung-durch-verantwortung" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logo_bdv.png" /></a>
+        <a href="http://www.imb-uni-augsburg.de/medienlabor/team" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logo_ml.png" /></a>
+      </div>
+      <?php print render($page['footer']); ?>
     </div>
-    <?php print render($page['footer']); ?>
+    
   </div>
-  
+
 </footer>
