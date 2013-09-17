@@ -196,9 +196,7 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_course:subscribe without approval'
   $permissions['node:courses_course:subscribe without approval'] = array(
-    'roles' => array(
-      'non-member' => 'non-member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:courses_course:unsubscribe'

@@ -1812,9 +1812,9 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
-    3 => '3',
-    5 => '5',
-    6 => '6',
+    30037204 => '30037204',
+    106505419 => '106505419',
+    197637936 => '197637936',
   );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
