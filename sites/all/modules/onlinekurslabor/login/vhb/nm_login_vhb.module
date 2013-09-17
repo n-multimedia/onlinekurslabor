@@ -63,6 +63,11 @@ function nm_login_vhb() {
         $course = nm_login_vhb_get_course($params['LVNR']);
         drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
       }
+      else {
+          $message = "Logged in user tryed to create an account and log in UID: " . $user->uid ;
+          //drupal_set_message("Matrikelnummer stimmt nicht mit der Emailadresse überein.", 'error');
+          watchdog("LOGIN VHB", $message, array(), WATCHDOG_ALERT);
+      }
     }
     else {
       //user account exists -> login and redirect to course
@@ -78,17 +83,26 @@ function nm_login_vhb() {
           drupal_session_regenerate();
           $account = clone $user;
         }
-        
+
         $course = nm_login_vhb_get_course($params['LVNR']);
 
-        //user might not be signed up for that course yet!
-        //check first
-        if (!og_is_member($course, 'user', $account)) {
-          //subscribe
-          nm_login_vhb_user_subscribe($account, $course);
+        if ($course) {
+          //user might not be signed up for that course yet!
+          //check first
+          $account_entity = og_load_entity('user', $account);
+          if (!og_is_member($course, 'user', $account_entity)) {
+            //subscribe
+            nm_login_vhb_user_subscribe($account, $course);
+          }
+          //redirect to course page
+          drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
         }
-        //redirect to course page
-        drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
+        else {
+
+          $message = "User could not be redirected or subscribed to course LVNR: " . $params['LVNR'];
+          //drupal_set_message("Matrikelnummer stimmt nicht mit der Emailadresse überein.", 'error');
+          watchdog("LOGIN VHB", $message, array(), WATCHDOG_ALERT);
+        }
       }
       else {
         //redirect to user login page
