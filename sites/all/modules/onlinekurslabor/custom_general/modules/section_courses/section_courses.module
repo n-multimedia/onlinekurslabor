@@ -404,7 +404,8 @@ function section_courses_text_outline() {
 
   $active_course = _section_courses_get_active_course();
   //$lang = field_language('node', $active_course, 'field_domain_ref');
-  $domain_ref = $active_course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
+  //$domain_ref = $active_course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
+  $domain_ref = _section_courses_course_get_domain_id($active_course);
 
   $menu_name = 'book-toc-' . $domain_ref;
   $tree = menu_tree_all_data($menu_name);
