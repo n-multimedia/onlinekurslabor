@@ -31,6 +31,7 @@ foreach ($rows as &$row_item) {
     $row_item['nid_1'] = $new_label;
   }
 }
+unset($row_item);
 
 ?>
 

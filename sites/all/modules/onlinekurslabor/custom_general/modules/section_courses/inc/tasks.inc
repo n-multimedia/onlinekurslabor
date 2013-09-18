@@ -13,8 +13,6 @@ function _course_tasks_generic_init_view() {
     node_tag_new(node_load($tasks_nid));
   }
 
-
-
   return $field_val;
 }
 
@@ -317,6 +315,7 @@ function _course_tasks_generic_solution_form_view() {
         }
       }
     }
+    unset($item);
 
     $output .= drupal_render($form);
   }

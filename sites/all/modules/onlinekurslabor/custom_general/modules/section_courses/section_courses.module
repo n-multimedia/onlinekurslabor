@@ -397,7 +397,7 @@ function _section_courses_text_outline_add_active_path(&$subtree_pointer) {
 
   $parents = _custom_general_book_get_parents($subtree_pointer, $active_mlid);
 
-  _section_courses_book_add_active_path(&$subtree_pointer, $active_mlid, $parents);
+  _section_courses_book_add_active_path($subtree_pointer, $active_mlid, $parents);
 }
 
 function section_courses_text_outline() {
@@ -1303,6 +1303,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
         $f_item['second']['#format'] = NM_FILTER_FORMAT_FILTERED_HTML;
       }
     }
+    unset($f_item);
     
     $form['#submit'][] = 'section_courses_courses_generic_task_node_form_submit';
     $form['#after_build'][] = 'section_courses_courses_generic_task_node_form_after_build';
@@ -1325,6 +1326,7 @@ function section_courses_courses_generic_task_node_form_submit($form, &$form_sta
       unset($f_item['second']['format']);
     }
   }
+  unset($f_item);
 
   $field_items2 = &$form_state['input']['field_generic_task_entry'][LANGUAGE_NONE];
   foreach ($field_items2 as &$f_item2) {
@@ -1333,17 +1335,18 @@ function section_courses_courses_generic_task_node_form_submit($form, &$form_sta
       unset($f_item2['second']['format']);
     }
   }
+  unset($f_item2);
 }
 
 function section_courses_courses_generic_task_node_form_after_build($form) {
-
-
+  
   $field_items = &$form['field_generic_task_entry'][LANGUAGE_NONE];
   foreach ($field_items as &$f_item) {
     if (is_array($f_item) && isset($f_item['second'])) {
       $f_item['second']['format']['#attributes']['style'] = 'display:none';
     }
   }
+  unset($f_item);
 
   return $form;
 }

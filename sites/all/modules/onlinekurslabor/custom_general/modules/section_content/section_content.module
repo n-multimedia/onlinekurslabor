@@ -1209,7 +1209,7 @@ function _section_content_text_outline_add_active_path(&$subtree_pointer) {
 
   $parents = _custom_general_book_get_parents($subtree_pointer, $active_mlid);
 
-  _section_content_book_add_active_path(&$subtree_pointer, $active_mlid, $parents);
+  _section_content_book_add_active_path($subtree_pointer, $active_mlid, $parents);
 }
 
 function _section_content_book_add_active_path(&$subtree_pointer, $active_mlid, $parents) {

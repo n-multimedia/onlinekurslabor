@@ -358,6 +358,7 @@ function _custom_general_theme_tools_block($tool_links, $id = "", $class = "sect
         $group['items'][] = $su;
       }
     }
+    unset($group);
   }
 
   //if group is set - assume that we want to have a vertical toolbar

@@ -55,6 +55,9 @@ foreach ($rows as &$row_item) {
   }
 }
 
+unset($row_item);
+
+
 ?>
 
 <table <?php if ($classes) {
