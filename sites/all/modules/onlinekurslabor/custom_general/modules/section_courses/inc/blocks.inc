@@ -13,7 +13,7 @@ function _section_courses_node_tabs_view() {
   /* refactor this
    * rename function could also be possible
    */
-  
+
   /*
    * user controls
    */
@@ -26,9 +26,8 @@ function _section_courses_node_tabs_view() {
       $block .= l($nav_items_single['edit'], $path);
     }
     return $block;
-    
   }
-  
+
   /*
    * node controls
    */
@@ -151,7 +150,7 @@ function _course_header_section_view() {
       'content' => array(
         '#type' => 'markup',
         '#markup' => $output,
-        ));
+    ));
   }
 
   return $block;
@@ -244,7 +243,7 @@ function _section_courses_get_instructor_tools() {
     ),
     'attributes' => array(
       'title' => '',
-      ));
+  ));
 
   /*
     $members_overview_options = $default_options;
@@ -523,7 +522,7 @@ function _section_courses_navtext_to_link($course, $text) {
     'attributes' => array(),
     'query' => array(
       'og_group_ref' => $course_nid,
-      ));
+  ));
 
   $active_node = NULL;
   if ((arg(0) == 'course') && (is_numeric(arg(3)))) {
@@ -709,8 +708,19 @@ function section_courses_theme_progressbar() {
     $percent = (($now - $start) / ($end - $start));
   }
 
-  $output = '<h2>Fortschritt (' . number_format($percent * 100, 0) . '%)</h2>';
-  $output .= '<div id="course_progressbar">' . $percent . '</div><div></div>';
+  $percent = number_format($percent * 100, 0);
+
+  $output = '<div class="nm_circle_progress_bar">';
+  $output .= '<div class="nm_cb_title">';
+  $output .= '<h5 class="nm_cb_title_1">zeitlicher Fortschritt</h5>';
+  $output .= '<h1 class="nm_cb_title_2">' . $percent . '</h1>';
+  $output .= '<h5 class="nm_cb_title_3">%</h5>';
+  $output .= '</div>';
+  //$output .= '<div id="course_progressbar">' . $percent . '</div><div></div>';
+
+  $output .= '<input class="knob" data-angleArc=360 data-fgColor="#333" data-thickness=".12" data-width="200" disabled value="' . $percent . '">';
+
+  $output .= '</div>';
 
   return $output;
 }

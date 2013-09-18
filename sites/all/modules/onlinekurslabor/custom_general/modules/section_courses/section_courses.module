@@ -568,7 +568,15 @@ function _section_courses_feature_active($course, $feature) {
           }
         }
       }
-
+      break;
+    case NM_COURSE_FEATURE_COURSE_GROUP_LOCK:
+      if (!empty($course->field_access_features)) {
+        foreach ($course->field_access_features[LANGUAGE_NONE] as $feature) {
+          if ($feature['value'] == NM_COURSE_FEATURE_COURSE_GROUP_LOCK) {
+            return TRUE;
+          }
+        }
+      }
       break;
     default:
   }
@@ -1295,6 +1303,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
         $f_item['second']['#format'] = NM_FILTER_FORMAT_FILTERED_HTML;
       }
     }
+    
     $form['#submit'][] = 'section_courses_courses_generic_task_node_form_submit';
     $form['#after_build'][] = 'section_courses_courses_generic_task_node_form_after_build';
   }
@@ -1337,4 +1346,44 @@ function section_courses_courses_generic_task_node_form_after_build($form) {
   }
 
   return $form;
+}
+
+/**
+ * Implements hook_og_user_access_alter().
+ *
+ * 
+ * Permit group-subscription for Course Groups, if course configuration forces is
+ * 
+ */
+function section_courses_og_user_access_alter(&$perm, $context) {
+  global $user;
+  $account = clone $user;
+
+  $group_type = $context['group_type'];
+  $group = $context['group'];
+
+  $course = _section_courses_get_active_course();
+
+  //we are in course section
+  if ($course) {
+    //Course Group - Content Type
+    if ($group_type == 'node' && $group->type == NM_COURSE_GROUP) {
+      //Student
+      if (in_array(NM_ROLE_STUDENT, $account->roles)) {
+        //lock group feature active
+        $group_locked = _section_courses_feature_active($course, NM_COURSE_FEATURE_COURSE_GROUP_LOCK);
+        //deny access
+
+        if (isset($perm["subscribe"]) && $group_locked) {
+          $perm["subscribe"] = FALSE;
+          $perm["subscribe without approval"] = FALSE;
+        }
+        if (isset($perm["unsubscribe"]) && $group_locked) {
+          $perm["unsubscribe"] = FALSE;
+        }
+      }
+    }
+  }
+
+  return;
 }

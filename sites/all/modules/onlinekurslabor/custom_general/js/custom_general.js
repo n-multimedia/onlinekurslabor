@@ -83,6 +83,17 @@
                 }
             }
 
+            /*
+             * progress bar
+             */
+
+            $(".knob").knob({
+                'change': function(value) {
+                    return false;
+                },
+            });
+
+
 
 
             /*
