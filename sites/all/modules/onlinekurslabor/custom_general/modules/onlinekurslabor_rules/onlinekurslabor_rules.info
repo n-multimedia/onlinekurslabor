@@ -1,0 +1,10 @@
+name = Onlinekurslabor Rules
+description = provides rules actions
+package = custom
+dependencies[] = custom_general
+
+core = 7.x
+
+; Information added by drupal.org packaging script on 2013-09-16
+version = "7.x-1.x"
+core = "7.x"
