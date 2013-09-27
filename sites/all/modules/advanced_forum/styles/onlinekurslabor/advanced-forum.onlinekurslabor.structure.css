@@ -68,16 +68,16 @@ ul.forum-links li {
 
 .forum-node-create-links {
     width: 30%;
-    float: left;
+    /*float: left;*/
 }
 
 .forum-node-create-links-top {
-    clear: both;
+    /*clear: both;*/
     padding-top: 20px; /* Lines up horizontally with pager. */
 }
 
 .forum-node-create-links .forum-add-node {
-    float: left;
+    /*float: left;*/
     margin-right: 10px;
 }
 
@@ -616,6 +616,9 @@ posts
 }
 
 
+.indented {
+    margin-left: 30px;
+}
 
 .af-button-large {
   display: inline-block;

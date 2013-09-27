@@ -47,6 +47,7 @@ define("NM_COURSE_NEWS_PATH", "course/news");
 define("NM_COURSE_INFO_PATH", "course/info");
 define("NM_COURSE_GROUPS_PATH", "course/groups");
 define("NM_COURSE_TEXT_PATH", "course/text");
+define("NM_COURSE_BIBLIO_PATH", "course/biblio");
 define("NM_COURSE_MEMBERS_PATH", "course/members");
 define("NM_COURSE_FORUM_PATH", "course/forum");
 define("NM_COURSE_FORUMCONTENT_PATH", "course/forumcontent");
@@ -82,6 +83,7 @@ define("NM_ROLE_AUTOR", "Autor");
 define("NM_ROLE_ADMIN", "administrator");
 define("NM_ROLE_DOZENT", "Dozent");
 define("NM_ROLE_STUDENT", "Student");
+define("NM_ROLE_TUTOR", "Tutor");
 
 //Content
 //Views
@@ -229,18 +231,29 @@ function _custom_general_get_group($referer_node) {
     $domain_id = $referer_node->nid;
   }
   else {
-    $entities = og_get_entity_groups('node', $referer_node->nid);
-    if (!empty($entities)) {
-      $domain_id = current(current($entities));
+    //forum special case
+    if ($referer_node->type == NM_COURSE_FORUMTOPIC) {
+      $tid = ($referer_node->taxonomy_forums[LANGUAGE_NONE][0]['tid']);
+      $term = taxonomy_term_load($tid);
+      $course_nid = $term->og_group_ref ? $term->og_group_ref[LANGUAGE_NONE][0]['target_id'] : NULL;
+
+      $domain_id = $course_nid;
+    }
+    else {
+      $entities = og_get_entity_groups('node', $referer_node->nid);
+      if (!empty($entities)) {
+        $domain_id = current(current($entities));
+      }
     }
   }
+
 
   return $domain_id;
 }
 
 //get breadcrumb items for domain by group id
 /*
-function _section_content_get_domain_breadcrumb_items($group_get_id = NULL) {
+  function _section_content_get_domain_breadcrumb_items($group_get_id = NULL) {
 
   //get active group id, passed as get param
   $tmp_gid = isset($_GET['og_group_ref']) ? $_GET['og_group_ref'] : NULL;
@@ -248,34 +261,33 @@ function _section_content_get_domain_breadcrumb_items($group_get_id = NULL) {
 
 
   if (!isset($group_get_id))
-    return NULL;
+  return NULL;
 
   //build query items for breadcrumb items, to keep important get information in the url
   $item_options = array(
-    'absolute' => TRUE,
-    'query' => array(
-      'og_group_ref' => $group_get_id,
-    )
+  'absolute' => TRUE,
+  'query' => array(
+  'og_group_ref' => $group_get_id,
+  )
   );
   $node_overview = node_load(NM_DOMAIN_OVERVIEW_ID);
   $node_domain = node_load($group_get_id);
 
   $domain_overview_item = array(
-    'title' => $node_overview->title,
-    'href' => check_url(url('node/' . NM_DOMAIN_OVERVIEW_ID, $item_options)),
-    'localized_options' => array(),
+  'title' => $node_overview->title,
+  'href' => check_url(url('node/' . NM_DOMAIN_OVERVIEW_ID, $item_options)),
+  'localized_options' => array(),
   );
   $active_domain_item = array(
-    'title' => $node_domain->title,
-    'href' => check_url(url('node/' . $group_get_id, $item_options)),
-    'localized_options' => array(),
+  'title' => $node_domain->title,
+  'href' => check_url(url('node/' . $group_get_id, $item_options)),
+  'localized_options' => array(),
   );
 
   return array('domain_overview_item' => $domain_overview_item, 'active_domain_item' => $active_domain_item);
-}
+  }
 
  */
-
 
 /**
  *  Implementation of hook_field_attach_form 
@@ -469,6 +481,9 @@ function custom_general_wysiwyg_plugin($editor, $version) {
 
   _linkit_add_settings($editor);
 
+  //css rules
+  drupal_add_css(drupal_get_path('module', 'custom_general') . '/css/wysiwyg.css');
+
   switch ($editor) {
     case 'ckeditor':
       return array(
@@ -526,7 +541,7 @@ function _custom_general_biblio_dashboard() {
 function _custom_general_biblio_dashboard_form($form, &$form_state) {
   $profile = linkit_profile_load("biblio");
 
-  
+
   if (is_null($profile)) {
     drupal_set_message(t('You need a linkit profile named <em>biblio</em> to continue!'), 'error');
     return $form;

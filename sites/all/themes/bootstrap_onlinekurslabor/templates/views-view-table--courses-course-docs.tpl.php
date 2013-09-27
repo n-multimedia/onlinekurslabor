@@ -17,53 +17,60 @@
  *   field id, then row number. This matches the index in $rows.
  * @ingroup views_templates
  */
-
-
 foreach ($rows as &$row_item) {
   if (isset($row_item['nid_1'])) {
     //check if task is new
     $new = _section_courses_course_get_num_unread_by_type(NULL, NM_COURSE_DOCS, $row_item['nid_1']);
     $new_label = "";
-    if($new) {
+    if ($new) {
       $new_label = '<small class="badge badge-important">neu</small>';
     }
-          
+
     $row_item['nid_1'] = $new_label;
   }
 }
-unset($row_item);
-
+if (isset($row_item)) {
+  unset($row_item);
+}
 ?>
 
-<table <?php if ($classes) {
+<table <?php
+if ($classes) {
   print 'class="' . $classes . ' table table-hover" ';
-} ?><?php print $attributes; ?>>
-  <?php if (!empty($title) || !empty($caption)) : ?>
+}
+?><?php print $attributes; ?>>
+<?php if (!empty($title) || !empty($caption)) : ?>
     <caption><?php print $caption . $title; ?></caption>
-  <?php endif; ?>
+    <?php endif; ?>
   <?php if (!empty($header)) : ?>
     <thead>
       <tr>
-        <?php foreach ($header as $field => $label): ?>
-          <th <?php if ($header_classes[$field]) {
-        print 'class="' . $header_classes[$field] . '" ';
-      } ?>>
-          <?php print $label; ?>
+  <?php foreach ($header as $field => $label): ?>
+          <th <?php
+    if ($header_classes[$field]) {
+      print 'class="' . $header_classes[$field] . '" ';
+    }
+    ?>>
+              <?php print $label; ?>
           </th>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
       </tr>
     </thead>
-    <?php endif; ?>
+  <?php endif; ?>
   <tbody>
-      <?php foreach ($rows as $row_count => $row): ?>
-      <tr <?php if ($row_classes[$row_count]) {
-        print 'class="' . implode(' ', $row_classes[$row_count]) . '"';
-      } ?>>
+    <?php foreach ($rows as $row_count => $row): ?>
+      <tr <?php
+    if ($row_classes[$row_count]) {
+      print 'class="' . implode(' ', $row_classes[$row_count]) . '"';
+    }
+      ?>>
         <?php foreach ($row as $field => $content): ?>
-          <td <?php if ($field_classes[$field][$row_count]) {
+          <td <?php
+      if ($field_classes[$field][$row_count]) {
         print 'class="' . $field_classes[$field][$row_count] . '" ';
-      } ?><?php print drupal_attributes($field_attributes[$field][$row_count]); ?>>
-    <?php print $content; ?>
+      }
+          ?><?php print drupal_attributes($field_attributes[$field][$row_count]); ?>>
+        <?php print $content; ?>
           </td>
   <?php endforeach; ?>
       </tr>

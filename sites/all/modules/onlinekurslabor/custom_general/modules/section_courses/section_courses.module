@@ -157,6 +157,12 @@ function section_courses_block_info() {
   $blocks['course_node_tabs'] = array(
     'info' => t('Course - Node Tabs'),
   );
+  $blocks['course_forum_breadcrumbs'] = array(
+    'info' => t('Forum - Breadcrumbs'),
+  );
+  $blocks['course_text_biblio'] = array(
+    'info' => t('Course - Text Biblio'),
+  );
 
   return $blocks;
 }
@@ -188,6 +194,12 @@ function section_courses_block_view($delta = '') {
       break;
     case 'course_node_tabs' :
       $block['content'] = _section_courses_node_tabs_view();
+      break;
+    case 'course_forum_breadcrumbs' :
+      $block['content'] = _section_courses_forum_breadcrumb_view();
+      break;
+    case 'course_text_biblio' :
+      $block['content'] = _section_courses_text_biblio_view();
       break;
   }
 
@@ -231,6 +243,7 @@ function _section_courses_get_active_course($reset = FALSE) {
   static $course;
 
   $context = context_get("context", "section_courses");
+
   if (empty($context))
     return FALSE;
 
@@ -380,16 +393,28 @@ function _section_courses_get_forum_href($course, $forum_term_id = NULL) {
 function _section_courses_text_outline_add_active_path(&$subtree_pointer) {
 
   $parents = array();
+  $active_course = _section_courses_get_active_course();
 
 //Get active MLID from url structure
   $active_mlid = NULL;
   $course_text_active_nid = NULL;
 
-  $course_text_active = (arg(0) == 'course' && arg(1) == 'text');
+  $course_text_active = (arg(0) == 'course' && (arg(1) == 'text' || arg(1) == 'biblio'));
   if ($course_text_active) {
     $course_text_active_nid = arg(3);
-
+    
     $domain_node = node_load($course_text_active_nid);
+    
+    //special case
+    //biblio entry -> not inside book
+    //need to get course text
+    if ($domain_node->type == NM_BIBLIO && $active_course) {
+      $domain_id = _section_courses_course_get_domain_id($active_course);
+      $domain_node = node_load($domain_id);
+    }
+
+    
+
     if ($domain_node->book) {
       $active_mlid = $domain_node->book['mlid'];
     }
@@ -682,6 +707,9 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
           $path = "course/doc/" . $course->nid . '/' . $nid;
         }//Study Text / Lehrtext
         else if (in_array($type, array(NM_CONTENT_DOMAIN, NM_CONTENT_CHAPTER))) {
+          $path = "course/text/" . $course->nid . '/' . $nid;
+        }
+        else if ($type == NM_BIBLIO) {
           $path = "course/text/" . $course->nid . '/' . $nid;
         }
 
@@ -1293,6 +1321,9 @@ function section_courses_og_membership_insert(OgMembership $og_membership) {
 function section_courses_form_alter(&$form, &$form_state, $form_id) {
 
 
+  /*
+   * Task Node
+   */
   if ($form_id == 'courses_generic_task_node_form') {
 
     $field_items = &$form['field_generic_task_entry'][LANGUAGE_NONE];
@@ -1303,10 +1334,78 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
         $f_item['second']['#format'] = NM_FILTER_FORMAT_FILTERED_HTML;
       }
     }
-    unset($f_item);
-    
+    if (isset($f_item)) {
+      unset($f_item);
+    }
+
     $form['#submit'][] = 'section_courses_courses_generic_task_node_form_submit';
     $form['#after_build'][] = 'section_courses_courses_generic_task_node_form_after_build';
+  }
+
+  /**
+   * Forum Topic Node
+   */
+  if ($form_id == 'forum_node_form') {
+    if (!section_courses_instructors_tools_access()) {
+      $form['taxonomy_forums']['#attributes']['style'] = 'display:none';
+    }
+  }
+}
+
+/**
+ * alter taxonomy reference widget for forum references
+ * we need to only show the options which are possible in course section
+ * 
+ * @param type $element
+ * @param type $form_state
+ * @param type $context
+ */
+function section_courses_field_widget_form_alter(&$element, &$form_state, $context) {
+  if ($context['field']['type'] == 'taxonomy_term_reference') {
+    if ($context['field']['field_name'] == 'taxonomy_forums') {
+      if (isset($element['#type']) && ($element['#type'] == 'select' || $element['#type'] == 'radios' || $element['#type'] == 'checkboxes')) {
+        $active_course = _section_courses_get_active_course();
+
+        if ($active_course) {
+          $term = _section_courses_get_forum_term($active_course);
+          $children = taxonomy_get_tree($term->vid, $term->tid);
+          $allowed = array();
+          foreach ($children as $value) {
+            $allowed[$value->tid] = $value->name;
+          }
+
+          if (!empty($allowed)) {
+            $options = array();
+            if (isset($element['#options']['_none'])) {
+              $options = array('_none' => $element['#options']['_none']);
+            }
+            else {
+              $options = array('_none' => theme('options_none', array('instance' => $context['instance'], 'option' => $element['#properties']['empty_option'])));
+            }
+            $options += array_intersect_key($element['#options'], $allowed);
+
+            $element['#options'] = $options;
+          }
+        }
+
+        /*
+          $allowed = _get_referencable_terms_from_view($context['field'], $context['instance'], NULL, 0, NULL, FALSE);
+          if (!empty($allowed)) {
+          $options = array();
+          if (isset($element['#options']['_none'])) {
+          $options = array('_none' => $element['#options']['_none']);
+          }
+          else {
+          $options = array('_none' => theme('options_none', array('instance' => $context['instance'], 'option' => $element['#properties']['empty_option'])));
+          }
+          $options += array_intersect_key($allowed, $element['#options']);
+          $element['#options'] = $options;
+          }
+         * 
+         * 
+         */
+      }
+    }
   }
 }
 
@@ -1326,27 +1425,33 @@ function section_courses_courses_generic_task_node_form_submit($form, &$form_sta
       unset($f_item['second']['format']);
     }
   }
-  unset($f_item);
+  if (isset($f_item)) {
+    unset($f_item);
+  }
 
   $field_items2 = &$form_state['input']['field_generic_task_entry'][LANGUAGE_NONE];
   foreach ($field_items2 as &$f_item2) {
-    if (is_array($f_item) && isset($f_item2['second'])) {
+    if (is_array($f_item2) && isset($f_item2['second'])) {
       unset($f_item2['second']['format']);
       unset($f_item2['second']['format']);
     }
   }
-  unset($f_item2);
+  if (isset($f_item2)) {
+    unset($f_item2);
+  }
 }
 
 function section_courses_courses_generic_task_node_form_after_build($form) {
-  
+
   $field_items = &$form['field_generic_task_entry'][LANGUAGE_NONE];
   foreach ($field_items as &$f_item) {
     if (is_array($f_item) && isset($f_item['second'])) {
       $f_item['second']['format']['#attributes']['style'] = 'display:none';
     }
   }
-  unset($f_item);
+  if (isset($f_item)) {
+    unset($f_item);
+  }
 
   return $form;
 }
@@ -1389,4 +1494,100 @@ function section_courses_og_user_access_alter(&$perm, $context) {
   }
 
   return;
+}
+
+function section_courses_forum_get_breadcrumb_items() {
+  $breadcrumb = array();
+  //add forum breadcrumbs
+  if (strpos(request_uri(), NM_COURSE_FORUM_PATH) || strpos(request_uri(), NM_COURSE_FORUMCONTENT_PATH)) {
+
+    $active_course = _section_courses_get_active_course();
+    $active_course_forum_name = _section_courses_get_forum_name($active_course);
+    //$forum_term = taxonomy_term_load(arg(3));
+
+    $active_topic = node_load(arg(3));
+    if (!$active_topic || $active_topic->type != "forum") {
+      $forum_term = taxonomy_term_load(arg(3));
+      $active_topic = NULL;
+    }
+    else {
+      $forum_term = taxonomy_term_load($active_topic->forum_tid);
+    }
+
+    $forum_term->parents = taxonomy_get_parents_all($forum_term->tid);
+
+    /* $breadcrumb[] = array(
+      'title' => $active_course->title,
+      'href' => NM_COURSE_HOME_PATH . '/' . $active_course->nid,
+      'localized_options' => array(),
+      ); */
+
+
+    if (isset($forum_term->parents)) {
+
+      $parents = array_reverse($forum_term->parents);
+
+      if (!empty($parents)) {
+        //follow path from course_depth
+        //the depth is reached when Forum "Course Forum Name" is called
+        $depth_flag = FALSE;
+        $counter = 0;
+        foreach ($parents as $p) {
+          //break in der Tiefe von Kursforen
+          if ($p->name != $active_course_forum_name && !$depth_flag) {
+            continue;
+          }
+
+          $depth_flag = TRUE;
+
+          if ($counter++ == 0) {
+            continue;
+          }
+
+          if ($p->tid != $forum_term->tid || $active_topic) {
+            $breadcrumb[] = array(
+              'title' => $p->name,
+              'href' => NM_COURSE_FORUM_PATH . '/' . $active_course->nid . '/' . $p->tid,
+              'localized_options' => array(),
+            );
+          }
+        }
+
+
+        //add first breadcrumb item
+        $tmp = array(
+          'title' => "Forum",
+          'href' => _section_courses_get_forum_href($active_course),
+          'localized_options' => array(),
+        );
+        array_unshift($breadcrumb, $tmp);
+
+        //add last breadcrumb item
+        if (count($parents) > 2) {
+          //add currently active
+          $href = NM_COURSE_FORUM_PATH . '/' . $active_course->nid . '/' . $forum_term->tid;
+          if (current_path() == $href) {
+            $breadcrumb[] = array(
+              'title' => $forum_term->name,
+              'href' => $href,
+              'localized_options' => array(),
+            );
+          }
+
+          //topic is active
+          if (strstr(current_path(), NM_COURSE_FORUMCONTENT_PATH)) {
+            $topic_nid = arg(3);
+            $topic = node_load($topic_nid);
+            $breadcrumb[] = array(
+              'title' => $topic->title,
+              'href' => NM_COURSE_FORUMCONTENT_PATH . '/' . $active_course->nid . '/' . $topic_nid,
+              'localized_options' => array(),
+            );
+          }
+        }
+      }
+    }
+  }
+
+  return $breadcrumb;
 }

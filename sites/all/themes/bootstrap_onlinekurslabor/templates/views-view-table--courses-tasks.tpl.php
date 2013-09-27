@@ -55,7 +55,9 @@ foreach ($rows as &$row_item) {
   }
 }
 
-unset($row_item);
+if (isset($row_item)) {
+  unset($row_item);
+}
 
 
 ?>

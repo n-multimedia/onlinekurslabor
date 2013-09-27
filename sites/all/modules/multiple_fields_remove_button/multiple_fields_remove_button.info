@@ -1,0 +1,11 @@
+name= Multiple Fields Remove Button
+description= Add remove button for mutli showing fields  .
+core=7.x
+package="Fields"
+
+; Information added by drupal.org packaging script on 2013-08-17
+version = "7.x-1.0"
+core = "7.x"
+project = "multiple_fields_remove_button"
+datestamp = "1376721394"
+

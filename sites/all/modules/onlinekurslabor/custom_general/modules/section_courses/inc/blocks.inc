@@ -1,5 +1,37 @@
 <?php
 
+function _section_courses_text_biblio_view() {
+  $active_course = _section_courses_get_active_course();
+  $domain_id = _section_courses_course_get_domain_id($active_course);
+
+  $options = array(
+    'attributes' => array(),
+    'html' => TRUE,
+    'query' => array(
+      'og_group_ref' => $active_course->nid,
+      ));
+
+  $path = NM_COURSE_BIBLIO_PATH . '/' . $active_course->nid . '/' . $domain_id;
+
+
+  $active = (_section_course_biblio_visible()) ? 'active' : '';
+
+  $output = '';
+  $link_text = '<table><tbody><tr valign="top"><td><span class="badge badge-info">A</span></td> <td style="padding-left:5px;">';
+  $link_text .= 'Bibliografie';
+  $link_text .= '</td></tr></tbody></table>';
+  $link = l($link_text, $path, $options);
+
+  $output .= '<ul class="menu nav nav-list"><li class="'. $active . '">' . $link . '</li></ul>';
+
+  return $output;
+}
+
+function _section_courses_forum_breadcrumb_view() {
+
+  return custom_general_render_breadcrumb(section_courses_forum_get_breadcrumb_items());
+}
+
 /**
  * Custom function to assemble renderable array for block content.
  * Returns a renderable array with the block content.
@@ -150,7 +182,7 @@ function _course_header_section_view() {
       'content' => array(
         '#type' => 'markup',
         '#markup' => $output,
-    ));
+        ));
   }
 
   return $block;
@@ -211,6 +243,15 @@ function section_courses_instructors_tools_access() {
   return !empty($one_of_needed_roles);
 }
 
+
+function section_courses_tutor_tools_access() {
+  global $user;
+  $one_of_needed_roles = array_intersect($user->roles, array(NM_ROLE_ADMIN, NM_ROLE_DOZENT, NM_ROLE_TUTOR));
+
+  return !empty($one_of_needed_roles);
+}
+
+
 /**
  * get link Items for Insructor's Tools Block
  * 
@@ -243,7 +284,7 @@ function _section_courses_get_instructor_tools() {
     ),
     'attributes' => array(
       'title' => '',
-  ));
+      ));
 
   /*
     $members_overview_options = $default_options;
@@ -522,7 +563,7 @@ function _section_courses_navtext_to_link($course, $text) {
     'attributes' => array(),
     'query' => array(
       'og_group_ref' => $course_nid,
-  ));
+      ));
 
   $active_node = NULL;
   if ((arg(0) == 'course') && (is_numeric(arg(3)))) {

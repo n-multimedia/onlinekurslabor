@@ -86,13 +86,14 @@ function _section_course_instructor_section_active() {
   $admin_section_visible = (arg(0) == 'course' && arg(1) == 'admin');
   $home_visible = (arg(0) == 'course' && arg(1) == 'home');
   $news_visible = (arg(0) == 'course' && arg(1) == 'news');
+  $biblio_visible = _section_course_biblio_visible();
 
 
   $section_courses = $docs_visible || $info_visible ||
       $groups_visible || $members_visible ||
       $text_visible || $forum_visible ||
       $admin_section_visible ||
-      $home_visible || $tasks_visible ||
+      $home_visible || $tasks_visible || $biblio_visible ||
       $news_visible;
 
   if ($section_courses) {
@@ -106,9 +107,31 @@ function _section_course_text_visible() {
   return $text_visible = (arg(0) == 'course' && arg(1) == 'text');
 }
 
+function _section_course_biblio_visible() {
+  $biblio_visible = (arg(0) == 'course' && arg(1) == 'biblio');
+  
+  if(_section_course_text_visible()) {
+    $node_nid = arg(3);
+    $node = node_load($node_nid);
+    
+    if($node->type == NM_BIBLIO) {
+      $biblio_visible = TRUE;
+    }
+  }
+  
+  return $biblio_visible;
+}
+
+
 function _section_course_forum_visible() {
   $text_visible = (arg(0) == 'course' && arg(1) == 'forum');
   $text_visible = (arg(0) == 'course' && arg(1) == 'forumcontent') || $text_visible;
+  if (arg(0) == 'node' && is_numeric(arg(1))) {
+    if (_custom_general_get_node_type(arg(1)) == NM_COURSE_FORUMTOPIC) {
+      $text_visible = TRUE;
+    }
+  }
+
   return $text_visible;
 }
 
@@ -383,7 +406,7 @@ function custom_general_get_task_solutions($tid, $uid) {
       if (empty($cg_members)) {
         $cg_members = array((object) array('uid' => $uid));
       }
-      
+
       $solutions = array();
 
       // Loop through and load each user
@@ -485,4 +508,27 @@ function custom_general_get_users_in_group($gid) {
   $result = $query->execute();
 
   return $result->fetchAll();
+}
+
+/**
+ * theme breadcrumb array
+ * 
+ * @param type $breadcrumb
+ * @return type
+ */
+function custom_general_render_breadcrumb($breadcrumb) {
+
+  $result = array();
+
+  foreach ($breadcrumb as $parent) {
+    if (current_path() == $parent['href']) {
+      $result[] = $parent['title'];
+    }
+    else {
+      $result[] = l($parent['title'], $parent['href'], $parent['localized_options']);
+    }
+  }
+
+
+  return implode(' » ', $result);
 }

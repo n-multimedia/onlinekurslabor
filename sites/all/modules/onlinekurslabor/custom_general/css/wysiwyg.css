@@ -1,0 +1,20 @@
+/* 
+    Document   : wysiwyg.css
+    Created on : 23.09.2013, 15:40:02
+    Author     : SN
+
+*/
+
+.cke_skin_kama .cke_button .cke_button_footnotes span {
+    background-image: url(../wysiwyg_plugin/images/note_add.gif) !important;
+    
+}
+
+.cke_skin_kama .cke_button .cke_button_media span {
+    background-image: url(../wysiwyg_plugin/images/wysiwyg-media.gif) !important;
+}
+
+.cke_skin_kama .cke_button .cke_button_table span {
+    background-image: url(../wysiwyg_plugin/images/table.gif) !important;
+    background-position:0 0;
+}

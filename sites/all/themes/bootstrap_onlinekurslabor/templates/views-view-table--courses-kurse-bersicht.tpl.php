@@ -29,7 +29,9 @@ foreach($rows as &$row_item){
     $row_item['title'] =  '<h4>'. l($node->title, 'course/info/'.$node->nid).'</h4>'.$node->field_subtitle[LANGUAGE_NONE][0]['value'];
   }
 }
-unset($row_item);
+if (isset($row_item)) {
+  unset($row_item);
+}
 
 ?>
 

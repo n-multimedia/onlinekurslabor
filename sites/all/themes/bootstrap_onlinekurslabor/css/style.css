@@ -587,6 +587,12 @@ SECTION CONTENT
 /*
 Outline left sidebar
 */
+.nav-list {
+    padding:0;
+}
+.nav-list li li {
+    padding-left: 15px;
+}
 
 .nav-list>.active>a, .nav-list>.active>a:hover{
     background-color: #dee9ef;
