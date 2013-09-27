@@ -31,10 +31,15 @@ function nm_section_courses_features_default_rules_configuration() {
         }
       ],
       "DO" : [
+        { "entity_fetch" : {
+            "USING" : { "type" : "node", "id" : [ "node:og-group-ref:nid" ] },
+            "PROVIDE" : { "entity_fetched" : { "course_fetched" : "Course" } }
+          }
+        },
         { "mail" : {
             "to" : [ "node:author:mail" ],
-            "subject" : "[node:title] - wurde bewertet",
-            "message" : "Hallo,\\u000D\\u000AIhre Lösung für die Aufgabe [node:title] wurde bewertet. \\u000D\\u000A\\u000D\\u000AViele Grüße\\u000D\\u000ADas Team von [site:name]",
+            "subject" : "[course_fetched:title] - [node:title] - wurde bewertet",
+            "message" : "Hallo,\\u000D\\u000AIhre Lösung für die Aufgabe [node:title] wurde bewertet. \\u000D\\u000A\\u000D\\u000AViele Grüße\\u000D\\u000ADas Team vom [site:name]",
             "language" : [ "" ]
           }
         }
@@ -44,7 +49,7 @@ function nm_section_courses_features_default_rules_configuration() {
   $items['rules_course_task_submitted'] = entity_import('rules_config', '{ "rules_course_task_submitted" : {
       "LABEL" : "Course Task Submitted",
       "PLUGIN" : "reaction rule",
-      "REQUIRES" : [ "workflow_rules", "rules", "og" ],
+      "REQUIRES" : [ "workflow_rules", "rules", "onlinekurslabor_rules" ],
       "ON" : [ "workflow_state_changed" ],
       "IF" : [
         { "AND" : [
@@ -63,15 +68,16 @@ function nm_section_courses_features_default_rules_configuration() {
         }
       ],
       "DO" : [
-        { "og_get_members" : {
-            "USING" : { "group_content" : [ "node" ] },
-            "PROVIDE" : { "group_members" : { "group_members" : "List of group members" } }
+        { "entity_fetch" : {
+            "USING" : { "type" : "node", "id" : [ "node:og-group-ref:nid" ] },
+            "PROVIDE" : { "entity_fetched" : { "course_fetched" : "Course" } }
           }
         },
-        { "mail_to_users_of_role" : {
+        { "mail_to_user_roles_in_group" : {
+            "group" : [ "course-fetched" ],
             "roles" : { "value" : { "106505419" : "106505419" } },
-            "subject" : "[node:title] - wurde eingereicht",
-            "message" : "Hallo,\\u000D\\u000Aeine Lösung für die Aufgabe [node:title] wurde eingereicht. \\u000D\\u000A\\u000D\\u000AViele Grüße\\u000D\\u000ADas Team vom [site:name]"
+            "subject" : "[course-fetched:title] - [node:title] - wurde eingereicht",
+            "message" : "Hallo,\\u000D\\u000Aeine Lösung für die Aufgabe \\u0022[node:title]\\u0022 wurde eingereicht. \\u000D\\u000A\\u000D\\u000AViele Grüße\\u000D\\u000ADas Team vom [site:name]"
           }
         }
       ]
@@ -80,7 +86,7 @@ function nm_section_courses_features_default_rules_configuration() {
   $items['rules_courses_member_subscribe'] = entity_import('rules_config', '{ "rules_courses_member_subscribe" : {
       "LABEL" : "Courses Member Subscribe",
       "PLUGIN" : "reaction rule",
-      "REQUIRES" : [ "rules", "og" ],
+      "REQUIRES" : [ "rules", "onlinekurslabor_rules", "og" ],
       "ON" : [ "og_user_insert" ],
       "IF" : [
         { "AND" : [
@@ -107,19 +113,15 @@ function nm_section_courses_features_default_rules_configuration() {
         { "mail" : {
             "to" : [ "account:mail" ],
             "subject" : "[site:name] - Anmeldung für [entity-course:title]",
-            "message" : "Hallo [account:name],\\u000D\\u000Adanke für deine Anmeldung. Du bist nun für den Kurs [entity-course:title] eingetragen.\\u000D\\u000A\\u000D\\u000AViele Grüße\\u000D\\u000ADas Team von [site:name]",
+            "message" : "Hallo [account:name],\\u000D\\u000Adanke für deine Anmeldung. Du bist nun für den Kurs [entity-course:title] eingetragen.\\u000D\\u000A\\u000D\\u000AViele Grüße\\u000D\\u000ADas Team vom [site:name]",
             "language" : [ "account:language" ]
           }
         },
-        { "og_get_members" : {
-            "USING" : { "group_content" : [ "og-membership:entity" ] },
-            "PROVIDE" : { "group_members" : { "group_members" : "List of group members" } }
-          }
-        },
-        { "mail_to_users_of_role" : {
+        { "mail_to_user_roles_in_group" : {
+            "group" : [ "entity-course" ],
             "roles" : { "value" : { "106505419" : "106505419" } },
             "subject" : "[entity-course:title] - Anmeldung - [account:name]",
-            "message" : "Hallo,\\u000D\\u000Aein Benutzer hat sich für den Kurs [entity-course:title] angemeldet.\\u000D\\u000A\\u000D\\u000AViele Grüße\\u000D\\u000ADas Team von [site:name]"
+            "message" : "Hallo,\\u000D\\u000Ader Benutzer \\u0022[account:name]\\u0022 hat sich für den Kurs \\u0022[entity-course:title]\\u0022 angemeldet.\\u000D\\u000A\\u000D\\u000AViele Grüße\\u000D\\u000ADas Team vom [site:name]"
           }
         }
       ]

@@ -1319,7 +1319,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['view']['field'] = 'view';
   $handler->display->display_options['fields']['view']['label'] = 'Kursgruppe';
   $handler->display->display_options['fields']['view']['view'] = 'courses_user_course_groups';
-  $handler->display->display_options['fields']['view']['arguments'] = '[!uid]';
+  $handler->display->display_options['fields']['view']['arguments'] = '[!uid]/!1';
   /* Sort criterion: Benutzer: Name */
   $handler->display->display_options['sorts']['name']['id'] = 'name';
   $handler->display->display_options['sorts']['name']['table'] = 'users';

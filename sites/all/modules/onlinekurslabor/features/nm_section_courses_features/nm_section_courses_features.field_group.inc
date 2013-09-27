@@ -53,6 +53,7 @@ function nm_section_courses_features_field_group_info() {
     'weight' => '8',
     'children' => array(
       0 => 'field_collaborative_features',
+      1 => 'field_access_features',
     ),
     'format_type' => 'htab',
     'format_settings' => array(

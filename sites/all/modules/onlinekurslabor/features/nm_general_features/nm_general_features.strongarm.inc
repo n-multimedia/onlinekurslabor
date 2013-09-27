@@ -732,7 +732,7 @@ function nm_general_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'user_admin_role';
-  $strongarm->value = 30037204;
+  $strongarm->value = '30037204';
   $export['user_admin_role'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -773,7 +773,7 @@ HINWEIS: Die Löschung Ihres Benutzerkontos kann nicht rückgängig gemacht werd
 Der Link ist einen Tag lang gültig und läuft automatisch aus, falls Sie ihn nicht verwenden.
 
 Viele Grüße
-Das Team von [site:name]';
+Das Team vom [site:name]';
   $export['user_mail_cancel_confirm_body'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -798,7 +798,7 @@ Sie können sich jetzt mit einem Klick auf folgenden Link anmelden oder diesen a
 Dieser Link kann nur einmal verwendet werden und leitet Sie zu einer Seite, auf der Sie ein neues Passwort festlegen können. Er ist einen Tag lang gültig und läuft automatisch aus, falls Sie ihn nicht verwenden.
 
 Viele Grüße
-Das Team von [site:name]';
+Das Team vom [site:name]';
   $export['user_mail_password_reset_body'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -826,7 +826,7 @@ Benutzername: [user:name]
 Passwort: Ihr Passwort
 
 Viele Grüße
-Das Team von [site:name]';
+Das Team vom [site:name]';
   $export['user_mail_register_admin_created_body'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -854,7 +854,7 @@ Benutzername: [user:name]
 Passwort: Ihr Passwort
 
 Viele Grüße
-Das Team von [site:name]';
+Das Team vom [site:name]';
   $export['user_mail_register_no_approval_required_body'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -873,7 +873,7 @@ Das Team von [site:name]';
 vielen Dank für die Registrierung auf [site:name]. Ihr Antrag für ein Benutzerkonto wird aktuell geprüft. Sobald eine Freigabe erfolgt ist, erhalten Sie eine weitere E-Mail mit Informationen zum Login, Setzen Ihres Passwortes sowie weitere Details.
 
 Viele Grüße
-Das Team von [site:name]';
+Das Team vom [site:name]';
   $export['user_mail_register_pending_approval_body'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -903,7 +903,7 @@ Benutzername: [user:name]
 Passwort: Ihr Passwort
 
 Viele Grüße
-Das Team von [site:name]';
+Das Team vom [site:name]';
   $export['user_mail_status_activated_body'] = $strongarm;
 
   $strongarm = new stdClass();

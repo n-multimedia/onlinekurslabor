@@ -402,9 +402,9 @@ function _section_courses_text_outline_add_active_path(&$subtree_pointer) {
   $course_text_active = (arg(0) == 'course' && (arg(1) == 'text' || arg(1) == 'biblio'));
   if ($course_text_active) {
     $course_text_active_nid = arg(3);
-    
+
     $domain_node = node_load($course_text_active_nid);
-    
+
     //special case
     //biblio entry -> not inside book
     //need to get course text
@@ -413,7 +413,7 @@ function _section_courses_text_outline_add_active_path(&$subtree_pointer) {
       $domain_node = node_load($domain_id);
     }
 
-    
+
 
     if ($domain_node->book) {
       $active_mlid = $domain_node->book['mlid'];
@@ -1350,6 +1350,12 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
       $form['taxonomy_forums']['#attributes']['style'] = 'display:none';
     }
   }
+
+  //adapting redirects for section courses
+  if (stristr($form_id, '_node_form')) {
+    $form['actions']['delete']['#submit'] = array('section_courses_node_form_delete_submit');
+    array_push($form['actions']['submit']['#submit'], 'section_courses_node_form_submit');
+  }
 }
 
 /**
@@ -1590,4 +1596,31 @@ function section_courses_forum_get_breadcrumb_items() {
   }
 
   return $breadcrumb;
+}
+
+function section_courses_node_form_delete_submit($form, &$form_state) {
+
+  $group_nid = _custom_general_get_group($form_state['node']);
+  $group = node_load($group_nid);
+
+
+  if ($group->type == NM_COURSE) {
+    $form_state['redirect'] = array(
+      NM_CONTENT_DELETE_CONTENT_PATH . '/' . $form_state['node']->nid,
+      array(
+        'query' => array(
+          'destination' => NM_COURSE_HOME_PATH . '/' . $group->nid,
+        ),
+      )
+        ,
+    );
+  }
+}
+
+function section_courses_node_form_submit($form, &$form_state) {
+
+  /*
+    if (arg(0) == 'courses' && (arg(1) == 'edit' || arg(1) == 'add') && is_numeric(arg(2))) {
+    $form_state['redirect'] = NM_CONTENT_TEXT_PATH . '/' . $form_state['node']->nid;
+    } */
 }

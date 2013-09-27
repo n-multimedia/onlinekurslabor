@@ -321,6 +321,45 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-courses_course-field_access_features'
+  $field_instances['node-courses_course-field_access_features'] = array(
+    'bundle' => 'courses_course',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 16,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_access_features',
+    'label' => 'Zugriffseinstellungen',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+      ),
+      'type' => 'options_buttons',
+      'weight' => 10,
+    ),
+  );
+
   // Exported field_instance: 'node-courses_course-field_collaborative_features'
   $field_instances['node-courses_course-field_collaborative_features'] = array(
     'bundle' => 'courses_course',
@@ -352,7 +391,9 @@ function nm_section_courses_features_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(),
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+      ),
       'type' => 'options_buttons',
       'weight' => 9,
     ),
@@ -2692,6 +2733,7 @@ function nm_section_courses_features_field_default_field_instances() {
   t('URL');
   t('Untertitel');
   t('VHB-LVNR');
+  t('Zugriffseinstellungen');
 
   return $field_instances;
 }

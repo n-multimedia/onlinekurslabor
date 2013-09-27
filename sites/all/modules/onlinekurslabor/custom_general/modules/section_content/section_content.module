@@ -395,7 +395,6 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
 
 
   if (stristr($form_id, '_node_form')) {
-
     $form['actions']['delete']['#submit'] = array('section_content_node_form_delete_submit');
     array_push($form['actions']['submit']['#submit'], 'section_content_node_form_submit');
   }
@@ -423,7 +422,6 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
       else {
         $form['#action'] .= "?og_group_ref=" . $referer_args['gid'];
       }
-
     }
   }
 
@@ -498,15 +496,20 @@ function section_content_node_form_delete_submit($form, &$form_state) {
   $group_nid = _custom_general_get_group($form_state['node']);
   $group = node_load($group_nid);
 
-  $form_state['redirect'] = array(
-    NM_CONTENT_DELETE_CONTENT_PATH . '/' . $form_state['node']->nid,
-    array(
-      'query' => array(
-        'destination' => NM_CONTENT_TEXT_PATH . '/' . $group->nid,
-      ),
-    )
-      ,
-  );
+  dpm("delete");
+
+  if ($group->type == NM_CONTENT_DOMAIN) {
+
+    $form_state['redirect'] = array(
+      NM_CONTENT_DELETE_CONTENT_PATH . '/' . $form_state['node']->nid,
+      array(
+        'query' => array(
+          'destination' => NM_CONTENT_TEXT_PATH . '/' . $group->nid,
+        ),
+      )
+        ,
+    );
+  }
 }
 
 function section_content_subscribe_submit($form, &$form_state) {
