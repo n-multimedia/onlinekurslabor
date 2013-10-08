@@ -17,7 +17,7 @@ function _section_courses_text_biblio_view() {
   $active = (_section_course_biblio_visible()) ? 'active' : '';
 
   $output = '';
-  $link_text = '<table><tbody><tr valign="top"><td><span class="badge badge-info">A</span></td> <td style="padding-left:5px;">';
+  $link_text = '<table><tbody><tr valign="top"><td><span class="badge">A</span></td> <td style="padding-left:5px;">';
   $link_text .= 'Bibliografie';
   $link_text .= '</td></tr></tbody></table>';
   $link = l($link_text, $path, $options);

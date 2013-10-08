@@ -44,7 +44,7 @@ function _custom_general_toc_enabled($nid) {
 function nm_bookchapters_rewrite_menu_link_title(&$item) {
   $chapter_numbering = nm_bookchapters_get_chapter_numbering_recursive($item['link']['menu_name'], $item['link']['plid'], $item['link']['mlid']);
   //wrap chapter number into label
-  $chapter_numbering = '<table><tr valign="top"><td><span class="badge badge-info">' . $chapter_numbering .  '</span></td>';
+  $chapter_numbering = '<table><tr valign="top"><td><span class="badge">' . $chapter_numbering .  '</span></td>';
   $title = $item['link']['link_title'];
   //wrap title
   $title = '<td style="padding-left:5px;">' . $title . '</td></tr></table>';

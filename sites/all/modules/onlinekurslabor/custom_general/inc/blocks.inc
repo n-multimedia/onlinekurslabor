@@ -22,7 +22,7 @@ function _custom_general_theme_top_nav($variables = NULL) {
       $user_pic = drupal_render($field_view);
     }
     $realname = realname_load($user);
-    if(empty($realname))
+    if (empty($realname))
       $realname = $user->name;
 
     //user menu here
@@ -31,11 +31,31 @@ function _custom_general_theme_top_nav($variables = NULL) {
     $user_link = "";
     $user_link .= '<li class="dropdown">';
     $user_link .= '<a class="dropdown-toggle" data-toggle="dropdown" href="#">';
-    $user_link .= $user_pic . ' ' . $realname . ' ';
+
+    $user_link .= $user_pic;
+    /*
+    if (in_array(NM_ROLE_TEST_STUDENT, $user->roles)) {
+      $user_link .= ' <span class="label">Testkonto</span> ';
+    }
+    else if (in_array(NM_ROLE_ADMIN, $user->roles)) {
+      $user_link .= ' <span class="label">Admin</span> ';
+    }
+    else if (in_array(NM_ROLE_DOZENT, $user->roles)) {
+      $user_link .= ' <span class="label">Dozent</span> ';
+    }
+    else if (in_array(NM_ROLE_AUTOR, $user->roles)) {
+      $user_link .= ' <span class="label">Autor</span> ';
+    }*/
+
+    $user_link .= $realname . ' ';
+
+    $user_link .= ' ';
+
+
     $user_link .='<span class="caret"></span>';
     $user_link .='</a>';
     $user_link .='<ul class="dropdown-menu">';
-    $user_link .='<li><a href="/user/'.$user->uid.'"><i class="icon-user"></i> Mein Profil</a></li>';
+    $user_link .='<li><a href="/user/' . $user->uid . '"><i class="icon-user"></i> Mein Profil</a></li>';
     $user_link .='<li><a href="/user/logout"><i class="icon-lock"></i> Abmelden</a></li>';
     //$user_link .='</ul>';
     //$user_link .='</div>';
@@ -49,10 +69,10 @@ function _custom_general_theme_top_nav($variables = NULL) {
   $output = "";
   $output .= '<ul id="custom-top-nav" class="nav pull-right">';
 
-  if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_STUDENT, NM_ROLE_ADMIN), $user->roles) || $user->uid == 0) {
+  if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT, NM_ROLE_ADMIN), $user->roles) || $user->uid == 0) {
     $output .= '<li><a href="/courses">Kursübersicht</a></li>';
   }
-  if(array_intersect(array(NM_ROLE_AUTOR, NM_ROLE_ADMIN), $user->roles)) {
+  if (array_intersect(array(NM_ROLE_AUTOR, NM_ROLE_ADMIN), $user->roles)) {
     $output .= '<li><a href="/domains">Themenübersicht</a></li>';
   }
 
@@ -64,11 +84,10 @@ function _custom_general_theme_top_nav($variables = NULL) {
   return $output;
 }
 
-function _custom_general_theme_space()
-{
+function _custom_general_theme_space() {
   $output = '';
-  
+
   $output .= '<div id="custom_general_space" class=".clearfix"></div>';
-  
+
   return $output;
 }

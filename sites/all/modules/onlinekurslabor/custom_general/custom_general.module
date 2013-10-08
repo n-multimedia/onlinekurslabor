@@ -83,6 +83,7 @@ define("NM_ROLE_AUTOR", "Autor");
 define("NM_ROLE_ADMIN", "administrator");
 define("NM_ROLE_DOZENT", "Dozent");
 define("NM_ROLE_STUDENT", "Student");
+define("NM_ROLE_TEST_STUDENT", "Test Student");
 define("NM_ROLE_TUTOR", "Tutor");
 
 //Content
