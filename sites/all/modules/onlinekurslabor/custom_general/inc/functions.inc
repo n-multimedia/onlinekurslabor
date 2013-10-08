@@ -96,6 +96,8 @@ function _section_course_instructor_section_active() {
       $home_visible || $tasks_visible || $biblio_visible ||
       $news_visible;
 
+
+  
   if ($section_courses) {
     return TRUE;
   }
@@ -109,30 +111,30 @@ function _section_course_text_visible() {
 
 function _section_course_biblio_visible() {
   $biblio_visible = (arg(0) == 'course' && arg(1) == 'biblio');
-  
-  if(_section_course_text_visible()) {
+
+  if (_section_course_text_visible()) {
     $node_nid = arg(3);
     $node = node_load($node_nid);
-    
-    if($node->type == NM_BIBLIO) {
+
+    if ($node->type == NM_BIBLIO) {
       $biblio_visible = TRUE;
     }
   }
-  
+
   return $biblio_visible;
 }
 
-
 function _section_course_forum_visible() {
-  $text_visible = (arg(0) == 'course' && arg(1) == 'forum');
-  $text_visible = (arg(0) == 'course' && arg(1) == 'forumcontent') || $text_visible;
+  $forum_visible = (arg(0) == 'course' && arg(1) == 'forum');
+  $forum_visible = (arg(0) == 'course' && arg(1) == 'forumcontent') || $forum_visible;
+
   if (arg(0) == 'node' && is_numeric(arg(1))) {
     if (_custom_general_get_node_type(arg(1)) == NM_COURSE_FORUMTOPIC) {
-      $text_visible = TRUE;
+      $forum_visible = TRUE;
     }
   }
 
-  return $text_visible;
+  return $forum_visible;
 }
 
 function _section_course_course_group_visible() {

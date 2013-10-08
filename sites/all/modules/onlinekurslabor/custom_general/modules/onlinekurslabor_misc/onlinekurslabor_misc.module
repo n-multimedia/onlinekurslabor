@@ -163,5 +163,34 @@ function onlinekurslabor_misc_remove_button_submit_handler($form, &$form_state) 
 }
 
 function onlinekurslabor_misc_form_alter($form, $form_state, $form_id) {
-  
+
+  if (isset($form['type'])) {
+
+    //section course needed
+    $active_course = _section_courses_get_active_course();
+    if (!$active_course) {
+      return;
+    }
+    
+    $title = "";
+    switch ($form['type']['#value']) {
+      case NM_COURSE_NEWS:
+        $title = empty($form['nid']['#value']) ? 'Neue Ankündigung erstellen' : 'Ankündigung bearbeiten';
+        break;
+      case NM_COURSE_DOCS:
+        $title = empty($form['nid']['#value']) ? 'Neues Kursdokument erstellen' : 'Kursdokument bearbeiten';
+        break;
+      case NM_COURSE_GENERIC_TASK:
+        $title = empty($form['nid']['#value']) ? 'Neue Aufgabe erstellen' : 'Aufgabe bearbeiten';
+        break;
+      case NM_COURSE_GROUP:
+        $title = empty($form['nid']['#value']) ? 'Neue Kursgruppe erstellen' : 'Kursgruppe bearbeiten';
+        break;
+      case NM_COURSE:
+        $title = empty($form['nid']['#value']) ? 'Neuen Kurs erstellen' : 'Kurs bearbeiten';
+        break;
+    }
+
+    drupal_set_title($title);
+  }
 }

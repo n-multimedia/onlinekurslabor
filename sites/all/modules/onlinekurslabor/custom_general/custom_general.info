@@ -6,6 +6,7 @@ dependencies[] = og
 dependencies[] = media
 dependencies[] = media_internet
 dependencies[] = oembed
+dependencies[] = ctools
 dependencies[] = context
 dependencies[] = linkit
 dependencies[] = menu_block
