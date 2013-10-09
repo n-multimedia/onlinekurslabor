@@ -13,15 +13,13 @@ function _course_tasks_generic_init_view() {
     node_tag_new(node_load($tasks_nid));
   }
 
-
-
   return $field_val;
 }
 
 function _course_tasks_generic_get_task_nid() {
   $tasks_nid = arg(3);
   if (empty($tasks_nid) || !is_numeric($tasks_nid)) {
-    return array();
+    return NULL;
   }
   return $tasks_nid;
 }
@@ -317,6 +315,9 @@ function _course_tasks_generic_solution_form_view() {
         }
       }
     }
+    if (isset($item)) {
+      unset($item);
+    }
 
     $output .= drupal_render($form);
   }
@@ -533,7 +534,7 @@ function _course_tasks_generic_section_view($field_val, $id) {
   $description_items = _course_tasks_generic_get_section($field_val, $id);
   $output = "";
   if (count($description_items) > 0) {
-    $output .= '<div id="task_general_' . $id . '" class="'.$class.'">';
+    $output .= '<div id="task_general_' . $id . '" class="' . $class . '">';
     $output .= '<h3>' . $title . '</h3>';
     foreach ($description_items as $item) {
       $output .= $item['second'];

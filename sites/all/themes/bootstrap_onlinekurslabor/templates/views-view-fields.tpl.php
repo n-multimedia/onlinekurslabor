@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Default simple view template to all the fields as a row.
@@ -25,23 +24,27 @@
  */
 ?>
 
+
 <?php
 $classes = isset($row->nm_classes) ? ($row->nm_classes) : "";
 unset($row->nm_classes);
 ?>
 
-<div class="<?php echo $classes; ?>">
+<?php if (!empty($classes)): ?>
+  <div class="<?php echo $classes; ?>">
+<?php endif; ?>
 
-<?php foreach ($fields as $id => $field): ?>
-  <?php if (!empty($field->separator)): ?>
-    <?php print $field->separator; ?>
-  <?php endif; ?>
+  <?php foreach ($fields as $id => $field): ?>
+    <?php if (!empty($field->separator)): ?>
+      <?php print $field->separator; ?>
+    <?php endif; ?>
 
-  <?php print $field->wrapper_prefix; ?>
+    <?php print $field->wrapper_prefix; ?>
     <?php print $field->label_html; ?>
     <?php print $field->content; ?>
-  <?php print $field->wrapper_suffix; ?>
-<?php endforeach; ?>
+    <?php print $field->wrapper_suffix; ?>
+  <?php endforeach; ?>
 
-</div>
-
+<?php if (!empty($classes)): ?>
+  </div>
+<?php endif; ?>

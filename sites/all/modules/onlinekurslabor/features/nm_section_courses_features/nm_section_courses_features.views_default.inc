@@ -11,6 +11,142 @@ function nm_section_courses_features_views_default_views() {
   $export = array();
 
   $view = new view();
+  $view->name = 'courses_admin_content';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'node';
+  $view->human_name = 'Courses - Admin - Inhalte';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['use_ajax'] = TRUE;
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['group_by'] = TRUE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
+  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ vorherige Seite';
+  $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
+  $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'title' => 'title',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  /* Relationship: OG membership: OG membership from Beitrag */
+  $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
+  $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
+  $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
+  $handler->display->display_options['relationships']['og_membership_rel']['required'] = TRUE;
+  /* Feld: Inhalt: Titel */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Feld: Inhalt: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  /* Feld: Inhalt: Edit link */
+  $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
+  $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
+  $handler->display->display_options['fields']['edit_node']['label'] = 'Bearbeiten';
+  /* Feld: Inhalt: Delete link */
+  $handler->display->display_options['fields']['delete_node']['id'] = 'delete_node';
+  $handler->display->display_options['fields']['delete_node']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['delete_node']['field'] = 'delete_node';
+  $handler->display->display_options['fields']['delete_node']['label'] = 'Löschen';
+  /* Sort criterion: Inhalt: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Contextual filter: OG membership: Group ID */
+  $handler->display->display_options['arguments']['gid']['id'] = 'gid';
+  $handler->display->display_options['arguments']['gid']['table'] = 'og_membership';
+  $handler->display->display_options['arguments']['gid']['field'] = 'gid';
+  $handler->display->display_options['arguments']['gid']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['arguments']['gid']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['gid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['gid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['gid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['gid']['summary_options']['items_per_page'] = '25';
+  /* Contextual filter: Inhalt: Typ */
+  $handler->display->display_options['arguments']['type']['id'] = 'type';
+  $handler->display->display_options['arguments']['type']['table'] = 'node';
+  $handler->display->display_options['arguments']['type']['field'] = 'type';
+  $handler->display->display_options['arguments']['type']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['type']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['type']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['type']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['type']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['type']['limit'] = '0';
+  /* Filter criterion: Inhalt: Veröffentlicht */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+
+  /* Display: Content pane */
+  $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
+  $handler->display->display_options['argument_input'] = array(
+    'gid' => array(
+      'type' => 'panel',
+      'context' => 'entity:node.changed',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'OG membership: Group ID',
+    ),
+  );
+  $translatables['courses_admin_content'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Zurücksetzen'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« erste Seite'),
+    t('‹ vorherige Seite'),
+    t('nächste Seite ›'),
+    t('letzte Seite »'),
+    t('OG membership from node'),
+    t('Titel'),
+    t('Updated date'),
+    t('Bearbeiten'),
+    t('Löschen'),
+    t('Alle'),
+    t('Content pane'),
+    t('View panes'),
+  );
+  $export['courses_admin_content'] = $view;
+
+  $view = new view();
   $view->name = 'courses_admin_course_members';
   $view->description = 'Newest group members.';
   $view->tag = 'og';
@@ -231,6 +367,20 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
+    'action::workflow_vbo_given_state_action' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::workflow_vbo_next_state_action' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
     'action::views_bulk_operations_delete_item' => array(
       'selected' => 1,
       'postpone_processing' => 0,
@@ -477,9 +627,14 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
-  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['type'] = 'mini';
   $handler->display->display_options['pager']['options']['items_per_page'] = '20';
   $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
+  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ vorherige Seite';
+  $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
+  $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'views_bulk_operations' => 'views_bulk_operations',
@@ -712,7 +867,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['field_matrikelnummer']['field'] = 'field_matrikelnummer';
   $handler->display->display_options['fields']['field_matrikelnummer']['relationship'] = 'profile';
   $handler->display->display_options['fields']['field_matrikelnummer']['settings'] = array(
-    'thousand_separator' => ' ',
+    'thousand_separator' => '',
     'prefix_suffix' => 1,
   );
   /* Feld: Profil: Hochschule */
@@ -743,7 +898,8 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['access']['id'] = 'access';
   $handler->display->display_options['fields']['access']['table'] = 'users';
   $handler->display->display_options['fields']['access']['field'] = 'access';
-  $handler->display->display_options['fields']['access']['date_format'] = 'long';
+  $handler->display->display_options['fields']['access']['alter']['text'] = 'vor [access]';
+  $handler->display->display_options['fields']['access']['date_format'] = 'time span';
   /* Feld: Benutzer: Aktiv */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'users';
@@ -776,31 +932,26 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['arguments']['gid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['gid']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['gid']['validate']['type'] = 'og';
-  /* Filter criterion: Benutzer: Rollen */
-  $handler->display->display_options['filters']['rid']['id'] = 'rid';
-  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
-  $handler->display->display_options['filters']['rid']['field'] = 'rid';
-  $handler->display->display_options['filters']['rid']['value'] = array(
-    66784200 => '66784200',
-  );
-  /* Filter criterion: Benutzer: Name (raw) */
-  $handler->display->display_options['filters']['name']['id'] = 'name';
-  $handler->display->display_options['filters']['name']['table'] = 'users';
-  $handler->display->display_options['filters']['name']['field'] = 'name';
-  $handler->display->display_options['filters']['name']['operator'] = 'contains';
-  $handler->display->display_options['filters']['name']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['name']['expose']['operator_id'] = 'name_op';
-  $handler->display->display_options['filters']['name']['expose']['label'] = 'Name';
-  $handler->display->display_options['filters']['name']['expose']['operator'] = 'name_op';
-  $handler->display->display_options['filters']['name']['expose']['identifier'] = 'name';
-  $handler->display->display_options['filters']['name']['expose']['remember_roles'] = array(
+  /* Filter criterion: Realname: Name */
+  $handler->display->display_options['filters']['realname']['id'] = 'realname';
+  $handler->display->display_options['filters']['realname']['table'] = 'realname';
+  $handler->display->display_options['filters']['realname']['field'] = 'realname';
+  $handler->display->display_options['filters']['realname']['operator'] = 'contains';
+  $handler->display->display_options['filters']['realname']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['realname']['expose']['operator_id'] = 'realname_op';
+  $handler->display->display_options['filters']['realname']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['realname']['expose']['operator'] = 'realname_op';
+  $handler->display->display_options['filters']['realname']['expose']['identifier'] = 'realname';
+  $handler->display->display_options['filters']['realname']['expose']['remember_roles'] = array(
     2 => '2',
+    30037204 => 0,
+    197637936 => 0,
+    16675960 => 0,
+    106505419 => 0,
+    126456107 => 0,
+    66784200 => 0,
+    24708420 => 0,
     1 => 0,
-    4 => 0,
-    5 => 0,
-    6 => 0,
-    3 => 0,
-    7 => 0,
   );
 
   /* Display: Block */
@@ -820,13 +971,103 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['allow']['fields_override'] = 0;
   $handler->display->display_options['argument_input'] = array(
     'gid' => array(
-      'type' => 'context',
+      'type' => 'panel',
       'context' => 'entity:node.nid',
       'context_optional' => 0,
       'panel' => '0',
       'fixed' => '',
       'label' => 'OG membership: Group ID',
     ),
+  );
+
+  /* Display: Block-Studenten */
+  $handler = $view->new_display('block', 'Block-Studenten', 'block_2');
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Benutzer: Rollen */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    66784200 => '66784200',
+  );
+  /* Filter criterion: Realname: Name */
+  $handler->display->display_options['filters']['realname']['id'] = 'realname';
+  $handler->display->display_options['filters']['realname']['table'] = 'realname';
+  $handler->display->display_options['filters']['realname']['field'] = 'realname';
+  $handler->display->display_options['filters']['realname']['operator'] = 'contains';
+  $handler->display->display_options['filters']['realname']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['realname']['expose']['operator_id'] = 'realname_op';
+  $handler->display->display_options['filters']['realname']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['realname']['expose']['operator'] = 'realname_op';
+  $handler->display->display_options['filters']['realname']['expose']['identifier'] = 'realname';
+  $handler->display->display_options['filters']['realname']['expose']['remember_roles'] = array(
+    2 => '2',
+    30037204 => 0,
+    197637936 => 0,
+    16675960 => 0,
+    106505419 => 0,
+    126456107 => 0,
+    66784200 => 0,
+    24708420 => 0,
+    1 => 0,
+  );
+
+  /* Display: Block-Dozenten */
+  $handler = $view->new_display('block', 'Block-Dozenten', 'block_3');
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Benutzer: Rollen */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    106505419 => '106505419',
+  );
+
+  /* Display: Block-Test Studenten */
+  $handler = $view->new_display('block', 'Block-Test Studenten', 'block_4');
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Benutzer: Rollen */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    24708420 => '24708420',
+  );
+  /* Filter criterion: Realname: Name */
+  $handler->display->display_options['filters']['realname']['id'] = 'realname';
+  $handler->display->display_options['filters']['realname']['table'] = 'realname';
+  $handler->display->display_options['filters']['realname']['field'] = 'realname';
+  $handler->display->display_options['filters']['realname']['operator'] = 'contains';
+  $handler->display->display_options['filters']['realname']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['realname']['expose']['operator_id'] = 'realname_op';
+  $handler->display->display_options['filters']['realname']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['realname']['expose']['operator'] = 'realname_op';
+  $handler->display->display_options['filters']['realname']['expose']['identifier'] = 'realname';
+  $handler->display->display_options['filters']['realname']['expose']['remember_roles'] = array(
+    2 => '2',
+    30037204 => 0,
+    197637936 => 0,
+    16675960 => 0,
+    106505419 => 0,
+    126456107 => 0,
+    66784200 => 0,
+    24708420 => 0,
+    1 => 0,
+  );
+
+  /* Display: Block-Tutoren */
+  $handler = $view->new_display('block', 'Block-Tutoren', 'block_5');
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Benutzer: Rollen */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    126456107 => '126456107',
   );
   $translatables['courses_admin_members'] = array(
     t('Defaults'),
@@ -836,6 +1077,13 @@ function nm_section_courses_features_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« erste Seite'),
+    t('‹ vorherige Seite'),
+    t('nächste Seite ›'),
+    t('letzte Seite »'),
     t('Teilnehmer @start - @end aus insgesamt @total'),
     t('OG membership from user'),
     t('Profil'),
@@ -847,6 +1095,7 @@ function nm_section_courses_features_views_default_views() {
     t('Kursgruppe(n)'),
     t('E-Mail'),
     t('Letzter Zugriff'),
+    t('vor [access]'),
     t('Aktiv'),
     t('Edit link'),
     t('Alle'),
@@ -854,8 +1103,321 @@ function nm_section_courses_features_views_default_views() {
     t('Content pane'),
     t('View: Courses - Studenten Mitglieder'),
     t('View panes'),
+    t('Block-Studenten'),
+    t('Block-Dozenten'),
+    t('Block-Test Studenten'),
+    t('Block-Tutoren'),
   );
   $export['courses_admin_members'] = $view;
+
+  $view = new view();
+  $view->name = 'courses_admin_og_members';
+  $view->description = '';
+  $view->tag = 'og';
+  $view->base_table = 'users';
+  $view->human_name = 'Courses - Admin - OG Members';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'OG members admin';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['query_comment'] = FALSE;
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '25';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
+  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ vorherige Seite';
+  $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
+  $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'views_bulk_operations' => 'views_bulk_operations',
+    'name' => 'name',
+    'state' => 'state',
+    'og_roles' => 'og_roles',
+    'created' => 'created',
+    'og_membership_request' => 'og_membership_request',
+  );
+  $handler->display->display_options['style_options']['default'] = 'name';
+  $handler->display->display_options['style_options']['info'] = array(
+    'views_bulk_operations' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'state' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'og_roles' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'created' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'og_membership_request' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  /* Kopfbereich: OG membership: Group membership overview */
+  $handler->display->display_options['header']['og_membership_overview']['id'] = 'og_membership_overview';
+  $handler->display->display_options['header']['og_membership_overview']['table'] = 'og_membership';
+  $handler->display->display_options['header']['og_membership_overview']['field'] = 'og_membership_overview';
+  $handler->display->display_options['header']['og_membership_overview']['manager'] = 1;
+  $handler->display->display_options['header']['og_membership_overview']['total_members_1'] = 0;
+  $handler->display->display_options['header']['og_membership_overview']['total_members_2'] = 0;
+  $handler->display->display_options['header']['og_membership_overview']['total_members_3'] = 0;
+  $handler->display->display_options['header']['og_membership_overview']['total_members'] = 1;
+  $handler->display->display_options['header']['og_membership_overview']['total_content'] = 1;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['content'] = 'No people found matching the search criteria.';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  /* Relationship: OG membership: OG membership from Benutzer */
+  $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
+  $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'users';
+  $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
+  /* Feld: Bulk operations: OG membership */
+  $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'og_membership';
+  $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['fields']['views_bulk_operations']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
+    'action::views_bulk_operations_delete_item' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::system_send_email_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_script_action' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_modify_action' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+      'settings' => array(
+        'show_all_tokens' => 1,
+        'display_values' => array(
+          '_all_' => '_all_',
+        ),
+      ),
+    ),
+    'action::og_set_state_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 1,
+      'label' => 'Teilnahme bestätigen',
+    ),
+    'action::og_user_roles_action' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_argument_selector_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+      'settings' => array(
+        'url' => '',
+      ),
+    ),
+    'action::og_membership_delete_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+  );
+  /* Feld: Benutzer: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
+  /* Feld: OG membership: State */
+  $handler->display->display_options['fields']['state']['id'] = 'state';
+  $handler->display->display_options['fields']['state']['table'] = 'og_membership';
+  $handler->display->display_options['fields']['state']['field'] = 'state';
+  $handler->display->display_options['fields']['state']['relationship'] = 'og_membership_rel';
+  /* Feld: OG membership: OG user roles in group */
+  $handler->display->display_options['fields']['og_roles']['id'] = 'og_roles';
+  $handler->display->display_options['fields']['og_roles']['table'] = 'og_membership';
+  $handler->display->display_options['fields']['og_roles']['field'] = 'og_roles';
+  $handler->display->display_options['fields']['og_roles']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['fields']['og_roles']['label'] = 'Rollen';
+  $handler->display->display_options['fields']['og_roles']['type'] = 'ul';
+  /* Feld: OG membership: Created */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'og_membership';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['fields']['created']['label'] = 'Member since';
+  $handler->display->display_options['fields']['created']['date_format'] = 'time ago';
+  /* Feld: OG membership: Request message */
+  $handler->display->display_options['fields']['og_membership_request']['id'] = 'og_membership_request';
+  $handler->display->display_options['fields']['og_membership_request']['table'] = 'field_data_og_membership_request';
+  $handler->display->display_options['fields']['og_membership_request']['field'] = 'og_membership_request';
+  $handler->display->display_options['fields']['og_membership_request']['relationship'] = 'og_membership_rel';
+  /* Feld: OG membership: Edit link */
+  $handler->display->display_options['fields']['edit_membership']['id'] = 'edit_membership';
+  $handler->display->display_options['fields']['edit_membership']['table'] = 'og_membership';
+  $handler->display->display_options['fields']['edit_membership']['field'] = 'edit_membership';
+  $handler->display->display_options['fields']['edit_membership']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['fields']['edit_membership']['label'] = '';
+  $handler->display->display_options['fields']['edit_membership']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['edit_membership']['destination'] = TRUE;
+  /* Sort criterion: Benutzer: Name */
+  $handler->display->display_options['sorts']['name']['id'] = 'name';
+  $handler->display->display_options['sorts']['name']['table'] = 'users';
+  $handler->display->display_options['sorts']['name']['field'] = 'name';
+  /* Contextual filter: OG membership: Group_type */
+  $handler->display->display_options['arguments']['group_type']['id'] = 'group_type';
+  $handler->display->display_options['arguments']['group_type']['table'] = 'og_membership';
+  $handler->display->display_options['arguments']['group_type']['field'] = 'group_type';
+  $handler->display->display_options['arguments']['group_type']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['arguments']['group_type']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['group_type']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['group_type']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['group_type']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['group_type']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['group_type']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['group_type']['limit'] = '0';
+  /* Contextual filter: OG membership: Group ID */
+  $handler->display->display_options['arguments']['gid']['id'] = 'gid';
+  $handler->display->display_options['arguments']['gid']['table'] = 'og_membership';
+  $handler->display->display_options['arguments']['gid']['field'] = 'gid';
+  $handler->display->display_options['arguments']['gid']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['arguments']['gid']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['gid']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['gid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['gid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['gid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['gid']['summary_options']['items_per_page'] = '25';
+  /* Filter criterion: Benutzer: Aktiv */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'users';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: OG membership: State */
+  $handler->display->display_options['filters']['state']['id'] = 'state';
+  $handler->display->display_options['filters']['state']['table'] = 'og_membership';
+  $handler->display->display_options['filters']['state']['field'] = 'state';
+  $handler->display->display_options['filters']['state']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['filters']['state']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['state']['expose']['operator_id'] = 'state_op';
+  $handler->display->display_options['filters']['state']['expose']['label'] = 'State';
+  $handler->display->display_options['filters']['state']['expose']['operator'] = 'state_op';
+  $handler->display->display_options['filters']['state']['expose']['identifier'] = 'state';
+  /* Filter criterion: Benutzer: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  /* Filter criterion: OG membership: State */
+  $handler->display->display_options['filters']['state_1']['id'] = 'state_1';
+  $handler->display->display_options['filters']['state_1']['table'] = 'og_membership';
+  $handler->display->display_options['filters']['state_1']['field'] = 'state';
+  $handler->display->display_options['filters']['state_1']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['filters']['state_1']['value'] = array(
+    2 => '2',
+    3 => '3',
+  );
+
+  /* Display: Block - Pending */
+  $handler = $view->new_display('block', 'Block - Pending', 'block_1');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  $translatables['courses_admin_og_members'] = array(
+    t('Master'),
+    t('OG members admin'),
+    t('more'),
+    t('Apply'),
+    t('Zurücksetzen'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« erste Seite'),
+    t('‹ vorherige Seite'),
+    t('nächste Seite ›'),
+    t('letzte Seite »'),
+    t('No people found matching the search criteria.'),
+    t('OG membership from user'),
+    t('OG membership'),
+    t('Name'),
+    t('State'),
+    t('Rollen'),
+    t('Member since'),
+    t('Request message'),
+    t('Alle'),
+    t('Block - Pending'),
+  );
+  $export['courses_admin_og_members'] = $view;
 
   $view = new view();
   $view->name = 'courses_course_docs';
@@ -1192,7 +1754,6 @@ function nm_section_courses_features_views_default_views() {
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Kursgruppen';
   $handler->display->display_options['argument_input'] = array(
     'gid' => array(
       'type' => 'panel',
@@ -1224,7 +1785,6 @@ function nm_section_courses_features_views_default_views() {
     t('Status'),
     t('Alle'),
     t('Content pane'),
-    t('Kursgruppen'),
     t('View panes'),
   );
   $export['courses_course_groups'] = $view;
@@ -1248,14 +1808,19 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
-  $handler->display->display_options['pager']['type'] = 'some';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '5';
+  $handler->display->display_options['pager']['type'] = 'mini';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '20';
   $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
+  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ vorherige Seite';
+  $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
+  $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'uid' => 'uid',
+    'field_photo' => 'name',
     'name' => 'name',
-    'view' => 'view',
   );
   $handler->display->display_options['style_options']['default'] = 'name';
   $handler->display->display_options['style_options']['info'] = array(
@@ -1266,14 +1831,16 @@ function nm_section_courses_features_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'name' => array(
-      'sortable' => 1,
+    'field_photo' => array(
+      'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'view' => array(
+    'name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -1313,13 +1880,16 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['label'] = '';
+  $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
   /* Feld: Global: Ansicht */
   $handler->display->display_options['fields']['view']['id'] = 'view';
   $handler->display->display_options['fields']['view']['table'] = 'views';
   $handler->display->display_options['fields']['view']['field'] = 'view';
-  $handler->display->display_options['fields']['view']['label'] = 'Kursgruppe';
+  $handler->display->display_options['fields']['view']['label'] = '';
+  $handler->display->display_options['fields']['view']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['view']['view'] = 'courses_user_course_groups';
-  $handler->display->display_options['fields']['view']['arguments'] = '[!uid]';
+  $handler->display->display_options['fields']['view']['arguments'] = '[!uid]/!1';
   /* Sort criterion: Benutzer: Name */
   $handler->display->display_options['sorts']['name']['id'] = 'name';
   $handler->display->display_options['sorts']['name']['table'] = 'users';
@@ -1407,13 +1977,118 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['allow']['fields_override'] = 0;
   $handler->display->display_options['argument_input'] = array(
     'gid' => array(
-      'type' => 'context',
+      'type' => 'panel',
       'context' => 'entity:node.nid',
       'context_optional' => 0,
       'panel' => '0',
       'fixed' => '',
       'label' => 'OG membership: Group ID',
     ),
+  );
+
+  /* Display: Block-Studenten */
+  $handler = $view->new_display('block', 'Block-Studenten', 'block_2');
+
+  /* Display: Block-Dozenten */
+  $handler = $view->new_display('block', 'Block-Dozenten', 'block_3');
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Feld: Benutzer: Uid */
+  $handler->display->display_options['fields']['uid']['id'] = 'uid';
+  $handler->display->display_options['fields']['uid']['table'] = 'users';
+  $handler->display->display_options['fields']['uid']['field'] = 'uid';
+  $handler->display->display_options['fields']['uid']['label'] = '';
+  $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
+  /* Feld: Profil: Foto */
+  $handler->display->display_options['fields']['field_photo']['id'] = 'field_photo';
+  $handler->display->display_options['fields']['field_photo']['table'] = 'field_data_field_photo';
+  $handler->display->display_options['fields']['field_photo']['field'] = 'field_photo';
+  $handler->display->display_options['fields']['field_photo']['relationship'] = 'profile';
+  $handler->display->display_options['fields']['field_photo']['label'] = '';
+  $handler->display->display_options['fields']['field_photo']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_photo']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_photo']['settings'] = array(
+    'image_style' => 'profile_mini_thumbnail',
+    'image_link' => 'content',
+  );
+  /* Feld: Benutzer: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['label'] = '';
+  $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Benutzer: Aktiv */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'users';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  /* Filter criterion: OG membership: State */
+  $handler->display->display_options['filters']['state']['id'] = 'state';
+  $handler->display->display_options['filters']['state']['table'] = 'og_membership';
+  $handler->display->display_options['filters']['state']['field'] = 'state';
+  $handler->display->display_options['filters']['state']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['filters']['state']['value'] = array(
+    1 => '1',
+  );
+  /* Filter criterion: Benutzer: Rollen */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    106505419 => '106505419',
+  );
+
+  /* Display: Block-Tutoren */
+  $handler = $view->new_display('block', 'Block-Tutoren', 'block_4');
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Feld: Benutzer: Uid */
+  $handler->display->display_options['fields']['uid']['id'] = 'uid';
+  $handler->display->display_options['fields']['uid']['table'] = 'users';
+  $handler->display->display_options['fields']['uid']['field'] = 'uid';
+  $handler->display->display_options['fields']['uid']['label'] = '';
+  $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
+  /* Feld: Profil: Foto */
+  $handler->display->display_options['fields']['field_photo']['id'] = 'field_photo';
+  $handler->display->display_options['fields']['field_photo']['table'] = 'field_data_field_photo';
+  $handler->display->display_options['fields']['field_photo']['field'] = 'field_photo';
+  $handler->display->display_options['fields']['field_photo']['relationship'] = 'profile';
+  $handler->display->display_options['fields']['field_photo']['label'] = '';
+  $handler->display->display_options['fields']['field_photo']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_photo']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_photo']['settings'] = array(
+    'image_style' => 'profile_mini_thumbnail',
+    'image_link' => 'content',
+  );
+  /* Feld: Benutzer: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['label'] = '';
+  $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Benutzer: Aktiv */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'users';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  /* Filter criterion: OG membership: State */
+  $handler->display->display_options['filters']['state']['id'] = 'state';
+  $handler->display->display_options['filters']['state']['table'] = 'og_membership';
+  $handler->display->display_options['filters']['state']['field'] = 'state';
+  $handler->display->display_options['filters']['state']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['filters']['state']['value'] = array(
+    1 => '1',
+  );
+  /* Filter criterion: Benutzer: Rollen */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    126456107 => '126456107',
   );
   $translatables['courses_course_members'] = array(
     t('Defaults'),
@@ -1423,15 +2098,23 @@ function nm_section_courses_features_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« erste Seite'),
+    t('‹ vorherige Seite'),
+    t('nächste Seite ›'),
+    t('letzte Seite »'),
     t('OG membership from user'),
     t('Profil'),
-    t('Name'),
-    t('Kursgruppe'),
     t('Alle'),
     t('Block'),
     t('Content pane'),
     t('View: Courses - Studenten Mitglieder'),
     t('View panes'),
+    t('Block-Studenten'),
+    t('Block-Dozenten'),
+    t('Block-Tutoren'),
   );
   $export['courses_course_members'] = $view;
 
@@ -1588,6 +2271,125 @@ function nm_section_courses_features_views_default_views() {
     t('View panes'),
   );
   $export['courses_course_news'] = $view;
+
+  $view = new view();
+  $view->name = 'courses_instructors';
+  $view->description = 'Newest group members.';
+  $view->tag = 'og';
+  $view->base_table = 'users';
+  $view->human_name = 'Courses - Kursdozenten';
+  $view->core = 0;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Defaults */
+  $handler = $view->new_display('default', 'Defaults', 'default');
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['query_comment'] = FALSE;
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['row_class'] = 'pane-node-field-instructor';
+  $handler->display->display_options['style_options']['default_row_class'] = FALSE;
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'name' => 'name',
+    'uid' => 'uid',
+  );
+  $handler->display->display_options['row_options']['separator'] = ',';
+  $handler->display->display_options['row_options']['hide_empty'] = TRUE;
+  /* Relationship: OG membership: OG membership from Benutzer */
+  $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
+  $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'users';
+  $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
+  /* Relationship: Benutzer: Profil */
+  $handler->display->display_options['relationships']['profile']['id'] = 'profile';
+  $handler->display->display_options['relationships']['profile']['table'] = 'users';
+  $handler->display->display_options['relationships']['profile']['field'] = 'profile';
+  $handler->display->display_options['relationships']['profile']['bundle_types'] = array(
+    'master' => 'master',
+  );
+  /* Feld: Benutzer: Uid */
+  $handler->display->display_options['fields']['uid']['id'] = 'uid';
+  $handler->display->display_options['fields']['uid']['table'] = 'users';
+  $handler->display->display_options['fields']['uid']['field'] = 'uid';
+  $handler->display->display_options['fields']['uid']['label'] = '';
+  $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['uid']['link_to_user'] = FALSE;
+  /* Feld: Benutzer: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['label'] = '';
+  $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['name']['format_username'] = FALSE;
+  /* Sort criterion: Benutzer: Name */
+  $handler->display->display_options['sorts']['name']['id'] = 'name';
+  $handler->display->display_options['sorts']['name']['table'] = 'users';
+  $handler->display->display_options['sorts']['name']['field'] = 'name';
+  /* Sort criterion: OG membership: Created */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'og_membership';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Contextual filter: OG membership: Group ID */
+  $handler->display->display_options['arguments']['gid']['id'] = 'gid';
+  $handler->display->display_options['arguments']['gid']['table'] = 'og_membership';
+  $handler->display->display_options['arguments']['gid']['field'] = 'gid';
+  $handler->display->display_options['arguments']['gid']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['arguments']['gid']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['gid']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['gid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['gid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['gid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['gid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['gid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['gid']['validate']['type'] = 'og';
+  /* Filter criterion: Benutzer: Aktiv */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'users';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  /* Filter criterion: OG membership: State */
+  $handler->display->display_options['filters']['state']['id'] = 'state';
+  $handler->display->display_options['filters']['state']['table'] = 'og_membership';
+  $handler->display->display_options['filters']['state']['field'] = 'state';
+  $handler->display->display_options['filters']['state']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['filters']['state']['value'] = array(
+    1 => '1',
+  );
+  /* Filter criterion: Benutzer: Rollen */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    106505419 => '106505419',
+  );
+
+  /* Display: Block */
+  $handler = $view->new_display('block', 'Block', 'block_1');
+  $translatables['courses_instructors'] = array(
+    t('Defaults'),
+    t('more'),
+    t('Apply'),
+    t('Zurücksetzen'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('OG membership from user'),
+    t('Profil'),
+    t('Alle'),
+    t('Block'),
+  );
+  $export['courses_instructors'] = $view;
 
   $view = new view();
   $view->name = 'courses_kurse_bersicht';

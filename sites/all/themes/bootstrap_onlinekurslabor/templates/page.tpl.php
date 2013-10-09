@@ -68,7 +68,7 @@
       <div class="main-content">
         <?php print render($title_prefix); ?>
         <?php if (!empty($title)): ?>
-          <h1 class="page-header"><?php print $title; ?></h1>
+          <h3 class="page-header"><?php print $title; ?></h3>
         <?php endif; ?>
         <?php print render($title_suffix); ?>
         <?php print $messages; ?>

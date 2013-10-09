@@ -1,5 +1,37 @@
 <?php
 
+function _section_courses_text_biblio_view() {
+  $active_course = _section_courses_get_active_course();
+  $domain_id = _section_courses_course_get_domain_id($active_course);
+
+  $options = array(
+    'attributes' => array(),
+    'html' => TRUE,
+    'query' => array(
+      'og_group_ref' => $active_course->nid,
+      ));
+
+  $path = NM_COURSE_BIBLIO_PATH . '/' . $active_course->nid . '/' . $domain_id;
+
+
+  $active = (_section_course_biblio_visible()) ? 'active' : '';
+
+  $output = '';
+  $link_text = '<table><tbody><tr valign="top"><td><span class="badge">A</span></td> <td style="padding-left:5px;">';
+  $link_text .= 'Bibliografie';
+  $link_text .= '</td></tr></tbody></table>';
+  $link = l($link_text, $path, $options);
+
+  $output .= '<ul class="menu nav nav-list"><li class="'. $active . '">' . $link . '</li></ul>';
+
+  return $output;
+}
+
+function _section_courses_forum_breadcrumb_view() {
+
+  return custom_general_render_breadcrumb(section_courses_forum_get_breadcrumb_items());
+}
+
 /**
  * Custom function to assemble renderable array for block content.
  * Returns a renderable array with the block content.
@@ -13,7 +45,7 @@ function _section_courses_node_tabs_view() {
   /* refactor this
    * rename function could also be possible
    */
-  
+
   /*
    * user controls
    */
@@ -26,9 +58,8 @@ function _section_courses_node_tabs_view() {
       $block .= l($nav_items_single['edit'], $path);
     }
     return $block;
-    
   }
-  
+
   /*
    * node controls
    */
@@ -212,6 +243,15 @@ function section_courses_instructors_tools_access() {
   return !empty($one_of_needed_roles);
 }
 
+
+function section_courses_tutor_tools_access() {
+  global $user;
+  $one_of_needed_roles = array_intersect($user->roles, array(NM_ROLE_ADMIN, NM_ROLE_DOZENT, NM_ROLE_TUTOR));
+
+  return !empty($one_of_needed_roles);
+}
+
+
 /**
  * get link Items for Insructor's Tools Block
  * 
@@ -347,7 +387,7 @@ function _section_courses_get_instructor_tools() {
     $label = $links[$id]['label'];
     $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
-    $path = "";
+    $path = 'course/admin/' . $group_id . '/content';
     $id = 'instr_overview_content';
     $label = $links[$id]['label'];
     $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
@@ -438,6 +478,7 @@ function _course_top_navigation_view() {
       $options['link'] = '<a href="#">' . $si . '</a>';
       $options['attributes']['class'][] = 'disabled';
     }
+    $options['attributes']['class'][] = drupal_html_class($si);
 
 
     $single_links[] = $options;
@@ -460,6 +501,7 @@ function _course_top_navigation_view() {
         $options['link'] = '<a href="#">' . $si . '</a>';
         $options['attributes']['class'][] = 'disabled';
       }
+      $options['attributes']['class'][] = drupal_html_class($si);
 
       $collab_links[] = $options;
     }
@@ -709,8 +751,19 @@ function section_courses_theme_progressbar() {
     $percent = (($now - $start) / ($end - $start));
   }
 
-  $output = '<h2>Fortschritt (' . number_format($percent * 100, 0) . '%)</h2>';
-  $output .= '<div id="course_progressbar">' . $percent . '</div><div></div>';
+  $percent = number_format($percent * 100, 0);
+
+  $output = '<div class="nm_circle_progress_bar">';
+  $output .= '<div class="nm_cb_title">';
+  $output .= '<h5 class="nm_cb_title_1">zeitlicher Fortschritt</h5>';
+  $output .= '<h1 class="nm_cb_title_2">' . $percent . '</h1>';
+  $output .= '<h5 class="nm_cb_title_3">%</h5>';
+  $output .= '</div>';
+  //$output .= '<div id="course_progressbar">' . $percent . '</div><div></div>';
+
+  $output .= '<input class="knob" data-angleArc=360 data-fgColor="#333" data-thickness=".12" data-width="200" disabled value="' . $percent . '">';
+
+  $output .= '</div>';
 
   return $output;
 }

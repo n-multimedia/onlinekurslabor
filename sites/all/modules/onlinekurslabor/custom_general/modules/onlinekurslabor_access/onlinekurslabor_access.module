@@ -6,4 +6,7 @@
 
 //restrict access to course content from users not being part of the course
 
+//restrict submission to course groups, if user already is part of a group
+
+//restrict access to other  course groups, if user already is part of a group
 

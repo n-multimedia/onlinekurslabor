@@ -1,6 +1,10 @@
 <?php
 
 function _section_courses_breadcrumb_alter(&$active_trail, $item) {
+
+  //skip all breadcrumb modifications
+  return;
+
 //Check if the proper context is set first:
 //Abort if context is wrong
   $context = context_get("context", "section_courses");
@@ -95,13 +99,13 @@ function _section_courses_get_course_breadcrumb_items($group_get_id = NULL) {
   $result['active_domain_item'] = array();
   $result['active_domain_item'][] = $active_course_item;
 
-//add forum breadcrumbs
+  //add forum breadcrumbs
   if (strpos(request_uri(), NM_COURSE_FORUM_PATH) || strpos(request_uri(), NM_COURSE_FORUMCONTENT_PATH)) {
 
     $active_course = _section_courses_get_active_course();
     $active_course_forum_name = _section_courses_get_forum_name($active_course);
-//$forum_term = taxonomy_term_load(arg(3));
-
+    
+    //$forum_term = taxonomy_term_load(arg(3));
     $active_topic = node_load(arg(3));
     if (!$active_topic || $active_topic->type != "forum") {
       $forum_term = taxonomy_term_load(arg(3));
@@ -155,6 +159,7 @@ function _section_courses_get_course_breadcrumb_items($group_get_id = NULL) {
 
   return $result;
 }
+
 
 //add domain overview as first breadcrumb item
 function _section_courses_breadcrumb_append_from_entity_data($entity_type, &$active_trail, $active_entity = NULL) {

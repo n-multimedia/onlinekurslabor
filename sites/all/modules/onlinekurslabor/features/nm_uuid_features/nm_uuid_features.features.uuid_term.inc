@@ -70,7 +70,7 @@ function nm_uuid_features_uuid_features_default_terms() {
     'name' => 'Kursforen',
     'description' => '',
     'format' => NULL,
-    'weight' => 4,
+    'weight' => 9,
     'uuid' => '201741a8-6506-4e61-921b-27c57027d96a',
     'vocabulary_machine_name' => 'forums',
     'og_group_ref' => array(),

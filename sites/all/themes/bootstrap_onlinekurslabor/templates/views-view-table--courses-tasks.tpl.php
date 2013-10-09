@@ -47,13 +47,18 @@ foreach ($rows as &$row_item) {
   //Group or Single task
   if(isset($row_item['field_task_type']) && is_numeric($row_item['field_task_type'])) {
     if($row_item['field_task_type'] == NM_COURSES_TASK_TYPE_SINGLE) {
-      $row_item['field_task_type'] = '<i class="icon-user" title="Einzelaufgabe"></i>';
+      $row_item['field_task_type'] = '<i class="icon-single" title="Einzelaufgabe"></i>';
     } else
     {
-      $row_item['field_task_type'] = '<i class="icon-user" title="Gruppenaufgabe"></i><i class="icon-user" title="Gruppenaufgabe"></i>';
+      $row_item['field_task_type'] = '<i class="icon-group" title="Gruppenaufgabe"></i>';
     }
   }
 }
+
+if (isset($row_item)) {
+  unset($row_item);
+}
+
 
 ?>
 

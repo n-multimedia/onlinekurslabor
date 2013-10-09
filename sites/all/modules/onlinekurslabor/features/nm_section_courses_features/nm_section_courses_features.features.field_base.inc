@@ -39,6 +39,32 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'text_long',
   );
 
+  // Exported field_base: 'field_access_features'
+  $field_bases['field_access_features'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_access_features',
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'course_group_lock' => 'Kursgruppen An-/Abmeldung sperren',
+      ),
+      'allowed_values_function' => '',
+      'profile2_private' => FALSE,
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
   // Exported field_base: 'field_collaborative_features'
   $field_bases['field_collaborative_features'] = array(
     'active' => 1,
@@ -57,7 +83,6 @@ function nm_section_courses_features_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         'forum' => 'Forum',
-        'wiki' => 'Wiki',
       ),
       'allowed_values_function' => '',
       'profile2_private' => FALSE,
@@ -505,49 +530,6 @@ function nm_section_courses_features_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'image',
-  );
-
-  // Exported field_base: 'field_instructor'
-  $field_bases['field_instructor'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_instructor',
-    'foreign keys' => array(
-      'users' => array(
-        'columns' => array(
-          'target_id' => 'uid',
-        ),
-        'table' => 'users',
-      ),
-    ),
-    'indexes' => array(
-      'target_id' => array(
-        0 => 'target_id',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'entityreference',
-    'settings' => array(
-      'handler' => 'views',
-      'handler_settings' => array(
-        'behaviors' => array(
-          'views-select-list' => array(
-            'status' => 0,
-          ),
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => 'entityreference_1',
-          'view_name' => 'instructors',
-        ),
-      ),
-      'profile2_private' => FALSE,
-      'target_type' => 'user',
-    ),
-    'translatable' => 0,
-    'type' => 'entityreference',
   );
 
   // Exported field_base: 'field_long_description'

@@ -68,16 +68,16 @@ ul.forum-links li {
 
 .forum-node-create-links {
     width: 30%;
-    float: left;
+    /*float: left;*/
 }
 
 .forum-node-create-links-top {
-    clear: both;
+    /*clear: both;*/
     padding-top: 20px; /* Lines up horizontally with pager. */
 }
 
 .forum-node-create-links .forum-add-node {
-    float: left;
+    /*float: left;*/
     margin-right: 10px;
 }
 
@@ -616,6 +616,9 @@ posts
 }
 
 
+.indented {
+    margin-left: 30px;
+}
 
 .af-button-large {
   display: inline-block;
@@ -629,12 +632,12 @@ posts
   vertical-align: middle;
   cursor: pointer;
   border: 1px solid transparent;
-  border-radius: 4px;
+  /*border-radius: 4px;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
        -o-user-select: none;
-          user-select: none;
+          user-select: none;*/
 }
 
 .af-button-large:focus {
@@ -669,9 +672,10 @@ fieldset[disabled] .af-button-large {
 }
 
 .af-button-large {
-  color: #333333;
-  background-color: #ffffff;
+  color: #fff;
   border-color: #cccccc;
+  background-color: #467DBD;
+  
 }
 
 .af-button-large:hover,
@@ -679,9 +683,9 @@ fieldset[disabled] .af-button-large {
 .af-button-large:active,
 .af-button-large.active,
 .open .dropdown-toggle.af-button-large {
-  color: #333333;
-  background-color: #ebebeb;
+  color: #fff;
   border-color: #adadad;
+  background-color:#426DA0; 
 }
 
 .af-button-large:active,
