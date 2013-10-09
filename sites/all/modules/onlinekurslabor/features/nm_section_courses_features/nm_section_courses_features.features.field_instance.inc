@@ -639,58 +639,6 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_instructor'
-  $field_instances['node-courses_course-field_instructor'] = array(
-    'bundle' => 'courses_course',
-    'default_value' => NULL,
-    'default_value_function' => 'entityreference_prepopulate_field_default_value',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'link' => FALSE,
-        ),
-        'type' => 'entityreference_label',
-        'weight' => 3,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_instructor',
-    'label' => 'Dozent',
-    'required' => 1,
-    'settings' => array(
-      'behaviors' => array(
-        'prepopulate' => array(
-          'action' => 'none',
-          'action_on_edit' => 0,
-          'fallback' => 'none',
-          'og_context' => 0,
-          'skip_perm' => 0,
-          'status' => 1,
-        ),
-      ),
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'multiple_value_widget' => 'table',
-      ),
-      'type' => 'options_select',
-      'weight' => 1,
-    ),
-  );
-
   // Exported field_instance: 'node-courses_course-field_long_description'
   $field_instances['node-courses_course-field_long_description'] = array(
     'bundle' => 'courses_course',
@@ -2711,7 +2659,6 @@ function nm_section_courses_features_field_default_field_instances() {
   t('Body');
   t('Comment');
   t('Determine if this is an OG group.');
-  t('Dozent');
   t('Foren');
   t('Group visibility');
   t('Groups audience');

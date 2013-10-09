@@ -527,7 +527,7 @@ function custom_general_render_breadcrumb($breadcrumb) {
       $result[] = $parent['title'];
     }
     else {
-      $result[] = l($parent['title'], $parent['href'], $parent['localized_options']);
+      $result[] = '<b>' . l($parent['title'], $parent['href'], $parent['localized_options']) . '</b>';
     }
   }
 

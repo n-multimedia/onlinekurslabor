@@ -297,13 +297,6 @@ function nm_section_courses_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:courses_course:update field_instructor field'
-  $permissions['node:courses_course:update field_instructor field'] = array(
-    'roles' => array(
-      'course-administrator' => 'course-administrator',
-    ),
-  );
-
   // Exported og permission: 'node:courses_course:update field_long_description field'
   $permissions['node:courses_course:update field_long_description field'] = array(
     'roles' => array(

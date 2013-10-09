@@ -387,7 +387,7 @@ function _section_courses_get_instructor_tools() {
     $label = $links[$id]['label'];
     $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
-    $path = "";
+    $path = 'course/admin/' . $group_id . '/content';
     $id = 'instr_overview_content';
     $label = $links[$id]['label'];
     $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
@@ -478,6 +478,7 @@ function _course_top_navigation_view() {
       $options['link'] = '<a href="#">' . $si . '</a>';
       $options['attributes']['class'][] = 'disabled';
     }
+    $options['attributes']['class'][] = drupal_html_class($si);
 
 
     $single_links[] = $options;
@@ -500,6 +501,7 @@ function _course_top_navigation_view() {
         $options['link'] = '<a href="#">' . $si . '</a>';
         $options['attributes']['class'][] = 'disabled';
       }
+      $options['attributes']['class'][] = drupal_html_class($si);
 
       $collab_links[] = $options;
     }

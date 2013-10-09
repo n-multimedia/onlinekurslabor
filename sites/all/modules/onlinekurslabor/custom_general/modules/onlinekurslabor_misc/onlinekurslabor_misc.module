@@ -171,7 +171,7 @@ function onlinekurslabor_misc_form_alter($form, $form_state, $form_id) {
     if (!$active_course) {
       return;
     }
-    
+
     $title = "";
     switch ($form['type']['#value']) {
       case NM_COURSE_NEWS:
@@ -188,6 +188,9 @@ function onlinekurslabor_misc_form_alter($form, $form_state, $form_id) {
         break;
       case NM_COURSE:
         $title = empty($form['nid']['#value']) ? 'Neuen Kurs erstellen' : 'Kurs bearbeiten';
+        break;
+      case NM_COURSE_FORUMTOPIC:
+        $title = empty($form['nid']['#value']) ? 'Neues Forenthema erstellen' : 'Forenthema bearbeiten';
         break;
     }
 

@@ -136,7 +136,7 @@ function book_preprocess(&$variables, $hook) {
         $numbering = nm_bookchapters_get_chapter_numbering_mlid($link['mlid']);
 
         if (!empty($numbering)) {
-          $chapter_numbering = '<table><tr valign="top"><td><span class="badge badge-info">' . $numbering . '</span></td>';
+          $chapter_numbering = '<table><tr valign="top"><td><span class="badge">' . $numbering . '</span></td>';
           $title = $link['title'];
           //wrap title
           $title = '<td style="padding-left:5px;">' . $title . '</td></tr></table>';
@@ -161,7 +161,7 @@ function book_preprocess(&$variables, $hook) {
       $pnumbering = nm_bookchapters_get_chapter_numbering_mlid($prev['mlid']);
       if (!empty($pnumbering)) {
 
-        $chapter_numbering = '<table><tr valign="top"><td><span class="badge badge-info">' . $pnumbering . '</span></td>';
+        $chapter_numbering = '<table><tr valign="top"><td><span class="badge">' . $pnumbering . '</span></td>';
         $title = $variables['prev_title'];
         //wrap title
         $title = '<td style="padding-left:5px;">' . $title . '</td></tr></table>';
@@ -175,7 +175,7 @@ function book_preprocess(&$variables, $hook) {
       $nnumbering = nm_bookchapters_get_chapter_numbering_mlid($next['mlid']);
 
       if (!empty($nnumbering)) {
-        $chapter_numbering = '<table><tr valign="top"><td><span class="badge badge-info">' . $nnumbering . '</span></td>';
+        $chapter_numbering = '<table><tr valign="top"><td><span class="badge">' . $nnumbering . '</span></td>';
         $title = $variables['next_title'];
         //wrap title
         $title = '<td style="padding-left:5px;">' . $title . '</td></tr></table>';

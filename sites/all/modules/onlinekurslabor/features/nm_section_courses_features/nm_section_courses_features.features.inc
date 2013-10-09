@@ -246,32 +246,32 @@ function nm_section_courses_features_workflow_default_workflows() {
         'target_state' => 'Bewertet',
       ),
       3 => array(
-        'roles' => 'workflow_features_author_name,Dozent,Moderator',
+        'roles' => 'workflow_features_author_name,Moderator,Dozent',
         'state' => 'Entwurf',
         'target_state' => 'Eingereicht',
       ),
       4 => array(
-        'roles' => 'Dozent,Moderator',
+        'roles' => 'Moderator,Dozent',
         'state' => 'Entwurf',
         'target_state' => 'Bewertet',
       ),
       5 => array(
-        'roles' => 'Dozent,Moderator',
+        'roles' => 'Moderator,Dozent',
         'state' => 'Eingereicht',
         'target_state' => 'Entwurf',
       ),
       6 => array(
-        'roles' => 'Dozent,Moderator',
+        'roles' => 'Moderator,Dozent',
         'state' => 'Eingereicht',
         'target_state' => 'Bewertet',
       ),
       7 => array(
-        'roles' => 'Dozent,Moderator',
+        'roles' => 'Moderator,Dozent',
         'state' => 'Bewertet',
         'target_state' => 'Entwurf',
       ),
       8 => array(
-        'roles' => 'Dozent,Moderator',
+        'roles' => 'Moderator,Dozent',
         'state' => 'Bewertet',
         'target_state' => 'Eingereicht',
       ),

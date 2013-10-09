@@ -201,7 +201,7 @@ function bootstrap_item_list($variables) {
       }
       if (count($children) > 0) {
         // Render nested list.
-        $data .= theme('item_list', array('items' => $children, 'title' => NULL, 'type' => $type, 'attributes' => $attributes));
+        $data .= theme_item_list(array('items' => $children, 'title' => NULL, 'type' => $type, 'attributes' => $attributes));
       }
       if ($i == 1) {
         $attributes['class'][] = 'first';
@@ -213,7 +213,7 @@ function bootstrap_item_list($variables) {
     }
     $output .= "</$type>";
   }
-
+ 
   return $output;
 }
 
@@ -284,7 +284,7 @@ function bootstrap_css_alter(&$css) {
       'type' => 'external',
       'every_page' => TRUE,
       'media' => 'all',
-      'preprocess' => FALSE,
+      'preprocess' => TRUE,
       'group' => CSS_THEME,
       'browsers' => array('IE' => TRUE, '!IE' => TRUE),
       'weight' => -2,
@@ -309,6 +309,8 @@ function bootstrap_css_alter(&$css) {
  * Implements hook_js_alter().
  */
 function bootstrap_js_alter(&$js) {
+  $files = array();
+
   // Load excluded JS files from theme.
   $excludes = _bootstrap_alter(bootstrap_theme_get_info('exclude'), 'js');
 
@@ -340,21 +342,27 @@ function bootstrap_js_alter(&$js) {
   }
 
   $js = array_diff_key($js, $excludes);
-
-  // Add CDN.
   if (theme_get_setting('cdn_bootstrap')) {
-    $cdn = '//netdna.bootstrapcdn.com/twitter-bootstrap/'. theme_get_setting('cdn_bootstrap_version')  .'/js/bootstrap.min.js';
-    $js[$cdn] = drupal_js_defaults();
-    $js[$cdn]['data'] = $cdn;
-    $js[$cdn]['type'] = 'external';
-    $js[$cdn]['every_page'] = TRUE;
-    $js[$cdn]['weight'] = -100;
+    $files[] = '//netdna.bootstrapcdn.com/twitter-bootstrap/'. theme_get_setting('cdn_bootstrap_version')  .'/js/bootstrap.min.js';
+  }
+
+  // Rearrange / Add JS
+  $group = -50;
+  $weight = -100;
+  foreach ($files as $file) {
+    if (!isset($js[$file])) {
+      $js[$file] = drupal_js_defaults();
+      $js[$file]['data'] = $file;
+      $js[$file]['group'] = $group;
+      $js[$file]['weight'] = $weight;
+      $weight++;
+    }
   }
 }
 
 function _bootstrap_alter($files, $type) {
   $output = array();
-
+  
   foreach($files as $key => $value) {
     if (isset($files[$key][$type])) {
       foreach ($files[$key][$type] as $file => $name) {
@@ -369,7 +377,7 @@ function _bootstrap_alter($files, $type) {
  * Returns HTML for Bootstrap's progress bar.
  */
 function bootstrap_progress_bar($variables) {
-  $output = '<div id="progress" class="progress-wrapper">';
+  $output .= '<div id="progress" class="progress-wrapper">';
   $output .= '  <div class="progress progress-striped progress-info active">';
   $output .= '    <div class="bar" style="width: ' . $variables['percent'] . '%"></div>';
   $output .= '  </div>';
@@ -447,5 +455,5 @@ function bootstrap_preprocess_table(&$variables) {
   if(!in_array('table-no-striping', $variables['attributes']['class'])) {
     $variables['attributes']['class'][] = 'table-striped';
   }
-
+  
 }

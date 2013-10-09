@@ -28,6 +28,19 @@ Panels reset - homepage
   padding:0;
 }
 
+.pane-courses-admin-content h2.pane-title, 
+.pane-courses-admin-members h2.pane-title, 
+.pane-courses-course-members h2.pane-title,
+.pane-courses-admin-og-members h2.pane-title{
+  font-size: 24.5px;
+}
+
+
+.pane-courses-course-members .username {
+  margin-left:10px;
+}
+
+
 
 /*
 HOME PAGE HOMEPAGE
@@ -345,6 +358,19 @@ News
   margin-bottom: 30px;
 }
 
+/*
+ICONS
+*/
+.icon-single {
+  background-image: url("../img/icons/single.png");
+  background-position: 0px 0px;
+  width:21px;
+}
+.icon-group {
+  background-image: url("../img/icons/group.png");
+  background-position: 0px 0px;
+  width:21px;
+}
 
 /*
 plattform logs
@@ -557,6 +583,7 @@ FORUM
 BUTTONS
 */
 
+
 .btn {
   display: inline-block;
   text-shadow: none;
@@ -569,7 +596,20 @@ BUTTONS
   border-radius: 0px !important;
 }
 
+.btn-primary{
+  background-color: #467DBD;
+}
+.btn-primary:hover{
+  background-color: #426DA0;
+}
 
+.btn-info{
+  background-color: #49afcd;
+}
+
+.btn-info:hover{
+  background-color: #3e93ad;
+}
 
 
 .row-fluid div.forum-post {
@@ -585,7 +625,7 @@ BUTTONS
 
 
 .row-fluid .forum-post-title {
-  
+
 }
 .row-fluid .forum-post-panel-main {
   border-left: 1px solid #666;
@@ -738,6 +778,13 @@ powered by
 
 .help-block {
   clear:both;
+}
+
+/*
+FORM
+*/
+.form-actions {
+  padding-left:0;
 }
 
 /*
