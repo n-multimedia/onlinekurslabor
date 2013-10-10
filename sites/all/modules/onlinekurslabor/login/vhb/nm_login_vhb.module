@@ -75,7 +75,7 @@ function nm_login_vhb() {
       //assuming that we don't need the transfered VHB - password 
       $account = user_load_by_mail($params['EMAIL']);
       //check if user is set and has role student, dismiss else
-      if ($account && count($account->roles) == 2 && in_array(NM_ROLE_STUDENT, $account->roles)) {
+      if ($account && count($account->roles) == 2 && (in_array(NM_ROLE_STUDENT, $account->roles) || in_array(NM_ROLE_TEST_STUDENT, $account->roles))) {
         global $user;
         //check if user is not already logged in
         if (!$user->uid) {
