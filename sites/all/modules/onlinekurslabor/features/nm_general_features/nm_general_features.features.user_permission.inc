@@ -538,6 +538,8 @@ function nm_general_features_user_default_permissions() {
       'Dozent' => 'Dozent',
       'Moderator' => 'Moderator',
       'Student' => 'Student',
+      'Test Student' => 'Test Student',
+      'Tutor' => 'Tutor',
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',

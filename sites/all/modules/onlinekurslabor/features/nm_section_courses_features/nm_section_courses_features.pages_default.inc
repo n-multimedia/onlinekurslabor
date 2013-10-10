@@ -799,7 +799,7 @@ function nm_section_courses_features_default_page_manager_pages() {
       'feed_icons' => 0,
       'panel_args' => 0,
       'link_to_view' => 0,
-      'args' => '%2',
+      'args' => '%3',
       'url' => '',
       'display' => 'default',
       'context' => array(
@@ -3492,7 +3492,7 @@ echo section_courses_render_course_link($course);
     ),
   );
   $display->cache = array();
-  $display->title = '';
+  $display->title = 'Forum';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
