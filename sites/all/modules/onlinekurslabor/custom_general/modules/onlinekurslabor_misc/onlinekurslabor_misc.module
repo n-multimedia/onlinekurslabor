@@ -1,5 +1,75 @@
 <?php
 
+/*
+ * Implemeting hook_entity_load
+ */
+/*
+  function onlinekurslabor_misc_entity_load($entities, $type) {
+  global $is_https;
+  if(!$is_https && $type == "file") {
+  //replace http protocol by https
+  foreach($entities as &$file){
+  $parsed_url = parse_url($file->uri);
+  $host = $parsed_url['host'];
+  if(isset($host) && !strstr($host, "https") && strstr($host, "http")) {
+  $file->uri = str_replace('http', 'https', $file->uri);
+  dpm($file->uri);
+  }
+  }
+  unset($file);
+  }
+  }
+ */
+
+/*
+  function onlinekurslabor_misc_file_load($entities) {
+  global $is_https;
+  if (!$is_https) {
+  //replace http protocol by https
+  foreach ($entities as &$file) {
+  $parsed_url = parse_url($file->uri);
+  $host = $parsed_url['host'];
+  if (isset($host) && !strstr($host, "https") && strstr($host, "http")) {
+  $file->uri = str_replace('http', 'https', $file->uri);
+  dpm($file->uri);
+  }
+  }
+  unset($file);
+  }
+  } */
+
+/*
+  function onlinekurslabor_misc_oembed_request_alter($parameters, &$plugin, &$url) {
+  dpm($parameters);
+  dpm($plugin);
+  $plugin['endpoint'] = str_replace('http', 'https', $plugin['endpoint']);
+  dpm($plugin['endpoint']);
+  dpm($url);
+
+  }
+ */
+/**
+ * replace oembed protocol in oembed's response message
+ * Implements hook_oembed_response_alter
+ * 
+ * @global type $is_https
+ * @param type $embed
+ */
+function onlinekurslabor_misc_oembed_response_alter(&$embed) {
+  global $is_https;
+  
+  if ($is_https) {
+    //iframe: replace http protocol by https
+    if (isset($embed['html'])) {
+      $html = $embed['html'];
+      if (!strstr($html, "https") && strstr($html, "http")) {
+        $html = str_replace('http', 'https', $html);
+      }
+      $embed['html'] = $html;
+    }
+  }
+}
+
 /**
  * Ajax callback remove field when remove click is trigger.
  *
