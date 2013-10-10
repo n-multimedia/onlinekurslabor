@@ -13,7 +13,7 @@ function nm_section_content_features_user_default_roles() {
   // Exported role: Autor.
   $roles['Autor'] = array(
     'name' => 'Autor',
-    'weight' => 6,
+    'weight' => 2,
     'machine_name' => 'autor',
   );
 
