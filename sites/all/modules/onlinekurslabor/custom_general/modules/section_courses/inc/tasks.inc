@@ -495,9 +495,13 @@ function _section_courses_task_solution_form_submit($form, &$form_state) {
     $node->field_generic_task[LANGUAGE_NONE][]['target_id'] = $form_state['values']['task_nid'];
   }
 
-  foreach ($form_state['values']['solutions'] as $item) {
-    $val = $item['value'];
-    $node->field_generic_solution_entry[LANGUAGE_NONE][] = array('value' => $val, 'format' => NM_FILTER_FORMAT_FILTERED_HTML);
+  //check if any solution fields were committed first
+  //possibility of task without solution fields
+  if (isset($form_state['values']['solutions'])) {
+    foreach ($form_state['values']['solutions'] as $item) {
+      $val = $item['value'];
+      $node->field_generic_solution_entry[LANGUAGE_NONE][] = array('value' => $val, 'format' => NM_FILTER_FORMAT_FILTERED_HTML);
+    }
   }
 
 
