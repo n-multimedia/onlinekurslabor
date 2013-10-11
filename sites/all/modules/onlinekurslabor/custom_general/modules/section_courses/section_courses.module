@@ -372,7 +372,7 @@ function _section_courses_get_forum_href($course, $forum_term_id = NULL) {
   return;
 
   //flags
-  $hide_outline = in_array(NM_ROLE_STUDENT, $user->roles);
+  $hide_outline = array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $user->roles);
 
 
   if ($hide_outline) {
@@ -997,7 +997,7 @@ function _section_courses_get_coursegroup_gid($uid) {
 
   //we want to redirect students directly to their course group
   //check fo role
-  if (in_array(NM_ROLE_STUDENT, $user->roles)) {
+  if (array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $user->roles)) {
     //get all gids the user belongs to
     $groups = og_get_groups_by_user($user);
     $groups = $groups['node'] ? $groups['node'] : array();
@@ -1526,7 +1526,7 @@ function section_courses_og_user_access_alter(&$perm, $context) {
     //Course Group - Content Type
     if ($group_type == 'node' && $group->type == NM_COURSE_GROUP) {
       //Student
-      if (in_array(NM_ROLE_STUDENT, $account->roles)) {
+      if (array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $account->roles)) {
         //lock group feature active
         $group_locked = _section_courses_feature_active($course, NM_COURSE_FEATURE_COURSE_GROUP_LOCK);
         //deny access
