@@ -397,7 +397,7 @@ function custom_general_get_task_solutions($tid, $uid) {
 
     //0 single | 1 group
     //if group task and student
-    if ($task_type == 1 && in_array(NM_ROLE_STUDENT, $account->roles)) {
+    if ($task_type == 1 && array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $account->roles)) {
       //get course group
       $cg_gid = _section_courses_get_coursegroup_gid($uid);
 
@@ -416,7 +416,7 @@ function custom_general_get_task_solutions($tid, $uid) {
         // Load the user object if necessary
         $account = user_load($member->uid);
 
-        if (!in_array(NM_ROLE_STUDENT, $account->roles))
+        if (!array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $account->roles))
           continue;
 
         // Do whatever else you need to
