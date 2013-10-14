@@ -88,7 +88,7 @@ function onlinekurslabor_redirect_preprocess_page($variables) {
     if (strstr(current_path(), NM_COURSE_TEXT_PATH)) {
 
       $active_course = _section_courses_get_active_course();
-      $domain_ref = $active_course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
+      $domain_ref = _section_courses_course_get_domain_id($active_course); //$active_course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
 
       $text_nid = arg(3);
       $text_node = node_load($text_nid);
