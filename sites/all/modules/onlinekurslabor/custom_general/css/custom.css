@@ -4,39 +4,39 @@ Knob
 */
 
 input[disabled].knob {
-  display: none;
+    display: none;
 }
 
 
 .nm_circle_progress_bar {
-  width:200px;
-  position:relative;
-  margin-left:auto;
-  margin-right:auto;
+    width:200px;
+    position:relative;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 .nm_circle_progress_bar .nm_cb_title, .nm_circle_progress_bar canvas, .nm_circle_progress_bar div{
-  display: block;
+    display: block;
 
-  margin-left:auto;
-  margin-right:auto;
-  text-align: center;
-  position:relative;
+    margin-left:auto;
+    margin-right:auto;
+    text-align: center;
+    position:relative;
 
 }
 
 .nm_circle_progress_bar .nm_cb_title {
-  position:absolute;
+    position:absolute;
 
-  top:60px;
-  left:28px;
+    top:60px;
+    left:28px;
 }
 
 .nm_cb_title_2 {
-  margin-bottom:0;
+    margin-bottom:0;
 }
 .nm_cb_title_3 {
-  margin-top:0;
+    margin-top:0;
 }
 
 
@@ -46,49 +46,49 @@ Content-Section
 
 .region-sidebar-first h2
 {
-  font-size: 18px;
+    font-size: 18px;
 }
 .unread_tiny_box {
-  position: absolute;
-  background: #f20000;
-  border: 1px solid #ddd;
+    position: absolute;
+    background: #f20000;
+    border: 1px solid #ddd;
 
-  font-size: 11px; 
-  color: white; 
-  font-weight: bold; 
+    font-size: 11px; 
+    color: white; 
+    font-weight: bold; 
 
-  bottom:25px; 
-  right: 0px; 
-  padding:2px; 
-  margin-left: 2px; 
-  display:inline; 
+    bottom:25px; 
+    right: 0px; 
+    padding:2px; 
+    margin-left: 2px; 
+    display:inline; 
 
-  padding:2px 6px;
+    padding:2px 6px;
 
 }
 .unread_tiny_box:after, .unread_tiny_box:before {
-  top: 100%;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
 }
 
 .unread_tiny_box:after {
-  border-color: rgba(242, 0, 0, 0);
-  border-top-color: #f20000;
-  border-width: 4px;
-  left: 50%;
-  margin-left: -4px;
+    border-color: rgba(242, 0, 0, 0);
+    border-top-color: #f20000;
+    border-width: 4px;
+    left: 50%;
+    margin-left: -4px;
 }
 .unread_tiny_box:before {
-  border-color: rgba(204, 204, 204, 0);
-  border-top-color: #ccc;
-  border-width: 5px;
-  left: 50%;
-  margin-left: -5px;
+    border-color: rgba(204, 204, 204, 0);
+    border-top-color: #ccc;
+    border-width: 5px;
+    left: 50%;
+    margin-left: -5px;
 }
 
 /**
@@ -101,24 +101,24 @@ Sponsors
 
 .courses_sponsors_cols {
 
-  height:185px;
-  overflow:hidden;
-  padding:7px 10px;
-  position:absolute;
-  top:0;
-  right:1px;
+    height:185px;
+    overflow:hidden;
+    padding:7px 10px;
+    position:absolute;
+    top:0;
+    right:1px;
 
 }
 .courses_sponsors_col {
-  display:inline-block;
-  vertical-align: top;
-  margin-left:10px;
-  float:right;
+    display:inline-block;
+    vertical-align: top;
+    margin-left:10px;
+    float:right;
 }
 
 .courses_sponsors a {
-  margin-bottom:7px;
-  display:block;
+    margin-bottom:7px;
+    display:block;
 }
 
 /*
@@ -153,23 +153,23 @@ div ul.section_nav_tools li a
 
 #course_top_navigation .btn
 {
-  position:relative;
-  border-top:0;
-  border-bottom:0;
-  -webkit-border-radius:0px;
-  border-radius: 0px;
-  moz-border-radius: 0px;
-  padding:0;
-  display:inline-block;
-  height:42px;
-  margin-left:-1px;
-  left:1px;
+    position:relative;
+    border-top:0;
+    border-bottom:0;
+    -webkit-border-radius:0px;
+    border-radius: 0px;
+    moz-border-radius: 0px;
+    padding:0;
+    display:inline-block;
+    height:42px;
+    margin-left:-1px;
+    left:1px;
 }
 #course_top_navigation .btn a
 {
-  padding: 11px 15px;
-  position:relative;
-  display:inline-block;
+    padding: 11px 15px;
+    position:relative;
+    display:inline-block;
 
 }
 
@@ -178,7 +178,7 @@ div ul.section_nav_tools li a
 }
 
 #course_top_navigation ul{
-  margin:0;
+    margin:0;
 }
 
 
@@ -187,7 +187,7 @@ AUTHOR AND INSTRUCOT'S TOOLS
 */
 
 .row-fluid .panels-flexible-column {
-  position:relative;
+    position:relative;
 }
 
 /*
@@ -195,37 +195,37 @@ Course Info
 */
 
 .panels-flexible-row.course-info-header .panel-separator {
-  display:none;
+    display:none;
 }
 .panels-flexible-row.course-info-header .panels-flexible-row-inside, .panels-flexible-row.course-info-subheader .panels-flexible-row-inside, .panels-flexible-region.course-info-content {
-  padding: 15px 0 15px 15px;
+    padding: 15px 0 15px 15px;
 }
 
 .panels-flexible-row.course-info-header h2, .panels-flexible-region.course-info-content h2 {
-  font-size: 25px;
+    font-size: 25px;
 }
 .panels-flexible-row.course-info-header h2 {
-  margin-bottom:5px;
+    margin-bottom:5px;
 }
 
 
 .view-instructor-subtitle {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 .panels-flexible-row.course-info-subheader .pane-entity-field {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .panels-flexible-row.course-info-header, .panels-flexible-region.course-info-content {
-  background-color: #f2f2f2;
+    background-color: #f2f2f2;
 }
 
 .view-instructor-subtitle {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .view-instructor-subtitle a {
-  color: #555;
+    color: #555;
 }
 
 /*
@@ -235,48 +235,48 @@ Instructor's Tools
 
 #instructors_tools-container
 {
-  width:60px;
-  overflow: hidden;
-  display: block;
-  padding:0;
-  direction:rtl;
-  text-align: right;
-  position:absolute;
-  right:0;
-  background-color: rgba(200,200,200, 0.3);
-  z-index: 1;
+    width:60px;
+    overflow: hidden;
+    display: block;
+    padding:0;
+    direction:rtl;
+    text-align: right;
+    position:absolute;
+    right:0;
+    background-color: rgba(200,200,200, 0.3);
+    z-index: 1;
 }
 
 #instructors_tools
 {
-  display:inline-block;
-  position:relative;
+    display:inline-block;
+    position:relative;
 }
 
 #instructors_tools-container .row-fluid:hover 
 {
-  background-color: rgba(0,136,204, 0.03);
+    background-color: rgba(0,136,204, 0.03);
 }
 
 #instructors_tools-container .btn
 {
-  display: inline-block;
-  width: 58px;
-  white-space: normal;
-  font-size:  10px;
-  word-wrap: break-word;
-  height: 60px;
-  padding:0;
-  font-weight: bold;
-  line-height: 8px;
-  margin-left:-1px;
-  left:1px;
+    display: inline-block;
+    width: 58px;
+    white-space: normal;
+    font-size:  10px;
+    word-wrap: break-word;
+    height: 60px;
+    padding:0;
+    font-weight: bold;
+    line-height: 8px;
+    margin-left:-1px;
+    left:1px;
 
 }
 
 #instructors_tools-container .one_item_toobar
 {
-  overflow:hidden;
+    overflow:hidden;
 }
 
 #instructors_tools-container .btn:not(:last-child) 
@@ -285,85 +285,85 @@ Instructor's Tools
 }
 
 #content_node_tabs-container li {
-  display: inline-block;
-  margin-right: 5px;
+    display: inline-block;
+    margin-right: 5px;
 }
 
 a.disabled {
-  pointer-events: none;
-  cursor: default;
-  color: #333;
+    pointer-events: none;
+    cursor: default;
+    color: #333;
 }
 
 .span1 .pane-block
 {
-  width:100%;
-  position:relative;
-  height: 300px;
+    width:100%;
+    position:relative;
+    height: 300px;
 }
 
 #instructors_tools-container .btn a
 {
-  display:block;
-  height: 60px;
+    display:block;
+    height: 60px;
 }
 
 
 #instructors_tools-container .btn a:before {
-  content: ' ';
-  display: block;
-  width: 60px;
-  height: 45px;  
-  position:relative;
-  margin: auto;
-  background-image: url(../images/icons/transparent-icons---instructor.png);
-  background-repeat: no-repeat;
+    content: ' ';
+    display: block;
+    width: 60px;
+    height: 45px;  
+    position:relative;
+    margin: auto;
+    background-image: url(../images/icons/transparent-icons---instructor.png);
+    background-repeat: no-repeat;
 }
 
 #instructors_tools-container .btn#instr_add_news a:before
 {
-  background-position: 0px 0px;
+    background-position: 0px 0px;
 }
 #instructors_tools-container .btn#instr_add_news a:before
 {
-  background-position: 0px 0px;
+    background-position: 0px 0px;
 }
 #instructors_tools-container .btn#instr_add_news a:hover:before, #instructors_tools-container .btn#instr_add_news a.active:before
 {
-  background-position: 0px -50px;
+    background-position: 0px -50px;
 }
 #instructors_tools-container .btn#instr_add_docs a:before
 {
-  background-position: -60px 0px;
+    background-position: -60px 0px;
 }
 #instructors_tools-container .btn#instr_add_docs a:hover:before, #instructors_tools-container .btn#instr_add_docs a.active:before
 {
-  background-position: -60px -50px;
+    background-position: -60px -50px;
 }
 #instructors_tools-container .btn#instr_add_groups a:before
 {
-  background-position: -120px 0px;
+    background-position: -120px 0px;
 }
 #instructors_tools-container .btn#instr_add_groups a:hover:before, #instructors_tools-container .btn#instr_add_groups a.active:before
 {
-  background-position: -120px -50px;
+    background-position: -120px -50px;
 }
 #instructors_tools-container .btn#instr_add_members a:before
 {
-  background-position: -180px 0px;
+    background-position: -180px 0px;
 }
 #instructors_tools-container .btn#instr_add_members a:hover:before, #instructors_tools-container .btn#instr_add_members a.active:before
 {
-  background-position: -180px -50px;
+    background-position: -180px -50px;
 }
 
 #instructors_tools-container .btn#instr_add_task a:before
 {
-  background-position: -180px -100px;
+    background-position: -180px -100px;
 }
 #instructors_tools-container .btn#instr_add_task a:hover:before, #instructors_tools-container .btn#instr_add_task a.active:before
 {
-  background-position: -180px -150px;
+    background-position: -180px -150px;
 }
 
 /*
@@ -372,36 +372,36 @@ Lists / Overviews
 
 #instructors_tools-container .btn#instr_overview_members a:before
 {
-  background-position: -240px 0px;
+    background-position: -240px 0px;
 }
 #instructors_tools-container .btn#instr_overview_members a:hover:before, #instructors_tools-container .btn#instr_overview_members a.active:before
 {
-  background-position: -240px -50px;
+    background-position: -240px -50px;
 }
 #instructors_tools-container .btn#instr_overview_groups a:before
 {
-  background-position: -300px 0px;
+    background-position: -300px 0px;
 }
 #instructors_tools-container .btn#instr_overview_groups a:hover:before, #instructors_tools-container .btn#instr_overview_groups a.active:before
 {
-  background-position: -300px -50px;
+    background-position: -300px -50px;
 }
 #instructors_tools-container .btn#instr_course_settings a:before
 {
-  background-position: 0px -100px;
+    background-position: 0px -100px;
 }
 #instructors_tools-container .btn#instr_course_settings a:hover:before, #instructors_tools-container .btn#instr_course_settings a.active:before
 {
-  background-position: 0px -150px;
+    background-position: 0px -150px;
 }
 
 #instructors_tools-container .btn#instr_overview_content a:before
 {
-  background-position: -60px -100px;
+    background-position: -60px -100px;
 }
 #instructors_tools-container .btn#instr_overview_content a:hover:before, #instructors_tools-container .btn#instr_overview_content a.active:before
 {
-  background-position: -60px -150px;
+    background-position: -60px -150px;
 }
 
 /*
@@ -410,21 +410,21 @@ Settings
 
 #instructors_tools-container .btn#instr_overview_forums a:before
 {
-  background-position: -360px 0px;
+    background-position: -360px 0px;
 }
 #instructors_tools-container .btn#instr_overview_forums a:hover:before, #instructors_tools-container .btn#instr_overview_forums a.active:before
 {
-  background-position: -360px -50px;
+    background-position: -360px -50px;
 }
 
 #instructors_tools-toolbar 
 {
-  display:none;
-  position:absolute;
-  background-color: #aaa;
-  color:#fff;
-  bottom:55px;
-  left:0;  
+    display:none;
+    position:absolute;
+    background-color: #aaa;
+    color:#fff;
+    bottom:55px;
+    left:0;  
 }
 
 
@@ -434,47 +434,47 @@ Authors's Tools
 
 #authors_tools
 {
-  display:inline-block;
-  position:relative;
+    display:inline-block;
+    position:relative;
 }
 
 #authors_tools-container .row-fluid:hover 
 {
-  background-color: rgba(0,136,204, 0.03);
+    background-color: rgba(0,136,204, 0.03);
 }
 
 #authors_tools-container
 {
-  width:60px;
-  overflow: hidden;
-  display: block;
-  padding:0;
-  direction:rtl;
-  text-align: right;
-  position:absolute;
-  right:0;
-  background-color: rgba(200,200,200, 0.3);
+    width:60px;
+    overflow: hidden;
+    display: block;
+    padding:0;
+    direction:rtl;
+    text-align: right;
+    position:absolute;
+    right:0;
+    background-color: rgba(200,200,200, 0.3);
 }
 
 #authors_tools-container .btn
 {
-  display: inline-block;
-  width: 58px;
-  white-space: normal;
-  font-size:  10px;
-  word-wrap: break-word;
-  height: 65px;
-  padding:0;
-  font-weight: bold;
-  line-height: 8px;
-  margin-left:-1px;
-  left:1px;
+    display: inline-block;
+    width: 58px;
+    white-space: normal;
+    font-size:  10px;
+    word-wrap: break-word;
+    height: 65px;
+    padding:0;
+    font-weight: bold;
+    line-height: 8px;
+    margin-left:-1px;
+    left:1px;
 
 }
 
 #authors_tools-container .one_item_toobar
 {
-  overflow:hidden;
+    overflow:hidden;
 }
 
 #authors_tools-container .btn:not(:last-child) 
@@ -484,120 +484,120 @@ Authors's Tools
 
 #block-block-4, .pane-block-4
 {
-  width:100%;
-  position:relative;
-  height: 300px;
+    width:100%;
+    position:relative;
+    height: 300px;
 }
 
 #authors_tools-container .btn a
 {
-  display:block;
+    display:block;
 }
 
 
 #authors_tools-container .btn a:before {
-  content: ' ';
-  display: block;
-  width: 60px;
-  height: 45px;  
-  position:relative;
-  margin: auto;
-  background-image: url(../images/icons/transparent-icons---author.png);
-  background-repeat: no-repeat;
-  margin-bottom:1px;
+    content: ' ';
+    display: block;
+    width: 60px;
+    height: 45px;  
+    position:relative;
+    margin: auto;
+    background-image: url(../images/icons/transparent-icons---author.png);
+    background-repeat: no-repeat;
+    margin-bottom:1px;
 }
 
 
 #authors_tools-container .btn#author_biblio_overview a:before
 {
-  background-position: 0px 0px;
+    background-position: 0px 0px;
 }
 #authors_tools-container .btn#author_biblio_overview a:hover:before, #authors_tools-container .btn#author_biblio_overview a.active:before
 {
-  background-position: 0px -50px;
+    background-position: 0px -50px;
 }
 
 #authors_tools-container .btn#author_biblio_add a:before
 {
-  background-position: -60px 0px;
+    background-position: -60px 0px;
 }
 #authors_tools-container .btn#author_biblio_add a:hover:before, #authors_tools-container .btn#author_biblio_add a.active:before
 {
-  background-position: -60px -50px;
+    background-position: -60px -50px;
 }
 
 #authors_tools-container .btn#author_media_overview a:before
 {
-  background-position: -120px 0px;
+    background-position: -120px 0px;
 }
 #authors_tools-container .btn#author_media_overview a:hover:before, #authors_tools-container .btn#author_biblio_add a.active:before
 {
-  background-position: -120px -50px;
+    background-position: -120px -50px;
 }
 
 
 #authors_tools-container .btn#author_chapter_add a:before
 {
-  background-position: -240px 0px;
+    background-position: -240px 0px;
 }
 #authors_tools-container .btn#author_chapter_add a:hover:before, #authors_tools-container .btn#author_chapter_add a.active:before
 {
-  background-position: -240px -50px;
+    background-position: -240px -50px;
 }
 
 #authors_tools-container .btn#author_subchapter_add a:before
 {
-  background-position: -300px 0px;
+    background-position: -300px 0px;
 }
 #authors_tools-container .btn#author_subchapter_add a:hover:before, #authors_tools-container .btn#author_subchapter_add a.active:before
 {
-  background-position: -300px -50px;
+    background-position: -300px -50px;
 }
 
 #authors_tools-container .btn#author_chapter_order a:before
 {
-  background-position: -360px 0px;
+    background-position: -360px 0px;
 }
 #authors_tools-container .btn#author_chapter_order a:hover:before, #authors_tools-container .btn#author_chapter_order a.active:before
 {
-  background-position: -360px -50px;
+    background-position: -360px -50px;
 }
 
 #authors_tools-container .btn#author_tasks_overview a:before
 {
-  background-position: 0px -100px;
+    background-position: 0px -100px;
 }
 #authors_tools-container .btn#author_tasks_overview a:hover:before, #authors_tools-container .btn#author_tasks_overview a.active:before
 {
-  background-position: 0px -150px;
+    background-position: 0px -150px;
 }
 
 #authors_tools-container .btn#author_tasks_qaa_add a:before
 {
-  background-position: -60px -100px;
+    background-position: -60px -100px;
 }
 #authors_tools-container .btn#author_tasks_qaa_add a:hover:before, #authors_tools-container .btn#author_tasks_qaa_add a.active:before
 {
-  background-position: -60px -150px;
+    background-position: -60px -150px;
 }
 
 #authors_tools-container .btn#author_tasks_mc_add a:before
 {
-  background-position: -120px -100px;
+    background-position: -120px -100px;
 }
 #authors_tools-container .btn#author_tasks_mc_add a:hover:before, #authors_tools-container .btn#author_tasks_mc_add a.active:before
 {
-  background-position: -120px -150px;
+    background-position: -120px -150px;
 }
 
 #instructors_tools-toolbar 
 {
-  display:none;
-  position:absolute;
-  background-color: #aaa;
-  color:#fff;
-  bottom:55px;
-  left:0;  
+    display:none;
+    position:absolute;
+    background-color: #aaa;
+    color:#fff;
+    bottom:55px;
+    left:0;  
 }
 
 /*
@@ -612,19 +612,19 @@ Course Toolbar items
 
 #course_top_nav_single-icon, #course_top_nav_collab-icon
 {
-  display:inline-block;
-  width: 45px;
-  height:42px;
-  background-image:  url(../images/icons/transparent-icons---course.png);
-  background-repeat: no-repeat;
-  vertical-align: middle;
-  width: 65px;
+    display:inline-block;
+    width: 45px;
+    height:42px;
+    background-image:  url(../images/icons/transparent-icons---course.png);
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    width: 65px;
 }
 
 #course_top_nav_collab-icon
 {
 
-  background-position: -65px 0px;
+    background-position: -65px 0px;
 
 }
 
@@ -737,33 +737,33 @@ Editor
 
 #linkit-modal #edit-biblio-search, 
 #linkit-modal #edit-tasks-search {
-  background: transparent url(../images/icons/throbber-inactive.gif) no-repeat 99% 10px;
+    background: transparent url(../images/icons/throbber-inactive.gif) no-repeat 99% 10px;
 } 
 #linkit-modal #edit-biblio-search.fetching,
 #linkit-modal #edit-tasks-search.fetching{ 
-  background-image: url(../images/icons/throbber-active.gif); 
+    background-image: url(../images/icons/throbber-active.gif); 
 }
 
 #linkit-modal #edit-biblio-tag, #linkit-modal #edit-biblio-search, 
 #linkit-modal #edit-tasks-tag, #linkit-modal #edit-tasks-search {
-  font-size: 1em;
-  height: 2em;
-  padding: 3px 25px 3px 5px;
-  width: 440px;
-  margin:auto;
+    font-size: 1em;
+    height: 2em;
+    padding: 3px 25px 3px 5px;
+    width: 440px;
+    margin:auto;
 }
 
 #linkit-modal .form-item {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 #linkit-modal .btn
 {
-  margin-right: 5px;
+    margin-right: 5px;
 }
 
 #wysiwyg-toggle-edit-assessment-value
 {
-  display: none !important;
+    display: none !important;
 }
 
 
@@ -772,31 +772,31 @@ Embeded Tasks
 */
 
 .embeded_task {
-  padding: 20px 20px 0px 80px;
-  background-color: #e6f2fc;
-  border:1px solid #ccc;
-  margin: 15px 0 15px 0;
-  position:relative;
-  min-height:70px;
+    padding: 20px 20px 0px 80px;
+    background-color: #e6f2fc;
+    border:1px solid #ccc;
+    margin: 15px 0 15px 0;
+    position:relative;
+    min-height:70px;
 
 }
 
 .embeded_task:before
 {
-  content: ' ';
-  position:absolute;
-  display:block;
-  width: 60px;
-  height:50px;
-  left:10px;
-  top:20px;
-  background-image: url(../images/icons/transparent-icons---author.png);
-  background-repeat: no-repeat;
-  background-position: -420px 0;
+    content: ' ';
+    position:absolute;
+    display:block;
+    width: 60px;
+    height:50px;
+    left:10px;
+    top:20px;
+    background-image: url(../images/icons/transparent-icons---author.png);
+    background-repeat: no-repeat;
+    background-position: -420px 0;
 }
 
 .embeded_task .solution{
-  margin-top:15px;
+    margin-top:15px;
 }
 
 /*
@@ -805,11 +805,11 @@ Embeded Tasks
 
 .node-content-multiple-choice .form-type-checkbox
 {
-  display:inline-block;
+    display:inline-block;
 }
 .node-content-multiple-choice label
 {
-  display:inline-block;
+    display:inline-block;
 }
 
 
@@ -847,13 +847,13 @@ Instructors Block
 
 body.cke_show_borders
 {
-  padding:0;
+    padding:0;
 }
 
 
 span.cke_skin_kama
 {
-  padding:0 !important;
+    padding:0 !important;
 }
 
 /*
@@ -865,21 +865,21 @@ Student
 */
 #students-add-wrapper .input-prepend
 {
-  margin-bottom:0px;
+    margin-bottom:0px;
 }
 #users_item_container .form-item {
-  display:inline-block;
-  margin-right:5px;
+    display:inline-block;
+    margin-right:5px;
 }
 #students-add-wrapper .form-item {
-  display:inline-block;
+    display:inline-block;
 }
 #students-add-wrapper .form-item-users-container-add-user-num .form-text {
-  width:40px;
-  margin-bottom:0px;
+    width:40px;
+    margin-bottom:0px;
 }
 #section-courses-student-registration-form #edit-submit {
-  margin-top:40px;
+    margin-top:40px;
 }
 
 /*
@@ -887,5 +887,22 @@ Student
 */
 
 .row-fluid .span12 .node iframe{
-  margin: 0;
+    margin: 0;
+}
+
+
+/*
+PRINT
+*/
+
+@media print
+{
+    ul.footnotes li {
+        margin-left:0;
+    }
+    .footnotes .footnote-label {
+        position: relative;
+        display:block;
+    }
+
 }
