@@ -97,7 +97,7 @@ function _section_course_instructor_section_active() {
       $news_visible;
 
 
-  
+
   if ($section_courses) {
     return TRUE;
   }
@@ -287,7 +287,7 @@ function _section_courses_course_get_num_unread_by_type($uid, $type, $nid = NULL
     //$query = db_select("node", "n");
     $active_course = _section_courses_get_active_course();
     if (!$active_course)
-      return $result_cache[$type][$nid];
+      return NULL;
     $query = db_select("og_membership", "ogm");
     $query->condition("ogm.gid", $active_course->nid, "=");
     //$query->fields("ogm", array("entity_type", "etid"));
@@ -510,6 +510,22 @@ function custom_general_get_users_in_group($gid) {
   $result = $query->execute();
 
   return $result->fetchAll();
+}
+
+function _section_course_get_num_coursegroups($course) {
+  $view = views_get_view('courses_course_groups');
+
+// set arguments (if needed, otherwise omit this line)
+  $view->set_arguments(array($course->nid));
+
+// execute view query
+  $view->execute();
+
+// results are now stored as an array in $view->result
+  $count = count($view->result);
+
+//print_r ($view);
+  return $count;
 }
 
 /**

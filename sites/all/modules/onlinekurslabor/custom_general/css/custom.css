@@ -8,6 +8,7 @@ input[disabled].knob {
 }
 
 
+
 .nm_circle_progress_bar {
     width:200px;
     position:relative;
@@ -101,7 +102,7 @@ Sponsors
 
 .courses_sponsors_cols {
 
-    height:185px;
+    height:auto;
     overflow:hidden;
     padding:7px 10px;
     position:absolute;
@@ -198,7 +199,7 @@ Course Info
     display:none;
 }
 .panels-flexible-row.course-info-header .panels-flexible-row-inside, .panels-flexible-row.course-info-subheader .panels-flexible-row-inside, .panels-flexible-region.course-info-content {
-    padding: 15px 0 15px 15px;
+    padding: 15px;
 }
 
 .panels-flexible-row.course-info-header h2, .panels-flexible-region.course-info-content h2 {
@@ -245,6 +246,10 @@ Instructor's Tools
     right:0;
     background-color: rgba(200,200,200, 0.3);
     z-index: 1;
+}
+
+#instructors_tools-container ul{
+    margin:0;
 }
 
 #instructors_tools
@@ -856,6 +861,64 @@ span.cke_skin_kama
     padding:0 !important;
 }
 
+div#autocomplete li:hover {
+    background-color: #467DBD;
+}
+.cke_skin_kama .cke_browser_webkit a.cke_dialog_ui_button {
+    -webkit-border-radius:0px !important;
+    border-radius: 0px !important;
+    moz-border-radius: 0px !important;
+}
+.cke_skin_kama a.cke_dialog_ui_button {
+    background-image:none !important;
+    background-color: #eee;
+
+
+}
+.cke_skin_kama span.cke_dialog_ui_button {
+    cursor: pointer !important;
+}
+
+.cke_skin_kama .cke_dialog_ui_button_ok span.cke_dialog_ui_button {
+    color: #fff;
+}
+
+.cke_skin_kama a.cke_dialog_ui_button.cke_dialog_ui_button_ok {
+    background-color: #467DBD;    
+    border:1px solid #555;
+}
+.cke_skin_kama a.cke_dialog_ui_button.cke_dialog_ui_button_ok:hover {
+    background-color: #426DA0;
+}
+
+
+.cke_skin_kama a.cke_dialog_ui_button.cke_dialog_ui_button_cancel {
+    background-color: #eee;   
+    border:1px solid #888;
+}
+
+.cke_skin_kama a.cke_dialog_ui_button.cke_dialog_ui_button_cancel:hover {
+    background-color: #e6e6e6;    
+}
+
+
+.cke_skin_kama input.cke_dialog_ui_input_text.form-autocomplete  {
+    height: 25px !important;
+    padding:5px;
+}
+
+
+.cke_skin_kama .cke_dialog .cke_dialog_body .cke_dialog_close_button {
+    background-image:none !important;
+    background-color: #333;
+}
+.cke_skin_kama .cke_dialog .cke_dialog_body .cke_dialog_close_button {
+    background-color: #888;
+}
+.cke_skin_kama .cke_dialog .cke_dialog_body .cke_dialog_close_button:before {
+    content: '✖';
+    color: #fff;
+}
 /*
 Admin Add 
 */

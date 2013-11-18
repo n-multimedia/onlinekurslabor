@@ -76,7 +76,9 @@ define("NM_COURSES_TASK_WORKFLOW_ASSESSED", "4");
 define('NM_COURSE_FEATURE_FORUM', 'forum');
 define('NM_COURSE_FEATURE_COURSE_GROUP_LOCK', 'course_group_lock');
 
-define("NM_COURSES_ROLE_ADMINISTRATOR", "course-administrator");
+define("NM_COURSES_ROLE_ADMINISTRATOR", "kurs-dozent");
+define("NM_COURSES_ROLE_TUTOR", "kurs-tutor");
+define("NM_COURSES_ROLE_STUDENT", "kurs-student");
 
 //Roles
 define("NM_ROLE_AUTOR", "Autor");

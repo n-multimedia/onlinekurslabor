@@ -25,7 +25,7 @@ function onlinekurslabor_user_form_alter(&$form, &$form_state, $form_id) {
           $profile = profile_create(array(
             'type' => 'master',
             'uid' => $user->uid
-              ));
+          ));
         }
         $form_state['profiles'][$profile->type] = $profile;
       }
@@ -36,7 +36,7 @@ function onlinekurslabor_user_form_alter(&$form, &$form_state, $form_id) {
           $profile = profile_create(array(
             'type' => 'student',
             'uid' => $user->uid
-              ));
+          ));
         }
         $form_state['profiles'][$profile->type] = $profile;
       }
@@ -49,6 +49,8 @@ function onlinekurslabor_user_form_alter(&$form, &$form_state, $form_id) {
     if (isset($form['profile_student']))
       $form['profile_student']['#type'] = 'tab';
   }
+
+
 }
 
 /**
@@ -78,8 +80,6 @@ function onlinekurslabor_user_wysiwyg_editor_settings_alter(&$settings, $context
   }
 }
 
-
-
 /**
  * Process variables for author-pane-user-picture.tpl.php.
  *
@@ -94,14 +94,421 @@ function onlinekurslabor_user_wysiwyg_editor_settings_alter(&$settings, $context
  */
 function onlinekurslabor_user_preprocess_author_pane_user_picture(&$variables) {
 
-    $account = $variables['account'];
-    $profile = profile2_load_by_user($account, 'master');
-    $user_pic = "";
-    if (isset($profile->field_photo)) {
-      $field_view = field_view_field('profile2', $profile, 'field_photo', array('settings' => array('image_style' => 'profile_main_thumbnail')));
-      $field_view['#label_display'] = 'hidden';
-      $user_pic = drupal_render($field_view);
+  $account = $variables['account'];
+  $profile = profile2_load_by_user($account, 'master');
+  $user_pic = "";
+  if (isset($profile->field_photo)) {
+    $field_view = field_view_field('profile2', $profile, 'field_photo', array('settings' => array('image_style' => 'profile_main_thumbnail')));
+    $field_view['#label_display'] = 'hidden';
+    $user_pic = drupal_render($field_view);
+  }
+
+  $variables['picture'] = $user_pic;
+}
+
+/**
+ * Implementation of hook_action_info().
+ */
+function onlinekurslabor_user_action_info() {
+  $actions = array();
+  $actions['user_assign_course_role'] = array(
+    'label' => t('Assign course role'),
+    'type' => 'user',
+    'configurable' => TRUE,
+    'triggers' => array('any'),
+  );
+  $actions['user_modify_course_membership_state'] = array(
+    'label' => t('Modify membership state'),
+    'type' => 'user',
+    'configurable' => TRUE,
+    'triggers' => array('any'),
+  );
+  $actions['user_send_email'] = array(
+    'type' => 'user',
+    'label' => t('Send e-mail (user)'),
+    'configurable' => TRUE,
+    'triggers' => array('any'),
+  );
+  $actions['og_group_send_email'] = array(
+    'label' => t('Send group mail'),
+    'type' => 'node',
+    'configurable' => TRUE,
+    'triggers' => array('any'),
+  );
+  $actions['og_membership_assign_course_role'] = array(
+    'label' => t('Assign course role'),
+    'type' => 'og_membership',
+    'configurable' => TRUE,
+    'triggers' => array('any'),
+  );
+  return $actions;
+}
+
+/**
+ * Return a form definition
+ *
+ * @param $context
+ *   Default values (if we are editing an existing action instance).
+ *
+ * @return
+ *   Form definition.
+ *
+ */
+function user_modify_course_membership_state_form($context) {
+  $active_course = _section_courses_get_active_course();
+
+  $form['state'] = array(
+    '#title' => t('State'),
+    '#type' => 'select',
+    '#options' => og_group_content_states(),
+    '#default_value' => OG_STATE_ACTIVE,
+    '#description' => t('Choose the state to set for the selected users in the group.'),
+  );
+
+  $form['course_nid'] = array('#type' => 'hidden', '#value' => $active_course->nid);
+
+  return $form;
+}
+
+/**
+ * Return a form definition
+ *
+ * @param $context
+ *   Default values (if we are editing an existing action instance).
+ *
+ * @return
+ *   Form definition.
+ *
+ */
+function user_assign_course_role_form($context) {
+  $active_course = _section_courses_get_active_course();
+  $og_roles = og_roles('node', NM_COURSE, $active_course->nid, FALSE, FALSE);
+
+  $ogs = $og_roles;
+  $form['ogs'] = array(
+    '#title' => t('Course roles'),
+    '#type' => 'checkboxes',
+    '#options' => $ogs,
+    '#description' => t('Select which roles to add for the selected users'),
+  );
+  $form['remove_roles'] = array(
+    '#title' => t('Remove unchecked roles'),
+    '#type' => 'checkbox',
+    '#description' => t('Select to remove unselected roles from the selected users. Otherwise selected roles will be added only.'),
+  );
+
+  $form['course_nid'] = array('#type' => 'hidden', '#value' => $active_course->nid);
+
+  return $form;
+}
+
+/**
+ * Return a form definition
+ *
+ * @param $context
+ *   Default values (if we are editing an existing action instance).
+ *
+ * @return
+ *   Form definition.
+ *
+ */
+function og_membership_assign_course_role_form($context) {
+  $active_course = _section_courses_get_active_course();
+  $og_roles = og_roles('node', NM_COURSE, $active_course->nid, FALSE, FALSE);
+
+  $ogs = $og_roles;
+  $form['ogs'] = array(
+    '#title' => t('Course roles'),
+    '#type' => 'checkboxes',
+    '#options' => $ogs,
+    '#description' => t('Select which roles to add for the selected users'),
+  );
+  $form['remove_roles'] = array(
+    '#title' => t('Remove unchecked roles'),
+    '#type' => 'checkbox',
+    '#description' => t('Select to remove unselected roles from the selected users. Otherwise selected roles will be added only.'),
+  );
+
+  $form['course_nid'] = array('#type' => 'hidden', '#value' => $active_course->nid);
+
+  return $form;
+}
+
+/**
+ * Return a form definition so the Send email action can be configured.
+ *
+ * @param $context
+ *   Default values (if we are editing an existing action instance).
+ *
+ * @return
+ *   Form definition.
+ *
+ * @see system_send_email_validate()
+ * @see system_send_email_submit()
+ */
+function user_send_email_form($context) {
+  // Set default values for form.
+  if (!isset($context['subject'])) {
+    $context['subject'] = '';
+  }
+  if (!isset($context['message'])) {
+    $context['message'] = '';
+  }
+
+  $form['subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#default_value' => $context['subject'],
+    '#maxlength' => '254',
+    '#description' => t('The subject of the message.'),
+  );
+  $form['message'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Message'),
+    '#default_value' => $context['message'],
+    '#cols' => '80',
+    '#rows' => '20',
+    '#description' => t('The message that should be sent. You may include placeholders like [node:title], [user:name], and [comment:body] to represent data that will be different each time message is sent. Not all placeholders will be available in all contexts.'),
+  );
+  return $form;
+}
+
+/**
+ * Return a form definition so the Send email action can be configured.
+ *
+ * @param $context
+ *   Default values (if we are editing an existing action instance).
+ *
+ * @return
+ *   Form definition.
+ *
+ * @see system_send_email_action_validate()
+ * @see system_send_email_action_submit()
+ */
+function og_group_send_email_form($context) {
+  // Set default values for form.
+  if (!isset($context['subject'])) {
+    $context['subject'] = '';
+  }
+  if (!isset($context['message'])) {
+    $context['message'] = '';
+  }
+
+  $form['subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#default_value' => $context['subject'],
+    '#maxlength' => '254',
+    '#description' => t('The subject of the message.'),
+  );
+  $form['message'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Message'),
+    '#default_value' => $context['message'],
+    '#cols' => '80',
+    '#rows' => '20',
+    '#description' => t('The message that should be sent. You may include placeholders like [node:title], [user:name], and [comment:body] to represent data that will be different each time message is sent. Not all placeholders will be available in all contexts.'),
+  );
+  return $form;
+}
+
+function user_assign_course_role_submit($form_id, $form_state) {
+  return array('ogs' => $form_state['values']['ogs'],
+    'course_nid' => $form_state['values']['course_nid'],
+    'remove_roles' => $form_state['values']['remove_roles'],
+  );
+}
+
+function og_membership_assign_course_role_submit($form_id, $form_state) {
+  return array('ogs' => $form_state['values']['ogs'],
+    'course_nid' => $form_state['values']['course_nid'],
+    'remove_roles' => $form_state['values']['remove_roles'],
+  );
+}
+
+function user_modify_course_membership_state_submit($form_id, $form_state) {
+  return array('state' => $form_state['values']['state'],
+    'course_nid' => $form_state['values']['course_nid'],
+  );
+}
+
+/**
+ * Process user_send_email form submissions.
+ */
+function user_send_email_submit($form, $form_state) {
+  $form_values = $form_state['values'];
+  // Process the HTML form to store configuration. The keyed array that
+  // we return will be serialized to the database.
+  $params = array(
+    'subject' => $form_values['subject'],
+    'message' => $form_values['message'],
+  );
+  return $params;
+}
+
+function og_group_send_email_submit($form, $form_state) {
+  $form_values = $form_state['values'];
+  // Process the HTML form to store configuration. The keyed array that
+  // we return will be serialized to the database.
+  $params = array(
+    'subject' => $form_values['subject'],
+    'message' => $form_values['message'],
+  );
+  return $params;
+}
+
+/**
+ * Action function for user_assign_course_role.
+ */
+function user_assign_course_role(&$entity, $context = array()) {
+
+  $course_nid = $context['course_nid'];
+  $og_membership = og_get_membership('node', $course_nid, 'user', $entity->uid);
+
+  //check if we shall delete roles before
+  if ($context['remove_roles']) {
+    //remove all possible roles first
+    $roles = og_roles('node', NM_COURSE, $og_membership->gid);
+    foreach ($roles as $key => $value) {
+      //invalidate cache seems to be late, so we just check for roles which would be added as next step and prevent removing those
+      if (!in_array($key, $context['ogs'])) {
+        og_role_revoke('node', $og_membership->gid, $og_membership->etid, $key);
+      }
     }
-    
-    $variables['picture'] = $user_pic;
+  }
+
+  //add selected course roles
+  foreach ($context['ogs'] as $rid) {
+    if ($rid) {
+      og_role_grant('node', $og_membership->gid, $og_membership->etid, $rid);
+    }
+  }
+}
+
+/**
+ * Action function for user_assign_course_role.
+ */
+function og_membership_assign_course_role(&$entity, $context = array()) {
+
+  $og_membership = $entity;
+
+  //check if we shall delete roles before
+  if ($context['remove_roles']) {
+    //remove all possible roles first
+    $roles = og_roles('node', NM_COURSE, $og_membership->gid);
+    foreach ($roles as $key => $value) {
+      //invalidate cache seems to be late, so we just check for roles which would be added as next step and prevent removing those
+      if (!in_array($key, $context['ogs'])) {
+        og_role_revoke('node', $og_membership->gid, $og_membership->etid, $key);
+      }
+    }
+  }
+
+  //add selected course roles
+  foreach ($context['ogs'] as $rid) {
+    if ($rid) {
+      og_role_grant('node', $og_membership->gid, $og_membership->etid, $rid);
+    }
+  }
+}
+
+function user_modify_course_membership_state(&$entity, $context = array()) {
+
+  $course_nid = $context['course_nid'];
+  $state = $context['state'];
+  $og_membership = og_get_membership('node', $course_nid, 'user', $entity->uid);
+
+  if ($og_membership->state == $state) {
+    return;
+  }
+
+  // Don't process the group manager, if exists.
+  $group = entity_load_single($og_membership->group_type, $og_membership->gid);
+  if (!empty($group->uid) && $group->uid == $og_membership->etid && $og_membership->entity_type == 'user') {
+    return;
+  }
+
+  $og_membership->state = $state;
+  $og_membership->save();
+}
+
+/**
+ * Sends an e-mail message.
+ *
+ * @param object $entity
+ *   An optional node object, which will be added as $context['node'] if
+ *   provided.
+ * @param array $context
+ *   Array with the following elements:
+ *   - 'recipient': E-mail message recipient. This will be passed through
+ *     token_replace().
+ *   - 'subject': The subject of the message. This will be passed through
+ *     token_replace().
+ *   - 'message': The message to send. This will be passed through
+ *     token_replace().
+ *   - Other elements will be used as the data for token replacement.
+ *
+ * @ingroup actions
+ */
+function user_send_email($entity, $context) {
+  if (empty($context['user'])) {
+    $context['user'] = $entity;
+  }
+
+  $recipient = $entity->mail; //token_replace($context['recipient'], $context);
+  // If the recipient is a registered user with a language preference, use
+  // the recipient's preferred language. Otherwise, use the system default
+  // language.
+  $recipient_account = user_load_by_mail($recipient);
+  if ($recipient_account) {
+    $language = user_preferred_language($recipient_account);
+  }
+  else {
+    $language = language_default();
+  }
+  $params = array('context' => $context);
+
+  if (drupal_mail('system', 'action_send_email', $recipient, $language, $params)) {
+    watchdog('action', 'Sent email to %recipient', array('%recipient' => $recipient));
+  }
+  else {
+    watchdog('error', 'Unable to send email to %recipient', array('%recipient' => $recipient));
+  }
+}
+
+function og_group_send_email($entity, $context) {
+  if (empty($context['user'])) {
+    $context['node'] = $entity;
+  }
+
+  $res = custom_general_get_users_in_group($entity->nid);
+
+
+  foreach ($res as $member) {
+
+
+    $recipient_account = user_load($member->uid);
+    $recipient = $recipient_account->mail;
+
+    if ($recipient_account) {
+      $language = user_preferred_language($recipient_account);
+    }
+    else {
+      $language = language_default();
+    }
+
+    $params = array('context' => $context);
+
+    if (drupal_mail('system', 'action_send_email', $recipient, $language, $params)) {
+      watchdog('action', 'Sent email to %recipient', array('%recipient' => $recipient));
+    }
+    else {
+      watchdog('error', 'Unable to send email to %recipient', array('%recipient' => $recipient));
+    }
+  }
+
+  //token_replace($context['recipient'], $context);
+  // If the recipient is a registered user with a language preference, use
+  // the recipient's preferred language. Otherwise, use the system default
+  // language.
 }

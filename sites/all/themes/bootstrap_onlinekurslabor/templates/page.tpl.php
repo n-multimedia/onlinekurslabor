@@ -70,6 +70,7 @@
         <?php if (!empty($title)): ?>
           <h3 class="page-header"><?php print $title; ?></h3>
         <?php endif; ?>
+          <div class="main-contet-wo-title">
         <?php print render($title_suffix); ?>
         <?php print $messages; ?>
         <?php if (!empty($tabs)): ?>
@@ -82,6 +83,7 @@
           <ul class="action-links"><?php print render($action_links); ?></ul>
         <?php endif; ?>
         <?php print render($page['content']); ?>
+          </div>
       </div>
     </section>
 

@@ -3,7 +3,7 @@
     Drupal.behaviors.custom_general = {
         /*toggle solution for qaa questions*/
         attach: function(context, settings) {
-
+            
             var temp_toolbar_width = 0;
             $('#instructors_tools-container').once('custom_general').mouseenter(function() {
                 //cache base width

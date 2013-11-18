@@ -60,7 +60,7 @@ function _course_tasks_generic_tips_view() {
 
 
   if ($current == 3) {
-    if (array_intersect(array(NM_ROLE_ADMIN, NM_ROLE_DOZENT), $user->roles)) {
+    if (array_intersect(array(NM_ROLE_ADMIN, NM_ROLE_DOZENT, NM_ROLE_TUTOR), $user->roles)) {
       //add bewertung feld
       $form = drupal_get_form('_section_courses_task_solution_assesment_form', $solution_node->nid);
       $form['assessment']['format']['#attributes']['style'] = 'display:none';
