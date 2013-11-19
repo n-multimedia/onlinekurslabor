@@ -3687,7 +3687,6 @@ function user_block_user_action(&$entity, $context = array()) {
   else {
     $uid = $GLOBALS['user']->uid;
   }
-  
   $account = user_load($uid);
   $account = user_save($account, array('status' => 0));
   watchdog('action', 'Blocked user %name.', array('%name' => $account->name));
