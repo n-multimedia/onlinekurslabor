@@ -1,11 +1,9 @@
 <?php
 
-
 /**
  * @file
  * Plugin to provide access control based on user permission strings in a group.
  */
-
 /**
  * Plugins are described by creating a $plugin array which will be used
  * by the system that includes this file.
@@ -51,6 +49,14 @@ function og_role_ctools_access_settings_submit($form, &$form_state) {
  * Check for access.
  */
 function og_role_ctools_access_check($conf, $context) {
+
+  global $user;
+  //25.11.2013 - 13:45 - SN
+  //bypass for admins
+  if (in_array(NM_ROLE_ADMIN, $user->roles)) {
+    return TRUE;
+  }
+  
   // As far as I know there should always be a context at this point, but this
   // is safe.
   list($user_context, $node_context) = $context;
@@ -75,22 +81,22 @@ function og_role_ctools_access_check($conf, $context) {
  */
 function og_role_ctools_access_summary($conf, $context) {
   list($user_context, $node_context) = $context;
-	
+
   if (!isset($conf['og_rids'])) {
     $conf['og_rids'] = array();
   }
-  
+
   $roles = og_role_access_og_get_all_roles();
-  
+
   $names = array();
   foreach (array_filter($conf['og_rids']) as $rid) {
     $names[] = check_plain($roles[$rid]);
   }
-  
+
   if (empty($names)) {
-  return t('@identifier has "@role in @group group"', array('@identifier' => $user_context->identifier, '@role' => 'any role', '@group' => $node_context->identifier));
+    return t('@identifier has "@role in @group group"', array('@identifier' => $user_context->identifier, '@role' => 'any role', '@group' => $node_context->identifier));
   }
-  
+
   return t('@identifier has "@role in @group group"', array('@identifier' => $user_context->identifier, '@role' => implode(', ', $names), '@group' => $node_context->identifier));
 }
 
