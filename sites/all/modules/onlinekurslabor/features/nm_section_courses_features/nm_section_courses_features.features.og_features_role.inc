@@ -10,14 +10,6 @@
 function nm_section_courses_features_og_features_default_roles() {
   $roles = array();
 
-  // Exported OG Role: 'node:courses_course:course-administrator'.
-  $roles['node:courses_course:course-administrator'] = array(
-    'gid' => 0,
-    'group_type' => 'node',
-    'group_bundle' => 'courses_course',
-    'name' => 'course-administrator',
-  );
-
   // Exported OG Role: 'node:courses_course:kurs-dozent'.
   $roles['node:courses_course:kurs-dozent'] = array(
     'gid' => 0,

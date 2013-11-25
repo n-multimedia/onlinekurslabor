@@ -12,9 +12,8 @@ function nm_section_courses_features_default_rules_configuration() {
   $items['rules_course_task_assessed'] = entity_import('rules_config', '{ "rules_course_task_assessed" : {
       "LABEL" : "Course Task Assessed",
       "PLUGIN" : "reaction rule",
-      "OWNER" : "rules",
       "REQUIRES" : [ "workflow_rules", "rules" ],
-      "ON" : { "workflow_state_changed" : [] },
+      "ON" : [ "workflow_state_changed" ],
       "IF" : [
         { "AND" : [
             { "workflow_check_transition" : {
@@ -50,9 +49,8 @@ function nm_section_courses_features_default_rules_configuration() {
   $items['rules_course_task_submitted'] = entity_import('rules_config', '{ "rules_course_task_submitted" : {
       "LABEL" : "Course Task Submitted",
       "PLUGIN" : "reaction rule",
-      "OWNER" : "rules",
       "REQUIRES" : [ "workflow_rules", "rules", "onlinekurslabor_rules" ],
-      "ON" : { "workflow_state_changed" : [] },
+      "ON" : [ "workflow_state_changed" ],
       "IF" : [
         { "AND" : [
             { "workflow_check_transition" : {
@@ -88,9 +86,8 @@ function nm_section_courses_features_default_rules_configuration() {
   $items['rules_courses_member_subscribe'] = entity_import('rules_config', '{ "rules_courses_member_subscribe" : {
       "LABEL" : "Courses Member Subscribe",
       "PLUGIN" : "reaction rule",
-      "OWNER" : "rules",
       "REQUIRES" : [ "rules", "onlinekurslabor_rules", "og" ],
-      "ON" : { "og_user_insert" : [] },
+      "ON" : [ "og_user_insert" ],
       "IF" : [
         { "AND" : [
             { "entity_is_of_type" : { "entity" : [ "og-membership:group" ], "type" : "node" } },
