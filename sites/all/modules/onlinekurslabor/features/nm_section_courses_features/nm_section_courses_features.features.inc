@@ -183,7 +183,7 @@ function nm_section_courses_features_default_profile2_type() {
     "label" : "Student",
     "weight" : "0",
     "data" : { "registration" : 1 },
-    "rdf_mapping" : [  ]
+    "rdf_mapping" : []
   }');
   return $items;
 }
@@ -246,32 +246,32 @@ function nm_section_courses_features_workflow_default_workflows() {
         'target_state' => 'Bewertet',
       ),
       3 => array(
-        'roles' => 'workflow_features_author_name,Moderator,Dozent',
+        'roles' => 'workflow_features_author_name,Moderator,Dozent,Tutor',
         'state' => 'Entwurf',
         'target_state' => 'Eingereicht',
       ),
       4 => array(
-        'roles' => 'Moderator,Dozent',
+        'roles' => 'Moderator,Dozent,Tutor',
         'state' => 'Entwurf',
         'target_state' => 'Bewertet',
       ),
       5 => array(
-        'roles' => 'Moderator,Dozent',
+        'roles' => 'Moderator,Dozent,Tutor',
         'state' => 'Eingereicht',
         'target_state' => 'Entwurf',
       ),
       6 => array(
-        'roles' => 'Moderator,Dozent',
+        'roles' => 'Moderator,Dozent,Tutor',
         'state' => 'Eingereicht',
         'target_state' => 'Bewertet',
       ),
       7 => array(
-        'roles' => 'Moderator,Dozent',
+        'roles' => 'Moderator,Dozent,Tutor',
         'state' => 'Bewertet',
         'target_state' => 'Entwurf',
       ),
       8 => array(
-        'roles' => 'Moderator,Dozent',
+        'roles' => 'Moderator,Dozent,Tutor',
         'state' => 'Bewertet',
         'target_state' => 'Eingereicht',
       ),

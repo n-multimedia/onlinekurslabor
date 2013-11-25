@@ -805,8 +805,8 @@ function nm_section_courses_features_default_page_manager_pages() {
       'context' => array(
         0 => '',
       ),
-      'override_title' => 0,
-      'override_title_text' => '',
+      'override_title' => 1,
+      'override_title_text' => 'Bibliografie',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -903,28 +903,17 @@ return section_courses_text_outline();
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'og_role',
         'settings' => array(
-          'state' => array(
-            1 => '1',
+          'og_rids' => array(
+            0 => 3,
+            1 => 19,
           ),
         ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
-        'not' => FALSE,
-      ),
-      1 => array(
-        'name' => 'role',
-        'settings' => array(
-          'rids' => array(
-            0 => 106505419,
-            1 => 197637936,
-            2 => 30037204,
-          ),
-        ),
-        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),
@@ -978,7 +967,7 @@ return section_courses_text_outline();
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible';
+  $display->layout = 'flexible:span11span1';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -1052,7 +1041,7 @@ return section_courses_text_outline();
     ),
   );
   $display->cache = array();
-  $display->title = '';
+  $display->title = 'Teilnehmer anlegen';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
@@ -1119,28 +1108,17 @@ return section_courses_text_outline();
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'og_role',
         'settings' => array(
-          'state' => array(
-            1 => '1',
+          'og_rids' => array(
+            0 => 3,
+            1 => 19,
           ),
         ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_node_edit_1',
         ),
-        'not' => FALSE,
-      ),
-      1 => array(
-        'name' => 'role',
-        'settings' => array(
-          'rids' => array(
-            0 => 106505419,
-            1 => 197637936,
-            2 => 30037204,
-          ),
-        ),
-        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),
@@ -2609,28 +2587,17 @@ echo section_courses_render_course_link($course);
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'og_role',
         'settings' => array(
-          'state' => array(
-            1 => '1',
+          'og_rids' => array(
+            0 => 3,
+            1 => 19,
           ),
         ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
-        'not' => FALSE,
-      ),
-      1 => array(
-        'name' => 'role',
-        'settings' => array(
-          'rids' => array(
-            0 => 106505419,
-            1 => 197637936,
-            2 => 30037204,
-          ),
-        ),
-        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),
@@ -2690,7 +2657,7 @@ echo section_courses_render_course_link($course);
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible';
+  $display->layout = 'flexible:span11span1';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -2827,28 +2794,17 @@ echo section_courses_render_course_link($course);
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'og_role',
         'settings' => array(
-          'state' => array(
-            1 => '1',
+          'og_rids' => array(
+            0 => 3,
+            1 => 19,
           ),
         ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
-        'not' => FALSE,
-      ),
-      1 => array(
-        'name' => 'role',
-        'settings' => array(
-          'rids' => array(
-            0 => 106505419,
-            1 => 197637936,
-            2 => 30037204,
-          ),
-        ),
-        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),
@@ -3216,28 +3172,17 @@ echo section_courses_render_course_link($course);
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'og_role',
         'settings' => array(
-          'state' => array(
-            1 => '1',
+          'og_rids' => array(
+            0 => 3,
+            1 => 19,
           ),
         ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
-        'not' => FALSE,
-      ),
-      1 => array(
-        'name' => 'role',
-        'settings' => array(
-          'rids' => array(
-            0 => 106505419,
-            1 => 197637936,
-            2 => 30037204,
-          ),
-        ),
-        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),
@@ -3407,28 +3352,17 @@ echo section_courses_render_course_link($course);
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'og_role',
         'settings' => array(
-          'state' => array(
-            1 => '1',
+          'og_rids' => array(
+            0 => 3,
+            1 => 20,
           ),
         ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
-        'not' => FALSE,
-      ),
-      1 => array(
-        'name' => 'role',
-        'settings' => array(
-          'rids' => array(
-            0 => 106505419,
-            1 => 197637936,
-            2 => 30037204,
-          ),
-        ),
-        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),
@@ -3557,28 +3491,17 @@ echo section_courses_render_course_link($course);
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'og_role',
         'settings' => array(
-          'state' => array(
-            1 => '1',
+          'og_rids' => array(
+            0 => 3,
+            1 => 19,
           ),
         ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
-        'not' => FALSE,
-      ),
-      1 => array(
-        'name' => 'role',
-        'settings' => array(
-          'rids' => array(
-            0 => 106505419,
-            1 => 197637936,
-            2 => 30037204,
-          ),
-        ),
-        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),
@@ -3632,7 +3555,7 @@ echo section_courses_render_course_link($course);
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible';
+  $display->layout = 'flexible:span11span1';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -3783,28 +3706,17 @@ echo section_courses_render_course_link($course);
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'og_role',
         'settings' => array(
-          'state' => array(
-            1 => '1',
+          'og_rids' => array(
+            0 => 3,
+            1 => 19,
           ),
         ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
-        'not' => FALSE,
-      ),
-      1 => array(
-        'name' => 'role',
-        'settings' => array(
-          'rids' => array(
-            0 => 106505419,
-            1 => 197637936,
-            2 => 30037204,
-          ),
-        ),
-        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),
@@ -3841,21 +3753,6 @@ echo section_courses_render_course_link($course);
     'css' => '',
     'contexts' => array(),
     'relationships' => array(),
-    'access' => array(
-      'plugins' => array(
-        0 => array(
-          'name' => 'node_type',
-          'settings' => array(
-            'type' => array(
-              'courses_course' => 'courses_course',
-            ),
-          ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
-        ),
-      ),
-      'logic' => 'and',
-    ),
   );
   $display = new panels_display();
   $display->layout = 'flexible:span11span1';
@@ -3866,37 +3763,39 @@ echo section_courses_render_course_link($course);
       'center' => NULL,
       'tools' => NULL,
     ),
+    'center' => array(
+      'style' => 'tabs',
+    ),
   );
   $display->cache = array();
-  $display->title = 'Kursteilnehmer';
+  $display->title = '';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
     $pane->pid = 'new-47';
     $pane->panel = 'center';
     $pane->type = 'views';
-    $pane->subtype = 'courses_admin_og_members';
+    $pane->subtype = 'courses_admin_members';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
       'override_pager_settings' => 0,
       'use_pager' => 1,
-      'nodes_per_page' => '25',
+      'nodes_per_page' => '20',
       'pager_id' => '0',
       'offset' => '0',
       'more_link' => 0,
       'feed_icons' => 0,
-      'panel_args' => 0,
+      'panel_args' => 1,
       'link_to_view' => 0,
-      'args' => 'node/%2',
+      'args' => '',
       'url' => '',
-      'display' => 'block_1',
+      'display' => 'bl_1',
       'context' => array(
         0 => '',
-        1 => '',
       ),
       'override_title' => 1,
-      'override_title_text' => 'Anfragen zur Teilnahme am Kurs',
+      'override_title_text' => 'Angefragt/Gesperrt',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -3927,7 +3826,7 @@ echo section_courses_render_course_link($course);
       'link_to_view' => 0,
       'args' => '',
       'url' => '',
-      'display' => 'block_2',
+      'display' => 'bl_2',
       'context' => array(
         0 => '',
       ),
@@ -3963,7 +3862,7 @@ echo section_courses_render_course_link($course);
       'link_to_view' => 0,
       'args' => '',
       'url' => '',
-      'display' => 'block_5',
+      'display' => 'bl_3',
       'context' => array(
         0 => '',
       ),
@@ -3999,7 +3898,7 @@ echo section_courses_render_course_link($course);
       'link_to_view' => 0,
       'args' => '',
       'url' => '',
-      'display' => 'block_3',
+      'display' => 'bl_4',
       'context' => array(
         0 => '',
       ),
@@ -4035,12 +3934,12 @@ echo section_courses_render_course_link($course);
       'link_to_view' => 0,
       'args' => '',
       'url' => '',
-      'display' => 'block_4',
+      'display' => 'bl_5',
       'context' => array(
         0 => '',
       ),
       'override_title' => 1,
-      'override_title_text' => 'Test Studenten',
+      'override_title_text' => 'Gast/Test Studenten',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -4054,6 +3953,42 @@ echo section_courses_render_course_link($course);
     $display->panels['center'][4] = 'new-51';
     $pane = new stdClass();
     $pane->pid = 'new-52';
+    $pane->panel = 'center';
+    $pane->type = 'views';
+    $pane->subtype = 'courses_admin_members';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_pager_settings' => 0,
+      'use_pager' => 1,
+      'nodes_per_page' => '20',
+      'pager_id' => '0',
+      'offset' => '0',
+      'more_link' => 0,
+      'feed_icons' => 0,
+      'panel_args' => 1,
+      'link_to_view' => 0,
+      'args' => '',
+      'url' => '',
+      'display' => 'bl_6',
+      'context' => array(
+        0 => '',
+      ),
+      'override_title' => 1,
+      'override_title_text' => 'Alle Mitglieder',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 5;
+    $pane->locks = array();
+    $display->content['new-52'] = $pane;
+    $display->panels['center'][5] = 'new-52';
+    $pane = new stdClass();
+    $pane->pid = 'new-53';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -4071,10 +4006,10 @@ echo section_courses_render_course_link($course);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-52'] = $pane;
-    $display->panels['tools'][0] = 'new-52';
+    $display->content['new-53'] = $pane;
+    $display->panels['tools'][0] = 'new-53';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = '0';
+  $display->title_pane = 'new-53';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_admin_members'] = $page;
@@ -4168,7 +4103,7 @@ echo section_courses_render_course_link($course);
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-53';
+    $pane->pid = 'new-54';
     $pane->panel = 'news';
     $pane->type = 'views_panes';
     $pane->subtype = 'courses_course_news-panel_pane_1';
@@ -4183,10 +4118,10 @@ echo section_courses_render_course_link($course);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-53'] = $pane;
-    $display->panels['news'][0] = 'new-53';
+    $display->content['new-54'] = $pane;
+    $display->panels['news'][0] = 'new-54';
     $pane = new stdClass();
-    $pane->pid = 'new-54';
+    $pane->pid = 'new-55';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -4204,10 +4139,10 @@ echo section_courses_render_course_link($course);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-54'] = $pane;
-    $display->panels['tools'][0] = 'new-54';
+    $display->content['new-55'] = $pane;
+    $display->panels['tools'][0] = 'new-55';
     $pane = new stdClass();
-    $pane->pid = 'new-55';
+    $pane->pid = 'new-56';
     $pane->panel = 'tools';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -4230,10 +4165,10 @@ echo section_courses_theme_progressbar();
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-55'] = $pane;
-    $display->panels['tools'][1] = 'new-55';
+    $display->content['new-56'] = $pane;
+    $display->panels['tools'][1] = 'new-56';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-53';
+  $display->title_pane = 'new-54';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_course_home'] = $page;
@@ -4286,7 +4221,7 @@ echo section_courses_theme_progressbar();
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-56';
+    $pane->pid = 'new-57';
     $pane->panel = 'center';
     $pane->type = 'views';
     $pane->subtype = 'courses_kurse_bersicht';
@@ -4316,10 +4251,10 @@ echo section_courses_theme_progressbar();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-56'] = $pane;
-    $display->panels['center'][0] = 'new-56';
+    $display->content['new-57'] = $pane;
+    $display->panels['center'][0] = 'new-57';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-56';
+  $display->title_pane = 'new-57';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_course_overview'] = $page;
@@ -4420,7 +4355,7 @@ echo section_courses_theme_progressbar();
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-57';
+    $pane->pid = 'new-58';
     $pane->panel = 'center';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_forum_breadcrumbs';
@@ -4438,10 +4373,10 @@ echo section_courses_theme_progressbar();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-57'] = $pane;
-    $display->panels['center'][0] = 'new-57';
+    $display->content['new-58'] = $pane;
+    $display->panels['center'][0] = 'new-58';
     $pane = new stdClass();
-    $pane->pid = 'new-58';
+    $pane->pid = 'new-59';
     $pane->panel = 'center';
     $pane->type = 'forum_node_create_list';
     $pane->subtype = 'forum_node_create_list';
@@ -4472,10 +4407,10 @@ echo section_courses_theme_progressbar();
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-58'] = $pane;
-    $display->panels['center'][1] = 'new-58';
+    $display->content['new-59'] = $pane;
+    $display->panels['center'][1] = 'new-59';
     $pane = new stdClass();
-    $pane->pid = 'new-59';
+    $pane->pid = 'new-60';
     $pane->panel = 'center';
     $pane->type = 'forum_list';
     $pane->subtype = 'forum_list';
@@ -4494,10 +4429,10 @@ echo section_courses_theme_progressbar();
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-59'] = $pane;
-    $display->panels['center'][2] = 'new-59';
+    $display->content['new-60'] = $pane;
+    $display->panels['center'][2] = 'new-60';
     $pane = new stdClass();
-    $pane->pid = 'new-60';
+    $pane->pid = 'new-61';
     $pane->panel = 'center';
     $pane->type = 'forum_topic_list';
     $pane->subtype = 'forum_topic_list';
@@ -4517,10 +4452,10 @@ echo section_courses_theme_progressbar();
     $pane->extras = array();
     $pane->position = 3;
     $pane->locks = array();
-    $display->content['new-60'] = $pane;
-    $display->panels['center'][3] = 'new-60';
+    $display->content['new-61'] = $pane;
+    $display->panels['center'][3] = 'new-61';
     $pane = new stdClass();
-    $pane->pid = 'new-61';
+    $pane->pid = 'new-62';
     $pane->panel = 'center';
     $pane->type = 'views';
     $pane->subtype = 'advanced_forum_new_topics';
@@ -4563,10 +4498,10 @@ echo section_courses_theme_progressbar();
     $pane->extras = array();
     $pane->position = 4;
     $pane->locks = array();
-    $display->content['new-61'] = $pane;
-    $display->panels['center'][4] = 'new-61';
+    $display->content['new-62'] = $pane;
+    $display->panels['center'][4] = 'new-62';
     $pane = new stdClass();
-    $pane->pid = 'new-62';
+    $pane->pid = 'new-63';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -4584,8 +4519,8 @@ echo section_courses_theme_progressbar();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-62'] = $pane;
-    $display->panels['tools'][0] = 'new-62';
+    $display->content['new-63'] = $pane;
+    $display->panels['tools'][0] = 'new-63';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -4692,7 +4627,7 @@ echo section_courses_theme_progressbar();
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible';
+  $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -4705,7 +4640,7 @@ echo section_courses_theme_progressbar();
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-63';
+    $pane->pid = 'new-64';
     $pane->panel = 'center';
     $pane->type = 'form';
     $pane->subtype = 'form';
@@ -4724,10 +4659,10 @@ echo section_courses_theme_progressbar();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-63'] = $pane;
-    $display->panels['center'][0] = 'new-63';
+    $display->content['new-64'] = $pane;
+    $display->panels['center'][0] = 'new-64';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-63';
+  $display->title_pane = 'new-64';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_forumcontent_add_in_course'] = $page;
@@ -4845,7 +4780,7 @@ echo section_courses_theme_progressbar();
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-64';
+    $pane->pid = 'new-65';
     $pane->panel = 'center';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -4870,10 +4805,10 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-64'] = $pane;
-    $display->panels['center'][0] = 'new-64';
+    $display->content['new-65'] = $pane;
+    $display->panels['center'][0] = 'new-65';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-64';
+  $display->title_pane = 'new-65';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_forumcontent_delete_in_course'] = $page;
@@ -4968,7 +4903,7 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible';
+  $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -4981,7 +4916,7 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-65';
+    $pane->pid = 'new-66';
     $pane->panel = 'center';
     $pane->type = 'form';
     $pane->subtype = 'form';
@@ -5000,10 +4935,10 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-65'] = $pane;
-    $display->panels['center'][0] = 'new-65';
+    $display->content['new-66'] = $pane;
+    $display->panels['center'][0] = 'new-66';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-65';
+  $display->title_pane = 'new-66';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_forumcontent_edit_in_course'] = $page;
@@ -5109,7 +5044,7 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-66';
+    $pane->pid = 'new-67';
     $pane->panel = 'center';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -5134,10 +5069,10 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-66'] = $pane;
-    $display->panels['center'][0] = 'new-66';
+    $display->content['new-67'] = $pane;
+    $display->panels['center'][0] = 'new-67';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-66';
+  $display->title_pane = 'new-67';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_forumcontent_editcomment_in_course'] = $page;
@@ -5245,7 +5180,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-67';
+    $pane->pid = 'new-68';
     $pane->panel = 'center';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_forum_breadcrumbs';
@@ -5263,10 +5198,10 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-67'] = $pane;
-    $display->panels['center'][0] = 'new-67';
+    $display->content['new-68'] = $pane;
+    $display->panels['center'][0] = 'new-68';
     $pane = new stdClass();
-    $pane->pid = 'new-68';
+    $pane->pid = 'new-69';
     $pane->panel = 'center';
     $pane->type = 'entity_view';
     $pane->subtype = 'node';
@@ -5286,10 +5221,10 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-68'] = $pane;
-    $display->panels['center'][1] = 'new-68';
+    $display->content['new-69'] = $pane;
+    $display->panels['center'][1] = 'new-69';
     $pane = new stdClass();
-    $pane->pid = 'new-69';
+    $pane->pid = 'new-70';
     $pane->panel = 'center';
     $pane->type = 'node_comments';
     $pane->subtype = 'node_comments';
@@ -5310,10 +5245,10 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-69'] = $pane;
-    $display->panels['center'][2] = 'new-69';
+    $display->content['new-70'] = $pane;
+    $display->panels['center'][2] = 'new-70';
     $pane = new stdClass();
-    $pane->pid = 'new-70';
+    $pane->pid = 'new-71';
     $pane->panel = 'center';
     $pane->type = 'node_comment_form';
     $pane->subtype = 'node_comment_form';
@@ -5333,8 +5268,8 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 3;
     $pane->locks = array();
-    $display->content['new-70'] = $pane;
-    $display->panels['center'][3] = 'new-70';
+    $display->content['new-71'] = $pane;
+    $display->panels['center'][3] = 'new-71';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -5450,7 +5385,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-71';
+    $pane->pid = 'new-72';
     $pane->panel = 'center';
     $pane->type = 'comment_reply_form';
     $pane->subtype = 'comment_reply_form';
@@ -5473,8 +5408,8 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-71'] = $pane;
-    $display->panels['center'][0] = 'new-71';
+    $display->content['new-72'] = $pane;
+    $display->panels['center'][0] = 'new-72';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -5584,7 +5519,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-72';
+    $pane->pid = 'new-73';
     $pane->panel = 'center';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_node_tabs';
@@ -5602,10 +5537,10 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-72'] = $pane;
-    $display->panels['center'][0] = 'new-72';
+    $display->content['new-73'] = $pane;
+    $display->panels['center'][0] = 'new-73';
     $pane = new stdClass();
-    $pane->pid = 'new-73';
+    $pane->pid = 'new-74';
     $pane->panel = 'center';
     $pane->type = 'entity_view';
     $pane->subtype = 'node';
@@ -5625,10 +5560,10 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-73'] = $pane;
-    $display->panels['center'][1] = 'new-73';
+    $display->content['new-74'] = $pane;
+    $display->panels['center'][1] = 'new-74';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-73';
+  $display->title_pane = 'new-74';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_news_in_course'] = $page;
@@ -5785,7 +5720,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-74';
+    $pane->pid = 'new-75';
     $pane->panel = 'center';
     $pane->type = 'views_panes';
     $pane->subtype = 'courses_tasks-panel_pane_1';
@@ -5800,10 +5735,10 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-74'] = $pane;
-    $display->panels['center'][0] = 'new-74';
+    $display->content['new-75'] = $pane;
+    $display->panels['center'][0] = 'new-75';
     $pane = new stdClass();
-    $pane->pid = 'new-75';
+    $pane->pid = 'new-76';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -5821,10 +5756,10 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-75'] = $pane;
-    $display->panels['tools'][0] = 'new-75';
+    $display->content['new-76'] = $pane;
+    $display->panels['tools'][0] = 'new-76';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-74';
+  $display->title_pane = 'new-75';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_tasks_in_course'] = $page;
@@ -5919,7 +5854,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-76';
+    $pane->pid = 'new-77';
     $pane->panel = 'center';
     $pane->type = 'entity_view';
     $pane->subtype = 'node';
@@ -5939,10 +5874,10 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-76'] = $pane;
-    $display->panels['center'][0] = 'new-76';
+    $display->content['new-77'] = $pane;
+    $display->panels['center'][0] = 'new-77';
     $pane = new stdClass();
-    $pane->pid = 'new-77';
+    $pane->pid = 'new-78';
     $pane->panel = 'outline';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -5965,10 +5900,10 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-77'] = $pane;
-    $display->panels['outline'][0] = 'new-77';
+    $display->content['new-78'] = $pane;
+    $display->panels['outline'][0] = 'new-78';
     $pane = new stdClass();
-    $pane->pid = 'new-78';
+    $pane->pid = 'new-79';
     $pane->panel = 'outline';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_text_biblio';
@@ -5986,10 +5921,10 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-78'] = $pane;
-    $display->panels['outline'][1] = 'new-78';
+    $display->content['new-79'] = $pane;
+    $display->panels['outline'][1] = 'new-79';
     $pane = new stdClass();
-    $pane->pid = 'new-79';
+    $pane->pid = 'new-80';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -6007,8 +5942,8 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-79'] = $pane;
-    $display->panels['tools'][0] = 'new-79';
+    $display->content['new-80'] = $pane;
+    $display->panels['tools'][0] = 'new-80';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -6168,7 +6103,7 @@ return section_courses_text_outline();
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-80';
+    $pane->pid = 'new-81';
     $pane->panel = 'news';
     $pane->type = 'views_panes';
     $pane->subtype = 'courses_course_docs-panel_pane_1';
@@ -6183,10 +6118,10 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-80'] = $pane;
-    $display->panels['news'][0] = 'new-80';
+    $display->content['new-81'] = $pane;
+    $display->panels['news'][0] = 'new-81';
     $pane = new stdClass();
-    $pane->pid = 'new-81';
+    $pane->pid = 'new-82';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -6204,10 +6139,10 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-81'] = $pane;
-    $display->panels['tools'][0] = 'new-81';
+    $display->content['new-82'] = $pane;
+    $display->panels['tools'][0] = 'new-82';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-80';
+  $display->title_pane = 'new-81';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['kursdokumente_in_kurs_'] = $page;
@@ -6435,7 +6370,7 @@ return section_courses_text_outline();
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-82';
+    $pane->pid = 'new-83';
     $pane->panel = 'left';
     $pane->type = 'views';
     $pane->subtype = 'courses_course_members';
@@ -6468,10 +6403,10 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-82'] = $pane;
-    $display->panels['left'][0] = 'new-82';
+    $display->content['new-83'] = $pane;
+    $display->panels['left'][0] = 'new-83';
     $pane = new stdClass();
-    $pane->pid = 'new-83';
+    $pane->pid = 'new-84';
     $pane->panel = 'main_';
     $pane->type = 'views';
     $pane->subtype = 'courses_course_members';
@@ -6504,10 +6439,10 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-83'] = $pane;
-    $display->panels['main_'][0] = 'new-83';
+    $display->content['new-84'] = $pane;
+    $display->panels['main_'][0] = 'new-84';
     $pane = new stdClass();
-    $pane->pid = 'new-84';
+    $pane->pid = 'new-85';
     $pane->panel = 'right';
     $pane->type = 'views';
     $pane->subtype = 'courses_course_members';
@@ -6540,10 +6475,10 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-84'] = $pane;
-    $display->panels['right'][0] = 'new-84';
+    $display->content['new-85'] = $pane;
+    $display->panels['right'][0] = 'new-85';
     $pane = new stdClass();
-    $pane->pid = 'new-85';
+    $pane->pid = 'new-86';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -6561,8 +6496,8 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-85'] = $pane;
-    $display->panels['tools'][0] = 'new-85';
+    $display->content['new-86'] = $pane;
+    $display->panels['tools'][0] = 'new-86';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

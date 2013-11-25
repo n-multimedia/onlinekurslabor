@@ -50,6 +50,9 @@ function nm_section_content_features_wysiwyg_default_profiles() {
         'section_content_task_plugin' => array(
           'tasks_button' => 1,
         ),
+        'drupal_path' => array(
+          'Link' => 1,
+        ),
         'drupal' => array(
           'media' => 1,
         ),

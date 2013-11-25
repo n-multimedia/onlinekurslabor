@@ -8,6 +8,7 @@ dependencies[] = better_formats
 dependencies[] = biblio
 dependencies[] = block
 dependencies[] = book
+dependencies[] = ckeditor_link
 dependencies[] = context
 dependencies[] = ctools
 dependencies[] = double_field
