@@ -7,7 +7,7 @@
             ////End of Code//////////
             $('form').delegate('.onlinekurlabor_misc_remove_button', 'click', function() {
                 var row = $(this).closest('td').parent('tr');
-                console.log(row);
+                //console.log(row);
                 ///Hide
                 $(row).remove();
                 ////Zebra color settings////////

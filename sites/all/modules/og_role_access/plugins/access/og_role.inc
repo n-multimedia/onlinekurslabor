@@ -43,13 +43,13 @@ function og_role_ctools_access_settings($form, &$form_state, $conf) {
  */
 function og_role_ctools_access_settings_submit($form, &$form_state) {
   $form_state['values']['settings']['og_rids'] = array_keys(array_filter($form_state['values']['settings']['og_rids']));
+
 }
 
 /**
  * Check for access.
  */
 function og_role_ctools_access_check($conf, $context) {
-
   global $user;
   //25.11.2013 - 13:45 - SN
   //bypass for admins
@@ -72,7 +72,9 @@ function og_role_ctools_access_check($conf, $context) {
   $node = $node_context->data;
 
   $user_og_roles = og_get_user_roles('node', $node->nid, $account->uid, FALSE);
-  $roles = array_keys($user_og_roles);
+  //27.11.2013 - 09:40 - SN - values instead of keys
+  $roles = array_values($user_og_roles);
+  
   return (bool) array_intersect($conf['og_rids'], $roles);
 }
 

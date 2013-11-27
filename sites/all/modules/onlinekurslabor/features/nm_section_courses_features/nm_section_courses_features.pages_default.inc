@@ -1413,8 +1413,7 @@ return section_courses_text_outline();
         'name' => 'og_role',
         'settings' => array(
           'og_rids' => array(
-            0 => 3,
-            1 => 19,
+            0 => 'kurs-dozent',
           ),
         ),
         'context' => array(
@@ -1618,8 +1617,7 @@ return section_courses_text_outline();
         'name' => 'og_role',
         'settings' => array(
           'og_rids' => array(
-            0 => 3,
-            1 => 19,
+            0 => 'kurs-dozent',
           ),
         ),
         'context' => array(
@@ -3097,8 +3095,7 @@ echo section_courses_render_course_link($course);
         'name' => 'og_role',
         'settings' => array(
           'og_rids' => array(
-            0 => 3,
-            1 => 19,
+            0 => 'kurs-dozent',
           ),
         ),
         'context' => array(
@@ -3304,8 +3301,7 @@ echo section_courses_render_course_link($course);
         'name' => 'og_role',
         'settings' => array(
           'og_rids' => array(
-            0 => 3,
-            1 => 19,
+            0 => 'kurs-dozent',
           ),
         ),
         'context' => array(
@@ -3682,8 +3678,7 @@ echo section_courses_render_course_link($course);
         'name' => 'og_role',
         'settings' => array(
           'og_rids' => array(
-            0 => 3,
-            1 => 19,
+            0 => 'kurs-dozent',
           ),
         ),
         'context' => array(
@@ -3862,8 +3857,7 @@ echo section_courses_render_course_link($course);
         'name' => 'og_role',
         'settings' => array(
           'og_rids' => array(
-            0 => 3,
-            1 => 20,
+            0 => 'kurs-dozent',
           ),
         ),
         'context' => array(
@@ -4001,8 +3995,7 @@ echo section_courses_render_course_link($course);
         'name' => 'og_role',
         'settings' => array(
           'og_rids' => array(
-            0 => 3,
-            1 => 19,
+            0 => 'kurs-dozent',
           ),
         ),
         'context' => array(
@@ -4216,8 +4209,7 @@ echo section_courses_render_course_link($course);
         'name' => 'og_role',
         'settings' => array(
           'og_rids' => array(
-            0 => 3,
-            1 => 19,
+            0 => 'kurs-dozent',
           ),
         ),
         'context' => array(
