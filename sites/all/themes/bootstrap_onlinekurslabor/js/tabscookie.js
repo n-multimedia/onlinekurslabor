@@ -17,13 +17,20 @@
                         var edate = new Date();
                         var minutes = 30;
                         edate.setTime(edate.getTime() + (minutes * 60 * 1000));
-                        $.cookie(cookieid, ui.index + 1, {
+                        var tabname = $(ui.tab).html()
+                        $.cookie(cookieid, tabname, {
                             expires: edate
                         });
                     },
                 });
-
-                $(tabsid).tabs("select", $.cookie(cookieid));
+                var tabs_tmp = $(tabsid + ' li');
+                $.each(tabs_tmp, function(i, val) {
+                    if($(val).find('a').html() == $.cookie(cookieid)) {
+                        $(tabsid).tabs("select", i);
+                    }
+                    //console.log();
+                });
+                
             }
         }
     }

@@ -16,8 +16,16 @@ function og_role_access_og_get_all_roles() {
   $rids = $query
     ->execute()
     ->fetchAllkeyed();
+  
+  
+  //27.11.2013 - 09:40 - SN
+  //use role names instead of rids
+  $result = array();
+  foreach($rids as $rid => $value){
+    $result[$value] = $value;
+  }
 
-  return $rids;
+  return $result;
 }
 
 /**
@@ -77,7 +85,8 @@ function og_role_access_og_user_check_roles($group_type, $group_id_arg = '', $ri
 	  $user_og_roles = og_get_user_roles($group['group_type'], $group['gid'], $account->uid);
 	  
 	  //get an array of the rids from the user's roles
-	  $roles = array_keys($user_og_roles);
+    //27.11.2013 - 09:40 - SN array_values instead of keys
+	  $roles = array_values($user_og_roles);
 	  
 	  return user_access('access all views', $account) || array_intersect(array_filter($rids), $roles);
 	}
