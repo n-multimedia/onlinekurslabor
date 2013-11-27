@@ -191,8 +191,13 @@ function nm_login_vhb_add_user($params) {
 
   //save and notify the user
   $account = user_save(drupal_anonymous_user(), $edit);
-
-  //student profile
+  
+  if (!$account) {
+    drupal_set_message("Account konnte nicht gespeichert werden.", 'error');
+    return;
+  }
+  
+   //student profile
   $profile2 = profile2_create(array('type' => 'student'));
   $profile2->setUser($account);
   profile2_save($profile2);
@@ -227,11 +232,9 @@ function nm_login_vhb_add_user($params) {
     $wrapper->field_gender->set('male');
   }
   $wrapper->save();
-
-  if (!$account) {
-    drupal_set_message("Account konnte nicht gespeichert werden.", 'error');
-    return;
-  }
+  
+  realname_update($account);
+  
   drupal_set_message('Student ' . $edit['name'] . ' wurde angelegt.');
 
   //assign user to defined course

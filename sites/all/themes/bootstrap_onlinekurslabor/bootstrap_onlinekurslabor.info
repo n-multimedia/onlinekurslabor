@@ -26,6 +26,8 @@ stylesheets[all][] = css/flat-ui.css
 ;**********************************
 ; 
 ; ; Scripts
+; scripts[] = 'js/jquery.cookie.js'
+scripts[] = 'js/tabscookie.js'
 ; scripts[] = 'bootstrap/js/bootstrap-affix.js'
 ; scripts[] = 'bootstrap/js/bootstrap-alert.js'
 ; scripts[] = 'bootstrap/js/bootstrap-button.js'

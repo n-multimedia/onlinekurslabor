@@ -38,9 +38,7 @@ function field_default_extract_form_values($entity_type, $entity, $field, $insta
   $values = drupal_array_get_nested_value($form_state['values'], $path, $key_exists);
   if ($key_exists) {
     // Remove the 'value' of the 'add more' button.
-    if (is_array($values) && isset($values['add_more'])) {
-      unset($values['add_more']);
-    }
+    unset($values['add_more']);
     $items = $values;
   }
 }
@@ -110,7 +108,7 @@ function field_default_insert($entity_type, $entity, $field, $instance, $langcod
   // languages get a default value. Otherwise we could have default values for
   // not yet open languages.
   if (empty($entity) || !property_exists($entity, $field['field_name']) ||
-      (isset($entity->{$field['field_name']}[$langcode]) && count($entity->{$field['field_name']}[$langcode]) == 0)) {
+    (isset($entity->{$field['field_name']}[$langcode]) && count($entity->{$field['field_name']}[$langcode]) == 0)) {
     $items = field_get_default_value($entity_type, $entity, $field, $instance, $langcode);
   }
 }

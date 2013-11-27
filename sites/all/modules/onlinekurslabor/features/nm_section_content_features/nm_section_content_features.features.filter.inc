@@ -35,15 +35,20 @@ function nm_section_content_features_filter_default_formats() {
         'status' => 1,
         'settings' => array(),
       ),
-      'filter_footnotes' => array(
+      'ckeditor_link_filter' => array(
         'weight' => -41,
+        'status' => 1,
+        'settings' => array(),
+      ),
+      'filter_footnotes' => array(
+        'weight' => -40,
         'status' => 1,
         'settings' => array(
           'footnotes_collapse' => 0,
         ),
       ),
       'htmlpurifier_advanced' => array(
-        'weight' => -40,
+        'weight' => -39,
         'status' => 1,
         'settings' => array(
           'htmlpurifier_help' => 1,
@@ -194,12 +199,12 @@ news',
         ),
       ),
       'filter_content_tasks' => array(
-        'weight' => -38,
+        'weight' => -37,
         'status' => 1,
         'settings' => array(),
       ),
       'media_filter' => array(
-        'weight' => -37,
+        'weight' => -36,
         'status' => 1,
         'settings' => array(),
       ),

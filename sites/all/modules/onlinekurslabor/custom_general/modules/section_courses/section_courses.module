@@ -15,7 +15,6 @@ function section_courses_preprocess_panels_pane(&$variables) {
     $variables['page']['content']['course_header_section']['#weight'] = -20;
     $variables['page']['content']['course_header_section']['#markup'] = $block['content'];
 
-
     } */
 
   // Update the history table, stating that this user viewed this node.
@@ -1031,7 +1030,7 @@ function section_courses_student_registration_form($form, &$form_state) {
   $form['#tree'] = TRUE;
   $form['users_container'] = array(
     '#type' => 'fieldset',
-    '#title' => 'Student(en) hinzufügen',
+    //'#title' => 'Student(en) hinzufügen',
     // Set up the wrapper so that AJAX will be able to replace the fieldset.
     '#prefix' => '<div id="students-add-wrapper">',
     '#suffix' => '</div>',
@@ -1309,13 +1308,16 @@ function _section_courses_book_add_active_path(&$subtree_pointer, $active_mlid, 
 }
 
 /*
- *  Assign og administrator role for instructors (dozenten)
+ * assign kurs_student role for students 
+ * Assign og administrator role for instructors (dozenten)
+ * 
  * 
  *  Implements hook_og_membership_insert
  *  Add OG-Role automatically when instructors join a group
  */
 
 function section_courses_og_membership_insert(OgMembership $og_membership) {
+
 
   if ('user' == $og_membership->entity_type && is_numeric($og_membership->etid)) {
 
@@ -1325,9 +1327,17 @@ function section_courses_og_membership_insert(OgMembership $og_membership) {
       $roles = og_roles('node', NM_COURSE, $og_membership->gid);
 
       foreach ($roles as $key => $value) {
-
         if (NM_COURSES_ROLE_ADMINISTRATOR == $value) {
+          og_role_grant('node', $og_membership->gid, $og_membership->etid, $key);
+        }
+      }
+    }
 
+    if (array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $account->roles)) {
+      $roles = og_roles('node', NM_COURSE, $og_membership->gid);
+
+      foreach ($roles as $key => $value) {
+        if (NM_COURSES_ROLE_STUDENT == $value) {
           og_role_grant('node', $og_membership->gid, $og_membership->etid, $key);
         }
       }

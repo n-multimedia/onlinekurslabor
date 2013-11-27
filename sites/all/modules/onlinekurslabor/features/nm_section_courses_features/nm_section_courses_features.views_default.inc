@@ -487,6 +487,13 @@ function nm_section_courses_features_views_default_views() {
         'url' => '',
       ),
     ),
+    'action::og_group_send_email' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
     'action::pathauto_node_update_action' => array(
       'selected' => 0,
       'postpone_processing' => 0,
@@ -624,7 +631,6 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
-  $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'mini';
@@ -745,11 +751,6 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['footer']['result']['field'] = 'result';
   $handler->display->display_options['footer']['result']['empty'] = TRUE;
   $handler->display->display_options['footer']['result']['content'] = 'Teilnehmer @start - @end aus insgesamt @total';
-  /* Relationship: OG membership: OG membership from Benutzer */
-  $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
-  $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'users';
-  $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
-  $handler->display->display_options['relationships']['og_membership_rel']['required'] = TRUE;
   /* Relationship: Benutzer: Profil */
   $handler->display->display_options['relationships']['profile']['id'] = 'profile';
   $handler->display->display_options['relationships']['profile']['table'] = 'users';
@@ -757,6 +758,17 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['relationships']['profile']['bundle_types'] = array(
     'student' => 'student',
   );
+  /* Relationship: OG membership: OG membership from Benutzer */
+  $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
+  $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'users';
+  $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
+  $handler->display->display_options['relationships']['og_membership_rel']['relationship'] = 'og_membership_related_user';
+  $handler->display->display_options['relationships']['og_membership_rel']['required'] = TRUE;
+  /* Relationship: OG membership: OG Roles from membership */
+  $handler->display->display_options['relationships']['og_users_roles']['id'] = 'og_users_roles';
+  $handler->display->display_options['relationships']['og_users_roles']['table'] = 'og_membership';
+  $handler->display->display_options['relationships']['og_users_roles']['field'] = 'og_users_roles';
+  $handler->display->display_options['relationships']['og_users_roles']['relationship'] = 'og_membership_rel';
   /* Feld: Bulk operations: Benutzer */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'users';
@@ -773,6 +785,13 @@ function nm_section_courses_features_views_default_views() {
       'override_label' => 1,
       'label' => 'Benutzerkonto sperren',
     ),
+    'action::user_assign_course_role' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 1,
+      'override_label' => 0,
+      'label' => '',
+    ),
     'action::views_bulk_operations_delete_item' => array(
       'selected' => 1,
       'postpone_processing' => 0,
@@ -781,7 +800,7 @@ function nm_section_courses_features_views_default_views() {
       'label' => 'Benutzerkonto löschen',
     ),
     'action::system_send_email_action' => array(
-      'selected' => 1,
+      'selected' => 0,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
@@ -795,7 +814,7 @@ function nm_section_courses_features_views_default_views() {
       'label' => '',
     ),
     'action::views_bulk_operations_modify_action' => array(
-      'selected' => 1,
+      'selected' => 0,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 1,
@@ -807,6 +826,13 @@ function nm_section_courses_features_views_default_views() {
           'user::og_user_node' => 'user::og_user_node',
         ),
       ),
+    ),
+    'action::user_modify_course_membership_state' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 1,
+      'override_label' => 0,
+      'label' => '',
     ),
     'action::views_bulk_operations_user_roles_action' => array(
       'selected' => 0,
@@ -823,6 +849,20 @@ function nm_section_courses_features_views_default_views() {
       'settings' => array(
         'url' => '',
       ),
+    ),
+    'action::user_send_email' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::realname_action_realname_update' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
     ),
     'action::pathauto_user_update_action' => array(
       'selected' => 0,
@@ -861,6 +901,12 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['realname']['table'] = 'realname';
   $handler->display->display_options['fields']['realname']['field'] = 'realname';
   $handler->display->display_options['fields']['realname']['label'] = 'Name';
+  /* Feld: OG membership: OG user roles in group */
+  $handler->display->display_options['fields']['og_roles']['id'] = 'og_roles';
+  $handler->display->display_options['fields']['og_roles']['table'] = 'og_membership';
+  $handler->display->display_options['fields']['og_roles']['field'] = 'og_roles';
+  $handler->display->display_options['fields']['og_roles']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['fields']['og_roles']['label'] = 'Kurs-Rolle';
   /* Feld: Profil: Matrikelnummer */
   $handler->display->display_options['fields']['field_matrikelnummer']['id'] = 'field_matrikelnummer';
   $handler->display->display_options['fields']['field_matrikelnummer']['table'] = 'field_data_field_matrikelnummer';
@@ -900,11 +946,6 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['access']['field'] = 'access';
   $handler->display->display_options['fields']['access']['alter']['text'] = 'vor [access]';
   $handler->display->display_options['fields']['access']['date_format'] = 'time span';
-  /* Feld: Benutzer: Aktiv */
-  $handler->display->display_options['fields']['status']['id'] = 'status';
-  $handler->display->display_options['fields']['status']['table'] = 'users';
-  $handler->display->display_options['fields']['status']['field'] = 'status';
-  $handler->display->display_options['fields']['status']['not'] = 0;
   /* Feld: Benutzer: Edit link */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'users';
@@ -953,9 +994,17 @@ function nm_section_courses_features_views_default_views() {
     24708420 => 0,
     1 => 0,
   );
+  /* Filter criterion: OG membership: State */
+  $handler->display->display_options['filters']['state']['id'] = 'state';
+  $handler->display->display_options['filters']['state']['table'] = 'og_membership';
+  $handler->display->display_options['filters']['state']['field'] = 'state';
+  $handler->display->display_options['filters']['state']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['filters']['state']['value'] = array(
+    1 => '1',
+  );
 
   /* Display: Block */
-  $handler = $view->new_display('block', 'Block', 'block_1');
+  $handler = $view->new_display('block', 'Block', 'block');
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
@@ -981,16 +1030,9 @@ function nm_section_courses_features_views_default_views() {
   );
 
   /* Display: Block-Studenten */
-  $handler = $view->new_display('block', 'Block-Studenten', 'block_2');
+  $handler = $view->new_display('block', 'Block-Studenten', 'bl_2');
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Benutzer: Rollen */
-  $handler->display->display_options['filters']['rid']['id'] = 'rid';
-  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
-  $handler->display->display_options['filters']['rid']['field'] = 'rid';
-  $handler->display->display_options['filters']['rid']['value'] = array(
-    66784200 => '66784200',
-  );
   /* Filter criterion: Realname: Name */
   $handler->display->display_options['filters']['realname']['id'] = 'realname';
   $handler->display->display_options['filters']['realname']['table'] = 'realname';
@@ -1012,21 +1054,30 @@ function nm_section_courses_features_views_default_views() {
     24708420 => 0,
     1 => 0,
   );
+  /* Filter criterion: OG user roles: Role Name */
+  $handler->display->display_options['filters']['name']['id'] = 'name';
+  $handler->display->display_options['filters']['name']['table'] = 'og_role';
+  $handler->display->display_options['filters']['name']['field'] = 'name';
+  $handler->display->display_options['filters']['name']['relationship'] = 'og_users_roles';
+  $handler->display->display_options['filters']['name']['value'] = array(
+    'kurs-student' => 'kurs-student',
+  );
 
   /* Display: Block-Dozenten */
-  $handler = $view->new_display('block', 'Block-Dozenten', 'block_3');
+  $handler = $view->new_display('block', 'Block-Dozenten', 'bl_4');
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Benutzer: Rollen */
-  $handler->display->display_options['filters']['rid']['id'] = 'rid';
-  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
-  $handler->display->display_options['filters']['rid']['field'] = 'rid';
-  $handler->display->display_options['filters']['rid']['value'] = array(
-    106505419 => '106505419',
+  /* Filter criterion: OG user roles: Role Name */
+  $handler->display->display_options['filters']['name']['id'] = 'name';
+  $handler->display->display_options['filters']['name']['table'] = 'og_role';
+  $handler->display->display_options['filters']['name']['field'] = 'name';
+  $handler->display->display_options['filters']['name']['relationship'] = 'og_users_roles';
+  $handler->display->display_options['filters']['name']['value'] = array(
+    'kurs-dozent' => 'kurs-dozent',
   );
 
   /* Display: Block-Test Studenten */
-  $handler = $view->new_display('block', 'Block-Test Studenten', 'block_4');
+  $handler = $view->new_display('block', 'Block-Test Studenten', 'bl_5');
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Benutzer: Rollen */
@@ -1059,15 +1110,238 @@ function nm_section_courses_features_views_default_views() {
   );
 
   /* Display: Block-Tutoren */
-  $handler = $view->new_display('block', 'Block-Tutoren', 'block_5');
+  $handler = $view->new_display('block', 'Block-Tutoren', 'bl_3');
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Benutzer: Rollen */
-  $handler->display->display_options['filters']['rid']['id'] = 'rid';
-  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
-  $handler->display->display_options['filters']['rid']['field'] = 'rid';
-  $handler->display->display_options['filters']['rid']['value'] = array(
-    126456107 => '126456107',
+  /* Filter criterion: OG user roles: Role Name */
+  $handler->display->display_options['filters']['name']['id'] = 'name';
+  $handler->display->display_options['filters']['name']['table'] = 'og_role';
+  $handler->display->display_options['filters']['name']['field'] = 'name';
+  $handler->display->display_options['filters']['name']['relationship'] = 'og_users_roles';
+  $handler->display->display_options['filters']['name']['value'] = array(
+    'kurs-tutor' => 'kurs-tutor',
+  );
+
+  /* Display: Block-Alle */
+  $handler = $view->new_display('block', 'Block-Alle', 'bl_6');
+
+  /* Display: Block-Pending */
+  $handler = $view->new_display('block', 'Block-Pending', 'bl_1');
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Feld: Bulk operations: Benutzer */
+  $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'users';
+  $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
+    'action::user_block_user_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 1,
+      'label' => 'Benutzerkonto sperren',
+    ),
+    'action::user_assign_course_role' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 1,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_delete_item' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 1,
+      'label' => 'Benutzerkonto löschen',
+    ),
+    'action::system_send_email_action' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_script_action' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_modify_action' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 1,
+      'label' => 'Status und Kursgruppe(n) zuweisen',
+      'settings' => array(
+        'show_all_tokens' => 1,
+        'display_values' => array(
+          'status' => 'status',
+          'user::og_user_node' => 'user::og_user_node',
+        ),
+      ),
+    ),
+    'action::user_modify_course_membership_state' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 1,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_user_roles_action' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_argument_selector_action' => array(
+      'selected' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+      'settings' => array(
+        'url' => '',
+      ),
+    ),
+    'action::user_send_email' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::realname_action_realname_update' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::pathauto_user_update_action' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+  );
+  /* Feld: Benutzer: Uid */
+  $handler->display->display_options['fields']['uid']['id'] = 'uid';
+  $handler->display->display_options['fields']['uid']['table'] = 'users';
+  $handler->display->display_options['fields']['uid']['field'] = 'uid';
+  $handler->display->display_options['fields']['uid']['label'] = '';
+  $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
+  /* Feld: Profil: Foto */
+  $handler->display->display_options['fields']['field_photo']['id'] = 'field_photo';
+  $handler->display->display_options['fields']['field_photo']['table'] = 'field_data_field_photo';
+  $handler->display->display_options['fields']['field_photo']['field'] = 'field_photo';
+  $handler->display->display_options['fields']['field_photo']['relationship'] = 'profile';
+  $handler->display->display_options['fields']['field_photo']['label'] = '';
+  $handler->display->display_options['fields']['field_photo']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_photo']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_photo']['settings'] = array(
+    'image_style' => 'profile_mini_thumbnail',
+    'image_link' => '',
+  );
+  /* Feld: Benutzer: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['exclude'] = TRUE;
+  /* Feld: Realname: Real name */
+  $handler->display->display_options['fields']['realname']['id'] = 'realname';
+  $handler->display->display_options['fields']['realname']['table'] = 'realname';
+  $handler->display->display_options['fields']['realname']['field'] = 'realname';
+  $handler->display->display_options['fields']['realname']['label'] = 'Name';
+  /* Feld: OG membership: State */
+  $handler->display->display_options['fields']['state']['id'] = 'state';
+  $handler->display->display_options['fields']['state']['table'] = 'og_membership';
+  $handler->display->display_options['fields']['state']['field'] = 'state';
+  $handler->display->display_options['fields']['state']['relationship'] = 'og_membership_rel';
+  /* Feld: OG membership: OG user roles in group */
+  $handler->display->display_options['fields']['og_roles']['id'] = 'og_roles';
+  $handler->display->display_options['fields']['og_roles']['table'] = 'og_membership';
+  $handler->display->display_options['fields']['og_roles']['field'] = 'og_roles';
+  $handler->display->display_options['fields']['og_roles']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['fields']['og_roles']['label'] = 'Kurs-Rolle';
+  /* Feld: Profil: Matrikelnummer */
+  $handler->display->display_options['fields']['field_matrikelnummer']['id'] = 'field_matrikelnummer';
+  $handler->display->display_options['fields']['field_matrikelnummer']['table'] = 'field_data_field_matrikelnummer';
+  $handler->display->display_options['fields']['field_matrikelnummer']['field'] = 'field_matrikelnummer';
+  $handler->display->display_options['fields']['field_matrikelnummer']['relationship'] = 'profile';
+  $handler->display->display_options['fields']['field_matrikelnummer']['settings'] = array(
+    'thousand_separator' => '',
+    'prefix_suffix' => 1,
+  );
+  /* Feld: Profil: Hochschule */
+  $handler->display->display_options['fields']['field_hochschule']['id'] = 'field_hochschule';
+  $handler->display->display_options['fields']['field_hochschule']['table'] = 'field_data_field_hochschule';
+  $handler->display->display_options['fields']['field_hochschule']['field'] = 'field_hochschule';
+  $handler->display->display_options['fields']['field_hochschule']['relationship'] = 'profile';
+  $handler->display->display_options['fields']['field_hochschule']['type'] = 'taxonomy_term_reference_plain';
+  /* Feld: Profil: Studienfach */
+  $handler->display->display_options['fields']['field_studienfach']['id'] = 'field_studienfach';
+  $handler->display->display_options['fields']['field_studienfach']['table'] = 'field_data_field_studienfach';
+  $handler->display->display_options['fields']['field_studienfach']['field'] = 'field_studienfach';
+  $handler->display->display_options['fields']['field_studienfach']['relationship'] = 'profile';
+  /* Feld: Global: Ansicht */
+  $handler->display->display_options['fields']['view']['id'] = 'view';
+  $handler->display->display_options['fields']['view']['table'] = 'views';
+  $handler->display->display_options['fields']['view']['field'] = 'view';
+  $handler->display->display_options['fields']['view']['label'] = 'Kursgruppe(n)';
+  $handler->display->display_options['fields']['view']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['view']['view'] = 'courses_user_course_groups';
+  $handler->display->display_options['fields']['view']['arguments'] = '[!uid]/!1';
+  /* Feld: OG membership: Created */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'og_membership';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['fields']['created']['label'] = 'Zeitpunkt der Anftrage';
+  $handler->display->display_options['fields']['created']['date_format'] = 'time span';
+  /* Feld: OG membership: Request message */
+  $handler->display->display_options['fields']['og_membership_request']['id'] = 'og_membership_request';
+  $handler->display->display_options['fields']['og_membership_request']['table'] = 'field_data_og_membership_request';
+  $handler->display->display_options['fields']['og_membership_request']['field'] = 'og_membership_request';
+  $handler->display->display_options['fields']['og_membership_request']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Realname: Name */
+  $handler->display->display_options['filters']['realname']['id'] = 'realname';
+  $handler->display->display_options['filters']['realname']['table'] = 'realname';
+  $handler->display->display_options['filters']['realname']['field'] = 'realname';
+  $handler->display->display_options['filters']['realname']['operator'] = 'contains';
+  $handler->display->display_options['filters']['realname']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['realname']['expose']['operator_id'] = 'realname_op';
+  $handler->display->display_options['filters']['realname']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['realname']['expose']['operator'] = 'realname_op';
+  $handler->display->display_options['filters']['realname']['expose']['identifier'] = 'realname';
+  $handler->display->display_options['filters']['realname']['expose']['remember_roles'] = array(
+    2 => '2',
+    30037204 => 0,
+    197637936 => 0,
+    16675960 => 0,
+    106505419 => 0,
+    126456107 => 0,
+    66784200 => 0,
+    24708420 => 0,
+    1 => 0,
+  );
+  /* Filter criterion: OG membership: State */
+  $handler->display->display_options['filters']['state']['id'] = 'state';
+  $handler->display->display_options['filters']['state']['table'] = 'og_membership';
+  $handler->display->display_options['filters']['state']['field'] = 'state';
+  $handler->display->display_options['filters']['state']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['filters']['state']['value'] = array(
+    2 => '2',
+    3 => '3',
   );
   $translatables['courses_admin_members'] = array(
     t('Defaults'),
@@ -1085,10 +1359,12 @@ function nm_section_courses_features_views_default_views() {
     t('nächste Seite ›'),
     t('letzte Seite »'),
     t('Teilnehmer @start - @end aus insgesamt @total'),
-    t('OG membership from user'),
     t('Profil'),
+    t('OG membership from user'),
+    t('OG Roles from OG membership'),
     t('Benutzer'),
     t('Name'),
+    t('Kurs-Rolle'),
     t('Matrikelnummer'),
     t('Hochschule'),
     t('Studienfach'),
@@ -1096,7 +1372,6 @@ function nm_section_courses_features_views_default_views() {
     t('E-Mail'),
     t('Letzter Zugriff'),
     t('vor [access]'),
-    t('Aktiv'),
     t('Edit link'),
     t('Alle'),
     t('Block'),
@@ -1107,6 +1382,11 @@ function nm_section_courses_features_views_default_views() {
     t('Block-Dozenten'),
     t('Block-Test Studenten'),
     t('Block-Tutoren'),
+    t('Block-Alle'),
+    t('Block-Pending'),
+    t('State'),
+    t('Zeitpunkt der Anftrage'),
+    t('Request message'),
   );
   $export['courses_admin_members'] = $view;
 
@@ -1219,6 +1499,13 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
+    'action::og_membership_assign_course_role' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 1,
+      'override_label' => 0,
+      'label' => '',
+    ),
     'action::views_bulk_operations_delete_item' => array(
       'selected' => 0,
       'postpone_processing' => 0,
@@ -1295,13 +1582,22 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['state']['table'] = 'og_membership';
   $handler->display->display_options['fields']['state']['field'] = 'state';
   $handler->display->display_options['fields']['state']['relationship'] = 'og_membership_rel';
+  /* Feld: Benutzer: Rollen */
+  $handler->display->display_options['fields']['rid']['id'] = 'rid';
+  $handler->display->display_options['fields']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['fields']['rid']['field'] = 'rid';
+  $handler->display->display_options['fields']['rid']['label'] = 'Systemrollen';
   /* Feld: OG membership: OG user roles in group */
   $handler->display->display_options['fields']['og_roles']['id'] = 'og_roles';
   $handler->display->display_options['fields']['og_roles']['table'] = 'og_membership';
   $handler->display->display_options['fields']['og_roles']['field'] = 'og_roles';
   $handler->display->display_options['fields']['og_roles']['relationship'] = 'og_membership_rel';
-  $handler->display->display_options['fields']['og_roles']['label'] = 'Rollen';
-  $handler->display->display_options['fields']['og_roles']['type'] = 'ul';
+  $handler->display->display_options['fields']['og_roles']['label'] = 'Kursrollen';
+  /* Feld: OG membership: Request message */
+  $handler->display->display_options['fields']['og_membership_request']['id'] = 'og_membership_request';
+  $handler->display->display_options['fields']['og_membership_request']['table'] = 'field_data_og_membership_request';
+  $handler->display->display_options['fields']['og_membership_request']['field'] = 'og_membership_request';
+  $handler->display->display_options['fields']['og_membership_request']['relationship'] = 'og_membership_rel';
   /* Feld: OG membership: Created */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'og_membership';
@@ -1309,19 +1605,6 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['created']['relationship'] = 'og_membership_rel';
   $handler->display->display_options['fields']['created']['label'] = 'Member since';
   $handler->display->display_options['fields']['created']['date_format'] = 'time ago';
-  /* Feld: OG membership: Request message */
-  $handler->display->display_options['fields']['og_membership_request']['id'] = 'og_membership_request';
-  $handler->display->display_options['fields']['og_membership_request']['table'] = 'field_data_og_membership_request';
-  $handler->display->display_options['fields']['og_membership_request']['field'] = 'og_membership_request';
-  $handler->display->display_options['fields']['og_membership_request']['relationship'] = 'og_membership_rel';
-  /* Feld: OG membership: Edit link */
-  $handler->display->display_options['fields']['edit_membership']['id'] = 'edit_membership';
-  $handler->display->display_options['fields']['edit_membership']['table'] = 'og_membership';
-  $handler->display->display_options['fields']['edit_membership']['field'] = 'edit_membership';
-  $handler->display->display_options['fields']['edit_membership']['relationship'] = 'og_membership_rel';
-  $handler->display->display_options['fields']['edit_membership']['label'] = '';
-  $handler->display->display_options['fields']['edit_membership']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['edit_membership']['destination'] = TRUE;
   /* Sort criterion: Benutzer: Name */
   $handler->display->display_options['sorts']['name']['id'] = 'name';
   $handler->display->display_options['sorts']['name']['table'] = 'users';
@@ -1356,16 +1639,6 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['status']['value'] = '1';
   $handler->display->display_options['filters']['status']['group'] = 0;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: OG membership: State */
-  $handler->display->display_options['filters']['state']['id'] = 'state';
-  $handler->display->display_options['filters']['state']['table'] = 'og_membership';
-  $handler->display->display_options['filters']['state']['field'] = 'state';
-  $handler->display->display_options['filters']['state']['relationship'] = 'og_membership_rel';
-  $handler->display->display_options['filters']['state']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['state']['expose']['operator_id'] = 'state_op';
-  $handler->display->display_options['filters']['state']['expose']['label'] = 'State';
-  $handler->display->display_options['filters']['state']['expose']['operator'] = 'state_op';
-  $handler->display->display_options['filters']['state']['expose']['identifier'] = 'state';
   /* Filter criterion: Benutzer: Name */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
   $handler->display->display_options['filters']['uid']['table'] = 'users';
@@ -1411,9 +1684,10 @@ function nm_section_courses_features_views_default_views() {
     t('OG membership'),
     t('Name'),
     t('State'),
-    t('Rollen'),
-    t('Member since'),
+    t('Systemrollen'),
+    t('Kursrollen'),
     t('Request message'),
+    t('Member since'),
     t('Alle'),
     t('Block - Pending'),
   );
@@ -1857,6 +2131,12 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['relationships']['profile']['bundle_types'] = array(
     'master' => 'master',
   );
+  /* Relationship: OG membership: OG Roles from membership */
+  $handler->display->display_options['relationships']['og_users_roles']['id'] = 'og_users_roles';
+  $handler->display->display_options['relationships']['og_users_roles']['table'] = 'og_membership';
+  $handler->display->display_options['relationships']['og_users_roles']['field'] = 'og_users_roles';
+  $handler->display->display_options['relationships']['og_users_roles']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['relationships']['og_users_roles']['required'] = TRUE;
   /* Feld: Benutzer: Uid */
   $handler->display->display_options['fields']['uid']['id'] = 'uid';
   $handler->display->display_options['fields']['uid']['table'] = 'users';
@@ -1926,12 +2206,13 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['state']['value'] = array(
     1 => '1',
   );
-  /* Filter criterion: Benutzer: Rollen */
-  $handler->display->display_options['filters']['rid']['id'] = 'rid';
-  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
-  $handler->display->display_options['filters']['rid']['field'] = 'rid';
-  $handler->display->display_options['filters']['rid']['value'] = array(
-    66784200 => '66784200',
+  /* Filter criterion: OG user roles: Role Name */
+  $handler->display->display_options['filters']['name']['id'] = 'name';
+  $handler->display->display_options['filters']['name']['table'] = 'og_role';
+  $handler->display->display_options['filters']['name']['field'] = 'name';
+  $handler->display->display_options['filters']['name']['relationship'] = 'og_users_roles';
+  $handler->display->display_options['filters']['name']['value'] = array(
+    'kurs-student' => 'kurs-student',
   );
 
   /* Display: Block */
@@ -2032,12 +2313,13 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['state']['value'] = array(
     1 => '1',
   );
-  /* Filter criterion: Benutzer: Rollen */
-  $handler->display->display_options['filters']['rid']['id'] = 'rid';
-  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
-  $handler->display->display_options['filters']['rid']['field'] = 'rid';
-  $handler->display->display_options['filters']['rid']['value'] = array(
-    106505419 => '106505419',
+  /* Filter criterion: OG user roles: Role Name */
+  $handler->display->display_options['filters']['name']['id'] = 'name';
+  $handler->display->display_options['filters']['name']['table'] = 'og_role';
+  $handler->display->display_options['filters']['name']['field'] = 'name';
+  $handler->display->display_options['filters']['name']['relationship'] = 'og_users_roles';
+  $handler->display->display_options['filters']['name']['value'] = array(
+    'kurs-dozent' => 'kurs-dozent',
   );
 
   /* Display: Block-Tutoren */
@@ -2083,12 +2365,13 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['state']['value'] = array(
     1 => '1',
   );
-  /* Filter criterion: Benutzer: Rollen */
-  $handler->display->display_options['filters']['rid']['id'] = 'rid';
-  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
-  $handler->display->display_options['filters']['rid']['field'] = 'rid';
-  $handler->display->display_options['filters']['rid']['value'] = array(
-    126456107 => '126456107',
+  /* Filter criterion: OG user roles: Role Name */
+  $handler->display->display_options['filters']['name']['id'] = 'name';
+  $handler->display->display_options['filters']['name']['table'] = 'og_role';
+  $handler->display->display_options['filters']['name']['field'] = 'name';
+  $handler->display->display_options['filters']['name']['relationship'] = 'og_users_roles';
+  $handler->display->display_options['filters']['name']['value'] = array(
+    'kurs-tutor' => 'kurs-tutor',
   );
   $translatables['courses_course_members'] = array(
     t('Defaults'),
@@ -2107,6 +2390,7 @@ function nm_section_courses_features_views_default_views() {
     t('letzte Seite »'),
     t('OG membership from user'),
     t('Profil'),
+    t('OG Roles from OG membership'),
     t('Alle'),
     t('Block'),
     t('Content pane'),
@@ -2315,6 +2599,12 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['relationships']['profile']['bundle_types'] = array(
     'master' => 'master',
   );
+  /* Relationship: OG membership: OG Roles from membership */
+  $handler->display->display_options['relationships']['og_users_roles']['id'] = 'og_users_roles';
+  $handler->display->display_options['relationships']['og_users_roles']['table'] = 'og_membership';
+  $handler->display->display_options['relationships']['og_users_roles']['field'] = 'og_users_roles';
+  $handler->display->display_options['relationships']['og_users_roles']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['relationships']['og_users_roles']['required'] = TRUE;
   /* Feld: Benutzer: Uid */
   $handler->display->display_options['fields']['uid']['id'] = 'uid';
   $handler->display->display_options['fields']['uid']['table'] = 'users';
@@ -2366,12 +2656,13 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['state']['value'] = array(
     1 => '1',
   );
-  /* Filter criterion: Benutzer: Rollen */
-  $handler->display->display_options['filters']['rid']['id'] = 'rid';
-  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
-  $handler->display->display_options['filters']['rid']['field'] = 'rid';
-  $handler->display->display_options['filters']['rid']['value'] = array(
-    106505419 => '106505419',
+  /* Filter criterion: OG user roles: Role Name */
+  $handler->display->display_options['filters']['name']['id'] = 'name';
+  $handler->display->display_options['filters']['name']['table'] = 'og_role';
+  $handler->display->display_options['filters']['name']['field'] = 'name';
+  $handler->display->display_options['filters']['name']['relationship'] = 'og_users_roles';
+  $handler->display->display_options['filters']['name']['value'] = array(
+    'kurs-dozent' => 'kurs-dozent',
   );
 
   /* Display: Block */
@@ -2386,6 +2677,7 @@ function nm_section_courses_features_views_default_views() {
     t('Desc'),
     t('OG membership from user'),
     t('Profil'),
+    t('OG Roles from OG membership'),
     t('Alle'),
     t('Block'),
   );
@@ -2617,6 +2909,7 @@ function nm_section_courses_features_views_default_views() {
     30037204 => '30037204',
     106505419 => '106505419',
     197637936 => '197637936',
+    126456107 => '126456107',
   );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';

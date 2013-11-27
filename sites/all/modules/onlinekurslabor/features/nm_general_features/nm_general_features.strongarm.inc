@@ -299,7 +299,7 @@ function nm_general_features_strongarm() {
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => 'RDBmAYJulelIaYF786BGwFq9Xn-QR78vZDtf4YpbXUA',
+    'javascript' => 'u5DsHaSdUCw0qTlC39JyiDn0KyPAfA73iOPxsRcUau0',
   );
   $export['language_default'] = $strongarm;
 
@@ -473,7 +473,7 @@ function nm_general_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'site_403';
-  $strongarm->value = '';
+  $strongarm->value = 'r4032login';
   $export['site_403'] = $strongarm;
 
   $strongarm = new stdClass();

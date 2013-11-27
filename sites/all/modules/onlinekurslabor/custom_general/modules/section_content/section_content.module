@@ -53,7 +53,18 @@ function section_content_node_view($node, $view_mode, $langcode) {
   if (in_array($node->type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN))) {
 //disable book navigation
     //unset($node->content['book_navigation']);
-    $node->content['book_navigation']['#markup'] = '<hr>' . $node->content['book_navigation']['#markup'];
+
+    $has_children = FALSE;
+    if (isset($node->book)) {
+      $book_link = book_link_load($node->book['mlid']);
+      $has_children = $book_link['has_children'];
+    }
+
+
+    if ($has_children) {
+      $node->content['book_navigation']['#markup'] = '<hr><h3>Unterkapitel</h3>' . $node->content['book_navigation']['#markup'];
+    }
+
     //TOC functionality. Numbering Chapters
     //check if numbering is enabled in domain settings
     if (_custom_general_toc_enabled($node->nid)) {
@@ -375,7 +386,7 @@ function _section_content_alter_breadcrumb_for_role(&$active_trail) {
  * Automatically create a Book when creating a domain (Gebiet)
  */
 function section_content_form_alter(&$form, &$form_state, $form_id) {
-  
+
   global $user;
   static $form_og;
 
@@ -394,10 +405,9 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
   }
 
 
-  if (stristr($form_id, '_node_form')&& in_array($form['#node']->type, array(NM_CONTENT_DOMAIN, NM_BIBLIO, NM_CONTENT_CHAPTER, NM_CONTENT_QUESTION_AND_ANSWER, NM_CONTENT_MULTIPLE_CHOICE))) {
+  if (stristr($form_id, '_node_form') && in_array($form['#node']->type, array(NM_CONTENT_DOMAIN, NM_BIBLIO, NM_CONTENT_CHAPTER, NM_CONTENT_QUESTION_AND_ANSWER, NM_CONTENT_MULTIPLE_CHOICE))) {
     $form['actions']['delete']['#submit'] = array('section_content_node_form_delete_submit');
     array_push($form['actions']['submit']['#submit'], 'section_content_node_form_submit');
-    
   }
 
   //Assign files to active groups when uploaded
