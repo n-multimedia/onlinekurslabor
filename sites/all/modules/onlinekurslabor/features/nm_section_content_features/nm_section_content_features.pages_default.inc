@@ -1084,7 +1084,23 @@ echo section_content_text_outline();
   $page->admin_title = 'content-domain-overview';
   $page->admin_description = '';
   $page->path = 'domains';
-  $page->access = array();
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 30037204,
+            1 => 197637936,
+            2 => 16675960,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
   $page->menu = array();
   $page->arguments = array();
   $page->conf = array(
@@ -1209,6 +1225,18 @@ echo \'<p><a class="btn" href="/node/add/content-domain">Neues Thema anlegen</a>
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 30037204,
+            1 => 197637936,
+            2 => 16675960,
+          ),
+        ),
+        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),
