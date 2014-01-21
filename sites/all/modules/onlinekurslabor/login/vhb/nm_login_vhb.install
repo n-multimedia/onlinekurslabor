@@ -1,0 +1,29 @@
+<?php
+
+function nm_login_vhb_schema() {
+  $schema['nm_login_vhb'] = array(
+    'description' => 'Users that are registrated through the vhb-interface',
+    'fields' => array(
+      'uid' => array(
+        'description' => "User's {users}.uid.",
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ),
+      'archivated' => array(
+        'description' => "Flag if user is archivated.",
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ),
+      'created' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Timestamp for when user was registrated.',
+        ),
+      'primary key' => array('uid'),
+  ));
+  return $schema;
+}
+

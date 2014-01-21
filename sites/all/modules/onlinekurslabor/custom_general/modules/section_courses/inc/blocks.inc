@@ -118,10 +118,10 @@ function _course_header_section_view() {
 
       $output .= '<div id="course_demo_info" class=""><h5>' . NM_COURSE_DEMO_LABEL . ' ' . $pending_msg . '</h5>';
       $output .= '<p>Im Demo-Modus haben Sie ausschließlich Zugriff auf den Lehrtext und die allgemeinen Kursinformationen.</p> ';
-      
+
       $url = 'group/node/' . $active_course->nid . '/subscribe';
       $subscribe_link = l('Melden Sie sich am Kurs an', $url, array('query' => array('destination' => 'course/home/' . $active_course->nid)));
-      $output .= '<p>'.$subscribe_link.', um weitere Werkzeuge freizuschalten.</p> ';
+      $output .= '<p>' . $subscribe_link . ', um weitere Werkzeuge freizuschalten.</p> ';
 
       $output .= '</div>';
     }
@@ -191,10 +191,17 @@ function _course_header_section_view() {
       $field_view = field_view_field('node', $active_course, 'field_course_header', array('settings' => array('image_style' => 'course_header')));
       //$field_view['#label_display'] = 'hidden';
       $uri = $field_view['#items'][0]['uri'];
+
+      $url = image_style_url('course_header', $uri);
+
+      //$url = parse_url($url_array);
+      //        dpm($url);
+      //$path = $url['path'];
+      $path = $url;
       //dpm($active_course->field_course_header);
-      $url_array = file_create_url($uri);
-      $url = parse_url($url_array);
-      $path = $url['path'];
+      //$url_array = file_create_url($uri);
+      //$url = parse_url($url_array);
+      //$path = $url['path'];
       $header_pic = '<div style="
         background-image:url(' . $path . ');
         -webkit-background-size: cover;

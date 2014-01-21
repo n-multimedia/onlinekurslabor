@@ -1,5 +1,8 @@
 <?php
 
+//Semester Logic
+define("NM_SEMESTERID_START_YEAR", '84');
+
 //System
 define("NM_FILTER_FORMAT_FILTERED_HTML", 'filtered_html');
 
@@ -69,6 +72,11 @@ define("NM_COURSES_TASK_TYPE_GROUP", "1");
 define("NM_COURSES_TASK_WORKFLOW_DRAFT", "2");
 define("NM_COURSES_TASK_WORKFLOW_SUBMITTED", "3");
 define("NM_COURSES_TASK_WORKFLOW_ASSESSED", "4");
+
+
+//Domains
+//Contet Types
+define("NM_SPACE", "spaces_space");
 
 
 //Features..

@@ -2,6 +2,9 @@
 
 define('NM_LOGIN_VHB_DATAVERSION', "2.0");
 
+
+module_load_include('inc', 'nm_login_vhb', 'nm_login_vhb');
+
 //define real salt in private file
 //define('NM_LOGIN_VHB_SALT', "testSALTweRt");
 

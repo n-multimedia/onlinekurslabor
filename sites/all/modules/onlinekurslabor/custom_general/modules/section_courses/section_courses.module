@@ -29,6 +29,78 @@ function section_courses_preprocess_panels_pane(&$variables) {
   }
 }
 
+function _section_courses_semesterID_ToString($sem_id) {
+
+  $result = "";
+  //semester id is beeing incremented twice a year
+  $year = ($sem_id / 2) + NM_SEMESTERID_START_YEAR;
+  $year_2 = $year + 1;
+
+  $year = $year % 100;
+  $year_2 = $year_2 % 100;
+
+  $year = str_pad($year, 2, '0', STR_PAD_LEFT);
+  $year_2 = str_pad($year_2, 2, '0', STR_PAD_LEFT);
+  if (($sem_id % 2) == 0) {
+    //dpm('WS ' . $year . '/' . ($year_2));
+    $result = 'WS ' . $year . '/' . ($year_2);
+  }
+  else {
+    //dpm('SS ' . ($year_2));
+    $result = 'SS ' . ($year_2);
+  }
+
+  return $result;
+
+  /*
+    $cur = 84;
+    for ($i = 0; $i <= 46; $i++) {
+    $cur_1 = $cur + 1;
+    $cur_1 = $cur_1 % 100;
+    $cur = $cur % 100;
+    //prepand 0 if needed
+    $cur = str_pad($cur, 2 ,'0', STR_PAD_LEFT);
+    $cur_1 = str_pad($cur_1, 2 ,'0', STR_PAD_LEFT);
+    if (($i % 2) == 0) {
+    dpm('WS ' . $cur . '/' . ($cur_1));
+    $cur = $cur_1;
+    }
+    else {
+    dpm('SS ' . ($cur));
+    }
+    } */
+}
+
+function _section_courses_string_ToSemesterID($str) {
+
+  $matches = array();
+
+  $result = FALSE;
+  //will only work till 2100
+  preg_match_all('|\d+|', $str, $matches);
+  if (isset($matches[0])) {
+    $id = $matches[0][0];
+
+    if (strstr($str, 'SS')) {
+
+      $result = (($id + 100 - NM_SEMESTERID_START_YEAR ) * 2 - 1);
+    }
+    else if (strstr($str, 'WS')) {
+      $result = (($id + 100 - NM_SEMESTERID_START_YEAR ) * 2);
+    }
+    
+    return $result;
+  }
+
+  /*
+   *   _section_courses_string_ToSemesterID("SS 07");
+    _section_courses_string_ToSemesterID("WS 07/08");
+    _section_courses_string_ToSemesterID("SS 08");
+   */
+
+  return FALSE;
+}
+
 /*
  *  alter group field
  *  subscribe/unsubscribe/you are the group manager
@@ -252,8 +324,8 @@ function _section_courses_get_active_course($reset = FALSE) {
 
 
   if (!isset($course) || $reset) {
-//proove if user is in course section
-//not prooving causes an infinite loop here (menu_get_object(); on /comment/%/edit)
+    //proove if user is in course section
+    //not prooving causes an infinite loop here (menu_get_object(); on /comment/%/edit)
     $node = NULL;
 
     if ((arg(0) != "course" && arg(0) != "node") || (arg(0) == "course" && arg(5) == "reply" || arg(5) == "edit")) {
@@ -905,6 +977,12 @@ if (class_exists('statuses_og_context')) {
     }
 
     function access_add($recipient, $sender) {
+      //10.12.2013 - 14:58 - SN - except Course Group streams
+      //allow tutors and instructors to access streams
+      $bypass = _section_courses_bypass_course_group_stream_access($recipient);
+      if ($bypass) {
+        return TRUE;
+      }
       // Only group members can add content of any kind.
       if (function_exists('og_get_group_ids')) { // OG 7.x-1.x
         $group_ids = og_get_group_ids('node', array($recipient->nid));
@@ -921,6 +999,13 @@ if (class_exists('statuses_og_context')) {
     }
 
     function access_delete($status, $account) {
+      //10.12.2013 - 14:58 - SN - except Course Group streams
+      //allow tutors and instructors to access streams
+      $recipient = node_load($status->recipient);
+      $bypass = _section_courses_bypass_course_group_stream_access($recipient);
+      if ($bypass) {
+        return TRUE;
+      }
       // Only group administrators can delete others' content in their group.
       if (function_exists('og_get_group_ids')) { // OG 7.x-1.x
         $group_ids = og_get_group_ids('node', array($status->recipient));
@@ -937,6 +1022,13 @@ if (class_exists('statuses_og_context')) {
     }
 
     function access_view($status, $account) {
+      //10.12.2013 - 14:58 - SN - except Course Group streams
+      //allow tutors and instructors to access streams
+      $recipient = node_load($status->recipient);
+      $bypass = _section_courses_bypass_course_group_stream_access($recipient);
+      if ($bypass) {
+        return TRUE;
+      }
       // Only group members can view group statuses if the group is private.
       if (function_exists('og_get_group_ids')) { // OG 7.x-1.x
         $group_ids = og_get_group_ids('node', array($status->recipient));
@@ -959,11 +1051,31 @@ if (class_exists('statuses_og_context')) {
     }
 
     function access_stream($recipient, $account) {
+      //10.12.2013 - 14:58 - SN - except Course Group streams
+      //allow tutors and instructors to access streams
+      $bypass = _section_courses_bypass_course_group_stream_access($recipient);
+      if ($bypass) {
+        return TRUE;
+      }
+
       return parent::access_stream($recipient, $account) && $this->access_add($recipient, $account);
     }
 
   }
 
+}
+
+function _section_courses_bypass_course_group_stream_access($course_group) {
+  $bypass = FALSE;
+  if (isset($course_group->type) && $course_group->type == NM_COURSE_GROUP) {
+    $active_course = _section_courses_get_active_course();
+
+    $og_role = og_get_user_roles('node', $active_course->nid);
+    if (array_intersect(array(NM_COURSES_ROLE_ADMINISTRATOR, NM_COURSES_ROLE_TUTOR), $og_role)) {
+      $bypass = TRUE;
+    }
+  }
+  return $bypass;
 }
 
 /*

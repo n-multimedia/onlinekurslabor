@@ -1,12 +1,42 @@
 <?
 
 //restrict access to other users solutions
-
 //restrict access for instructors to see group streams
-
+//-> change in design here: instructors may see group streems to have the ability to help the groups
 //restrict access to course content from users not being part of the course
-
 //restrict submission to course groups, if user already is part of a group
-
 //restrict access to other  course groups, if user already is part of a group
 
+/**
+ * Alter the permissions to take action on a comment.
+ *
+ * @param $allow
+ *   Whether the user will be allowed to take action on the comment. Only set
+ *   this to FALSE if you want to explicitly deny access. Setting this to TRUE
+ *   defaults to the built-in access controls.
+ * @param $op
+ *   The action being taken on the comment. One of view, post, edit, delete.
+ * @param $comment
+ *   The comment object on which the action is being taken.
+ * @param $account
+ *   The user object of the person taking the action.
+ * @see fbss_comments_can()
+ */
+/* 10.12.2013 - 16:09 - SN
+ * permit access to delete and edit status comments otside from legal course context
+ * instructors and tutors may not edit and delete status comments in other courses that they are not assigned to
+ */
+function onlinekurslabor_access_fbss_comments_has_permission_alter(&$allow, $op, $comment, $account) {
+
+  $active_course = _section_courses_get_active_course();
+
+  //if course section is set only
+  if ($active_course) {
+    $og_role = og_get_user_roles('node', $active_course->nid);
+    if ($op == 'edit' || $op == 'delete') {
+      if (!array_intersect(array(NM_COURSES_ROLE_ADMINISTRATOR, NM_COURSES_ROLE_TUTOR), $og_role)) {
+        $allow = FALSE;
+      }
+    }
+  }
+}

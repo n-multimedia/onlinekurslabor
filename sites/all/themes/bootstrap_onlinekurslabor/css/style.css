@@ -316,6 +316,14 @@ Margin between content and navigation
 
 
 /*
+*/
+.course_item_container{
+    margin-bottom: 20px;
+}
+.course_item_container .course_item_title h4{
+    margin-top:0;
+}
+/*
 VIEWS
 */
 
