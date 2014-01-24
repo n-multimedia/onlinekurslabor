@@ -528,8 +528,19 @@ function custom_general_menu() {
     'page arguments' => array(2),
       //'theme callback' => '_linkit_dashboard_theme',
   );
+  
+  $items['admin/onlinekurslabor'] = array(
+    'title' => 'Onlinekurslabor',
+    'access callback' => TRUE,
+    'page callback' => 'custom_general_onlinekurslabor_admin_page',
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 99,
+  );
 
   return $items;
+}
+function custom_general_onlinekurslabor_admin_page(){
+  return "Onlinekurslabor Setting Page";
 }
 
 function custom_general_menu_alter(&$items) {
