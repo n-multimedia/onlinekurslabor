@@ -25,7 +25,7 @@ function onlinekurslabor_user_form_alter(&$form, &$form_state, $form_id) {
           $profile = profile_create(array(
             'type' => 'master',
             'uid' => $user->uid
-              ));
+          ));
         }
         $form_state['profiles'][$profile->type] = $profile;
       }
@@ -36,7 +36,7 @@ function onlinekurslabor_user_form_alter(&$form, &$form_state, $form_id) {
           $profile = profile_create(array(
             'type' => 'student',
             'uid' => $user->uid
-              ));
+          ));
         }
         $form_state['profiles'][$profile->type] = $profile;
       }
@@ -356,10 +356,15 @@ function user_assign_course_role_submit($form_id, $form_state) {
 }
 
 function og_membership_assign_course_role_submit($form_id, $form_state) {
-  return array('ogs' => $form_state['values']['ogs'],
-    'course_nid' => $form_state['values']['course_nid'],
-    'remove_roles' => $form_state['values']['remove_roles'],
-  );
+
+  $result = array();
+  $result['ogs'] = $form_state['values']['ogs'];
+  $result['course_nid'] = $form_state['values']['course_nid'];
+  if ($form_state['values']['remove_roles']) {
+    $result['remove_roles'] = $form_state['values']['remove_roles'];
+  }
+
+  return $result;
 }
 
 function user_modify_course_membership_state_submit($form_id, $form_state) {
@@ -369,9 +374,11 @@ function user_modify_course_membership_state_submit($form_id, $form_state) {
 }
 
 function user_assign_to_course_group_submit($form_id, $form_state) {
-  return array('course_group_nid' => $form_state['values']['course_groups'],
-    'course_nid' => $form_state['values']['course_nid'],
-  );
+  $result = array();
+  $result['course_group_nid'] = $form_state['values']['course_groups'];
+  $result['course_nid'] = $form_state['values']['course_nid'];
+
+  return $result;
 }
 
 /**
@@ -481,34 +488,38 @@ function user_assign_to_course_group(&$entity, $context = array()) {
   global $user;
   $course_nid = $context['course_nid'];
   $new_course_group_nid = $context['course_group_nid'];
-  $active_course = node_load($course_nid);
-  $course_groups = _section_course_get_coursegroups($active_course);
+  //if nid was set
+  if ($new_course_group_nid) {
+    $active_course = node_load($course_nid);
+    $course_groups = _section_course_get_coursegroups($active_course);
 
-  /**
-   * 13.02.2014 - 10:02 - SN
-   * todo performance boost by 1 query?
-   * get users course group in course
-   */
-  foreach ($course_groups as $course_group) {
-    $og_membership = og_get_membership('node', $course_group->nid, 'user', $entity->uid);
-    if ($og_membership) {
-      og_membership_delete($og_membership->id);
-      //delete all ids... without continue..
-      //continue would just delete the membership of the first match
-      //.. that would be enough actually
-      //continue;
+    /**
+     * 13.02.2014 - 10:02 - SN
+     * todo performance boost by 1 query?
+     * get users course group in course
+     */
+    foreach ($course_groups as $course_group) {
+      $og_membership = og_get_membership('node', $course_group->nid, 'user', $entity->uid);
+      if ($og_membership) {
+        og_membership_delete($og_membership->id);
+        //delete all ids... without continue..
+        //continue would just delete the membership of the first match
+        //.. that would be enough actually
+        //continue;
+      }
     }
-  }
 
-  //assign to selected group
-  $values = array(
-    'entity type' => 'user',
-    'entity' => $entity,
-    'state' => OG_STATE_ACTIVE,
-  );
-  og_group('node', $new_course_group_nid, $values);
-  
-  
+    //assign to selected group
+    $values = array(
+      'entity type' => 'user',
+      'entity' => $entity,
+      'state' => OG_STATE_ACTIVE,
+    );
+    og_group('node', $new_course_group_nid, $values);
+  }
+  else {
+    drupal_set_message(t('No entry could be assigned to a course group because no course group was selected.'), 'warning');
+  }
 }
 
 /**
