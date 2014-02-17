@@ -370,7 +370,7 @@ function _section_courses_task_solution_assesment_form($form, &$form_state, $sol
       $form['save_cancel_submission'] = array(
         '#type' => 'submit',
         '#attributes' => array('class' => array('btn-default')),
-        '#value' => 'Speicherun und Einreichung aufheben',
+        '#value' => 'Speichern und Einreichung aufheben',
       );
       break;
   }

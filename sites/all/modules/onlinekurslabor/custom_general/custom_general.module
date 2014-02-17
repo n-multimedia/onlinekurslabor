@@ -1,7 +1,12 @@
 <?php
 
 //Semester Logic
-define("NM_SEMESTERID_START_YEAR", '84');
+//year when the vhb ID started - needed for calculation
+define("NM_VHB_SEMESTERID_START_YEAR", '84');
+//vhb semester id when the first onlinekurslabor course was online
+define("NM_VHB_SEMESTERID_OKL_START", '58');
+//semester when okl started (WS 13/14)
+define("NM_VHB_SEMESTERID_OKL_START_DATE", '10.2013');
 
 //System
 define("NM_FILTER_FORMAT_FILTERED_HTML", 'filtered_html');
@@ -528,18 +533,19 @@ function custom_general_menu() {
     'page arguments' => array(2),
       //'theme callback' => '_linkit_dashboard_theme',
   );
-  
+
   $items['admin/onlinekurslabor'] = array(
     'title' => 'Onlinekurslabor',
-    'access callback' => TRUE,
+    'access callback' => 'custom_general_user_is_okl_admin',
+    'access arguments' => array(array('administrator')),
     'page callback' => 'custom_general_onlinekurslabor_admin_page',
     'type' => MENU_NORMAL_ITEM,
-    'weight' => 99,
   );
 
   return $items;
 }
-function custom_general_onlinekurslabor_admin_page(){
+
+function custom_general_onlinekurslabor_admin_page() {
   return "Onlinekurslabor Setting Page";
 }
 
@@ -612,7 +618,7 @@ function custom_general_preprocess_page(&$variables) {
   drupal_add_library('system', 'ui.progressbar');
 }
 
-function custom_general_addpend_active_class($path, &$options) {
+function custom_general_append_active_class($path, &$options) {
   // Append active class.
   if (($path == $_GET['q'] || ($path == '<front>' && drupal_is_front_page())) && (empty($options['language']) || $options['language']->language == $language_url->language)) {
     $options['attributes']['class'][] = 'active';

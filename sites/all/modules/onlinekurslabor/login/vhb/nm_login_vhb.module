@@ -34,7 +34,7 @@ function nm_login_vhb_menu() {
     ); */
 
   $items['admin/onlinekurslabor/nm_vhb_login'] = array(
-    'title' => 'NM Login VHB -  settings',
+    'title' => 'VHB Login',
     'file' => 'nm_login_vhb.pages.inc',
     'page callback' => 'nm_login_vhb_admin_list_all',
     'access callback' => 'user_access',
@@ -419,14 +419,15 @@ function nm_login_vhb_action_info() {
     'nm_login_vhb_archivate_user_action' => array(
       'label' => t('Archivate user'),
       'type' => 'nm_login_vhb_entry',
+      'configurable' => FALSE,
       'triggers' => array('any'),
     ),
   );
 }
 
 function nm_login_vhb_archivate_user_action_submit($form_id, $form_state) {
-  dpm($form_id);
-  dpm($form_state);
+  //dpm($form_id);
+  //dpm($form_state);
 }
 
 /**

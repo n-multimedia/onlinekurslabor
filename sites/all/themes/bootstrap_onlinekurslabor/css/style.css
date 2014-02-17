@@ -317,11 +317,14 @@ Margin between content and navigation
 
 /*
 */
-.course_item_container{
+.course-item{
+    border-bottom:1px solid #dddddd;
+    padding-bottom: 8px;
     margin-bottom: 20px;
 }
-.course_item_container .course_item_title h4{
+.course-item .course-title h2{
     margin-top:0;
+    font-size: 17.5px;
 }
 /*
 VIEWS

@@ -481,7 +481,7 @@ function _section_courses_get_instructor_tools() {
   foreach ($links as $name => $link) {
     $attributes = array('attributes' => array('id' => $name, 'class' => array('btn')));
     if (isset($link['path'])) {
-      custom_general_addpend_active_class(($link['path']), $attributes);
+      custom_general_append_active_class(($link['path']), $attributes);
     }
 
     $group = isset($link['group']) ? $link['group'] : NULL;

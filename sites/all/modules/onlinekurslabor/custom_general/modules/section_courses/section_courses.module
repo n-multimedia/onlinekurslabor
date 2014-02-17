@@ -29,52 +29,110 @@ function section_courses_preprocess_panels_pane(&$variables) {
   }
 }
 
+/**
+ * Implements hook_menu
+ * 
+ * @return array
+ */
+function section_courses_menu() {
+
+  $items['admin/onlinekurslabor/setting'] = array(
+    'title' => 'Onlinekurslabor - Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('section_courses_onlinekurslabor_admin_settings_page'),
+    'access callback' => 'custom_general_user_is_okl_admin',
+    'access arguments' => array(array('administrator')),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * admin settings page
+ * settings for
+ *  - current semester
+ *  -...
+ * 
+ * @return type
+ */
+function section_courses_onlinekurslabor_admin_settings_page() {
+  $form = array();
+
+  $vocabulary = taxonomy_vocabulary_machine_name_load('semester');
+
+  $semesters = taxonomy_get_tree($vocabulary->vid);
+  $terms_select = array();
+  foreach ($semesters as $semester) {
+    // str_repeat('-', $semester->depth) .
+    $terms_select[$semester->tid] = $semester->name;
+  }
+
+  //todo error handling
+  //we need the taxonomy terms to be available!
+  $default_key = current(taxonomy_get_term_by_name(_section_courses_semesterID_ToString(NM_VHB_SEMESTERID_OKL_START)));
+  $current_semester = taxonomy_term_load(variable_get('okl_current_semester', $default_key->tid));
+
+  $key = $current_semester->tid;
+  $default_val = 0;
+  if (isset($terms_select[$key])) {
+    $default_val = $key;
+  }
+
+  $form['okl_current_semester'] = array(
+    '#type' => 'select',
+    '#title' => t('Current Semester'),
+    '#default_value' => $default_val,
+    '#options' => $terms_select,
+    '#description' => t("(e.g. SS 13, WS 13/14, ...)"),
+    '#required' => TRUE,
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Convert VHB-Semester-ID to readable string
+ * @param type $sem_id
+ * @return string e.g. WS 13/14 or SS 14
+ */
 function _section_courses_semesterID_ToString($sem_id) {
-
   $result = "";
-  //semester id is beeing incremented twice a year
-  $year = ($sem_id / 2) + NM_SEMESTERID_START_YEAR;
-  $year_2 = $year + 1;
+  if (is_numeric($sem_id)) {
+    //semester id is beeing incremented twice a year
+    $year = ($sem_id / 2) + NM_VHB_SEMESTERID_START_YEAR;
+    $year_2 = $year + 1;
 
-  $year = $year % 100;
-  $year_2 = $year_2 % 100;
+    $year = $year % 100;
+    $year_2 = $year_2 % 100;
 
-  $year = str_pad($year, 2, '0', STR_PAD_LEFT);
-  $year_2 = str_pad($year_2, 2, '0', STR_PAD_LEFT);
-  if (($sem_id % 2) == 0) {
-    //dpm('WS ' . $year . '/' . ($year_2));
-    $result = 'WS ' . $year . '/' . ($year_2);
+    $year = str_pad($year, 2, '0', STR_PAD_LEFT);
+    $year_2 = str_pad($year_2, 2, '0', STR_PAD_LEFT);
+    if (($sem_id % 2) == 0) {
+      //dpm('WS ' . $year . '/' . ($year_2));
+      $result = 'WS ' . $year . '/' . ($year_2);
+    }
+    else {
+      //dpm('SS ' . ($year_2));
+      $result = 'SS ' . ($year_2);
+    }
   }
   else {
-    //dpm('SS ' . ($year_2));
-    $result = 'SS ' . ($year_2);
+    $result = NULL;
   }
 
   return $result;
-
-  /*
-    $cur = 84;
-    for ($i = 0; $i <= 46; $i++) {
-    $cur_1 = $cur + 1;
-    $cur_1 = $cur_1 % 100;
-    $cur = $cur % 100;
-    //prepand 0 if needed
-    $cur = str_pad($cur, 2 ,'0', STR_PAD_LEFT);
-    $cur_1 = str_pad($cur_1, 2 ,'0', STR_PAD_LEFT);
-    if (($i % 2) == 0) {
-    dpm('WS ' . $cur . '/' . ($cur_1));
-    $cur = $cur_1;
-    }
-    else {
-    dpm('SS ' . ($cur));
-    }
-    } */
 }
 
+/**
+ * 12.02.2014 - 16:11 - SN not sure, if this works.. 
+ * needs to be tested
+ * @param type $str
+ * @return boolean
+ */
 function _section_courses_string_ToSemesterID($str) {
 
   $matches = array();
-
   $result = FALSE;
   //will only work till 2100
   preg_match_all('|\d+|', $str, $matches);
@@ -83,21 +141,14 @@ function _section_courses_string_ToSemesterID($str) {
 
     if (strstr($str, 'SS')) {
 
-      $result = (($id + 100 - NM_SEMESTERID_START_YEAR ) * 2 - 1);
+      $result = (($id + 100 - NM_VHB_SEMESTERID_START_YEAR ) * 2 - 1);
     }
     else if (strstr($str, 'WS')) {
-      $result = (($id + 100 - NM_SEMESTERID_START_YEAR ) * 2);
+      $result = (($id + 100 - NM_VHB_SEMESTERID_START_YEAR ) * 2);
     }
-    
+
     return $result;
   }
-
-  /*
-   *   _section_courses_string_ToSemesterID("SS 07");
-    _section_courses_string_ToSemesterID("WS 07/08");
-    _section_courses_string_ToSemesterID("SS 08");
-   */
-
   return FALSE;
 }
 
@@ -605,7 +656,7 @@ function section_courses_text_outline() {
 
 function section_content_node_presave($node) {
   if ($node->type == NM_COURSE) {
-//Add Form Container for the Course, if form feature is set
+    //Add Form Container for the Course, if form feature is set
     //$lang = field_language('node', $node, 'field_collaborative_features');
     foreach ($node->field_collaborative_features[LANGUAGE_NONE] as $feature) {
       if ($feature['value'] == 'forum') {
@@ -614,8 +665,8 @@ function section_content_node_presave($node) {
           'name' => check_plain($node->title) . '_' . $node->nid,
           'vid' => $vid,
           )); */
-//$voc = taxonomy_vocabulary_machine_name_load('forums');
-//dpm($voc);
+        //$voc = taxonomy_vocabulary_machine_name_load('forums');
+        //dpm($voc);
         $term = current(taxonomy_get_term_by_name('Kursforen'));
         $term_exists = current(taxonomy_get_term_by_name(_section_courses_get_forum_name($node)));
 
@@ -628,8 +679,8 @@ function section_content_node_presave($node) {
 
           $new_term = _section_courses_get_forum_term($node);
 
-//add taxibiny to og
-//Set the values
+          //add taxonomy to og
+          //Set the values
           $values = array(
             'entity_type' => 'taxonomy_term',
             'entity' => $new_term,
@@ -637,8 +688,8 @@ function section_content_node_presave($node) {
           );
 
           $og_membership_entity = og_group('node', $node->nid, $values);
-//
-//mark the forum as container
+        //
+        //mark the forum as container
           $containers = variable_get('forum_containers', array());
           $containers[] = $new_term->tid;
           variable_set('forum_containers', $containers);
@@ -1822,3 +1873,22 @@ function section_courses_node_form_submit($form, &$form_state) {
 
   $form_state['redirect'] = 'node' . '/' . $form_state['nid'];
 }
+
+/*
+ *  DB QUERY ALTER
+ *  Needed to display overview of courses, where the usere is not signed up for yet
+ * 
+ */
+
+/**
+ * todo 11.02.2014 - 23:06 - SN
+ * @param type $view
+ * @param type $queryt
+ */
+function section_courses_views_query_alter(&$view, &$query) {
+  //panel_pane_3 -> show courses where user is not member of
+  if ($view->name == "courses_kurse_bersicht" && $view->current_display == 'panel_pane_3') {
+    $query->add_where_expression(1, "node.nid NOT IN (SELECT gid FROM og_membership WHERE entity_type= 'user' AND etid = ***CURRENT_USER*** )");
+  }
+}
+
