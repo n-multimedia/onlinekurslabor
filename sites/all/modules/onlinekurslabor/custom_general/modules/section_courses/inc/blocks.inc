@@ -778,7 +778,8 @@ function _section_courses_navtext_to_link($course, $text) {
 
 function _section_courses_theme_tiny_unread_box(&$result, $num_unread) {
   if ($num_unread > 0) {
-    $result .= '<div class="unread_tiny_box"><div class="arrow-down" style=""></div>' . $num_unread . '</div>';
+    $result = substr($result, 0, strpos($result, '</a>'));
+    $result .= '<div class="unread_tiny_box"><div class="arrow-down" style=""></div>' . $num_unread . '</div></a>';
   }
 }
 
