@@ -365,12 +365,16 @@ function _section_courses_get_active_course($reset = FALSE) {
   static $course;
   static $context;
 
-  if (!$context) {
-    $context = context_get("context", "section_courses");
+  if (empty($context)) {
+    $context = context_isset("context", "section_courses");
   }
 
-
-  if (empty($context))
+  if (empty($context)) {
+    custom_general_init();
+    $context = context_isset("context", "section_courses");
+  }
+  
+  if(empty($context)) 
     return FALSE;
 
 
@@ -379,7 +383,11 @@ function _section_courses_get_active_course($reset = FALSE) {
     //not prooving causes an infinite loop here (menu_get_object(); on /comment/%/edit)
     $node = NULL;
 
-    if ((arg(0) != "course" && arg(0) != "node") || (arg(0) == "course" && arg(5) == "reply" || arg(5) == "edit")) {
+    /**
+     * 18.02.2014 - 16:58 - SN
+     * changed arg(5) to arg(4)
+     */
+    if ((arg(0) != "course" && arg(0) != "node") || (arg(0) == "course" && arg(4) == "reply" || arg(4) == "edit")) {
       $course = FALSE;
       $node = node_load(arg(2));
     }
@@ -391,7 +399,10 @@ function _section_courses_get_active_course($reset = FALSE) {
       $course = $node;
     }
 
-    if (is_object($node) && in_array($node->type, array(NM_COURSE_DOCS, NM_COURSE_NEWS, NM_COURSE, NM_COURSE_GROUP, NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION, NM_COURSE_FORUMTOPIC))) {
+    if (is_object($node) && in_array($node->type, array(
+          NM_COURSE_DOCS, NM_COURSE_NEWS, NM_COURSE, NM_COURSE_GROUP,
+          NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION,
+          NM_COURSE_FORUMTOPIC))) {
       if ($node->type == NM_COURSE_GROUP) {
         //get course which this group is assigned to
         if (isset($node->og_group_ref)) {
@@ -1528,8 +1539,6 @@ function section_courses_og_membership_insert(OgMembership $og_membership) {
  * @param type $form_id
  */
 function section_courses_form_alter(&$form, &$form_state, $form_id) {
-
-
   /*
    * Task Node
    */
@@ -1555,6 +1564,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
    * Forum Topic Node
    */
   if ($form_id == 'forum_node_form') {
+
     if (!section_courses_instructors_tools_access()) {
       $form['taxonomy_forums']['#attributes']['style'] = 'display:none';
     }

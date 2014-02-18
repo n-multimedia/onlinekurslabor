@@ -286,18 +286,21 @@ function section_courses_instructors_tools_access($reset = FALSE) {
     $user_uid = $user->uid;
 
     $active_course = _section_courses_get_active_course();
-
+    
     $one_of_needed_roles = NULL;
     if ($active_course) {
       //$og_membership = og_get_membership('node', $active_course->nid, 'user', $user_uid);
       $roles = og_get_user_roles('node', $active_course->nid, $user_uid);
       $one_of_needed_roles = array_intersect($roles, array(NM_COURSES_ROLE_ADMINISTRATOR, NM_COURSES_ROLE_TUTOR));
       //bypass for admin
+
       if (in_array(NM_ROLE_ADMIN, $user->roles)) {
-        $one_of_needed_roles = TRUE;
+        $one_of_needed_roles = array(NM_ROLE_ADMIN);
       }
     }
+    
     $result = !empty($one_of_needed_roles);
+    
   }
 
   return ($result === NULL || $result === FALSE) ? FALSE : TRUE;
