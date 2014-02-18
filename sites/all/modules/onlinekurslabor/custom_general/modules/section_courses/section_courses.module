@@ -688,8 +688,8 @@ function section_content_node_presave($node) {
           );
 
           $og_membership_entity = og_group('node', $node->nid, $values);
-        //
-        //mark the forum as container
+          //
+          //mark the forum as container
           $containers = variable_get('forum_containers', array());
           $containers[] = $new_term->tid;
           variable_set('forum_containers', $containers);
@@ -753,7 +753,7 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
      * forum node links
      */
 
-//[todo] refactoring needed
+    //[todo] refactoring needed
     if (strstr($path, "comment/") && strstr($path, "/edit")) {
       $regex = '#^comment/([0-9]+)/edit$#s';
       preg_match($regex, $path, $matches);
@@ -763,7 +763,7 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
         $path = "course/forumcontent/" . $course->nid . '/' . $comment->nid . '/' . $tid . '/edit';
       }
     }
-//comment reply
+    //comment reply
     else if (strstr($path, "comment/reply/")) {
       $regex = '#^comment/reply/([0-9]+/*[0-9]*)#s';
       preg_match($regex, $path, $matches);
@@ -772,7 +772,7 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
         $path = "course/forumcontent/" . $course->nid . '/' . $tid . '/reply';
       }
     }
-//delete
+    //delete
     else if (strstr($path, "comment/") && strstr($path, "/delete")) {
       $regex = '#^comment/([0-9]+)/delete$#s';
       preg_match($regex, $path, $matches);
@@ -780,6 +780,18 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
         $tid = $matches[1];
         $comment = comment_load($tid);
         $path = "course/forumcontent/" . $course->nid . '/' . $comment->nid . '/' . $tid . '/delete';
+      }
+    }
+    //view
+    else if (strstr($path, "comment/")) {
+      $regex = '@^comment/([0-9]+)#*@s';
+      preg_match($regex, $path, $matches);
+      if (!empty($matches)) {
+        $tid = $matches[1];
+        $comment = comment_load($tid);
+        //18.02.2014 - 14:49 - SN
+        //anchor is defined in $options (assumption)
+        $path = "course/forumcontent/" . $course->nid . '/' . $comment->nid . '/' . $tid;
       }
     }
     else if (strstr($path, "node/add/forum/")) {
