@@ -98,18 +98,19 @@ function entityreference_prepopulate_field_attach_form($entity_type, $entity, &$
       }
 
       if ($ids || ($id && !empty($settings['action_on_edit']))) {
-        // New entity with prepopualte values, or an existing entity,
+        // New entity with prepopulate values, or an existing entity,
         // we might need to disable/ hide the group-audience field.
         if ($settings['action'] == 'disable') {
           $form[$field_name][$lang]['#disabled'] = TRUE;
         }
-        elseif ($settings['action'] == 'hide') {
-          // We don't hide the field via hook_field_access(), as the
-          // default value won't be set.
+        elseif ($settings['action'] == 'hide' && !$id) {
+          // For new entities we don't hide the field via hook_field_access(),
+          // as the default value won't be set. We use hook_field_access() only
+          // on existing ones.
           $form[$field_name]['#access'] = FALSE;
         }
       }
-      elseif (in_array($settings['fallback'], array('form_error', 'redirect'))) {
+      elseif (in_array($settings['fallback'], array('form_error', 'redirect', 'hide'))) {
         $message = t('Field @label must be populated via URL.', array('@label' => $instance['label']));
         if ($settings['fallback'] == 'form_error') {
           form_error($form, $message);
@@ -117,6 +118,9 @@ function entityreference_prepopulate_field_attach_form($entity_type, $entity, &$
         elseif ($settings['fallback'] == 'redirect') {
           drupal_set_message($message, 'notice');
           drupal_goto();
+        }
+        elseif ($settings['fallback'] == 'hide') {
+          $form[$field_name]['#access'] = FALSE;
         }
       }
     }
@@ -138,20 +142,28 @@ function entityreference_prepopulate_field_access($op, $field, $entity_type, $en
   }
 
   list($id,,$bundle) = entity_extract_ids($entity_type, $entity);
-  if ($id) {
-    // Entity is already saved.
-    return;
-  }
-
   $instance = field_info_instance($entity_type, $field['field_name'], $bundle);
   if (empty($instance['settings']['behaviors']['prepopulate']['status'])) {
     return;
   }
 
   $settings = $instance['settings']['behaviors']['prepopulate'];
+
   if (!empty($settings['skip_perm']) && user_access($settings['skip_perm'])) {
     return;
   }
+
+  if ($id && empty($entity->is_new)) {
+    // The field need to be hidden when editing the entity.
+    return $settings['action'] == 'hide' && $settings['action_on_edit'] ? FALSE : NULL;
+  }
+
+  if ($settings['action'] == 'hide') {
+    // If entity is already saved and not just inserted, deny access, otherwise
+    // ignore.
+    return $id && empty($entity->is_new) ? FALSE : NULL;
+  }
+
   $ids = entityreference_prepopulate_get_values($field, $instance);
 
   if (!$ids && $settings['fallback'] == 'hide') {
@@ -340,7 +352,7 @@ function entityreference_prepopulate_get_values_from_url($field, $instance) {
 function entityreference_prepopulate_get_values_from_og_context($field, $instance) {
   $field_name = $field['field_name'];
 
-  if (!module_exists('og_context') || !og_is_group_audience_field($field_name) || !$og_context = og_context()) {
+  if (!module_exists('og_context') || !$og_context = og_context()) {
     return;
   }
 

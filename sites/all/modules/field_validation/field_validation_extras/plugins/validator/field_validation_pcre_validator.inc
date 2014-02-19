@@ -33,7 +33,7 @@ class field_validation_pcre_validator extends field_validation_validator {
     $form['settings']['data'] = array(
       '#title' => t('Pattern'),
       '#description' => t("Specify the Perl-compatible regular expression pattern to validate the user input against."),
-      '#type' => 'textfield',
+      '#type' => 'textarea',
       '#default_value' => isset($default_settings['data']) ? $default_settings['data'] : '',
     );
     parent::settings_form($form, $form_state);

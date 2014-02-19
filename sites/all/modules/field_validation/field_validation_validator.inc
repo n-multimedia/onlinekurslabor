@@ -53,7 +53,7 @@ abstract class field_validation_validator {
       '#type' => 'checkbox',
       '#default_value' => isset($default_settings['bypass']) ? $default_settings['bypass'] : FALSE,
     );
-    $roles_options = user_roles(TRUE);
+    $roles_options = user_roles();
     $form['settings']['roles'] = array(
       '#title' => t('Roles'),
       '#description' => t("Only the checked roles will be able to bypass this validation rule."),

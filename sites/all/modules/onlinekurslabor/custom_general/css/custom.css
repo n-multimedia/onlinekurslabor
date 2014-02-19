@@ -461,6 +461,11 @@ Authors's Tools
     background-color: rgba(200,200,200, 0.3);
 }
 
+#authors_tools-container ul{
+    padding: 0;
+    margin:0;
+}
+
 #authors_tools-container .btn
 {
     display: inline-block;

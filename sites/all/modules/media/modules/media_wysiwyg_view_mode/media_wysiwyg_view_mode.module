@@ -96,7 +96,7 @@ function media_wysiwyg_view_mode_form_alter(&$form, $form_state, $form_id)  {
     case 'media_format_form':
       $file = $form['#media'];
 
-      $default_view_mode = media_variable_get('wysiwyg_default_view_mode');
+      $default_view_mode = variable_get('media__wysiwyg_default_view_mode', 'full');
 
       $view_mode = !empty($form_state['values']['format']) ? $form_state['values']['format'] : $default_view_mode;
 

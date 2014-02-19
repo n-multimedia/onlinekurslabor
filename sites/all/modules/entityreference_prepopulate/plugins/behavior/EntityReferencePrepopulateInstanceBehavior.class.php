@@ -62,8 +62,8 @@ class EntityReferencePrepopulateInstanceBehavior extends EntityReference_Behavio
 
     $description = t('Determine if values that should be prepopulated should "listen" to the OG-context.');
 
-    if ($disabled = !module_exists('og_context') || !og_is_group_audience_field($field_name)) {
-      $description .= '<br / >' . t('Organic groups integration: Enable OG-context and set "Entity selection mode" to "Organic groups" to enable this selection.');
+    if ($disabled = !module_exists('og_context')) {
+      $description .= '<br / >' . t('Organic groups integration: Enable OG-context module.');
     }
 
     $form['og_context'] = array(

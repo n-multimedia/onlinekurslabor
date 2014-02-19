@@ -13,8 +13,12 @@ function file_entity_field_formatter_info() {
     'label' => t('Rendered file'),
     'description' => t('Display the file in a specific view mode'),
     'field types' => array('file', 'image'),
-    'settings' => array('file_view_mode' => 'default'),
-    'hidden file formatter' => TRUE,
+    'settings' => array(
+      'file_view_mode' => 'default',
+    ),
+    'file formatter' => array(
+      'hidden' => TRUE,
+    ),
   );
   $info['file_download_link'] = array(
     'label' => t('Download link'),
@@ -34,6 +38,9 @@ function file_entity_field_formatter_info() {
       'loop' => FALSE,
       'multiple_file_behavior' => 'tags',
     ),
+    'file formatter' => array(
+      'mime types' => array('audio/*'),
+    ),
   );
   $info['file_video'] = array(
     'label' => t('Video'),
@@ -48,8 +55,38 @@ function file_entity_field_formatter_info() {
       'height' => NULL,
       'multiple_file_behavior' => 'tags',
     ),
+    'file formatter' => array(
+      'mime types' => array('video/*'),
+    ),
   );
   return $info;
+}
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ */
+function file_entity_field_formatter_info_alter(&$info) {
+  // Add descriptions to core formatters.
+  $descriptions = array(
+    'file_default' => t('Create a simple link to the file. The link is prefixed by a file type icon and the name of the file is used as the link text'),
+    'file_table' => t('Build a two-column table where the first column contains a generic link to the file and the second column displays the size of the file.'),
+    'file_url_plain' => t('Display a plain text URL to the file.'),
+    'image' => t('Format the file as an image. The image can be displayed using an image style and can optionally be linked to the image file itself or its parent content.'),
+  );
+  foreach ($descriptions as $key => $description) {
+    if (isset($info[$key]) && empty($info[$key]['description'])) {
+      $info[$key]['description'] = $description;
+    }
+  }
+
+  // Formatters that can be used for images but not files, should have a
+  // default mimetype restriction added to the image/* mime type for use with
+  // file formatters.
+  foreach ($info as &$formatter) {
+    if (!isset($formatter['file formatter']) && in_array('image', $formatter['field types']) && !in_array('file', $formatter['field types'])) {
+      $formatter['file formatter']['mime types'] = array('image/*');
+    }
+  }
 }
 
 /**
@@ -227,7 +264,8 @@ function file_entity_field_formatter_view($entity_type, $entity, $field, $instan
     // If no 'referencing entity' is set, we are starting a new 'reference
     // thread' and need to reset the queue.
     // @todo Bug: $entity->referencing_entity on files referenced in a different
-    // thread on the page. E.g: 1 references 1+2 / 2 references 1+2 / visit homepage.
+    // thread on the page.
+    // E.g: 1 references 1+2 / 2 references 1+2 / visit homepage.
     // We'd need a more accurate way...
     if (!isset($entity->referencing_entity)) {
       $recursion_queue = array();
@@ -304,7 +342,7 @@ function file_entity_field_formatter_view($entity_type, $entity, $field, $instan
       }
     }
 
-    // render each source list as an <audio> element
+    // Render each source list as an <audio> element.
     foreach ($source_lists as $delta => $sources) {
       $element[$delta] = array(
         '#theme' => 'file_entity_file_audio',
@@ -338,7 +376,7 @@ function file_entity_field_formatter_view($entity_type, $entity, $field, $instan
       }
     }
 
-    // render each source list as an <video> element
+    // Render each source list as an <video> element.
     foreach ($source_lists as $delta => $sources) {
       $width = $settings['width'];
       $height = $settings['height'];

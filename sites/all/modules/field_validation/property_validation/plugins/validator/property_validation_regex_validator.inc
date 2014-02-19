@@ -34,7 +34,7 @@ class property_validation_regex_validator extends property_validation_validator 
     $form['settings']['data'] = array(
       '#title' => t('Regex code'),
       '#description' => t("Specify regex code to validate the user input against."),
-      '#type' => 'textfield',
+      '#type' => 'textarea',
       '#default_value' => isset($default_settings['data']) ? $default_settings['data'] : '',
     );
     parent::settings_form($form, $form_state);

@@ -22,7 +22,7 @@
       if (matches) {
         var i = 1;
         for (var macro in tagmap) {
-          var index = matches.indexOf(macro);
+          var index = $.inArray(macro, matches);
           if (index !== -1) {
             var media_json = macro.replace('[[', '').replace(']]', '');
 
@@ -182,7 +182,7 @@
         file_info.attributes = {};
 
         // Extract whitelisted attributes.
-        $.each(Drupal.media.filter.allowed_attributes, function(i, a) {
+        $.each(Drupal.media.filter.allowed_attributes(), function(i, a) {
           if (value = element.attr(a)) {
             file_info.attributes[a] = value;
           }

@@ -58,18 +58,12 @@ function media_field_formatter_view($entity_type, $entity, $field, $instance, $l
   $element = array();
 
   if ($display['type'] == 'media_large_icon') {
-    // Add height/width variable according to media_thumbnail image style
-    // so that the output in media browser is consistent.
-    // @todo is this the correct place to put this?
-    $style = image_style_load('media_thumbnail');
+    // Use the media_thumbnail image style so that the output in media browser
+    // is consistent.
     foreach ($items as $delta => $item) {
       $element[$delta] = array(
         '#theme' => 'media_formatter_large_icon',
         '#file' => (object) $item,
-        '#attributes' => array(
-          'width' => $style['effects'][0]['data']['width'],
-          'height' => $style['effects'][0]['data']['height'],
-        ),
       );
     }
   }

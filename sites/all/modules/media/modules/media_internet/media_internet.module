@@ -139,7 +139,7 @@ class MediaInternetFileHandler extends MediaInternetBaseHandler {
 
   public function claim($embedCode) {
     // Claim only valid URLs using a supported scheme.
-    if (!valid_url($embedCode, TRUE) || !in_array(file_uri_scheme($embedCode), media_variable_get('fromurl_supported_schemes'))) {
+    if (!valid_url($embedCode, TRUE) || !in_array(file_uri_scheme($embedCode), variable_get('media__fromurl_supported_schemes', array('http', 'https', 'ftp', 'smb', 'ftps')))) {
       return FALSE;
     }
 

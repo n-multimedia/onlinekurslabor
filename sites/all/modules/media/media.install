@@ -6,16 +6,6 @@
  */
 
 /**
- * Implements hook_schema().
- */
-function media_schema() {
-  $schema['cache_media_xml'] = drupal_get_schema_unprocessed('system', 'cache');
-  $schema['cache_media_xml']['description'] = 'Cache table for the the results of retreived XML documents for remote streams.';
-
-  return $schema;
-}
-
-/**
  * Implements hook_install().
  */
 function media_install() {
@@ -48,16 +38,70 @@ function media_install() {
       file_display_save((object) $display);
     }
   }
+
+  // Make sure that we set the icon base directory variable if it is not
+  // already set.
+  $base = variable_get('media__icon_base_directory', NULL);
+  if (!isset($base)) {
+    $default_base = 'public://media-icons';
+    variable_set('media__icon_base_directory', $default_base);
+  }
+  try {
+    _media_install_copy_icons();
+  }
+  catch (Exception $e) {
+    watchdog_exception('media', $e);
+  }
+}
+
+/**
+ * Copy the media file icons to files directory for use with image styles.
+ */
+function _media_install_copy_icons() {
+  $destination = variable_get('media__icon_base_directory', 'public://media-icons') . '/' . variable_get('media__icon_set', 'default');
+  if (!file_prepare_directory($destination, FILE_CREATE_DIRECTORY)) {
+    throw new Exception("Unable to create directory $destination.");
+  }
+  // @todo If we ever add another default icon set, this should copy all images from one directory up.
+  $source = drupal_get_path('module', 'media') . '/images/icons/' . variable_get('media__icon_set', 'default');
+  $files = file_scan_directory($source, '/.*\.(png|jpg)$/');
+  foreach ($files as $file) {
+    $result = file_unmanaged_copy($file->uri, $destination, FILE_EXISTS_REPLACE);
+    if (!$result) {
+      throw new Exception("Unable to copy {$file->uri} to $destination.");
+    }
+  }
 }
 
 /**
  * Implements hook_uninstall().
  */
 function media_uninstall() {
-  drupal_load('module', 'media');
-  foreach (media_variable_default() as $name => $value) {
-    media_variable_del($name);
-  }
+  // Remove variables.
+  variable_del('media__wysiwyg_title');
+  variable_del('media__wysiwyg_icon_title');
+  variable_del('media__wysiwyg_default_view_mode');
+  variable_del('media__wysiwyg_upload_directory');
+  variable_del('media__wysiwyg_allowed_types');
+  variable_del('media__wysiwyg_allowed_attributes');
+  variable_del('media__wysiwyg_browser_plugins');
+  variable_del('media__dialog_theme');
+  variable_del('media__max_filesize');
+  variable_del('media__debug');
+  variable_del('media__file_list_size');
+  variable_del('media__xml_cache_expire');
+  variable_del('media__import_batch_size');
+  variable_del('media__fromurl_supported_schemes');
+  variable_del('media__icon_base_directory');
+  variable_del('media__icon_set');
+  variable_del('media__show_deprecated_view_modes');
+  variable_del('media__show_file_type_rebuild_nag');
+  variable_del('media__field_select_media_text');
+  variable_del('media__field_remove_media_text');
+  variable_del('media__browser_library_empty_message');
+  variable_del('media__browser_pager_limit');
+  variable_del('media__browser_viewtype_default');
+  variable_del('media__display_types_migration_mess');
 }
 
 /**
@@ -120,12 +164,9 @@ function media_update_7000() {
 }
 
 /**
- * Create the cache_media_xml table.
+ * Deprecated update function.
  */
 function media_update_7001() {
-  $schema['cache_media_xml'] = drupal_get_schema_unprocessed('system', 'cache');
-  $schema['cache_media_xml']['description'] = 'Cache table for the the results of retreived XML documents for remote streams.';
-  db_create_table('cache_media_xml', $schema['cache_media_xml']);
 }
 
 /**
@@ -566,7 +607,7 @@ function media_update_7201() {
  */
 function media_update_7202() {
   module_enable(array('views'));
-  if (module_exists('views')) {
+  if (!module_exists('views')) {
     throw new DrupalUpdateException('The <a href="https://drupal.org/project/views">Views module</a> must be downloaded and available for Media updates to proceed.');
   }
 }
@@ -989,4 +1030,41 @@ function media_update_7214() {
   if (db_table_exists('media_filter_usage')) {
     db_drop_table('media_filter_usage');
   }
+}
+
+/**
+ * Skipped to run media_update_7217().
+ */
+function media_update_7216() {
+  // Do nothing.
+}
+
+/**
+ * Copy file type icons to public files directory.
+ */
+function media_update_7217() {
+  // Remove any trailing slashes from the icon base directory variable.
+  $dir = variable_get('media__icon_base_directory');
+  if (!empty($dir)) {
+    $dir = rtrim($dir, '/');
+    variable_set('media__icon_base_directory', $dir);
+  }
+
+  try {
+    _media_install_copy_icons();
+  }
+  catch (Exception $e) {
+    throw new DrupalUpdateException($e->getMessage());
+  }
+}
+
+/**
+ * Drop the legacy {cache_media_xml} table.
+ */
+function media_update_7218() {
+  if (db_table_exists('cache_media_xml')) {
+    db_drop_table('cache_media_xml');
+  }
+
+  variable_del('media__xml_cache_expire');
 }
