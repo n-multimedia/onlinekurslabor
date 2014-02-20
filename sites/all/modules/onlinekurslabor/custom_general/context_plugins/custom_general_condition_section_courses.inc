@@ -48,7 +48,7 @@ class custom_general_condition_section_courses extends context_condition {
   //22.04.2013 - 23:50 - SN
   //helper function - special cases when Section Content should be active
   function _section_courses_active() {
-    $group = og_context();
+    //$group = og_context();
 
     $node = menu_get_object();
 
