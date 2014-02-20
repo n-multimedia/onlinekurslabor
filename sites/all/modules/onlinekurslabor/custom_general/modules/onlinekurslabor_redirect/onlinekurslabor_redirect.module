@@ -10,7 +10,7 @@ function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
 
   $active_course = _section_courses_get_active_course();
 
-  if (arg(0) != 'node') {
+  if (arg(0) != 'node' || arg(2) == 'revisions' ) {
     return;
   }
 

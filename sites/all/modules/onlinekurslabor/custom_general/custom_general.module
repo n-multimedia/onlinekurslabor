@@ -230,6 +230,58 @@ function custom_general_form_alter($form, $form_state, $form_id) {
 }
 
 /**
+ * BIBLIO alter form, fix step 2
+ * after selecting a "Publication Type" in a panel
+ * (/domain/add/%/biblio) the selection is not being saved
+ * 
+ * form functions are called twice in panels, so im trying to cache the form_state for 
+ * the second execution
+ */
+function custom_general_form_biblio_node_form_alter(&$form, &$form_state, $form_id) {
+  static $called = 0;
+
+  //storing right values from first  call!
+  if ($called == 0) {
+    $called = 1;
+
+    if (isset($_SESSION['onlinekurslabor']['biblio']['form_state_biblio_type'])) {
+      $now = time();
+      //unset session on new page call
+      //dpm('call,now');
+      //dpm($_SESSION['onlinekurslabor']['biblio']['timestamp']);
+      //dpm($now);
+      if ($now - $_SESSION['onlinekurslabor']['biblio']['timestamp'] > 2) {
+        unset($_SESSION['onlinekurslabor']['biblio']);
+      }
+    }
+
+    $node = isset($form['#noce']) ? $form['#node'] : null;
+    $tid = !empty($form_state['biblio_type']) ? $form_state['biblio_type'] :
+        ( isset($node->biblio_type) ? $node->biblio_type : 0);
+
+    $step_two = !empty($tid);
+
+    //dpm($step_two);
+    if ($step_two) {
+      $_SESSION['onlinekurslabor']['biblio']['form_state_biblio_type'] = $form_state;
+      $_SESSION['onlinekurslabor']['biblio']['form'] = $form;
+      $_SESSION['onlinekurslabor']['biblio']['timestamp'] = time('now');
+      //dpm('time: ' . time('now'));
+    }
+  }
+
+  //overriding strange values in every unnecessary additional call
+  //coming from page/panels?! don't know.. quick fix
+  if (isset($_SESSION['onlinekurslabor']['biblio']['form_state_biblio_type'])) {
+    //dpm('setting form');
+    $form_state = $_SESSION['onlinekurslabor']['biblio']['form_state_biblio_type'];
+    $form = $_SESSION['onlinekurslabor']['biblio']['form'];
+    //$form = drupal_get_form('form_biblio_node_form', $form_state);
+    //unset($_SESSION['onlinekurslabor']['biblio']['form_state_biblio_type']);
+  }
+}
+
+/**
  * Get the group id the node belongs to
  * 
  * @param type $referer_node

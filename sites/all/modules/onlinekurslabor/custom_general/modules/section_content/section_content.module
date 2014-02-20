@@ -18,6 +18,9 @@ function section_content_block_info() {
   $blocks['content_authors_tools'] = array(
     'info' => t('Content - Authors Tools'),
   );
+  $blocks['content_node_revisions'] = array(
+    'info' => t('Content - Node Revisions'),
+  );
 
   return $blocks;
 }
@@ -35,10 +38,41 @@ function section_content_block_view($delta = '') {
     case 'content_authors_tools' :
       $block['content'] = _section_content_theme_authors_tools();
       break;
+    case 'content_node_revisions' :
+      $block['content'] = _section_content_theme_node_revisions();
+      break;
   }
 
 
   return $block;
+}
+
+
+/**
+ * Revisions Block.
+ * 
+ * Task: Mapping all actions of page domain/text/%/revisions/...
+ * to the callbacks of the diff module
+ * 
+ * aim: embeding revision actions/views into domain context
+ * 
+ * @return type
+ */
+function _section_content_theme_node_revisions() {
+  //disable in panel configuration
+  if (arg(0) != 'admin' && arg(3) == 'revisions') {
+    //case node/%/revisions
+    module_load_include('inc', 'diff', 'diff.pages');
+    
+    $node = node_load(arg(2));
+    switch (arg(4)) {
+      case 'view':
+        return drupal_render(diff_diffs_show($node, arg(5), arg(6)));
+        break;
+      default:
+        return drupal_render(diff_diffs_overview($node));
+    }
+  }
 }
 
 /**
@@ -669,7 +703,7 @@ function _section_content_tasks_autocomplete($search = NULL) {
         'title' => t('No results'),
         'addClass' => 'status-notice',
         'disabled' => TRUE,
-        ));
+    ));
   }
   drupal_json_output($results);
   drupal_exit();

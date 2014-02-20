@@ -540,7 +540,7 @@ Authors's Tools
 {
     background-position: -120px 0px;
 }
-#authors_tools-container .btn#author_media_overview a:hover:before, #authors_tools-container .btn#author_biblio_add a.active:before
+#authors_tools-container .btn#author_media_overview a:hover:before, #authors_tools-container .btn#author_media_overview a.active:before
 {
     background-position: -120px -50px;
 }

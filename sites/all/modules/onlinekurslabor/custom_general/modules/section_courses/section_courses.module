@@ -832,7 +832,7 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
      *  Probably a performance killing thing....
      * 
      */
-    else if (strstr($path, "node/")) {
+    else if (strstr($path, "node/") ) {
       $regex = '#^node/([0-9]+)$#s';
       preg_match($regex, $path, $matches);
       if (!empty($matches)) {

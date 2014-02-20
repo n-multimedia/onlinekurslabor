@@ -14,6 +14,7 @@ function _section_content_node_tabs_view() {
     $nav_items_single['overview'] = "Ansicht";
     $nav_items_single['course'] = "Bearbeiten";
     $nav_items_single['sub_chapter'] = "Unterkapitel hinzufügen";
+    $nav_items_single['revisions'] = "Versionen";
 
     $single_links = array();
 
@@ -61,7 +62,7 @@ function _section_content_navtext_to_link($domain, $text) {
     ),
     'query' => array(
       'og_group_ref' => $domain_nid,
-      ));
+  ));
 
   if ((arg(0) == 'domain') && (is_numeric(arg(2)))) {
     $node = node_load(arg(2));
@@ -90,7 +91,9 @@ function _section_content_navtext_to_link($domain, $text) {
         $result = l($text, 'domain/add/' . $domain->nid . '/' . NM_CONTENT_CHAPTER, $options);
       }
       break;
-
+    case "Versionen":
+      $result = l($text, "domain/text/" . $node_nid . '/revisions', $options);
+      break;
     default:
   }
 
@@ -149,7 +152,7 @@ function _section_courses_get_authors_tools() {
     ),
     'attributes' => array(
       'title' => '',
-      ));
+  ));
 
   $active_node = NULL;
   if (arg(0) == 'domain' && (arg(1) == 'text' || arg(1) == 'edit' || arg(1) == 'media' || arg(1) == 'biblio' || arg(1) == 'add') && is_numeric(arg(2))) {
@@ -255,7 +258,7 @@ function _section_courses_get_authors_tools() {
       $links[$id] += _custom_general_get_structered_tool_link($id, $label, "/", array('attributes' => array('class' => array('disabled'))));
     }
 
-    $path = 'domain/text/' . $group_id. '/rearrange';
+    $path = 'domain/text/' . $group_id . '/rearrange';
     $id = 'author_chapter_order';
     $label = $links[$id]['label'];
     $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
