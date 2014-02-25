@@ -444,6 +444,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     array_push($form['actions']['submit']['#submit'], 'section_content_node_form_submit');
   }
 
+  
   //Assign files to active groups when uploaded
   //dependency: file entity, og, media
   if ($form_id == 'file_entity_add_upload' || $form_id == 'media_internet_add' || $form_id == 'media_format_form') {
@@ -454,10 +455,11 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     $referer_args['gid'] = isset($referer_args['node']) ? _custom_general_get_group($referer_args['node']) : NULL;
 
     $options = drupal_parse_url($form['#action']);
-
+    
     if (isset($form['og_group_ref']) && isset($options['query']['og_group_ref'])) {
       $form['og_group_ref'][LANGUAGE_NONE][0]['default']['#default_value']['value'] = $options['query']['og_group_ref'];
     }
+    
 
     if (isset($referer_args['gid']) && is_numeric($referer_args['gid'])) {
       if (strpos('?', $form['#action']) >= 0) {
@@ -495,27 +497,27 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
   /**
    *  BOOK
    */
-//automatically create a Book when creating a domain (Gebiet)
+  //automatically create a Book when creating a domain (Gebiet)
   if (!empty($form['#node_edit_form'])) {
     $node = $form['#node'];
     $type = $form['type']['#value'];
-// Not a book || not a domain => Nothing to do
+    // Not a book || not a domain => Nothing to do
     if (($type != NM_CONTENT_DOMAIN) || !isset($node->book)) {
       
     }
     else {
       $nid = empty($node->nid) ? 'new' : $node->nid;
       $form['book']['bid']['#default_value'] = $nid;
-//$form['book']['#type'] = 'hidden';
+      //$form['book']['#type'] = 'hidden';
     }
   }
-//Only hide book options for authors, so admin has all fields available
+  //Only hide book options for authors, so admin has all fields available
   $hide_book_options = in_array(NM_ROLE_AUTOR, $user->roles);
-//remove book settings from biblio content type for authors (Role Autor)
+  //remove book settings from biblio content type for authors (Role Autor)
   if (!empty($form['#node_edit_form']) && $hide_book_options) {
     $node = $form['#node'];
     $type = $form['type']['#value'];
-// Not a book || not a domain => Nothing to do
+    // Not a book || not a domain => Nothing to do
     if (($type != NM_BIBLIO) || !isset($node->book)) {
       
     }
@@ -950,7 +952,7 @@ function section_content_preprocess_field(&$vars) {
   }
   else
   if ($vars['element']['#field_name'] == 'field_qaa_answer' && $vars['element']['#bundle'] == 'content_question_and_answer') {
-    $vars['theme_hook_suggestions'][] = 'question_and_answer_field';
+    $vars['theme_hook_suggestions'][] = 'question_and_answer_field';        
   }
 }
 

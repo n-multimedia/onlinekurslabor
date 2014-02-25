@@ -83,7 +83,7 @@ function bootstrap_form_element(&$variables) {
   $exclude_control = FALSE;
   $control_wrapper = '<div class="controls">';
   // Add bootstrap class
-  if (isset($element['#type']) && ($element['#type'] == "radio" || $element['#type'] == "checkbox")){
+  if (isset($element['#type']) && ($element['#type'] == "radio" || $element['#type'] == "checkbox")) {
     $exclude_control = TRUE;
   }
   else {
@@ -128,13 +128,13 @@ function bootstrap_form_element(&$variables) {
         $exclude_control = TRUE;
       }
       else {
-        $output = $exclude_control ? $output : $output.$control_wrapper;
+        $output = $exclude_control ? $output : $output . $control_wrapper;
         $output .= ' ' . $prefix . $element['#children'] . $suffix . "\n";
       }
       break;
 
     case 'after':
-      $output = $exclude_control ? $output : $output.$control_wrapper;
+      $output = $exclude_control ? $output : $output . $control_wrapper;
       $variables['#children'] = ' ' . $prefix . $element['#children'] . $suffix;
       $output .= ' ' . theme('form_element_label', $variables) . "\n";
       break;
@@ -142,12 +142,12 @@ function bootstrap_form_element(&$variables) {
     case 'none':
     case 'attribute':
       // Output no label and no required marker, only the children.
-      $output = $exclude_control ? $output : $output.$control_wrapper;
+      $output = $exclude_control ? $output : $output . $control_wrapper;
       $output .= ' ' . $prefix . $element['#children'] . $suffix . "\n";
       break;
   }
 
-  if ( !empty($element['#description']) ) {
+  if (!empty($element['#description'])) {
     $output .= '<p class="help-block">' . $element['#description'] . "</p>\n";
   }
 
@@ -169,6 +169,15 @@ function bootstrap_form_element_label(&$variables) {
   // This is also used in the installer, pre-database setup.
   $t = get_t();
 
+  /**
+   * 20.02.2014 - 17:49 - SN
+   * Fix for double_fields
+   * those elements don't provide a #type attribute
+   */
+  if (!isset($element['#type'])) {
+    $element['#type'] = NULL;
+  }
+
   // If title and required marker are both empty, output no label.
   if ((!isset($element['#title']) || $element['#title'] === '' && $element['#type'] !== 'radio' && $element['#type'] !== 'checkbox') && empty($element['#required'])) {
     return '';
@@ -180,6 +189,7 @@ function bootstrap_form_element_label(&$variables) {
   $title = filter_xss_admin($element['#title']);
 
   $attributes = array();
+
   // Style the label as class option to display inline with the element.
   if ($element['#title_display'] == 'after') {
     $attributes['class'][] = 'option';
@@ -200,12 +210,14 @@ function bootstrap_form_element_label(&$variables) {
   }
   // @Bootstrap: Insert radio and checkboxes inside label elements.
   $output = '';
-  if ( isset($variables['#children']) ) {
+  if (isset($variables['#children'])) {
     $output .= $variables['#children'];
   }
 
   // @Bootstrap: Append label
   $output .= $t('!title !required', array('!title' => $title, '!required' => $required));
+
+
 
   // The leading whitespace helps visually separate fields from inline labels.
   return ' <label' . drupal_attributes($attributes) . '>' . $output . "</label>\n";
@@ -226,7 +238,6 @@ function bootstrap_preprocess_button(&$vars) {
       t('Add and configure') => 'btn-primary',
       t('Update style') => 'btn-primary',
       t('Download feature') => 'btn-primary',
-
       //generals
       t('Save') => 'btn-primary',
       t('Apply') => 'btn-primary',
@@ -272,7 +283,7 @@ function bootstrap_button($variables) {
     return '<input' . drupal_attributes($element['#attributes']) . ">\n"; // This line break adds inherent margin between multiple buttons
   }
   else {
-    return '<button' . drupal_attributes($element['#attributes']) . '>'. $label ."</button>\n"; // This line break adds inherent margin between multiple buttons
+    return '<button' . drupal_attributes($element['#attributes']) . '>' . $label . "</button>\n"; // This line break adds inherent margin between multiple buttons
   }
 }
 
@@ -280,12 +291,12 @@ function bootstrap_button($variables) {
  * Returns an array containing ids of any whitelisted drupal elements
  */
 function _bootstrap_element_whitelist() {
-/**
- * Why whitelist an element?
- * The reason is to provide a list of elements we wish to exclude
- * from certain modifications made by the bootstrap theme which
- * break core functionality - e.g. ajax.
- */
+  /**
+   * Why whitelist an element?
+   * The reason is to provide a list of elements we wish to exclude
+   * from certain modifications made by the bootstrap theme which
+   * break core functionality - e.g. ajax.
+   */
   return array(
     'edit-refresh',
     'edit-pass-pass1',
@@ -371,13 +382,13 @@ function bootstrap_bootstrap_append_element(&$variables) {
         $exclude_control = TRUE;
       }
       else {
-        $output = $exclude_control ? $output : $output.$control_wrapper;
+        $output = $exclude_control ? $output : $output . $control_wrapper;
         $output .= ' ' . $prefix . $element['#children'] . $suffix . "\n";
       }
       break;
 
     case 'after':
-      $output = $exclude_control ? $output : $output.$control_wrapper;
+      $output = $exclude_control ? $output : $output . $control_wrapper;
       $variables['#children'] = ' ' . $prefix . $element['#children'] . $suffix;
       $output .= ' ' . theme('form_element_label', $variables) . "\n";
       break;
@@ -385,12 +396,12 @@ function bootstrap_bootstrap_append_element(&$variables) {
     case 'none':
     case 'attribute':
       // Output no label and no required marker, only the children.
-      $output = $exclude_control ? $output : $output.$control_wrapper;
+      $output = $exclude_control ? $output : $output . $control_wrapper;
       $output .= ' ' . $prefix . $element['#children'] . $suffix . "\n";
       break;
   }
 
-  if ( !empty($element['#description']) ) {
+  if (!empty($element['#description'])) {
     $output .= '<p class="help-block">' . $element['#description'] . "</p>\n";
   }
 
