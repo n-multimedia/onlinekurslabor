@@ -22,21 +22,55 @@
  *
  * @ingroup views_templates
  */
-
 //get nid and unset field
-$nid = $fields['nid_1']->raw;
+$nid = $fields['nid']->raw;
 $node = node_load($nid);
 $course_actions = section_courses_render_course_link($node);
+$label = !$node->status ? '<span class="label label-important">Entwurf</span> ' : '';
+$percent = 0;
+
+//dpm($fields);
+if (isset($node->field_time_span[LANGUAGE_NONE][0]['value']) && isset($node->field_time_span[LANGUAGE_NONE][0]['value2'])) {
+  $start = strtotime($node->field_time_span[LANGUAGE_NONE][0]['value']);
+  $end = strtotime($node->field_time_span[LANGUAGE_NONE][0]['value2']);
+
+  if ($start > 0 && $end > 0 && $end > $start) {
+    $now = time();
+    $percent = ($now - $start) / ($end - $start) * 100;
+  }
+
+  if ($percent > 100) {
+    $percent = 100;
+  }
+
+  $start_text = date('d.m.Y', $start);
+  $end_text = date('d.m.Y', $end);
+}
 ?>
 
-<div class="course-item span12">
-      <div class="span3"><?php echo $fields['field_course_picture']->content; ?></div>
-      <div class="span4">
-        <div class="course-title"><h2><?php echo $fields['title']->content; ?></h2></div>
-        <div class="course-subtitle"><?php echo $fields['field_subtitle']->content; ?></div>
+<script>
+  jQuery(function() {
+    jQuery("#progressbar_<?php echo $nid ?>").progressbar({
+      value: <?php echo $percent; ?>
+    });
+  });
+</script>
+
+<div class="row-fluid">
+  <div class="course-item span12">
+    <div class="span3"><?php echo $fields['field_course_picture']->content; ?></div>
+    <div class="span4">
+      <div class="course-title"><h2><?php echo $label ?><?php echo $fields['title']->content ?></h2></div>
+      <div class="course-subtitle"><?php echo $fields['field_subtitle']->content; ?></div>
+      <div class="course-time row-fluid">
+        <div class="course-start-date"><strong>Begin:</strong> <?php echo $start_text; ?></div>
+        <div class="course-end-date"><strong>Ende:</strong> <?php echo $end_text; ?></div>
+        <div id="progressbar_<?php echo $nid ?>" ></div>
       </div>
-      <div class="span5">
-        <div class="course-short-description"><?php echo $fields['field_short_description']->content; ?></div>
-        <div class="course-actions"><?php echo $course_actions ?></div>
-      </div>
+    </div>
+    <div class="span5">
+      <div class="course-short-description"><?php echo $fields['field_short_description']->content; ?></div>
+      <div class="course-actions"><?php echo $course_actions ?></div>
+    </div>
+  </div>
 </div>

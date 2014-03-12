@@ -1,6 +1,31 @@
 
 ------------------------ D7 2.x BRANCH --------------------------------------------------
 
+February 21, 2014
+-----------------
+Issue #1876748 by bharriger, SimonLitt: Contact link missing HTML attributes.
+
+November 12, 2013
+-----------------
+Issue #2089923 by Scyther: 'Last seen' missing specific CSS class in tpl file.
+
+November 9, 2013
+----------------
+Issue #2044341 by bigbaldy: Realname panels error on theme function.
+Issue #2132075 by xandeadx: Move points colon to label.
+
+November 5, 2013
+----------------
+Issue #1958202 by bigferumdron, Scyther: Changes in user status display.
+
+March 8, 2013
+-------------
+Issue #1650334 by tjhart87: Incorrect CSS for some icons.
+
+March 5, 2013
+-------------
+Issue #1843492 by Shabana: AP showing more user badges then the maximum specified.
+
 May 12, 2012
 ------------
 by Scyther: Changed from time() to REQUEST_TIME.

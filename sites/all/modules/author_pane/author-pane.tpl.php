@@ -9,7 +9,7 @@
  *
  * Available variables (core modules):
  * - $account: The entire user object for the author.
- * - $picture: Themed user picture for the author. 
+ * - $picture: Themed user picture for the author.
  *   See author-pane-user-picture.tpl.php.
  * - $account_name: Themed user name for the author.
  * - $account_id: User ID number for the author.
@@ -24,7 +24,7 @@
  * - $contact: Linked translated text "Contact user".
  *
  * Available variables (contributed modules):
- * - $facebook_status: Status, including username, from the Facebook-style 
+ * - $facebook_status: Status, including username, from the Facebook-style
  *   Statuses module.
  * - $facebook_status_status: Status from the Facebook-style Statuses module.
  *
@@ -34,7 +34,7 @@
  * - $user_badges: Badges from User Badges module.
  *
  * - $userpoints_points: Author's total number of points from all categories.
- * - $userpoints_categories: Array holding each category and the points for 
+ * - $userpoints_categories: Array holding each category and the points for
  *   that category. Both provided by the User Points module.
  *
  * - $user_stats_posts: Number of posts from the User Stats module.
@@ -50,7 +50,7 @@
  * - $fasttoggle_block_author: Link to toggle the author blocked/unblocked.
  *
  * Not working as of this writing but kept for future compatability:
- * - $user_relationships: Linked text "Add to <relationship>" or 
+ * - $user_relationships: Linked text "Add to <relationship>" or
  *   "Remove from <relationship>".
  * - $flag_friend: Linked text. Actual text depends on module settings.
  *
@@ -89,7 +89,7 @@
 
       <?php /* Last active */ ?>
       <?php if (!empty($last_active)): ?>
-        <div class="author-pane-line">
+        <div class="author-pane-line author-last-seen">
            <span class="author-pane-label"><?php print t('Last seen'); ?>:</span> <?php print t('!time ago', array('!time' => $last_active)); ?>
         </div>
       <?php endif; ?>
@@ -125,7 +125,7 @@
       <?php /* Points */ ?>
       <?php if (isset($userpoints_points)): ?>
         <div class="author-pane-line author-points">
-          <span class="author-pane-label"><?php print t('!Points', userpoints_translation()); ?></span>: <?php print $userpoints_points; ?>
+          <span class="author-pane-label"><?php print t('!Points', userpoints_translation()); ?>:</span> <?php print $userpoints_points; ?>
         </div>
       <?php endif; ?>
     </div>

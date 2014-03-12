@@ -48,14 +48,22 @@ function theme_panels_tabs_style_render_region($vars) {
   // Get the pane titles.
   $items = array();
   $delta = 1;
-  foreach ($display->panels[$region_id] as $pane_id) {
-    // Make sure the pane exists.
-    if (!empty($panes[$pane_id])) {
-      $title = panels_tabs_pane_titles($display->did, $pane_id);
-      $title = $title ? $title : t('Tab @delta', array('@delta' => $delta));
-      $items[] = '<a href="#'. $tab_id . '-' . $delta .'">' . $title . '</a>';
-      ++$delta;
+
+  if (isset($display->panels[$region_id])) {
+    foreach ($display->panels[$region_id] as $pane_id) {
+      // Make sure the pane exists.
+      if (!empty($panes[$pane_id])) {
+        $title = panels_tabs_pane_titles($display->did, $pane_id);
+        $title = $title ? $title : t('Tab @delta', array('@delta' => $delta));
+        $items[] = '<a href="#'. $tab_id . '-' . $delta .'">' . $title . '</a>';
+        ++$delta;
+      }
     }
+  }
+
+  if ($delta === 1) {
+    // No tabs to show, the tabs wrapper must not be rendered.
+    return '';
   }
 
   $element['tabs_title'] = array('#theme' => 'item_list', '#items' => $items);

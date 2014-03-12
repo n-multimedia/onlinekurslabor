@@ -24,6 +24,7 @@
                 //$('#instructors_tools-container').animate({ width: temp_toolbar_width }, 'fast');
             });
 
+            
             $('#authors_tools-container').once('custom_general').mouseenter(function() {
                 //cache base width
                 if (temp_toolbar_width == 0)
@@ -44,23 +45,34 @@
             });
 
             /*
+             * Media
+             */
+            /*
              * Video resizing
              */
             var iframe = $('.row-fluid .span12 iframe');
 
-            if (iframe.length > 1) {
+            if (iframe.length >= 1) {
                 for (var i = 0; i < iframe.length; i++) {
                     iframetmp = $(iframe[i]);
                     if (iframetmp.width() < 400) {
-                        var row = $(iframetmp).wrap('<div class="row-fluid" />').addClass("span8").parent();
-
-                        row.append('<div class="span2" />');
-                        row.prepend('<div class="span2" />');
-                    } else if (iframetmp.width() < 500) {
                         var row = $(iframetmp).wrap('<div class="row-fluid" />').addClass("span6").parent();
 
                         row.append('<div class="span3" />');
                         row.prepend('<div class="span3" />');
+                        //26.02.2014 - 15:55 - SN
+                        //videos to tiny, -> expanding height
+                        iframetmp.height(iframetmp.height()+70);
+
+                    } else if (iframetmp.width() < 500) {
+                        var row = $(iframetmp).wrap('<div class="row-fluid" />').addClass("span8").parent();
+
+                        row.append('<div class="span2" />');
+                        row.prepend('<div class="span2" />');
+                        //26.02.2014 - 15:55 - SN
+                        //videos to tiny, -> expanding height
+                        iframetmp.height(iframetmp.height()+20);
+
                     } else {
                         $(iframetmp).addClass("span12").wrap('<div class="row-fluid" />');
                     }

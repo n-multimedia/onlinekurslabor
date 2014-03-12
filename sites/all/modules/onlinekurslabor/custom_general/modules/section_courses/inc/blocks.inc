@@ -286,7 +286,7 @@ function section_courses_instructors_tools_access($reset = FALSE) {
     $user_uid = $user->uid;
 
     $active_course = _section_courses_get_active_course();
-    
+
     $one_of_needed_roles = NULL;
     if ($active_course) {
       //$og_membership = og_get_membership('node', $active_course->nid, 'user', $user_uid);
@@ -298,12 +298,30 @@ function section_courses_instructors_tools_access($reset = FALSE) {
         $one_of_needed_roles = array(NM_ROLE_ADMIN);
       }
     }
-    
+
     $result = !empty($one_of_needed_roles);
-    
   }
 
+  if(!$result && _section_courses_instructors_tools_role_access()){
+    $result = TRUE;
+  }
+
+
   return ($result === NULL || $result === FALSE) ? FALSE : TRUE;
+}
+
+function _section_courses_instructors_tools_role_access() {
+  global $user;
+  $one_of_needed_roles = array_intersect($user->roles, array(NM_ROLE_ADMIN));
+  
+  $active_course = _section_courses_get_active_course();
+  //27.02.2014 - 10:51 - SN 
+  //access to tools on panel overview pages
+  if(!$active_course) {
+    $one_of_needed_roles = $one_of_needed_roles || array_intersect($user->roles, array(NM_ROLE_DOZENT));
+  }
+
+  return !empty($one_of_needed_roles);
 }
 
 function section_courses_tutor_tools_access() {

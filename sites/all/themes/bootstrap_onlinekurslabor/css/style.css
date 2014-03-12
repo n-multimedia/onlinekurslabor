@@ -35,10 +35,10 @@ Panels reset - homepage
     padding:0;
 }
 
-.pane-courses-admin-content h2.pane-title, 
-.pane-courses-admin-members h2.pane-title, 
-.pane-courses-course-members h2.pane-title,
-.pane-courses-admin-og-members h2.pane-title{
+.panel-pane.pane-courses-admin-content-panel-pane-1 h2.pane-title, 
+.panel-pane.pane-courses-admin-content-panel-pane-2 h2.pane-title, 
+.panel-pane.pane-courses-admin-content-panel-pane-3 h2.pane-title,
+.panel-pane.pane-courses-admin-content-panel-pane-4 h2.pane-title{
     font-size: 24.5px;
 }
 
@@ -319,12 +319,42 @@ Margin between content and navigation
 */
 .course-item{
     border-bottom:1px solid #dddddd;
-    padding-bottom: 8px;
+    padding: 10px 10px;
     margin-bottom: 20px;
+    margin-left:0;
+    position:relative;
+}
+.course-item:hover{
+    background-color: #eee;
 }
 .course-item .course-title h2{
     margin-top:0;
     font-size: 17.5px;
+}
+.ui-progressbar {
+    height:12px;
+    clear:both;
+}
+.ui-progressbar .ui-progressbar-value {
+    background-color: #dedede;
+    margin:0;
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important;
+}
+.course-time {
+    position:relative;
+    margin-top:15px;
+    margin-bottom:10px;
+    font-size:13px;
+}
+.course-time .course-start-date{
+    float:left;
+    margin-bottom:3px;
+}
+.course-time .course-end-date {
+    float:right;
+    margin-bottom:3px;
 }
 /*
 VIEWS

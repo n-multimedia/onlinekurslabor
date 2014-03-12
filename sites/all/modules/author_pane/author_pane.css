@@ -39,7 +39,7 @@
   display: block;
 }
 
-.author-privatemsg-icon {
+.author-privatemsg {
   background: transparent url(images/private-message.png) no-repeat;
   padding-left: 26px;
   height: 20px;
@@ -47,7 +47,7 @@
   display: block;
 }
 
-.author-relationship-add-icon {
+.author-user-relationship a[href*="request/"] {
   background: transparent url(images/buddy-add.png) no-repeat;
   padding-left: 26px;
   height: 20px;
@@ -55,7 +55,7 @@
   display: block;
 }
 
-.author-relationship-remove-icon {
+.author-user-relationship a[href*="/remove?"] {
   background: transparent url(images/buddy-remove.png) no-repeat;
   padding-left: 26px;
   height: 20px;

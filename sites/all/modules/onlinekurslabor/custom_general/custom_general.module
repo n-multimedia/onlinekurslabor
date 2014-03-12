@@ -178,6 +178,13 @@ function custom_general_context_registry() {
   } */
 
 function custom_general_init() {
+  static $init;
+  
+  if($init)
+    return;
+  
+  $init = TRUE;
+  
   // Execute the group type context condition all the time because we want
   // to use that condition to be able to check for "no group context."
   $plugin = context_get_plugin('condition', 'custom_general_condition_section_content');
@@ -236,6 +243,7 @@ function custom_general_form_alter($form, $form_state, $form_id) {
  * 
  * form functions are called twice in panels, so im trying to cache the form_state for 
  * the second execution
+ * [todo] move to section_courses
  */
 function custom_general_form_biblio_node_form_alter(&$form, &$form_state, $form_id) {
   static $called = 0;

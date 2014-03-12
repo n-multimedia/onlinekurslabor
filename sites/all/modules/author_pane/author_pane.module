@@ -41,7 +41,7 @@ function author_pane_theme() {
  * Implements hook_block_info().
  */
 function author_pane_block_info() {
-  // TODO Rename block deltas (e.g. delta-0) to readable strings.
+  // TODO Rename block deltas (e.g., delta-0) to readable strings.
   $blocks['delta-0']['info'] = t('Author Pane');
 
   // We don't want the block to cache since what is displayed depends on
@@ -225,7 +225,7 @@ function template_preprocess_author_pane(&$variables) {
     // Online status - uses the settings for the who's online block.
     $variables['last_active'] = ($account->access) ? format_interval(REQUEST_TIME - $account->access) : t("Never");
 
-    if ((REQUEST_TIME -$account->access) < variable_get('user_block_seconds_online', 900)) {
+    if (_author_pane_is_user_online($account_id)) {
       $variables['online_status'] = t('Online');
       $variables['online_status_class'] = 'author-online';
     }
@@ -385,4 +385,38 @@ function author_pane_run_preprocess($module, $caller) {
   }
 
   return TRUE;
+}
+
+/**
+ * Help function for Author Pane to check if a user is online.
+ *
+ * @param int $uid
+ *  A user id of the user to check if is online.
+ * @return
+ *  TRUE if the user is onlie, else FALSE.
+ */
+function _author_pane_is_user_online($uid) {
+  global $user;
+  // Use a static to save database calls,
+  // if this function is called for the same user more then once.
+  $static = &drupal_static(__FUNCTION__);
+
+  if (isset($static[$uid])) {
+    return $static[$uid];
+  }
+
+  // If current users is not anonymous and is watching its own author pane then the user is online.
+  if ($user->uid != 0 && $user->uid == $uid) {
+    return $static[$uid] = TRUE;
+  }
+
+  // How long back to check if the user has been active.
+  $time = REQUEST_TIME - variable_get('user_block_seconds_online', 900);
+
+  // Check if the user has a session active and that it has been used for the last $time ago.
+  if (db_query("SELECT 1 FROM {sessions} WHERE uid = :uid and timestamp > :time", array(':uid' => $uid, ':time' => $time))->fetchField()) {
+    return $static[$uid] = TRUE;
+  }
+
+  return $static[$uid] = FALSE;
 }

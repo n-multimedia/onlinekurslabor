@@ -460,6 +460,11 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
       $form['og_group_ref'][LANGUAGE_NONE][0]['default']['#default_value']['value'] = $options['query']['og_group_ref'];
     }
     
+    //25.02.2014 - 15:38 - SN
+    //add additional group
+    if(isset($form['#media'])) {
+      unset($form['options']['fields']['og_group_ref']);
+    }
 
     if (isset($referer_args['gid']) && is_numeric($referer_args['gid'])) {
       if (strpos('?', $form['#action']) >= 0) {
