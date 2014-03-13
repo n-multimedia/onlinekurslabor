@@ -294,11 +294,6 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:content_domain:update group_access field'
-  $permissions['node:content_domain:update group_access field'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:content_domain:update group_group field'
   $permissions['node:content_domain:update group_group field'] = array(
     'roles' => array(),
@@ -458,11 +453,6 @@ function nm_section_content_features_og_features_default_permissions() {
     'roles' => array(
       'member' => 'member',
     ),
-  );
-
-  // Exported og permission: 'node:content_domain:view group_access field'
-  $permissions['node:content_domain:view group_access field'] = array(
-    'roles' => array(),
   );
 
   // Exported og permission: 'node:content_domain:view group_group field'

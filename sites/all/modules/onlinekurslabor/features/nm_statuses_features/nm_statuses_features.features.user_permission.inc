@@ -23,6 +23,9 @@ function nm_statuses_features_user_default_permissions() {
   $permissions['delete all status comments'] = array(
     'name' => 'delete all status comments',
     'roles' => array(
+      'Dozent' => 'Dozent',
+      'Moderator' => 'Moderator',
+      'Tutor' => 'Tutor',
       'administrator' => 'administrator',
     ),
     'module' => 'fbss_comments',
@@ -32,6 +35,7 @@ function nm_statuses_features_user_default_permissions() {
   $permissions['delete all statuses'] = array(
     'name' => 'delete all statuses',
     'roles' => array(
+      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
     ),
     'module' => 'statuses',
@@ -86,6 +90,9 @@ function nm_statuses_features_user_default_permissions() {
   $permissions['edit all status comments'] = array(
     'name' => 'edit all status comments',
     'roles' => array(
+      'Dozent' => 'Dozent',
+      'Moderator' => 'Moderator',
+      'Tutor' => 'Tutor',
       'administrator' => 'administrator',
     ),
     'module' => 'fbss_comments',
@@ -95,6 +102,7 @@ function nm_statuses_features_user_default_permissions() {
   $permissions['edit all statuses'] = array(
     'name' => 'edit all statuses',
     'roles' => array(
+      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
     ),
     'module' => 'statuses',

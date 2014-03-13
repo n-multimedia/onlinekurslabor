@@ -9,6 +9,66 @@
  */
 function nm_section_courses_features_default_rules_configuration() {
   $items = array();
+  $items['rules_course_forum_topic_created'] = entity_import('rules_config', '{ "rules_course_forum_topic_created" : {
+      "LABEL" : "Course Forum Topic Created",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "REQUIRES" : [ "rules", "onlinekurslabor_rules" ],
+      "ON" : { "node_insert--forum" : { "bundle" : "forum" } },
+      "DO" : [
+        { "entity_fetch" : {
+            "USING" : { "type" : "node", "id" : [ "node:og-group-ref:nid" ] },
+            "PROVIDE" : { "entity_fetched" : { "course_fetched" : "Course" } }
+          }
+        },
+        { "mail_to_user_roles_in_group" : {
+            "group" : [ "course-fetched" ],
+            "roles" : { "value" : {
+                "106505419" : "106505419",
+                "126456107" : "126456107",
+                "66784200" : "66784200",
+                "24708420" : "24708420"
+              }
+            },
+            "exlude_user" : [ "node:author:uid" ],
+            "subject" : "[course-fetched:title] -  Es gibt ein neues Thema im Forum",
+            "message" : "\\r\\nes gibt ein neues Thema \\u0022[node:title]\\u0022 im Forum. \\r\\n\\r\\nLink zum Thema:\\r\\n[node:url]\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
+          }
+        }
+      ]
+    }
+  }');
+  $items['rules_course_forum_topic_reply'] = entity_import('rules_config', '{ "rules_course_forum_topic_reply" : {
+      "LABEL" : "Course Forum Topic Reply",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "REQUIRES" : [ "rules", "php", "comment" ],
+      "ON" : { "comment_insert--comment_node_forum" : { "bundle" : "comment_node_forum" } },
+      "IF" : [
+        { "NOT data_is" : { "data" : [ "comment:node:author" ], "value" : [ "comment:author" ] } }
+      ],
+      "DO" : [
+        { "entity_fetch" : {
+            "USING" : {
+              "type" : "node",
+              "id" : {
+                "select" : "comment:node:nid",
+                "php" : { "code" : "$node = node_load($value);\\r\\n$course_nid = $node-\\u003Eog_group_ref[LANGUAGE_NONE][0][\\u0027target_id\\u0027];\\r\\nreturn $course_nid;\\r\\n" }
+              }
+            },
+            "PROVIDE" : { "entity_fetched" : { "course_fetched" : "Course" } }
+          }
+        },
+        { "mail" : {
+            "to" : [ "comment:node:author:mail" ],
+            "subject" : "[course-fetched:title] - Es gibt eine neue Antwort in Ihrem Thema",
+            "message" : "Hallo [comment:node:author],\\r\\nes gibt eine neue Antwort im Thema \\u0022[comment:node:title]\\u0022.\\r\\n\\r\\nLink zum Kommentar:\\r\\n[comment:url]\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
+            "language" : [ "" ]
+          }
+        }
+      ]
+    }
+  }');
   $items['rules_course_task_assessed'] = entity_import('rules_config', '{ "rules_course_task_assessed" : {
       "LABEL" : "Course Task Assessed",
       "PLUGIN" : "reaction rule",
@@ -79,7 +139,7 @@ function nm_section_courses_features_default_rules_configuration() {
             "group" : [ "course-fetched" ],
             "roles" : { "value" : { "106505419" : "106505419" } },
             "subject" : "[course-fetched:title] - [node:title] - wurde eingereicht",
-            "message" : "Hallo,\\r\\neine L\\u00f6sung f\\u00fcr die Aufgabe \\u0022[node:title]\\u0022 wurde eingereicht. \\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
+            "message" : "\\r\\neine L\\u00f6sung f\\u00fcr die Aufgabe \\u0022[node:title]\\u0022 wurde eingereicht. \\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
           }
         }
       ]
@@ -124,7 +184,7 @@ function nm_section_courses_features_default_rules_configuration() {
             "group" : [ "entity-course" ],
             "roles" : { "value" : { "106505419" : "106505419" } },
             "subject" : "[entity-course:title] - Anmeldung - [account:name]",
-            "message" : "Hallo,\\r\\nder Benutzer \\u0022[account:name]\\u0022 hat sich f\\u00fcr den Kurs \\u0022[entity-course:title]\\u0022 angemeldet.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
+            "message" : "\\r\\nder Benutzer \\u0022[account:name]\\u0022 hat sich f\\u00fcr den Kurs \\u0022[entity-course:title]\\u0022 angemeldet.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
           }
         }
       ]

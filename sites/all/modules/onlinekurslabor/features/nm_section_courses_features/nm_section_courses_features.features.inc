@@ -64,6 +64,29 @@ function nm_section_courses_features_image_default_styles() {
     ),
   );
 
+  // Exported image style: course_header_list_item.
+  $styles['course_header_list_item'] = array(
+    'name' => 'course_header_list_item',
+    'label' => 'course_header_list_item',
+    'effects' => array(
+      15 => array(
+        'label' => 'Skalieren und zuschneiden',
+        'help' => 'Skalieren und zuschneiden wird das Seitenverhältnis des ursprünglichen Bildes erhalten, und dann die überstehenden Ränder entfernen. Dies ist besonders nützlich für die Erstellung von perfekt quadratischen Vorschaubildern ohne Verzerrung des Bildes.',
+        'effect callback' => 'image_scale_and_crop_effect',
+        'dimensions callback' => 'image_resize_dimensions',
+        'form callback' => 'image_resize_form',
+        'summary theme' => 'image_resize_summary',
+        'module' => 'image',
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 600,
+          'height' => 150,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
   // Exported image style: course_overview_image.
   $styles['course_overview_image'] = array(
     'name' => 'course_overview_image',

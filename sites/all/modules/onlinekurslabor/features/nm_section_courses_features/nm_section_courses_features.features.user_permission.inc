@@ -31,7 +31,11 @@ function nm_section_courses_features_user_default_permissions() {
   // Exported permission: 'create courses_course content'.
   $permissions['create courses_course content'] = array(
     'name' => 'create courses_course content',
-    'roles' => array(),
+    'roles' => array(
+      'Dozent' => 'Dozent',
+      'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
+    ),
     'module' => 'node',
   );
 
@@ -115,7 +119,11 @@ function nm_section_courses_features_user_default_permissions() {
   // Exported permission: 'delete own courses_course content'.
   $permissions['delete own courses_course content'] = array(
     'name' => 'delete own courses_course content',
-    'roles' => array(),
+    'roles' => array(
+      'Dozent' => 'Dozent',
+      'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
+    ),
     'module' => 'node',
   );
 
@@ -208,7 +216,11 @@ function nm_section_courses_features_user_default_permissions() {
   // Exported permission: 'edit own courses_course content'.
   $permissions['edit own courses_course content'] = array(
     'name' => 'edit own courses_course content',
-    'roles' => array(),
+    'roles' => array(
+      'Dozent' => 'Dozent',
+      'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
+    ),
     'module' => 'node',
   );
 

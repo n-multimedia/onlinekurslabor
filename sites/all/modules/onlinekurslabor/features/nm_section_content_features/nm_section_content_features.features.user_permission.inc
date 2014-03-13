@@ -275,6 +275,8 @@ function nm_section_content_features_user_default_permissions() {
     'name' => 'delete revisions',
     'roles' => array(
       'Autor' => 'Autor',
+      'Dozent' => 'Dozent',
+      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
     ),
     'module' => 'node',
@@ -397,7 +399,9 @@ function nm_section_content_features_user_default_permissions() {
     'name' => 'revert revisions',
     'roles' => array(
       'Autor' => 'Autor',
+      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
     ),
     'module' => 'node',
   );
@@ -668,7 +672,9 @@ function nm_section_content_features_user_default_permissions() {
     'name' => 'view revisions',
     'roles' => array(
       'Autor' => 'Autor',
+      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
     ),
     'module' => 'node',
   );

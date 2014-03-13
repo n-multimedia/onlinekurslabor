@@ -14,28 +14,28 @@ function nm_section_content_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_content_chapter';
-  $strongarm->value = 'edit-submission';
+  $strongarm->value = 'edit-print';
   $export['additional_settings__active_tab_content_chapter'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_content_domain';
-  $strongarm->value = 'edit-submission';
+  $strongarm->value = 'edit-print';
   $export['additional_settings__active_tab_content_domain'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_content_multiple_choice';
-  $strongarm->value = 'edit-og';
+  $strongarm->value = 'edit-print';
   $export['additional_settings__active_tab_content_multiple_choice'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'additional_settings__active_tab_content_question_and_answer';
-  $strongarm->value = 'edit-display';
+  $strongarm->value = 'edit-print';
   $export['additional_settings__active_tab_content_question_and_answer'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -342,7 +342,7 @@ function nm_section_content_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'biblio_orphan_clean_next_execution';
-  $strongarm->value = 1386664878;
+  $strongarm->value = 1394724319;
   $export['biblio_orphan_clean_next_execution'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -1912,6 +1912,13 @@ function nm_section_content_features_strongarm() {
     'viddy' => 1,
     'tudou' => 1,
     'mixbit' => 1,
+    'sproutvideo' => 1,
+    'minotovideo' => 1,
+    'brainshark' => 1,
+    '23video' => 1,
+    'goanimate' => 1,
+    'brainsonic' => 1,
+    'lustich' => 1,
     'whitehouse' => 1,
     'hulu' => 1,
     'crackle' => 1,
@@ -1962,11 +1969,13 @@ function nm_section_content_features_strongarm() {
     'vidyard' => 1,
     'veoh' => 1,
     'univision' => 1,
+    'vidcaster' => 1,
     'godtube' => 1,
     'mediamatters' => 1,
     'clikthrough' => 1,
     'clipsyndicate' => 1,
     'srf' => 1,
+    'mpora' => 1,
     'espn' => 1,
     'abcnews' => 1,
     'washingtonpost' => 1,
@@ -1979,6 +1988,8 @@ function nm_section_content_features_strongarm() {
     'cnnedition' => 1,
     'cnnmoney' => 1,
     'msnbc' => 1,
+    'nbcnews' => 1,
+    'foxsports' => 1,
     'globalpost' => 1,
     'guardian' => 1,
     'bravotv' => 1,
@@ -1990,6 +2001,9 @@ function nm_section_content_features_strongarm() {
     'foxbusiness' => 1,
     'reuters' => 1,
     'huffpost' => 1,
+    'nytimes' => 1,
+    'vorarlberg' => 1,
+    'spiegel' => 1,
     'github' => 1,
     'crunchbase' => 1,
     'slideshare' => 1,
@@ -2002,7 +2016,6 @@ function nm_section_content_features_strongarm() {
     'kickstarter' => 1,
     'scrapblog' => 1,
     'foursquare' => 1,
-    'linkedin' => 1,
     'sliderocket' => 1,
     'chartly' => 1,
     'googlemaps' => 1,
@@ -2039,7 +2052,6 @@ function nm_section_content_features_strongarm() {
     'urtak' => 1,
     'graphicly' => 1,
     'ganxy' => 1,
-    'gopollgo' => 1,
     'panorama' => 1,
     'behance' => 1,
     'jdsupra' => 1,
@@ -2048,6 +2060,18 @@ function nm_section_content_features_strongarm() {
     'jsfiddle' => 1,
     'ponga' => 1,
     'listly' => 1,
+    'crowdmap' => 1,
+    'ifttt' => 1,
+    'weavly' => 1,
+    'tagmotion' => 1,
+    'cloudup' => 1,
+    'hackpad' => 1,
+    'talely' => 1,
+    'polar' => 1,
+    'bubbli' => 1,
+    'imajize' => 1,
+    'giflike' => 1,
+    'rapidengage' => 1,
     'yfrog' => 1,
     'flickr' => 1,
     'twitpic' => 1,
@@ -2082,6 +2106,7 @@ function nm_section_content_features_strongarm() {
     'droplr' => 1,
     'eyeem' => 1,
     'giphy' => 1,
+    'frontback' => 1,
     'amazon' => 1,
     'shopstyle' => 1,
     'apple' => 1,
@@ -2106,6 +2131,7 @@ function nm_section_content_features_strongarm() {
     'grooveshark' => 1,
     'radioreddit' => 1,
     'gogoyoko' => 1,
+    'hypem' => 1,
   );
   $export['oembedembedly_providers'] = $strongarm;
 

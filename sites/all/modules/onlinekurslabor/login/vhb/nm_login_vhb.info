@@ -1,4 +1,4 @@
-name = Login Interface VHB
+name = NM Login VHB
 description = used for receiving user data from vhb POST requests
 package = custom
 

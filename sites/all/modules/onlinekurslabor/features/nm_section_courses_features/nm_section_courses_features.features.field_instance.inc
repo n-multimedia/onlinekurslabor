@@ -446,7 +446,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'image_image',
-      'weight' => 5,
+      'weight' => 14,
     ),
   );
 
@@ -496,7 +496,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'image_image',
-      'weight' => 6,
+      'weight' => 15,
     ),
   );
 
@@ -635,7 +635,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'multiple_value_widget' => 'table',
       ),
       'type' => 'options_buttons',
-      'weight' => 7,
+      'weight' => 16,
     ),
   );
 
@@ -711,6 +711,43 @@ function nm_section_courses_features_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 10,
+    ),
+  );
+
+  // Exported field_instance: 'node-courses_course-field_semester'
+  $field_instances['node-courses_course-field_semester'] = array(
+    'bundle' => 'courses_course',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 17,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_semester',
+    'label' => 'Semester',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 11,
     ),
   );
 
@@ -879,7 +916,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'year_range' => '-3:+3',
       ),
       'type' => 'date_popup',
-      'weight' => 11,
+      'weight' => 12,
     ),
   );
 
@@ -994,59 +1031,8 @@ function nm_section_courses_features_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 12,
+      'weight' => 13,
     ),
-  );
-
-  // Exported field_instance: 'node-courses_course-group_access'
-  $field_instances['node-courses_course-group_access'] = array(
-    'bundle' => 'courses_course',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 10,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'group_access',
-    'label' => 'Group visibility',
-    'required' => TRUE,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'view modes' => array(
-      'full' => array(
-        'label' => 'above',
-        'type' => 'options_onoff',
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'type' => 'options_onoff',
-      ),
-    ),
-    'widget' => array(
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_buttons',
-      'weight' => 6,
-    ),
-    'widget_type' => 'options_select',
   );
 
   // Exported field_instance: 'node-courses_course-group_group'
@@ -2660,7 +2646,6 @@ function nm_section_courses_features_field_default_field_instances() {
   t('Comment');
   t('Determine if this is an OG group.');
   t('Foren');
-  t('Group visibility');
   t('Groups audience');
   t('Gruppe');
   t('Header');
@@ -2671,6 +2656,7 @@ function nm_section_courses_features_field_default_field_instances() {
   t('Laufzeit');
   t('Matrikelnummer');
   t('Platzhalter');
+  t('Semester');
   t('Sponsoren');
   t('Studienfach');
   t('Thema');
