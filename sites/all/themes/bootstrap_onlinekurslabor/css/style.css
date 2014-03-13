@@ -35,10 +35,10 @@ Panels reset - homepage
     padding:0;
 }
 
-.panel-pane.pane-courses-admin-content-panel-pane-1 h2.pane-title, 
-.panel-pane.pane-courses-admin-content-panel-pane-2 h2.pane-title, 
-.panel-pane.pane-courses-admin-content-panel-pane-3 h2.pane-title,
-.panel-pane.pane-courses-admin-content-panel-pane-4 h2.pane-title{
+h2.pane-title, 
+h2.pane-title, 
+h2.pane-title,
+h2.pane-title{
     font-size: 24.5px;
 }
 

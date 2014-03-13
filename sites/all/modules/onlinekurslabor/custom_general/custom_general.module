@@ -727,40 +727,52 @@ function custom_general_block_view($delta = '') {
  * @param &$fields
  *   By reference. The fields that have been declared by another feature.
  */
-/*
-function custom_general_field_default_fields_alter(&$fields) {
 
-  $source_dir = drupal_get_path('module', 'custom_general') . '/images/default_images';
 
+/**
+ * Implements hook_field_default_field_bases_alter().
+ *
+ * Alter the default fields right before they are cached into the database.
+ *
+ * @param &$fields
+ *   By reference. The fields that have been declared by another feature.
+ */
+function custom_general_field_default_field_bases_alter(&$fields) {
+  $source_dir = drupal_get_path('module', 'custom_general') . '/default_images';
   $field_default_images = array(
+    // Field Base uses the field name
     'field_photo' => 'noprofile.jpg',
-    //'field_collection_item-field_people-field_people_photo' => 'avatar.png',
-    // etc...
+    // Field Instance uses entity-bundle-field_name
+    // 'node-article-field_image' => 'default.jpg',
   );
-
   foreach ($field_default_images as $field_name => $filename) {
     $source = $source_dir . '/' . $filename;
     $destination = 'default_images/' . $filename;
     if (isset($fields[$field_name])) {
-      mymodule_set_default_image($fields[$field_name], $filename, $source, $destination);
+      _custom_general_set_default_image($fields[$field_name], $filename, $source, $destination);
     }
   }
 }
-
-function custom_general_set_default_image(&$field, $filename, $source, $destination) {
+/**
+ * Custom function to set the default image.
+ * (It has an _ at the beginning to make sure it never accidentally gets fired as a hook)
+ *
+ * @param  array $field
+ * @param  string $filename Filename of the source image.
+ * @param  string $source Filepath of the source image.
+ * @param  string $destination Filepath you want to save to.
+ */
+function _custom_general_set_default_image(&$field, $filename, $source, $destination) {
   // See if a default image hasn't been set for this field yet
-  if (empty($field['field_config']['settings']['default_image'])) {
+  if (empty($field['settings']['default_image'])) {
     // Dynamically set the user default image on the field
     $destination = file_default_scheme() . '://' . $destination;
-
     // Check to see if it exists already
     $result = db_select('file_managed', 'f')
       ->fields('f', array('fid'))
       ->condition('f.uri', $destination)
       ->execute();
-
     $fid = $result->fetchField();
-
     // Simulate an upload of the default user image
     if (!$fid && file_exists($source)) {
       $file = new stdClass;
@@ -770,12 +782,12 @@ function custom_general_set_default_image(&$field, $filename, $source, $destinat
       $file->filemime = file_get_mimetype($source);
       $file->uid = 1;
       $file->status = 1;
-
       $file = file_copy($file, 'public://', FILE_EXISTS_REPLACE);
-
       $fid = $file->fid;
     }
-
-    $field['field_config']['settings']['default_image'] = (string) $fid;
+    // field_config key no longer seems to exist.
+    // $field['field_config']['settings']['default_image'] = (string) $fid;
+    // Use this instead.
+    $field['settings']['default_image'] = (string) $fid;
   }
-}*/
+}

@@ -324,6 +324,7 @@ features[page_manager_pages][] = kursdokumente_in_kurs_
 features[page_manager_pages][] = members_in_course
 features[panels_layout][] = course_information
 features[profile2_type][] = student
+features[rules_config][] = nm_section_courses_features_courses_member_unsubscribe
 features[rules_config][] = rules_course_forum_topic_created
 features[rules_config][] = rules_course_forum_topic_reply
 features[rules_config][] = rules_course_task_assessed
