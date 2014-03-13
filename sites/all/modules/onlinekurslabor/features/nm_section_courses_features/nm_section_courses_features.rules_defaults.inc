@@ -83,20 +83,14 @@ function nm_section_courses_features_default_rules_configuration() {
       "LABEL" : "Course Forum Topic Reply",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "REQUIRES" : [ "rules", "php", "comment" ],
+      "REQUIRES" : [ "rules", "comment" ],
       "ON" : { "comment_insert--comment_node_forum" : { "bundle" : "comment_node_forum" } },
       "IF" : [
         { "NOT data_is" : { "data" : [ "comment:node:author" ], "value" : [ "comment:author" ] } }
       ],
       "DO" : [
         { "entity_fetch" : {
-            "USING" : {
-              "type" : "node",
-              "id" : {
-                "select" : "comment:node:nid",
-                "php" : { "code" : "$node = node_load($value);\\r\\n$course_nid = $node-\\u003Eog_group_ref[LANGUAGE_NONE][0][\\u0027target_id\\u0027];\\r\\nreturn $course_nid;\\r\\n" }
-              }
-            },
+            "USING" : { "type" : "node", "id" : { "select" : "comment:node:nid" } },
             "PROVIDE" : { "entity_fetched" : { "course_fetched" : "Course" } }
           }
         },

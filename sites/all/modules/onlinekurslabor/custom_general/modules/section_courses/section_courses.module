@@ -1596,14 +1596,14 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
   /**
    * Course Form
    */
-  if (isset($form['type']) && $form['type']['#value'] == NM_COURSE) {
-    /*$form['options']['#title'] = t('Promotion settings');
-    $form['options']['#attributes']['class'] = array('node-promotion-options');
-    $form['options']['#attached'] = array(
+  if (isset($form['type']) && isset($form['type']['#value']) && $form['type']['#value'] == NM_COURSE) {
+    /* $form['options']['#title'] = t('Promotion settings');
+      $form['options']['#attributes']['class'] = array('node-promotion-options');
+      $form['options']['#attached'] = array(
       'js' => array(
-        'vertical-tabs' => drupal_get_path('module', 'save_draft') . '/save_draft.js',
+      'vertical-tabs' => drupal_get_path('module', 'save_draft') . '/save_draft.js',
       ),
-    );*/
+      ); */
     $form['options']['status'] = false;
     if (empty($form['#validate'])) {
       $form['#validate'] = array();
@@ -1643,7 +1643,6 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
     }
   }
 }
-
 
 /**
  * Handles save draft form validation

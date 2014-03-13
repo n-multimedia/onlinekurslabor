@@ -731,19 +731,20 @@ function custom_general_block_view($delta = '') {
 
 /**
  * Implements hook_field_default_field_bases_alter().
+ * note: Features hook
  *
+ * Set default images here
  * Alter the default fields right before they are cached into the database.
  *
  * @param &$fields
  *   By reference. The fields that have been declared by another feature.
  */
 function custom_general_field_default_field_bases_alter(&$fields) {
-  $source_dir = drupal_get_path('module', 'custom_general') . '/default_images';
+  $source_dir = drupal_get_path('module', 'custom_general') . '/images/default_images';
   $field_default_images = array(
     // Field Base uses the field name
-    'field_photo' => 'noprofile.jpg',
-    // Field Instance uses entity-bundle-field_name
-    // 'node-article-field_image' => 'default.jpg',
+    'field_photo' => 'noprofile_default.jpg',
+    'field_course_header' => 'course_header_default.jpg',
   );
   foreach ($field_default_images as $field_name => $filename) {
     $source = $source_dir . '/' . $filename;
@@ -764,7 +765,8 @@ function custom_general_field_default_field_bases_alter(&$fields) {
  */
 function _custom_general_set_default_image(&$field, $filename, $source, $destination) {
   // See if a default image hasn't been set for this field yet
-  if (empty($field['settings']['default_image'])) {
+
+  //if (empty($field['settings']['default_image'])) {
     // Dynamically set the user default image on the field
     $destination = file_default_scheme() . '://' . $destination;
     // Check to see if it exists already
@@ -782,12 +784,12 @@ function _custom_general_set_default_image(&$field, $filename, $source, $destina
       $file->filemime = file_get_mimetype($source);
       $file->uid = 1;
       $file->status = 1;
-      $file = file_copy($file, 'public://', FILE_EXISTS_REPLACE);
+      $file = file_copy($file, 'public://default_images/', FILE_EXISTS_REPLACE);
       $fid = $file->fid;
     }
     // field_config key no longer seems to exist.
     // $field['field_config']['settings']['default_image'] = (string) $fid;
     // Use this instead.
     $field['settings']['default_image'] = (string) $fid;
-  }
+  //}
 }
