@@ -102,7 +102,7 @@
             $(".knob").knob({
                 'change': function(value) {
                     return false;
-                },
+                }
             });
 
 

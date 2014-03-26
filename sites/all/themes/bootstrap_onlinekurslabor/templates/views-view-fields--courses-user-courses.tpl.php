@@ -22,41 +22,43 @@
  *
  * @ingroup views_templates
  */
-//get nid and unset field
 $nid = $fields['nid']->raw;
+
+$node_path = url('node/' . $nid);
+
 $node = node_load($nid);
-$course_actions = section_courses_render_course_link($node);
-$label = !$node->status ? '<span class="label label-important">Entwurf</span> ' : '';
+
+unset($fields['nid']);
+
+$field_view = field_view_field('node', $node, 'field_course_picture', array('settings' => array('image_style' => 'course_header')));
+//$field_view['#label_display'] = 'hidden';
+$uri = $field_view['#items'][0]['uri'];
+$url = image_style_url('course_overview_image', $uri);
+
+$path = $url;
 
 $start_text = '';
 $end_text = '';
 $percent = _section_courses_get_timespan_percentage($node, $start_text, $end_text);
-
 ?>
 
-<script>
-  jQuery(function() {
-    jQuery("#progressbar_<?php echo $nid ?>").progressbar({
-      value: <?php echo $percent; ?>
-    });
-  });
-</script>
 
 <div class="row-fluid">
-  <div class="course-item span12">
-    <div class="span3"><?php echo $fields['field_course_picture']->content; ?></div>
-    <div class="span4">
-      <div class="course-title"><h2><?php echo $label ?><?php echo $fields['title']->content ?></h2></div>
-      <div class="course-subtitle"><?php echo $fields['field_subtitle']->content; ?></div>
-      <div class="course-time row-fluid">
-        <div class="course-start-date"><strong>Begin:</strong> <?php echo $start_text; ?></div>
-        <div class="course-end-date"><strong>Ende:</strong> <?php echo $end_text; ?></div>
-        <div id="progressbar_<?php echo $nid ?>" ></div>
-      </div>
+  <a href="<?php echo $node_path; ?>" class="user-courses-item">
+    <div class="span3" style="
+         background-image:url(<?php echo $path; ?>);
+         -webkit-background-size: cover;
+         -moz-background-size: cover;
+         -o-background-size: cover;
+         background-size: cover;
+         margin:0;
+         padding:0;
+         height:55px;
+         ">
+      <div class="user-courses-item-progress" style="display:block;background-color:#fff;opacity:0.8;height:50px;padding-top:5px;display:none;"><?php echo section_courses_theme_progressbar($node, 38, FALSE); ?></div>
     </div>
-    <div class="span5">
-      <div class="course-short-description"><?php echo $fields['field_short_description']->content; ?></div>
-      <div class="course-actions"><?php echo $course_actions ?></div>
+    <div class="user-courses-item-title span9" >
+      <?php echo $node->title; ?>  
     </div>
-  </div>
+  </a>
 </div>

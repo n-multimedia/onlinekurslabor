@@ -362,12 +362,12 @@ function _section_courses_task_solution_assesment_form($form, &$form_state, $sol
         '#attributes' => array('class' => array('btn-primary')),
         '#value' => 'Speichern',
       );
-      $form['save_assess'] = array(
+      $form['store_assets'] = array(
         '#type' => 'submit',
         '#attributes' => array('class' => array('btn-success')),
         '#value' => 'Speichern und Bewerten',
       );
-      $form['save_cancel_submission'] = array(
+      $form['store_cancel_submission'] = array(
         '#type' => 'submit',
         '#attributes' => array('class' => array('btn-default')),
         '#value' => 'Speichern und Einreichung aufheben',
@@ -397,10 +397,10 @@ function _section_courses_task_solution_assesment_form_submit($form, &$form_stat
 
   //check which button was clicked
   //if save and submit was clicked, move node to submitted state
-  if (isset($form_state['values']['save_assess']) && ($form_state['values']['save_assess'] == $form_state['triggering_element']['#value'])) {
+  if (isset($form_state['values']['store_assets']) && ($form_state['values']['store_assets'] == $form_state['triggering_element']['#value'])) {
     workflow_execute_transition($node, NM_COURSES_TASK_WORKFLOW_ASSESSED);
   }
-  elseif (isset($form_state['values']['save_cancel_submission']) && ($form_state['values']['save_cancel_submission'] == $form_state['triggering_element']['#value'])) {
+  elseif (isset($form_state['values']['store_cancel_submission']) && ($form_state['values']['store_cancel_submission'] == $form_state['triggering_element']['#value'])) {
     workflow_execute_transition($node, NM_COURSES_TASK_WORKFLOW_DRAFT);
   }
 }
@@ -440,7 +440,7 @@ function _section_courses_task_solution_form($form, &$form_state, $task_nid) {
   $form['save'] = array(
     '#type' => 'submit',
     '#attributes' => array('class' => array('btn-primary')),
-    '#value' => 'Speichern',
+    '#value' => 'Als Entwurf speichern',
   );
 
   //[todo] generate possible transitionbuttons automatically ?

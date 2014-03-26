@@ -16,6 +16,22 @@ input[disabled].knob {
     margin-right:auto;
 }
 
+/*
+user profile smaller 
+*/
+.user-courses-item .nm_circle_progress_bar {
+  width:auto;
+  position:inherit;
+}
+.user-courses-item .nm_circle_progress_bar, .user-courses-item .nm_circle_progress_bar>div  {
+  height: 38px !important;
+  overflow:hidden;
+}
+.user-courses-item:hover .user-courses-item-progress{
+  display:block !important;
+}
+
+
 .nm_circle_progress_bar .nm_cb_title, .nm_circle_progress_bar canvas, .nm_circle_progress_bar div{
     display: block;
 
@@ -544,7 +560,24 @@ Authors's Tools
 {
     background-position: -120px -50px;
 }
+/*interactive video*/
+#authors_tools-container .btn#author_h5p_overview a:before
+{
+    background-position: -180px 0px;
+}
+#authors_tools-container .btn#author_h5p_overview a:hover:before, #authors_tools-container .btn#author_h5p_overview a.active:before
+{
+    background-position: -180px -50px;
+}
 
+#authors_tools-container .btn#author_h5p_add a:before
+{
+    background-position: -180px -100px;
+}
+#authors_tools-container .btn#author_h5p_add a:hover:before, #authors_tools-container .btn#author_h5p_add a.active:before
+{
+    background-position: -180px -150px;
+}
 
 #authors_tools-container .btn#author_chapter_add a:before
 {

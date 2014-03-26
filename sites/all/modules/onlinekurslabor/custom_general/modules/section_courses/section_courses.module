@@ -258,6 +258,7 @@ function section_courses_preprocess_views_view_fields(&$variables) {
 
 function section_courses_block_info() {
   $blocks = array();
+
   $blocks['course_top_navigation'] = array(
     'info' => t('Course Top Navigation'),
   );
@@ -1987,3 +1988,38 @@ function section_courses_views_query_alter(&$view, &$query) {
   }
 }
 
+/**
+ * get timespan progress in percent
+ * 
+ * @param type $node
+ * @return int
+ */
+function _section_courses_get_timespan_percentage($node, &$start_text=NULL, &$end_text=NULL) {
+  $percent = 0;
+  if (isset($node->field_time_span[LANGUAGE_NONE][0]['value']) && isset($node->field_time_span[LANGUAGE_NONE][0]['value2'])) {
+    $now = time();
+    $start = $node->field_time_span[LANGUAGE_NONE][0]['value'];
+    $end = $node->field_time_span[LANGUAGE_NONE][0]['value2'];
+
+    $start = strtotime($start);
+    $end = strtotime($end);
+
+    $percent = 0;
+
+    if ($now <= $start) {
+      $percent = 0;
+    }
+    else if ($now >= $end) {
+      $percent = 1;
+    }
+    else {
+      $percent = (($now - $start) / ($end - $start));
+    }
+    
+    $percent *= 100;
+
+    $start_text = date('d.m.Y', $start);
+    $end_text = date('d.m.Y', $end);
+  }
+  return $percent;
+}

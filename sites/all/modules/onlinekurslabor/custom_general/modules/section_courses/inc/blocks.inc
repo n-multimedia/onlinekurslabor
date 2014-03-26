@@ -9,7 +9,7 @@ function _section_courses_text_biblio_view() {
     'html' => TRUE,
     'query' => array(
       'og_group_ref' => $active_course->nid,
-  ));
+      ));
 
   $path = NM_COURSE_BIBLIO_PATH . '/' . $active_course->nid . '/' . $domain_id;
 
@@ -53,9 +53,13 @@ function _section_courses_node_tabs_view() {
     $nav_items_single = array();
     $nav_items_single['edit'] = "Profil bearbeiten";
 
+    //pre + suffix
+    $nav_items_single['edit'] = '<button class="btn btn-default"><i class="icon-pencil" style="color:white;"></i> ' . $nav_items_single['edit'];
+    $nav_items_single['edit'] .= '</button>';
+
     $path = 'user/' . arg(1) . '/edit';
     if (drupal_valid_path($path)) {
-      $block .= l($nav_items_single['edit'], $path);
+      $block .= l($nav_items_single['edit'], $path, array('attributes' => array(), 'html' => TRUE,));
     }
     return $block;
   }
@@ -224,7 +228,7 @@ function _course_header_section_view() {
       'content' => array(
         '#type' => 'markup',
         '#markup' => $output,
-    ));
+        ));
   }
 
   return $block;
@@ -302,7 +306,7 @@ function section_courses_instructors_tools_access($reset = FALSE) {
     $result = !empty($one_of_needed_roles);
   }
 
-  if(!$result && _section_courses_instructors_tools_role_access()){
+  if (!$result && _section_courses_instructors_tools_role_access()) {
     $result = TRUE;
   }
 
@@ -313,11 +317,11 @@ function section_courses_instructors_tools_access($reset = FALSE) {
 function _section_courses_instructors_tools_role_access() {
   global $user;
   $one_of_needed_roles = array_intersect($user->roles, array(NM_ROLE_ADMIN));
-  
+
   $active_course = _section_courses_get_active_course();
   //27.02.2014 - 10:51 - SN 
   //access to tools on panel overview pages
-  if(!$active_course) {
+  if (!$active_course) {
     $one_of_needed_roles = $one_of_needed_roles || array_intersect($user->roles, array(NM_ROLE_DOZENT));
   }
 
@@ -363,7 +367,7 @@ function _section_courses_get_instructor_tools() {
     ),
     'attributes' => array(
       'title' => '',
-  ));
+      ));
 
   /*
     $members_overview_options = $default_options;
@@ -644,7 +648,7 @@ function _section_courses_navtext_to_link($course, $text) {
     'attributes' => array(),
     'query' => array(
       'og_group_ref' => $course_nid,
-  ));
+      ));
 
   $active_node = NULL;
   if ((arg(0) == 'course') && (is_numeric(arg(3)))) {
@@ -805,44 +809,30 @@ function _section_courses_theme_tiny_unread_box(&$result, $num_unread) {
  * TODO
  */
 
-function section_courses_theme_progressbar() {
-  $active_course = _section_courses_get_active_course();
-
+function section_courses_theme_progressbar($active_course = NULL, $size = 200, $label = TRUE) {
+  if (!$active_course) {
+    $active_course = _section_courses_get_active_course();
+  }
 
   if (!isset($active_course->field_time_span[LANGUAGE_NONE]) || !isset($active_course->field_time_span[LANGUAGE_NONE][0]['value2'])) {
     return "";
   }
 
-  $now = time();
-  $start = $active_course->field_time_span[LANGUAGE_NONE][0]['value'];
-  $end = $active_course->field_time_span[LANGUAGE_NONE][0]['value2'];
+  $percent = _section_courses_get_timespan_percentage($active_course);
 
-  $start = strtotime($start);
-  $end = strtotime($end);
-
-  $percent = 0;
-
-  if ($now <= $start) {
-    $percent = 0;
-  }
-  else if ($now >= $end) {
-    $percent = 1;
-  }
-  else {
-    $percent = (($now - $start) / ($end - $start));
-  }
-
-  $percent = number_format($percent * 100, 0);
+  $percent = number_format($percent, 0);
 
   $output = '<div class="nm_circle_progress_bar">';
-  $output .= '<div class="nm_cb_title">';
-  $output .= '<h5 class="nm_cb_title_1">zeitlicher Fortschritt</h5>';
-  $output .= '<h1 class="nm_cb_title_2">' . $percent . '</h1>';
-  $output .= '<h5 class="nm_cb_title_3">%</h5>';
-  $output .= '</div>';
+  if ($label) {
+    $output .= '<div class="nm_cb_title">';
+    $output .= '<h5 class="nm_cb_title_1">zeitlicher Fortschritt</h5>';
+    $output .= '<h1 class="nm_cb_title_2">' . $percent . '</h1>';
+    $output .= '<h5 class="nm_cb_title_3">%</h5>';
+    $output .= '</div>';
+  }
   //$output .= '<div id="course_progressbar">' . $percent . '</div><div></div>';
 
-  $output .= '<input class="knob" data-angleArc=360 data-fgColor="#333" data-thickness=".12" data-width="200" disabled value="' . $percent . '">';
+  $output .= '<input class="knob" data-angleArc=360 data-fgColor="#333" data-thickness=".12" data-width="' . $size . '" disabled value="' . $percent . '">';
 
   $output .= '</div>';
 

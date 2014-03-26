@@ -34,6 +34,7 @@ define("NM_CONTENT_CHAPTER", "content_chapter");
 define("NM_CONTENT_MULTIPLE_CHOICE", "content_multiple_choice");
 define("NM_CONTENT_QUESTION_AND_ANSWER", "content_question_and_answer");
 define("NM_BIBLIO", "biblio");
+define("NM_INTERACTIVE_CONTENT", "interactive_content");
 define("NM_FILE", "file");
 
 //Course
@@ -674,6 +675,7 @@ function custom_general_preprocess_page(&$variables) {
   drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/custom_general.js");
   drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/jquery.autogrow-textarea.js");
   drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/jquery.knob.js");
+  drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/spin.js");
 
   drupal_add_library('system', 'ui.progressbar');
 }
@@ -745,6 +747,7 @@ function custom_general_field_default_field_bases_alter(&$fields) {
     // Field Base uses the field name
     'field_photo' => 'noprofile_default.jpg',
     'field_course_header' => 'course_header_default.jpg',
+    'field_course_picture' => 'course_header_default.jpg',
   );
   foreach ($field_default_images as $field_name => $filename) {
     $source = $source_dir . '/' . $filename;
