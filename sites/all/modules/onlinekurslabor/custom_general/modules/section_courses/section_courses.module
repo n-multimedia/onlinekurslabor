@@ -1178,7 +1178,7 @@ function _section_courses_student_get_coursegroup_gid() {
  * @param type $uid
  * @return Group ID of the first course group that matched
  */
-function _section_courses_get_coursegroup_gid($uid) {
+function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
   $user = user_load($uid);
 
   //we want to redirect students directly to their course group
@@ -1192,7 +1192,12 @@ function _section_courses_get_coursegroup_gid($uid) {
       //check if group's type is a course group
       if (_custom_general_get_node_type($gid) == NM_COURSE_GROUP) {
         //get active course
-        $active_course = _section_courses_get_active_course();
+        if (empty($course)) {
+          $active_course = _section_courses_get_active_course();
+        }
+        else {
+          $active_course = $course;
+        }
         //check if course group is part of the active course
         if (og_is_member('node', $active_course->nid, 'node', node_load($gid))) {
           return $gid;
@@ -1994,7 +1999,7 @@ function section_courses_views_query_alter(&$view, &$query) {
  * @param type $node
  * @return int
  */
-function _section_courses_get_timespan_percentage($node, &$start_text=NULL, &$end_text=NULL) {
+function _section_courses_get_timespan_percentage($node, &$start_text = NULL, &$end_text = NULL) {
   $percent = 0;
   if (isset($node->field_time_span[LANGUAGE_NONE][0]['value']) && isset($node->field_time_span[LANGUAGE_NONE][0]['value2'])) {
     $now = time();
@@ -2015,7 +2020,7 @@ function _section_courses_get_timespan_percentage($node, &$start_text=NULL, &$en
     else {
       $percent = (($now - $start) / ($end - $start));
     }
-    
+
     $percent *= 100;
 
     $start_text = date('d.m.Y', $start);
@@ -2023,3 +2028,9 @@ function _section_courses_get_timespan_percentage($node, &$start_text=NULL, &$en
   }
   return $percent;
 }
+
+/*
+ * remove user from course groups if he leaves course
+ */
+
+//todo..

@@ -4,7 +4,7 @@
  */
 
 (function($) {
-
+    
     var nm_stream_toggle_open_data = new Array();
     var nm_stream_get_update_timer = false;
     var nm_stream_pause_update_timer = false;
@@ -798,6 +798,7 @@
              */
             var post_spinner_white;
             var post_spinner_black;
+            var post_spinner_load;
 
             function nm_stream_disable_action_buttons(element) {
                 var submit = element.find("button[class*=-submit]");
@@ -889,6 +890,37 @@
 
                 return post_spinner_black;
             }
+            
+             function nm_stream_get_post_spinner_load() {
+
+                var opts = {
+                    lines: 8, // The number of lines to draw
+                    length: 2, // The length of each line
+                    width: 3, // The line thickness
+                    radius: 4, // The radius of the inner circle
+                    corners: 1, // Corner roundness (0..1)
+                    rotate: 0, // The rotation offset
+                    direction: 1, // 1: clockwise, -1: counterclockwise
+                    color: '#333', // #rgb or #rrggbb or array of colors
+                    speed: 1.2, // Rounds per second
+                    trail: 60, // Afterglow percentage
+                    shadow: false, // Whether to render a shadow
+                    hwaccel: false, // Whether to use hardware acceleration
+                    className: 'spinner', // The CSS class to assign to the spinner
+                    zIndex: 2e9, // The z-index (defaults to 2000000000)
+                    top: 'auto', // Top position relative to parent in px
+                    left: 'auto' // Left position relative to parent in px
+                };
+
+                if (!post_spinner_load) {
+                    //first call -> init spinner
+                    post_spinner_load = new Spinner(opts).spin();
+                } else {
+                    post_spinner_load.spin();
+                }
+
+                return post_spinner_load;
+            }
 
             function nm_stream_textarea_change(textarea, form_container) {
                 form_container = $(form_container);
@@ -924,10 +956,11 @@
             $('.view-content').first().once('nm_stream', function() {
                 nm_stream_get_update();
                 //append iframe for uploads
-                $(this).append('<iframe id="nm_stream_hidden_upload" src="" name="nm_stream_hidden_upload" style="width:0;height:0;border:0px solid #fff; position:absolute;"></iframe>');
+                $(this).parent().parent().append('<iframe id="nm_stream_hidden_upload" src="" name="nm_stream_hidden_upload" style="width:0;height:0;border:0px solid #fff; position:absolute;"></iframe>');
             });
 
             function nm_stream_get_update() {
+              return;
                 //pause update actions
                 //case:
                 //submitting content where updates are transmitted in response messages
@@ -939,6 +972,9 @@
 
 
                 var last_node = $('.nm-stream-node-container').first();
+                
+                if(last_node.length === 0)
+                  return;
 
                 var regresult = $(last_node).attr('id').split('-');
                 var nid = regresult.pop();
@@ -1104,6 +1140,17 @@
                     duplicate: '<h3>Diese Datei wurde bereits ausgewählt!</h3>\n<br/>$file'
                 }
 
+            });
+            
+            /*
+             * laod more as infinite spinner
+             */
+            $('.view-nm-stream .pager a').once('nm_stream', function(){
+
+                post_spinner_load = nm_stream_get_post_spinner_load();
+                $(this).text('');
+                $(this).append(post_spinner_load.el);
+                
             });
 
         }

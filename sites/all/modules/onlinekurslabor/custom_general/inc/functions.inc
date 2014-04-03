@@ -138,23 +138,23 @@ function _section_course_forum_visible() {
   return $forum_visible;
 }
 
-function _section_course_course_group_visible() {
-  $text_visible = (arg(0) == 'course' && arg(1) == 'groups');
+function _section_course_course_group_visible($path=NULL) {
+  $text_visible = (arg(0, $path) == 'course' && arg(1, $path) == 'groups');
   return $text_visible;
 }
 
-function _section_course_course_news_visible() {
-  $text_visible = (arg(0) == 'course' && arg(1) == 'news');
+function _section_course_course_news_visible($path=NULL) {
+  $text_visible = (arg(0, $path) == 'course' && arg(1, $path) == 'news');
   return $text_visible;
 }
 
-function _section_course_course_docs_visible() {
-  $text_visible = (arg(0) == 'course' && (arg(1) == 'docs' || arg(1) == 'doc' ));
+function _section_course_course_docs_visible($path=NULL) {
+  $text_visible = (arg(0, $path) == 'course' && (arg(1, $path) == 'docs' || arg(1, $path) == 'doc' ));
   return $text_visible;
 }
 
-function _section_course_course_tasks_visible() {
-  $text_visible = (arg(0) == 'course' && arg(1) == 'tasks');
+function _section_course_course_tasks_visible($path=NULL) {
+  $text_visible = (arg(0, $path) == 'course' && arg(1, $path) == 'tasks');
   return $text_visible;
 }
 

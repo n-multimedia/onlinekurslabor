@@ -19,6 +19,9 @@ input[disabled].knob {
 /*
 user profile smaller 
 */
+.btn.edit-profile{
+  margin-top:10px;
+}
 .user-courses-item .nm_circle_progress_bar {
   width:auto;
   position:inherit;

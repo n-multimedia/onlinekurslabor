@@ -5,6 +5,11 @@
  */
 ?>
 
+<?php if (isset($nm_error)): ?>
+<div class="alert alert-error"><?php echo $nm_error ?></div>
+  <?php return; ?>
+<?php endif; ?>
+
 <?php if ($node): ?>
   <?php /* edit */ ?>
   <form id="nm-stream-edit-node-<?php echo $node->nid; ?>" method="post" enctype="multipart/form-data" target="nm_stream_hidden_upload" action="/nm_stream/node/<?php echo $node->nid; ?>/edit">

@@ -1,0 +1,10 @@
+name = h5p integration
+description = embed h5p content in a text
+package = custom
+
+
+core = 7.x
+
+; Information added by drupal.org packaging script on 2013-02-25
+version = "7.x-1.x"
+core = "7.x"

@@ -1,0 +1,6 @@
+name = h5 Annotations Liste
+description = extends the h5p-plugin by a list conaining all annotations in an interactive video
+core = 7.x
+
+
+dependencies[] = h5p
