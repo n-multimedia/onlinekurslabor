@@ -63,7 +63,7 @@ function nm_stream_menu() {
   );
 
   $items['nm_stream/node/%node/load'] = array(
-    'title' => 'Add NM Stream Comment',
+    'title' => 'Load node',
     'page callback' => 'nm_stream_nm_stream_node_load_callback',
     'page arguments' => array(2),
     'access arguments' => array('access content'),
@@ -155,19 +155,25 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
   //new added nodes
   //topmost node could have been deleted from another user
   $node = node_load($nid);
-  if ($node) {
+  //0 is beeing transmitted if no node exists yet
+  //-1 if just the update status is interesting
+  if ($node || $nid == 0) {
+
     //get nm_stream nodes where created > $node->created
     $query = db_select('node', 'n');
     $query->addField('n', 'nid');
 
+    if ($nid > 0) {
+      $query->condition('n.created', $node->created, '>');
+    }
+    
     $query
         //->condition('n.nid', $node->nid, '>')
-        ->condition('n.created', $node->created, '>')
         ->condition('n.type', 'nm_stream')
         ->condition('n.status', NODE_PUBLISHED)
         ->orderBy("n.nid", "DESC") //order important!
         ->addTag('node_access');
-
+    
 
     //01.04.2014 - 22:53 - SN context needed
     //if we are in a special context e.g. course group, we just want to see 
@@ -181,6 +187,7 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
     }
 
     $results = $query->execute()->fetchAll();
+    
 
     $output = '';
     foreach ($results as $result) {
