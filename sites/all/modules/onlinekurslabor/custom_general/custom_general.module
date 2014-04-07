@@ -34,7 +34,7 @@ define("NM_CONTENT_CHAPTER", "content_chapter");
 define("NM_CONTENT_MULTIPLE_CHOICE", "content_multiple_choice");
 define("NM_CONTENT_QUESTION_AND_ANSWER", "content_question_and_answer");
 define("NM_BIBLIO", "biblio");
-define("NM_INTERACTIVE_CONTENT", "interactive_content");
+define("NM_INTERACTIVE_CONTENT", "h5p_content");
 define("NM_FILE", "file");
 
 //Course

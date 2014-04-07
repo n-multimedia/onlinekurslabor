@@ -960,7 +960,6 @@
             });
 
             function nm_stream_get_update() {
-              return;
                 //pause update actions
                 //case:
                 //submitting content where updates are transmitted in response messages
