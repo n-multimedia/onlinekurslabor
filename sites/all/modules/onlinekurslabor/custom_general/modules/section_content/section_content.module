@@ -131,6 +131,9 @@ function section_content_menu_block_tree_alter(&$tree, &$config) {
   $top_leaf_link = $top_leaf['link']['link_path'];
   $node_id = substr($top_leaf_link, strpos($top_leaf_link, '/') + 1);
   $node = node_load($node_id);
+  
+  if(!$node)
+      return;
 
 //Only apply when top_leaf is of type 'domain'
   if ($node->type == NM_CONTENT_DOMAIN) {

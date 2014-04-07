@@ -1064,7 +1064,7 @@ function nm_stream_preprocess_nm_stream_stream_node_form(&$vars) {
    */
 
   //01.04.2014 - 22:47 - SN disabled - because of panel error
-  //_nm_stream_add_js_and_css();
+  _nm_stream_add_js_and_css();
 
 
   $account = clone $user;
@@ -1330,6 +1330,27 @@ function _nm_stream_render_node_attachments($node) {
   return $output;
 }
 
+function _nm_stream_add_js_and_css() {
+  //solving panel error
+
+  if (!path_is_admin(current_path())) {
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/nm_stream.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.autosize.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.ddslick.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/bootbox.js");
+
+    //upload
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.MultiFile.js");
+    //ajax file upload 
+    //drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.form.js");
+
+    drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream.css');
+
+    //upload
+    drupal_add_css(drupal_get_path('module', 'nm_stream') . "/js/jQuery-File-Upload-9.5.7/css/jquery.fileupload.css");
+  }
+}
+
 /*
  * import all old status messages 
  */
@@ -1395,29 +1416,13 @@ function nm_stream_import_status_stream() {
                 )
               ),
         );
-        comment_submit($comment);
+        $comment = comment_submit($comment);
+        $comment->created = $comment->created;
+        $comment->changed = $comment->changed;
         comment_save($comment);
       }
     }
   }
-}
-
-function _nm_stream_add_js_and_css() {
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/nm_stream.js");
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.autosize.js");
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.ddslick.js");
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/bootbox.js");
-
-  //upload
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.MultiFile.js");
-  //ajax file upload 
-  //drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.form.js");
-
-
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream.css');
-
-  //upload
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . "/js/jQuery-File-Upload-9.5.7/css/jquery.fileupload.css");
 }
 
 /**
