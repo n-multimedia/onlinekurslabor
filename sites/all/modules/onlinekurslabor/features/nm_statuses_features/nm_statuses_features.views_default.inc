@@ -140,7 +140,7 @@ function nm_statuses_features_views_default_views() {
     <div class="statuses-details">
       <div class="statuses-links">[edit] [delete] [repost]</div> [created]
     </div>
-    <!-- meta -->[comment-box]
+    <!-- meta -->[comment-box][comment-box]
    [comment-box]
   </div>
 </div>';
@@ -195,7 +195,7 @@ function nm_statuses_features_views_default_views() {
     <div class="statuses-details">
       <div class="statuses-links">[edit] [delete] [repost]</div> [created]
     </div>
-    <!-- meta -->[comment-box]
+    <!-- meta -->[comment-box][comment-box]
    [comment-box]
   </div>
 </div>'),

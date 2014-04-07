@@ -44,6 +44,14 @@ function nm_stream_features_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'node';
   $handler->display->display_options['row_options']['view_mode'] = 'nm_stream';
   $handler->display->display_options['row_options']['links'] = FALSE;
+  /* No results behavior: Global: Unfiltered text */
+  $handler->display->display_options['empty']['area_text_custom']['id'] = 'area_text_custom';
+  $handler->display->display_options['empty']['area_text_custom']['table'] = 'views';
+  $handler->display->display_options['empty']['area_text_custom']['field'] = 'area_text_custom';
+  $handler->display->display_options['empty']['area_text_custom']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area_text_custom']['content'] = '<div class="view-content">
+<div class="views-row"></div>
+</div>';
   /* Relationship: OG membership: OG membership from Beitrag */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
@@ -101,6 +109,9 @@ function nm_stream_features_views_default_views() {
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
+    t('<div class="view-content">
+<div class="views-row"></div>
+</div>'),
     t('OG membership from node'),
     t('Alle'),
     t('Content pane'),
