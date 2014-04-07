@@ -1,5 +1,13 @@
 <?php
 
+//Semester Logic
+//year when the vhb ID started - needed for calculation
+define("NM_VHB_SEMESTERID_START_YEAR", '84');
+//vhb semester id when the first onlinekurslabor course was online
+define("NM_VHB_SEMESTERID_OKL_START", '58');
+//semester when okl started (WS 13/14)
+define("NM_VHB_SEMESTERID_OKL_START_DATE", '10.2013');
+
 //System
 define("NM_FILTER_FORMAT_FILTERED_HTML", 'filtered_html');
 
@@ -26,6 +34,7 @@ define("NM_CONTENT_CHAPTER", "content_chapter");
 define("NM_CONTENT_MULTIPLE_CHOICE", "content_multiple_choice");
 define("NM_CONTENT_QUESTION_AND_ANSWER", "content_question_and_answer");
 define("NM_BIBLIO", "biblio");
+define("NM_INTERACTIVE_CONTENT", "h5p_content");
 define("NM_FILE", "file");
 
 //Course
@@ -69,6 +78,11 @@ define("NM_COURSES_TASK_TYPE_GROUP", "1");
 define("NM_COURSES_TASK_WORKFLOW_DRAFT", "2");
 define("NM_COURSES_TASK_WORKFLOW_SUBMITTED", "3");
 define("NM_COURSES_TASK_WORKFLOW_ASSESSED", "4");
+
+
+//Domains
+//Contet Types
+define("NM_SPACE", "spaces_space");
 
 
 //Features..
@@ -165,6 +179,13 @@ function custom_general_context_registry() {
   } */
 
 function custom_general_init() {
+  static $init;
+  
+  if($init)
+    return;
+  
+  $init = TRUE;
+  
   // Execute the group type context condition all the time because we want
   // to use that condition to be able to check for "no group context."
   $plugin = context_get_plugin('condition', 'custom_general_condition_section_content');
@@ -213,6 +234,59 @@ function custom_general_form_alter($form, $form_state, $form_id) {
   if ($plugin) {
 
     $plugin->execute2();
+  }
+}
+
+/**
+ * BIBLIO alter form, fix step 2
+ * after selecting a "Publication Type" in a panel
+ * (/domain/add/%/biblio) the selection is not being saved
+ * 
+ * form functions are called twice in panels, so im trying to cache the form_state for 
+ * the second execution
+ * [todo] move to section_courses
+ */
+function custom_general_form_biblio_node_form_alter(&$form, &$form_state, $form_id) {
+  static $called = 0;
+
+  //storing right values from first  call!
+  if ($called == 0) {
+    $called = 1;
+
+    if (isset($_SESSION['onlinekurslabor']['biblio']['form_state_biblio_type'])) {
+      $now = time();
+      //unset session on new page call
+      //dpm('call,now');
+      //dpm($_SESSION['onlinekurslabor']['biblio']['timestamp']);
+      //dpm($now);
+      if ($now - $_SESSION['onlinekurslabor']['biblio']['timestamp'] > 2) {
+        unset($_SESSION['onlinekurslabor']['biblio']);
+      }
+    }
+
+    $node = isset($form['#noce']) ? $form['#node'] : null;
+    $tid = !empty($form_state['biblio_type']) ? $form_state['biblio_type'] :
+        ( isset($node->biblio_type) ? $node->biblio_type : 0);
+
+    $step_two = !empty($tid);
+
+    //dpm($step_two);
+    if ($step_two) {
+      $_SESSION['onlinekurslabor']['biblio']['form_state_biblio_type'] = $form_state;
+      $_SESSION['onlinekurslabor']['biblio']['form'] = $form;
+      $_SESSION['onlinekurslabor']['biblio']['timestamp'] = time('now');
+      //dpm('time: ' . time('now'));
+    }
+  }
+
+  //overriding strange values in every unnecessary additional call
+  //coming from page/panels?! don't know.. quick fix
+  if (isset($_SESSION['onlinekurslabor']['biblio']['form_state_biblio_type'])) {
+    //dpm('setting form');
+    $form_state = $_SESSION['onlinekurslabor']['biblio']['form_state_biblio_type'];
+    $form = $_SESSION['onlinekurslabor']['biblio']['form'];
+    //$form = drupal_get_form('form_biblio_node_form', $form_state);
+    //unset($_SESSION['onlinekurslabor']['biblio']['form_state_biblio_type']);
   }
 }
 
@@ -521,7 +595,19 @@ function custom_general_menu() {
       //'theme callback' => '_linkit_dashboard_theme',
   );
 
+  $items['admin/onlinekurslabor'] = array(
+    'title' => 'Onlinekurslabor',
+    'access callback' => 'custom_general_user_is_okl_admin',
+    'access arguments' => array(array('administrator')),
+    'page callback' => 'custom_general_onlinekurslabor_admin_page',
+    'type' => MENU_NORMAL_ITEM,
+  );
+
   return $items;
+}
+
+function custom_general_onlinekurslabor_admin_page() {
+  return "Onlinekurslabor Setting Page";
 }
 
 function custom_general_menu_alter(&$items) {
@@ -589,11 +675,12 @@ function custom_general_preprocess_page(&$variables) {
   drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/custom_general.js");
   drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/jquery.autogrow-textarea.js");
   drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/jquery.knob.js");
+  drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/spin.js");
 
   drupal_add_library('system', 'ui.progressbar');
 }
 
-function custom_general_addpend_active_class($path, &$options) {
+function custom_general_append_active_class($path, &$options) {
   // Append active class.
   if (($path == $_GET['q'] || ($path == '<front>' && drupal_is_front_page())) && (empty($options['language']) || $options['language']->language == $language_url->language)) {
     $options['attributes']['class'][] = 'active';
@@ -642,40 +729,55 @@ function custom_general_block_view($delta = '') {
  * @param &$fields
  *   By reference. The fields that have been declared by another feature.
  */
-/*
-function custom_general_field_default_fields_alter(&$fields) {
 
+
+/**
+ * Implements hook_field_default_field_bases_alter().
+ * note: Features hook
+ *
+ * Set default images here
+ * Alter the default fields right before they are cached into the database.
+ *
+ * @param &$fields
+ *   By reference. The fields that have been declared by another feature.
+ */
+function custom_general_field_default_field_bases_alter(&$fields) {
   $source_dir = drupal_get_path('module', 'custom_general') . '/images/default_images';
-
   $field_default_images = array(
-    'field_photo' => 'noprofile.jpg',
-    //'field_collection_item-field_people-field_people_photo' => 'avatar.png',
-    // etc...
+    // Field Base uses the field name
+    'field_photo' => 'noprofile_default.jpg',
+    'field_course_header' => 'course_header_default.jpg',
+    'field_course_picture' => 'course_header_default.jpg',
   );
-
   foreach ($field_default_images as $field_name => $filename) {
     $source = $source_dir . '/' . $filename;
     $destination = 'default_images/' . $filename;
     if (isset($fields[$field_name])) {
-      mymodule_set_default_image($fields[$field_name], $filename, $source, $destination);
+      _custom_general_set_default_image($fields[$field_name], $filename, $source, $destination);
     }
   }
 }
-
-function custom_general_set_default_image(&$field, $filename, $source, $destination) {
+/**
+ * Custom function to set the default image.
+ * (It has an _ at the beginning to make sure it never accidentally gets fired as a hook)
+ *
+ * @param  array $field
+ * @param  string $filename Filename of the source image.
+ * @param  string $source Filepath of the source image.
+ * @param  string $destination Filepath you want to save to.
+ */
+function _custom_general_set_default_image(&$field, $filename, $source, $destination) {
   // See if a default image hasn't been set for this field yet
-  if (empty($field['field_config']['settings']['default_image'])) {
+
+  //if (empty($field['settings']['default_image'])) {
     // Dynamically set the user default image on the field
     $destination = file_default_scheme() . '://' . $destination;
-
     // Check to see if it exists already
     $result = db_select('file_managed', 'f')
       ->fields('f', array('fid'))
       ->condition('f.uri', $destination)
       ->execute();
-
     $fid = $result->fetchField();
-
     // Simulate an upload of the default user image
     if (!$fid && file_exists($source)) {
       $file = new stdClass;
@@ -685,12 +787,12 @@ function custom_general_set_default_image(&$field, $filename, $source, $destinat
       $file->filemime = file_get_mimetype($source);
       $file->uid = 1;
       $file->status = 1;
-
-      $file = file_copy($file, 'public://', FILE_EXISTS_REPLACE);
-
+      $file = file_copy($file, 'public://default_images/', FILE_EXISTS_REPLACE);
       $fid = $file->fid;
     }
-
-    $field['field_config']['settings']['default_image'] = (string) $fid;
-  }
-}*/
+    // field_config key no longer seems to exist.
+    // $field['field_config']['settings']['default_image'] = (string) $fid;
+    // Use this instead.
+    $field['settings']['default_image'] = (string) $fid;
+  //}
+}

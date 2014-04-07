@@ -14,6 +14,7 @@ function _section_content_node_tabs_view() {
     $nav_items_single['overview'] = "Ansicht";
     $nav_items_single['course'] = "Bearbeiten";
     $nav_items_single['sub_chapter'] = "Unterkapitel hinzufügen";
+    $nav_items_single['revisions'] = "Versionen";
 
     $single_links = array();
 
@@ -61,7 +62,7 @@ function _section_content_navtext_to_link($domain, $text) {
     ),
     'query' => array(
       'og_group_ref' => $domain_nid,
-      ));
+  ));
 
   if ((arg(0) == 'domain') && (is_numeric(arg(2)))) {
     $node = node_load(arg(2));
@@ -90,7 +91,9 @@ function _section_content_navtext_to_link($domain, $text) {
         $result = l($text, 'domain/add/' . $domain->nid . '/' . NM_CONTENT_CHAPTER, $options);
       }
       break;
-
+    case "Versionen":
+      $result = l($text, "domain/text/" . $node_nid . '/revisions', $options);
+      break;
     default:
   }
 
@@ -149,7 +152,7 @@ function _section_courses_get_authors_tools() {
     ),
     'attributes' => array(
       'title' => '',
-      ));
+  ));
 
   $active_node = NULL;
   if (arg(0) == 'domain' && (arg(1) == 'text' || arg(1) == 'edit' || arg(1) == 'media' || arg(1) == 'biblio' || arg(1) == 'add') && is_numeric(arg(2))) {
@@ -182,11 +185,15 @@ function _section_courses_get_authors_tools() {
   $links['author_biblio_add']['label'] = "Biblio";
 
   $links['author_media_overview']['label'] = "Medien";
+  
+  $links['author_h5p_overview']['label'] = "H5P";
+  $links['author_h5p_add']['label'] = "H5P";
+  
   $links['author_tasks_overview']['label'] = "Aufgaben";
-
+  
   $links['author_tasks_mc_add']['label'] = "Multiple Choice";
   $links['author_tasks_qaa_add']['label'] = "Frage und Antwort";
-
+  
   //Groups
   $links['author_chapter_add']['group']['gid'] = 1;
   $links['author_chapter_add']['group']['root'] = TRUE;
@@ -208,6 +215,11 @@ function _section_courses_get_authors_tools() {
   $links['author_tasks_overview']['group']['root'] = TRUE;
   $links['author_tasks_mc_add']['group']['gid'] = 5;
   $links['author_tasks_qaa_add']['group']['gid'] = 5;
+  
+  $links['author_h5p_overview']['group']['gid'] = 6;
+  $links['author_h5p_overview']['group']['root'] = TRUE;
+  $links['author_h5p_add']['group']['gid'] = 6;
+  $links['author_h5p_add']['group']['gid'] = 6;
 
   /*
     $groups = array();
@@ -255,7 +267,7 @@ function _section_courses_get_authors_tools() {
       $links[$id] += _custom_general_get_structered_tool_link($id, $label, "/", array('attributes' => array('class' => array('disabled'))));
     }
 
-    $path = 'domain/text/' . $group_id. '/rearrange';
+    $path = 'domain/text/' . $group_id . '/rearrange';
     $id = 'author_chapter_order';
     $label = $links[$id]['label'];
     $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
@@ -276,6 +288,18 @@ function _section_courses_get_authors_tools() {
     $label = $links[$id]['label'];
     $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
+    
+    $path = 'domain/h5p/' . $group_id;
+    $id = 'author_h5p_overview';
+    $label = $links[$id]['label'];
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+    
+    $path = 'domain/add/' . $group_id. '/' . NM_INTERACTIVE_CONTENT;
+    $id = 'author_h5p_add';
+    $label = $links[$id]['label'];
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+    
+    
     $path = 'domain/tasks/' . $group_id;
     $id = 'author_tasks_overview';
     $label = $links[$id]['label'];
@@ -296,7 +320,7 @@ function _section_courses_get_authors_tools() {
   foreach ($links as $name => $link) {
     $attributes = array('attributes' => array('id' => $name, 'class' => array('btn')));
     if (isset($link['path']))
-      custom_general_addpend_active_class(($link['path']), $attributes);
+      custom_general_append_active_class(($link['path']), $attributes);
 
     $group = isset($link['group']) ? $link['group'] : NULL;
     $link = isset($link['link']) ? $link['link'] : NULL;

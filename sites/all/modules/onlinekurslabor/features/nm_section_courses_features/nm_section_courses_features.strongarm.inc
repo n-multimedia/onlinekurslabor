@@ -163,7 +163,7 @@ function nm_section_courses_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_courses_course';
-  $strongarm->value = '1';
+  $strongarm->value = '0';
   $export['comment_courses_course'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -205,7 +205,7 @@ function nm_section_courses_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_default_mode_courses_course';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['comment_default_mode_courses_course'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -289,7 +289,7 @@ function nm_section_courses_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_form_location_courses_course';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['comment_form_location_courses_course'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -331,7 +331,7 @@ function nm_section_courses_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_preview_courses_course';
-  $strongarm->value = '1';
+  $strongarm->value = '0';
   $export['comment_preview_courses_course'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -373,7 +373,7 @@ function nm_section_courses_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_subject_field_courses_course';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['comment_subject_field_courses_course'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -1194,6 +1194,20 @@ function nm_section_courses_features_strongarm() {
   $strongarm->name = 'og_group_manager_default_rids_node_course_group';
   $strongarm->value = array();
   $export['og_group_manager_default_rids_node_course_group'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'page_manager_user_edit_disabled';
+  $strongarm->value = TRUE;
+  $export['page_manager_user_edit_disabled'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'page_manager_user_view_disabled';
+  $strongarm->value = FALSE;
+  $export['page_manager_user_view_disabled'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */

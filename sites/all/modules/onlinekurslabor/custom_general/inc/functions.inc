@@ -44,6 +44,7 @@ function _section_domain_author_section_active() {
   $media_active = (arg(0) == 'domain' && arg(1) == 'media');
   $biblio_overview_active = (arg(0) == 'domain' && arg(1) == 'biblio');
   $tasks_overview_active = (arg(0) == 'domain' && arg(1) == 'tasks');
+  $h5p_overview_active = (arg(0) == 'domain' && arg(1) == 'h5p');
   $domain_text_active = (arg(0) == 'domain' && arg(1) == 'text');
   $domain_add_active = (arg(0) == 'domain' && arg(1) == 'add');
   $domain_edit_active = (arg(0) == 'domain' && arg(1) == 'edit');
@@ -53,7 +54,7 @@ function _section_domain_author_section_active() {
       $media_active || $book_active ||
       $tasks_overview_active || $domain_text_active ||
       $domain_add_active || $domain_edit_active ||
-      $domain_delete_active;
+      $domain_delete_active || $h5p_overview_active;
 }
 
 /**
@@ -137,23 +138,23 @@ function _section_course_forum_visible() {
   return $forum_visible;
 }
 
-function _section_course_course_group_visible() {
-  $text_visible = (arg(0) == 'course' && arg(1) == 'groups');
+function _section_course_course_group_visible($path=NULL) {
+  $text_visible = (arg(0, $path) == 'course' && arg(1, $path) == 'groups');
   return $text_visible;
 }
 
-function _section_course_course_news_visible() {
-  $text_visible = (arg(0) == 'course' && arg(1) == 'news');
+function _section_course_course_news_visible($path=NULL) {
+  $text_visible = (arg(0, $path) == 'course' && arg(1, $path) == 'news');
   return $text_visible;
 }
 
-function _section_course_course_docs_visible() {
-  $text_visible = (arg(0) == 'course' && (arg(1) == 'docs' || arg(1) == 'doc' ));
+function _section_course_course_docs_visible($path=NULL) {
+  $text_visible = (arg(0, $path) == 'course' && (arg(1, $path) == 'docs' || arg(1, $path) == 'doc' ));
   return $text_visible;
 }
 
-function _section_course_course_tasks_visible() {
-  $text_visible = (arg(0) == 'course' && arg(1) == 'tasks');
+function _section_course_course_tasks_visible($path=NULL) {
+  $text_visible = (arg(0, $path) == 'course' && arg(1, $path) == 'tasks');
   return $text_visible;
 }
 
@@ -512,20 +513,25 @@ function custom_general_get_users_in_group($gid) {
   return $result->fetchAll();
 }
 
+function _section_course_get_coursegroups($course) {
+
+  $query = db_select('node', 'n');
+
+  $query->condition('n.nid', 0, '<>')
+      ->condition('n.status', 1, '=')
+      ->condition('n.type', NM_COURSE_GROUP)
+      ->fields('n', array('nid', 'title','type'))
+      ->join('og_membership', 'ogm', "ogm.gid = :gid AND n.nid = ogm.etid AND ogm.entity_type = 'node'", array(':gid' => $course->nid));
+
+  $result = $query->execute();
+
+
+  return $result->fetchAll();
+}
+
 function _section_course_get_num_coursegroups($course) {
-  $view = views_get_view('courses_course_groups');
 
-// set arguments (if needed, otherwise omit this line)
-  $view->set_arguments(array($course->nid));
-
-// execute view query
-  $view->execute();
-
-// results are now stored as an array in $view->result
-  $count = count($view->result);
-
-//print_r ($view);
-  return $count;
+  return count(_section_course_get_coursegroups($course));
 }
 
 /**
@@ -549,4 +555,19 @@ function custom_general_render_breadcrumb($breadcrumb) {
 
 
   return implode(' » ', $result);
+}
+
+/**
+ * access check by role 
+ * @return boolean
+ */
+function custom_general_user_is_okl_admin($roles = array()) {
+  global $user;
+
+  foreach ($roles as $role) {
+    if (in_array($role, $user->roles)) {
+      return TRUE;
+    }
+  }
+  return FALSE;
 }

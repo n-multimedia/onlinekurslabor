@@ -9,7 +9,7 @@ function _section_courses_text_biblio_view() {
     'html' => TRUE,
     'query' => array(
       'og_group_ref' => $active_course->nid,
-  ));
+      ));
 
   $path = NM_COURSE_BIBLIO_PATH . '/' . $active_course->nid . '/' . $domain_id;
 
@@ -53,9 +53,13 @@ function _section_courses_node_tabs_view() {
     $nav_items_single = array();
     $nav_items_single['edit'] = "Profil bearbeiten";
 
+    //pre + suffix
+    $nav_items_single['edit'] = '<button class="btn btn-default edit-profile"><i class="icon-pencil" style="color:white;"></i> ' . $nav_items_single['edit'];
+    $nav_items_single['edit'] .= '</button>';
+
     $path = 'user/' . arg(1) . '/edit';
     if (drupal_valid_path($path)) {
-      $block .= l($nav_items_single['edit'], $path);
+      $block .= l($nav_items_single['edit'], $path, array('attributes' => array(), 'html' => TRUE,));
     }
     return $block;
   }
@@ -118,10 +122,10 @@ function _course_header_section_view() {
 
       $output .= '<div id="course_demo_info" class=""><h5>' . NM_COURSE_DEMO_LABEL . ' ' . $pending_msg . '</h5>';
       $output .= '<p>Im Demo-Modus haben Sie ausschließlich Zugriff auf den Lehrtext und die allgemeinen Kursinformationen.</p> ';
-      
+
       $url = 'group/node/' . $active_course->nid . '/subscribe';
       $subscribe_link = l('Melden Sie sich am Kurs an', $url, array('query' => array('destination' => 'course/home/' . $active_course->nid)));
-      $output .= '<p>'.$subscribe_link.', um weitere Werkzeuge freizuschalten.</p> ';
+      $output .= '<p>' . $subscribe_link . ', um weitere Werkzeuge freizuschalten.</p> ';
 
       $output .= '</div>';
     }
@@ -191,10 +195,17 @@ function _course_header_section_view() {
       $field_view = field_view_field('node', $active_course, 'field_course_header', array('settings' => array('image_style' => 'course_header')));
       //$field_view['#label_display'] = 'hidden';
       $uri = $field_view['#items'][0]['uri'];
+
+      $url = image_style_url('course_header', $uri);
+
+      //$url = parse_url($url_array);
+      //        dpm($url);
+      //$path = $url['path'];
+      $path = $url;
       //dpm($active_course->field_course_header);
-      $url_array = file_create_url($uri);
-      $url = parse_url($url_array);
-      $path = $url['path'];
+      //$url_array = file_create_url($uri);
+      //$url = parse_url($url_array);
+      //$path = $url['path'];
       $header_pic = '<div style="
         background-image:url(' . $path . ');
         -webkit-background-size: cover;
@@ -217,7 +228,7 @@ function _course_header_section_view() {
       'content' => array(
         '#type' => 'markup',
         '#markup' => $output,
-    ));
+        ));
   }
 
   return $block;
@@ -286,14 +297,35 @@ function section_courses_instructors_tools_access($reset = FALSE) {
       $roles = og_get_user_roles('node', $active_course->nid, $user_uid);
       $one_of_needed_roles = array_intersect($roles, array(NM_COURSES_ROLE_ADMINISTRATOR, NM_COURSES_ROLE_TUTOR));
       //bypass for admin
+
       if (in_array(NM_ROLE_ADMIN, $user->roles)) {
-        $one_of_needed_roles = TRUE;
+        $one_of_needed_roles = array(NM_ROLE_ADMIN);
       }
     }
+
     $result = !empty($one_of_needed_roles);
   }
 
+  if (!$result && _section_courses_instructors_tools_role_access()) {
+    $result = TRUE;
+  }
+
+
   return ($result === NULL || $result === FALSE) ? FALSE : TRUE;
+}
+
+function _section_courses_instructors_tools_role_access() {
+  global $user;
+  $one_of_needed_roles = array_intersect($user->roles, array(NM_ROLE_ADMIN));
+
+  $active_course = _section_courses_get_active_course();
+  //27.02.2014 - 10:51 - SN 
+  //access to tools on panel overview pages
+  if (!$active_course) {
+    $one_of_needed_roles = $one_of_needed_roles || array_intersect($user->roles, array(NM_ROLE_DOZENT));
+  }
+
+  return !empty($one_of_needed_roles);
 }
 
 function section_courses_tutor_tools_access() {
@@ -335,7 +367,7 @@ function _section_courses_get_instructor_tools() {
     ),
     'attributes' => array(
       'title' => '',
-  ));
+      ));
 
   /*
     $members_overview_options = $default_options;
@@ -474,7 +506,7 @@ function _section_courses_get_instructor_tools() {
   foreach ($links as $name => $link) {
     $attributes = array('attributes' => array('id' => $name, 'class' => array('btn')));
     if (isset($link['path'])) {
-      custom_general_addpend_active_class(($link['path']), $attributes);
+      custom_general_append_active_class(($link['path']), $attributes);
     }
 
     $group = isset($link['group']) ? $link['group'] : NULL;
@@ -616,7 +648,7 @@ function _section_courses_navtext_to_link($course, $text) {
     'attributes' => array(),
     'query' => array(
       'og_group_ref' => $course_nid,
-  ));
+      ));
 
   $active_node = NULL;
   if ((arg(0) == 'course') && (is_numeric(arg(3)))) {
@@ -768,7 +800,8 @@ function _section_courses_navtext_to_link($course, $text) {
 
 function _section_courses_theme_tiny_unread_box(&$result, $num_unread) {
   if ($num_unread > 0) {
-    $result .= '<div class="unread_tiny_box"><div class="arrow-down" style=""></div>' . $num_unread . '</div>';
+    $result = substr($result, 0, strpos($result, '</a>'));
+    $result .= '<div class="unread_tiny_box"><div class="arrow-down" style=""></div>' . $num_unread . '</div></a>';
   }
 }
 
@@ -776,44 +809,30 @@ function _section_courses_theme_tiny_unread_box(&$result, $num_unread) {
  * TODO
  */
 
-function section_courses_theme_progressbar() {
-  $active_course = _section_courses_get_active_course();
-
+function section_courses_theme_progressbar($active_course = NULL, $size = 200, $label = TRUE) {
+  if (!$active_course) {
+    $active_course = _section_courses_get_active_course();
+  }
 
   if (!isset($active_course->field_time_span[LANGUAGE_NONE]) || !isset($active_course->field_time_span[LANGUAGE_NONE][0]['value2'])) {
     return "";
   }
 
-  $now = time();
-  $start = $active_course->field_time_span[LANGUAGE_NONE][0]['value'];
-  $end = $active_course->field_time_span[LANGUAGE_NONE][0]['value2'];
+  $percent = _section_courses_get_timespan_percentage($active_course);
 
-  $start = strtotime($start);
-  $end = strtotime($end);
-
-  $percent = 0;
-
-  if ($now <= $start) {
-    $percent = 0;
-  }
-  else if ($now >= $end) {
-    $percent = 1;
-  }
-  else {
-    $percent = (($now - $start) / ($end - $start));
-  }
-
-  $percent = number_format($percent * 100, 0);
+  $percent = number_format($percent, 0);
 
   $output = '<div class="nm_circle_progress_bar">';
-  $output .= '<div class="nm_cb_title">';
-  $output .= '<h5 class="nm_cb_title_1">zeitlicher Fortschritt</h5>';
-  $output .= '<h1 class="nm_cb_title_2">' . $percent . '</h1>';
-  $output .= '<h5 class="nm_cb_title_3">%</h5>';
-  $output .= '</div>';
+  if ($label) {
+    $output .= '<div class="nm_cb_title">';
+    $output .= '<h5 class="nm_cb_title_1">zeitlicher Fortschritt</h5>';
+    $output .= '<h1 class="nm_cb_title_2">' . $percent . '</h1>';
+    $output .= '<h5 class="nm_cb_title_3">%</h5>';
+    $output .= '</div>';
+  }
   //$output .= '<div id="course_progressbar">' . $percent . '</div><div></div>';
 
-  $output .= '<input class="knob" data-angleArc=360 data-fgColor="#333" data-thickness=".12" data-width="200" disabled value="' . $percent . '">';
+  $output .= '<input class="knob" data-angleArc=360 data-fgColor="#333" data-thickness=".12" data-width="' . $size . '" disabled value="' . $percent . '">';
 
   $output .= '</div>';
 

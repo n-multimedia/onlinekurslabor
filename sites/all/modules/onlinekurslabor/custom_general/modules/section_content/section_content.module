@@ -18,6 +18,9 @@ function section_content_block_info() {
   $blocks['content_authors_tools'] = array(
     'info' => t('Content - Authors Tools'),
   );
+  $blocks['content_node_revisions'] = array(
+    'info' => t('Content - Node Revisions'),
+  );
 
   return $blocks;
 }
@@ -35,10 +38,41 @@ function section_content_block_view($delta = '') {
     case 'content_authors_tools' :
       $block['content'] = _section_content_theme_authors_tools();
       break;
+    case 'content_node_revisions' :
+      $block['content'] = _section_content_theme_node_revisions();
+      break;
   }
 
 
   return $block;
+}
+
+
+/**
+ * Revisions Block.
+ * 
+ * Task: Mapping all actions of page domain/text/%/revisions/...
+ * to the callbacks of the diff module
+ * 
+ * aim: embeding revision actions/views into domain context
+ * 
+ * @return type
+ */
+function _section_content_theme_node_revisions() {
+  //disable in panel configuration
+  if (arg(0) != 'admin' && arg(3) == 'revisions') {
+    //case node/%/revisions
+    module_load_include('inc', 'diff', 'diff.pages');
+    
+    $node = node_load(arg(2));
+    switch (arg(4)) {
+      case 'view':
+        return drupal_render(diff_diffs_show($node, arg(5), arg(6)));
+        break;
+      default:
+        return drupal_render(diff_diffs_overview($node));
+    }
+  }
 }
 
 /**
@@ -97,6 +131,9 @@ function section_content_menu_block_tree_alter(&$tree, &$config) {
   $top_leaf_link = $top_leaf['link']['link_path'];
   $node_id = substr($top_leaf_link, strpos($top_leaf_link, '/') + 1);
   $node = node_load($node_id);
+  
+  if(!$node)
+      return;
 
 //Only apply when top_leaf is of type 'domain'
   if ($node->type == NM_CONTENT_DOMAIN) {
@@ -250,7 +287,7 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
         //solution for biblio and course text needed
         $type = _custom_general_get_node_type($nid);
 
-        if (in_array($type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN, NM_BIBLIO, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER))) {
+        if (in_array($type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN, NM_BIBLIO, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER, NM_INTERACTIVE_CONTENT))) {
           $path = 'domain/text/' . $nid;
         }
         $original_path = $path;
@@ -410,6 +447,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     array_push($form['actions']['submit']['#submit'], 'section_content_node_form_submit');
   }
 
+  
   //Assign files to active groups when uploaded
   //dependency: file entity, og, media
   if ($form_id == 'file_entity_add_upload' || $form_id == 'media_internet_add' || $form_id == 'media_format_form') {
@@ -420,9 +458,15 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     $referer_args['gid'] = isset($referer_args['node']) ? _custom_general_get_group($referer_args['node']) : NULL;
 
     $options = drupal_parse_url($form['#action']);
-
+    
     if (isset($form['og_group_ref']) && isset($options['query']['og_group_ref'])) {
       $form['og_group_ref'][LANGUAGE_NONE][0]['default']['#default_value']['value'] = $options['query']['og_group_ref'];
+    }
+    
+    //25.02.2014 - 15:38 - SN
+    //add additional group
+    if(isset($form['#media'])) {
+      unset($form['options']['fields']['og_group_ref']);
     }
 
     if (isset($referer_args['gid']) && is_numeric($referer_args['gid'])) {
@@ -461,27 +505,27 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
   /**
    *  BOOK
    */
-//automatically create a Book when creating a domain (Gebiet)
+  //automatically create a Book when creating a domain (Gebiet)
   if (!empty($form['#node_edit_form'])) {
     $node = $form['#node'];
     $type = $form['type']['#value'];
-// Not a book || not a domain => Nothing to do
+    // Not a book || not a domain => Nothing to do
     if (($type != NM_CONTENT_DOMAIN) || !isset($node->book)) {
       
     }
     else {
       $nid = empty($node->nid) ? 'new' : $node->nid;
       $form['book']['bid']['#default_value'] = $nid;
-//$form['book']['#type'] = 'hidden';
+      //$form['book']['#type'] = 'hidden';
     }
   }
-//Only hide book options for authors, so admin has all fields available
+  //Only hide book options for authors, so admin has all fields available
   $hide_book_options = in_array(NM_ROLE_AUTOR, $user->roles);
-//remove book settings from biblio content type for authors (Role Autor)
+  //remove book settings from biblio content type for authors (Role Autor)
   if (!empty($form['#node_edit_form']) && $hide_book_options) {
     $node = $form['#node'];
     $type = $form['type']['#value'];
-// Not a book || not a domain => Nothing to do
+    // Not a book || not a domain => Nothing to do
     if (($type != NM_BIBLIO) || !isset($node->book)) {
       
     }
@@ -669,7 +713,7 @@ function _section_content_tasks_autocomplete($search = NULL) {
         'title' => t('No results'),
         'addClass' => 'status-notice',
         'disabled' => TRUE,
-        ));
+    ));
   }
   drupal_json_output($results);
   drupal_exit();
@@ -916,7 +960,7 @@ function section_content_preprocess_field(&$vars) {
   }
   else
   if ($vars['element']['#field_name'] == 'field_qaa_answer' && $vars['element']['#bundle'] == 'content_question_and_answer') {
-    $vars['theme_hook_suggestions'][] = 'question_and_answer_field';
+    $vars['theme_hook_suggestions'][] = 'question_and_answer_field';        
   }
 }
 

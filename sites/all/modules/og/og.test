@@ -406,7 +406,7 @@ class OgMetaData extends DrupalWebTestCase {
       $values += array('state' => $other_state);
       og_group('entity_test', $entity2->pid, $values);
 
-      // Subscribe node to third group, using a diffferent field.
+      // Subscribe node to third group, using a different field.
       $values += array('field_name' => 'og_ref_2');
       og_group('entity_test', $entity3->pid, $values);
 
@@ -780,13 +780,30 @@ class OgDefaultAccessFieldTestCase extends DrupalWebTestCase {
     $this->assertNotEqual($og_roles, $new_og_roles, t('Group with default access field enabled has own roles and permissions settings.'));
 
     // Assert the newley created admin role was mapped to the default one.
-    $user_roles = og_get_user_roles('entity_test', $entity->pid, $user1->uid);
+    $user_roles = og_get_user_roles('entity_test', $entity->pid, $user1->uid, FALSE);
     $this->assertTrue(array_search(OG_ADMINISTRATOR_ROLE, $user_roles), t('User has overriden "admin" role.'));
 
     // Disable existing group's default access field.
+    variable_set('og_maintain_overridden_roles', TRUE);
     $wrapper->{OG_DEFAULT_ACCESS_FIELD}->set(0);
     $wrapper->save();
     $this->assertEqual($og_roles, og_roles('entity_test', 'main', $entity->pid), t('Group with enabled default access field that was disabled is assigned to the global roles and permissions settings.'));
+
+    // Assert admin role was maintained from the overriden group.
+    $user_roles = og_get_user_roles('entity_test', $entity->pid, $user1->uid, FALSE);
+    $this->assertTrue(array_search(OG_ADMINISTRATOR_ROLE, $user_roles), t('"admin" role maintained from overriden group.'));
+
+    // Override group.
+    $wrapper->{OG_DEFAULT_ACCESS_FIELD}->set(1);
+    $wrapper->save();
+
+    // Assert admin role was not maintained from the overriden group.
+    variable_set('og_maintain_overridden_roles', FALSE);
+    $wrapper->{OG_DEFAULT_ACCESS_FIELD}->set(0);
+    $wrapper->save();
+
+    $user_roles = og_get_user_roles('entity_test', $entity->pid, $user1->uid, FALSE);
+    $this->assertFalse(array_search(OG_ADMINISTRATOR_ROLE, $user_roles), t('"admin" role not maintained from overriden group.'));
   }
 }
 
@@ -1770,9 +1787,10 @@ class OgDeleteOrphansTestCase extends DrupalWebTestCase {
     og_membership_orphans_worker($item->data);
 
     // Load the node into a wrapper and verify we moved him to another group.
-    $wrapper = entity_metadata_wrapper('node', $first_node->nid);
+    $gids = og_get_entity_groups('node', $first_node->nid);
+    $gid = reset($gids['node']);
 
-    $this->assertTrue($wrapper->{OG_AUDIENCE_FIELD}->get(0)->getIdentifier() == $second_group->nid, "The node of the group moved to another group.");
+    $this->assertEqual($gid, $second_group->nid, 'The group content moved to another group.');
   }
 }
 

@@ -2,6 +2,10 @@
 
 define('NM_LOGIN_VHB_DATAVERSION', "2.0");
 
+
+module_load_include('inc', 'nm_login_vhb', 'nm_login_vhb');
+module_load_include('inc', 'nm_login_vhb', 'nm_login_vhb.entity');
+
 //define real salt in private file
 //define('NM_LOGIN_VHB_SALT', "testSALTweRt");
 
@@ -19,6 +23,51 @@ function nm_login_vhb_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+  /*
+    $items['nm_vhb_login/admin/list'] = array(
+    'title' => 'Login Interface VHB',
+    'page callback' => 'nm_login_vhb_admin_list',
+    'file' => 'nm_login_vhb.pages.inc',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer users'),
+    'type' => MENU_CALLBACK,
+    ); */
+
+  $items['admin/onlinekurslabor/nm_vhb_login'] = array(
+    'title' => 'VHB Login',
+    'file' => 'nm_login_vhb.pages.inc',
+    'page callback' => 'nm_login_vhb_admin_list_all',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer users'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['admin/onlinekurslabor/nm_vhb_login/list_all'] = array(
+    'title' => t('List all entries'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => 1,
+  );
+
+  $items['admin/onlinekurslabor/nm_vhb_login/list_active'] = array(
+    'title' => t('List active users'),
+    'page callback' => 'nm_login_vhb_admin_list_active',
+    'file' => 'nm_login_vhb.pages.inc',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer users'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 2,
+  );
+
+  $items['admin/onlinekurslabor/nm_vhb_login/vhb/list_archivated'] = array(
+    'title' => t('List archivated users'),
+    'page callback' => 'nm_login_vhb_admin_list_archivated',
+    'file' => 'nm_login_vhb.pages.inc',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer users'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 3,
+  );
+
   return $items;
 }
 
@@ -51,7 +100,16 @@ function nm_login_vhb() {
     if (nm_login_vhb_user_is_new($params)) {
       //user is new -> create new account and subscribe for course
       //drupal_set_message("Benutzer ist neu -> Neuen Account anlegen");
-      $account = nm_login_vhb_add_user($params);
+      //before creating new user, check if user data has been archivated
+      $archivated_uid = nm_login_vhb_user_is_archivated($params['MATRIKELNUMMER']);
+      if ($archivated_uid) {
+        //reactivate user
+        nm_login_vhb_reactivate_user($archivated_uid, $params);
+      }
+      else {
+
+        $account = nm_login_vhb_add_user($params);
+      }
 
       global $user;
       //check if user is not already logged in
@@ -64,9 +122,9 @@ function nm_login_vhb() {
         drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
       }
       else {
-          $message = "Logged in user tryed to create an account and log in UID: " . $user->uid ;
-          //drupal_set_message("Matrikelnummer stimmt nicht mit der Emailadresse überein.", 'error');
-          watchdog("LOGIN VHB", $message, array(), WATCHDOG_ALERT);
+        $message = "Logged in user tryed to create an account and log in UID: " . $user->uid;
+        //drupal_set_message("Matrikelnummer stimmt nicht mit der Emailadresse überein.", 'error');
+        watchdog("LOGIN VHB", $message, array(), WATCHDOG_ALERT);
       }
     }
     else {
@@ -184,20 +242,20 @@ function nm_login_vhb_add_user($params) {
   //increment until we get an unused user name
   $count = 1;
   $user_name = $edit['name'];
-  while (user_load_by_name($edit['name'])) {
+  while (user_load_by_name($user_name)) {
     $user_name = $edit['name'] . ' ' . $count++;
   }
   $edit['name'] = $user_name;
 
   //save and notify the user
   $account = user_save(drupal_anonymous_user(), $edit);
-  
+
   if (!$account) {
     drupal_set_message("Account konnte nicht gespeichert werden.", 'error');
     return;
   }
-  
-   //student profile
+
+  //student profile
   $profile2 = profile2_create(array('type' => 'student'));
   $profile2->setUser($account);
   profile2_save($profile2);
@@ -232,9 +290,9 @@ function nm_login_vhb_add_user($params) {
     $wrapper->field_gender->set('male');
   }
   $wrapper->save();
-  
+
   realname_update($account);
-  
+
   drupal_set_message('Student ' . $edit['name'] . ' wurde angelegt.');
 
   //assign user to defined course
@@ -244,6 +302,9 @@ function nm_login_vhb_add_user($params) {
   nm_login_vhb_user_subscribe($account, $course);
 
   _user_mail_notify('register_admin_created', $account);
+
+  //add db entry
+  nm_login_vhb_db_insert($account);
 
   return $account;
 }
@@ -336,4 +397,71 @@ function nm_login_vhb_test() {
 
 
   return $output;
+}
+
+function nm_login_vhb_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'nm_login_vhb'),
+      //'template path' => drupal_get_path('module', 'example') . '/themes',
+  );
+}
+
+/**
+ * VBO 
+ */
+
+/**
+ * Implements hook_action_info
+ */
+function nm_login_vhb_action_info() {
+  return array(
+    'nm_login_vhb_archivate_user_action' => array(
+      'label' => t('Archivate user'),
+      'type' => 'nm_login_vhb_entry',
+      'configurable' => FALSE,
+      'triggers' => array('any'),
+    ),
+  );
+}
+
+function nm_login_vhb_archivate_user_action_submit($form_id, $form_state) {
+  //dpm($form_id);
+  //dpm($form_state);
+}
+
+/**
+ * Implementation of a Drupal action
+ *
+ * @param object $object
+ * @param array $context
+ */
+function nm_login_vhb_archivate_user_action(&$object, $context = array()) {
+  // If aggregate is set to TRUE, $object will be an array containing the identifier.
+  // Else, it will be the object from _OBJECTTYPELOAD
+  $user = user_load($object->uid);
+  if ($object->archivated == 0) {
+    nm_login_vhb_archivate_user($user);
+  }
+  else {
+    drupal_set_message("Der Benutzer " . $user->name . ' konnte nicht archiviert werden, da dieser bereits archiviert ist.', 'error');
+  }
+}
+
+/**
+ * Implements hook_views_bulk_operations_form_alter().
+ */
+function nm_login_vhb_views_bulk_operations_form_alter(&$form, &$form_state, $vbo) {
+
+
+  //dpm($form_state);
+  if ($form['#form_id'] == 'views_form_nm_login_vhb_default') {
+
+    $vbo->view->override_url = $_GET['q'];
+    // We are changing the override_url too late, the form action was already
+    // set by Views to the previous URL, so it needs to be overriden as well.
+    $query = drupal_get_query_parameters($_GET, array('q'));
+    $form['#action'] = url($_GET['q'], array('query' => $query));
+
+  }
 }

@@ -47,6 +47,9 @@ function nm_section_content_features_wysiwyg_default_profiles() {
         'footnotes' => array(
           'footnotes' => 1,
         ),
+        'h5p_integration_plugin' => array(
+          'h5p_button' => 1,
+        ),
         'section_content_task_plugin' => array(
           'tasks_button' => 1,
         ),

@@ -1,0 +1,1443 @@
+<?php
+
+module_load_include('inc', 'nm_stream', 'inc/blocks');
+module_load_include('inc', 'nm_stream', 'inc/realms');
+
+
+define('NM_STREAM_PRIVATE', 1);
+define('NM_STREAM_TEAM', 2);
+define('NM_STREAM_COURSE', 3);
+define('NM_STREAM_PUBLIC', 4);
+
+/**
+ * Implements hook_block_info().
+ */
+function nm_stream_block_info() {
+  // This example comes from node.module.
+  $blocks['nm_stream_form_add_edit'] = array(
+    'info' => t('NM Stream Form Add Edit'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+
+  return $blocks;
+}
+
+function nm_stream_theme() {
+  $module_path = drupal_get_path('module', 'nm_stream');
+  return array(
+    'nm_stream_node' => array(
+      'template' => 'nm_stream_node',
+      'path' => $module_path . '/templates',
+      'variables' => array(
+        'node' => NULL,
+      ),),
+    'nm_stream_node_comment' => array(
+      'template' => 'nm_stream_node_comment',
+      'path' => $module_path . '/templates',
+      'variables' => array(
+        'comment' => NULL,
+      ),),
+    'nm_stream_node_comment_form' => array(
+      'template' => 'nm_stream_node_comment_form',
+      'path' => $module_path . '/templates',
+      'variables' => array(
+        'node' => NULL,
+        'comment' => NULL,
+      ),),
+    'nm_stream_stream_node_form' => array(
+      'template' => 'nm_stream_stream_node_form',
+      'path' => $module_path . '/templates',
+      'variables' => array(
+        'node' => NULL,
+      ),)
+  );
+}
+
+function nm_stream_menu() {
+
+  $items['nm_stream/node/add'] = array(
+    'title' => 'Add NM Stream Node',
+    'page callback' => 'nm_stream_nm_stream_node_add_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['nm_stream/node/%node/load'] = array(
+    'title' => 'Load node',
+    'page callback' => 'nm_stream_nm_stream_node_load_callback',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['nm_stream/node/%node/get_all_comments'] = array(
+    'title' => 'Edit NM Stream Node',
+    'page callback' => 'nm_stream_nm_stream_node_get_all_comments_callback',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['nm_stream/node/%node/edit'] = array(
+    'title' => 'Edit NM Stream Node',
+    'page callback' => 'nm_stream_nm_stream_node_edit_callback',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['nm_stream/node/%node/delete'] = array(
+    'title' => 'Delete NM Stream Node',
+    'page callback' => 'nm_stream_nm_stream_node_delete_callback',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['nm_stream/node/%node/file/%file/delete'] = array(
+    'title' => 'Delete NM Stream File',
+    'page callback' => 'nm_stream_nm_stream_node_file_delete_callback',
+    'page arguments' => array(2, 4),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+
+  $items['nm_stream/node/%node/comment/add'] = array(
+    'title' => 'Add NM Stream Comment',
+    'page callback' => 'nm_stream_nm_stream_comment_add_callback',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+
+  $items['nm_stream/comment/%comment/edit'] = array(
+    'title' => 'Edit NM Stream Comment',
+    'page callback' => 'nm_stream_nm_stream_comment_edit_callback',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['nm_stream/comment/%comment/delete'] = array(
+    'title' => 'Delete NM Stream Comment',
+    'page callback' => 'nm_stream_nm_stream_comment_delete_callback',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['nm_stream/node/%/get_update'] = array(
+    'title' => 'Get new nodes',
+    'page callback' => 'nm_stream_nm_stream_node_get_update_callback',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  /*
+    //file upload
+    $items['nm_stream/file_upload'] = array(
+    'title' => 'File Upload Callback',
+    'page callback' => 'nm_stream_file_upload_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    ); */
+
+
+
+  return $items;
+}
+
+function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
+
+  //NODES
+  //new added nodes
+  //topmost node could have been deleted from another user
+  $node = node_load($nid);
+  //0 is beeing transmitted if no node exists yet
+  //-1 if just the update status is interesting
+  if ($node || $nid == 0) {
+
+    //get nm_stream nodes where created > $node->created
+    $query = db_select('node', 'n');
+    $query->addField('n', 'nid');
+
+    if ($nid > 0) {
+      $query->condition('n.created', $node->created, '>');
+    }
+    
+    $query
+        //->condition('n.nid', $node->nid, '>')
+        ->condition('n.type', 'nm_stream')
+        ->condition('n.status', NODE_PUBLISHED)
+        ->orderBy("n.nid", "DESC") //order important!
+        ->addTag('node_access');
+    
+
+    //01.04.2014 - 22:53 - SN context needed
+    //if we are in a special context e.g. course group, we just want to see 
+    //filtered entries which are assign to this group
+    //for now we only have course groups as special context
+
+    $context = nm_stream_og_context();
+    if (!empty($context)) {
+      $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN 
+      $query->condition('og_membership_node.gid', $context->nid);
+    }
+
+    $results = $query->execute()->fetchAll();
+    
+
+    $output = '';
+    foreach ($results as $result) {
+      $node = node_load($result->nid);
+      $output .= drupal_render(node_view($node, 'nm_stream'));
+    }
+
+    if (empty($results)) {
+      $response['update_status'] = 1; // 0:error, 1:empty, 2: new content available, 
+      // $response['error'] = 'Beim Speichern ist ein Fehler aufgetreten.';
+    }
+    else {
+      $response['update_status'] = 2; // 0:error, 1:empty, 2: new content available, 
+      $response['new_nodes'] = $output;
+    }
+  }
+
+  //check if changes were made the user is listening to
+  $nids = array();
+  foreach ($_SESSION['nm_stream']['nodes'] as $item) {
+    $nids[$item['nid']] = $item['nid'];
+  }
+
+  if (!empty($nids)) {
+    $query2 = db_select('node', 'n');
+    $query2->addField('n', 'nid');
+    $query2->addField('n', 'changed');
+    $query2
+        ->condition('n.nid', $nids, 'IN')
+        ->condition('n.type', 'nm_stream')
+        ->condition('n.status', NODE_PUBLISHED)
+        ->addTag('node_access');
+
+    $results2 = $query2->execute()->fetchAllAssoc('nid');
+
+    //deleted nodes
+    //check if nodes were deleted
+    if (count($nids) > count($results2)) {
+      $response['deleted_nodes'] = array();
+      foreach ($nids as $nid) {
+        if (!isset($results2[$nid])) {
+          $response['deleted_nodes'][$nid] = $nid;
+          unset($nids[$nid]);
+          unset($_SESSION['nm_stream']['nodes'][$nid]);
+        }
+      }
+      if (!empty($response['deleted_nodes'])) {
+        $response['update_status'] = 2;
+      }
+      else {
+        unset($response['deleted_nodes']);
+      }
+    }
+    else {
+      if (!isset($response['update_status']))
+        $response['update_status'] = 1;
+    }
+
+    //changed nodes
+    //dpm($results2);
+    //dpm($_SESSION['nm_stream']['nodes']);
+    if (!empty($results2)) {
+      $response['changed_nodes'] = array();
+      foreach ($results2 as $result) {
+        if (isset($_SESSION['nm_stream']['nodes'][$result->nid]) && $result->changed > $_SESSION['nm_stream']['nodes'][$result->nid]['changed']) {
+          $response['changed_nodes'][$result->nid] = drupal_render(node_view(node_load($result->nid), 'nm_stream'));
+        }
+      }
+      if (!empty($response['changed_nodes'])) {
+        $response['update_status'] = 2;
+      }
+      else {
+        unset($response['changed_nodes']);
+      }
+    }
+    else {
+      if (!isset($response['update_status']))
+        $response['update_status'] = 1;
+    }
+  }
+
+
+  //Comments
+  if (is_array($_SESSION['nm_stream']['comments'])) {
+    ksort($_SESSION['nm_stream']['comments']);
+    $users_last_loaded_comment = end($_SESSION['nm_stream']['comments']);
+
+    if (!empty($users_last_loaded_comment)) {
+
+      //get nm_stream nodes where created > $node->created
+      $query_new_comments = db_select('comment', 'c');
+      $query_new_comments->addField('c', 'cid');
+      $query_new_comments->addField('c', 'nid');
+      $query_new_comments
+          ->condition('c.cid', $users_last_loaded_comment['cid'], '>')
+          ->condition('c.status', COMMENT_PUBLISHED)
+          ->orderBy("c.cid", "DESC") //order important!
+          ->addTag('node_access');
+
+      $results_new_comments = $query_new_comments->execute()->fetchAll();
+
+
+      if (empty($results_new_comments)) {
+        if (!isset($response['update_status'])) {
+          $response['update_status'] = 1; // 0:error, 1:empty, 2: new content available, 
+          // $response['error'] = 'Beim Speichern ist ein Fehler aufgetreten.';
+        }
+      }
+      else {
+        $response['update_status'] = 2; // 0:error, 1:empty, 2: new content available, 
+        //nodes added -> information change
+
+        $response['new_comments'] = array();
+        foreach ($results_new_comments as $result) {
+
+          if (!isset($response['new_comments'][$result->nid])) {
+            $response['information'][$result->nid] = _nm_stream_get_node_information(node_load($result->nid));
+
+            $response['new_comments'][$result->nid] = theme('nm_stream_node_comment', (array('comment' => comment_load($result->cid))));
+          }
+          else {
+            $response['new_comments'][$result->nid] .= theme('nm_stream_node_comment', (array('comment' => comment_load($result->cid))));
+          }
+        }
+
+        if (empty($response['new_comments'])) {
+          unset($response['new_comments']);
+        }
+      }
+    }
+
+    //check if changes were made to comments the user is listening to
+    $cids = array();
+    foreach ($_SESSION['nm_stream']['comments'] as $item) {
+      $cids[$item['cid']] = $item['cid'];
+    }
+
+    if (!empty($cids)) {
+      $query3 = db_select('comment', 'c');
+      $query3->addField('c', 'cid');
+      $query3->addField('c', 'nid');
+      $query3->addField('c', 'changed');
+      $query3
+          ->condition('c.cid', $cids, 'IN')
+          ->condition('c.status', COMMENT_PUBLISHED)
+          ->addTag('node_access');
+
+      $results3 = $query3->execute()->fetchAllAssoc('cid');
+
+      //deleted comments
+      //check if nodes were deleted
+
+      if (count($cids) > count($results3)) {
+        $response['deleted_comments'] = array();
+        foreach ($cids as $cid) {
+          if (!isset($results3[$cid])) {
+            $response['deleted_comments'][$cid] = $cid;
+
+            unset($cids[$cid]);
+            unset($_SESSION['nm_stream']['comments'][$cid]);
+          }
+        }
+        if (!empty($response['deleted_comments'])) {
+          //nodes were deleted -> information change
+
+          $response['update_status'] = 2;
+        }
+        else {
+          unset($response['deleted_comments']);
+        }
+      }
+      else {
+        if (!isset($response['update_status']))
+          $response['update_status'] = 1;
+      }
+
+      //changed comments
+      if (!empty($results3)) {
+        $response['changed_comments'] = array();
+        foreach ($results3 as $result) {
+          if (isset($_SESSION['nm_stream']['comments'][$result->cid]) && $result->changed > $_SESSION['nm_stream']['comments'][$result->cid]['changed']) {
+            $response['changed_comments'][$result->cid] = theme('nm_stream_node_comment', (array('comment' => comment_load($result->cid)))); //drupal_render(node_view(node_load($result->cid), 'nm_stream'));
+          }
+        }
+        if (!empty($response['changed_comments'])) {
+          $response['update_status'] = 2;
+        }
+        else {
+          unset($response['changed_comments']);
+        }
+      }
+      else {
+        if (!isset($response['update_status']))
+          $response['update_status'] = 1;
+      }
+    }
+  }
+
+  if ($format == 'JSON')
+    return drupal_json_output($response);
+  else if ($format == 'array')
+    return $response;
+}
+
+function nm_stream_nm_stream_node_add_callback() {
+  global $user;
+
+  $context = nm_stream_og_context();
+
+  if (empty($context)) {
+
+    drupal_set_message('NM Stream Entry could not be created. No context is set!', 'error');
+    return false;
+  }
+
+  $response = array();
+
+  $num_files = 0;
+  if (isset($_FILES['files']))
+    $num_files = count($_FILES['files']);
+
+  //get configurated file extensions
+  $file_instance = field_info_instance('node', 'field_nm_attachments', 'nm_stream');
+  $validators = array(
+    'file_validate_extensions' => array($file_instance['settings']['file_extensions']),
+  );
+
+  $files = array();
+  for ($i = 0; $i < $num_files; $i++) {
+    $file = file_save_upload($i, $validators, 'public://nm_stream');
+
+    if ($file) {
+      $files[$i] = $file;
+    }
+    else {
+      //no file uploaded
+    }
+  }
+
+  //get update data before adding new node
+  //sort to find the highest nid value
+  ksort($_SESSION['nm_stream']['nodes']);
+  $users_last_loaded_node = end($_SESSION['nm_stream']['nodes']);
+  if (!empty($users_last_loaded_node)) {
+    $update_result = nm_stream_nm_stream_node_get_update_callback($users_last_loaded_node['nid'], 'array');
+
+    $response += $update_result;
+  }
+
+  //update end
+  $body = isset($_REQUEST['body']) ? check_plain($_REQUEST['body']) : '';
+  $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
+  $iframe = isset($_REQUEST['iframe']) ? TRUE : FALSE;
+
+  //$form_token = isset($_REQUEST['form_token']) ? check_plain($_REQUEST['form_token']) : '';
+  //$iframe = true;
+  if (!is_numeric($privacy) || empty($body) /* || !drupal_valid_token($form_token) */) {
+    //return error
+    $response['status'] = 0; // 0:error, 1: ok
+    $response['error'] = 'Beim Speichern ist ein Fehler aufgetreten.';
+
+    if ($iframe) {
+      drupal_add_http_header('Content-Type:', 'text/plain');
+      echo drupal_json_encode($response);
+      exit(0);
+    }
+    else {
+      return drupal_json_output($response);
+    }
+  }
+
+  $type = 'nm_stream';
+  $body = $body;
+  $privacy = $privacy;
+
+  $node = new stdClass();
+  $node->title = time();
+  $node->type = $type;
+  $node->body[LANGUAGE_NONE][0]['value'] = $body;
+  $node->field_nm_privacy [LANGUAGE_NONE][0]['value'] = $privacy;
+  node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
+  $node->language = 'de';
+  $node->uid = $user->uid;
+  $node->status = 1; //(1 or 0): published or not
+  $node->promote = 0; //(1 or 0): promoted to front page
+  $node->comment = 2; // 0 = comments disabled, 1 = read only, 2 = read/write
+
+  $node = node_submit($node); // Prepare node for saving
+  //attach to group
+  $node->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $context->nid;
+  //group content visibility
+  $node->group_content_access[LANGUAGE_NONE][0]['value'] = OG_CONTENT_ACCESS_PRIVATE;
+
+  $node->field_nm_attachments[LANGUAGE_NONE] = array();
+  //dpm($files);
+  foreach ($files as $file) {
+    $node->field_nm_attachments[LANGUAGE_NONE][] = array(
+      'fid' => $file->fid,
+      'uid' => $file->uid,
+      'uri' => $file->uri,
+      'filename' => $file->filename,
+      'filemime' => $file->filemime,
+      'status' => 1,
+      'display' => 1,
+    );
+  }
+
+  node_save($node);
+
+
+  //add rendered node to response
+  $response['status'] = 1;
+  $response['node'] = drupal_render(node_view($node, 'nm_stream'));
+
+  $response['node'] = '<div class="views-row">' . $response['node'] . '</div>';
+
+  if ($iframe) {
+    drupal_add_http_header('Content-Type:', 'text/plain');
+    echo drupal_json_encode($response);
+    exit(0);
+  }
+  else {
+    return drupal_json_output($response);
+  }
+}
+
+function nm_stream_nm_stream_node_load_callback($node) {
+  $response = array();
+
+  $response['status'] = 1;
+  $response['node'] = drupal_render(node_view($node, 'nm_stream'));
+
+  $response['node'] = '<div class="views-row">' . $response['node'] . '</div>';
+
+  return drupal_json_output($response);
+}
+
+function nm_stream_nm_stream_node_edit_callback($node) {
+
+  global $user;
+
+  $response = array();
+
+  $num_files = 0;
+  if (isset($_FILES['files']))
+    $num_files = count($_FILES['files']);
+
+  $files = array();
+  for ($i = 0; $i < $num_files; $i++) {
+    $file = file_save_upload($i, null, 'public://nm_stream');
+
+    if ($file) {
+      $files[$i] = $file;
+    }
+    else {
+      //no file uploaded
+    }
+  }
+
+  $body = isset($_REQUEST['body']) ? check_plain($_REQUEST['body']) : '';
+  $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
+  $iframe = isset($_REQUEST['iframe']) ? TRUE : FALSE;
+
+  if (isset($_REQUEST['body'])) {
+
+    if (!is_numeric($privacy) || empty($body)) {
+      $response['status'] = 0;
+      $response['error'] = 'Invalid data has been transmitted.';
+    }
+    else {
+      //set new values
+      $node->body[LANGUAGE_NONE][0]['value'] = $body;
+      $node->field_nm_privacy [LANGUAGE_NONE][0]['value'] = $privacy;
+
+      //file attachments
+      if (!isset($node->field_nm_attachments[LANGUAGE_NONE])) {
+        $node->field_nm_attachments[LANGUAGE_NONE] = array();
+      }
+      //dpm($files);
+      foreach ($files as $file) {
+        $node->field_nm_attachments[LANGUAGE_NONE][] = array(
+          'fid' => $file->fid,
+          'uid' => $file->uid,
+          'uri' => $file->uri,
+          'filename' => $file->filename,
+          'filemime' => $file->filemime,
+          'status' => 1,
+          'display' => 1,
+        );
+      }
+
+      node_save($node);
+
+      $response['status'] = 1;
+      $response['updated_node'] = drupal_render(node_view($node, 'nm_stream'));
+    }
+  }
+  else {
+    $node_edit_form = theme('nm_stream_stream_node_form', array('node' => $node));
+
+    $response['status'] = 1;
+    $response['node_edit_form'] = $node_edit_form;
+  }
+
+  if ($iframe) {
+    drupal_add_http_header('Content-Type:', 'text/plain');
+    echo drupal_json_encode($response);
+    exit(0);
+  }
+  else {
+    return drupal_json_output($response);
+  }
+}
+
+/**
+ * attachments delete callback 
+ * 
+ * @param type $node
+ * @param type $file
+ */
+function nm_stream_nm_stream_node_file_delete_callback($node, $file) {
+
+  $response = array();
+
+  //update
+  ksort($_SESSION['nm_stream']['nodes']);
+  $users_last_loaded_node = end($_SESSION['nm_stream']['nodes']);
+  $update_result = nm_stream_nm_stream_node_get_update_callback($users_last_loaded_node['nid'], 'array');
+
+  $response += $update_result;
+
+  //update end
+  if (!$node) {
+    $response['status'] = 0;
+    $response['error'] = 'Invalid data has been transmitted.';
+  }
+  else {
+    if (!empty($node->field_nm_attachments[LANGUAGE_NONE])) {
+      foreach ($node->field_nm_attachments[LANGUAGE_NONE] as $key => $item) {
+        if (($item['fid'] == $file->fid)) {
+          $file = file_load($item['fid']);
+          unset($node->field_nm_attachments[LANGUAGE_NONE][$key]);
+          $node = node_save($node);
+          file_delete($file);
+        }
+      }
+    }
+
+    //set success msg
+    $response['status'] = 1;
+    $response['message'] = 'Datei wurde gelöscht';
+  }
+
+  //if no msg was set, an error occured
+  if (empty($response)) {
+    $response['status'] = 0;
+    $response['error'] = 'Invalid data has been transmitted.';
+  }
+
+
+  return drupal_json_output($response);
+}
+
+function nm_stream_nm_stream_node_delete_callback($node) {
+
+  $response = array();
+
+  //update
+  ksort($_SESSION['nm_stream']['nodes']);
+  $users_last_loaded_node = end($_SESSION['nm_stream']['nodes']);
+  $update_result = nm_stream_nm_stream_node_get_update_callback($users_last_loaded_node['nid'], 'array');
+
+  $response += $update_result;
+  //update end
+
+  if (!$node) {
+    $response['status'] = 0;
+    $response['error'] = 'Invalid data has been transmitted.';
+  }
+  else {
+    node_delete($node->nid);
+
+    $response['status'] = 1;
+    $response['message'] = 'Eintrag wurde gelöscht';
+  }
+
+
+  return drupal_json_output($response);
+}
+
+function nm_stream_nm_stream_comment_add_callback($node) {
+
+  global $user;
+
+  $response = array();
+
+  //get update data before adding new node
+  //sort to find the highest nid value
+  ksort($_SESSION['nm_stream']['comments']);
+  $users_last_loaded_comment = end($_SESSION['nm_stream']['comments']);
+  if (!empty($users_last_loaded_comment)) {
+    $update_result = nm_stream_nm_stream_node_get_update_callback(-1, 'array');
+
+    $response += $update_result;
+  }
+  //update end
+
+
+  $body = isset($_REQUEST['body']) ? check_plain($_REQUEST['body']) : '';
+
+  //error handling
+  if (!($node) || empty($body)) {
+    //return error
+    $response['status'] = 0; // 0:error, 1: ok
+    $response['error'] = 'Beim Speichern ist ein Fehler aufgetreten.';
+    return drupal_json_output($response);
+  }
+
+  $first_comment = FALSE;
+  if ($node->comment_count == 0) {
+    $first_comment = TRUE;
+  }
+
+  // Add a comment.
+  $comment = (object) array(
+        'nid' => $node->nid,
+        'cid' => 0,
+        'pid' => 0,
+        'is_anonymous' => 0,
+        'uid' => $user->uid,
+        'status' => COMMENT_PUBLISHED,
+        'subject' => truncate_utf8(trim(decode_entities(strip_tags($body))), 29, TRUE),
+        'language' => LANGUAGE_NONE,
+        'comment_body' => array(
+          LANGUAGE_NONE => array(
+            0 => array(
+              'value' => $body,
+              'format' => 'filtered_html'
+            )
+          )
+        ),
+  );
+  comment_submit($comment);
+  comment_save($comment);
+
+
+  $node = node_load($node->nid, NULL, TRUE);
+
+  $response['status'] = 1;
+  $response['comment'] = theme('nm_stream_node_comment', (array('comment' => $comment)));
+  $response['information'][$node->nid] = _nm_stream_get_node_information($node);
+  //if first comment, we need to rerender the whole node, because the structore of the node is changing
+  if ($first_comment) {
+    $response['node'] = drupal_render(node_view($node, 'nm_stream'));
+  }
+
+  return drupal_json_output($response);
+  ;
+}
+
+function nm_stream_nm_stream_node_get_all_comments_callback($node) {
+  $response = array();
+
+  $comments = comment_load_multiple(_nm_stream_comment_get_thread($node, COMMENT_MODE_FLAT, 256));
+
+  $comments_container = '';
+  foreach ($comments as $comment) {
+    $comments_container .= theme('nm_stream_node_comment', array('comment' => $comment));
+  }
+
+  $response['status'] = 1;
+  $response['comments_container'] = $comments_container;
+
+  return drupal_json_output($response);
+}
+
+function nm_stream_nm_stream_comment_edit_callback($comment) {
+
+  $response = array();
+
+  $body = isset($_REQUEST['body']) ? check_plain($_REQUEST['body']) : '';
+
+  if (isset($_REQUEST['body'])) {
+
+    if (empty($body)) {
+      $response['status'] = 0;
+      $response['error'] = 'Invalid data has been transmitted.';
+    }
+    else {
+      //set new values
+      $comment->comment_body[LANGUAGE_NONE][0] = array(
+        'value' => $body,
+        'format' => 'filtered_html'
+      );
+      $comment->changed = REQUEST_TIME;
+      comment_save($comment);
+
+      $response['status'] = 1;
+      $response['updated_comment'] = theme('nm_stream_node_comment', array('comment' => $comment));
+    }
+  }
+  else {
+
+    $comment_edit_form = theme('nm_stream_node_comment_form', array('node' => node_load($comment->nid), 'comment' => $comment));
+
+    $response['status'] = 1;
+    $response['comment_edit_form'] = $comment_edit_form;
+  }
+
+  return drupal_json_output($response);
+}
+
+function nm_stream_nm_stream_comment_delete_callback($comment) {
+
+
+  //update end
+
+  $nid = $comment->nid;
+
+  if (!$comment) {
+    $response['status'] = 0;
+    $response['error'] = 'Invalid data has been transmitted.';
+  }
+  else {
+    $response['status'] = 1;
+
+    comment_delete($comment->cid);
+
+    $response['message'] = 'Kommentar wurde gelöscht.';
+  }
+
+
+  $response = array();
+  //update
+  ksort($_SESSION['nm_stream']['comments']);
+  $update_result = nm_stream_nm_stream_node_get_update_callback(-1, 'array');
+
+  $response += $update_result;
+
+  //set information after deletion of comment
+  $response['information'][$nid] = _nm_stream_get_node_information(node_load($nid));
+
+
+
+  return drupal_json_output($response);
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function nm_stream_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'nm_stream_form_add_edit' :
+      $block['content'] = _nm_stream_form_add_edit_view();
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ * The first attribute in the array defines an arbitrary label for the view mode machine name.
+ * 'custom settings' => TRUE displays the view mode as a default at the top of the display modes settings screen
+ */
+function nm_stream_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes'] += array(
+    'nm_stream' => array(
+      'label' => t('NM Stream'),
+      'custom settings' => TRUE,
+    ),
+  );
+}
+
+/* Add custom templates for view modes */
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function nm_stream_preprocess_node(&$vars) {
+  global $user;
+
+  if ($vars['view_mode'] == 'nm_stream') {
+
+    //add js and css files
+    _nm_stream_add_js_and_css();
+
+    $vars['theme_hook_suggestions'][] = 'nm_stream_node';
+    $node = $vars['node'];
+
+    //register user as listener for this node
+    $_SESSION['nm_stream']['nodes'][$node->nid] = array(
+      'nid' => $node->nid, //node id
+      'changed' => $node->changed, //last changed date of node 
+      'request_time' => REQUEST_TIME //request time of node
+    );
+
+    $account = user_load($node->uid);
+
+    $realname = realname_load($account);
+    if (empty($realname))
+      $realname = $account->name;
+
+    $vars['nm_author_link'] = theme('username', array('account' => $account));
+    $vars['nm_nid'] = $node->nid;
+    $vars['nm_author_name'] = $realname;
+    $vars['nm_author_path'] = url('user/' . $account->uid);
+    $vars['nm_author_pic'] = _nm_stream_get_user_pic($account);
+    $vars['nm_created'] = 'vor ' . format_interval(time() - $node->created); //format_date($node->created);
+    $vars['nm_created'] = str_replace('Tage', 'Tagen', $vars['nm_created']);
+
+    $vars['nm_modified'] = ($node->created != $node->changed) ? 'geändert am ' . format_date($node->changed) : '';
+    $vars['nm_body'] = $node->body[LANGUAGE_NONE][0]['value'];
+    $vars['nm_actions'] = _nm_stream_get_action_links($node);
+    $vars['nm_num_comments'] = (isset($node->comment_count)) ? $node->comment_count : 0;
+    $vars['nm_attachments'] = _nm_stream_render_node_attachments($node);
+
+    //if we are in another context we need to
+    $vars['nm_context'] = '';
+    $active_context = nm_stream_og_context();
+    $node_context = _custom_general_get_group($node);
+
+    //dpm($active_context);
+    //dpm($node_context);
+
+    if (empty($active_context) || $node_context != $active_context->nid) {
+      $node_context_node = node_load($node_context);
+      $vars['nm_context'] = 'Beitrag aus: ' . l($node_context_node->title, 'node/' . $node_context_node->nid, array('fragment' => 'node-' . $node->nid));
+    }
+
+    //set privacy icon
+    $privacy_options = _nm_stream_privacy_options();
+    if (!empty($node->field_nm_privacy) && $node->field_nm_privacy[LANGUAGE_NONE][0]['value']) {
+      $privacy = $node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
+      foreach ($privacy_options as $key => $option) {
+        if ($key == $privacy) {
+          $vars['nm_privacy'] = $option;
+          break;
+        }
+      }
+    }
+    else {
+      foreach ($privacy_options as $option) {
+        if ($option['default']) {
+          $vars['nm_privacy'] = $option;
+          break;
+        }
+      }
+    }
+
+    if ($node->comment == COMMENT_NODE_OPEN) {
+      //todo configurable limit
+      $comments = comment_load_multiple(_nm_stream_comment_get_thread($node, COMMENT_MODE_FLAT, 5));
+
+      $comments_container = '';
+      foreach ($comments as $comment) {
+        $comments_container .= theme('nm_stream_node_comment', array('comment' => $comment));
+      }
+      $vars['comments_container'] = $comments_container;
+
+      $vars['comments_information'] = _nm_stream_get_node_information($node);
+
+      //if user is authentificated
+      $vars['comments_form'] = '';
+      if ($user->uid > 0) {
+        $vars['comments_form'] = theme('nm_stream_node_comment_form', array('node' => $node));
+      }
+    }
+  }
+}
+
+function _nm_stream_get_node_information($node) {
+  $comments_information = '';
+  $comment_count = (isset($node->comment_count)) ? $node->comment_count : 0;
+  ;
+
+  if ($comment_count > 5) {
+    $comment_count_unshown = $comment_count - 5;
+    $weitere_pl = format_plural($comment_count_unshown, 'weiterer', 'weitere');
+    $kommentare_pl = format_plural($comment_count_unshown, 'Kommentar', 'Kommentare');
+
+    $comments_information .= '<i class="icon-comment"></i> ' . '<a href="#" class="nm_stream_comment_toggle">alle Kommentare anzeigen (' . $comment_count_unshown . ' ' . $weitere_pl . ' ' . $kommentare_pl . ' verfügbar)</a>';
+    $comments_information .= ' <span class="caret"></span>';
+  }
+  else {
+    $comments_information .= '<i class="icon-comment"></i> ' . '<a href="#" class="nm_stream_comment_toggle">Kommentare ausblenden</a>';
+  }
+
+  return $comments_information;
+}
+
+function nm_stream_preprocess_nm_stream_node_comment(&$vars) {
+
+  $comment = $vars['comment'];
+  $account = user_load($comment->uid);
+
+  //register user as listener for this comment
+  $_SESSION['nm_stream']['comments'][$comment->cid] = array(
+    'cid' => $comment->cid, //node id
+    'changed' => $comment->changed, //last changed date of node 
+    'request_time' => REQUEST_TIME //request time of node
+  );
+
+  $realname = realname_load($account);
+  if (empty($realname))
+    $realname = $account->name;
+
+  $vars['nm_cid'] = $comment->cid;
+  $vars['nm_author_link'] = theme('username', array('account' => $account));
+  $vars['nm_author_name'] = $realname;
+  $vars['nm_author_path'] = url('user/' . $account->uid);
+  $vars['nm_author_pic'] = _nm_stream_get_user_pic($account);
+  $vars['nm_created'] = 'vor ' . format_interval(time() - $comment->created);
+  $vars['nm_created'] = str_replace('Tage', 'Tagen', $vars['nm_created']);
+  $vars['nm_modified'] = ($comment->changed - $comment->created > 5) ? 'geändert am ' . format_date($comment->changed) : '';
+  $vars['nm_body'] = $comment->comment_body[LANGUAGE_NONE][0]['value'];
+  $vars['nm_actions'] = _nm_stream_get_action_links($comment);
+}
+
+/**
+ * 
+ * @param type $vars
+ */
+function nm_stream_preprocess_nm_stream_node_comment_form(&$vars) {
+  global $user;
+
+  $comment = NULL;
+
+  if (!empty($vars['comment'])) {
+    $comment = $vars['comment'];
+  }
+
+  /*
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/nm_stream.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.autosize.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.ddslick.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/bootbox.js");
+
+    //upload
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.MultiFile.js");
+    //ajax file upload
+    //drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.form.js"); */
+
+
+  $node = $vars['node'];
+
+  $account = clone $user;
+
+  $vars['nm_author_pic'] = _nm_stream_get_user_pic($account);
+  $vars['nm_node_id'] = $node->nid;
+  $vars['nm_comment_form_dummy'] = 'Kommentar hinzufügen...';
+}
+
+/**
+ * 
+ * @param type $vars
+ */
+function nm_stream_preprocess_nm_stream_stream_node_form(&$vars) {
+  global $user;
+
+  $context = nm_stream_og_context();
+  if (empty($context) && empty($vars['node'])) {
+
+    $vars['nm_error'] = 'NM Stream Form could not be created. No context is set!';
+    drupal_set_message('NM Stream Form could not be created. No context is set!', 'error');
+    return false;
+  }
+
+
+  $node = NULL;
+  if (!empty($vars['node'])) {
+    $node = $vars['node'];
+  }
+
+  /*
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/nm_stream.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.autosize.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.ddslick.js");
+   */
+
+  //01.04.2014 - 22:47 - SN disabled - because of panel error
+  _nm_stream_add_js_and_css();
+
+
+  $account = clone $user;
+
+  $vars['nm_author_pic'] = _nm_stream_get_user_pic($account);
+  $vars['nm_node_form_dummy'] = 'Beitrag hinzufügen...';
+
+
+  $vars['nm_privacy'] = _nm_stream_render_privacy_widget();
+}
+
+/*
+ * _hook_nm_stream_context_alter();
+ * get active context which the new node will be assigned to
+ */
+
+function nm_stream_og_context() {
+  $context = array();
+
+  /*
+   * todo 
+   * move this part to an independent module (hook)
+   * section_courses
+   */
+
+  $active_course = _section_courses_get_active_course();
+
+  if ($active_course) {
+    if (_section_course_course_group_visible()) {
+      //course_group_nid  /course/groups/%course_nid/%group_nid/
+      $context = node_load(arg(3));
+    }
+  }
+  else {
+    //check referer url
+    //for ajax callbacks!
+    //check url for valid url path first
+    //nm_stream for ajax callbacks
+    //_section_course_course_group_visible() for infinite stream. in views callback all args seem to be set properly
+    if (arg(0) == 'nm_stream' || _section_course_course_group_visible()) {
+
+      $referer_url = drupal_parse_url($_SERVER['HTTP_REFERER']);
+      $referer_url['path'] = substr(parse_url($referer_url['path'], PHP_URL_PATH), 1);
+
+      //dpm($referer_url['path']);
+      //dpm(arg(3, $referer_url['path']));
+      if (_section_course_course_group_visible($referer_url['path'])) {
+        $context = node_load(arg(3, $referer_url['path']));
+      }
+    }
+  }
+
+
+  //call alter hooks
+  //drupal_alter('nm_stream_context', $context);
+
+  return $context;
+}
+
+function _nm_stream_render_privacy_widget($node = NULL) {
+  $privacy_options = _nm_stream_privacy_options();
+
+  $result = '';
+  if ($node) {
+    $result .= '<select class="nm-stream-node-edit-privacy" name="privacy">';
+    $node_privacy_key = _nm_stream_get_privacy_option($node);
+    foreach ($privacy_options as $key => $option) {
+      $selected = '';
+      if ($node_privacy_key['key'] == $key)
+        $selected = 'selected';
+
+      $image_src = 'data-imagesrc="/' . $option['icon_path'] . '"';
+      $result.= '<option value="' . $key . '" ' . $selected . ' ' . $image_src . ' >';
+      $result.= $option['label'];
+      $result .= '</option>';
+    }
+  }
+  else {
+    $result .= '<select class="nm-stream-node-add-privacy"  name="privacy">';
+    foreach ($privacy_options as $key => $option) {
+      $selected = '';
+      if ($option['default'])
+        $selected = 'selected';
+
+      $image_src = 'data-imagesrc="/' . $option['icon_path'] . '"';
+      $result.= '<option value="' . $key . '" ' . $selected . ' ' . $image_src . ' >';
+      $result.= $option['label'];
+      $result .= '</option>';
+    }
+  }
+  $result .= '</select>';
+
+  return $result;
+}
+
+/**
+ * get privacy options for a special content type
+ * @param type content type
+ */
+function _nm_stream_privacy_options() {
+  $module_path = drupal_get_path('module', 'nm_stream');
+  //permission options depending on current context (og group)
+  $options_items = array();
+
+  $options_items[NM_STREAM_PRIVATE] = array(
+    'label' => t('Private'),
+    'icon_path' => $module_path . '/images/privacy-icons/privacy-private.png',
+    'default' => FALSE,
+  );
+  $options_items[NM_STREAM_TEAM] = array(
+    'label' => t('Team'),
+    'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+    'default' => TRUE,
+  );
+  $options_items[NM_STREAM_COURSE] = array(
+    'label' => t('Course'),
+    'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+    'default' => FALSE,
+  );
+  $options_items[NM_STREAM_PUBLIC] = array(
+    'label' => t('Public'),
+    'icon_path' => $module_path . '/images/privacy-icons/privacy-public.png',
+    'default' => FALSE,
+  );
+
+  return $options_items;
+}
+
+function _nm_stream_get_privacy_option($node) {
+  $key = $node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
+
+  $privacy_options = _nm_stream_privacy_options();
+
+
+  return array('key' => $key, 'option' => $privacy_options[$key]);
+}
+
+/**
+ * get user picture
+ * 
+ * @param type $account
+ */
+function _nm_stream_get_user_pic($account) {
+  $realname = realname_load($account);
+  if (empty($realname))
+    $realname = $account->name;
+
+  $profile = profile2_load_by_user($account, 'master');
+  $user_pic = "";
+  if (isset($profile->field_photo)) {
+    $field_view = field_view_field('profile2', $profile, 'field_photo', array('settings' => array('image_style' => 'profile_stream_thumbnail')));
+    $field_view['#label_display'] = 'hidden';
+    $field_view[0]['#item']['title'] = $realname;
+    $field_view[0]['#item']['alt'] = $realname;
+    $user_pic = drupal_render($field_view);
+  }
+
+  return $user_pic;
+}
+
+/**
+ * get action links for a node
+ * @global type $user
+ * @param type $content
+ */
+function _nm_stream_get_action_links($content) {
+  global $user;
+
+  if (isset($content->node_type)) {
+    //comment
+    $output = '';
+    if (comment_access('edit', $content)) {
+      $output .= '<a href="#" class="nm-stream-comment-edit"><i class="icon-edit"></i> ' . t('edit') . '</a>';
+    }
+    //delete op is not implemented yet
+    if (comment_access('delete', $content) || node_access('delete', node_load($content->nid))) {
+      $output .='<a href="#" class="nm-stream-comment-delete"><i class="icon-trash"></i> ' . t('delete') . '</a>';
+    }
+  }
+  else {
+    //node
+    $output = '';
+    if (node_access('update', $content)) {
+      $output .= '<a href="#" class="nm-stream-node-edit"><i class="icon-edit"></i> ' . t('edit') . '</a>';
+    }
+    if (node_access('delete', $content)) {
+      $output .='<a href="#" class="nm-stream-node-delete"><i class="icon-trash"></i> ' . t('delete') . '</a>';
+    }
+  }
+
+  return $output;
+}
+
+/**
+ * need to reverse order
+ * modified comment_get_thread
+ * 
+ * @param type $node
+ * @param type $mode
+ * @param type $comments_per_page
+ * @return type
+ */
+function _nm_stream_comment_get_thread($node, $mode, $comments_per_page) {
+  $query = db_select('comment', 'c'); //->extend('PagerDefault');
+  $query->addField('c', 'cid');
+  $query
+      ->condition('c.nid', $node->nid)
+      ->addTag('node_access')
+      ->addTag('comment_filter')
+      ->addMetaData('node', $node)
+      ->range(0, $comments_per_page);
+
+
+//  $count_query = db_select('comment', 'c');
+//  $count_query->addExpression('COUNT(*)');
+//  $count_query
+//      ->condition('c.nid', $node->nid)
+//      ->addTag('node_access')
+//      ->addTag('comment_filter')
+//      ->addMetaData('node', $node);
+
+  if (!user_access('administer comments')) {
+    $query->condition('c.status', COMMENT_PUBLISHED);
+    //$count_query->condition('c.status', COMMENT_PUBLISHED);
+  }
+  if ($mode === COMMENT_MODE_FLAT) {
+    $query->orderBy('c.cid', 'DESC');
+  }
+  else {
+    // See comment above. Analysis reveals that this doesn't cost too
+    // much. It scales much much better than having the whole comment
+    // structure.
+    $query->addExpression('SUBSTRING(c.thread, 1, (LENGTH(c.thread) - 1))', 'torder');
+    $query->orderBy('torder', 'DESC');
+  }
+
+  //$query->setCountQuery($count_query);
+  $cids = $query->execute()->fetchCol();
+
+  return $cids;
+}
+
+function _nm_stream_render_node_attachments($node) {
+
+  $output = '';
+
+  if (empty($node->field_nm_attachments))
+    return $output;
+
+
+  foreach ($node->field_nm_attachments[LANGUAGE_NONE] as $item) {
+    $file = file_load($item['fid']);
+    $output .= '<span class="file-container">';
+    $output .= theme('file_link', array('file' => $file));
+
+    if (node_access('update', $node)) {
+      $output .= '<a href="#" class="nm-stream-file-delete" id="nm-stream-file-' . $item['fid'] . '"><i class="icon-trash"></i></a>';
+    }
+
+    $output .= '</span>';
+  }
+
+  return $output;
+}
+
+function _nm_stream_add_js_and_css() {
+  //solving panel error
+
+  if (!path_is_admin(current_path())) {
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/nm_stream.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.autosize.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.ddslick.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/bootbox.js");
+
+    //upload
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.MultiFile.js");
+    //ajax file upload 
+    //drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.form.js");
+
+    drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream.css');
+
+    //upload
+    drupal_add_css(drupal_get_path('module', 'nm_stream') . "/js/jQuery-File-Upload-9.5.7/css/jquery.fileupload.css");
+  }
+}
+
+/*
+ * import all old status messages 
+ */
+
+function nm_stream_import_status_stream() {
+  //get all course groups
+  $nids = custom_general_node_ids_by_type(NM_COURSE_GROUP);
+  foreach ($nids as $nid) {
+    $course_gid = $nid;
+    //get sid for every course group
+    $statuses = statuses_get_statuses(null, $course_gid, 'course_group');
+
+    //revert order back, to save chronological id raising
+    $statuses = array_reverse($statuses);
+
+    foreach ($statuses as $status) {
+      $node = new stdClass();
+      $node->title = $status->created;
+      $node->type = 'nm_stream';
+      $node->body[LANGUAGE_NONE][0]['value'] = $status->message;
+      $node->field_nm_privacy [LANGUAGE_NONE][0]['value'] = 2;
+      node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
+      $node->language = 'de';
+      $node->uid = $status->sender;
+      $node->status = 1; //(1 or 0): published or not
+      $node->promote = 0; //(1 or 0): promoted to front page
+      $node->comment = 2; // 0 = comments disabled, 1 = read only, 2 = read/write
+
+      $node->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $nid;
+
+      //group content visibility
+      $node->group_content_access[LANGUAGE_NONE][0]['value'] = OG_CONTENT_ACCESS_PRIVATE;
+
+      $node->created = $status->created;
+      $node->changed = $status->created;
+      //changed beeing modified fix
+      $node->modified = $status->created;
+
+      $node = node_submit($node); // Prepare node for saving
+
+      node_save($node);
+
+      //get comments
+      $fbss_comments = fbss_comments_get_comments($status->sid);
+      foreach ($fbss_comments as $comment) {
+        // attach comment.
+        $comment = (object) array(
+              'nid' => $node->nid,
+              'cid' => 0,
+              'pid' => 0,
+              'is_anonymous' => 0,
+              'uid' => $comment->uid,
+              'created' => $comment->created,
+              'status' => COMMENT_PUBLISHED,
+              'subject' => truncate_utf8(trim(decode_entities(strip_tags($comment->comment))), 29, TRUE),
+              'language' => LANGUAGE_NONE,
+              'comment_body' => array(
+                LANGUAGE_NONE => array(
+                  0 => array(
+                    'value' => $comment->comment,
+                    'format' => 'filtered_html'
+                  )
+                )
+              ),
+        );
+        $comment = comment_submit($comment);
+        $comment->created = $comment->created;
+        $comment->changed = $comment->changed;
+        comment_save($comment);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_presave().
+ */
+function nm_stream_node_presave($node) {
+  if (isset($node->modified)) {
+    $node->created = $node->modified;
+    $node->changed = $node->modified;
+  }
+}

@@ -9,10 +9,10 @@ ADAPING BOOTSTRAP
 
 
 .book-navigation .nm_float_right {
-  float:right;
+    float:right;
 }
 .book-navigation .nm_float_left {
-  float:left;
+    float:left;
 }
 
 /*
@@ -35,10 +35,8 @@ Panels reset - homepage
     padding:0;
 }
 
-.pane-courses-admin-content h2.pane-title, 
-.pane-courses-admin-members h2.pane-title, 
-.pane-courses-course-members h2.pane-title,
-.pane-courses-admin-og-members h2.pane-title{
+
+.pane-title{
     font-size: 24.5px;
 }
 
@@ -53,8 +51,8 @@ PANELS
 */
 
 [class*="panels-flexible-region-row-fluid"]{
-  float:none;
-  width:auto;
+    float:none;
+    width:auto;
 }
 
 
@@ -315,6 +313,47 @@ Margin between content and navigation
 }
 
 
+/*
+*/
+.course-item{
+    border-bottom:1px solid #dddddd;
+    padding: 10px 10px;
+    margin-bottom: 20px;
+    margin-left:0;
+    position:relative;
+}
+.course-item:hover{
+    background-color: #eee;
+}
+.course-item .course-title h2{
+    margin-top:0;
+    font-size: 17.5px;
+}
+.ui-progressbar {
+    height:12px;
+    clear:both;
+}
+.ui-progressbar .ui-progressbar-value {
+    background-color: #dedede;
+    margin:0;
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important;
+}
+.course-time {
+    position:relative;
+    margin-top:15px;
+    margin-bottom:10px;
+    font-size:13px;
+}
+.course-time .course-start-date{
+    float:left;
+    margin-bottom:3px;
+}
+.course-time .course-end-date {
+    float:right;
+    margin-bottom:3px;
+}
 /*
 VIEWS
 */
@@ -667,6 +706,7 @@ BUTTONS
     -webkit-border-radius: 0px !important;
     -moz-border-radius: 0px !important;
     border-radius: 0px !important;
+    padding:4px 8px;
 }
 
 .btn-primary{
@@ -911,4 +951,51 @@ jQuery UI adaption
 }
 .ui-widget-content a:hove {
     color: #005580;
+}
+
+
+/*
+BLOCKQUOTE (wysiwyg)
+*/
+blockquote {
+    padding: 0 0 0 15px;
+    margin: 0 0 20px;
+    border-left: 5px solid #eeeeee;
+}
+
+blockquote small {
+    display: block;
+    line-height: 20px;
+    color: rgb(153, 153, 153);
+}
+
+blockquote small:before {
+    content: '\2014 \00A0';
+}
+blockquote p {
+    margin-bottom: 0;
+    font-size: 17.5px;
+    font-weight: 300;
+    line-height: 1.25;
+}
+
+
+/*
+USER PROFILE
+*/
+.user-courses-item {
+  display:block;
+  border-top: 1px solid #cecece;
+  border-bottom: 1px solid #eee;
+  padding:0px 0;
+  margin-bottom: 10px;
+  min-height:55px;
+  position:relative;
+}
+.user-courses-item:hover{
+  background-color: #f7f7f7;
+}
+.user-courses-item-title {
+  padding: 2px 3px 0 0;
+
 }

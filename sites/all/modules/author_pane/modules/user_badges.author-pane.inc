@@ -14,12 +14,18 @@ function user_badges_preprocess_author_pane(&$variables) {
   }
 
   // Anonymous users has no user badges.
-  // TODO: When a stable release of user_badges exists.
-  // - Check if this if-case is necessary to use?
-  //   user_badges_for_uid, right now, returns "NULL" if $uid is 0.
-  // - Static cache is not necessary, user_badges_for_uid has it right now.
   if ($variables['account']->uid != 0) {
-    $variables['user_badges'] = user_badges_for_uid($variables['account']->uid);
+
+    // Only display the badges according badge limit
+    if (isset($variables['account']->badges)) {
+      $variables['user_badges'] = '';
+
+      // Loop through and add only the badges that are within the limit,
+      // $variables['account']->badges, stores the badges within the limit
+      foreach ($variables['account']->badges as $badge) {
+        $variables['user_badges'] .= theme('user_badge', array('badge' => $badge));
+      }
+    }
   }
 }
 

@@ -15,17 +15,19 @@ $plugin = array(
 class field_validation_unique_values_validator extends field_validation_validator {
 
   /**
-   * Validate field. 
+   * Validate field.
    */
   public function validate() {
     $flag = FALSE;
     $group_name = $this->rule->settings['data'];
-    $total_items = count($this->items);
     $field_values = $this->get_field_column_value1($this->items, $this->rule->col);
-    $field_values = array_flip($field_values);
-    if (count($field_values) < $total_items) {
-      $flag = TRUE;
+
+    foreach ($field_values as $delta => $value) {
+      if ($value && $value == $this->value && $delta < $this->delta) {
+        $flag = TRUE;
+      }
     }
+
     if (!$flag) {
       ctools_include('export');
       $other_group_rules = ctools_export_load_object('field_validation_rule', 'conditions', array('entity_type' => $this->rule->entity_type, 'bundle' => $this->rule->bundle, 'validator' => $this->rule->validator));
@@ -39,14 +41,16 @@ class field_validation_unique_values_validator extends field_validation_validato
         if (isset($this->entity->{$other_group_rule->field_name}[$this->langcode])) {
           $other_items = $this->entity->{$other_group_rule->field_name}[$this->langcode];
           $other_field_values = $this->get_field_column_value1($other_items, $other_group_rule->col);
-          $other_field_values = array_flip($other_field_values);
-          $total_items = $total_items + count($other_items);
 
-          $field_values = $field_values + $other_field_values;
-          if (count($field_values) < $total_items) {
+          $total_field_values = array_merge($field_values, $other_field_values);
+          $duplicate_values = array_unique(
+            array_diff_assoc($total_field_values, array_unique($total_field_values))
+          );
+
+          if (in_array($this->value, $duplicate_values)) {
             $flag = TRUE;
             break;
-          } 
+          }
         }
       }
     }
@@ -54,10 +58,10 @@ class field_validation_unique_values_validator extends field_validation_validato
       $this->set_error();
     }
 
-    $break = TRUE;
+    $break = FALSE;
     return $break;
   }
-  
+
   /**
    * Provide settings option
    */
@@ -72,7 +76,7 @@ class field_validation_unique_values_validator extends field_validation_validato
     );
     parent::settings_form($form, $form_state);
   }
-  
+
   /**
    * helper function to get field values
    */

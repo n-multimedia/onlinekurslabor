@@ -291,6 +291,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 0,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'hidden',
         'module' => 'text',
@@ -335,6 +341,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 16,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -373,6 +385,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'list_default',
         'weight' => 8,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -415,6 +433,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'image',
         'weight' => 12,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -446,7 +470,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'image_image',
-      'weight' => 5,
+      'weight' => 14,
     ),
   );
 
@@ -465,6 +489,12 @@ function nm_section_courses_features_field_default_field_instances() {
         ),
         'type' => 'image',
         'weight' => 2,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -492,11 +522,12 @@ function nm_section_courses_features_field_default_field_instances() {
       'active' => 1,
       'module' => 'image',
       'settings' => array(
+        'multiple_value_widget' => 'table',
         'preview_image_style' => 'thumbnail',
         'progress_indicator' => 'throbber',
       ),
       'type' => 'image_image',
-      'weight' => 6,
+      'weight' => 15,
     ),
   );
 
@@ -516,6 +547,12 @@ function nm_section_courses_features_field_default_field_instances() {
         ),
         'type' => 'entityreference_label',
         'weight' => 15,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -567,6 +604,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'entityreference_label',
         'weight' => 9,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -614,6 +657,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'taxonomy_term_reference_link',
         'weight' => 14,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -635,7 +684,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'multiple_value_widget' => 'table',
       ),
       'type' => 'options_buttons',
-      'weight' => 7,
+      'weight' => 16,
     ),
   );
 
@@ -652,6 +701,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 6,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -714,6 +769,49 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-courses_course-field_semester'
+  $field_instances['node-courses_course-field_semester'] = array(
+    'bundle' => 'courses_course',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 17,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_semester',
+    'label' => 'Semester',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 11,
+    ),
+  );
+
   // Exported field_instance: 'node-courses_course-field_short_description'
   $field_instances['node-courses_course-field_short_description'] = array(
     'bundle' => 'courses_course',
@@ -727,6 +825,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 4,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -803,6 +907,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 1,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -848,6 +958,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'date_default',
         'weight' => 11,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -879,7 +995,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'year_range' => '-3:+3',
       ),
       'type' => 'date_popup',
-      'weight' => 11,
+      'weight' => 12,
     ),
   );
 
@@ -896,6 +1012,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 13,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -972,6 +1094,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 5,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -994,59 +1122,8 @@ function nm_section_courses_features_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 12,
+      'weight' => 13,
     ),
-  );
-
-  // Exported field_instance: 'node-courses_course-group_access'
-  $field_instances['node-courses_course-group_access'] = array(
-    'bundle' => 'courses_course',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 10,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'group_access',
-    'label' => 'Group visibility',
-    'required' => TRUE,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'view modes' => array(
-      'full' => array(
-        'label' => 'above',
-        'type' => 'options_onoff',
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'type' => 'options_onoff',
-      ),
-    ),
-    'widget' => array(
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_buttons',
-      'weight' => 6,
-    ),
-    'widget_type' => 'options_select',
   );
 
   // Exported field_instance: 'node-courses_course-group_group'
@@ -1067,6 +1144,12 @@ function nm_section_courses_features_field_default_field_instances() {
           'field_name' => FALSE,
         ),
         'type' => 'og_group_subscribe',
+        'weight' => 0,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -1119,6 +1202,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
+        'weight' => 0,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -1197,6 +1286,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'media',
         'weight' => 1,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1257,6 +1352,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 2,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1340,6 +1441,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'double_field_unformatted_list',
         'weight' => 0,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1414,6 +1521,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'date_default',
         'weight' => 3,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1467,6 +1580,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 2,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1506,6 +1625,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'og_list_default',
         'weight' => 1,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1576,6 +1701,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 1,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1655,6 +1786,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'entityreference_label',
         'weight' => 2,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1703,6 +1840,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 4,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1779,6 +1922,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'og_list_default',
         'weight' => 3,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1837,6 +1986,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 2,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -1920,6 +2075,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'og_group_subscribe',
         'weight' => 0,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1972,6 +2133,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'og_list_default',
         'weight' => 1,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2041,6 +2208,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
+        'weight' => 0,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -2117,6 +2290,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'file_default',
         'weight' => 1,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -2180,6 +2359,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 2,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2248,6 +2433,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 1,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -2324,6 +2515,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 3,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -2381,6 +2578,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
+        'weight' => 0,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -2660,7 +2863,6 @@ function nm_section_courses_features_field_default_field_instances() {
   t('Comment');
   t('Determine if this is an OG group.');
   t('Foren');
-  t('Group visibility');
   t('Groups audience');
   t('Gruppe');
   t('Header');
@@ -2671,6 +2873,7 @@ function nm_section_courses_features_field_default_field_instances() {
   t('Laufzeit');
   t('Matrikelnummer');
   t('Platzhalter');
+  t('Semester');
   t('Sponsoren');
   t('Studienfach');
   t('Thema');

@@ -7,13 +7,12 @@
 
 function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
 
-
   $active_course = _section_courses_get_active_course();
 
-  if (arg(0) != 'node') {
+  if (arg(0) != 'node' || arg(2) == 'revisions') {
     return;
   }
-  
+
   if ($active_course) {
     switch ($node->type) {
       case NM_COURSE:
@@ -35,7 +34,13 @@ function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
       case NM_COURSE_GENERIC_TASK_SOLUTION:
         //Solution
         $tid = $node->field_generic_task[LANGUAGE_NONE][0]['target_id'];
-        drupal_goto(NM_COURSE_GENERIC_TASK_PATH . '/' . $active_course->nid . '/' . $tid . '/solution');
+        //Redirect Admins, Dozenten, Tutoren to solution
+        if (section_courses_instructors_tools_access()) {
+          drupal_goto(NM_COURSE_GENERIC_TASK_PATH . '/' . $active_course->nid . '/' . $tid . '/solution/' . $node->uid);
+        }
+        else {
+          drupal_goto(NM_COURSE_GENERIC_TASK_PATH . '/' . $active_course->nid . '/' . $tid . '/solution');
+        }
         //drupal_access_denied();
         break;
       case NM_COURSE_GROUP:
@@ -55,6 +60,12 @@ function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
         //deny access, if forum is not assigned to any special course (in general) 
         drupal_access_denied();
         break;
+      //redirect rules for domains and chapters
+      case NM_CONTENT_DOMAIN:
+      case NM_CONTENT_CHAPTER:
+        //forum 
+        drupal_goto(NM_CONTENT_TEXT_PATH . '/' . $node->nid);
+        break;
     }
   }
 }
@@ -69,7 +80,7 @@ function onlinekurslabor_redirect_preprocess_page($variables) {
   //assuming viewing a panel page
   if (page_manager_get_current_page()) {
 
-    
+
     //note: node type needs to be checked in variants "Selection rules"
     //user in news section
     if (strstr(current_path(), NM_COURSE_NEWS_PATH)) {
@@ -95,7 +106,7 @@ function onlinekurslabor_redirect_preprocess_page($variables) {
 
       //chapter/domain is not the one chosen for the active course 
       if (isset($text_node->book) && $text_node->book['bid'] != $domain_ref) {
-        
+
         drupal_goto(NM_COURSE_TEXT_PATH . '/' . $active_course->nid . '/' . $domain_ref);
       }
     }

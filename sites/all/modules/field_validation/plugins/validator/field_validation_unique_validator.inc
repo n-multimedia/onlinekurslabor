@@ -15,7 +15,7 @@ $plugin = array(
 class field_validation_unique_validator extends field_validation_validator {
 
   /**
-   * Validate field. 
+   * Validate field.
    */
   public function validate() {
     $flag = TRUE;
@@ -46,7 +46,7 @@ class field_validation_unique_validator extends field_validation_validator {
         $id = arg(1);
       }
       if ($this->rule->entity_type == 'field_collection_item' && arg(0) == 'field-collection' && arg(3) =='edit' && empty($id)) {
-        $id = arg(2); 
+        $id = arg(2);
       }
       if ($this->rule->entity_type == 'profile2' && empty($id)) {
         $arg_index = 1;
@@ -68,6 +68,12 @@ class field_validation_unique_validator extends field_validation_validator {
       //Always bypass all access checkings.
       $query->addMetaData('account', user_load(1));
       $query->fieldCondition($this->rule->field_name, $this->rule->col, $this->value);
+
+      // Do the check per user
+      if (isset($this->rule->settings['per_user']) && $this->rule->settings['per_user'] && $scope != 'global') {
+        global $user;
+        $query->propertyCondition('uid', $user->uid);
+      }
 
       // Store a copy of our matched entities for our use in tokens later.
       $matched_entities = $query->execute();
@@ -117,7 +123,7 @@ class field_validation_unique_validator extends field_validation_validator {
       $this->set_error($token);
     }
   }
-  
+
   /**
    * Provide settings option
    */
@@ -130,14 +136,22 @@ class field_validation_unique_validator extends field_validation_validator {
       '#type' => 'select',
       '#options' => array(
         'global' => t('Global'),
-        'entity' => t('Entity'),
+        'entity' => t('Entity Type'),
         'bundle' => t('Bundle'),
-      ),  
+      ),
       '#default_value' => isset($default_settings['data']) ? $default_settings['data'] : '',
+    );
+    $form['settings']['per_user'] = array(
+      '#title' => t('Per user'),
+      '#type' => 'checkbox',
+      '#default_value' => isset($default_settings['per_user']) ? $default_settings['per_user'] : FALSE,
+      '#states' => array(
+        'invisible' => array(':input[name="settings[data]"]' => array('value' => 'global')),
+      ),
     );
     parent::settings_form($form, $form_state);
   }
-  
+
   /**
    * Provide token help info for error message.
    */

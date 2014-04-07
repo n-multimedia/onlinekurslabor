@@ -32,7 +32,7 @@ function author_pane_content_type_render($subtype, $conf, $panel_args, $context)
     // Use the Real Name module if installed. Otherwise just the plain,
     // unthemed user name for the title since we don't want it linked.
     if (module_exists('realname')) {
-      $block->title = theme('username', $account, array('plain' => TRUE));
+      $block->title = theme('realname', $account, array('plain' => TRUE));
     }
     else {
       $block->title = check_plain($account->name);

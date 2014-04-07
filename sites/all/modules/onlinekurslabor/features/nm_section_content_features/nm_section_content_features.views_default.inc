@@ -75,7 +75,7 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Feld: Inhalt: Gruppe */
+  /* Feld: Feld: Gruppe */
   $handler->display->display_options['fields']['group_group']['id'] = 'group_group';
   $handler->display->display_options['fields']['group_group']['table'] = 'field_data_group_group';
   $handler->display->display_options['fields']['group_group']['field'] = 'group_group';
@@ -402,27 +402,83 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['exposed_form']['options']['autosubmit'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '30';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
   $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ vorherige Seite';
   $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
   $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
-  $handler->display->display_options['style_plugin'] = 'grid';
-  $handler->display->display_options['row_plugin'] = 'file';
-  $handler->display->display_options['row_options']['view_mode'] = 'preview';
-  $handler->display->display_options['row_options']['links'] = 1;
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'fid' => 'fid',
+    'rendered' => 'rendered',
+    'filename' => 'filename',
+    'count' => 'count',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'fid' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'rendered' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'filename' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'count' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
   /* Relationship: OG membership: OG membership from Datei */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'file_managed';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['required'] = TRUE;
+  /* Feld: Datei: Datei-ID */
+  $handler->display->display_options['fields']['fid']['id'] = 'fid';
+  $handler->display->display_options['fields']['fid']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['fid']['field'] = 'fid';
+  $handler->display->display_options['fields']['fid']['label'] = '';
+  $handler->display->display_options['fields']['fid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['fid']['element_label_colon'] = FALSE;
+  /* Feld: Datei: Rendered */
+  $handler->display->display_options['fields']['rendered']['id'] = 'rendered';
+  $handler->display->display_options['fields']['rendered']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['rendered']['field'] = 'rendered';
+  $handler->display->display_options['fields']['rendered']['label'] = '';
+  $handler->display->display_options['fields']['rendered']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['rendered']['file_view_mode'] = 'preview';
   /* Feld: Datei: Name */
   $handler->display->display_options['fields']['filename']['id'] = 'filename';
   $handler->display->display_options['fields']['filename']['table'] = 'file_managed';
   $handler->display->display_options['fields']['filename']['field'] = 'filename';
-  $handler->display->display_options['fields']['filename']['label'] = '';
   $handler->display->display_options['fields']['filename']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['filename']['alter']['ellipsis'] = FALSE;
+  /* Feld: SUM(File Usage: Use count) */
+  $handler->display->display_options['fields']['count']['id'] = 'count';
+  $handler->display->display_options['fields']['count']['table'] = 'file_usage';
+  $handler->display->display_options['fields']['count']['field'] = 'count';
+  $handler->display->display_options['fields']['count']['group_type'] = 'sum';
+  $handler->display->display_options['fields']['count']['label'] = 'in Beiträgen verwendet';
   /* Contextual filter: OG membership: Group ID */
   $handler->display->display_options['arguments']['gid']['id'] = 'gid';
   $handler->display->display_options['arguments']['gid']['table'] = 'og_membership';
@@ -532,8 +588,11 @@ function nm_section_content_features_views_default_views() {
     t('nächste Seite ›'),
     t('letzte Seite »'),
     t('OG membership from file'),
-    t('Alle'),
     t('Name'),
+    t('in Beiträgen verwendet'),
+    t('.'),
+    t(','),
+    t('Alle'),
     t('Typ'),
     t('Page'),
     t('Content pane'),

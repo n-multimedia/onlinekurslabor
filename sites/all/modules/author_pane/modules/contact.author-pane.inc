@@ -16,7 +16,14 @@ function contact_preprocess_author_pane(&$variables) {
   }
 
   if (_contact_personal_tab_access($variables['account'])) {
-    $variables['contact'] = l(t('Email'), 'user/' . $variables['account']->uid . '/contact', array('attributes' => array('class' => array('author-pane-link'))));
+    $options = array(
+      'attributes' => array(
+        'class' => array('author-pane-link'),
+        'title' => t('Send @accountname an email.', array('@accountname' => $variables['account']->name)),
+      ),
+      'html' => TRUE,
+    );
+    $variables['contact'] = l('<span>' . t('Send Email') . '</span>', 'user/' . $variables['account']->uid . '/contact', $options);
   }
 }
 

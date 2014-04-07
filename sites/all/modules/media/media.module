@@ -12,9 +12,6 @@
 /* INCLUDES                                  */
 /* ***************************************** */
 
-// A registry of variable_get defaults.
-require_once dirname(__FILE__) . '/includes/media.variables.inc';
-
 // Code relating to using media as a field.
 require_once dirname(__FILE__) . '/includes/media.fields.inc';
 
@@ -74,7 +71,7 @@ function media_entity_info_alter(&$entity_info) {
   // For sites that updated from Media 1.x, continue to provide these deprecated
   // view modes.
   // @see http://drupal.org/node/1051090
-  if (media_variable_get('show_deprecated_view_modes')) {
+  if (variable_get('media__show_deprecated_view_modes', FALSE)) {
     $entity_info['file']['view modes'] += array(
       'media_link' => array(
         'label' => t('Link'),
@@ -184,7 +181,8 @@ function media_menu() {
       'title' => 'Edit multiple files',
       'page callback' => 'media_file_page_edit_multiple',
       'page arguments' => array(4),
-      'access arguments' => array('edit any files'),
+      'access callback' =>  '_media_file_entity_access_recursive',
+      'access arguments' => array(4, 'update'),
       'file' => 'includes/media.pages.inc',
     );
   }
@@ -247,7 +245,7 @@ function media_admin_paths() {
 
   // If the media browser theme is set to the admin theme, ensure it gets set
   // as an admin path as well.
-  $dialog_theme = media_variable_get('dialog_theme');
+  $dialog_theme = variable_get('media__dialog_theme', '');
   if (empty($dialog_theme) || $dialog_theme == variable_get('admin_theme')) {
     $paths['media/browser'] = TRUE;
     $paths['media/browser/*'] = TRUE;
@@ -303,7 +301,7 @@ function media_theme() {
 
     // Display a file as a large icon.
     'media_formatter_large_icon' => array(
-      'variables' => array('file' => NULL, 'attributes' => array()),
+      'variables' => array('file' => NULL, 'attributes' => array(), 'style_name' => 'media_thumbnail'),
       'file' => 'includes/media.theme.inc',
     ),
   );
@@ -351,7 +349,7 @@ function media_page_alter(&$page) {
   // Check if there are file types that need migration and display a message
   // to user if so.
   $menu = menu_get_item();
-  if (media_variable_get('display_types_migration_mess') && $menu['path'] == 'admin/structure/file-types') {
+  if (variable_get('media__display_types_migration_mess', TRUE) && $menu['path'] == 'admin/structure/file-types') {
     if ($migratable_types = _media_get_migratable_file_types()) {
       drupal_set_message(t('There are disabled/deleted file types that can be migrated to their new alternatives. Visit <a href="!url">migration page</a> to get more information.', array('!url' => url('admin/structure/file-types/upgrade'))));
     }
@@ -560,14 +558,26 @@ function media_form_wysiwyg_profile_form_alter(&$form, &$form_state) {
 }
 
 /**
- * Implements hook_file_download_access().
+ * Access callback for the media-multi form.
+ *
+ * @param $files
+ *   An array of files being editing on the multiform.
+ * @param $op
+ *   A string containing the operation requested, such as 'update'.
+ * @return
+ *   TRUE if the current user has access to edit all of the files, otherwise FALSE.
  */
-function media_file_download_access($field, $entity_type, $entity) {
-  if ($entity_type == 'media') {
-    // @todo replace this with file_entity_access one, when downloads
-    // are supported by file_entity module.
-    return user_access('view files');
+function _media_file_entity_access_recursive($files, $op) {
+  // Check that the current user can access each file.
+  if (!empty($files)) {
+    foreach ($files as $file) {
+      if (!file_entity_access($op, $file)) {
+        return FALSE;
+      }
+    }
+    return TRUE;
   }
+  return FALSE;
 }
 
 /* ***************************************** */
@@ -589,13 +599,6 @@ function media_multi_load($fids) {
   return file_load_multiple(explode(' ', $fids));
 }
 
-/**
- * Returns the type of the media file to be used as a page title.
- */
-function media_type_page_title($type) {
-  return t('@type media type settings', array('@type' => $type->label));
-}
-
 /* ***************************************** */
 /* Callbacks                                 */
 /* ***************************************** */
@@ -607,7 +610,7 @@ function media_file_list_element_process($element, $edit, $form_state, $form) {
   $element['list'] = array(
     '#type'     => 'select',
     '#options'  => $element['#options'],
-    '#size'     => media_variable_get('file_list_size'),
+    '#size'     => variable_get('media__file_list_size', 10),
   );
   return $element;
 }
@@ -679,27 +682,7 @@ function media_library() {
  * will default to the administration theme, unless set otherwise.
  */
 function media_dialog_get_theme_name() {
-  return media_variable_get('dialog_theme', variable_get('admin_theme'));
-}
-
-/**
- * A wrapper around simplexml to retrieve a given XML file.
- *
- * @param string $url
- *   The URL to the XML to retrieve.
- * @param bool $display_errors
- *   Optional; if TRUE, then we'll display errors to the end user. They'll be
- *   logged to the watchdog in any case.
- * @param bool $refresh
- *   Optional; if TRUE, then we'll force a new load of the XML. Otherwise,
- *   a cached version will be retrieved if possible.
- *
- * @return object
- *   A fully populated object, or FALSE on an error.
- */
-function media_retrieve_xml($url, $display_errors = FALSE, $refresh = FALSE) {
-  module_load_include('inc', 'media', 'includes/media.xml');
-  return _media_retrieve_xml($url, $display_errors, $refresh);
+  return variable_get('media__dialog_theme', variable_get('admin_theme'));
 }
 
 /**
@@ -913,7 +896,7 @@ function media_element_process(&$element, &$form_state, $form) {
       ),
     ),
     '#weight' => 20,
-    '#access' => file_entity_access('update', $file),
+    '#access' => $file ? file_entity_access('update', $file) : TRUE, // only do perm check for existing files
   );
   $element['remove'] = array(
     '#type' => 'link',
@@ -1074,37 +1057,45 @@ function media_file_displays_alter(&$displays, $file, $view_mode) {
  */
 function media_file_default_displays_alter(&$file_displays) {
   // Image previews should be displayed using the media image style.
-  $file_displays['image__preview__file_field_image']->settings['image_style'] = 'media_thumbnail';
+  if (isset($file_displays['image__preview__file_field_image'])) {
+    $file_displays['image__preview__file_field_image']->settings['image_style'] = 'media_thumbnail';
+  }
 
   // Video previews should be displayed using a large filetype icon.
-  $file_displays['video__preview__file_field_file_default']->status = FALSE;
+  if (isset($file_displays['video__preview__file_field_file_default'])) {
+    $file_displays['video__preview__file_field_file_default']->status = FALSE;
+  }
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__preview__file_field_media_large_icon';
-  $file_display->weight = 0;
+  $file_display->weight = 50;
   $file_display->status = TRUE;
   $file_display->settings = '';
   $file_displays['video__preview__file_field_media_large_icon'] = $file_display;
 
   // Audio previews should be displayed using a large filetype icon.
-  $file_displays['audio__preview__file_field_file_default']->status = FALSE;
+  if (isset($file_displays['audio__preview__file_field_file_default'])) {
+    $file_displays['audio__preview__file_field_file_default']->status = FALSE;
+  }
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'audio__preview__file_field_media_large_icon';
-  $file_display->weight = 0;
+  $file_display->weight = 50;
   $file_display->status = TRUE;
   $file_display->settings = '';
   $file_displays['audio__preview__file_field_media_large_icon'] = $file_display;
 
   // Document previews should be displayed using a large filetype icon.
-  $file_displays['document__preview__file_field_file_default']->status = FALSE;
+  if (isset($file_displays['document__preview__file_field_file_default'])) {
+    $file_displays['document__preview__file_field_file_default']->status = FALSE;
+  }
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'document__preview__file_field_media_large_icon';
-  $file_display->weight = 0;
+  $file_display->weight = 50;
   $file_display->status = TRUE;
   $file_display->settings = '';
   $file_displays['document__preview__file_field_media_large_icon'] = $file_display;

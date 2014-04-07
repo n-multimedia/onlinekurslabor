@@ -163,7 +163,6 @@ function nm_general_features_user_default_permissions() {
   $permissions['administer comments'] = array(
     'name' => 'administer comments',
     'roles' => array(
-      'Dozent' => 'Dozent',
       'administrator' => 'administrator',
     ),
     'module' => 'comment',

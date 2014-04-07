@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Field validation phone validator. The code is ported from phone module.
+ * Field validation postal code validator.
  *
  */
 $plugin = array(

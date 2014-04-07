@@ -16,6 +16,25 @@ input[disabled].knob {
     margin-right:auto;
 }
 
+/*
+user profile smaller 
+*/
+.btn.edit-profile{
+  margin-top:10px;
+}
+.user-courses-item .nm_circle_progress_bar {
+  width:auto;
+  position:inherit;
+}
+.user-courses-item .nm_circle_progress_bar, .user-courses-item .nm_circle_progress_bar>div  {
+  height: 38px !important;
+  overflow:hidden;
+}
+.user-courses-item:hover .user-courses-item-progress{
+  display:block !important;
+}
+
+
 .nm_circle_progress_bar .nm_cb_title, .nm_circle_progress_bar canvas, .nm_circle_progress_bar div{
     display: block;
 
@@ -159,7 +178,7 @@ div ul.section_nav_tools li a
     border-bottom:0;
     -webkit-border-radius:0px;
     border-radius: 0px;
-    moz-border-radius: 0px;
+    -moz-border-radius: 0px;
     padding:0;
     display:inline-block;
     height:42px;
@@ -461,6 +480,11 @@ Authors's Tools
     background-color: rgba(200,200,200, 0.3);
 }
 
+#authors_tools-container ul{
+    padding: 0;
+    margin:0;
+}
+
 #authors_tools-container .btn
 {
     display: inline-block;
@@ -535,11 +559,28 @@ Authors's Tools
 {
     background-position: -120px 0px;
 }
-#authors_tools-container .btn#author_media_overview a:hover:before, #authors_tools-container .btn#author_biblio_add a.active:before
+#authors_tools-container .btn#author_media_overview a:hover:before, #authors_tools-container .btn#author_media_overview a.active:before
 {
     background-position: -120px -50px;
 }
+/*interactive video*/
+#authors_tools-container .btn#author_h5p_overview a:before
+{
+    background-position: -180px 0px;
+}
+#authors_tools-container .btn#author_h5p_overview a:hover:before, #authors_tools-container .btn#author_h5p_overview a.active:before
+{
+    background-position: -180px -50px;
+}
 
+#authors_tools-container .btn#author_h5p_add a:before
+{
+    background-position: -180px -100px;
+}
+#authors_tools-container .btn#author_h5p_add a:hover:before, #authors_tools-container .btn#author_h5p_add a.active:before
+{
+    background-position: -180px -150px;
+}
 
 #authors_tools-container .btn#author_chapter_add a:before
 {
@@ -740,6 +781,16 @@ Nav collab
 Editor
 */
 
+/*
+3d
+*/
+.cke_skin_kama .cke_wrapper {
+    background:none;
+}
+span.cke_skin_kama {
+
+}
+
 #linkit-modal #edit-biblio-search, 
 #linkit-modal #edit-tasks-search {
     background: transparent url(../images/icons/throbber-inactive.gif) no-repeat 99% 10px;
@@ -858,7 +909,14 @@ body.cke_show_borders
 
 span.cke_skin_kama
 {
+    -webkit-border-radius:0px !important;
+    border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
     padding:0 !important;
+}
+.cke_skin_kama .cke_wrapper{
+    background:none !important;
+    background-color: #eee !important;
 }
 
 div#autocomplete li:hover {
@@ -867,7 +925,7 @@ div#autocomplete li:hover {
 .cke_skin_kama .cke_browser_webkit a.cke_dialog_ui_button {
     -webkit-border-radius:0px !important;
     border-radius: 0px !important;
-    moz-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
 }
 .cke_skin_kama a.cke_dialog_ui_button {
     background-image:none !important;
@@ -955,6 +1013,26 @@ Student
 
 
 /*
+MEDIA Browser
+*/
+
+.media-thumbnail {
+
+}
+.media-item {
+    min-height: 120px;
+}
+.media-item img{
+    width:100px;
+    height:auto;
+}
+
+.view-domain-media img{
+    width:100px;
+    height:auto;
+}
+
+/*
 PRINT
 */
 
@@ -969,3 +1047,4 @@ PRINT
     }
 
 }
+

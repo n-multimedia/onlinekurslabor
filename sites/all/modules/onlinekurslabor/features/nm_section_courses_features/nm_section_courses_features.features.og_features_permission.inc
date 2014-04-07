@@ -399,14 +399,6 @@ function nm_section_courses_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:courses_course:update group_access field'
-  $permissions['node:courses_course:update group_access field'] = array(
-    'roles' => array(
-      'kurs-dozent' => 'kurs-dozent',
-      'kurs-tutor' => 'kurs-tutor',
-    ),
-  );
-
   // Exported og permission: 'node:courses_course:update group_group field'
   $permissions['node:courses_course:update group_group field'] = array(
     'roles' => array(
@@ -627,14 +619,6 @@ function nm_section_courses_features_og_features_default_permissions() {
       'kurs-tutor' => 'kurs-tutor',
       'member' => 'member',
       'non-member' => 'non-member',
-    ),
-  );
-
-  // Exported og permission: 'node:courses_course:view group_access field'
-  $permissions['node:courses_course:view group_access field'] = array(
-    'roles' => array(
-      'kurs-dozent' => 'kurs-dozent',
-      'kurs-tutor' => 'kurs-tutor',
     ),
   );
 
@@ -935,13 +919,6 @@ function nm_section_courses_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:courses_group:update group'
   $permissions['node:courses_group:update group'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
-  );
-
-  // Exported og permission: 'node:courses_group:update group_access field'
-  $permissions['node:courses_group:update group_access field'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
     ),

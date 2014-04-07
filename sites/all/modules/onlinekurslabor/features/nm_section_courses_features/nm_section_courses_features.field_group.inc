@@ -50,7 +50,7 @@ function nm_section_courses_features_field_group_info() {
   $field_group->parent_name = 'group_course_general';
   $field_group->data = array(
     'label' => 'Features',
-    'weight' => '8',
+    'weight' => '9',
     'children' => array(
       0 => 'field_collaborative_features',
       1 => 'field_access_features',
@@ -85,7 +85,8 @@ function nm_section_courses_features_field_group_info() {
       2 => 'field_long_description',
       3 => 'field_short_description',
       4 => 'field_time_span',
-      5 => 'title',
+      5 => 'field_semester',
+      6 => 'title',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -117,6 +118,7 @@ function nm_section_courses_features_field_group_info() {
       1 => 'group_course_general_data',
       2 => 'group_course_features',
       3 => 'group_courses_vhb',
+      4 => 'group_courses_text',
     ),
     'format_type' => 'htabs',
     'format_settings' => array(
@@ -131,6 +133,35 @@ function nm_section_courses_features_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_courses_text|node|courses_course|form';
+  $field_group->group_name = 'group_courses_text';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'courses_course';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_course_general';
+  $field_group->data = array(
+    'label' => 'Lehrtext',
+    'weight' => '8',
+    'children' => array(
+      0 => 'field_domain_ref',
+      1 => 'field_domain_demo_ref',
+    ),
+    'format_type' => 'htab',
+    'format_settings' => array(
+      'formatter' => 'closed',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-courses-text field-group-htab',
+        'required_fields' => 1,
+        'id' => '',
+      ),
+    ),
+  );
+  $export['group_courses_text|node|courses_course|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_courses_vhb|node|courses_course|form';
   $field_group->group_name = 'group_courses_vhb';
   $field_group->entity_type = 'node';
@@ -139,7 +170,7 @@ function nm_section_courses_features_field_group_info() {
   $field_group->parent_name = 'group_course_general';
   $field_group->data = array(
     'label' => 'VHB Einstellungen',
-    'weight' => '9',
+    'weight' => '10',
     'children' => array(
       0 => 'field_vhb_lvnr',
     ),

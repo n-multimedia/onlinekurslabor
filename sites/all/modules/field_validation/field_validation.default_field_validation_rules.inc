@@ -14,7 +14,7 @@ function field_validation_default_field_validation_rule() {
   $export = array();
 
   $rule = new stdClass;
-  $rule->disabled = FALSE;
+  $rule->disabled = TRUE;
   $rule->api_version = 2;
   $rule->name = 'body_min_words';
   $rule->rulename = 'Body Min words';

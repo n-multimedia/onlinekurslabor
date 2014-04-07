@@ -1,0 +1,54 @@
+<?php
+
+function nm_login_vhb_schema() {
+  $schema['nm_login_vhb'] = array(
+    'description' => "Users that are registrated through the vhb-interface",
+    'fields' => array(
+      'uid' => array(
+        'description' => "Users {users}.uid.",
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'unsigned' => TRUE,
+      ),
+      'archivated' => array(
+        'description' => "Flag if user is archivated.",
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'unsigned' => TRUE,
+      ),
+      'matrikelnummer' => array(
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => "Obfuscated Matrikelnummer",
+      ),
+      'created' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'unsigned' => TRUE,
+        'description' => "Timestamp when the user was registrated.",
+      ),
+    ),
+    'indexes' => array(
+      'user_created' => array('created'),
+      'user_archivated' => array('archivated'),
+    ),
+    'unique keys' => array(
+      'uid' => array('uid'),
+    ),
+  );
+
+  return $schema;
+}
+
+function nm_login_vhb_install() {
+  
+}
+
+function nm_login_vhb_uninstall() {
+  
+}

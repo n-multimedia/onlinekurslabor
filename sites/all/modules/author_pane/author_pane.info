@@ -17,9 +17,9 @@ files[] = modules/user_titles.author-pane.inc
 files[] = modules/userpoints.author-pane.inc
 files[] = content_types/author_pane.inc
 
-; Information added by drupal.org packaging script on 2012-05-12
-version = "7.x-2.0-beta1"
+; Information added by Drupal.org packaging script on 2014-02-21
+version = "7.x-2.0"
 core = "7.x"
 project = "author_pane"
-datestamp = "1336847751"
+datestamp = "1392987849"
 

@@ -24,6 +24,12 @@ function nm_general_features_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 0,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'hidden',
         'module' => 'text',
@@ -66,6 +72,12 @@ function nm_general_features_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
+        'weight' => 0,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -415,7 +427,7 @@ function nm_general_features_field_default_field_instances() {
     'required' => 0,
     'settings' => array(
       'alt_field' => 0,
-      'default_image' => 184,
+      'default_image' => 0,
       'file_directory' => 'profile',
       'file_extensions' => 'png gif jpg jpeg',
       'max_filesize' => '3 MB',

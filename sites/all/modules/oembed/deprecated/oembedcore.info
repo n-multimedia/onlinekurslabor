@@ -11,9 +11,9 @@ files[] = OEmbedStreamWrapper.inc
 files[] = MediaInternetOEmbedHandler.inc
 hidden = TRUE
 
-; Information added by drupal.org packaging script on 2013-02-16
-version = "7.x-0.1-beta4+8-dev"
+; Information added by drupal.org packaging script on 2013-10-01
+version = "7.x-0.x-dev"
 core = "7.x"
 project = "oembed"
-datestamp = "1360978292"
+datestamp = "1380595213"
 
