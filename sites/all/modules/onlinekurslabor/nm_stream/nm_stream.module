@@ -1404,7 +1404,7 @@ function nm_stream_import_status_stream() {
       $fbss_comments = fbss_comments_get_comments($status->sid);
       foreach ($fbss_comments as $comment) {
         // attach comment.
-        $comment = (object) array(
+        $com = (object) array(
               'nid' => $node->nid,
               'cid' => 0,
               'pid' => 0,
@@ -1423,10 +1423,11 @@ function nm_stream_import_status_stream() {
                 )
               ),
         );
-        $comment = comment_submit($comment);
-        $comment->created = $comment->created;
-        $comment->changed = $comment->changed;
-        comment_save($comment);
+        $com = comment_submit($com);
+        $com->created = $comment->created;
+        $com->changed = $comment->created;
+
+        comment_save($com);
       }
     }
   }
