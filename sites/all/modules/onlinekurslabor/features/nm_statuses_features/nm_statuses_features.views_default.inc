@@ -123,6 +123,7 @@ function nm_statuses_features_views_default_views() {
   $handler->display->display_options['fields']['comment-box']['id'] = 'comment-box';
   $handler->display->display_options['fields']['comment-box']['table'] = 'statuses';
   $handler->display->display_options['fields']['comment-box']['field'] = 'comment-box';
+  $handler->display->display_options['fields']['comment-box']['label'] = '';
   $handler->display->display_options['fields']['comment-box']['exclude'] = TRUE;
   /* Feld: Global: Custom text */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
@@ -139,7 +140,7 @@ function nm_statuses_features_views_default_views() {
     <div class="statuses-details">
       <div class="statuses-links">[edit] [delete] [repost]</div> [created]
     </div>
-    <!-- meta -->
+    <!-- meta -->[comment-box]
    [comment-box]
   </div>
 </div>';
@@ -184,7 +185,6 @@ function nm_statuses_features_views_default_views() {
     t('Profil'),
     t('<span class="statuses-sender">[name]</span>'),
     t('Share'),
-    t('Status comment box'),
     t('<div id="statuses-item-[sid]" class="[classes] row-fluid">
   <div class="status_author span1">
   [field_photo]
@@ -195,7 +195,7 @@ function nm_statuses_features_views_default_views() {
     <div class="statuses-details">
       <div class="statuses-links">[edit] [delete] [repost]</div> [created]
     </div>
-    <!-- meta -->
+    <!-- meta -->[comment-box]
    [comment-box]
   </div>
 </div>'),

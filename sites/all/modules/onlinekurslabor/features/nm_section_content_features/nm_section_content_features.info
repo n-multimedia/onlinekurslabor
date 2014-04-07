@@ -20,6 +20,7 @@ dependencies[] = file
 dependencies[] = file_entity
 dependencies[] = filter
 dependencies[] = footnotes
+dependencies[] = h5p_integration
 dependencies[] = htmlpurifier
 dependencies[] = image
 dependencies[] = linkit

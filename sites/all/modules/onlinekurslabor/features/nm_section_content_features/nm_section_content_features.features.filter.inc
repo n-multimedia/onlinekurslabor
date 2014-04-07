@@ -203,8 +203,13 @@ news',
         'status' => 1,
         'settings' => array(),
       ),
-      'media_filter' => array(
+      'filter_content_h5p' => array(
         'weight' => -36,
+        'status' => 1,
+        'settings' => array(),
+      ),
+      'media_filter' => array(
+        'weight' => -35,
         'status' => 1,
         'settings' => array(),
       ),
