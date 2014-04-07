@@ -127,6 +127,8 @@
                             //node_container.find('.nm-stream-main').first().prepend(data.node_edit_form);
                             //html(data.node_edit_form)
                             //attach behavior
+                            node_container.find('textarea').autosize();
+                            
                             Drupal.attachBehaviors(edit_form);
                         }
 
@@ -619,6 +621,7 @@
                             //node_container.find('.nm-stream-main').first().prepend(data.node_edit_form);
                             //html(data.node_edit_form)
                             //attach behavior
+                            edit_form.find('textarea').autosize();
                             Drupal.attachBehaviors(edit_form);
                         } else {
                             comment_container.find('.nm-stream-main').find('form').show();
