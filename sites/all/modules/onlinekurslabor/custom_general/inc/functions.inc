@@ -529,6 +529,20 @@ function _section_course_get_coursegroups($course) {
   return $result->fetchAll();
 }
 
+function _section_course_get_courses() {
+
+  $query = db_select('node', 'n');
+
+  $query->condition('n.nid', 0, '<>')
+      //->condition('n.status', 1, '=')
+      ->condition('n.type', NM_COURSE)
+      ->fields('n', array('nid', 'title','type'));
+
+  $result = $query->execute();
+
+  return $result->fetchAll();
+}
+
 function _section_course_get_num_coursegroups($course) {
 
   return count(_section_course_get_coursegroups($course));

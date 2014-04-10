@@ -1374,6 +1374,9 @@ function section_courses_student_registration_form_validate($form, &$form_state)
 
   $name = "";
   $mail = "";
+  if(isset($form_state['clicked_button'])) {
+    
+  }
   // Random example, if the title is 'test' throw an error
   if ($form_state['values']['users_container']['items'] > 0) {
     foreach ($form_state['values']['users_container']['items'] as $key => $ci) {
