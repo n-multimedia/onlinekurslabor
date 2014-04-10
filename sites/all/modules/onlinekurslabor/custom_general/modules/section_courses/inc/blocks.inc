@@ -9,7 +9,7 @@ function _section_courses_text_biblio_view() {
     'html' => TRUE,
     'query' => array(
       'og_group_ref' => $active_course->nid,
-      ));
+  ));
 
   $path = NM_COURSE_BIBLIO_PATH . '/' . $active_course->nid . '/' . $domain_id;
 
@@ -228,7 +228,7 @@ function _course_header_section_view() {
       'content' => array(
         '#type' => 'markup',
         '#markup' => $output,
-        ));
+    ));
   }
 
   return $block;
@@ -367,7 +367,7 @@ function _section_courses_get_instructor_tools() {
     ),
     'attributes' => array(
       'title' => '',
-      ));
+  ));
 
   /*
     $members_overview_options = $default_options;
@@ -648,7 +648,7 @@ function _section_courses_navtext_to_link($course, $text) {
     'attributes' => array(),
     'query' => array(
       'og_group_ref' => $course_nid,
-      ));
+  ));
 
   $active_node = NULL;
   if ((arg(0) == 'course') && (is_numeric(arg(3)))) {
@@ -732,6 +732,14 @@ function _section_courses_navtext_to_link($course, $text) {
         $num_unread = _section_courses_advanced_forum_get_num_unread($user->uid, $term->tid);
 
         $path = $forum_link;
+
+        //get number of active forum containers and link to first container 
+        //directly if only one cotainer is available
+        $forum_container = taxonomy_get_children($term->tid);
+        if (count($forum_container) == 1) {
+          $path = _section_courses_get_forum_href($course, current($forum_container)->tid);
+        }
+
         $result['path'] = $path;
         $result['link'] = l($text, $path, $options);
 

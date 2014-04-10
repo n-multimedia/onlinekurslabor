@@ -80,7 +80,6 @@ function onlinekurslabor_redirect_preprocess_page($variables) {
   //assuming viewing a panel page
   if (page_manager_get_current_page()) {
 
-
     //note: node type needs to be checked in variants "Selection rules"
     //user in news section
     if (strstr(current_path(), NM_COURSE_NEWS_PATH)) {
