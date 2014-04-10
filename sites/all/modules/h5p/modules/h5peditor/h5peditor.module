@@ -12,25 +12,31 @@
  */
 function h5peditor_menu() {
   $items = array();
-  $h5peditor_access = array('create h5p_content content');
+  //$h5peditor_access = array('create h5p_content content');
 
   $items['h5peditor/libraries'] = array(
     'title' => 'H5peditor Libraries',
     'page callback' => 'h5peditor_libraries_callback',
-    'access arguments' => $h5peditor_access,
+	'access callback' => 'node_access',
+	'access arguments' => array('create', 'h5p_content'), 
+    //'access arguments' => $h5peditor_access,
     'type' => MENU_CALLBACK,
   );
   $items['h5peditor/libraries/%/%/%'] = array(
     'title' => 'H5peditor Library',
     'page callback' => 'h5peditor_library_callback',
     'page arguments' => array(2, 3, 4),
-    'access arguments' => $h5peditor_access,
+	'access callback' => 'node_access',
+	'access arguments' => array('create', 'h5p_content'), 
+    //'access arguments' => $h5peditor_access,
     'type' => MENU_CALLBACK,
   );
   $items['h5peditor/files'] = array(
     'title' => 'H5peditor Files',
     'page callback' => 'h5peditor_files_callback',
-    'access arguments' => $h5peditor_access,
+	'access callback' => 'node_access',
+	'access arguments' => array('create', 'h5p_content'), 
+    //'access arguments' => $h5peditor_access,
     'type' => MENU_CALLBACK,
   );
 
