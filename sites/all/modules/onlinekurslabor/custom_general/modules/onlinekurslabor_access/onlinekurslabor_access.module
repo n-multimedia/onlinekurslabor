@@ -66,7 +66,7 @@ function onlinekurslabor_access_node_grants($account, $op) {
  */
 function onlinekurslabor_access_node_access_records($node) {
 
-  if (!is_object($node) || !og_is_group('node', $node) && $node->type == NM_COURSE) {
+  if (!is_object($node) || !og_is_group('node', $node) || $node->type != NM_COURSE) {
     return;
   }
 
