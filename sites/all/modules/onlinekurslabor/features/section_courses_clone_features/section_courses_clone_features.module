@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the section_courses_clone_features feature.
+ */
+
+include_once 'section_courses_clone_features.features.inc';

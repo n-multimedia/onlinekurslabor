@@ -1363,6 +1363,8 @@ function _nm_stream_add_js_and_css() {
  */
 
 function nm_stream_import_status_stream() {
+  dpm('FUNCTION DEACTIVATED');
+  return;
   //get all course groups
   $nids = custom_general_node_ids_by_type(NM_COURSE_GROUP);
   foreach ($nids as $nid) {

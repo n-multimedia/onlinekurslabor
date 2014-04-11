@@ -529,6 +529,22 @@ function _section_course_get_coursegroups($course) {
   return $result->fetchAll();
 }
 
+function _section_course_get_news($course) {
+
+  $query = db_select('node', 'n');
+
+  $query->condition('n.nid', 0, '<>')
+      ->condition('n.status', 1, '=')
+      ->condition('n.type', NM_COURSE_NEWS)
+      ->fields('n', array('nid', 'title','type'))
+      ->join('og_membership', 'ogm', "ogm.gid = :gid AND n.nid = ogm.etid AND ogm.entity_type = 'node'", array(':gid' => $course->nid));
+
+  $result = $query->execute();
+
+
+  return $result->fetchAll();
+}
+
 function _section_course_get_courses() {
 
   $query = db_select('node', 'n');
