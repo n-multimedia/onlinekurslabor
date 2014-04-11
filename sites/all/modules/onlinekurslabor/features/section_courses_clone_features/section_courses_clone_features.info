@@ -5,6 +5,7 @@ package = Features
 version = 7.x-1.0-alpha1
 project = section_courses_clone_features
 dependencies[] = views
+dependencies[] = section_courses_clone
 features[ctools][] = views:views_default:3.0
 features[features_api][] = api:2
 features[views_view][] = nm_courses_clone
