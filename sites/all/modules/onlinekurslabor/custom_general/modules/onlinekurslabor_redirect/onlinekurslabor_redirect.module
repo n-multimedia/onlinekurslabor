@@ -63,6 +63,7 @@ function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
       //redirect rules for domains and chapters
       case NM_CONTENT_DOMAIN:
       case NM_CONTENT_CHAPTER:
+      case NM_INTERACTIVE_CONTENT:
         //forum 
         drupal_goto(NM_CONTENT_TEXT_PATH . '/' . $node->nid);
         break;
