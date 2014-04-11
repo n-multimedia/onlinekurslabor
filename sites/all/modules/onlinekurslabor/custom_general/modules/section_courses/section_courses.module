@@ -1375,6 +1375,13 @@ function _section_courses_student_registration_import($input) {
       $acc = user_load_by_mail($email);
 
       if ($acc) {
+        //account activation, if account has not been activated yet
+        if (!$acc->status) {
+
+          $acc->status = 1;
+          user_save($acc);
+        }
+
         //hadnle ajax callbacks
         if (arg(0) == 'system' && arg(1) == 'ajax') {
           $referer_url = drupal_parse_url($_SERVER['HTTP_REFERER']);
