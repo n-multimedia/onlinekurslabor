@@ -93,6 +93,8 @@ function section_courses_clone_course_submit($form_id, $form_state) {
  */
 function section_courses_clone_course(&$entity, $context = array()) {
 
+  watchdog('section_courses_clone', 'Cloning Course %nid', array('%nid' => $entity->nid), WATCHDOG_ERROR);
+  
   //clone entity
   //unset($entity->nid);
   //node_save($entiy);

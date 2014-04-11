@@ -1365,7 +1365,11 @@ function section_courses_student_registration_import_callback($form, $form_state
 
 function _section_courses_student_registration_import($input) {
 
+  $input = check_plain($input);
+
   if (!empty($input)) {
+    watchdog('section_courses', 'Importing user list %input', array('%input' => $input), WATCHDOG_ERROR);
+
     $emails = explode("\n", $input);
 
     $success = array();
