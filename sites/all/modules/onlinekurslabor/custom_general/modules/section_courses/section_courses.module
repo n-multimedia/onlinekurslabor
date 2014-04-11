@@ -1368,7 +1368,7 @@ function _section_courses_student_registration_import($input) {
   $input = check_plain($input);
 
   if (!empty($input)) {
-    watchdog('section_courses', 'Importing user list %input', array('%input' => $input), WATCHDOG_ERROR);
+    watchdog('section_courses', 'Importing user list %input', array('%input' => $input), WATCHDOG_INFO);
 
     $emails = explode("\n", $input);
 
@@ -1376,13 +1376,24 @@ function _section_courses_student_registration_import($input) {
     $already_in = array();
     $missing_accounts = array();
     foreach ($emails as $email) {
+      if(empty($email)) {
+        //ignore empty lines
+        continue;
+      }
+      
       $acc = user_load_by_mail($email);
 
       if ($acc) {
         //account activation, if account has not been activated yet
         if (!$acc->status) {
-
+          
+          //activate
           $acc->status = 1;
+          
+          //add role
+          $role = user_role_load_by_name(NM_ROLE_STUDENT);
+          $acc->roles = array($role->rid => $role->name);
+          
           user_save($acc);
         }
 
