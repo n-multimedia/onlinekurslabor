@@ -3,6 +3,8 @@ description = embed h5p content in a text
 package = custom
 
 
+dependencies[] = h5p_annotationlist
+
 core = 7.x
 
 ; Information added by drupal.org packaging script on 2013-02-25

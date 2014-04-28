@@ -1,4 +1,4 @@
-
+alert("start");
 // Create the dialog namespace.
 Drupal.h5p_integration = Drupal.custom_general || {};
 Drupal.h5p_integration.h5pDialogButtons = Drupal.h5p_integration.h5pDialogButtons || {};
@@ -101,7 +101,7 @@ Drupal.h5p_integration.h5pDialogButtons = Drupal.h5p_integration.h5pDialogButton
   
   Drupal.behaviors.h5pDialogButtons = {
     attach: function (context, settings) {
-      $('#linkit-modal #-h5p-course-integration-dashboard-form #edit-h5p-insert', context).bind('click', function() {
+      $('#linkit-modal #-h5p-integration-dashboard-form #edit-h5p-insert', context).bind('click', function() {
 
         var linkitCache = Drupal.linkit.getLinkitCache();
         //console.log(linkitCache);
@@ -109,7 +109,7 @@ Drupal.h5p_integration.h5pDialogButtons = Drupal.h5p_integration.h5pDialogButton
         Drupal.linkit.editorDialog[linkitCache.editorName].insertH5PTag(Drupal.h5p_integration.getH5PTag());
         // Close the dialog.
         Drupal.linkit.dialog.close();
-        
+        alert("return false");
         return false;
       });
       
@@ -203,3 +203,4 @@ Drupal.h5p_integration.h5pDialogButtons = Drupal.h5p_integration.h5pDialogButton
   };
   
 })(jQuery);
+alert("ende");

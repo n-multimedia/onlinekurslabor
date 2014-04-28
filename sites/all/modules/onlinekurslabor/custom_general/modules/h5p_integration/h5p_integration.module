@@ -15,7 +15,7 @@ function h5p_integration_wysiwyg_plugin($editor, $version) {
         'h5p_integration_plugin' => array(
           'path' => drupal_get_path('module', 'h5p_integration') . '/wysiwyg_plugin',
           'buttons' => array(
-            'h5p_button' => t('Interactive Content'),
+            'h5p_button' => t('H5P Interactive Content'),
           ),
           'load' => TRUE,
         ),
