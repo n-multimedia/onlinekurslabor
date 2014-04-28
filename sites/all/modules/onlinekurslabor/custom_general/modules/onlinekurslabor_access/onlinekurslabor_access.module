@@ -40,3 +40,46 @@ function onlinekurslabor_access_fbss_comments_has_permission_alter(&$allow, $op,
     }
   }
 }
+
+/**
+ * Implements hook_node_grants().
+ */
+function onlinekurslabor_access_node_grants($account, $op) {
+
+  if ($op != 'view') {
+    return;
+  }
+
+  $grants = array();
+  $courses = _section_course_get_courses();
+  
+  $realm = 'onlinekurslabor_access';
+  foreach ($courses as $course) {
+    $grants[$realm][] = $course->nid;
+  }
+
+  return !empty($grants) ? $grants : array();
+}
+
+/**
+ * Implements hook_node_access_records().
+ */
+function onlinekurslabor_access_node_access_records($node) {
+
+  if (!is_object($node) || !og_is_group('node', $node) || $node->type != NM_COURSE) {
+    return;
+  }
+
+  $grants[] = array(
+    'realm' => 'onlinekurslabor_access',
+    'gid' => $node->nid,
+    'grant_view' => 1,
+    'grant_update' => 0,
+    'grant_delete' => 0,
+    'priority' => 0,
+  );
+
+
+
+  return !empty($grants) ? $grants : array();
+}

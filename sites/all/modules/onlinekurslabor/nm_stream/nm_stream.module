@@ -63,7 +63,7 @@ function nm_stream_menu() {
   );
 
   $items['nm_stream/node/%node/load'] = array(
-    'title' => 'Add NM Stream Comment',
+    'title' => 'Load node',
     'page callback' => 'nm_stream_nm_stream_node_load_callback',
     'page arguments' => array(2),
     'access arguments' => array('access content'),
@@ -155,19 +155,25 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
   //new added nodes
   //topmost node could have been deleted from another user
   $node = node_load($nid);
-  if ($node) {
+  //0 is beeing transmitted if no node exists yet
+  //-1 if just the update status is interesting
+  if ($node || $nid == 0) {
+
     //get nm_stream nodes where created > $node->created
     $query = db_select('node', 'n');
     $query->addField('n', 'nid');
 
+    if ($nid > 0) {
+      $query->condition('n.created', $node->created, '>');
+    }
+    
     $query
         //->condition('n.nid', $node->nid, '>')
-        ->condition('n.created', $node->created, '>')
         ->condition('n.type', 'nm_stream')
         ->condition('n.status', NODE_PUBLISHED)
         ->orderBy("n.nid", "DESC") //order important!
         ->addTag('node_access');
-
+    
 
     //01.04.2014 - 22:53 - SN context needed
     //if we are in a special context e.g. course group, we just want to see 
@@ -181,6 +187,7 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
     }
 
     $results = $query->execute()->fetchAll();
+    
 
     $output = '';
     foreach ($results as $result) {
@@ -1064,7 +1071,7 @@ function nm_stream_preprocess_nm_stream_stream_node_form(&$vars) {
    */
 
   //01.04.2014 - 22:47 - SN disabled - because of panel error
-  //_nm_stream_add_js_and_css();
+  _nm_stream_add_js_and_css();
 
 
   $account = clone $user;
@@ -1330,11 +1337,34 @@ function _nm_stream_render_node_attachments($node) {
   return $output;
 }
 
+function _nm_stream_add_js_and_css() {
+  //solving panel error
+
+  if (!path_is_admin(current_path())) {
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/nm_stream.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.autosize.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.ddslick.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/bootbox.js");
+
+    //upload
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.MultiFile.js");
+    //ajax file upload 
+    //drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.form.js");
+
+    drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream.css');
+
+    //upload
+    drupal_add_css(drupal_get_path('module', 'nm_stream') . "/js/jQuery-File-Upload-9.5.7/css/jquery.fileupload.css");
+  }
+}
+
 /*
  * import all old status messages 
  */
 
 function nm_stream_import_status_stream() {
+  dpm('FUNCTION DEACTIVATED');
+  return;
   //get all course groups
   $nids = custom_general_node_ids_by_type(NM_COURSE_GROUP);
   foreach ($nids as $nid) {
@@ -1376,7 +1406,7 @@ function nm_stream_import_status_stream() {
       $fbss_comments = fbss_comments_get_comments($status->sid);
       foreach ($fbss_comments as $comment) {
         // attach comment.
-        $comment = (object) array(
+        $com = (object) array(
               'nid' => $node->nid,
               'cid' => 0,
               'pid' => 0,
@@ -1395,29 +1425,14 @@ function nm_stream_import_status_stream() {
                 )
               ),
         );
-        comment_submit($comment);
-        comment_save($comment);
+        $com = comment_submit($com);
+        $com->created = $comment->created;
+        $com->changed = $comment->created;
+
+        comment_save($com);
       }
     }
   }
-}
-
-function _nm_stream_add_js_and_css() {
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/nm_stream.js");
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.autosize.js");
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.ddslick.js");
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/bootbox.js");
-
-  //upload
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.MultiFile.js");
-  //ajax file upload 
-  //drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.form.js");
-
-
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream.css');
-
-  //upload
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . "/js/jQuery-File-Upload-9.5.7/css/jquery.fileupload.css");
 }
 
 /**

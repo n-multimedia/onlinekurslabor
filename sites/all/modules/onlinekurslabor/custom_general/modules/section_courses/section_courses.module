@@ -666,7 +666,17 @@ function section_courses_text_outline() {
   }
  */
 
-function section_content_node_presave($node) {
+//11.04.2014 - 00:51 - SN changed presave to insert hook
+//prevent errors on node creation!
+function section_content_node_insert($node) {
+  _section_content_add_form_container($node);
+}
+
+function section_content_node_update($node) {
+  _section_content_add_form_container($node);
+}
+
+function _section_content_add_form_container($node) {
   if ($node->type == NM_COURSE) {
     //Add Form Container for the Course, if form feature is set
     //$lang = field_language('node', $node, 'field_collaborative_features');
@@ -1220,66 +1230,108 @@ function section_courses_student_registration_form($form, &$form_state) {
   // Creation of a phone field and its container, hidden by default.
 
   $form['#tree'] = TRUE;
-  $form['users_container'] = array(
+
+
+  $form['import_container'] = array(
     '#type' => 'fieldset',
-    //'#title' => 'Student(en) hinzufügen',
-    // Set up the wrapper so that AJAX will be able to replace the fieldset.
-    '#prefix' => '<div id="students-add-wrapper">',
+    '#prefix' => '<div id="students-import-wrapper">',
     '#suffix' => '</div>',
+      //'#title' => 'Student(en) hinzufügen',
+      // Set up the wrapper so that AJAX will be able to replace the fieldset.
   );
 
-  /* if a count set, create a number of user fields */
-  if (isset($form_state['users_num'])) {
-    $users_num = $form_state['users_num'];
-  }
-  else {
-    $form_state['users_num'] = 1;
-    $users_num = 1;
-  }
-
-  // Add the current choices to the form.
-  for ($i = 0; $i < $users_num; $i++) {
-    $form['users_container']['items'][$i . 'prefix'] = array(
-      '#prefix' => '<span class="badge badge-info">#' . ($i + 1) . '</span>',
+  if (isset($form_state['triggering_element']['#id']) && strstr($form_state['triggering_element']['#id'], 'import')) {
+    $output_msg = _section_courses_student_registration_import($form_state['values']['import_container']['import_users']);
+    $form['import_container']['import_message'] = array(
+      '#markup' => $output_msg,
     );
-    $form['users_container']['items'][$i] = section_courses_student_registration_fields();
   }
 
-  $form['users_container']['add_user_num'] = array(
-    //'#prefix' => '<div class="controls"><div class="input-prepend"><span class="add-on">#</span>',
-    //'#suffix' => '</div></div>',
-    //'#title' => 'Anzahl',
-    //'#description' => 'choose a username',
-    '#type' => 'textfield',
-    '#default_value' => '1',
-    '#attributes' => array('class' => array('input-small')),
-    '#maxlength' => 2,
+
+
+  $form['import_container']['import_users'] = array(
+    '#title' => t('Import List'),
+    '#type' => 'textarea',
+    '#description' => 'Import registrated users into course and active theit accounts if they are locked. <em>One email address per line</em>',
   );
 
-  $form['users_container']['add_user'] = array(
-    '#type' => 'submit',
-    '#value' => '<i class="icon-plus icon-white"></i> Zeilen',
-    '#submit' => array('section_courses_student_registration_fields_add_one'),
-    '#attributes' => array('class' => array('btn-success')),
+
+  $form['import_container']['import'] = array(
+    '#type' => 'button',
+    '#value' => '<i class="icon-user icon-white"></i> Import',
+    '#submit' => array('section_courses_student_registration_import_submit'),
+    '#attributes' => array('class' => array('btn-warning')),
     // See the examples in ajax_example.module for more details on the
     // properties of #ajax.
     '#ajax' => array(
-      'callback' => 'section_courses_student_registration_fields_callback',
-      'wrapper' => 'students-add-wrapper',
+      'callback' => 'section_courses_student_registration_import_callback',
+      'wrapper' => 'students-import-wrapper',
     ),
   );
 
+
+
+
+//
+//    $form['users_container'] = array(
+//      '#type' => 'fieldset',
+//      //'#title' => 'Student(en) hinzufügen',
+//      // Set up the wrapper so that AJAX will be able to replace the fieldset.
+//      '#prefix' => '<div id="students-add-wrapper">',
+//      '#suffix' => '</div>',
+//    );
+//    /* if a count set, create a number of user fields */
+//    if (isset($form_state['users_num'])) {
+//      $users_num = $form_state['users_num'];
+//    }
+//    else {
+//      $form_state['users_num'] = 1;
+//      $users_num = 1;
+//    }
+//
+//    // Add the current choices to the form.
+//    for ($i = 0; $i < $users_num; $i++) {
+//      $form['users_container']['items'][$i . 'prefix'] = array(
+//        '#prefix' => '<span class="badge badge-info">#' . ($i + 1) . '</span>',
+//      );
+//      $form['users_container']['items'][$i] = section_courses_student_registration_fields();
+//    }
+//
+//    $form['users_container']['add_user_num'] = array(
+//      //'#prefix' => '<div class="controls"><div class="input-prepend"><span class="add-on">#</span>',
+//      //'#suffix' => '</div></div>',
+//      //'#title' => 'Anzahl',
+//      //'#description' => 'choose a username',
+//      '#type' => 'textfield',
+//      '#default_value' => '1',
+//      '#attributes' => array('class' => array('input-small')),
+//      '#maxlength' => 2,
+//    );
+//
+//    $form['users_container']['add_user'] = array(
+//      '#type' => 'submit',
+//      '#value' => '<i class="icon-plus icon-white"></i> Zeilen',
+//      '#submit' => array('section_courses_student_registration_fields_add_one'),
+//      '#attributes' => array('class' => array('btn-success')),
+//      // See the examples in ajax_example.module for more details on the
+//      // properties of #ajax.
+//      '#ajax' => array(
+//        'callback' => 'section_courses_student_registration_fields_callback',
+//        'wrapper' => 'students-add-wrapper',
+//      ),
+//    );
+//
 
   /*
     $form['users_container']['#tree'] = TRUE;
     $form['users_container'][] = section_courses_student_registration_fields();
    */
-
-  $form['submit'] = array(
+  /*
+    $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save'),
-  );
-
+    );
+   */
   /*
     $type_name = 'student';
     $form_state['profiles'][$type_name] = profile2_create(array('type' => $type_name));
@@ -1300,7 +1352,118 @@ function section_courses_student_registration_fields_callback($form, $form_state
 }
 
 /**
+ * Callback for both ajax-enabled buttons.
+ *
+ * Selects and returns the fieldset with the names in it.
+ */
+function section_courses_student_registration_import_callback($form, $form_state) {
+
+  $form_state['rebuild'] = TRUE;
+
+  return $form['import_container']; //$form['import_container'];
+}
+
+function _section_courses_student_registration_import($input) {
+
+  $input = check_plain($input);
+
+  if (!empty($input)) {
+    watchdog('section_courses', 'Importing user list %input', array('%input' => $input), WATCHDOG_INFO);
+
+    $emails = explode("\n", $input);
+
+    $success = array();
+    $already_in = array();
+    $missing_accounts = array();
+    foreach ($emails as $email) {
+      if(empty($email)) {
+        //ignore empty lines
+        continue;
+      }
+      
+      $acc = user_load_by_mail($email);
+
+      if ($acc) {
+        //account activation, if account has not been activated yet
+        if (!$acc->status) {
+          
+          //activate
+          $acc->status = 1;
+          
+          //add role
+          $role = user_role_load_by_name(NM_ROLE_STUDENT);
+          $acc->roles = array($role->rid => $role->name);
+          
+          user_save($acc);
+        }
+
+        //hadnle ajax callbacks
+        if (arg(0) == 'system' && arg(1) == 'ajax') {
+          $referer_url = drupal_parse_url($_SERVER['HTTP_REFERER']);
+          $referer_url['path'] = substr(parse_url($referer_url['path'], PHP_URL_PATH), 1);
+
+          if (arg(0, $referer_url['path']) == 'course' && arg(1, $referer_url['path']) == 'admin') {
+            $active_course = node_load(arg(2, $referer_url['path']));
+          }
+        }
+        else {
+          //assign user to active group
+          $active_course = _section_courses_get_active_course();
+        }
+
+
+        if (og_is_member('node', $active_course->nid, 'user', $acc, array(OG_STATE_ACTIVE))) {
+          //already member
+          $already_in[] = $email;
+        }
+        else {
+          //not a member yet
+          //add to group
+          $values = array(
+            'entity type' => 'user',
+            'entity' => $acc,
+          );
+          og_group('node', $active_course->nid, $values);
+
+          $success[] = $email;
+        }
+      }
+      else {
+        $missing_accounts[] = $email;
+      }
+    }
+
+    $output = '';
+
+
+
+    //missing
+    if ($missing_accounts)
+      $output .= '<div class="alert alert-error"><h3>Kein Account vorhanden</h3><h5>Für folgende Einträge</h5>' . '<ol style="padding:0 0 0 25px;margin:0;margin-bottom: 20px;"><li>' . implode('</li><li>', $missing_accounts) . "</li>" . '</ol></div>';
+    //already in
+    if ($already_in)
+      $output .= '<div class="alert alert-warning"><h3>Bereits im Kurs</h3><h5>Für folgende Einträge</h5>' . '<ol style="padding:0 0 0 25px;margin:0;margin-bottom: 20px;"><li>' . implode('</li><li>', $already_in) . "</li>" . '</ol></div>';
+    //successfully addded
+    if ($success)
+      $output .= '<div class="alert alert-success"><h3>Erfolgreich hinzugefügt</h3><h5>Für folgende Einträge</h5>' . '<ol style="padding:0 0 0 25px;margin:0;margin-bottom: 20px;"><li>' . implode('</li><li>', $success) . "</li>" . '</ol></div>';
+  }
+
+  return $output;
+}
+
+/**
  * Submit handler for the "add-one-more" button.
+ *
+ * Increments the max counter and causes a rebuild.
+ */
+function section_courses_student_registration_import_submit($form, &$form_state) {
+
+  return;
+  $form_state['import_response'] = 'import submitted';
+}
+
+/**
+ * Submit handler for the "import" button.
  *
  * Increments the max counter and causes a rebuild.
  */
@@ -1370,10 +1533,16 @@ function section_courses_student_registration_fields() {
 }
 
 function section_courses_student_registration_form_validate($form, &$form_state) {
+
+  //todo check for clicked button
+  return;
   $account = drupal_anonymous_user();
 
   $name = "";
   $mail = "";
+  if (isset($form_state['clicked_button'])) {
+    
+  }
   // Random example, if the title is 'test' throw an error
   if ($form_state['values']['users_container']['items'] > 0) {
     foreach ($form_state['values']['users_container']['items'] as $key => $ci) {

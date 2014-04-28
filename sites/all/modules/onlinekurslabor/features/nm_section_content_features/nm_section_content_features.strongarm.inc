@@ -342,7 +342,7 @@ function nm_section_content_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'biblio_orphan_clean_next_execution';
-  $strongarm->value = 1394724319;
+  $strongarm->value = 1396954154;
   $export['biblio_orphan_clean_next_execution'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -1692,8 +1692,8 @@ function nm_section_content_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'media__wysiwyg_allowed_types';
   $strongarm->value = array(
-    0 => 'video',
-    1 => 'image',
+    0 => 'image',
+    1 => 'video',
     2 => 'audio',
     3 => 'document',
   );

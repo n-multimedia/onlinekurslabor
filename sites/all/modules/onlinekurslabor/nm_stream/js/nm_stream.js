@@ -127,6 +127,8 @@
                             //node_container.find('.nm-stream-main').first().prepend(data.node_edit_form);
                             //html(data.node_edit_form)
                             //attach behavior
+                            node_container.find('textarea').autosize();
+                            
                             Drupal.attachBehaviors(edit_form);
                         }
 
@@ -207,7 +209,7 @@
                                 //add new node
                                 if (data.status === 1) {
                                     //display new Post
-                                    var new_node = $('.nm-stream-node-container').closest('.view-content').prepend($(data.node).fadeIn());
+                                    var new_node = $('.pane-nm-stream .view-content .views-row').first().prepend($(data.node).fadeIn());
                                     //fix, new nodes could not be edited without views-row div around
                                     //attach behavior
                                     Drupal.attachBehaviors(new_node);
@@ -247,8 +249,13 @@
                             //reset textarea
                             form_container.find('textarea').val('');
 
-                            //display new Post
-                            var new_node = $('.nm-stream-node-container').closest('.view-content').prepend($(data.node).fadeIn());
+                            
+                            //if($('.nm-stream-node-container').closest('.view-content').length > 0) {
+                              //display new Post
+                            var new_node = $('.pane-nm-stream .view-content .views-row').first().prepend($(data.node).fadeIn());
+           
+                            //}
+                            
                             //fix, new nodes could not be edited without views-row div around
                             //attach behavior
                             Drupal.attachBehaviors(new_node);
@@ -614,6 +621,7 @@
                             //node_container.find('.nm-stream-main').first().prepend(data.node_edit_form);
                             //html(data.node_edit_form)
                             //attach behavior
+                            edit_form.find('textarea').autosize();
                             Drupal.attachBehaviors(edit_form);
                         } else {
                             comment_container.find('.nm-stream-main').find('form').show();
@@ -712,7 +720,6 @@
 
 
                             } else {
-
 
                                 //append new node
                                 var new_node = post_button.closest('.nm-stream-node-container').before($(data.node).fadeIn());
@@ -953,14 +960,13 @@
              */
 
             //potential error source, if we do not have view-content class wrapper
-            $('.view-content').first().once('nm_stream', function() {
+            $('.pane-nm-stream').once('nm_stream', function() {
                 nm_stream_get_update();
                 //append iframe for uploads
                 $(this).parent().parent().append('<iframe id="nm_stream_hidden_upload" src="" name="nm_stream_hidden_upload" style="width:0;height:0;border:0px solid #fff; position:absolute;"></iframe>');
             });
 
             function nm_stream_get_update() {
-              return;
                 //pause update actions
                 //case:
                 //submitting content where updates are transmitted in response messages
@@ -973,11 +979,13 @@
 
                 var last_node = $('.nm-stream-node-container').first();
                 
-                if(last_node.length === 0)
-                  return;
+                var nid = 0;
+                //if no node has been posted yet
+                if(last_node.length !== 0) {
+                  var regresult = $(last_node).attr('id').split('-');
+                  nid = regresult.pop();
+                }
 
-                var regresult = $(last_node).attr('id').split('-');
-                var nid = regresult.pop();
                 var url = '/nm_stream/node/' + nid + '/get_update';
 
                 $.ajax({
@@ -1026,10 +1034,11 @@
             function nm_stream_handle_node_updates(data) {
 
                 //NODES
-                var last_node = $('.nm-stream-node-container').first();
+                var view_container = $('.pane-nm-stream .view-content .views-row').first();
 
                 if (typeof data.new_nodes !== 'undefined') {
-                    var new_nodes = last_node.parent().prepend($(data.new_nodes).fadeIn());
+                    console.log(data);
+                    var new_nodes = view_container.prepend($(data.new_nodes).fadeIn());
 
                     Drupal.attachBehaviors(new_nodes);
                 }
@@ -1041,8 +1050,10 @@
                     for (var nid in data.changed_nodes) {
                         var new_top = $(data.changed_nodes[nid]).find('.nm-stream-top').html();
                         var new_body = $(data.changed_nodes[nid]).find('.nm-stream-main-body').html();
+                        var new_attachments = $(data.changed_nodes[nid]).find('.nm-stream-attachments').html();
                         var node_top_changed = $('#nm-stream-node-' + nid).find('.nm-stream-top').first().html(new_top);
                         var node_body_changed = $('#nm-stream-node-' + nid).find('.nm-stream-main-body').first().html(new_body);
+                        var node_attachments_changed = $('#nm-stream-node-' + nid).find('.nm-stream-attachments').first().html(new_attachments);
 
                         Drupal.attachBehaviors(node_top_changed);
                     }

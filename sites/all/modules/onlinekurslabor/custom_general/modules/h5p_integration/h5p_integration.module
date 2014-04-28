@@ -32,7 +32,7 @@ function h5p_integration_menu() {
 
   $items = array();
 
-  $items['admin/h5p_course_interactive_content_dashbord'] = array(
+  $items['admin/h5p_interactive_content_dashbord'] = array(
     'title' => 'Interactive Content',
     'description' => 'Interactive Content Auswahl',
     'page callback' => '_h5p_integration_dashboard',

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the nm_h5p_features feature.
+ */
+
+include_once 'nm_h5p_features.features.inc';

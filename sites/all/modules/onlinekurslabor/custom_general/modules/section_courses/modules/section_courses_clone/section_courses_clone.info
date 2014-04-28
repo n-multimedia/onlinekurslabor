@@ -1,0 +1,10 @@
+name = Section Courses Clone
+description = provides clone function for courses
+package = custom
+dependencies[] = section_courses
+
+core = 7.x
+
+; Information added by drupal.org packaging script on 2013-02-25
+version = "7.x-1.x"
+core = "7.x"

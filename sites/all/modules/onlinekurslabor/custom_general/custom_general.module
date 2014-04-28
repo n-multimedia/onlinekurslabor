@@ -787,7 +787,16 @@ function _custom_general_set_default_image(&$field, $filename, $source, $destina
       $file->filemime = file_get_mimetype($source);
       $file->uid = 1;
       $file->status = 1;
-      $file = file_copy($file, 'public://default_images/', FILE_EXISTS_REPLACE);
+      $file = file_copy($file, 'public://default_images', FILE_EXISTS_REPLACE);
+      
+      if(!$file){
+        watchdog('custom general', 'Default image could not be set', null, WATCHDOG_ERROR);
+        
+        return;
+        
+      }
+        
+      
       $fid = $file->fid;
     }
     // field_config key no longer seems to exist.

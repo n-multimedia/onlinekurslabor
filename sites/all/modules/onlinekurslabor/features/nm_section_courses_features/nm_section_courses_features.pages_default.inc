@@ -76,11 +76,11 @@ function nm_section_courses_features_default_page_manager_handlers() {
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = 'df37f9de-8f65-4986-bde2-106996793063';
+  $display->uuid = 'bae68106-8056-4354-aadf-8d646dd29a98';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-0380b77c-1be3-4a1f-b485-4b1d37a3146f';
+    $pane->pid = 'new-df961a10-10be-4faa-a01d-ca9f92c26ebf';
     $pane->panel = 'news';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -127,9 +127,9 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '0380b77c-1be3-4a1f-b485-4b1d37a3146f';
-    $display->content['new-0380b77c-1be3-4a1f-b485-4b1d37a3146f'] = $pane;
-    $display->panels['news'][0] = 'new-0380b77c-1be3-4a1f-b485-4b1d37a3146f';
+    $pane->uuid = 'df961a10-10be-4faa-a01d-ca9f92c26ebf';
+    $display->content['new-df961a10-10be-4faa-a01d-ca9f92c26ebf'] = $pane;
+    $display->panels['news'][0] = 'new-df961a10-10be-4faa-a01d-ca9f92c26ebf';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -152,16 +152,7 @@ return drupal_render($form);
     'css_id' => '',
     'css' => '',
     'contexts' => array(),
-    'relationships' => array(
-      0 => array(
-        'identifier' => 'Profile2 from user',
-        'keyword' => 'profile2',
-        'name' => 'profile2',
-        'type' => 'master',
-        'context' => 'argument_entity_id:user_1',
-        'id' => 1,
-      ),
-    ),
+    'relationships' => array(),
     'access' => array(
       'plugins' => array(
         0 => array(
@@ -195,11 +186,11 @@ return drupal_render($form);
   );
   $display->cache = array();
   $display->title = '<none>';
-  $display->uuid = '134cf04a-caae-4e11-b3c5-b3f6f3755b6e';
+  $display->uuid = 'e5d28afc-8c87-4207-bde9-49f7826ec6d2';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-f4480fab-a0e9-4f85-8c6a-bbbfad7590d7';
+    $pane->pid = 'new-90b30581-91b8-4240-90ea-2fed182a3d79';
     $pane->panel = 'center';
     $pane->type = 'block';
     $pane->subtype = 'statuses-statuses';
@@ -234,11 +225,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'f4480fab-a0e9-4f85-8c6a-bbbfad7590d7';
-    $display->content['new-f4480fab-a0e9-4f85-8c6a-bbbfad7590d7'] = $pane;
-    $display->panels['center'][0] = 'new-f4480fab-a0e9-4f85-8c6a-bbbfad7590d7';
+    $pane->uuid = '90b30581-91b8-4240-90ea-2fed182a3d79';
+    $display->content['new-90b30581-91b8-4240-90ea-2fed182a3d79'] = $pane;
+    $display->panels['center'][0] = 'new-90b30581-91b8-4240-90ea-2fed182a3d79';
     $pane = new stdClass();
-    $pane->pid = 'new-157d9fe5-b0ee-4345-8e25-0b1421212234';
+    $pane->pid = 'new-e6efca4b-7261-40eb-911c-470487862428';
     $pane->panel = 'left';
     $pane->type = 'token';
     $pane->subtype = 'user:name';
@@ -278,11 +269,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '157d9fe5-b0ee-4345-8e25-0b1421212234';
-    $display->content['new-157d9fe5-b0ee-4345-8e25-0b1421212234'] = $pane;
-    $display->panels['left'][0] = 'new-157d9fe5-b0ee-4345-8e25-0b1421212234';
+    $pane->uuid = 'e6efca4b-7261-40eb-911c-470487862428';
+    $display->content['new-e6efca4b-7261-40eb-911c-470487862428'] = $pane;
+    $display->panels['left'][0] = 'new-e6efca4b-7261-40eb-911c-470487862428';
     $pane = new stdClass();
-    $pane->pid = 'new-7097330a-7b7f-4ab1-a41a-1539062342db';
+    $pane->pid = 'new-040d7151-b887-4283-83cc-002f8dee1ee7';
     $pane->panel = 'left';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_node_tabs';
@@ -300,11 +291,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = '7097330a-7b7f-4ab1-a41a-1539062342db';
-    $display->content['new-7097330a-7b7f-4ab1-a41a-1539062342db'] = $pane;
-    $display->panels['left'][1] = 'new-7097330a-7b7f-4ab1-a41a-1539062342db';
+    $pane->uuid = '040d7151-b887-4283-83cc-002f8dee1ee7';
+    $display->content['new-040d7151-b887-4283-83cc-002f8dee1ee7'] = $pane;
+    $display->panels['left'][1] = 'new-040d7151-b887-4283-83cc-002f8dee1ee7';
     $pane = new stdClass();
-    $pane->pid = 'new-24beb24d-acc2-4981-b054-56f3976546b1';
+    $pane->pid = 'new-35ad4056-6b4f-456a-8b63-ca4a825990d8';
     $pane->panel = 'left';
     $pane->type = 'entity_field';
     $pane->subtype = 'profile2:field_photo';
@@ -332,11 +323,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $pane->uuid = '24beb24d-acc2-4981-b054-56f3976546b1';
-    $display->content['new-24beb24d-acc2-4981-b054-56f3976546b1'] = $pane;
-    $display->panels['left'][2] = 'new-24beb24d-acc2-4981-b054-56f3976546b1';
+    $pane->uuid = '35ad4056-6b4f-456a-8b63-ca4a825990d8';
+    $display->content['new-35ad4056-6b4f-456a-8b63-ca4a825990d8'] = $pane;
+    $display->panels['left'][2] = 'new-35ad4056-6b4f-456a-8b63-ca4a825990d8';
     $pane = new stdClass();
-    $pane->pid = 'new-ded26c45-f7c6-4641-8f14-96cfb76a5a4f';
+    $pane->pid = 'new-11ece18e-0ecb-4673-a6c7-44c6224efc33';
     $pane->panel = 'left';
     $pane->type = 'views';
     $pane->subtype = 'courses_user_courses';
@@ -352,11 +343,14 @@ return drupal_render($form);
       'feed_icons' => 0,
       'panel_args' => 0,
       'link_to_view' => 0,
-      'args' => '%1',
+      'args' => '',
       'url' => '',
       'display' => 'default',
       'override_title' => 1,
       'override_title_text' => 'Meine Kurse',
+      'context' => array(
+        0 => 'argument_entity_id:user_1.uid',
+      ),
     );
     $pane->cache = array();
     $pane->style = array(
@@ -383,11 +377,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 3;
     $pane->locks = array();
-    $pane->uuid = 'ded26c45-f7c6-4641-8f14-96cfb76a5a4f';
-    $display->content['new-ded26c45-f7c6-4641-8f14-96cfb76a5a4f'] = $pane;
-    $display->panels['left'][3] = 'new-ded26c45-f7c6-4641-8f14-96cfb76a5a4f';
+    $pane->uuid = '11ece18e-0ecb-4673-a6c7-44c6224efc33';
+    $display->content['new-11ece18e-0ecb-4673-a6c7-44c6224efc33'] = $pane;
+    $display->panels['left'][3] = 'new-11ece18e-0ecb-4673-a6c7-44c6224efc33';
     $pane = new stdClass();
-    $pane->pid = 'new-609b2059-c7b2-45b1-a4ec-dfd4f3e45d56';
+    $pane->pid = 'new-5020e69c-0387-488d-8699-1e0a1e76958a';
     $pane->panel = 'right';
     $pane->type = 'entity_field';
     $pane->subtype = 'profile2:field_birthday';
@@ -435,11 +429,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '609b2059-c7b2-45b1-a4ec-dfd4f3e45d56';
-    $display->content['new-609b2059-c7b2-45b1-a4ec-dfd4f3e45d56'] = $pane;
-    $display->panels['right'][0] = 'new-609b2059-c7b2-45b1-a4ec-dfd4f3e45d56';
+    $pane->uuid = '5020e69c-0387-488d-8699-1e0a1e76958a';
+    $display->content['new-5020e69c-0387-488d-8699-1e0a1e76958a'] = $pane;
+    $display->panels['right'][0] = 'new-5020e69c-0387-488d-8699-1e0a1e76958a';
     $pane = new stdClass();
-    $pane->pid = 'new-e1e38b60-2978-4a21-9229-358d1b0c9005';
+    $pane->pid = 'new-de2a8900-4d23-4638-bfcb-66acdb97a97a';
     $pane->panel = 'right';
     $pane->type = 'entity_field';
     $pane->subtype = 'profile2:field_hochschule';
@@ -464,11 +458,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = 'e1e38b60-2978-4a21-9229-358d1b0c9005';
-    $display->content['new-e1e38b60-2978-4a21-9229-358d1b0c9005'] = $pane;
-    $display->panels['right'][1] = 'new-e1e38b60-2978-4a21-9229-358d1b0c9005';
+    $pane->uuid = 'de2a8900-4d23-4638-bfcb-66acdb97a97a';
+    $display->content['new-de2a8900-4d23-4638-bfcb-66acdb97a97a'] = $pane;
+    $display->panels['right'][1] = 'new-de2a8900-4d23-4638-bfcb-66acdb97a97a';
     $pane = new stdClass();
-    $pane->pid = 'new-ca81f3d5-83c7-4ce3-964a-89c4edfbf9d3';
+    $pane->pid = 'new-e73f16bd-a90f-452b-aa71-2fb5d821ccce';
     $pane->panel = 'right';
     $pane->type = 'entity_field';
     $pane->subtype = 'profile2:field_studienfach';
@@ -493,11 +487,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $pane->uuid = 'ca81f3d5-83c7-4ce3-964a-89c4edfbf9d3';
-    $display->content['new-ca81f3d5-83c7-4ce3-964a-89c4edfbf9d3'] = $pane;
-    $display->panels['right'][2] = 'new-ca81f3d5-83c7-4ce3-964a-89c4edfbf9d3';
+    $pane->uuid = 'e73f16bd-a90f-452b-aa71-2fb5d821ccce';
+    $display->content['new-e73f16bd-a90f-452b-aa71-2fb5d821ccce'] = $pane;
+    $display->panels['right'][2] = 'new-e73f16bd-a90f-452b-aa71-2fb5d821ccce';
     $pane = new stdClass();
-    $pane->pid = 'new-8db549e6-3c01-443c-9ea9-5142bc63e826';
+    $pane->pid = 'new-1e7cf0b7-9996-4461-b157-3063bdfc780f';
     $pane->panel = 'right';
     $pane->type = 'entity_field';
     $pane->subtype = 'profile2:field_about_me';
@@ -522,9 +516,9 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 3;
     $pane->locks = array();
-    $pane->uuid = '8db549e6-3c01-443c-9ea9-5142bc63e826';
-    $display->content['new-8db549e6-3c01-443c-9ea9-5142bc63e826'] = $pane;
-    $display->panels['right'][3] = 'new-8db549e6-3c01-443c-9ea9-5142bc63e826';
+    $pane->uuid = '1e7cf0b7-9996-4461-b157-3063bdfc780f';
+    $display->content['new-1e7cf0b7-9996-4461-b157-3063bdfc780f'] = $pane;
+    $display->panels['right'][3] = 'new-1e7cf0b7-9996-4461-b157-3063bdfc780f';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -589,11 +583,11 @@ return drupal_render($form);
   );
   $display->cache = array();
   $display->title = '<none>';
-  $display->uuid = '58ffb003-47d5-4222-a2d0-c6ee058ff4f0';
+  $display->uuid = '19615f50-db07-48c7-9e98-57cc97e70488';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-e0228c6f-3b1f-412b-ac39-b248ef53a49c';
+    $pane->pid = 'new-a2575693-1fe6-4861-9255-b43af73ddb43';
     $pane->panel = 'center';
     $pane->type = 'entity_field';
     $pane->subtype = 'profile2:field_about_me';
@@ -618,11 +612,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'e0228c6f-3b1f-412b-ac39-b248ef53a49c';
-    $display->content['new-e0228c6f-3b1f-412b-ac39-b248ef53a49c'] = $pane;
-    $display->panels['center'][0] = 'new-e0228c6f-3b1f-412b-ac39-b248ef53a49c';
+    $pane->uuid = 'a2575693-1fe6-4861-9255-b43af73ddb43';
+    $display->content['new-a2575693-1fe6-4861-9255-b43af73ddb43'] = $pane;
+    $display->panels['center'][0] = 'new-a2575693-1fe6-4861-9255-b43af73ddb43';
     $pane = new stdClass();
-    $pane->pid = 'new-84e1ec1c-cca8-4fb4-9617-fccb02bb3971';
+    $pane->pid = 'new-a8053283-21d4-4e08-98cd-e3b31a98bc70';
     $pane->panel = 'center';
     $pane->type = 'block';
     $pane->subtype = 'statuses-statuses';
@@ -657,11 +651,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = '84e1ec1c-cca8-4fb4-9617-fccb02bb3971';
-    $display->content['new-84e1ec1c-cca8-4fb4-9617-fccb02bb3971'] = $pane;
-    $display->panels['center'][1] = 'new-84e1ec1c-cca8-4fb4-9617-fccb02bb3971';
+    $pane->uuid = 'a8053283-21d4-4e08-98cd-e3b31a98bc70';
+    $display->content['new-a8053283-21d4-4e08-98cd-e3b31a98bc70'] = $pane;
+    $display->panels['center'][1] = 'new-a8053283-21d4-4e08-98cd-e3b31a98bc70';
     $pane = new stdClass();
-    $pane->pid = 'new-cfb45589-b232-4ae0-b246-711594f84b55';
+    $pane->pid = 'new-730e1093-d789-4603-bca8-364bdec23d77';
     $pane->panel = 'left';
     $pane->type = 'token';
     $pane->subtype = 'user:name';
@@ -701,11 +695,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'cfb45589-b232-4ae0-b246-711594f84b55';
-    $display->content['new-cfb45589-b232-4ae0-b246-711594f84b55'] = $pane;
-    $display->panels['left'][0] = 'new-cfb45589-b232-4ae0-b246-711594f84b55';
+    $pane->uuid = '730e1093-d789-4603-bca8-364bdec23d77';
+    $display->content['new-730e1093-d789-4603-bca8-364bdec23d77'] = $pane;
+    $display->panels['left'][0] = 'new-730e1093-d789-4603-bca8-364bdec23d77';
     $pane = new stdClass();
-    $pane->pid = 'new-d8de026c-8e47-4c9a-b466-6b6ddea2cf5a';
+    $pane->pid = 'new-5d4162ea-bcfa-400b-b4f6-8c5280ce3e74';
     $pane->panel = 'left';
     $pane->type = 'entity_field';
     $pane->subtype = 'profile2:field_photo';
@@ -733,11 +727,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = 'd8de026c-8e47-4c9a-b466-6b6ddea2cf5a';
-    $display->content['new-d8de026c-8e47-4c9a-b466-6b6ddea2cf5a'] = $pane;
-    $display->panels['left'][1] = 'new-d8de026c-8e47-4c9a-b466-6b6ddea2cf5a';
+    $pane->uuid = '5d4162ea-bcfa-400b-b4f6-8c5280ce3e74';
+    $display->content['new-5d4162ea-bcfa-400b-b4f6-8c5280ce3e74'] = $pane;
+    $display->panels['left'][1] = 'new-5d4162ea-bcfa-400b-b4f6-8c5280ce3e74';
     $pane = new stdClass();
-    $pane->pid = 'new-0edc495c-4398-45eb-87e6-c658778eba90';
+    $pane->pid = 'new-b6432393-fe59-4556-a667-3e9d771b73df';
     $pane->panel = 'left';
     $pane->type = 'views';
     $pane->subtype = 'courses_user_domains';
@@ -753,11 +747,11 @@ return drupal_render($form);
       'feed_icons' => 0,
       'panel_args' => 0,
       'link_to_view' => 0,
-      'args' => '%1',
+      'args' => '',
       'url' => '',
       'display' => 'default',
       'context' => array(
-        0 => '',
+        0 => 'argument_entity_id:user_1.uid',
       ),
       'override_title' => 1,
       'override_title_text' => 'Meine Themen',
@@ -770,11 +764,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $pane->uuid = '0edc495c-4398-45eb-87e6-c658778eba90';
-    $display->content['new-0edc495c-4398-45eb-87e6-c658778eba90'] = $pane;
-    $display->panels['left'][2] = 'new-0edc495c-4398-45eb-87e6-c658778eba90';
+    $pane->uuid = 'b6432393-fe59-4556-a667-3e9d771b73df';
+    $display->content['new-b6432393-fe59-4556-a667-3e9d771b73df'] = $pane;
+    $display->panels['left'][2] = 'new-b6432393-fe59-4556-a667-3e9d771b73df';
     $pane = new stdClass();
-    $pane->pid = 'new-c97d60cd-4674-4fa3-a1d5-bf690a8d3d05';
+    $pane->pid = 'new-70c901a2-03d7-4b10-982c-3cb1eacf4cd5';
     $pane->panel = 'right';
     $pane->type = 'entity_field';
     $pane->subtype = 'profile2:field_birthday';
@@ -822,9 +816,9 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'c97d60cd-4674-4fa3-a1d5-bf690a8d3d05';
-    $display->content['new-c97d60cd-4674-4fa3-a1d5-bf690a8d3d05'] = $pane;
-    $display->panels['right'][0] = 'new-c97d60cd-4674-4fa3-a1d5-bf690a8d3d05';
+    $pane->uuid = '70c901a2-03d7-4b10-982c-3cb1eacf4cd5';
+    $display->content['new-70c901a2-03d7-4b10-982c-3cb1eacf4cd5'] = $pane;
+    $display->panels['right'][0] = 'new-70c901a2-03d7-4b10-982c-3cb1eacf4cd5';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -839,7 +833,7 @@ return drupal_render($form);
   $handler->handler = 'panel_context';
   $handler->weight = 3;
   $handler->conf = array(
-    'title' => 'Tutor',
+    'title' => 'Autor Tutor Dozent Student',
     'no_blocks' => 0,
     'pipeline' => 'standard',
     'body_classes_to_remove' => '',
@@ -863,7 +857,7 @@ return drupal_render($form);
           'name' => 'role',
           'settings' => array(
             'rids' => array(
-              0 => 126456107,
+              0 => 2,
             ),
           ),
           'context' => 'argument_entity_id:user_1',
@@ -889,50 +883,45 @@ return drupal_render($form);
   );
   $display->cache = array();
   $display->title = '<none>';
-  $display->uuid = '7fe4be70-8eac-4788-b196-08c51ba7c209';
+  $display->uuid = '8379bcdc-986a-4f10-9b67-3a850e77e04c';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-5ee75aa0-b468-4bb5-a658-ee50ae8d8e77';
+    $pane->pid = 'new-a4e17017-5635-4f91-9f66-6d66f0c6e1bd';
     $pane->panel = 'center';
-    $pane->type = 'block';
-    $pane->subtype = 'statuses-statuses';
+    $pane->type = 'views';
+    $pane->subtype = 'nm_stream';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
+      'override_pager_settings' => 0,
+      'use_pager' => 1,
+      'nodes_per_page' => '10',
+      'pager_id' => '0',
+      'offset' => '0',
+      'more_link' => 0,
+      'feed_icons' => 0,
+      'panel_args' => 0,
+      'link_to_view' => 0,
+      'args' => '',
+      'url' => '',
+      'display' => 'default',
       'override_title' => 1,
       'override_title_text' => 'Stream',
     );
     $pane->cache = array();
     $pane->style = array(
-      'settings' => array(
-        'title' => array(
-          'element' => 'h3',
-          'attributes' => array(
-            'id' => '',
-            'class' => '',
-          ),
-        ),
-        'content' => array(
-          'element' => '',
-          'attributes' => array(
-            'id' => '',
-            'class' => '',
-          ),
-        ),
-        'theme' => 0,
-      ),
-      'style' => 'wrapper_element',
+      'settings' => NULL,
     );
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '5ee75aa0-b468-4bb5-a658-ee50ae8d8e77';
-    $display->content['new-5ee75aa0-b468-4bb5-a658-ee50ae8d8e77'] = $pane;
-    $display->panels['center'][0] = 'new-5ee75aa0-b468-4bb5-a658-ee50ae8d8e77';
+    $pane->uuid = 'a4e17017-5635-4f91-9f66-6d66f0c6e1bd';
+    $display->content['new-a4e17017-5635-4f91-9f66-6d66f0c6e1bd'] = $pane;
+    $display->panels['center'][0] = 'new-a4e17017-5635-4f91-9f66-6d66f0c6e1bd';
     $pane = new stdClass();
-    $pane->pid = 'new-40770580-bd7e-449b-90c5-9b9fbef41983';
+    $pane->pid = 'new-3125f2f0-5c95-4957-96cf-ece6cc14d914';
     $pane->panel = 'left';
     $pane->type = 'token';
     $pane->subtype = 'user:name';
@@ -972,33 +961,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '40770580-bd7e-449b-90c5-9b9fbef41983';
-    $display->content['new-40770580-bd7e-449b-90c5-9b9fbef41983'] = $pane;
-    $display->panels['left'][0] = 'new-40770580-bd7e-449b-90c5-9b9fbef41983';
+    $pane->uuid = '3125f2f0-5c95-4957-96cf-ece6cc14d914';
+    $display->content['new-3125f2f0-5c95-4957-96cf-ece6cc14d914'] = $pane;
+    $display->panels['left'][0] = 'new-3125f2f0-5c95-4957-96cf-ece6cc14d914';
     $pane = new stdClass();
-    $pane->pid = 'new-aad67367-2095-446a-9672-5e6f11af410c';
-    $pane->panel = 'left';
-    $pane->type = 'block';
-    $pane->subtype = 'section_courses-course_node_tabs';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'override_title' => 0,
-      'override_title_text' => '',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 1;
-    $pane->locks = array();
-    $pane->uuid = 'aad67367-2095-446a-9672-5e6f11af410c';
-    $display->content['new-aad67367-2095-446a-9672-5e6f11af410c'] = $pane;
-    $display->panels['left'][1] = 'new-aad67367-2095-446a-9672-5e6f11af410c';
-    $pane = new stdClass();
-    $pane->pid = 'new-e56ea398-13a6-49a3-bebb-51f8e582ec78';
+    $pane->pid = 'new-c0ca5bbc-d035-46f3-89d8-51a878d5c6b4';
     $pane->panel = 'left';
     $pane->type = 'entity_field';
     $pane->subtype = 'profile2:field_photo';
@@ -1014,7 +981,29 @@ return drupal_render($form);
         'image_style' => 'profile_main_thumbnail',
         'image_link' => '',
       ),
-      'context' => 'relationship_entity_from_schema:uid-user-profile2_1',
+      'context' => 'relationship_profile2_1',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = 'c0ca5bbc-d035-46f3-89d8-51a878d5c6b4';
+    $display->content['new-c0ca5bbc-d035-46f3-89d8-51a878d5c6b4'] = $pane;
+    $display->panels['left'][1] = 'new-c0ca5bbc-d035-46f3-89d8-51a878d5c6b4';
+    $pane = new stdClass();
+    $pane->pid = 'new-a82c3cb9-d48d-407e-968e-cfd780de3415';
+    $pane->panel = 'left';
+    $pane->type = 'block';
+    $pane->subtype = 'section_courses-course_node_tabs';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
       'override_title' => 0,
       'override_title_text' => '',
     );
@@ -1026,11 +1015,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $pane->uuid = 'e56ea398-13a6-49a3-bebb-51f8e582ec78';
-    $display->content['new-e56ea398-13a6-49a3-bebb-51f8e582ec78'] = $pane;
-    $display->panels['left'][2] = 'new-e56ea398-13a6-49a3-bebb-51f8e582ec78';
+    $pane->uuid = 'a82c3cb9-d48d-407e-968e-cfd780de3415';
+    $display->content['new-a82c3cb9-d48d-407e-968e-cfd780de3415'] = $pane;
+    $display->panels['left'][2] = 'new-a82c3cb9-d48d-407e-968e-cfd780de3415';
     $pane = new stdClass();
-    $pane->pid = 'new-aefd6288-05f3-4d65-af94-186507fd81ff';
+    $pane->pid = 'new-5776b9d0-5e3b-4d95-8345-be9310efa02e';
     $pane->panel = 'left';
     $pane->type = 'views';
     $pane->subtype = 'courses_user_courses';
@@ -1046,11 +1035,14 @@ return drupal_render($form);
       'feed_icons' => 0,
       'panel_args' => 0,
       'link_to_view' => 0,
-      'args' => '%1',
+      'args' => '',
       'url' => '',
       'display' => 'default',
       'override_title' => 1,
       'override_title_text' => 'Meine Kurse',
+      'context' => array(
+        0 => 'argument_entity_id:user_1.uid',
+      ),
     );
     $pane->cache = array();
     $pane->style = array(
@@ -1077,11 +1069,48 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 3;
     $pane->locks = array();
-    $pane->uuid = 'aefd6288-05f3-4d65-af94-186507fd81ff';
-    $display->content['new-aefd6288-05f3-4d65-af94-186507fd81ff'] = $pane;
-    $display->panels['left'][3] = 'new-aefd6288-05f3-4d65-af94-186507fd81ff';
+    $pane->uuid = '5776b9d0-5e3b-4d95-8345-be9310efa02e';
+    $display->content['new-5776b9d0-5e3b-4d95-8345-be9310efa02e'] = $pane;
+    $display->panels['left'][3] = 'new-5776b9d0-5e3b-4d95-8345-be9310efa02e';
     $pane = new stdClass();
-    $pane->pid = 'new-59fc2452-14bc-449b-834f-311d4debc053';
+    $pane->pid = 'new-a5665709-cfee-4eba-90f6-38e8bda3b148';
+    $pane->panel = 'left';
+    $pane->type = 'views';
+    $pane->subtype = 'courses_user_domains';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_pager_settings' => 0,
+      'use_pager' => 0,
+      'nodes_per_page' => '7',
+      'pager_id' => '0',
+      'offset' => '0',
+      'more_link' => 0,
+      'feed_icons' => 0,
+      'panel_args' => 0,
+      'link_to_view' => 0,
+      'args' => '',
+      'url' => '',
+      'display' => 'default',
+      'context' => array(
+        0 => 'argument_entity_id:user_1.uid',
+      ),
+      'override_title' => 1,
+      'override_title_text' => 'Meine Themen',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 4;
+    $pane->locks = array();
+    $pane->uuid = 'a5665709-cfee-4eba-90f6-38e8bda3b148';
+    $display->content['new-a5665709-cfee-4eba-90f6-38e8bda3b148'] = $pane;
+    $display->panels['left'][4] = 'new-a5665709-cfee-4eba-90f6-38e8bda3b148';
+    $pane = new stdClass();
+    $pane->pid = 'new-23bd63a6-75a3-4260-91e4-650f12dda391';
     $pane->panel = 'right';
     $pane->type = 'entity_field';
     $pane->subtype = 'profile2:field_birthday';
@@ -1129,11 +1158,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '59fc2452-14bc-449b-834f-311d4debc053';
-    $display->content['new-59fc2452-14bc-449b-834f-311d4debc053'] = $pane;
-    $display->panels['right'][0] = 'new-59fc2452-14bc-449b-834f-311d4debc053';
+    $pane->uuid = '23bd63a6-75a3-4260-91e4-650f12dda391';
+    $display->content['new-23bd63a6-75a3-4260-91e4-650f12dda391'] = $pane;
+    $display->panels['right'][0] = 'new-23bd63a6-75a3-4260-91e4-650f12dda391';
     $pane = new stdClass();
-    $pane->pid = 'new-933d5bf9-734b-49da-a899-c0720f0dd768';
+    $pane->pid = 'new-ac85c33c-cb1c-44f4-8797-e7e1fc404021';
     $pane->panel = 'right';
     $pane->type = 'entity_field';
     $pane->subtype = 'profile2:field_hochschule';
@@ -1158,11 +1187,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = '933d5bf9-734b-49da-a899-c0720f0dd768';
-    $display->content['new-933d5bf9-734b-49da-a899-c0720f0dd768'] = $pane;
-    $display->panels['right'][1] = 'new-933d5bf9-734b-49da-a899-c0720f0dd768';
+    $pane->uuid = 'ac85c33c-cb1c-44f4-8797-e7e1fc404021';
+    $display->content['new-ac85c33c-cb1c-44f4-8797-e7e1fc404021'] = $pane;
+    $display->panels['right'][1] = 'new-ac85c33c-cb1c-44f4-8797-e7e1fc404021';
     $pane = new stdClass();
-    $pane->pid = 'new-c0e22827-ecd6-4ab1-963b-4fd999f03df2';
+    $pane->pid = 'new-a6cc2dea-c2c3-49a6-9105-3a6106d13c78';
     $pane->panel = 'right';
     $pane->type = 'entity_field';
     $pane->subtype = 'profile2:field_studienfach';
@@ -1187,11 +1216,11 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $pane->uuid = 'c0e22827-ecd6-4ab1-963b-4fd999f03df2';
-    $display->content['new-c0e22827-ecd6-4ab1-963b-4fd999f03df2'] = $pane;
-    $display->panels['right'][2] = 'new-c0e22827-ecd6-4ab1-963b-4fd999f03df2';
+    $pane->uuid = 'a6cc2dea-c2c3-49a6-9105-3a6106d13c78';
+    $display->content['new-a6cc2dea-c2c3-49a6-9105-3a6106d13c78'] = $pane;
+    $display->panels['right'][2] = 'new-a6cc2dea-c2c3-49a6-9105-3a6106d13c78';
     $pane = new stdClass();
-    $pane->pid = 'new-1796f4ef-d118-44b4-becd-a16c1f1da66e';
+    $pane->pid = 'new-db1f5baa-0c9c-434d-9ac2-bfa41eb62ee9';
     $pane->panel = 'right';
     $pane->type = 'entity_field';
     $pane->subtype = 'profile2:field_about_me';
@@ -1216,9 +1245,9 @@ return drupal_render($form);
     $pane->extras = array();
     $pane->position = 3;
     $pane->locks = array();
-    $pane->uuid = '1796f4ef-d118-44b4-becd-a16c1f1da66e';
-    $display->content['new-1796f4ef-d118-44b4-becd-a16c1f1da66e'] = $pane;
-    $display->panels['right'][3] = 'new-1796f4ef-d118-44b4-becd-a16c1f1da66e';
+    $pane->uuid = 'db1f5baa-0c9c-434d-9ac2-bfa41eb62ee9';
+    $display->content['new-db1f5baa-0c9c-434d-9ac2-bfa41eb62ee9'] = $pane;
+    $display->panels['right'][3] = 'new-db1f5baa-0c9c-434d-9ac2-bfa41eb62ee9';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -1239,7 +1268,10 @@ function nm_section_courses_features_default_page_manager_pages() {
   $page->admin_title = 'Biblio in: (Kurs)';
   $page->admin_description = '';
   $page->path = 'course/biblio/%1/%2';
-  $page->access = array();
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
   $page->menu = array();
   $page->arguments = array(
     1 => array(
@@ -1316,11 +1348,11 @@ function nm_section_courses_features_default_page_manager_pages() {
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = '37c8552e-65de-4735-9fa5-0faea0ad6fb0';
+  $display->uuid = '066921f7-f62e-4495-b3b2-433d502bdbb3';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-bb56cab6-f879-4e56-81b4-0a9290972582';
+    $pane->pid = 'new-3b0c085e-85c9-465b-be3e-fbd604c75c4b';
     $pane->panel = 'center';
     $pane->type = 'views';
     $pane->subtype = 'domain_biblio';
@@ -1353,11 +1385,11 @@ function nm_section_courses_features_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'bb56cab6-f879-4e56-81b4-0a9290972582';
-    $display->content['new-bb56cab6-f879-4e56-81b4-0a9290972582'] = $pane;
-    $display->panels['center'][0] = 'new-bb56cab6-f879-4e56-81b4-0a9290972582';
+    $pane->uuid = '3b0c085e-85c9-465b-be3e-fbd604c75c4b';
+    $display->content['new-3b0c085e-85c9-465b-be3e-fbd604c75c4b'] = $pane;
+    $display->panels['center'][0] = 'new-3b0c085e-85c9-465b-be3e-fbd604c75c4b';
     $pane = new stdClass();
-    $pane->pid = 'new-0133c77d-fde9-4257-8523-3b97ca530052';
+    $pane->pid = 'new-236b5613-32fb-4a5b-ab7c-4d0deeb37e68';
     $pane->panel = 'outline';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -1380,11 +1412,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '0133c77d-fde9-4257-8523-3b97ca530052';
-    $display->content['new-0133c77d-fde9-4257-8523-3b97ca530052'] = $pane;
-    $display->panels['outline'][0] = 'new-0133c77d-fde9-4257-8523-3b97ca530052';
+    $pane->uuid = '236b5613-32fb-4a5b-ab7c-4d0deeb37e68';
+    $display->content['new-236b5613-32fb-4a5b-ab7c-4d0deeb37e68'] = $pane;
+    $display->panels['outline'][0] = 'new-236b5613-32fb-4a5b-ab7c-4d0deeb37e68';
     $pane = new stdClass();
-    $pane->pid = 'new-702160e8-25f9-4c17-8162-cc3b181e1e31';
+    $pane->pid = 'new-ee641611-2ffa-4e44-a25b-de6c9ee5c709';
     $pane->panel = 'outline';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_text_biblio';
@@ -1402,11 +1434,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = '702160e8-25f9-4c17-8162-cc3b181e1e31';
-    $display->content['new-702160e8-25f9-4c17-8162-cc3b181e1e31'] = $pane;
-    $display->panels['outline'][1] = 'new-702160e8-25f9-4c17-8162-cc3b181e1e31';
+    $pane->uuid = 'ee641611-2ffa-4e44-a25b-de6c9ee5c709';
+    $display->content['new-ee641611-2ffa-4e44-a25b-de6c9ee5c709'] = $pane;
+    $display->panels['outline'][1] = 'new-ee641611-2ffa-4e44-a25b-de6c9ee5c709';
     $pane = new stdClass();
-    $pane->pid = 'new-05a094a0-328c-49f4-a24d-06165aeb6a25';
+    $pane->pid = 'new-c3fb50ad-abdb-420d-a6d3-74c224de324e';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -1424,9 +1456,9 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '05a094a0-328c-49f4-a24d-06165aeb6a25';
-    $display->content['new-05a094a0-328c-49f4-a24d-06165aeb6a25'] = $pane;
-    $display->panels['tools'][0] = 'new-05a094a0-328c-49f4-a24d-06165aeb6a25';
+    $pane->uuid = 'c3fb50ad-abdb-420d-a6d3-74c224de324e';
+    $display->content['new-c3fb50ad-abdb-420d-a6d3-74c224de324e'] = $pane;
+    $display->panels['tools'][0] = 'new-c3fb50ad-abdb-420d-a6d3-74c224de324e';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -1459,6 +1491,8 @@ return section_courses_text_outline();
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -1583,11 +1617,11 @@ return section_courses_text_outline();
   );
   $display->cache = array();
   $display->title = 'Teilnehmer anlegen';
-  $display->uuid = 'ca6a1645-48b3-4a50-9855-cc0c7f6ea30c';
+  $display->uuid = 'c3753c99-df30-45d9-a4b0-e095c5807d0c';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-1428d710-dc2d-4641-bd6e-0f43d32e954e';
+    $pane->pid = 'new-a9432128-769f-44a9-a00c-01675f65cd26';
     $pane->panel = 'center';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -1610,11 +1644,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '1428d710-dc2d-4641-bd6e-0f43d32e954e';
-    $display->content['new-1428d710-dc2d-4641-bd6e-0f43d32e954e'] = $pane;
-    $display->panels['center'][0] = 'new-1428d710-dc2d-4641-bd6e-0f43d32e954e';
+    $pane->uuid = 'a9432128-769f-44a9-a00c-01675f65cd26';
+    $display->content['new-a9432128-769f-44a9-a00c-01675f65cd26'] = $pane;
+    $display->panels['center'][0] = 'new-a9432128-769f-44a9-a00c-01675f65cd26';
     $pane = new stdClass();
-    $pane->pid = 'new-80c3249b-3470-490e-8f49-2cf563d2ca04';
+    $pane->pid = 'new-d365041b-60c0-486f-857a-630317889bb4';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -1632,9 +1666,9 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '80c3249b-3470-490e-8f49-2cf563d2ca04';
-    $display->content['new-80c3249b-3470-490e-8f49-2cf563d2ca04'] = $pane;
-    $display->panels['tools'][0] = 'new-80c3249b-3470-490e-8f49-2cf563d2ca04';
+    $pane->uuid = 'd365041b-60c0-486f-857a-630317889bb4';
+    $display->content['new-d365041b-60c0-486f-857a-630317889bb4'] = $pane;
+    $display->panels['tools'][0] = 'new-d365041b-60c0-486f-857a-630317889bb4';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -1666,6 +1700,8 @@ return section_courses_text_outline();
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -1819,6 +1855,8 @@ return section_courses_text_outline();
       ),
     ),
     'logic' => 'or',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -1930,14 +1968,14 @@ return section_courses_text_outline();
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = '0249ad67-3461-43e4-8b76-611839c5c6f6';
+  $display->uuid = '4cf6417e-9fc2-4f4c-b809-7d631a5f21df';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-68b10c92-a3ab-44bc-b9bc-951ec60df67e';
+    $pane->pid = 'new-38bc2fbf-7423-4f4c-9285-de4672e0e60f';
     $pane->panel = 'news';
     $pane->type = 'block';
-    $pane->subtype = 'statuses-statuses';
+    $pane->subtype = 'nm_stream-nm_stream_form_add_edit';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
@@ -1952,11 +1990,48 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '68b10c92-a3ab-44bc-b9bc-951ec60df67e';
-    $display->content['new-68b10c92-a3ab-44bc-b9bc-951ec60df67e'] = $pane;
-    $display->panels['news'][0] = 'new-68b10c92-a3ab-44bc-b9bc-951ec60df67e';
+    $pane->uuid = '38bc2fbf-7423-4f4c-9285-de4672e0e60f';
+    $display->content['new-38bc2fbf-7423-4f4c-9285-de4672e0e60f'] = $pane;
+    $display->panels['news'][0] = 'new-38bc2fbf-7423-4f4c-9285-de4672e0e60f';
     $pane = new stdClass();
-    $pane->pid = 'new-8c278e5d-147f-4a70-a82b-a3b24a647877';
+    $pane->pid = 'new-56d682cf-6bbf-4b6c-b569-0df094188e3b';
+    $pane->panel = 'news';
+    $pane->type = 'views';
+    $pane->subtype = 'nm_stream';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_pager_settings' => 0,
+      'use_pager' => 1,
+      'nodes_per_page' => '10',
+      'pager_id' => '0',
+      'offset' => '0',
+      'more_link' => 0,
+      'feed_icons' => 0,
+      'panel_args' => 0,
+      'link_to_view' => 0,
+      'args' => '',
+      'url' => '',
+      'display' => 'default',
+      'override_title' => 1,
+      'override_title_text' => '',
+      'context' => array(
+        0 => 'argument_entity_id:node_2.nid',
+      ),
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = '56d682cf-6bbf-4b6c-b569-0df094188e3b';
+    $display->content['new-56d682cf-6bbf-4b6c-b569-0df094188e3b'] = $pane;
+    $display->panels['news'][1] = 'new-56d682cf-6bbf-4b6c-b569-0df094188e3b';
+    $pane = new stdClass();
+    $pane->pid = 'new-9539c4f8-70de-4a28-a09f-c9b83b577dc0';
     $pane->panel = 'tools';
     $pane->type = 'node_title';
     $pane->subtype = 'node_title';
@@ -1979,11 +2054,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '8c278e5d-147f-4a70-a82b-a3b24a647877';
-    $display->content['new-8c278e5d-147f-4a70-a82b-a3b24a647877'] = $pane;
-    $display->panels['tools'][0] = 'new-8c278e5d-147f-4a70-a82b-a3b24a647877';
+    $pane->uuid = '9539c4f8-70de-4a28-a09f-c9b83b577dc0';
+    $display->content['new-9539c4f8-70de-4a28-a09f-c9b83b577dc0'] = $pane;
+    $display->panels['tools'][0] = 'new-9539c4f8-70de-4a28-a09f-c9b83b577dc0';
     $pane = new stdClass();
-    $pane->pid = 'new-be0ea8de-a1d8-401a-a0e8-cad853cf5df3';
+    $pane->pid = 'new-af4736c1-c79e-4870-9dfa-a2c429006297';
     $pane->panel = 'tools';
     $pane->type = 'views';
     $pane->subtype = 'courses_admin_course_members';
@@ -2016,11 +2091,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = 'be0ea8de-a1d8-401a-a0e8-cad853cf5df3';
-    $display->content['new-be0ea8de-a1d8-401a-a0e8-cad853cf5df3'] = $pane;
-    $display->panels['tools'][1] = 'new-be0ea8de-a1d8-401a-a0e8-cad853cf5df3';
+    $pane->uuid = 'af4736c1-c79e-4870-9dfa-a2c429006297';
+    $display->content['new-af4736c1-c79e-4870-9dfa-a2c429006297'] = $pane;
+    $display->panels['tools'][1] = 'new-af4736c1-c79e-4870-9dfa-a2c429006297';
     $pane = new stdClass();
-    $pane->pid = 'new-86ef1db8-3373-40d6-8c31-2d5d4a430d20';
+    $pane->pid = 'new-262a01c1-785f-41fc-8965-51fa6bfb146b';
     $pane->panel = 'tools';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:group_group';
@@ -2047,11 +2122,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $pane->uuid = '86ef1db8-3373-40d6-8c31-2d5d4a430d20';
-    $display->content['new-86ef1db8-3373-40d6-8c31-2d5d4a430d20'] = $pane;
-    $display->panels['tools'][2] = 'new-86ef1db8-3373-40d6-8c31-2d5d4a430d20';
+    $pane->uuid = '262a01c1-785f-41fc-8965-51fa6bfb146b';
+    $display->content['new-262a01c1-785f-41fc-8965-51fa6bfb146b'] = $pane;
+    $display->panels['tools'][2] = 'new-262a01c1-785f-41fc-8965-51fa6bfb146b';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-68b10c92-a3ab-44bc-b9bc-951ec60df67e';
+  $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $handler = new stdClass();
@@ -2154,11 +2229,11 @@ return section_courses_text_outline();
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = '94e2a41f-fa56-4ee3-bba3-bcf1bd3ccc6d';
+  $display->uuid = '13e598f2-c0f0-4c77-b80f-c264880f297b';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-4ff43052-02e4-43ff-bdff-9aef1f4f9346';
+    $pane->pid = 'new-ffdd8704-3fed-4ef2-bb6a-b5b0c0f9bb3e';
     $pane->panel = 'news';
     $pane->type = 'views_panes';
     $pane->subtype = 'courses_course_groups-panel_pane_1';
@@ -2173,11 +2248,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '4ff43052-02e4-43ff-bdff-9aef1f4f9346';
-    $display->content['new-4ff43052-02e4-43ff-bdff-9aef1f4f9346'] = $pane;
-    $display->panels['news'][0] = 'new-4ff43052-02e4-43ff-bdff-9aef1f4f9346';
+    $pane->uuid = 'ffdd8704-3fed-4ef2-bb6a-b5b0c0f9bb3e';
+    $display->content['new-ffdd8704-3fed-4ef2-bb6a-b5b0c0f9bb3e'] = $pane;
+    $display->panels['news'][0] = 'new-ffdd8704-3fed-4ef2-bb6a-b5b0c0f9bb3e';
     $pane = new stdClass();
-    $pane->pid = 'new-d20a2935-9c9d-4f02-b675-5642106da41f';
+    $pane->pid = 'new-864e4bd4-2a45-4808-8417-06d08086fb03';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -2195,11 +2270,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'd20a2935-9c9d-4f02-b675-5642106da41f';
-    $display->content['new-d20a2935-9c9d-4f02-b675-5642106da41f'] = $pane;
-    $display->panels['tools'][0] = 'new-d20a2935-9c9d-4f02-b675-5642106da41f';
+    $pane->uuid = '864e4bd4-2a45-4808-8417-06d08086fb03';
+    $display->content['new-864e4bd4-2a45-4808-8417-06d08086fb03'] = $pane;
+    $display->panels['tools'][0] = 'new-864e4bd4-2a45-4808-8417-06d08086fb03';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-4ff43052-02e4-43ff-bdff-9aef1f4f9346';
+  $display->title_pane = 'new-ffdd8704-3fed-4ef2-bb6a-b5b0c0f9bb3e';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['course_groups_in_course'] = $page;
@@ -2229,6 +2304,8 @@ return section_courses_text_outline();
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -2306,11 +2383,11 @@ return section_courses_text_outline();
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = '86fe779b-1b3f-428d-b8fa-ce14540ed310';
+  $display->uuid = '27adf0f1-3633-4a04-ba0c-29b964f89b06';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-13034876-c9cd-4998-a410-83686e11c377';
+    $pane->pid = 'new-fc93e900-33d9-4e00-8af4-25d45b8c5a8d';
     $pane->panel = 'news';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_node_tabs';
@@ -2328,11 +2405,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '13034876-c9cd-4998-a410-83686e11c377';
-    $display->content['new-13034876-c9cd-4998-a410-83686e11c377'] = $pane;
-    $display->panels['news'][0] = 'new-13034876-c9cd-4998-a410-83686e11c377';
+    $pane->uuid = 'fc93e900-33d9-4e00-8af4-25d45b8c5a8d';
+    $display->content['new-fc93e900-33d9-4e00-8af4-25d45b8c5a8d'] = $pane;
+    $display->panels['news'][0] = 'new-fc93e900-33d9-4e00-8af4-25d45b8c5a8d';
     $pane = new stdClass();
-    $pane->pid = 'new-6cab4a19-d140-486d-825d-ffb126edfecb';
+    $pane->pid = 'new-ca94eac8-7e2b-4f1d-aa03-3ceff1053424';
     $pane->panel = 'news';
     $pane->type = 'entity_view';
     $pane->subtype = 'node';
@@ -2352,11 +2429,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = '6cab4a19-d140-486d-825d-ffb126edfecb';
-    $display->content['new-6cab4a19-d140-486d-825d-ffb126edfecb'] = $pane;
-    $display->panels['news'][1] = 'new-6cab4a19-d140-486d-825d-ffb126edfecb';
+    $pane->uuid = 'ca94eac8-7e2b-4f1d-aa03-3ceff1053424';
+    $display->content['new-ca94eac8-7e2b-4f1d-aa03-3ceff1053424'] = $pane;
+    $display->panels['news'][1] = 'new-ca94eac8-7e2b-4f1d-aa03-3ceff1053424';
     $pane = new stdClass();
-    $pane->pid = 'new-7f8aee8f-0f88-4c80-9b50-3d990abd53bb';
+    $pane->pid = 'new-c873ab04-5bdf-4bfc-8a04-856644a0c47f';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -2374,9 +2451,9 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '7f8aee8f-0f88-4c80-9b50-3d990abd53bb';
-    $display->content['new-7f8aee8f-0f88-4c80-9b50-3d990abd53bb'] = $pane;
-    $display->panels['tools'][0] = 'new-7f8aee8f-0f88-4c80-9b50-3d990abd53bb';
+    $pane->uuid = 'c873ab04-5bdf-4bfc-8a04-856644a0c47f';
+    $display->content['new-c873ab04-5bdf-4bfc-8a04-856644a0c47f'] = $pane;
+    $display->panels['tools'][0] = 'new-c873ab04-5bdf-4bfc-8a04-856644a0c47f';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -2408,6 +2485,8 @@ return section_courses_text_outline();
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -2530,11 +2609,11 @@ return section_courses_text_outline();
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = 'c1944c3b-c1a8-4528-a77e-0a2e6115795c';
+  $display->uuid = '49db32e8-f4c0-4cfa-b87f-093fcb6e3e86';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-1565efcd-c297-4e19-95d8-ad5ebba5038b';
+    $pane->pid = 'new-0edd414b-2039-48c9-9c4b-2c2b9d5990b4';
     $pane->panel = 'news';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_node_tabs';
@@ -2552,11 +2631,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '1565efcd-c297-4e19-95d8-ad5ebba5038b';
-    $display->content['new-1565efcd-c297-4e19-95d8-ad5ebba5038b'] = $pane;
-    $display->panels['news'][0] = 'new-1565efcd-c297-4e19-95d8-ad5ebba5038b';
+    $pane->uuid = '0edd414b-2039-48c9-9c4b-2c2b9d5990b4';
+    $display->content['new-0edd414b-2039-48c9-9c4b-2c2b9d5990b4'] = $pane;
+    $display->panels['news'][0] = 'new-0edd414b-2039-48c9-9c4b-2c2b9d5990b4';
     $pane = new stdClass();
-    $pane->pid = 'new-a35fe3ec-9b95-4a3d-a5f3-107cf725a7d4';
+    $pane->pid = 'new-990de6ea-3ee2-49e5-920c-9c040316dd6d';
     $pane->panel = 'news';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_tasks_generic_description';
@@ -2574,11 +2653,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = 'a35fe3ec-9b95-4a3d-a5f3-107cf725a7d4';
-    $display->content['new-a35fe3ec-9b95-4a3d-a5f3-107cf725a7d4'] = $pane;
-    $display->panels['news'][1] = 'new-a35fe3ec-9b95-4a3d-a5f3-107cf725a7d4';
+    $pane->uuid = '990de6ea-3ee2-49e5-920c-9c040316dd6d';
+    $display->content['new-990de6ea-3ee2-49e5-920c-9c040316dd6d'] = $pane;
+    $display->panels['news'][1] = 'new-990de6ea-3ee2-49e5-920c-9c040316dd6d';
     $pane = new stdClass();
-    $pane->pid = 'new-24bee676-16cd-491e-b02a-5deeb102d4b4';
+    $pane->pid = 'new-5b8f0c32-6c04-4e43-8eeb-3152f04a9e84';
     $pane->panel = 'news';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_tasks_generic_solution';
@@ -2596,11 +2675,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $pane->uuid = '24bee676-16cd-491e-b02a-5deeb102d4b4';
-    $display->content['new-24bee676-16cd-491e-b02a-5deeb102d4b4'] = $pane;
-    $display->panels['news'][2] = 'new-24bee676-16cd-491e-b02a-5deeb102d4b4';
+    $pane->uuid = '5b8f0c32-6c04-4e43-8eeb-3152f04a9e84';
+    $display->content['new-5b8f0c32-6c04-4e43-8eeb-3152f04a9e84'] = $pane;
+    $display->panels['news'][2] = 'new-5b8f0c32-6c04-4e43-8eeb-3152f04a9e84';
     $pane = new stdClass();
-    $pane->pid = 'new-84bf02da-dad0-4d90-9b97-a4719c0d1f9b';
+    $pane->pid = 'new-38a71211-e95d-4e6b-8ed3-871fd11e0d39';
     $pane->panel = 'tools';
     $pane->type = 'views_panes';
     $pane->subtype = 'courses_task_solutions-panel_pane_1';
@@ -2615,11 +2694,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '84bf02da-dad0-4d90-9b97-a4719c0d1f9b';
-    $display->content['new-84bf02da-dad0-4d90-9b97-a4719c0d1f9b'] = $pane;
-    $display->panels['tools'][0] = 'new-84bf02da-dad0-4d90-9b97-a4719c0d1f9b';
+    $pane->uuid = '38a71211-e95d-4e6b-8ed3-871fd11e0d39';
+    $display->content['new-38a71211-e95d-4e6b-8ed3-871fd11e0d39'] = $pane;
+    $display->panels['tools'][0] = 'new-38a71211-e95d-4e6b-8ed3-871fd11e0d39';
     $pane = new stdClass();
-    $pane->pid = 'new-11ae8bfd-d15b-4718-b72e-d2d44ff03e3b';
+    $pane->pid = 'new-442c300e-334c-4206-ad96-1849169ba7fe';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_tasks_generic_tips';
@@ -2637,9 +2716,9 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = '11ae8bfd-d15b-4718-b72e-d2d44ff03e3b';
-    $display->content['new-11ae8bfd-d15b-4718-b72e-d2d44ff03e3b'] = $pane;
-    $display->panels['tools'][1] = 'new-11ae8bfd-d15b-4718-b72e-d2d44ff03e3b';
+    $pane->uuid = '442c300e-334c-4206-ad96-1849169ba7fe';
+    $display->content['new-442c300e-334c-4206-ad96-1849169ba7fe'] = $pane;
+    $display->panels['tools'][1] = 'new-442c300e-334c-4206-ad96-1849169ba7fe';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -2654,7 +2733,10 @@ return section_courses_text_outline();
   $page->admin_title = 'Kursinformationen in: (Kurs) ';
   $page->admin_description = '';
   $page->path = 'course/info/%1';
-  $page->access = array();
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
   $page->menu = array();
   $page->arguments = array(
     1 => array(
@@ -2838,11 +2920,11 @@ return section_courses_text_outline();
   );
   $display->cache = array();
   $display->title = '%node:title';
-  $display->uuid = '551271e4-9d18-4370-8ba9-49b11a01cb12';
+  $display->uuid = 'dc0d0009-e4d9-4e03-b9aa-05ff00c3bb9e';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-97a199a3-5971-43dd-aa12-6bef8d06e8ee';
+    $pane->pid = 'new-44a3a1c7-faf8-420a-954d-6a6712e90af1';
     $pane->panel = 'content';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_long_description';
@@ -2867,11 +2949,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '97a199a3-5971-43dd-aa12-6bef8d06e8ee';
-    $display->content['new-97a199a3-5971-43dd-aa12-6bef8d06e8ee'] = $pane;
-    $display->panels['content'][0] = 'new-97a199a3-5971-43dd-aa12-6bef8d06e8ee';
+    $pane->uuid = '44a3a1c7-faf8-420a-954d-6a6712e90af1';
+    $display->content['new-44a3a1c7-faf8-420a-954d-6a6712e90af1'] = $pane;
+    $display->panels['content'][0] = 'new-44a3a1c7-faf8-420a-954d-6a6712e90af1';
     $pane = new stdClass();
-    $pane->pid = 'new-dafeed9b-5333-45e5-aee2-508f5c582bfd';
+    $pane->pid = 'new-61853739-1101-437c-8dce-d577b47f09d9';
     $pane->panel = 'links';
     $pane->type = 'node_title';
     $pane->subtype = 'node_title';
@@ -2894,11 +2976,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'dafeed9b-5333-45e5-aee2-508f5c582bfd';
-    $display->content['new-dafeed9b-5333-45e5-aee2-508f5c582bfd'] = $pane;
-    $display->panels['links'][0] = 'new-dafeed9b-5333-45e5-aee2-508f5c582bfd';
+    $pane->uuid = '61853739-1101-437c-8dce-d577b47f09d9';
+    $display->content['new-61853739-1101-437c-8dce-d577b47f09d9'] = $pane;
+    $display->panels['links'][0] = 'new-61853739-1101-437c-8dce-d577b47f09d9';
     $pane = new stdClass();
-    $pane->pid = 'new-bcae6177-8301-4e50-a9a7-8019c8ff9e7a';
+    $pane->pid = 'new-12660a6b-4636-4f11-b6cc-7aa9e1074924';
     $pane->panel = 'links';
     $pane->type = 'views';
     $pane->subtype = 'courses_instructors';
@@ -2931,11 +3013,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = 'bcae6177-8301-4e50-a9a7-8019c8ff9e7a';
-    $display->content['new-bcae6177-8301-4e50-a9a7-8019c8ff9e7a'] = $pane;
-    $display->panels['links'][1] = 'new-bcae6177-8301-4e50-a9a7-8019c8ff9e7a';
+    $pane->uuid = '12660a6b-4636-4f11-b6cc-7aa9e1074924';
+    $display->content['new-12660a6b-4636-4f11-b6cc-7aa9e1074924'] = $pane;
+    $display->panels['links'][1] = 'new-12660a6b-4636-4f11-b6cc-7aa9e1074924';
     $pane = new stdClass();
-    $pane->pid = 'new-9784fb63-5e93-4e24-9779-74a951240311';
+    $pane->pid = 'new-fe6e761f-8466-4f28-85bd-e7f16fd4572f';
     $pane->panel = 'links';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_subtitle';
@@ -2960,11 +3042,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $pane->uuid = '9784fb63-5e93-4e24-9779-74a951240311';
-    $display->content['new-9784fb63-5e93-4e24-9779-74a951240311'] = $pane;
-    $display->panels['links'][2] = 'new-9784fb63-5e93-4e24-9779-74a951240311';
+    $pane->uuid = 'fe6e761f-8466-4f28-85bd-e7f16fd4572f';
+    $display->content['new-fe6e761f-8466-4f28-85bd-e7f16fd4572f'] = $pane;
+    $display->panels['links'][2] = 'new-fe6e761f-8466-4f28-85bd-e7f16fd4572f';
     $pane = new stdClass();
-    $pane->pid = 'new-192fb030-ff87-4c1b-9ac1-1aeaa5c2eee4';
+    $pane->pid = 'new-fe3cfc56-5d97-4cdf-acef-57e21bbb06b0';
     $pane->panel = 'links';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_short_description';
@@ -2989,11 +3071,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 3;
     $pane->locks = array();
-    $pane->uuid = '192fb030-ff87-4c1b-9ac1-1aeaa5c2eee4';
-    $display->content['new-192fb030-ff87-4c1b-9ac1-1aeaa5c2eee4'] = $pane;
-    $display->panels['links'][3] = 'new-192fb030-ff87-4c1b-9ac1-1aeaa5c2eee4';
+    $pane->uuid = 'fe3cfc56-5d97-4cdf-acef-57e21bbb06b0';
+    $display->content['new-fe3cfc56-5d97-4cdf-acef-57e21bbb06b0'] = $pane;
+    $display->panels['links'][3] = 'new-fe3cfc56-5d97-4cdf-acef-57e21bbb06b0';
     $pane = new stdClass();
-    $pane->pid = 'new-e96d2026-8f66-4c3e-a434-de899aa6e55c';
+    $pane->pid = 'new-1bceb5e9-99be-4a6b-b852-2446d50565f3';
     $pane->panel = 'links_';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_time_span';
@@ -3024,11 +3106,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'e96d2026-8f66-4c3e-a434-de899aa6e55c';
-    $display->content['new-e96d2026-8f66-4c3e-a434-de899aa6e55c'] = $pane;
-    $display->panels['links_'][0] = 'new-e96d2026-8f66-4c3e-a434-de899aa6e55c';
+    $pane->uuid = '1bceb5e9-99be-4a6b-b852-2446d50565f3';
+    $display->content['new-1bceb5e9-99be-4a6b-b852-2446d50565f3'] = $pane;
+    $display->panels['links_'][0] = 'new-1bceb5e9-99be-4a6b-b852-2446d50565f3';
     $pane = new stdClass();
-    $pane->pid = 'new-9b20985d-88fa-4300-b123-ea1da4bffcbd';
+    $pane->pid = 'new-820b4468-b869-497b-95e8-b59868c287e0';
     $pane->panel = 'links_';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_workload';
@@ -3053,11 +3135,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = '9b20985d-88fa-4300-b123-ea1da4bffcbd';
-    $display->content['new-9b20985d-88fa-4300-b123-ea1da4bffcbd'] = $pane;
-    $display->panels['links_'][1] = 'new-9b20985d-88fa-4300-b123-ea1da4bffcbd';
+    $pane->uuid = '820b4468-b869-497b-95e8-b59868c287e0';
+    $display->content['new-820b4468-b869-497b-95e8-b59868c287e0'] = $pane;
+    $display->panels['links_'][1] = 'new-820b4468-b869-497b-95e8-b59868c287e0';
     $pane = new stdClass();
-    $pane->pid = 'new-d77826e1-11b2-4aef-b200-990f48faae23';
+    $pane->pid = 'new-39a1c91f-57d5-4597-8e4a-6082a675d5e3';
     $pane->panel = 'links_';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:group_group';
@@ -3084,11 +3166,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $pane->uuid = 'd77826e1-11b2-4aef-b200-990f48faae23';
-    $display->content['new-d77826e1-11b2-4aef-b200-990f48faae23'] = $pane;
-    $display->panels['links_'][2] = 'new-d77826e1-11b2-4aef-b200-990f48faae23';
+    $pane->uuid = '39a1c91f-57d5-4597-8e4a-6082a675d5e3';
+    $display->content['new-39a1c91f-57d5-4597-8e4a-6082a675d5e3'] = $pane;
+    $display->panels['links_'][2] = 'new-39a1c91f-57d5-4597-8e4a-6082a675d5e3';
     $pane = new stdClass();
-    $pane->pid = 'new-1628b3cc-9e84-4dd9-9761-f35e31b25d7f';
+    $pane->pid = 'new-232f45f6-5565-4819-99aa-ce8314c3779e';
     $pane->panel = 'rechts';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_course_picture';
@@ -3116,11 +3198,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '1628b3cc-9e84-4dd9-9761-f35e31b25d7f';
-    $display->content['new-1628b3cc-9e84-4dd9-9761-f35e31b25d7f'] = $pane;
-    $display->panels['rechts'][0] = 'new-1628b3cc-9e84-4dd9-9761-f35e31b25d7f';
+    $pane->uuid = '232f45f6-5565-4819-99aa-ce8314c3779e';
+    $display->content['new-232f45f6-5565-4819-99aa-ce8314c3779e'] = $pane;
+    $display->panels['rechts'][0] = 'new-232f45f6-5565-4819-99aa-ce8314c3779e';
     $pane = new stdClass();
-    $pane->pid = 'new-5a477a06-efd9-4847-880c-12d0472c76d1';
+    $pane->pid = 'new-3fbf1e35-6b7d-4fee-9ddf-e4d3ec9db14b';
     $pane->panel = 'rechts_';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -3146,9 +3228,9 @@ echo section_courses_render_course_link($course);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '5a477a06-efd9-4847-880c-12d0472c76d1';
-    $display->content['new-5a477a06-efd9-4847-880c-12d0472c76d1'] = $pane;
-    $display->panels['rechts_'][0] = 'new-5a477a06-efd9-4847-880c-12d0472c76d1';
+    $pane->uuid = '3fbf1e35-6b7d-4fee-9ddf-e4d3ec9db14b';
+    $display->content['new-3fbf1e35-6b7d-4fee-9ddf-e4d3ec9db14b'] = $pane;
+    $display->panels['rechts_'][0] = 'new-3fbf1e35-6b7d-4fee-9ddf-e4d3ec9db14b';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -3181,6 +3263,8 @@ echo section_courses_render_course_link($course);
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -3311,11 +3395,11 @@ echo section_courses_render_course_link($course);
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = 'ea3dcf8b-4bf0-4b5d-b2e6-7d82f8595d18';
+  $display->uuid = '1fa1cee7-8d7b-4ffc-8271-eee9ed5ab49e';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-7e1a9378-9e63-4ea8-9dd7-4ffc0cf2ab24';
+    $pane->pid = 'new-94323719-a6fe-4925-b209-42f5273131a0';
     $pane->panel = 'center';
     $pane->type = 'form';
     $pane->subtype = 'form';
@@ -3334,11 +3418,11 @@ echo section_courses_render_course_link($course);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '7e1a9378-9e63-4ea8-9dd7-4ffc0cf2ab24';
-    $display->content['new-7e1a9378-9e63-4ea8-9dd7-4ffc0cf2ab24'] = $pane;
-    $display->panels['center'][0] = 'new-7e1a9378-9e63-4ea8-9dd7-4ffc0cf2ab24';
+    $pane->uuid = '94323719-a6fe-4925-b209-42f5273131a0';
+    $display->content['new-94323719-a6fe-4925-b209-42f5273131a0'] = $pane;
+    $display->panels['center'][0] = 'new-94323719-a6fe-4925-b209-42f5273131a0';
     $pane = new stdClass();
-    $pane->pid = 'new-4b5096a9-78e7-4c18-8aea-1b1019456dc7';
+    $pane->pid = 'new-bf8b8a4f-b14c-448c-9271-8c3a5959ed16';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -3356,11 +3440,11 @@ echo section_courses_render_course_link($course);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '4b5096a9-78e7-4c18-8aea-1b1019456dc7';
-    $display->content['new-4b5096a9-78e7-4c18-8aea-1b1019456dc7'] = $pane;
-    $display->panels['tools'][0] = 'new-4b5096a9-78e7-4c18-8aea-1b1019456dc7';
+    $pane->uuid = 'bf8b8a4f-b14c-448c-9271-8c3a5959ed16';
+    $display->content['new-bf8b8a4f-b14c-448c-9271-8c3a5959ed16'] = $pane;
+    $display->panels['tools'][0] = 'new-bf8b8a4f-b14c-448c-9271-8c3a5959ed16';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-7e1a9378-9e63-4ea8-9dd7-4ffc0cf2ab24';
+  $display->title_pane = 'new-94323719-a6fe-4925-b209-42f5273131a0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_admin_add_node'] = $page;
@@ -3391,6 +3475,8 @@ echo section_courses_render_course_link($course);
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -3699,6 +3785,8 @@ echo section_courses_render_course_link($course);
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -3781,11 +3869,11 @@ echo section_courses_render_course_link($course);
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = 'f49544f5-4b4b-404a-a3b4-6ec403f454b0';
+  $display->uuid = 'fb5218c5-156b-405d-acdd-6843b4bc6d53';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-68de29f2-b765-4b3f-bb1f-5b81f7215b35';
+    $pane->pid = 'new-3de3ea61-23f3-4448-a4d3-34b81de84939';
     $pane->panel = 'news';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_node_tabs';
@@ -3803,11 +3891,11 @@ echo section_courses_render_course_link($course);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '68de29f2-b765-4b3f-bb1f-5b81f7215b35';
-    $display->content['new-68de29f2-b765-4b3f-bb1f-5b81f7215b35'] = $pane;
-    $display->panels['news'][0] = 'new-68de29f2-b765-4b3f-bb1f-5b81f7215b35';
+    $pane->uuid = '3de3ea61-23f3-4448-a4d3-34b81de84939';
+    $display->content['new-3de3ea61-23f3-4448-a4d3-34b81de84939'] = $pane;
+    $display->panels['news'][0] = 'new-3de3ea61-23f3-4448-a4d3-34b81de84939';
     $pane = new stdClass();
-    $pane->pid = 'new-70f88363-68df-49b4-89e1-615e756d7649';
+    $pane->pid = 'new-0cd7c74f-294f-410e-81b3-761bdcb1416a';
     $pane->panel = 'news';
     $pane->type = 'form';
     $pane->subtype = 'form';
@@ -3826,11 +3914,11 @@ echo section_courses_render_course_link($course);
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = '70f88363-68df-49b4-89e1-615e756d7649';
-    $display->content['new-70f88363-68df-49b4-89e1-615e756d7649'] = $pane;
-    $display->panels['news'][1] = 'new-70f88363-68df-49b4-89e1-615e756d7649';
+    $pane->uuid = '0cd7c74f-294f-410e-81b3-761bdcb1416a';
+    $display->content['new-0cd7c74f-294f-410e-81b3-761bdcb1416a'] = $pane;
+    $display->panels['news'][1] = 'new-0cd7c74f-294f-410e-81b3-761bdcb1416a';
     $pane = new stdClass();
-    $pane->pid = 'new-4b0c2c8f-594b-4110-a8cf-2f3dc89a5b52';
+    $pane->pid = 'new-7c638452-e250-4ae4-a9e8-3b2db13ffa23';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -3848,11 +3936,11 @@ echo section_courses_render_course_link($course);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '4b0c2c8f-594b-4110-a8cf-2f3dc89a5b52';
-    $display->content['new-4b0c2c8f-594b-4110-a8cf-2f3dc89a5b52'] = $pane;
-    $display->panels['tools'][0] = 'new-4b0c2c8f-594b-4110-a8cf-2f3dc89a5b52';
+    $pane->uuid = '7c638452-e250-4ae4-a9e8-3b2db13ffa23';
+    $display->content['new-7c638452-e250-4ae4-a9e8-3b2db13ffa23'] = $pane;
+    $display->panels['tools'][0] = 'new-7c638452-e250-4ae4-a9e8-3b2db13ffa23';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-70f88363-68df-49b4-89e1-615e756d7649';
+  $display->title_pane = 'new-0cd7c74f-294f-410e-81b3-761bdcb1416a';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_admin_edit_node'] = $page;
@@ -3883,6 +3971,8 @@ echo section_courses_render_course_link($course);
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -3943,11 +4033,11 @@ echo section_courses_render_course_link($course);
   );
   $display->cache = array();
   $display->title = 'Forum';
-  $display->uuid = '7f0e33a4-1e8e-45f5-b40e-567a097e0816';
+  $display->uuid = '58df806a-85db-4513-b6ab-f447a5aea1d7';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-b225a928-14d4-44ca-bcbc-97182ed100b6';
+    $pane->pid = 'new-90afa9d5-35b8-449c-8200-d9b080275427';
     $pane->panel = 'center';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -3968,11 +4058,11 @@ echo section_courses_render_course_link($course);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'b225a928-14d4-44ca-bcbc-97182ed100b6';
-    $display->content['new-b225a928-14d4-44ca-bcbc-97182ed100b6'] = $pane;
-    $display->panels['center'][0] = 'new-b225a928-14d4-44ca-bcbc-97182ed100b6';
+    $pane->uuid = '90afa9d5-35b8-449c-8200-d9b080275427';
+    $display->content['new-90afa9d5-35b8-449c-8200-d9b080275427'] = $pane;
+    $display->panels['center'][0] = 'new-90afa9d5-35b8-449c-8200-d9b080275427';
     $pane = new stdClass();
-    $pane->pid = 'new-7f6a73b9-9897-46c1-937f-8ac43a29ce5e';
+    $pane->pid = 'new-abd1e078-f8d8-4725-80ba-0e489c81c8e2';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -3990,9 +4080,9 @@ echo section_courses_render_course_link($course);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '7f6a73b9-9897-46c1-937f-8ac43a29ce5e';
-    $display->content['new-7f6a73b9-9897-46c1-937f-8ac43a29ce5e'] = $pane;
-    $display->panels['tools'][0] = 'new-7f6a73b9-9897-46c1-937f-8ac43a29ce5e';
+    $pane->uuid = 'abd1e078-f8d8-4725-80ba-0e489c81c8e2';
+    $display->content['new-abd1e078-f8d8-4725-80ba-0e489c81c8e2'] = $pane;
+    $display->panels['tools'][0] = 'new-abd1e078-f8d8-4725-80ba-0e489c81c8e2';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -4025,6 +4115,8 @@ echo section_courses_render_course_link($course);
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -4149,11 +4241,11 @@ echo section_courses_render_course_link($course);
   );
   $display->cache = array();
   $display->title = 'Kursgruppen';
-  $display->uuid = '99439b7d-e8c0-4221-a8ec-f24e040839a1';
+  $display->uuid = '8dec6129-22c3-4ff5-8de8-aab5c51c645f';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-37038def-4714-4c0e-bc15-421134553b7b';
+    $pane->pid = 'new-77d7dfa5-522e-4432-b88b-3f829c558e15';
     $pane->panel = 'center';
     $pane->type = 'views';
     $pane->subtype = 'courses_admin_groups';
@@ -4186,11 +4278,11 @@ echo section_courses_render_course_link($course);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '37038def-4714-4c0e-bc15-421134553b7b';
-    $display->content['new-37038def-4714-4c0e-bc15-421134553b7b'] = $pane;
-    $display->panels['center'][0] = 'new-37038def-4714-4c0e-bc15-421134553b7b';
+    $pane->uuid = '77d7dfa5-522e-4432-b88b-3f829c558e15';
+    $display->content['new-77d7dfa5-522e-4432-b88b-3f829c558e15'] = $pane;
+    $display->panels['center'][0] = 'new-77d7dfa5-522e-4432-b88b-3f829c558e15';
     $pane = new stdClass();
-    $pane->pid = 'new-a38f0c27-408b-48ee-bd10-0dcb2d8f389d';
+    $pane->pid = 'new-c5c8edca-00cd-4492-b2b3-34513d6168ae';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -4208,11 +4300,11 @@ echo section_courses_render_course_link($course);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'a38f0c27-408b-48ee-bd10-0dcb2d8f389d';
-    $display->content['new-a38f0c27-408b-48ee-bd10-0dcb2d8f389d'] = $pane;
-    $display->panels['tools'][0] = 'new-a38f0c27-408b-48ee-bd10-0dcb2d8f389d';
+    $pane->uuid = 'c5c8edca-00cd-4492-b2b3-34513d6168ae';
+    $display->content['new-c5c8edca-00cd-4492-b2b3-34513d6168ae'] = $pane;
+    $display->panels['tools'][0] = 'new-c5c8edca-00cd-4492-b2b3-34513d6168ae';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-37038def-4714-4c0e-bc15-421134553b7b';
+  $display->title_pane = 'new-77d7dfa5-522e-4432-b88b-3f829c558e15';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_admin_groups'] = $page;
@@ -4243,6 +4335,8 @@ echo section_courses_render_course_link($course);
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -4569,6 +4663,8 @@ echo section_courses_render_course_link($course);
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -4630,11 +4726,11 @@ echo section_courses_render_course_link($course);
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = '0ab43911-63b7-41d0-a716-d4cb5ad29bdb';
+  $display->uuid = '75f4b5c9-faf5-4b62-b773-9f71858e7994';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-c97de03b-b1bd-4d5b-a1e0-32ef74f463b2';
+    $pane->pid = 'new-1ed5406a-9021-49e7-bd7d-74b3a7c56d64';
     $pane->panel = 'news';
     $pane->type = 'views_panes';
     $pane->subtype = 'courses_course_news-panel_pane_1';
@@ -4649,11 +4745,11 @@ echo section_courses_render_course_link($course);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'c97de03b-b1bd-4d5b-a1e0-32ef74f463b2';
-    $display->content['new-c97de03b-b1bd-4d5b-a1e0-32ef74f463b2'] = $pane;
-    $display->panels['news'][0] = 'new-c97de03b-b1bd-4d5b-a1e0-32ef74f463b2';
+    $pane->uuid = '1ed5406a-9021-49e7-bd7d-74b3a7c56d64';
+    $display->content['new-1ed5406a-9021-49e7-bd7d-74b3a7c56d64'] = $pane;
+    $display->panels['news'][0] = 'new-1ed5406a-9021-49e7-bd7d-74b3a7c56d64';
     $pane = new stdClass();
-    $pane->pid = 'new-7804f458-d10b-43a8-a065-437b794f828c';
+    $pane->pid = 'new-5d61e5a4-4920-40bf-859b-bb5a17e0e753';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -4671,11 +4767,11 @@ echo section_courses_render_course_link($course);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '7804f458-d10b-43a8-a065-437b794f828c';
-    $display->content['new-7804f458-d10b-43a8-a065-437b794f828c'] = $pane;
-    $display->panels['tools'][0] = 'new-7804f458-d10b-43a8-a065-437b794f828c';
+    $pane->uuid = '5d61e5a4-4920-40bf-859b-bb5a17e0e753';
+    $display->content['new-5d61e5a4-4920-40bf-859b-bb5a17e0e753'] = $pane;
+    $display->panels['tools'][0] = 'new-5d61e5a4-4920-40bf-859b-bb5a17e0e753';
     $pane = new stdClass();
-    $pane->pid = 'new-217e66f4-576b-4634-b378-84abdf10a4e1';
+    $pane->pid = 'new-1d593bf2-5130-4953-9a57-d17bdefaf819';
     $pane->panel = 'tools';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -4698,11 +4794,11 @@ echo section_courses_theme_progressbar();
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = '217e66f4-576b-4634-b378-84abdf10a4e1';
-    $display->content['new-217e66f4-576b-4634-b378-84abdf10a4e1'] = $pane;
-    $display->panels['tools'][1] = 'new-217e66f4-576b-4634-b378-84abdf10a4e1';
+    $pane->uuid = '1d593bf2-5130-4953-9a57-d17bdefaf819';
+    $display->content['new-1d593bf2-5130-4953-9a57-d17bdefaf819'] = $pane;
+    $display->panels['tools'][1] = 'new-1d593bf2-5130-4953-9a57-d17bdefaf819';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-c97de03b-b1bd-4d5b-a1e0-32ef74f463b2';
+  $display->title_pane = 'new-1ed5406a-9021-49e7-bd7d-74b3a7c56d64';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_course_home'] = $page;
@@ -4715,7 +4811,10 @@ echo section_courses_theme_progressbar();
   $page->admin_title = 'courses-course-overview';
   $page->admin_description = '';
   $page->path = 'courses';
-  $page->access = array();
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
   $page->menu = array();
   $page->arguments = array();
   $page->conf = array(
@@ -4872,6 +4971,8 @@ echo \'<p><a class="btn" href="/node/add/courses-course">Neuen Kurs anlegen</a><
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -4940,11 +5041,11 @@ echo \'<p><a class="btn" href="/node/add/courses-course">Neuen Kurs anlegen</a><
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = 'f67fb7de-8cb3-4d17-9afe-f6aea6a3ae5d';
+  $display->uuid = 'e784bdfd-660e-401f-9f88-c7decd7f2d86';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-27726fc1-912d-41b4-9efd-92eb5ecccd16';
+    $pane->pid = 'new-6a546994-9091-4afd-8fcd-1d04949f0b22';
     $pane->panel = 'center';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_forum_breadcrumbs';
@@ -4962,11 +5063,11 @@ echo \'<p><a class="btn" href="/node/add/courses-course">Neuen Kurs anlegen</a><
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '27726fc1-912d-41b4-9efd-92eb5ecccd16';
-    $display->content['new-27726fc1-912d-41b4-9efd-92eb5ecccd16'] = $pane;
-    $display->panels['center'][0] = 'new-27726fc1-912d-41b4-9efd-92eb5ecccd16';
+    $pane->uuid = '6a546994-9091-4afd-8fcd-1d04949f0b22';
+    $display->content['new-6a546994-9091-4afd-8fcd-1d04949f0b22'] = $pane;
+    $display->panels['center'][0] = 'new-6a546994-9091-4afd-8fcd-1d04949f0b22';
     $pane = new stdClass();
-    $pane->pid = 'new-a96ade69-e8d1-485d-9284-d35b5e19b4fd';
+    $pane->pid = 'new-bbd862f2-66bb-42a8-8c1b-98f608bc8fbd';
     $pane->panel = 'center';
     $pane->type = 'forum_node_create_list';
     $pane->subtype = 'forum_node_create_list';
@@ -4997,11 +5098,11 @@ echo \'<p><a class="btn" href="/node/add/courses-course">Neuen Kurs anlegen</a><
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = 'a96ade69-e8d1-485d-9284-d35b5e19b4fd';
-    $display->content['new-a96ade69-e8d1-485d-9284-d35b5e19b4fd'] = $pane;
-    $display->panels['center'][1] = 'new-a96ade69-e8d1-485d-9284-d35b5e19b4fd';
+    $pane->uuid = 'bbd862f2-66bb-42a8-8c1b-98f608bc8fbd';
+    $display->content['new-bbd862f2-66bb-42a8-8c1b-98f608bc8fbd'] = $pane;
+    $display->panels['center'][1] = 'new-bbd862f2-66bb-42a8-8c1b-98f608bc8fbd';
     $pane = new stdClass();
-    $pane->pid = 'new-56a720f0-19cc-494a-96fc-22cf529d8c55';
+    $pane->pid = 'new-bd6000b6-dec9-4f16-91f4-9c6e053bae79';
     $pane->panel = 'center';
     $pane->type = 'forum_list';
     $pane->subtype = 'forum_list';
@@ -5020,11 +5121,11 @@ echo \'<p><a class="btn" href="/node/add/courses-course">Neuen Kurs anlegen</a><
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $pane->uuid = '56a720f0-19cc-494a-96fc-22cf529d8c55';
-    $display->content['new-56a720f0-19cc-494a-96fc-22cf529d8c55'] = $pane;
-    $display->panels['center'][2] = 'new-56a720f0-19cc-494a-96fc-22cf529d8c55';
+    $pane->uuid = 'bd6000b6-dec9-4f16-91f4-9c6e053bae79';
+    $display->content['new-bd6000b6-dec9-4f16-91f4-9c6e053bae79'] = $pane;
+    $display->panels['center'][2] = 'new-bd6000b6-dec9-4f16-91f4-9c6e053bae79';
     $pane = new stdClass();
-    $pane->pid = 'new-519c3bc3-6650-49f3-951b-733072dc0a52';
+    $pane->pid = 'new-7e1c012e-8b7c-4035-ad81-7e79c5ecdc2e';
     $pane->panel = 'center';
     $pane->type = 'forum_topic_list';
     $pane->subtype = 'forum_topic_list';
@@ -5044,11 +5145,11 @@ echo \'<p><a class="btn" href="/node/add/courses-course">Neuen Kurs anlegen</a><
     $pane->extras = array();
     $pane->position = 3;
     $pane->locks = array();
-    $pane->uuid = '519c3bc3-6650-49f3-951b-733072dc0a52';
-    $display->content['new-519c3bc3-6650-49f3-951b-733072dc0a52'] = $pane;
-    $display->panels['center'][3] = 'new-519c3bc3-6650-49f3-951b-733072dc0a52';
+    $pane->uuid = '7e1c012e-8b7c-4035-ad81-7e79c5ecdc2e';
+    $display->content['new-7e1c012e-8b7c-4035-ad81-7e79c5ecdc2e'] = $pane;
+    $display->panels['center'][3] = 'new-7e1c012e-8b7c-4035-ad81-7e79c5ecdc2e';
     $pane = new stdClass();
-    $pane->pid = 'new-84d14b47-8be8-487f-b723-f46398d15abf';
+    $pane->pid = 'new-6017a486-e6ff-4907-a5aa-8eb270c7f574';
     $pane->panel = 'center';
     $pane->type = 'views';
     $pane->subtype = 'advanced_forum_new_topics';
@@ -5091,11 +5192,11 @@ echo \'<p><a class="btn" href="/node/add/courses-course">Neuen Kurs anlegen</a><
     $pane->extras = array();
     $pane->position = 4;
     $pane->locks = array();
-    $pane->uuid = '84d14b47-8be8-487f-b723-f46398d15abf';
-    $display->content['new-84d14b47-8be8-487f-b723-f46398d15abf'] = $pane;
-    $display->panels['center'][4] = 'new-84d14b47-8be8-487f-b723-f46398d15abf';
+    $pane->uuid = '6017a486-e6ff-4907-a5aa-8eb270c7f574';
+    $display->content['new-6017a486-e6ff-4907-a5aa-8eb270c7f574'] = $pane;
+    $display->panels['center'][4] = 'new-6017a486-e6ff-4907-a5aa-8eb270c7f574';
     $pane = new stdClass();
-    $pane->pid = 'new-b4309e30-fdb2-4a90-9727-922ac47bdc0a';
+    $pane->pid = 'new-c376d448-a2d5-46d3-a88d-52d662b7588e';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -5113,9 +5214,9 @@ echo \'<p><a class="btn" href="/node/add/courses-course">Neuen Kurs anlegen</a><
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'b4309e30-fdb2-4a90-9727-922ac47bdc0a';
-    $display->content['new-b4309e30-fdb2-4a90-9727-922ac47bdc0a'] = $pane;
-    $display->panels['tools'][0] = 'new-b4309e30-fdb2-4a90-9727-922ac47bdc0a';
+    $pane->uuid = 'c376d448-a2d5-46d3-a88d-52d662b7588e';
+    $display->content['new-c376d448-a2d5-46d3-a88d-52d662b7588e'] = $pane;
+    $display->panels['tools'][0] = 'new-c376d448-a2d5-46d3-a88d-52d662b7588e';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -5147,6 +5248,8 @@ echo \'<p><a class="btn" href="/node/add/courses-course">Neuen Kurs anlegen</a><
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -5232,11 +5335,11 @@ echo \'<p><a class="btn" href="/node/add/courses-course">Neuen Kurs anlegen</a><
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = 'b5c169b2-7c3c-407e-afb6-0f6ddf27b3ce';
+  $display->uuid = 'd0b259cc-ec8e-4157-a155-083d474c1d67';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-be90c6e4-fab5-472c-b789-de3c07935a4c';
+    $pane->pid = 'new-cffdbc18-b95e-498e-a7d8-c7acb30c8838';
     $pane->panel = 'center';
     $pane->type = 'form';
     $pane->subtype = 'form';
@@ -5255,11 +5358,11 @@ echo \'<p><a class="btn" href="/node/add/courses-course">Neuen Kurs anlegen</a><
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'be90c6e4-fab5-472c-b789-de3c07935a4c';
-    $display->content['new-be90c6e4-fab5-472c-b789-de3c07935a4c'] = $pane;
-    $display->panels['center'][0] = 'new-be90c6e4-fab5-472c-b789-de3c07935a4c';
+    $pane->uuid = 'cffdbc18-b95e-498e-a7d8-c7acb30c8838';
+    $display->content['new-cffdbc18-b95e-498e-a7d8-c7acb30c8838'] = $pane;
+    $display->panels['center'][0] = 'new-cffdbc18-b95e-498e-a7d8-c7acb30c8838';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-be90c6e4-fab5-472c-b789-de3c07935a4c';
+  $display->title_pane = 'new-cffdbc18-b95e-498e-a7d8-c7acb30c8838';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_forumcontent_add_in_course'] = $page;
@@ -5301,6 +5404,8 @@ echo \'<p><a class="btn" href="/node/add/courses-course">Neuen Kurs anlegen</a><
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -5374,11 +5479,11 @@ echo \'<p><a class="btn" href="/node/add/courses-course">Neuen Kurs anlegen</a><
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = '111500e9-79a9-4e1c-859e-37efcbe85f06';
+  $display->uuid = '60126cd8-fe7c-4a13-bb92-0f48d86e19d6';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-3de9cf80-4111-4f85-9e7c-a5c46ca7a804';
+    $pane->pid = 'new-866ee208-9f90-408a-9f2b-2844c286075e';
     $pane->panel = 'center';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -5403,11 +5508,11 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '3de9cf80-4111-4f85-9e7c-a5c46ca7a804';
-    $display->content['new-3de9cf80-4111-4f85-9e7c-a5c46ca7a804'] = $pane;
-    $display->panels['center'][0] = 'new-3de9cf80-4111-4f85-9e7c-a5c46ca7a804';
+    $pane->uuid = '866ee208-9f90-408a-9f2b-2844c286075e';
+    $display->content['new-866ee208-9f90-408a-9f2b-2844c286075e'] = $pane;
+    $display->panels['center'][0] = 'new-866ee208-9f90-408a-9f2b-2844c286075e';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-3de9cf80-4111-4f85-9e7c-a5c46ca7a804';
+  $display->title_pane = 'new-866ee208-9f90-408a-9f2b-2844c286075e';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_forumcontent_delete_in_course'] = $page;
@@ -5437,6 +5542,8 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -5512,11 +5619,11 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = '91492df3-98f7-4aae-b88a-0d8ba8d9629b';
+  $display->uuid = 'f43b5a4c-ed02-4e7a-ba71-f639a7116338';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-134ecae9-96a5-4464-af1e-7ccbe75871f4';
+    $pane->pid = 'new-f322cb83-22b2-40a7-9e63-bf68c3e7e9f6';
     $pane->panel = 'center';
     $pane->type = 'form';
     $pane->subtype = 'form';
@@ -5535,11 +5642,11 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '134ecae9-96a5-4464-af1e-7ccbe75871f4';
-    $display->content['new-134ecae9-96a5-4464-af1e-7ccbe75871f4'] = $pane;
-    $display->panels['center'][0] = 'new-134ecae9-96a5-4464-af1e-7ccbe75871f4';
+    $pane->uuid = 'f322cb83-22b2-40a7-9e63-bf68c3e7e9f6';
+    $display->content['new-f322cb83-22b2-40a7-9e63-bf68c3e7e9f6'] = $pane;
+    $display->panels['center'][0] = 'new-f322cb83-22b2-40a7-9e63-bf68c3e7e9f6';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-134ecae9-96a5-4464-af1e-7ccbe75871f4';
+  $display->title_pane = 'new-f322cb83-22b2-40a7-9e63-bf68c3e7e9f6';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_forumcontent_edit_in_course'] = $page;
@@ -5569,6 +5676,8 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -5642,11 +5751,11 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = '691a08b7-9608-48b6-b46a-b4a0fd1a1ee7';
+  $display->uuid = 'ae03abde-987f-4bbe-ba2b-7aab66e5c908';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-44100eed-3a65-475a-a95b-365f40249d5e';
+    $pane->pid = 'new-d60b12b9-8f9e-4ef5-a5e9-7477f0611f48';
     $pane->panel = 'center';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -5671,11 +5780,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '44100eed-3a65-475a-a95b-365f40249d5e';
-    $display->content['new-44100eed-3a65-475a-a95b-365f40249d5e'] = $pane;
-    $display->panels['center'][0] = 'new-44100eed-3a65-475a-a95b-365f40249d5e';
+    $pane->uuid = 'd60b12b9-8f9e-4ef5-a5e9-7477f0611f48';
+    $display->content['new-d60b12b9-8f9e-4ef5-a5e9-7477f0611f48'] = $pane;
+    $display->panels['center'][0] = 'new-d60b12b9-8f9e-4ef5-a5e9-7477f0611f48';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-44100eed-3a65-475a-a95b-365f40249d5e';
+  $display->title_pane = 'new-d60b12b9-8f9e-4ef5-a5e9-7477f0611f48';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_forumcontent_editcomment_in_course'] = $page;
@@ -5705,6 +5814,8 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -5780,11 +5891,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = 'b3262187-cf97-49fc-a195-6c77ca7e5908';
+  $display->uuid = '25c1076a-b303-4012-99cb-35f1b48b2842';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-c0d31207-547e-4fc5-8b36-6488d1d50162';
+    $pane->pid = 'new-e345bd71-a268-4d53-afd3-8190b7310224';
     $pane->panel = 'center';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_forum_breadcrumbs';
@@ -5802,11 +5913,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'c0d31207-547e-4fc5-8b36-6488d1d50162';
-    $display->content['new-c0d31207-547e-4fc5-8b36-6488d1d50162'] = $pane;
-    $display->panels['center'][0] = 'new-c0d31207-547e-4fc5-8b36-6488d1d50162';
+    $pane->uuid = 'e345bd71-a268-4d53-afd3-8190b7310224';
+    $display->content['new-e345bd71-a268-4d53-afd3-8190b7310224'] = $pane;
+    $display->panels['center'][0] = 'new-e345bd71-a268-4d53-afd3-8190b7310224';
     $pane = new stdClass();
-    $pane->pid = 'new-b6ff1b6e-a960-47ef-9c4f-ee982fa306ca';
+    $pane->pid = 'new-c84c51ce-6a94-4c68-b795-2f7d007aff24';
     $pane->panel = 'center';
     $pane->type = 'entity_view';
     $pane->subtype = 'node';
@@ -5826,11 +5937,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = 'b6ff1b6e-a960-47ef-9c4f-ee982fa306ca';
-    $display->content['new-b6ff1b6e-a960-47ef-9c4f-ee982fa306ca'] = $pane;
-    $display->panels['center'][1] = 'new-b6ff1b6e-a960-47ef-9c4f-ee982fa306ca';
+    $pane->uuid = 'c84c51ce-6a94-4c68-b795-2f7d007aff24';
+    $display->content['new-c84c51ce-6a94-4c68-b795-2f7d007aff24'] = $pane;
+    $display->panels['center'][1] = 'new-c84c51ce-6a94-4c68-b795-2f7d007aff24';
     $pane = new stdClass();
-    $pane->pid = 'new-2aaeed4d-3c87-4a96-845e-48a7d7c0ebdf';
+    $pane->pid = 'new-b360abb7-1b19-4969-982d-5ba4a523ee9f';
     $pane->panel = 'center';
     $pane->type = 'node_comments';
     $pane->subtype = 'node_comments';
@@ -5851,11 +5962,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $pane->uuid = '2aaeed4d-3c87-4a96-845e-48a7d7c0ebdf';
-    $display->content['new-2aaeed4d-3c87-4a96-845e-48a7d7c0ebdf'] = $pane;
-    $display->panels['center'][2] = 'new-2aaeed4d-3c87-4a96-845e-48a7d7c0ebdf';
+    $pane->uuid = 'b360abb7-1b19-4969-982d-5ba4a523ee9f';
+    $display->content['new-b360abb7-1b19-4969-982d-5ba4a523ee9f'] = $pane;
+    $display->panels['center'][2] = 'new-b360abb7-1b19-4969-982d-5ba4a523ee9f';
     $pane = new stdClass();
-    $pane->pid = 'new-d60232df-9e9b-4376-bb7f-96f3857478d7';
+    $pane->pid = 'new-65da5f79-d601-442c-8dda-e542342c461c';
     $pane->panel = 'center';
     $pane->type = 'node_comment_form';
     $pane->subtype = 'node_comment_form';
@@ -5875,9 +5986,9 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 3;
     $pane->locks = array();
-    $pane->uuid = 'd60232df-9e9b-4376-bb7f-96f3857478d7';
-    $display->content['new-d60232df-9e9b-4376-bb7f-96f3857478d7'] = $pane;
-    $display->panels['center'][3] = 'new-d60232df-9e9b-4376-bb7f-96f3857478d7';
+    $pane->uuid = '65da5f79-d601-442c-8dda-e542342c461c';
+    $display->content['new-65da5f79-d601-442c-8dda-e542342c461c'] = $pane;
+    $display->panels['center'][3] = 'new-65da5f79-d601-442c-8dda-e542342c461c';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -5909,6 +6020,8 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -5990,11 +6103,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = 'ed750d19-9c61-4d5f-bc4f-f7848f462504';
+  $display->uuid = 'e9153794-e34b-4e8a-be04-f99095045b3d';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-75068604-e2fd-4d08-8c21-7522c95f4411';
+    $pane->pid = 'new-3845c905-c6ee-464e-9332-d8be1953433d';
     $pane->panel = 'center';
     $pane->type = 'comment_reply_form';
     $pane->subtype = 'comment_reply_form';
@@ -6017,9 +6130,9 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '75068604-e2fd-4d08-8c21-7522c95f4411';
-    $display->content['new-75068604-e2fd-4d08-8c21-7522c95f4411'] = $pane;
-    $display->panels['center'][0] = 'new-75068604-e2fd-4d08-8c21-7522c95f4411';
+    $pane->uuid = '3845c905-c6ee-464e-9332-d8be1953433d';
+    $display->content['new-3845c905-c6ee-464e-9332-d8be1953433d'] = $pane;
+    $display->panels['center'][0] = 'new-3845c905-c6ee-464e-9332-d8be1953433d';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -6051,6 +6164,8 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -6127,11 +6242,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = 'e8dd852b-b99b-4001-88d2-10a5744c0e54';
+  $display->uuid = '92d5a183-acac-4ad1-a50c-4b6fd0813227';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-59c4ecf7-33d9-41e4-afe5-2a17bc258dd6';
+    $pane->pid = 'new-aeb5a737-2e60-4f47-9395-2fa070a45e6a';
     $pane->panel = 'center';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_node_tabs';
@@ -6149,11 +6264,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '59c4ecf7-33d9-41e4-afe5-2a17bc258dd6';
-    $display->content['new-59c4ecf7-33d9-41e4-afe5-2a17bc258dd6'] = $pane;
-    $display->panels['center'][0] = 'new-59c4ecf7-33d9-41e4-afe5-2a17bc258dd6';
+    $pane->uuid = 'aeb5a737-2e60-4f47-9395-2fa070a45e6a';
+    $display->content['new-aeb5a737-2e60-4f47-9395-2fa070a45e6a'] = $pane;
+    $display->panels['center'][0] = 'new-aeb5a737-2e60-4f47-9395-2fa070a45e6a';
     $pane = new stdClass();
-    $pane->pid = 'new-51742e52-7ade-4bb0-b82a-9be569f3f592';
+    $pane->pid = 'new-c75e6148-cead-4ea2-af5c-0d67ffbd03a7';
     $pane->panel = 'center';
     $pane->type = 'entity_view';
     $pane->subtype = 'node';
@@ -6173,11 +6288,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = '51742e52-7ade-4bb0-b82a-9be569f3f592';
-    $display->content['new-51742e52-7ade-4bb0-b82a-9be569f3f592'] = $pane;
-    $display->panels['center'][1] = 'new-51742e52-7ade-4bb0-b82a-9be569f3f592';
+    $pane->uuid = 'c75e6148-cead-4ea2-af5c-0d67ffbd03a7';
+    $display->content['new-c75e6148-cead-4ea2-af5c-0d67ffbd03a7'] = $pane;
+    $display->panels['center'][1] = 'new-c75e6148-cead-4ea2-af5c-0d67ffbd03a7';
     $pane = new stdClass();
-    $pane->pid = 'new-13841988-4570-4e15-bef0-1bfa0564948b';
+    $pane->pid = 'new-868f6a73-0d07-4077-9047-c62985347bbe';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -6195,11 +6310,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '13841988-4570-4e15-bef0-1bfa0564948b';
-    $display->content['new-13841988-4570-4e15-bef0-1bfa0564948b'] = $pane;
-    $display->panels['tools'][0] = 'new-13841988-4570-4e15-bef0-1bfa0564948b';
+    $pane->uuid = '868f6a73-0d07-4077-9047-c62985347bbe';
+    $display->content['new-868f6a73-0d07-4077-9047-c62985347bbe'] = $pane;
+    $display->panels['tools'][0] = 'new-868f6a73-0d07-4077-9047-c62985347bbe';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-51742e52-7ade-4bb0-b82a-9be569f3f592';
+  $display->title_pane = 'new-c75e6148-cead-4ea2-af5c-0d67ffbd03a7';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_news_in_course'] = $page;
@@ -6229,6 +6344,8 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -6353,11 +6470,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = '8ddd62e4-cb26-42aa-80e8-d481486880f0';
+  $display->uuid = 'db6de0bb-41a3-47d0-9e2b-da58339b40de';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-6b5b128e-9128-42a2-9342-4321f8d8c090';
+    $pane->pid = 'new-bed6ecf9-9160-4ad7-8b76-c030266c2b17';
     $pane->panel = 'center';
     $pane->type = 'views_panes';
     $pane->subtype = 'courses_tasks-panel_pane_1';
@@ -6372,11 +6489,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '6b5b128e-9128-42a2-9342-4321f8d8c090';
-    $display->content['new-6b5b128e-9128-42a2-9342-4321f8d8c090'] = $pane;
-    $display->panels['center'][0] = 'new-6b5b128e-9128-42a2-9342-4321f8d8c090';
+    $pane->uuid = 'bed6ecf9-9160-4ad7-8b76-c030266c2b17';
+    $display->content['new-bed6ecf9-9160-4ad7-8b76-c030266c2b17'] = $pane;
+    $display->panels['center'][0] = 'new-bed6ecf9-9160-4ad7-8b76-c030266c2b17';
     $pane = new stdClass();
-    $pane->pid = 'new-6ff1c3fd-9a9b-496a-ba80-9a3f125a7bff';
+    $pane->pid = 'new-02feeaeb-57ba-443e-8f06-43132dd80ab1';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -6394,11 +6511,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '6ff1c3fd-9a9b-496a-ba80-9a3f125a7bff';
-    $display->content['new-6ff1c3fd-9a9b-496a-ba80-9a3f125a7bff'] = $pane;
-    $display->panels['tools'][0] = 'new-6ff1c3fd-9a9b-496a-ba80-9a3f125a7bff';
+    $pane->uuid = '02feeaeb-57ba-443e-8f06-43132dd80ab1';
+    $display->content['new-02feeaeb-57ba-443e-8f06-43132dd80ab1'] = $pane;
+    $display->panels['tools'][0] = 'new-02feeaeb-57ba-443e-8f06-43132dd80ab1';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-6b5b128e-9128-42a2-9342-4321f8d8c090';
+  $display->title_pane = 'new-bed6ecf9-9160-4ad7-8b76-c030266c2b17';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_tasks_in_course'] = $page;
@@ -6411,7 +6528,10 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->admin_title = 'Studientext in: (Kurs)';
   $page->admin_description = '';
   $page->path = 'course/text/%1/%2';
-  $page->access = array();
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
   $page->menu = array();
   $page->arguments = array(
     1 => array(
@@ -6490,11 +6610,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = '74c8458a-0abc-4c74-a887-5f75ca2cfbd7';
+  $display->uuid = '66dbe875-2d78-4243-bcf6-dce00d46273c';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-e026c3b7-669f-4875-98e3-1129f7cd0579';
+    $pane->pid = 'new-d9b72f36-2b7e-46e0-bacf-00cc5c23ac5c';
     $pane->panel = 'center';
     $pane->type = 'entity_view';
     $pane->subtype = 'node';
@@ -6514,11 +6634,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'e026c3b7-669f-4875-98e3-1129f7cd0579';
-    $display->content['new-e026c3b7-669f-4875-98e3-1129f7cd0579'] = $pane;
-    $display->panels['center'][0] = 'new-e026c3b7-669f-4875-98e3-1129f7cd0579';
+    $pane->uuid = 'd9b72f36-2b7e-46e0-bacf-00cc5c23ac5c';
+    $display->content['new-d9b72f36-2b7e-46e0-bacf-00cc5c23ac5c'] = $pane;
+    $display->panels['center'][0] = 'new-d9b72f36-2b7e-46e0-bacf-00cc5c23ac5c';
     $pane = new stdClass();
-    $pane->pid = 'new-aeb3c32a-0daf-40f8-a160-24ffd811b954';
+    $pane->pid = 'new-d445add9-630c-48d1-b4e6-375b2d616005';
     $pane->panel = 'outline';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -6541,11 +6661,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'aeb3c32a-0daf-40f8-a160-24ffd811b954';
-    $display->content['new-aeb3c32a-0daf-40f8-a160-24ffd811b954'] = $pane;
-    $display->panels['outline'][0] = 'new-aeb3c32a-0daf-40f8-a160-24ffd811b954';
+    $pane->uuid = 'd445add9-630c-48d1-b4e6-375b2d616005';
+    $display->content['new-d445add9-630c-48d1-b4e6-375b2d616005'] = $pane;
+    $display->panels['outline'][0] = 'new-d445add9-630c-48d1-b4e6-375b2d616005';
     $pane = new stdClass();
-    $pane->pid = 'new-6be34a2e-a10d-46a8-9289-225b2640c79d';
+    $pane->pid = 'new-34bfc27b-c755-4677-a814-91555cdd9e92';
     $pane->panel = 'outline';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_text_biblio';
@@ -6563,11 +6683,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $pane->uuid = '6be34a2e-a10d-46a8-9289-225b2640c79d';
-    $display->content['new-6be34a2e-a10d-46a8-9289-225b2640c79d'] = $pane;
-    $display->panels['outline'][1] = 'new-6be34a2e-a10d-46a8-9289-225b2640c79d';
+    $pane->uuid = '34bfc27b-c755-4677-a814-91555cdd9e92';
+    $display->content['new-34bfc27b-c755-4677-a814-91555cdd9e92'] = $pane;
+    $display->panels['outline'][1] = 'new-34bfc27b-c755-4677-a814-91555cdd9e92';
     $pane = new stdClass();
-    $pane->pid = 'new-1a06ff50-5c33-4753-8150-3ec883aee276';
+    $pane->pid = 'new-c2665aae-6b87-4bb0-af15-295aa2e40f87';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -6585,9 +6705,9 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '1a06ff50-5c33-4753-8150-3ec883aee276';
-    $display->content['new-1a06ff50-5c33-4753-8150-3ec883aee276'] = $pane;
-    $display->panels['tools'][0] = 'new-1a06ff50-5c33-4753-8150-3ec883aee276';
+    $pane->uuid = 'c2665aae-6b87-4bb0-af15-295aa2e40f87';
+    $display->content['new-c2665aae-6b87-4bb0-af15-295aa2e40f87'] = $pane;
+    $display->panels['tools'][0] = 'new-c2665aae-6b87-4bb0-af15-295aa2e40f87';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -6619,6 +6739,8 @@ return section_courses_text_outline();
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -6744,11 +6866,11 @@ return section_courses_text_outline();
   );
   $display->cache = array();
   $display->title = '';
-  $display->uuid = '260fada4-d7bf-425f-9d74-79e42d8f8cae';
+  $display->uuid = '728d6767-c85d-47c1-8938-6a608cc82baf';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-962fb22f-1eed-4ca5-8c15-c639d1f5fba1';
+    $pane->pid = 'new-6d5f5932-34cd-428b-9717-03b5c2b33e25';
     $pane->panel = 'news';
     $pane->type = 'views_panes';
     $pane->subtype = 'courses_course_docs-panel_pane_1';
@@ -6763,11 +6885,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '962fb22f-1eed-4ca5-8c15-c639d1f5fba1';
-    $display->content['new-962fb22f-1eed-4ca5-8c15-c639d1f5fba1'] = $pane;
-    $display->panels['news'][0] = 'new-962fb22f-1eed-4ca5-8c15-c639d1f5fba1';
+    $pane->uuid = '6d5f5932-34cd-428b-9717-03b5c2b33e25';
+    $display->content['new-6d5f5932-34cd-428b-9717-03b5c2b33e25'] = $pane;
+    $display->panels['news'][0] = 'new-6d5f5932-34cd-428b-9717-03b5c2b33e25';
     $pane = new stdClass();
-    $pane->pid = 'new-37d6b13b-551c-46c3-ab0d-599cd0436c15';
+    $pane->pid = 'new-2c3766a5-4fa7-4741-815f-ebab25e174e9';
     $pane->panel = 'tools';
     $pane->type = 'block';
     $pane->subtype = 'section_courses-course_instructors_tools';
@@ -6785,11 +6907,11 @@ return section_courses_text_outline();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '37d6b13b-551c-46c3-ab0d-599cd0436c15';
-    $display->content['new-37d6b13b-551c-46c3-ab0d-599cd0436c15'] = $pane;
-    $display->panels['tools'][0] = 'new-37d6b13b-551c-46c3-ab0d-599cd0436c15';
+    $pane->uuid = '2c3766a5-4fa7-4741-815f-ebab25e174e9';
+    $display->content['new-2c3766a5-4fa7-4741-815f-ebab25e174e9'] = $pane;
+    $display->panels['tools'][0] = 'new-2c3766a5-4fa7-4741-815f-ebab25e174e9';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-962fb22f-1eed-4ca5-8c15-c639d1f5fba1';
+  $display->title_pane = 'new-6d5f5932-34cd-428b-9717-03b5c2b33e25';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['kursdokumente_in_kurs_'] = $page;
@@ -6819,6 +6941,8 @@ return section_courses_text_outline();
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(

@@ -131,6 +131,9 @@ function section_content_menu_block_tree_alter(&$tree, &$config) {
   $top_leaf_link = $top_leaf['link']['link_path'];
   $node_id = substr($top_leaf_link, strpos($top_leaf_link, '/') + 1);
   $node = node_load($node_id);
+  
+  if(!$node)
+      return;
 
 //Only apply when top_leaf is of type 'domain'
   if ($node->type == NM_CONTENT_DOMAIN) {
@@ -284,7 +287,7 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
         //solution for biblio and course text needed
         $type = _custom_general_get_node_type($nid);
 
-        if (in_array($type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN, NM_BIBLIO, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER))) {
+        if (in_array($type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN, NM_BIBLIO, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER, NM_INTERACTIVE_CONTENT))) {
           $path = 'domain/text/' . $nid;
         }
         $original_path = $path;

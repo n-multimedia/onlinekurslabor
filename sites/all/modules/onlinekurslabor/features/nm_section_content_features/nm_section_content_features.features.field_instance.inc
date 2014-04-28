@@ -961,6 +961,12 @@ function nm_section_content_features_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 0,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'hidden',
         'module' => 'text',
@@ -1004,6 +1010,12 @@ function nm_section_content_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 1,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1072,6 +1084,12 @@ function nm_section_content_features_field_default_field_instances() {
         'type' => 'file_default',
         'weight' => 1,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1134,6 +1152,12 @@ function nm_section_content_features_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
+        'weight' => 0,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -1211,6 +1235,12 @@ function nm_section_content_features_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 2,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1278,6 +1308,12 @@ function nm_section_content_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 1,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1351,6 +1387,12 @@ function nm_section_content_features_field_default_field_instances() {
         'type' => 'image',
         'weight' => 0,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1402,6 +1444,12 @@ function nm_section_content_features_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 4,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1441,6 +1489,12 @@ function nm_section_content_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 2,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1493,6 +1547,12 @@ function nm_section_content_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'double_field_mc_answers',
         'weight' => 1,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'node_embed' => array(
         'label' => 'above',
@@ -1583,6 +1643,12 @@ function nm_section_content_features_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 3,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'task' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1662,6 +1728,12 @@ function nm_section_content_features_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
+        'weight' => 0,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'node_embed' => array(
@@ -1753,6 +1825,12 @@ function nm_section_content_features_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 2,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'node_embed' => array(
         'label' => 'above',
         'module' => 'og_ui',
@@ -1836,6 +1914,12 @@ function nm_section_content_features_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 1,
       ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'task' => array(
         'label' => 'above',
         'module' => 'text',
@@ -1916,6 +2000,12 @@ function nm_section_content_features_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
+        'weight' => 0,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'task' => array(
@@ -1999,6 +2089,12 @@ function nm_section_content_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 2,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'task' => array(
         'label' => 'above',
