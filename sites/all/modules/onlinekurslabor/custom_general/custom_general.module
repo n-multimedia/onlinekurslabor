@@ -102,6 +102,8 @@ define("NM_ROLE_STUDENT", "Student");
 define("NM_ROLE_TEST_STUDENT", "Test Student");
 define("NM_ROLE_TUTOR", "Tutor");
 
+define("NM_ROLE_KOOPERATIONSPARTNER", "Kooperationspartner");
+
 //Content
 //Views
 define("NM_VIEW_DOMAIN_MEDIA", "domain_media");
