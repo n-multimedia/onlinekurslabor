@@ -183,7 +183,7 @@
                     '</div>' +
                     '<div class="interaction_content">' +
                     '<h3><a href=# data="%s">%s&nbsp;</a></h3>' +
-                    '<span class="duration"><a href=# data="%s">%s</a> - <a href=# data="%s">%s</a></span>' +
+                    '<span class="duration"><a href=# data="%s">%s</a>&nbsp;-&nbsp;<a href=# data="%s">%s</a></span>' +
                     '</div>' +
                     '</div>';
             var item_label;
