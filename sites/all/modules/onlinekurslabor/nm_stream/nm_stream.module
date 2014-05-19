@@ -166,14 +166,14 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
     if ($nid > 0) {
       $query->condition('n.created', $node->created, '>');
     }
-    
+
     $query
         //->condition('n.nid', $node->nid, '>')
         ->condition('n.type', 'nm_stream')
         ->condition('n.status', NODE_PUBLISHED)
         ->orderBy("n.nid", "DESC") //order important!
         ->addTag('node_access');
-    
+
 
     //01.04.2014 - 22:53 - SN context needed
     //if we are in a special context e.g. course group, we just want to see 
@@ -187,7 +187,7 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
     }
 
     $results = $query->execute()->fetchAll();
-    
+
 
     $output = '';
     foreach ($results as $result) {
@@ -207,6 +207,10 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
 
   //check if changes were made the user is listening to
   $nids = array();
+  //29.04.2014 - 12:08 - SN fix
+  //no nid is set yet
+  if (!isset($_SESSION['nm_stream']))
+    return;
   foreach ($_SESSION['nm_stream']['nodes'] as $item) {
     $nids[$item['nid']] = $item['nid'];
   }
@@ -271,7 +275,7 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
 
 
   //Comments
-  if (is_array($_SESSION['nm_stream']['comments'])) {
+  if (isset($_SESSION['nm_stream']['comments']) && is_array($_SESSION['nm_stream']['comments'])) {
     ksort($_SESSION['nm_stream']['comments']);
     $users_last_loaded_comment = end($_SESSION['nm_stream']['comments']);
 
@@ -429,8 +433,10 @@ function nm_stream_nm_stream_node_add_callback() {
 
   //get update data before adding new node
   //sort to find the highest nid value
-  ksort($_SESSION['nm_stream']['nodes']);
-  $users_last_loaded_node = end($_SESSION['nm_stream']['nodes']);
+  if (!empty($_SESSION['nm_stream']['nodes'])) {
+    ksort($_SESSION['nm_stream']['nodes']);
+    $users_last_loaded_node = end($_SESSION['nm_stream']['nodes']);
+  }
   if (!empty($users_last_loaded_node)) {
     $update_result = nm_stream_nm_stream_node_get_update_callback($users_last_loaded_node['nid'], 'array');
 
@@ -686,8 +692,10 @@ function nm_stream_nm_stream_comment_add_callback($node) {
 
   //get update data before adding new node
   //sort to find the highest nid value
-  ksort($_SESSION['nm_stream']['comments']);
-  $users_last_loaded_comment = end($_SESSION['nm_stream']['comments']);
+  if (!empty($_SESSION['nm_stream']['nodes'])) {
+    ksort($_SESSION['nm_stream']['nodes']);
+    $users_last_loaded_node = end($_SESSION['nm_stream']['nodes']);
+  }
   if (!empty($users_last_loaded_comment)) {
     $update_result = nm_stream_nm_stream_node_get_update_callback(-1, 'array');
 
@@ -873,10 +881,12 @@ function nm_stream_preprocess_node(&$vars) {
   global $user;
 
   if ($vars['view_mode'] == 'nm_stream') {
-
+    //dpm(count($_SESSION['nm_stream']['nodes']));
     //add js and css files
     _nm_stream_add_js_and_css();
 
+    //dpm($vars);
+    //$vars['teaser'] = TRUE;
     $vars['theme_hook_suggestions'][] = 'nm_stream_node';
     $node = $vars['node'];
 
@@ -1168,6 +1178,28 @@ function _nm_stream_render_privacy_widget($node = NULL) {
 }
 
 /**
+ * Implements hook_init
+ */
+function nm_stream_init() {
+  global $user;
+
+  //clear session variable, if user was not active for x seconds
+  //29.04.2014 - 13:19 - SN
+  $interval = 180;
+  $last_access = db_query("SELECT MAX(s.timestamp) FROM {sessions} s WHERE s.timestamp >= :timestamp AND s.uid > 0", array(':timestamp' => REQUEST_TIME - $interval))->fetchField();
+  //dpm(REQUEST_TIME);
+  //dpm($last_access);
+  //dpm(REQUEST_TIME - $last_access);
+  //dpm(count($_SESSION['nm_stream']['nodes']));
+  //dpm(REQUEST_TIME -$last_access);
+  if ($user->uid && empty($last_access)) {
+    if (isset($_SESSION['nm_stream'])) {
+      unset($_SESSION['nm_stream']);
+    }
+  }
+}
+
+/**
  * get privacy options for a special content type
  * @param type content type
  */
@@ -1238,7 +1270,7 @@ function _nm_stream_get_user_pic($account) {
  * @param type $content
  */
 function _nm_stream_get_action_links($content) {
-  global $user;
+  //global $user;
 
   if (isset($content->node_type)) {
     //comment

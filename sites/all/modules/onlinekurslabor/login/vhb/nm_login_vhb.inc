@@ -5,6 +5,18 @@
  * @param type $user
  */
 function nm_login_vhb_db_insert($user) {
+
+  //check if entry already exists for that user first
+  $query = db_select('nm_login_vhb', 'nm');
+  $query->fields('nm', array('uid'));
+  $res = $query->execute()->fetchField();
+  //check if uid was found
+  if (isset($res) && $res > 0) {
+    return;
+  }
+
+  //add a new entry otherwise
+  
   //add db entry for $user
   db_insert('nm_login_vhb') // Table name no longer needs {}
       ->fields(array(
@@ -187,7 +199,7 @@ function nm_login_vhb_archivate_user($user) {
 
   //load matrikelnummer from profile2 data
   if (isset($profile2->field_matrikelnummer) && !empty($profile2->field_matrikelnummer[LANGUAGE_NONE])) {
-    
+
     $matrikelnummer = $profile2->field_matrikelnummer[LANGUAGE_NONE][0]['value'];
     //Populate profile fields
     $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
@@ -217,7 +229,7 @@ function nm_login_vhb_archivate_user($user) {
 
     realname_update($account);
 
-    drupal_set_message('Student ' . $edit['name'] . ' wurde angelegt.');
+    drupal_set_message('Student ' . $edit['name'] . ' wurde archiviert.');
 
     //update db entry
     $num_c = db_update('nm_login_vhb')->fields(array(
@@ -256,14 +268,14 @@ function nm_login_vhb_archivate_user($user) {
  * @return type
  */
 function nm_login_vhb_obfuscate_matrikelnummer($matrikelnummer) {
-  
+
   require_once './includes/password.inc';
-  
+
   $salt = NM_LOGIN_VHB_LOGIN_ENTRY_SALT;
   $hash_bin = hash('sha512', $salt . $matrikelnummer, TRUE);
   $len = strlen($hash_bin);
   $hash = _password_base64_encode($hash_bin, $len);
-  
+
   return $hash;
 }
 
