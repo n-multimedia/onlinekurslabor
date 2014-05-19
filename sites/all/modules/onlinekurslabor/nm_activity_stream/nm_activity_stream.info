@@ -1,0 +1,7 @@
+name = Nm Activity Stream
+description = Provides activity stream functionality
+package = custom
+
+
+version = "7.x-1.x"
+core = "7.x"

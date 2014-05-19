@@ -1,0 +1,829 @@
+<?php
+/**
+ * @file
+ * Main file for the message UI module.
+ */
+
+/**
+ * Get list of the messages.
+ */
+function message_ui_get_types() {
+  $query = new entityFieldQuery();
+  $result = $query
+    ->entityCondition('entity_type', 'message_type')
+    ->execute();
+
+  if (empty($result['message_type'])) {
+    return;
+  }
+
+  $message_types = entity_load('message_type', array_keys($result['message_type']));
+
+  foreach ($message_types as $message_type) {
+    $list[$message_type->name] = $message_type->description;
+  }
+
+  return $list;
+}
+
+/**
+ * Check if the user can create an instance for a message type.
+ *
+ * @param $type
+ *  The message type for which the info shall be returned, or NULL to return an
+ *  array with info about all types.
+ * @param $account
+ *  The user object or user uid.
+ *
+ * @return array|bool
+ *  TRUE or FALSE for a specific message type or an array of the message types
+ */
+function message_ui_user_can_create_message($type = NULL, $account = NULL) {
+  if (empty($account)) {
+    global $user;
+    $account = $user;
+  }
+  $account = entity_metadata_wrapper('user', $account)->value();
+  $types = message_ui_get_types();
+
+  // User have access to create any instances.
+  if (user_access('create any message instance', $account)) {
+    return TRUE;
+  }
+
+  // Check access for a specific message.
+  if ($type) {
+    // Didn't found that type.
+    if (!in_array($type, $types)) {
+      return;
+    }
+
+    if (user_access('create a ' . $type . ' message instance', $account)) {
+      return TRUE;
+    }
+  }
+
+  // Build list of arrays for the permissions.
+  $permissions = array();
+  foreach (array_keys($types) as $type) {
+    $permissions[$type] = user_access('create a ' . $type . ' message instance', $account);
+  }
+
+  return $permissions;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function message_ui_menu() {
+  $items = array();
+
+  $items['message/%message'] = array(
+    'title' => 'Viewing a message',
+    'description' => 'Select a message to create an instance.',
+    'page callback' => 'message_ui_show_message',
+    'page arguments' => array(1),
+    'access callback' => 'message_ui_access_control',
+    'access arguments' => array('view', 1),
+  );
+
+  $items['admin/content/message/create'] = array(
+    'title' => 'Create a new message',
+    'description' => 'Select a message to create an instance.',
+    'page callback' => 'message_ui_create_new_message_instance_list',
+    'access callback' => 'message_ui_access_control',
+    'access arguments' => array('create', 'any'),
+    'type' => MENU_LOCAL_ACTION,
+    'weight' => -10,
+  );
+
+  if ($types = message_ui_get_types()) {
+    foreach ($types as $type => $title) {
+      $items['admin/content/message/create/' . str_replace('_', '-', $type)] = array(
+        'title' => $title,
+        'description' => 'Create a new message' . $title . ' instance',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('message_ui_instance_message_manage', $type),
+        'access arguments' => array('create', $type),
+        'access callback' => 'message_ui_access_control',
+      );
+    }
+  }
+
+  $items['message/%message/view'] = array(
+    'title' => 'View',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+    'access callback' => 'message_ui_access_control',
+    'access arguments' => array('view', 1),
+  );
+
+  $items['message/%message/edit'] = array(
+    'title' => 'Edit',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('message_ui_instance_message_manage', 1),
+    'access callback' => 'message_ui_access_control',
+    'access arguments' => array('edit', 1),
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    'weight' => 0,
+  );
+
+  $items['message/%message/delete'] = array(
+    'title' => 'Delete',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('message_ui_instance_delete', 1),
+    'access callback' => 'message_ui_access_control',
+    'access arguments' => array('delete', 1),
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    'weight' => 10,
+  );
+
+  if (module_exists('devel')) {
+    $items['message/%message/devel'] = array(
+      'title' => 'Devel',
+      'page callback' => 'devel_load_object',
+      'page arguments' => array('message', 1),
+      'access arguments' => array('access devel information'),
+      'type' => MENU_LOCAL_TASK,
+      'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+      'file' => 'devel.pages.inc',
+      'file path' => drupal_get_path('module', 'devel'),
+      'weight' => 20,
+    );
+  }
+
+  $items['admin/config/development/message_delete_multiple'] = array(
+    'title' => 'Message delete multiple',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('message_ui_delete_multiple_messages'),
+    'access callback' => 'message_ui_access_control',
+    'access arguments' => array('delete', 1),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function message_ui_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'message_ui') . '/views',
+  );
+}
+
+/**
+ * Implements hook_admin_paths().
+ */
+function message_ui_admin_paths() {
+  return array(
+    'message/*/edit' => TRUE,
+    'message/*/delete' => TRUE,
+    'message/*/devel' => TRUE,
+  );
+}
+
+/**
+ * Message module access callback.
+ *
+ * @param $operation
+ *  The operation - create, view, update, delete.
+ * @param $message
+ *  The message object or message type.
+ * @param stdClass $user
+ *  A user object. Optional.
+ *
+ * @return bool True or false.
+ */
+function message_ui_access_control($operation, $message, stdClass $user = NULL) {
+  if (empty($user)) {
+    global $user;
+    $account = user_load($user->uid);
+  }
+  else {
+    $account = user_load($user->uid);
+  }
+
+  // Get the message type from the function argument or from the message object.
+  $type = is_object($message) ? $message->type : $message;
+
+  // The user can manage any type of message.
+  if (user_access('bypass message access control', $account)) {
+    return TRUE;
+  }
+
+  // Verify that the user can apply the op.
+  if (user_access($operation . ' any message instance', $account) || user_access($operation . ' a ' . $type . ' message instance', $account)) {
+    return TRUE;
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function message_ui_permission() {
+  // Defining the operation.
+  $operations = array(
+    'view',
+    'edit',
+    'create',
+    'delete',
+  );
+
+  // Build the permissions.
+  $permissions = array();
+
+  $permissions['bypass message access control'] = array(
+    'title' => t('Bypass message access control'),
+    'description' => t('Grant to the user the permission to apply CRUD option on any messages. Grant this permission to trusty users!'),
+  );
+
+  $permissions['update tokens'] = array(
+    'title' => t('Manage the message tokens'),
+    'description' => t('Grant to the user the permission to update the tokens of the message - manually or automatically with a checkbox'),
+  );
+
+  foreach ($operations as $operation) {
+    $permissions[$operation . ' any message instance'] = array(
+      'title' => t(ucfirst($operation) . ' any message type'),
+      'description' => t('Allowing to ' . $operation . ' message from any message type.'),
+    );
+
+    if ($types = message_ui_get_types()) {
+      foreach ($types as $type => $title) {
+        $permissions[$operation . ' a ' . $type . ' message instance'] = array(
+          'title' => t(ucfirst($operation) . ' a new message instance for ' . $title),
+          'description' => t('Allowing to ' . $operation . ' an instance for the ' . $title . ' message type'),
+        );
+      }
+    }
+  }
+
+  return $permissions;
+}
+
+/**
+ * Implements hook_cron_queue_info().
+ */
+function message_ui_cron_queue_info() {
+  $items['message_ui_arguments'] = array(
+    'title' => t('Message UI arguments'),
+    'worker callback' => 'message_ui_arguments_worker',
+    'time' => 60,
+  );
+  return $items;
+}
+
+/**
+ * Display list of message types to create an instance for them.
+ */
+function message_ui_create_new_message_instance_list() {
+  $items = array();
+  $allowed_types = message_ui_user_can_create_message();
+
+  if ($types = message_ui_get_types()) {
+    foreach ($types as $type => $title) {
+      if ($allowed_types || (is_array($allowed_types) && $allowed_types[$type])) {
+        $items[] = l($title, 'admin/content/message/create/' . str_replace('_', '-', $type));
+      }
+    }
+  }
+  else {
+    return t("There are no messages types. You can create a new message type <a href='@url'>here</a>.", array('@url' => url('admin/structure/messages/add')));
+  }
+
+  return theme('item_list', array('items' => $items));
+}
+
+/**
+ * Get hard coded arguments.
+ *
+ * @param $type
+ *  The message type.
+ * @param $count
+ *  Determine weather to the count the arguments or return a list of them.
+ * @return int
+ *  The number of the arguments.
+ */
+function message_ui_message_arguments($type, $count = FALSE) {
+  $message_type = message_type_load($type);
+
+  if (!$output = $message_type->getText()) {
+    return;
+  }
+
+  preg_match_all('/[@|%|\!]\{([a-z0-9:_\-]+?)\}/i', $output, $matches);
+
+  return $count ? count($matches[0]) : $matches[0];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function message_ui_form_message_user_admin_settings_alter(&$form, $form_state, $form_id) {
+  $form['update_tokens'] = array(
+    '#type' => 'fieldset',
+    '#itle' => t('Token update settings'),
+  );
+  $form['update_tokens']['update_tokens_update_tokens'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Update messages arguments'),
+    '#description' => t('When editing a message type, the user can add or delete arguments. When this is checked, you can choose how to update to messages arguments.'),
+    '#default_value' => variable_get('update_tokens_update_tokens', FALSE),
+  );
+
+  $form['update_tokens']['update_tokens_how_to_act'] = array(
+    '#type' => 'select',
+    '#title' => t('Choose how to act'),
+    '#default_value' => variable_get('update_tokens_how_to_act'),
+    '#options' => array(
+      'update_when_removed' => t('Update messages when tokens are removed'),
+      'update_when_added' => t('Update messages when tokens are added'),
+    ),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="update_tokens_update_tokens"]' => array('checked' => TRUE),
+      ),
+    ),
+  );
+
+  $form['update_tokens']['update_tokens_how_update'] = array(
+    '#type' => 'select',
+    '#title' => t('Choose how to update the messages'),
+    '#default_value' => variable_get('update_tokens_how_update'),
+    '#options' => array(
+      'update_with_batch' => t('Update messages with batch API'),
+      'update_when_item' => t('Update messages with queue item'),
+    ),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="update_tokens_update_tokens"]' => array('checked' => TRUE),
+      ),
+    ),
+  );
+
+  $form['update_tokens']['update_tokens_number_items'] = array(
+    '#type' => 'textfield',
+    '#size' => '10',
+    '#title' => t('Items to process each time.'),
+    '#description' => t('Choose how much items to process each iteration.'),
+    '#default_value' => variable_get('update_tokens_number_items', 250),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="update_tokens_update_tokens"]' => array('checked' => TRUE),
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_entity_update().
+ *
+ * Submit handler for updating the arguments number.
+ *
+ * When a message type is been edited, there could be a change in the arguments
+ * of the message - added or removed.
+ * If this has been defined, we need to update the arguments of the other
+ * messages. This will be achieved by in two steps:
+ * 1. Load an instance of the message from the same type
+ * 2. Cont the number of the arguments and if there is a difference between the
+ *    number of the arguments from the old message to the current one - create
+ *    a batch or a queue and update the messages.
+ */
+function message_ui_entity_update($entity, $type) {
+  if ($type != 'message_type') {
+    return;
+  }
+
+  $type = $entity->name;
+
+  $query = new entityFieldQuery();
+  $result = $query
+    ->entityCondition('entity_type', 'message')
+    ->propertyCondition('type', $type)
+    ->range(0, 1)
+    ->propertyOrderBy('mid', 'DESC')
+    ->execute();
+
+  // There is no messages from this type.
+  if (empty($result['message'])) {
+    return;
+  }
+
+  $keys = array_keys($result['message']);
+  $message = message_load(reset($keys));
+  $new_arguments = message_ui_message_arguments($type);
+
+  $old_arguments_number = count($message->arguments);
+  $new_arguments_number = count($new_arguments);
+  $how_to_act = variable_get('update_tokens_how_to_act');
+
+  $update['when_added'] = $old_arguments_number < $new_arguments_number && $how_to_act == 'update_when_added';
+  $update['when_removed'] = $old_arguments_number > $new_arguments_number && $how_to_act == 'update_when_removed';
+
+  if (!($update['when_added'] || $update['when_removed'])) {
+    return;
+  }
+
+  $item_to_process = variable_get('update_tokens_number_items', 250);
+
+  if (variable_get('update_tokens_how_update') == 'update_with_batch') {
+    // Get all the messages.
+    $query = new entityFieldQuery();
+    $result = $query
+      ->entityCondition('entity_type', 'message')
+      ->propertyCondition('type', $type)
+      ->propertyOrderBy('mid', 'DESC')
+      ->execute();
+
+    $chunks = array_chunk(array_keys($result['message']), $item_to_process);
+    $operations = array();
+    foreach ($chunks as $chunk) {
+      $operations[] = array('message_ui_arguments_update', array($chunk, $new_arguments));
+    }
+
+    // Set the batch.
+    $batch = array(
+      'operations' => $operations,
+      'finished' => 'message_ui_message_arguments_update',
+      'title' => t('Updating the messages arguments.'),
+      'init_message' => t('Start process messages.'),
+      'progress_message' => t('Processed @current out of @total.'),
+      'error_message' => t('Example Batch has encountered an error.'),
+    );
+    batch_set($batch);
+    batch_process('admin/structure/messages');
+  }
+  elseif (variable_get('update_tokens_how_update') == 'update_when_item') {
+    // Define the queue item data.
+    $data = array(
+      'type' => $type,
+      'last_mid' => 0,
+      'new_arguments' => $new_arguments,
+      'item_to_process' => $item_to_process,
+    );
+
+    // Set the queue worker.
+    $queue = DrupalQueue::get('message_ui_arguments');
+    return $queue->createItem($data);
+  }
+}
+
+/**
+ * The message batch or queue item callback function.
+ *
+ * @param $mids
+ *  The messages ID for process.
+ * @param $arguments
+ *  The new state arguments.
+ */
+function message_ui_arguments_update($mids, $arguments) {
+  // Load the messages and update them.
+  $messages = message_load_multiple($mids);
+
+  foreach ($messages as $message) {
+    _message_ui_arguments_update($message, $arguments);
+  }
+}
+
+/**
+ * Update the message arguments via a queue worker.
+ */
+function message_ui_arguments_worker($data) {
+  // Load all of the messages.
+  $query = new entityFieldQuery();
+  $result = $query
+    ->entityCondition('entity_type', 'message')
+    ->propertyCondition('type', $data['type'])
+    ->propertyOrderBy('mid', 'DESC')
+    ->propertyCondition('mid', $data['last_mid'], '>=')
+    ->range(0, $data['item_to_process'])
+    ->execute();
+
+  if (empty($result['message'])) {
+    return;
+  }
+  
+  // Update the messages.
+  $messages = message_load_multiple(array_keys($result['message']));
+  foreach ($messages as $message) {
+    _message_ui_arguments_update($message, $data['new_arguments']);
+    $data['last_mid'] = $message->mid;
+  }
+
+  // Create the next queue worker.
+  $queue = DrupalQueue::get('message_ui_arguments');
+  return $queue->createItem($data);
+}
+
+/**
+ * A helper function for generate a new array of the message's arguments.
+ *
+ * @param Message $message
+ *  The message which her arguments need an update.
+ * @param array $arguments
+ *  The new arguments need to be calculated.
+ */
+function _message_ui_arguments_update(Message $message, $arguments) {
+
+  $message_arguments = array();
+
+  foreach ($arguments as $token) {
+    // Get the hard coded value of the message and him in the message.
+    $token_name = str_replace(array('@{', '}'), array('[', ']'), $token);
+    $value = token_replace($token_name, array('message' => $message));
+
+    $message_arguments[$token] = $value;
+  }
+
+  $message->arguments = $message_arguments;
+  $message->save();
+}
+
+/**
+ * The UI for creating/editing the message.
+ */
+function message_ui_instance_message_manage($form, &$form_state, $message) {
+  if (!is_object($message)) {
+    $message = message_create($message);
+  }
+
+  $form_state['#entity'] = $message;
+  $message_text = $message->view();
+
+  $form['text'] = array(
+    '#type' => 'item',
+    '#title' => t('Message text'),
+    '#markup' => render($message_text),
+  );
+
+  field_attach_form('message', $message, $form, $form_state);
+
+  $form['additional_settings'] = array(
+    '#type' => 'vertical_tabs',
+    '#weight' => 99,
+  );
+
+  $form['owner'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Authoring information'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#group' => 'additional_settings',
+    '#attributes' => array(
+      'class' => array('message-form-owner'),
+    ),
+    '#attached' => array(
+      'js' => array(
+        drupal_get_path('module', 'message_ui') . '/js/message_ui.js',
+        array(
+          'type' => 'setting',
+          'data' => array('anonymous' => variable_get('anonymous', t('Anonymous'))),
+        ),
+      ),
+    ),
+    '#weight' => 90,
+  );
+
+  $form['owner']['name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Authored by'),
+    '#maxlength' => 60,
+    '#weight' => 99,
+    '#autocomplete_path' => 'user/autocomplete',
+    '#description' => t('Leave blank for %anonymous.', array('%anonymous' => variable_get('anonymous', t('Anonymous')))),
+    '#default_value' => user_load($message->uid)->name,
+  );
+
+  $form['owner']['date'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Authored on'),
+    '#description' => t('Please insert in the format of @date', array(
+      '@date' => date('Y-m-d j:i', $message->timestamp),
+    )),
+    '#default_value' => date('Y-m-d H:i', $message->timestamp),
+    '#maxlength' => 25,
+    '#weight' => 100,
+  );
+
+  if (!empty($message->arguments) && (user_access('update tokens') || user_access('bypass message access control'))) {
+    $form['tokens'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Tokens and arguments'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#group' => 'additional_settings',
+      '#weight' => 110,
+    );
+
+    // Give the user an option to update the har coded tokens.
+    $form['tokens']['replace_tokens'] = array(
+      '#type' => 'select',
+      '#title' => t('Update tokens value automatically'),
+      '#description' => t('By default, the hard coded values will be replaced automatically. If unchecked - you can update their value manually.'),
+      '#default_value' => 'no_update',
+      '#options' => array(
+        'no_update' => t("Don't update"),
+        'update' => t('Update automatically'),
+        'update_manually' => t('Update manually'),
+      ),
+    );
+
+    $form['tokens']['values'] = array(
+      '#type' => 'container',
+      '#states' => array(
+        'visible' => array(
+          ':input[name="replace_tokens"]' => array('value' => 'update_manually'),
+        ),
+      ),
+    );
+
+    // Build list of fields to update the tokens manually.
+    foreach ($message->arguments as $name => $value) {
+      $form['tokens']['values'][$name] = array(
+        '#type' => 'textfield',
+        '#title' => t("@name's value", array('@name' => $name)),
+        '#default_value' => $value,
+      );
+    }
+  }
+
+  $form['actions'] = array(
+    '#type' => 'actions',
+    'submit' => array(
+      '#type' => 'submit',
+      '#value' => empty($message->is_new) ? t('Update') : t('Create'),
+      '#submit' => array('message_ui_instance_message_create_submit'),
+    ),
+    'cancel' => array(
+      '#type' => 'markup',
+      '#markup' => l(t('Cancel'), is_object($message) && !empty($message->mid) ? 'message/' . $message->mid : 'admin/structure/messages'),
+    ),
+  );
+
+  return $form;
+}
+
+/**
+ * Validate the submitted message.
+ */
+function message_ui_instance_message_manage_validate($form, &$form_state) {
+  field_attach_form_validate('message', $form_state['#entity'], $form, $form_state);
+}
+
+/**
+ * Submit handler - create/edit new message via the UI.
+ */
+function message_ui_instance_message_create_submit($form, &$form_state) {
+  $message = $form_state['#entity'];
+
+  field_attach_submit('message', $message, $form, $form_state);
+
+  // Update the tokens.
+  $token_actions = empty($form_state['values']['replace_tokens']) ? array() : $form_state['values']['replace_tokens'];
+
+  if (is_object($message) && !empty($message->arguments)) {
+    if (!empty($token_actions) && $token_actions != 'no_update') {
+
+      foreach (array_keys($message->arguments) as $token) {
+        // Loop through the arguments of the message.
+
+        if ($token_actions == 'update') {
+          // Get the hard coded value of the message and him in the message.
+          $token_name = str_replace(array('@{', '}'), array('[', ']'), $token);
+          $value = token_replace($token_name, array('message' => $message));
+        }
+        else {
+          // Hard coded value given from the user.
+          $value = $form_state['values'][$token];
+        }
+
+        $message->arguments[$token] = $value;
+      }
+    }
+  }
+
+  $wrapper = entity_metadata_wrapper('message', $message);
+  $wrapper->user->set(user_load_by_name($form_state['values']['name']));
+  $wrapper->timestamp->set(strtotime($form_state['values']['date']));
+  $wrapper->save();
+
+  $form_state['redirect'] = 'message/' . $wrapper->getIdentifier();
+}
+
+/**
+ * Display the message.
+ */
+function message_ui_show_message(Message $message) {
+  $build = $message->view();
+
+  $build += array(
+    '#theme' => 'message',
+    '#entity' => $message,
+    '#view_mode' => 'full',
+  );
+
+  $build['#contextual_links']['message'] = array('message', array($message->identifier()));
+
+  // Allow modules to modify the structured node.
+  drupal_alter('message_ui_view', $build, $message);
+
+  return $build;
+}
+
+/**
+ * Deleting the message.
+ */
+function message_ui_instance_delete($form, &$form_state, Message $message) {
+  // When the bundle is exported - display a message to the user.
+  $form_state['#entity'] = $message;
+
+  // Always provide entity id in the same form key as in the entity edit form.
+  return confirm_form($form,
+    t('Are you sure you want to delete the @type message instance?',
+      array('@type' => $message->type)),
+    'admin/content/message',
+    t('Are you sure you want to delete the message instance? This action cannot be undone.'),
+    t('Delete'),
+    t('Cancel'));
+}
+
+/**
+ * Deleting the sub theme submit handler.
+ */
+function message_ui_instance_delete_submit($form, &$form_state) {
+  if ($form_state['clicked_button']['#type']) {
+    $form_state['#entity']->delete();
+
+    $form_state['redirect'] = 'admin/content/message';
+    drupal_set_message(t('The message instance @type deleted successfully', array(
+      '@type' => $form_state['#entity']->type,
+    )));
+  }
+}
+
+/**
+ * Delete multiple messages
+ */
+function message_ui_delete_multiple_messages($form, $form_state) {
+  $types = message_ui_get_types();
+
+  $form['types'] = array(
+    '#type' => 'select',
+    '#title' => t('Message types'),
+    '#description' => t('Select the message type your would like to delete message from.'),
+    '#options' => $types,
+    '#multiple' => TRUE,
+    '#required' => TRUE,
+  );
+
+  $form['actions'] = array(
+    '#type' => 'actions',
+    'submit' => array(
+      '#type' => 'submit',
+      '#value' => t('Send'),
+    ),
+  );
+
+  return $form;
+}
+
+/**
+ * Submit handler - delete the messages.
+ */
+function message_ui_delete_multiple_messages_submit($form, $form_state) {
+  // Get the message IDs.
+  $query = new entityFieldQuery();
+  $result = $query
+    ->entityCondition('entity_type', 'message')
+    ->propertyCondition('type', $form_state['values']['types'], 'IN')
+    ->execute();
+
+  if (empty($result['message'])) {
+    // No messages found, return.
+    drupal_set_message(t('No messages were found according to the parameters you entered'), 'error');
+    return;
+  }
+
+  // Prepare the message IDs chunk array for batch operation.
+  $chunks = array_chunk(array_keys($result['message']), 100);
+  $operations = array();
+
+  foreach ($chunks as $chunk) {
+    $operations[] = array('message_delete_multiple', array($chunk));
+  }
+
+  // Set the batch.
+  $batch = array(
+    'operations' => $operations,
+    'title' => t('deleting messages.'),
+    'init_message' => t('Starting to delete messages.'),
+    'progress_message' => t('Processed @current out of @total.'),
+    'error_message' => t('The batch operation has failed.'),
+  );
+  batch_set($batch);
+  batch_process($_GET['q']);
+}

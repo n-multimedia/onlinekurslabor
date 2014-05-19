@@ -1,0 +1,62 @@
+<?php
+
+function nm_activity_stream_preprocess_message(&$variables) {
+
+  $message = $variables['elements']['#entity'];
+  
+  //dpm($message);
+  //dpm($variables);
+  if (isset($message) && $message->type == 'message_new_node') {
+    $ref_node_id = $message->field_message_node_ref[LANGUAGE_NONE][0]['target_id'];
+    $ref_node = node_load($ref_node_id);
+    $output = '';
+    $output_end = 'wurde hinzugefügt.';
+    switch ($ref_node->type) {
+      case NM_COURSE_FORUMTOPIC:
+        $output .= "Neues Forenthema ";
+        $output_end = 'verfügbar';
+        break;
+      case NM_COURSE_DOCS:
+        $output .= "Neues Kursdokument ";
+        $output_end = 'verfügbar';
+        break;
+      case NM_COURSE_GROUP:
+        $output .= "Eine Kursgruppe ";
+        break;
+      case NM_COURSE_GENERIC_TASK:
+        $output .= "Eine neue Aufgabe ";
+        $output_end = 'wurde erstellt';
+        break;
+      case NM_COURSE_GENERIC_TASK_SOLUTION:
+        $output .= "Eine neue Lösung ";
+        $output_end = 'verfügbar';
+        break;
+      case NM_COURSE_NEWS:
+        $output .= "Eine neue Ankündigung ";
+        break;
+    }
+
+    $time_string = '<div>' . 'vor ' . format_interval(time() - $ref_node->created) . '</div>'; //format_date($node->created);
+    $time_string = str_replace('Tage', 'Tagen', $time_string);
+
+    $output .= $output_end;
+    $output = '<div>' . $output . '</div>';
+    
+    //check if node is unread
+    $unread = _custom_general_get_num_unread(NULL, $ref_node->nid) ? TRUE: FALSE;
+    
+    if ($unread) {
+      //unread -> highlight
+      $output .= '<div><strong>' . l($ref_node->title, 'node/' . $ref_node->nid) . '</strong></div>';
+    }
+    else {
+      //read
+      $output .= '<div>' . l($ref_node->title, 'node/' . $ref_node->nid) . '</div>';
+    }
+    $output .= $time_string;
+    
+    
+
+    $variables['message_new'] = $output;
+  }
+}
