@@ -1,0 +1,27 @@
+div.single_activity{
+    padding-bottom: 5px;
+}
+div.single_activity.seen .seen_hidden
+{
+    display:none;
+}
+
+div.single_activity div.title .userimage
+{
+    float: left;
+    width:15%;
+    padding-top:5px;
+}
+
+div.single_activity div.title .activity_description{
+    float:left;
+    width:80%;
+          color:#898F9C;
+          padding:5px;
+}
+div.single_activity  div.time *
+{   font-size:12px;
+    color: #898F9C;
+    cursor: pointer;
+}
+
