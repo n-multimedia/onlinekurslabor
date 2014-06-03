@@ -20,6 +20,73 @@ function nm_activity_stream_theme($existing, $type, $theme, $path)
     );
 }
 
+/*
+  // https://drupal.org/project/accessapi
+  function nm_activity_stream_accessapi() {
+  return array(
+  'node_view' => array(
+  'arguments' => array(
+  'node' => NULL,
+  'account' => NULL,
+  ),
+  'callback' => 'node_view_access', // default is user_access
+  ),
+  );
+  }
+
+  function nm_activity_stream_accessapi_node_view($node, $account) {
+  return array( // The return value is an array of access records.
+  array( // This is an access record array.
+  'value' => ACCESSAPI_DISALLOW, // one of ACCESSAPI_ALLOW, ACCESSAPI_DISALLOW, ACCESSAPI_UNKNOWN
+  'weight' => -30, // records will be re-ordered
+  'id' => 'example special node view', // an identifier that will allow us to find and modify the record in an alter hook. Should be at least the module name
+  )
+  );
+  }
+ */
+
+/**
+ *
+ * desc: Das ist der Hook, der die Sichtbarkeit einer "Message" (entitity_info) steuert
+ *
+ * @param
+ * @return
+ *
+ * @author Bernhard Strehl
+ */
+function nm_activity_stream_entity_info_alter(&$entity_info)
+{
+
+    $entity_info['message']['access callback'] = 'nm_activity_stream_entity_access';
+}
+
+/**
+ *
+ * Wir schauen hier einfach mal, ob der aktuelle User eine Message lesen kann.
+ * Wenn ja, ist sie global verfügbar, ansonsten ist sie global nicht verfügbar.
+ * Andere Views brauchen sich um sichtbarkeit dann nicht mehr zu kümmern
+ *
+ * @param
+ * @return
+ *
+ * @author Bernhard Strehl
+ */
+function nm_activity_stream_entity_access($op, $entity = NULL, $account = NULL)
+{
+     
+    //get currently loggedin user
+    ////not necessary
+    //$ref_current_user = $GLOBALS['user'];
+
+    //create objects of the node and the user that created the node
+    $ref_node_id = $entity->field_message_node_ref[LANGUAGE_NONE][0]['target_id'];
+    $ref_node = node_load($ref_node_id);
+    $ref_user = user_load($ref_node->uid);
+
+
+    return (node_access($op, $ref_node) === TRUE);
+}
+
 function nm_activity_stream_preprocess_message(&$variables)
 {
 
@@ -29,102 +96,55 @@ function nm_activity_stream_preprocess_message(&$variables)
     //dpm($variables);
     if (isset($message) && $message->type == 'message_new_node')
     {
+        //get currently loggedin user
+        $ref_current_user = $GLOBALS['user'];
+
+        //create objects of the node and the user that created the node
         $ref_node_id = $message->field_message_node_ref[LANGUAGE_NONE][0]['target_id'];
         $ref_node = node_load($ref_node_id);
-
         $ref_user = user_load($ref_node->uid);
 
+        /* create vars for the template */
         $vars = array();
-
+     
         $vars['user_realname'] = $ref_user->realname;
         $vars['user_path'] = $ref_user->uid;
-        $vars['user_image'] =  strip_tags (   _nm_activity_stream_get_user_pic($ref_user), '<img>');
+        $vars['user_image'] = strip_tags(_nm_activity_stream_get_user_pic($ref_user), '<img>');
         $vars['activity_title'] = $ref_node->title;
         $vars['activity_path'] = 'node/' . $ref_node->nid;
         $vars['activity_type'] = $ref_node->type;
         $vars['activity_timestamp_create'] = $ref_node->created;
         $vars['activity_unread'] = _custom_general_get_num_unread(NULL, $ref_node->nid) ? TRUE : FALSE;
-         
+
 
 
         $variables['message_new'] = theme('nm_activity_stream_theme_single_activity', $vars);
         //
         return;
-
-        $html_user = l($ref_user->realname, 'user/' . $ref_user->uid);
-        $output = 'hat ';
-        $output_end = ' erstellt.';
-        switch ($ref_node->type)
-        {
-            case NM_COURSE_FORUMTOPIC:
-                $output .= "Neues Forenthema ";
-                $output_end = 'verfügbar';
-                break;
-            case NM_COURSE_DOCS:
-                $output .= "Neues Kursdokument ";
-                $output_end = 'verfügbar';
-                break;
-            case NM_COURSE_GROUP:
-                $output .= "Eine Kursgruppe ";
-                break;
-            case NM_COURSE_GENERIC_TASK:
-                $output .= "Eine neue Aufgabe ";
-                $output_end = 'wurde erstellt';
-                break;
-            case NM_COURSE_GENERIC_TASK_SOLUTION:
-                $output .= "Eine neue Lösung ";
-                $output_end = 'verfügbar';
-                break;
-            case NM_COURSE_NEWS:
-                $output .= "Eine neue Ankündigung ";
-                break;
-        }
-
-        $time_string = '<div>' . 'vor ' . format_interval(time() - $ref_node->created) . '</div>'; //format_date($node->created);
-        $time_string = str_replace('Tage', 'Tagen', $time_string);
-
-        $output .= $output_end;
-        $output = '<div>' . $output . '</div>';
-
-        //check if node is unread
-        $unread = _custom_general_get_num_unread(NULL, $ref_node->nid) ? TRUE : FALSE;
-
-        if ($unread)
-        {
-            //unread -> highlight
-            $output .= '<div><strong>' . l($ref_node->title, 'node/' . $ref_node->nid) . '</strong></div>';
-        } else
-        {
-            //read
-            $output .= '<div>' . l($ref_node->title, 'node/' . $ref_node->nid) . '</div>';
-        }
-        $output .= $time_string;
-
-
-
-        $variables['message_new'] = $output;
+         
     }
 }
-
 
 /**
  * get user picture
  *
  * @param type $account_object
  */
-function _nm_activity_stream_get_user_pic($account_object) {
-  $realname = realname_load($account_object);
-  if (empty($realname))
-    $realname = $account_object->name;
+function _nm_activity_stream_get_user_pic($account_object)
+{
+    $realname = realname_load($account_object);
+    if (empty($realname))
+        $realname = $account_object->name;
 
-  $profile = profile2_load_by_user($account_object, 'master');
-  $user_pic = "";
-  if (isset($profile->field_photo)) {
-    $field_view = field_view_field('profile2', $profile, 'field_photo', array('settings' => array('image_style' => 'profile_stream_thumbnail')));
-    $field_view['#label_display'] = 'hidden';
-    $field_view[0]['#item']['title'] = $realname;
-    $field_view[0]['#item']['alt'] = $realname;
-    $user_pic = drupal_render($field_view);
-  } 
-  return $user_pic;
+    $profile = profile2_load_by_user($account_object, 'master');
+    $user_pic = "";
+    if (isset($profile->field_photo))
+    {
+        $field_view = field_view_field('profile2', $profile, 'field_photo', array('settings' => array('image_style' => 'profile_stream_thumbnail')));
+        $field_view['#label_display'] = 'hidden';
+        $field_view[0]['#item']['title'] = $realname;
+        $field_view[0]['#item']['alt'] = $realname;
+        $user_pic = drupal_render($field_view);
+    }
+    return $user_pic;
 }
