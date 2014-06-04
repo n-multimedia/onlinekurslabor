@@ -2057,3 +2057,143 @@ function _section_courses_get_timespan_percentage($node, &$start_text = NULL, &$
  */
 
 //todo..
+
+
+/*
+ *  Projects Projekte
+ */
+
+/**
+ * Add students form
+ * 
+ * @param type $form
+ * @param type $form_state
+ * @return type
+ */
+function section_courses_group_projects_form($form, &$form_state) {
+
+  // Creation of a phone field and its container, hidden by default.
+
+  $form['#tree'] = TRUE;
+
+
+  /*
+    $form['import_container'] = array(
+    '#type' => 'fieldset',
+    '#prefix' => '<div id="students-import-wrapper">',
+    '#suffix' => '</div>',
+    //'#title' => 'Student(en) hinzufügen',
+    // Set up the wrapper so that AJAX will be able to replace the fieldset.
+    );
+
+    if (isset($form_state['triggering_element']['#id']) && strstr($form_state['triggering_element']['#id'], 'import')) {
+    $output_msg = _section_courses_student_registration_import($form_state['values']['import_container']['import_users']);
+    $form['import_container']['import_message'] = array(
+    '#markup' => $output_msg,
+    );
+    } */
+
+  $active_course = _section_courses_get_active_course();
+
+  $course_groups = _section_course_get_coursegroups($active_course);
+
+  $form['description'][] = array(
+    '#markup' => '<h3 class="page-header">Projektvorschläge zu Kursgruppen zuweisen<h3>',
+  );
+
+  $form['proposals'] = array();
+  if (!empty($active_course->field_course_proposals)) {
+
+    $options = array(0 => '---');
+    foreach ($active_course->field_course_proposals[LANGUAGE_NONE] as $proposal) {
+      $proposal_node = node_load($proposal['target_id']);
+      $options[$proposal_node->nid] = $proposal_node->title;
+    }
+
+    foreach ($course_groups as $course_group) {
+
+      $selected_proposal_nid = _section_courses_course_group_get_proposal($course_group);
+      $default_value = $selected_proposal_nid ? $selected_proposal_nid : 0;
+      //dpm(node_load($course_group->nid));
+      //dpm($default_value);
+
+      $form['proposals'][] = array(
+        '#markup' => '<h4>' . $course_group->title . '</h4>',
+      );
+      $form['proposals'][$course_group->nid] = array(
+        '#type' => 'select',
+        '#options' => $options,
+        '#default_value' => $default_value
+          //'#title' => t('In what country is your college or university located?'),
+      );
+    }
+
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => 'Submit'
+    );
+  }
+  else {
+    $form['warning'][] = array(
+      '#markup' => '<h5 class="page-header"><span class="badge badge-important">Damit Sie fortfahren können, müssen Sie zuerst relevante Projektvorschläge in den Kurseinstellungen auswählen. </span><h5>',
+    );
+  }
+
+
+
+  /*
+    $form['import_container']['import'] = array(
+    '#type' => 'button',
+    '#value' => '<i class="icon-user icon-white"></i> Import',
+    '#submit' => array('section_courses_student_registration_import_submit'),
+    '#attributes' => array('class' => array('btn-warning')),
+    // See the examples in ajax_example.module for more details on the
+    // properties of #ajax.
+    '#ajax' => array(
+    'callback' => 'section_courses_student_registration_import_callback',
+    'wrapper' => 'students-import-wrapper',
+    ),
+    );
+   * 
+   */
+
+  return $form;
+}
+
+function section_courses_group_projects_form_submit($form, &$form_state) {
+
+  //dpm($form_state['values']['proposals']);
+  //assign selected project to groups
+  foreach ($form_state['values']['proposals'] as $group_nid => $proposal_nid) {
+
+    $course_group_node = node_load($group_nid);
+
+    if ($proposal_nid) {
+      $course_group_node->field_course_group_proposal[LANGUAGE_NONE][0]['target_id'] = $proposal_nid;
+    }
+    else {
+      $course_group_node->field_course_group_proposal = NULL;
+    }
+    node_save($course_group_node);
+
+    //$wrapper = entity_metadata_wrapper('node', $course_group_node);
+    //$wrapper->field_course_group_proposal->set(node_load($proposal_nid));
+    //$wrapper->save();
+  }
+}
+
+function _section_courses_course_group_get_proposal($course_group) {
+
+
+  $nid = NULL;
+  $course_group_node = node_load($course_group->nid);
+  //dpm($course_group_node->field_course_group_proposal);
+  if (!empty($course_group_node->field_course_group_proposal)) {
+    $nid = $course_group_node->field_course_group_proposal[LANGUAGE_NONE][0]['target_id'];
+  }
+
+  //$nid = entity_metadata_wrapper('node', $course_group_node)->field_course_group_proposal->value();
+
+
+  return $nid;
+}

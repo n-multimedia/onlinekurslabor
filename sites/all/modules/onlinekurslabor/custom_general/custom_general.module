@@ -79,6 +79,19 @@ define("NM_COURSES_TASK_WORKFLOW_DRAFT", "2");
 define("NM_COURSES_TASK_WORKFLOW_SUBMITTED", "3");
 define("NM_COURSES_TASK_WORKFLOW_ASSESSED", "4");
 
+//Projects
+//Content Types
+define("NM_PROJECTS_RROJEKTORGANISATION", "projects_organization");
+define("NM_PROJECTS_DOKUMENTATION", "projects_documentation");
+define("NM_PROJECTS_KOOPERATIONSVEREINBARUNG", "projects_cooperation_agreement");
+define("NM_PROJECTS_ZIELVEREINBARUNG", "projects_objective");
+define("NM_PROJECTS_PROJEKTVORSCHLAG", "projects_proposal");
+define("NM_PROJECTS_TAGEBUCH", "projects_blog");
+
+define("NM_COURSE_PROJECTS_PATH", "projects/");
+
+define("NM_COURSE_PROJECTS_PARTNERS_PATH", "projects/partners/");
+
 
 //Domains
 //Contet Types
@@ -148,6 +161,14 @@ function custom_general_context_plugins() {
       'parent' => 'context_condition',
     )
   );
+  $plugins['custom_general_condition_section_projects'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'custom_general') . '/context_plugins',
+      'file' => 'custom_general_condition_section_projects.inc',
+      'class' => 'custom_general_condition_section_projects',
+      'parent' => 'context_condition',
+    )
+  );
 
   return $plugins;
 }
@@ -171,6 +192,11 @@ function custom_general_context_registry() {
         'description' => t("Set this context when viewing parts of the <em>Courses Section</em>"),
         'plugin' => 'custom_general_condition_section_courses',
       ),
+      'custom_general_condition_section_projects' => array(
+        'title' => t('Section Projects is active'),
+        'description' => t("Set this context when viewing parts of the <em>Projects Section</em>"),
+        'plugin' => 'custom_general_condition_section_projects',
+      ),
     ),
   );
 }
@@ -182,12 +208,12 @@ function custom_general_context_registry() {
 
 function custom_general_init() {
   static $init;
-  
-  if($init)
+
+  if ($init)
     return;
-  
+
   $init = TRUE;
-  
+
   // Execute the group type context condition all the time because we want
   // to use that condition to be able to check for "no group context."
   $plugin = context_get_plugin('condition', 'custom_general_condition_section_content');
@@ -200,16 +226,27 @@ function custom_general_init() {
     $plugin->execute2();
   }
 
+
+  $plugin = context_get_plugin('condition', 'custom_general_condition_section_projects');
+  if ($plugin) {
+    $plugin->execute2();
+  }
+
+
   $group = og_context();
   if ($group) {
-    // Execute the group type context condition all the time because we want
-    // to use that condition to be able to check for "no group context."
+
     $plugin = context_get_plugin('condition', 'custom_general_condition_section_content');
     if ($plugin) {
       $plugin->execute($group);
     }
 
     $plugin = context_get_plugin('condition', 'custom_general_condition_section_courses');
+    if ($plugin) {
+      $plugin->execute($group);
+    }
+
+    $plugin = context_get_plugin('condition', 'custom_general_condition_section_projects');
     if ($plugin) {
       $plugin->execute($group);
     }
@@ -732,7 +769,6 @@ function custom_general_block_view($delta = '') {
  *   By reference. The fields that have been declared by another feature.
  */
 
-
 /**
  * Implements hook_field_default_field_bases_alter().
  * note: Features hook
@@ -759,6 +795,7 @@ function custom_general_field_default_field_bases_alter(&$fields) {
     }
   }
 }
+
 /**
  * Custom function to set the default image.
  * (It has an _ at the beginning to make sure it never accidentally gets fired as a hook)
@@ -770,40 +807,38 @@ function custom_general_field_default_field_bases_alter(&$fields) {
  */
 function _custom_general_set_default_image(&$field, $filename, $source, $destination) {
   // See if a default image hasn't been set for this field yet
-
   //if (empty($field['settings']['default_image'])) {
-    // Dynamically set the user default image on the field
-    $destination = file_default_scheme() . '://' . $destination;
-    // Check to see if it exists already
-    $result = db_select('file_managed', 'f')
+  // Dynamically set the user default image on the field
+  $destination = file_default_scheme() . '://' . $destination;
+  // Check to see if it exists already
+  $result = db_select('file_managed', 'f')
       ->fields('f', array('fid'))
       ->condition('f.uri', $destination)
       ->execute();
-    $fid = $result->fetchField();
-    // Simulate an upload of the default user image
-    if (!$fid && file_exists($source)) {
-      $file = new stdClass;
-      $file->filename = $filename;
-      $file->timestamp = REQUEST_TIME;
-      $file->uri = $source;
-      $file->filemime = file_get_mimetype($source);
-      $file->uid = 1;
-      $file->status = 1;
-      $file = file_copy($file, 'public://default_images', FILE_EXISTS_REPLACE);
-      
-      if(!$file){
-        watchdog('custom general', 'Default image could not be set', null, WATCHDOG_ERROR);
-        
-        return;
-        
-      }
-        
-      
-      $fid = $file->fid;
+  $fid = $result->fetchField();
+  // Simulate an upload of the default user image
+  if (!$fid && file_exists($source)) {
+    $file = new stdClass;
+    $file->filename = $filename;
+    $file->timestamp = REQUEST_TIME;
+    $file->uri = $source;
+    $file->filemime = file_get_mimetype($source);
+    $file->uid = 1;
+    $file->status = 1;
+    $file = file_copy($file, 'public://default_images', FILE_EXISTS_REPLACE);
+
+    if (!$file) {
+      watchdog('custom general', 'Default image could not be set', null, WATCHDOG_ERROR);
+
+      return;
     }
-    // field_config key no longer seems to exist.
-    // $field['field_config']['settings']['default_image'] = (string) $fid;
-    // Use this instead.
-    $field['settings']['default_image'] = (string) $fid;
+
+
+    $fid = $file->fid;
+  }
+  // field_config key no longer seems to exist.
+  // $field['field_config']['settings']['default_image'] = (string) $fid;
+  // Use this instead.
+  $field['settings']['default_image'] = (string) $fid;
   //}
 }

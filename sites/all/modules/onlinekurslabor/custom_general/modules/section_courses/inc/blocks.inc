@@ -395,6 +395,8 @@ function _section_courses_get_instructor_tools() {
   $links['instr_add_groups']['label'] = "Gruppe";
 
 
+  $links['instr_overview_projects']['label'] = "Projekte";
+
   $links['instr_overview_forums']['label'] = "Forum";
 
   $links['instr_course_settings']['label'] = "Kurs";
@@ -415,10 +417,13 @@ function _section_courses_get_instructor_tools() {
   $links['instr_overview_groups']['group']['root'] = TRUE;
   $links['instr_add_groups']['group']['gid'] = 3;
 
-  $links['instr_overview_forums']['group']['gid'] = 4;
+  $links['instr_overview_projects']['group']['gid'] = 4;
+  $links['instr_overview_projects']['group']['root'] = TRUE;
+
+  $links['instr_overview_forums']['group']['gid'] = 5;
   $links['instr_overview_forums']['group']['root'] = TRUE;
 
-  $links['instr_course_settings']['group']['gid'] = 5;
+  $links['instr_course_settings']['group']['gid'] = 6;
   $links['instr_course_settings']['group']['root'] = TRUE;
 
 
@@ -451,6 +456,12 @@ function _section_courses_get_instructor_tools() {
     //settings
     $path = 'course/admin/' . $group_id . '/settings';
     $id = 'instr_course_settings';
+    $label = $links[$id]['label'];
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+
+
+    $path = 'course/projects/' . $group_id; //todo
+    $id = 'instr_overview_projects';
     $label = $links[$id]['label'];
     $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 

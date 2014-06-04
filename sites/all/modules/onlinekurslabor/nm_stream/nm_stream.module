@@ -30,6 +30,7 @@ function nm_stream_theme() {
       'path' => $module_path . '/templates',
       'variables' => array(
         'node' => NULL,
+        'type' => NULL
       ),),
     'nm_stream_node_comment' => array(
       'template' => 'nm_stream_node_comment',
@@ -49,6 +50,7 @@ function nm_stream_theme() {
       'path' => $module_path . '/templates',
       'variables' => array(
         'node' => NULL,
+        'type' => NULL
       ),)
   );
 }
@@ -149,7 +151,7 @@ function nm_stream_menu() {
   return $items;
 }
 
-function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
+function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON', $type = 'nm_stream') {
 
   //NODES
   //new added nodes
@@ -169,7 +171,7 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
 
     $query
         //->condition('n.nid', $node->nid, '>')
-        ->condition('n.type', 'nm_stream')
+        ->condition('n.type', $type)
         ->condition('n.status', NODE_PUBLISHED)
         ->orderBy("n.nid", "DESC") //order important!
         ->addTag('node_access');
@@ -221,7 +223,7 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
     $query2->addField('n', 'changed');
     $query2
         ->condition('n.nid', $nids, 'IN')
-        ->condition('n.type', 'nm_stream')
+        ->condition('n.type', $type)
         ->condition('n.status', NODE_PUBLISHED)
         ->addTag('node_access');
 
@@ -396,7 +398,7 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
     return $response;
 }
 
-function nm_stream_nm_stream_node_add_callback() {
+function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
   global $user;
 
   $context = nm_stream_og_context();
@@ -414,7 +416,7 @@ function nm_stream_nm_stream_node_add_callback() {
     $num_files = count($_FILES['files']);
 
   //get configurated file extensions
-  $file_instance = field_info_instance('node', 'field_nm_attachments', 'nm_stream');
+  $file_instance = field_info_instance('node', 'field_nm_attachments', $type);
   $validators = array(
     'file_validate_extensions' => array($file_instance['settings']['file_extensions']),
   );
@@ -465,7 +467,7 @@ function nm_stream_nm_stream_node_add_callback() {
     }
   }
 
-  $type = 'nm_stream';
+  //$type = 'nm_stream';
   $body = $body;
   $privacy = $privacy;
 
@@ -531,7 +533,7 @@ function nm_stream_nm_stream_node_load_callback($node) {
   return drupal_json_output($response);
 }
 
-function nm_stream_nm_stream_node_edit_callback($node) {
+function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
 
   global $user;
 
@@ -543,7 +545,7 @@ function nm_stream_nm_stream_node_edit_callback($node) {
 
   $files = array();
   for ($i = 0; $i < $num_files; $i++) {
-    $file = file_save_upload($i, null, 'public://nm_stream');
+    $file = file_save_upload($i, null, 'public://' . $type);
 
     if ($file) {
       $files[$i] = $file;
@@ -592,7 +594,7 @@ function nm_stream_nm_stream_node_edit_callback($node) {
     }
   }
   else {
-    $node_edit_form = theme('nm_stream_stream_node_form', array('node' => $node));
+    $node_edit_form = theme('nm_stream_stream_node_form', array('node' => $node, 'type' => $type));
 
     $response['status'] = 1;
     $response['node_edit_form'] = $node_edit_form;
@@ -858,12 +860,22 @@ function nm_stream_block_view($delta = '') {
   return $block;
 }
 
+function nm_stream_content_types() {
+  $options = array();
+  $options['nm_stream'] = 'nm_stream';
+  $options[NM_PROJECTS_TAGEBUCH] = NM_PROJECTS_TAGEBUCH;
+
+  return $options;
+}
+
 /**
  * Implements hook_entity_info_alter().
  * The first attribute in the array defines an arbitrary label for the view mode machine name.
  * 'custom settings' => TRUE displays the view mode as a default at the top of the display modes settings screen
  */
 function nm_stream_entity_info_alter(&$entity_info) {
+
+
   $entity_info['node']['view modes'] += array(
     'nm_stream' => array(
       'label' => t('NM Stream'),
@@ -1060,6 +1072,8 @@ function nm_stream_preprocess_nm_stream_node_comment_form(&$vars) {
 function nm_stream_preprocess_nm_stream_stream_node_form(&$vars) {
   global $user;
 
+  //$vars['type']
+
   $context = nm_stream_og_context();
   if (empty($context) && empty($vars['node'])) {
 
@@ -1108,12 +1122,16 @@ function nm_stream_og_context() {
    */
 
   $active_course = _section_courses_get_active_course();
+  $active_project = section_projects_get_active_project();
 
   if ($active_course) {
     if (_section_course_course_group_visible()) {
       //course_group_nid  /course/groups/%course_nid/%group_nid/
       $context = node_load(arg(3));
     }
+  }
+  else if ($active_project) {
+    $context = node_load(arg(3));
   }
   else {
     //check referer url

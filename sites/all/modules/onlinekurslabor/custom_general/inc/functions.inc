@@ -87,6 +87,7 @@ function _section_course_instructor_section_active() {
   $admin_section_visible = (arg(0) == 'course' && arg(1) == 'admin');
   $home_visible = (arg(0) == 'course' && arg(1) == 'home');
   $news_visible = (arg(0) == 'course' && arg(1) == 'news');
+  $projects_visible = (arg(0) == 'course' && arg(1) == 'projects');
   $biblio_visible = _section_course_biblio_visible();
 
 
@@ -95,7 +96,7 @@ function _section_course_instructor_section_active() {
       $text_visible || $forum_visible ||
       $admin_section_visible ||
       $home_visible || $tasks_visible || $biblio_visible ||
-      $news_visible;
+      $news_visible || $projects_visible;
 
 
 

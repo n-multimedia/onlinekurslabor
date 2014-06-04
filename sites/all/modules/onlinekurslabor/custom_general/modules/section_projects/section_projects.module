@@ -1,2 +1,477 @@
 <?php
 
+/**
+ * Implementing hook_theme
+ * 
+ * @return type
+ */
+function section_projects_theme() {
+  $module_path = drupal_get_path('module', 'section_projects');
+  return array(
+    'section_projects_tools' => array(
+      'template' => 'section_projects_tools',
+      'path' => $module_path . '/templates',
+      'variables' => array(
+        'node_items' => NULL,
+        'project_items' => NULL
+      ),),
+  );
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function section_projects_block_info() {
+  $blocks = array();
+
+  $blocks['projects_po_tools'] = array(
+    'info' => t('Project - Tools'),
+  );
+
+  $blocks['projects_course_group_actions'] = array(
+    'info' => t('Project - Course Group - Actions'),
+  );
+
+  $blocks['project_cockpit_tabs'] = array(
+    'info' => t('Projects - Cockpit - Tabs'),
+  );
+  $blocks['project_cockpit_main'] = array(
+    'info' => t('Projects - Cockpit - Main'),
+  );
+
+  return $blocks;
+}
+
+//add course header 
+//16.07.2013 - 11:58 - SN - now done by context module
+function section_projects_preprocess_page(&$vars) {
+  $active_projects = section_projects_get_active_project();
+
+  if ($active_projects) {
+
+    drupal_add_js(drupal_get_path('module', 'section_projects') . "/js/section_projects.js");
+    drupal_add_css(drupal_get_path('module', 'section_projects') . "/css/section_projects.css");
+
+    /*
+      $block = module_invoke('section_spaces', 'block_view', 'space_header_section');
+      $vars['page']['header']['space_header_section'] = array(
+      '#markup' => render($block),
+      '#weight' => -10
+      ); */
+
+    //uasort($vars['page']['header'], 'element_sort');
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function section_projects_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'projects_po_tools' :
+      $block['content'] = _section_projects_po_tools_view();
+      break;
+    case 'projects_course_group_actions' :
+      $block['content'] = _section_projects_course_group_actions_view();
+      break;
+    case 'project_cockpit_tabs' :
+      $block['content'] = _section_projects_project_cockpit_tabs_view();
+      break;
+    case 'project_cockpit_main' :
+      $block['content'] = _section_projects_project_cockpit_main_view();
+      break;
+  }
+
+  return $block;
+}
+
+function _section_projects_project_cockpit_main_view() {
+  $navigation_items = _section_projects_get_navigation_items();
+
+  $block = array();
+  $active_project = section_projects_get_active_project();
+
+  if (!isset($active_project) || empty($active_project))
+    return array();
+
+  if ($active_project) {
+    $output = "";
+    $output .= '<div style="position:relative" class="projects_cockpit_main_container">';
+    $i = 0;
+
+    foreach ($navigation_items as $item) {
+      $active_class = ($i == 0) ? 'active' : '';
+
+      $output .= '<div class = "tabpanel ' . drupal_html_class($item) . ' ' . $active_class . ' row-fluid">';
+
+      //dpm('projects_cockpit_main_' . drupal_html_class($item) . '_view');
+      $output .= call_user_func('projects_cockpit_main_' . drupal_html_class($item) . '_view');
+
+      $output .= '</div>';
+      $i++;
+    }
+
+    $output .= '</div>';
+
+    $block = array(
+      'content' => array(
+        '#type' => 'markup',
+        '#markup' => $output,
+    ));
+  }
+
+  return $block;
+}
+
+function _section_projects_project_cockpit_tabs_view() {
+
+  $navigation_items = _section_projects_get_navigation_items();
+
+
+  $block = array();
+  $active_project = section_projects_get_active_project();
+
+  if (!isset($active_project) || empty($active_project))
+    return array();
+
+  $i = 0;
+  if ($active_project) {
+    $output = "";
+    $output .= '<div style="position:relative" class="nav_tabbox">';
+    foreach ($navigation_items as $item) {
+      $active_class = ($i == 0) ? 'active' : '';
+      $output .= '<div class="' . $active_class . '">';
+      $output .= '<a href = "#" class="tab ' . drupal_html_class($item) . '">';
+      $output .= $item;
+      $output .= '</a>';
+      $output .= '</div>';
+
+      $i++;
+    }
+
+    $output .= '</div>';
+
+    $block = array(
+      'content' => array(
+        '#type' => 'markup',
+        '#markup' => $output,
+    ));
+  }
+
+  return $block;
+}
+
+function _section_projects_po_tools_view() {
+  $output = '';
+
+  if (_section_projects_tools_access()) {
+
+    $active_project = section_projects_get_active_project();
+
+    if (!$active_project)
+      return $output;
+
+    $node_items = array();
+    $node_items['title'] = '';
+    $node_items['items'] = array();
+
+    //Projektvorschlag
+    if (arg(1) == 'partners' && is_numeric(arg(3))) {
+      $node_items = array('title' => 'Projektvorschlag');
+
+      $node_items['items'][] = l('Projektvorschlag bearbeiten', 'projects/admin/' . arg(3) . '/edit');
+    }
+    else {
+      //Projektorganisation
+      $node_items = array('title' => 'Partnerorganisation');
+      $node_items['items'] = array();
+      $node_items['items'][] = l('Partnerorganisation bearbeiten', 'projects/admin/' . $active_project->nid . '/edit');
+    }
+
+    $context_items = array();
+    $context_items['title'] = '';
+    $context_items['items'] = array();
+
+    $context_items = array('title' => 'Aktionen');
+    $context_items['items'] = array();
+    $context_items['items'][] = l('Neuen Projektvorschlag erstellen', 'projects/admin/add/' . NM_PROJECTS_PROJEKTVORSCHLAG, array(
+      'query' => array(
+        'og_group_ref' => $active_project->nid,
+    )));
+
+
+    if (arg(1) == 'partners' && is_numeric(arg(3))) {
+      $context_items['items'][] = l('Zum Cockpit', 'projects/partners/' . $active_project->nid . '/' . arg(3) . '/cockpit');
+      
+      //check context -> cockpit
+      $context_items['items'][] = l('Neuen Tagebucheintrag verfassen', 'projects/admin/add/' . NM_PROJECTS_TAGEBUCH, array(
+        'query' => array(
+          'og_group_ref' => arg(3),
+      )));
+    }
+
+
+
+
+    $output = theme('section_projects_tools', array('node_items' => $node_items, 'context_items' => $context_items));
+  }
+
+  $block = array(
+    'content' => array(
+      '#type' => 'markup',
+      '#markup' => $output,
+  ));
+
+  return $block;
+}
+
+function _section_projects_course_group_actions_view() {
+  $output = '';
+
+  $output .= '<div>';
+
+  $active_course = _section_courses_get_active_course();
+  //check if course group has a project assigned to it
+  if ($active_course && arg(0) == 'course' && arg(1) == 'groups' && is_numeric(arg(3))) {
+    $active_course_group = node_load(arg(3));
+    $proposal_nid = _section_courses_course_group_get_proposal($active_course_group);
+
+    if ($proposal_nid) {
+      //$output .= $proposal_nid;
+      $partner_nid = _custom_general_get_group(node_load($proposal_nid));
+      $output .= '<a href="/' . NM_COURSE_PROJECTS_PARTNERS_PATH . $partner_nid . '/' . $proposal_nid . '/cockpit">Zum Projektcockpit</a>';
+    }
+  }
+  $output .= '</div>';
+
+  return $output;
+}
+
+/*
+  function _section_projects_node_tabs_view() {
+  $output = '';
+
+  if (_section_projects_tools_access()) {
+  $output .= '<div id="content_node_tabs-container" class="btn-grop row-fluid">';
+  $output .= '<ul class="span12">';
+  $output .= '<li>';
+  $output .= l('Ansicht', 'projects/partners/1419');
+  $output .= '</li>';
+  $output .= '<li>';
+  $output .= l('Bearbeiten', 'projects/admin/1419/edit');
+  $output .= '</li>';
+  $output .= '</ul>';
+  $output .= '</div>';
+  }
+  $block = array(
+  'content' => array(
+  '#type' => 'markup',
+  '#markup' => $output,
+  ));
+
+  return $block;
+  }
+ */
+
+/**
+ * HELPER FUNCTIONS
+ */
+
+/**
+ * 
+ * @global type $user
+ */
+function _section_projects_tools_access($account = NULL) {
+  if (!$account) {
+    global $user;
+    $account = clone $user;
+  }
+
+  if (array_intersect($account->roles, array(NM_ROLE_ADMIN, NM_ROLE_KOOPERATIONSPARTNER))) {
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+function section_projects_get_active_project($reset = FALSE) {
+  static $project;
+
+
+  if (!(section_projects_context()))
+    return FALSE;
+
+  if (!isset($project) || $reset) {
+    $project_nid = arg(2);
+
+    $project = node_load($project_nid);
+  }
+
+
+  return $project;
+}
+
+function section_projects_context() {
+  if (empty($context)) {
+    $context = context_isset("context", "section_projects");
+  }
+
+  if (empty($context)) {
+    custom_general_init();
+    $context = context_isset("context", "section_projects");
+  }
+
+  if (empty($context))
+    return FALSE;
+
+  return TRUE;
+}
+
+/*
+ * alter links of nodes related to projects
+ */
+
+function section_projects_url_outbound_alter(&$path, &$options, &$original_path) {
+
+  $project = section_projects_get_active_project();
+
+  if ($project || section_projects_context()) {
+    /*
+     * 
+     * forum node links
+     */
+
+    if (strstr($path, "node/")) {
+      $regex = '#^node/([0-9]+)$#s';
+      preg_match($regex, $path, $matches);
+      if (!empty($matches)) {
+        $nid = $matches[1];
+        //solution for biblio and course text needed
+        $type = _custom_general_get_node_type($nid);
+
+        if ($type == NM_PROJECTS_PROJEKTVORSCHLAG) {
+          if ($project) {
+            $path = "projects/partners/" . $project->nid . '/' . $nid;
+          }
+          else {
+            $node = node_load($nid);
+            $project_nid = _custom_general_get_group($node);
+            $path = "projects/partners/" . $project_nid . '/' . $nid;
+          }
+        }
+        else if ($type == NM_PROJECTS_RROJEKTORGANISATION) {
+          $path = "projects/partners/" . $nid;
+        }
+      }
+    }
+  }
+}
+
+/*
+ *  Webform - Survey Umfrage
+ */
+
+/**
+ * Provide a select options component to Webform. The values are 
+ * populated via a callback function, which returns 
+ * an array of nodes.
+ *
+ * @return void
+ * @author Kosta Harlan
+ */
+function section_projects_webform_select_options_info() {
+  $items = array();
+
+  if (function_exists('_section_projects_get_proposal_nodes')) {
+    $items['proposal-nodes'] = array(
+      'title' => t('Proposal nodes'),
+      'options callback' => '_section_projects_get_proposal_nodes',
+    );
+  }
+
+  return $items;
+}
+
+/**
+ * Returns an array of Story nodes keyed on the node ID.
+ *
+ * @return array
+ * @author Kosta Harlan
+ */
+function _section_projects_get_proposal_nodes() {
+  $nodes = array();
+
+  $result = db_select('node', 'n')
+      ->fields('n', array('nid', 'title'))
+      ->condition('n.type', NM_PROJECTS_PROJEKTVORSCHLAG)
+      ->execute();
+
+  foreach ($result as $node) {
+    $nodes[$node->nid] = $node->title;
+  }
+  return $nodes;
+}
+
+/**
+ *  COCKPIT
+ */
+
+/**
+ * tab items for project cockpit
+ * @return string
+ */
+function _section_projects_get_navigation_items() {
+  $tab_items = array(
+    'Durchführung',
+    'Kooperationsvereinbarung',
+    'Lernzielvereinbarung',
+    'Dokumentation'
+  );
+
+  return $tab_items;
+}
+
+function projects_cockpit_main_durchführung_view() {
+  $output = '';
+
+  //$output .= _nm_stream_form_add_edit_view(NM_PROJECTS_TAGEBUCH);
+
+  $output = 'view';
+
+  return $output;
+}
+
+function projects_cockpit_main_kooperationsvereinbarung_view() {
+  $output = '';
+
+  $output = 'projects_cockpit_main_kooperationsvereinbarung_view';
+
+  return $output;
+}
+
+function projects_cockpit_main_lernzielvereinbarung_view() {
+
+  $output = '';
+
+  $output = 'projects_cockpit_main_lernzielvereinbarung_view';
+
+  return $output;
+}
+
+function projects_cockpit_main_dokumentation_view() {
+  $output = '';
+
+  $output = 'projects_cockpit_main_dokumentation_view';
+
+  return $output;
+}
+
+/**
+ * Implementing hook_preprocess_HOOK
+ * @param type $vars
+ */
+function section_projects_preprocess_section_projects_tools(&$vars) {
+  //dpm('preprocessing');
+}
