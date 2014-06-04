@@ -1,0 +1,58 @@
+/* 
+    Document   : section_domains
+    Created on : 18.12.2013, 07:05:09
+    Author     : Nm
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+
+/*
+HEADER
+*/
+
+
+/*
+Navigation
+Redundant with section_spaces.css - but spaces is deactivated for now!
+*/
+
+.nav_tabbox>div {
+    float:left;
+    margin-bottom: 20px;
+    margin-right: 10px;
+}
+.nav_tabbox a.tab{
+    padding:10px 10px 12px 15px;
+    display: block;
+    font-size: 16.5px;
+    background-color: #eee;
+    color: #555;
+    float:left;
+
+}
+
+.nav_tabbox a.tab:hover{
+    text-decoration: none;
+    background-color: #cfcfcf;
+
+}
+
+.nav_tabbox .active a.tab{
+    background-color: #cecece;
+}
+
+/*
+Main
+*/
+.projects_cockpit_main_container .tabpanel{
+    clear:both;
+    display:none;
+    float:left;
+    padding: 10px;
+}
+
+.projects_cockpit_main_container .tabpanel.active{
+    display:block;
+}
+
