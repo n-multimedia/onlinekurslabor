@@ -3,11 +3,13 @@
 module_load_include('inc', 'nm_stream', 'inc/blocks');
 module_load_include('inc', 'nm_stream', 'inc/realms');
 
-
+//NM_Stream
 define('NM_STREAM_PRIVATE', 1);
 define('NM_STREAM_TEAM', 2);
 define('NM_STREAM_COURSE', 3);
 define('NM_STREAM_PUBLIC', 4);
+//Projects Blog
+define('NM_STREAM_PROJECT', 5);
 
 /**
  * Implements hook_block_info().
@@ -57,8 +59,9 @@ function nm_stream_theme() {
 
 function nm_stream_menu() {
 
-  $items['nm_stream/node/add'] = array(
+  $items['nm_stream/node/add/%'] = array(
     'title' => 'Add NM Stream Node',
+    'page arguments' => array(3),
     'page callback' => 'nm_stream_nm_stream_node_add_callback',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
@@ -151,7 +154,7 @@ function nm_stream_menu() {
   return $items;
 }
 
-function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON', $type = 'nm_stream') {
+function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON', $types = array('nm_stream', 'projects_blog')) {
 
   //NODES
   //new added nodes
@@ -171,7 +174,7 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON', $t
 
     $query
         //->condition('n.nid', $node->nid, '>')
-        ->condition('n.type', $type)
+        ->condition('n.type', $types, 'IN')
         ->condition('n.status', NODE_PUBLISHED)
         ->orderBy("n.nid", "DESC") //order important!
         ->addTag('node_access');
@@ -209,185 +212,191 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON', $t
 
   //check if changes were made the user is listening to
   $nids = array();
-  //29.04.2014 - 12:08 - SN fix
+  //29.04.2014 - 12:08 - SN fix 18.06.2014 - 18:27 - SN fix v.2 !! nie empty result alda!
   //no nid is set yet
-  if (!isset($_SESSION['nm_stream']))
-    return;
-  foreach ($_SESSION['nm_stream']['nodes'] as $item) {
-    $nids[$item['nid']] = $item['nid'];
-  }
-
-  if (!empty($nids)) {
-    $query2 = db_select('node', 'n');
-    $query2->addField('n', 'nid');
-    $query2->addField('n', 'changed');
-    $query2
-        ->condition('n.nid', $nids, 'IN')
-        ->condition('n.type', $type)
-        ->condition('n.status', NODE_PUBLISHED)
-        ->addTag('node_access');
-
-    $results2 = $query2->execute()->fetchAllAssoc('nid');
-
-    //deleted nodes
-    //check if nodes were deleted
-    if (count($nids) > count($results2)) {
-      $response['deleted_nodes'] = array();
-      foreach ($nids as $nid) {
-        if (!isset($results2[$nid])) {
-          $response['deleted_nodes'][$nid] = $nid;
-          unset($nids[$nid]);
-          unset($_SESSION['nm_stream']['nodes'][$nid]);
-        }
-      }
-      if (!empty($response['deleted_nodes'])) {
-        $response['update_status'] = 2;
-      }
-      else {
-        unset($response['deleted_nodes']);
-      }
-    }
-    else {
-      if (!isset($response['update_status']))
-        $response['update_status'] = 1;
-    }
-
-    //changed nodes
-    //dpm($results2);
-    //dpm($_SESSION['nm_stream']['nodes']);
-    if (!empty($results2)) {
-      $response['changed_nodes'] = array();
-      foreach ($results2 as $result) {
-        if (isset($_SESSION['nm_stream']['nodes'][$result->nid]) && $result->changed > $_SESSION['nm_stream']['nodes'][$result->nid]['changed']) {
-          $response['changed_nodes'][$result->nid] = drupal_render(node_view(node_load($result->nid), 'nm_stream'));
-        }
-      }
-      if (!empty($response['changed_nodes'])) {
-        $response['update_status'] = 2;
-      }
-      else {
-        unset($response['changed_nodes']);
-      }
-    }
-    else {
-      if (!isset($response['update_status']))
-        $response['update_status'] = 1;
+  if (!isset($_SESSION['nm_stream']) || !isset($_SESSION['nm_stream']['nodes'])) {
+    if (!isset($response['update_status'])) {
+      $response['update_status'] = 1; // 0:error, 1:empty, 2: new content available, 
     }
   }
+  else {
 
+    foreach ($_SESSION['nm_stream']['nodes'] as $item) {
+      $nids[$item['nid']] = $item['nid'];
+    }
 
-  //Comments
-  if (isset($_SESSION['nm_stream']['comments']) && is_array($_SESSION['nm_stream']['comments'])) {
-    ksort($_SESSION['nm_stream']['comments']);
-    $users_last_loaded_comment = end($_SESSION['nm_stream']['comments']);
-
-    if (!empty($users_last_loaded_comment)) {
-
-      //get nm_stream nodes where created > $node->created
-      $query_new_comments = db_select('comment', 'c');
-      $query_new_comments->addField('c', 'cid');
-      $query_new_comments->addField('c', 'nid');
-      $query_new_comments
-          ->condition('c.cid', $users_last_loaded_comment['cid'], '>')
-          ->condition('c.status', COMMENT_PUBLISHED)
-          ->orderBy("c.cid", "DESC") //order important!
+    if (!empty($nids)) {
+      $query2 = db_select('node', 'n');
+      $query2->addField('n', 'nid');
+      $query2->addField('n', 'changed');
+      $query2
+          ->condition('n.nid', $nids, 'IN')
+          ->condition('n.type', $types, 'IN')
+          ->condition('n.status', NODE_PUBLISHED)
           ->addTag('node_access');
 
-      $results_new_comments = $query_new_comments->execute()->fetchAll();
+      $results2 = $query2->execute()->fetchAllAssoc('nid');
 
-
-      if (empty($results_new_comments)) {
-        if (!isset($response['update_status'])) {
-          $response['update_status'] = 1; // 0:error, 1:empty, 2: new content available, 
-          // $response['error'] = 'Beim Speichern ist ein Fehler aufgetreten.';
+      //deleted nodes
+      //check if nodes were deleted
+      if (count($nids) > count($results2)) {
+        $response['deleted_nodes'] = array();
+        foreach ($nids as $nid) {
+          if (!isset($results2[$nid])) {
+            $response['deleted_nodes'][$nid] = $nid;
+            unset($nids[$nid]);
+            unset($_SESSION['nm_stream']['nodes'][$nid]);
+          }
+        }
+        if (!empty($response['deleted_nodes'])) {
+          $response['update_status'] = 2;
+        }
+        else {
+          unset($response['deleted_nodes']);
         }
       }
       else {
-        $response['update_status'] = 2; // 0:error, 1:empty, 2: new content available, 
-        //nodes added -> information change
+        if (!isset($response['update_status']))
+          $response['update_status'] = 1;
+      }
 
-        $response['new_comments'] = array();
-        foreach ($results_new_comments as $result) {
+      //changed nodes
+      //dpm($results2);
+      //dpm($_SESSION['nm_stream']['nodes']);
+      if (!empty($results2)) {
+        $response['changed_nodes'] = array();
+        foreach ($results2 as $result) {
+          if (isset($_SESSION['nm_stream']['nodes'][$result->nid]) && $result->changed > $_SESSION['nm_stream']['nodes'][$result->nid]['changed']) {
+            $response['changed_nodes'][$result->nid] = drupal_render(node_view(node_load($result->nid), 'nm_stream'));
+          }
+        }
+        if (!empty($response['changed_nodes'])) {
+          $response['update_status'] = 2;
+        }
+        else {
+          unset($response['changed_nodes']);
+        }
+      }
+      else {
+        if (!isset($response['update_status']))
+          $response['update_status'] = 1;
+      }
+    }
 
-          if (!isset($response['new_comments'][$result->nid])) {
-            $response['information'][$result->nid] = _nm_stream_get_node_information(node_load($result->nid));
 
-            $response['new_comments'][$result->nid] = theme('nm_stream_node_comment', (array('comment' => comment_load($result->cid))));
+    //Comments
+    if (isset($_SESSION['nm_stream']['comments']) && is_array($_SESSION['nm_stream']['comments'])) {
+      ksort($_SESSION['nm_stream']['comments']);
+      $users_last_loaded_comment = end($_SESSION['nm_stream']['comments']);
+
+      if (!empty($users_last_loaded_comment)) {
+
+        //get nm_stream nodes where created > $node->created
+        $query_new_comments = db_select('comment', 'c');
+        $query_new_comments->addField('c', 'cid');
+        $query_new_comments->addField('c', 'nid');
+        $query_new_comments
+            ->condition('c.cid', $users_last_loaded_comment['cid'], '>')
+            ->condition('c.status', COMMENT_PUBLISHED)
+            ->orderBy("c.cid", "DESC") //order important!
+            ->addTag('node_access');
+
+        $results_new_comments = $query_new_comments->execute()->fetchAll();
+
+
+        if (empty($results_new_comments)) {
+          if (!isset($response['update_status'])) {
+            $response['update_status'] = 1; // 0:error, 1:empty, 2: new content available, 
+            // $response['error'] = 'Beim Speichern ist ein Fehler aufgetreten.';
+          }
+        }
+        else {
+          $response['update_status'] = 2; // 0:error, 1:empty, 2: new content available, 
+          //nodes added -> information change
+
+          $response['new_comments'] = array();
+          foreach ($results_new_comments as $result) {
+
+            if (!isset($response['new_comments'][$result->nid])) {
+              $response['information'][$result->nid] = _nm_stream_get_node_information(node_load($result->nid));
+
+              $response['new_comments'][$result->nid] = theme('nm_stream_node_comment', (array('comment' => comment_load($result->cid))));
+            }
+            else {
+              $response['new_comments'][$result->nid] .= theme('nm_stream_node_comment', (array('comment' => comment_load($result->cid))));
+            }
+          }
+
+          if (empty($response['new_comments'])) {
+            unset($response['new_comments']);
+          }
+        }
+      }
+
+      //check if changes were made to comments the user is listening to
+      $cids = array();
+      foreach ($_SESSION['nm_stream']['comments'] as $item) {
+        $cids[$item['cid']] = $item['cid'];
+      }
+
+      if (!empty($cids)) {
+        $query3 = db_select('comment', 'c');
+        $query3->addField('c', 'cid');
+        $query3->addField('c', 'nid');
+        $query3->addField('c', 'changed');
+        $query3
+            ->condition('c.cid', $cids, 'IN')
+            ->condition('c.status', COMMENT_PUBLISHED)
+            ->addTag('node_access');
+
+        $results3 = $query3->execute()->fetchAllAssoc('cid');
+
+        //deleted comments
+        //check if nodes were deleted
+
+        if (count($cids) > count($results3)) {
+          $response['deleted_comments'] = array();
+          foreach ($cids as $cid) {
+            if (!isset($results3[$cid])) {
+              $response['deleted_comments'][$cid] = $cid;
+
+              unset($cids[$cid]);
+              unset($_SESSION['nm_stream']['comments'][$cid]);
+            }
+          }
+          if (!empty($response['deleted_comments'])) {
+            //nodes were deleted -> information change
+
+            $response['update_status'] = 2;
           }
           else {
-            $response['new_comments'][$result->nid] .= theme('nm_stream_node_comment', (array('comment' => comment_load($result->cid))));
+            unset($response['deleted_comments']);
           }
-        }
-
-        if (empty($response['new_comments'])) {
-          unset($response['new_comments']);
-        }
-      }
-    }
-
-    //check if changes were made to comments the user is listening to
-    $cids = array();
-    foreach ($_SESSION['nm_stream']['comments'] as $item) {
-      $cids[$item['cid']] = $item['cid'];
-    }
-
-    if (!empty($cids)) {
-      $query3 = db_select('comment', 'c');
-      $query3->addField('c', 'cid');
-      $query3->addField('c', 'nid');
-      $query3->addField('c', 'changed');
-      $query3
-          ->condition('c.cid', $cids, 'IN')
-          ->condition('c.status', COMMENT_PUBLISHED)
-          ->addTag('node_access');
-
-      $results3 = $query3->execute()->fetchAllAssoc('cid');
-
-      //deleted comments
-      //check if nodes were deleted
-
-      if (count($cids) > count($results3)) {
-        $response['deleted_comments'] = array();
-        foreach ($cids as $cid) {
-          if (!isset($results3[$cid])) {
-            $response['deleted_comments'][$cid] = $cid;
-
-            unset($cids[$cid]);
-            unset($_SESSION['nm_stream']['comments'][$cid]);
-          }
-        }
-        if (!empty($response['deleted_comments'])) {
-          //nodes were deleted -> information change
-
-          $response['update_status'] = 2;
         }
         else {
-          unset($response['deleted_comments']);
+          if (!isset($response['update_status']))
+            $response['update_status'] = 1;
         }
-      }
-      else {
-        if (!isset($response['update_status']))
-          $response['update_status'] = 1;
-      }
 
-      //changed comments
-      if (!empty($results3)) {
-        $response['changed_comments'] = array();
-        foreach ($results3 as $result) {
-          if (isset($_SESSION['nm_stream']['comments'][$result->cid]) && $result->changed > $_SESSION['nm_stream']['comments'][$result->cid]['changed']) {
-            $response['changed_comments'][$result->cid] = theme('nm_stream_node_comment', (array('comment' => comment_load($result->cid)))); //drupal_render(node_view(node_load($result->cid), 'nm_stream'));
+        //changed comments
+        if (!empty($results3)) {
+          $response['changed_comments'] = array();
+          foreach ($results3 as $result) {
+            if (isset($_SESSION['nm_stream']['comments'][$result->cid]) && $result->changed > $_SESSION['nm_stream']['comments'][$result->cid]['changed']) {
+              $response['changed_comments'][$result->cid] = theme('nm_stream_node_comment', (array('comment' => comment_load($result->cid)))); //drupal_render(node_view(node_load($result->cid), 'nm_stream'));
+            }
+          }
+          if (!empty($response['changed_comments'])) {
+            $response['update_status'] = 2;
+          }
+          else {
+            unset($response['changed_comments']);
           }
         }
-        if (!empty($response['changed_comments'])) {
-          $response['update_status'] = 2;
-        }
         else {
-          unset($response['changed_comments']);
+          if (!isset($response['update_status']))
+            $response['update_status'] = 1;
         }
-      }
-      else {
-        if (!isset($response['update_status']))
-          $response['update_status'] = 1;
       }
     }
   }
@@ -441,7 +450,8 @@ function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
   }
   if (!empty($users_last_loaded_node)) {
     $update_result = nm_stream_nm_stream_node_get_update_callback($users_last_loaded_node['nid'], 'array');
-
+    //dpm($update_result);
+    //dpm($response);
     $response += $update_result;
   }
 
@@ -917,14 +927,16 @@ function nm_stream_preprocess_node(&$vars) {
 
     $vars['nm_author_link'] = theme('username', array('account' => $account));
     $vars['nm_nid'] = $node->nid;
+    $vars['nm_type'] = $node->type;
     $vars['nm_author_name'] = $realname;
     $vars['nm_author_path'] = url('user/' . $account->uid);
     $vars['nm_author_pic'] = _nm_stream_get_user_pic($account);
     $vars['nm_created'] = 'vor ' . format_interval(time() - $node->created); //format_date($node->created);
     $vars['nm_created'] = str_replace('Tage', 'Tagen', $vars['nm_created']);
 
+    $body = field_get_items('node', $node, 'body');
     $vars['nm_modified'] = ($node->created != $node->changed) ? 'geändert am ' . format_date($node->changed) : '';
-    $vars['nm_body'] = $node->body[LANGUAGE_NONE][0]['value'];
+    $vars['nm_body'] = drupal_render(field_view_value('node', $node, 'body', $body[0]));
     $vars['nm_actions'] = _nm_stream_get_action_links($node);
     $vars['nm_num_comments'] = (isset($node->comment_count)) ? $node->comment_count : 0;
     $vars['nm_attachments'] = _nm_stream_render_node_attachments($node);
@@ -943,7 +955,7 @@ function nm_stream_preprocess_node(&$vars) {
     }
 
     //set privacy icon
-    $privacy_options = _nm_stream_privacy_options();
+    $privacy_options = _nm_stream_privacy_options($node->type);
     if (!empty($node->field_nm_privacy) && $node->field_nm_privacy[LANGUAGE_NONE][0]['value']) {
       $privacy = $node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
       foreach ($privacy_options as $key => $option) {
@@ -1006,6 +1018,7 @@ function _nm_stream_get_node_information($node) {
 function nm_stream_preprocess_nm_stream_node_comment(&$vars) {
 
   $comment = $vars['comment'];
+
   $account = user_load($comment->uid);
 
   //register user as listener for this comment
@@ -1069,12 +1082,14 @@ function nm_stream_preprocess_nm_stream_node_comment_form(&$vars) {
  * 
  * @param type $vars
  */
-function nm_stream_preprocess_nm_stream_stream_node_form(&$vars) {
+function nm_stream_preprocess_nm_stream_stream_node_form(&$vars, $hook) {
   global $user;
 
   //$vars['type']
+  if (!isset($vars['context'])) {
+    $context = nm_stream_og_context();
+  }
 
-  $context = nm_stream_og_context();
   if (empty($context) && empty($vars['node'])) {
 
     $vars['nm_error'] = 'NM Stream Form could not be created. No context is set!';
@@ -1104,7 +1119,7 @@ function nm_stream_preprocess_nm_stream_stream_node_form(&$vars) {
   $vars['nm_node_form_dummy'] = 'Beitrag hinzufügen...';
 
 
-  $vars['nm_privacy'] = _nm_stream_render_privacy_widget();
+  $vars['nm_privacy'] = _nm_stream_render_privacy_widget($node, $vars['type']);
 }
 
 /*
@@ -1131,7 +1146,7 @@ function nm_stream_og_context() {
     }
   }
   else if ($active_project) {
-    $context = node_load(arg(3));
+    $context = node_load(arg(5));
   }
   else {
     //check referer url
@@ -1149,6 +1164,11 @@ function nm_stream_og_context() {
       if (_section_course_course_group_visible($referer_url['path'])) {
         $context = node_load(arg(3, $referer_url['path']));
       }
+
+      //project section
+      if (_section_projects_cockpit_visible($referer_url['path'])) {
+        $context = node_load(arg(5, $referer_url['path']));
+      }
     }
   }
 
@@ -1159,8 +1179,9 @@ function nm_stream_og_context() {
   return $context;
 }
 
-function _nm_stream_render_privacy_widget($node = NULL) {
-  $privacy_options = _nm_stream_privacy_options();
+function _nm_stream_render_privacy_widget($node, $type) {
+
+  $privacy_options = _nm_stream_privacy_options($type);
 
   $result = '';
   if ($node) {
@@ -1221,7 +1242,13 @@ function nm_stream_init() {
  * get privacy options for a special content type
  * @param type content type
  */
-function _nm_stream_privacy_options() {
+function _nm_stream_privacy_options($type = 'nm_stream') {
+
+
+
+  //04.06.2014 - 18:12 - SN 
+  //dynamic privacy settings for blog entries
+
   $module_path = drupal_get_path('module', 'nm_stream');
   //permission options depending on current context (og group)
   $options_items = array();
@@ -1231,21 +1258,39 @@ function _nm_stream_privacy_options() {
     'icon_path' => $module_path . '/images/privacy-icons/privacy-private.png',
     'default' => FALSE,
   );
+
   $options_items[NM_STREAM_TEAM] = array(
     'label' => t('Team'),
     'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
     'default' => TRUE,
   );
-  $options_items[NM_STREAM_COURSE] = array(
-    'label' => t('Course'),
-    'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
-    'default' => FALSE,
-  );
+
+
+  switch ($type) {
+    case 'nm_stream':
+      $options_items[NM_STREAM_COURSE] = array(
+        'label' => t('Course'),
+        'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+        'default' => FALSE,
+      );
+      break;
+    case 'projects_blog':
+      $options_items[NM_STREAM_PROJECT] = array(
+        'label' => t('Project'),
+        'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+        'default' => FALSE,
+      );
+      break;
+  }
+
+
   $options_items[NM_STREAM_PUBLIC] = array(
     'label' => t('Public'),
     'icon_path' => $module_path . '/images/privacy-icons/privacy-public.png',
     'default' => FALSE,
   );
+
+
 
   return $options_items;
 }
@@ -1253,7 +1298,7 @@ function _nm_stream_privacy_options() {
 function _nm_stream_get_privacy_option($node) {
   $key = $node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
 
-  $privacy_options = _nm_stream_privacy_options();
+  $privacy_options = _nm_stream_privacy_options($node->type);
 
 
   return array('key' => $key, 'option' => $privacy_options[$key]);
@@ -1331,8 +1376,13 @@ function _nm_stream_comment_get_thread($node, $mode, $comments_per_page) {
       ->condition('c.nid', $node->nid)
       ->addTag('node_access')
       ->addTag('comment_filter')
-      ->addMetaData('node', $node)
-      ->range(0, $comments_per_page);
+      ->addMetaData('node', $node);
+
+
+
+  if ($comments_per_page > 0) {
+    $query->range(0, $comments_per_page);
+  }
 
 
 //  $count_query = db_select('comment', 'c');
@@ -1355,7 +1405,7 @@ function _nm_stream_comment_get_thread($node, $mode, $comments_per_page) {
     // much. It scales much much better than having the whole comment
     // structure.
     $query->addExpression('SUBSTRING(c.thread, 1, (LENGTH(c.thread) - 1))', 'torder');
-    $query->orderBy('torder', 'DESC');
+    $query->orderBy('torder', 'ASC');
   }
 
   //$query->setCountQuery($count_query);

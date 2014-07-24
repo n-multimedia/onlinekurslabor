@@ -4,7 +4,7 @@
  */
 
 (function($) {
-    
+
     var nm_stream_toggle_open_data = new Array();
     var nm_stream_get_update_timer = false;
     var nm_stream_pause_update_timer = false;
@@ -38,7 +38,7 @@
             /*
              *  NODE
              */
-            //bind click to edit button
+            //bind click to delete button
             $('.nm-stream-node-delete').once('nm_stream').click(function() {
                 var delete_button = $(this)
 
@@ -121,14 +121,14 @@
                         if (node_container.find('.nm-stream-main').first().find('form').length === 0) {
 
                             //display the edit form
-                            var edit_form = node_container.find('.nm-stream-main-body').hide();
+                            var edit_form = node_container.find('.nm-stream-main-body').first().hide();
                             node_container.find('.nm-stream-main').first().prepend($(data.node_edit_form));
                             //todo add form here
                             //node_container.find('.nm-stream-main').first().prepend(data.node_edit_form);
                             //html(data.node_edit_form)
                             //attach behavior
                             node_container.find('textarea').autosize();
-                            
+
                             Drupal.attachBehaviors(edit_form);
                         }
 
@@ -249,13 +249,13 @@
                             //reset textarea
                             form_container.find('textarea').val('');
 
-                            
+
                             //if($('.nm-stream-node-container').closest('.view-content').length > 0) {
-                              //display new Post
+                            //display new Post
                             var new_node = $('.pane-nm-stream .view-content .views-row').first().prepend($(data.node).fadeIn());
-           
+
                             //}
-                            
+
                             //fix, new nodes could not be edited without views-row div around
                             //attach behavior
                             Drupal.attachBehaviors(new_node);
@@ -662,6 +662,7 @@
             $('.nm-stream-comment-submit').once('nm_stream').click(function() {
                 //submit new comment
                 var post_button = $(this)
+                
                 if ($(this).closest('.nm-stream-edit-comment-actions').length === 0) {
                     //add
                     var form_container = $(this).closest('.nm-stream-comment-form-container');
@@ -688,9 +689,13 @@
                             //reset textarea
                             form_container.find('textarea').val('');
 
-                            //first comment, so node object ist available
-                            if (typeof data.node === "undefined") {
+                            //special handling for ajax comment functionality
+                            var only_comment_function = post_button.closest('.nm-stream-comments').find('.nm-stream-comments-container').length < 1;
 
+                            //first comment, so node object ist available
+                            if (typeof data.node === "undefined" ||  (typeof data.node === "undefined" && only_comment_function)) {
+                                
+                                //console.log(only_comment_function);
                                 //check if we have a comment container below the post button (source was an initial node without comments)
                                 if (post_button.closest('.nm-stream-node-container').find('.nm-stream-comments-section').length > 0) {
 
@@ -703,17 +708,28 @@
                                     //remove comment init add form
                                     post_button.closest('.nm-stream-node-container').find('.nm-stream-node .nm-stream-comments-form').remove();
                                 }
-
+                                
+    
+                                
                                 //display new Post
-                                var new_comment = post_button.closest('.nm-stream-comments').find('.nm-stream-comments-container').prepend($(data.comment).fadeIn());
+                                var new_comment = [];
 
-                                //fix
-                                //do not load information info, because we did start with <5 (limit) comments
-                                //every new comment is already visible
+                                if (only_comment_function) {
 
-                                var node_container = post_button.closest('.nm-stream-node-container');
+                                    //special case in for node comments only - for kooperationsvereinbarung-comments
+                                    console.log(post_button);
+                                    new_comment = post_button.closest('.nm-stream-node-container').parent().find('.nm-stream-comments-section').append($(data.comment).fadeIn());
 
-                                nm_stream_update_node_information(node_container, data.information);
+                                } else {
+                                    //fix
+                                    //do not load information info, because we did start with <5 (limit) comments
+                                    //every new comment is already visible
+                                    new_comment = post_button.closest('.nm-stream-comments').find('.nm-stream-comments-container').prepend($(data.comment).fadeIn());
+                                                                        
+                                    var node_container = post_button.closest('.nm-stream-node-container');
+
+                                    nm_stream_update_node_information(node_container, data.information);
+                                }
 
                                 //attach behavior
                                 Drupal.attachBehaviors(new_comment);
@@ -776,9 +792,10 @@
             });
             //bind click to cancel button
             $('.nm-stream-comment-cancel').once('nm_stream').click(function() {
+
                 if ($(this).closest('.nm-stream-edit-comment-actions').length === 0) {
                     //add form
-                    $('.nm-stream-comment-form').show();
+                    $(this).closest('.nm-stream-node-container').find('.nm-stream-comment-form').show();
                     $(this).closest('.nm-stream-comment-form-container').find('textarea').val('');
                     $(this).closest('form').hide();
 
@@ -897,8 +914,8 @@
 
                 return post_spinner_black;
             }
-            
-             function nm_stream_get_post_spinner_load() {
+
+            function nm_stream_get_post_spinner_load() {
 
                 var opts = {
                     lines: 8, // The number of lines to draw
@@ -966,6 +983,13 @@
                 $(this).parent().parent().append('<iframe id="nm_stream_hidden_upload" src="" name="nm_stream_hidden_upload" style="width:0;height:0;border:0px solid #fff; position:absolute;"></iframe>');
             });
 
+            //bind to projects cockpit
+            $('.pane-section-projects-project-cockpit-main').once('nm_stream', function() {
+                nm_stream_get_update();
+                //append iframe for uploads
+                $(this).parent().parent().append('<iframe id="nm_stream_hidden_upload" src="" name="nm_stream_hidden_upload" style="width:0;height:0;border:0px solid #fff; position:absolute;"></iframe>');
+            });
+
             function nm_stream_get_update() {
                 //pause update actions
                 //case:
@@ -978,12 +1002,12 @@
 
 
                 var last_node = $('.nm-stream-node-container').first();
-                
+
                 var nid = 0;
                 //if no node has been posted yet
-                if(last_node.length !== 0) {
-                  var regresult = $(last_node).attr('id').split('-');
-                  nid = regresult.pop();
+                if (last_node.length !== 0) {
+                    var regresult = $(last_node).attr('id').split('-');
+                    nid = regresult.pop();
                 }
 
                 var url = '/nm_stream/node/' + nid + '/get_update';
@@ -1037,7 +1061,6 @@
                 var view_container = $('.pane-nm-stream .view-content .views-row').first();
 
                 if (typeof data.new_nodes !== 'undefined') {
-                    console.log(data);
                     var new_nodes = view_container.prepend($(data.new_nodes).fadeIn());
 
                     Drupal.attachBehaviors(new_nodes);
@@ -1152,16 +1175,16 @@
                 }
 
             });
-            
+
             /*
              * laod more as infinite spinner
              */
-            $('.view-nm-stream .pager a').once('nm_stream', function(){
+            $('.view-nm-stream .pager a').once('nm_stream', function() {
 
                 post_spinner_load = nm_stream_get_post_spinner_load();
                 $(this).text('');
                 $(this).append(post_spinner_load.el);
-                
+
             });
 
         }

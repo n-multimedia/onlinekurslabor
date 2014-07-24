@@ -49,7 +49,10 @@ Main
     clear:both;
     display:none;
     float:left;
-    padding: 10px;
+}
+
+.projects_cockpit_main_container .tabpanel .span12 {
+   
 }
 
 .projects_cockpit_main_container .tabpanel.active{

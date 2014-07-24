@@ -6,7 +6,7 @@
 ?>
 
 <a id="node-<?php echo $nm_nid; ?>"></a>
-<div class="nm-stream-node-container" id="nm-stream-node-<?php echo $nm_nid; ?>">
+<div class="nm-stream-node-container  <?php echo $nm_type; ?>" id="nm-stream-node-<?php echo $nm_nid; ?>">
   <div class="nm-stream-context"><?php echo $nm_context; ?></div>
   <div class="nm-stream-node">
     <div class="row-fluid">

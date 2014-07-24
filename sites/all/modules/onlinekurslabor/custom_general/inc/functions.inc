@@ -159,6 +159,12 @@ function _section_course_course_tasks_visible($path = NULL) {
   return $text_visible;
 }
 
+
+function _section_projects_cockpit_visible($path = NULL) {
+  $text_visible = (arg(0, $path) == 'projects' && arg(4, $path) == 'cockpit');
+  return $text_visible;
+}
+
 /**
  * Get node type from the Database without overhead
  * @param type $nid
