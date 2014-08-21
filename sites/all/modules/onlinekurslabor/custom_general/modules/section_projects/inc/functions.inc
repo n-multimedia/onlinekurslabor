@@ -76,6 +76,53 @@ function _section_projects_get_cooperation_agreements($proposal, $account = NULL
   //return isset($result['node']) ? $result['node'] : NULL;
 }
 
+/**
+ * get the objective linked to a cooperation agreement
+ * @param type $ca
+ * @return type
+ */
+function _section_projects_get_objective_by_ca($ca) {
+
+
+  //kooperationsvereinbarungen holen, die dem proposal zugeordnet sind
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', NM_PROJECTS_ZIELVEREINBARUNG)
+      ->propertyCondition('status', 1)
+      // ->propertyCondition('uid', $uid)
+      ->fieldCondition('field_ca_ref', 'target_id', $ca->nid, '=');
+  $result = $query->execute();
+  
+  return isset($result['node']) ? current($result['node']) : NULL;
+
+}
+
+/**
+ * Get documentation linked to a cooperation agreement
+ * @param node $ca cooperation agreement node
+ * @return node
+ */
+function _section_projects_get_documentation_by_ca($ca) {
+
+
+  //kooperationsvereinbarungen holen, die dem proposal zugeordnet sind
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', NM_PROJECTS_DOKUMENTATION)
+      ->propertyCondition('status', 1)
+      // ->propertyCondition('uid', $uid)
+      ->fieldCondition('field_ca_ref', 'target_id', $ca->nid, '=');
+  $result = $query->execute();
+  
+  return isset($result['node']) ? current($result['node']) : NULL;
+
+}
+
+/**
+ * get course groups by user account
+ * @param type $account
+ * @return type
+ */
 function _section_projects_get_coursegroups($account) {
 
   $query = db_select('node', 'n');

@@ -570,6 +570,7 @@
 
                                     //check if node updates were made in meantime
                                     if (data.update_status === 2) {
+                                        //console.log(data);
                                         nm_stream_handle_node_updates(data);
                                     }
 
@@ -687,13 +688,14 @@
                         if (data.status === 1) {
                             //save succeed
                             //reset textarea
+                            
                             form_container.find('textarea').val('');
 
                             //special handling for ajax comment functionality
-                            var only_comment_function = post_button.closest('.nm-stream-comments').find('.nm-stream-comments-container').length < 1;
+                            var only_comment_function = post_button.closest('.nm-stream-node-container').find('.nm-stream-node').length < 1;
 
                             //first comment, so node object ist available
-                            if (typeof data.node === "undefined" ||  (typeof data.node === "undefined" && only_comment_function)) {
+                            if (typeof data.node === "undefined" ||  (typeof data.node !== "undefined" && only_comment_function)) {
                                 
                                 //console.log(only_comment_function);
                                 //check if we have a comment container below the post button (source was an initial node without comments)
@@ -709,16 +711,14 @@
                                     post_button.closest('.nm-stream-node-container').find('.nm-stream-node .nm-stream-comments-form').remove();
                                 }
                                 
-    
-                                
                                 //display new Post
                                 var new_comment = [];
 
                                 if (only_comment_function) {
 
                                     //special case in for node comments only - for kooperationsvereinbarung-comments
-                                    console.log(post_button);
-                                    new_comment = post_button.closest('.nm-stream-node-container').parent().find('.nm-stream-comments-section').append($(data.comment).fadeIn());
+                                    //console.log(post_button);
+                                    new_comment = post_button.closest('.nm-stream-node-container').parent().find('.nm-stream-comments-section .nm-stream-comments-container').append($(data.comment).fadeIn());
 
                                 } else {
                                     //fix
@@ -1102,7 +1102,6 @@
                         if ($('#nm-stream-node-' + nid).find('.nm-stream-comments-container').length === 0) {
 
 
-
                             var url = '/nm_stream/node/' + nid + '/load';
 
                             $.post(url, data, function(data) {
@@ -1121,7 +1120,21 @@
                             });
 
                         } else {
-                            var new_comments = $('#nm-stream-node-' + nid).find('.nm-stream-comments-container').first().prepend(data.new_comments[nid]);
+                            //check if we are in only comments mode
+                            //special handling for ajax comment functionality
+                            //not easy here
+                            var only_comment_function = $('#nm-stream-node-' + nid).closest('.nm-stream-comments-section').length > 0;
+                            //var new_comments = $('.nm-stream-comments-section').first().append(data.new_comments[nid]);
+                            
+                            if(only_comment_function) {
+                                //append
+                                var new_comments = $('#nm-stream-node-' + nid).find('.nm-stream-comments-container').first().append(data.new_comments[nid]);
+                            }else {
+                                //prepend
+                                var new_comments = $('#nm-stream-node-' + nid).find('.nm-stream-comments-container').first().prepend(data.new_comments[nid]);
+                            }
+                            
+ 
                             Drupal.attachBehaviors(new_comments);
                         }
                     }
@@ -1155,8 +1168,8 @@
                     for (var nid in data.information) {
                         var node_container = $('#nm-stream-node-' + nid);
                         if (node_container.length > 0) {
+                            nm_stream_update_node_information(node_container, data.information);
                         }
-                        nm_stream_update_node_information(node_container, data.information);
                     }
                 }
             }
