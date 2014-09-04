@@ -559,6 +559,23 @@ function custom_general_get_users_in_group($gid) {
   return $result->fetchAll();
 }
 
+function custom_general_get_users_in_group_by_role($gid, $roles) {
+  $query = db_select('users', 'u');
+
+  $query->condition('u.uid', 0, '<>')
+      ->condition('u.status', 1, '=')
+      ->fields('u', array('uid', 'name'))
+      ->join('og_membership', 'ogm', "ogm.gid = :gid AND u.uid = ogm.etid AND ogm.entity_type = 'user'", array(':gid' => $gid));
+  $query->join('og_users_roles', 'ogur', "ogm.etid = ogur.uid");
+  $query->innerJoin('og_role', 'ogr', "ogur.rid = ogr.rid");
+  
+  $query->condition('ogr.name', $roles, 'IN');
+
+  $result = $query->execute();
+
+  return $result->fetchAll();
+}
+
 function _section_course_get_coursegroups($course) {
 
   $query = db_select('node', 'n');
