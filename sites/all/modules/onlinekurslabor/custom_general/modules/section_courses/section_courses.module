@@ -1043,13 +1043,13 @@ function _section_courses_student_get_coursegroup_gid() {
  * @return Group ID of the first course group that matched
  */
 function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
-  $user = user_load($uid);
+  $account = user_load($uid);
 
   //we want to redirect students directly to their course group
   //check fo role
-  if (array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $user->roles)) {
+  if (array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $account->roles)) {
     //get all gids the user belongs to
-    $groups = og_get_groups_by_user($user);
+    $groups = og_get_groups_by_user($account);
     $groups = $groups['node'] ? $groups['node'] : array();
 
     foreach ($groups as $gid) {

@@ -52,7 +52,7 @@ function _section_projects_get_cooperation_agreements($proposal, $account = NULL
         foreach ($ca_student_refs as $cs) {
           if ($account->uid == $cs['target_id']) {
             //match
-            $result_cas[] = $cs;
+            $result_cas[] = $ca;
             break 1;
           }
         }

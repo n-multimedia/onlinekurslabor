@@ -22,9 +22,9 @@ function section_projects_theme() {
 
 function section_projects_menu() {
 
-  $items['projects/%/%nid'] = array(
+  $items['projects/%/%/%node'] = array(
     'title' => 'Project Nodes Seal/Unseal Callback',
-    'page arguments' => array(1, 2),
+    'page arguments' => array(1, 2, 3),
     'page callback' => 'section_projects_seal_node_callback',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
@@ -33,17 +33,79 @@ function section_projects_menu() {
   return $items;
 }
 
-function section_projects_seal_node_callback($op, $node) {
+function section_projects_seal_node_callback($op, $role, $node) {
   global $user;
+
+  $account = clone $user;
+
+  $token = $_GET['projects_token'];
+  if (!drupal_valid_token($token, 'projects_seal')) {
+    return drupal_access_denied();
+  }
 
   switch ($op) {
     case 'seal':
-
+      switch ($role) {
+        case 'dozent':
+          if (_section_projects_seal_user_is_responsible_dozent($account, $node)) {
+            _section_projects_seal_ca($node, '100');
+          }
+          break;
+        case 'student':
+          if (_section_projects_seal_user_is_responsible_student($account, $node)) {
+            _section_projects_seal_ca($node, '010');
+          }
+          break;
+        case 'partner':
+          if (_section_projects_seal_user_is_responsible_kooperationspartner($account, $node)) {
+            _section_projects_seal_ca($node, '001');
+          }
+          break;
+      }
       break;
     case 'unseal':
-
+      switch ($role) {
+        case 'dozent':
+          if (_section_projects_seal_user_is_responsible_dozent($account, $node)) {
+            _section_projects_unseal_ca($node, '100');
+          }
+          break;
+        case 'student':
+          if (_section_projects_seal_user_is_responsible_student($account, $node)) {
+            _section_projects_unseal_ca($node, '010');
+          }
+          break;
+        case 'partner':
+          if (_section_projects_seal_user_is_responsible_kooperationspartner($account, $node)) {
+            _section_projects_unseal_ca($node, '001');
+          }
+          break;
+      }
       break;
   }
+
+  $result = array('data' => section_projects_seal_render_action_buttons($node));
+  //drupal_json_output($result);
+  //return 'test';
+}
+
+function _section_projects_seal_ca($node, $role_code) {
+  //get actual seal value
+  if (empty($node->field_seal)) {
+    $node->field_seal [LANGUAGE_NONE][0]['value'] = 0;
+  }
+  $node->field_seal[LANGUAGE_NONE][0]['value'] = ($node->field_seal[LANGUAGE_NONE][0]['value']) | bindec($role_code);
+ 
+  node_save($node);
+}
+function _section_projects_unseal_ca($node, $role_code) {
+  //get actual seal value
+  if (empty($node->field_seal)) {
+    $node->field_seal [LANGUAGE_NONE][0]['value'] = 0;
+  }
+  $node->field_seal[LANGUAGE_NONE][0]['value'] = ($node->field_seal[LANGUAGE_NONE][0]['value']) ^ bindec($role_code);
+  
+  node_save($node);
 }
 
 function section_projects_seal_render_action_buttons($node) {
@@ -51,29 +113,39 @@ function section_projects_seal_render_action_buttons($node) {
   $result = '';
 
   //get actual seal value
-  if (empty($node->seal)) {
-    $node->seal[LANGUAGE_NONE][0]['value'] = 0;
+  if (empty($node->field_seal)) {
+    $node->field_seal[LANGUAGE_NONE][0]['value'] = 0;
   }
 
-  $seal = $node->seal[LANGUAGE_NONE][0]['value'];
+  $seal = $node->field_seal[LANGUAGE_NONE][0]['value'];
 
   switch ($node->type) {
     case 'projects_cooperation_agreement':
       //get needed partners
+      dpm($seal & bindec('100'));
       $parteien = array(
-        'dozent' => array('label' => 'Dozent', 'sealed' => $seal == bindec('100')), //dozent
-        'student' => array('Student(en)', 'sealed' => $seal == bindec('010')), //student
-        'kooperationspartner' => array('Kooperationspartner', 'sealed' => $seal == bindec('001')), //kooperationspartner
+        'dozent' => array('label' => 'Dozent', 'sealed' => ($seal & bindec('100')) == bindec('100')), //dozent
+        'student' => array('Student(en)', 'sealed' => ($seal & bindec('010')) == bindec('010')), //student
+        'partner' => array('Kooperationspartner', 'sealed' => ($seal & bindec('001')) == bindec('001')), //kooperationspartner
       );
-      dpm($parteien);
       $links = _section_projects_seal_prepare_action_links($parteien, $node);
 
-      dpm($links);
       break;
     case 'projects_objective':
 
       break;
   }
+
+  $token = drupal_get_token('projects_seal');
+  $options = array('query' => array('projects_token' => $token));
+
+  $result .= '<div class="projects-seal-widget">';
+  foreach ($links as $link) {
+    $result .= '<div class="action">';
+    $result .=!empty($link['href']) ? l($link['title'], $link['href'], $options) : $link['title'];
+    $result .= '</div>';
+  }
+  $result .= '</div>';
 
   return $result;
 }
@@ -83,31 +155,111 @@ function _section_projects_seal_prepare_action_links($parteien, $node) {
 
   $links = array();
 
+  //dozent
+  $link = array();
   if (_section_projects_seal_user_is_responsible_dozent($user, $node)) {
     dpm('verantwortlicher dozent');
     if ($parteien['dozent']['sealed']) {
-      $links['Dozent'] = 'Dozent: Unterschrift zurückziehen';
+      $link['title'] = 'Dozent: Unterschrift zurückziehen';
+      $link['href'] = 'projects/unseal/dozent/' . $node->nid;
     }
     else {
-      $links['Dozent'] = 'Dozent: unterschreiben';
+      $link['title'] = 'Dozent: unterschreiben';
+      $link['href'] = 'projects/seal/dozent/' . $node->nid;
     }
   }
   else {
     dpm('nicht verantwortlicher dozent');
     if ($parteien['dozent']['sealed']) {
-      $links['Dozent'] = 'Dozent: hat unterschrieben';
+      $link['title'] = 'Dozent: hat unterschrieben';
     }
     else {
-      $links['Dozent'] = 'Dozent: Unterschrift steht aus';
+      $link['title'] = 'Dozent: Unterschrift steht aus';
     }
   }
+  $links[] = $link;
+
+  //Student
+  $link = array();
+  if (_section_projects_seal_user_is_responsible_student($user, $node)) {
+    dpm('verantwortlicher student');
+    if ($parteien['student']['sealed']) {
+      $link['title'] = 'Student: Unterschrift zurückziehen';
+      $link['href'] = 'projects/unseal/student/' . $node->nid;
+    }
+    else {
+      $link['title'] = 'Student: unterschreiben';
+      $link['href'] = 'projects/seal/student/' . $node->nid;
+    }
+  }
+  else {
+    dpm('nicht verantwortlicher student');
+    if ($parteien['student']['sealed']) {
+      $link['title'] = 'Student: hat unterschrieben';
+    }
+    else {
+      $link['title'] = 'Student: Unterschrift steht aus';
+    }
+  }
+  $links[] = $link;
+
+  //Kooperationspartner
+  $link = array();
+  if (_section_projects_seal_user_is_responsible_kooperationspartner($user, $node)) {
+    dpm('verantwortlicher partner');
+    if ($parteien['partner']['sealed']) {
+      $link['title'] = 'Partner: Unterschrift zurückziehen';
+      $link['href'] = 'projects/unseal/dozent/' . $node->nid;
+    }
+    else {
+      $link['title'] = 'Partner: unterschreiben';
+      $link['href'] = 'projects/seal/dozent/' . $node->nid;
+    }
+  }
+  else {
+    dpm('nicht verantwortlicher partner');
+    if ($parteien['partner']['sealed']) {
+      $link['title'] = 'Partner: hat unterschrieben';
+    }
+    else {
+      $link['title'] = 'Partner: Unterschrift steht aus';
+    }
+  }
+  $links[] = $link;
 
   return $links;
 }
 
+function _section_projects_seal_user_is_responsible_kooperationspartner($account, $node) {
+  switch ($node->type) {
+    case 'projects_cooperation_agreement':
+
+      if (!empty($node->field_ca_proposal_ref)) {
+        $proposal_ref = $node->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id'];
+        $proposal_node = node_load($proposal_ref);
+
+        if (!empty($proposal_node->field_partner_organization_ref)) {
+          $partner_ref = $proposal_node->field_partner_organization_ref[LANGUAGE_NONE][0]['target_id'];
+          $partner_node = node_load($partner_ref);
+          if (!empty($partner_node->field_field_po_contact_person)) {
+            foreach ($partner_node->field_field_po_contact_person[LANGUAGE_NONE] as $contact_user) {
+              $uid = $contact_user['target_id'];
+              if ($account->uid == $uid) {
+                return TRUE;
+              }
+            }
+          }
+        }
+      }
+      break;
+    case 'projects_objective':
+      break;
+  }
+
+  return FALSE;
+}
+
 function _section_projects_seal_user_is_responsible_dozent($account, $node) {
-
-
   switch ($node->type) {
     case 'projects_cooperation_agreement':
       //get dozenten of this course
@@ -127,6 +279,37 @@ function _section_projects_seal_user_is_responsible_dozent($account, $node) {
           }
         }
       }
+      break;
+    case 'projects_objective':
+      break;
+  }
+
+  return FALSE;
+}
+
+function _section_projects_seal_user_is_responsible_student($account, $node) {
+
+  switch ($node->type) {
+    case 'projects_cooperation_agreement':
+      //check student's course group
+      //only possible if course group is set
+      if (!empty($node->field_ca_course_group_ref)) {
+        $course_group_nid = $node->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $course_group = node_load($course_group_nid);
+        $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $course = node_load($course_nid);
+        //get users course group in course
+        if (_section_courses_get_coursegroup_gid($account->uid, $course) == $course_group_nid) {
+          return TRUE;
+        }
+      }
+      //check if student ist explicitely mentioned
+      if (!empty($node->field_ca_student_refs)) {
+        if ($node->field_ca_student_refs[LANGUAGE_NONE][0]['target_id'] == $account->uid) {
+          return TRUE;
+        }
+      }
+
       break;
     case 'projects_objective':
       break;
@@ -364,7 +547,6 @@ function _section_projects_po_tools_view() {
       //check if cooperation agreement available
       $proposal = node_load(arg(3));
       $cas = _section_projects_get_cooperation_agreements($proposal);
-      dpm($cas);
 
       if (count($cas) > 0 && arg(4) != 'cockpit') {
         //extracting the first resul
@@ -513,7 +695,7 @@ function section_projects_context() {
     custom_general_init();
     $context = context_isset("context", "section_projects");
   }
-  
+
   if (empty($context))
     return FALSE;
 
