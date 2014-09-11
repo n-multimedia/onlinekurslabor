@@ -3,7 +3,7 @@
   Drupal.behaviors.section_projects = {
 
     attach: function(context, settings) {
-      $(".nav_tabbox .tab").click(function()
+      $(".nav-tabbox .tab").click(function()
       {
         var lastClass = $(this).attr('class').substr( $(this).attr('class').lastIndexOf(' ') + 1);
         $('.tabpanel').removeClass('active');
@@ -71,8 +71,8 @@
               success: function(response)
               {
 
-                container.html(response.data);
-                Drupal.attachBehaviors(response);
+                container.parent().html(response.data);
+                Drupal.attachBehaviors(container);
                 post_spinner_black.stop();
 
               }

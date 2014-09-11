@@ -17,38 +17,50 @@ Navigation
 Redundant with section_spaces.css - but spaces is deactivated for now!
 */
 
-.nav_tabbox>div {
+.nav-tabbox{
+    background-color: #604a7b;
+    position: relative;
     float:left;
     margin-bottom: 20px;
-    margin-right: 10px;
 }
-.nav_tabbox a.tab{
-    padding:10px 10px 12px 15px;
+
+.nav-tabbox > div:first-child {
+    margin-left:10px;
+}
+.nav-tabbox > div {
+    float: left;
+    border: 1px solid #999;
+    border-top:0;
+    border-bottom:0;
+    margin-left:-1px;
+}
+.nav-tabbox a.tab{
+    padding:11px 15px;
     display: block;
-    font-size: 16.5px;
-    background-color: #eee;
+    background-color: #5d455c;
     color: #555;
-    float:left;
-
+    float: left;
+    color: #fff;
+    text-shadow: none;
 }
 
-.nav_tabbox a.tab:hover{
+.nav-tabbox a.tab:hover{
     text-decoration: none;
-    background-color: #cfcfcf;
+    background-color: #4f3f56;
 
 }
 
-.nav_tabbox .active a.tab{
-    background-color: #cecece;
+.nav-tabbox .active a.tab{
+    background-color: #45364b;
 }
 
 /*
 Main
 */
 .projects_cockpit_main_container .tabpanel{
-    clear:both;
-    display:none;
-    float:left;
+    clear: both;
+    display: none;
+    float: left;
 }
 
 .projects_cockpit_main_container .tabpanel .span12 {
@@ -56,6 +68,6 @@ Main
 }
 
 .projects_cockpit_main_container .tabpanel.active{
-    display:block;
+    display: block;
 }
 
