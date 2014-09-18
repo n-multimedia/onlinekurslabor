@@ -1,0 +1,6 @@
+name = Section Projects
+description = provides features, functions and adjustments for Projects Section
+package = custom
+
+version = "7.x-1.x"
+core = "7.x"

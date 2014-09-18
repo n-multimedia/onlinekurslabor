@@ -1,0 +1,7 @@
+name = Nm Activity Stream
+description = Provides activity stream functionality
+package = custom
+stylesheets[all][] = css/nm_activity_stream.css
+scripts[] = js/nm_activity_stream.js
+version = "7.x-1.x"
+core = "7.x"

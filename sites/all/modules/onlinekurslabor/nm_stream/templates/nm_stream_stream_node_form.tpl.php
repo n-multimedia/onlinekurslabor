@@ -26,7 +26,7 @@
               </span>
               <div class="fileupload-list"></div>
             </div>
-            <div id="nm-stream-edit-node-privacy--<?php echo $node->nid ?> "><?php echo _nm_stream_render_privacy_widget($node); ?></div>
+            <div id="nm-stream-edit-node-privacy--<?php echo $node->nid ?> "><?php echo _nm_stream_render_privacy_widget($node, $node->type); ?></div>
             <input type="hidden" name="iframe" value="" />
             <input type="hidden" name="form_token" value="<?php echo drupal_get_token(); ?>" />
             <button class="nm-stream-node-cancel btn btn-danger"><?php echo t('Cancel'); ?></button>
@@ -49,7 +49,7 @@
               <div class="nm-stream-node-form">
                 <?php echo $nm_node_form_dummy; ?>
               </div>
-              <form id="nm-stream-add-node" method="post" enctype="multipart/form-data" target="nm_stream_hidden_upload" action="/nm_stream/node/add">
+              <form id="nm-stream-add-node" method="post" enctype="multipart/form-data" target="nm_stream_hidden_upload" action="/nm_stream/node/add/<?php echo $type; ?>">
                 <textarea class="nm-stream-node-body span12" name="body"></textarea>
                 <div class="row-fluid">
                   <div class="nm-stream-add-node-attachments span12">

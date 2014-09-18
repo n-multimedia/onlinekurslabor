@@ -1,0 +1,1223 @@
+<?php
+
+module_load_include('inc', 'section_projects', 'inc/functions');
+
+/**
+ * Implementing hook_theme
+ * 
+ * @return type
+ */
+function section_projects_theme() {
+  $module_path = drupal_get_path('module', 'section_projects');
+  return array(
+    'section_projects_tools' => array(
+      'template' => 'section_projects_tools',
+      'path' => $module_path . '/templates',
+      'variables' => array(
+        'node_items' => NULL,
+        'project_items' => NULL
+      ),),
+  );
+}
+
+function section_projects_menu() {
+
+  $items['projects/%/%/%node'] = array(
+    'title' => 'Project Nodes Seal/Unseal Callback',
+    'page arguments' => array(1, 2, 3),
+    'page callback' => 'section_projects_seal_node_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+function section_projects_seal_node_callback($op, $role, $node) {
+  global $user;
+
+  $account = clone $user;
+
+  $token = $_GET['projects_token'];
+  if (!drupal_valid_token($token, 'projects_seal')) {
+    return drupal_access_denied();
+  }
+
+  switch ($op) {
+    case 'seal':
+      switch ($role) {
+        case 'dozent':
+          if (_section_projects_seal_user_is_responsible_dozent($account, $node)) {
+            _section_projects_seal_ca($node, '100');
+          }
+          break;
+        case 'student':
+          if (_section_projects_seal_user_is_responsible_student($account, $node)) {
+            _section_projects_seal_ca($node, '010');
+          }
+          break;
+        case 'partner':
+          if (_section_projects_seal_user_is_responsible_kooperationspartner($account, $node)) {
+            _section_projects_seal_ca($node, '001');
+          }
+          break;
+      }
+      break;
+    case 'unseal':
+      switch ($role) {
+        case 'dozent':
+          if (_section_projects_seal_user_is_responsible_dozent($account, $node)) {
+            _section_projects_unseal_ca($node, '100');
+          }
+          break;
+        case 'student':
+          if (_section_projects_seal_user_is_responsible_student($account, $node)) {
+            _section_projects_unseal_ca($node, '010');
+          }
+          break;
+        case 'partner':
+          if (_section_projects_seal_user_is_responsible_kooperationspartner($account, $node)) {
+            _section_projects_unseal_ca($node, '001');
+          }
+          break;
+      }
+      break;
+  }
+
+
+  $result = array('data' => section_projects_seal_render_action_buttons($node));
+  drupal_json_output($result);
+  //return 'test';
+}
+
+function _section_projects_seal_ca(&$node, $role_code) {
+  //get actual seal value
+  if (empty($node->field_seal)) {
+    $node->field_seal [LANGUAGE_NONE][0]['value'] = 0;
+  }
+  $node->field_seal[LANGUAGE_NONE][0]['value'] = ($node->field_seal[LANGUAGE_NONE][0]['value']) | bindec($role_code);
+
+  node_save($node);
+}
+
+function _section_projects_unseal_ca(&$node, $role_code) {
+  //get actual seal value
+  if (empty($node->field_seal)) {
+    $node->field_seal [LANGUAGE_NONE][0]['value'] = 0;
+  }
+  $node->field_seal[LANGUAGE_NONE][0]['value'] = ($node->field_seal[LANGUAGE_NONE][0]['value']) ^ bindec($role_code);
+
+  node_save($node);
+}
+
+function section_projects_seal_render_action_buttons($node) {
+
+  $result = '';
+
+  //get actual seal value
+  if (empty($node->field_seal)) {
+    $node->field_seal[LANGUAGE_NONE][0]['value'] = 0;
+  }
+
+  $seal = $node->field_seal[LANGUAGE_NONE][0]['value'];
+
+  switch ($node->type) {
+    case 'projects_cooperation_agreement':
+      //get needed partners
+      //dpm($seal & bindec('100'));
+      $parteien = array(
+        'dozent' => array('label' => 'Dozent', 'sealed' => ($seal & bindec('100')) == bindec('100')), //dozent
+        'student' => array('Student(en)', 'sealed' => ($seal & bindec('010')) == bindec('010')), //student
+        'partner' => array('Kooperationspartner', 'sealed' => ($seal & bindec('001')) == bindec('001')), //kooperationspartner
+      );
+      $links = _section_projects_seal_prepare_action_links($parteien, $node);
+
+      break;
+    case 'projects_objective':
+      $parteien = array(
+        'dozent' => array('label' => 'Dozent', 'sealed' => ($seal & bindec('100')) == bindec('100')), //dozent
+        'student' => array('Student(en)', 'sealed' => ($seal & bindec('010')) == bindec('010')), //student
+      );
+      $links = _section_projects_seal_prepare_action_links($parteien, $node);
+      break;
+  }
+
+  $token = drupal_get_token('projects_seal');
+  $options = array('query' => array('projects_token' => $token));
+
+  $result .= '<div class="projects-seal-widget">';
+  foreach ($links as $link) {
+    $result .= '<div class="action">';
+    $result .=!empty($link['href']) ? l($link['title'], $link['href'], $options) : $link['title'];
+    $result .= '</div>';
+  }
+  $result .= '</div>';
+
+  return $result;
+}
+
+function _section_projects_seal_prepare_action_links($parteien, $node) {
+  global $user;
+
+  $links = array();
+
+  //dozent
+  $link = array();
+  if (!empty($parteien['dozent'])) {
+    if (_section_projects_seal_user_is_responsible_dozent($user, $node)) {
+      //dpm('verantwortlicher dozent');
+      if ($parteien['dozent']['sealed']) {
+        $link['title'] = 'Dozent: Unterschrift zurückziehen';
+        $link['href'] = 'projects/unseal/dozent/' . $node->nid;
+      }
+      else {
+        $link['title'] = 'Dozent: unterschreiben';
+        $link['href'] = 'projects/seal/dozent/' . $node->nid;
+      }
+    }
+    else {
+      //dpm('nicht verantwortlicher dozent');
+      if ($parteien['dozent']['sealed']) {
+        $link['title'] = 'Dozent: hat unterschrieben';
+      }
+      else {
+        $link['title'] = 'Dozent: Unterschrift steht aus';
+      }
+    }
+    $links[] = $link;
+  }
+
+  //Student
+  $link = array();
+  if (!empty($parteien['student'])) {
+    if (_section_projects_seal_user_is_responsible_student($user, $node)) {
+      //dpm('verantwortlicher student');
+      if ($parteien['student']['sealed']) {
+        $link['title'] = 'Student: Unterschrift zurückziehen';
+        $link['href'] = 'projects/unseal/student/' . $node->nid;
+      }
+      else {
+        $link['title'] = 'Student: unterschreiben';
+        $link['href'] = 'projects/seal/student/' . $node->nid;
+      }
+    }
+    else {
+      //dpm('nicht verantwortlicher student');
+      if ($parteien['student']['sealed']) {
+        $link['title'] = 'Student: hat unterschrieben';
+      }
+      else {
+        $link['title'] = 'Student: Unterschrift steht aus';
+      }
+    }
+    $links[] = $link;
+  }
+
+
+  //Kooperationspartner
+  $link = array();
+  //only needed for CA
+  if (!empty($parteien['partner'])) {
+    if (_section_projects_seal_user_is_responsible_kooperationspartner($user, $node)) {
+      //dpm('verantwortlicher partner');
+      if ($parteien['partner']['sealed']) {
+        $link['title'] = 'Partner: Unterschrift zurückziehen';
+        $link['href'] = 'projects/unseal/dozent/' . $node->nid;
+      }
+      else {
+        $link['title'] = 'Partner: unterschreiben';
+        $link['href'] = 'projects/seal/dozent/' . $node->nid;
+      }
+    }
+    else {
+      //dpm('nicht verantwortlicher partner');
+      if ($parteien['partner']['sealed']) {
+        $link['title'] = 'Partner: hat unterschrieben';
+      }
+      else {
+        $link['title'] = 'Partner: Unterschrift steht aus';
+      }
+    }
+    $links[] = $link;
+  }
+
+
+  return $links;
+}
+
+function _section_projects_seal_user_is_responsible_kooperationspartner($account, $node) {
+  switch ($node->type) {
+    case 'projects_cooperation_agreement':
+
+      if (!empty($node->field_ca_proposal_ref)) {
+        $proposal_ref = $node->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id'];
+        $proposal_node = node_load($proposal_ref);
+
+        if (!empty($proposal_node->field_partner_organization_ref)) {
+          $partner_ref = $proposal_node->field_partner_organization_ref[LANGUAGE_NONE][0]['target_id'];
+          $partner_node = node_load($partner_ref);
+          if (!empty($partner_node->field_field_po_contact_person)) {
+            foreach ($partner_node->field_field_po_contact_person[LANGUAGE_NONE] as $contact_user) {
+              $uid = $contact_user['target_id'];
+              if ($account->uid == $uid) {
+                return TRUE;
+              }
+            }
+          }
+        }
+      }
+      break;
+    case 'projects_objective':
+      break;
+  }
+
+  return FALSE;
+}
+
+function _section_projects_seal_user_is_responsible_dozent($account, $node) {
+  switch ($node->type) {
+    case 'projects_cooperation_agreement':
+      //get dozenten of this course
+      //only possible if course group is set
+      if (!empty($node->field_ca_course_group_ref)) {
+        $course_group_nid = $node->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $course_group = node_load($course_group_nid);
+        $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        //$course = node_load($course_nid);
+        //$dozenten = og_membership_load_multipleF(ALSE, array('gid' => $course_nid, 'entity_type' => 'user'));
+        $dozenten = custom_general_get_users_in_group_by_role($course_nid, array('kurs-dozent'));
+        //dpm($dozenten);
+
+        foreach ($dozenten as $dozent) {
+          if ($dozent->uid == $account->uid) {
+            return TRUE;
+          }
+        }
+      }
+      break;
+    case 'projects_objective':
+      //dpm(($node));
+      if (!empty($node->field_ca_ref)) {
+        $ca_node_nid = $node->field_ca_ref[LANGUAGE_NONE][0]['target_id'];
+        $ca_node = node_load($ca_node_nid);
+        $course_group_nid = $ca_node->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $course_group = node_load($course_group_nid);
+        $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        //$course = node_load($course_nid);
+        //$dozenten = og_membership_load_multipleF(ALSE, array('gid' => $course_nid, 'entity_type' => 'user'));
+        $dozenten = custom_general_get_users_in_group_by_role($course_nid, array('kurs-dozent'));
+        //dpm($dozenten);
+
+        foreach ($dozenten as $dozent) {
+          if ($dozent->uid == $account->uid) {
+            return TRUE;
+          }
+        }
+      }
+      break;
+  }
+
+  return FALSE;
+}
+
+function _section_projects_seal_user_is_responsible_student($account, $node) {
+
+  switch ($node->type) {
+    case 'projects_cooperation_agreement':
+      //check student's course group
+      //only possible if course group is set
+      if (!empty($node->field_ca_course_group_ref)) {
+        $course_group_nid = $node->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $course_group = node_load($course_group_nid);
+        $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $course = node_load($course_nid);
+        //get users course group in course
+        if (_section_courses_get_coursegroup_gid($account->uid, $course) == $course_group_nid) {
+          return TRUE;
+        }
+      }
+      //check if student ist explicitely mentioned
+      if (!empty($node->field_ca_student_refs)) {
+        if ($node->field_ca_student_refs[LANGUAGE_NONE][0]['target_id'] == $account->uid) {
+          return TRUE;
+        }
+      }
+
+      break;
+    case 'projects_objective':
+      break;
+  }
+
+  return FALSE;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function section_projects_block_info() {
+  $blocks = array();
+
+  //navigation + header blcok
+  $blocks['projects_header_and_navigation'] = array(
+    'info' => t('Projects Header And Navigation'),
+  );
+
+  $blocks['projects_po_tools'] = array(
+    'info' => t('Project - Tools'),
+  );
+
+  $blocks['projects_course_group_actions'] = array(
+    'info' => t('Project - Course Group - Actions'),
+  );
+
+  $blocks['project_cockpit_main'] = array(
+    'info' => t('Projects - Cockpit - Main'),
+  );
+
+  return $blocks;
+}
+
+//add course header 
+//16.07.2013 - 11:58 - SN - now done by context module
+function section_projects_preprocess_page(&$vars) {
+  $active_projects = section_projects_get_active_project();
+
+  if ($active_projects) {
+
+    drupal_add_js(drupal_get_path('module', 'section_projects') . "/js/section_projects.js");
+    drupal_add_css(drupal_get_path('module', 'section_projects') . "/css/section_projects.css");
+
+    /*
+      $block = module_invoke('section_spaces', 'block_view', 'space_header_section');
+      $vars['page']['header']['space_header_section'] = array(
+      '#markup' => render($block),
+      '#weight' => -10
+      ); */
+
+    //uasort($vars['page']['header'], 'element_sort');
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function section_projects_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'projects_header_and_navigation':
+      $block['content'] = _section_projects_header_and_navigation_view();
+      break;
+    case 'projects_po_tools' :
+      $block['content'] = _section_projects_po_tools_view();
+      break;
+    case 'projects_course_group_actions' :
+      $block['content'] = _section_projects_course_group_actions_view();
+      break;
+    case 'project_cockpit_main' :
+      $block['content'] = _section_projects_project_cockpit_main_view();
+      break;
+  }
+
+  return $block;
+}
+
+function _section_projects_header_and_navigation_view() {
+  $output = '';
+
+
+  //partnerübersicht
+  $arg2 = arg(2);
+  //partnerorganisation
+  $arg3 = arg(3);
+  //projektvorschlag
+  $arg4 = arg(4);
+
+  if (!isset($arg2)) {
+    //projects overview page
+    $output = '';
+  }
+
+  //header for partner -> projektvorschlag -> cockpit
+  if (is_numeric($arg2)) {
+    //partner organisation
+    $po_node = node_load($arg2);
+
+    $output .= '<div style="position:relative">';
+
+    $output .= '<div id="course_header" class="row-fluid">';
+    $output .= '<div class="span12">';
+
+    $output .= '<div id="course_header_title">';
+    $output .= '<h1>';
+    $output .= $po_node->title;
+    $output .= '</h1>';
+
+    $output .= '</div>';
+
+    //header here
+    $header_pic = '';
+    if (isset($po_node->field_po_header)) {
+      //$field_items = field_get_items('node', $active_course, 'field_course_header');
+      $field_view = field_view_field('node', $po_node, 'field_po_header', array('settings' => array('image_style' => 'course_header')));
+      //$field_view['#label_display'] = 'hidden';
+      $uri = $field_view['#items'][0]['uri'];
+
+      $url = image_style_url('course_header', $uri);
+
+      //$url = parse_url($url_array);
+      //        dpm($url);
+      //$path = $url['path'];
+      $path = $url;
+      //dpm($active_course->field_course_header);
+      //$url_array = file_create_url($uri);
+      //$url = parse_url($url_array);
+      //$path = $url['path'];
+      $header_pic = '<div style="
+        background-image:url(' . $path . ');
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover; 
+        height:200px;
+        ">
+        </div>';
+    }
+    $output .= $header_pic;
+
+    $output .= '</div>';
+
+    //partner logo
+    $field_view = field_view_field('node', $po_node, 'field_po_logo', array('settings' => array('image_style' => 'projects_logo')));
+    $field_view['#label_display'] = 'hidden';
+    $output .= '<div class="row-fluid" style="position:absolute; height:100%">';
+    $output .= '<div style="height:100%;" class="offset8 span4">';
+    $output .= '<div style="position:absolute; bottom:20px; z-index:10; width:32%; text-align:center;">';
+    $output .= drupal_render($field_view);
+    $output .= '</div>';
+    $output .= '</div>';
+    $output .= '<div class="row-fluid" style="position:absolute; height:100%">';
+    $output .= '<div style="position:absolute; background-color: #fff; opacity:0.6; height:100%;" class="offset8  span4">';
+    $output .= '</div>';
+    $output .= '</div>';
+    $output .= '</div>';
+    $output .= '</div>';
+    //partner logo end
+
+
+    //container
+    $output .= "</div>";
+  }
+
+  //+navigation
+  if (is_numeric($arg2) && is_numeric($arg3) && ($arg4 == 'cockpit')) {
+    //projects overview page
+    $output .= _section_projects_project_cockpit_tabs_view();
+  }
+
+  $block = array(
+    'content' => array(
+      '#type' => 'markup',
+      '#markup' => $output,
+  ));
+
+
+  return $block;
+}
+
+function _section_projects_project_cockpit_main_view() {
+  $navigation_items = _section_projects_get_navigation_items();
+
+  $block = array();
+  $active_project = section_projects_get_active_project();
+
+  if (!isset($active_project) || empty($active_project))
+    return array();
+
+  if ($active_project) {
+    $output = "";
+    $output .= '<div style="position:relative" class="projects_cockpit_main_container">';
+    $i = 0;
+
+    foreach ($navigation_items as $item) {
+      $active_class = ($i == 0) ? 'active' : '';
+
+      $output .= '<div class = "tabpanel ' . drupal_html_class(transliteration_get($item)) . ' ' . $active_class . ' row-fluid">';
+
+      $output .= '<div class = "span12" >';
+      //dpm('projects_cockpit_main_' . drupal_html_class($item) . '_view');
+      $output .= call_user_func('projects_cockpit_main_' . drupal_html_class(transliteration_get($item)) . '_view');
+      $output .= '</div>';
+
+      $output .= '</div>';
+      $i++;
+    }
+
+    $output .= '</div>';
+
+    $block = array(
+      'content' => array(
+        '#type' => 'markup',
+        '#markup' => $output,
+    ));
+  }
+
+  return $block;
+}
+
+function _section_projects_project_cockpit_tabs_view() {
+
+  $navigation_items = _section_projects_get_navigation_items();
+
+
+  $block = array();
+  $active_project = section_projects_get_active_project();
+
+  if (!isset($active_project) || empty($active_project))
+    return array();
+
+  $i = 0;
+  if ($active_project) {
+    $output = '<div class="row-fluid">';
+    $output .= '<div style="position:relative" class="nav-tabbox span12">';
+    foreach ($navigation_items as $item) {
+      $active_class = ($i == 0) ? 'active' : '';
+      $output .= '<div class="' . $active_class . '">';
+      $output .= '<a href = "#" class="tab ' . drupal_html_class(transliteration_get($item)) . '">';
+      $output .= $item;
+      $output .= '</a>';
+      $output .= '</div>';
+
+      $i++;
+    }
+
+    $output .= '</div>';
+    $output .= '</div>';
+  }
+
+  return $output;
+}
+
+function _section_projects_po_tools_view() {
+  global $user;
+  $account = clone $user;
+
+  $output = '';
+
+  if (_section_projects_tools_access()) {
+
+    $active_project = section_projects_get_active_project();
+
+    if (!$active_project)
+      return $output;
+
+    $node_items = array();
+    $node_items['title'] = '';
+    $node_items['items'] = array();
+
+    //Projektvorschlag
+    if (arg(1) == 'partners' && is_numeric(arg(3))) {
+      $node_items = array('title' => 'Projektvorschlag');
+
+      $node_items['items'][] = l('Projektvorschlag bearbeiten', 'projects/admin/' . arg(3) . '/edit');
+    }
+    else {
+      //Projektorganisation
+      $node_items = array('title' => 'Partnerorganisation');
+      $node_items['items'] = array();
+      $node_items['items'][] = l('Partnerorganisation bearbeiten', 'projects/admin/' . $active_project->nid . '/edit');
+    }
+
+    $context_items = array();
+    $context_items['title'] = '';
+    $context_items['items'] = array();
+
+    $context_items = array('title' => 'Aktionen');
+    $context_items['items'] = array();
+
+    //Create Proposal
+    //Dozent + Kooperationspartner
+    if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_KOOPERATIONSPARTNER, NM_ROLE_ADMIN), $user->roles)) {
+      $context_items['items'][] = l('Neuen Projektvorschlag erstellen', 'projects/admin/add/' . NM_PROJECTS_PROJEKTVORSCHLAG, array(
+        'query' => array(
+          'field_partner_organization_ref' => $active_project->nid,
+      )));
+
+
+      if (arg(1) == 'partners' && is_numeric(arg(3))) {
+        $context_items['items'][] = l('Neue Kooperationsvereinbarung erstellen', 'projects/admin/add/' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG, array(
+          'query' => array(
+            'field_partner_organization_ref' => $active_project->nid,
+            'field_ca_proposal_ref' => arg(3),
+        )));
+      }
+    }
+
+    //24.07.2014 - 16:00 - SN : check if we already have one first!
+    //lernzielvereinbarung + dokumentation only 1  for each cooperation agreement
+    //Student + Dozent
+    if (arg(0) == 'projects' && arg(4) == 'cockpit' && is_numeric(arg(5))) {
+      if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_STUDENT, NM_ROLE_ADMIN), $user->roles)) {
+        $context_items['items'][] = l('Lernzielvereinbarung erstellen', 'projects/admin/add/' . NM_PROJECTS_ZIELVEREINBARUNG, array(
+          'query' => array(
+            'field_ca_ref' => arg(5),
+        )));
+      }
+    }
+
+    //Student + Dozent
+    if (arg(0) == 'projects' && arg(4) == 'cockpit' && is_numeric(arg(5))) {
+      if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_STUDENT, NM_ROLE_ADMIN), $user->roles)) {
+        $context_items['items'][] = l('Dokumentation erstellen', 'projects/admin/add/' . NM_PROJECTS_DOKUMENTATION, array(
+          'query' => array(
+            'field_ca_ref' => arg(5),
+        )));
+      }
+    }
+
+
+    if (arg(1) == 'partners' && is_numeric(arg(3))) {
+      //check if cooperation agreement available
+      $proposal = node_load(arg(3));
+      $cas = _section_projects_get_cooperation_agreements($proposal);
+
+      if (count($cas) > 0 && arg(4) != 'cockpit') {
+        //extracting the first resul
+        //multicontext possible!
+        $ca = current($cas);
+        //dpm($ca);
+        //18.06.2014 - 17:46 - SN
+        //taking latest ca, possibility to select another context in cockpit section
+        $context_items['items'][] = l('Zum Cockpit', 'projects/partners/' . $active_project->nid . '/' . arg(3) . '/cockpit/' . $ca->nid);
+      }
+
+      //context cooperation agreement set?
+      if (is_numeric(arg(4)) || (arg(4) == 'cockpit') && is_numeric(arg(5))) {
+        //check context -> cockpit
+        $context_items['items'][] = l('Neuen Tagebucheintrag verfassen', 'projects/admin/add/' . NM_PROJECTS_TAGEBUCH, array(
+          'query' => array(
+            'og_group_ref' => arg(5),
+        )));
+      }
+    }
+
+
+
+
+    $output = theme('section_projects_tools', array('node_items' => $node_items, 'context_items' => $context_items));
+  }
+
+  $block = array(
+    'content' => array(
+      '#type' => 'markup',
+      '#markup' => $output,
+  ));
+
+  return $block;
+}
+
+function _section_projects_course_group_actions_view() {
+  $output = '';
+
+  $output .= '<div>';
+
+  $active_course = _section_courses_get_active_course();
+  //check if course group has a project assigned to it
+  if ($active_course && arg(0) == 'course' && arg(1) == 'groups' && is_numeric(arg(3))) {
+    $active_course_group = node_load(arg(3));
+    $proposal_nid = _section_courses_course_group_get_proposal($active_course_group);
+
+    if ($proposal_nid) {
+      //$output .= $proposal_nid;
+      $proposal = node_load($proposal_nid);
+      $partner_nid = $proposal->field_partner_organization_ref[LANGUAGE_NONE][0]['target_id'];
+      // l('Zum Cockpit', 'projects/partners/' . $active_project->nid . '/' . arg(3) . '/cockpit/' . $ca->nid);
+
+      $cas = _section_projects_get_cooperation_agreements($proposal);
+
+      if (count($cas) > 0) {
+        //extracting the first resul
+        //multicontext possible!
+        $ca = current($cas);
+        //dpm($ca);
+        //18.06.2014 - 17:46 - SN
+        //taking latest ca, possibility to select another context in cockpit section
+
+        $output .= '<a href="/' . NM_COURSE_PROJECTS_PARTNERS_PATH . $partner_nid . '/' . $proposal_nid . '/cockpit/' . $ca->nid . '">Zum Projektcockpit</a>';
+      }
+    }
+  }
+  $output .= '</div>';
+
+  return $output;
+}
+
+/*
+  function _section_projects_node_tabs_view() {
+  $output = '';
+
+  if (_section_projects_tools_access()) {
+  $output .= '<div id="content_node_tabs-container" class="btn-grop row-fluid">';
+  $output .= '<ul class="span12">';
+  $output .= '<li>';
+  $output .= l('Ansicht', 'projects/partners/1419');
+  $output .= '</li>';
+  $output .= '<li>';
+  $output .= l('Bearbeiten', 'projects/admin/1419/edit');
+  $output .= '</li>';
+  $output .= '</ul>';
+  $output .= '</div>';
+  }
+  $block = array(
+  'content' => array(
+  '#type' => 'markup',
+  '#markup' => $output,
+  ));
+
+  return $block;
+  }
+ */
+
+/**
+ * HELPER FUNCTIONS
+ */
+
+/**
+ * 
+ * @global type $user
+ */
+function _section_projects_tools_access($account = NULL) {
+  if (!$account) {
+    global $user;
+    $account = clone $user;
+  }
+
+  if (array_intersect($account->roles, array(NM_ROLE_ADMIN, NM_ROLE_KOOPERATIONSPARTNER, NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT))) {
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+function section_projects_get_active_project($reset = FALSE) {
+  static $project;
+
+
+  if (!(section_projects_context())) {
+    return FALSE;
+  }
+
+  if (!isset($project) || $reset) {
+    $project_nid = arg(2);
+
+    $project = node_load($project_nid);
+  }
+
+
+  return $project;
+}
+
+function section_projects_context() {
+  static $context;
+
+  if (empty($context)) {
+    $context = context_isset("context", "section_projects");
+  }
+
+  if (empty($context)) {
+    custom_general_init();
+    $context = context_isset("context", "section_projects");
+  }
+
+  if (empty($context))
+    return FALSE;
+
+  return TRUE;
+}
+
+/*
+ * alter links of nodes related to projects
+ */
+
+function section_projects_url_outbound_alter(&$path, &$options, &$original_path) {
+
+  $project = section_projects_get_active_project();
+
+  if ($project || section_projects_context()) {
+    /*
+     * 
+     * forum node links
+     */
+
+    if (strstr($path, "node/")) {
+      $regex = '#^node/([0-9]+)$#s';
+      preg_match($regex, $path, $matches);
+      if (!empty($matches)) {
+        $nid = $matches[1];
+        //solution for biblio and course text needed
+        $type = _custom_general_get_node_type($nid);
+
+        if ($type == NM_PROJECTS_PROJEKTVORSCHLAG) {
+          if ($project) {
+            $path = "projects/partners/" . $project->nid . '/' . $nid;
+          }
+          else {
+            $node = node_load($nid);
+            //get project group the which proposal belongs to
+            $entities = og_get_entity_groups('node', $node->nid);
+            $group_nid = -1;
+            if (!empty($entities)) {
+              $group_nid = current(current($entities));
+            }
+            $path = "projects/partners/" . $group_nid . '/' . $nid;
+          }
+        }
+        else if ($type == NM_PROJECTS_RROJEKTORGANISATION) {
+          $path = "projects/partners/" . $nid;
+        }
+      }
+    }
+  }
+}
+
+/*
+ *  Webform - Survey Umfrage
+ */
+
+/**
+ * Provide a select options component to Webform. The values are 
+ * populated via a callback function, which returns 
+ * an array of nodes.
+ *
+ * @return void
+ * @author Kosta Harlan
+ */
+function section_projects_webform_select_options_info() {
+  $items = array();
+
+  if (function_exists('_section_projects_get_proposal_nodes')) {
+    $items['proposal-nodes'] = array(
+      'title' => t('Proposal nodes'),
+      'options callback' => '_section_projects_get_proposal_nodes',
+    );
+  }
+
+  return $items;
+}
+
+/**
+ * Returns an array of Story nodes keyed on the node ID.
+ *
+ * @return array
+ * @author Kosta Harlan
+ */
+function _section_projects_get_proposal_nodes() {
+  $nodes = array();
+
+  $result = db_select('node', 'n')
+      ->fields('n', array('nid', 'title'))
+      ->condition('n.type', NM_PROJECTS_PROJEKTVORSCHLAG)
+      ->execute();
+
+  foreach ($result as $node) {
+    $nodes[$node->nid] = $node->title;
+  }
+  return $nodes;
+}
+
+/**
+ *  COCKPIT
+ */
+
+/**
+ * tab items for project cockpit
+ * @return string
+ */
+function _section_projects_get_navigation_items() {
+  $tab_items = array(
+    'Durchführung',
+    'Kooperationsvereinbarung',
+    'Lernzielvereinbarung',
+    'Dokumentation'
+  );
+
+  return $tab_items;
+}
+
+function projects_cockpit_main_durchfuehrung_view() {
+  $output = '';
+
+  $p_proposal = NULL;
+  if (is_numeric(arg(5))) {
+    $p_proposal = arg(5);
+  }
+
+
+  //dpm($p_proposal);
+  //submit form
+  $output .= theme('nm_stream_stream_node_form', array('node' => NULL, 'type' => 'projects_blog'));
+
+  $view_name = 'projects_tagebucheintr_ge';
+  $display_name = 'panel_proposal_blogs_entries';
+  $view = views_get_view($view_name);
+  //dpm($view);
+  if (is_object($view)) {
+    $view->set_display($view_name);
+    $view->set_arguments(array($p_proposal));
+    $view->pre_execute();
+    $output .= $view->render($display_name);
+  }
+  //$output .= _nm_stream_form_add_edit_view(NM_PROJECTS_TAGEBUCH);
+  //$output = 'view';
+
+  return $output;
+}
+
+function _section_projects_render_node_tabs($node) {
+  //tabs view/edit
+  $options = array(
+    'attributes' => array(),
+    'query' => array()
+  );
+  $options['attributes']['class'] = array('btn');
+
+  //active link not set properly, using url() function to avoid this probplem
+  $options['attributes']['class'] = array('btn');
+  $tabs = array();
+  if (substr(url('node/' . $node->nid), 0, 1) == '/') {
+    $path = substr(url('node/' . $node->nid), 1);
+    $result['path'] = $path;
+    $result['link'] = l("Ansicht", $path, $options);
+  }
+  else {
+    $path = url('node/' . $node->nid);
+    $result['path'] = $path;
+    $result['link'] = l("Ansicht", $path, $options);
+  }
+  $tabs['overview'] = $result;
+
+  $path = 'projects/admin/' . $node->nid . '/edit';
+  $result['path'] = $path;
+  $result['link'] = l("Bearbeiten", $path, $options);
+  $tabs['edit'] = $result;
+
+  return _custom_general_theme_tools_block($tabs, "content_node_tabs", "btn-grop");
+}
+
+function projects_cockpit_main_kooperationsvereinbarung_view() {
+  $output = '';
+
+  if (is_numeric(arg(5))) {
+    $ca_node = node_load(arg(5));
+
+
+    $output .=_section_projects_render_node_tabs($ca_node);
+
+    $output .= "<h4>Kooperationsvereinbarung</h4>";
+
+    $output .= section_projects_seal_render_action_buttons($ca_node);
+
+    //$timespan_items = field_get_items('node', $ca_node, 'field_ca_timespan');
+    //$output .= "zeitlicher Rahmen: " . drupal_render(field_view_value('node', $ca_node, 'field_ca_timespan', $timespan_items[0]));
+
+    $node_view = node_view($ca_node);
+    $node_view['links']['#access'] = FALSE;
+    $output .= drupal_render($node_view);
+
+    //$output .= render(node_view($ca_node, 'nm_stream'));
+    //$output .= theme('nm_stream_node_comment_form', array('node' => $ca_node));
+
+    $comments = comment_load_multiple(_nm_stream_comment_get_thread($ca_node, COMMENT_MODE_THREADED, 0));
+    if (!empty($comments)) {
+      comment_prepare_thread($comments);
+    }
+
+    $comments_container = '';
+    foreach ($comments as $comment) {
+      $opi = theme('nm_stream_node_comment', array('comment' => $comment));
+
+      //dpm($comment->divs);
+      $is_threaded = isset($comment->divs) && variable_get('comment_default_mode_' . $ca_node->type, COMMENT_MODE_THREADED) == COMMENT_MODE_THREADED;
+
+      $prefix = '';
+      $suffix = '';
+      if ($is_threaded) {
+        $prefix = $comment->divs <= 0 ? str_repeat('</div>', abs($comment->divs)) : "\n" . '<div class="indented">';
+
+        // Close all open divs.
+        if ($is_threaded && !empty($comment->divs_final)) {
+          $suffix = str_repeat('</div>', $comment->divs_final);
+        }
+      }
+
+      $comments_container .= $prefix . $opi . $suffix;
+    }
+
+    $pre = '<div class="nm-stream-node-container" id="nm-stream-node-comment-' . $ca_node->nid . '">';
+    $suff = '</div>';
+
+    $output = $output;
+
+    $comment_form = theme('nm_stream_node_comment_form', array('node' => $ca_node));
+    $output .= '<div class="nm-stream-comments-section" style="padding: 15px 15px;""><h3>Kommentare</h3><div id="nm-stream-node-' . $ca_node->nid . '"><div class="nm-stream-comments-container">' . $comments_container . '</div></div></div>' . $pre . $comment_form . $suff;
+
+    //$output .= drupal_render(drupal_get_form("comment_node_{$ca_node->type}_form", (object) array('nid' => $ca_node->nid)));
+  }
+
+
+
+  return $output;
+}
+
+function projects_cockpit_main_lernzielvereinbarung_view() {
+  $output = '';
+
+  if (is_numeric(arg(5))) {
+    $ca_node = node_load(arg(5));
+
+    $objective_node = _section_projects_get_objective_by_ca($ca_node);
+    $objective_node = node_load($objective_node->nid);
+
+    $output .=_section_projects_render_node_tabs($objective_node);
+
+
+    $output .= "<h4>Lernzielvereinbarung</h4>";
+
+    $output .= section_projects_seal_render_action_buttons($objective_node);
+
+
+    $objective_node = node_load($objective_node->nid);
+
+    //$timespan_items = field_get_items('node', $ca_node, 'field_ca_timespan');
+    //$output .= "zeitlicher Rahmen: " . drupal_render(field_view_value('node', $ca_node, 'field_ca_timespan', $timespan_items[0]));
+
+    $node_view = node_view($objective_node);
+    $node_view['links']['#access'] = FALSE;
+    $output .= drupal_render($node_view);
+
+    //$output .= render(node_view($ca_node, 'nm_stream'));
+    //$output .= theme('nm_stream_node_comment_form', array('node' => $ca_node));
+
+    $comments = comment_load_multiple(_nm_stream_comment_get_thread($objective_node, COMMENT_MODE_THREADED, 0));
+    if (!empty($comments)) {
+      comment_prepare_thread($comments);
+    }
+
+    $comments_container = '';
+    foreach ($comments as $comment) {
+      $opi = theme('nm_stream_node_comment', array('comment' => $comment));
+
+      //dpm($comment->divs);
+      $is_threaded = isset($comment->divs) && variable_get('comment_default_mode_' . $objective_node->type, COMMENT_MODE_THREADED) == COMMENT_MODE_THREADED;
+
+      $prefix = '';
+      $suffix = '';
+      if ($is_threaded) {
+        $prefix = $comment->divs <= 0 ? str_repeat('</div>', abs($comment->divs)) : "\n" . '<div class="indented">';
+
+        // Close all open divs.
+        if ($is_threaded && !empty($comment->divs_final)) {
+          $suffix = str_repeat('</div>', $comment->divs_final);
+        }
+      }
+
+      $comments_container .= $prefix . $opi . $suffix;
+    }
+
+
+    $pre = '<div class="nm-stream-node-container" id="nm-stream-node-comment-' . $objective_node->nid . '">';
+    $suff = '</div>';
+
+    $output = $output;
+
+
+    $comment_form = theme('nm_stream_node_comment_form', array('node' => $objective_node));
+    $output .= '<div class="nm-stream-comments-section" style="padding: 15px 15px;""><h3>Kommentare</h3><div id="nm-stream-node-' . $objective_node->nid . '"><div class="nm-stream-comments-container">' . $comments_container . '</div></div></div>' . $pre . $comment_form . $suff;
+
+
+    //$output .= drupal_render(drupal_get_form("comment_node_{$ca_node->type}_form", (object) array('nid' => $ca_node->nid)));
+  }
+
+
+
+  return $output;
+}
+
+function projects_cockpit_main_dokumentation_view() {
+  $output = '';
+
+  if (is_numeric(arg(5))) {
+    $ca_node = node_load(arg(5));
+
+    $documentation_node = _section_projects_get_documentation_by_ca($ca_node);
+    $documentation_node = node_load($documentation_node->nid);
+
+    $output .=_section_projects_render_node_tabs($documentation_node);
+
+
+    $output .= "<h4>Dokumentation</h4>";
+
+
+
+    //$timespan_items = field_get_items('node', $ca_node, 'field_ca_timespan');
+    //$output .= "zeitlicher Rahmen: " . drupal_render(field_view_value('node', $ca_node, 'field_ca_timespan', $timespan_items[0]));
+
+    $node_view = node_view($documentation_node);
+    $node_view['links']['#access'] = FALSE;
+    $output .= drupal_render($node_view);
+
+    //$output .= render(node_view($ca_node, 'nm_stream'));
+    //$output .= theme('nm_stream_node_comment_form', array('node' => $ca_node));
+
+    $comments = comment_load_multiple(_nm_stream_comment_get_thread($documentation_node, COMMENT_MODE_THREADED, 0));
+    if (!empty($comments)) {
+      comment_prepare_thread($comments);
+    }
+
+    $comments_container = '';
+    foreach ($comments as $comment) {
+      $opi = theme('nm_stream_node_comment', array('comment' => $comment));
+
+      //dpm($comment->divs);
+      $is_threaded = isset($comment->divs) && variable_get('comment_default_mode_' . $documentation_node->type, COMMENT_MODE_THREADED) == COMMENT_MODE_THREADED;
+
+      $prefix = '';
+      $suffix = '';
+      if ($is_threaded) {
+        $prefix = $comment->divs <= 0 ? str_repeat('</div>', abs($comment->divs)) : "\n" . '<div class="indented">';
+
+        // Close all open divs.
+        if ($is_threaded && !empty($comment->divs_final)) {
+          $suffix = str_repeat('</div>', $comment->divs_final);
+        }
+      }
+
+      $comments_container .= $prefix . $opi . $suffix;
+    }
+
+
+    $pre = '<div class="nm-stream-node-container" id="nm-stream-node-comment-' . $documentation_node->nid . '">';
+    $suff = '</div>';
+
+    $output = $output;
+
+
+    $comment_form = theme('nm_stream_node_comment_form', array('node' => $documentation_node));
+    $output .= '<div class="nm-stream-comments-section" style="padding: 15px 15px;""><h3>Kommentare</h3><div id="nm-stream-node-' . $documentation_node->nid . '"><div class="nm-stream-comments-container">' . $comments_container . '</div></div></div>' . $pre . $comment_form . $suff;
+
+
+    //$output .= drupal_render(drupal_get_form("comment_node_{$ca_node->type}_form", (object) array('nid' => $ca_node->nid)));
+  }
+
+
+
+  return $output;
+}
+
+/**
+ * Implementing hook_preprocess_HOOK
+ * @param type $vars
+ */
+function section_projects_preprocess_section_projects_tools(&$vars) {
+  //dpm('preprocessing');
+}

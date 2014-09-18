@@ -1,0 +1,35 @@
+div.single_activity{
+    margin-bottom: 10px;
+    padding-left:0px;
+     border-left:2px solid #F6F6F6;
+}
+div.single_activity.seen .seen_hidden
+{
+    display:none;
+}
+
+div.single_activity div.title .userimage
+{
+    float: left;
+    width:15%;
+    padding-top:5px;
+}
+ 
+div.single_activity div.title .activity_description{
+    float:left;
+    width:80%;
+          color:#898F9C;
+          padding:5px;
+}
+div.single_activity   div.title div.time *
+{   font-size:12px;
+    color: #898F9C;
+    cursor: pointer;
+}
+
+div.single_activity div.detail
+{
+    padding: 5px;
+    background: #F6F6F6;
+    
+}

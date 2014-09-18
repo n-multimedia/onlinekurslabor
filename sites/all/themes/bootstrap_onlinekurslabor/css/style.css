@@ -999,3 +999,42 @@ USER PROFILE
   padding: 2px 3px 0 0;
 
 }
+
+/*
+PROJECTS
+*/
+
+.partners-projects-item {
+    padding: 5px 0;
+}
+.partners-projects-item:hover {
+    background-color: #f3f3f3;
+}
+
+.partners-projects-item.active {
+    background-color: #efefef;
+}
+
+.partners-po-item{
+    border-bottom:1px solid #dddddd;
+    padding: 10px 10px;
+    margin-bottom: 20px;
+    margin-left:0;
+    position:relative;
+}
+.partners-po-item:hover{
+    background-color: #eee;
+}
+
+.partners-po-item .partners-projects-item-title h2, .partners-po-item .partners-projects-item-list h3{
+    margin-top:0;
+    font-size: 17.5px;
+}
+
+
+.partners-po-item .partners-projects-item [class*="span"] {
+    padding: 0;
+    min-height: 0;
+}
+
+

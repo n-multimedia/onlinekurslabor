@@ -1,7 +1,7 @@
 (function($) {
 
   Drupal.behaviors.section_domains = {
-    /*toggle solution for qaa questions*/
+
     attach: function(context, settings) {
       $(".nav_tabbox .tab").click(function()
       {

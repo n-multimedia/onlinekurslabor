@@ -1,0 +1,129 @@
+<?php
+
+/**
+ * @file
+ * Main module file.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function message_notify_ui_menu() {
+  $items = array();
+
+  $items['message/%message/notify'] = array(
+    'title' => 'Notify',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('message_notify_ui_send_notification', 1),
+    'access arguments' => array('send message notify'),
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    'weight' => 20,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_admin_paths().
+ */
+function message_notify_ui_admin_paths() {
+  return array(
+    'message/*/notify' => TRUE,
+  );
+}
+
+/**
+ * Implements hook_permission().
+ */
+function message_notify_ui_permission() {
+  return array(
+    'send message notify' => array(
+      'title' => t('Send message notify'),
+      'description' => t('Grant permission to a user for sending a message notification.'),
+    ),
+  );
+}
+
+/**
+ * Send notification of a message.
+ */
+function message_notify_ui_send_notification($form, &$form_state, Message $message) {
+  $notifiers = message_notify_get_notifiers();
+  $form_state['#message'] = $message;
+  $multiple = count(message_notify_get_notifiers()) >= 2 && variable_get('message_notify_ui_notify_multiple', TRUE);
+
+  $list = $multiple ? array() : array(
+    '---' => t('Select a notifier for the message'),
+  );
+  foreach ($notifiers as $notifier => $data) {
+    $list[$notifier] = $data['title'];
+  }
+
+  $form['notifier'] = array(
+    '#title' => t('Notifier'),
+    '#description' => t('Please select a notifier type'),
+    '#type' => 'select',
+    '#options' => $list,
+    '#multiple' => $multiple,
+  );
+
+  $form['actions'] = array(
+    '#type' => 'actions',
+    'submit' => array(
+      '#type' => 'submit',
+      '#value' => t('Send'),
+    ),
+  );
+
+  return $form;
+}
+
+/**
+ * Validating the submit form.
+ */
+function message_notify_ui_send_notification_validate($form, $form_state) {
+  if ($form_state['values']['notifier'] == '---' || empty($form_state['values']['notifier'])) {
+    form_set_error('notifier', t('Please select a notifier.'));
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function message_notify_ui_form_message_user_admin_settings_alter(&$form, $form_state) {
+  if (count(message_notify_get_notifiers()) <= 1) {
+    return;
+  }
+
+  $form['message_notify_ui_notify_multiple'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Allow multiple notifications via UI'),
+    '#description' => t('When notifying via the ui and this is checked - the user could select multiple notifiers for a single message.'),
+    '#default_value' => variable_get('message_notify_ui_notify_multiple'),
+  );
+}
+
+/**
+ * Submit handler - notify a message.
+ */
+function message_notify_ui_send_notification_submit($form, &$form_state) {
+  $message = $form_state['#message'];
+
+  if (!is_array($form_state['values']['notifier'])) {
+    $form_state['values']['notifier'] = array($form_state['values']['notifier']);
+  }
+
+  $notifiers = $form_state['values']['notifier'];
+
+  foreach ($notifiers as $notifier) {
+    message_notify_send_message($message, array(), $notifier);
+    $params = array(
+      '@id' => $message->identifier(),
+      '@type' => $notifier,
+    );
+    drupal_set_message(t('The message with the ID @id has notified through the @type notifier.', $params));
+  }
+
+  $form_state['redirect'] = 'message/' . $message->mid;
+}

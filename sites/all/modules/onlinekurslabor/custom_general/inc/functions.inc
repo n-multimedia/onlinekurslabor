@@ -87,6 +87,7 @@ function _section_course_instructor_section_active() {
   $admin_section_visible = (arg(0) == 'course' && arg(1) == 'admin');
   $home_visible = (arg(0) == 'course' && arg(1) == 'home');
   $news_visible = (arg(0) == 'course' && arg(1) == 'news');
+  $projects_visible = (arg(0) == 'course' && arg(1) == 'projects');
   $biblio_visible = _section_course_biblio_visible();
 
 
@@ -95,7 +96,7 @@ function _section_course_instructor_section_active() {
       $text_visible || $forum_visible ||
       $admin_section_visible ||
       $home_visible || $tasks_visible || $biblio_visible ||
-      $news_visible;
+      $news_visible || $projects_visible;
 
 
 
@@ -138,23 +139,29 @@ function _section_course_forum_visible() {
   return $forum_visible;
 }
 
-function _section_course_course_group_visible($path=NULL) {
+function _section_course_course_group_visible($path = NULL) {
   $text_visible = (arg(0, $path) == 'course' && arg(1, $path) == 'groups');
   return $text_visible;
 }
 
-function _section_course_course_news_visible($path=NULL) {
+function _section_course_course_news_visible($path = NULL) {
   $text_visible = (arg(0, $path) == 'course' && arg(1, $path) == 'news');
   return $text_visible;
 }
 
-function _section_course_course_docs_visible($path=NULL) {
+function _section_course_course_docs_visible($path = NULL) {
   $text_visible = (arg(0, $path) == 'course' && (arg(1, $path) == 'docs' || arg(1, $path) == 'doc' ));
   return $text_visible;
 }
 
-function _section_course_course_tasks_visible($path=NULL) {
+function _section_course_course_tasks_visible($path = NULL) {
   $text_visible = (arg(0, $path) == 'course' && arg(1, $path) == 'tasks');
+  return $text_visible;
+}
+
+
+function _section_projects_cockpit_visible($path = NULL) {
+  $text_visible = (arg(0, $path) == 'projects' && arg(4, $path) == 'cockpit');
   return $text_visible;
 }
 
@@ -273,6 +280,45 @@ function _section_courses_advanced_forum_get_num_unread($uid, $tid) {
   }
 
   return $num_total;
+}
+
+function _custom_general_get_num_unread($uid = NULL, $nid) {
+
+  static $result_cache = array();
+  if (!$uid) {
+    global $user;
+    $uid = $user->uid;
+  }
+
+  if (empty($result_cache[$nid])) {
+    //get group's news entities
+    //$query = db_select("node", "n");
+
+    $query = db_select("node", "n");
+
+    $query->condition('n.nid', $nid);
+
+    $h_alias = $query->leftJoin("history", "h", "n.nid = h.nid AND h.uid = :uid", array(":uid" => $uid));
+    //$query->addField("h", "timestamp");
+    //$query->addField("n", "changed");
+    $query->addExpression("COUNT(n.nid)", "count");
+    $query->condition("n.status", NODE_PUBLISHED)
+        //fid
+        ->condition("n.changed", NODE_NEW_LIMIT, ">")
+        ->condition(db_or()->where("n.changed > {$h_alias}.timestamp")->isNull("h.timestamp"))
+        //->groupBy("{$f_alias}.tid")
+        ->addTag("node_access");
+
+    $result = $query->execute();
+
+    //dpm($result->fetchAll());
+    $result_cache[$nid] = current($result->fetchAll())->count;
+  }
+
+  return $result_cache[$nid];
+
+  //check history entries for every entity found
+  //return unread
 }
 
 function _section_courses_course_get_num_unread_by_type($uid, $type, $nid = NULL) {
@@ -513,6 +559,23 @@ function custom_general_get_users_in_group($gid) {
   return $result->fetchAll();
 }
 
+function custom_general_get_users_in_group_by_role($gid, $roles) {
+  $query = db_select('users', 'u');
+
+  $query->condition('u.uid', 0, '<>')
+      ->condition('u.status', 1, '=')
+      ->fields('u', array('uid', 'name'))
+      ->join('og_membership', 'ogm', "ogm.gid = :gid AND u.uid = ogm.etid AND ogm.entity_type = 'user'", array(':gid' => $gid));
+  $query->join('og_users_roles', 'ogur', "ogm.etid = ogur.uid");
+  $query->innerJoin('og_role', 'ogr', "ogur.rid = ogr.rid");
+  
+  $query->condition('ogr.name', $roles, 'IN');
+
+  $result = $query->execute();
+
+  return $result->fetchAll();
+}
+
 function _section_course_get_coursegroups($course) {
 
   $query = db_select('node', 'n');
@@ -520,7 +583,7 @@ function _section_course_get_coursegroups($course) {
   $query->condition('n.nid', 0, '<>')
       ->condition('n.status', 1, '=')
       ->condition('n.type', NM_COURSE_GROUP)
-      ->fields('n', array('nid', 'title','type'))
+      ->fields('n', array('nid', 'title', 'type'))
       ->join('og_membership', 'ogm', "ogm.gid = :gid AND n.nid = ogm.etid AND ogm.entity_type = 'node'", array(':gid' => $course->nid));
 
   $result = $query->execute();
@@ -536,7 +599,7 @@ function _section_course_get_news($course) {
   $query->condition('n.nid', 0, '<>')
       ->condition('n.status', 1, '=')
       ->condition('n.type', NM_COURSE_NEWS)
-      ->fields('n', array('nid', 'title','type'))
+      ->fields('n', array('nid', 'title', 'type'))
       ->join('og_membership', 'ogm', "ogm.gid = :gid AND n.nid = ogm.etid AND ogm.entity_type = 'node'", array(':gid' => $course->nid));
 
   $result = $query->execute();
@@ -552,7 +615,7 @@ function _section_course_get_courses() {
   $query->condition('n.nid', 0, '<>')
       //->condition('n.status', 1, '=')
       ->condition('n.type', NM_COURSE)
-      ->fields('n', array('nid', 'title','type'));
+      ->fields('n', array('nid', 'title', 'type'));
 
   $result = $query->execute();
 

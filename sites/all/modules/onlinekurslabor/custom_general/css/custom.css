@@ -217,8 +217,10 @@ Course Info
 .panels-flexible-row.course-info-header .panel-separator {
     display:none;
 }
-.panels-flexible-row.course-info-header .panels-flexible-row-inside, .panels-flexible-row.course-info-subheader .panels-flexible-row-inside, .panels-flexible-region.course-info-content {
-    padding: 15px;
+.panels-flexible-row.course-info-header .panels-flexible-row-inside, 
+.panels-flexible-row.course-info-subheader .panels-flexible-row-inside, 
+.panels-flexible-region-course-info-content{
+    padding: 15px !important;
 }
 
 .panels-flexible-row.course-info-header h2, .panels-flexible-region.course-info-content h2 {
@@ -410,6 +412,16 @@ Lists / Overviews
 {
     background-position: -300px -50px;
 }
+
+#instructors_tools-container .btn#instr_overview_projects a:before
+{
+    background-position: -300px -100px;
+}
+#instructors_tools-container .btn#instr_overview_projects a:hover:before, #instructors_tools-container .btn#instr_overview_projects a.active:before
+{
+    background-position: -300px -150px;
+}
+
 #instructors_tools-container .btn#instr_course_settings a:before
 {
     background-position: 0px -100px;
@@ -1047,4 +1059,10 @@ PRINT
     }
 
 }
+/*
+for timespan span problem
+*/
 
+div.field-name-field-proposal-timespan {
+    margin:0 !important;
+}
