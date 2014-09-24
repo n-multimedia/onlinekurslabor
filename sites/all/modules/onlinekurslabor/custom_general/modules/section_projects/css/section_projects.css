@@ -71,3 +71,69 @@ Main
     display: block;
 }
 
+.node--projects-cooperation-agreement, .node--projects-objective
+{
+    border:1px solid black;
+}
+.node--projects-cooperation-agreement tr, .node--projects-objective tr
+{
+    border-bottom:1px solid black;
+}
+
+.projects-seal-widget
+{/*notwendig, um den div "existent" zu machen (klickbar)*/
+     height:95px;
+   margin-bottom:20px;
+}
+
+.projects-seal-widget .entry
+{ 
+    float:left;
+    margin-right:1em;
+    border:1px solid grey;
+     text-align:center;
+     font-size:80%;
+     width:80px;
+     height:95px;
+}
+ 
+.projects-seal-widget a.noaction
+{
+    cursor: default;
+}
+.projects-seal-widget a.noaction:hover
+{
+   text-decoration: none;
+   color: #0088cc;
+}
+.projects-seal-widget .action
+{
+background: #DCEBF9;
+}
+.projects-seal-widget .entry .sprite-background
+{
+    
+     background-image:url("../icons/icons-sign-widget.png");
+       width:60px;
+    height:60px;
+    margin:auto;
+   
+}
+
+.projects-seal-widget .entry .signed
+{
+    background-position: 180px 0%;
+}
+.projects-seal-widget .entry .sign
+{
+    background-position: 240px 0%;
+}
+.projects-seal-widget .entry .unsigned
+{
+    background-position: 120px 0%;
+}
+
+.projects-seal-widget .entry .withdraw
+{
+    background-position: 300px 0%;
+}

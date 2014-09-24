@@ -110,52 +110,107 @@ function _section_projects_unseal_ca(&$node, $role_code) {
   node_save($node);
 }
 
-function section_projects_seal_render_action_buttons($node) {
+function section_projects_seal_render_action_buttons($node)
+{
 
-  $result = '';
+    $button_type = "links";
+    $result = '';
 
-  //get actual seal value
-  if (empty($node->field_seal)) {
-    $node->field_seal[LANGUAGE_NONE][0]['value'] = 0;
-  }
+    //get actual seal value
+    if (empty($node->field_seal))
+    {
+        $node->field_seal[LANGUAGE_NONE][0]['value'] = 0;
+    }
 
-  $seal = $node->field_seal[LANGUAGE_NONE][0]['value'];
+    $seal = $node->field_seal[LANGUAGE_NONE][0]['value'];
 
-  switch ($node->type) {
-    case 'projects_cooperation_agreement':
-      //get needed partners
-      //dpm($seal & bindec('100'));
-      $parteien = array(
-        'dozent' => array('label' => 'Dozent', 'sealed' => ($seal & bindec('100')) == bindec('100')), //dozent
-        'student' => array('Student(en)', 'sealed' => ($seal & bindec('010')) == bindec('010')), //student
-        'partner' => array('Kooperationspartner', 'sealed' => ($seal & bindec('001')) == bindec('001')), //kooperationspartner
-      );
-      $links = _section_projects_seal_prepare_action_links($parteien, $node);
+    switch ($node->type)
+    {
+        case 'projects_cooperation_agreement':
+            //get needed partners
+            //dpm($seal & bindec('100'));
+            $parteien = array(
+                'dozent' => array('label' => 'Dozent', 'sealed' => ($seal & bindec('100')) == bindec('100')), //dozent
+                'student' => array('Student(en)', 'sealed' => ($seal & bindec('010')) == bindec('010')), //student
+                'partner' => array('Kooperationspartner', 'sealed' => ($seal & bindec('001')) == bindec('001')), //kooperationspartner
+            );
+            $button_type = "buttons";
+            $links = _section_projects_seal_prepare_action_buttons($parteien, $node);
+            dpm("todo testen  partner verschieben strings h5");
 
-      break;
-    case 'projects_objective':
-      $parteien = array(
-        'dozent' => array('label' => 'Dozent', 'sealed' => ($seal & bindec('100')) == bindec('100')), //dozent
-        'student' => array('Student(en)', 'sealed' => ($seal & bindec('010')) == bindec('010')), //student
-      );
-      $links = _section_projects_seal_prepare_action_links($parteien, $node);
-      break;
-  }
+            break;
+        case 'projects_objective':
+            $parteien = array(
+                'dozent' => array('label' => 'Dozent', 'sealed' => ($seal & bindec('100')) == bindec('100')), //dozent
+                'student' => array('Student(en)', 'sealed' => ($seal & bindec('010')) == bindec('010')), //student
+            );
+            //$links = _section_projects_seal_prepare_action_links($parteien, $node);
+            $button_type = "buttons";
+            $links = _section_projects_seal_prepare_action_buttons($parteien, $node);
+            break;
+    }
 
-  $token = drupal_get_token('projects_seal');
-  $options = array('query' => array('projects_token' => $token));
+    $token = drupal_get_token('projects_seal');
+    $options = array('query' => array('projects_token' => $token));
 
-  $result .= '<div class="projects-seal-widget">';
-  foreach ($links as $link) {
-    $result .= '<div class="action">';
-    $result .=!empty($link['href']) ? l($link['title'], $link['href'], $options) : $link['title'];
-    $result .= '</div>';
-  }
-  $result .= '</div>';
+    switch ($button_type)
+    {
+        case "buttons":
+            $result = '<h5>Signaturen</h5><div  class="projects-seal-widget" >';
 
-  return $result;
+            foreach ($links as $link)
+            {
+                //reset array
+                $options = array();
+                if ($link['href'] === "#")
+                {
+                    $options['fragment'] = '';
+                    $options['external'] = true;
+                }
+                else
+                    $options['query'] = array('projects_token' => $token);
+
+                $content = "";
+                $result.= '<div  class="entry ' . ($link['href'] === "#" ? '' : 'action') . '" >';
+
+                $options['html'] = true;
+                $options['attributes'] = array('title' => $link['title'], 'class' => 'section_projects ' . ($link['href'] === "#" ? 'noaction' : ''));
+
+                if ($link['href'] === "#")
+                {
+                    $options['fragment'] = '';
+                    $options['external'] = true;
+                }
+                $content .= '<div class="' . $link['class'] . ' sprite-background "></div>' . $link['name'];
+
+                $result.= l($content, $link['href'], $options);
+                $result.='</div>';
+            }
+            $result.='</div>';
+            $result.='<div style="float:none;"></div>';
+            //todo
+            $result.='<h5>Vereinbarung</h5>';
+            break;
+
+
+        case "links":
+            $result .= '<div class="projects-seal-widget">';
+            foreach ($links as $link)
+            {
+                $result .= '<div class="action">';
+                $result .= ! empty($link['href']) ? l($link['title'], $link['href'], $options) : $link['title'];
+                $result .= '</div>';
+            }
+            $result .= '</div>';
+            break;
+    }
+
+
+    return $result;
 }
 
+/*@deprecated - for extending this function, edit  _section_projects_seal_prepare_action_buttons
+ */
 function _section_projects_seal_prepare_action_links($parteien, $node) {
   global $user;
 
@@ -222,11 +277,11 @@ function _section_projects_seal_prepare_action_links($parteien, $node) {
       //dpm('verantwortlicher partner');
       if ($parteien['partner']['sealed']) {
         $link['title'] = 'Partner: Unterschrift zurückziehen';
-        $link['href'] = 'projects/unseal/dozent/' . $node->nid;
+        $link['href'] = 'projects/unseal/partner/' . $node->nid;
       }
       else {
         $link['title'] = 'Partner: unterschreiben';
-        $link['href'] = 'projects/seal/dozent/' . $node->nid;
+        $link['href'] = 'projects/seal/partner/' . $node->nid;
       }
     }
     else {
@@ -243,6 +298,79 @@ function _section_projects_seal_prepare_action_links($parteien, $node) {
 
 
   return $links;
+}
+
+
+
+
+
+function _section_projects_seal_prepare_action_buttons($parteien, $node)
+{
+    global $user;
+
+    $links = array();
+
+    //templates für den linktitel
+    $template['withdraw'] = array('title' => '%s: Unterschrift zurückziehen');
+    $template['sign'] = array('title' => '%s: unterschreiben');
+    $template['signed'] = array('title' => '%s: hat unterschreiben');
+    $template['unsigned'] = array('title' => '%s: Unterschrift steht aus');
+
+    foreach ($parteien as $partyname => $partydetails)
+    {
+        $is_responsible = false;
+        $class = "";
+        $link = array();
+        $writablename = @$partydetails['label'];
+        if (!$writablename)#
+            $writablename = @$partydetails['0'];
+        switch ($partyname)
+        {
+            case 'dozent':
+                if (_section_projects_seal_user_is_responsible_dozent($user, $node))
+                    $is_responsible = true;
+                break;
+            case 'student':
+                if (_section_projects_seal_user_is_responsible_student($user, $node))
+                    $is_responsible = true;
+                $writablename = 'Student';
+                break;
+            case 'partner':
+                if (_section_projects_seal_user_is_responsible_kooperationspartner($user, $node))
+                    $is_responsible = true;
+                $writablename = 'Kooperations-Partner';
+                break;
+        }
+        if ($is_responsible)
+        {
+            if ($partydetails['sealed'])
+                $class = 'withdraw';
+            else
+                $class = 'sign';
+        } else
+        {
+            if ($partydetails['sealed'])
+                $class = 'signed';
+            else
+                $class = 'unsigned';
+        }
+
+        $link['title'] = sprintf($template[$class]['title'], $writablename);
+        $link['class'] = $class;
+        $link['name'] = $writablename;
+        if ($is_responsible)
+        {
+            $possible_targets = array('withdraw' => 'unseal', 'sign' => 'seal', 'signed' => '#', 'unsigned' => '#');
+            # 'projects/unseal/%s/'
+            $link['href'] = 'projects/' . $possible_targets[$class] . '/' . $partyname . '/' . $node->nid;
+        }
+        else
+            $link['href'] = '#';
+
+        $links[] = $link;
+    }
+
+    return $links;
 }
 
 function _section_projects_seal_user_is_responsible_kooperationspartner($account, $node) {
