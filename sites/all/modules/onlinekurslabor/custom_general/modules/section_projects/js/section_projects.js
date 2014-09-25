@@ -23,6 +23,10 @@
         return true;
         return false;
       });
+      
+      $('a.noaction').click(function(){
+          return false;
+      });
       /*selektiere gewaehlten tab*/
        var hash = window.location.hash;
        var hashid = hash.substring(1);

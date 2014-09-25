@@ -64,7 +64,7 @@ Main
 }
 
 .projects_cockpit_main_container .tabpanel .span12 {
-   
+
 }
 
 .projects_cockpit_main_container .tabpanel.active{
@@ -88,43 +88,55 @@ Main
 
 .projects-seal-widget
 {/*notwendig, um den div "existent" zu machen (klickbar)*/
-     height:95px;
-   margin-bottom:20px;
+    height:95px;
+    margin-bottom:20px;
 }
 
 .projects-seal-widget .entry
 { 
     float:left;
     margin-right:1em;
-    border:1px solid grey;
-     text-align:center;
-     font-size:80%;
-     width:80px;
-     height:95px;
+
+    text-align:center;
+    font-size:80%;
+    
+    position:relative;
+
 }
- 
+
+.projects-seal-widget a {
+    display:block;
+    
+    width:80px;
+    height:110px;
+}
+
 .projects-seal-widget a.noaction
 {
-    cursor: default;
+    cursor: not-allowed;
+    color: #888;
 }
 .projects-seal-widget a.noaction:hover
 {
-   text-decoration: none;
-   color: #0088cc;
+    text-decoration: none;
+    color: #888;
 }
 .projects-seal-widget .action
 {
-background: #DCEBF9;
+    background: #DCEBF9;
+}
+.projects-seal-widget .action .spinner {
+    top:30%;
+    left:50%;
 }
 .projects-seal-widget .entry .sprite-background
 {
-    
-    background-image:url("../icons/icons-sign-widget-2.png");
-    width:75px;
-    height:60px;
+    background-image:url("../icons/icons-sign-widget.png");
     margin:auto;
-   
+    height:70px;
+    width:60px;
 }
+
 
 .projects-seal-widget .entry .signed
 {
