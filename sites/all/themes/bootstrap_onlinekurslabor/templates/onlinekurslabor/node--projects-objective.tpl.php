@@ -23,14 +23,22 @@
     hide($content['links']);
     hide($content['field_tags']);
  
-    $fields_for_objective = array('field_objective_motivation' , 'field_objective_task' ,'field_objective_matching' ,'field_ca_ref'  );
+    $fields_for_objective = array('field_objective_motivation' , 'field_objective_task' ,'field_objective_matching'   );
     ?>
   <table cellspacing="0" cellpadding="3" width="100%"class="node--projects-objective" >
-
+   <tr>
+                  <td width="90%">
+                    
+                  <? ?>
+                  </td>
+                  <td>
+                   <?   print render ($content['field_ca_ref']);?>
+                  </td>
+              </tr>
          <?
           foreach($fields_for_objective as $field)
           {
-              echo '<tr><td>';
+              echo '<tr><td colspan="2">';
                   print render($content[$field]);
               echo '</tr></td>';
           }
