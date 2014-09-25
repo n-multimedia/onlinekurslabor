@@ -106,7 +106,6 @@ function _section_projects_unseal_ca(&$node, $role_code) {
     $node->field_seal [LANGUAGE_NONE][0]['value'] = 0;
   }
   $node->field_seal[LANGUAGE_NONE][0]['value'] = ($node->field_seal[LANGUAGE_NONE][0]['value']) ^ bindec($role_code);
-
   node_save($node);
 }
 
