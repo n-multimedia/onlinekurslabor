@@ -709,9 +709,10 @@ function _section_projects_project_cockpit_tabs_view() {
     $output = '<div class="row-fluid">';
     $output .= '<div style="position:relative" class="nav-tabbox span12">';
     foreach ($navigation_items as $item) {
+      
       $active_class = ($i == 0) ? 'active' : '';
       $output .= '<div class="' . $active_class . '">';
-      $output .= '<a href = "#" class="tab ' . drupal_html_class(transliteration_get($item)) . '">';
+      $output .= '<a href = "#'. drupal_html_class(transliteration_get($item)).'" class="tab ' . drupal_html_class(transliteration_get($item)) . '">';
       $output .= $item;
       $output .= '</a>';
       $output .= '</div>';

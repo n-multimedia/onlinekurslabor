@@ -3,6 +3,8 @@
   Drupal.behaviors.section_projects = {
 
     attach: function(context, settings) {
+        
+        
       $(".nav-tabbox .tab").click(function()
       {
         var lastClass = $(this).attr('class').substr( $(this).attr('class').lastIndexOf(' ') + 1);
@@ -18,10 +20,15 @@
           $(this).closest('.span4').removeClass('span4').addClass('span3').next('.span8').removeClass('span8').addClass('span9');
          
         }*/
-        
+        return true;
         return false;
       });
-      
+      /*selektiere gewaehlten tab*/
+       var hash = window.location.hash;
+       var hashid = hash.substring(1);
+       $(".nav-tabbox a."+hashid).click();
+
+       
       //seal logic
 
       $('.projects-seal-widget .action a').once('section_projects').click(function(){
