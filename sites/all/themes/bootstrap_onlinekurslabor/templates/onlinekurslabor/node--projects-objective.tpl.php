@@ -1,11 +1,6 @@
 <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
-  <pre>
-  24.07.2014 - 15:35 - SN: TODO
-  template umsetzen 
-  bootstrap_onlinekurslabor/templates/onlinekurslabor/node--projects-objective.tpl
-  </pre>
-  
+   
   <!--
   <header>
     <?php print render($title_prefix); ?>
@@ -27,7 +22,24 @@
     hide($content['comments']);
     hide($content['links']);
     hide($content['field_tags']);
-    print render($content);
+ 
+    $fields_for_objective = array('field_objective_motivation' , 'field_objective_task' ,'field_objective_matching' ,'field_ca_ref'  );
+    ?>
+  <table cellspacing="0" cellpadding="3" width="100%"class="node--projects-objective" >
+
+         <?
+          foreach($fields_for_objective as $field)
+          {
+              echo '<tr><td>';
+                  print render($content[$field]);
+              echo '</tr></td>';
+          }
+        ?>
+   </table>
+  <br>
+  <br>
+<?
+  #  print render($content);
   ?>
 
   <?php if (!empty($content['field_tags']) || !empty($content['links'])): ?>

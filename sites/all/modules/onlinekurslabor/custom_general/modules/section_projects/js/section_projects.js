@@ -25,6 +25,7 @@
       //seal logic
 
       $('.projects-seal-widget .action a').once('section_projects').click(function(){
+        
         var self = $(this);
         var container = self.closest('.action');
         var href = self.attr('href');
