@@ -71,3 +71,9 @@ Main
     display: block;
 }
 
+#course_header_title {
+    z-index: 10;
+}
+#course_header_title a{
+    color: #fff;
+}
