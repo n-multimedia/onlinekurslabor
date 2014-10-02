@@ -156,7 +156,7 @@ function section_projects_seal_render_action_buttons($node)
     switch ($button_type)
     {
         case "buttons":
-            $result = '<h5>Signaturen</h5><div  class="projects-seal-widget" >';
+            $result = '<div  class="projects-seal-widget" >';
 
             foreach ($links as $link)
             {
@@ -746,7 +746,7 @@ function _section_projects_project_cockpit_tabs_view() {
     foreach ($navigation_items as $item) {
       $active_class = ($i == 0) ? 'active' : '';
       $output .= '<div class="' . $active_class . '">';
-      $output .= '<a href = "#" class="tab ' . drupal_html_class(transliteration_get($item)) . '">';
+      $output .= '<a href = "#'. drupal_html_class(transliteration_get($item)).'" class="tab ' . drupal_html_class(transliteration_get($item)) . '">';
       $output .= $item;
       $output .= '</a>';
       $output .= '</div>';
@@ -839,10 +839,14 @@ function _section_projects_po_tools_view() {
     //Student + Dozent
     if (arg(0) == 'projects' && arg(4) == 'cockpit' && is_numeric(arg(5))) {
       if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_STUDENT, NM_ROLE_ADMIN), $user->roles)) {
-        $context_items['items'][] = l('Dokumentation erstellen', 'projects/admin/add/' . NM_PROJECTS_DOKUMENTATION, array(
-          'query' => array(
-            'field_ca_ref' => arg(5),
-        )));
+        $ca_node = node_load(arg(5));
+        $documentation_node = _section_projects_get_documentation_by_ca($ca_node);
+        if(empty($documentation_node)) {
+          $context_items['items'][] = l('Dokumentation erstellen', 'projects/admin/add/' . NM_PROJECTS_DOKUMENTATION, array(
+            'query' => array(
+              'field_ca_ref' => arg(5),
+          )));
+        }
       }
     }
 
@@ -1189,6 +1193,7 @@ function projects_cockpit_main_kooperationsvereinbarung_view() {
 
     $output .= "<h4>Kooperationsvereinbarung</h4>";
 
+    $output .= "<h5>Signaturen</h5>";
     $output .= section_projects_seal_render_action_buttons($ca_node);
 
     //$timespan_items = field_get_items('node', $ca_node, 'field_ca_timespan');
@@ -1263,7 +1268,7 @@ function projects_cockpit_main_lernzielvereinbarung_view() {
 
     $output .=_section_projects_render_node_tabs($objective_node);
 
-
+    $output .= "<h5>Signaturen</h5>";
     $output .= section_projects_seal_render_action_buttons($objective_node);
 
 

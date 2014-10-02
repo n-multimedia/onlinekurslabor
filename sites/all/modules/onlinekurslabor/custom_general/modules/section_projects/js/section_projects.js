@@ -20,18 +20,28 @@
           $(this).closest('.span4').removeClass('span4').addClass('span3').next('.span8').removeClass('span8').addClass('span9');
          
         }*/
+        
         return true;
-        return false;
       });
       
       $('a.noaction').click(function(){
           return false;
       });
+      
       /*selektiere gewaehlten tab*/
        var hash = window.location.hash;
        var hashid = hash.substring(1);
-       $(".nav-tabbox a."+hashid).click();
+       if(hashid) {
+        $(".nav-tabbox a." + hashid).click();
+       }
 
+        window.addEventListener("popstate", function(e) {
+            hash = window.location.hash;
+            hashid = hash.substring(1);
+            if(hashid) {
+             $(".nav-tabbox a." + hashid).click();
+            }
+        });
        
       //seal logic
 
@@ -82,7 +92,6 @@
               url: url,
               success: function(response)
               {
-
                 container.parent().html(response.data);
                 Drupal.attachBehaviors(container);
                 post_spinner_black.stop();
