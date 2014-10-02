@@ -97,6 +97,8 @@ function nm_login_vhb() {
 
   if ($hash == $_POST['HASH']) {
     //sign in logic for students
+    watchdog("LOGIN VHB", 'Valid request: <pre>'. print_r($params, TRUE) .'</pre>', array(), WATCHDOG_INFO);
+    
     if (nm_login_vhb_user_is_new($params)) {
       //user is new -> create new account and subscribe for course
       //drupal_set_message("Benutzer ist neu -> Neuen Account anlegen");
@@ -104,10 +106,12 @@ function nm_login_vhb() {
       $archivated_uid = nm_login_vhb_user_is_archivated($params['MATRIKELNUMMER']);
       if ($archivated_uid) {
         //reactivate user
+        watchdog("LOGIN VHB", 'User reactivated', array(), WATCHDOG_INFO);
         nm_login_vhb_reactivate_user($archivated_uid, $params);
       }
       else {
-
+        
+        watchdog("LOGIN VHB", 'New user entry added', array(), WATCHDOG_INFO);
         $account = nm_login_vhb_add_user($params);
         //add db entry after adding a new account
         nm_login_vhb_db_insert($account);
@@ -273,7 +277,7 @@ function nm_login_vhb_add_user($params) {
 
   //28.04.2014 - 14:40 - SN
   //matrikelnummer must not have >11 characters
-  if (strlestrlen($params['MATRIKELNUMMER']) > 11) {
+  if (drupal_strlen($params['MATRIKELNUMMER']) > 11) {
     $message = 'Matrikelnummer is to long! (uid: @uid)';
     drupal_set_message($message, 'error');
     watchdog("LOGIN VHB", $message, array('@uid' => $account->uid), WATCHDOG_ERROR);
