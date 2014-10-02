@@ -64,10 +64,94 @@ Main
 }
 
 .projects_cockpit_main_container .tabpanel .span12 {
-   
+
 }
 
 .projects_cockpit_main_container .tabpanel.active{
     display: block;
 }
 
+#course_header_title {
+    z-index: 10;
+}
+#course_header_title a{
+    color: #fff;
+}
+.node--projects-cooperation-agreement, .node--projects-objective
+{
+    border:1px solid black;
+}
+.node--projects-cooperation-agreement tr, .node--projects-objective tr
+{
+    border-bottom:1px solid black;
+}
+
+.projects-seal-widget
+{/*notwendig, um den div "existent" zu machen (klickbar)*/
+    height:95px;
+    margin-bottom:20px;
+}
+
+.projects-seal-widget .entry
+{ 
+    float:left;
+    margin-right:1em;
+
+    text-align:center;
+    font-size:80%;
+    
+    position:relative;
+
+}
+
+.projects-seal-widget a {
+    display:block;
+    
+    width:80px;
+    height:110px;
+}
+
+.projects-seal-widget a.noaction
+{
+    cursor: not-allowed;
+    color: #888;
+}
+.projects-seal-widget a.noaction:hover
+{
+    text-decoration: none;
+    color: #888;
+}
+.projects-seal-widget .action
+{
+    background: #DCEBF9;
+}
+.projects-seal-widget .action .spinner {
+    top:30%;
+    left:50%;
+}
+.projects-seal-widget .entry .sprite-background
+{
+    background-image:url("../icons/icons-sign-widget.png");
+    margin:auto;
+    height:70px;
+    width:60px;
+}
+
+
+.projects-seal-widget .entry .signed
+{
+    background-position: 180px 0%;
+}
+.projects-seal-widget .entry .sign
+{
+    background-position: 240px 0%;
+}
+.projects-seal-widget .entry .unsigned
+{
+    background-position: 120px 0%;
+}
+
+.projects-seal-widget .entry .withdraw
+{
+    background-position: 300px 0%;
+}

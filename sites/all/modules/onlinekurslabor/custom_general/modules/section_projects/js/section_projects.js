@@ -3,6 +3,8 @@
   Drupal.behaviors.section_projects = {
 
     attach: function(context, settings) {
+        
+        
       $(".nav-tabbox .tab").click(function()
       {
         var lastClass = $(this).attr('class').substr( $(this).attr('class').lastIndexOf(' ') + 1);
@@ -19,12 +21,32 @@
          
         }*/
         
-        return false;
+        return true;
       });
       
+      $('a.noaction').click(function(){
+          return false;
+      });
+      
+      /*selektiere gewaehlten tab*/
+       var hash = window.location.hash;
+       var hashid = hash.substring(1);
+       if(hashid) {
+        $(".nav-tabbox a." + hashid).click();
+       }
+
+        window.addEventListener("popstate", function(e) {
+            hash = window.location.hash;
+            hashid = hash.substring(1);
+            if(hashid) {
+             $(".nav-tabbox a." + hashid).click();
+            }
+        });
+       
       //seal logic
 
       $('.projects-seal-widget .action a').once('section_projects').click(function(){
+        
         var self = $(this);
         var container = self.closest('.action');
         var href = self.attr('href');
@@ -70,7 +92,6 @@
               url: url,
               success: function(response)
               {
-
                 container.parent().html(response.data);
                 Drupal.attachBehaviors(container);
                 post_spinner_black.stop();

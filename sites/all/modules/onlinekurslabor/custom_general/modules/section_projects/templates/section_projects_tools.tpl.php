@@ -1,6 +1,5 @@
 <?php ?>
-
-
+"hier bin ich"
 <div class="section-projects-tools">
   <?php if (!empty($node_items)): ?>
     <?php echo $node_items['title'] ?>
