@@ -1395,6 +1395,23 @@ function projects_cockpit_main_dokumentation_view() {
   return $output;
 }
 
+function section_projects_action_info () {
+ return array(
+  'projects_cockpit_main_sign_inform_action' => array( // The function to call
+   'type' => 'signing actions',
+   'label' => t('Send e-mails to all users that need to be informed about the signing of a contract'),
+   'configurable' => FALSE, // Has a config form
+   'triggers' => array(
+    'node_update', // Availability in the triggers GUI
+    ),
+   ),);}
+
+   function section_projects_sign_inform_action()
+   {
+       dpm("HURRAH EIN UPDATE");
+       dpm(func_get_args());
+   }
+
 /**
  * Implementing hook_preprocess_HOOK
  * @param type $vars
