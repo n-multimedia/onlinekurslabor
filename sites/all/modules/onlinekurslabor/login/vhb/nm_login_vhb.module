@@ -136,7 +136,7 @@ function nm_login_vhb() {
     else {
       //user account exists -> login and redirect to course
       //drupal_set_message("Benutzer existiert -> einloggen");
-      //assuming that we don't need the transfered VHB - password 
+      //assuming that we don't need the transfered VHB - password
       $account = user_load_by_mail($params['EMAIL']);
       //check if user is set and has role student, dismiss else
       if ($account && count($account->roles) == 2 && array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $account->roles)) {
@@ -146,8 +146,8 @@ function nm_login_vhb() {
           $user = user_load($account->uid);
           drupal_session_regenerate();
           $account = clone $user;
-          //add db entry after loging in, useful for users which have not 
-          //been added to the db yet 
+          //add db entry after loging in, useful for users which have not
+          //been added to the db yet
           //28.04.2014 - 15:24 - SN
           //not deployed yet, because the timestamps would be different
           //adding missing entries manually
@@ -207,7 +207,7 @@ function nm_login_vhb_user_is_new($params) {
     $message = '
                 <p>(' . $params['EMAIL'] . ' - ' . $params['MATRIKELNUMMER'] . ").</p>
                 <p>Matrikelnummer stimmt nicht mit der Emailadresse überein.</p>
-                
+
                 ";
 
     //drupal_set_message("Matrikelnummer stimmt nicht mit der Emailadresse überein.", 'error');
@@ -234,11 +234,11 @@ function nm_login_vhb_load_count_matrikelnummer($matrikelnummer) {
 /**
  * Create a new user account by using attributes submitted
  * by a VHB POST request
- * 
+ *
  * @param $params VHB encoded POST parameters
- * 
+ *
  * @return $account user account object
- * 
+ *
  */
 function nm_login_vhb_add_user($params) {
 
@@ -316,7 +316,7 @@ function nm_login_vhb_add_user($params) {
   $wrapper->field_last_name->set($params['NACHNAME']);
   $wrapper->field_birthday->set(strtotime($params['GEBDAT']));
   //not knowing which SEX options posiible
-  //weiblich = female so everything !female will be male 
+  //weiblich = female so everything !female will be male
   if ($params['SEX'] == 'weiblich') {
     $wrapper->field_gender->set('female');
   }
@@ -346,11 +346,11 @@ function nm_login_vhb_add_user($params) {
 /**
  * Update empty profile2 fields of existing user
  * by a VHB POST request
- * 
+ *
  * @param $params VHB encoded POST parameters
- * 
+ *
  * @return $account user account object
- * 
+ *
  */
 function nm_login_vhb_update_empty_profile_fields($account, $params) {
   //some redundand aspects
@@ -365,6 +365,13 @@ function nm_login_vhb_update_empty_profile_fields($account, $params) {
 
   //student profile
   $profile2 = profile2_load_by_user($account, 'student');
+
+  if(!$profile2) {
+    //student profile
+    $profile2 = profile2_create(array('type' => 'student'));
+    $profile2->setUser($account);
+    profile2_save($profile2);
+  }
 
   //Populate profile fields
   $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
@@ -395,7 +402,6 @@ function nm_login_vhb_update_empty_profile_fields($account, $params) {
     $wrapper->field_studienfach->set($params['STUDIENFACH']);
   }
 
-
   $tmp = $wrapper->field_hochschule->value();
   if (empty($tmp)) {
     //load term id and set hochschule field
@@ -410,6 +416,13 @@ function nm_login_vhb_update_empty_profile_fields($account, $params) {
 
   //master profile
   $profile2 = profile2_load_by_user($account, 'master');
+
+  if(!$profile2) {
+    //master profile
+    $profile2 = profile2_create(array('type' => 'master'));
+    $profile2->setUser($account);
+    profile2_save($profile2);
+  }
 
   $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
 
@@ -433,7 +446,7 @@ function nm_login_vhb_update_empty_profile_fields($account, $params) {
 
   if ($tmp == 'fa') {
     //not knowing which SEX options posiible
-    //weiblich = female so everything !female will be male 
+    //weiblich = female so everything !female will be male
     if ($params['SEX'] == 'weiblich') {
       $wrapper->field_gender->set('female');
     }
@@ -448,7 +461,7 @@ function nm_login_vhb_update_empty_profile_fields($account, $params) {
 
 /**
  * subscribe user for a course
- * 
+ *
  * @param type $account
  * @param type $course
  */
@@ -464,9 +477,9 @@ function nm_login_vhb_user_subscribe($account, $course) {
 
 /**
  * get course by LVNR
- * 
+ *
  * @param type $lvnr
- * @return 
+ * @return
  * $node object or NULL if no result was found
  */
 function nm_login_vhb_get_course($lvnr) {
@@ -505,7 +518,7 @@ function nm_login_vhb_test() {
   }
 
   dpm($_POST);
-  //dpm(PHP_EOL); // Ausgabe aller POST-Elemente 
+  //dpm(PHP_EOL); // Ausgabe aller POST-Elemente
 
   $output .= "<p><b>UTF-8 konvertierte Parameter: diese werden im System weiterverwendet</b></p>";
   $output .= print_r($params, true);
@@ -545,7 +558,7 @@ function nm_login_vhb_views_api() {
 }
 
 /**
- * VBO 
+ * VBO
  */
 
 /**
