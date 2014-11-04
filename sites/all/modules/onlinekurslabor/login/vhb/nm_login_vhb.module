@@ -97,6 +97,8 @@ function nm_login_vhb() {
 
   if ($hash == $_POST['HASH']) {
     //sign in logic for students
+    watchdog("LOGIN VHB", 'Valid request: <pre>' . print_r($params, TRUE) . '</pre>', array(), WATCHDOG_INFO);
+
     if (nm_login_vhb_user_is_new($params)) {
       //user is new -> create new account and subscribe for course
       //drupal_set_message("Benutzer ist neu -> Neuen Account anlegen");
@@ -104,10 +106,12 @@ function nm_login_vhb() {
       $archivated_uid = nm_login_vhb_user_is_archivated($params['MATRIKELNUMMER']);
       if ($archivated_uid) {
         //reactivate user
+        watchdog("LOGIN VHB", 'User reactivated', array(), WATCHDOG_INFO);
         nm_login_vhb_reactivate_user($archivated_uid, $params);
       }
       else {
 
+        watchdog("LOGIN VHB", 'New user entry added', array(), WATCHDOG_INFO);
         $account = nm_login_vhb_add_user($params);
         //add db entry after adding a new account
         nm_login_vhb_db_insert($account);
@@ -132,7 +136,7 @@ function nm_login_vhb() {
     else {
       //user account exists -> login and redirect to course
       //drupal_set_message("Benutzer existiert -> einloggen");
-      //assuming that we don't need the transfered VHB - password 
+      //assuming that we don't need the transfered VHB - password
       $account = user_load_by_mail($params['EMAIL']);
       //check if user is set and has role student, dismiss else
       if ($account && count($account->roles) == 2 && array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $account->roles)) {
@@ -142,13 +146,17 @@ function nm_login_vhb() {
           $user = user_load($account->uid);
           drupal_session_regenerate();
           $account = clone $user;
-          //add db entry after loging in, useful for users which have not 
-          //been added to the db yet 
+          //add db entry after loging in, useful for users which have not
+          //been added to the db yet
           //28.04.2014 - 15:24 - SN
           //not deployed yet, because the timestamps would be different
           //adding missing entries manually
           //nm_login_vhb_db_insert($account);
         }
+
+        //02.10.2014 - 16:20 - SN
+        //update !empty! fields
+        nm_login_vhb_update_empty_profile_fields($account, $params);
 
         $course = nm_login_vhb_get_course($params['LVNR']);
 
@@ -199,7 +207,7 @@ function nm_login_vhb_user_is_new($params) {
     $message = '
                 <p>(' . $params['EMAIL'] . ' - ' . $params['MATRIKELNUMMER'] . ").</p>
                 <p>Matrikelnummer stimmt nicht mit der Emailadresse überein.</p>
-                
+
                 ";
 
     //drupal_set_message("Matrikelnummer stimmt nicht mit der Emailadresse überein.", 'error');
@@ -226,11 +234,11 @@ function nm_login_vhb_load_count_matrikelnummer($matrikelnummer) {
 /**
  * Create a new user account by using attributes submitted
  * by a VHB POST request
- * 
+ *
  * @param $params VHB encoded POST parameters
- * 
+ *
  * @return $account user account object
- * 
+ *
  */
 function nm_login_vhb_add_user($params) {
 
@@ -273,7 +281,7 @@ function nm_login_vhb_add_user($params) {
 
   //28.04.2014 - 14:40 - SN
   //matrikelnummer must not have >11 characters
-  if (strlestrlen($params['MATRIKELNUMMER']) > 11) {
+  if (drupal_strlen($params['MATRIKELNUMMER']) > 11) {
     $message = 'Matrikelnummer is to long! (uid: @uid)';
     drupal_set_message($message, 'error');
     watchdog("LOGIN VHB", $message, array('@uid' => $account->uid), WATCHDOG_ERROR);
@@ -308,7 +316,7 @@ function nm_login_vhb_add_user($params) {
   $wrapper->field_last_name->set($params['NACHNAME']);
   $wrapper->field_birthday->set(strtotime($params['GEBDAT']));
   //not knowing which SEX options posiible
-  //weiblich = female so everything !female will be male 
+  //weiblich = female so everything !female will be male
   if ($params['SEX'] == 'weiblich') {
     $wrapper->field_gender->set('female');
   }
@@ -336,8 +344,124 @@ function nm_login_vhb_add_user($params) {
 }
 
 /**
+ * Update empty profile2 fields of existing user
+ * by a VHB POST request
+ *
+ * @param $params VHB encoded POST parameters
+ *
+ * @return $account user account object
+ *
+ */
+function nm_login_vhb_update_empty_profile_fields($account, $params) {
+  //some redundand aspects
+  //refactor new generic function
+  //course/admin/%1/members/add
+  $role = user_role_load_by_name(NM_ROLE_STUDENT);
+
+  if (!$account) {
+    drupal_set_message("Account konnte nicht gespeichert werden.", 'error');
+    return;
+  }
+
+  //student profile
+  $profile2 = profile2_load_by_user($account, 'student');
+
+  if(!$profile2) {
+    //student profile
+    $profile2 = profile2_create(array('type' => 'student'));
+    $profile2->setUser($account);
+    profile2_save($profile2);
+  }
+
+  //Populate profile fields
+  $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+
+  //28.04.2014 - 14:40 - SN
+  //matrikelnummer must not have >11 characters
+  if (drupal_strlen($params['MATRIKELNUMMER']) > 11) {
+    $message = 'Matrikelnummer is to long! (uid: @uid)';
+    drupal_set_message($message, 'error');
+    watchdog("LOGIN VHB", $message, array('@uid' => $account->uid), WATCHDOG_ERROR);
+    $params['MATRIKELNUMMER'] = '';
+  }
+  //matrikelnummer must be numeric
+  if (!is_numeric($params['MATRIKELNUMMER'])) {
+    $message = 'Matrikelnummer is not numeric! (uid: @uid)';
+    drupal_set_message($message, 'error');
+    watchdog("LOGIN VHB", $message, array('@uid' => $account->uid), WATCHDOG_ERROR);
+    //$params['MATRIKELNUMMER'] = '';
+  }
+  //set new value if field is empty
+  $tmp = $wrapper->field_matrikelnummer->value();
+  if (empty($tmp)) {
+    $wrapper->field_matrikelnummer->set($params['MATRIKELNUMMER']);
+  }
+
+  $tmp = $wrapper->field_studienfach->value();
+  if (empty($tmp)) {
+    $wrapper->field_studienfach->set($params['STUDIENFACH']);
+  }
+
+  $tmp = $wrapper->field_hochschule->value();
+  if (empty($tmp)) {
+    //load term id and set hochschule field
+    $terms = taxonomy_get_term_by_name($params['HOCHSCHULE']);
+
+    if (!empty($terms)) {
+      $wrapper->field_hochschule->set(current($terms)->tid);
+    }
+  }
+
+  $wrapper->save();
+
+  //master profile
+  $profile2 = profile2_load_by_user($account, 'master');
+
+  if(!$profile2) {
+    //master profile
+    $profile2 = profile2_create(array('type' => 'master'));
+    $profile2->setUser($account);
+    profile2_save($profile2);
+  }
+
+  $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+
+  $tmp = $wrapper->field_first_name->value();
+  if (empty($tmp)) {
+    $wrapper->field_first_name->set($params['VORNAME']);
+  }
+
+  $tmp = $wrapper->field_last_name->value();
+  if (empty($tmp)) {
+    $wrapper->field_last_name->set($params['NACHNAME']);
+  }
+
+
+  $tmp = $wrapper->field_birthday->value();
+  if (empty($tmp)) {
+    $wrapper->field_birthday->set(strtotime($params['GEBDAT']));
+  }
+
+  $tmp = $wrapper->field_gender->value();
+
+  if ($tmp == 'fa') {
+    //not knowing which SEX options posiible
+    //weiblich = female so everything !female will be male
+    if ($params['SEX'] == 'weiblich') {
+      $wrapper->field_gender->set('female');
+    }
+    else {
+      $wrapper->field_gender->set('male');
+    }
+  }
+  $wrapper->save();
+
+  realname_update($account);
+}
+
+/**
  * subscribe user for a course
- * 
+ *
  * @param type $account
  * @param type $course
  */
@@ -353,9 +477,9 @@ function nm_login_vhb_user_subscribe($account, $course) {
 
 /**
  * get course by LVNR
- * 
+ *
  * @param type $lvnr
- * @return 
+ * @return
  * $node object or NULL if no result was found
  */
 function nm_login_vhb_get_course($lvnr) {
@@ -394,7 +518,7 @@ function nm_login_vhb_test() {
   }
 
   dpm($_POST);
-  //dpm(PHP_EOL); // Ausgabe aller POST-Elemente 
+  //dpm(PHP_EOL); // Ausgabe aller POST-Elemente
 
   $output .= "<p><b>UTF-8 konvertierte Parameter: diese werden im System weiterverwendet</b></p>";
   $output .= print_r($params, true);
@@ -434,7 +558,7 @@ function nm_login_vhb_views_api() {
 }
 
 /**
- * VBO 
+ * VBO
  */
 
 /**
