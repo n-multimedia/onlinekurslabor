@@ -79,11 +79,11 @@ Main
 }
 .node--projects-cooperation-agreement, .node--projects-objective
 {
-    border:1px solid black;
+    border:1px solid #333333;
 }
 .node--projects-cooperation-agreement tr, .node--projects-objective tr
 {
-    border-bottom:1px solid black;
+    border-bottom:1px solid #333333;
 }
 
 .projects-seal-widget

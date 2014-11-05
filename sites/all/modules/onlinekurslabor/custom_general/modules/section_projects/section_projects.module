@@ -136,7 +136,7 @@ function section_projects_seal_render_action_buttons($node)
             );
             $button_type = "buttons";
             $links = _section_projects_seal_prepare_action_buttons($parteien, $node);
-            dpm("todo testen  partner verschieben strings h5");
+          
 
             break;
         case 'projects_objective':
@@ -1401,21 +1401,208 @@ function projects_cockpit_main_dokumentation_view() {
 }
 
 function section_projects_action_info () {
- return array(
-  'projects_cockpit_main_sign_inform_action' => array( // The function to call
+ return array( 
+  'section_projects_sign_inform_action' => array( // The function to call
    'type' => 'signing actions',
-   'label' => t('Send e-mails to all users that need to be informed about the signing of a contract'),
+   'label' => t('Send e-mails to all users that need to be informed about the signing of a contracts'),
    'configurable' => FALSE, // Has a config form
    'triggers' => array(
     'node_update', // Availability in the triggers GUI
     ),
    ),);}
 
-   function section_projects_sign_inform_action()
-   {
-       dpm("HURRAH EIN UPDATE");
-       dpm(func_get_args());
-   }
+function section_projects_sign_inform_action($entity, $context)
+{
+   // dpm($context);
+    /* signierstatus auf alter und aktualisierter version */
+    $the_node = @$context['node'];
+    $original = $the_node->original;
+    //todo buggy
+    /*
+      if(!$the_node || !$original)
+      return true;
+     */
+    $signing_state_new = $the_node->field_seal;
+    $signing_state_new = (int) ($signing_state_new['und'][0]['value']);
+
+
+
+    $signing_state_old = $original->field_seal;
+    $signing_state_old = (int) ($signing_state_old['und'][0]['value']);
+
+    //keine aenderung - return
+    if ($signing_state_new == $signing_state_old)
+        return true;
+
+    $signed_all_old = array();
+
+    if (($signing_state_old & bindec('100')) == bindec('100'))
+        $signed_all_old[] = 'dozent';
+    if (($signing_state_old & bindec('010')) == bindec('010'))
+        $signed_all_old[] = 'student';
+    if (($signing_state_old & bindec('001')) == bindec('001'))
+        $signed_all_old[] = 'partner';
+
+    $signed_all_new = array();
+    if (($signing_state_new & bindec('100')) == bindec('100'))
+        $signed_all_new[] = 'dozent';
+    if (($signing_state_new & bindec('010')) == bindec('010'))
+        $signed_all_new[] = 'student';
+    if (($signing_state_new & bindec('001')) == bindec('001'))
+        $signed_all_new[] = 'partner';
+
+    $sign_intersect = array_intersect($signed_all_new, $signed_all_old);
+    $new_sigs = array_diff($signed_all_new, $signed_all_old);
+    ;
+    $lost_sigs = array_diff($signed_all_old, $signed_all_new);
+    ;
+    if (count($new_sigs))
+    {
+        //neue unterschrift
+        $diff = array_diff($signed_all_new, $signed_all_old);
+        $text = t("was signed by:");
+    } elseif (count($lost_sigs))
+    {
+        //unterschrift weg
+        $diff = array_diff($signed_all_old, $signed_all_new);
+        $text = t("Signatures withdrawn by");
+    }
+
+    //betroffene nutzer laden und Mail bauen
+    if (count($new_sigs) || count($lost_sigs))
+    {
+        $THIS_IS_A_LERNZIELVEREINBARUNG = false;
+
+        /* projektvorschlag laden */
+        $the_proposal_id = @$the_node->field_ca_proposal_ref['und'][0]['target_id'];
+        $das_was_hinten_an_die_url_kommt = $the_node->nid;
+
+        //fails wenn lernzielvereinbarung genutzt wird
+        if (!$the_proposal_id)
+        {
+            $the_lernziels_coop_id = $the_node->field_ca_ref['und'][0]['target_id'];
+            $the_lernziels_coop = node_load($the_lernziels_coop_id);
+            $the_proposal_id = $the_lernziels_coop->field_ca_proposal_ref['und'][0]['target_id'];
+            $das_was_hinten_an_die_url_kommt = $the_node->field_ca_ref['und'][0]['target_id'];
+
+            $ca_ref = $the_node->field_ca_ref['und'][0]['target_id'];
+            $ca_object = node_load($ca_ref);
+
+            $THIS_IS_A_LERNZIELVEREINBARUNG = TRUE;
+        }
+        $the_proposal = node_load($the_proposal_id);
+    
+        /* kursgruppe zum projektvorschlag laden */
+        if ($THIS_IS_A_LERNZIELVEREINBARUNG)
+            $the_course_group_id = $ca_object->field_ca_course_group_ref['und'][0]['target_id'];
+        else
+            $the_course_group_id = $the_node->field_ca_course_group_ref['und'][0]['target_id'];
+
+
+        $the_course_group = node_load($the_course_group_id);
+
+        /* lade kursgruppenmitglieder aus db */
+        $course_group_query = new EntityFieldQuery();
+        $course_group_query->entityCondition('entity_type', 'user')
+                ->fieldCondition('og_user_node', 'target_id', $the_course_group->nid, '=');
+        $results = $course_group_query->execute();
+        $course_group_user_uids = array_keys($results['user']);
+        $course_group_users = user_load_multiple($course_group_user_uids);  // $users is now an array of user entity objects
+
+        /* der echte Kurs, also die Lehrveranstaltung */
+        /* $the_course = node_load($the_course_group->og_group_ref['und'][0]['target_id']);
+          dpm($the_course); */
+
+        /* Lade Organisation */
+        $the_org_id = $the_proposal->field_partner_organization_ref['und'][0]['target_id'];
+        $the_org = node_load($the_org_id);
+        $the_org_contacts = $the_org->field_field_po_contact_person['und'];
+        foreach ($the_org_contacts as $id_cand)
+        {
+            $the_org_contacts_ids[] = $id_cand['target_id'];
+        }
+        $organisation_users = user_load_multiple($the_org_contacts_ids);
+        #dpm($organisation_users);
+// braucht man das??
+        /*
+          $course_query = new EntityFieldQuery();
+          $course_query->entityCondition('entity_type', 'user')
+          ->fieldCondition('og_user_node', 'target_id', $the_course_group->og_group_ref['und'][0]['target_id'], '=');
+
+          $results = $course_query->execute();
+
+          // Or,
+          $course_user_uids = array_keys($results['user']);
+          $course_users = user_load_multiple($course_user_uids);  // $users is now an array of user entity objects
+          dpm("kursmitglierd");
+          dpm($course_users);
+         */
+
+        /* Die Kooperationsvereinbarung %s wurde von allen Beteiligten unterschrieben, ab sofort sind keine Änderungen daran mehr möglich.
+          <br><br>Viel Erfolg bei der Umsetzung! */
+
+        /* Der Kooperationsvereinbarung %s im Projekt %s wurde eine Unterschrift hinzugefügt. */
+        /* Es wurde eine Unterschrift aus der Kooperationsvereinbarung %s  im Projekt %s  gestrichen! */
+
+  
+        $url_tpl_jump = 'projects/partners/' . $the_org_id . '/' . $the_proposal->nid . '/cockpit/' . $das_was_hinten_an_die_url_kommt;
+        switch ($the_node->type)
+        {
+            case 'projects_objective':
+                $url_for_context = url($url_tpl_jump, array('fragment' => 'lernzielvereinbarung', 'absolute' => true));
+                $type_context = "Lernzielvereinbarung";
+                break;
+            case 'projects_cooperation_agreement':
+                $url_for_context = url($url_tpl_jump, array('fragment' => 'kooperationsvereinbarung', 'absolute' => true));
+                $type_context = "Kooperationsvereinbarung";
+                break;
+        }
+       
+        $mail_content_tpl_add = t('Der %s %s im Projekt %s wurde eine Unterschrift hinzugefügt.');
+        $mail_content_tpl_remove = t('Es wurde eine Unterschrift aus der %s %s  im Projekt %s  gestrichen!');
+
+        $mail_content_add = sprintf($mail_content_tpl_add, $type_context, l($the_node->title, $url_for_context), $the_proposal->title);
+        $mail_content_remove = sprintf($mail_content_tpl_remove, $type_context, l($the_node->title, $url_for_context), $the_proposal->title);
+        if (count($new_sigs))
+        {
+            $text = $mail_content_add;
+        } elseif (count($lost_sigs))
+        {
+            //unterschrift weg
+
+            $text = $mail_content_remove;
+        }
+        $module = 'section_projects';
+        $key = 'signature_has_changed';
+        $language = language_default();
+        $params = array(
+            '@text' => $text,
+            '@diff' => implode("\r\n", $diff) //. "\r\n" . "debug:" . "\r\n" . "states" . "\r\n" . $signing_state_new . "///" . $signing_state_old . "\r\n" . '$signed_all_new' . "\r\n" . implode("\r\n", $signed_all_new) . "\r\n" . '$signed_all_old' . "\r\n" . implode("\r\n", $signed_all_old)
+        );
+
+        //todo alle mails, dies interessiert
+        drupal_mail($module, $key, 'bstrehl@gmx.net', $language, $params);
+    }
+    //es hat sich nichts getan - donothing
+}
+
+/**
+* Implements hook_mail().
+*/
+function section_projects_mail($key, &$message, $params)
+{
+    switch ($key)
+    {
+        case 'signature_has_changed':
+
+            $message['subject'] = t("Signature has changed");
+            $message['body'] = array();
+            $message['body'][] = t("Hello");
+            $message['body'][] = t("@text", $params);
+            $message['body'][] = t("@diff", $params);
+            break;
+    }
+}
 
 /**
  * Implementing hook_preprocess_HOOK
