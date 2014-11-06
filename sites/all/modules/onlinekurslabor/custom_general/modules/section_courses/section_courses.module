@@ -937,6 +937,32 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
       }
       } */
   }
+  else {
+    //not course context
+    if (strstr($path, "node/")) {
+      $regex = '#^node/([0-9]+)$#s';
+      preg_match($regex, $path, $matches);
+      if (!empty($matches)) {
+        $nid = $matches[1];
+        //solution for biblio and course text needed
+        $type = _custom_general_get_node_type($nid);
+
+        if ($type == NM_COURSE_GROUP) {
+          $course_group = node_load($nid);
+          if(!empty($course_group->og_group_ref)) {
+            $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+            $path = "course/groups/" . $course_nid . '/' . $nid;
+          }
+        }
+        else if ($type == NM_COURSE) {
+          $path = "course/home/" . $nid;
+        }
+      }
+
+
+      $original_path = $path;
+    }
+  }
 }
 
 /*
