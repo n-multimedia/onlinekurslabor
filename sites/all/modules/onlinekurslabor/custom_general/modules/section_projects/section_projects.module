@@ -1402,26 +1402,111 @@ function projects_cockpit_main_dokumentation_view() {
 
 function section_projects_action_info () {
  return array( 
-  'section_projects_sign_inform_action' => array( // The function to call
+  'section_projects_sign_inform_action' => // The function to call
+   array(
    'type' => 'signing actions',
-   'label' => t('Send e-mails to all users that need to be informed about the signing of a contracts'),
+   'label' => t('Send e-mails to all users that need to be informed about the signing of a contract'),
    'configurable' => FALSE, // Has a config form
    'triggers' => array(
     'node_update', // Availability in the triggers GUI
     ),
-   ),);}
+   )
+     ,
+     'section_projects_reset_signatures' => // The function to call
+   array( 
+   'type' => 'signing actions',
+   'label' => t('Reset all signatures if a node is updated'),
+   'configurable' => FALSE, // Has a config form
+   'triggers' => array(
+    'node_update', // Availability in the triggers GUI
+    ),
+   )
+     ,
+     
+     );
 
-function section_projects_sign_inform_action($entity, $context)
+   }
+
+   function section_projects_reset_signatures($entity, $context)
 {
-   // dpm($context);
-    /* signierstatus auf alter und aktualisierter version */
     $the_node = @$context['node'];
     $original = $the_node->original;
-    //todo buggy
-    /*
-      if(!$the_node || !$original)
-      return true;
-     */
+     
+    //$node -> type projects_cooperation_agreement
+    //oder projects_objective
+    switch ($the_node->type)
+    {
+        case 'projects_cooperation_agreement':
+            $fields_to_compare = array(
+                'body["und"][0]["value"]',
+                'field_ca_timespan["und"][0]["value"]',
+                'field_ca_timespan["und"][0]["value2"]',
+                'field_ca_expectation_academy["und"][0]["value"]',
+                'field_ca_expectation_po["und"][0]["value"]',
+                'field_ca_result["und"][0]["value"]',
+                'field_ca_students_role["und"][0]["value"]',
+                'field_ca_partners_role["und"][0]["value"]',
+                'field_ca_instructors_role["und"][0]["value"]',
+                'field_ca_cooperation_rules["und"][0]["value"]',
+                'field_ca_course_group_ref["und"][0]["target_id"]',
+                'field_ca_proposal_ref["und"][0]["target_id"]',
+                'field_ca_student_refs["und"][0]["target_id"]',
+                'group_group["und"][0]["value"]'
+            );
+            break;
+        case 'projects_objective':
+            $fields_to_compare = array(
+                'body["und"][0]["value"]',
+                'field_objective_motivation["und"][0]["value"]',
+                'field_objective_task["und"][0]["value"]',
+                'field_objective_matching["und"][0]["value"]',
+                'field_ca_ref["und"][0]["target_id"]',
+            );
+            break;
+        default: return true;
+            break;
+    }
+
+    //ueberpruefe original und neue version auf gleichheit
+    $somethinghaschanged = false;
+    foreach ($fields_to_compare as $cmp_field)
+    {
+        //pfui. sorry, aber war die einzige mglk, ohne riesen if-konstrukte.
+        $compare_value_node = eval('return $the_node->' . $cmp_field . ';');
+        $compare_value_original = eval('return $original->' . $cmp_field . ';');
+        #   dpm($compare_value_node);
+        if ($compare_value_original != $compare_value_node)
+        {
+            $somethinghaschanged = true;
+        }
+    }
+
+
+    if ($somethinghaschanged)
+    { # dpm("change! Reset signature");
+        //reset signature
+        $the_node = node_load($the_node->nid, null, true);
+        $the_node->field_seal['und'][0]['value'] = 0;
+        node_save_action($the_node);
+    }
+
+    return true;
+}
+function section_projects_sign_inform_action($entity, $context)
+{   $the_node = @$context['node'];
+    $original = $the_node->original;
+   
+    //muss angepasst werden fuer weitere signiertypen
+     if(!in_array($the_node->type,array('projects_cooperation_agreement', 'projects_objective')))
+             return true;
+
+    /* signierstatus auf alter und aktualisierter version */
+  
+   //das ist wichtig, sonst funktioniert das nicht. 
+    entity_get_controller('node')->resetCache(array($the_node->nid));
+    $the_node = node_load($the_node->nid);
+    
+
     $signing_state_new = $the_node->field_seal;
     $signing_state_new = (int) ($signing_state_new['und'][0]['value']);
 
@@ -1453,9 +1538,10 @@ function section_projects_sign_inform_action($entity, $context)
 
     $sign_intersect = array_intersect($signed_all_new, $signed_all_old);
     $new_sigs = array_diff($signed_all_new, $signed_all_old);
-    ;
+
     $lost_sigs = array_diff($signed_all_old, $signed_all_new);
-    ;
+
+  #  dpm($lost_sigs);
     if (count($new_sigs))
     {
         //neue unterschrift
@@ -1469,6 +1555,7 @@ function section_projects_sign_inform_action($entity, $context)
     }
 
     //betroffene nutzer laden und Mail bauen
+    //der naechste abschnitt ist nur dafuer da um die nutzer zu laden
     if (count($new_sigs) || count($lost_sigs))
     {
         $THIS_IS_A_LERNZIELVEREINBARUNG = false;
@@ -1479,7 +1566,7 @@ function section_projects_sign_inform_action($entity, $context)
 
         //fails wenn lernzielvereinbarung genutzt wird
         if (!$the_proposal_id)
-        {
+        { $THIS_IS_A_LERNZIELVEREINBARUNG = TRUE;
             $the_lernziels_coop_id = $the_node->field_ca_ref['und'][0]['target_id'];
             $the_lernziels_coop = node_load($the_lernziels_coop_id);
             $the_proposal_id = $the_lernziels_coop->field_ca_proposal_ref['und'][0]['target_id'];
@@ -1488,7 +1575,7 @@ function section_projects_sign_inform_action($entity, $context)
             $ca_ref = $the_node->field_ca_ref['und'][0]['target_id'];
             $ca_object = node_load($ca_ref);
 
-            $THIS_IS_A_LERNZIELVEREINBARUNG = TRUE;
+           
         }
         $the_proposal = node_load($the_proposal_id);
     
@@ -1529,14 +1616,51 @@ function section_projects_sign_inform_action($entity, $context)
           $course_query->entityCondition('entity_type', 'user')
           ->fieldCondition('og_user_node', 'target_id', $the_course_group->og_group_ref['und'][0]['target_id'], '=');
 
-          $results = $course_query->execute();
+          $results = $course_query->execute();*/
 
+/*
           // Or,
           $course_user_uids = array_keys($results['user']);
           $course_users = user_load_multiple($course_user_uids);  // $users is now an array of user entity objects
           dpm("kursmitglierd");
           dpm($course_users);
+
          */
+
+       switch($the_node->type)
+     {
+         case 'projects_cooperation_agreement':
+      //get dozenten of this course
+      //only possible if course group is set
+      if (!empty($the_node->field_ca_course_group_ref)) {
+        $course_group_nid = $the_node->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $course_group = node_load($course_group_nid);
+        $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        //$course = node_load($course_nid);
+        //$dozenten = og_membership_load_multipleF(ALSE, array('gid' => $course_nid, 'entity_type' => 'user'));
+        $dozenten = custom_general_get_users_in_group_by_role($course_nid, array('kurs-dozent'));
+        //dpm($dozenten);
+
+
+        }
+      
+      break;
+    case 'projects_objective':
+      //dpm(($node));
+      if (!empty($the_node->field_ca_ref)) {
+        $ca_node_nid = $the_node->field_ca_ref[LANGUAGE_NONE][0]['target_id'];
+        $ca_node = node_load($ca_node_nid);
+        $course_group_nid = $ca_node->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $course_group = node_load($course_group_nid);
+        $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        //$course = node_load($course_nid);
+        //$dozenten = og_membership_load_multipleF(ALSE, array('gid' => $course_nid, 'entity_type' => 'user'));
+        $dozenten = custom_general_get_users_in_group_by_role($course_nid, array('kurs-dozent'));
+          #dpm($results);
+      }
+      break;
+      }
+
 
         /* Die Kooperationsvereinbarung %s wurde von allen Beteiligten unterschrieben, ab sofort sind keine Änderungen daran mehr möglich.
           <br><br>Viel Erfolg bei der Umsetzung! */
@@ -1559,10 +1683,10 @@ function section_projects_sign_inform_action($entity, $context)
         }
        
         $mail_content_tpl_add = t('Der %s %s im Projekt %s wurde eine Unterschrift hinzugefügt.');
-        $mail_content_tpl_remove = t('Es wurde eine Unterschrift aus der %s %s  im Projekt %s  gestrichen!');
+        $mail_content_tpl_remove = t('Es %s aus der %s %s  im Projekt %s  gestrichen!');
 
         $mail_content_add = sprintf($mail_content_tpl_add, $type_context, l($the_node->title, $url_for_context), $the_proposal->title);
-        $mail_content_remove = sprintf($mail_content_tpl_remove, $type_context, l($the_node->title, $url_for_context), $the_proposal->title);
+        $mail_content_remove = sprintf($mail_content_tpl_remove,(count($lost_sigs) ===1?'wurde eine Unterschrift':'wurden '.count($lost_sigs).' Unterschriften'), $type_context, l($the_node->title, $url_for_context), $the_proposal->title);
         if (count($new_sigs))
         {
             $text = $mail_content_add;
@@ -1580,8 +1704,32 @@ function section_projects_sign_inform_action($entity, $context)
             '@diff' => implode("\r\n", $diff) //. "\r\n" . "debug:" . "\r\n" . "states" . "\r\n" . $signing_state_new . "///" . $signing_state_old . "\r\n" . '$signed_all_new' . "\r\n" . implode("\r\n", $signed_all_new) . "\r\n" . '$signed_all_old' . "\r\n" . implode("\r\n", $signed_all_old)
         );
 
-        //todo alle mails, dies interessiert
-        drupal_mail($module, $key, 'bstrehl@gmx.net', $language, $params);
+        {
+            foreach($dozenten as $dozminiinfo)
+                $dozenten_ids[] = $dozminiinfo->uid;
+            $dozenten_objects = user_load_multiple($dozenten_ids);
+            $author_of_thingy = user_load($the_node->uid);
+
+            //$organisation_users  $course_group_users
+            $all_affected_users = array_merge($dozenten_objects, $organisation_users, $course_group_users, array($author_of_thingy));
+
+            $singular_affected_users = array();
+            foreach($all_affected_users as $aff_user)
+            {
+                if(!in_array($aff_user,$singular_affected_users))
+                        $singular_affected_users[] = $aff_user;
+            }
+
+        }
+        //  alle mails, dies interessiert
+        foreach ($singular_affected_users as $user_to_mail_to)
+        {
+            $params_new = $params;
+            $params_new['@name'] = $user_to_mail_to->name;
+
+            drupal_mail($module, $key, $user_to_mail_to->mail, $language, $params_new);
+        }
+        drupal_set_message(("Alle Unterschriften wurden automatisch zurückgezogen, da sich der Inhalt verändert hat."));
     }
     //es hat sich nichts getan - donothing
 }
@@ -1595,9 +1743,9 @@ function section_projects_mail($key, &$message, $params)
     {
         case 'signature_has_changed':
 
-            $message['subject'] = t("Signature has changed");
+            $message['subject'] = t("Geänderte Unterschrift");
             $message['body'] = array();
-            $message['body'][] = t("Hello");
+            $message['body'][] = t("Hello")." ".t("@name", $params).',';;
             $message['body'][] = t("@text", $params);
             $message['body'][] = t("@diff", $params);
             break;
