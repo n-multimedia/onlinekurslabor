@@ -648,7 +648,7 @@ Authors's Tools
     background-position: -120px -150px;
 }
 
-#instructors_tools-toolbar 
+#authors_tools-toolbar 
 {
     display:none;
     position:absolute;
@@ -662,6 +662,227 @@ Authors's Tools
 END  - Authors's Tools
 */
 
+
+
+/*
+Project's Tools
+*/
+
+#projects_tools
+{
+    display:inline-block;
+    position:relative;
+}
+
+#projects_tools-container .row-fluid:hover 
+{
+    background-color: rgba(0,136,204, 0.03);
+}
+
+#projects_tools-container
+{
+    width:60px;
+    overflow: hidden;
+    display: block;
+    padding:0;
+    direction:rtl;
+    text-align: right;
+    position:absolute;
+    right:0;
+    background-color: rgba(200,200,200, 0.3);
+    z-index: 1000;
+}
+
+#projects_tools-container ul{
+    padding: 0;
+    margin:0;
+}
+
+#projects_tools-container .btn
+{
+    display: inline-block;
+    width: 58px;
+    white-space: normal;
+    font-size:  10px;
+    word-wrap: break-word;
+    height: 65px;
+    padding:0;
+    font-weight: bold;
+    line-height: 8px;
+    margin-left:-1px;
+    left:1px;
+
+}
+
+#projects_tools-container .one_item_toobar
+{
+    overflow:hidden;
+}
+
+#projects_tools-container .btn:not(:last-child) 
+{
+
+}
+
+#block-block-4, .pane-block-4
+{
+    width:100%;
+    position:relative;
+    height: 300px;
+}
+
+#projects_tools-container .btn a
+{
+    display:block;
+}
+
+
+#projects_tools-container .btn a:before {
+    content: ' ';
+    display: block;
+    width: 60px;
+    height: 45px;  
+    position:relative;
+    margin: auto;
+    background-image: url(../images/icons/transparent-icons---projects.gif);
+    background-repeat: no-repeat;
+    margin-bottom:1px;
+}
+
+
+#projects_tools-container .btn#projektvorschlag a:before
+{
+    background-position: -300px -150px;
+}
+#projects_tools-container .btn#projektvorschlag a:hover:before, #projects_tools-container .btn#projektvorschlag a.active:before
+{
+    background-position: -300px -100px;
+}
+
+#projects_tools-container .btn#kooperationsvereinbarung a:before
+{
+    background-position: -60px -100px;
+}
+#projects_tools-container .btn#kooperationsvereinbarung a:hover:before, #projects_tools-container .btn#kooperationsvereinbarung a.active:before
+{
+    background-position: -60px -150px;
+}
+
+#projects_tools-container .btn#cockpit a:before
+{
+    background-position: -180px -100px;
+}
+#projects_tools-container .btn#cockpit a:hover:before, #projects_tools-container .btn#cockpit a.active:before
+{
+    background-position: -180px -150px;
+}
+/*interactive video*/
+#projects_tools-container .btn#author_h5p_overview a:before
+{
+    background-position: -180px 0px;
+}
+#projects_tools-container .btn#author_h5p_overview a:hover:before, #projects_tools-container .btn#author_h5p_overview a.active:before
+{
+    background-position: -180px -50px;
+}
+
+#projects_tools-container .btn#author_h5p_add a:before
+{
+    background-position: -180px -100px;
+}
+#projects_tools-container .btn#author_h5p_add a:hover:before, #projects_tools-container .btn#author_h5p_add a.active:before
+{
+    background-position: -180px -150px;
+}
+
+#projects_tools-container .btn#author_chapter_add a:before
+{
+    background-position: -240px 0px;
+}
+#projects_tools-container .btn#author_chapter_add a:hover:before, #projects_tools-container .btn#author_chapter_add a.active:before
+{
+    background-position: -240px -50px;
+}
+
+#projects_tools-container .btn#author_subchapter_add a:before
+{
+    background-position: -300px 0px;
+}
+#projects_tools-container .btn#author_subchapter_add a:hover:before, #projects_tools-container .btn#author_subchapter_add a.active:before
+{
+    background-position: -300px -50px;
+}
+
+#projects_tools-container .btn#author_chapter_order a:before
+{
+    background-position: -360px 0px;
+}
+#projects_tools-container .btn#author_chapter_order a:hover:before, #projects_tools-container .btn#author_chapter_order a.active:before
+{
+    background-position: -360px -50px;
+}
+
+#projects_tools-container .btn#author_tasks_overview a:before
+{
+    background-position: 0px -100px;
+}
+#projects_tools-container .btn#author_tasks_overview a:hover:before, #projects_tools-container .btn#author_tasks_overview a.active:before
+{
+    background-position: 0px -150px;
+}
+
+#projects_tools-container .btn#author_tasks_qaa_add a:before
+{
+    background-position: -60px -100px;
+}
+#projects_tools-container .btn#author_tasks_qaa_add a:hover:before, #projects_tools-container .btn#author_tasks_qaa_add a.active:before
+{
+    background-position: -60px -150px;
+}
+
+#projects_tools-container .btn#author_tasks_mc_add a:before
+{
+    background-position: -120px -100px;
+}
+#projects_tools-container .btn#author_tasks_mc_add a:hover:before, #projects_tools-container .btn#author_tasks_mc_add a.active:before
+{
+    background-position: -120px -150px;
+}
+
+#projects_tools-container .btn#tagebuch a:before
+{
+    background-position: -60px 0px;
+}
+#projects_tools-container .btn#tagebuch a:hover:before, #projects_tools-container .btn#tagebuch a.active:before
+{
+    background-position: -60px -50px;
+}
+
+#projects_tools-container .btn#cooperationagreement a:before
+{
+    background-image: url(../images/icons/transparent-icons---instructor.png);
+    background-position: 0px -100px;
+}
+#projects_tools-container .btn#cooperationagreement a:hover:before, #projects_tools-container .btn#cooperationagreement a.active:before
+{
+    background-image: url(../images/icons/transparent-icons---instructor.png);
+    background-position: 0px -150px;
+}
+
+
+#projects_tools-toolbar 
+{
+    display:none;
+    position:absolute;
+    background-color: #aaa;
+    color:#fff;
+    bottom:55px;
+    left:0;  
+}
+
+/*
+END  - Project's Tools
+*/
 
 /*
 Course Toolbar items
