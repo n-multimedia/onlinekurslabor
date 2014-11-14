@@ -1,10 +1,5 @@
 <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
-
-  <pre>
-  24.07.2014 - 15:35 - SN: TODO
-  template umsetzen 
-  bootstrap_onlinekurslabor/templates/onlinekurslabor/node--projects-documentation.tpl
-  </pre>
+ 
   
   <!--
   <header>
@@ -27,8 +22,32 @@
     hide($content['comments']);
     hide($content['links']);
     hide($content['field_tags']);
-    print render($content);
+   
+
   ?>
+
+  <table cellspacing="0" cellpadding="3" width="100%"class="node--projects-documentation" >
+              <tr>
+                  <th>
+                   <h3>Dokumentation</h3>
+                   <?   print  render ($content['field_ca_ref']);?>
+                  </th>
+              </tr>
+              <tr>
+                  <td  >
+                       <?   print render ($content['body']);?>
+                  </td>
+              </tr>
+               <tr>
+                  <td  >
+                      Author: <?= user_load($node->uid)->realname;   ?>
+                  </td>
+              </tr>
+          <?
+
+?>
+   </table>
+  <br><br>
 
   <?php if (!empty($content['field_tags']) || !empty($content['links'])): ?>
     <footer>
