@@ -4,7 +4,7 @@ module_load_include('inc', 'section_projects', 'inc/functions');
 
 /**
  * Implementing hook_theme
- * 
+ *
  * @return type
  */
 function section_projects_theme() {
@@ -492,7 +492,7 @@ function section_projects_block_info() {
   return $blocks;
 }
 
-//add course header 
+//add course header
 //16.07.2013 - 11:58 - SN - now done by context module
 function section_projects_preprocess_page(&$vars) {
   $active_projects = section_projects_get_active_project();
@@ -629,22 +629,22 @@ function _section_projects_header_and_navigation_view() {
       $output .= '<h4>';
       $output .= l($proposal->title, 'node/' . $proposal->nid);
       $output .= '</h4>';
-      
+
       $output .= '<h3>';
       $output .= l($ca->title, 'node/' . $ca->nid);
       $output .= '</h3>';
-      
-    }    
+
+    }
     else if ($arg2 == 'add') {
 
       $query = (drupal_get_query_parameters());
       $ca = node_load($query['og_group_ref']);
       $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
-      
+
       $output .= '<h4>';
       $output .= l($proposal->title, 'node/' . $proposal->nid);
       $output .= '</h4>';
-      
+
       $output .= '<h3>';
       $output .= l($ca->title, 'node/' . $ca->nid);
       $output .= '</h3>';
@@ -676,7 +676,7 @@ function _section_projects_header_and_navigation_view() {
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
-        background-size: cover; 
+        background-size: cover;
         height:200px;
         ">
         </div>';
@@ -1030,7 +1030,7 @@ function _section_projects_course_group_actions_view() {
  */
 
 /**
- * 
+ *
  * @global type $user
  */
 function _section_projects_tools_access($account = NULL) {
@@ -1096,7 +1096,7 @@ function section_projects_url_outbound_alter(&$path, &$options, &$original_path)
 
   if ($project || section_projects_context()) {
     /*
-     * 
+     *
      * forum node links
      */
 
@@ -1176,8 +1176,8 @@ function section_projects_url_outbound_alter(&$path, &$options, &$original_path)
  */
 
 /**
- * Provide a select options component to Webform. The values are 
- * populated via a callback function, which returns 
+ * Provide a select options component to Webform. The values are
+ * populated via a callback function, which returns
  * an array of nodes.
  *
  * @return void
@@ -1389,7 +1389,7 @@ function projects_cockpit_main_lernzielvereinbarung_view() {
     $objective_node = _section_projects_get_objective_by_ca($ca_node);
 
     $output .=_section_projects_render_node_tabs($objective_node);
-    
+
     $output .= "<h4>Lernzielvereinbarung</h4>";
 
     if (empty($objective_node)) {
@@ -1400,7 +1400,7 @@ function projects_cockpit_main_lernzielvereinbarung_view() {
 
     $objective_node = node_load($objective_node->nid);
 
-    
+
 
     $output .= "<h5>Signaturen</h5>";
     $output .= section_projects_seal_render_action_buttons($objective_node);
@@ -1528,6 +1528,7 @@ function projects_cockpit_main_dokumentation_view() {
 
     //$output .= drupal_render(drupal_get_form("comment_node_{$ca_node->type}_form", (object) array('nid' => $ca_node->nid)));
   }
+
 
 
 
