@@ -106,15 +106,14 @@ function nm_login_vhb() {
       $archivated_uid = nm_login_vhb_user_is_archivated($params['MATRIKELNUMMER']);
       if ($archivated_uid) {
         //reactivate user
-        watchdog("LOGIN VHB", 'User reactivated', array(), WATCHDOG_INFO);
         nm_login_vhb_reactivate_user($archivated_uid, $params);
+        watchdog("LOGIN VHB", 'User reactivated', array(), WATCHDOG_INFO);
       }
       else {
-
-        watchdog("LOGIN VHB", 'New user entry added', array(), WATCHDOG_INFO);
         $account = nm_login_vhb_add_user($params);
         //add db entry after adding a new account
         nm_login_vhb_db_insert($account);
+        watchdog("LOGIN VHB", 'New user entry added', array(), WATCHDOG_INFO);
       }
 
       global $user;
@@ -224,7 +223,7 @@ function nm_login_vhb_load_count_matrikelnummer($matrikelnummer) {
 
   $query->entityCondition('entity_type', 'profile2')
       ->entityCondition('bundle', 'student')
-      ->fieldCondition('field_matrikelnummer', 'value', $matrikelnummer, '=');
+      ->fieldCondition('field_matrikelnummer_varchar', 'value', $matrikelnummer, '=');
 
   $result = $query->count()->execute();
 
@@ -288,14 +287,20 @@ function nm_login_vhb_add_user($params) {
     $params['MATRIKELNUMMER'] = '';
   }
   //matrikelnummer must be numeric
-  if (!is_numeric($params['MATRIKELNUMMER'])) {
-    $message = 'Matrikelnummer is not numeric! (uid: @uid)';
-    drupal_set_message($message, 'error');
-    watchdog("LOGIN VHB", $message, array('@uid' => $account->uid), WATCHDOG_ERROR);
-    //$params['MATRIKELNUMMER'] = '';
-  }
+  // if (!is_numeric($params['MATRIKELNUMMER'])) {
+  //   $message = 'Matrikelnummer is not numeric! (uid: @uid)';
+  //   drupal_set_message($message, 'error');
+  //   watchdog("LOGIN VHB", $message, array('@uid' => $account->uid), WATCHDOG_ERROR);
+  //   //$params['MATRIKELNUMMER'] = '';
+  // }
+  //
+  // $wrapper->field_matrikelnummer->set($params['MATRIKELNUMMER']);
+  //
+  // 20.11.2014 - 11:39 - SN
+  // matrikelnummer field changed to matrikelnummer_varchar
+  //
 
-  $wrapper->field_matrikelnummer->set($params['MATRIKELNUMMER']);
+  $wrapper->field_matrikelnummer_varchar->set($params['MATRIKELNUMMER']);
   $wrapper->field_studienfach->set($params['STUDIENFACH']);
   //load term id and set hochschule field
   $terms = taxonomy_get_term_by_name($params['HOCHSCHULE']);
@@ -385,17 +390,22 @@ function nm_login_vhb_update_empty_profile_fields($account, $params) {
     $params['MATRIKELNUMMER'] = '';
   }
   //matrikelnummer must be numeric
-  if (!is_numeric($params['MATRIKELNUMMER'])) {
-    $message = 'Matrikelnummer is not numeric! (uid: @uid)';
-    drupal_set_message($message, 'error');
-    watchdog("LOGIN VHB", $message, array('@uid' => $account->uid), WATCHDOG_ERROR);
-    //$params['MATRIKELNUMMER'] = '';
-  }
-  //set new value if field is empty
-  $tmp = $wrapper->field_matrikelnummer->value();
+  // if (!is_numeric($params['MATRIKELNUMMER'])) {
+  //   $message = 'Matrikelnummer is not numeric! (uid: @uid)';
+  //   drupal_set_message($message, 'error');
+  //   watchdog("LOGIN VHB", $message, array('@uid' => $account->uid), WATCHDOG_ERROR);
+  //   //$params['MATRIKELNUMMER'] = '';
+  // }
+  // //set new value if field is empty
+  // $tmp = $wrapper->field_matrikelnummer->value();
+
+  //20.11.2014 - 11:40 - SN matrikelnummer int changed to varchar
+  $tmp = $wrapper->field_matrikelnummer_varchar->value();
   if (empty($tmp)) {
-    $wrapper->field_matrikelnummer->set($params['MATRIKELNUMMER']);
+    $wrapper->field_matrikelnummer_varchar->set($params['MATRIKELNUMMER']);
   }
+
+
 
   $tmp = $wrapper->field_studienfach->value();
   if (empty($tmp)) {
@@ -613,4 +623,14 @@ function nm_login_vhb_views_bulk_operations_form_alter(&$form, &$form_state, $vb
     $query = drupal_get_query_parameters($_GET, array('q'));
     $form['#action'] = url($_GET['q'], array('query' => $query));
   }
+}
+
+
+/**
+ * delete table entry on user delete
+ * @param  [type] $account [description]
+ * @return [type]          [description]
+ */
+function nm_login_vhb_user_delete($account) {
+  db_delete('nm_login_vhb')->condition('uid', $account->uid)->execute();
 }

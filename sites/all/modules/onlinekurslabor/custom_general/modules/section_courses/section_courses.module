@@ -5,7 +5,7 @@ module_load_include('inc', 'section_courses', 'inc/realms');
 module_load_include('inc', 'section_courses', 'inc/tasks');
 module_load_include('inc', 'section_courses', 'inc/actions');
 
-//add course header 
+//add course header
 //16.07.2013 - 11:58 - SN - now done by context module
 function section_courses_preprocess_panels_pane(&$variables) {
   /*
@@ -31,7 +31,7 @@ function section_courses_preprocess_panels_pane(&$variables) {
 
 /**
  * Implements hook_menu
- * 
+ *
  * @return array
  */
 function section_courses_menu() {
@@ -53,7 +53,7 @@ function section_courses_menu() {
  * settings for
  *  - current semester
  *  -...
- * 
+ *
  * @return type
  */
 function section_courses_onlinekurslabor_admin_settings_page() {
@@ -125,7 +125,7 @@ function _section_courses_semesterID_ToString($sem_id) {
 }
 
 /**
- * 12.02.2014 - 16:11 - SN not sure, if this works.. 
+ * 12.02.2014 - 16:11 - SN not sure, if this works..
  * needs to be tested
  * @param type $str
  * @return boolean
@@ -330,9 +330,9 @@ function section_courses_block_view($delta = '') {
 }
 
 /**
- * 
+ *
  * Implements hook_menu_breadcrumb_alter
- * 
+ *
  * @global type $user
  * @param type $active_trail
  * @param type $item
@@ -359,7 +359,7 @@ function section_courses_context_load_alter(&$context) {
 
 /**
  * Determins which course is beeing active/selected
- * 
+ *
  * @return active course object or FALSE
  */
 function _section_courses_get_active_course($reset = FALSE) {
@@ -471,9 +471,9 @@ function _section_courses_get_forum_href($course, $forum_term_id = NULL) {
 
 /**
  * Assign og administrator role for instructors (dozenten)
- * 
+ *
  * Implements hook_entity_insert
- * 
+ *
  */
 /*
   function section_courses_entity_insert($entity, $type) {
@@ -489,9 +489,9 @@ function _section_courses_get_forum_href($course, $forum_term_id = NULL) {
 //solved with context module
 /**
  * Remove Outline Tabs from various sites.
- * 
+ *
  * Implements hook_preprocess_page
- * 
+ *
  * @global type $user
  * @param type $vars
  * @return type
@@ -615,7 +615,7 @@ function section_courses_text_outline() {
     if ($config['depth'] > 0) {
     menu_tree_depth_trim($tree, $config['depth']);
     }
-   * 
+   *
    */
 
 // Render the tree.
@@ -779,7 +779,7 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
 
   if ($course) {
     /*
-     * 
+     *
      * forum node links
      */
 
@@ -849,7 +849,7 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
     /* replace links for book navigation and titles
      * [todo] Solution to avoid this overkill!
      *  Probably a performance killing thing....
-     * 
+     *
      */
     else if (strstr($path, "node/")) {
       $regex = '#^node/([0-9]+)$#s';
@@ -969,7 +969,7 @@ function section_courses_node_access($node, $op, $account) {
 
     // Returning nothing from this function would have the same effect.
     return NODE_ACCESS_IGNORE;
-   * 
+   *
    */
 }
 
@@ -990,12 +990,12 @@ function section_courses_node_access($node, $op, $account) {
   }
   }
   }
- * 
+ *
  * */
 
 /**
- * 
- * 
+ *
+ *
  * @param type $implementations
  * @param type $hook
  */
@@ -1007,7 +1007,7 @@ function section_courses_module_implements_alter(&$implementations, $hook) {
   if (empty($context))
     return;
 
-  //hack for showing the node menu items! deactivates node_access!!!! need more legitimation checks here  
+  //hack for showing the node menu items! deactivates node_access!!!! need more legitimation checks here
 
   if ($hook == 'field_access') {
     //unset($implementations['og']);
@@ -1025,10 +1025,10 @@ function section_courses_module_implements_alter(&$implementations, $hook) {
 
 /**
  * get the student's course group of the active course
- * 
+ *
  * @global type $user
  * @return Group ID of the first course group that matched
- * 
+ *
  */
 function _section_courses_student_get_coursegroup_gid() {
   global $user;
@@ -1038,7 +1038,7 @@ function _section_courses_student_get_coursegroup_gid() {
 
 /**
  * get the users's course group in the active course
- * 
+ *
  * @param type $uid
  * @return Group ID of the first course group that matched
  */
@@ -1074,7 +1074,7 @@ function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
 
 /**
  * Add students form
- * 
+ *
  * @param type $form
  * @param type $form_state
  * @return type
@@ -1106,7 +1106,7 @@ function section_courses_student_registration_form($form, &$form_state) {
   $form['import_container']['import_users'] = array(
     '#title' => t('Import List'),
     '#type' => 'textarea',
-    '#description' => 'Import registrated users into course and active theit accounts if they are locked. <em>One email address per line</em>',
+    '#description' => 'Import registrated users into course and active their accounts if they are locked. <em>One email address per line</em>',
   );
 
 
@@ -1190,7 +1190,7 @@ function section_courses_student_registration_form($form, &$form_state) {
     $type_name = 'student';
     $form_state['profiles'][$type_name] = profile2_create(array('type' => $type_name));
     profile2_attach_form($form, $form_state);
-   * 
+   *
    */
 
   return $form;
@@ -1224,7 +1224,29 @@ function _section_courses_student_registration_import($input) {
   if (!empty($input)) {
     watchdog('section_courses', 'Importing user list %input', array('%input' => $input), WATCHDOG_INFO);
 
-    $emails = explode("\n", $input);
+    //email list = account activation
+    //first + lastname; emaillist =  account creation!
+    $emails = array();
+    $rows_data = array();
+
+    if(strpos($input, ';') > 0) {
+      //separators are in the input textares => account creation
+      $rows = explode("\n", $input);
+      foreach($rows as $row){
+        $row = explode(';', $row);
+        $data['first_name'] = substr($row[0], 0, strrpos($row[0], ' '));
+        $data['last_name'] = substr($row[0], strrpos($row[0], ' ')+1);
+        $data['email'] = $row[1];
+
+        $emails[] = $data['email'];
+        $rows_data[$data['email']] = $data;
+      }
+    }
+
+    //account activation
+    if(strpos($input, ';') === FALSE) {
+      $emails = explode("\n", $input);
+    }
 
     $success = array();
     $already_in = array();
@@ -1283,9 +1305,92 @@ function _section_courses_student_registration_import($input) {
         }
       }
       else {
-        $missing_accounts[] = $email;
+
+        if(strpos($input, ';') === FALSE) {
+          // fill missing aacounts array for status message, or create accounts if
+          // the structure of the request contains ';' separators
+          $missing_accounts[] = $email;
+        }else
+        {
+
+          //add user
+          $role = user_role_load_by_name(NM_ROLE_STUDENT);
+          $edit = array(
+            'name' => $rows_data[$email]['first_name'] . ' ' . $rows_data[$email]['last_name'],
+            'pass' => user_password(),
+            'mail' => $rows_data[$email]['email'],
+            'init' => $rows_data[$email]['email'],
+            'status' => 1,
+            'access' => REQUEST_TIME,
+            'roles' => array($role->rid => $role->name),
+          );
+
+          //increment until we get an unused user name
+          $count = 1;
+          $user_name = $edit['name'];
+          while (user_load_by_name($user_name)) {
+            $user_name = $edit['name'] . ' ' . $count++;
+          }
+          $edit['name'] = $user_name;
+
+          //save and notify the user
+          $account = user_save(drupal_anonymous_user(), $edit);
+
+          if (!$account) {
+            drupal_set_message("Account konnte nicht gespeichert werden.", 'error');
+            return;
+          }
+
+          //student profile
+          $profile2 = profile2_create(array('type' => 'student'));
+          $profile2->setUser($account);
+          profile2_save($profile2);
+          //Populate profile fields
+          $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+
+          //master profile
+          $profile2 = profile2_create(array('type' => 'master'));
+          $profile2->setUser($account);
+          profile2_save($profile2);
+          //Populate profile fields
+          $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+          $wrapper->field_first_name->set($rows_data[$email]['first_name']);
+          $wrapper->field_last_name->set($rows_data[$email]['last_name']);
+
+          $wrapper->save();
+
+          realname_update($account);
+
+          //hadnle ajax callbacks
+          if (arg(0) == 'system' && arg(1) == 'ajax') {
+            $referer_url = drupal_parse_url($_SERVER['HTTP_REFERER']);
+            $referer_url['path'] = substr(parse_url($referer_url['path'], PHP_URL_PATH), 1);
+
+            if (arg(0, $referer_url['path']) == 'course' && arg(1, $referer_url['path']) == 'admin') {
+              $active_course = node_load(arg(2, $referer_url['path']));
+            }
+          }
+          else {
+            //assign user to active group
+            $active_course = _section_courses_get_active_course();
+          }
+
+          //not a member yet
+          //add to group
+          $values = array(
+            'entity type' => 'user',
+            'entity' => $account,
+          );
+          og_group('node', $active_course->nid, $values);
+
+          drupal_set_message('Student ' . $edit['name'] . ' wurde angelegt.');
+        }
+
+
+
       }
     }
+
 
     $output = '';
 
@@ -1395,7 +1500,7 @@ function section_courses_student_registration_form_validate($form, &$form_state)
   $name = "";
   $mail = "";
   if (isset($form_state['clicked_button'])) {
-    
+
   }
   // Random example, if the title is 'test' throw an error
   if ($form_state['values']['users_container']['items'] > 0) {
@@ -1523,10 +1628,10 @@ function _section_courses_book_add_active_path(&$subtree_pointer, $active_mlid, 
 }
 
 /*
- * assign kurs_student role for students 
+ * assign kurs_student role for students
  * Assign og administrator role for instructors (dozenten)
- * 
- * 
+ *
+ *
  *  Implements hook_og_membership_insert
  *  Add OG-Role automatically when instructors join a group
  */
@@ -1562,7 +1667,7 @@ function section_courses_og_membership_insert(OgMembership $og_membership) {
 
 /**
  * add WYSIWYG Editor to Task Fields
- * 
+ *
  * @param string $form
  * @param type $form_state
  * @param type $form_id
@@ -1697,7 +1802,7 @@ function section_courses_save_draft_submit($form, &$form_state) {
 /**
  * alter taxonomy reference widget for forum references
  * we need to only show the options which are possible in course section
- * 
+ *
  * @param type $element
  * @param type $form_state
  * @param type $context
@@ -1746,8 +1851,8 @@ function section_courses_field_widget_form_alter(&$element, &$form_state, $conte
           $options += array_intersect_key($allowed, $element['#options']);
           $element['#options'] = $options;
           }
-         * 
-         * 
+         *
+         *
          */
       }
     }
@@ -1756,7 +1861,7 @@ function section_courses_field_widget_form_alter(&$element, &$form_state, $conte
 
 /**
  * Unset field format values to avoid db errors
- * 
+ *
  * @param type $form
  * @param type $form_state
  */
@@ -1804,9 +1909,9 @@ function section_courses_courses_generic_task_node_form_after_build($form) {
 /**
  * Implements hook_og_user_access_alter().
  *
- * 
+ *
  * Permit group-subscription for Course Groups, if course configuration forces is
- * 
+ *
  */
 function section_courses_og_user_access_alter(&$perm, $context) {
   global $user;
@@ -2000,7 +2105,7 @@ function section_courses_node_form_submit($form, &$form_state) {
 /*
  *  DB QUERY ALTER
  *  Needed to display overview of courses, where the usere is not signed up for yet
- * 
+ *
  */
 
 /**
@@ -2018,7 +2123,7 @@ function section_courses_views_query_alter(&$view, &$query) {
 
 /**
  * get timespan progress in percent
- * 
+ *
  * @param type $node
  * @return int
  */
@@ -2065,7 +2170,7 @@ function _section_courses_get_timespan_percentage($node, &$start_text = NULL, &$
 
 /**
  * Add students form
- * 
+ *
  * @param type $form
  * @param type $form_state
  * @return type
@@ -2154,7 +2259,7 @@ function section_courses_group_projects_form($form, &$form_state) {
     'wrapper' => 'students-import-wrapper',
     ),
     );
-   * 
+   *
    */
 
   return $form;
