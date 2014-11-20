@@ -58,6 +58,13 @@ function nm_section_content_features_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = '<span style="color:#ccc;">Keine Einträge</span>';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   /* Feld: Inhalt: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
@@ -75,7 +82,7 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Feld: Feld: Gruppe */
+  /* Feld: Inhalt: Gruppe */
   $handler->display->display_options['fields']['group_group']['id'] = 'group_group';
   $handler->display->display_options['fields']['group_group']['table'] = 'field_data_group_group';
   $handler->display->display_options['fields']['group_group']['field'] = 'group_group';
@@ -123,6 +130,7 @@ function nm_section_content_features_views_default_views() {
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
+    t('<span style="color:#ccc;">Keine Einträge</span>'),
     t('Name'),
     t('Status'),
     t('Content pane'),

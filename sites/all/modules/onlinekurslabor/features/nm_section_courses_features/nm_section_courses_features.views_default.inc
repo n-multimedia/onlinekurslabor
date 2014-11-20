@@ -462,6 +462,10 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['required'] = TRUE;
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_course_group_proposal_target_id']['id'] = 'field_course_group_proposal_target_id';
+  $handler->display->display_options['relationships']['field_course_group_proposal_target_id']['table'] = 'field_data_field_course_group_proposal';
+  $handler->display->display_options['relationships']['field_course_group_proposal_target_id']['field'] = 'field_course_group_proposal_target_id';
   /* Feld: Bulk operations: Inhalt */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'node';
@@ -631,6 +635,13 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['view']['label'] = 'Teilnehmer';
   $handler->display->display_options['fields']['view']['view'] = 'courses_admin_course_members';
   $handler->display->display_options['fields']['view']['arguments'] = '[!nid]';
+  /* Feld: Inhalt: Titel */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['relationship'] = 'field_course_group_proposal_target_id';
+  $handler->display->display_options['fields']['title_1']['label'] = 'Projektvorschlag';
+  $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   /* Sort criterion: Inhalt: Titel */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
@@ -709,12 +720,14 @@ function nm_section_courses_features_views_default_views() {
     t('letzte Seite »'),
     t('Bis jetzt wurden noch keine Kursgruppen angelegt.'),
     t('OG membership from node'),
+    t('Inhalt entity referenced from field_course_group_proposal'),
     t('Auswahl'),
     t('- Choose an operation -'),
     t('Kursgruppe(n) löschen'),
     t('Name der Kursgruppe'),
     t('Beschreibung'),
     t('Teilnehmer'),
+    t('Projektvorschlag'),
     t('Alle'),
     t('Content pane'),
     t('Kursgruppen'),
@@ -2150,7 +2163,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['body']['settings'] = array(
     'trim_length' => '600',
   );
-  /* Feld: Feld: Gruppe */
+  /* Feld: Inhalt: Gruppe */
   $handler->display->display_options['fields']['group_group']['id'] = 'group_group';
   $handler->display->display_options['fields']['group_group']['table'] = 'field_data_group_group';
   $handler->display->display_options['fields']['group_group']['field'] = 'group_group';
@@ -2256,6 +2269,7 @@ function nm_section_courses_features_views_default_views() {
 
   /* Display: Defaults */
   $handler = $view->new_display('default', 'Defaults', 'default');
+  $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -3483,14 +3497,6 @@ function nm_section_courses_features_views_default_views() {
     'courses_generic_task' => 'courses_generic_task',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Inhalt: Bearbeitungszeitraum -  start date (field_task_handling_period) */
-  $handler->display->display_options['filters']['field_task_handling_period_value']['id'] = 'field_task_handling_period_value';
-  $handler->display->display_options['filters']['field_task_handling_period_value']['table'] = 'field_data_field_task_handling_period';
-  $handler->display->display_options['filters']['field_task_handling_period_value']['field'] = 'field_task_handling_period_value';
-  $handler->display->display_options['filters']['field_task_handling_period_value']['operator'] = '<=';
-  $handler->display->display_options['filters']['field_task_handling_period_value']['granularity'] = 'minute';
-  $handler->display->display_options['filters']['field_task_handling_period_value']['form_type'] = 'date_popup';
-  $handler->display->display_options['filters']['field_task_handling_period_value']['default_date'] = 'now';
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');

@@ -531,6 +531,57 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-courses_course-field_course_proposals'
+  $field_instances['node-courses_course-field_course_proposals'] = array(
+    'bundle' => 'courses_course',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 18,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_course_proposals',
+    'label' => 'Projektvorschläge',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 17,
+    ),
+  );
+
   // Exported field_instance: 'node-courses_course-field_domain_demo_ref'
   $field_instances['node-courses_course-field_domain_demo_ref'] = array(
     'bundle' => 'courses_course',
@@ -2055,6 +2106,57 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-courses_group-field_course_group_proposal'
+  $field_instances['node-courses_group-field_course_group_proposal'] = array(
+    'bundle' => 'courses_group',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 3,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_course_group_proposal',
+    'label' => 'Projektvorschlag',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 5,
+    ),
+  );
+
   // Exported field_instance: 'node-courses_group-group_group'
   $field_instances['node-courses_group-group_group'] = array(
     'bundle' => 'courses_group',
@@ -2873,6 +2975,8 @@ function nm_section_courses_features_field_default_field_instances() {
   t('Laufzeit');
   t('Matrikelnummer');
   t('Platzhalter');
+  t('Projektvorschlag');
+  t('Projektvorschläge');
   t('Semester');
   t('Sponsoren');
   t('Studienfach');

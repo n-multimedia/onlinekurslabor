@@ -12,27 +12,37 @@ function nm_h5p_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:content_domain:create h5p_content content'
   $permissions['node:content_domain:create h5p_content content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:delete any h5p_content content'
   $permissions['node:content_domain:delete any h5p_content content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:delete own h5p_content content'
   $permissions['node:content_domain:delete own h5p_content content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:update any h5p_content content'
   $permissions['node:content_domain:update any h5p_content content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:update own h5p_content content'
   $permissions['node:content_domain:update own h5p_content content'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:courses_course:create h5p_content content'
@@ -107,38 +117,6 @@ function nm_h5p_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:spaces_space:update own h5p_content content'
   $permissions['node:spaces_space:update own h5p_content content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'user:user:administer group'
-  $permissions['user:user:administer group'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
-  );
-
-  // Exported og permission: 'user:user:create h5p_content content'
-  $permissions['user:user:create h5p_content content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'user:user:delete any h5p_content content'
-  $permissions['user:user:delete any h5p_content content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'user:user:delete own h5p_content content'
-  $permissions['user:user:delete own h5p_content content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'user:user:update any h5p_content content'
-  $permissions['user:user:update any h5p_content content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'user:user:update own h5p_content content'
-  $permissions['user:user:update own h5p_content content'] = array(
     'roles' => array(),
   );
 

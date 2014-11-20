@@ -23,6 +23,7 @@ dependencies[] = footnotes
 dependencies[] = h5p_integration
 dependencies[] = htmlpurifier
 dependencies[] = image
+dependencies[] = image_resize_filter
 dependencies[] = linkit
 dependencies[] = list
 dependencies[] = media
