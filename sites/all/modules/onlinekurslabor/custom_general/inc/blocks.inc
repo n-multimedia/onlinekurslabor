@@ -74,7 +74,7 @@ function _custom_general_theme_top_nav($variables = NULL) {
   }
   
   //19.05.2014 - 15:49 - SN Projects
-  if (array_intersect(array(NM_ROLE_KOOPERATIONSPARTNER, NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT, NM_ROLE_TUTOR,  NM_ROLE_ADMIN), $user->roles) || $user->uid == 0) {
+  if (array_intersect(array(NM_ROLE_KOOPERATIONSPARTNER,NM_ROLE_DOZENT, NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT, NM_ROLE_TUTOR,  NM_ROLE_ADMIN), $user->roles) || $user->uid == 0) {
     $output .= '<li><a href="/projects/partners">Partner</a></li>';
   }
   
