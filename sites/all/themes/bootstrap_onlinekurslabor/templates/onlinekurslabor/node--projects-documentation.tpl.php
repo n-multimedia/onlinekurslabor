@@ -29,7 +29,7 @@
   <table cellspacing="0" cellpadding="3" width="100%"class="node--projects-documentation" >
               <tr>
                   <th>
-                   <h3>Dokumentation</h3>
+                   <h3><?  print  $title?></h3>
                    <?   print  render ($content['field_ca_ref']);?>
                   </th>
               </tr>
