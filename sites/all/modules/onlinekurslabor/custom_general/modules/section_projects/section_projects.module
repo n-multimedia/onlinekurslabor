@@ -1636,7 +1636,7 @@ function section_projects_action_info () {
         $the_node->field_seal['und'][0]['value'] = 0;
         node_save_action($the_node);
          drupal_set_message(("Alle Unterschriften wurden automatisch zurückgezogen, da sich der Inhalt verändert hat."));
-   
+
     }
 
     return true;
@@ -1719,7 +1719,7 @@ function section_projects_node_grants($account, $op) {
      }
 
    # dpm(node_load(1489));
-       
+
         $grants[basename(dirname(__FILE__))][] = 1478;
         $grants[basename(dirname(__FILE__))][] =  1483;
         $grants[basename(dirname(__FILE__))][] =  1479;
@@ -1738,7 +1738,7 @@ function section_projects_node_grants($account, $op) {
     $perm['view field_ca_ref field'] = true;
        $perm['view field_objective_matching field'] = true;
     }
-  
+
 
 
 
@@ -1768,7 +1768,7 @@ return true;
  */
 
 function section_projects_node_access($node, $op, $account) {
- 
+
     $signing_state = @$node->field_seal;
     $signing_state = (int) ($signing_state['und'][0]['value']);
        $signatures = array();
@@ -1788,7 +1788,7 @@ function section_projects_node_access($node, $op, $account) {
             ||  ($node->type == 'projects_objective')  && (count($signatures)==2  ))
     // Operation on which you want to act: "create", "delete", "update", "view".
    && ( $op == 'update'
-      || $op =='delete'      
+      || $op =='delete'
      )
 
   ) {
@@ -1999,7 +1999,7 @@ function section_projects_sign_inform_action($entity, $context)
         $mail_content_tpl_all_sigs = ('Die %s %s im Projekt %s wurde von allen Beteiligten unterzeichnet. Eine Änderung ist nicht mehr möglich. Viel Gelingen!');
         $mail_content_tpl_missings = ('Es fehl%s noch die Unterschrift%s von:');
         $tpl_readable_users= array('partner'=> 'Kooperationspartner', 'dozent'=>'Dozent','student'=>'Student');
-        
+
         $mail_content_add = sprintf($mail_content_tpl_add, $type_context, l($the_node->title, $url_for_context), $the_proposal->title);
         $mail_content_remove = sprintf($mail_content_tpl_remove,(count($lost_sigs) ===1?'wurde eine Unterschrift':'wurden '.count($lost_sigs).' Unterschriften'), $type_context, l($the_node->title, $url_for_context), $the_proposal->title);
         $mail_content_all_sigs = sprintf($mail_content_tpl_all_sigs, $type_context, l($the_node->title, $url_for_context), $the_proposal->title);
@@ -2059,8 +2059,8 @@ function section_projects_sign_inform_action($entity, $context)
         {
             $params_new = $params;
             $params_new['@name'] = $user_to_mail_to->name;
- drupal_mail($module, $key, 'bstrehl@gmx.net', $language, $params_new);
-            //drupal_mail($module, $key, $user_to_mail_to->mail, $language, $params_new);
+            //drupal_mail($module, $key, 'bstrehl@gmx.net', $language, $params_new);
+            drupal_mail($module, $key, $user_to_mail_to->mail, $language, $params_new);
         }
         }
     //es hat sich nichts getan - donothing
@@ -2080,7 +2080,7 @@ function section_projects_mail($key, &$message, $params)
             $message['body'][] = t("Hello")." ".t("@name", $params).',';;
             $message['body'][] = nl2br($params['@text']);             #t("@text", $params);
           # $message['body'][] = t("@diff", $params);
-             
+
             break;
     }
 }
