@@ -366,7 +366,6 @@
 			* @theme main
 			*/
 			.bodyContent{
-				/*@editable*/ color:#505050;
 				/*@editable*/ font-family:Helvetica;
 				/*@editable*/ font-size:14px;
 				/*@editable*/ line-height:150%;
