@@ -1,0 +1,12 @@
+#simple-table-of-contents {
+  background-color: #F6F6F2;
+  border: 1px solid #F9F9F9;
+  float: right; /* LTR */
+  margin: 0 0 10px 10px; /* LTR */
+  padding: 15px 20px;
+  width: 240px;
+}
+
+.simple-table-of-contents-label {
+  margin-right: 5px; /* LTR */
+}

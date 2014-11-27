@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Simple Table of Contents module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function simple_table_of_contents_uninstall() {
+  // Remove variables
+  variable_del('simple_table_of_contents_position');
+  variable_del('simple_table_of_contents_minimum_heading');
+  variable_del('simple_table_of_contents_title');
+}

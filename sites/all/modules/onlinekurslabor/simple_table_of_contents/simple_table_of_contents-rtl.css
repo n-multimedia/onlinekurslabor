@@ -1,0 +1,9 @@
+#simple-table-of-contents {
+  float: left;
+  margin: 0 10px 10px 0;
+}
+
+.simple-table-of-contents-label {
+  margin-right: 0;
+  margin-left: 5px;
+}
