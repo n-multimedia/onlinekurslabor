@@ -487,7 +487,7 @@ function _section_projects_seal_user_is_responsible_student($account, $node) {
 
       break;
   }
- 
+
   return FALSE;
 }
 
@@ -586,7 +586,12 @@ function _section_projects_header_and_navigation_view() {
     //partner organisation
     $query = (drupal_get_query_parameters());
     if ($arg2 == 'add') {
-      $po_node = node_load($query['og_group_ref']);
+      if($arg3 == 'projects_proposal') {
+        $po_node = node_load($query['field_partner_organization_ref']);
+      }else {
+        $po_node = node_load($query['og_group_ref']);
+      }
+
     }
     else {
       $po_node = node_load($arg2);
@@ -660,7 +665,7 @@ function _section_projects_header_and_navigation_view() {
       $output .= '</h3>';
 
     }
-    else if ($arg2 == 'add') {
+    else if ($arg2 == 'add' && $arg3 != 'projects_proposal') {
 
       $query = (drupal_get_query_parameters());
       $ca = node_load($query['og_group_ref']);
@@ -1082,7 +1087,12 @@ function section_projects_get_active_project($reset = FALSE) {
   if (!isset($project) || $reset) {
     if (arg(2) == 'add') {
       $query = (drupal_get_query_parameters());
-      $project = node_load($query['og_group_ref']);
+      //30.11.2014 - 14:03 - SN
+      if(arg(3) == 'projects_proposal') {
+        $project = node_load($query['field_partner_organization_ref']);
+      }else {
+        $project = node_load($query['og_group_ref']);
+      }
     }
     else {
       $project_nid = arg(2);
@@ -1662,7 +1672,7 @@ function section_projects_action_info () {
         $the_node->field_seal['und'][0]['value'] = 0;
         node_save_action($the_node);
          drupal_set_message(("Alle Unterschriften wurden automatisch zurückgezogen, da sich der Inhalt verändert hat."));
-   
+
     }
 
     return true;
@@ -1671,7 +1681,7 @@ function section_projects_action_info () {
  /* Implements hook_node_access_records().
 */
 function section_projects_node_access_records($node) {
-     
+
   /*$sids = array();
   // handle the Section node itself
   if ($node->type == OA_SECTION_TYPE) {
@@ -1703,7 +1713,7 @@ foreach($tagebuch_objects as $tbo)
     if($tbo->field_nm_privacy['und'][0]['value'] ==1)
             $sids[] = $tbo->nid;
 }*/
-         
+
 if($node->type === NM_PROJECTS_TAGEBUCH && @(int)($node->field_nm_privacy['und'][0]['value']) ===1)
    $sids[] = $node->nid;
   foreach ($sids as $sid) {
@@ -1721,7 +1731,7 @@ if($node->type === NM_PROJECTS_TAGEBUCH && @(int)($node->field_nm_privacy['und']
  /* Implements hook_node_grants().
 */
 function section_projects_node_grants($account, $op) {
-    
+
  /* $sections = oa_get_sections();
   // returns a list of all section IDs
   foreach ($sections as $sid) {
@@ -1750,7 +1760,7 @@ function section_projects_node_grants($account, $op) {
       $grants[basename(dirname(__FILE__))][]   =  $account->uid;
 
    # dpm(node_load(1489));
-       
+
    /*     $grants[basename(dirname(__FILE__))][] = 1478;
         $grants[basename(dirname(__FILE__))][] =  1483;
         $grants[basename(dirname(__FILE__))][] =  1479;
@@ -1761,7 +1771,7 @@ function section_projects_node_grants($account, $op) {
     //TODO Permissions einbauen!
     function section_projects_og_user_access_alter(&$perm, $context) {
  global $user;
- dpm($context);
+# dpm($context);
  #dpm()
     ;
     /*teilnehmer? dürfen felder der lernzielvb sehen*/
@@ -1788,6 +1798,7 @@ function section_projects_node_grants($account, $op) {
     /* todo kein zugriff auf wysiwyg */
     $perm['update any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = true;
     $perm['update body field'] = true;
+ #   $perm['view body field'] = true;
 
 
     //blog eintrag erstellen
@@ -1822,7 +1833,7 @@ return true;
  */
 
 function section_projects_node_access($node, $op, $account) {
- 
+
     $signing_state = @$node->field_seal;
     $signing_state = (int) ($signing_state['und'][0]['value']);
        $signatures = array();
@@ -1842,7 +1853,7 @@ function section_projects_node_access($node, $op, $account) {
             ||  ($node->type == 'projects_objective')  && (count($signatures)==2  ))
     // Operation on which you want to act: "create", "delete", "update", "view".
    && ( $op == 'update'
-      || $op =='delete'      
+      || $op =='delete'
      )
 
   ) {
@@ -2053,7 +2064,7 @@ function section_projects_sign_inform_action($entity, $context)
         $mail_content_tpl_all_sigs = ('Die %s %s im Projekt %s wurde von allen Beteiligten unterzeichnet. Eine Änderung ist nicht mehr möglich. Viel Gelingen!');
         $mail_content_tpl_missings = ('Es fehl%s noch die Unterschrift%s von:');
         $tpl_readable_users= array('partner'=> 'Kooperationspartner', 'dozent'=>'Dozent','student'=>'Student');
-        
+
         $mail_content_add = sprintf($mail_content_tpl_add, $type_context, l($the_node->title, $url_for_context), $the_proposal->title);
         $mail_content_remove = sprintf($mail_content_tpl_remove,(count($lost_sigs) ===1?'wurde eine Unterschrift':'wurden '.count($lost_sigs).' Unterschriften'), $type_context, l($the_node->title, $url_for_context), $the_proposal->title);
         $mail_content_all_sigs = sprintf($mail_content_tpl_all_sigs, $type_context, l($the_node->title, $url_for_context), $the_proposal->title);
@@ -2135,7 +2146,7 @@ function section_projects_mail($key, &$message, $params)
             $message['body'][] = t("Hello")." ".t("@name", $params).',';;
             $message['body'][] = nl2br($params['@text']);             #t("@text", $params);
           # $message['body'][] = t("@diff", $params);
-             
+
             break;
     }
 }
