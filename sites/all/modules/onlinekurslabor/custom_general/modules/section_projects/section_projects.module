@@ -466,6 +466,28 @@ function _section_projects_seal_user_is_responsible_student($account, $node) {
 
       break;
     case 'projects_objective':
+       //check student's course group
+      //only possible if course group is set
+           if (!empty($node->field_ca_ref)) {
+          $ca = node_load($node->field_ca_ref[LANGUAGE_NONE][0]['target_id']);
+        }
+      if (!empty($ca->field_ca_course_group_ref)) {
+        $course_group_nid = $ca->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $course_group = node_load($course_group_nid);
+        $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $course = node_load($course_nid);
+        //get users course group in course
+        if (_section_courses_get_coursegroup_gid($account->uid, $course) == $course_group_nid) {
+          return TRUE;
+        }
+      }
+      //check if student ist explicitely mentioned
+      if (!empty($ca->field_ca_student_refs)) {
+        if ($ca->field_ca_student_refs[LANGUAGE_NONE][0]['target_id'] == $account->uid) {
+          return TRUE;
+        }
+      }
+
       break;
   }
 
@@ -567,7 +589,12 @@ function _section_projects_header_and_navigation_view() {
     //partner organisation
     $query = (drupal_get_query_parameters());
     if ($arg2 == 'add') {
-      $po_node = node_load($query['og_group_ref']);
+      if($arg3 == 'projects_proposal') {
+        $po_node = node_load($query['field_partner_organization_ref']);
+      }else {
+        $po_node = node_load($query['og_group_ref']);
+      }
+
     }
     else {
       $po_node = node_load($arg2);
@@ -641,7 +668,7 @@ function _section_projects_header_and_navigation_view() {
       $output .= '</h3>';
 
     }
-    else if ($arg2 == 'add') {
+    else if ($arg2 == 'add' && $arg3 != 'projects_proposal') {
 
       $query = (drupal_get_query_parameters());
       $ca = node_load($query['og_group_ref']);
@@ -1045,7 +1072,7 @@ function _section_projects_tools_access($account = NULL) {
     $account = clone $user;
   }
 
-  if (array_intersect($account->roles, array(NM_ROLE_ADMIN, NM_ROLE_KOOPERATIONSPARTNER, NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT))) {
+  if (array_intersect($account->roles, array(NM_ROLE_ADMIN,NM_ROLE_DOZENT, NM_ROLE_KOOPERATIONSPARTNER, NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT))) {
     return TRUE;
   }
 
@@ -1063,7 +1090,12 @@ function section_projects_get_active_project($reset = FALSE) {
   if (!isset($project) || $reset) {
     if (arg(2) == 'add') {
       $query = (drupal_get_query_parameters());
-      $project = node_load($query['og_group_ref']);
+      //30.11.2014 - 14:03 - SN
+      if(arg(3) == 'projects_proposal') {
+        $project = node_load($query['field_partner_organization_ref']);
+      }else {
+        $project = node_load($query['og_group_ref']);
+      }
     }
     else {
       $project_nid = arg(2);
@@ -1289,6 +1321,10 @@ function _section_projects_render_node_tabs($node) {
     'query' => array()
   );
   $options['attributes']['class'] = array('btn');
+
+  if(!node_access('update', $node)){
+     return '';
+  }
 
   //$parsed = drupal_parse_url(current_path());
   //get the right fragment
@@ -1655,6 +1691,7 @@ function section_projects_node_access_records($node) {
     $privacy = NULL;
     if(!empty($node->field_nm_privacy)) {
       $privacy = $node->field_nm_privacy['und'][0]['value'];
+
     }
     if(!$privacy) {
       return $grants;
@@ -1730,6 +1767,7 @@ function section_projects_node_access_records($node) {
  /* Implements hook_node_grants().
 */
 function section_projects_node_grants($account, $op) {
+
 
   $grants = array();
   //private for every option
@@ -1836,29 +1874,52 @@ function section_projects_node_grants($account, $op) {
 }
 
 //TODO Permissions einbauen!
-function section_projects_og_user_access_alter(&$perm, $context) {
-#dpm ($context);
- #   dpm($perm);
+    function section_projects_og_user_access_alter(&$perm, $context) {
+ global $user;
+# dpm($context);
+ #dpm()
+    ;
+    /*teilnehmer? dürfen felder der lernzielvb sehen*/
     { // ansicht lernzielvereinbarung
-    $perm['view field_objective_task field'] = true;
-    $perm['view field_objective_motivation field'] = true;
-    $perm['view field_ca_ref field'] = true;
-    $perm['view field_objective_matching field'] = true;
+        $perm['view field_objective_task field'] = true;
+        $perm['view field_objective_motivation field'] = true;
+        $perm['view field_ca_ref field'] = true;
+        $perm['view field_objective_matching field'] = true;
+    }
+
+
+    /* studenten, die auf lernzielvereinbarungen zugeifen dürfne,. dürfen auch die felder editieren */
+    if(node_access('view',$context['group']))
+    {
+            $perm['update any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = true;
+    $perm['update field_objective_motivation field'] = true;
+    $perm['update field_objective_matching field'] = true;
+    $perm['update field_objective_task field'] = true;
+
     }
 
 
 
+    /* studenten, die auf dokumentation zugeifen dürfne,. dürfen auch die felder editieren */
+    /* todo kein zugriff auf wysiwyg */
+    $perm['update any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = true;
+    $perm['update body field'] = true;
+ #   $perm['view body field'] = true;
 
-   //blog eintrag erstellen
+    //blog eintrag erstellen
     $perm['create projects_blog content'] = true;
-    $perm['create field_blog_type content'] = true;
-    $perm['view field_blog_type field'] = true;
-    $perm['update own body field'] = true;
-    $perm['update own field_nm_privacy field'] = true;
-    $perm['create field_nm_privacy content'] = true;
-    $perm['view field_nm_privacy field'] = true;
+    $perm['update field_nm_privacy field'] = true;
+    $perm['update field_blog_type field'] = true;
+    //    $perm['create field_blog_type content'] = true;
+    //    $perm['view field_blog_type field'] = true;
+    //     $perm['update body field'] = true;
 
 
+    /* kann das raus?
+      $perm['update  field_nm_privacy field'] = true;
+      $perm['create field_nm_privacy content'] = true;
+      $perm['view field_nm_privacy field'] = true;
+     */
 
     return ;
   // If user ID 2 doesn't already have a permission then enable it.
@@ -2166,8 +2227,9 @@ function section_projects_sign_inform_action($entity, $context)
         {
             $params_new = $params;
             $params_new['@name'] = $user_to_mail_to->name;
-            //drupal_mail($module, $key, 'bstrehl@gmx.net', $language, $params_new);
-            drupal_mail($module, $key, $user_to_mail_to->mail, $language, $params_new);
+            dpm($params_new);
+ drupal_mail($module, $key, 'bernhard.strehl@gmail.com', $language, $params_new);
+            //drupal_mail($module, $key, $user_to_mail_to->mail, $language, $params_new);
         }
         }
     //es hat sich nichts getan - donothing
