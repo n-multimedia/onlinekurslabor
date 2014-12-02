@@ -589,7 +589,7 @@ function _section_projects_header_and_navigation_view() {
     //partner organisation
     $query = (drupal_get_query_parameters());
     if ($arg2 == 'add') {
-      if($arg3 == 'projects_proposal') {
+      if($arg3 == 'projects_proposal' || $arg3 == 'projects_cooperation_agreement') {
         $po_node = node_load($query['field_partner_organization_ref']);
       }else {
         $po_node = node_load($query['og_group_ref']);
@@ -668,7 +668,7 @@ function _section_projects_header_and_navigation_view() {
       $output .= '</h3>';
 
     }
-    else if ($arg2 == 'add' && $arg3 != 'projects_proposal') {
+    else if ($arg2 == 'add' && ($arg3 != 'projects_proposal' && $arg3 != 'projects_cooperation_agreement')) {
 
       $query = (drupal_get_query_parameters());
       $ca = node_load($query['og_group_ref']);
@@ -1091,7 +1091,7 @@ function section_projects_get_active_project($reset = FALSE) {
     if (arg(2) == 'add') {
       $query = (drupal_get_query_parameters());
       //30.11.2014 - 14:03 - SN
-      if(arg(3) == 'projects_proposal') {
+      if(arg(3) == 'projects_proposal' || arg(3) == 'projects_cooperation_agreement') {
         $project = node_load($query['field_partner_organization_ref']);
       }else {
         $project = node_load($query['og_group_ref']);
