@@ -2050,7 +2050,7 @@ function section_projects_sign_inform_action($entity, $context)
             case 'projects_objective':
                 $url_for_context = url($url_tpl_jump, array('fragment' => 'lernzielvereinbarung', 'absolute' => true));
                 $type_context = "Lernzielvereinbarung";
-                $missing_sigs = array_diff(array('dozent','student',$signed_all_new ));
+                $missing_sigs = array_diff(array('dozent','student') ,$signed_all_new );
                 break;
             case 'projects_cooperation_agreement':
                 $url_for_context = url($url_tpl_jump, array('fragment' => 'kooperationsvereinbarung', 'absolute' => true));
@@ -2124,7 +2124,7 @@ function section_projects_sign_inform_action($entity, $context)
         {
             $params_new = $params;
             $params_new['@name'] = $user_to_mail_to->name;
-            dpm($params_new);
+            #dpm($params_new);
  drupal_mail($module, $key, 'bernhard.strehl@gmail.com', $language, $params_new);
             //drupal_mail($module, $key, $user_to_mail_to->mail, $language, $params_new);
         }
