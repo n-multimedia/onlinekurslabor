@@ -123,40 +123,5 @@ function nm_stream_features_og_features_default_permissions() {
     'roles' => array(),
   );
 
-  // Exported og permission: 'user:user:create nm_stream content'
-  $permissions['user:user:create nm_stream content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
-  // Exported og permission: 'user:user:delete any nm_stream content'
-  $permissions['user:user:delete any nm_stream content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
-  // Exported og permission: 'user:user:delete own nm_stream content'
-  $permissions['user:user:delete own nm_stream content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
-  // Exported og permission: 'user:user:update any nm_stream content'
-  $permissions['user:user:update any nm_stream content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
-  // Exported og permission: 'user:user:update own nm_stream content'
-  $permissions['user:user:update own nm_stream content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
   return $permissions;
 }

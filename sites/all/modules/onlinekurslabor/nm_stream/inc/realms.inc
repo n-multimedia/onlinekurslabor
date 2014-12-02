@@ -1,7 +1,7 @@
 <?php
 
 function nm_stream_node_access($op, $node) {
-  
+
 }
 
 function nm_stream_node_access_records($node) {

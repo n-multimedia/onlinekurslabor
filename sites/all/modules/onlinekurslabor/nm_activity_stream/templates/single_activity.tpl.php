@@ -12,27 +12,27 @@
             switch ($activity_type)
             {
                 case NM_COURSE_FORUMTOPIC:
-                    echo "ein Forenthema";
+                    echo "ein Forenthema erstellt";
                     break;
                 case NM_COURSE_DOCS:
-                    echo "ein Kursdokument";
+                    echo "ein Kursdokument bereitgestellt";
                     break;
                 case NM_COURSE_GROUP:
-                    echo "eine Kursgruppe";
+                    echo "eine Kursgruppe angelegt";
                     break;
                 case NM_COURSE_GENERIC_TASK:
-                    echo"eine Aufgabe";
+                    echo"eine Aufgabe gestellt";
                     break;
                 case NM_COURSE_GENERIC_TASK_SOLUTION:
-                    echo "eine Lösung";
+                    echo "eine Lösung verfasst";
                     break;
                 case NM_COURSE_NEWS:
-                    echo "eine Ankündigung";
+                    echo "eine Ankündigung verfasst";
                     break;
             }
             ?>
 
-            angelegt
+
 
             <div class="time seen_hidden">
                 <a href="javascript:return false;" title="<?= date("d.m.Y H:i:s", $activity_timestamp_create); ?>">
@@ -47,4 +47,4 @@
         <?= l($activity_title, $activity_path) ?>
     </div>
 </div>
- 
+

@@ -13,7 +13,7 @@ function nm_uuid_features_taxonomy_default_vocabularies() {
       'name' => 'Foren',
       'machine_name' => 'forums',
       'description' => 'Forum Navigations-Vokabular',
-      'hierarchy' => 1,
+      'hierarchy' => 0,
       'module' => 'forum',
       'weight' => -10,
       'rdf_mapping' => array(
@@ -38,7 +38,7 @@ function nm_uuid_features_taxonomy_default_vocabularies() {
       'description' => '',
       'hierarchy' => 0,
       'module' => 'taxonomy',
-      'weight' => 0,
+      'weight' => -8,
       'rdf_mapping' => array(
         'rdftype' => array(
           0 => 'skos:ConceptScheme',

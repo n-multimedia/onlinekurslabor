@@ -119,6 +119,7 @@ function nm_section_courses_features_field_group_info() {
       2 => 'group_course_features',
       3 => 'group_courses_vhb',
       4 => 'group_courses_text',
+      5 => 'group_course_projects',
     ),
     'format_type' => 'htabs',
     'format_settings' => array(
@@ -129,6 +130,34 @@ function nm_section_courses_features_field_group_info() {
     ),
   );
   $export['group_course_general|node|courses_course|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_course_projects|node|courses_course|form';
+  $field_group->group_name = 'group_course_projects';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'courses_course';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_course_general';
+  $field_group->data = array(
+    'label' => 'Projekte',
+    'weight' => '11',
+    'children' => array(
+      0 => 'field_course_proposals',
+    ),
+    'format_type' => 'htab',
+    'format_settings' => array(
+      'formatter' => 'closed',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-course-projects field-group-htab',
+        'required_fields' => 1,
+        'id' => '',
+      ),
+    ),
+  );
+  $export['group_course_projects|node|courses_course|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */

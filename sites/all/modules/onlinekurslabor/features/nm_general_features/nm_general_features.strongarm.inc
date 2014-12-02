@@ -299,7 +299,7 @@ function nm_general_features_strongarm() {
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => 'u5DsHaSdUCw0qTlC39JyiDn0KyPAfA73iOPxsRcUau0',
+    'javascript' => 'ukTOQrBcUCjHU14wTQDhrBsOzy3d2_RsDtHaNns-7xM',
   );
   $export['language_default'] = $strongarm;
 

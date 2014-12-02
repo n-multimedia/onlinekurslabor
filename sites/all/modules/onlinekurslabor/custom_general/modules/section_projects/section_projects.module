@@ -455,9 +455,12 @@ function _section_projects_seal_user_is_responsible_student($account, $node) {
         }
       }
       //check if student ist explicitely mentioned
+      //TODO check every entry not only the first one
       if (!empty($node->field_ca_student_refs)) {
-        if ($node->field_ca_student_refs[LANGUAGE_NONE][0]['target_id'] == $account->uid) {
-          return TRUE;
+        foreach($node->field_ca_student_refs[LANGUAGE_NONE] as $item ){
+          if ($item['target_id'] == $account->uid) {
+            return TRUE;
+          }
         }
       }
 
@@ -586,7 +589,7 @@ function _section_projects_header_and_navigation_view() {
     //partner organisation
     $query = (drupal_get_query_parameters());
     if ($arg2 == 'add') {
-      if($arg3 == 'projects_proposal') {
+      if($arg3 == 'projects_proposal' || $arg3 == 'projects_cooperation_agreement') {
         $po_node = node_load($query['field_partner_organization_ref']);
       }else {
         $po_node = node_load($query['og_group_ref']);
@@ -665,7 +668,7 @@ function _section_projects_header_and_navigation_view() {
       $output .= '</h3>';
 
     }
-    else if ($arg2 == 'add' && $arg3 != 'projects_proposal') {
+    else if ($arg2 == 'add' && ($arg3 != 'projects_proposal' && $arg3 != 'projects_cooperation_agreement')) {
 
       $query = (drupal_get_query_parameters());
       $ca = node_load($query['og_group_ref']);
@@ -1088,7 +1091,7 @@ function section_projects_get_active_project($reset = FALSE) {
     if (arg(2) == 'add') {
       $query = (drupal_get_query_parameters());
       //30.11.2014 - 14:03 - SN
-      if(arg(3) == 'projects_proposal') {
+      if(arg(3) == 'projects_proposal' || arg(3) == 'projects_cooperation_agreement') {
         $project = node_load($query['field_partner_organization_ref']);
       }else {
         $project = node_load($query['og_group_ref']);
@@ -1681,94 +1684,196 @@ function section_projects_action_info () {
  /* Implements hook_node_access_records().
 */
 function section_projects_node_access_records($node) {
+  $grants =  array();
+  $sids = array();
 
-  /*$sids = array();
-  // handle the Section node itself
-  if ($node->type == OA_SECTION_TYPE) {
-    if (!oa_section_is_public($node)) {
-      $sids[] = $node->nid;
+  if($node->type === NM_PROJECTS_TAGEBUCH) {
+    $privacy = NULL;
+    if(!empty($node->field_nm_privacy)) {
+      $privacy = $node->field_nm_privacy['und'][0]['value'];
+
+    }
+    if(!$privacy) {
+      return $grants;
+    }
+
+     switch ($privacy) {
+      case NM_STREAM_PRIVATE:
+
+        $grants[] = array(
+          'realm' => 'section_projects_nm_stream_private',
+          'gid' => $node->uid,
+          'grant_view' => 1,
+          'grant_update' => 1,
+          'grant_delete' => 1,
+          'priority' => 1,
+        );
+        break;
+      case NM_STREAM_TEAM:
+
+        $context_nid = $node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $context_type = _custom_general_get_node_type($context_nid);
+        switch ($context_type) {
+          case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
+
+            $grants[] = array(
+              'realm' => 'section_projects_nm_stream_team',
+              'gid' => $context_nid,
+              'grant_view' => 1,
+              'grant_update' => 0,
+              'grant_delete' => 0,
+              'priority' => 1,
+            );
+            break;
+        }
+        break;
+
+      case NM_STREAM_PROJECT:
+        $context_nid = $node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $context_type = _custom_general_get_node_type($context_nid);
+        switch ($context_type) {
+          case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
+
+            $grants[] = array(
+              'realm' => 'section_projects_nm_stream_project',
+              'gid' => $context_nid,
+              'grant_view' => 1,
+              'grant_update' => 0,
+              'grant_delete' => 0,
+              'priority' => 1,
+            );
+            break;
+        }
+        break;
+      case NM_STREAM_PUBLIC:
+        $grants[] = array(
+          'realm' => 'section_projects_nm_stream_public',
+          'gid' => 1,
+          'grant_view' => 1,
+          'grant_update' => 0,
+          'grant_delete' => 0,
+          'priority' => 1,
+        );
+        break;
+      default:
+        //private
+        break;
     }
   }
-  // Now handle pages within the Section
-  else if (!empty($node->{OA_SECTION_FIELD})) {
-    foreach ($node->{OA_SECTION_FIELD}[LANGUAGE_NONE] as $entity_ref) {
-      $section = node_load($entity_ref['target_id']);
-      if (!oa_section_is_public($section)) {
-        $sids[] = $entity_ref['target_id'];
-      }
-    }
-  }
-  if (empty($sids)) {
-    return array();
-  }*/
-        $grants =  array();
-         $sids = array();
-  #  $sids = array(1478);
-/*
-      $tagebuch = _section_projects_get_nodes(NM_PROJECTS_TAGEBUCH);
 
-    $tagebuch_objects = node_load_multiple(array_keys($tagebuch));
-foreach($tagebuch_objects as $tbo)
-{   //privater eintrag
-    if($tbo->field_nm_privacy['und'][0]['value'] ==1)
-            $sids[] = $tbo->nid;
-}*/
 
-if($node->type === NM_PROJECTS_TAGEBUCH && @(int)($node->field_nm_privacy['und'][0]['value']) ===1)
-   $sids[] = $node->nid;
-  foreach ($sids as $sid) {
-    $grants[] = array (
-      'realm' => basename(dirname(__FILE__)),
-      'gid' => $node->uid,
-      'grant_view' => 1,
-      'grant_update' => 1,
-      'grant_delete' => 0,
-      'priority' => 0,
-    );
-  }
   return !empty($grants) ? $grants : array();
 }
  /* Implements hook_node_grants().
 */
 function section_projects_node_grants($account, $op) {
 
- /* $sections = oa_get_sections();
-  // returns a list of all section IDs
-  foreach ($sections as $sid) {
-    // determine if the user is a member of this section
-    if (user_in_organization($sid, $account) ||
-      user_in_team($sid, $account) ||
-      user_in_users($sid, $account)) {
-        $grants[OA_ACCESS_REALM][] = $sid;
+
+  $grants = array();
+  //private for every option
+  $grants['section_projects_nm_stream_private'][] = $account->uid;
+
+  if ($op != 'view') {
+    return $grants;
+  }
+
+
+  //_section_courses_get_coursegroup_gid($uid);
+
+  $grants['section_projects_nm_stream_public'][] = 1;
+
+  //grant access to users concerning all blog entries published to the whole project
+  //course -> course-group -> cooperation agreement
+  if(in_array(NM_ROLE_STUDENT , $account->roles)) {
+    $cas = _section_projects_get_all_cooperation_agreements();
+
+    if(!empty($cas)) {
+      foreach ($cas as $key => $ca) {
+        $ca = node_load($ca->nid);
+        if(_section_projects_seal_user_is_responsible_student($account, $ca)) {
+            $grants['section_projects_nm_stream_project'][] = $ca->nid;
+        }
+
+        if (!empty($ca->field_ca_course_group_ref)) {
+          $course_group_nid = $ca->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
+          $course_group = node_load($course_group_nid);
+          $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+          $course = node_load($course_nid);
+          //get users course group in course
+          if (_section_courses_get_coursegroup_gid($account->uid, $course) == $course_group_nid) {
+            $grants['section_projects_nm_stream_team'][] = $ca->nid;
+          }
+        }
+
+      }
+
     }
-  }*/
-   #
-     $grants =  array();
+    /*$user_group_nids = og_get_groups_by_user($account, 'node');
 
-  /* // Das lass ich mal Anschauungsobjekt drinnen. Funzioniert, ist aber aufwändig. Oft genügt, wenn man einen Key $user->uid hernimmt.
-   * //und hier checken wir ob wir auf die gesperrten tagebucheintraege zugreifen koennen
-    $tagebuch = _section_projects_get_nodes(NM_PROJECTS_TAGEBUCH);
-    $tagebuch_objects = node_load_multiple(array_keys($tagebuch));
-    #dpm($tagebuch_objects);
-     foreach($tagebuch_objects as $tbo)
-     {if(count($tbo->field_nm_privacy))
-     {
-         if((int)($tbo->field_nm_privacy['und'][0]['value']) ===1 && $tbo->uid === $account->uid)
-               $grants[basename(dirname(__FILE__))][]   =  $tbo->uid;
-     }
-     }*/
-      $grants[basename(dirname(__FILE__))][]   =  $account->uid;
-
-   # dpm(node_load(1489));
-
-   /*     $grants[basename(dirname(__FILE__))][] = 1478;
-        $grants[basename(dirname(__FILE__))][] =  1483;
-        $grants[basename(dirname(__FILE__))][] =  1479;
-         $grants[basename(dirname(__FILE__))][] =  1484;*/
-  return  $grants ;
+    if (empty($user_group_nids)) {
+      return $grants;
     }
 
-    //TODO Permissions einbauen!
+    $user_courses = array();
+    $user_groups = array();
+
+    foreach ($user_group_nids as $ugn) {
+        if (_custom_general_get_node_type($ugn) == NM_COURSE_GROUP) {
+          $course_group = node_load($ugn);
+          $proposal = new stdClass();
+          $proposal->nid = _section_courses_course_group_get_proposal($course_group);
+          if($proposal->nid) {
+
+            $cas = _section_projects_get_cooperation_agreements($proposal, $account);
+            //dpm($cas);
+            // if (count($cas) > 0) {
+            //   //extracting the first resul
+            //   //multicontext possible!
+            //   $ca = current($cas);
+            //   $grants['nm_stream_team'][] = $ca->nid;
+
+            //   $grants['nm_stream_project'][] = $ca->nid;
+
+            //}
+          }
+        }
+      }*/
+  }else if(in_array(NM_ROLE_DOZENT , $account->roles)){
+    $cas = _section_projects_get_all_cooperation_agreements($account);
+    if(!empty($cas)){
+      foreach ($cas as $key => $ca) {
+        if(_section_projects_seal_user_is_responsible_dozent($ca, $account)) {
+            $grants['section_projects_nm_stream_project'][] = $ca->nid;
+        }
+      }
+   }
+  }else if(in_array(NM_ROLE_KOOPERATIONSPARTNER , $account->roles)) {
+    $cas = _section_projects_get_all_cooperation_agreements($account);
+    if(!empty($cas)){
+      foreach ($cas as $key => $ca) {
+        if(_section_projects_seal_user_is_responsible_kooperationspartner($ca, $account)) {
+            $grants['section_projects_nm_stream_project'][] = $ca->nid;
+        }
+      }
+    }
+  }
+
+
+  //students who are on mentioned via extra field
+  //cooperation agreement -> student
+
+
+  //cooperation partners
+
+
+  //intrustors / dozenten
+  //get nids, of ca where dozent is author
+
+
+  return !empty($grants) ? $grants : array();
+}
+
+//TODO Permissions einbauen!
     function section_projects_og_user_access_alter(&$perm, $context) {
  global $user;
 # dpm($context);
@@ -1790,6 +1895,7 @@ function section_projects_node_grants($account, $op) {
     $perm['update field_objective_motivation field'] = true;
     $perm['update field_objective_matching field'] = true;
     $perm['update field_objective_task field'] = true;
+
     }
 
 
@@ -1799,7 +1905,6 @@ function section_projects_node_grants($account, $op) {
     $perm['update any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = true;
     $perm['update body field'] = true;
  #   $perm['view body field'] = true;
-
 
     //blog eintrag erstellen
     $perm['create projects_blog content'] = true;
@@ -1815,8 +1920,6 @@ function section_projects_node_grants($account, $op) {
       $perm['create field_nm_privacy content'] = true;
       $perm['view field_nm_privacy field'] = true;
      */
-
-
 
     return ;
   // If user ID 2 doesn't already have a permission then enable it.
