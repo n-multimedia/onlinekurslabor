@@ -28,6 +28,8 @@ function _section_projects_get_all_cooperation_agreements($account = NULL){
 
 
 function _section_projects_get_cooperation_agreements($proposal, $account = NULL) {
+  //04.12.2014 - 16:21 - SN
+  //add caching here
 
   if (!$account) {
     global $user;
