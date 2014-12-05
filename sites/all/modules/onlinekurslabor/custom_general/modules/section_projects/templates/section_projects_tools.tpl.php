@@ -29,6 +29,7 @@
   $count = 0;
   foreach($context_items['items'] as $item){
 
+    //check access to path first
     $attributes = array('attributes' => array('id' => $item['name'], 'class' => array('btn')));
 
     if (isset($item['path'])) {
@@ -41,6 +42,7 @@
 
 
     $tool_links[] = $tool_link;
+
 
   }
 
