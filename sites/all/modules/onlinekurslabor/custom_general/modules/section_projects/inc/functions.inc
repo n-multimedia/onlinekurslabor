@@ -1,32 +1,5 @@
 <?php
 
-function _section_projects_get_all_cooperation_agreements($account = NULL){
-
-
-  $result_cas = array();
-
-  //kooperationsvereinbarungen holen, die dem proposal zugeordnet sind
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'node')
-      ->entityCondition('bundle', NM_PROJECTS_KOOPERATIONSVEREINBARUNG)
-      ->propertyCondition('status', 1);
-
-  //where uid == account->uid (instructors dozenten)
-
-  if(!empty($account)) {
-      $query->propertyCondition('uid', $account->uid);
-  }
-
-  $result = $query->execute();
-
-  if(isset($result['node'])) {
-    return  $result['node'];
-  }
-
-  return NULL;
-}
-
-
 function _section_projects_get_cooperation_agreements($proposal, $account = NULL) {
 
   if (!$account) {
@@ -53,11 +26,11 @@ function _section_projects_get_cooperation_agreements($proposal, $account = NULL
       $ca = node_load($ca->nid);
       $ca_course_group_ref = field_get_items('node', $ca, 'field_ca_course_group_ref');
       $ca_student_refs = field_get_items('node', $ca, 'field_ca_student_refs');
-
+      
       //dpm($ca_course_group_ref);
       //dpm($ca_student_refs);
 
-      //check if cooperation agreement is assigned to a course
+      //check if cooperation agreement is assigned to a course 
       //group the active user is in
       if (!empty($ca_course_group_ref)) {
         foreach ($ca_course_group_ref as $cg) {
@@ -93,7 +66,7 @@ function _section_projects_get_cooperation_agreements($proposal, $account = NULL
   //get user's course groups
 
   /*
-   *
+   * 
     //load Projektvorschlag 4
     $proposal = node_load(1427);
 
@@ -119,7 +92,7 @@ function _section_projects_get_objective_by_ca($ca) {
       // ->propertyCondition('uid', $uid)
       ->fieldCondition('field_ca_ref', 'target_id', $ca->nid, '=');
   $result = $query->execute();
-
+  
   return isset($result['node']) ? current($result['node']) : NULL;
 
 }
@@ -140,7 +113,7 @@ function _section_projects_get_documentation_by_ca($ca) {
       // ->propertyCondition('uid', $uid)
       ->fieldCondition('field_ca_ref', 'target_id', $ca->nid, '=');
   $result = $query->execute();
-
+  
   return isset($result['node']) ? current($result['node']) : NULL;
 
 }
