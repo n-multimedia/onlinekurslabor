@@ -90,7 +90,7 @@ function nm_section_courses_features_default_rules_configuration() {
       ],
       "DO" : [
         { "entity_fetch" : {
-            "USING" : { "type" : "node", "id" : [ "comment:node:nid" ] },
+            "USING" : { "type" : "node", "id" : { "select" : "comment:node:nid" } },
             "PROVIDE" : { "entity_fetched" : { "course_fetched" : "Course" } }
           }
         },

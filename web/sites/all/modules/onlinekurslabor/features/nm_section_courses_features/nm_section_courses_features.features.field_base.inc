@@ -187,7 +187,7 @@ function nm_section_courses_features_field_default_field_bases() {
     'locked' => 0,
     'module' => 'image',
     'settings' => array(
-      'default_image' => 310,
+      'default_image' => 188,
       'profile2_private' => FALSE,
       'uri_scheme' => 'public',
     ),
@@ -218,7 +218,7 @@ function nm_section_courses_features_field_default_field_bases() {
     'locked' => 0,
     'module' => 'image',
     'settings' => array(
-      'default_image' => 310,
+      'default_image' => 188,
       'profile2_private' => FALSE,
       'uri_scheme' => 'public',
     ),
