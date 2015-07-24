@@ -704,6 +704,35 @@ echo _section_projects_render_node_tabs($node);
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
+    $pane->pid = 'new-ed9ad104-2fc6-44b9-8338-b21a61db20d1';
+    $pane->panel = 'center';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'Create Partnerorganisation Button',
+      'title' => '',
+      'body' => '<?php
+if(user_access(\'create projects_organization content\'))
+echo \'<p><a class="btn" href="/node/add/projects-organization">Neue Partnerorganisation anlegen</a></p>\';
+
+?>',
+      'format' => 'php_code',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'ed9ad104-2fc6-44b9-8338-b21a61db20d1';
+    $display->content['new-ed9ad104-2fc6-44b9-8338-b21a61db20d1'] = $pane;
+    $display->panels['center'][0] = 'new-ed9ad104-2fc6-44b9-8338-b21a61db20d1';
+    $pane = new stdClass();
     $pane->pid = 'new-63afec16-590e-4eba-8b93-136849b63f1d';
     $pane->panel = 'center';
     $pane->type = 'views';
@@ -732,11 +761,11 @@ echo _section_projects_render_node_tabs($node);
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 0;
+    $pane->position = 1;
     $pane->locks = array();
     $pane->uuid = '63afec16-590e-4eba-8b93-136849b63f1d';
     $display->content['new-63afec16-590e-4eba-8b93-136849b63f1d'] = $pane;
-    $display->panels['center'][0] = 'new-63afec16-590e-4eba-8b93-136849b63f1d';
+    $display->panels['center'][1] = 'new-63afec16-590e-4eba-8b93-136849b63f1d';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-63afec16-590e-4eba-8b93-136849b63f1d';
   $handler->conf['display'] = $display;

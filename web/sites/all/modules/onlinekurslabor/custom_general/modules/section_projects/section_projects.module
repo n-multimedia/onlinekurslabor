@@ -741,12 +741,8 @@ function _section_projects_header_and_navigation_view() {
     $output .= "</div>";
   }
 
-if(is_numeric($arg2))
-{$node2=node_load($arg2);
-} 
   //+navigation
-  if ((is_numeric($arg2) && is_numeric($arg3) && ($arg4 == 'cockpit')) )//||($arg2=='add' && in_array($arg3, array('projects_objective','projects_documentation','projects_blog')))||(is_numeric($arg2) && $arg3=='edit'&& in_array($node2->type,array(NM_PROJECTS_KOOPERATIONSVEREINBARUNG))))
-                {
+  if (is_numeric($arg2) && is_numeric($arg3) && ($arg4 == 'cockpit')) {
     //projects overview page
     $output .= _section_projects_project_cockpit_tabs_view();
   }
@@ -904,6 +900,22 @@ function _section_projects_po_tools_view() {
           )))
           );
         }
+
+        //no context. partner organisation
+        $arg3 = arg(3);
+        if (empty($arg3)) {
+          //partner organisation edit link
+
+          //setting / edit partner organisation
+          $context_items['items'][] = array(
+            'name' => 'cooperationagreement',
+            'path' => url('projects/admin/' . $active_project->nid . '/edit'),
+            'link' => l('Partner Organi-sation', 'projects/admin/' . $active_project->nid . '/edit', array(
+              //'query' => array(
+              //  'og_group_ref' => arg(5),
+              //)
+            )));
+        }
       }
     }
 
@@ -967,6 +979,18 @@ function _section_projects_po_tools_view() {
           'name' => 'cockpit',
           'path' => url('projects/partners/' . $active_project->nid . '/' . arg(3) . '/cockpit/' . $ca->nid),
           'link' => l('Cockpit', 'projects/partners/' . $active_project->nid . '/' . arg(3) . '/cockpit/' . $ca->nid));
+
+
+        //Proposal
+        $context_items['items'][] = array(
+          'name' => 'cooperationagreement',
+          'path' => url('projects/admin/' . $proposal->nid . '/edit'),
+          'link' => l('Idee', 'projects/admin/' . $proposal->nid . '/edit', array(
+            //'query' => array(
+            //  'og_group_ref' => arg(5),
+            //)
+          )));
+
       }
 
       //context cooperation agreement set?
@@ -992,6 +1016,7 @@ function _section_projects_po_tools_view() {
               'og_group_ref' => arg(5),
         ))));
       }
+
     }
 
     $output = theme('section_projects_tools', array('node_items' => $node_items, 'context_items' => $context_items));
@@ -1372,14 +1397,12 @@ function _section_projects_render_node_tabs($node) {
     $result['link'] = l("Ansicht", $path, $options);
   }
   $tabs['overview'] = $result;
-$signing_state = _section_projects_get_signing_states_array($node->nid);
-/*alle unterschrieben ? Kein Bearbeiten*/
-if(!(((count($signing_state)==2 )&& $node->type==NM_PROJECTS_KOOPERATIONSVEREINBARUNG) || ((count($signing_state)==2) && $node->type==NM_PROJECTS_ZIELVEREINBARUNG)))
-{ $path = 'projects/admin/' . $node->nid . '/edit';
+
+  $path = 'projects/admin/' . $node->nid . '/edit';
   $result['path'] = $path;
   $result['link'] = l("Bearbeiten", $path, $options);
   $tabs['edit'] = $result;
-}
+
   return _custom_general_theme_tools_block($tabs, "content_node_tabs", "btn-grop");
 }
 
@@ -2111,25 +2134,6 @@ function section_projects_form_alter(&$form, &$form_state, $form_id) {
   if(!empty($form['#node_edit_form']) && strstr($form['type']['#value'], 'projects_')) {
     unset($form['book']);
   }
-}
-function _section_projects_get_signing_states_array($node_id)
-{
-    $the_node =  node_load($node_id);
-     $signing_state = @$the_node->field_seal;
-     if(!$signing_state)
-         return false;
-     
-    $signing_state = (int) ($signing_state['und'][0]['value']);
-
-    $signatures = array();
-    if (($signing_state & bindec('100')) == bindec('100'))
-        $signatures[] = 'dozent';
-    if (($signing_state & bindec('010')) == bindec('010'))
-        $signatures[] = 'student';
-    if (($signing_state & bindec('001')) == bindec('001'))
-        $signatures[] = 'partner';
-    return $signatures;
-
 }
 
 function section_projects_sign_inform_action($entity, $context)

@@ -266,7 +266,7 @@ Instructor's Tools
     position:absolute;
     right:0;
     background-color: rgba(200,200,200, 0.3);
-    z-index: 1;
+    z-index: 500;
 }
 
 #instructors_tools-container ul{
@@ -690,7 +690,7 @@ Project's Tools
     position:absolute;
     right:0;
     background-color: rgba(200,200,200, 0.3);
-    z-index: 1000;
+    z-index: 500;
 }
 
 #projects_tools-container ul{
