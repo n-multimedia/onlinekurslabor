@@ -112,7 +112,6 @@ function _section_projects_get_cooperation_agreements($proposal, $account = NULL
  */
 function _section_projects_get_objective_by_ca($ca) {
 
-
   //kooperationsvereinbarungen holen, die dem proposal zugeordnet sind
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')

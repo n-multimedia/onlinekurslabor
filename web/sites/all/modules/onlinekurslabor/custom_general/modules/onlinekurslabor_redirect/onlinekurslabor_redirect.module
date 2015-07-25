@@ -7,7 +7,6 @@
 
 function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
 
-  
   //check if we are in node/%nid/context
   if (arg(0) != 'node' || arg(2) == 'revisions') {
     return;
@@ -45,7 +44,7 @@ function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
    *  END NEW LOGICs
    * 18.09.2014 - 17:34 - SN
    */
- 
+
   return;
   
   $active_course = _section_courses_get_active_course();
