@@ -14,14 +14,14 @@ function nm_stream_node_access_records($node) {
 
     switch ($privacy) {
       case NM_STREAM_PRIVATE:
-        $grants[] = array(
+        /*$grants[] = array(
           'realm' => 'all',
           'gid' => 0,
           'grant_view' => 0,
           'grant_update' => 0,
           'grant_delete' => 0,
           'priority' => 1,
-        );
+        );*/
         $grants[] = array(
           'realm' => 'nm_stream_private',
           'gid' => $node->uid,
@@ -37,14 +37,14 @@ function nm_stream_node_access_records($node) {
         $context_type = _custom_general_get_node_type($context_nid);
         switch ($context_type) {
           case NM_COURSE_GROUP:
-            $grants[] = array(
+            /*$grants[] = array(
               'realm' => 'all',
               'gid' => 0,
               'grant_view' => 0,
               'grant_update' => 0,
               'grant_delete' => 0,
               'priority' => 1,
-            );
+            );*/
             $grants[] = array(
               'realm' => 'nm_stream_team',
               'gid' => $context_nid,
@@ -69,14 +69,14 @@ function nm_stream_node_access_records($node) {
               $course_nid = current(current($entities));
             }
 
-            $grants[] = array(
+            /*$grants[] = array(
               'realm' => 'all',
               'gid' => 0,
               'grant_view' => 0,
               'grant_update' => 0,
               'grant_delete' => 0,
               'priority' => 1,
-            );
+            );*/
             $grants[] = array(
               'realm' => 'nm_stream_course',
               'gid' => $course_nid,
