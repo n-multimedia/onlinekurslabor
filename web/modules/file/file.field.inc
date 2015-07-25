@@ -92,6 +92,7 @@ function file_field_instance_settings_form($field, $instance) {
     '#description' => t('Separate extensions with a space or comma and do not include the leading dot.'),
     '#element_validate' => array('_file_generic_settings_extensions'),
     '#weight' => 1,
+    '#maxlength' => 256,
     // By making this field required, we prevent a potential security issue
     // that would allow files of any type to be uploaded.
     '#required' => TRUE,
@@ -251,6 +252,12 @@ function file_field_insert($entity_type, $entity, $field, $instance, $langcode, 
  * Checks for files that have been removed from the object.
  */
 function file_field_update($entity_type, $entity, $field, $instance, $langcode, &$items) {
+  // Check whether the field is defined on the object.
+  if (!isset($entity->{$field['field_name']})) {
+    // We cannot check for removed files if the field is not defined.
+    return;
+  }
+
   list($id, $vid, $bundle) = entity_extract_ids($entity_type, $entity);
 
   // On new revisions, all files are considered to be a new usage and no
@@ -768,7 +775,7 @@ function file_field_widget_submit($form, &$form_state) {
   $langcode = $element['#language'];
   $parents = $element['#field_parents'];
 
-  $submitted_values = drupal_array_get_nested_value($form_state['values'], array_slice($button['#array_parents'], 0, -2));
+  $submitted_values = drupal_array_get_nested_value($form_state['values'], array_slice($button['#parents'], 0, -2));
   foreach ($submitted_values as $delta => $submitted_value) {
     if (!$submitted_value['fid']) {
       unset($submitted_values[$delta]);
@@ -779,7 +786,7 @@ function file_field_widget_submit($form, &$form_state) {
   $submitted_values = array_values($submitted_values);
 
   // Update form_state values.
-  drupal_array_set_nested_value($form_state['values'], array_slice($button['#array_parents'], 0, -2), $submitted_values);
+  drupal_array_set_nested_value($form_state['values'], array_slice($button['#parents'], 0, -2), $submitted_values);
 
   // Update items.
   $field_state = field_form_get_state($parents, $field_name, $langcode, $form_state);

@@ -1,4 +1,228 @@
 
+Drupal 7.38, 2015-06-17
+-----------------------
+- Fixed security issues (multiple vulnerabilities). See SA-CORE-2015-002.
+
+Drupal 7.37, 2015-05-07
+-----------------------
+- Fixed a regression in Drupal 7.36 which caused certain kinds of content types
+  to become disabled if they were defined by a no-longer-enabled module.
+- Removed a confusing description regarding automatic time zone detection from
+  the user account form (minor UI and data structure change).
+- Allowed custom HTML tags with a dash in the name to pass through filter_xss()
+  when specified in the list of allowed tags.
+- Allowed hook_field_schema() implementations to specify indexes for fields
+  based on a fixed-length column prefix (rather than the entire column), as was
+  already allowed in hook_schema() implementations.
+- Fixed PDO exceptions on PostgreSQL when accessing invalid entity URLs.
+- Added a sites/all/libraries folder to the codebase, with instructions for
+  using it.
+- Added a description to the "Administer text formats and filters" permission
+  on the Permissions page (string change).
+- Numerous small bug fixes.
+- Numerous API documentation improvements.
+- Additional automated test coverage.
+
+Drupal 7.36, 2015-04-01
+-----------------------
+- Added a 'file_public_schema' variable which allows modules that define
+  publicly-accessible streams in hook_stream_wrappers() to bypass file download
+  access checks when processing managed file upload fields.
+- Fixed a bug that caused database query tags not to be added to search-related
+  database queries under many circumstances, and which prevented the
+  corresponding hook_query_TAG_alter() implementations from being called.
+- Fixed the "for" attribute on managed file upload field labels to improve
+  accessibility (minor markup change).
+- Added a 'javascript_always_use_jquery' variable which can be set to FALSE by
+  sites that may not need jQuery loaded on all pages, and a 'requires_jquery'
+  option to drupal_add_js() which modules can set to FALSE when adding
+  JavaScript files that have no dependency on jQuery (API addition:
+  https://www.drupal.org/node/2462717).
+- Fixed incorrect foreign keys in the User module's role_permission and
+  users_roles database tables.
+- Changed permission descriptions throughout Drupal core to consistently link
+  to relevant administrative pages, regardless of whether the user viewing the
+  Permissions page can view the page being linked to (minor UI change).
+- Fixed the drupal_add_region_content() function so that it actually adds
+  content to the page.
+- Added an 'image_suppress_itok_output' variable to allow sites already using
+  the existing 'image_allow_insecure_derivatives' variable to also prevent
+  security tokens from appearing in image derivative URLs.
+- Fixed double-escaping of theme names in the Block module administrative
+  interface (minor string change).
+- Added basic support for Xdebug when running automated tests.
+- Fixed a bug which caused previewing a node to remove elements from the node
+  being edited. With this fix, calling node_preview() will no longer modify the
+  passed-in node object (minor API change).
+- Added a user_has_role() function to check whether a user has a particular
+  role (API addition: https://www.drupal.org/node/2462411).
+- Fixed installation failures when an opcode cache is enabled.
+- Fixed a bug in the Drupal 6 to Drupal 7 upgrade path which caused private
+  files to be inaccessible.
+- Fixed a bug in the Drupal 6 to Drupal 7 upgrade path which caused user
+  pictures to be lost.
+- Fixed missing language code in hook_field_attach_view_alter() when it is
+  invoked from field_view_field().
+- Stopped sending ETag and Last-Modified headers for uncached page requests,
+  since they break caching for certain Varnish and Nginx configurations.
+- Changed the Simpletest module to allow PSR-4 test classes to be used in
+  Drupal 7.
+- Fixed a fatal error that occurred when using the Comment module's "Unpublish
+  comment containing keyword(s)" action.
+- Changed the "lang" attribute on language links to "xml:lang" so it validates
+  as XHTML (minor markup change).
+- Prevented the form API from allowing arrays to be submitted for various form
+  elements, such as textfields, textareas, and password fields (API change:
+  https://www.drupal.org/node/2462723).
+- Fixed a bug in the Contact module which caused the global user object to have
+  the incorrect name and e-mail address during the remainder of the page
+  request after the contact form is submitted.
+- Numerous small bug fixes.
+- Numerous API documentation improvements.
+- Additional automated test coverage.
+
+Drupal 7.35, 2015-03-18
+----------------------
+- Fixed security issues (multiple vulnerabilities). See SA-CORE-2015-001.
+
+Drupal 7.34, 2014-11-19
+----------------------
+- Fixed security issues (multiple vulnerabilities). See SA-CORE-2014-006.
+
+Drupal 7.33, 2014-11-07
+-----------------------
+- Began storing the file modification time of each module and theme in the
+  {system} database table so that contributed modules can use it to identify
+  recently changed modules and themes (minor data structure change to the
+  return value of system_get_info() and other related functions).
+- Added a "Did you mean?" feature to the run-tests.sh script for running
+  automated tests from the command line, to help developers who are attempting
+  to run a particular test class or group.
+- Changed the date format used in various HTTP headers output by Drupal core
+  from RFC 1123 format to RFC 7231 format.
+- Added a "block_cache_bypass_node_grants" variable to allow sites which have
+  node access modules enabled to use the block cache if desired (API addition).
+- Made image derivative generation HTTP requests return a 404 error (rather
+  than a 500 error) when the source image does not exist.
+- Fixed a bug which caused user pictures to be removed from the user object
+  after saving, and resulted in data loss if the user account was subsequently
+  re-saved.
+- Fixed a bug in which field_has_data() did not return TRUE for fields that
+  only had data in older entity revisions, leading to loss of the field's data
+  when the field configuration was edited.
+- Fixed a bug which caused the Ajax progress throbber to appear misaligned in
+  many situatons (minor styling change).
+- Prevented the Bartik theme from lower-casing the "Permalink" link on
+  comments, for improved multilingual support (minor UI change).
+- Added a "preferred_menu_links" tag to the database query that is used by
+  menu_link_get_preferred() to find the preferred menu link for a given path,
+  to make it easier to alter.
+- Increased the maximum allowed length of block titles to 255 characters
+  (database schema change to the {block} table).
+- Removed the Field module's field_modules_uninstalled() function, since it did
+  not do anything when it was invoked.
+- Added a "theme_hook_original" variable to templates and theme functions and
+  an optional sitewide theme debug mode, to provide contextual information in
+  the page's HTML to theme developers. The theme debug mode is based on the one
+  used with Twig in Drupal 8 and can be accessed by setting the "theme_debug"
+  variable to TRUE (API addition).
+- Added an entity_view_mode_prepare() API function to allow entity-defining
+  modules to properly invoke hook_entity_view_mode_alter(), and used it
+  throughout Drupal core to fix bugs with the invocation of that hook (API
+  change: https://www.drupal.org/node/2369141).
+- Security improvement: Made the database API's orderBy() method sanitize the
+  sort direction ("ASC" or "DESC") for queries built with db_select(), so that
+  calling code does not have to.
+- Changed the RDF module to consistently output RDF metadata for nodes and
+  comments near where the node is rendered in the HTML (minor markup and data
+  structure change).
+- Added an HTML class to RDFa metatags throughout Drupal to prevent them from
+  accidentally affecting the site appearance (minor markup change).
+- Fixed a bug in the Unicode requirements check which prevented installing
+  Drupal on PHP 5.6.
+- Fixed a bug which caused drupal_get_bootstrap_phase() to abort the bootstrap
+  when called early in the page request.
+- Renamed the "Search result" view mode to "Search result highlighting input"
+  to better reflect how it is used (UI change).
+- Improved database queries generated by EntityFieldQuery in the case where
+  delta or language condition groups are used, to reduce the number of INNER
+  JOINs (this is a minor data structure change affecting code which implements
+  hook_query_alter() on these queries).
+- Removed special-case behavior for file uploads which allowed user #1 to
+  bypass maximum file size and user quota limits.
+- Numerous small bug fixes.
+- Numerous API documentation improvements.
+- Additional automated test coverage.
+
+Drupal 7.32, 2014-10-15
+----------------------
+- Fixed security issues (SQL injection). See SA-CORE-2014-005.
+
+Drupal 7.31, 2014-08-06
+----------------------
+- Fixed security issues (denial of service). See SA-CORE-2014-004.
+
+Drupal 7.30, 2014-07-24
+-----------------------
+- Fixed a regression introduced in Drupal 7.29 that caused files or images
+  attached to taxonomy terms to be deleted when the taxonomy term was edited
+  and resaved (and other related bugs with contributed and custom modules).
+- Added a warning on the permissions page to recommend restricting access to
+  the "View site reports" permission to trusted administrators. See
+  DRUPAL-PSA-2014-002.
+- Numerous API documentation improvements.
+- Additional automated test coverage.
+
+Drupal 7.29, 2014-07-16
+----------------------
+- Fixed security issues (multiple vulnerabilities). See SA-CORE-2014-003.
+
+Drupal 7.28, 2014-05-08
+-----------------------
+- Fixed a regression introduced in Drupal 7.27 that caused JavaScript to break
+  on older browsers (such as Internet Explorer 8 and earlier) when Ajax was
+  used.
+- Increased the timeout used by the Update Manager module when it fetches data
+  from drupal.org (from 5 seconds to 30 seconds), to work around a problem
+  which causes incomplete information about security updates to be presented to
+  site administrators. This fix may lead to a performance slowdown on the
+  Update Manager administration pages, when installing Drupal distributions,
+  and (for sites that use the automated cron feature) on occasional page loads
+  by site visitors.
+- Fixed the behavior of the token system's "[node:summary]" token when the body
+  field does not have a manual summary.
+- Changed the behavior of db_query_temporary() so that it works on SELECT
+  queries even when they have leading comments/whitespace. A side effect of
+  this fix is that db_query_temporary() will now fail with an error if it is
+  ever used on non-SELECT queries.
+- Added a "node_admin_filter" tag to the database query used to build the list
+  of nodes on the content administration page, to make it easier to alter.
+- Made the cron queue system log any exceptions that are thrown while an item
+  in the queue is being processed, rather than stopping the entire PHP request.
+- Improved screen reader support by adding an aria-live HTML attribute to file
+  upload fields when there is an error uploading the file (minor markup
+  change).
+- Made the pager on the Tracker module listing pages show the same number of
+  items as other pagers throughout Drupal core (minor UI change).
+- Fixed a bug which caused caches not to be properly cleared when a file entity
+  was saved or deleted.
+- Added several missing countries to the default list returned by
+  country_get_list() (string change).
+- Replaced the term "weight" with "influence" in the content ranking settings
+  for search, and added help text for administrators (string change).
+- Fixed untranslatable text strings in the administrative interface for the
+  "Crop" effect provided by the Image module (minor string change).
+- Fixed a bug in the Taxonomy module update function introduced in Drupal 7.26
+  that caused memory and CPU problems on sites with very large numbers of
+  unpublished nodes.
+- Numerous small bug fixes.
+- Numerous API documentation improvements.
+- Additional automated test coverage.
+
+Drupal 7.27, 2014-04-16
+----------------------
+- Fixed security issues (information disclosure). See SA-CORE-2014-002.
+
 Drupal 7.26, 2014-01-15
 ----------------------
 - Fixed security issues (multiple vulnerabilities). See SA-CORE-2014-001.

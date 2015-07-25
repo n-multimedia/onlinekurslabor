@@ -28,7 +28,9 @@ interface DrupalEntityControllerInterface {
    * @param $ids
    *   An array of entity IDs, or FALSE to load all entities.
    * @param $conditions
-   *   An array of conditions in the form 'field' => $value.
+   *   An array of conditions. Keys are field names on the entity's base table.
+   *   Values will be compared for equality. All the comparisons will be ANDed
+   *   together. This parameter is deprecated; use an EntityFieldQuery instead.
    *
    * @return
    *   An array of entity objects indexed by their ids. When no results are
@@ -46,7 +48,7 @@ interface DrupalEntityControllerInterface {
 class DrupalDefaultEntityController implements DrupalEntityControllerInterface {
 
   /**
-   * Static cache of entities.
+   * Static cache of entities, keyed by entity ID.
    *
    * @var array
    */
@@ -181,6 +183,11 @@ class DrupalDefaultEntityController implements DrupalEntityControllerInterface {
       }
     }
 
+    // Ensure integer entity IDs are valid.
+    if (!empty($ids)) {
+      $this->cleanIds($ids);
+    }
+
     // Load any remaining entities from the database. This is the case if $ids
     // is set to FALSE (so we load all entities), if there are any ids left to
     // load, if loading a revision, or if $conditions was passed without $ids.
@@ -222,6 +229,35 @@ class DrupalDefaultEntityController implements DrupalEntityControllerInterface {
   }
 
   /**
+   * Ensures integer entity IDs are valid.
+   *
+   * The identifier sanitization provided by this method has been introduced
+   * as Drupal used to rely on the database to facilitate this, which worked
+   * correctly with MySQL but led to errors with other DBMS such as PostgreSQL.
+   *
+   * @param array $ids
+   *   The entity IDs to verify. Non-integer IDs are removed from this array if
+   *   the entity type requires IDs to be integers.
+   */
+  protected function cleanIds(&$ids) {
+    $entity_info = entity_get_info($this->entityType);
+    if (isset($entity_info['base table field types'])) {
+      $id_type = $entity_info['base table field types'][$this->idKey];
+      if ($id_type == 'serial' || $id_type == 'int') {
+        $ids = array_filter($ids, array($this, 'filterId'));
+        $ids = array_map('intval', $ids);
+      }
+    }
+  }
+
+  /**
+   * Callback for array_filter that removes non-integer IDs.
+   */
+  protected function filterId($id) {
+    return is_numeric($id) && $id == (int) $id;
+  }
+
+  /**
    * Builds the query to load the entity.
    *
    * This has full revision support. For entities requiring special queries,
@@ -236,7 +272,9 @@ class DrupalDefaultEntityController implements DrupalEntityControllerInterface {
    * @param $ids
    *   An array of entity IDs, or FALSE to load all entities.
    * @param $conditions
-   *   An array of conditions in the form 'field' => $value.
+   *   An array of conditions. Keys are field names on the entity's base table.
+   *   Values will be compared for equality. All the comparisons will be ANDed
+   *   together. This parameter is deprecated; use an EntityFieldQuery instead.
    * @param $revision_id
    *   The ID of the revision to load, or FALSE if this query is asking for the
    *   most current revision(s).
@@ -360,9 +398,23 @@ class DrupalDefaultEntityController implements DrupalEntityControllerInterface {
     // This ensures the same behavior whether loading from memory or database.
     if ($conditions) {
       foreach ($entities as $entity) {
-        $entity_values = (array) $entity;
-        if (array_diff_assoc($conditions, $entity_values)) {
-          unset($entities[$entity->{$this->idKey}]);
+        // Iterate over all conditions and compare them to the entity
+        // properties. We cannot use array_diff_assoc() here since the
+        // conditions can be nested arrays, too.
+        foreach ($conditions as $property_name => $condition) {
+          if (is_array($condition)) {
+            // Multiple condition values for one property are treated as OR
+            // operation: only if the value is not at all in the condition array
+            // we remove the entity.
+            if (!in_array($entity->{$property_name}, $condition)) {
+              unset($entities[$entity->{$this->idKey}]);
+              continue 2;
+            }
+          }
+          elseif ($condition != $entity->{$property_name}) {
+            unset($entities[$entity->{$this->idKey}]);
+            continue 2;
+          }
         }
       }
     }

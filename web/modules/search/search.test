@@ -11,6 +11,9 @@ define('SEARCH_TYPE', '_test_');
 define('SEARCH_TYPE_2', '_test2_');
 define('SEARCH_TYPE_JPN', '_test3_');
 
+/**
+ * Indexes content and queries it.
+ */
 class SearchMatchTestCase extends DrupalWebTestCase {
   public static function getInfo() {
     return array(
@@ -307,6 +310,9 @@ class SearchPageText extends DrupalWebTestCase {
   }
 }
 
+/**
+ * Indexes content and tests the advanced search form.
+ */
 class SearchAdvancedSearchForm extends DrupalWebTestCase {
   protected $node;
 
@@ -370,6 +376,9 @@ class SearchAdvancedSearchForm extends DrupalWebTestCase {
   }
 }
 
+/**
+ * Indexes content and tests ranking factors.
+ */
 class SearchRankingTestCase extends DrupalWebTestCase {
   public static function getInfo() {
     return array(
@@ -580,6 +589,9 @@ class SearchRankingTestCase extends DrupalWebTestCase {
   }
 }
 
+/**
+ * Tests the rendering of the search block.
+ */
 class SearchBlockTestCase extends DrupalWebTestCase {
   public static function getInfo() {
     return array(
@@ -727,7 +739,7 @@ class SearchCommentTestCase extends DrupalWebTestCase {
   public static function getInfo() {
     return array(
       'name' => 'Comment Search tests',
-      'description' => 'Verify text formats and filters used elsewhere.',
+      'description' => 'Test integration searching comments.',
       'group' => 'Search',
     );
   }
@@ -2033,6 +2045,47 @@ class SearchNodeAccessTest extends DrupalWebTestCase {
     $edit = array('keys' => '"bunny\'s"');
     $this->drupalPost('search/node', $edit, t('Search'));
     $this->assertText($node->title);
+  }
+}
+
+/**
+ * Tests node search with query tags.
+ */
+class SearchNodeTagTest extends DrupalWebTestCase {
+  public $test_user;
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Node search query tags',
+      'description' => 'Tests Node search tags functionality.',
+      'group' => 'Search',
+    );
+  }
+
+  function setUp() {
+    parent::setUp('search', 'search_node_tags');
+    node_access_rebuild();
+
+    // Create a test user and log in.
+    $this->test_user = $this->drupalCreateUser(array('search content'));
+    $this->drupalLogin($this->test_user);
+  }
+
+  /**
+   * Tests that the correct tags are available and hooks invoked.
+   */
+  function testNodeSearchQueryTags() {
+    $this->drupalCreateNode(array('body' => array(LANGUAGE_NONE => array(array('value' => 'testing testing testing.')))));
+
+    // Update the search index.
+    module_invoke_all('update_index');
+    search_update_totals();
+
+    $edit = array('keys' => 'testing');
+    $this->drupalPost('search/node', $edit, t('Search'));
+
+    $this->assertTrue(variable_get('search_node_tags_test_query_tag', FALSE), 'hook_query_alter() was invoked and the query contained the "search_node" tag.');
+    $this->assertTrue(variable_get('search_node_tags_test_query_tag_hook', FALSE), 'hook_query_search_node_alter() was invoked.');
   }
 }
 
