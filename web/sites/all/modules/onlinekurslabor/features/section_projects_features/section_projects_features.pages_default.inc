@@ -233,7 +233,7 @@ function section_projects_features_default_page_manager_pages() {
         ),
         'context' => array(
           0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_3',
+          1 => 'argument_entity_id:node_4',
         ),
         'not' => FALSE,
       ),

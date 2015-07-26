@@ -118,7 +118,10 @@ function _section_projects_get_objective_by_ca($ca) {
       ->entityCondition('bundle', NM_PROJECTS_ZIELVEREINBARUNG)
       ->propertyCondition('status', 1)
       // ->propertyCondition('uid', $uid)
-      ->fieldCondition('field_ca_ref', 'target_id', $ca->nid, '=');
+      ->fieldCondition('field_ca_ref', 'target_id', $ca->nid, '=')
+      //CAUTION ignoring Access, because it does not work properly!
+      //25.07.2015 - 16:00 - SN. Not critical
+  ->addMetaData('account', user_load(1));
   $result = $query->execute();
 
   return isset($result['node']) ? current($result['node']) : NULL;

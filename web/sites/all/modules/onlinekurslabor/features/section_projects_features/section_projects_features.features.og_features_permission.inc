@@ -2296,7 +2296,7 @@ function section_projects_features_og_features_default_permissions() {
   // Exported og permission: 'node:projects_organization:create projects_proposal content'
   $permissions['node:projects_organization:create projects_proposal content'] = array(
     'roles' => array(
-      'non-member' => 'non-member',
+      'member' => 'member',
     ),
   );
 
@@ -2406,9 +2406,7 @@ function section_projects_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:projects_organization:delete any projects_proposal content'
   $permissions['node:projects_organization:delete any projects_proposal content'] = array(
-    'roles' => array(
-      'non-member' => 'non-member',
-    ),
+    'roles' => array(),
   );
 
   // Exported og permission: 'node:projects_organization:delete any webform content'
@@ -2518,7 +2516,7 @@ function section_projects_features_og_features_default_permissions() {
   // Exported og permission: 'node:projects_organization:delete own projects_proposal content'
   $permissions['node:projects_organization:delete own projects_proposal content'] = array(
     'roles' => array(
-      'non-member' => 'non-member',
+      'member' => 'member',
     ),
   );
 
@@ -2687,7 +2685,7 @@ function section_projects_features_og_features_default_permissions() {
   // Exported og permission: 'node:projects_organization:update any projects_proposal content'
   $permissions['node:projects_organization:update any projects_proposal content'] = array(
     'roles' => array(
-      'non-member' => 'non-member',
+      'member' => 'member',
     ),
   );
 
@@ -3300,7 +3298,7 @@ function section_projects_features_og_features_default_permissions() {
   // Exported og permission: 'node:projects_organization:update own projects_proposal content'
   $permissions['node:projects_organization:update own projects_proposal content'] = array(
     'roles' => array(
-      'non-member' => 'non-member',
+      'member' => 'member',
     ),
   );
 
