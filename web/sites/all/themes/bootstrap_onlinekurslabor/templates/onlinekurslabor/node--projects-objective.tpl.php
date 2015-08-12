@@ -1,6 +1,7 @@
-<article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
+<article id="node-<?php print $node->nid; ?>"
+         class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
-   
+
   <!--
   <header>
     <?php print render($title_prefix); ?>
@@ -18,35 +19,43 @@
   </header>
   -->
   <?php
-    // Hide comments, tags, and links now so that we can render them later.
-    hide($content['comments']);
-    hide($content['links']);
-    hide($content['field_tags']);
- 
-    $fields_for_objective = array('field_objective_motivation' , 'field_objective_task' ,'field_objective_matching'   );
+  // Hide comments, tags, and links now so that we can render them later.
+  hide($content['comments']);
+  hide($content['links']);
+  hide($content['field_tags']);
+
+  $fields_for_objective = array(
+    'field_objective_motivation',
+    'field_objective_task',
+    'field_objective_matching'
+  );
+  ?>
+  <table cellspacing="0" cellpadding="3" width="100%"
+         class="node--projects-objective">
+    <tr>
+      <td width="90%">
+        <? ?>
+      </td>
+      <td>
+        <? print render($content['field_ca_ref']); ?>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <? print render($content['body']); ?>
+      </td>
+    </tr>
+    <?
+    foreach ($fields_for_objective as $field) {
+      echo '<tr><td colspan="2">';
+      print render($content[$field]);
+      echo '</tr></td>';
+    }
     ?>
-  <table cellspacing="0" cellpadding="3" width="100%"class="node--projects-objective" >
-   <tr>
-                  <td width="90%">
-                    
-                  <? ?>
-                  </td>
-                  <td>
-                   <?   print render ($content['field_ca_ref']);?>
-                  </td>
-              </tr>
-         <?
-          foreach($fields_for_objective as $field)
-          {
-              echo '<tr><td colspan="2">';
-                  print render($content[$field]);
-              echo '</tr></td>';
-          }
-        ?>
-   </table>
+  </table>
   <br>
   <br>
-<?
+  <?
   #  print render($content);
   ?>
 

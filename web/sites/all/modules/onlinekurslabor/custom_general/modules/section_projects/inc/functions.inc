@@ -49,43 +49,78 @@ function _section_projects_get_cooperation_agreements($proposal, $account = NULL
   $result = $query->execute();
 
   //dpm($result);
-
   if (isset($result['node'])) {
     foreach ($result['node'] as $ca) {
       $ca = node_load($ca->nid);
-      $ca_course_group_ref = field_get_items('node', $ca, 'field_ca_course_group_ref');
-      $ca_student_refs = field_get_items('node', $ca, 'field_ca_student_refs');
+      //$ca_course_group_ref = field_get_items('node', $ca, 'field_ca_course_group_ref');
+      //$ca_student_refs = field_get_items('node', $ca, 'field_ca_student_refs');
 
-      //dpm($ca_course_group_ref);
-      //dpm($ca_student_refs);
+      //distinguish role
+      //Admin
+      if(in_array(NM_ROLE_ADMIN, $user->roles)) {
+        if(_section_projects_seal_user_is_responsible_dozent($account, $ca)) {
+          $result_cas[] = $ca;
+          break;
+        }
+      }
 
-      //check if cooperation agreement is assigned to a course
-      //group the active user is in
-      if (!empty($ca_course_group_ref)) {
-        foreach ($ca_course_group_ref as $cg) {
-          $users_cgs = _section_projects_get_coursegroups($account);
-          //dpm($users_cgs);
-          foreach ($users_cgs as $user_cg) {
-            if ($user_cg->nid == $cg['target_id']) {
-              //match
-              $result_cas[] = $ca;
-              break 2;
+      //Dozenz
+      if(in_array(NM_ROLE_DOZENT, $user->roles)) {
+        if(_section_projects_seal_user_is_responsible_dozent($account, $ca)) {
+          $result_cas[] = $ca;
+          break;
+        }
+      }
+
+      //Student
+      if(in_array(NM_ROLE_STUDENT, $user->roles)) {
+        if(_section_projects_seal_user_is_responsible_student($account, $ca)) {
+          $result_cas[] = $ca;
+          break;
+        }
+      }
+
+      //Kooperationspartner
+      if(in_array(NM_ROLE_KOOPERATIONSPARTNER, $user->roles)) {
+
+        if(_section_projects_seal_user_is_responsible_kooperationspartner($account, $ca)) {
+          $result_cas[] = $ca;
+          break;
+        }
+      }
+
+
+
+        /*
+        //check if cooperation agreement is assigned to a course
+        //group the active user is in
+        if (!empty($ca_course_group_ref)) {
+          foreach ($ca_course_group_ref as $cg) {
+            $users_cgs = _section_projects_get_coursegroups($account);
+            //dpm($users_cgs);
+            foreach ($users_cgs as $user_cg) {
+              if ($user_cg->nid == $cg['target_id']) {
+                //match
+                $result_cas[] = $ca;
+                break 2;
+              }
             }
           }
         }
-      }
 
-      //check if cooperation agreement is assigned directly
-      //to the active user
-      if (!empty($ca_student_refs)) {
-        foreach ($ca_student_refs as $cs) {
-          if ($account->uid == $cs['target_id']) {
-            //match
-            $result_cas[] = $ca;
-            break 1;
+        //check if cooperation agreement is assigned directly
+        //to the active user
+        if (!empty($ca_student_refs)) {
+          foreach ($ca_student_refs as $cs) {
+            if ($account->uid == $cs['target_id']) {
+              //match
+              $result_cas[] = $ca;
+              break 1;
+            }
           }
-        }
-      }
+        }*/
+
+
     }
   }
 
@@ -118,10 +153,10 @@ function _section_projects_get_objective_by_ca($ca) {
       ->entityCondition('bundle', NM_PROJECTS_ZIELVEREINBARUNG)
       ->propertyCondition('status', 1)
       // ->propertyCondition('uid', $uid)
-      ->fieldCondition('field_ca_ref', 'target_id', $ca->nid, '=')
+      ->fieldCondition('field_ca_ref', 'target_id', $ca->nid, '=');
       //CAUTION ignoring Access, because it does not work properly!
       //25.07.2015 - 16:00 - SN. Not critical
-  ->addMetaData('account', user_load(1));
+  //->addMetaData('account', user_load(1));
   $result = $query->execute();
 
   return isset($result['node']) ? current($result['node']) : NULL;
@@ -135,7 +170,6 @@ function _section_projects_get_objective_by_ca($ca) {
  */
 function _section_projects_get_documentation_by_ca($ca) {
 
-
   //kooperationsvereinbarungen holen, die dem proposal zugeordnet sind
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
@@ -143,6 +177,7 @@ function _section_projects_get_documentation_by_ca($ca) {
       ->propertyCondition('status', 1)
       // ->propertyCondition('uid', $uid)
       ->fieldCondition('field_ca_ref', 'target_id', $ca->nid, '=');
+  //->addMetaData('account', user_load(1));
   $result = $query->execute();
 
   return isset($result['node']) ? current($result['node']) : NULL;

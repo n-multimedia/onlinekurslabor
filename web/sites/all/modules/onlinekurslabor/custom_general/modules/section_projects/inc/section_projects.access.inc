@@ -9,12 +9,30 @@
 /* Implements hook_node_access_records().
 */
 function section_projects_node_access_records($node) {
-  $grants =  array();
+  $grants = array();
 
   //project specific entries
   //ca, doc, objective
-  if (in_array($node->type,
-    array(NM_PROJECTS_DOKUMENTATION, NM_PROJECTS_KOOPERATIONSVEREINBARUNG, NM_PROJECTS_ZIELVEREINBARUNG))) {
+  if (in_array($node->type, array(
+    NM_PROJECTS_DOKUMENTATION,
+    NM_PROJECTS_ZIELVEREINBARUNG
+  ))) {
+    //set ca nid
+
+    if (!empty($node->field_ca_ref[LANGUAGE_NONE][0]['target_id'])) {
+      $ca_node_nid = $node->field_ca_ref[LANGUAGE_NONE][0]['target_id'];
+      $grants[] = array(
+        'realm' => 'section_projects_ca',
+        'gid' => $ca_node_nid,
+        'grant_view' => 1,
+        'grant_update' => 0,
+        'grant_delete' => 0,
+        'priority' => 1,
+      );
+    }
+  }
+  if ($node->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
+    //set ca nid
     $grants[] = array(
       'realm' => 'section_projects_ca',
       'gid' => $node->nid,
@@ -26,13 +44,13 @@ function section_projects_node_access_records($node) {
   }
 
   //Blog entries
-  if($node->type === NM_PROJECTS_TAGEBUCH) {
+  if ($node->type === NM_PROJECTS_TAGEBUCH) {
     $privacy = NULL;
-    if(!empty($node->field_nm_privacy)) {
+    if (!empty($node->field_nm_privacy)) {
       $privacy = $node->field_nm_privacy['und'][0]['value'];
 
     }
-    if(!$privacy) {
+    if (!$privacy) {
       return $grants;
     }
 
@@ -117,17 +135,19 @@ function section_projects_node_grants($account, $op) {
   }
 
 
+  $grants['section_projects_nm_stream_public'][] = 1;
+
   //grant access to users concerning all blog entries published to the whole project
   //course -> course-group -> cooperation agreement
 
-  if(in_array(NM_ROLE_STUDENT , $account->roles) || in_array(NM_ROLE_DOZENT , $account->roles)) {
+  if (in_array(NM_ROLE_STUDENT, $account->roles) || in_array(NM_ROLE_DOZENT, $account->roles)) {
     $cas = _section_projects_get_all_cooperation_agreements();
-    if(!empty($cas)) {
+    if (!empty($cas)) {
       foreach ($cas as $key => $ca) {
         $ca = node_load($ca->nid);
         //STUDENTS ONLY
-        if(in_array(NM_ROLE_STUDENT , $account->roles)) {
-          if(_section_projects_seal_user_is_responsible_student($account, $ca)) {
+        if (in_array(NM_ROLE_STUDENT, $account->roles)) {
+          if (_section_projects_seal_user_is_responsible_student($account, $ca)) {
             $grants['section_projects_nm_stream_project'][] = $ca->nid;
             //grant access for ca and its content
             $grants['section_projects_ca'][] = $ca->nid;
@@ -147,35 +167,34 @@ function section_projects_node_grants($account, $op) {
         }
 
         //DOZENT ONLY
-        if(in_array(NM_ROLE_DOZENT, $account->roles)) {
-          if(_section_projects_seal_user_is_responsible_dozent($account, $ca)) {
+        if (in_array(NM_ROLE_DOZENT, $account->roles)) {
+          if (_section_projects_seal_user_is_responsible_dozent($account, $ca)) {
             $grants['section_projects_nm_stream_team'][] = $ca->nid;
+            $grants['section_projects_ca'][] = $ca->nid;
+            $grants['section_projects_nm_stream_project'][] = $ca->nid;
           }
         }
 
 
       }
     }
-  }else if(in_array(NM_ROLE_DOZENT , $account->roles)){
-    $cas = _section_projects_get_all_cooperation_agreements($account);
-    if(!empty($cas)){
-      foreach ($cas as $key => $ca) {
-        $ca = node_load($ca->nid);
-        if(_section_projects_seal_user_is_responsible_dozent($account, $ca)) {
-          $grants['section_projects_nm_stream_project'][] = $ca->nid;
+  }
+  else {
+    if (in_array(NM_ROLE_KOOPERATIONSPARTNER, $account->roles)) {
+      $cas = _section_projects_get_all_cooperation_agreements();;
+      if (!empty($cas)) {
+        foreach ($cas as $key => $ca) {
+          $ca = node_load($ca->nid);
+          //dpm($ca->title . ' ' . $ca->nid);
+          //dpm(_section_projects_seal_user_is_responsible_kooperationspartner($account, $ca));
+          if (_section_projects_seal_user_is_responsible_kooperationspartner($account, $ca)) {
+            $grants['section_projects_nm_stream_project'][] = $ca->nid;
+            $grants['section_projects_ca'][] = $ca->nid;
+          }
         }
       }
     }
-  }else if(in_array(NM_ROLE_KOOPERATIONSPARTNER , $account->roles)) {
-    $cas = _section_projects_get_all_cooperation_agreements($account);
-    if(!empty($cas)){
-      foreach ($cas as $key => $ca) {
-        $ca = node_load($ca->nid);
-        if(_section_projects_seal_user_is_responsible_kooperationspartner($account, $ca)) {
-          $grants['section_projects_nm_stream_project'][] = $ca->nid;
-        }
-      }
-    }
+
   }
 
   //cooperation partners
@@ -184,31 +203,226 @@ function section_projects_node_grants($account, $op) {
 }
 
 
-
 //TODO Permissions einbauen!
 function section_projects_og_user_access_alter(&$perm, $context) {
 
   global $user;
   $account = clone $user;
 
+  /**
+   *  STUDENT
+   */
+  if ($context['group']->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
+    if (in_array(NM_ROLE_STUDENT, $account->roles)) {
+      if (_section_projects_seal_user_is_responsible_student($account, $context['group'])) {
+        //must NOT edit any objectives
+        $perm['update any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+        $perm['create ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+        //$perm['delete any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+        $perm['delete own ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
 
-  //Dozent
-  //04.12.2014 - 18:15 - SN todo check context first
-  //may dozent do all those things in this group?!!!! !!!IMPORTANT
-  if(in_array(NM_ROLE_DOZENT, $account->roles)) {
+        $perm['update any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
+        $perm['create ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
+        $perm['delete any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
+        $perm['delete own ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
 
 
+        //fields
+        //lernzielvereinbarung
+        $perm['view body field'] = TRUE;
+        $perm['view field_objective_motivation field'] = TRUE;
+        $perm['view field_objective_task field'] = TRUE;
+        $perm['view field_objective_matching field'] = TRUE;
+        $perm['view field_seal field'] = TRUE;
+        $perm['view field_ca_ref field'] = TRUE;
+
+        $perm['update body field'] = TRUE;
+        $perm['update field_objective_motivation field'] = TRUE;
+        $perm['update field_objective_task field'] = TRUE;
+        $perm['update field_objective_matching field'] = TRUE;
+        $perm['update field_seal field'] = TRUE;
+        $perm['update field_ca_ref field'] = TRUE;
+      }
+    }
 
 
-    //must NOT edit any objectives
-    $perm['update any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = FALSE;
-    $perm['create ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = FALSE;
-    $perm['delete any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = FALSE;
-    $perm['delete own ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = FALSE;
+    /*
+     * DOZENT
+     */
 
-    //$perm['create ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
-    $perm['update any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE; // dangerous here 04.12.2014 - 18:23 - SN context need to be checked
+
+    if (in_array(NM_ROLE_DOZENT, $account->roles)) {
+      if (_section_projects_seal_user_is_responsible_dozent($account, $context['group'])) {
+        //must NOT edit any objectives
+        $perm['update any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+        $perm['update own ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+        $perm['create ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+        $perm['delete any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+        $perm['delete own ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+
+        $perm['update any ' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG . ' content'] = TRUE;
+        $perm['update own ' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG . ' content'] = TRUE;
+        $perm['create ' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG . ' content'] = TRUE;
+        $perm['delete any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+        $perm['delete own ' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG . ' content'] = TRUE;
+
+        $perm['update any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
+        $perm['update own ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
+        $perm['create ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
+        $perm['delete any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
+        $perm['delete own ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
+
+        //fields
+        //kooperationsvereinbarung
+        $perm['view body field'] = TRUE;
+        $perm['view field_ca_timespann field'] = TRUE;
+        $perm['view field_ca_expectation_academy field'] = TRUE;
+        $perm['view field_ca_result field'] = TRUE;
+        $perm['view field_ca_partners_role field'] = TRUE;
+        $perm['view field_ca_instructors_role field'] = TRUE;
+        $perm['view field_ca_cooperation_rules field'] = TRUE;
+        $perm['view field_ca_course_group_ref field'] = TRUE;
+        $perm['view field_ca_course_group_ref field'] = TRUE;
+        $perm['view field_ca_proposal_ref field'] = TRUE;
+        $perm['view field_ca_student_refs field'] = TRUE;
+        $perm['view field_seal field'] = TRUE;
+
+        $perm['update body field'] = TRUE;
+        $perm['update field_ca_timespann field'] = TRUE;
+        $perm['update field_ca_expectation_academy field'] = TRUE;
+        $perm['update field_ca_result field'] = TRUE;
+        $perm['update field_ca_partners_role field'] = TRUE;
+        $perm['update field_ca_instructors_role field'] = TRUE;
+        $perm['update field_ca_cooperation_rules field'] = TRUE;
+        $perm['update field_ca_course_group_ref field'] = TRUE;
+        $perm['update field_ca_proposal_ref field'] = TRUE;
+        $perm['update field_ca_student_refs field'] = TRUE;
+        $perm['update field_seal field'] = TRUE;
+
+        //lernzielvereinbarung
+        $perm['view body field'] = TRUE;
+        $perm['view field_objective_motivation field'] = TRUE;
+        $perm['view field_objective_task field'] = TRUE;
+        $perm['view field_objective_matching field'] = TRUE;
+        $perm['view field_seal field'] = TRUE;
+        $perm['view field_ca_ref field'] = TRUE;
+
+        $perm['update body field'] = TRUE;
+        $perm['update field_objective_motivation field'] = TRUE;
+        $perm['update field_objective_task field'] = TRUE;
+        $perm['update field_objective_matching field'] = TRUE;
+        $perm['update field_seal field'] = TRUE;
+        $perm['update field_ca_ref field'] = TRUE;
+
+      }
+    }
+
+    /*
+     * Kooperationspartner
+     */
+    if (in_array(NM_ROLE_KOOPERATIONSPARTNER, $account->roles)) {
+      //lernzielvereinbarung
+      $perm['view body field'] = TRUE;
+      $perm['view field_objective_motivation field'] = TRUE;
+      $perm['view field_objective_task field'] = TRUE;
+      $perm['view field_objective_matching field'] = TRUE;
+      $perm['view field_seal field'] = TRUE;
+      $perm['view field_ca_ref field'] = TRUE;
+
+      //kooperationsvereinbarung
+      $perm['view body field'] = TRUE;
+      $perm['view field_ca_timespann field'] = TRUE;
+      $perm['view field_ca_expectation_academy field'] = TRUE;
+      $perm['view field_ca_result field'] = TRUE;
+      $perm['view field_ca_partners_role field'] = TRUE;
+      $perm['view field_ca_instructors_role field'] = TRUE;
+      $perm['view field_ca_cooperation_rules field'] = TRUE;
+      $perm['view field_ca_course_group_ref field'] = TRUE;
+      $perm['view field_ca_course_group_ref field'] = TRUE;
+      $perm['view field_ca_proposal_ref field'] = TRUE;
+      $perm['view field_ca_student_refs field'] = TRUE;
+      $perm['view field_seal field'] = TRUE;
+
+    }
   }
+
+
+  /**
+   * Kooperationspartner
+   */
+  if ($context['group']->type == NM_PROJECTS_RROJEKTORGANISATION) {
+    if (in_array(NM_ROLE_KOOPERATIONSPARTNER, $account->roles)) {
+      if (_section_projects_seal_user_is_responsible_kooperationspartner($account, $context['group'])) {
+        $perm['update any ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
+        $perm['update own ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
+        $perm['create ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
+        $perm['delete any ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
+        $perm['delete own ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
+
+        $perm['update any ' . NM_PROJECTS_RROJEKTORGANISATION . ' content'] = TRUE;
+        $perm['update own ' . NM_PROJECTS_RROJEKTORGANISATION . ' content'] = TRUE;
+        $perm['create ' . NM_PROJECTS_RROJEKTORGANISATION . ' content'] = TRUE;
+        $perm['delete any ' . NM_PROJECTS_RROJEKTORGANISATION . ' content'] = TRUE;
+        $perm['delete own ' . NM_PROJECTS_RROJEKTORGANISATION . ' content'] = TRUE;
+
+        //fields
+
+        //projektvorschlag
+        $perm['view body field'] = TRUE;
+        $perm['view field_proposal_status field'] = TRUE;
+        $perm['view field_proposal_task_area field'] = TRUE;
+        $perm['view field_proposal_timespan field'] = TRUE;
+        $perm['view field_proposal_expectation  field'] = TRUE;
+        $perm['view field_proposal_result field'] = TRUE;
+        $perm['view field_proposal_students_role field'] = TRUE;
+        $perm['view field_proposal_partners_role field'] = TRUE;
+        $perm['view field_proposal_contact field'] = TRUE;
+        $perm['view field_proposal_contact field'] = TRUE;
+        $perm['view field_partner_organization_ref field'] = TRUE;
+
+        $perm['update body field'] = TRUE;
+        $perm['update field_proposal_status field'] = TRUE;
+        $perm['update field_proposal_task_area field'] = TRUE;
+        $perm['update field_proposal_timespan field'] = TRUE;
+        $perm['update field_proposal_expectation  field'] = TRUE;
+        $perm['update field_proposal_result field'] = TRUE;
+        $perm['update field_proposal_students_role field'] = TRUE;
+        $perm['update field_proposal_partners_role field'] = TRUE;
+        $perm['update field_proposal_contact field'] = TRUE;
+        $perm['update field_proposal_contact field'] = TRUE;
+        $perm['update field_partner_organization_ref field'] = TRUE;
+
+        //partnerorganisation
+        $perm['view body field'] = TRUE;
+        $perm['view field_operational_area field'] = TRUE;
+        $perm['view field_po_short_description field'] = TRUE;
+        $perm['view field_po_contact field'] = TRUE;
+        $perm['view field_field_po_contact_person field'] = TRUE;
+
+        $perm['update body field'] = TRUE;
+        $perm['update field_operational_area field'] = TRUE;
+        $perm['update field_po_short_description field'] = TRUE;
+        $perm['update field_po_contact field'] = TRUE;
+        $perm['update field_field_po_contact_person field'] = TRUE;
+
+      }else {
+        $perm['update any ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = FALSE;
+        $perm['update own ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = FALSE;
+        $perm['create ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = FALSE;
+        $perm['delete any ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = FALSE;
+        $perm['delete own ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = FALSE;
+
+        $perm['update any ' . NM_PROJECTS_RROJEKTORGANISATION . ' content'] = FALSE;
+        $perm['update own ' . NM_PROJECTS_RROJEKTORGANISATION . ' content'] = FALSE;
+        $perm['create ' . NM_PROJECTS_RROJEKTORGANISATION . ' content'] = FALSE;
+        $perm['delete any ' . NM_PROJECTS_RROJEKTORGANISATION . ' content'] = FALSE;
+        $perm['delete own ' . NM_PROJECTS_RROJEKTORGANISATION . ' content'] = FALSE;
+      }
+    }
+  }
+
+
+  return;
 
   /*
    * ===============================
@@ -218,7 +432,7 @@ function section_projects_og_user_access_alter(&$perm, $context) {
    * IMPORTANT
    * =====================================
    */
-  if(in_array(NM_ROLE_STUDENT, $account->roles)) {
+  if (in_array(NM_ROLE_STUDENT, $account->roles)) {
     //must NOT edit any objectives
     $perm['update any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
     $perm['create ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
@@ -239,28 +453,24 @@ function section_projects_og_user_access_alter(&$perm, $context) {
 
     /* studenten, die auf dokumentation zugeifen dürfne,. dürfen auch die felder editieren */
     /* todo kein zugriff auf wysiwyg */
-    $perm['create ' . NM_PROJECTS_DOKUMENTATION . ' content'] = true;
-    $perm['update any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = true;
-    $perm['update body field'] = true;
-
-
-
+    $perm['create ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
+    $perm['update any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
+    $perm['update body field'] = TRUE;
 
 
     /* studenten, die auf lernzielvereinbarungen zugeifen dürfne,. dürfen auch die felder editieren */
-    if(node_access('view',$context['group']))
-    {
-      $perm['update any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = true;
-      $perm['update field_objective_motivation field'] = true;
-      $perm['update field_objective_matching field'] = true;
-      $perm['update field_objective_task field'] = true;
+    if (node_access('view', $context['group'])) {
+      $perm['update any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+      $perm['update field_objective_motivation field'] = TRUE;
+      $perm['update field_objective_matching field'] = TRUE;
+      $perm['update field_objective_task field'] = TRUE;
     }
 
     //blog eintrag erstellen
-    $perm['create projects_blog content'] = true;
-    $perm['update field_nm_privacy field'] = true;
-    $perm['create field_blog_type content'] = true;
-    $perm['update field_blog_type field'] = true;
+    $perm['create projects_blog content'] = TRUE;
+    $perm['update field_nm_privacy field'] = TRUE;
+    $perm['create field_blog_type content'] = TRUE;
+    $perm['update field_blog_type field'] = TRUE;
     //    $perm['create field_blog_type content'] = true;
     //    $perm['view field_blog_type field'] = true;
     //     $perm['update body field'] = true;
@@ -270,16 +480,10 @@ function section_projects_og_user_access_alter(&$perm, $context) {
 
   }
 
-
-
-
-
-
   return $perm;
 
 
 }
-
 
 
 /*
@@ -292,27 +496,29 @@ return true;
 
 function section_projects_node_access($node, $op, $account) {
 
+  return NODE_ACCESS_IGNORE;
+
   //DOZENT
   //deny create permission, to objective
-  if(in_array(NM_ROLE_DOZENT , $account->roles)) {
-    if($node == 'projects_objective' ||  (is_object($node) && $node->type == 'projects_objective')) {
+  if (in_array(NM_ROLE_DOZENT, $account->roles)) {
+    if ($node == 'projects_objective' || (is_object($node) && $node->type == 'projects_objective')) {
       return NODE_ACCESS_DENY;
     }
   }
 
   //STUDENT
-  if(in_array(NM_ROLE_STUDENT , $account->roles)) {
-    if($node == 'projects_objective' ||  (is_object($node) && $node->type == 'projects_objective')) {
+  if (in_array(NM_ROLE_STUDENT, $account->roles)) {
+    if ($node == 'projects_objective' || (is_object($node) && $node->type == 'projects_objective')) {
       return NODE_ACCESS_ALLOW; //@todo need to check context!!!! but ok for the prototype!!
     }
   }
 
 
-  if(!is_object($node) || $node->nid == 0) {
+  if (!is_object($node) || $node->nid == 0) {
     return NODE_ACCESS_IGNORE;
   }
 
-  if($node->type != 'projects_cooperation_agreement' && $node->type != 'projects_objective' ) {
+  if ($node->type != 'projects_cooperation_agreement' && $node->type != 'projects_objective') {
     return NODE_ACCESS_IGNORE;
   }
 
@@ -320,23 +526,26 @@ function section_projects_node_access($node, $op, $account) {
   $signing_state = @$node->field_seal;
   $signing_state = (int) ($signing_state['und'][0]['value']);
   $signatures = array();
-  if (($signing_state & bindec('100')) == bindec('100'))
+  if (($signing_state & bindec('100')) == bindec('100')) {
     $signatures[] = 'dozent';
-  if (($signing_state & bindec('010')) == bindec('010'))
+  }
+  if (($signing_state & bindec('010')) == bindec('010')) {
     $signatures[] = 'student';
-  if (($signing_state & bindec('001')) == bindec('001'))
+  }
+  if (($signing_state & bindec('001')) == bindec('001')) {
     $signatures[] = 'partner';
+  }
   if (
     // The $node argument can be either a $node object or a machine name of
     // node's content type. It is called multiple times during a page load
     // so it is enough if you perform the check once you get the object.
     is_object($node)
     &&
-    ( ($node->type == 'projects_cooperation_agreement') && (count($signatures)==3)
-      ||  ($node->type == 'projects_objective')  && (count($signatures)==2  ))
+    (($node->type == 'projects_cooperation_agreement') && (count($signatures) == 3)
+      || ($node->type == 'projects_objective') && (count($signatures) == 2))
     // Operation on which you want to act: "create", "delete", "update", "view".
-    && ( $op == 'update'
-      || $op =='delete'
+    && ($op == 'update'
+      || $op == 'delete'
     )
 
   ) {
@@ -351,6 +560,6 @@ function section_projects_node_access($node, $op, $account) {
   return NODE_ACCESS_IGNORE;
 }
 
-function rrtt(){
+function rrtt() {
   dpm('123 test');
 }

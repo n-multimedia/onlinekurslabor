@@ -114,6 +114,7 @@ define("NM_ROLE_DOZENT", "Dozent");
 define("NM_ROLE_STUDENT", "Student");
 define("NM_ROLE_TEST_STUDENT", "Test Student");
 define("NM_ROLE_TUTOR", "Tutor");
+define("NM_ROLE_MODERATOR", "Moderator");
 
 define("NM_ROLE_KOOPERATIONSPARTNER", "Kooperationspartner");
 
