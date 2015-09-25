@@ -918,7 +918,7 @@ class views_plugin_display extends views_plugin {
   /**
    * Get a full array of handlers for $type. This caches them.
    */
-  function get_handlers($type) {
+  function &get_handlers($type) {
     if (!isset($this->handlers[$type])) {
       $this->handlers[$type] = array();
       $types = views_object_types();
@@ -2140,7 +2140,7 @@ class views_plugin_display extends views_plugin {
           '#default_value' => $pager['type'],
         );
 
-        $pager_plugin = views_fetch_plugin_data('pager', $pager['type'], array($this->view->base_table));
+        $pager_plugin = views_fetch_plugin_data('pager', $pager['type']);
         if (!empty($pager_plugin['uses options'])) {
           $form['markup'] = array(
             '#prefix' => '<div class="form-item description">',
