@@ -40,7 +40,7 @@
               </tr>
                <tr>
                   <td  >
-                      Author: <?= user_load($node->uid)->realname;   ?>
+                      <?php //Author: <?= user_load($node->uid)->realname;   ?>
                   </td>
               </tr>
           <?

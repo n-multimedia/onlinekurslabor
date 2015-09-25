@@ -23,7 +23,7 @@
     hide($content['field_tags']);
    //    print render ($content[field_ca_timespan]);
 
-     $fields_for_coop = array(  'field_ca_expectation_academy','field_ca_expectation_po',  'field_ca_result',      'field_ca_students_role','field_ca_partners_role', 'field_ca_cooperation_rules');
+     $fields_for_coop = array( 'body', 'field_ca_expectation_academy','field_ca_expectation_po',  'field_ca_result',      'field_ca_students_role','field_ca_partners_role', 'field_ca_cooperation_rules');
     ?>
  
   <table cellspacing="0" cellpadding="3" width="100%"class="node--projects-cooperation-agreement" >
@@ -38,9 +38,12 @@
           <?
   foreach($fields_for_coop as $coop_part)
   {
+    $rendered_field_content = render($content[$coop_part]);
+    if(!empty($rendered_field_content)){
       echo '<tr><td colspan="2">';
-          print render($content[$coop_part]);
+      print render($content[$coop_part]);
       echo '</tr></td>';
+    }
   }
 ?>
    </table>

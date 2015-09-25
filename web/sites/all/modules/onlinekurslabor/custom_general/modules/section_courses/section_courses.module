@@ -1697,6 +1697,17 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
       $form['actions']['submit']['#value'] = t('Publish');
     }
   }
+
+  /*
+   * Course Group
+   * hide proposal selection. this option should be set through
+   * course/projects/%course_nid
+   * */
+  if (isset($form['type']) && isset($form['type']['#value']) && $form['type']['#value'] == NM_COURSE_GROUP) {
+    if(user_access('administer content') && $form['field_course_group_proposal']) {
+      hide($form['field_course_group_proposal']);
+    }
+  }
 }
 
 /**
@@ -2143,10 +2154,10 @@ function section_courses_group_projects_form($form, &$form_state) {
       //dpm(node_load($course_group->nid));
       //dpm($default_value);
 
-      $form['proposals'][] = array(
+      $form['proposals'][$course_group->nid]['markup'] = array(
         '#markup' => '<h4>' . $course_group->title . '</h4>',
       );
-      $form['proposals'][$course_group->nid] = array(
+      $form['proposals'][$course_group->nid]['options'] = array(
         '#type' => 'select',
         '#options' => $options,
         '#default_value' => $default_value

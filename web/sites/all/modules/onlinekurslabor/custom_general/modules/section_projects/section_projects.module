@@ -410,18 +410,20 @@ function _section_projects_seal_user_is_responsible_dozent($account, $node) {
     case 'projects_cooperation_agreement':
       //get dozenten of this course
       //only possible if course group is set
-      if (!empty($node->field_ca_course_group_ref)) {
+      if (!empty($node->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'])) {
         $course_group_nid = $node->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
         $course_group = node_load($course_group_nid);
-        $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
-        //$course = node_load($course_nid);
-        //$dozenten = og_membership_load_multipleF(ALSE, array('gid' => $course_nid, 'entity_type' => 'user'));
-        $dozenten = custom_general_get_users_in_group_by_role($course_nid, array('kurs-dozent'));
-        //dpm($dozenten);
+        if(!empty($course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
+          $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+          //$course = node_load($course_nid);
+          //$dozenten = og_membership_load_multipleF(ALSE, array('gid' => $course_nid, 'entity_type' => 'user'));
+          $dozenten = custom_general_get_users_in_group_by_role($course_nid, array('kurs-dozent'));
+          //dpm($dozenten);
 
-        foreach ($dozenten as $dozent) {
-          if ($dozent->uid == $account->uid) {
-            return TRUE;
+          foreach ($dozenten as $dozent) {
+            if ($dozent->uid == $account->uid) {
+              return TRUE;
+            }
           }
         }
       }
@@ -499,13 +501,15 @@ function _section_projects_seal_user_is_responsible_student($account, $node) {
       if (!empty($node->field_ca_course_group_ref)) {
         $course_group_nid = $node->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
         $course_group = node_load($course_group_nid);
-        $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
-        $course = node_load($course_nid);
-        //get users course group in course
-        //dpm(_section_courses_get_coursegroup_gid($account->uid, $course));
-        //dpm($course_group_nid);
-        if (_section_courses_get_coursegroup_gid($account->uid, $course) == $course_group_nid) {
-          return TRUE;
+        if(!empty($course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
+          $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+          $course = node_load($course_nid);
+          //get users course group in course
+          //dpm(_section_courses_get_coursegroup_gid($account->uid, $course));
+          //dpm($course_group_nid);
+          if (_section_courses_get_coursegroup_gid($account->uid, $course) == $course_group_nid) {
+            return TRUE;
+          }
         }
       }
       //check if student ist explicitely mentioned
@@ -957,7 +961,7 @@ function _section_projects_po_tools_view() {
             $context_items['items'][] = array(
               'name' => 'cooperationagreement',
               'path' => url('projects/admin/' . $active_project->nid . '/edit'),
-              'link' => l('Partnerorg.', 'projects/admin/' . $active_project->nid . '/edit', array(
+              'link' => l('Partnerorg', 'projects/admin/' . $active_project->nid . '/edit', array(
                 //'query' => array(
                 //  'og_group_ref' => arg(5),
                 //)
@@ -971,7 +975,11 @@ function _section_projects_po_tools_view() {
     //todo
     //Dozent
     //clean way would be to check create node access create permission!
-    if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_ADMIN, NM_ROLE_MODERATOR), $user->roles)) {
+    //if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_ADMIN, NM_ROLE_MODERATOR), $user->roles)) {
+    $tmp = new stdClass();
+    $tmp->nid = 0;
+    $tmp->type = NM_PROJECTS_KOOPERATIONSVEREINBARUNG;
+    if (node_access('create', $tmp)) {
       if (arg(1) == 'partners' && is_numeric(arg(3))) {
         $context_items['items'][] = array(
           'name' => 'kooperationsvereinbarung',
@@ -1300,11 +1308,14 @@ function section_projects_url_outbound_alter(&$path, &$options, &$original_path)
           $objective = node_load($nid);
 
           $tmp = $objective;
-          if (!empty($tmp->field_ca_ref)) {
+          if (!empty($tmp->field_ca_ref[LANGUAGE_NONE][0]['target_id'])) {
             $ca = node_load($tmp->field_ca_ref[LANGUAGE_NONE][0]['target_id']);
           }
-          else {
+          else if(!empty($tmp->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
             $ca = node_load($tmp->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+          } else {
+            drupal_set_message('nid:(' . $tmp->nid . ') NM: Invalid objective! Ref missing!', 'error');
+            return;
           }
 
           $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
@@ -1836,7 +1847,84 @@ function section_projects_form_alter(&$form, &$form_state, $form_id) {
   if(!empty($form['#node_edit_form']) && strstr($form['type']['#value'], 'projects_')) {
     unset($form['book']);
   }
+
+
+
+  //unset proposal fields in coursegrops
+  if(!empty($form['#entity_type']) && $form['#entity_type'] == 'node' && !empty($form['field_course_group_proposal'])) {
+    hide($form['field_course_group_proposal']);
+  }
+
+  //hide kv / ca direct student reference
+  if(!empty($form['#entity_type']) && $form['#entity_type'] == 'node' && $form['#bundle'] == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
+    hide($form['field_ca_student_refs']);
+  }
+
+  //blog. Hide title
+  if(!empty($form['#entity_type']) && $form['#entity_type'] == 'node' && $form['#bundle'] == NM_PROJECTS_TAGEBUCH) {
+
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.ddslick.js");
+    drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream.css');
+
+
+    drupal_add_js('jQuery(document).ready(function () { jQuery("#nm-stream-add-node-privacy").ddslick();jQuery("[id^=nm-stream-edit-node-privacy-]").ddslick(); });',
+      array('type' => 'inline', 'scope' => 'footer')
+    );
+
+
+    //hide field
+    drupal_add_js('jQuery(document).ready(function () { jQuery("#edit-field-nm-privacy").hide(); });',
+      array('type' => 'inline', 'scope' => 'footer')
+    );
+
+
+    $form['title']['#default_value'] = time();
+    hide($form['title']);
+
+    $privacy_options = _nm_stream_privacy_options(NM_PROJECTS_TAGEBUCH);
+    if (empty($form['nid']['#value'])) {
+      //new
+      $markup_privacy_widget = _nm_stream_render_privacy_widget(NULL, NM_PROJECTS_TAGEBUCH);
+      $markup_privacy_widget = '<div id="nm-stream-add-node-privacy">' . $markup_privacy_widget . '</div>';
+      //set property on submit
+      drupal_add_js('jQuery(document).ready(function () { jQuery("form.node-form").on("submit", function(){
+        jQuery("#edit-field-nm-privacy input").val(jQuery("#nm-stream-add-node-privacy input").val());
+        });
+
+      });',
+        array('type' => 'inline', 'scope' => 'footer')
+      );
+
+    }
+    else {
+      //edit
+      $node = $form['#node'];
+      $markup_privacy_widget = _nm_stream_render_privacy_widget($node, $node->type);
+      $markup_privacy_widget = '<div id="nm-stream-edit-node-privacy--' . $node->nid . '">' . $markup_privacy_widget . '</div>';
+
+      drupal_add_js('jQuery(document).ready(function () { jQuery("form.node-form").on("submit", function(){
+        jQuery("#edit-field-nm-privacy input").val(jQuery("[id^=nm-stream-edit-node-privacy-] input").val());
+        });
+
+      });',
+        array('type' => 'inline', 'scope' => 'footer')
+      );
+    }
+
+
+    //hide privacy field
+    //hide($form['field_nm_privacy']);
+
+    $form['privacy_widget_markup'] = array(
+      '#prefix' => '<br /><label>Sichtbarkeitseinstellung</label>',
+      '#markup' => $markup_privacy_widget,
+      '#weight' => 20
+    );
+
+  }
+
 }
+
 
 
 function section_projects_sign_inform_action($entity, $context) {

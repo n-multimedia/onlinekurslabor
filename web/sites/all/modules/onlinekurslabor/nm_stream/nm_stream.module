@@ -456,7 +456,10 @@ function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
   }
 
   //update end
-  $body = isset($_REQUEST['body']) ? check_plain($_REQUEST['body']) : '';
+  $allowed_tags = array('a', 'em', 'u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
+    'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot');
+  $body = isset($_REQUEST['body']) ? filter_xss($_REQUEST['body'], $allowed_tags) : '';
+
   $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
   $iframe = isset($_REQUEST['iframe']) ? TRUE : FALSE;
 
@@ -484,7 +487,15 @@ function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
   $node = new stdClass();
   $node->title = time();
   $node->type = $type;
-  $node->body[LANGUAGE_NONE][0]['value'] = $body;
+  //$node->body[LANGUAGE_NONE][0]['value'] = $body;
+  $node->body = array(
+    LANGUAGE_NONE => array(
+      0 => array(
+        'value' => $body,
+        'format' => 'filtered_html'
+      )
+    )
+  );
   $node->field_nm_privacy [LANGUAGE_NONE][0]['value'] = $privacy;
   node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
   $node->language = 'de';
@@ -565,7 +576,11 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
     }
   }
 
-  $body = isset($_REQUEST['body']) ? check_plain($_REQUEST['body']) : '';
+  //consider adapting for in add callback too!
+  $allowed_tags = array('a', 'em', 'u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
+    'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot');
+  $body = isset($_REQUEST['body']) ? filter_xss($_REQUEST['body'], $allowed_tags) : '';
+
   $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
   $iframe = isset($_REQUEST['iframe']) ? TRUE : FALSE;
 
@@ -716,7 +731,12 @@ function nm_stream_nm_stream_comment_add_callback($node) {
   //update end
 
 
-  $body = isset($_REQUEST['body']) ? check_plain($_REQUEST['body']) : '';
+  //consider adapting for in edit callback too!
+  $allowed_tags = array('a', 'em', 'u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
+    'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot');
+  $body = isset($_REQUEST['body']) ? filter_xss($_REQUEST['body'], $allowed_tags) : '';
+
+  //$body = isset($_REQUEST['body']) ? check_plain($_REQUEST['body']) : '';
 
   //error handling
   if (!($node) || empty($body)) {
@@ -788,7 +808,9 @@ function nm_stream_nm_stream_comment_edit_callback($comment) {
 
   $response = array();
 
-  $body = isset($_REQUEST['body']) ? check_plain($_REQUEST['body']) : '';
+  $allowed_tags = array('a', 'em', 'u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
+    'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot');
+  $body = isset($_REQUEST['body']) ? filter_xss($_REQUEST['body'], $allowed_tags) : '';
 
   if (isset($_REQUEST['body'])) {
 
@@ -1262,12 +1284,13 @@ function _nm_stream_privacy_options($type = 'nm_stream') {
   $options_items[NM_STREAM_TEAM] = array(
     'label' => t('Team'),
     'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
-    'default' => TRUE,
+    'default' => FALSE,
   );
-
 
   switch ($type) {
     case 'nm_stream':
+      $options_items[NM_STREAM_TEAM]['default'] = TRUE;
+
       $options_items[NM_STREAM_COURSE] = array(
         'label' => t('Course'),
         'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
@@ -1278,7 +1301,7 @@ function _nm_stream_privacy_options($type = 'nm_stream') {
       $options_items[NM_STREAM_PROJECT] = array(
         'label' => t('Project'),
         'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
-        'default' => FALSE,
+        'default' => TRUE,
       );
       break;
   }

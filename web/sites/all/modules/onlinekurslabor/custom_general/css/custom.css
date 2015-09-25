@@ -867,6 +867,16 @@ Project's Tools
     background-position: -60px -50px;
 }
 
+#projects_tools-container .btn#lernzielvereinbarung a:before
+{
+    background-position: -60px 0px;
+}
+#projects_tools-container .btn#lernzielvereinbarung a:hover:before, #projects_tools-container .btn#lernzielvereinbarung a.active:before
+{
+    background-position: -60px -50px;
+}
+
+
 #projects_tools-container .btn#cooperationagreement a:before
 {
     background-image: url(../images/icons/transparent-icons---instructor.png);

@@ -153,15 +153,17 @@ function section_projects_node_grants($account, $op) {
             $grants['section_projects_ca'][] = $ca->nid;
           }
 
-          if (!empty($ca->field_ca_course_group_ref)) {
+          if (!empty($ca->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'])) {
             $course_group_nid = $ca->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
             $course_group = node_load($course_group_nid);
-            $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
-            $course = node_load($course_nid);
-            //get users course group in course
-            if (_section_courses_get_coursegroup_gid($account->uid, $course) == $course_group_nid) {
-              $grants['section_projects_nm_stream_team'][] = $ca->nid;
-              //grant access for ca and its content
+            if (!empty($course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
+              $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+              $course = node_load($course_nid);
+              //get users course group in course
+              if (_section_courses_get_coursegroup_gid($account->uid, $course) == $course_group_nid) {
+                $grants['section_projects_nm_stream_team'][] = $ca->nid;
+                //grant access for ca and its content
+              }
             }
           }
         }
@@ -272,6 +274,12 @@ function section_projects_og_user_access_alter(&$perm, $context) {
         $perm['delete any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
         $perm['delete own ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
 
+        //$perm['update any ' . NM_PROJECTS_TAGEBUCH . ' content'] = TRUE;
+        $perm['update own ' . NM_PROJECTS_TAGEBUCH . ' content'] = TRUE;
+        $perm['create ' . NM_PROJECTS_TAGEBUCH . ' content'] = TRUE;
+        $perm['delete any ' . NM_PROJECTS_TAGEBUCH . ' content'] = TRUE;
+        $perm['delete own ' . NM_PROJECTS_TAGEBUCH . ' content'] = TRUE;
+
         //fields
         //kooperationsvereinbarung
         $perm['view body field'] = TRUE;
@@ -351,6 +359,40 @@ function section_projects_og_user_access_alter(&$perm, $context) {
    * Kooperationspartner
    */
   if ($context['group']->type == NM_PROJECTS_RROJEKTORGANISATION) {
+    if (in_array(NM_ROLE_DOZENT, $account->roles)) {
+      //Projektvorschlag
+      $perm['update any ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
+      $perm['update own ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
+      $perm['create ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
+      $perm['delete any ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
+      $perm['delete own ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
+
+      //projektvorschlag
+      $perm['view body field'] = TRUE;
+      $perm['view field_proposal_status field'] = TRUE;
+      $perm['view field_proposal_task_area field'] = TRUE;
+      $perm['view field_proposal_timespan field'] = TRUE;
+      $perm['view field_proposal_expectation  field'] = TRUE;
+      $perm['view field_proposal_result field'] = TRUE;
+      $perm['view field_proposal_students_role field'] = TRUE;
+      $perm['view field_proposal_partners_role field'] = TRUE;
+      $perm['view field_proposal_contact field'] = TRUE;
+      $perm['view field_proposal_contact field'] = TRUE;
+      $perm['view field_partner_organization_ref field'] = TRUE;
+
+      $perm['update body field'] = TRUE;
+      $perm['update field_proposal_status field'] = TRUE;
+      $perm['update field_proposal_task_area field'] = TRUE;
+      $perm['update field_proposal_timespan field'] = TRUE;
+      $perm['update field_proposal_expectation  field'] = TRUE;
+      $perm['update field_proposal_result field'] = TRUE;
+      $perm['update field_proposal_students_role field'] = TRUE;
+      $perm['update field_proposal_partners_role field'] = TRUE;
+      $perm['update field_proposal_contact field'] = TRUE;
+      $perm['update field_proposal_contact field'] = TRUE;
+      $perm['update field_partner_organization_ref field'] = TRUE;
+    }
+
     if (in_array(NM_ROLE_KOOPERATIONSPARTNER, $account->roles)) {
       if (_section_projects_seal_user_is_responsible_kooperationspartner($account, $context['group'])) {
         $perm['update any ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
@@ -422,7 +464,7 @@ function section_projects_og_user_access_alter(&$perm, $context) {
   }
 
 
-  return;
+return;
 
   /*
    * ===============================

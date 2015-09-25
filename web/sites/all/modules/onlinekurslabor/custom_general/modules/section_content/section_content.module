@@ -534,6 +534,15 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     }
   }
 
+  //hide book form options for certain content types
+  if(!empty($form['#entity_type']) && $form['#entity_type'] == 'node'){
+    if(!in_array($form['#bundle'], array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN))){
+      if(!empty($form['book']) && !user_access('administer content')) {
+        hide($form['book']);
+      }
+    }
+  }
+
   return $form;
 }
 

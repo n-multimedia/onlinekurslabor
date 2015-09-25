@@ -47,16 +47,13 @@ $field_view = field_view_field('node', $node, 'field_proposal_status');
 $field_view['#label_display'] = 'hidden';
 $proposal_status = drupal_render($field_view);
 
-//active class for /projects/partners/%/% overview
-$active_class = $nid === arg(3) ? 'active' : '';
 
 ?>
-
-
-<div class="row-fluid partners-projects-item <?php echo $active_class; ?>">
+<?if($nid !== arg(3)):?>
+<div class="row-fluid partners-projects-item">
 
   <div class="partners-projects-item-title span5" >
-    <a href="<?php echo $node_path; ?>" class="partners-projects-item <?php echo $active_class; ?>"><?php echo $node->title; ?>    </a>
+    <a href="<?php echo $node_path; ?>" class="partners-projects-item"><?php echo $node->title; ?>    </a>
   </div>
   <div class="partners-projects-item-changed span3" >
     <?php echo format_date($node->changed); ?>  
@@ -66,3 +63,4 @@ $active_class = $nid === arg(3) ? 'active' : '';
   </div>
 
 </div>
+<?endif?>
