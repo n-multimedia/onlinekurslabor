@@ -7,7 +7,6 @@
 
       $(".nav-tabbox .tab").click(function()
       {
-        console.log('123');
         var lastClass = $(this).attr('class').substr( $(this).attr('class').lastIndexOf(' ') + 1);
         $('.tabpanel').removeClass('active');
         $('.tabpanel.' + lastClass).addClass('active');
