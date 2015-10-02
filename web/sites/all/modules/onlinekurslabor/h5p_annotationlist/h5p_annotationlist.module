@@ -13,6 +13,7 @@
  * Implements hook_init().
  */
 function h5p_annotationlist_init() {
+#return;
   $nid = (arg(0) == 'node' && is_numeric(arg(1))) ? arg(1) : NULL;
 
   drupal_add_js(array('h5psidebar' => array('json_video_id' => 'cid-' . $nid)), 'setting');

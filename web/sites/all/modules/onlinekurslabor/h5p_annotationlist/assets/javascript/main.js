@@ -85,7 +85,7 @@
         addSideBarToVideoObject: function(video_object)
         {
             var the_great_list;
-            jQuery.each(Drupal.settings.h5p.content, function(json_video_id, some_video_object)
+            jQuery.each(H5PIntegration.contents, function(json_video_id, some_video_object)
             {
                 //console.debug(json_video_id);
                 //console.debug(some_video_object);
@@ -154,7 +154,7 @@
                 Drupal.behaviors.h5p_annotationlist.addAnnotationsToSidebar(json_video_id, jQuery(this).attr("value"), video_object);
             });
             /*extrahiere annotationsdaten*/
-            var videojson = (Drupal.settings.h5p.content[json_video_id]);
+            var videojson = (H5PIntegration.contents[json_video_id]);
 
             if (videojson !== undefined)
             {
