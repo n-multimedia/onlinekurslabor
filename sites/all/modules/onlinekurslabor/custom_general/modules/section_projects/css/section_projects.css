@@ -77,14 +77,28 @@ Main
 #course_header_title a{
     color: #fff;
 }
-.node--projects-cooperation-agreement, .node--projects-objective
-{
-    border:1px solid black;
+.node--projects-cooperation-agreement, .node--projects-objective, .node--projects-documentation
+{  background: #F1EFF1;
+    border:1px solid #C4B8A9;
+
+    color: #484848;
+ 
 }
-.node--projects-cooperation-agreement tr, .node--projects-objective tr
+.node--projects-cooperation-agreement tr, .node--projects-objective tr, .node--projects-documentation tr
 {
-    border-bottom:1px solid black;
+    
 }
+.node--projects-cooperation-agreement tr td, .node--projects-objective tr td, .node--projects-documentation tr td
+{
+    padding:20px;
+}
+.node--projects-documentation th
+{ 
+    font-weight:normal;
+    padding-bottom:18px;
+   
+}
+
 
 .projects-seal-widget
 {/*notwendig, um den div "existent" zu machen (klickbar)*/

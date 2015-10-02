@@ -4,7 +4,7 @@ module_load_include('inc', 'section_projects', 'inc/functions');
 
 /**
  * Implementing hook_theme
- * 
+ *
  * @return type
  */
 function section_projects_theme() {
@@ -110,20 +110,19 @@ function _section_projects_unseal_ca(&$node, $role_code) {
   node_save($node);
 }
 
-function section_projects_seal_render_action_buttons($node)
-{
+function section_projects_seal_render_action_buttons($node) {
 
-    $button_type = "links";
-    $result = '';
+  $button_type = "links";
+  $result = '';
 
-    //get actual seal value
-    if (empty($node->field_seal))
-    {
-        $node->field_seal[LANGUAGE_NONE][0]['value'] = 0;
-    }
+  //get actual seal value
+  if (empty($node->field_seal)) {
+    $node->field_seal[LANGUAGE_NONE][0]['value'] = 0;
+  }
+
 
     $seal = $node->field_seal[LANGUAGE_NONE][0]['value'];
-
+//projects_cooperation_agreement
     switch ($node->type)
     {
         case 'projects_cooperation_agreement':
@@ -136,7 +135,7 @@ function section_projects_seal_render_action_buttons($node)
             );
             $button_type = "buttons";
             $links = _section_projects_seal_prepare_action_buttons($parteien, $node);
-            dpm("todo testen  partner verschieben strings h5");
+
 
             break;
         case 'projects_objective':
@@ -150,67 +149,64 @@ function section_projects_seal_render_action_buttons($node)
             break;
     }
 
-    $token = drupal_get_token('projects_seal');
-    $options = array('query' => array('projects_token' => $token));
 
-    switch ($button_type)
-    {
-        case "buttons":
-            $result = '<div  class="projects-seal-widget" >';
+  $token = drupal_get_token('projects_seal');
+  $options = array('query' => array('projects_token' => $token));
 
-            foreach ($links as $link)
-            {
-                //reset array
-                $options = array();
-                if ($link['href'] === "#")
-                {
-                    $options['fragment'] = '';
-                    $options['external'] = true;
-                }
-                else
-                    $options['query'] = array('projects_token' => $token);
+  switch ($button_type) {
+    case "buttons":
+      $result = '<div  class="projects-seal-widget" >';
 
-                $content = "";
-                $result.= '<div  class="entry ' . ($link['href'] === "#" ? '' : 'action') . '" >';
+      foreach ($links as $link) {
+        //reset array
+        $options = array();
+        if ($link['href'] === "#") {
+          $options['fragment'] = '';
+          $options['external'] = true;
+        }
+        else
+          $options['query'] = array('projects_token' => $token);
 
-                $options['html'] = true;
-                $options['attributes'] = array('title' => $link['title'], 'class' => 'section_projects ' . ($link['href'] === "#" ? 'noaction' : ''));
+        $content = "";
+        $result.= '<div  class="entry ' . ($link['href'] === "#" ? '' : 'action') . '" >';
 
-                if ($link['href'] === "#")
-                {
-                    $options['fragment'] = '';
-                    $options['external'] = true;
-                }
-                $content .= '<div class="' . $link['class'] . ' sprite-background "></div>' . $link['name'];
+        $options['html'] = true;
+        $options['attributes'] = array('title' => $link['title'], 'class' => 'section_projects ' . ($link['href'] === "#" ? 'noaction' : ''));
 
-                $result.= l($content, $link['href'], $options);
-                $result.='</div>';
-            }
-            $result.='</div>';
-            $result.='<div style="float:none;"></div>';
-            //todo
-            $result.='<h5>Vereinbarung</h5>';
-            break;
+        if ($link['href'] === "#") {
+          $options['fragment'] = '';
+          $options['external'] = true;
+        }
+        $content .= '<div class="' . $link['class'] . ' sprite-background "></div>' . $link['name'];
+
+        $result.= l($content, $link['href'], $options);
+        $result.='</div>';
+      }
+      $result.='</div>';
+      $result.='<div style="float:none;"></div>';
+      //todo
+      $result.='<h5>Vereinbarung</h5>';
+      break;
 
 
-        case "links":
-            $result .= '<div class="projects-seal-widget">';
-            foreach ($links as $link)
-            {
-                $result .= '<div class="action">';
-                $result .= ! empty($link['href']) ? l($link['title'], $link['href'], $options) : $link['title'];
-                $result .= '</div>';
-            }
-            $result .= '</div>';
-            break;
-    }
+    case "links":
+      $result .= '<div class="projects-seal-widget">';
+      foreach ($links as $link) {
+        $result .= '<div class="action">';
+        $result .=!empty($link['href']) ? l($link['title'], $link['href'], $options) : $link['title'];
+        $result .= '</div>';
+      }
+      $result .= '</div>';
+      break;
+  }
 
 
-    return $result;
+  return $result;
 }
 
-/*@deprecated - for extending this function, edit  _section_projects_seal_prepare_action_buttons
+/* @deprecated - for extending this function, edit  _section_projects_seal_prepare_action_buttons
  */
+
 function _section_projects_seal_prepare_action_links($parteien, $node) {
   global $user;
 
@@ -300,77 +296,67 @@ function _section_projects_seal_prepare_action_links($parteien, $node) {
   return $links;
 }
 
+function _section_projects_seal_prepare_action_buttons($parteien, $node) {
+  global $user;
 
+  $links = array();
 
+  //templates für den linktitel
+  $template['withdraw'] = array('title' => '%s: Unterschrift zurückziehen');
+  $template['sign'] = array('title' => '%s: unterschreiben');
+  $template['signed'] = array('title' => '%s: hat unterschreiben');
+  $template['unsigned'] = array('title' => '%s: Unterschrift steht aus');
 
-
-function _section_projects_seal_prepare_action_buttons($parteien, $node)
-{
-    global $user;
-
-    $links = array();
-
-    //templates für den linktitel
-    $template['withdraw'] = array('title' => '%s: Unterschrift zurückziehen');
-    $template['sign'] = array('title' => '%s: unterschreiben');
-    $template['signed'] = array('title' => '%s: hat unterschreiben');
-    $template['unsigned'] = array('title' => '%s: Unterschrift steht aus');
-
-    foreach ($parteien as $partyname => $partydetails)
-    {
-        $is_responsible = false;
-        $class = "";
-        $link = array();
-        $writablename = @$partydetails['label'];
-        if (!$writablename)#
-            $writablename = @$partydetails['0'];
-        switch ($partyname)
-        {
-            case 'dozent':
-                if (_section_projects_seal_user_is_responsible_dozent($user, $node))
-                    $is_responsible = true;
-                break;
-            case 'student':
-                if (_section_projects_seal_user_is_responsible_student($user, $node))
-                    $is_responsible = true;
-                $writablename = 'Student';
-                break;
-            case 'partner':
-                if (_section_projects_seal_user_is_responsible_kooperationspartner($user, $node))
-                    $is_responsible = true;
-                $writablename = 'Kooperations-Partner';
-                break;
-        }
-        if ($is_responsible)
-        {
-            if ($partydetails['sealed'])
-                $class = 'withdraw';
-            else
-                $class = 'sign';
-        } else
-        {
-            if ($partydetails['sealed'])
-                $class = 'signed';
-            else
-                $class = 'unsigned';
-        }
-
-        $link['title'] = sprintf($template[$class]['title'], $writablename);
-        $link['class'] = $class;
-        $link['name'] = $writablename;
-        if ($is_responsible)
-        {
-            $possible_targets = array('withdraw' => 'unseal', 'sign' => 'seal', 'signed' => '#', 'unsigned' => '#');
-            # 'projects/unseal/%s/'
-            $link['href'] = 'projects/' . $possible_targets[$class] . '/' . $partyname . '/' . $node->nid;
-        }
-        else
-            $link['href'] = '#';
-
-        $links[] = $link;
+  foreach ($parteien as $partyname => $partydetails) {
+    $is_responsible = false;
+    $class = "";
+    $link = array();
+    $writablename = @$partydetails['label'];
+    if (!$writablename)#
+      $writablename = @$partydetails['0'];
+    switch ($partyname) {
+      case 'dozent':
+        if (_section_projects_seal_user_is_responsible_dozent($user, $node))
+          $is_responsible = true;
+        break;
+      case 'student':
+        if (_section_projects_seal_user_is_responsible_student($user, $node))
+          $is_responsible = true;
+        $writablename = 'Student';
+        break;
+      case 'partner':
+        if (_section_projects_seal_user_is_responsible_kooperationspartner($user, $node))
+          $is_responsible = true;
+        $writablename = 'Kooperations-Partner';
+        break;
+    }
+    if ($is_responsible) {
+      if ($partydetails['sealed'])
+        $class = 'withdraw';
+      else
+        $class = 'sign';
+    } else {
+      if ($partydetails['sealed'])
+        $class = 'signed';
+      else
+        $class = 'unsigned';
     }
 
-    return $links;
+    $link['title'] = sprintf($template[$class]['title'], $writablename);
+    $link['class'] = $class;
+    $link['name'] = $writablename;
+    if ($is_responsible) {
+      $possible_targets = array('withdraw' => 'unseal', 'sign' => 'seal', 'signed' => '#', 'unsigned' => '#');
+      # 'projects/unseal/%s/'
+      $link['href'] = 'projects/' . $possible_targets[$class] . '/' . $partyname . '/' . $node->nid;
+    }
+    else
+      $link['href'] = '#';
+
+    $links[] = $link;
+  }
+
+  return $links;
 }
 
 function _section_projects_seal_user_is_responsible_kooperationspartner($account, $node) {
@@ -421,6 +407,10 @@ function _section_projects_seal_user_is_responsible_dozent($account, $node) {
             return TRUE;
           }
         }
+      }
+      //check author of the cooperation agreement - needed if no course group was set
+      if ($node->uid == $account->uid) {
+        return TRUE;
       }
       break;
     case 'projects_objective':
@@ -473,6 +463,28 @@ function _section_projects_seal_user_is_responsible_student($account, $node) {
 
       break;
     case 'projects_objective':
+       //check student's course group
+      //only possible if course group is set
+           if (!empty($node->field_ca_ref)) {
+          $ca = node_load($node->field_ca_ref[LANGUAGE_NONE][0]['target_id']);
+        }
+      if (!empty($ca->field_ca_course_group_ref)) {
+        $course_group_nid = $ca->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $course_group = node_load($course_group_nid);
+        $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $course = node_load($course_nid);
+        //get users course group in course
+        if (_section_courses_get_coursegroup_gid($account->uid, $course) == $course_group_nid) {
+          return TRUE;
+        }
+      }
+      //check if student ist explicitely mentioned
+      if (!empty($ca->field_ca_student_refs)) {
+        if ($ca->field_ca_student_refs[LANGUAGE_NONE][0]['target_id'] == $account->uid) {
+          return TRUE;
+        }
+      }
+
       break;
   }
 
@@ -505,7 +517,7 @@ function section_projects_block_info() {
   return $blocks;
 }
 
-//add course header 
+//add course header
 //16.07.2013 - 11:58 - SN - now done by context module
 function section_projects_preprocess_page(&$vars) {
   $active_projects = section_projects_get_active_project();
@@ -551,10 +563,8 @@ function section_projects_block_view($delta = '') {
 }
 
 function _section_projects_header_and_navigation_view() {
-  
 
   $output = '';
-
 
   //partnerübersicht
   $arg2 = arg(2);
@@ -566,35 +576,56 @@ function _section_projects_header_and_navigation_view() {
   if (!isset($arg2)) {
     //projects overview page
     $output = '';
-  }
+  } 
 
   //header for partner -> projektvorschlag -> cockpit
-  if (is_numeric($arg2)) { 
+  if (is_numeric($arg2) || $arg2 == 'add') {
+
     //partner organisation
-    $po_node = node_load($arg2);
-    
-    if($po_node->type !== NM_PROJECTS_RROJEKTORGANISATION) {
-      if($po_node->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
-          $ca = $po_node;
-          $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
-          $partner_nid = _custom_general_get_group($proposal);
-          $po_node = node_load($partner_nid);
-      }else if($po_node->type == NM_PROJECTS_PROJEKTVORSCHLAG){
-          $proposal = $po_node;
-          $partner_nid = _custom_general_get_group($proposal);
-          $po_node = node_load($partner_nid);
-      
-      }else if(in_array($po_node->type, array(NM_PROJECTS_ZIELVEREINBARUNG, NM_PROJECTS_DOKUMENTATION, NM_PROJECTS_TAGEBUCH))){
-          $tmp = $po_node;
-          if(!empty($tmp->field_ca_ref)) {
-            $ca = node_load($tmp->field_ca_ref[LANGUAGE_NONE][0]['target_id']);
-          }else {
-            $ca = node_load($tmp->og_group_ref[LANGUAGE_NONE][0]['target_id']);
-          }
-          
-          $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
-          $partner_nid = _custom_general_get_group($proposal);
-          $po_node = node_load($partner_nid);
+    $query = (drupal_get_query_parameters());
+
+    if ($arg2 == 'add') {
+      if($arg3 == 'projects_proposal' || $arg3 == 'projects_cooperation_agreement') {
+        $po_node = node_load($query['field_partner_organization_ref']);
+      }else if($arg3 == 'projects_objective' || $arg3 == 'projects_documentation') {
+        $ca = node_load($query['field_ca_ref']);
+        //$partner_nid = _custom_general_get_group($proposal);
+        $po_node = $ca;
+      }
+      else {
+        $po_node = node_load($query['og_group_ref']);
+      }
+
+    }
+
+    else {
+      $po_node = node_load($arg2);
+    }
+
+    if ($po_node->type !== NM_PROJECTS_RROJEKTORGANISATION) {
+      if ($po_node->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
+        $ca = $po_node;
+        $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
+        $partner_nid = _custom_general_get_group($proposal);
+        $po_node = node_load($partner_nid);
+      }
+      else if ($po_node->type == NM_PROJECTS_PROJEKTVORSCHLAG) {
+        $proposal = $po_node;
+        $partner_nid = _custom_general_get_group($proposal);
+        $po_node = node_load($partner_nid);
+      }
+      else if (in_array($po_node->type, array(NM_PROJECTS_ZIELVEREINBARUNG, NM_PROJECTS_DOKUMENTATION, NM_PROJECTS_TAGEBUCH))) {
+        $tmp = $po_node;
+        if (!empty($tmp->field_ca_ref)) {
+          $ca = node_load($tmp->field_ca_ref[LANGUAGE_NONE][0]['target_id']);
+        }
+        else {
+          $ca = node_load($tmp->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+        }
+
+        $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
+        $partner_nid = _custom_general_get_group($proposal);
+        $po_node = node_load($partner_nid);
       }
     }
 
@@ -613,6 +644,44 @@ function _section_projects_header_and_navigation_view() {
       $output .= '<h4>';
       $output .= l($ca_node->title, 'node/' . $ca_node->nid);
       $output .= '</h4>';
+    }
+    else if ($arg3 == 'edit') {
+      if ($po_node->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
+        $ca = $po_node;
+        $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
+      }
+      else if (in_array($po_node->type, array(NM_PROJECTS_ZIELVEREINBARUNG, NM_PROJECTS_DOKUMENTATION, NM_PROJECTS_TAGEBUCH))) {
+        $tmp = node_load($arg2);
+        if (!empty($tmp->field_ca_ref)) {
+          $ca = node_load($tmp->field_ca_ref[LANGUAGE_NONE][0]['target_id']);
+        }
+        else {
+          $ca = node_load($tmp->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+        }
+
+        $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
+      }
+
+    }
+
+    else if ($arg2 == 'add' && ($arg3 != 'projects_proposal' && $arg3 != 'projects_cooperation_agreement' && $arg3 != 'projects_objective' && $arg3 != 'projects_documentation'&& $arg3 != 'projects_objective')) {
+
+
+      $query = (drupal_get_query_parameters());
+      $ca = node_load($query['og_group_ref']);
+      $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
+
+    }
+
+    if(!empty($proposal)) {
+      $output .= '<h4>';
+      $output .= l($proposal->title, 'node/' . $proposal->nid);
+      $output .= '</h4>';
+    }
+    if(!empty($ca)) {
+      $output .= '<h3>';
+      $output .= l($ca->title, 'node/' . $ca->nid);
+      $output .= '</h3>';
     }
 
 
@@ -641,7 +710,7 @@ function _section_projects_header_and_navigation_view() {
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
-        background-size: cover; 
+        background-size: cover;
         height:200px;
         ">
         </div>';
@@ -672,8 +741,12 @@ function _section_projects_header_and_navigation_view() {
     $output .= "</div>";
   }
 
+if(is_numeric($arg2))
+{$node2=node_load($arg2);
+} 
   //+navigation
-  if (is_numeric($arg2) && is_numeric($arg3) && ($arg4 == 'cockpit')) {
+  if ((is_numeric($arg2) && is_numeric($arg3) && ($arg4 == 'cockpit')) )//||($arg2=='add' && in_array($arg3, array('projects_objective','projects_documentation','projects_blog')))||(is_numeric($arg2) && $arg3=='edit'&& in_array($node2->type,array(NM_PROJECTS_KOOPERATIONSVEREINBARUNG))))
+                {
     //projects overview page
     $output .= _section_projects_project_cockpit_tabs_view();
   }
@@ -746,7 +819,7 @@ function _section_projects_project_cockpit_tabs_view() {
     foreach ($navigation_items as $item) {
       $active_class = ($i == 0) ? 'active' : '';
       $output .= '<div class="' . $active_class . '">';
-      $output .= '<a href = "#'. drupal_html_class(transliteration_get($item)).'" class="tab ' . drupal_html_class(transliteration_get($item)) . '">';
+      $output .= '<a href = "#' . drupal_html_class(transliteration_get($item)) . '" class="tab ' . drupal_html_class(transliteration_get($item)) . '">';
       $output .= $item;
       $output .= '</a>';
       $output .= '</div>';
@@ -778,18 +851,25 @@ function _section_projects_po_tools_view() {
     $node_items['title'] = '';
     $node_items['items'] = array();
 
-    //Projektvorschlag
-    if (arg(1) == 'partners' && is_numeric(arg(3))) {
+    /*
+      //Projektvorschlag
+      if (arg(1) == 'partners' && is_numeric(arg(3))) {
       $node_items = array('title' => 'Projektvorschlag');
-
-      $node_items['items'][] = l('Projektvorschlag bearbeiten', 'projects/admin/' . arg(3) . '/edit');
-    }
-    else {
+      $node_items['items'][] = array(
+      'name' => 'projektvorschlag_bearbeiten',
+      'path' => url('projects/admin/' . arg(3) . '/edit'),
+      'link' => l('Projektvorschlag bearbeiten', 'projects/admin/' . arg(3) . '/edit'));
+      }
+      else {
       //Projektorganisation
       $node_items = array('title' => 'Partnerorganisation');
-      $node_items['items'] = array();
-      $node_items['items'][] = l('Partnerorganisation bearbeiten', 'projects/admin/' . $active_project->nid . '/edit');
-    }
+      $node_items['items'] = array('title' => 'Partnerorganisation');
+      $node_items['items'][] = array(
+      'name' => 'partnerorganisation_bearbeiten',
+      'path' => url('projects/admin/' . $active_project->nid . '/edit'),
+      'link' => l('Partnerorganisation bearbeiten', 'projects/admin/' . $active_project->nid . '/edit')
+      );
+      } */
 
     $context_items = array();
     $context_items['title'] = '';
@@ -803,16 +883,26 @@ function _section_projects_po_tools_view() {
     if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_KOOPERATIONSPARTNER, NM_ROLE_ADMIN), $user->roles)) {
       //dont display in cockpit
       if (arg(0) == 'projects' && arg(4) != 'cockpit') {
-        $context_items['items'][] = l('Neuen Projektvorschlag erstellen', 'projects/admin/add/' . NM_PROJECTS_PROJEKTVORSCHLAG, array(
-          'query' => array(
-            'field_partner_organization_ref' => $active_project->nid,
-        )));
-        if (arg(1) == 'partners' && is_numeric(arg(3))) {
-          $context_items['items'][] = l('Neue Kooperationsvereinbarung erstellen', 'projects/admin/add/' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG, array(
+        $context_items['items'][] = array(
+          'name' => 'projektvorschlag',
+          'path' => url('projects/admin/add/' . NM_PROJECTS_PROJEKTVORSCHLAG),
+          'link' => l('Idee', 'projects/admin/add/' . NM_PROJECTS_PROJEKTVORSCHLAG, array(
             'query' => array(
               'field_partner_organization_ref' => $active_project->nid,
-              'field_ca_proposal_ref' => arg(3),
-          )));
+        )))
+        );
+
+
+        if (arg(1) == 'partners' && is_numeric(arg(3))) {
+          $context_items['items'][] = array(
+            'name' => 'kooperationsvereinbarung',
+            'path' => url('projects/admin/add/' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG),
+            'link' => l('Koop Ver', 'projects/admin/add/' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG, array(
+              'query' => array(
+                'field_partner_organization_ref' => $active_project->nid,
+                'field_ca_proposal_ref' => arg(3),
+          )))
+          );
         }
       }
     }
@@ -821,17 +911,25 @@ function _section_projects_po_tools_view() {
     //lernzielvereinbarung + dokumentation only 1  for each cooperation agreement
     //Student + Dozent
     if (arg(0) == 'projects' && arg(4) == 'cockpit' && is_numeric(arg(5))) {
-      if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_STUDENT, NM_ROLE_ADMIN), $user->roles)) {
-        
-        $ca_node = node_load(arg(5));
-        
-        $objective_node = _section_projects_get_objective_by_ca($ca_node);
-        //check if lernzielverinbarung already exists
-        if(empty($objective_node)) {
-          $context_items['items'][] = l('Lernzielvereinbarung erstellen', 'projects/admin/add/' . NM_PROJECTS_ZIELVEREINBARUNG, array(
-            'query' => array(
-              'field_ca_ref' => arg(5),
-          )));
+      //check permission
+      $tmp = new stdClass();
+      $tmp->nid = 0;
+      $tmp->type = NM_PROJECTS_ZIELVEREINBARUNG;
+      if(node_access('create', $tmp)) {
+        if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_STUDENT, NM_ROLE_ADMIN), $user->roles)) {
+
+          $ca_node = node_load(arg(5));
+          $objective_node = _section_projects_get_objective_by_ca($ca_node);
+          //check if lernzielverinbarung already exists
+          if (empty($objective_node)) {
+              $context_items['items'][] = array(
+                'name' => 'lernzielvereinbarung',
+                'path' => url('projects/admin/add/' . NM_PROJECTS_ZIELVEREINBARUNG),
+                'link' => l('Lernzielvereinbarung erstellen', 'projects/admin/add/' . NM_PROJECTS_ZIELVEREINBARUNG, array(
+                  'query' => array(
+                    'field_ca_ref' => arg(5),
+              ))));
+          }
         }
       }
     }
@@ -841,11 +939,14 @@ function _section_projects_po_tools_view() {
       if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_STUDENT, NM_ROLE_ADMIN), $user->roles)) {
         $ca_node = node_load(arg(5));
         $documentation_node = _section_projects_get_documentation_by_ca($ca_node);
-        if(empty($documentation_node)) {
-          $context_items['items'][] = l('Dokumentation erstellen', 'projects/admin/add/' . NM_PROJECTS_DOKUMENTATION, array(
-            'query' => array(
-              'field_ca_ref' => arg(5),
-          )));
+        if (empty($documentation_node)) {
+          $context_items['items'][] = array(
+            'name' => 'dokumentation',
+            'path' => url('projects/admin/' . $active_project->nid . '/edit'),
+            'link' => l('Dokumentation erstellen', 'projects/admin/add/' . NM_PROJECTS_DOKUMENTATION, array(
+              'query' => array(
+                'field_ca_ref' => arg(5),
+          ))));
         }
       }
     }
@@ -862,19 +963,36 @@ function _section_projects_po_tools_view() {
         //dpm($ca);
         //18.06.2014 - 17:46 - SN
         //taking latest ca, possibility to select another context in cockpit section
-        $context_items['items'][] = l('Zum Cockpit', 'projects/partners/' . $active_project->nid . '/' . arg(3) . '/cockpit/' . $ca->nid);
+        $context_items['items'][] = array(
+          'name' => 'cockpit',
+          'path' => url('projects/partners/' . $active_project->nid . '/' . arg(3) . '/cockpit/' . $ca->nid),
+          'link' => l('Cockpit', 'projects/partners/' . $active_project->nid . '/' . arg(3) . '/cockpit/' . $ca->nid));
       }
 
       //context cooperation agreement set?
       if (is_numeric(arg(4)) || (arg(4) == 'cockpit') && is_numeric(arg(5))) {
         //check context -> cockpit
-        $context_items['items'][] = l('Neuen Tagebucheintrag verfassen', 'projects/admin/add/' . NM_PROJECTS_TAGEBUCH, array(
-          'query' => array(
-            'og_group_ref' => arg(5),
-        )));
+        $context_items['items'][] = array(
+          'name' => 'tagebuch',
+          'path' => url('projects/admin/add/' . NM_PROJECTS_TAGEBUCH),
+          'link' => l(' Tagebuch', 'projects/admin/add/' . NM_PROJECTS_TAGEBUCH, array(
+            'query' => array(
+              'og_group_ref' => arg(5),
+        ))));
+
+
+        $ca = node_load(arg(5));
+
+        //setting / edit cooperation agreement
+        $context_items['items'][] = array(
+          'name' => 'cooperationagreement',
+          'path' => url('projects/admin/' . $ca->nid . '/edit'),
+          'link' => l('Projekt', 'projects/admin/' . $ca->nid . '/edit', array(
+            'query' => array(
+              'og_group_ref' => arg(5),
+        ))));
       }
     }
-
 
     $output = theme('section_projects_tools', array('node_items' => $node_items, 'context_items' => $context_items));
   }
@@ -955,7 +1073,7 @@ function _section_projects_course_group_actions_view() {
  */
 
 /**
- * 
+ *
  * @global type $user
  */
 function _section_projects_tools_access($account = NULL) {
@@ -964,7 +1082,7 @@ function _section_projects_tools_access($account = NULL) {
     $account = clone $user;
   }
 
-  if (array_intersect($account->roles, array(NM_ROLE_ADMIN, NM_ROLE_KOOPERATIONSPARTNER, NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT))) {
+  if (array_intersect($account->roles, array(NM_ROLE_ADMIN,NM_ROLE_DOZENT, NM_ROLE_KOOPERATIONSPARTNER, NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT))) {
     return TRUE;
   }
 
@@ -974,17 +1092,29 @@ function _section_projects_tools_access($account = NULL) {
 function section_projects_get_active_project($reset = FALSE) {
   static $project;
 
-
   if (!(section_projects_context())) {
     return FALSE;
   }
 
   if (!isset($project) || $reset) {
-    $project_nid = arg(2);
-
-    $project = node_load($project_nid);
+    if (arg(2) == 'add') {
+      $query = (drupal_get_query_parameters());
+      //30.11.2014 - 14:03 - SN
+      if(arg(3) == 'projects_proposal' || arg(3) == 'projects_cooperation_agreement') {
+        $project = node_load($query['field_partner_organization_ref']);
+      }else if(arg(3) == 'projects_objective' || arg(3) == 'projects_documentation') {
+        $proposal = node_load($query['field_ca_ref']);
+        $partner_nid = _custom_general_get_group($proposal);
+        $project = node_load($partner_nid);
+      }else {
+        $project = node_load(@$query['og_group_ref']?: $query['field_ca_ref']);
+      }
+    }
+    else {
+      $project_nid = arg(2);
+      $project = node_load($project_nid);
+    }
   }
-
 
   return $project;
 }
@@ -1017,7 +1147,7 @@ function section_projects_url_outbound_alter(&$path, &$options, &$original_path)
 
   if ($project || section_projects_context()) {
     /*
-     * 
+     *
      * forum node links
      */
 
@@ -1053,6 +1183,40 @@ function section_projects_url_outbound_alter(&$path, &$options, &$original_path)
           $partner_nid = _custom_general_get_group($proposal);
           $path = "projects/partners/" . $partner_nid . "/" . $proposal->nid . "/cockpit/" . $nid;
         }
+        else if ($type == NM_PROJECTS_ZIELVEREINBARUNG) {
+          $objective = node_load($nid);
+
+          $tmp = $objective;
+          if (!empty($tmp->field_ca_ref)) {
+            $ca = node_load($tmp->field_ca_ref[LANGUAGE_NONE][0]['target_id']);
+          }
+          else {
+            $ca = node_load($tmp->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+          }
+
+          $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
+          $partner_nid = _custom_general_get_group($proposal);
+          //$po_node = node_load($partner_nid);
+
+          $path = "projects/partners/" . $partner_nid . "/" . $proposal->nid . "/cockpit/" . $ca->nid;
+        }
+        else if ($type == NM_PROJECTS_DOKUMENTATION) {
+          $docu = node_load($nid);
+
+          $tmp = $docu;
+          if (!empty($tmp->field_ca_ref)) {
+            $ca = node_load($tmp->field_ca_ref[LANGUAGE_NONE][0]['target_id']);
+          }
+          else {
+            $ca = node_load($tmp->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+          }
+
+          $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
+          $partner_nid = _custom_general_get_group($proposal);
+          //$po_node = node_load($partner_nid);
+
+          $path = "projects/partners/" . $partner_nid . "/" . $proposal->nid . "/cockpit/" . $ca->nid;
+        }
       }
     }
   }
@@ -1063,8 +1227,8 @@ function section_projects_url_outbound_alter(&$path, &$options, &$original_path)
  */
 
 /**
- * Provide a select options component to Webform. The values are 
- * populated via a callback function, which returns 
+ * Provide a select options component to Webform. The values are
+ * populated via a callback function, which returns
  * an array of nodes.
  *
  * @return void
@@ -1102,7 +1266,19 @@ function _section_projects_get_proposal_nodes() {
   }
   return $nodes;
 }
+function _section_projects_get_nodes($type) {
+  $nodes = array();
 
+  $result = db_select('node', 'n')
+      ->fields('n', array('nid', 'title'))
+      ->condition('n.type', $type)
+      ->execute();
+
+  foreach ($result as $node) {
+    $nodes[$node->nid] = $node->title;
+  }
+  return $nodes;
+}
 /**
  *  COCKPIT
  */
@@ -1159,6 +1335,29 @@ function _section_projects_render_node_tabs($node) {
   );
   $options['attributes']['class'] = array('btn');
 
+  if(!node_access('update', $node)){
+     return '';
+  }
+
+  //$parsed = drupal_parse_url(current_path());
+  //get the right fragment
+  $fragment = '';
+  switch ($node->type) {
+    case NM_PROJECTS_DOKUMENTATION:
+      $fragment = 'dokumentation';
+      break;
+    case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
+      $fragment = 'kooperationsvereinbarung';
+      break;
+    case NM_PROJECTS_TAGEBUCH:
+      $fragment = 'durchfuehrung';
+      break;
+    case NM_PROJECTS_ZIELVEREINBARUNG:
+      $fragment = 'lernzielvereinbarung';
+      break;
+  }
+  $options['fragment'] = $fragment;
+
   //active link not set properly, using url() function to avoid this probplem
   $options['attributes']['class'] = array('btn');
   $tabs = array();
@@ -1173,12 +1372,14 @@ function _section_projects_render_node_tabs($node) {
     $result['link'] = l("Ansicht", $path, $options);
   }
   $tabs['overview'] = $result;
-
-  $path = 'projects/admin/' . $node->nid . '/edit';
+$signing_state = _section_projects_get_signing_states_array($node->nid);
+/*alle unterschrieben ? Kein Bearbeiten*/
+if(!(((count($signing_state)==2 )&& $node->type==NM_PROJECTS_KOOPERATIONSVEREINBARUNG) || ((count($signing_state)==2) && $node->type==NM_PROJECTS_ZIELVEREINBARUNG)))
+{ $path = 'projects/admin/' . $node->nid . '/edit';
   $result['path'] = $path;
   $result['link'] = l("Bearbeiten", $path, $options);
   $tabs['edit'] = $result;
-
+}
   return _custom_general_theme_tools_block($tabs, "content_node_tabs", "btn-grop");
 }
 
@@ -1255,15 +1456,15 @@ function projects_cockpit_main_lernzielvereinbarung_view() {
     $ca_node = node_load(arg(5));
 
     $objective_node = _section_projects_get_objective_by_ca($ca_node);
-    
+
     $output .= "<h4>Lernzielvereinbarung</h4>";
-    
-    if(empty($objective_node)) {
-       $output .= 'Keine Lernzielvereinbarung gefunden. Todo Anlegen link..';
-       
-       return $output;
+
+    if (empty($objective_node)) {
+      $output .= 'Keine Lernzielvereinbarung gefunden. Todo Anlegen link..';
+
+      return $output;
     }
-    
+
     $objective_node = node_load($objective_node->nid);
 
     $output .=_section_projects_render_node_tabs($objective_node);
@@ -1336,7 +1537,17 @@ function projects_cockpit_main_dokumentation_view() {
     $ca_node = node_load(arg(5));
 
     $documentation_node = _section_projects_get_documentation_by_ca($ca_node);
+
+
+
+    if(empty($documentation_node)) {
+      $output .= "Es ist noch keine Dokumentation für das Projekt vorhanden. Bitte legen Sie zunächst eine Dokumentation an.";
+
+      return $output;
+    }
+
     $documentation_node = node_load($documentation_node->nid);
+
 
     $output .=_section_projects_render_node_tabs($documentation_node);
 
@@ -1398,6 +1609,821 @@ function projects_cockpit_main_dokumentation_view() {
 
 
   return $output;
+}
+
+function section_projects_action_info () {
+ return array(
+  'section_projects_sign_inform_action' => // The function to call
+   array(
+   'type' => 'signing actions',
+   'label' => t('Send e-mails to all users that need to be informed about the signing of a contract'),
+   'configurable' => FALSE, // Has a config form
+   'triggers' => array(
+    'node_update', // Availability in the triggers GUI
+    ),
+   )
+     ,
+     'section_projects_reset_signatures' => // The function to call
+   array(
+   'type' => 'signing actions',
+   'label' => t('Reset all signatures if a node is updated'),
+   'configurable' => FALSE, // Has a config form
+   'triggers' => array(
+    'node_update', // Availability in the triggers GUI
+    ),
+   )
+     ,
+
+     );
+
+   }
+
+   function section_projects_reset_signatures($entity, $context)
+{
+    $the_node = @$context['node'];
+    $original = $the_node->original;
+
+    //$node -> type projects_cooperation_agreement
+    //oder projects_objective
+    switch ($the_node->type)
+    {
+        case 'projects_cooperation_agreement':
+            $fields_to_compare = array(
+                'body["und"][0]["value"]',
+                'field_ca_timespan["und"][0]["value"]',
+                'field_ca_timespan["und"][0]["value2"]',
+                'field_ca_expectation_academy["und"][0]["value"]',
+                'field_ca_expectation_po["und"][0]["value"]',
+                'field_ca_result["und"][0]["value"]',
+                'field_ca_students_role["und"][0]["value"]',
+                'field_ca_partners_role["und"][0]["value"]',
+                'field_ca_instructors_role["und"][0]["value"]',
+                'field_ca_cooperation_rules["und"][0]["value"]',
+                'field_ca_course_group_ref["und"][0]["target_id"]',
+                'field_ca_proposal_ref["und"][0]["target_id"]',
+                'field_ca_student_refs["und"][0]["target_id"]',
+                'group_group["und"][0]["value"]'
+            );
+            break;
+        case 'projects_objective':
+            $fields_to_compare = array(
+                'body["und"][0]["value"]',
+                'field_objective_motivation["und"][0]["value"]',
+                'field_objective_task["und"][0]["value"]',
+                'field_objective_matching["und"][0]["value"]',
+                'field_ca_ref["und"][0]["target_id"]',
+            );
+            break;
+        default: return true;
+            break;
+    }
+
+    //ueberpruefe original und neue version auf gleichheit
+    $somethinghaschanged = false;
+    foreach ($fields_to_compare as $cmp_field)
+    {
+        //pfui. sorry, aber war die einzige mglk, ohne riesen if-konstrukte.
+        $compare_value_node = eval('return $the_node->' . $cmp_field . ';');
+        $compare_value_original = eval('return $original->' . $cmp_field . ';');
+        #   dpm($compare_value_node);
+        if ($compare_value_original != $compare_value_node)
+        {
+            $somethinghaschanged = true;
+        }
+    }
+
+
+    if ($somethinghaschanged)
+    { # dpm("change! Reset signature");
+        //reset signature
+        $the_node = node_load($the_node->nid, null, true);
+        $the_node->field_seal['und'][0]['value'] = 0;
+        node_save_action($the_node);
+         drupal_set_message(("Alle Unterschriften wurden automatisch zurückgezogen, da sich der Inhalt verändert hat."));
+
+    }
+
+    return true;
+}
+
+ /* Implements hook_node_access_records().
+*/
+function section_projects_node_access_records($node) {
+  $grants =  array();
+  $sids = array();
+
+  if($node->type === NM_PROJECTS_TAGEBUCH) {
+    $privacy = NULL;
+    if(!empty($node->field_nm_privacy)) {
+      $privacy = $node->field_nm_privacy['und'][0]['value'];
+
+    }
+    if(!$privacy) {
+      return $grants;
+    }
+
+     switch ($privacy) {
+      case NM_STREAM_PRIVATE:
+
+        $grants[] = array(
+          'realm' => 'section_projects_nm_stream_private',
+          'gid' => $node->uid,
+          'grant_view' => 1,
+          'grant_update' => 1,
+          'grant_delete' => 1,
+          'priority' => 1,
+        );
+        break;
+      case NM_STREAM_TEAM:
+
+        $context_nid = $node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $context_type = _custom_general_get_node_type($context_nid);
+        switch ($context_type) {
+          case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
+
+            $grants[] = array(
+              'realm' => 'section_projects_nm_stream_team',
+              'gid' => $context_nid,
+              'grant_view' => 1,
+              'grant_update' => 0,
+              'grant_delete' => 0,
+              'priority' => 1,
+            );
+            break;
+        }
+        break;
+
+      case NM_STREAM_PROJECT:
+        $context_nid = $node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $context_type = _custom_general_get_node_type($context_nid);
+        switch ($context_type) {
+          case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
+
+            $grants[] = array(
+              'realm' => 'section_projects_nm_stream_project',
+              'gid' => $context_nid,
+              'grant_view' => 1,
+              'grant_update' => 0,
+              'grant_delete' => 0,
+              'priority' => 1,
+            );
+            break;
+        }
+        break;
+      case NM_STREAM_PUBLIC:
+        $grants[] = array(
+          'realm' => 'section_projects_nm_stream_public',
+          'gid' => 1,
+          'grant_view' => 1,
+          'grant_update' => 0,
+          'grant_delete' => 0,
+          'priority' => 1,
+        );
+        break;
+      default:
+        //private
+        break;
+    }
+  }
+return $grants;
+}
+
+
+ /* Implements hook_node_grants().
+*/
+function section_projects_node_grants($account, $op) {
+
+
+     $grants =  array();
+
+  /* // Das lass ich mal Anschauungsobjekt drinnen. Funzioniert, ist aber aufwändig. Oft genügt, wenn man einen Key $user->uid hernimmt.
+   * //und hier checken wir ob wir auf die gesperrten tagebucheintraege zugreifen koennen
+    $tagebuch = _section_projects_get_nodes(NM_PROJECTS_TAGEBUCH);
+    $tagebuch_objects = node_load_multiple(array_keys($tagebuch));
+    #dpm($tagebuch_objects);
+     foreach($tagebuch_objects as $tbo)
+     {if(count($tbo->field_nm_privacy))
+     {
+         if((int)($tbo->field_nm_privacy['und'][0]['value']) ===1 && $tbo->uid === $account->uid)
+               $grants[basename(dirname(__FILE__))][]   =  $tbo->uid;
+     }
+     }*/
+
+
+  $grants = array();
+  //private for every option
+  $grants['section_projects_nm_stream_private'][] = $account->uid;
+
+  if ($op != 'view') {
+    return $grants;
+  }
+
+
+ //grant access to users concerning all blog entries published to the whole project
+  //course -> course-group -> cooperation agreement
+  if(in_array(NM_ROLE_STUDENT , $account->roles) || in_array(NM_ROLE_DOZENT , $account->roles)) {
+    $cas = _section_projects_get_all_cooperation_agreements();
+    if(!empty($cas)) {
+      foreach ($cas as $key => $ca) {
+        $ca = node_load($ca->nid);
+        if(in_array(NM_ROLE_STUDENT , $account->roles)) {
+          if(_section_projects_seal_user_is_responsible_student($account, $ca)) {
+              $grants['section_projects_nm_stream_project'][] = $ca->nid;
+          }
+
+          if (!empty($ca->field_ca_course_group_ref)) {
+            $course_group_nid = $ca->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
+            $course_group = node_load($course_group_nid);
+            $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+            $course = node_load($course_nid);
+            //get users course group in course
+            if (_section_courses_get_coursegroup_gid($account->uid, $course) == $course_group_nid) {
+              $grants['section_projects_nm_stream_team'][] = $ca->nid;
+            }
+          }
+        }
+
+        //DOZENT ONLY
+        if(in_array(NM_ROLE_DOZENT, $account->roles)) {
+          if(_section_projects_seal_user_is_responsible_dozent($account, $ca)) {
+            $grants['section_projects_nm_stream_team'][] = $ca->nid;
+        }
+
+        }
+
+      }
+
+    }
+    /*$user_group_nids = og_get_groups_by_user($account, 'node');
+
+    if (empty($user_group_nids)) {
+      return $grants;
+    }
+
+    $user_courses = array();
+    $user_groups = array();
+
+    foreach ($user_group_nids as $ugn) {
+        if (_custom_general_get_node_type($ugn) == NM_COURSE_GROUP) {
+          $course_group = node_load($ugn);
+          $proposal = new stdClass();
+          $proposal->nid = _section_courses_course_group_get_proposal($course_group);
+          if($proposal->nid) {
+
+            $cas = _section_projects_get_cooperation_agreements($proposal, $account);
+            //dpm($cas);
+            // if (count($cas) > 0) {
+            //   //extracting the first resul
+            //   //multicontext possible!
+            //   $ca = current($cas);
+            //   $grants['nm_stream_team'][] = $ca->nid;
+
+            //   $grants['nm_stream_project'][] = $ca->nid;
+
+            //}
+          }
+        }
+      }*/
+ }else if(in_array(NM_ROLE_DOZENT , $account->roles)){
+    $cas = _section_projects_get_all_cooperation_agreements($account);
+    if(!empty($cas)){
+      foreach ($cas as $key => $ca) {
+        $ca = node_load($ca->nid);
+        if(_section_projects_seal_user_is_responsible_dozent($account, $ca)) {
+            $grants['section_projects_nm_stream_project'][] = $ca->nid;
+        }
+      }
+   }
+  }else if(in_array(NM_ROLE_KOOPERATIONSPARTNER , $account->roles)) {
+    $cas = _section_projects_get_all_cooperation_agreements($account);
+    if(!empty($cas)){
+      foreach ($cas as $key => $ca) {
+        $ca = node_load($ca->nid);
+        if(_section_projects_seal_user_is_responsible_kooperationspartner($account, $ca)) {
+            $grants['section_projects_nm_stream_project'][] = $ca->nid;
+        }
+      }
+    }
+  }
+
+  //students who are on mentioned via extra field
+  //cooperation agreement -> student
+
+
+  //cooperation partners
+
+
+  //intrustors / dozenten
+  //get nids, of ca where dozent is author
+    return $grants;
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//TODO Permissions einbauen!
+function section_projects_og_user_access_alter(&$perm, $context) {
+  global $user;
+  $account = clone $user;
+
+
+  //Dozent
+  //04.12.2014 - 18:15 - SN todo check context first
+  //may dozent do all those things in this group?!!!! !!!IMPORTANT
+  if(in_array(NM_ROLE_DOZENT, $account->roles)) {
+
+
+   
+
+    //must NOT edit any objectives
+    $perm['update any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = FALSE;
+    $perm['create ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = FALSE;
+    $perm['delete any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = FALSE;
+    $perm['delete own ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = FALSE;
+
+    //$perm['create ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
+    $perm['update any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE; // dangerous here 04.12.2014 - 18:23 - SN context need to be checked
+  }
+
+/*
+ * ===============================
+ * IMPORTANT
+ * @TODO
+ *  bei Student hats was mit den Berechtigungschecks verhauen. Überprüfen!!
+ * IMPORTANT
+ * =====================================
+ */
+  if(in_array(NM_ROLE_STUDENT, $account->roles)) {
+    //must NOT edit any objectives
+    $perm['update any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+    $perm['create ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+    $perm['delete any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+    $perm['delete own ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+
+    //view
+    $perm['view field_objective_task field'] = TRUE;
+    $perm['view field_objective_motivation field'] = TRUE;
+    $perm['view field_ca_ref field'] = TRUE;
+    $perm['view field_objective_matching field'] = TRUE;
+
+    //edit
+    $perm['update any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+    $perm['update field_objective_motivation field'] = TRUE;
+    $perm['update field_objective_matching field'] = TRUE;
+    $perm['update field_objective_task field'] = TRUE;
+
+ /* studenten, die auf dokumentation zugeifen dürfne,. dürfen auch die felder editieren */
+    /* todo kein zugriff auf wysiwyg */
+$perm['create ' . NM_PROJECTS_DOKUMENTATION . ' content'] = true;
+       $perm['update any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = true;
+    $perm['update body field'] = true;
+
+
+
+
+
+ /* studenten, die auf lernzielvereinbarungen zugeifen dürfne,. dürfen auch die felder editieren */
+    if(node_access('view',$context['group']))
+    {
+            $perm['update any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = true;
+    $perm['update field_objective_motivation field'] = true;
+    $perm['update field_objective_matching field'] = true;
+    $perm['update field_objective_task field'] = true;
+    }
+
+    //blog eintrag erstellen
+    $perm['create projects_blog content'] = true;
+    $perm['update field_nm_privacy field'] = true;
+      $perm['create field_blog_type content'] = true;
+    $perm['update field_blog_type field'] = true;
+    //    $perm['create field_blog_type content'] = true;
+    //    $perm['view field_blog_type field'] = true;
+    //     $perm['update body field'] = true;
+
+//   /*
+
+
+  }
+
+
+
+
+
+
+  return $perm;
+
+
+}
+
+
+
+/*
+function section_projects_field_access($op, $field, $entity_type, $entity, $account) {
+return true;
+}*/
+/**
+ * Implements hook_node_access().
+ */
+
+function section_projects_node_access($node, $op, $account) {
+
+    //DOZENT
+    //deny create permission, to objective
+    if(in_array(NM_ROLE_DOZENT , $account->roles)) {
+      if($node == 'projects_objective' ||  (is_object($node) && $node->type == 'projects_objective')) {
+        return NODE_ACCESS_DENY;
+      }
+    }
+
+    //STUDENT
+    if(in_array(NM_ROLE_STUDENT , $account->roles)) {
+      if($node == 'projects_objective' ||  (is_object($node) && $node->type == 'projects_objective')) {
+        return NODE_ACCESS_ALLOW; //@todo need to check context!!!! but ok for the prototype!!
+      }
+    }
+
+
+    if(!is_object($node) || $node->nid == 0) {
+      return NODE_ACCESS_IGNORE;
+    }
+
+    if($node->type != 'projects_cooperation_agreement' && $node->type != 'projects_objective' ) {
+        return NODE_ACCESS_IGNORE;
+    }
+
+
+    $signing_state = @$node->field_seal;
+    $signing_state = (int) ($signing_state['und'][0]['value']);
+    $signatures = array();
+    if (($signing_state & bindec('100')) == bindec('100'))
+        $signatures[] = 'dozent';
+    if (($signing_state & bindec('010')) == bindec('010'))
+        $signatures[] = 'student';
+    if (($signing_state & bindec('001')) == bindec('001'))
+        $signatures[] = 'partner';
+  if (
+    // The $node argument can be either a $node object or a machine name of
+    // node's content type. It is called multiple times during a page load
+    // so it is enough if you perform the check once you get the object.
+    is_object($node)
+          &&
+          ( ($node->type == 'projects_cooperation_agreement') && (count($signatures)==3)
+            ||  ($node->type == 'projects_objective')  && (count($signatures)==2  ))
+    // Operation on which you want to act: "create", "delete", "update", "view".
+   && ( $op == 'update'
+      || $op =='delete'
+     )
+
+  ) {
+    // Check if the node is published.
+     { //das würde dann auch beim view auslösen. deshalb nicht anzeigen...
+         #drupal_set_message('Dies kann nicht bearbeitet werden, da bereits alle Beteiligten unterschrieben haben.','warning');
+
+        return NODE_ACCESS_DENY;
+      }
+    }
+
+  return NODE_ACCESS_IGNORE;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function section_projects_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
+
+  if(in_array(NM_ROLE_ADMIN, $user->roles)) {
+    return;
+  }
+
+  //unset book outline for every project content type
+  if(!empty($form['#node_edit_form']) && strstr($form['type']['#value'], 'projects_')) {
+    unset($form['book']);
+  }
+}
+function _section_projects_get_signing_states_array($node_id)
+{
+    $the_node =  node_load($node_id);
+     $signing_state = @$the_node->field_seal;
+     if(!$signing_state)
+         return false;
+     
+    $signing_state = (int) ($signing_state['und'][0]['value']);
+
+    $signatures = array();
+    if (($signing_state & bindec('100')) == bindec('100'))
+        $signatures[] = 'dozent';
+    if (($signing_state & bindec('010')) == bindec('010'))
+        $signatures[] = 'student';
+    if (($signing_state & bindec('001')) == bindec('001'))
+        $signatures[] = 'partner';
+    return $signatures;
+
+}
+
+function section_projects_sign_inform_action($entity, $context)
+{   $the_node = @$context['node'];
+    $original = $the_node->original;
+
+    //muss angepasst werden fuer weitere signiertypen
+     if(!in_array($the_node->type,array('projects_cooperation_agreement', 'projects_objective')))
+             return true;
+
+    /* signierstatus auf alter und aktualisierter version */
+
+   //das ist wichtig, sonst funktioniert das nicht.
+    entity_get_controller('node')->resetCache(array($the_node->nid));
+    $the_node = node_load($the_node->nid);
+
+
+    $signing_state_new = $the_node->field_seal;
+    $signing_state_new = (int) ($signing_state_new['und'][0]['value']);
+
+
+
+    $signing_state_old = $original->field_seal;
+    $signing_state_old = (int) ($signing_state_old['und'][0]['value']);
+
+    //keine aenderung - return
+    if ($signing_state_new == $signing_state_old)
+        return true;
+
+    $signed_all_old = array();
+
+    if (($signing_state_old & bindec('100')) == bindec('100'))
+        $signed_all_old[] = 'dozent';
+    if (($signing_state_old & bindec('010')) == bindec('010'))
+        $signed_all_old[] = 'student';
+    if (($signing_state_old & bindec('001')) == bindec('001'))
+        $signed_all_old[] = 'partner';
+
+    $signed_all_new = array();
+    if (($signing_state_new & bindec('100')) == bindec('100'))
+        $signed_all_new[] = 'dozent';
+    if (($signing_state_new & bindec('010')) == bindec('010'))
+        $signed_all_new[] = 'student';
+    if (($signing_state_new & bindec('001')) == bindec('001'))
+        $signed_all_new[] = 'partner';
+
+    $sign_intersect = array_intersect($signed_all_new, $signed_all_old);
+    $new_sigs = array_diff($signed_all_new, $signed_all_old);
+
+    $lost_sigs = array_diff($signed_all_old, $signed_all_new);
+
+  #  dpm($lost_sigs);
+    if (count($new_sigs))
+    {
+        //neue unterschrift
+        $diff = array_diff($signed_all_new, $signed_all_old);
+        $text = t("was signed by:");
+    } elseif (count($lost_sigs))
+    {
+        //unterschrift weg
+        $diff = array_diff($signed_all_old, $signed_all_new);
+        $text = t("Signatures withdrawn by");
+    }
+
+    //betroffene nutzer laden und Mail bauen
+    //der naechste abschnitt ist nur dafuer da um die nutzer zu laden
+    if (count($new_sigs) || count($lost_sigs))
+    {
+        $THIS_IS_A_LERNZIELVEREINBARUNG = false;
+
+        /* projektvorschlag laden */
+        $the_proposal_id = @$the_node->field_ca_proposal_ref['und'][0]['target_id'];
+        $das_was_hinten_an_die_url_kommt = $the_node->nid;
+
+        //fails wenn lernzielvereinbarung genutzt wird
+        if (!$the_proposal_id)
+        { $THIS_IS_A_LERNZIELVEREINBARUNG = TRUE;
+            $the_lernziels_coop_id = $the_node->field_ca_ref['und'][0]['target_id'];
+            $the_lernziels_coop = node_load($the_lernziels_coop_id);
+            $the_proposal_id = $the_lernziels_coop->field_ca_proposal_ref['und'][0]['target_id'];
+            $das_was_hinten_an_die_url_kommt = $the_node->field_ca_ref['und'][0]['target_id'];
+
+            $ca_ref = $the_node->field_ca_ref['und'][0]['target_id'];
+            $ca_object = node_load($ca_ref);
+
+
+        }
+        $the_proposal = node_load($the_proposal_id);
+
+        /* kursgruppe zum projektvorschlag laden */
+        if ($THIS_IS_A_LERNZIELVEREINBARUNG)
+            $the_course_group_id = $ca_object->field_ca_course_group_ref['und'][0]['target_id'];
+        else
+            $the_course_group_id = $the_node->field_ca_course_group_ref['und'][0]['target_id'];
+
+
+        $the_course_group = node_load($the_course_group_id);
+
+        /* lade kursgruppenmitglieder aus db */
+        $course_group_query = new EntityFieldQuery();
+        $course_group_query->entityCondition('entity_type', 'user')
+                ->fieldCondition('og_user_node', 'target_id', $the_course_group->nid, '=');
+        $results = $course_group_query->execute();
+        $course_group_user_uids = array_keys($results['user']);
+        $course_group_users = user_load_multiple($course_group_user_uids);  // $users is now an array of user entity objects
+
+        /* der echte Kurs, also die Lehrveranstaltung */
+        /* $the_course = node_load($the_course_group->og_group_ref['und'][0]['target_id']);
+          dpm($the_course); */
+
+        /* Lade Organisation */
+        $the_org_id = $the_proposal->field_partner_organization_ref['und'][0]['target_id'];
+        $the_org = node_load($the_org_id);
+        $the_org_contacts = $the_org->field_field_po_contact_person['und'];
+        foreach ($the_org_contacts as $id_cand)
+        {
+            $the_org_contacts_ids[] = $id_cand['target_id'];
+        }
+        $organisation_users = user_load_multiple($the_org_contacts_ids);
+        #dpm($organisation_users);
+// braucht man das??
+        /*
+          $course_query = new EntityFieldQuery();
+          $course_query->entityCondition('entity_type', 'user')
+          ->fieldCondition('og_user_node', 'target_id', $the_course_group->og_group_ref['und'][0]['target_id'], '=');
+
+          $results = $course_query->execute();*/
+
+/*
+          // Or,
+          $course_user_uids = array_keys($results['user']);
+          $course_users = user_load_multiple($course_user_uids);  // $users is now an array of user entity objects
+          dpm("kursmitglierd");
+          dpm($course_users);
+
+         */
+
+       switch($the_node->type)
+     {
+         case 'projects_cooperation_agreement':
+      //get dozenten of this course
+      //only possible if course group is set
+      if (!empty($the_node->field_ca_course_group_ref)) {
+        $course_group_nid = $the_node->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $course_group = node_load($course_group_nid);
+        $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        //$course = node_load($course_nid);
+        //$dozenten = og_membership_load_multipleF(ALSE, array('gid' => $course_nid, 'entity_type' => 'user'));
+        $dozenten = custom_general_get_users_in_group_by_role($course_nid, array('kurs-dozent'));
+        //dpm($dozenten);
+
+
+        }
+
+      break;
+    case 'projects_objective':
+      //dpm(($node));
+      if (!empty($the_node->field_ca_ref)) {
+        $ca_node_nid = $the_node->field_ca_ref[LANGUAGE_NONE][0]['target_id'];
+        $ca_node = node_load($ca_node_nid);
+        $course_group_nid = $ca_node->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $course_group = node_load($course_group_nid);
+        $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        //$course = node_load($course_nid);
+        //$dozenten = og_membership_load_multipleF(ALSE, array('gid' => $course_nid, 'entity_type' => 'user'));
+        $dozenten = custom_general_get_users_in_group_by_role($course_nid, array('kurs-dozent'));
+          #dpm($results);
+      }
+      break;
+      }
+
+
+        /* Die Kooperationsvereinbarung %s wurde von allen Beteiligten unterschrieben, ab sofort sind keine Änderungen daran mehr möglich.
+          <br><br>Viel Erfolg bei der Umsetzung! */
+
+        /* Der Kooperationsvereinbarung %s im Projekt %s wurde eine Unterschrift hinzugefügt. */
+        /* Es wurde eine Unterschrift aus der Kooperationsvereinbarung %s  im Projekt %s  gestrichen! */
+
+
+        $url_tpl_jump = 'projects/partners/' . $the_org_id . '/' . $the_proposal->nid . '/cockpit/' . $das_was_hinten_an_die_url_kommt;
+        switch ($the_node->type)
+        {
+            case 'projects_objective':
+                $url_for_context = url($url_tpl_jump, array('fragment' => 'lernzielvereinbarung', 'absolute' => true));
+                $type_context = "Lernzielvereinbarung";
+                $missing_sigs = array_diff(array('dozent','student'),$signed_all_new );
+                break;
+            case 'projects_cooperation_agreement':
+                $url_for_context = url($url_tpl_jump, array('fragment' => 'kooperationsvereinbarung', 'absolute' => true));
+                $type_context = "Kooperationsvereinbarung";
+                $missing_sigs = array_diff( array('dozent', 'partner','student'),$signed_all_new);
+                break;
+        }
+
+        $mail_content_tpl_add = ('Der %s %s im Projekt %s wurde eine Unterschrift hinzugefügt.');
+        $mail_content_tpl_remove = ('Es %s aus der %s %s  im Projekt %s  gestrichen!');
+        $mail_content_tpl_all_sigs = ('Die %s %s im Projekt %s wurde von allen Beteiligten unterzeichnet. Eine Änderung ist nicht mehr möglich. Viel Gelingen!');
+        $mail_content_tpl_missings = ('Es fehl%s noch die Unterschrift%s von:');
+        $tpl_readable_users= array('partner'=> 'Kooperationspartner', 'dozent'=>'Dozent','student'=>'Student');
+
+        $mail_content_add = sprintf($mail_content_tpl_add, $type_context, l($the_node->title, $url_for_context), $the_proposal->title);
+        $mail_content_remove = sprintf($mail_content_tpl_remove,(count($lost_sigs) ===1?'wurde eine Unterschrift':'wurden '.count($lost_sigs).' Unterschriften'), $type_context, l($the_node->title, $url_for_context), $the_proposal->title);
+        $mail_content_all_sigs = sprintf($mail_content_tpl_all_sigs, $type_context, l($the_node->title, $url_for_context), $the_proposal->title);
+
+        if(count($missing_sigs)>0)
+        {
+        if(count($missing_sigs)>1)
+            $mail_content_missings = sprintf($mail_content_tpl_missings, 'en','en');
+        else
+              $mail_content_missings = sprintf($mail_content_tpl_missings, 't','');
+        foreach($missing_sigs as $missing_role)
+            $mail_content_missings.="\r\n".$tpl_readable_users[$missing_role];
+        }
+        else $mail_content_missings ="";
+
+        if (count($new_sigs))
+        {
+            $text = $mail_content_add;
+        } elseif (count($lost_sigs))
+        {
+            //unterschrift weg
+
+            $text = $mail_content_remove;
+        }
+        if(((count($signed_all_new) ==3) && !$THIS_IS_A_LERNZIELVEREINBARUNG) || (count($signed_all_new) == 2 && $THIS_IS_A_LERNZIELVEREINBARUNG))
+        {
+            $text = $mail_content_all_sigs;
+        }
+        $text.="\r\n".$mail_content_missings;
+        $module = 'section_projects';
+        $key = 'signature_has_changed';
+        $language = language_default();
+        $params = array(
+            '@text' => ($text),
+            '@diff' => implode("\r\n", $diff) //. "\r\n" . "debug:" . "\r\n" . "states" . "\r\n" . $signing_state_new . "///" . $signing_state_old . "\r\n" . '$signed_all_new' . "\r\n" . implode("\r\n", $signed_all_new) . "\r\n" . '$signed_all_old' . "\r\n" . implode("\r\n", $signed_all_old)
+        );
+
+        {
+            foreach($dozenten as $dozminiinfo)
+                $dozenten_ids[] = $dozminiinfo->uid;
+            $dozenten_objects = user_load_multiple($dozenten_ids);
+            $author_of_thingy = user_load($the_node->uid);
+            if(@$the_node->field_ca_ref['und'][0]['target_id'])
+            {
+                $ca = node_load($the_node->field_ca_ref['und'][0]['target_id']);
+            }
+            else $ca = $the_node;
+            foreach( $ca->field_ca_student_refs['und'] as $additional_user)
+            {
+                $directly_added_students_ids[] = $additional_user['target_id'];
+            }
+            $directly_added_student = user_load_multiple($directly_added_students_ids);
+          
+            //$organisation_users  $course_group_users
+            $all_affected_users = array_merge($dozenten_objects, $directly_added_student,$organisation_users, $course_group_users, array($author_of_thingy));
+
+            $singular_affected_users = array();
+            foreach($all_affected_users as $aff_user)
+            {
+                if(!in_array($aff_user,$singular_affected_users))
+                        $singular_affected_users[] = $aff_user;
+            }
+
+        }
+        //  alle mails, dies interessiert
+        foreach ($singular_affected_users as $user_to_mail_to)
+        {
+            $params_new = $params;
+            $params_new['@name'] = $user_to_mail_to->name;
+           # dpm($params_new);
+ drupal_mail($module, $key, 'bernhard.strehl@gmail.com', $language, $params_new);
+            //drupal_mail($module, $key, $user_to_mail_to->mail, $language, $params_new);
+        }
+        }
+    //es hat sich nichts getan - donothing
+}
+
+/**
+* Implements hook_mail().
+*/
+function section_projects_mail($key, &$message, $params)
+{
+    switch ($key)
+    {
+        case 'signature_has_changed':
+
+            $message['subject'] = t("Geänderte Unterschrift");
+            $message['body'] = array();
+            $message['body'][] = t("Hello")." ".t("@name", $params).',';;
+            $message['body'][] = nl2br($params['@text']);             #t("@text", $params);
+          # $message['body'][] = t("@diff", $params);
+
+            break;
+    }
 }
 
 /**

@@ -30,6 +30,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
@@ -215,7 +216,7 @@ function nm_section_courses_features_views_default_views() {
     t('Master'),
     t('Ankündigungen'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -262,6 +263,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '0';
@@ -378,7 +380,7 @@ function nm_section_courses_features_views_default_views() {
   $translatables['courses_admin_course_members'] = array(
     t('Defaults'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -408,6 +410,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
@@ -462,6 +465,10 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['required'] = TRUE;
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_course_group_proposal_target_id']['id'] = 'field_course_group_proposal_target_id';
+  $handler->display->display_options['relationships']['field_course_group_proposal_target_id']['table'] = 'field_data_field_course_group_proposal';
+  $handler->display->display_options['relationships']['field_course_group_proposal_target_id']['field'] = 'field_course_group_proposal_target_id';
   /* Feld: Bulk operations: Inhalt */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'node';
@@ -631,6 +638,13 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['view']['label'] = 'Teilnehmer';
   $handler->display->display_options['fields']['view']['view'] = 'courses_admin_course_members';
   $handler->display->display_options['fields']['view']['arguments'] = '[!nid]';
+  /* Feld: Inhalt: Titel */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['relationship'] = 'field_course_group_proposal_target_id';
+  $handler->display->display_options['fields']['title_1']['label'] = 'Projektvorschlag';
+  $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   /* Sort criterion: Inhalt: Titel */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
@@ -695,7 +709,7 @@ function nm_section_courses_features_views_default_views() {
   $translatables['courses_admin_groups'] = array(
     t('Master'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -709,12 +723,14 @@ function nm_section_courses_features_views_default_views() {
     t('letzte Seite »'),
     t('Bis jetzt wurden noch keine Kursgruppen angelegt.'),
     t('OG membership from node'),
+    t('Inhalt entity referenced from field_course_group_proposal'),
     t('Auswahl'),
-    t('- Choose an operation -'),
+    t('- Aktion wählen -'),
     t('Kursgruppe(n) löschen'),
     t('Name der Kursgruppe'),
     t('Beschreibung'),
     t('Teilnehmer'),
+    t('Projektvorschlag'),
     t('Alle'),
     t('Content pane'),
     t('Kursgruppen'),
@@ -741,6 +757,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'mini';
   $handler->display->display_options['pager']['options']['items_per_page'] = '50';
@@ -757,13 +774,13 @@ function nm_section_courses_features_views_default_views() {
     'field_photo' => 'field_photo',
     'name' => 'name',
     'realname' => 'realname',
-    'field_matrikelnummer' => 'field_matrikelnummer',
+    'og_roles' => 'og_roles',
+    'field_matrikelnummer_varchar' => 'field_matrikelnummer_varchar',
     'field_hochschule' => 'field_hochschule',
     'field_studienfach' => 'field_studienfach',
     'view' => 'view',
     'mail' => 'mail',
     'access' => 'access',
-    'status' => 'status',
     'edit_node' => 'edit_node',
   );
   $handler->display->display_options['style_options']['default'] = 'name';
@@ -801,7 +818,12 @@ function nm_section_courses_features_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_matrikelnummer' => array(
+    'og_roles' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_matrikelnummer_varchar' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -835,13 +857,6 @@ function nm_section_courses_features_views_default_views() {
       'empty_column' => 0,
     ),
     'access' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'status' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -1031,14 +1046,12 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['og_roles']['relationship'] = 'og_membership_rel';
   $handler->display->display_options['fields']['og_roles']['label'] = 'Kurs-Rolle';
   /* Feld: Profil: Matrikelnummer */
-  $handler->display->display_options['fields']['field_matrikelnummer']['id'] = 'field_matrikelnummer';
-  $handler->display->display_options['fields']['field_matrikelnummer']['table'] = 'field_data_field_matrikelnummer';
-  $handler->display->display_options['fields']['field_matrikelnummer']['field'] = 'field_matrikelnummer';
-  $handler->display->display_options['fields']['field_matrikelnummer']['relationship'] = 'profile';
-  $handler->display->display_options['fields']['field_matrikelnummer']['settings'] = array(
-    'thousand_separator' => '',
-    'prefix_suffix' => 1,
-  );
+  $handler->display->display_options['fields']['field_matrikelnummer_varchar']['id'] = 'field_matrikelnummer_varchar';
+  $handler->display->display_options['fields']['field_matrikelnummer_varchar']['table'] = 'field_data_field_matrikelnummer_varchar';
+  $handler->display->display_options['fields']['field_matrikelnummer_varchar']['field'] = 'field_matrikelnummer_varchar';
+  $handler->display->display_options['fields']['field_matrikelnummer_varchar']['relationship'] = 'profile';
+  $handler->display->display_options['fields']['field_matrikelnummer_varchar']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_matrikelnummer_varchar']['type'] = 'text_plain';
   /* Feld: Profil: Hochschule */
   $handler->display->display_options['fields']['field_hochschule']['id'] = 'field_hochschule';
   $handler->display->display_options['fields']['field_hochschule']['table'] = 'field_data_field_hochschule';
@@ -1446,14 +1459,12 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['og_roles']['relationship'] = 'og_membership_rel';
   $handler->display->display_options['fields']['og_roles']['label'] = 'Kurs-Rolle';
   /* Feld: Profil: Matrikelnummer */
-  $handler->display->display_options['fields']['field_matrikelnummer']['id'] = 'field_matrikelnummer';
-  $handler->display->display_options['fields']['field_matrikelnummer']['table'] = 'field_data_field_matrikelnummer';
-  $handler->display->display_options['fields']['field_matrikelnummer']['field'] = 'field_matrikelnummer';
-  $handler->display->display_options['fields']['field_matrikelnummer']['relationship'] = 'profile';
-  $handler->display->display_options['fields']['field_matrikelnummer']['settings'] = array(
-    'thousand_separator' => '',
-    'prefix_suffix' => 1,
-  );
+  $handler->display->display_options['fields']['field_matrikelnummer_varchar']['id'] = 'field_matrikelnummer_varchar';
+  $handler->display->display_options['fields']['field_matrikelnummer_varchar']['table'] = 'field_data_field_matrikelnummer_varchar';
+  $handler->display->display_options['fields']['field_matrikelnummer_varchar']['field'] = 'field_matrikelnummer_varchar';
+  $handler->display->display_options['fields']['field_matrikelnummer_varchar']['relationship'] = 'profile';
+  $handler->display->display_options['fields']['field_matrikelnummer_varchar']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_matrikelnummer_varchar']['type'] = 'text_plain';
   /* Feld: Profil: Hochschule */
   $handler->display->display_options['fields']['field_hochschule']['id'] = 'field_hochschule';
   $handler->display->display_options['fields']['field_hochschule']['table'] = 'field_data_field_hochschule';
@@ -1520,7 +1531,7 @@ function nm_section_courses_features_views_default_views() {
   $translatables['courses_admin_members'] = array(
     t('Defaults'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -1537,7 +1548,7 @@ function nm_section_courses_features_views_default_views() {
     t('OG membership from user'),
     t('OG Roles from OG membership'),
     t('Benutzer'),
-    t('- Choose an operation -'),
+    t('- Aktion wählen -'),
     t('Benutzerkonto sperren'),
     t('Einer Kursgruppe zuweisen'),
     t('Benutzerkonto löschen'),
@@ -1588,6 +1599,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '25';
@@ -1846,7 +1858,7 @@ function nm_section_courses_features_views_default_views() {
     t('Master'),
     t('OG members admin'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -1861,7 +1873,7 @@ function nm_section_courses_features_views_default_views() {
     t('No people found matching the search criteria.'),
     t('OG membership from user'),
     t('OG membership'),
-    t('- Choose an operation -'),
+    t('- Aktion wählen -'),
     t('Teilnahme bestätigen'),
     t('Name'),
     t('State'),
@@ -1891,6 +1903,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
@@ -2040,7 +2053,7 @@ function nm_section_courses_features_views_default_views() {
   $translatables['courses_course_docs'] = array(
     t('Master'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -2081,6 +2094,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
@@ -2150,7 +2164,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['body']['settings'] = array(
     'trim_length' => '600',
   );
-  /* Feld: Feld: Gruppe */
+  /* Feld: Inhalt: Gruppe */
   $handler->display->display_options['fields']['group_group']['id'] = 'group_group';
   $handler->display->display_options['fields']['group_group']['table'] = 'field_data_group_group';
   $handler->display->display_options['fields']['group_group']['field'] = 'group_group';
@@ -2222,7 +2236,7 @@ function nm_section_courses_features_views_default_views() {
   $translatables['courses_course_groups'] = array(
     t('Master'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -2256,12 +2270,14 @@ function nm_section_courses_features_views_default_views() {
 
   /* Display: Defaults */
   $handler = $view->new_display('default', 'Defaults', 'default');
+  $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'mini';
   $handler->display->display_options['pager']['options']['items_per_page'] = '20';
@@ -2557,7 +2573,7 @@ function nm_section_courses_features_views_default_views() {
   $translatables['courses_course_members'] = array(
     t('Defaults'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -2600,6 +2616,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
@@ -2717,7 +2734,7 @@ function nm_section_courses_features_views_default_views() {
   $translatables['courses_course_news'] = array(
     t('Master'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -2755,6 +2772,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -2851,7 +2869,7 @@ function nm_section_courses_features_views_default_views() {
   $translatables['courses_instructors'] = array(
     t('Defaults'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -2883,6 +2901,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '15';
@@ -3098,7 +3117,7 @@ function nm_section_courses_features_views_default_views() {
   $translatables['courses_kurse_bersicht'] = array(
     t('Master'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -3150,6 +3169,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
@@ -3337,7 +3357,7 @@ function nm_section_courses_features_views_default_views() {
     t('Master'),
     t('Bearbeitete Aufgaben'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -3380,6 +3400,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '20';
@@ -3483,14 +3504,6 @@ function nm_section_courses_features_views_default_views() {
     'courses_generic_task' => 'courses_generic_task',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Inhalt: Bearbeitungszeitraum -  start date (field_task_handling_period) */
-  $handler->display->display_options['filters']['field_task_handling_period_value']['id'] = 'field_task_handling_period_value';
-  $handler->display->display_options['filters']['field_task_handling_period_value']['table'] = 'field_data_field_task_handling_period';
-  $handler->display->display_options['filters']['field_task_handling_period_value']['field'] = 'field_task_handling_period_value';
-  $handler->display->display_options['filters']['field_task_handling_period_value']['operator'] = '<=';
-  $handler->display->display_options['filters']['field_task_handling_period_value']['granularity'] = 'minute';
-  $handler->display->display_options['filters']['field_task_handling_period_value']['form_type'] = 'date_popup';
-  $handler->display->display_options['filters']['field_task_handling_period_value']['default_date'] = 'now';
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
@@ -3508,7 +3521,7 @@ function nm_section_courses_features_views_default_views() {
   $translatables['courses_tasks'] = array(
     t('Master'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -3549,6 +3562,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
@@ -3621,7 +3635,7 @@ function nm_section_courses_features_views_default_views() {
   $translatables['courses_user_course_groups'] = array(
     t('Master'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -3658,6 +3672,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '7';
@@ -3753,7 +3768,7 @@ function nm_section_courses_features_views_default_views() {
     t('Master'),
     t('Courses - User - Kurse'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -3784,6 +3799,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '7';
@@ -3857,7 +3873,7 @@ function nm_section_courses_features_views_default_views() {
     t('Master'),
     t('Courses - User - Kurse'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -3888,6 +3904,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
@@ -3941,7 +3958,7 @@ function nm_section_courses_features_views_default_views() {
     t('Master'),
     t('Dozenten'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),

@@ -1,0 +1,16 @@
+name = Simple Table of Contents
+description = Adds an table of contents to the body of content.
+core = 7.x
+
+dependencies[] = node
+
+files[] = simple_table_of_contents.test
+
+configure = admin/config/system/simple-table-of-contents
+
+; Information added by drupal.org packaging script on 2013-01-09
+version = "7.x-1.1"
+core = "7.x"
+project = "simple_table_of_contents"
+datestamp = "1357745274"
+

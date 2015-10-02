@@ -1,0 +1,177 @@
+<?php
+
+/**
+ * @file
+ * Tests for Simple Table of Contents module.
+ */
+class SimpleTableOfContentsTestCase extends DrupalWebTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Simple Table of Contents',
+      'description' => 'Create slides, configure options and test slider generation.',
+      'group' => 'Simple Table of Contents',
+    );
+  }
+
+  function setUp() {
+    // Install the Node and Simple Table Of Contents module.
+    parent::setUp('node', 'simple_table_of_contents');
+
+    // Create users.
+    $full_html_format = filter_format_load('full_html');
+    $privileged_user = $this->drupalCreateUser(array('create page content', 'edit own page content', filter_permission_name($full_html_format), 'administer simple table of contents'));
+    $this->drupalLogin($privileged_user);
+  }
+
+  /**
+   * Create a "Basic page" node and verify it has a table of contents.
+   */
+  function testNodeWithTableOfContents() {
+    $html = '';
+    $html .= '<p>' . t('This node has a number of headings which should trigger the generation of a table of contents.') . '</p>';
+    $html .= '<h2>' . t('Heading 2') . '</h2>';
+    $html .= '<h3>' . t('Nested Heading 3') . '</h3>';
+    $html .= '<h2>' . t('Heading 2') . '</h2>';
+    $html .= '<h3>' . t('Nested Heading 3') . '</h3>';
+    $html .= '<h4>' . t('Nested Heading 4') . '</h4>';
+    $html .= '<h5>' . t('Nested Heading 5') . '</h5>';
+    $html .= '<h6>' . t('Nested Heading 6') . '</h6>';
+
+    // Create a node.
+    $edit = array();
+    $langcode = LANGUAGE_NONE;
+    $edit["title"] = $this->randomName(8);
+    $edit["body[$langcode][0][value]"] = $html;
+    $edit["body[$langcode][0][format]"] = 'full_html';
+    $this->drupalPost('node/add/page', $edit, t('Save'));
+
+    $node = $this->drupalGetNodeByTitle($edit["title"]);
+
+    // View the node.
+    $this->drupalGet('node/' . $node->nid);
+
+    // Check that a table of contents was generated.
+    $this->assertText('Table of Contents');
+  }
+
+  /**
+   * Create a "Basic page" node and verify it does not have a table of contents.
+   */
+  function testNodeWithoutTableOfContents() {
+    // Create a node.
+    $edit = array();
+    $langcode = LANGUAGE_NONE;
+    $edit["title"] = $this->randomName(8);
+    $edit["body[$langcode][0][value]"] = t('This node does not have any headings and should not trigger the generation of a table of contents.');
+    $this->drupalPost('node/add/page', $edit, t('Save'));
+
+    $node = $this->drupalGetNodeByTitle($edit["title"]);
+
+    // View the node.
+    $this->drupalGet('node/' . $node->nid);
+
+    // Check that a table of contents was not generated.
+    $this->assertNoText('Table of Contents');
+  }
+
+  /**
+   * Create a "Basic page" node and verify that it has a table of contents with appropriate links to anchors which were placed on all page headings.
+   */
+  function testLinkGeneration() {
+    $html = '';
+    $html .= '<p>' . t('This node has a table of contents with appropriate links to anchors which were placed on all page headings.') . '</p>';
+    $html .= '<h2>' . t('Heading 2') . '</h2>';
+
+    // Create a node.
+    $edit = array();
+    $langcode = LANGUAGE_NONE;
+    $edit["title"] = $this->randomName(8);
+    $edit["body[$langcode][0][value]"] = $html;
+    $edit["body[$langcode][0][format]"] = 'full_html';
+    $this->drupalPost('node/add/page', $edit, t('Save'));
+
+    $node = $this->drupalGetNodeByTitle($edit["title"]);
+
+    // View the node.
+    $this->drupalGet('node/' . $node->nid);
+
+    // Check if the anchor was added to the heading
+    $this->assertRaw('<h2 id="simple-table-of-contents-1">');
+
+    // Check if any of the generated heading IDs are duplicates.
+    $this->assertNoDuplicateIds();
+
+    // Check if a link to the heading was generated
+    $this->assertLink('Heading 2');
+
+    // Check if the link links to the heading anchor
+    $this->assertLinkByHref('#simple-table-of-contents-1');
+  }
+
+  /**
+   * Test configuration options.
+   */
+  function testTableOfContentsOptions() {
+    // Create a custom table of contents title.
+    $custom_title = $this->randomName(8);
+
+    $edit = array();
+    $edit["simple_table_of_contents_title"] = $custom_title;
+    $this->drupalPost('admin/config/system/simple-table-of-contents', $edit, t('Save configuration'));
+
+    $html = '';
+    $html .= '<p>' . t('This node has a custom table of contents title.') . '</p>';
+    $html .= '<h2>' . t('Heading 2') . '</h2>';
+
+    // Create a node.
+    $edit = array();
+    $langcode = LANGUAGE_NONE;
+    $edit["title"] = $this->randomName(8);
+    $edit["body[$langcode][0][value]"] = $html;
+    $edit["body[$langcode][0][format]"] = 'full_html';
+    $this->drupalPost('node/add/page', $edit, t('Save'));
+
+    $node = $this->drupalGetNodeByTitle($edit["title"]);
+
+    // View the node.
+    $this->drupalGet('node/' . $node->nid);
+
+    // Check that the table of contents has a custom title.
+    $this->assertText($custom_title);
+
+    // Configure minimum heading.
+    $edit = array();
+    $edit["simple_table_of_contents_minimum_heading"] = 2;
+    $this->drupalPost('admin/config/system/simple-table-of-contents', $edit, t('Save configuration'));
+
+    $html = '';
+    $html .= '<p>' . t('This node has a number of headings but only level 2 and 3 headings should appear in the table of contents.') . '</p>';
+    $html .= '<h2>' . t('Heading 2') . '</h2>';
+    $html .= '<h3>' . t('Nested Heading 3') . '</h3>';
+    $html .= '<h2>' . t('Heading 2') . '</h2>';
+    $html .= '<h3>' . t('Nested Heading 3') . '</h3>';
+    $html .= '<h4>' . t('Nested Heading 4') . '</h4>';
+    $html .= '<h5>' . t('Nested Heading 5') . '</h5>';
+    $html .= '<h6>' . t('Nested Heading 6') . '</h6>';
+
+    // Create a node.
+    $edit = array();
+    $langcode = LANGUAGE_NONE;
+    $edit["title"] = $this->randomName(8);
+    $edit["body[$langcode][0][value]"] = $html;
+    $edit["body[$langcode][0][format]"] = 'full_html';
+    $this->drupalPost('node/add/page', $edit, t('Save'));
+
+    $node = $this->drupalGetNodeByTitle($edit["title"]);
+
+    // View the node.
+    $this->drupalGet('node/' . $node->nid);
+
+    // Check that only first and second level headings can be found in the table of contents.
+    $this->assertNoUniqueText('Heading 2');
+    $this->assertNoUniqueText('Nested Heading 3');
+    $this->assertUniqueText('Nested Heading 4');
+    $this->assertUniqueText('Nested Heading 5');
+    $this->assertUniqueText('Nested Heading 6');
+  }
+}

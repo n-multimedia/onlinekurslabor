@@ -90,6 +90,7 @@ function nm_stream_features_views_default_views() {
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'nm_stream' => 'nm_stream',
+    'projects_blog' => 'projects_blog',
   );
 
   /* Display: Content pane */

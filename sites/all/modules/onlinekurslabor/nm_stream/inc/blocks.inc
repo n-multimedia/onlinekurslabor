@@ -6,7 +6,10 @@ function _nm_stream_form_add_edit_view($type='nm_stream') {
 
   //$output = drupal_render(drupal_get_form('nm_stream_add_edit_form', null, $type));
   $output = '';
-  if(node_access('create', $type)) {
+  $node = new stdClass();
+  $node->nid = 0;
+  $node->type = $type;
+  if(node_access('create', $node)) {
     $output = theme('nm_stream_stream_node_form', array('node' => NULL, 'type' => $type));
   }
 

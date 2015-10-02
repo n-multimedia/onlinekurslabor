@@ -1,0 +1,238 @@
+<?php
+
+/**
+ * @file
+ * Primarily Drupal hooks.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function simple_table_of_contents_permission() {
+  return array(
+    'administer simple table of contents' => array(
+      'title' => t('Administer Simple Table of Contents'),
+      'description' => t('Allows a user to configure the display and position of tables of contents.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function simple_table_of_contents_menu() {
+  $items['admin/config/system/simple-table-of-contents'] = array(
+    'title' => 'Simple Table of Contents',
+    'description' => 'Configure the display and position of tables of contents.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('simple_table_of_contents_configuration_form'),
+    'access arguments' => array('administer simple table of contents'),
+    'file' => 'simple_table_of_contents.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_help().
+ */
+function simple_table_of_contents_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#simple_table_of_contents':
+      $output = '';
+      $output .= '<p>' . t('<a href="@project_page">Simple Table of Contents</a> adds a table of contents to the body of content.', array('@project_page' => 'http://drupal.org/project/simple_table_of_contents')) . '</p>';
+      $output .= '<h2>' . t('Usage') . '</h2>';
+      $output .= '<p>' . t('Simple Table of Contents automatically adds a table of contents to the body of content. Administrators or users with the Administer Simple Table of Contents permission are able to configure the display of position of tables of contents by visiting the Simple Table of Contents <a href="configuration_page">configuration page</a>.', array('@configuration_page' => url('admin/config/system/simple-table-of-contents'))) . '</p>';
+      $output .= '<h2>' . t('Configuration') . '</h2>';
+      $output .= '<p>' . t('The Simple Table of Contents <a href="@configuration_page">configuration page</a> provides an interface for configuring the display and position of tables of contents.', array('@configuration_page' => url('admin/config/system/simple-table-of-contents'))) . '</p>';
+      return $output;
+    case 'admin/config/system/simple-table-of-contents':
+      $output = '';
+      $output .= '<p>' . t('Configure the display and position of tables of contents.') . '</p>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function simple_table_of_contents_node_view($node, $view_mode, $langcode) {
+  // Only add a table of contents to nodes with a body
+  if (isset($node->content['body'])) {
+    // Get the node's body text
+    $body = $node->content['body'][0]['#markup'];
+
+    // Append or prepend a container to hold the table of contents
+    $position = variable_get('simple_table_of_contents_position', 'above');
+
+    switch ($position) {
+      case 'above':
+        $html = '<div id="simple-table-of-contents"></div>' . $body;
+        break;
+      case 'below':
+        $html = $body . '<div id="simple-table-of-contents"></div>';
+        break;
+    }
+
+    // Generate the table of contents
+    $markup = simple_table_of_contents_generate_table_of_contents($html);
+
+    // Replace the node's body with the modified markup if a table of contents
+    // was built
+    if (isset($markup)) {
+      $node->content['body'][0]['#markup'] = $markup;
+      $node->content['body'][0]['#attached']['css'][] = drupal_get_path('module', 'simple_table_of_contents') . '/simple_table_of_contents.css';
+    }
+  }
+}
+
+/**
+ * Generates a table of contents.
+ *
+ * @param <string> $html
+ *   A string of HTML to process and turn into a table of contents. The string
+ *   must contain <div id="simple-table-of-contents"></div> which will be used
+ *   as a container to hold the table of contents.
+ *
+ * @return <string>
+ *   A processed string containing the table of contents.
+ */
+function simple_table_of_contents_generate_table_of_contents($html) {
+  // DOMDocument::loadHTML() uses the ISO-8859-1 encoding by default
+  // To ensure our UTF-8 HTML content doesn't get mangled, encode all HTML
+  // entities
+  $encoded_html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
+
+  // Create a DOMDocument and load the HTML
+  $doc = new DOMDocument();
+  $doc->loadHTML($encoded_html);
+
+  // Create an Xpath
+  $xpath = new DOMXPath($doc);
+
+  // Attempt to find a container to hold the table of contents
+  $container = $xpath->query("//div[@id='simple-table-of-contents']")->item(0);
+
+  // Build the table of contents if a container is found or return
+  if (!$container) {
+    return;
+  }
+  else {
+    // Build an array of headings
+    $headings = array('h2', 'h3', 'h4', 'h5', 'h6');
+
+    // Remove any headings that don't meet the minimum requirement
+    array_splice($headings, variable_get('simple_table_of_contents_minimum_heading', 5));
+
+    // Process the array of headings
+    foreach ($headings as $k => $v) {
+      $headings[$k] = "self::$v";
+    }
+
+    // Find the headings
+    $query_headings = implode(' or ', $headings);
+    $query = "//*[$query_headings]"; // "//*[self::html:h2 or ...]"
+    $headings = $xpath->query($query);
+
+    // Build a stub table of contents
+    $toc = $doc->createElement('ul');
+
+    // Create a number of variables to track the table of contents count and level
+    $current_level = 2;
+    $parents = array(false, $toc);
+    $indexes = array(0);
+    $i = 1;
+
+    // Iterate through the headings and build the table of contents
+    foreach ($headings as $node) {
+      $level = (int) $node->tagName[1];
+      $name = $node->textContent;
+
+      while ($level > $current_level) {
+        if (!$parents[$current_level-1]->lastChild) {
+          $parents[$current_level-1]->appendChild(
+            $doc->createElement('li')
+          );
+        }
+
+        $sublist = $doc->createElement('ul');
+        $parents[$current_level - 1]->lastChild->appendChild($sublist);
+        $parents[$current_level] = $sublist;
+        $current_level++;
+        $indexes[$current_level - 2] = 0;
+      }
+
+      while ($level < $current_level) {
+        unset($indexes[$current_level - 2]);
+        $current_level--;
+      }
+
+      $indexes[$current_level - 2]++;
+
+      $line = $doc->createElement('li');
+      $label = $doc->createElement('span', implode('.', $indexes) . '.');
+      $label->setAttribute('class', 'simple-table-of-contents-label');
+      $line->appendChild($label);
+      $link = $doc->createElement('a', $name);
+      $line->appendChild($link);
+      $parents[$current_level-1]->appendChild($line);
+
+      // Setup the anchors
+      $header_id = $node->getAttribute('id');
+
+      if (!$header_id) {
+        $header_id = drupal_html_id('simple-table-of-contents-' . $i);
+        $node->setAttribute('id', $header_id);
+        $i++;
+      }
+
+      $link->setAttribute('href', '#' . $header_id);
+    }
+
+    // Add the table of contents to the container if it has any items or return
+    if (!$toc->hasChildNodes()) {
+      return;
+    }
+    else {
+      $title = variable_get('simple_table_of_contents_title', t('Table of Contents'));
+
+      // Add a title if one was defined
+      if (!empty($title)) {
+        $container->appendChild($doc->createElement('h2', check_plain($title)));
+      }
+
+      // Add the table of contents to the container
+      $container->appendChild($toc);
+
+      // DOMDocument::loadHTML() automatically wraps "incomplete" HTML with an
+      // unwanted doctype, head and body
+
+      // Remove doctype
+      $doc->doctype->parentNode->removeChild($doc->doctype);
+
+      // Remove html element
+      $html = $doc->getElementsByTagName('html')->item(0);
+      $fragment = $doc->createDocumentFragment();
+      while ($html->childNodes->length > 0) {
+        $fragment->appendChild($html->childNodes->item(0));
+      }
+      $html->parentNode->replaceChild($fragment, $html);
+
+      // Remove body element
+      $body = $doc->getElementsByTagName('body')->item(0);
+      $fragment = $doc->createDocumentFragment();
+      while ($body->childNodes->length > 0) {
+        $fragment->appendChild($body->childNodes->item(0));
+      }
+      $body->parentNode->replaceChild($fragment, $body);
+
+      // Save the table of contents to HTML
+      $html = $doc->saveHTML();
+
+      // Decode previously encoded HTML entities
+      $decoded_html = mb_convert_encoding($html, 'UTF-8', 'HTML-ENTITIES');
+
+      return $decoded_html;
+    }
+  }
+}

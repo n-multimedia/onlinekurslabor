@@ -3,11 +3,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-$teaser = '1 neue Nachricht, Kooperationsvereinbarung eingereicht';
-$html_content = 
-'<h1>Neuigkeiten</h1>
-   
-Hallo Bernhard Strehl, 
+$body =
+'
 <br>es gibt folgende Neuigkeiten<br><br>
 - <a href="http://google.de/">1 neue Nachricht </a><br>
 - <a href="http://google.de/">Kooperationsvereinbarung in Kanal C wurde eingereicht </a><br> 
@@ -464,7 +461,7 @@ Hallo Bernhard Strehl,
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templatePreheader">
                                         <tr>
                                             <td valign="top" class="preheaderContent" style="padding-top:10px; padding-right:20px; padding-bottom:10px; padding-left:20px;" mc:edit="preheader_content00">
-                                               <? echo $teaser ?>
+                                               Informationen aus dem Onlinekurslabor
                                             </td>
                                             <!-- *|IFNOT:ARCHIVE_PAGE|* -->
                                             <td valign="top" width="180" class="preheaderContent" style="padding-top:10px; padding-right:20px; padding-bottom:10px; padding-left:0;" mc:edit="preheader_content01">
@@ -482,7 +479,7 @@ Hallo Bernhard Strehl,
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateHeader">
                                         <tr>
                                             <td valign="top" class="headerContent">
-                                            	<img src="http://okldev2.naumenko-multimedia.de/sites/all/themes/bootstrap_onlinekurslabor/images/onlinekurslabor-logo-header.png" style="max-width:600px;" id="headerImage" mc:label="header_image" mc:edit="header_image" mc:allowdesigner mc:allowtext />
+                                            	<img src="http://okldev2.naumenko-multimedia.de/sites/all/themes/bootstrap_onlinekurslabor/images/onlinekurslabor-logo-header.png" style="max-width:600px; margin-left:20px;" id="headerImage" mc:label="header_image" mc:edit="header_image" mc:allowdesigner mc:allowtext />
                                             </td>
                                         </tr>
                                     </table>
@@ -495,16 +492,10 @@ Hallo Bernhard Strehl,
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateBody">
                                         <tr>
                                             <td valign="top" class="bodyContent" mc:edit="body_content">
-                                           <?/*     <h1>Designing Your Template</h1>
-                                                <h3>Creating a good-looking email is simple</h3>
-                                                Customize your template by clicking on the style editor tabs above. Set your fonts, colors, and styles. After setting your styling is all done you can click here in this area, delete the text, and start adding your own awesome content.
-                                                <br />
-                                                <br />
-                                                <h2>Styling Your Content</h2>
-                                                <h4>Make your email easy to read</h4>
-                                                After you enter your content, highlight the text you want to style and select the options you set in the style editor in the "<em>styles</em>" drop down box. Want to <a href="http://www.mailchimp.com/kb/article/im-using-the-style-designer-and-i-cant-get-my-formatting-to-change" target="_blank">get rid of styling on a bit of text</a>, but having trouble doing it? Just use the "<em>remove formatting</em>" button to strip the text of any formatting and reset your style.
-                                            </td>*/
-                                           echo $html_content;
+                                                
+                                                <h1>Neuigkeiten</h1>
+                                                <?
+                                           echo $body;
                                            ?>
                                         </tr>
                                     </table>
