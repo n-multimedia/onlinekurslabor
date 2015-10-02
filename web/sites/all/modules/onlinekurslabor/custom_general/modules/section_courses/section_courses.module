@@ -1278,7 +1278,7 @@ function _section_courses_student_registration_import($input) {
 
     if(strpos($input, ';') > 0) {
       //separators are in the input textares => account creation
-      $emails = explode("\n", $input);
+      $rows = explode("\n", $input);
       foreach($rows as $row){
         $row = explode(';', $row);
         $data['first_name'] = substr($row[0], 0, strrpos($row[0], ' '));
@@ -1294,6 +1294,7 @@ function _section_courses_student_registration_import($input) {
     if(strpos($input, ';') === FALSE) {
       $emails = explode("\n", $input);
     }
+
     $success = array();
     $already_in = array();
     $missing_accounts = array();
