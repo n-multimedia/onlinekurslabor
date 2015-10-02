@@ -1383,6 +1383,11 @@ function _section_courses_student_registration_import($input) {
 
           //save and notify the user
           $account = user_save(drupal_anonymous_user(), $edit);
+          //Notification
+          // Set operation.
+          $op = 'register_no_approval_required';
+          // Send an email.
+          _user_mail_notify($op, $account);
 
           if (!$account) {
             drupal_set_message("Account konnte nicht gespeichert werden.", 'error');
