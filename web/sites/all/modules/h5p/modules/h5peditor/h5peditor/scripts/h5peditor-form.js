@@ -5,12 +5,18 @@ var ns = H5PEditor;
  * Construct a form from library semantics.
  */
 ns.Form = function () {
+  var self = this;
+  
   this.params = {};
   this.passReadies = false;
   this.commonFields = {};
-  this.$form = ns.$('<div class="h5peditor-form"><div class="tree"></div><div class="common"><div class="h5peditor-label">' + ns.t('core', 'commonFields') + '</div></div></div>');
-  this.$common = this.$form.children('.common');
+  this.$form = ns.$('<div class="h5peditor-form"><div class="tree"></div><div class="common collapsed hidden"><div class="h5peditor-label"><span class="icon"></span>' + ns.t('core', 'commonFields') + '</div><div class="fields"><p class="desc">' + ns.t('core', 'commonFieldsDescription') + '</p></div></div></div>');
+  this.$common = this.$form.find('.common > .fields');
   this.library = '';
+  
+  this.$common.prev().click(function () {
+    self.$common.parent().toggleClass('collapsed');
+  });
 };
 
 /**
@@ -47,19 +53,8 @@ ns.Form.prototype.remove = function () {
  * @returns {undefined}
  */
 ns.Form.prototype.processSemantics = function (semantics, defaultParams) {
-  try {
-    this.params = defaultParams;
-    ns.processSemanticsChunk(semantics, this.params, this.$form.children('.tree'), this);
-  }
-  catch (error) {
-    if (window['console'] !== undefined && typeof console.error === 'function') {
-      console.error(error.stack);
-    }
-
-    var $error = ns.$('<div class="h5peditor-error">' + ns.t('core', 'semanticsError', {':error': error}) + '</div>');
-    this.$form.replaceWith($error);
-    this.$form = $error;
-  }
+  this.params = defaultParams;
+  ns.processSemanticsChunk(semantics, this.params, this.$form.children('.tree'), this);
 };
 
 /**

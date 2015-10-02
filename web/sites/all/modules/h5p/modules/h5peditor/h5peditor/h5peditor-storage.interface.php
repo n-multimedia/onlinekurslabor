@@ -1,11 +1,39 @@
-<?php 
-//FIXME: Document this (What is provided in params (and how), and what is
-//expected in return (how))
+<?php
 
 interface H5peditorStorage {
-  public function getSemantics($machine_name, $major_version, $minor_version);
-  public function addTempFile($file);
-  public function removeFile($path);
+  /**
+   * TODO
+   */
+  public function getLanguage($machineName, $majorVersion, $minorVersion, $language);
+
+  /**
+   * TODO
+   */
+  public function addTmpFile($file);
+
+  /**
+   * TODO
+   */
   public function keepFile($oldPath, $newPath);
-  public function getLibraries();
+
+  /**
+   * TODO
+   */
+  public function removeFile($path);
+
+  /**
+   * TODO
+   */
+  public function getLibraries($libraries = NULL);
+  
+  /**
+   * Alter styles and scripts
+   * 
+   * @param array $files
+   *  List of files as objects with path and version as properties
+   * @param array $libraries
+   *  List of libraries indexed by machineName with objects as values. The objects
+   *  have majorVersion and minorVersion as properties.
+   */
+  public function alterLibraryFiles(&$files, $libraries);
 }

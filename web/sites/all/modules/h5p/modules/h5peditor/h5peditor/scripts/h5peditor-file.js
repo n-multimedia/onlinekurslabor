@@ -11,11 +11,23 @@ var ns = H5PEditor;
  * @returns {ns.File}
  */
 ns.File = function (parent, field, params, setValue) {
+  var self = this;
+
+  this.parent = parent;
   this.field = field;
   this.params = params;
   this.setValue = setValue;
+  this.library = parent.library + '/' + field.name;
+
+  if (params !== undefined) {
+    this.copyright = params.copyright;
+  }
 
   this.changes = [];
+  this.passReadies = true;
+  parent.ready(function () {
+    self.passReadies = false;
+  });
 };
 
 /**
@@ -25,6 +37,7 @@ ns.File = function (parent, field, params, setValue) {
  * @returns {undefined}
  */
 ns.File.prototype.appendTo = function ($wrapper) {
+  var self = this;
   ns.File.addIframe();
 
   var label = '';
@@ -32,12 +45,41 @@ ns.File.prototype.appendTo = function ($wrapper) {
     label = '<span class="h5peditor-label">' + (this.field.label === undefined ? this.field.name : this.field.label) + '</span>';
   }
 
-  var html = ns.createItem(this.field.type, label + '<div class="file"></div>', this.field.description);
+  var html = ns.createItem(this.field.type, label + '<div class="file"></div><a class="h5p-copyright-button" href="#">' + ns.t('core', 'editCopyright') + '</a><div class="h5p-editor-dialog"><a href="#" class="h5p-close" title="' + ns.t('core', 'close') + '"></a></div>', this.field.description);
 
-  this.$file = ns.$(html).appendTo($wrapper).children('.file');
+  var $container = ns.$(html).appendTo($wrapper);
+  this.$file = $container.find('.file');
+  this.$errors = $container.find('.h5p-errors');
   this.addFile();
-  this.$errors = this.$file.next();
+
+  var $dialog = $container.find('.h5p-editor-dialog');
+  $container.find('.h5p-copyright-button').add($dialog.find('.h5p-close')).click(function () {
+    $dialog.toggleClass('h5p-open');
+    return false;
+  });
+
+  var group = new ns.widgets.group(self, ns.copyrightSemantics, self.copyright, function (field, value) {
+    if (self.params !== undefined) {
+      self.params.copyright = value;
+    }
+    self.copyright = value;
+  });
+  group.appendTo($dialog);
+  group.expand();
+  group.$group.find('.title').remove();
+  this.children = [group];
 };
+
+
+/**
+ * Sync copyright between all video files.
+ *
+ * @returns {undefined}
+ */
+ns.File.prototype.setCopyright = function (value) {
+  this.copyright = this.params.copyright = value;
+};
+
 
 /**
  * Creates thumbnail HTML and actions.
@@ -100,19 +142,19 @@ ns.File.prototype.uploadFile = function () {
   this.$errors.html('');
 
   ns.File.changeCallback = function () {
-    that.$file.html('<div class="h5peditor-uploading">Uploading, please wait...</div>');
+    that.$file.html('<div class="h5peditor-uploading h5p-throbber">' + ns.t('core', 'uploading') + '</div>');
   };
 
-  ns.File.callback = function (json) {
+  ns.File.callback = function (err, result) {
     try {
-      var result = JSON.parse(json);
-      if (result['error'] !== undefined) {
-        throw(result['error']);
+      if (err) {
+        throw err;
       }
 
       that.params = {
         path: result.path,
-        mime: result.mime
+        mime: result.mime,
+        copyright: that.copyright
       };
       if (that.field.type === 'image') {
         that.params.width = result.width;
@@ -166,6 +208,21 @@ ns.File.prototype.remove = function () {
 };
 
 /**
+ * Collect functions to execute once the tree is complete.
+ *
+ * @param {function} ready
+ * @returns {undefined}
+ */
+ns.File.prototype.ready = function (ready) {
+  if (this.passReadies) {
+    this.parent.ready(ready);
+  }
+  else {
+    ready();
+  }
+};
+
+/**
  * Add the iframe we use for uploads.
  */
 ns.File.addIframe = function () {
@@ -174,16 +231,43 @@ ns.File.addIframe = function () {
   }
   ns.File.iframeLoaded = true;
 
+  // Prevent trying to parse first load event.
+  var initialized = false;
+
   // All editor uploads share this iframe to conserve valuable resources.
-  ns.$('<iframe id="h5peditor-uploader"></iframe>').load(function () {
+  ns.$('<iframe id="h5peditor-uploader"></iframe>').load(function (data) {
     var $body = ns.$(this).contents().find('body');
-    var json = $body.text();
-    if (ns.File.callback !== undefined) {
-      ns.File.callback(json);
+
+    if (initialized) {
+      // Try to read response
+      var response, error;
+      try {
+        response = JSON.parse($body.text());
+        if (response.error) {
+          error = response.error;
+        }
+      }
+      catch (err) {
+        H5P.error(err);
+        error = H5PEditor.t('core', 'fileToLarge');
+      }
+
+      // Trigger callback if set.
+      if (ns.File.callback !== undefined) {
+        if (error) {
+          ns.File.callback(H5PEditor.t('core', 'uploadError') + ': ' + error);
+        }
+        else {
+          ns.File.callback(undefined, response);
+        }
+      }
+    }
+    else {
+      initialized = true;
     }
 
     $body.html('');
-    var $form = ns.$('<form method="post" enctype="multipart/form-data" action="' + ns.ajaxPath + 'files"><input name="file" type="file"/><input name="field" type="hidden"/><input name="contentId" type="hidden" value="' + (ns.contentId === undefined ? 0 : ns.contentId) + '"/></form>').appendTo($body);
+    var $form = ns.$('<form method="post" enctype="multipart/form-data" action="' + ns.getAjaxUrl('files') + '"><input name="file" type="file"/><input name="field" type="hidden"/><input name="contentId" type="hidden" value="' + (ns.contentId === undefined ? 0 : ns.contentId) + '"/></form>').appendTo($body);
 
     ns.File.$field = $form.children('input[name="field"]');
     ns.File.$file = $form.children('input[name="file"]');

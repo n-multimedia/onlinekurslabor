@@ -2,15 +2,17 @@
  * This file contains helper functions for the editor.
  */
 
-var H5PEditor = H5PEditor || {};
-var ns = H5PEditor;
+// Use resources set in parent window
+var ns = H5PEditor = window.parent.H5PEditor;
+ns.$ = H5P.jQuery;
+
+// Load needed resources from parent.
+H5PIntegration = window.parent.H5PIntegration;
 
 /**
  * Keep track of our widgets.
  */
 ns.widgets = {};
-
-ns.language = {};
 
 /**
  * Keeps track of which semantics are loaded.
@@ -28,42 +30,7 @@ ns.semanticsLoaded = {};
 ns.isIE = navigator.userAgent.match(/; MSIE \d+.\d+;/) !== null;
 
 /**
- * Translate text strings.
- *
- * @param {String} library
- *  library machineName, or "core"
- * @param {String} key
- * @param {Object} vars
- * @returns {String|@exp;H5peditor@call;t}
- */
-ns.t = function (library, key, vars) {
-  if (ns.language[library] === undefined) {
-    return 'Missing translations for library ' + library;
-  }
-
-  if (library === 'core') {
-    if (ns.language[library][key] === undefined) {
-      return 'Missing translation for ' + key;
-    }
-    var translation = ns.language[library][key];
-  }
-  else {
-    if (ns.language[library]['libraryStrings'] === undefined || ns.language[library]['libraryStrings'][key] === undefined) {
-      return ns.t('core', 'missingTranslation', {':key': key});
-    }
-    var translation = ns.language[library]['libraryStrings'][key];
-  }
-
-  // Replace placeholder with variables.
-  for (var placeholder in vars) {
-    translation = translation.replace(placeholder, vars[placeholder]);
-  }
-
-  return translation;
-};
-
-/**
- * Extremely advanced function that loads the given library, inserts any css and js and
+ * Loads the given library, inserts any css and js and
  * then runs the callback with the samantics as an argument.
  *
  * @param {string} libraryName
@@ -88,11 +55,20 @@ ns.loadLibrary = function (libraryName, callback) {
       ns.loadedSemantics[libraryName] = 0; // Indicates that others should queue.
       ns.semanticsLoaded[libraryName] = []; // Other callbacks to run once loaded.
       var library = ns.libraryFromString(libraryName);
+
+      var url = ns.getAjaxUrl('libraries', library);
+
+      // Add content language to URL
+      if (ns.contentLanguage !== undefined) {
+        url += (url.indexOf('?') === -1 ? '?' : '&') + 'language=' + ns.contentLanguage;
+      }
+
+      // Fire away!
       ns.$.ajax({
-        url: ns.ajaxPath + 'libraries/' + library.machineName + '/' + library.majorVersion + '/' + library.minorVersion,
+        url: url,
         success: function (libraryData) {
           var semantics = libraryData.semantics;
-          if (libraryData.language !== undefined) {
+          if (libraryData.language !== null) {
             var language = JSON.parse(libraryData.language);
             semantics = ns.$.extend(true, [], semantics, language.semantics);
           }
@@ -105,7 +81,7 @@ ns.loadLibrary = function (libraryName, callback) {
             for (var path in libraryData.css) {
               if (!H5P.cssLoaded(path)) {
                 css += libraryData.css[path];
-                H5P.loadedCss.push(path);
+                H5PIntegration.loadedCss.push(path);
               }
             }
             if (css) {
@@ -119,7 +95,7 @@ ns.loadLibrary = function (libraryName, callback) {
             for (var path in libraryData.javascript) {
               if (!H5P.jsLoaded(path)) {
                 js += libraryData.javascript[path];
-                H5P.loadedJs.push(path);
+                H5PIntegration.loadedJs.push(path);
               }
             }
             if (js) {
@@ -185,7 +161,7 @@ ns.processSemanticsChunk = function (semanticsChunk, params, $wrapper, parent) {
       params[field.name] = field['default'];
     }
 
-    var widget = field.widget === undefined ? field.type : field.widget;
+    var widget = ns.getWidgetName(field);
 
     // TODO: Remove later, this is here for debugging purposes.
     if (ns.widgets[widget] === undefined) {
@@ -240,7 +216,7 @@ ns.addCommonField = function (field, parent, params, ancestor) {
   }
 
   if (ancestor.commonFields[parent.library][field.name] === undefined) {
-    var widget = field.widget === undefined ? field.type : field.widget;
+    var widget = ns.getWidgetName(field);
     ancestor.commonFields[parent.library][field.name] = {
       instance: new ns.widgets[widget](parent, field, params[field.name], function (field, value) {
           for (var i = 0; i < commonField.setValues.length; i++) {
@@ -264,6 +240,7 @@ ns.addCommonField = function (field, parent, params, ancestor) {
   });
 
   if (commonField.setValues.length === 1) {
+    ancestor.$common.parent().removeClass('hidden');
     commonField.instance.appendTo(ancestor.$common);
     commonField.params = params[field.name];
   }
@@ -313,7 +290,9 @@ ns.removeChildren = function (children) {
 
   for (var i = 0; i < children.length; i++) {
     // Common fields will be removed by library.
-    if (children[i].field.common === undefined || !children[i].field.common) {
+    if (children[i].field === undefined ||
+        children[i].field.common === undefined ||
+        !children[i].field.common) {
       children[i].remove();
     }
   }
@@ -419,8 +398,7 @@ ns.createError = function (message) {
  * @returns {String}
  */
 ns.createItem = function (type, content, description) {
-  // TODO: Remove the errors class, it is deprecated
-  var html = '<div class="field ' + type + '">' + content + '<div class="h5p-errors errors"></div>';
+  var html = '<div class="field ' + type + '">' + content + '<div class="h5p-errors"></div>';
   if (description !== undefined) {
     html += '<div class="h5peditor-field-description">' + description + '</div>';
   }
@@ -510,7 +488,7 @@ ns.checkErrors = function ($errors, $input, value) {
  *  Concatinated version of the library
  */
 ns.libraryToString = function (library) {
-  return library.machineName + ' ' + library.majorVersion + '.' + library.minorVersion;
+  return library.name + ' ' + library.majorVersion + '.' + library.minorVersion;
 };
 
 /**
@@ -535,6 +513,16 @@ ns.libraryFromString = function (library) {
   else {
     return false;
   }
+};
+
+/**
+ * Helper function for detecting field widget.
+ *
+ * @param {Object} field
+ * @returns {String} Widget name
+ */
+ns.getWidgetName = function (field) {
+  return (field.widget === undefined ? field.type : field.widget);
 };
 
 /**
