@@ -1152,7 +1152,10 @@ function section_courses_student_registration_form($form, &$form_state) {
   $form['import_container']['import_users'] = array(
     '#title' => t('Import List'),
     '#type' => 'textarea',
-    '#description' => 'Import registrated users into course and active theit accounts if they are locked. <em>One email address per line</em>',
+    '#description' => 'Import registrated users into course and active their accounts if they are locked. <em>One email address per line</em>
+                       <br/>
+                       You can also the following syntax to create new accounts. "Firstname Lastname;example@email.com". <em>One entry per line</em>
+                       ',
   );
 
 
@@ -1383,11 +1386,6 @@ function _section_courses_student_registration_import($input) {
 
           //save and notify the user
           $account = user_save(drupal_anonymous_user(), $edit);
-          //Notification
-          // Set operation.
-          $op = 'register_no_approval_required';
-          // Send an email.
-          _user_mail_notify($op, $account);
 
           if (!$account) {
             drupal_set_message("Account konnte nicht gespeichert werden.", 'error');
@@ -1413,6 +1411,13 @@ function _section_courses_student_registration_import($input) {
           $wrapper->save();
 
           realname_update($account);
+          $account = user_load($account->uid, TRUE);
+
+          //Notification. we need the realname first!
+          // Set operation.
+          $op = 'register_no_approval_required';
+          // Send an email.
+          _user_mail_notify($op, $account);
 
           //hadnle ajax callbacks
           if (arg(0) == 'system' && arg(1) == 'ajax') {
