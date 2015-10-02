@@ -160,7 +160,7 @@ Um das Template zu bearbeiten, bitte folgendermaßen vorgehn:
 
                                                 <h1 style="color: #08C !important;display: block;font-family: Helvetica;font-size: 26px;font-style: normal;font-weight: bold;line-height: 100%;letter-spacing: normal;margin-top: 0;margin-right: 0;margin-bottom: 10px;margin-left: 0;text-align: left">Neuigkeiten</h1>
                                                 <?
-                                           echo $body;
+                                           echo _filter_autop($body);
                                            ?>
                                         </td></tr></table><!-- // END BODY --></td>
                             </tr><tr><td align="center" valign="top" style="-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0;mso-table-rspace: 0">
