@@ -299,7 +299,7 @@ function nm_general_features_strongarm() {
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => 'ukTOQrBcUCjHU14wTQDhrBsOzy3d2_RsDtHaNns-7xM',
+    'javascript' => '1TlkjsuNO5z4SxSwWZa_1KaqvQG-nvILEIFs2B5Y-yw',
   );
   $export['language_default'] = $strongarm;
 
@@ -431,7 +431,7 @@ function nm_general_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'og_group_manager_full_access';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['og_group_manager_full_access'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -822,7 +822,7 @@ Dieser Link kann nur einmal verwendet werden und leitet Sie zu einer Seite, auf 
 
 Nachdem Sie Ihr Passwort festgelegt haben, können Sie sich zukünftig auf [site:login-url] mit den folgenden Zugangsdaten anmelden:
 
-Benutzername: [user:name]
+Benutzername: [user:mail]
 Passwort: Ihr Passwort
 
 Viele Grüße
@@ -850,7 +850,7 @@ Dieser Link kann nur einmal verwendet werden und leitet Sie auf eine Seite, auf 
 
 Nachdem Sie Ihr Passwort festgelegt haben, können Sie sich zukünftig mit folgenden Zugangsdaten bei [site:login-url] anmelden:
 
-Benutzername: [user:name]
+Benutzername: [user:mail]
 Passwort: Ihr Passwort
 
 Viele Grüße
@@ -899,7 +899,7 @@ Dieser Link kann nur einmal verwendet werden und leitet Sie zu einer Seite, auf 
 
 Nachdem Sie Ihr Passwort festgelegt haben, können Sie sich zukünftig auf [site:login-url] mit den folgenden Zugangsdaten anmelden:
 
-Benutzername: [user:name]
+Benutzername: [user:mail]
 Passwort: Ihr Passwort
 
 Viele Grüße

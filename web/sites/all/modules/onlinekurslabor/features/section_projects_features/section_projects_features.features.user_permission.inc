@@ -45,7 +45,12 @@ function section_projects_features_user_default_permissions() {
   // Exported permission: 'create projects_organization content'.
   $permissions['create projects_organization content'] = array(
     'name' => 'create projects_organization content',
-    'roles' => array(),
+    'roles' => array(
+      'Dozent' => 'Dozent',
+      'Kooperationspartner' => 'Kooperationspartner',
+      'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
+    ),
     'module' => 'node',
   );
 
@@ -90,7 +95,10 @@ function section_projects_features_user_default_permissions() {
   // Exported permission: 'delete any projects_organization content'.
   $permissions['delete any projects_organization content'] = array(
     'name' => 'delete any projects_organization content',
-    'roles' => array(),
+    'roles' => array(
+      'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
+    ),
     'module' => 'node',
   );
 
@@ -136,7 +144,12 @@ function section_projects_features_user_default_permissions() {
   // Exported permission: 'delete own projects_organization content'.
   $permissions['delete own projects_organization content'] = array(
     'name' => 'delete own projects_organization content',
-    'roles' => array(),
+    'roles' => array(
+      'Dozent' => 'Dozent',
+      'Kooperationspartner' => 'Kooperationspartner',
+      'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
+    ),
     'module' => 'node',
   );
 
@@ -181,7 +194,10 @@ function section_projects_features_user_default_permissions() {
   // Exported permission: 'edit any projects_organization content'.
   $permissions['edit any projects_organization content'] = array(
     'name' => 'edit any projects_organization content',
-    'roles' => array(),
+    'roles' => array(
+      'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
+    ),
     'module' => 'node',
   );
 
@@ -227,7 +243,12 @@ function section_projects_features_user_default_permissions() {
   // Exported permission: 'edit own projects_organization content'.
   $permissions['edit own projects_organization content'] = array(
     'name' => 'edit own projects_organization content',
-    'roles' => array(),
+    'roles' => array(
+      'Dozent' => 'Dozent',
+      'Kooperationspartner' => 'Kooperationspartner',
+      'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
+    ),
     'module' => 'node',
   );
 

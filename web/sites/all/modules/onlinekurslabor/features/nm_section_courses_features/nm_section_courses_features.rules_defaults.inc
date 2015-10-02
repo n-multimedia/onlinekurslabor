@@ -207,7 +207,7 @@ function nm_section_courses_features_default_rules_configuration() {
         { "mail" : {
             "to" : [ "account:mail" ],
             "subject" : "[site:name] - Anmeldung f\\u00fcr [entity-course:title]",
-            "message" : "Hallo [account:name],\\r\\ndanke f\\u00fcr deine Anmeldung. Du bist nun f\\u00fcr den Kurs \\u0022[entity-course:title]\\u0022 eingetragen.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
+            "message" : "Hallo [account:name],\\r\\ndanke f\\u00fcr deine Anmeldung. Du bist nun f\\u00fcr den Kurs \\u0022[entity-course:title]\\u0022 eingetragen.\\r\\n\\r\\nMit diesem Link gelangst du direkt zum Kurs [entity-course:url].\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
             "language" : [ "account:language" ]
           }
         },

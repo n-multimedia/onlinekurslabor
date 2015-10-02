@@ -447,6 +447,7 @@ function nm_section_content_features_field_default_field_bases() {
         1 => 'Group',
       ),
       'allowed_values_function' => '',
+      'profile2_private' => FALSE,
     ),
     'translatable' => 0,
     'type' => 'list_boolean',

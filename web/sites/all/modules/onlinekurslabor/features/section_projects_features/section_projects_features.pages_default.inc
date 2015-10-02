@@ -71,11 +71,39 @@ function section_projects_features_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
+    $pane->pid = 'new-ccbe9fc6-19fb-4bbb-a66a-e50e50445c50';
+    $pane->panel = 'news';
+    $pane->type = 'node';
+    $pane->subtype = 'node';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'nid' => '%3',
+      'links' => 0,
+      'leave_node_title' => 0,
+      'identifier' => '',
+      'build_mode' => 'full',
+      'link_node_title' => 0,
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'ccbe9fc6-19fb-4bbb-a66a-e50e50445c50';
+    $display->content['new-ccbe9fc6-19fb-4bbb-a66a-e50e50445c50'] = $pane;
+    $display->panels['news'][0] = 'new-ccbe9fc6-19fb-4bbb-a66a-e50e50445c50';
+    $pane = new stdClass();
     $pane->pid = 'new-485db5de-e1f7-4966-aa98-5573472036c0';
     $pane->panel = 'news';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:body';
-    $pane->shown = TRUE;
+    $pane->shown = FALSE;
     $pane->access = array();
     $pane->configuration = array(
       'label' => 'title',
@@ -94,11 +122,11 @@ function section_projects_features_default_page_manager_pages() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 0;
+    $pane->position = 1;
     $pane->locks = array();
     $pane->uuid = '485db5de-e1f7-4966-aa98-5573472036c0';
     $display->content['new-485db5de-e1f7-4966-aa98-5573472036c0'] = $pane;
-    $display->panels['news'][0] = 'new-485db5de-e1f7-4966-aa98-5573472036c0';
+    $display->panels['news'][1] = 'new-485db5de-e1f7-4966-aa98-5573472036c0';
     $pane = new stdClass();
     $pane->pid = 'new-572042dc-fbff-4d42-9fbc-1fb76d2c9681';
     $pane->panel = 'news';
@@ -117,11 +145,11 @@ function section_projects_features_default_page_manager_pages() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 2;
     $pane->locks = array();
     $pane->uuid = '572042dc-fbff-4d42-9fbc-1fb76d2c9681';
     $display->content['new-572042dc-fbff-4d42-9fbc-1fb76d2c9681'] = $pane;
-    $display->panels['news'][1] = 'new-572042dc-fbff-4d42-9fbc-1fb76d2c9681';
+    $display->panels['news'][2] = 'new-572042dc-fbff-4d42-9fbc-1fb76d2c9681';
     $pane = new stdClass();
     $pane->pid = 'new-5f4057bb-31f2-4d68-adc3-c5be42a2dbe2';
     $pane->panel = 'news';
@@ -154,11 +182,11 @@ function section_projects_features_default_page_manager_pages() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 2;
+    $pane->position = 3;
     $pane->locks = array();
     $pane->uuid = '5f4057bb-31f2-4d68-adc3-c5be42a2dbe2';
     $display->content['new-5f4057bb-31f2-4d68-adc3-c5be42a2dbe2'] = $pane;
-    $display->panels['news'][2] = 'new-5f4057bb-31f2-4d68-adc3-c5be42a2dbe2';
+    $display->panels['news'][3] = 'new-5f4057bb-31f2-4d68-adc3-c5be42a2dbe2';
     $pane = new stdClass();
     $pane->pid = 'new-c042c272-103d-45e7-837e-f59af6407354';
     $pane->panel = 'tools';
@@ -210,6 +238,35 @@ function section_projects_features_default_page_manager_pages() {
     $pane->uuid = '9c33d91c-9df5-4006-bf02-e7187bcb5026';
     $display->content['new-9c33d91c-9df5-4006-bf02-e7187bcb5026'] = $pane;
     $display->panels['tools'][1] = 'new-9c33d91c-9df5-4006-bf02-e7187bcb5026';
+    $pane = new stdClass();
+    $pane->pid = 'new-2da4c5d1-d487-40b4-81f3-8552a8b3baa4';
+    $pane->panel = 'tools';
+    $pane->type = 'entity_field';
+    $pane->subtype = 'node:field_proposal_status';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => 'title',
+      'formatter' => 'list_default',
+      'delta_limit' => 0,
+      'delta_offset' => '0',
+      'delta_reversed' => FALSE,
+      'formatter_settings' => array(),
+      'context' => 'argument_entity_id:node_3',
+      'override_title' => 1,
+      'override_title_text' => 'Mitarbeit',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = '2da4c5d1-d487-40b4-81f3-8552a8b3baa4';
+    $display->content['new-2da4c5d1-d487-40b4-81f3-8552a8b3baa4'] = $pane;
+    $display->panels['tools'][2] = 'new-2da4c5d1-d487-40b4-81f3-8552a8b3baa4';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -534,7 +591,19 @@ return node_access(\'create\', $tmp_node);',
   $page->admin_description = '';
   $page->path = 'projects/admin/%1/edit';
   $page->access = array(
-    'plugins' => array(),
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_access',
+        'settings' => array(
+          'type' => 'update',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
     'logic' => 'and',
     'type' => 'none',
     'settings' => NULL,
@@ -997,6 +1066,38 @@ echo \'<p><a class="btn" href="/node/add/projects-organization">Neue Partnerorga
     $pane->uuid = 'fc656e11-48ff-48b1-bca3-6f6514d3b84e';
     $display->content['new-fc656e11-48ff-48b1-bca3-6f6514d3b84e'] = $pane;
     $display->panels['tools'][1] = 'new-fc656e11-48ff-48b1-bca3-6f6514d3b84e';
+    $pane = new stdClass();
+    $pane->pid = 'new-cbff1145-c9b3-4e09-b4a5-9a52ae4962fc';
+    $pane->panel = 'tools';
+    $pane->type = 'entity_field';
+    $pane->subtype = 'node:field_field_po_contact_person';
+    $pane->shown = FALSE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => 'title',
+      'formatter' => 'og_list_default',
+      'delta_limit' => '0',
+      'delta_offset' => '0',
+      'delta_reversed' => 0,
+      'formatter_settings' => array(
+        'view_mode' => 'default',
+        'links' => 1,
+      ),
+      'context' => 'argument_entity_id:node_1',
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = 'cbff1145-c9b3-4e09-b4a5-9a52ae4962fc';
+    $display->content['new-cbff1145-c9b3-4e09-b4a5-9a52ae4962fc'] = $pane;
+    $display->panels['tools'][2] = 'new-cbff1145-c9b3-4e09-b4a5-9a52ae4962fc';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
