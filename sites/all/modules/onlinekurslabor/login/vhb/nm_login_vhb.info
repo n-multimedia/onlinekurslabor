@@ -1,7 +1,0 @@
-name = NM Login VHB
-description = used for receiving user data from vhb POST requests
-package = custom
-
-core = 7.x
-
-dependencies[] = section_courses

@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the nm_stream_features feature.
- */
-
-include_once 'nm_stream_features.features.inc';

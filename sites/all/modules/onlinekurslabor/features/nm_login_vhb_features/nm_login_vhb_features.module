@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the nm_login_vhb_features feature.
- */
-
-include_once 'nm_login_vhb_features.features.inc';

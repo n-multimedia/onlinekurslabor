@@ -1,2 +1,0 @@
-CCK Multiple Field Remove
-----------------------------

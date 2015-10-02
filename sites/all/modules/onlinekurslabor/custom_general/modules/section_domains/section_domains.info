@@ -1,6 +1,0 @@
-name = Section Domains
-description = provides adjustments for Domains Section
-package = custom
-
-version = "7.x-1.x"
-core = "7.x"

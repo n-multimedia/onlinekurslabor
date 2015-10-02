@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the section_content_features feature.
- */
-
-include_once 'nm_section_content_features.features.inc';

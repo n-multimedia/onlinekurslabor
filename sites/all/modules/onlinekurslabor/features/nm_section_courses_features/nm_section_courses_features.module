@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the nm_section_courses_features feature.
- */
-
-include_once 'nm_section_courses_features.features.inc';
