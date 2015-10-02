@@ -1,7 +1,7 @@
 ##!/bin/sh
 
 #enable modules
-drush en section_projects_features notification_features email_registration --yes
+drush en section_projects_features notification_features email_registration htmlmail --yes
 
 #revert features
 drush fra --yes
