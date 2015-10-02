@@ -41,6 +41,7 @@ function onlinekurslabor_access_fbss_comments_has_permission_alter(&$allow, $op,
   }
 }
 
+
 /**
  * Implements hook_node_grants().
  */
@@ -54,8 +55,13 @@ function onlinekurslabor_access_node_grants($account, $op) {
   $courses = _section_course_get_courses();
   
   $realm = 'onlinekurslabor_access';
+  $realm2 = 'onlinekurslabor_course_group_access';
   foreach ($courses as $course) {
     $grants[$realm][] = $course->nid;
+    //give view access for all course groups in course
+    if(og_is_member('node', $course->nid, 'user', $account)) {
+      $grants[$realm2][] = $course->nid;
+    }
   }
 
   return !empty($grants) ? $grants : array();
@@ -66,19 +72,33 @@ function onlinekurslabor_access_node_grants($account, $op) {
  */
 function onlinekurslabor_access_node_access_records($node) {
 
-  if (!is_object($node) || !og_is_group('node', $node) || $node->type != NM_COURSE) {
-    return;
+  if ($node->type == NM_COURSE) {
+    $grants[] = array(
+      'realm' => 'onlinekurslabor_access',
+      'gid' => $node->nid,
+      'grant_view' => 1,
+      'grant_update' => 0,
+      'grant_delete' => 0,
+      'priority' => 0,
+    );
   }
 
-  $grants[] = array(
-    'realm' => 'onlinekurslabor_access',
-    'gid' => $node->nid,
-    'grant_view' => 1,
-    'grant_update' => 0,
-    'grant_delete' => 0,
-    'priority' => 0,
-  );
+  /**
+   * restrict access to course groups.
+   * course groups should be accessable only, if one is member in its course
+   */
 
+  if ($node->type == NM_COURSE_GROUP) {
+
+    $grants[] = array(
+      'realm' => 'onlinekurslabor_course_group_access',
+      'gid' => $node->og_group_ref[LANGUAGE_NONE][0]['target_id'],
+      'grant_view' => 1,
+      'grant_update' => 0,
+      'grant_delete' => 0,
+      'priority' => 1,
+    );
+  }
 
 
   return !empty($grants) ? $grants : array();

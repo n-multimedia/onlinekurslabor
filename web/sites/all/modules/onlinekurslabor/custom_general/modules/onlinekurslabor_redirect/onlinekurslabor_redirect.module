@@ -17,7 +17,7 @@ function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
    * 18.09.2014 - 17:34 - SN
    */
   
-  //redirection rules for domains
+  //redirection rules for domains and projects
   switch ($node->type) {
     //courses
     case NM_COURSE_FORUMTOPIC:
@@ -39,6 +39,30 @@ function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
       $path = "projects/partners/". $partner_nid."/". $proposal->nid ."/cockpit/" . $ca->nid;
       
       drupal_goto($path);
+      break;
+
+    case NM_PROJECTS_PROJEKTVORSCHLAG:
+      $proposal = $node;
+      $partner_nid = _custom_general_get_group($proposal);
+      $path = "projects/partners/". $partner_nid."/". $proposal->nid ;
+
+      drupal_goto($path);
+      break;
+
+    case NM_PROJECTS_TAGEBUCH:
+      $blog = $node;
+      $ca = node_load(_custom_general_get_group($blog));
+
+      $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
+      $partner_nid = _custom_general_get_group($proposal);
+      $path = "projects/partners/". $partner_nid."/". $proposal->nid ."/cockpit/" . $ca->nid;
+
+      //redirect to the right position
+      $options = array();
+      $options['fragment'] = 'node-'.$blog->nid;
+
+      drupal_goto($path,$options);
+      break;
   }
     
    /*

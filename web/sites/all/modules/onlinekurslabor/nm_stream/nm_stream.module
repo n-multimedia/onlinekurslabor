@@ -86,7 +86,8 @@ function nm_stream_menu() {
     'title' => 'Edit NM Stream Node',
     'page callback' => 'nm_stream_nm_stream_node_edit_callback',
     'page arguments' => array(2),
-    'access arguments' => array('access content'),
+    'access callback' => 'node_access',
+    'access arguments' => array('update', 2),
     'type' => MENU_CALLBACK,
   );
 
@@ -94,7 +95,8 @@ function nm_stream_menu() {
     'title' => 'Delete NM Stream Node',
     'page callback' => 'nm_stream_nm_stream_node_delete_callback',
     'page arguments' => array(2),
-    'access arguments' => array('access content'),
+    'access callback' => 'node_access',
+    'access arguments' => array('delete', 2),
     'type' => MENU_CALLBACK,
   );
 
@@ -102,7 +104,8 @@ function nm_stream_menu() {
     'title' => 'Delete NM Stream File',
     'page callback' => 'nm_stream_nm_stream_node_file_delete_callback',
     'page arguments' => array(2, 4),
-    'access arguments' => array('access content'),
+    'access callback' => 'node_access',
+    'access arguments' => array('update', 2),
     'type' => MENU_CALLBACK,
   );
 
@@ -111,7 +114,8 @@ function nm_stream_menu() {
     'title' => 'Add NM Stream Comment',
     'page callback' => 'nm_stream_nm_stream_comment_add_callback',
     'page arguments' => array(2),
-    'access arguments' => array('access content'),
+    'access callback' => 'node_access',
+    'access arguments' => array('view', 2),
     'type' => MENU_CALLBACK,
   );
 
@@ -120,7 +124,8 @@ function nm_stream_menu() {
     'title' => 'Edit NM Stream Comment',
     'page callback' => 'nm_stream_nm_stream_comment_edit_callback',
     'page arguments' => array(2),
-    'access arguments' => array('access content'),
+    'access callback' => 'comment_access',
+    'access arguments' => array('edit', 2),
     'type' => MENU_CALLBACK,
   );
 
@@ -128,7 +133,8 @@ function nm_stream_menu() {
     'title' => 'Delete NM Stream Comment',
     'page callback' => 'nm_stream_nm_stream_comment_delete_callback',
     'page arguments' => array(2),
-    'access arguments' => array('access content'),
+    'access callback' => 'comment_access',
+    'access arguments' => array('delete', 2),
     'type' => MENU_CALLBACK,
   );
 
@@ -181,13 +187,13 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON', $t
 
 
     //01.04.2014 - 22:53 - SN context needed
-    //if we are in a special context e.g. course group, we just want to see 
+    //if we are in a special context e.g. course group, we just want to see
     //filtered entries which are assign to this group
     //for now we only have course groups as special context
 
     $context = nm_stream_og_context();
     if (!empty($context)) {
-      $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN 
+      $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
       $query->condition('og_membership_node.gid', $context->nid);
     }
 
@@ -201,11 +207,11 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON', $t
     }
 
     if (empty($results)) {
-      $response['update_status'] = 1; // 0:error, 1:empty, 2: new content available, 
+      $response['update_status'] = 1; // 0:error, 1:empty, 2: new content available,
       // $response['error'] = 'Beim Speichern ist ein Fehler aufgetreten.';
     }
     else {
-      $response['update_status'] = 2; // 0:error, 1:empty, 2: new content available, 
+      $response['update_status'] = 2; // 0:error, 1:empty, 2: new content available,
       $response['new_nodes'] = $output;
     }
   }
@@ -216,7 +222,7 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON', $t
   //no nid is set yet
   if (!isset($_SESSION['nm_stream']) || !isset($_SESSION['nm_stream']['nodes'])) {
     if (!isset($response['update_status'])) {
-      $response['update_status'] = 1; // 0:error, 1:empty, 2: new content available, 
+      $response['update_status'] = 1; // 0:error, 1:empty, 2: new content available,
     }
   }
   else {
@@ -306,12 +312,12 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON', $t
 
         if (empty($results_new_comments)) {
           if (!isset($response['update_status'])) {
-            $response['update_status'] = 1; // 0:error, 1:empty, 2: new content available, 
+            $response['update_status'] = 1; // 0:error, 1:empty, 2: new content available,
             // $response['error'] = 'Beim Speichern ist ein Fehler aufgetreten.';
           }
         }
         else {
-          $response['update_status'] = 2; // 0:error, 1:empty, 2: new content available, 
+          $response['update_status'] = 2; // 0:error, 1:empty, 2: new content available,
           //nodes added -> information change
 
           $response['new_comments'] = array();
@@ -636,8 +642,8 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
 }
 
 /**
- * attachments delete callback 
- * 
+ * attachments delete callback
+ *
  * @param type $node
  * @param type $file
  */
@@ -937,7 +943,7 @@ function nm_stream_preprocess_node(&$vars) {
     //register user as listener for this node
     $_SESSION['nm_stream']['nodes'][$node->nid] = array(
       'nid' => $node->nid, //node id
-      'changed' => $node->changed, //last changed date of node 
+      'changed' => $node->changed, //last changed date of node
       'request_time' => REQUEST_TIME //request time of node
     );
 
@@ -1046,7 +1052,7 @@ function nm_stream_preprocess_nm_stream_node_comment(&$vars) {
   //register user as listener for this comment
   $_SESSION['nm_stream']['comments'][$comment->cid] = array(
     'cid' => $comment->cid, //node id
-    'changed' => $comment->changed, //last changed date of node 
+    'changed' => $comment->changed, //last changed date of node
     'request_time' => REQUEST_TIME //request time of node
   );
 
@@ -1067,7 +1073,7 @@ function nm_stream_preprocess_nm_stream_node_comment(&$vars) {
 }
 
 /**
- * 
+ *
  * @param type $vars
  */
 function nm_stream_preprocess_nm_stream_node_comment_form(&$vars) {
@@ -1101,7 +1107,7 @@ function nm_stream_preprocess_nm_stream_node_comment_form(&$vars) {
 }
 
 /**
- * 
+ *
  * @param type $vars
  */
 function nm_stream_preprocess_nm_stream_stream_node_form(&$vars, $hook) {
@@ -1153,7 +1159,7 @@ function nm_stream_og_context() {
   $context = array();
 
   /*
-   * todo 
+   * todo
    * move this part to an independent module (hook)
    * section_courses
    */
@@ -1268,7 +1274,7 @@ function _nm_stream_privacy_options($type = 'nm_stream') {
 
 
 
-  //04.06.2014 - 18:12 - SN 
+  //04.06.2014 - 18:12 - SN
   //dynamic privacy settings for blog entries
 
   $module_path = drupal_get_path('module', 'nm_stream');
@@ -1329,7 +1335,7 @@ function _nm_stream_get_privacy_option($node) {
 
 /**
  * get user picture
- * 
+ *
  * @param type $account
  */
 function _nm_stream_get_user_pic($account) {
@@ -1386,7 +1392,7 @@ function _nm_stream_get_action_links($content) {
 /**
  * need to reverse order
  * modified comment_get_thread
- * 
+ *
  * @param type $node
  * @param type $mode
  * @param type $comments_per_page
@@ -1471,7 +1477,7 @@ function _nm_stream_add_js_and_css() {
 
     //upload
     drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.MultiFile.js");
-    //ajax file upload 
+    //ajax file upload
     //drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.form.js");
 
     drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream.css');
@@ -1482,7 +1488,7 @@ function _nm_stream_add_js_and_css() {
 }
 
 /*
- * import all old status messages 
+ * import all old status messages
  */
 
 function nm_stream_import_status_stream() {

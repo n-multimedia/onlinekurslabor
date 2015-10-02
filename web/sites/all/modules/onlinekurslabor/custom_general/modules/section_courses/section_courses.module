@@ -973,7 +973,7 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
  * Allow access to domain-content, when its part of the course
  */
 function section_courses_node_access($node, $op, $account) {
-
+  return NODE_ACCESS_IGNORE;
   /*
     if (!is_object($node) || !in_array($node->type, array(NM_CHAPTER, NM_DOMAIN))) {
     return NODE_ACCESS_IGNORE;
@@ -1111,6 +1111,10 @@ function section_courses_student_registration_form($form, &$form_state) {
 
   $form['#tree'] = TRUE;
 
+
+  $form['import_container_header'] = array(
+    '#markup' => '<strong></strong>'
+  );
 
   $form['import_container'] = array(
     '#type' => 'fieldset',
