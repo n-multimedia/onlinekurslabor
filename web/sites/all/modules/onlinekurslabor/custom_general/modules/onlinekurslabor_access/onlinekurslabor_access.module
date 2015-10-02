@@ -54,13 +54,11 @@ function onlinekurslabor_access_node_grants($account, $op) {
   $grants = array();
   $courses = _section_course_get_courses();
   
-  $realm = 'onlinekurslabor_access';
-  $realm2 = 'onlinekurslabor_course_group_access';
+  $realm = 'onlinekurslabor_course_content';
   foreach ($courses as $course) {
-    $grants[$realm][] = $course->nid;
     //give view access for all course groups in course
     if(og_is_member('node', $course->nid, 'user', $account)) {
-      $grants[$realm2][] = $course->nid;
+      $grants[$realm][] = $course->nid;
     }
   }
 
@@ -72,33 +70,30 @@ function onlinekurslabor_access_node_grants($account, $op) {
  */
 function onlinekurslabor_access_node_access_records($node) {
 
-  if ($node->type == NM_COURSE) {
-    $grants[] = array(
-      'realm' => 'onlinekurslabor_access',
-      'gid' => $node->nid,
-      'grant_view' => 1,
-      'grant_update' => 0,
-      'grant_delete' => 0,
-      'priority' => 0,
-    );
-  }
-
   /**
    * restrict access to course groups.
    * course groups should be accessable only, if one is member in its course
    */
 
-  if ($node->type == NM_COURSE_GROUP) {
+  if (in_array($node->type, array(NM_COURSE_GROUP, NM_COURSE_GENERIC_TASK, NM_COURSE_NEWS, NM_COURSE_DOCS, NM_COURSE_FORUMTOPIC))) {
 
-    $grants[] = array(
-      'realm' => 'onlinekurslabor_course_group_access',
-      'gid' => $node->og_group_ref[LANGUAGE_NONE][0]['target_id'],
-      'grant_view' => 1,
-      'grant_update' => 0,
-      'grant_delete' => 0,
-      'priority' => 1,
-    );
+    //should never be empty
+    if(!empty($node->og_group_ref[LANGUAGE_NONE][0]['target_id'])){
+      $grants[] = array(
+        'realm' => 'onlinekurslabor_course_content',
+        'gid' => $node->og_group_ref[LANGUAGE_NONE][0]['target_id'],
+        'grant_view' => 1,
+        'grant_update' => 0,
+        'grant_delete' => 0,
+        'priority' => 1,
+      );
+    }else {
+      watchdog('onlinekurslabor_access', 'Course countent without course reference (%d)', array('%d' => $node->nid . ' ' . $node->title), WATCHDOG_ALERT);
+    }
+
   }
+
+  //todo solution
 
 
   return !empty($grants) ? $grants : array();

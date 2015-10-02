@@ -136,7 +136,7 @@ function nm_stream_menu() {
     'page callback' => 'nm_stream_nm_stream_comment_delete_callback',
     'page arguments' => array(2, 4),
     'access callback' => 'comment_access',
-    'access arguments' => array('delete', 2),
+    'access arguments' => array('edit', 2),
     'type' => MENU_CALLBACK,
   );
 

@@ -540,11 +540,10 @@
 
             $('.nm-stream-comment-delete').once('nm_stream').click(function() {
                 var delete_button = $(this)
-
                 var comment_container = delete_button.closest('.nm-stream-comment');
                 var regresult = comment_container.attr('id').split('-');
                 var cid = regresult.pop();
-                var token = comment_container.find('.nm-stream-form-token').val();
+                var token = comment_container.closest('.nm-stream-node-container').find('.nm-stream-form-token').val();
 
                 var url = '/nm_stream/comment/' + cid + '/delete/' + token;
 
