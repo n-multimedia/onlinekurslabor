@@ -287,6 +287,7 @@ function nm_login_vhb_add_user($params) {
     $params['MATRIKELNUMMER'] = '';
   }
   //matrikelnummer must be numeric
+
   // if (!is_numeric($params['MATRIKELNUMMER'])) {
   //   $message = 'Matrikelnummer is not numeric! (uid: @uid)';
   //   drupal_set_message($message, 'error');
@@ -301,6 +302,7 @@ function nm_login_vhb_add_user($params) {
   //
 
   $wrapper->field_matrikelnummer_varchar->set($params['MATRIKELNUMMER']);
+
   $wrapper->field_studienfach->set($params['STUDIENFACH']);
   //load term id and set hochschule field
   $terms = taxonomy_get_term_by_name($params['HOCHSCHULE']);
@@ -390,6 +392,7 @@ function nm_login_vhb_update_empty_profile_fields($account, $params) {
     $params['MATRIKELNUMMER'] = '';
   }
   //matrikelnummer must be numeric
+
   // if (!is_numeric($params['MATRIKELNUMMER'])) {
   //   $message = 'Matrikelnummer is not numeric! (uid: @uid)';
   //   drupal_set_message($message, 'error');
@@ -404,7 +407,6 @@ function nm_login_vhb_update_empty_profile_fields($account, $params) {
   if (empty($tmp)) {
     $wrapper->field_matrikelnummer_varchar->set($params['MATRIKELNUMMER']);
   }
-
 
 
   $tmp = $wrapper->field_studienfach->value();
