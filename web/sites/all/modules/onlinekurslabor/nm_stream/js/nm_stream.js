@@ -45,8 +45,9 @@
                 var node_container = delete_button.closest('.nm-stream-node-container');
                 var regresult = node_container.attr('id').split('-');
                 var nid = regresult.pop();
+                var token = node_container.find('.nm-stream-form-token').val();
 
-                var url = '/nm_stream/node/' + nid + '/delete';
+                var url = '/nm_stream/node/' + nid + '/delete/'+token;
 
 
                 post_spinner_black = nm_stream_get_post_spinner_black();
@@ -173,9 +174,10 @@
                     var form_container = $(this).closest('.nm-stream-node-form-container');
                     var body = form_container.find('textarea').val();
                     var privacy = form_container.find('.dd-selected-value').val();
+                    var token = form_container.find('.nm-stream-form-token').val();
 
                     var url = $(form_container).find('form#nm-stream-add-node').attr('action'); // '/nm_stream/node/add';
-                    var data = {body: body, privacy: privacy};
+                    var data = {body: body, privacy: privacy, token: token};
 
 
                     //check if attachments need to be uploaded -> user iframe form submit else post 
@@ -277,12 +279,13 @@
                     var form_container = $(this).closest('form');
                     var body = form_container.find('textarea').val();
                     var privacy = form_container.find('.dd-selected-value').val();
+                    var token = form_container.find('.nm-stream-form-token').val();
 
                     var regresult = $(this).closest('form').attr('id').split('-');
                     var nid = regresult.pop();
 
                     var url = $(form_container).attr('action'); //'/nm_stream/node/' + nid + '/edit';
-                    var data = {body: body, privacy: privacy};
+                    var data = {body: body, privacy: privacy, token: token};
 
 
                     //check if attachments need to be uploaded -> user iframe form submit else post 
@@ -472,8 +475,9 @@
 
                 var regresult_attachment = delete_button.attr('id').split('-');
                 var fid = regresult_attachment.pop();
+                var token = node_container.find('.nm-stream-form-token').val();
 
-                var url = '/nm_stream/node/' + nid + '/file/' + fid + '/delete';
+                var url = '/nm_stream/node/' + nid + '/file/' + fid + '/delete/' + token;
 
                 post_spinner_black = nm_stream_get_post_spinner_black();
 
@@ -540,8 +544,9 @@
                 var comment_container = delete_button.closest('.nm-stream-comment');
                 var regresult = comment_container.attr('id').split('-');
                 var cid = regresult.pop();
+                var token = comment_container.find('.nm-stream-form-token').val();
 
-                var url = '/nm_stream/comment/' + cid + '/delete';
+                var url = '/nm_stream/comment/' + cid + '/delete/' + token;
 
 
                 post_spinner_black = nm_stream_get_post_spinner_black();
@@ -671,9 +676,10 @@
 
                     var regresult = form_container.find('form').attr('id').split('-');
                     var nid = regresult.pop();
+                    var token = form_container.find('.nm-stream-form-token').val();
 
                     var url = '/nm_stream/node/' + nid + '/comment/add';
-                    var data = {body: body};
+                    var data = {body: body, token: token};
 
                     //disable button
                     nm_stream_form_set_loading(form_container);
@@ -760,12 +766,13 @@
                     var form_container = $(this).closest('form');
 
                     var body = form_container.find('textarea').val();
+                    var token = form_container.find('.nm-stream-form-token').val();
 
                     var regresult = form_container.attr('id').split('-');
                     var cid = regresult.pop();
 
                     var url = '/nm_stream/comment/' + cid + '/edit';
-                    var data = {body: body};
+                    var data = {body: body, token: token};
 
                     //disable button
                     nm_stream_form_set_loading(form_container);

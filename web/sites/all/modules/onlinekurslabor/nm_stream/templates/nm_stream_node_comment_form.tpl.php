@@ -32,6 +32,7 @@
                 <textarea class="nm-stream-comment-body span12"></textarea>
                 <div class="row-fluid">
                   <div class="nm-stream-add-comment-actions">
+                    <input class="nm-stream-form-token" type="hidden" name="form_token" value="<?php echo drupal_get_token(); ?>" />
                     <button class="nm-stream-comment-cancel btn btn-danger"><?php echo t('Cancel'); ?></button>
                     <button class="nm-stream-comment-submit btn btn-primary"><?php echo t('Post'); ?></button>
                   </div>

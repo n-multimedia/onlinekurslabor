@@ -63,7 +63,8 @@ function nm_stream_menu() {
     'title' => 'Add NM Stream Node',
     'page arguments' => array(3),
     'page callback' => 'nm_stream_nm_stream_node_add_callback',
-    'access arguments' => array('access content'),
+    'access callback' => 'nm_stream_user_has_role',
+    'access arguments' => array(array('authenticated user')),
     'type' => MENU_CALLBACK,
   );
 
@@ -71,15 +72,16 @@ function nm_stream_menu() {
     'title' => 'Load node',
     'page callback' => 'nm_stream_nm_stream_node_load_callback',
     'page arguments' => array(2),
-    'access arguments' => array('access content'),
+    'access callback' => 'node_access',
+    'access arguments' => array('view', 2),
     'type' => MENU_CALLBACK,
   );
 
   $items['nm_stream/node/%node/get_all_comments'] = array(
     'title' => 'Edit NM Stream Node',
     'page callback' => 'nm_stream_nm_stream_node_get_all_comments_callback',
-    'page arguments' => array(2),
-    'access arguments' => array('access content'),
+    'access callback' => 'node_access',
+    'access arguments' => array('view', 2),
     'type' => MENU_CALLBACK,
   );
   $items['nm_stream/node/%node/edit'] = array(
@@ -91,19 +93,19 @@ function nm_stream_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['nm_stream/node/%node/delete'] = array(
+  $items['nm_stream/node/%node/delete/%'] = array(
     'title' => 'Delete NM Stream Node',
     'page callback' => 'nm_stream_nm_stream_node_delete_callback',
-    'page arguments' => array(2),
+    'page arguments' => array(2,4),
     'access callback' => 'node_access',
     'access arguments' => array('delete', 2),
     'type' => MENU_CALLBACK,
   );
 
-  $items['nm_stream/node/%node/file/%file/delete'] = array(
+  $items['nm_stream/node/%node/file/%file/delete/%'] = array(
     'title' => 'Delete NM Stream File',
     'page callback' => 'nm_stream_nm_stream_node_file_delete_callback',
-    'page arguments' => array(2, 4),
+    'page arguments' => array(2, 4,6),
     'access callback' => 'node_access',
     'access arguments' => array('update', 2),
     'type' => MENU_CALLBACK,
@@ -129,10 +131,10 @@ function nm_stream_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['nm_stream/comment/%comment/delete'] = array(
+  $items['nm_stream/comment/%comment/delete/%'] = array(
     'title' => 'Delete NM Stream Comment',
     'page callback' => 'nm_stream_nm_stream_comment_delete_callback',
-    'page arguments' => array(2),
+    'page arguments' => array(2, 4),
     'access callback' => 'comment_access',
     'access arguments' => array('delete', 2),
     'type' => MENU_CALLBACK,
@@ -158,6 +160,24 @@ function nm_stream_menu() {
 
 
   return $items;
+}
+
+
+function nm_stream_user_has_role($roles) {
+  if (user_is_logged_in()) {
+    global $user;
+    if (in_array('administrator', $user->roles)) {
+      return TRUE;
+    }
+    foreach ($roles as $role) {
+      if (in_array($role, $user->roles)) {
+        return TRUE;
+      }
+    }
+  }
+  else {
+    return FALSE;
+  }
 }
 
 function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON', $types = array('nm_stream', 'projects_blog')) {
@@ -592,6 +612,15 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
 
   if (isset($_REQUEST['body'])) {
 
+    //prevent csrf attacks
+    $token = isset($_REQUEST['token']) ? $_REQUEST['token']: '';
+    if(!drupal_valid_token($token)){
+      $response['status'] = 0;
+      $response['error'] = 'CSRF!';
+
+      return drupal_json_output($response);
+    }
+
     if (!is_numeric($privacy) || empty($body)) {
       $response['status'] = 0;
       $response['error'] = 'Invalid data has been transmitted.';
@@ -647,7 +676,15 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
  * @param type $node
  * @param type $file
  */
-function nm_stream_nm_stream_node_file_delete_callback($node, $file) {
+function nm_stream_nm_stream_node_file_delete_callback($node, $file, $token) {
+
+  //prevent csrf attacks
+  if(!drupal_valid_token($token)){
+    $response['status'] = 0;
+    $response['error'] = 'CSRF!';
+
+    return drupal_json_output($response);
+  }
 
   $response = array();
 
@@ -690,7 +727,15 @@ function nm_stream_nm_stream_node_file_delete_callback($node, $file) {
   return drupal_json_output($response);
 }
 
-function nm_stream_nm_stream_node_delete_callback($node) {
+function nm_stream_nm_stream_node_delete_callback($node, $token) {
+
+  //prevent csrf attacks
+  if(!drupal_valid_token($token)){
+    $response['status'] = 0;
+    $response['error'] = 'CSRF!';
+
+    return drupal_json_output($response);
+  }
 
   $response = array();
 
@@ -722,6 +767,16 @@ function nm_stream_nm_stream_comment_add_callback($node) {
   global $user;
 
   $response = array();
+
+  //prevent csrf attacks
+  $token = isset($_REQUEST['token']) ? $_REQUEST['token']: '';
+  if(!drupal_valid_token($token)){
+    $response['status'] = 0;
+    $response['error'] = 'CSRF!';
+
+    return drupal_json_output($response);
+  }
+
 
   //get update data before adding new node
   //sort to find the highest nid value
@@ -848,8 +903,16 @@ function nm_stream_nm_stream_comment_edit_callback($comment) {
   return drupal_json_output($response);
 }
 
-function nm_stream_nm_stream_comment_delete_callback($comment) {
+function nm_stream_nm_stream_comment_delete_callback($comment, $token) {
 
+
+  //prevent csrf attacks
+  if(!drupal_valid_token($token)){
+    $response['status'] = 0;
+    $response['error'] = 'CSRF!';
+
+    return drupal_json_output($response);
+  }
 
   //update end
 
