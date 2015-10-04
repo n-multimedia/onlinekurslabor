@@ -1831,35 +1831,7 @@ function section_projects_reset_signatures($entity, $context) {
 function section_projects_form_alter(&$form, &$form_state, $form_id) {
   global $user;
 
-  if(in_array(NM_ROLE_ADMIN, $user->roles)) {
-    return;
-  }
-  if(in_array(NM_ROLE_MODERATOR, $user->roles)) {
-    return;
-  }
-
-  //hide Seal (Besiegeln) Field for non admins
-  if(!empty($form['field_seal'])) {
-    $form['field_seal']['#access'] = FALSE;
-  }
-
-  //unset book outline for every project content type
-  if(!empty($form['#node_edit_form']) && strstr($form['type']['#value'], 'projects_')) {
-    unset($form['book']);
-  }
-
-
-
-  //unset proposal fields in coursegrops
-  if(!empty($form['#entity_type']) && $form['#entity_type'] == 'node' && !empty($form['field_course_group_proposal'])) {
-    hide($form['field_course_group_proposal']);
-  }
-
-  //hide kv / ca direct student reference
-  if(!empty($form['#entity_type']) && $form['#entity_type'] == 'node' && $form['#bundle'] == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
-    hide($form['field_ca_student_refs']);
-  }
-
+  //Privacy widget
   //blog. Hide title
   if(!empty($form['#entity_type']) && $form['#entity_type'] == 'node' && $form['#bundle'] == NM_PROJECTS_TAGEBUCH) {
 
@@ -1877,9 +1849,6 @@ function section_projects_form_alter(&$form, &$form_state, $form_id) {
       array('type' => 'inline', 'scope' => 'footer')
     );
 
-
-    $form['title']['#default_value'] = time();
-    hide($form['title']);
 
     $privacy_options = _nm_stream_privacy_options(NM_PROJECTS_TAGEBUCH);
     if (empty($form['nid']['#value'])) {
@@ -1921,6 +1890,44 @@ function section_projects_form_alter(&$form, &$form_state, $form_id) {
       '#weight' => 20
     );
 
+  }
+
+
+  if(in_array(NM_ROLE_ADMIN, $user->roles)) {
+    return;
+  }
+  if(in_array(NM_ROLE_MODERATOR, $user->roles)) {
+    return;
+  }
+
+  //hide Seal (Besiegeln) Field for non admins
+  if(!empty($form['field_seal'])) {
+    $form['field_seal']['#access'] = FALSE;
+  }
+
+  //unset book outline for every project content type
+  if(!empty($form['#node_edit_form']) && strstr($form['type']['#value'], 'projects_')) {
+    unset($form['book']);
+  }
+
+
+
+  //unset proposal fields in coursegrops
+  if(!empty($form['#entity_type']) && $form['#entity_type'] == 'node' && !empty($form['field_course_group_proposal'])) {
+    hide($form['field_course_group_proposal']);
+  }
+
+  //hide kv / ca direct student reference
+  if(!empty($form['#entity_type']) && $form['#entity_type'] == 'node' && $form['#bundle'] == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
+    hide($form['field_ca_student_refs']);
+  }
+
+
+  //blog. Hide title
+  if(!empty($form['#entity_type']) && $form['#entity_type'] == 'node' && $form['#bundle'] == NM_PROJECTS_TAGEBUCH) {
+    //hide field
+    $form['title']['#default_value'] = time();
+    hide($form['title']);
   }
 
 }
