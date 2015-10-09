@@ -27,6 +27,13 @@ function section_courses_preprocess_panels_pane(&$variables) {
     $node = node_load(key($variables['content']['node']));
     node_tag_new($node);
   }
+
+  /*course groups panel*/
+  if (is_array($variables['content']) && !empty($variables['content']['#object']->nid) ) {
+    $node = node_load($variables['content']['#object']->nid);
+    node_tag_new($node);
+  }
+
 }
 
 /**

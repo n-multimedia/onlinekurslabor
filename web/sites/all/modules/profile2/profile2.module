@@ -452,6 +452,12 @@ function profile2_form_submit_handler(&$form, &$form_state) {
       $profile->uid = $form_state['user']->uid;
     }
     profile2_save($profile);
+
+    if($type == 'master') {
+      //09.10.2015 - 12:40 - SN fix realname problem
+      $account = user_load($profile->uid);
+      realname_update($account);
+    }
   }
 }
 

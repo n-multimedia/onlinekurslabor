@@ -117,7 +117,6 @@ function nm_activity_stream_preprocess_message(&$variables)
         $vars['activity_unread'] = _custom_general_get_num_unread(NULL, $ref_node->nid) ? TRUE : FALSE;
 
 
-
         $variables['message_new'] = theme('nm_activity_stream_theme_single_activity', $vars);
         //
         return;

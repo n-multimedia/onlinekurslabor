@@ -266,7 +266,9 @@ function custom_general_context_page_reaction() {
   
 }
 
+
 function custom_general_form_alter($form, $form_state, $form_id) {
+
   if ($form_id != "book_admin_edit")
     return;
 
@@ -276,6 +278,7 @@ function custom_general_form_alter($form, $form_state, $form_id) {
     $plugin->execute2();
   }
 }
+
 
 /**
  * BIBLIO alter form, fix step 2
@@ -843,3 +846,13 @@ function _custom_general_set_default_image(&$field, $filename, $source, $destina
   $field['settings']['default_image'] = (string) $fid;
   //}
 }
+
+/**
+ * fix realname
+ * Implements hook_user_insert().
+ */
+/*
+function custom_general_user_insert(&$edit, $account, $category) {
+  //$account = user_load($account, TRUE);
+  realname_update($account);
+}*/
