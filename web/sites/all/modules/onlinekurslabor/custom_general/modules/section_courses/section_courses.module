@@ -1283,6 +1283,7 @@ function _section_courses_student_registration_import($input) {
       //separators are in the input textares => account creation
       $rows = explode("\n", $input);
       foreach($rows as $row){
+        $row =  html_entity_decode($row, ENT_QUOTES);
         $row = explode(';', $row);
         $data['first_name'] = substr($row[0], 0, strrpos($row[0], ' '));
         $data['last_name'] = substr($row[0], strrpos($row[0], ' ')+1);
