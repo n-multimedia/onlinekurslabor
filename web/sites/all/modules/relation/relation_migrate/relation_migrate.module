@@ -34,7 +34,7 @@ function relation_migrate_configuration_form($form, &$form_state) {
 
   foreach ($field_types as $field_type_name) {
     $field_type_info = field_info_field_types($field_type_name);
-    $fields = field_read_fields(array('type' => $field_type_name));
+    $fields = field_info_fields(array('type' => $field_type_name));
     if (!empty($field_type_info) && !empty($fields)) {
       $form[$field_type_name] = array(
         '#type' => 'fieldset',
@@ -98,7 +98,6 @@ function _relation_migrate_uid_validate($element, &$form_state, $form) {
   }
 }
 
-
 /**
  * Validates relation type selection on configuration form.
  *
@@ -143,7 +142,6 @@ function _relation_migrate_validate_type_source($fields, $relation_type) {
   return TRUE;
 }
 
-
 /**
  * Implements hook_migrate_api().
  */
@@ -155,7 +153,8 @@ function relation_migrate_migrate_api() {
       'RelationMigrateNodeReference' => array('class_name' => 'RelationMigrateNodeReference'),
       'RelationMigrateUserReference' => array('class_name' => 'RelationMigrateUserReference'),
       'RelationMigrateTermReference' => array('class_name' => 'RelationMigrateTermReference'),
-    )
+    ),
   );
   return $api;
 }
+

@@ -504,7 +504,7 @@ class EntityStructureWrapper extends EntityMetadataWrapper implements IteratorAg
       while (!($entity instanceof EntityDrupalWrapper) && isset($entity->info['parent'])) {
         $entity = $entity->info['parent'];
       }
-      if ($entity instanceof EntityDrupalWrapper && !$entity->entityAccess('update', $account)) {
+      if ($entity instanceof EntityDrupalWrapper && $entity->entityAccess('update', $account) === FALSE) {
         return FALSE;
       }
     }
@@ -515,6 +515,7 @@ class EntityStructureWrapper extends EntityMetadataWrapper implements IteratorAg
     elseif ($op == 'edit' && isset($info['setter permission'])) {
       return user_access($info['setter permission'], $account);
     }
+    // If access is unknown, we return TRUE.
     return TRUE;
   }
 
@@ -758,7 +759,7 @@ class EntityDrupalWrapper extends EntityStructureWrapper {
     elseif ($this->id === FALSE && !$this->data) {
       $this->updateParent(NULL);
     }
-    elseif ($previous_id != $this->id) {
+    elseif ($previous_id !== $this->id) {
       $this->updateParent($this->id);
     }
     return $this;
@@ -809,7 +810,14 @@ class EntityDrupalWrapper extends EntityStructureWrapper {
     if (!empty($this->info['parent'])) {
       // If this is a property, make sure the user is able to view the
       // currently referenced entity also.
-      return $this->entityAccess('view', $account) && parent::access($op, $account);
+      if ($this->entityAccess('view', $account) === FALSE) {
+        return FALSE;
+      }
+      if (parent::access($op, $account) === FALSE) {
+        return FALSE;
+      }
+      // If access is unknown, we return TRUE.
+      return TRUE;
     }
     else {
       // This is not a property, so fallback on entity access.
@@ -824,6 +832,12 @@ class EntityDrupalWrapper extends EntityStructureWrapper {
    */
   public function entityAccess($op, $account = NULL) {
     $entity = $this->dataAvailable() ? $this->value() : NULL;
+    // The value() method could return FALSE on entities such as user 0, so we
+    // need to use NULL instead to conform to the expectations of
+    // entity_access().
+    if ($entity === FALSE) {
+      $entity = NULL;
+    }
     return entity_access($op, $this->type, $entity, $account);
   }
 
@@ -1038,8 +1052,11 @@ class EntityListWrapper extends EntityMetadataWrapper implements IteratorAggrega
     // Support setting lists of fully loaded entities.
     if ($this->isEntityList && $values && is_object(reset($values))) {
       foreach ($values as $key => $value) {
-        list($id, $vid, $bundle) = entity_extract_ids($this->itemType, $value);
-        $values[$key] = $id;
+        // Ignore outdated NULL value references in lists of entities.
+        if (isset($value)) {
+          list($id, $vid, $bundle) = entity_extract_ids($this->itemType, $value);
+          $values[$key] = $id;
+        }
       }
     }
     return parent::set($values);

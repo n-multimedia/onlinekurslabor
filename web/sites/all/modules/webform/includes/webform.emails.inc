@@ -25,9 +25,9 @@ function webform_emails_form($form, $form_state, $node) {
   );
 
   foreach ($node->webform['emails'] as $eid => $email) {
-    $email_addresses = array_filter(explode(',', check_plain($email['email'])));
+    $email_addresses = array_filter(explode(',', $email['email']));
     foreach ($email_addresses as $key => $email_address) {
-      $email_addresses[$key] = webform_format_email_address($email_address, NULL, $node, NULL, FALSE);
+      $email_addresses[$key] = check_plain(webform_format_email_address($email_address, NULL, $node, NULL, FALSE));
     }
 
     $form['emails'][$eid]['email'] = array(
@@ -134,12 +134,13 @@ function theme_webform_email_add_form($variables) {
 
   // Add a default value to the custom e-mail textfield.
   $form['email_custom']['#attributes']['rel'] = t('email@example.com');
-  $form['email_custom']['#attributes']['class'] = array('webform-set-active', 'webform-default-value');
+  $form['email_custom']['#attributes']['class'][] = 'webform-set-active';
+  $form['email_custom']['#attributes']['class'][] = 'webform-default-value';
   $form['email_option']['custom']['#theme_wrappers'] = array('webform_inline_radio');
   $form['email_option']['custom']['#inline_element'] = drupal_render($form['email_custom']);
 
   // Render the component value.
-  $form['email_component']['#attributes']['class'] = array('webform-set-active');
+  $form['email_component']['#attributes']['class'][] = 'webform-set-active';
   $form['email_option']['component']['#theme_wrappers'] = array('webform_inline_radio');
   $form['email_option']['component']['#inline_element'] = drupal_render($form['email_component']);
 
@@ -309,7 +310,8 @@ function webform_email_edit_form($form, $form_state, $node, $email = array()) {
   );
 
   // Add the submit button.
-  $form['submit'] = array(
+  $form['actions'] = array('#type' => 'actions');
+  $form['actions']['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save e-mail settings'),
     '#weight' => 20,
@@ -329,7 +331,7 @@ function theme_webform_email_edit_form($variables) {
   // Loop through fields, rendering them into radio button options.
   foreach (array('email', 'subject', 'from_address', 'from_name') as $field) {
     foreach (array('custom', 'component') as $option) {
-      $form[$field . '_' . $option]['#attributes']['class'] = array('webform-set-active');
+      $form[$field . '_' . $option]['#attributes']['class'][] = 'webform-set-active';
       $form[$field . '_option'][$option]['#theme_wrappers'] = array('webform_inline_radio');
       $form[$field . '_option'][$option]['#inline_element'] = drupal_render($form[$field . '_' . $option]);
     }
@@ -451,7 +453,7 @@ function webform_email_edit_form_submit($form, &$form_state) {
 
   // Clear the entity cache if Entity Cache module is installed.
   if (module_exists('entitycache')) {
-    cache_clear_all($node->nid, 'cache_entity_node');
+    entity_get_controller('node')->resetCache(array($node->nid));
   }
 
   $form_state['redirect'] = array('node/' . $node->nid . '/webform/emails');
@@ -499,7 +501,7 @@ function webform_email_delete_form_submit($form, &$form_state) {
 
   // Clear the entity cache if Entity Cache module is installed.
   if (module_exists('entitycache')) {
-    cache_clear_all($node->nid, 'cache_entity_node');
+    entity_get_controller('node')->resetCache(array($node->nid));
   }
 
   $form_state['redirect'] = 'node/' . $node->nid . '/webform/emails';

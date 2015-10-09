@@ -27,7 +27,7 @@ class OgBehaviorHandler extends EntityReference_BehaviorHandler_Abstract {
       }
       $id = $wrapper->getIdentifier();
       $items[$id] = array();
-      $gids = og_get_entity_groups($entity_type, $entity, array(OG_STATE_ACTIVE), $field_name);
+      $gids = og_get_entity_groups($entity_type, $entity, array(), $field_name);
 
       if (empty($gids[$target_type])) {
         continue;
@@ -250,8 +250,18 @@ class OgBehaviorHandler extends EntityReference_BehaviorHandler_Abstract {
   public function validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
     $new_errors = array();
     $values = array('default' => array(), 'admin' => array());
-    foreach ($items as $item) {
-      $values[$item['field_mode']][] = $item['target_id'];
+
+    $item = reset($items);
+    if (!empty($item['field_mode'])) {
+      // This is a complex widget with "default" and "admin" field modes.
+      foreach ($items as $item) {
+        $values[$item['field_mode']][] = $item['target_id'];
+      }
+    }
+    else {
+      foreach ($items as $item) {
+        $values['default'][] = $item['target_id'];
+      }
     }
 
     $field_name = $field['field_name'];
@@ -281,8 +291,11 @@ class OgBehaviorHandler extends EntityReference_BehaviorHandler_Abstract {
 
     if ($new_errors) {
       og_field_widget_register_errors($field_name, $new_errors);
+      // We throw an exception ourself, as we unset the $errors array.
+      throw new FieldValidationException($new_errors);
     }
 
-    $errors = array();
+    // Errors for this field now handled, removing from the referenced array.
+    unset($errors[$field_name]);
   }
 }

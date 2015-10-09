@@ -618,7 +618,7 @@ function _linkit_add_settings($editor) {
     drupal_add_js($settings, 'setting');
     $set_urls[$editor] = TRUE;
   }
-  
+
   // Add the linkit library for the editor.
   drupal_add_library('linkit', 'linkit_' . $editor);
 }

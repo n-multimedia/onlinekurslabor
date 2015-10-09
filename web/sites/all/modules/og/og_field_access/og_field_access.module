@@ -25,24 +25,7 @@ function og_field_access_field_access($op, $field, $entity_type, $entity, $accou
   if ($entity_type == 'user' && !$id) {
     return;
   }
-  //14.09.2015 - 07:38 - SN -  Fix
-  //issue: cant create group + audience in one step: coursegroups
-  //fix for content type which can be group and group audience at the same time
-  if ($bundle == NM_COURSE_GROUP && (!$id || isset($entity->is_new)) && $op == 'edit' && (og_is_group($entity_type, $entity) || og_is_group_content_type($entity_type, $bundle))) {
-    // This is create form of a non-saved entity, so we check
-    // permissions to access the field, for all the groups the user is a
-    // member.
-    $name = 'og_group_manager_default_rids_' . $entity_type . '_' . $bundle;
-    if ($rids = variable_get($name)) {
-      $role_permissions = og_role_permissions($rids);
-      foreach ($rids as $rid) {
-        if (!empty($role_permissions[$rid][$perm]) && $role_permissions[$rid][$perm] == TRUE) {
-          return TRUE;
-        }
-      }
-    }
-    return FALSE;
-  }else if (!$id && $op == 'edit' && (og_is_group($entity_type, $entity) || og_is_group_content_type($entity_type, $bundle))) {
+  if (!$id && $op == 'edit' && (og_is_group($entity_type, $entity) || og_is_group_content_type($entity_type, $bundle))) {
     // This is create form of a non-saved entity, so we check
     // permissions to access the field, for all the groups the user is a
     // member.
@@ -55,10 +38,6 @@ function og_field_access_field_access($op, $field, $entity_type, $entity, $accou
     }
     return FALSE;
   }
-
-  /*
-
-  */
 
   // Return result only if the entity is related to OG.
   $access = og_user_access_entity($perm, $entity_type, $entity, $account);

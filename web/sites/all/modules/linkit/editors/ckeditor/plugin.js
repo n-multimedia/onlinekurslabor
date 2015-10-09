@@ -19,6 +19,8 @@
 
       // Add Command.
       editor.addCommand( 'linkit', {
+        // FOR ACF in ckeditor 4.1+, allow everything.
+        allowedContent: 'a[*]{*}(*)',
         exec : function () {
 
           // Set the editor object.

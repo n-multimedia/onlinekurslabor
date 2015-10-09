@@ -316,7 +316,7 @@ function relation_views_data_alter(&$data) {
               'relationship field' => $entity_infos[$entity_type_right]['entity keys']['id'],
               'handler' => 'relation_handler_relationship',
               'relation_type' => $type,
-              'entity_type_right' => $entity_type_right,
+              'entity_type_left' => $entity_type_right,
               'directional' => $relation_type->directional,
             ),
           );
@@ -331,7 +331,7 @@ function relation_views_data_alter(&$data) {
               'relationship field' => 'rid',
               'handler' => 'relation_handler_relationship',
               'relation_type' => $type,
-              'entity_type_left' => $entity_type_left,
+              'entity_type_right' => $entity_type_left,
               'directional' => $relation_type->directional,
             ),
           );
@@ -365,7 +365,7 @@ function relation_form_views_ui_add_item_form_alter(&$form, $form_state) {
     }
     if ($preg_pieces) {
       // Filter out impossible Views relationships.
-      $relation_type_preg = '/' . implode('|', array_unique($preg_pieces)) .'/';
+      $relation_type_preg = '/' . implode('|', array_unique($preg_pieces)) . '/';
       foreach (element_children($form['options']['name']) as $name) {
         if (substr($name, 0, 9) == 'relation.' && !preg_match($relation_type_preg, $name)) {
           $form['options']['name'][$name]['#access'] = FALSE;

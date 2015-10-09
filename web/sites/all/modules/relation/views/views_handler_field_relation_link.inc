@@ -38,9 +38,15 @@ class views_handler_field_relation_link extends views_handler_field_entity {
   }
 
   function render_link($relation, $values) {
+    // Ensure that relation_ui module enabled.
+    if (!module_exists('relation_ui')) {
+      return;
+    }
+
     if (user_access('view relations')) {
       $this->options['alter']['make_link'] = TRUE;
-      $this->options['alter']['path'] = "relation/$relation->rid";
+      $relation_uri = entity_uri('relation', $relation);
+      $this->options['alter']['path'] = $relation_uri['path'];
       $text = !empty($this->options['text']) ? $this->options['text'] : t('View');
       return $text;
     }

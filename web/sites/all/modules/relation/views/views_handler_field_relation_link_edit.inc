@@ -16,13 +16,19 @@ class views_handler_field_relation_link_edit extends views_handler_field_relatio
    * Renders the link.
    */
   function render_link($relation, $values) {
+    // Ensure that relation_ui module enabled.
+    if (!module_exists('relation_ui')) {
+      return;
+    }
+
     // Ensure user has access to edit this relation.
     if (!user_access('edit relations')) {
       return;
     }
 
     $this->options['alter']['make_link'] = TRUE;
-    $this->options['alter']['path'] = "relation/$relation->rid/edit";
+    $relation_uri = entity_uri('relation', $relation);
+    $this->options['alter']['path'] = $relation_uri['path'] . "/edit";
     $this->options['alter']['query'] = drupal_get_destination();
 
     $text = !empty($this->options['text']) ? $this->options['text'] : t('Edit');

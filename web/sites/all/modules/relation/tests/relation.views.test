@@ -203,7 +203,7 @@ class RelationViewsTestCase extends RelationTestCase {
         // Second test: node that has no relations. The results should be that
         // no results are found for the required relation, and 6 / NULL
         // for the optional relation.
-        $view = $view->clone_view(); 
+        $view = $view->clone_view();
         $view->set_arguments(array($this->node6->nid));
         $view->execute();
 
@@ -434,6 +434,105 @@ class RelationViewsTestCase extends RelationTestCase {
             unset($matches[$result->nid]);
           }
           $this->assertFalse($matches);
+          break;
+        case 1:
+          // Target. This finds the u1->p3 and u1->p4 relation.
+          $this->assertEqual(count($view->result), 2);
+          $matches = array($this->node3->nid => TRUE, $this->node4->nid => TRUE);
+          foreach ($view->result as $result) {
+            unset($matches[$result->nid]);
+          }
+          $this->assertFalse($matches);
+          break;
+      }
+    }
+  }
+
+  /**
+   * Tests views from Relation base to endpoint entities
+   */
+  function testRelationsFromRelationBase() {
+    for ($r_index = -1; $r_index < 2; $r_index++) {
+      $view = new view;
+      $view->base_table = 'relation';
+      $handler = $view->new_display('default');
+      $handler->display->display_options['relationships']['relation_base_directional_entitydifferent_user']['id'] = 'relation_base_directional_entitydifferent_user';
+      $handler->display->display_options['relationships']['relation_base_directional_entitydifferent_user']['table'] = 'relation';
+      $handler->display->display_options['relationships']['relation_base_directional_entitydifferent_user']['field'] = 'relation_base_directional_entitydifferent_user';
+      $handler->display->display_options['relationships']['relation_base_directional_entitydifferent_user']['required'] = TRUE;
+      $handler->display->display_options['relationships']['relation_base_directional_entitydifferent_user']['r_index'] = $r_index;
+      $handler->display->display_options['fields']['rid']['id'] = 'rid';
+      $handler->display->display_options['fields']['rid']['table'] = 'relation';
+      $handler->display->display_options['fields']['rid']['field'] = 'rid';
+      $handler->display->display_options['fields']['uid']['id'] = 'uid';
+      $handler->display->display_options['fields']['uid']['table'] = 'users';
+      $handler->display->display_options['fields']['uid']['field'] = 'uid';
+      $handler->display->display_options['fields']['uid']['relationship'] = 'relation_base_directional_entitydifferent_user';
+      $handler->display->display_options['arguments']['uid']['id'] = 'uid';
+      $handler->display->display_options['arguments']['uid']['table'] = 'users';
+      $handler->display->display_options['arguments']['uid']['field'] = 'uid';
+      $handler->display->display_options['arguments']['uid']['relationship'] = 'relation_base_directional_entitydifferent_user';
+      $view->set_arguments(array($this->user1->uid));
+      $view->execute();
+
+      switch ($r_index) {
+        case -1:
+          // Both ways, should find u1->p3 and u1->p4 relations
+          $this->assertEqual(count($view->result), 2);
+          $matches = array($this->user1->uid => TRUE);
+          foreach ($view->result as $result) {
+            unset($matches[$result->users_relation_uid]);
+          }
+          $this->assertFalse($matches);
+          break;
+        case 0:
+          // Source. This finds the u1->p3 and u1->p4 relation.
+          $this->assertEqual(count($view->result), 2);
+          $matches = array($this->user1->uid => TRUE);
+          foreach ($view->result as $result) {
+            unset($matches[$result->users_relation_uid]);
+          }
+          $this->assertFalse($matches);
+          break;
+        case 1:
+          // Target. This finds no relations.
+          $this->assertEqual(count($view->result), 0);
+          break;
+      }
+    }
+  }
+
+  /**
+   * Tests views from endpoints to Relation base
+   */
+  function testRelationsToRelationBase() {
+    for ($r_index = -1; $r_index < 2; $r_index++) {
+      $view = new view;
+      $view->base_table = 'node';
+      $handler = $view->new_display('default');
+      $handler->display->display_options['relationships']['relation_base_right_directional_entitydifferent']['id'] = 'relation_base_right_directional_entitydifferent';
+      $handler->display->display_options['relationships']['relation_base_right_directional_entitydifferent']['table'] = 'node';
+      $handler->display->display_options['relationships']['relation_base_right_directional_entitydifferent']['field'] = 'relation_base_right_directional_entitydifferent';
+      $handler->display->display_options['relationships']['relation_base_right_directional_entitydifferent']['required'] = TRUE;
+      $handler->display->display_options['relationships']['relation_base_right_directional_entitydifferent']['r_index'] = $r_index;
+      $handler->display->display_options['fields']['nid']['id'] = 'nid';
+      $handler->display->display_options['fields']['nid']['table'] = 'node';
+      $handler->display->display_options['fields']['nid']['field'] = 'nid';
+      $view->execute();
+
+      switch ($r_index) {
+        case -1:
+          // Both ways, should find u1->p3 and u1->p4 relations
+          $this->assertEqual(count($view->result), 2);
+          $matches = array($this->node3->nid => TRUE, $this->node4->nid => TRUE);
+          foreach ($view->result as $result) {
+            unset($matches[$result->nid]);
+          }
+          $this->assertFalse($matches);
+          break;
+        case 0:
+          // Source. This finds no relations.
+          $this->assertEqual(count($view->result), 0);
           break;
         case 1:
           // Target. This finds the u1->p3 and u1->p4 relation.

@@ -75,7 +75,7 @@ class LinkitPluginEntity extends LinkitPlugin {
    * Build the label that will be used in the search result for each row.
    */
   function buildLabel($entity) {
-    return entity_label($this->plugin['entity_type'], $entity);
+    return check_plain(entity_label($this->plugin['entity_type'], $entity));
   }
 
   /**

@@ -86,6 +86,7 @@ function relation_tokens($type, $tokens, array $data = array(), array $options =
 
   if ($type == 'relation' && !empty($data['relation'])) {
     $relation = $data['relation'];
+    $relation_uri = entity_uri('relation', $relation);
 
     foreach ($tokens as $name => $original) {
       switch ($name) {
@@ -108,11 +109,11 @@ function relation_tokens($type, $tokens, array $data = array(), array $options =
           break;
 
         case 'url':
-          $replacements[$original] = url('relation/' . $relation->rid, $url_options);
+          $replacements[$original] = url($relation_uri['path'], $url_options + $relation_uri['options']);
           break;
 
         case 'edit-url':
-          $replacements[$original] = url('relation/' . $relation->rid . '/edit', $url_options);
+          $replacements[$original] = url($relation_uri['path'] . '/edit', $url_options + $relation_uri['options']);
           break;
 
         // Default values for the chained tokens handled below.
