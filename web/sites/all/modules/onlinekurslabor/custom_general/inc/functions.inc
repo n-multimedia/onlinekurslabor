@@ -412,6 +412,24 @@ function custom_general_get_task_solutions_by_uid($tid, $uid) {
 
 /**
  * get user's solution of a tasks
+ * @param type $tid
+ * @param type $uid
+ * @return type
+ */
+function custom_general_get_all_task_solutions_by_uid($uid) {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', NM_COURSE_GENERIC_TASK_SOLUTION)
+    ->propertyCondition('status', 1)
+    ->propertyCondition('uid', $uid);
+
+  $result = $query->execute();
+
+  return isset($result['node']) ? $result['node'] : NULL;
+}
+
+/**
+ * get user's solution of a tasks
  * dynamicly selection of user, depending on query arguments
  * 
  * @param type $tid
@@ -585,6 +603,38 @@ function _section_course_get_coursegroups($course) {
       ->condition('n.type', NM_COURSE_GROUP)
       ->fields('n', array('nid', 'title', 'type'))
       ->join('og_membership', 'ogm', "ogm.gid = :gid AND n.nid = ogm.etid AND ogm.entity_type = 'node'", array(':gid' => $course->nid));
+
+  $result = $query->execute();
+
+
+  return $result->fetchAll();
+}
+
+function _section_course_get_solutions($course) {
+
+  $query = db_select('node', 'n');
+
+  $query->condition('n.nid', 0, '<>')
+    ->condition('n.status', 1, '=')
+    ->condition('n.type', NM_COURSE_GENERIC_TASK_SOLUTION)
+    ->fields('n', array('nid', 'title', 'type'))
+    ->join('og_membership', 'ogm', "ogm.gid = :gid AND n.nid = ogm.etid AND ogm.entity_type = 'node'", array(':gid' => $course->nid));
+
+  $result = $query->execute();
+
+
+  return $result->fetchAll();
+}
+
+function _section_course_get_tasks($course) {
+
+  $query = db_select('node', 'n');
+
+  $query->condition('n.nid', 0, '<>')
+    ->condition('n.status', 1, '=')
+    ->condition('n.type', NM_COURSE_GENERIC_TASK)
+    ->fields('n', array('nid', 'title', 'type'))
+    ->join('og_membership', 'ogm', "ogm.gid = :gid AND n.nid = ogm.etid AND ogm.entity_type = 'node'", array(':gid' => $course->nid));
 
   $result = $query->execute();
 
