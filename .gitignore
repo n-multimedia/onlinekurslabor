@@ -3,6 +3,8 @@
 .drush/
 .gitconfig
 .ssh/
+.bash*
+
 drush-backups/
 log/
 private/
