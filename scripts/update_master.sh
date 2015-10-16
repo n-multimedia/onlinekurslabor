@@ -9,8 +9,9 @@ drush en section_projects_features notification_features email_registration html
 #revert features
 drush fra --yes
 
-drush updatedb
+drush cc all
 
+drush updatedb --yes
 
 #rebuild node access
 drush php-eval 'node_access_rebuild();'
