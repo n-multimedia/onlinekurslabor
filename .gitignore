@@ -1,9 +1,10 @@
-.bash_history
+.bash*
+.profile
 .cache/
 .drush/
 .gitconfig
 .ssh/
-.bash*
+
 
 drush-backups/
 log/
