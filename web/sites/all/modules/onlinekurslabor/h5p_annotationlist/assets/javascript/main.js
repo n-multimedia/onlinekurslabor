@@ -5,6 +5,8 @@
 
 
         },
+        //siehe save_video_objects, wird nach onload gesetzt
+        h5p_data_container: null,
         video_object_list: [], // new Array(),
         annotations_sortby: ['start', 'end', 'interactiontype', 'title'],
         annotations_sortby_label: ['Start', 'Ende', 'Typ', 'Titel'],
@@ -53,6 +55,8 @@
          */
         save_video_objects: function()
         {
+             //ggf bei neuen versionen anpassen, ist das js-objekt des original-h5p-plugins
+              this.h5p_data_container = H5PIntegration.contents;
             //console.debug("doing");
 
             var saved_object = null;
@@ -85,7 +89,7 @@
         addSideBarToVideoObject: function(video_object)
         {
             var the_great_list;
-            jQuery.each(H5PIntegration.contents, function(json_video_id, some_video_object)
+            jQuery.each(this.h5p_data_container, function(json_video_id, some_video_object)
             {
                 //console.debug(json_video_id);
                 //console.debug(some_video_object);
@@ -154,7 +158,7 @@
                 Drupal.behaviors.h5p_annotationlist.addAnnotationsToSidebar(json_video_id, jQuery(this).attr("value"), video_object);
             });
             /*extrahiere annotationsdaten*/
-            var videojson = (H5PIntegration.contents[json_video_id]);
+            var videojson = (this.h5p_data_container[json_video_id]);
 
             if (videojson !== undefined)
             {
