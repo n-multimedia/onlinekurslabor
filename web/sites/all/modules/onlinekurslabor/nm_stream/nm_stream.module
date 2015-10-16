@@ -1041,8 +1041,14 @@ function nm_stream_preprocess_node(&$vars) {
     //dpm($node_context);
 
     if (empty($active_context) || $node_context != $active_context->nid) {
-      $node_context_node = node_load($node_context);
-      $vars['nm_context'] = 'Beitrag aus: ' . l($node_context_node->title, 'node/' . $node_context_node->nid, array('fragment' => 'node-' . $node->nid));
+      if(empty($node_context)) {
+        $node_context_node = node_load($node_context);
+        $vars['nm_context'] = 'Beitrag aus: ' . l($node_context_node->title, 'node/' . $node_context_node->nid, array('fragment' => 'node-' . $node->nid));
+      }else {
+        //TODO implement node_delete hook, to remove all streamentries belonging to the node
+        $vars['nm_context'] = '-';
+      }
+
     }
 
     //set privacy icon
