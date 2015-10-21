@@ -116,6 +116,22 @@ function onlinekurslabor_access_node_access_records($node) {
         'priority' => 1,
       );
     }else {
+      //forums are handled by taxonomy terms
+      if($node->type == NM_COURSE_FORUMTOPIC){
+        if(!empty($node->taxonomy_forums[LANGUAGE_NONE][0]['tid'])){
+          $term = taxonomy_term_load($node->taxonomy_forums[LANGUAGE_NONE][0]['tid']);
+          if(!empty($term->og_group_ref[LANGUAGE_NONE][0]['target_id'])){
+            $grants[] = array(
+              'realm' => 'onlinekurslabor_course_content',
+              'gid' => $term->og_group_ref[LANGUAGE_NONE][0]['target_id'],
+              'grant_view' => 1,
+              'grant_update' => 0,
+              'grant_delete' => 0,
+              'priority' => 1,
+            );
+          }
+        }
+      }
       watchdog('onlinekurslabor_access', 'Course countent without course reference (%d)', array('%d' => $node->nid . ' ' . $node->title), WATCHDOG_ALERT);
     }
 
