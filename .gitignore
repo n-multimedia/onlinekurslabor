@@ -10,6 +10,7 @@ drush-backups/
 log/
 private/
 
+web/.htaccess
 web/tmp
 web/stats
 web/sites/*/settings*.php

@@ -9,6 +9,7 @@ function nm_login_vhb_db_insert($user) {
   //check if entry already exists for that user first
   $query = db_select('nm_login_vhb', 'nm');
   $query->fields('nm', array('uid'));
+  $query->condition('nm.uid', $user->uid);
   $res = $query->execute()->fetchField();
   //check if uid was found
   if (isset($res) && $res > 0) {
@@ -16,7 +17,7 @@ function nm_login_vhb_db_insert($user) {
   }
 
   //add a new entry otherwise
-  
+
   //add db entry for $user
   db_insert('nm_login_vhb') // Table name no longer needs {}
       ->fields(array(
@@ -89,7 +90,8 @@ function nm_login_vhb_reactivate_user($uid, $params) {
   $profile2 = profile2_load_by_user($account, 'student');
   //Populate profile fields
   $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
-  $wrapper->field_matrikelnummer->set($params['MATRIKELNUMMER']);
+  // $wrapper->field_matrikelnummer->set($params['MATRIKELNUMMER']); 20.11.2014 - 11:42 - SN
+  $wrapper->field_matrikelnummer_varchar->set($params['MATRIKELNUMMER']);
   $wrapper->field_studienfach->set($params['STUDIENFACH']);
   //load term id and set hochschule field
   $terms = taxonomy_get_term_by_name($params['HOCHSCHULE']);
@@ -109,7 +111,7 @@ function nm_login_vhb_reactivate_user($uid, $params) {
   $wrapper->field_last_name->set($params['NACHNAME']);
   $wrapper->field_birthday->set(strtotime($params['GEBDAT']));
   //not knowing which SEX options posiible
-  //weiblich = female so everything !female will be male 
+  //weiblich = female so everything !female will be male
   if ($params['SEX'] == 'weiblich') {
     $wrapper->field_gender->set('female');
   }
@@ -198,12 +200,12 @@ function nm_login_vhb_archivate_user($user) {
   $profile2 = profile2_load_by_user($account, 'student');
 
   //load matrikelnummer from profile2 data
-  if (isset($profile2->field_matrikelnummer) && !empty($profile2->field_matrikelnummer[LANGUAGE_NONE])) {
-
-    $matrikelnummer = $profile2->field_matrikelnummer[LANGUAGE_NONE][0]['value'];
+  // if (isset($profile2->field_matrikelnummer) && !empty($profile2->field_matrikelnummer[LANGUAGE_NONE])) {
+if (isset($profile2->field_matrikelnummer_varchar) && !empty($profile2->field_matrikelnummer_varchar[LANGUAGE_NONE])) {
+    $matrikelnummer = $profile2->field_matrikelnummer_varchar[LANGUAGE_NONE][0]['value'];
     //Populate profile fields
     $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
-    $wrapper->field_matrikelnummer->set(NULL);
+    $wrapper->field_matrikelnummer_varchar->set(NULL);
     $wrapper->field_studienfach->set(NULL);
     //load term id and set hochschule field
     //$terms = taxonomy_get_term_by_name...;
@@ -222,7 +224,7 @@ function nm_login_vhb_archivate_user($user) {
     $wrapper->field_last_name->set('');
     $wrapper->field_birthday->set(NULL);
     //not knowing which SEX options possible
-    //weiblich = female so everything !female will be male 
+    //weiblich = female so everything !female will be male
     $wrapper->field_gender->set('fa');
 
     $wrapper->save();
@@ -279,10 +281,11 @@ function nm_login_vhb_obfuscate_matrikelnummer($matrikelnummer) {
   return $hash;
 }
 
+
 /**
- * import all users that have a matrikelnummer set into 
+ * import all users that have a matrikelnummer set into
  * the interface db
- * needed to import existing, users who used the vhb-interface before 
+ * needed to import existing, users who used the vhb-interface before
  * the db function was implemented
  */
 function nm_login_vhb_import_all_users() {
@@ -311,3 +314,40 @@ function nm_login_vhb_import_all_users() {
     }
   }
 }
+
+/**
+ * [nm_login_vhb_migrate_to_new_matrikelnummer_varchar_field description]
+ * @return [type] [description]
+ */
+function nm_login_vhb_migrate_to_new_matrikelnummer_varchar_field() {
+  $counter = 1;
+  $query = db_select('users', 'u');
+  $query->fields('u', array('uid'));
+  $result = $query->execute();
+  while ($record = $result->fetchAssoc()) {
+    $user = user_load($record['uid']);
+    $profile = profile2_load_by_user($user, 'student');
+    if (!empty($profile) && !empty($profile->field_matrikelnummer)) {
+      $matrikelnummer = $profile->field_matrikelnummer[LANGUAGE_NONE][0]['value'];
+      if (!empty($matrikelnummer)) {
+        //check if user is already listed
+        //$wrapper = entity_metadata_wrapper('profile2', $profile->pid);
+        //$wrapper->field_first_name->set($matrikelnummer);
+
+        dpm($counter . ': ' .$matrikelnummer . ' migriert - user: ' . $user->uid);
+
+        if(empty($profile->field_matrikelnummer_varchar)) {
+          $profile->field_matrikelnummer_varchar[LANGUAGE_NONE][0]['value'] = $matrikelnummer;
+          $profile->save();
+        }
+
+        $counter++;
+
+        // if($counter > 5) {
+        //   break;
+        // }
+      }
+    }
+  }
+}
+
