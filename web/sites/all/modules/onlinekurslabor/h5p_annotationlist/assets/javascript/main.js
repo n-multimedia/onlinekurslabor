@@ -55,7 +55,20 @@
          */
         save_video_objects: function()
         {
+<<<<<<< HEAD
             
+=======
+
+            /**
+             * 17.10.2015 - 00:05 - SN
+             * check, if H5PIntegration object has already been initialized
+             */
+            if(typeof(H5PIntegration) === 'undefined') {
+                return;
+            }
+             //ggf bei neuen versionen anpassen, ist das js-objekt des original-h5p-plugins
+              this.h5p_data_container = H5PIntegration.contents;
+>>>>>>> 3e5432ead5d1b9f6a6e5efb591cbf2ffe46fe880
             //console.debug("doing");
 
             var saved_object = null;

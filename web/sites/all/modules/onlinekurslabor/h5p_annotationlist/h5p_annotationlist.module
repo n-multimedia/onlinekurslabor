@@ -14,6 +14,10 @@
  */
 function h5p_annotationlist_init() {
 
+  //17.10.2015 - 00:06 - SN
+  //todo - include if necessarry only. e.g. page_view callback
+  //node prepare view or something
+
   $nid = (arg(0) == 'node' && is_numeric(arg(1))) ? arg(1) : NULL;
 /*
   drupal_add_js(array('h5psidebar' => array('json_video_id' => 'cid-' . $nid)), 'setting');
