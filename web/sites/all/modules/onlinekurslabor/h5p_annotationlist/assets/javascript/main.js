@@ -54,29 +54,11 @@
          save_video_objects: ueberscrheibt temporär die funktion  H5P.InteractiveVideo.prototype.attach um sich einklinken zu koennen. führt die originalversion anschließend aus.
          */
         save_video_objects: function()
-        {
-<<<<<<< HEAD
-            
-=======
-
-            /**
-             * 17.10.2015 - 00:05 - SN
-             * check, if H5PIntegration object has already been initialized
-             */
-            if(typeof(H5PIntegration) === 'undefined') {
-                return;
-            }
-             //ggf bei neuen versionen anpassen, ist das js-objekt des original-h5p-plugins
-              this.h5p_data_container = H5PIntegration.contents;
->>>>>>> 3e5432ead5d1b9f6a6e5efb591cbf2ffe46fe880
-            //console.debug("doing");
-
-            var saved_object = null;
-            if (typeof H5P === 'undefined')
+        { 
+           
+             if (typeof H5P === 'undefined' || typeof(H5PIntegration) === 'undefined' || typeof H5P.InteractiveVideo === 'undefined')
                 return false;
-            if (typeof H5P.InteractiveVideo === 'undefined')
-                return false;
-               
+          
               /*
                * 
                * ggf bei neuen versionen anpassen, ist das js-objekt des original-h5p-plugins
@@ -84,8 +66,10 @@
                * 
                */
               this.h5p_data_container = H5PIntegration.contents;
-              
-            //speichere Originalfunktionsaufruf
+            
+
+            var saved_object = null;
+           
             var originalInteractiveVideoPrototypeAttachMethod = H5P.InteractiveVideo.prototype.attach;
             //Ueberschreibe original Funktionsaufruf
             H5P.InteractiveVideo.prototype.attach = function()
@@ -118,7 +102,7 @@
 
 
                     the_great_list =
-                            '<div id="h5p_annotationlist_' + json_video_id + '" class="h5p_annotationlist">' +
+                            '<div id="h5p_annotationlist_' + json_video_id + '" class="h5p_annotationlist" style="display:none;">' +
                             '<div class="sort_region">' +
                             '<a href=# title="Sortieren" class="sort_label fa fa-sort fa-1"><span class=""></span></a><div class="sort_container">Sortieren nach<br>';
 
@@ -169,8 +153,7 @@
         /*fuegt dem container '#h5p_annotationlist_'+json_video_id  eine liste der annotationen hinzu*/
         addAnnotationsToSidebar: function(json_video_id, sortby, video_object)
         {
-            if(typeof  videojsonparsed.interactiveVideo.interactions === 'undefined')
-                return false;
+         
             
             if (!sortby || !this.annotations_sortby.indexOf(sortby))
                 sortby = "start";
@@ -185,7 +168,7 @@
             /*extrahiere annotationsdaten*/
             var videojson = (this.h5p_data_container[json_video_id]);
 
-            if (videojson !== undefined)
+            if (typeof videojson !== undefined)
             {
                 videojson = videojson['jsonContent'];
             }
@@ -197,6 +180,8 @@
 
             /*extrahiere annotationsdaten und sortiere diese*/
             var videojsonparsed = jQuery.parseJSON(videojson);
+            if(typeof  videojsonparsed === 'undefined' || typeof  videojsonparsed.interactiveVideo === 'undefined' ||typeof  videojsonparsed.interactiveVideo.interactions === 'undefined')
+                return false;
             var all_interactions = videojsonparsed.interactiveVideo.interactions;
             all_interactions.sort(this.SortfunctionForAnnotations(sortby));
 
@@ -237,6 +222,8 @@
 
             });
             new_annotation_html = '<div class="h5p_annotationlist_annotation_container_nowrap">' + new_annotation_html + '</div>'
+            //offenbar haben wir annotationen, also setzen wir die liste auf visible
+            sidebar_div.css('display','block');
             //haenge html an
             sidebar_div.find("div.h5p_annotationlist_annotation_container").html(new_annotation_html);
             var total_width = sidebar_div.find("div.h5p_annotationlist_annotation_item").width() * all_interactions.length;
