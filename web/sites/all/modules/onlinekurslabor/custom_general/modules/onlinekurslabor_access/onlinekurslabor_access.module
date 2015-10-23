@@ -52,6 +52,8 @@ function onlinekurslabor_access_node_grants($account, $op) {
   }
 
   $grants = array();
+
+  //COURSES
   $courses = _section_course_get_courses();
 
   $realm = 'onlinekurslabor_course_content';
@@ -77,7 +79,6 @@ function onlinekurslabor_access_node_grants($account, $op) {
           }
         }
       }
-
     }
   }
 
@@ -90,6 +91,40 @@ function onlinekurslabor_access_node_grants($account, $op) {
     }
   }
 
+  //DOMAINS
+  $grants = array();
+  $domains = _section_content_get_domains();
+
+  $realm = 'onlinekurslabor_domain_content';
+  foreach ($domains as $domain) {
+    //give view access for all domain group members
+    if(og_is_member('node', $domain->nid, 'user', $account)) {
+      $grants[$realm][] = $domain->nid;
+    }
+
+    //access for authors
+    if (in_array($value, array(NM_ROLE_AUTOR, NM_ROLE_DOZENT, NM_ROLE_TUTOR))) {
+      $grants[$realm][] = $domain->nid;
+    }else {
+      //get courses the student is in
+      foreach ($courses as $course) {
+        if (og_is_member('node', $course->nid, 'user', $account)) {
+          //access complete domain text
+          //set domain field target id
+          if(!empty($course->field_domain_ref[LANGUAGE_NONE][0]['target_id'])){
+            $grants[$realm][] = $course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
+          }
+        }
+        //access demotext
+        //set demo domain field target id
+        if(!empty($course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id'])){
+          $grants[$realm][] = $course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
+        }
+      }
+    }
+  }
+
+
   return !empty($grants) ? $grants : array();
 }
 
@@ -101,6 +136,12 @@ function onlinekurslabor_access_node_access_records($node) {
   /**
    * restrict access to course groups.
    * course groups should be accessable only, if one is member in its course
+   */
+
+
+
+  /*
+   * COURSES AND COURSE CONTENT
    */
 
   if (in_array($node->type, array(NM_COURSE_GROUP, NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION, NM_COURSE_NEWS, NM_COURSE_DOCS, NM_COURSE_FORUMTOPIC))) {
@@ -132,7 +173,7 @@ function onlinekurslabor_access_node_access_records($node) {
           }
         }
       }
-      watchdog('onlinekurslabor_access', 'Course countent without course reference (%d)', array('%d' => $node->nid . ' ' . $node->title), WATCHDOG_ALERT);
+      watchdog('onlinekurslabor_access', 'Course content without course reference (%d)', array('%d' => $node->nid . ' ' . $node->title), WATCHDOG_ALERT);
     }
 
   }
@@ -148,6 +189,40 @@ function onlinekurslabor_access_node_access_records($node) {
         'priority' => 1,
       );
   }
+
+  /*
+   * DOMAIN AND DOMAIN CONTENT
+   * TEXT
+   */
+  if ($node->type == NM_CONTENT_DOMAIN) {
+    $grants[] = array(
+      'realm' => 'onlinekurslabor_domain_content',
+      'gid' => $node->nid,
+      'grant_view' => 1,
+      'grant_update' => 0,
+      'grant_delete' => 0,
+      'priority' => 1,
+    );
+  }
+
+  if (in_array($node->type, array(NM_CONTENT_CHAPTER))) {
+
+    //should never be empty
+    if (!empty($node->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
+      $grants[] = array(
+        'realm' => 'onlinekurslabor_domain_content',
+        'gid' => $node->og_group_ref[LANGUAGE_NONE][0]['target_id'],
+        'grant_view' => 1,
+        'grant_update' => 0,
+        'grant_delete' => 0,
+        'priority' => 1,
+      );
+    }
+    else {
+      watchdog('onlinekurslabor_access', 'Domain content without domain reference (%d)', array('%d' => $node->nid . ' ' . $node->title), WATCHDOG_ALERT);
+    }
+  }
+
 
 
   return !empty($grants) ? $grants : array();
