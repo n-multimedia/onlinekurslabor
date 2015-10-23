@@ -56,11 +56,14 @@ function onlinekurslabor_access_node_grants($account, $op) {
   //COURSES
   $courses = _section_course_get_courses();
 
-  $realm = 'onlinekurslabor_course_content';
+  $realm_content = 'onlinekurslabor_course_content';
+  $realm_solution = 'onlinekurslabor_course_solution';
   foreach ($courses as $course) {
     //give view access for all course groups in course
+
     if(og_is_member('node', $course->nid, 'user', $account)) {
-      $grants[$realm][] = $course->nid;
+      $grants[$realm_content][] = $course->nid;
+
 
       //solutions for instructors
       $course_solutions = _section_course_get_solutions($course);
@@ -73,7 +76,7 @@ function onlinekurslabor_access_node_grants($account, $op) {
           //grant permission for dozenz and tutor only
           if (in_array($value, array(NM_COURSES_ROLE_ADMINISTRATOR, NM_COURSES_ROLE_TUTOR))) {
             foreach($course_solutions as $solution){
-              $grants[$realm][] = $solution->nid;
+              $grants[$realm_solution][] = $solution->nid;
             }
             break;
           }
@@ -82,47 +85,45 @@ function onlinekurslabor_access_node_grants($account, $op) {
     }
   }
 
+
   $uid = $account->uid;
   //solutions for students
   $solutions = custom_general_get_all_task_solutions_by_uid($uid);
   if(!empty($solutions)) {
     foreach ($solutions as $solution) {
-      $grants[$realm][] = $solution->nid;
+      $grants[$realm_solution][] = $solution->nid;
     }
   }
 
   //DOMAINS
-  $grants = array();
-  $domains = _section_content_get_domains();
 
-  $realm = 'onlinekurslabor_domain_content';
+  $domains = _section_content_get_domains();
+  $realm_domain_content = 'onlinekurslabor_domain_content';
   foreach ($domains as $domain) {
     //give view access for all domain group members
     if(og_is_member('node', $domain->nid, 'user', $account)) {
-      $grants[$realm][] = $domain->nid;
+      $grants[$realm_domain_content][] = $domain->nid;
     }else if (array_intersect($account->roles, array(NM_ROLE_DOZENT, NM_ROLE_TUTOR))) {
       //access for authors
-      $grants[$realm][] = $domain->nid;
+      $grants[$realm_domain_content][] = $domain->nid;
     }
   }
 
-
-
-  //get courses the user is in
+    //get courses the user is in
   foreach ($courses as $course) {
     $course = node_load($course->nid);
     if (og_is_member('node', $course->nid, 'user', $account)) {
       //access complete domain text
       //set domain field target id
       if(!empty($course->field_domain_ref[LANGUAGE_NONE][0]['target_id'])){
-        $grants[$realm][] = $course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
+        $grants[$realm_domain_content][] = $course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
       }
     }
 
     //access demotext
     //set demo domain field target id
     if(!empty($course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id'])){
-      $grants[$realm][] = $course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id'];
+      $grants[$realm_domain_content][] = $course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id'];
     }
   }
 
@@ -183,14 +184,14 @@ function onlinekurslabor_access_node_access_records($node) {
 
   //todo solution
   if ($node->type == NM_COURSE_GENERIC_TASK_SOLUTION) {
-      $grants[] = array(
-        'realm' => 'onlinekurslabor_course_solution',
-        'gid' => $node->nid,
-        'grant_view' => 1,
-        'grant_update' => 0,
-        'grant_delete' => 0,
-        'priority' => 1,
-      );
+    $grants[] = array(
+      'realm' => 'onlinekurslabor_course_solution',
+      'gid' => $node->nid,
+      'grant_view' => 1,
+      'grant_update' => 0,
+      'grant_delete' => 0,
+      'priority' => 1,
+    );
   }
 
   /*
