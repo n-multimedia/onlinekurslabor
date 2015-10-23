@@ -8,7 +8,7 @@ function _section_domain_active($group) {
   //$node = menu_get_object();
   //_custom_general_get_group($group);
   //
-  
+
   $section_content = _section_domain_author_section_active();
 
   if ($section_content) {
@@ -23,7 +23,7 @@ function _section_course_active($group) {
   //$node = menu_get_object();
   //_custom_general_get_group($group);
   //
-  
+
   $section_content = _section_course_instructor_section_active();
 
   if ($section_content) {
@@ -35,8 +35,8 @@ function _section_course_active($group) {
 
 /**
  * Determines if user is viewing a content section which belongs to the backend
- * 
- * @return boolean 
+ *
+ * @return boolean
  */
 function _section_domain_author_section_active() {
   $book_active = (arg(0) == 'admin' && arg(1) == 'content' && arg(2) == 'book' );
@@ -59,8 +59,8 @@ function _section_domain_author_section_active() {
 
 /**
  * Determines if user is viewing a course section which belongs to the instructor's backend
- * 
- * @return boolean 
+ *
+ * @return boolean
  */
 function _section_course_instructor_section_active() {
   /*
@@ -197,7 +197,7 @@ function _custom_general_get_node_type($nid) {
 /**
  * todo - choose course forum first
  * get unread num of posts in a forum
- * 
+ *
  * @staticvar null $result_cache
  * @param $uid user id
  * @param $uid term id
@@ -431,7 +431,7 @@ function custom_general_get_all_task_solutions_by_uid($uid) {
 /**
  * get user's solution of a tasks
  * dynamicly selection of user, depending on query arguments
- * 
+ *
  * @param type $tid
  * @param type $uid
  */
@@ -586,7 +586,7 @@ function custom_general_get_users_in_group_by_role($gid, $roles) {
       ->join('og_membership', 'ogm', "ogm.gid = :gid AND u.uid = ogm.etid AND ogm.entity_type = 'user'", array(':gid' => $gid));
   $query->join('og_users_roles', 'ogur', "ogm.etid = ogur.uid");
   $query->innerJoin('og_role', 'ogr', "ogur.rid = ogr.rid");
-  
+
   $query->condition('ogr.name', $roles, 'IN');
 
   $result = $query->execute();
@@ -679,7 +679,7 @@ function _section_course_get_num_coursegroups($course) {
 
 /**
  * theme breadcrumb array
- * 
+ *
  * @param type $breadcrumb
  * @return type
  */
@@ -701,7 +701,7 @@ function custom_general_render_breadcrumb($breadcrumb) {
 }
 
 /**
- * access check by role 
+ * access check by role
  * @return boolean
  */
 function custom_general_user_is_okl_admin($roles = array()) {
@@ -713,4 +713,18 @@ function custom_general_user_is_okl_admin($roles = array()) {
     }
   }
   return FALSE;
+}
+
+function _section_content_get_domains() {
+
+  $query = db_select('node', 'n');
+
+  $query->condition('n.nid', 0, '<>')
+    //->condition('n.status', 1, '=')
+    ->condition('n.type', NM_CONTENT_DOMAIN)
+    ->fields('n', array('nid', 'title', 'type'));
+
+  $result = $query->execute();
+
+  return $result->fetchAll();
 }

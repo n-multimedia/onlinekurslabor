@@ -100,29 +100,32 @@ function onlinekurslabor_access_node_grants($account, $op) {
     //give view access for all domain group members
     if(og_is_member('node', $domain->nid, 'user', $account)) {
       $grants[$realm][] = $domain->nid;
-    }
-
-    //access for authors
-    if (in_array($value, array(NM_ROLE_AUTOR, NM_ROLE_DOZENT, NM_ROLE_TUTOR))) {
+    }else if (array_intersect($account->roles, array(NM_ROLE_DOZENT, NM_ROLE_TUTOR))) {
+      //access for authors
       $grants[$realm][] = $domain->nid;
-    }else {
-      //get courses the student is in
-      foreach ($courses as $course) {
-        if (og_is_member('node', $course->nid, 'user', $account)) {
-          //access complete domain text
-          //set domain field target id
-          if(!empty($course->field_domain_ref[LANGUAGE_NONE][0]['target_id'])){
-            $grants[$realm][] = $course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
-          }
-        }
-        //access demotext
-        //set demo domain field target id
-        if(!empty($course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id'])){
-          $grants[$realm][] = $course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
-        }
-      }
     }
   }
+
+
+
+  //get courses the user is in
+  foreach ($courses as $course) {
+    $course = node_load($course->nid);
+    if (og_is_member('node', $course->nid, 'user', $account)) {
+      //access complete domain text
+      //set domain field target id
+      if(!empty($course->field_domain_ref[LANGUAGE_NONE][0]['target_id'])){
+        $grants[$realm][] = $course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
+      }
+    }
+
+    //access demotext
+    //set demo domain field target id
+    if(!empty($course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id'])){
+      $grants[$realm][] = $course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id'];
+    }
+  }
+
 
 
   return !empty($grants) ? $grants : array();
@@ -206,7 +209,6 @@ function onlinekurslabor_access_node_access_records($node) {
   }
 
   if (in_array($node->type, array(NM_CONTENT_CHAPTER))) {
-
     //should never be empty
     if (!empty($node->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
       $grants[] = array(
