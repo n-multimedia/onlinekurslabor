@@ -146,7 +146,7 @@ $vars = array();
 $vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/3_partner_oT.png" class="span12" />\';
 $vars[\'description\'] = "für Partner vor Ort";
 $vars[\'middle\'] = "Gewinnen Sie Studierende für Ihre gemeinwohlorientierten Projekte, um von deren Ideen und fachlichem Know-How zu profitieren!";
-$vars[\'bottom\'] = \'<a href="#">Projektvorschlag einreichen</a>\';
+$vars[\'bottom\'] = \'<a href="projects/partners">Projektvorschlag einreichen</a>\';
 
 return theme(\'nm_fancy_box\', $vars);
 
