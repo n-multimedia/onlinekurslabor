@@ -26,6 +26,7 @@ function h5p_annotationlist_init() {
 
   drupal_add_css(drupal_get_path('module', 'h5p_annotationlist') . '/assets/css/main.css');
   drupal_add_css(drupal_get_path('module', 'h5p_annotationlist') . '/assets/css/font-awesome.min.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+ 
 }
 
 /**
