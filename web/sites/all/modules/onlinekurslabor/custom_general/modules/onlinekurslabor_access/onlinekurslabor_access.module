@@ -53,7 +53,7 @@ function onlinekurslabor_access_node_grants($account, $op) {
 
   $grants = array();
   $courses = _section_course_get_courses();
-  
+
   $realm = 'onlinekurslabor_course_content';
   foreach ($courses as $course) {
     //give view access for all course groups in course
