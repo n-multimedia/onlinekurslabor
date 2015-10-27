@@ -11,6 +11,9 @@ define('NM_STREAM_PUBLIC', 4);
 //Projects Blog
 define('NM_STREAM_PROJECT', 5);
 
+define('NM_STREAM_ALLOWED_HTML_TAGS', serialize(array('a', 'em', 'b','u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
+    'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot')));
+
 /**
  * Implements hook_block_info().
  */
@@ -482,9 +485,7 @@ function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
   }
 
   //update end
-  $allowed_tags = array('a', 'em', 'u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
-    'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot');
-  $body = isset($_REQUEST['body']) ? filter_xss($_REQUEST['body'], $allowed_tags) : '';
+  $body = _nm_stream_filter_xss($_REQUEST['body']) ;
 
   $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
   $iframe = isset($_REQUEST['iframe']) ? TRUE : FALSE;
@@ -603,10 +604,7 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
   }
 
   //consider adapting for in add callback too!
-  $allowed_tags = array('a', 'em', 'u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
-    'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot');
-  $body = isset($_REQUEST['body']) ? filter_xss($_REQUEST['body'], $allowed_tags) : '';
-
+  $body = _nm_stream_filter_xss($_REQUEST['body']) ;
   $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
   $iframe = isset($_REQUEST['iframe']) ? TRUE : FALSE;
 
@@ -793,12 +791,8 @@ function nm_stream_nm_stream_comment_add_callback($node) {
 
 
   //consider adapting for in edit callback too!
-  $allowed_tags = array('a', 'em', 'u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
-    'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot');
-  $body = isset($_REQUEST['body']) ? filter_xss($_REQUEST['body'], $allowed_tags) : '';
-
-  //$body = isset($_REQUEST['body']) ? check_plain($_REQUEST['body']) : '';
-
+  $body = _nm_stream_filter_xss($_REQUEST['body']) ;
+  
   //error handling
   if (!($node) || empty($body)) {
     //return error
@@ -869,10 +863,8 @@ function nm_stream_nm_stream_comment_edit_callback($comment) {
 
   $response = array();
 
-  $allowed_tags = array('a', 'em', 'u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
-    'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot');
-  $body = isset($_REQUEST['body']) ? filter_xss($_REQUEST['body'], $allowed_tags) : '';
-
+  $body = _nm_stream_filter_xss($_REQUEST['body']) ;
+  
   if (isset($_REQUEST['body'])) {
 
     if (empty($body)) {
@@ -1554,6 +1546,15 @@ function _nm_stream_add_js_and_css() {
     //upload
     drupal_add_css(drupal_get_path('module', 'nm_stream') . "/js/jQuery-File-Upload-9.5.7/css/jquery.fileupload.css");
   }
+}
+
+function _nm_stream_filter_xss($text)
+{   /*einen mit <b>bold</b> <u>underline</u> und <script>alert(123);</script>*/
+   $NM_STREAM_ALLOWED_HTML_TAGS = unserialize(NM_STREAM_ALLOWED_HTML_TAGS);
+   if($text)
+       return filter_xss($text, $NM_STREAM_ALLOWED_HTML_TAGS);
+   else
+       return  '';
 }
 
 /*
