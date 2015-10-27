@@ -169,7 +169,7 @@ Um das Template zu bearbeiten, bitte folgendermaßen vorgehn:
                                                 <br /><em>Sie erhalten diese Mail, da Sie im Onlinekurslabor registriert sind.</em>
                                                 <br /></td>
                                         </tr><tr><td valign="top" class="footerContent" style="padding-top: 0;padding-bottom: 40px;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0;mso-table-rspace: 0;color: #808080;font-family: Helvetica;font-size: 10px;line-height: 150%;padding-right: 20px;padding-left: 20px;text-align: left" mc:edit="footer_content01">
-                                            	 Diese E-Mail wurde automatisch erstellt. Sie können darauf nicht antworten.
+                                                Diese E-Mail wurde automatisch erstellt. Sie können darauf nicht antworten. Für Fragen und Anregungen wenden Sie sich an <a href="mailto:onlinekurslabor@medienlabor-uni-augsburg.de">onlinekurslabor@medienlabor-uni-augsburg.de</a>
                                             </td>
                                         </tr></table><!-- // END FOOTER --></td>
                             </tr></table><!-- // END TEMPLATE --></td>
