@@ -20,7 +20,7 @@ class ViewsBulkOperationsAction extends ViewsBulkOperationsBaseOperation {
    */
   public function getAccessMask() {
     // Assume edit by default.
-    if (empty($this->operationInfo['behavior'])) {
+    if (!isset($this->operationInfo['behavior'])) {
       $this->operationInfo['behavior'] = array('changes_property');
     }
 

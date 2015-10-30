@@ -63,6 +63,10 @@ DirectoryIndex index.php index.html index.htm
   RewriteCond %{HTTPS} on
   RewriteRule ^ - [E=protossl:s]
 
+ RewriteEngine On
+ RewriteCond %{SERVER_PORT} 80
+ RewriteRule ^(.*)$ https://onlinekurslabor.phil.uni-augsburg.de/$1 [R,L]
+
   # Make sure Authorization HTTP header is available to PHP
   # even when running as CGI or FastCGI.
   RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -140,4 +144,5 @@ DirectoryIndex index.php index.html index.htm
       Header append Vary Accept-Encoding
     </FilesMatch>
   </IfModule>
+  
 </IfModule>
