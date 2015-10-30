@@ -40,7 +40,7 @@ function nm_login_vhb_features_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'name' => 'name',
-    'matrikelnummer' => 'matrikelnummer',
+    'matrikelnummer' => 'matrikelnummer_varchar',
     'created' => 'created',
     'archivated' => 'archivated',
   );
@@ -161,7 +161,7 @@ function nm_login_vhb_features_views_default_views() {
   /* Feld: NM Login VHB: Matrikelnummer field */
   $handler->display->display_options['fields']['matrikelnummer']['id'] = 'matrikelnummer';
   $handler->display->display_options['fields']['matrikelnummer']['table'] = 'nm_login_vhb';
-  $handler->display->display_options['fields']['matrikelnummer']['field'] = 'matrikelnummer';
+  $handler->display->display_options['fields']['matrikelnummer']['field'] = 'matrikelnummer_varchar';
   $handler->display->display_options['fields']['matrikelnummer']['label'] = 'Matrikelnummer';
   /* Feld: NM Login VHB: Timestamp field */
   $handler->display->display_options['fields']['created']['id'] = 'created';
