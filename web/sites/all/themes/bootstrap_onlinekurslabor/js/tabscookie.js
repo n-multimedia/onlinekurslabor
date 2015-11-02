@@ -13,10 +13,9 @@
             if ($(tabsid).length > 0) {
                 $(tabsid).tabs({
                     activate:function(event,ui){
-                        //expire tab cookie in 30 minutes
                         var edate = new Date();
-                        var minutes = 30;
-                        edate.setTime(edate.getTime() + (minutes * 60 * 1000));
+ 												//expire tab cookie in 30 minutes
+                        edate.setTime(edate.getTime() + (30 * 60 * 1000));
                         var tabname = jQuery(ui.newTab.context).html();
                         if(typeof tabname === null)
                        	 throw new Error('Selected tab could not be found in /sites/all/themes/bootstrap_onlinekurslabor/js/tabcookie')
