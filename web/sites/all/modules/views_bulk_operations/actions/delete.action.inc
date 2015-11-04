@@ -19,7 +19,6 @@ function views_bulk_operations_delete_action_info() {
       'label' => t('Delete revision'),
       'configurable' => FALSE,
       'behavior' => array('deletes_property'),
-      'triggers' => array('any'),
     ),
   );
 }
