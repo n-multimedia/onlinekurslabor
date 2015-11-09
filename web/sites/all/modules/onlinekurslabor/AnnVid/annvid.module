@@ -1,0 +1,179 @@
+<?php
+
+/**
+ * @file
+ * ein modul, das pdfs rendern kann. 
+ */
+/**
+ * @ingroup image
+ * @{
+ */
+
+/**
+ * Implements hook_init().
+ */
+function AnnVid_init() {
+#return;
+  $nid = (arg(0) == 'node' && is_numeric(arg(1))) ? arg(1) : NULL;
+/*
+  drupal_add_js(array('html5pdf' => array('json_video_id' => 'cid-' . $nid)), 'setting');
+  #drupal_add_js(drupal_get_path('module', 'html5pdf') . '/assets/javascript/pdf.js', array('cache' => FALSE));  
+  
+  //add core-js
+  drupal_add_js(drupal_get_path('module', 'html5pdf') . '/assets/javascript/html5pdf.js');
+  drupal_add_js(drupal_get_path('module', 'html5pdf') . '/assets/javascript/jquery.scrollview.js');
+  
+
+  //add plugin-js
+  drupal_add_js(base_path().drupal_get_path('module', 'html5pdf') . '/assets/javascript/drupal-html5pdf.js');
+  //add plugin-js for controlss
+  
+  */
+  drupal_add_css(drupal_get_path('module', 'AnnVid') . '/assets/css/annvid.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
+}
+  
+function AnnVid_hook_page_alter($page) {
+  if (true) {
+    foreach (element_children($page) as $region) {
+      $page[$region]['#access'] = ($region == 'content');    
+    }
+  }
+}
+/**
+ * Implements hook_theme()
+ */
+function AnnVid_theme() {
+  return array(
+    'popup' => array(
+      'arguments' => array('content' => null), //Array of variables in page-ajax.tpl.php
+      'template' => 'player',
+      'path' => drupal_get_path('module', 'AnnVid') .'/theme/',
+    ),
+  );
+}
+
+
+function _AnnVid_getPlayer($h5p_node_id, $pdf_file_url)
+{
+    $pdfreader =  _html5pdf_getPDFReader($h5p_node_id,$pdf_file_url);
+   #  exit ;
+   #  #[h5p]2276:cat[/h5p]
+   #  //dieser befehl führt immer dazu, dass man auf den node umgeleitet wird. kA warum.
+    //onlinekurslabor_redirect.module zeile 29 + 135    case NM_INTERACTIVE_CONTENT: raus!
+       $video =   _h5p_integration_h5p_replacements(array(0, 2277));
+       $js_path = base_path().drupal_get_path('module', 'AnnVid') . '/assets/javascript/videoconnector.js';
+         $js2_path = base_path().drupal_get_path('module', 'AnnVid') . '/assets/javascript/streamconnector.js';
+          $image_path = base_path().drupal_get_path('module', 'AnnVid') . '/assets/images/ajax-loader.gif';
+     $html_code  =  <<<EOF
+             <div class=annvid_container>
+             <div class="annvid_loading_div"><center>loading ... <br><img src=$image_path ></center></div>
+             <table width="100%">
+                    <tr>
+                        <td valign="top">
+                        <script src="$js_path"></script>
+             <script src="$js2_path"></script>
+                        $video
+                        <br>
+                            <div class="gradient_background" class="annvid_stream">
+                                <div class="nm_stream">
+                                    <div class="nm-stream-main-body">
+                                    Marie finden wir um 4:30 , 15:30 und 1:30:14
+                                    </div>
+                                </div>
+                           <div class="nm_stream">
+                                    <div class="nm-stream-main-body">
+                                    4:20 behandelt das Beispiel auf Seite 8 
+                                    </div>
+                                </div>
+             
+                                <div class="nm_stream">
+                                    <div class="nm-stream-main-body">
+                                    5:20  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
+
+                                    </div>
+                                </div>
+             
+                                <div class="nm_stream">
+                                    <div class="nm-stream-main-body">
+                                    6:20  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
+
+                                    </div>
+                                </div>
+             
+                                <div class="nm_stream">
+                                    <div class="nm-stream-main-body">
+                                    7:20  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
+
+                                    </div>
+                                </div>
+             
+                             <div class="nm_stream">
+                                    <div class="nm-stream-main-body">
+                                  Lorem ipsum dolor sit amet, consetetur sadipscing    30:30 elitr, sed diam 
+                                     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
+                                    </div>
+                                </div>
+                            <div class="nm_stream">
+                                    <div class="nm-stream-main-body">
+                                   Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam    
+                                     Lorem ipsum dolor 30:35 sit amet, consetetur sadipscing elitr, sed diam  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
+                                    </div>
+                                </div>
+             
+                                 <div class="nm_stream">
+                                    <div class="nm-stream-main-body">
+                                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam     
+                                     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam  Lorem ipsum dolor 30:40 sit amet, consetetur sadipscing elitr, sed diam 
+                                    </div>
+                                </div>
+                                 <div class="nm_stream">
+                                    <div class="nm-stream-main-body">
+                                     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam  
+                                     Lorem ipsum dolor sit amet, consetetur sadipscing elitr,  30:45 sed diam  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
+                                    </div>
+                                </div>
+                                <div class="nm_stream">
+                                    <div class="nm-stream-main-body">
+                                     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam  
+                                     Lorem ipsum dolor sit 30:50 amet, consetetur sadipscing elitr, sed diam  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
+                                    </div>
+                                </div>
+             
+                                <div class="nm_stream">
+                                    <div class="nm-stream-main-body">
+                                    8:20  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
+  
+                                    </div>
+                                </div>
+             
+                             <div class="nm_stream">
+                                    <div class="nm-stream-main-body">
+                                    see page 8 
+                                    </div>
+                                </div>
+             
+                  <div class="nm_stream">
+                                    <div class="nm-stream-main-body">
+                                    find examples on p9 and pp9-10
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td valign="top">
+                        <div class="annvid_pdf">
+                        $pdfreader
+                        </div>
+                        </td>
+                    </tr>
+             </table>
+             </div>
+             <style>
+             /*annotationlist verstecken, stört per default... */
+                .h5p_annotationlist 
+                {
+                    display:none !important;
+                }
+             </style>
+EOF;
+    return  $html_code;
+}
