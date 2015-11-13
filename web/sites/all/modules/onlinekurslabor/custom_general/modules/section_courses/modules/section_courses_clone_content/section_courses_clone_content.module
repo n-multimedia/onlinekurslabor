@@ -64,7 +64,6 @@ function section_courses_clone_content(&$entity, $context = array()) {
   watchdog('section_courses_clone_content', 'Cloning Content %nid to %cid', array('%nid' => $entity->nid, '%cid'=>implode(', ',  $context['target_courses']) ), WATCHDOG_INFO);
    
 $target_courses = $context['target_courses'];
- dpm($entity);
 $entity_type = $entity->type;
 $entity_nid  = $entity->nid; 
 if(in_array($entity_type, array( 'courses_news', 'courses_docs','courses_generic_task')))
