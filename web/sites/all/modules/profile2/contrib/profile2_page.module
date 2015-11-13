@@ -27,7 +27,7 @@ function profile2_page_menu() {
         'page callback' => 'profile2_page_own',
         'page arguments' => array($path),
         'access callback' => 'user_access',
-        'access arguments' => array("edit own $type_name profile"),
+        'access arguments' => array("view own $type_name profile"),
         'file' => 'profile2_page.inc',
         'menu_name' => 'user-menu',
       );
@@ -155,7 +155,12 @@ function profile2_page_forms($form_id, $args) {
       $forms['profile2_edit_' . $bundle . '_form']['callback'] = 'profile2_form';
       $forms['profile2_edit_' . $bundle . '_form']['wrapper callback'] = 'entity_ui_form_defaults';
     }
-    return $forms;
+    if (!empty($forms)) {
+      // Include the file with profile2_form() callback. This needed when the
+      // form is loaded from the outside, for example, from the ajax callback.
+      form_load_include($form_state, 'inc', 'profile2_page');
+      return $forms;
+    }
   }
 }
 
@@ -187,6 +192,12 @@ function profile2_page_entity_info_alter(&$entity_info) {
   );
   $entity_info['profile2']['uri callback'] = 'profile2_page_uri_callback';
   $entity_info['profile2']['form callback'] = 'profile2_page_form_callback';
+
+  // Integrate with Metatag module to enable metatags support for separate
+  // profile pages.
+  if (module_exists('metatag')) {
+    $entity_info['profile2']['metatags'] = TRUE;
+  }
 }
 
 /**
@@ -257,7 +268,7 @@ function profile2_page_profile2_type_insert(ProfileType $type) {
 function profile2_page_profile2_type_update(ProfileType $type) {
   // Rebuild the menu if use_page or the type name has been changed.
   // @see profile2_page_profile2_type_insert()
-  if (empty($type->data['use_page']) != empty($type->original->data['use_page']) || ($type->data['use_page'] &&  $type->type != $type->original->type)) {
+  if (empty($type->data['use_page']) != empty($type->original->data['use_page']) || (!empty($type->data['use_page']) &&  $type->type != $type->original->type)) {
     variable_set('menu_rebuild_needed', TRUE);
   }
 }
