@@ -220,8 +220,8 @@ if (isset($profile2->field_matrikelnummer_varchar) && !empty($profile2->field_ma
 
     //Populate profile fields
     $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
-    $wrapper->field_first_name->set('');
-    $wrapper->field_last_name->set('');
+    //$wrapper->field_first_name->set('');
+    //$wrapper->field_last_name->set('');
     $wrapper->field_birthday->set(NULL);
     //not knowing which SEX options possible
     //weiblich = female so everything !female will be male
@@ -229,7 +229,7 @@ if (isset($profile2->field_matrikelnummer_varchar) && !empty($profile2->field_ma
 
     $wrapper->save();
 
-    realname_update($account);
+    //realname_update($account);
 
     drupal_set_message('Student ' . $edit['name'] . ' wurde archiviert.');
 
@@ -245,7 +245,6 @@ if (isset($profile2->field_matrikelnummer_varchar) && !empty($profile2->field_ma
       drupal_set_message($user->uid . " has been archivated");
     }
 
-    drupal_set_message("Der Benutzer " . $user->name . ' wurde archiviert.');
     return $account;
   }
   else {
