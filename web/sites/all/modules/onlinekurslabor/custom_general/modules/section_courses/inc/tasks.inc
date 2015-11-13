@@ -47,7 +47,9 @@ function _course_tasks_generic_tips_view() {
     $solution = current($solutions);
     $solution_node = node_load($solution->nid);
 
-    $output .=_course_tasks_generic_solution_workflow_form($solution_node);
+    if (array_intersect(array(NM_ROLE_ADMIN, NM_ROLE_DOZENT, NM_ROLE_TUTOR), $user->roles)) {
+      $output .= _course_tasks_generic_solution_workflow_form($solution_node);
+    }
   }
   //prepend workflow form - end
 
