@@ -160,6 +160,12 @@ function og_forum_form_forum_node_form_alter(&$form, &$form_state) {
  */
 function og_forum_node_access($node, $op, $account) {
 
+  //13.11.2015 - 11:22 - SN
+  //Realm based Logic implemented. Don't need to handle this anymore
+  //realm onlinekurslabor_course_content
+  return NODE_ACCESS_IGNORE;
+
+
   if (!is_object($node) || $node->type != 'forum') {
     return NODE_ACCESS_IGNORE;
   }
