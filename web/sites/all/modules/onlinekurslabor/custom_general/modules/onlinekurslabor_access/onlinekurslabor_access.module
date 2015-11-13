@@ -54,7 +54,7 @@ function onlinekurslabor_access_node_grants($account, $op) {
   $grants = array();
 
   //COURSES
-  $courses = _section_course_get_courses();
+  $courses = _section_course_get_courses_by_uid($account->uid);
 
   $realm_content = 'onlinekurslabor_course_content';
   $realm_solution = 'onlinekurslabor_course_solution';
@@ -143,11 +143,24 @@ function onlinekurslabor_access_node_access_records($node) {
    */
 
 
-
   /*
    * COURSES AND COURSE CONTENT
    */
 
+  //course
+  //should never be empty
+  if($node->type == NM_COURSE) {
+    $grants[] = array(
+      'realm' => 'onlinekurslabor_course_content',
+      'gid' => $node->nid,
+      'grant_view' => 1,
+      'grant_update' => 0,
+      'grant_delete' => 0,
+      'priority' => 1,
+    );
+  }
+
+  //course content
   if (in_array($node->type, array(NM_COURSE_GROUP, NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION, NM_COURSE_NEWS, NM_COURSE_DOCS, NM_COURSE_FORUMTOPIC))) {
 
     //should never be empty
