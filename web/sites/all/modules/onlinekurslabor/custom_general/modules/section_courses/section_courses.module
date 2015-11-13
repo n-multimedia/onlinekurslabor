@@ -2385,3 +2385,43 @@ function _section_courses_course_group_get_proposal($course_group) {
 
   return $nid;
 }
+
+ /**
+  * copy an existing content to another course
+ * given: content-id , course-id 
+ * applicable for: news, aufgaben, kursdokument. für weitere typen anpassen.
+  *
+  * @param string $content_id   ID des Contents, der kopiert werden soll
+  * @param string $new_course_id ID des Zielkurses
+  */
+function _section_courses_clone_content($content_id, $new_course_id)
+{         
+    
+        $content_object = node_load($content_id);
+        $clone_object = _section_courses_clone_node_prepare($content_object);
+        if(isset($clone_object->field_course_docs ))
+        {
+            /*kopiere attachments auf dateieebnee*/
+            $docs = $clone_object->field_course_docs[LANGUAGE_NONE];
+            foreach($docs as $counter => $entry)
+            {
+               $fid = $entry['fid'];
+               $file = file_load($fid);
+               //clone file
+               $new_file = file_copy($file, $file->uri ,FILE_EXISTS_RENAME);
+               //on success set new id
+               if($new_file)
+                $clone_object->field_course_docs[LANGUAGE_NONE][$counter]['fid'] = $new_file->fid;
+    
+            }
+        }
+        if (isset($content_object->og_group_ref)) {
+          /* unnecessary
+          $copy_ogr = $cn->og_group_ref;
+          $clone_cn->og_group_ref = $copy_ogr;*/
+          //set new group audience
+          $clone_object->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $new_course_id;
+          node_save($clone_object);
+         # dpm('node',$clone_cn);
+        }
+}

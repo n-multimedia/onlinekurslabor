@@ -1,0 +1,96 @@
+<?php
+
+ 
+/**
+ * Implementation of hook_action_info().
+ */
+function section_courses_clone_content_action_info() {
+  $actions = array();
+  $actions['section_courses_clone_content'] = array(
+    'label' => t('Copy to course'),
+    'type' => 'node',
+    'configurable' => TRUE,
+    'triggers' => array('any'),
+  );
+
+  return $actions;
+}
+
+/**
+ * Return a form definition
+ *
+ * @param $context
+ *   Default values (if we are editing an existing action instance).
+ *
+ * @return
+ *   Form definition.
+ *
+ */
+function section_courses_clone_content_form($context) {
+
+  //dpm($context);
+
+    $course_ids = array(2154);
+    foreach ($course_ids as $course_id)
+    { $node = node_load($course_id);
+        $courses[$course_id] = $node->title .' (todo: '.$node->field_semester[LANGUAGE_NONE][0]['tid'].')';
+    }
+    dpm($courses);
+  $target_courses = $courses;
+ 
+  $form['target_courses'] = array(
+    '#title' => t('Items'),
+    '#type' => 'checkboxes',
+    '#options' => $target_courses,
+    '#description' => t('Select to which course you would like to copy.'),
+  );
+ 
+
+  return $form;
+}
+
+function section_courses_clone_content_submit($form_id, $form_state) {
+    
+  $result = array();
+  $result['target_courses'] = $form_state['values']['target_courses']; 
+  return $result;
+}
+
+/**
+ * after confirmation this will be done
+ */
+function section_courses_clone_content(&$entity, $context = array()) {
+
+  watchdog('section_courses_clone_content', 'Cloning Content %nid to %cid', array('%nid' => $entity->nid, '%cid'=>implode(', ',  $context['target_courses']) ), WATCHDOG_INFO);
+   
+$target_courses = $context['target_courses'];
+$entity_type = $entity->type;
+$entity_nid  = $entity->nid; 
+if(in_array($entity_type, array( 'courses_news', 'courses_docs','courses_generic_task')))
+{
+    foreach($target_courses as $new_course_id)
+    {    
+        _section_courses_clone_content($entity_nid, $new_course_id);
+    }
+     
+} 
+}
+
+/**
+ * Implements hook_views_bulk_operations_form_alter().
+ */
+function section_courses_clone_content_views_bulk_operations_form_alter(&$form, &$form_state, $vbo) {
+
+
+// exit("not iimmplemented yet");
+ 
+  if ($form['#form_id'] == 'views_form_nm_courses_clone_default') {
+
+    $vbo->view->override_url = $_GET['q'];
+    // We are changing the override_url too late, the form action was already
+    // set by Views to the previous URL, so it needs to be overriden as well.
+    $query = drupal_get_query_parameters($_GET, array('q'));
+    $form['#action'] = url($_GET['q'], array('query' => $query));
+  }
+}
+ 
