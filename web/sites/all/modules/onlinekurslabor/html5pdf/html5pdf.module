@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * @file
+ * ein modul, das pdfs rendern kann. 
+ */
+/**
+ * @ingroup image
+ * @{
+ */
+
+/**
+ * Implements hook_init().
+ */
+function html5pdf_init() {
+#return;
+  $nid = (arg(0) == 'node' && is_numeric(arg(1))) ? arg(1) : NULL;
+
+  drupal_add_js(array('html5pdf' => array('json_video_id' => 'cid-' . $nid)), 'setting');
+  #drupal_add_js(drupal_get_path('module', 'html5pdf') . '/assets/javascript/pdf.js', array('cache' => FALSE));  
+  
+  //add core-js
+  drupal_add_js(drupal_get_path('module', 'html5pdf') . '/assets/javascript/html5pdf.js');
+  drupal_add_js(drupal_get_path('module', 'html5pdf') . '/assets/javascript/jquery.scrollview.js');
+  
+
+  //add plugin-js
+  drupal_add_js(base_path().drupal_get_path('module', 'html5pdf') . '/assets/javascript/drupal-html5pdf.js');
+  //add plugin-js for controlss
+  drupal_add_css(drupal_get_path('module', 'html5pdf') . '/assets/css/main.css');
+  
+}
+
+/*noch zu klären: wie geht man mit width um? in php festzulegen ist tendentiell dumm. Evtl $.live*/
+function _html5pdf_getPDFReader($identifier,$pdf_url)
+{ 
+   #  $nid = (arg(0) == 'node' && is_numeric(arg(1))) ? arg(1) : NULL;
+   $html_code =  '<script src="'.base_path().drupal_get_path('module', 'html5pdf') . '/assets/javascript/pdf.js'.'"></script>';
+   //generate html-block including IDs and some pdf-controls
+   $html_code .=  <<<EOF
+                       <div id="{$identifier}-html5pdf" style="width:500px;">
+                          <div class=html5pdf_control id="{$identifier}_control">
+                           <i id="{$identifier}_prev" class="html5pdfsprite html5pdfsprite-last"></i> 
+                            <span><span id="{$identifier}_page_num">-</span> / <span id="{$identifier}_page_count">-</span></span>
+                             <i id="{$identifier}_next" class="html5pdfsprite html5pdfsprite-next"></i>
+                             <i id="{$identifier}_zoomin" class="html5pdfsprite html5pdfsprite-zoomin"></i>
+                             <i id="{$identifier}_zoomout" class="html5pdfsprite html5pdfsprite-zoomout"></i>
+                            </div><div style="clear:both;"></div>
+                           <div  id="{$identifier}_pdfscrollcontainer" class="html5pdf_pdfscrollcontainer"><div><canvas id="{$identifier}_pdfcanvas"  class="pdf_canvas"></canvas></div></div>
+                      </div>
+EOF;
+                             $worker_src = base_path().drupal_get_path('module', 'html5pdf') . '/assets/javascript/pdf.worker.js';
+    //generate a jscript-code to read the pdf
+      $html_code .=  <<<EOF
+                      <script type="text/javascript">
+                        /*autodetect doesnt work*/
+                        PDFJS.workerSrc='$worker_src';
+                        var identifierstring = '{$identifier}';
+                        var settings;
+                        Drupal.behaviors.html5pdf.createReader({
+                            pdffile: '$pdf_url'
+                          }, identifierstring);
+                                
+                         jQuery("#{$identifier}_pdfscrollcontainer").scrollview();
+ 
+       
+                      </script>
+EOF;
+    return $html_code;
+}
+
+/**
+ * @} End of "ingroup image".
+ */

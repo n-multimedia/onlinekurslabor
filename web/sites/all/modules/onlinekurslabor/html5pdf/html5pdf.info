@@ -1,0 +1,5 @@
+name = HTML5-PDF
+description = integrates a PDF-Player based on pdf.js
+core = 7.x
+
+

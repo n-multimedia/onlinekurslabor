@@ -163,6 +163,40 @@ function _courses_tasks_solution_workflow_label($sid = 0) {
   return $markup;
 }
 
+/*
+liefert texte bzw icons um für aufgabe einreichungszeitraum festzulegen
+ * sowie für ggf angegebene solution eine bewertung */
+function _courses_tasks_get_task_period_label($task_id, $solution_id = 0) {
+    $node = node_load($task_id);
+    $starttime = $node->field_task_handling_period[LANGUAGE_NONE][0][value];
+    $endtime = $node->field_task_handling_period[LANGUAGE_NONE][0][value2];
+    $starttime_secs = strtotime($starttime);
+    $endtime_secs = strtotime($endtime);
+
+    if ($solution_id) {
+        $solution = node_load($solution_id);
+        $created = $solution->created;
+        $changed = $solution->changed;
+        $title = "title='Datum: " . date('d.m.Y H:i:s', $changed) . "'";
+
+        if ($changed < $starttime_secs)
+            $markup = '<span class="label label-important" ' . $title . '><strong>Zu früh eingereicht</strong></span>';
+        elseif ($changed > $endtime_secs)
+            $markup = '<span class="label label-important" ' . $title . '><strong>Zu spät eingereicht</strong></span>';
+        else
+            $markup = '<span class="label label-info" ' . $title . '><strong>Pünktlich eingereicht</strong></span>';
+        return $markup;
+    }
+    //keine solultion vorhanden
+    if ($starttime_secs > time())
+        $markup = '<span class="label label-important"><strong>Noch kein Bearbeitungszeitraum</strong></span>';
+    elseif (time() > $endtime_secs)
+        $markup = '<span class="label label-important"><strong>Einreichungsfrist verpasst</strong></span>';
+    else
+        $markup = '<span class="label label-info"><strong>Bearbeitungszeitraum aktiv</strong></span>';
+    return $markup;
+}
+
 /**
  * checks if a solution is editable
  * a solution is not editable any more when the node reaches a special workflow state
@@ -197,7 +231,7 @@ function _course_tasks_generic_description_view() {
     return;
 
   $task = node_load($task_nid);
-
+  
   if (empty($field_val))
     return;
 
@@ -209,10 +243,11 @@ function _course_tasks_generic_description_view() {
     $solution = current($solutions);
     $label = _courses_tasks_solution_workflow_label($solution->nid);
   }
-
+  //php-warning abfangen
+  $einreichungsfristlabel = _courses_tasks_get_task_period_label($task_nid, @$solution->nid);
   $output = "";
   //$output .= '<div class="alert alert-info">';
-  $output .= "<h1>" . $task->title . ' ' . $label . "</h1>";
+  $output .= "<h1>" . $task->title . ' ' . $label .' '. $einreichungsfristlabel."</h1>";
   //$output .= '</div>';
   $output .= '<div class="alert alert-info">';
   $output .= _course_tasks_generic_section_view($field_val, NM_COURSES_TASK_DESCRIPTION);

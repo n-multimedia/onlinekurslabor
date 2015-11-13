@@ -1,0 +1,8 @@
+name = AnnVid
+description = A plugin for creating annotable Videos
+core = 7.x
+
+
+dependencies[] = h5p
+dependencies[] = nm_stream
+dependencies[] = html5pdf
