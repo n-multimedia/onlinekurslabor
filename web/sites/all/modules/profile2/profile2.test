@@ -134,4 +134,30 @@ class Profile2CRUDTestCase extends DrupalWebTestCase {
     $this->assertText(check_plain($edit['profile_main[profile_fullname][und][0][value]']), 'Profile displayed.');
   }
 
+  /**
+   * Tests optional access parameters.
+   */
+  function testAccess() {
+    global $user;
+    $admin_user = $this->drupalCreateUser(array('administer profiles'));
+    $user2 = $this->drupalCreateUser();
+    // Create profiles for the admin user.
+    $profile = profile2_create(array('type' => 'test', 'uid' => $admin_user->uid));
+    profile2_save($profile);
+
+    // Make sure access is denied to the profile.
+    $this->drupalLogin($user2);
+    $this->drupalGet('user/' . $admin_user->uid . '/edit/main');
+    $this->assertText(t('Access denied'), 'Access has been denied.');
+
+    // Set the global user to ensure the defaults are respected.
+    $user = $user2;
+
+    // Ensure optional parameters check access for the current logged in user.
+    $this->assertFalse(profile2_access('edit'), 'No edit access for user 2');
+
+    // Ensure optional parameters check access for the admin user.
+    $this->assertTrue(profile2_access('edit', NULL, $admin_user), 'No edit access for user 1');
+  }
+
 }

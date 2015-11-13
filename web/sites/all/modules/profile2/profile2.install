@@ -144,6 +144,22 @@ function profile2_schema() {
 }
 
 /**
+ * Implements hook_uninstall()
+ */
+function profile2_uninstall() {
+  // Select all available profile2 bundles from the database directly, instead
+  // of entity_load() call. See https://drupal.org/node/1330598 for details.
+ $types = db_select('profile_type', 'p')
+    ->fields('p')
+    ->execute()
+    ->fetchAllAssoc('type');
+
+  foreach ($types as $name => $type) {
+    field_attach_delete_bundle('profile2', $name);
+  }
+}
+
+/**
  * Add in the exportable entity db columns as required by the entity API.
  */
 function profile2_update_7100() {
