@@ -4,7 +4,7 @@
 .drush/
 .gitconfig
 .ssh/
-
+.mysql_history
 
 drush-backups/
 log/
