@@ -476,6 +476,9 @@ function _section_courses_course_get_domain_id($course) {
 function _section_courses_get_forum_href($course, $forum_term_id = NULL) {
   if (!$forum_term_id) {
     $forum_term = _section_courses_get_forum_term($course);
+    if(empty($forum_term)){
+      return '';
+    }
     $forum_term_id = $forum_term->tid;
   }
   return "course/forum/" . $course->nid . '/' . $forum_term_id;

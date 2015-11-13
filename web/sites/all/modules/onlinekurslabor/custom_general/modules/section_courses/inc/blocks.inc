@@ -319,10 +319,10 @@ function _section_courses_instructors_tools_role_access() {
   $one_of_needed_roles = array_intersect($user->roles, array(NM_ROLE_ADMIN));
 
   $active_course = _section_courses_get_active_course();
-  //27.02.2014 - 10:51 - SN 
+  //27.02.2014 - 10:51 - SN
   //access to tools on panel overview pages
-  if (!$active_course) {
-    $one_of_needed_roles = $one_of_needed_roles || array_intersect($user->roles, array(NM_ROLE_DOZENT));
+  if ($active_course) {
+    $one_of_needed_roles = array_merge($one_of_needed_roles, array_intersect($user->roles, array(NM_ROLE_DOZENT)));
   }
 
   return !empty($one_of_needed_roles);
@@ -740,6 +740,10 @@ function _section_courses_navtext_to_link($course, $text) {
 
         $term = _section_courses_get_forum_term($course);
 
+        if(empty($term)){
+          drupal_set_message('Das Forumfeature ist in diesem Kurs aktiv aber es konnte kein passenden Forumterm gefunden werden.<br/>Bitte erstellen Sie den Term oder deaktivieren Sie das Kursfeature.', 'error');
+          break;
+        }
         $num_unread = _section_courses_advanced_forum_get_num_unread($user->uid, $term->tid);
 
         $path = $forum_link;

@@ -672,6 +672,28 @@ function _section_course_get_courses() {
   return $result->fetchAll();
 }
 
+/**
+ * get all courses a user is member of by uid
+ *
+ * @param $uid
+ * @return mixed
+ */
+function _section_course_get_courses_by_uid($uid) {
+//more efficient way
+  $query = db_select('og_membership', 'om')
+    ->fields('n', array('nid', 'title', 'type'))
+    ->condition('om.type', 'og_membership_type_default')
+    ->condition('om.entity_type', 'user')
+    ->condition('om.state',OG_STATE_ACTIVE)
+    ->condition('om.etid', $uid)
+    ->condition('n.type', NM_COURSE);
+  $query->leftJoin('node', 'n', 'n.nid = om.gid');
+  $results = $query->execute()->fetchAll();
+
+  return $results;
+
+}
+
 function _section_course_get_num_coursegroups($course) {
 
   return count(_section_course_get_coursegroups($course));
