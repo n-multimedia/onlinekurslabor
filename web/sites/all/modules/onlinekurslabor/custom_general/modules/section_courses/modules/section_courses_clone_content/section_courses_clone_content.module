@@ -32,10 +32,7 @@ function section_courses_clone_content_form($context) {
 
  /*load courses for user */
 $users_editable_courses = _section_course_get_courses_for_course_admin($user->uid, 'field_semester');
-   /* foreach ($course_ids as $course_id)
-    { $node = node_load($course_id);
-        $courses[$course_id] = $node->title .' (todo: '.$node->field_semester[LANGUAGE_NONE][0]['tid'].')';
-    }*/
+  
 foreach($users_editable_courses as $course)
 {
     //build simple array

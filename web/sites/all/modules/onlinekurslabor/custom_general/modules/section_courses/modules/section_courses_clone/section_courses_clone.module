@@ -120,7 +120,7 @@ function section_courses_clone_course(&$entity, $context = array()) {
       }
     }
   }
-
+  $clone_node->title .= ' (KOPIE)';
   //PROPERTIES
   $clone_node->status = $clone_properties['status'] ? 1 : 0;
 
@@ -131,6 +131,8 @@ function section_courses_clone_course(&$entity, $context = array()) {
    *  A F T E R   S A V I N G
    */
   //ITEMS
+  //initialize to array to prevent warnings
+  $course_news =  $course_groups = $aufgaben = $kursdokumente = array();
   //clone news
   if ($clone_items['news'])  
     $course_news = _section_course_get_news($entity); 
@@ -140,12 +142,15 @@ function section_courses_clone_course(&$entity, $context = array()) {
   if ($clone_items['aufgaben']) 
     $aufgaben = _section_course_get_tasks ($entity);   
   if ($clone_items['kursdokumente']) 
-   dpm("Not implemented for kursdokumente");# $kursdokumente = _section_course_course_docs_visible ($entity);    
+     $kursdokumente = _section_course_get_documents ($entity);    
   
-    $content_entities = array_merge($course_news, $course_groups,$aufgaben,$kursdokumente);
+   
+  
+    $content_entities = array_merge(array(),$course_news, $course_groups,$aufgaben,$kursdokumente);
+   
     if (!empty($content_entities)) {
       //clone course groups
-      foreach ($content_entity as $cg) {
+      foreach ($content_entities as $cg) {
            _section_courses_clone_content($cg->nid, $clone_node->nid);
         }
       }
