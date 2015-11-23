@@ -2398,7 +2398,9 @@ function _section_courses_clone_content($content_id, $new_course_id)
 {         
     
         $content_object = node_load($content_id);
+    
         $clone_object = _section_courses_clone_node_prepare($content_object);
+    
         if(isset($clone_object->field_course_docs ))
         {
             /*kopiere attachments auf dateieebnee*/

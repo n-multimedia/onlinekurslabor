@@ -2,6 +2,7 @@ name = Section Courses Clone Content
 description = provides clone function for content in courses
 package = custom
 dependencies[] = section_courses
+dependencies[] = section_courses_clone
 
 core = 7.x
 

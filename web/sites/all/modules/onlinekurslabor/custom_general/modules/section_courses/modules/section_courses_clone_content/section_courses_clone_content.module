@@ -27,37 +27,41 @@ function section_courses_clone_content_action_info() {
  *
  */
 function section_courses_clone_content_form($context) {
-
+    global $user;
   //dpm($context);
 
-    $course_ids = array(2154);
-    foreach ($course_ids as $course_id)
-    { $node = node_load($course_id);
-        $courses[$course_id] = $node->title .' (todo: '.$node->field_semester[LANGUAGE_NONE][0]['tid'].')';
-    }
-    dpm($courses);
+ /*load courses for user */
+$users_editable_courses = _section_course_get_courses_for_course_admin($user->uid, 'field_semester');
+  
+foreach($users_editable_courses as $course)
+{
+    //build simple array
+    $courses[$course->nid] = $course->title .' ('._section_course_get_Semestername($course).')';
+} 
   $target_courses = $courses;
  
   $form['target_courses'] = array(
     '#title' => t('Items'),
     '#type' => 'checkboxes',
     '#options' => $target_courses,
-    '#description' => t('Select to which course you would like to copy.'),
+    '#description' => t('Select which course(s) you would like to copy to.'),
   );
  
 
   return $form;
 }
-
+/*behandelt nur submittete daten und leitet weiter an section_courses_clone_content mit $context = $result */
 function section_courses_clone_content_submit($form_id, $form_state) {
     
   $result = array();
-  $result['target_courses'] = $form_state['values']['target_courses']; 
+  //remove id => 0 values
+  $result['target_courses'] =array_filter( $form_state['values']['target_courses']); 
   return $result;
 }
 
 /**
  * after confirmation this will be done
+ * only implemented for 'courses_news', 'courses_docs','courses_generic_task'
  */
 function section_courses_clone_content(&$entity, $context = array()) {
 
@@ -78,6 +82,7 @@ if(in_array($entity_type, array( 'courses_news', 'courses_docs','courses_generic
 
 /**
  * Implements hook_views_bulk_operations_form_alter().
+ * kA was das tut
  */
 function section_courses_clone_content_views_bulk_operations_form_alter(&$form, &$form_state, $vbo) {
 

@@ -694,6 +694,84 @@ function _section_course_get_courses_by_uid($uid) {
 
 }
 
+/**
+ * get a course-object // e.g. drupal-node-object
+ *
+ * @param int $course_id
+ * @return StdClass
+ */
+function _section_course_get_course($course_id)
+{
+    return  node_load($course_id);
+}
+
+/**
+ * get the written name of a semester for a course
+ *
+ * @param StdClass / int $course - the course-object or just the id
+ * @return String name
+ */
+function _section_course_get_Semestername($course)
+ {
+    if (!is_object($course))
+        $course = _section_course_get_course($course);
+
+    $semester_id = $course->field_semester[LANGUAGE_NONE][0]['tid'];
+
+    $term = taxonomy_term_load($semester_id);
+    $name = $term->name;
+    return $name;
+}
+
+/**
+ * get all courses a user with $user_uid may edit
+ *
+ * @param String $user_uid
+ * @return array node_object $courses
+ */
+function _section_course_get_courses_for_course_admin($user_uid, $sort_field='')
+{
+   /*some odd actions*/
+    $field = field_info_field('og_group_ref');
+$instance = field_info_instance('node', 'og_group_ref', 'courses_news');
+$refs = entityreference_get_selection_handler($field , $instance)->getReferencableEntities();
+#dpm($refs);
+$courses = $refs['courses_course'];
+
+$real_courses = array();
+foreach($courses as $course_id => $bla)
+    $real_courses[$course_id] = _section_course_get_course($course_id);
+  
+
+if($sort_field)
+    usort($real_courses, create_function('$a, $b', 'return _section_course_sort_courses_by_field($a, $b, "'.$sort_field.'");'));
+
+return $real_courses;
+}
+/**
+ * needed for usort, dont touch this. 
+ *
+ * @param node_object course $a
+ * @param node_object course $b
+ * 
+ * @return in -1 ,0 , 1
+ */
+function _section_course_sort_courses_by_field($a, $b, $name_of_field)
+{
+    
+    //flatten the array withouth the need for foreaches or array_keys
+     $it1 = new RecursiveIteratorIterator(new RecursiveArrayIterator($a->$name_of_field));
+     $it2 = new RecursiveIteratorIterator(new RecursiveArrayIterator($b->$name_of_field));
+   
+     $var1 = iterator_to_array($it1, false);
+     $var2 = iterator_to_array($it2, false);
+     $var1 = $var1[0];
+     $var2 = $var2[0];
+     //sort the int
+        return ($var1 - $var2);
+        
+}
+
 function _section_course_get_num_coursegroups($course) {
 
   return count(_section_course_get_coursegroups($course));
