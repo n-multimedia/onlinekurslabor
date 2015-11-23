@@ -177,9 +177,13 @@ function _courses_tasks_get_task_period_label($task_id, $solution_id = 0) {
 
     if ($solution_id) {
         $solution = node_load($solution_id);
+        $state = workflow_node_current_state($solution);
+    }
+    //aw nicht im entwurfsmodus
+    if ($solution_id && !($state == NM_COURSES_TASK_WORKFLOW_DRAFT)) {
+
         $created = $solution->created;
         $changed = $solution->changed;
-        $title = "title='Datum: " . date('d.m.Y H:i:s', $changed) . "'";
 
         if ($changed < $starttime_secs)
             $markup = '<span class="label label-important" ' . $title . '><strong>Zu früh eingereicht</strong></span>';
@@ -189,7 +193,7 @@ function _courses_tasks_get_task_period_label($task_id, $solution_id = 0) {
             $markup = '<span class="label label-info" ' . $title . '><strong>Pünktlich eingereicht</strong></span>';
         return $markup;
     }
-    //keine solultion vorhanden
+    //keine solultion vorhanden oder im draft-modus
     if ($starttime_secs > time())
         $markup = '<span class="label label-important"><strong>Noch kein Bearbeitungszeitraum</strong></span>';
     elseif (time() > $endtime_secs)
