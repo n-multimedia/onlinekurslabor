@@ -828,3 +828,39 @@ function _section_content_get_domains() {
 
   return $result->fetchAll();
 }
+
+
+
+function _section_courses_fix_solution_og(){
+  $query = db_select('node', 'n');
+
+  $query->condition('n.nid', 0, '<>')
+    ->condition('n.status', 1, '=')
+    ->condition('n.type', NM_COURSE_GENERIC_TASK_SOLUTION)
+    ->fields('n', array('nid'))
+    ->leftJoin('og_membership', 'ogm', "n.nid = ogm.etid AND ogm.entity_type = 'node'");
+  $query->isNull('ogm.gid');
+
+  $result = $query->execute()->fetchAll();
+
+  dpm($result);
+
+  foreach($result as $n){
+
+    /*
+    $solution = node_load($node->nid);
+    dpm(format_date($solution->created, 'short'));
+    dpm($solution);
+    */
+
+    $node = node_load($n->nid);
+    if(empty($node->og_group_ref[LANGUAGE_NONE][0]['target_id']) && !empty($node->field_generic_task[LANGUAGE_NONE][0]['target_id'])) {
+      $tid = $node->field_generic_task[LANGUAGE_NONE][0]['target_id'];
+      $task = node_load($tid);
+      $course_nid = $task->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+      $node->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $course_nid;
+      node_save($node);
+    }
+  }
+
+}

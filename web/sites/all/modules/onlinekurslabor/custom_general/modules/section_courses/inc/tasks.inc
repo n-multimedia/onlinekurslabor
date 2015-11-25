@@ -522,8 +522,8 @@ function _section_courses_task_solution_form_submit($form, &$form_state) {
   }
   else {
     $active_course = _section_courses_get_active_course();
-    $tas_nid = $form_state['values']['task_nid'];
-    $task = node_load($tas_nid);
+    $task = node_load($task_nid);
+    $node = new stdClass();
     $node->title = 'Lösung: ' . $task->title;
     $node->type = NM_COURSE_GENERIC_TASK_SOLUTION;
     node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
