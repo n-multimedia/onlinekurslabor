@@ -6988,7 +6988,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     if ($active_course) {
       $nid = _section_courses_course_get_domain_id($active_course);
       if(node_access(\'update\', node_load($nid))){
-        echo \'<a class="btn" href="node/\'.$nid.\'">Lehrtext bearbeiten (Themenbereich)</a>\';
+        echo \'<a class="btn" href="/node/\'.$nid.\'">Lehrtext bearbeiten (Themenbereich)</a>\';
       }
     }
 

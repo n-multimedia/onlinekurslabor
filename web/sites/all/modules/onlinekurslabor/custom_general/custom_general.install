@@ -1,0 +1,17 @@
+<?php
+/**
+ * User: naumenko-multimedia
+ * Date: 04.12.2015
+ * Time: 15:01
+ */
+
+function custom_general_update_3000(){
+  $users = entity_load('user');
+  foreach ($users as $user_id => $user) {
+
+    _DefaultAvatar_createDefaultAvatarForUser($user->uid);
+
+  }
+}
+
+
