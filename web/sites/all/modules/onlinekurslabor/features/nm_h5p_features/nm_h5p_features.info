@@ -1,6 +1,7 @@
 name = nm_h5p_features
 description = Provides h5p integration possibility
 core = 7.x
+version = 7.x-1.0-alpha1
 package = Features
 dependencies[] = features
 dependencies[] = h5p
