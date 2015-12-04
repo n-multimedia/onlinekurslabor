@@ -89,7 +89,7 @@ function nm_general_features_image_default_styles() {
     'name' => 'profile_nano_thumbnail',
     'label' => 'profile_nano_thumbnail',
     'effects' => array(
-      4 => array(
+      1 => array(
         'label' => 'Skalieren und zuschneiden',
         'help' => 'Skalieren und zuschneiden wird das Seitenverhältnis des ursprünglichen Bildes erhalten, und dann die überstehenden Ränder entfernen. Dies ist besonders nützlich für die Erstellung von perfekt quadratischen Vorschaubildern ohne Verzerrung des Bildes.',
         'effect callback' => 'image_scale_and_crop_effect',
@@ -104,6 +104,49 @@ function nm_general_features_image_default_styles() {
         ),
         'weight' => 1,
       ),
+        
+    2 => array(
+      'label' => 'Rounded Corners',
+      'help' => 'This is true cropping, not overlays, so the result <em>can</em> be transparent.',
+      'effect callback' => 'canvasactions_roundedcorners_effect',
+      'dimensions passthrough' => TRUE,
+      'form callback' => 'canvasactions_roundedcorners_form',
+      'summary theme' => 'canvasactions_roundedcorners_summary',
+      'module' => 'imagecache_canvasactions',
+      'name' => 'canvasactions_roundedcorners',
+      'data' => array(
+        'radius' => '12',
+        'independent_corners_set' => array(
+          'independent_corners' => 0,
+          'radii' => array(
+            'tl' => 0,
+            'tr' => 0,
+            'bl' => 0,
+            'br' => 0,
+          ),
+        ),
+      ),
+      'ieid' => '2',
+      'isid' => '1',
+      'weight' => '2',
+    ),
+    3 => array(
+      'label' => 'Change file format',
+      'help' => 'Choose to save the image as a different filetype.',
+      'effect callback' => 'coloractions_convert_image',
+      'dimensions passthrough' => TRUE,
+      'form callback' => 'coloractions_convert_form',
+      'summary theme' => 'coloractions_convert_summary',
+      'module' => 'imagecache_coloractions',
+      'name' => 'coloractions_convert',
+      'data' => array(
+        'format' => 'image/png',
+        'quality' => '95',
+      ),
+      'ieid' => '3',
+      'isid' => '1',
+      'weight' => '3',
+    )
     ),
   );
 
@@ -116,11 +159,11 @@ function nm_general_features_image_default_styles() {
 function nm_general_features_node_info() {
   $items = array(
     'page' => array(
-      'name' => t('Einfache Seite'),
+      'name' => t('Basic page'),
       'base' => 'node_content',
-      'description' => t('Benutzen Sie <em>Einfache Seiten</em> für statischen Inhalt, wie z.B. eine „Über uns“ Seite.'),
+      'description' => t('Use <em>basic pages</em> for your static content, such as an \'About us\' page.'),
       'has_title' => '1',
-      'title_label' => t('Titel'),
+      'title_label' => t('Title'),
       'help' => '',
     ),
     'plattform_log' => array(

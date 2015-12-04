@@ -1,0 +1,7 @@
+name = defaultavatar
+description = Creates a default avatar for every User. Has a migration-Feature for existing users
+core = 7.x
+package = custom
+
+
+dependencies[] = profile2
