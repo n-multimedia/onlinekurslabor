@@ -321,7 +321,8 @@ function _section_courses_instructors_tools_role_access() {
   $active_course = _section_courses_get_active_course();
   //27.02.2014 - 10:51 - SN
   //access to tools on panel overview pages
-  if ($active_course) {
+  // courses overview /courses - add course button
+  if (!$active_course) {
     $one_of_needed_roles = array_merge($one_of_needed_roles, array_intersect($user->roles, array(NM_ROLE_DOZENT)));
   }
 
