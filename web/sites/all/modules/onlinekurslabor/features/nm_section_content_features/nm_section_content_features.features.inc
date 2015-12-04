@@ -201,7 +201,7 @@ function nm_section_content_features_node_info() {
       'base' => 'node_content',
       'description' => t('Kapitel der Lehrtexte, die durch ein Gebiet zusammengefasst werden.'),
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'content_domain' => array(
@@ -209,7 +209,7 @@ function nm_section_content_features_node_info() {
       'base' => 'node_content',
       'description' => t('Das Themastellt einen themenspezifischen Container für (multimediale) Kapitel und Bibliografien dar.'),
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'content_multiple_choice' => array(
@@ -217,7 +217,7 @@ function nm_section_content_features_node_info() {
       'base' => 'node_content',
       'description' => t('Multiple Choice Fragen für Studientexte'),
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'content_question_and_answer' => array(
@@ -225,7 +225,7 @@ function nm_section_content_features_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
   );

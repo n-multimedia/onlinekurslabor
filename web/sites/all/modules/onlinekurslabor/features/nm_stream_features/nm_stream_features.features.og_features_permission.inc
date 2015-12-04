@@ -98,30 +98,5 @@ function nm_stream_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:spaces_space:create nm_stream content'
-  $permissions['node:spaces_space:create nm_stream content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:spaces_space:delete any nm_stream content'
-  $permissions['node:spaces_space:delete any nm_stream content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:spaces_space:delete own nm_stream content'
-  $permissions['node:spaces_space:delete own nm_stream content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:spaces_space:update any nm_stream content'
-  $permissions['node:spaces_space:update any nm_stream content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:spaces_space:update own nm_stream content'
-  $permissions['node:spaces_space:update own nm_stream content'] = array(
-    'roles' => array(),
-  );
-
   return $permissions;
 }

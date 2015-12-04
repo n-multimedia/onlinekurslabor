@@ -95,30 +95,5 @@ function nm_h5p_features_og_features_default_permissions() {
     'roles' => array(),
   );
 
-  // Exported og permission: 'node:spaces_space:create h5p_content content'
-  $permissions['node:spaces_space:create h5p_content content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:spaces_space:delete any h5p_content content'
-  $permissions['node:spaces_space:delete any h5p_content content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:spaces_space:delete own h5p_content content'
-  $permissions['node:spaces_space:delete own h5p_content content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:spaces_space:update any h5p_content content'
-  $permissions['node:spaces_space:update any h5p_content content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:spaces_space:update own h5p_content content'
-  $permissions['node:spaces_space:update own h5p_content content'] = array(
-    'roles' => array(),
-  );
-
   return $permissions;
 }

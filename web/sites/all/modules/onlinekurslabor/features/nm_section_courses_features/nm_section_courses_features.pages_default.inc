@@ -965,6 +965,37 @@ return drupal_render($form);
     $display->content['new-3125f2f0-5c95-4957-96cf-ece6cc14d914'] = $pane;
     $display->panels['left'][0] = 'new-3125f2f0-5c95-4957-96cf-ece6cc14d914';
     $pane = new stdClass();
+    $pane->pid = 'new-193f4165-7698-44bc-a7cb-cc20140926a8';
+    $pane->panel = 'left';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'User\'s roles',
+      'title' => '',
+      'body' => '(<?
+$usrobj = user_load("%user:uid"); 
+$roles = $usrobj->roles ;
+$to_remove = array(\'authenticated user\');
+$roles = array_diff($roles , $to_remove);
+echo implode($roles , \', \');
+?>)',
+      'format' => 'php_code',
+      'substitute' => 1,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = '193f4165-7698-44bc-a7cb-cc20140926a8';
+    $display->content['new-193f4165-7698-44bc-a7cb-cc20140926a8'] = $pane;
+    $display->panels['left'][1] = 'new-193f4165-7698-44bc-a7cb-cc20140926a8';
+    $pane = new stdClass();
     $pane->pid = 'new-c0ca5bbc-d035-46f3-89d8-51a878d5c6b4';
     $pane->panel = 'left';
     $pane->type = 'entity_field';
@@ -991,11 +1022,11 @@ return drupal_render($form);
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 2;
     $pane->locks = array();
     $pane->uuid = 'c0ca5bbc-d035-46f3-89d8-51a878d5c6b4';
     $display->content['new-c0ca5bbc-d035-46f3-89d8-51a878d5c6b4'] = $pane;
-    $display->panels['left'][1] = 'new-c0ca5bbc-d035-46f3-89d8-51a878d5c6b4';
+    $display->panels['left'][2] = 'new-c0ca5bbc-d035-46f3-89d8-51a878d5c6b4';
     $pane = new stdClass();
     $pane->pid = 'new-a82c3cb9-d48d-407e-968e-cfd780de3415';
     $pane->panel = 'left';
@@ -1013,11 +1044,11 @@ return drupal_render($form);
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 2;
+    $pane->position = 3;
     $pane->locks = array();
     $pane->uuid = 'a82c3cb9-d48d-407e-968e-cfd780de3415';
     $display->content['new-a82c3cb9-d48d-407e-968e-cfd780de3415'] = $pane;
-    $display->panels['left'][2] = 'new-a82c3cb9-d48d-407e-968e-cfd780de3415';
+    $display->panels['left'][3] = 'new-a82c3cb9-d48d-407e-968e-cfd780de3415';
     $pane = new stdClass();
     $pane->pid = 'new-5776b9d0-5e3b-4d95-8345-be9310efa02e';
     $pane->panel = 'left';
@@ -1067,11 +1098,11 @@ return drupal_render($form);
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 3;
+    $pane->position = 4;
     $pane->locks = array();
     $pane->uuid = '5776b9d0-5e3b-4d95-8345-be9310efa02e';
     $display->content['new-5776b9d0-5e3b-4d95-8345-be9310efa02e'] = $pane;
-    $display->panels['left'][3] = 'new-5776b9d0-5e3b-4d95-8345-be9310efa02e';
+    $display->panels['left'][4] = 'new-5776b9d0-5e3b-4d95-8345-be9310efa02e';
     $pane = new stdClass();
     $pane->pid = 'new-a5665709-cfee-4eba-90f6-38e8bda3b148';
     $pane->panel = 'left';
@@ -1104,11 +1135,11 @@ return drupal_render($form);
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 4;
+    $pane->position = 5;
     $pane->locks = array();
     $pane->uuid = 'a5665709-cfee-4eba-90f6-38e8bda3b148';
     $display->content['new-a5665709-cfee-4eba-90f6-38e8bda3b148'] = $pane;
-    $display->panels['left'][4] = 'new-a5665709-cfee-4eba-90f6-38e8bda3b148';
+    $display->panels['left'][5] = 'new-a5665709-cfee-4eba-90f6-38e8bda3b148';
     $pane = new stdClass();
     $pane->pid = 'new-23bd63a6-75a3-4260-91e4-650f12dda391';
     $pane->panel = 'right';
@@ -3373,8 +3404,9 @@ echo section_courses_render_course_link($course);
         'name' => 'og_role',
         'settings' => array(
           'og_rids' => array(
-            0 => 'kurs-dozent',
-            1 => 'kurs-tutor',
+            0 => 'administrator member',
+            1 => 'kurs-dozent',
+            2 => 'kurs-tutor',
           ),
         ),
         'context' => array(
@@ -6504,6 +6536,8 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -6819,6 +6853,20 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->access = array(
     'type' => 'none',
     'settings' => NULL,
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_access',
+        'settings' => array(
+          'type' => 'view',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_2',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
   );
   $page->menu = array();
   $page->arguments = array(

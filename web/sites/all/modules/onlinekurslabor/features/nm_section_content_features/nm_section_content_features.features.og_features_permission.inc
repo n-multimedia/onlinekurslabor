@@ -12,7 +12,9 @@ function nm_section_content_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:content_domain:add user'
   $permissions['node:content_domain:add user'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:administer group'
@@ -22,7 +24,9 @@ function nm_section_content_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:content_domain:approve and deny subscription'
   $permissions['node:content_domain:approve and deny subscription'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:create biblio content'
@@ -131,17 +135,23 @@ function nm_section_content_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:content_domain:manage members'
   $permissions['node:content_domain:manage members'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:manage permissions'
   $permissions['node:content_domain:manage permissions'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:manage roles'
   $permissions['node:content_domain:manage roles'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:subscribe'
@@ -296,7 +306,9 @@ function nm_section_content_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:content_domain:update group_group field'
   $permissions['node:content_domain:update group_group field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:update og_group_ref field'
@@ -308,7 +320,9 @@ function nm_section_content_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:content_domain:update og_user_node field'
   $permissions['node:content_domain:update og_user_node field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:update own biblio content'
@@ -346,7 +360,9 @@ function nm_section_content_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:content_domain:update taxonomy_forums field'
   $permissions['node:content_domain:update taxonomy_forums field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   // Exported og permission: 'node:content_domain:view any master profile'
@@ -481,7 +497,9 @@ function nm_section_content_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:content_domain:view taxonomy_forums field'
   $permissions['node:content_domain:view taxonomy_forums field'] = array(
-    'roles' => array(),
+    'roles' => array(
+      'member' => 'member',
+    ),
   );
 
   return $permissions;
