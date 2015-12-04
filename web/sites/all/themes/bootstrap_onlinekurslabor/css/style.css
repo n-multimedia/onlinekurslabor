@@ -871,6 +871,18 @@ powered by
     text-align:left;
 }
 
+.footer_region_left ul.nav-list li.leaf{
+   float:left;
+   margin-left:0.5em;
+}
+.footer_region_left ul.nav-list li a{
+padding: 0px;
+margin:0px;
+}
+.footer_region_left li.leaf > a:hover, .footer_region_left li.leaf > a:focus, .footer_region_left li.active > a:link{
+    background: none;
+}
+
 .footer_region_right {
     text-align:right;
 }
