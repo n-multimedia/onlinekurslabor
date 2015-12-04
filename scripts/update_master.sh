@@ -10,7 +10,7 @@ drush fr nm_section_courses_features nm_general_features --yes
 #clear cache
 drush cc all
 
-drush image-flush
+drush image-flush --all
 
 drush updatedb --yes
 
