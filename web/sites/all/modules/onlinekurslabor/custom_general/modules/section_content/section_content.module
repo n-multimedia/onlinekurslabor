@@ -548,6 +548,24 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     }
   }
 
+  if($form_id == 'courses_course_node_form'){
+    //add domain add link to
+    $description = '';
+    section_courses_instructors_tools_access();
+    //$warning_text = '<strong>Wichtig</strong>: Beim Klick auf diesen Link verlassen Sie die Seite. <br/>Bitte stellen Sie zuvor sicher, dass Sie all Ihre Änderungen gespeichert haben! ';
+    if(node_access('create', NM_CONTENT_DOMAIN)){
+      $description = "<p>Falls Sie noch keinen Lehrtext zu Ihrem Kurs haben können Sie über folgenden Link mit der Erstellung eines neuen Lehrtextes starten.</p>";
+      $description .= l('Neuen Lehrtext erstellen', 'node/add/content-domain', array('attributes'=>array('target'=>'_blank')));
+    }else {
+      $description = "<p>Falls Sie keinen Lehrtext zur Auswahl haben, kontaktieren Sie unseren Support. Dieser kann Ihnen die benötigten Rechte freischalten.</p>";
+      $description .= l('Kontakt', 'kontakt', array('attributes'=>array('target'=>'_blank')));
+    }
+    $description .= '<br />';
+    $description .= '<br />';
+
+    $form['field_domain_demo_ref']['#suffix'] = $description;
+  }
+
 
   return $form;
 }
