@@ -519,8 +519,8 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
       //$form['book']['#type'] = 'hidden';
     }
   }
-  //Only hide book options for authors, so admin has all fields available
-  $hide_book_options = in_array(NM_ROLE_AUTOR, $user->roles);
+  //Only hide book options for users who dont have admin permission
+  $hide_book_options = !node_access('administer content');
   //remove book settings from biblio content type for authors (Role Autor)
   if (!empty($form['#node_edit_form']) && $hide_book_options) {
     $node = $form['#node'];
@@ -532,16 +532,22 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     else {
       $form['book']['#type'] = 'hidden';
     }
-  }
 
-  //hide book form options for certain content types
-  if(!empty($form['#entity_type']) && $form['#entity_type'] == 'node'){
-    if(!in_array($form['#bundle'], array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN))){
-      if(!empty($form['book']) && !user_access('administer content')) {
-        hide($form['book']);
+    //hide book form options for certain content types
+    if(!empty($form['#entity_type']) && $form['#entity_type'] == 'node') {
+      if (!in_array($form['#bundle'], array(
+        NM_CONTENT_CHAPTER,
+        NM_CONTENT_DOMAIN,
+        'book'
+      ))
+      ) {
+        if (!empty($form['book']) && !user_access('administer content')) {
+          hide($form['book']);
+        }
       }
     }
   }
+
 
   return $form;
 }
