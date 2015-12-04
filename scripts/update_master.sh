@@ -2,12 +2,18 @@
 
 #drush vset maintenance_mode 1
 
-drush en userprotect --yes
+drush en userprotect defaultavatar --yes
 
-drush fr nm_section_courses_features --yes
+drush fr nm_section_courses_features nm_general_features --yes
+
+
 
 #clear cache
 drush cc all
+
+drush image-flush
+
+drush language-import de ../language/alpha3.po --replace
 
 
 #drush vset maintenance_mode 0
