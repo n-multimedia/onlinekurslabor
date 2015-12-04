@@ -338,13 +338,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_cooperation_agreement:create webform content'
-  $permissions['node:projects_cooperation_agreement:create webform content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_cooperation_agreement:delete any biblio content'
   $permissions['node:projects_cooperation_agreement:delete any biblio content'] = array(
     'roles' => array(
@@ -444,13 +437,6 @@ function section_projects_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:projects_cooperation_agreement:delete any projects_proposal content'
   $permissions['node:projects_cooperation_agreement:delete any projects_proposal content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_cooperation_agreement:delete any webform content'
-  $permissions['node:projects_cooperation_agreement:delete any webform content'] = array(
     'roles' => array(
       'member' => 'member',
     ),
@@ -559,13 +545,6 @@ function section_projects_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:projects_cooperation_agreement:delete own projects_proposal content'
   $permissions['node:projects_cooperation_agreement:delete own projects_proposal content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_cooperation_agreement:delete own webform content'
-  $permissions['node:projects_cooperation_agreement:delete own webform content'] = array(
     'roles' => array(
       'member' => 'member',
     ),
@@ -733,22 +712,8 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_cooperation_agreement:update any webform content'
-  $permissions['node:projects_cooperation_agreement:update any webform content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_cooperation_agreement:update body field'
   $permissions['node:projects_cooperation_agreement:update body field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_cooperation_agreement:update comment_body field'
-  $permissions['node:projects_cooperation_agreement:update comment_body field'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
     ),
@@ -913,13 +878,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_cooperation_agreement:update field_courses_ref field'
-  $permissions['node:projects_cooperation_agreement:update field_courses_ref field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_cooperation_agreement:update field_domain_demo_ref field'
   $permissions['node:projects_cooperation_agreement:update field_domain_demo_ref field'] = array(
     'roles' => array(
@@ -943,13 +901,6 @@ function section_projects_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:projects_cooperation_agreement:update field_domain_ref field'
   $permissions['node:projects_cooperation_agreement:update field_domain_ref field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_cooperation_agreement:update field_domains_ref field'
-  $permissions['node:projects_cooperation_agreement:update field_domains_ref field'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
     ),
@@ -1188,20 +1139,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_cooperation_agreement:update field_space_header field'
-  $permissions['node:projects_cooperation_agreement:update field_space_header field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_cooperation_agreement:update field_space_home field'
-  $permissions['node:projects_cooperation_agreement:update field_space_home field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_cooperation_agreement:update field_subtitle field'
   $permissions['node:projects_cooperation_agreement:update field_subtitle field'] = array(
     'roles' => array(
@@ -1402,13 +1339,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_cooperation_agreement:update own webform content'
-  $permissions['node:projects_cooperation_agreement:update own webform content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_cooperation_agreement:update taxonomy_forums field'
   $permissions['node:projects_cooperation_agreement:update taxonomy_forums field'] = array(
     'roles' => array(
@@ -1428,15 +1358,6 @@ function section_projects_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:projects_cooperation_agreement:view body field'
   $permissions['node:projects_cooperation_agreement:view body field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-      'member' => 'member',
-      'non-member' => 'non-member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_cooperation_agreement:view comment_body field'
-  $permissions['node:projects_cooperation_agreement:view comment_body field'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
       'member' => 'member',
@@ -1647,15 +1568,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_cooperation_agreement:view field_courses_ref field'
-  $permissions['node:projects_cooperation_agreement:view field_courses_ref field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-      'member' => 'member',
-      'non-member' => 'non-member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_cooperation_agreement:view field_domain_demo_ref field'
   $permissions['node:projects_cooperation_agreement:view field_domain_demo_ref field'] = array(
     'roles' => array(
@@ -1685,15 +1597,6 @@ function section_projects_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:projects_cooperation_agreement:view field_domain_ref field'
   $permissions['node:projects_cooperation_agreement:view field_domain_ref field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-      'member' => 'member',
-      'non-member' => 'non-member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_cooperation_agreement:view field_domains_ref field'
-  $permissions['node:projects_cooperation_agreement:view field_domains_ref field'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
       'member' => 'member',
@@ -1992,24 +1895,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_cooperation_agreement:view field_space_header field'
-  $permissions['node:projects_cooperation_agreement:view field_space_header field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-      'member' => 'member',
-      'non-member' => 'non-member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_cooperation_agreement:view field_space_home field'
-  $permissions['node:projects_cooperation_agreement:view field_space_home field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-      'member' => 'member',
-      'non-member' => 'non-member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_cooperation_agreement:view field_subtitle field'
   $permissions['node:projects_cooperation_agreement:view field_subtitle field'] = array(
     'roles' => array(
@@ -2254,11 +2139,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_organization:create webform content'
-  $permissions['node:projects_organization:create webform content'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:projects_organization:delete any biblio content'
   $permissions['node:projects_organization:delete any biblio content'] = array(
     'roles' => array(
@@ -2360,11 +2240,6 @@ function section_projects_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:projects_organization:delete any projects_proposal content'
   $permissions['node:projects_organization:delete any projects_proposal content'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:projects_organization:delete any webform content'
-  $permissions['node:projects_organization:delete any webform content'] = array(
     'roles' => array(),
   );
 
@@ -2472,11 +2347,6 @@ function section_projects_features_og_features_default_permissions() {
     'roles' => array(
       'member' => 'member',
     ),
-  );
-
-  // Exported og permission: 'node:projects_organization:delete own webform content'
-  $permissions['node:projects_organization:delete own webform content'] = array(
-    'roles' => array(),
   );
 
   // Exported og permission: 'node:projects_organization:edit any master profile'
@@ -2643,20 +2513,8 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_organization:update any webform content'
-  $permissions['node:projects_organization:update any webform content'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:projects_organization:update body field'
   $permissions['node:projects_organization:update body field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_organization:update comment_body field'
-  $permissions['node:projects_organization:update comment_body field'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
     ),
@@ -2793,13 +2651,6 @@ function section_projects_features_og_features_default_permissions() {
     'roles' => array(),
   );
 
-  // Exported og permission: 'node:projects_organization:update field_courses_ref field'
-  $permissions['node:projects_organization:update field_courses_ref field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_organization:update field_domain_demo_ref field'
   $permissions['node:projects_organization:update field_domain_demo_ref field'] = array(
     'roles' => array(
@@ -2823,13 +2674,6 @@ function section_projects_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:projects_organization:update field_domain_ref field'
   $permissions['node:projects_organization:update field_domain_ref field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_organization:update field_domains_ref field'
-  $permissions['node:projects_organization:update field_domains_ref field'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
     ),
@@ -3042,20 +2886,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_organization:update field_space_header field'
-  $permissions['node:projects_organization:update field_space_header field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_organization:update field_space_home field'
-  $permissions['node:projects_organization:update field_space_home field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_organization:update field_subtitle field'
   $permissions['node:projects_organization:update field_subtitle field'] = array(
     'roles' => array(
@@ -3251,11 +3081,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_organization:update own webform content'
-  $permissions['node:projects_organization:update own webform content'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:projects_organization:update taxonomy_forums field'
   $permissions['node:projects_organization:update taxonomy_forums field'] = array(
     'roles' => array(
@@ -3275,15 +3100,6 @@ function section_projects_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:projects_organization:view body field'
   $permissions['node:projects_organization:view body field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-      'member' => 'member',
-      'non-member' => 'non-member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_organization:view comment_body field'
-  $permissions['node:projects_organization:view comment_body field'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
       'member' => 'member',
@@ -3440,15 +3256,6 @@ function section_projects_features_og_features_default_permissions() {
     'roles' => array(),
   );
 
-  // Exported og permission: 'node:projects_organization:view field_courses_ref field'
-  $permissions['node:projects_organization:view field_courses_ref field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-      'member' => 'member',
-      'non-member' => 'non-member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_organization:view field_domain_demo_ref field'
   $permissions['node:projects_organization:view field_domain_demo_ref field'] = array(
     'roles' => array(
@@ -3478,15 +3285,6 @@ function section_projects_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:projects_organization:view field_domain_ref field'
   $permissions['node:projects_organization:view field_domain_ref field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-      'member' => 'member',
-      'non-member' => 'non-member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_organization:view field_domains_ref field'
-  $permissions['node:projects_organization:view field_domains_ref field'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
       'member' => 'member',
@@ -3806,24 +3604,6 @@ function section_projects_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:projects_organization:view field_short_description field'
   $permissions['node:projects_organization:view field_short_description field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-      'member' => 'member',
-      'non-member' => 'non-member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_organization:view field_space_header field'
-  $permissions['node:projects_organization:view field_space_header field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-      'member' => 'member',
-      'non-member' => 'non-member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_organization:view field_space_home field'
-  $permissions['node:projects_organization:view field_space_home field'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
       'member' => 'member',

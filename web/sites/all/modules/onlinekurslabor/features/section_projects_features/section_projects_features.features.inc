@@ -69,7 +69,7 @@ function section_projects_features_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'projects_cooperation_agreement' => array(
@@ -77,7 +77,7 @@ function section_projects_features_node_info() {
       'base' => 'node_content',
       'description' => t('Hierbei handelt es sich um eine gemeinsame Vereinbarung zwischen dem Praxispartner, Ihrem Team und Dozenten der Lehrveranstaltung, um die Erwartung bezüglich der Projektergebnisse zu klären. Die Vereinbarung ist für den Dozenten, den Praxispartner und die Studierendenteams sichtbar.'),
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'projects_documentation' => array(
@@ -85,7 +85,7 @@ function section_projects_features_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'projects_objective' => array(
@@ -93,7 +93,7 @@ function section_projects_features_node_info() {
       'base' => 'node_content',
       'description' => t('Hierbei handelt es sich um eine individuelle Vereinbarung zwischen Ihnen und dem Dozenten der Lehrveranstaltung, um die fachlichen und überfachlichen Lernziele des Projekts festzulegen. Die Vereinbarung ist für Sie, den Dozenten, den Praxispartner und die Teammitglieder sichtbar.'),
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'projects_organization' => array(
@@ -101,7 +101,7 @@ function section_projects_features_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'projects_proposal' => array(
@@ -109,7 +109,7 @@ function section_projects_features_node_info() {
       'base' => 'node_content',
       'description' => t('Hierbei handelt es sich um einen Vorschlag für ein Projekt von einem Praxispartner. Die Projektvorschläge können jederzeit von einem Praxispartner eingereicht werden. Vor Semesterbeginn hat der Dozent dann die Möglichkeit passende Projektvorschläge für seine Lehrveranstaltungen auszuwählen und eine Kooperationsvereinbarung vorzubereiten.'),
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
   );

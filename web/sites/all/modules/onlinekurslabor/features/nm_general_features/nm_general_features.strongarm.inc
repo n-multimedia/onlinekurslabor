@@ -349,7 +349,7 @@ dasddasdasd',
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => '1TlkjsuNO5z4SxSwWZa_1KaqvQG-nvILEIFs2B5Y-yw',
+    'javascript' => 'EggYBiNpxU7lngxf-6m5j86_Wv5SXR6PtPwdhQOtum4',
   );
   $export['language_default'] = $strongarm;
 
