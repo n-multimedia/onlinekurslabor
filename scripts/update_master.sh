@@ -4,6 +4,8 @@
 
 drush en userprotect --yes
 
+drush fr nm_section_courses_features --yes
+
 #clear cache
 drush cc all
 
