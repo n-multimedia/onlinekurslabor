@@ -388,7 +388,7 @@ function _section_courses_get_instructor_tools() {
   $links['instr_add_members']['label'] = "Teilnehmer";
 
   $links['instr_overview_content']['label'] = "Inhalte";
-  $links['instr_add_news']['label'] = "Nachricht";
+  $links['instr_add_news']['label'] = "Neuigkeit";
   $links['instr_add_docs']['label'] = "Dokument";
   $links['instr_add_task']['label'] = "Aufgabe";
 
