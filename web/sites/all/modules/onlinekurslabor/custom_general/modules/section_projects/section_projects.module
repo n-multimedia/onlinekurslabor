@@ -568,6 +568,9 @@ function section_projects_block_info() {
   $blocks['projects_course_group_actions'] = array(
     'info' => t('Project - Course Group - Actions'),
   );
+    $blocks['projects_course_group_userlink'] = array(
+    'info' => t('Project - Course Group - Link to Usermanagement'),
+  );
 
   $blocks['project_cockpit_main'] = array(
     'info' => t('Projects - Cockpit - Main'),
@@ -613,6 +616,9 @@ function section_projects_block_view($delta = '') {
     case 'projects_course_group_actions' :
       $block['content'] = _section_projects_course_group_actions_view();
       break;
+    case  'projects_course_group_userlink' :
+       $block['content'] =   _section_projects_course_group_actions_userlink();
+    break;
     case 'project_cockpit_main' :
       $block['content'] = _section_projects_project_cockpit_main_view();
       break;
@@ -1151,6 +1157,23 @@ function _section_projects_course_group_actions_view() {
 
   return $output;
 }
+
+/*liefert lediglich einen Link zur Teilnehmerverwaltung zurück. Useful wenn man in einer Kursgruppe ist.*/
+function _section_projects_course_group_actions_userlink($linktext = "Gruppenmitglieder hinzufügen") {
+    $output = '';
+    $active_course = _section_courses_get_active_course();
+    //check if course group has a project assigned to it
+    if ($active_course && node_access('update', $active_course)) {
+        $output .= '<div>';
+        $output .= '<a href="/' . NM_COURSE_ADMIN_PREFIX_PATH . '/' . $active_course->nid . '/members?og_group_ref=' . $active_course->nid . '">'.$linktext.'</a>';
+        $output .= '</div>';
+    }
+
+
+    return $output;
+}
+
+
 
 /*
   function _section_projects_node_tabs_view() {
