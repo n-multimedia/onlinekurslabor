@@ -793,6 +793,7 @@ function nm_stream_nm_stream_comment_add_callback($node) {
   //consider adapting for in edit callback too!
   $body = _nm_stream_filter_xss($_REQUEST['body']) ;
 
+
   //error handling
   if (!($node) || empty($body)) {
     //return error
@@ -864,6 +865,7 @@ function nm_stream_nm_stream_comment_edit_callback($comment) {
   $response = array();
 
   $body = _nm_stream_filter_xss($_REQUEST['body']) ;
+
 
   if (isset($_REQUEST['body'])) {
 
@@ -943,6 +945,15 @@ function nm_stream_nm_stream_comment_delete_callback($comment, $token) {
  */
 function nm_stream_block_view($delta = '') {
   $block = array();
+
+
+
+
+  if(arg(0) == 'admin'){
+    //do not render any output in admin section
+    //problem: nm_stream_stream_node_form searching for context
+    return $block;
+  }
 
   switch ($delta) {
     case 'nm_stream_form_add_edit' :
@@ -1477,20 +1488,20 @@ function _nm_stream_get_action_links($content) {
 /**
  * gets the rendered gui inkludiing add-new-comment
  * and the list of the comments
- * @param string $context : a node-id 
+ * @param string $context : a node-id
  * @return string gui
  */
 function _nm_stream_get_renderedGUI($context)
 {
-    
+
 $ret =  _nm_stream_form_add_edit_view() ;
-    
+
 $my_view_name = 'nm_stream';
 $my_display_name = 'default';
 $args = array($context);
 
 $my_view = views_get_view($my_view_name);
-if ( is_object($my_view) ) { 
+if ( is_object($my_view) ) {
   $my_view->set_display($my_display_name);
 $my_view->set_arguments($args);
   $my_view->pre_execute();

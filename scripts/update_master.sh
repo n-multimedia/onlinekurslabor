@@ -14,7 +14,7 @@ drush image-flush --all
 
 drush updatedb --yes
 
-drush language-import de ../language/alpha3.po --replace
+drush language-import-translations de ../language/alpha3.po --replace --groups=default
 
 
 #drush vset maintenance_mode 0
