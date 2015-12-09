@@ -312,13 +312,32 @@ function nm_general_features_user_default_permissions() {
     'module' => 'system',
   );
 
+  // Exported permission: 'administer userprotect'.
+  $permissions['administer userprotect'] = array(
+    'name' => 'administer userprotect',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'userprotect',
+  );
+
   // Exported permission: 'administer users'.
   $permissions['administer users'] = array(
     'name' => 'administer users',
     'roles' => array(
+      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
     ),
     'module' => 'user',
+  );
+
+  // Exported permission: 'administer uuid'.
+  $permissions['administer uuid'] = array(
+    'name' => 'administer uuid',
+    'roles' => array(
+      'Moderator' => 'Moderator',
+    ),
+    'module' => 'uuid',
   );
 
   // Exported permission: 'administer views'.
@@ -382,6 +401,36 @@ function nm_general_features_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'user',
+  );
+
+  // Exported permission: 'change own e-mail'.
+  $permissions['change own e-mail'] = array(
+    'name' => 'change own e-mail',
+    'roles' => array(
+      'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
+    ),
+    'module' => 'userprotect',
+  );
+
+  // Exported permission: 'change own openid'.
+  $permissions['change own openid'] = array(
+    'name' => 'change own openid',
+    'roles' => array(
+      'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
+    ),
+    'module' => 'userprotect',
+  );
+
+  // Exported permission: 'change own password'.
+  $permissions['change own password'] = array(
+    'name' => 'change own password',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'userprotect',
   );
 
   // Exported permission: 'change own username'.
@@ -462,6 +511,16 @@ function nm_general_features_user_default_permissions() {
     'name' => 'edit any plattform_log content',
     'roles' => array(),
     'module' => 'node',
+  );
+
+  // Exported permission: 'edit own account'.
+  $permissions['edit own account'] = array(
+    'name' => 'edit own account',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'userprotect',
   );
 
   // Exported permission: 'edit own comments'.

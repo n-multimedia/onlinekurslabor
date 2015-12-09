@@ -104,49 +104,44 @@ function nm_general_features_image_default_styles() {
         ),
         'weight' => 1,
       ),
-        
-    2 => array(
-      'label' => 'Rounded Corners',
-      'help' => 'This is true cropping, not overlays, so the result <em>can</em> be transparent.',
-      'effect callback' => 'canvasactions_roundedcorners_effect',
-      'dimensions passthrough' => TRUE,
-      'form callback' => 'canvasactions_roundedcorners_form',
-      'summary theme' => 'canvasactions_roundedcorners_summary',
-      'module' => 'imagecache_canvasactions',
-      'name' => 'canvasactions_roundedcorners',
-      'data' => array(
-        'radius' => '12',
-        'independent_corners_set' => array(
-          'independent_corners' => 0,
-          'radii' => array(
-            'tl' => 0,
-            'tr' => 0,
-            'bl' => 0,
-            'br' => 0,
+      2 => array(
+        'label' => 'Rounded Corners',
+        'help' => 'This is true cropping, not overlays, so the result <em>can</em> be transparent.',
+        'effect callback' => 'canvasactions_roundedcorners_effect',
+        'dimensions passthrough' => TRUE,
+        'form callback' => 'canvasactions_roundedcorners_form',
+        'summary theme' => 'canvasactions_roundedcorners_summary',
+        'module' => 'imagecache_canvasactions',
+        'name' => 'canvasactions_roundedcorners',
+        'data' => array(
+          'radius' => 12,
+          'independent_corners_set' => array(
+            'independent_corners' => 0,
+            'radii' => array(
+              'tl' => 0,
+              'tr' => 0,
+              'bl' => 0,
+              'br' => 0,
+            ),
           ),
         ),
+        'weight' => 2,
       ),
-      'ieid' => '2',
-      'isid' => '1',
-      'weight' => '2',
-    ),
-    3 => array(
-      'label' => 'Change file format',
-      'help' => 'Choose to save the image as a different filetype.',
-      'effect callback' => 'coloractions_convert_image',
-      'dimensions passthrough' => TRUE,
-      'form callback' => 'coloractions_convert_form',
-      'summary theme' => 'coloractions_convert_summary',
-      'module' => 'imagecache_coloractions',
-      'name' => 'coloractions_convert',
-      'data' => array(
-        'format' => 'image/png',
-        'quality' => '95',
+      3 => array(
+        'label' => 'Change file format',
+        'help' => 'Choose to save the image as a different filetype.',
+        'effect callback' => 'coloractions_convert_image',
+        'dimensions passthrough' => TRUE,
+        'form callback' => 'coloractions_convert_form',
+        'summary theme' => 'coloractions_convert_summary',
+        'module' => 'imagecache_coloractions',
+        'name' => 'coloractions_convert',
+        'data' => array(
+          'format' => 'image/png',
+          'quality' => 95,
+        ),
+        'weight' => 3,
       ),
-      'ieid' => '3',
-      'isid' => '1',
-      'weight' => '3',
-    )
     ),
   );
 
@@ -159,11 +154,11 @@ function nm_general_features_image_default_styles() {
 function nm_general_features_node_info() {
   $items = array(
     'page' => array(
-      'name' => t('Basic page'),
+      'name' => t('Einfache Seite'),
       'base' => 'node_content',
-      'description' => t('Use <em>basic pages</em> for your static content, such as an \'About us\' page.'),
+      'description' => t('Benutzen Sie <em>Einfache Seiten</em> für statischen Inhalt, wie z.B. eine „Über uns“ Seite.'),
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'plattform_log' => array(
