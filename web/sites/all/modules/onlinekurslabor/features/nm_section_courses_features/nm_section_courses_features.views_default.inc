@@ -87,12 +87,19 @@ function nm_section_courses_features_views_default_views() {
       'override_label' => 0,
       'label' => '',
     ),
+    'action::section_courses_clone_content' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 1,
+      'override_label' => 1,
+      'label' => 'In Kurs kopieren',
+    ),
     'action::views_bulk_operations_delete_item' => array(
-      'selected' => 0,
+      'selected' => 1,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
+      'override_label' => 1,
+      'label' => 'Löschen',
     ),
     'action::views_bulk_operations_delete_revision' => array(
       'selected' => 0,
@@ -222,7 +229,7 @@ function nm_section_courses_features_views_default_views() {
       'label' => '',
     ),
     'action::pathauto_node_update_action' => array(
-      'selected' => 1,
+      'selected' => 0,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
@@ -404,10 +411,11 @@ function nm_section_courses_features_views_default_views() {
     t('OG membership from node'),
     t('Inhalt'),
     t('- Choose an operation -'),
+    t('In Kurs kopieren'),
+    t('Löschen'),
     t('Title'),
     t('Updated date'),
     t('Bearbeiten'),
-    t('Löschen'),
     t('Alle'),
     t('course_news'),
     t('View panes'),
@@ -3346,8 +3354,10 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
   $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ vorherige Seite';
   $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
+  $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'gid' => 'gid',
@@ -3534,10 +3544,10 @@ function nm_section_courses_features_views_default_views() {
     t('Items per page'),
     t('- All -'),
     t('Offset'),
-    t('« first'),
+    t('« erste Seite'),
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
-    t('last »'),
+    t('letzte Seite »'),
     t('Anzahl: @total'),
     t('author'),
     t('OG membership from node'),
