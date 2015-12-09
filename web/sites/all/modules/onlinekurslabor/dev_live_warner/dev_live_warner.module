@@ -12,7 +12,7 @@
  */
 function dev_live_warner_init() { 
  
-  if(strstr($_SERVER['HTTP_HOST'], 'dev') ||  strstr($_SERVER['HTTP_HOST'], 'test'))
+  if(strstr($_SERVER['HTTP_HOST'], 'okldev') ||  strstr($_SERVER['HTTP_HOST'], 'okltest'))
   {
       //add plugin-js for controlss
   drupal_add_css(drupal_get_path('module', 'dev_live_warner') . '/assets/css/dev.css');
