@@ -336,6 +336,9 @@ function section_courses_block_view($delta = '') {
   }
 
   return $block;
+
+
+
 }
 
 /**

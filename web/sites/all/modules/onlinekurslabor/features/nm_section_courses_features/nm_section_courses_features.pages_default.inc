@@ -6950,6 +6950,44 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
+    $pane->pid = 'new-fa24f570-f5a3-438f-9984-898feaec3bfd';
+    $pane->panel = 'center';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'Edit Course Text Link',
+      'title' => '<none>',
+      'body' => '<?php 
+
+  $active_course = _section_courses_get_active_course();
+  if ($active_course) {
+    //$nid = _section_courses_course_get_domain_id($active_course);
+    if (arg(0) == \'course\' && arg(1) == \'text\' && is_numeric(arg(3))) {
+      $nid = arg(3);
+      if (node_access(\'update\', node_load($nid))) {
+        echo \'<a class="btn" href="/domain/edit/\' . $nid . \'">Lehrtext bearbeiten (Themenbereich)</a>\';
+      }
+    }
+  }
+
+?>',
+      'format' => 'php_code',
+      'substitute' => 1,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'fa24f570-f5a3-438f-9984-898feaec3bfd';
+    $display->content['new-fa24f570-f5a3-438f-9984-898feaec3bfd'] = $pane;
+    $display->panels['center'][0] = 'new-fa24f570-f5a3-438f-9984-898feaec3bfd';
+    $pane = new stdClass();
     $pane->pid = 'new-d9b72f36-2b7e-46e0-bacf-00cc5c23ac5c';
     $pane->panel = 'center';
     $pane->type = 'entity_view';
@@ -6968,45 +7006,11 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 0;
+    $pane->position = 1;
     $pane->locks = array();
     $pane->uuid = 'd9b72f36-2b7e-46e0-bacf-00cc5c23ac5c';
     $display->content['new-d9b72f36-2b7e-46e0-bacf-00cc5c23ac5c'] = $pane;
-    $display->panels['center'][0] = 'new-d9b72f36-2b7e-46e0-bacf-00cc5c23ac5c';
-    $pane = new stdClass();
-    $pane->pid = 'new-fa24f570-f5a3-438f-9984-898feaec3bfd';
-    $pane->panel = 'outline';
-    $pane->type = 'custom';
-    $pane->subtype = 'custom';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'admin_title' => 'Edit Course Text Link',
-      'title' => '<none>',
-      'body' => '<?php 
-   $active_course = _section_courses_get_active_course();
-    if ($active_course) {
-      $nid = _section_courses_course_get_domain_id($active_course);
-      if(node_access(\'update\', node_load($nid))){
-        echo \'<a class="btn" href="/node/\'.$nid.\'">Lehrtext bearbeiten (Themenbereich)</a>\';
-      }
-    }
-
-?>',
-      'format' => 'php_code',
-      'substitute' => 1,
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $pane->uuid = 'fa24f570-f5a3-438f-9984-898feaec3bfd';
-    $display->content['new-fa24f570-f5a3-438f-9984-898feaec3bfd'] = $pane;
-    $display->panels['outline'][0] = 'new-fa24f570-f5a3-438f-9984-898feaec3bfd';
+    $display->panels['center'][1] = 'new-d9b72f36-2b7e-46e0-bacf-00cc5c23ac5c';
     $pane = new stdClass();
     $pane->pid = 'new-d445add9-630c-48d1-b4e6-375b2d616005';
     $pane->panel = 'outline';
@@ -7029,11 +7033,11 @@ return section_courses_text_outline();
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 0;
     $pane->locks = array();
     $pane->uuid = 'd445add9-630c-48d1-b4e6-375b2d616005';
     $display->content['new-d445add9-630c-48d1-b4e6-375b2d616005'] = $pane;
-    $display->panels['outline'][1] = 'new-d445add9-630c-48d1-b4e6-375b2d616005';
+    $display->panels['outline'][0] = 'new-d445add9-630c-48d1-b4e6-375b2d616005';
     $pane = new stdClass();
     $pane->pid = 'new-34bfc27b-c755-4677-a814-91555cdd9e92';
     $pane->panel = 'outline';
@@ -7051,11 +7055,11 @@ return section_courses_text_outline();
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 2;
+    $pane->position = 1;
     $pane->locks = array();
     $pane->uuid = '34bfc27b-c755-4677-a814-91555cdd9e92';
     $display->content['new-34bfc27b-c755-4677-a814-91555cdd9e92'] = $pane;
-    $display->panels['outline'][2] = 'new-34bfc27b-c755-4677-a814-91555cdd9e92';
+    $display->panels['outline'][1] = 'new-34bfc27b-c755-4677-a814-91555cdd9e92';
     $pane = new stdClass();
     $pane->pid = 'new-c2665aae-6b87-4bb0-af15-295aa2e40f87';
     $pane->panel = 'tools';
