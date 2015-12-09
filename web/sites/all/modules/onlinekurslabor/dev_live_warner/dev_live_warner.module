@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * 
+ * Ersetzt das User-Bild in profile2 durch einen robohash.
+ * benötigt genau die im Code genannten Feldnamen.
+ * 
+ */
+ 
+/**
+ * Implements hook_init().
+ */
+function dev_live_warner_init() { 
+ 
+  if(strstr($_SERVER['HTTP_HOST'], 'dev') ||  strstr($_SERVER['HTTP_HOST'], 'test'))
+  {
+      //add plugin-js for controlss
+  drupal_add_css(drupal_get_path('module', 'dev_live_warner') . '/assets/css/dev.css');
+    //add plugin-js for controlss
+  drupal_add_js(drupal_get_path('module', 'dev_live_warner') . '/assets/js/dev.js');
+  
+  }
+   
+}
+  
