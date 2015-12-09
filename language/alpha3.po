@@ -12,6 +12,10 @@ msgstr "Zielkurse auswählen"
 msgid "You didn't choose any course."
 msgstr "Sie haben keinen Zielkurs ausgewählt."
 
+msgid "Import existing users: enter their email-adresses <em>One email address per line</em> (accounts will be unlocked)"
+msgstr "Existierende Nutzer eintragen: E-Mail-Adressen eintragen <em>Eine E-Mail pro Zeile</em> (Accounts werden ggf. freigeschaltet)"
 
+msgid "Create new accounts: enter \"Firstname Lastname; example@email.com\". <em>One entry per line</em> (if an account with that email address already exists, the user will be imported)"
+msgstr "Neue Nutzer anlegen: Syntax  \"Vorname Nachname; example@email.com\". <em>Ein Eintrag pro Zeile</em> (existiert bereits ein entsprechender Account, wird der Nutzer in den Kurs eingetragen)"
 
 
