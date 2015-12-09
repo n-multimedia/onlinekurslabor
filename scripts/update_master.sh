@@ -2,7 +2,7 @@
 
 #drush vset maintenance_mode 1
 
-drush en userprotect defaultavatar --yes
+drush en userprotect defaultavatar dev_live_warner --yes
 
 drush fr nm_section_courses_features nm_general_features --yes
 

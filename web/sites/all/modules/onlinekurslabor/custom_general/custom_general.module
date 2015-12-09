@@ -527,7 +527,7 @@ function _custom_general_theme_tools_block($tool_links, $id = "", $class = "sect
       $output .= '</div>';
     }
     //$output .= '</div>';
-    $output .= '</div>';
+    //$output .= '</div>';
   }
   //no groups configured - render horizontal toolbar
   else {
