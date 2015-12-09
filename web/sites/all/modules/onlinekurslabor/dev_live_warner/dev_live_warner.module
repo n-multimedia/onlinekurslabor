@@ -2,8 +2,10 @@
 
 /**
  * 
- * Ersetzt das User-Bild in profile2 durch einen robohash.
- * benötigt genau die im Code genannten Feldnamen.
+ * aendert das design, damit man weiß, dass man im dev-/test-system und nicht
+ * live ist.
+ * vergräult nutzer, die aus versehen auf diese kommen durch einen furchtbar hässlichen
+ * landingscreen mit link aufs live-system
  * 
  */
  
