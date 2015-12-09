@@ -944,8 +944,13 @@ function nm_stream_nm_stream_comment_delete_callback($comment, $token) {
 function nm_stream_block_view($delta = '') {
   $block = array();
 
+  if(arg(0) == 'admin'){
+    //do not render any output in admin section
+    //problem: nm_stream_stream_node_form searching for context
+    return $block;
+  }
   switch ($delta) {
-    case 'nm_stream_form_add_edit' :
+    case 'nm_stream_form_add_edit':
       $block['content'] = _nm_stream_form_add_edit_view();
       break;
   }
