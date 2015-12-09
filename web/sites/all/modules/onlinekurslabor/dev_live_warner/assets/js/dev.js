@@ -1,9 +1,16 @@
 
 /*
- * fügt lustige landingpages hinzu, fügt pagelements hinzu und steuert behaviour dieser erweiterungen
+ * fügt lustige landingpage hinzu, fügt pagelements hinzu und steuert behaviour dieser erweiterungen
  */
 jQuery( document ).ready(function() {
- jQuery("body").addClass("dev");
+    //fuer admin-overlay
+    if(window.self !== window.top)
+    {   //falls style grad nicht resetted ist, dev anzeigen
+        if(window.top.jQuery("body").hasClass("dev"))
+           jQuery("body").addClass("dev");
+    }
+    else
+        jQuery("body").addClass("dev");
  jQuery("body.dev #navbar .navbar-inner").prepend('<a id="reset_style" href="#" class="pull-left">Reset Style</a>');
  jQuery("#reset_style").click(function(){jQuery(this).remove(); jQuery("body").removeClass("dev")});
  if(! (devliveplugin_readCookie("dev_overlay_skip") === "ja"))
