@@ -1,4 +1,17 @@
 #Translation File - onlinekurslabor
 
-msgid ""
-msgstr ""
+msgid "You can't delete the default profile picture. To remove it, upload a custom picture."
+msgstr "Sie können das Standard-Foto nicht löschen. Um es zu ersetzen, laden Sie bitte ein eigenes Bild hoch."
+
+
+msgid "A default picture was created for you!"
+msgstr "Ein Standard-Foto wurde für Sie erstellt!"
+
+msgid "Select which course(s) you would like to copy to."
+msgstr "Zielkurse auswählen"
+
+msgid "You didn't choose any course."
+msgstr "Sie haben keinen Zielkurs ausgewählt."
+
+
+

@@ -610,6 +610,27 @@ function _section_course_get_coursegroups($course) {
   return $result->fetchAll();
 }
 
+/**
+ * get all kurs-dokumente of a course -object
+ *
+ * @param StdClass  $course object
+ * @return mixed
+ */
+function _section_course_get_documents($course) {
+
+  $query = db_select('node', 'n');
+
+  $query->condition('n.nid', 0, '<>')
+      ->condition('n.status', 1, '=')
+      ->condition('n.type', NM_COURSE_DOCS)
+      ->fields('n', array('nid', 'title', 'type'))
+      ->join('og_membership', 'ogm', "ogm.gid = :gid AND n.nid = ogm.etid AND ogm.entity_type = 'node'", array(':gid' => $course->nid));
+
+  $result = $query->execute();
+
+
+  return $result->fetchAll();
+}
 function _section_course_get_solutions($course) {
 
   $query = db_select('node', 'n');
@@ -740,7 +761,11 @@ $courses = $refs['courses_course'];
 
 $real_courses = array();
 foreach($courses as $course_id => $bla)
-    $real_courses[$course_id] = _section_course_get_course($course_id);
+{
+   $a_course = _section_course_get_course($course_id);
+     if (node_access('update', $a_course))
+              $real_courses[$course_id] = $a_course;
+}
   
 
 if($sort_field)
