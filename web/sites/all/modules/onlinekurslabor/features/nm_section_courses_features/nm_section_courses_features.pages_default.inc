@@ -2256,6 +2256,29 @@ return section_courses_text_outline();
     $pane->uuid = '36d8976c-8a6d-4cbc-8c93-57b7b36bc709';
     $display->content['new-36d8976c-8a6d-4cbc-8c93-57b7b36bc709'] = $pane;
     $display->panels['tools'][4] = 'new-36d8976c-8a6d-4cbc-8c93-57b7b36bc709';
+    $pane = new stdClass();
+    $pane->pid = 'new-aeb10b6f-d2f3-4e92-9a61-97560efdbded';
+    $pane->panel = 'tools';
+    $pane->type = 'block';
+    $pane->subtype = 'section_projects-projects_course_group_userlink';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 0,
+      'override_title_text' => '',
+      'override_title_heading' => 'h2',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 5;
+    $pane->locks = array();
+    $pane->uuid = 'aeb10b6f-d2f3-4e92-9a61-97560efdbded';
+    $display->content['new-aeb10b6f-d2f3-4e92-9a61-97560efdbded'] = $pane;
+    $display->panels['tools'][5] = 'new-aeb10b6f-d2f3-4e92-9a61-97560efdbded';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
