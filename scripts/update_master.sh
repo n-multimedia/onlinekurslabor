@@ -4,7 +4,7 @@
 
 drush en userprotect defaultavatar dev_live_warner --yes
 
-drush fr nm_section_courses_features nm_general_features --yes
+drush fr nm_section_content_features nm_section_courses_features nm_general_features --yes
 
 
 #clear cache

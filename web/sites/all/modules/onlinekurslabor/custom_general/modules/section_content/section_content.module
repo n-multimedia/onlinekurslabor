@@ -520,14 +520,20 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     }
   }
   //Only hide book options for users who dont have admin permission
-  $hide_book_options = !node_access('administer content');
+  $hide_book_options = !user_access('administer content');
+
   //remove book settings from biblio content type for authors (Role Autor)
   if (!empty($form['#node_edit_form']) && $hide_book_options) {
-    $node = $form['#node'];
+    //should be easier
+    //09.12.2015 - 18:09 - SN
+    //outline should be shown for admins only!
+    $form['book']['#type'] = 'hidden';
+
+    /*$node = $form['#node'];
     $type = $form['type']['#value'];
     // Not a book || not a domain => Nothing to do
     if (($type != NM_BIBLIO) || !isset($node->book)) {
-      
+
     }
     else {
       $form['book']['#type'] = 'hidden';
@@ -545,7 +551,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
           hide($form['book']);
         }
       }
-    }
+    }*/
   }
 
   if($form_id == 'courses_course_node_form'){

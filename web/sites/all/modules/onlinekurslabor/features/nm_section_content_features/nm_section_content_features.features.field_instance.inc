@@ -1255,6 +1255,7 @@ function nm_section_content_features_field_default_field_instances() {
     'settings' => array(
       'behaviors' => array(
         'og_widget' => array(
+          'access_override' => 0,
           'admin' => array(
             'widget_type' => 'entityreference_autocomplete',
           ),
@@ -1264,10 +1265,13 @@ function nm_section_content_features_field_default_field_instances() {
           'status' => TRUE,
         ),
         'prepopulate' => array(
-          'action' => 'none',
-          'action_on_edit' => 0,
+          'action' => 'hide',
+          'action_on_edit' => 1,
           'fallback' => 'none',
-          'og_context' => 0,
+          'providers' => array(
+            'og_context' => 0,
+            'url' => 1,
+          ),
           'skip_perm' => 0,
           'status' => 1,
         ),
@@ -1289,7 +1293,9 @@ function nm_section_content_features_field_default_field_instances() {
     'widget' => array(
       'active' => 0,
       'module' => 'og',
-      'settings' => array(),
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+      ),
       'type' => 'og_complex',
       'weight' => 3,
     ),
