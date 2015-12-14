@@ -92,6 +92,10 @@ define("NM_COURSE_PROJECTS_PATH", "projects/");
 
 define("NM_COURSE_PROJECTS_PARTNERS_PATH", "projects/partners/");
 
+//Videosafe Contenttype
+define("NM_VIDEOSAFE_PATH", "videosafe");
+define("NM_VIDEOSAFE_FOLDER", "videosafe_folder");
+define("NM_VIDEOSAFE_VIDEO", "videosafe_video");
 
 //Domains
 //Contet Types
