@@ -9,6 +9,7 @@
  * @{
  */
 
+define('ANNVID_CONTENTTYPE','annvid');
 /**
  * Implements hook_init().
  */
@@ -31,27 +32,97 @@ function AnnVid_init() {
   */
   drupal_add_css(drupal_get_path('module', 'AnnVid') . '/assets/css/annvid.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
 }
-  
+ 
+
+/*wird vom field annvid_codefield_get_player_code, das teil des displays inhaltstyps annvid
+ * ist, aufgerufen und fügt   benötigtes js dem html-code hinzui */
+function _AnnVid_getPlayerCode($node_id)
+{ $node = node_load($node_id);
+
+      $js_path = base_path().drupal_get_path('module', 'AnnVid') . '/assets/javascript/videoconnector.js';
+         $js2_path = base_path().drupal_get_path('module', 'AnnVid') . '/assets/javascript/streamconnector.js';
+          $image_path = base_path().drupal_get_path('module', 'AnnVid') . '/assets/images/ajax-loader.gif';
+           
+      $html_code =  <<<EOF
+                     <script src="$js_path"></script>
+                     <script src="$js2_path"></script>
+                    
+EOF;
+       if($node->field_show_h5p_annotationlist[LANGUAGE_NONE][0]['value'] === "0")
+       { /*annotationlist verstecken */
+           $html_code .=
+                    '<style>
+                       .h5p_annotationlist 
+                        {display:none !important; }
+                     </style>';
+       }
+       
+    return $html_code ;
+}
+  /*
 function AnnVid_hook_page_alter($page) {
   if (true) {
     foreach (element_children($page) as $region) {
       $page[$region]['#access'] = ($region == 'content');    
     }
   }
-}
+}*/
 /**
  * Implements hook_theme()
- */
+
 function AnnVid_theme() {
   return array(
     'popup' => array(
-      'arguments' => array('content' => null), //Array of variables in page-ajax.tpl.php
+      'variables' => array('content' => null), //Array of variables in page-ajax.tpl.php
       'template' => 'player',
       'path' => drupal_get_path('module', 'AnnVid') .'/theme/',
+        'function' => 'theme_custom_output'
     ),
   );
 }
+function AnnVid_output_callback($node) {
+  print theme('popup', array('node' => $node));
+}
 
+function my_page_function ()
+{
+      // Call theme() function, so that Drupal includes the custom-page.tpl.php template
+    return theme('popup');
+}
+
+
+function theme_custom_output($variables) {
+    return kuchen234;
+  $node = $variables['node'];
+  $build = node_view($node);
+  $output = drupal_render($build);
+  return $output;
+}
+ */
+/*
+ * Implementation of hook_menu()
+
+function custom_example_menu(){
+  // path location (<a href="http://www.url.com/foo/bar" title="http://www.url.com/foo/bar">http://www.url.com/foo/bar</a> )
+  $items['foo/bar'] = array(
+    // page title
+    'title' => 'Page Title',
+    // describe the page for the menu system.  site visitors will not see this
+    'description' => 'Simple custom hook_menu() implementation.',
+    // function that is called when visiting the new path
+    'page callback' => 'my_page_function',
+    // permissions required to view page
+    'access arguments' => array('access content'),
+  );  
+  return $items;
+}
+  */
+function _AnnVid_getStreamTimeLine()
+{
+       $html_code = '<div id=stream_timeline></div>';
+
+       return $html_code ;
+}
 
 function _AnnVid_getPlayer($h5p_node_id, $pdf_file_url)
 {
@@ -60,7 +131,7 @@ function _AnnVid_getPlayer($h5p_node_id, $pdf_file_url)
    #  #[h5p]2276:cat[/h5p]
    #  //dieser befehl führt immer dazu, dass man auf den node umgeleitet wird. kA warum.
     //onlinekurslabor_redirect.module zeile 29 + 135    case NM_INTERACTIVE_CONTENT: raus!
-       $video =   _h5p_integration_h5p_replacements(array(0, 2277));
+       $video =   _h5p_integration_h5p_replacements(array(0, $h5p_node_id));
        $js_path = base_path().drupal_get_path('module', 'AnnVid') . '/assets/javascript/videoconnector.js';
          $js2_path = base_path().drupal_get_path('module', 'AnnVid') . '/assets/javascript/streamconnector.js';
           $image_path = base_path().drupal_get_path('module', 'AnnVid') . '/assets/images/ajax-loader.gif';

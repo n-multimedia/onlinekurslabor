@@ -65,11 +65,10 @@ function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
             drupal_goto($path, $options);
             break;
         case NM_VIDEOSAFE_VIDEO:
-            drupal_goto(NM_VIDEOSAFE_PATH . '/' . $node->nid);
-            break;
         case NM_VIDEOSAFE_FOLDER:
             drupal_goto(NM_VIDEOSAFE_PATH . '/' . $node->nid);
             break;
+        
     }
 
     $active_course = _section_courses_get_active_course();

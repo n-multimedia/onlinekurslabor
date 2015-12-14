@@ -1244,7 +1244,7 @@ function nm_stream_og_context() {
   $active_annvid = node_load($active_annvid_nid);
   if($active_annvid) {
     //edition a proposal
-    if ($active_annvid->type == 'annvid_content') {
+    if ($active_annvid->type ==ANNVID_CONTENTTYPE) {
       return $active_annvid;
     }
 
@@ -1288,7 +1288,7 @@ function nm_stream_og_context() {
 
           $active_annvid_nid = arg(1, $referer_url['path']);
           $active_annvid = node_load($active_annvid_nid);
-          if (!empty($active_annvid) && $active_annvid->type == 'annvid_content') {
+          if (!empty($active_annvid) && $active_annvid->type == ANNVID_CONTENTTYPE) {
             $context = node_load($active_annvid_nid);
           }
       }

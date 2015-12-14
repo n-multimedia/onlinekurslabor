@@ -5,8 +5,8 @@
 (function($) {
     Drupal.behaviors.annvid = {
         attach: function(context, settings) {
-
-
+       Drupal.behaviors.annvid.stream.attach(context, settings) ;
+      //gibnts nich  Drupal.behaviors.annvid.video.attach(context, settings);
         },
         initialized_state: new Array(),
         
@@ -28,7 +28,7 @@
                 Drupal.behaviors.annvid.processHash();
                 jQuery(".annvid_container").addClass("annvid_container_loaded");
                 jQuery(".annvid_loading_div").fadeOut("slow");
-                   
+                Drupal.behaviors.annvid.stream.createStreamTimeline()   ;
                   
                 
             }
@@ -294,7 +294,7 @@ jQuery(document).ready(function() {
             //   Drupal.behaviors.annvid.redirect("video:"+e.message);
                 console.log('new time!' + e.message);
     });
-    jQuery(".nm_stream .nm-stream-main-body").makeStreamClickable();
+   
     
      jQuery(document).on("annvid_entity_loaded", function(e){ 
          Drupal.behaviors.annvid.notifyInitialized(e.message);

@@ -21,6 +21,10 @@ div.gradient_background{
     padding-left:0.4em;
     margin-left:0.3em;
 }
+.annotation_container_highlighted
+{
+    background-color: #FF873A !important;
+}
 .annvid_container
 { 
 }
@@ -31,4 +35,26 @@ div.gradient_background{
     position:absolute;
     background: white;
     z-index:20;
+}
+div#stream_timeline{
+    margin-top: 4px;
+    margin-bottom: 4px;
+    border:1px solid #AAAAAA;
+    height:24px;
+    background: #EEEEEE;
+}
+div#stream_timeline div#timemark
+{    position:absolute;
+    z-index: 3;
+    opacity: 0.8; 
+    height:24px;
+    width:3px; 
+    background-color:#FF7617;    
+}
+div#stream_timeline img.timeline_profile
+{
+    width:20px;
+    margin-top:2px;
+    position:absolute;
+    z-index: 2;
 }
