@@ -1295,9 +1295,9 @@ function _section_courses_student_registration_import($input) {
       foreach($rows as $row){
         $row =  html_entity_decode($row, ENT_QUOTES);
         $row = explode(';', $row);
-        $data['first_name'] = substr($row[0], 0, strrpos($row[0], ' '));
-        $data['last_name'] = substr($row[0], strrpos($row[0], ' ')+1);
-        $data['email'] = $row[1];
+        $data['first_name'] = trim(substr($row[0], 0, strrpos($row[0], ' ')));
+        $data['last_name'] = trim(substr($row[0], strrpos($row[0], ' ')+1));
+        $data['email'] = trim($row[1]);
 
         $emails[] = $data['email'];
         $rows_data[$data['email']] = $data;
