@@ -1050,3 +1050,8 @@ PROJECTS
 }
 
 
+/*selbes cursorverhalten fuer alle disableds*/
+.btn.disabled, .btn[disabled], .btn.disabled *, .btn[disabled] *
+{
+    cursor: default ;
+}
