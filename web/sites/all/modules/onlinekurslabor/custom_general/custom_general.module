@@ -872,7 +872,6 @@ function custom_general_mail_alter(&$message){
 
   if($message['from'] == $default_from){
     $default_from = 'onlinekurslabor@medienlabor-uni-augsburg.de';
-    $message['from'] = '"'. variable_get('site_name', 'Drupal') .'" <'. $default_from .'>';
-    $message['headers']['From'] = $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['Errors-To'] = $message['headers']['Reply-To'] = $message['from'];
+    $message['headers']['Reply-To'] = '"'. variable_get('site_name', 'Drupal') .'" <'. $default_from .'>';
   }
 }
