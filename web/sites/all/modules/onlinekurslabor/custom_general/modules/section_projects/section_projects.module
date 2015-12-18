@@ -631,6 +631,9 @@ function _section_projects_header_and_navigation_view() {
 
   $output = '';
 
+  $arg0 = arg(0);
+  $arg1 = arg(1);
+
   //partnerübersicht
   $arg2 = arg(2);
   //partnerorganisation
@@ -810,6 +813,8 @@ function _section_projects_header_and_navigation_view() {
   if (is_numeric($arg2) && is_numeric($arg3) && ($arg4 == 'cockpit')) {
     //projects overview page
     $output .= _section_projects_project_cockpit_tabs_view();
+  }else if(($arg0 == 'projects') && ($arg1 == 'admin')) {
+    $output .= _section_projects_project_cockpit_tabs_view_static();
   }
 
   $block = array(
@@ -860,6 +865,52 @@ function _section_projects_project_cockpit_main_view() {
   }
 
   return $block;
+}
+
+
+/**
+ * in add and edit forms we need static lincs instead of tabs
+ * @return array|string
+ */
+function _section_projects_project_cockpit_tabs_view_static() {
+  $navigation_items = _section_projects_get_navigation_items();
+
+  $block = array();
+  $active_project = section_projects_get_active_project();
+
+  //get project and partner ids
+  if (!empty($active_project->field_ca_proposal_ref)) {
+    $proposal_ref = $active_project->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id'];
+    $proposal_node = node_load($proposal_ref);
+
+    if (!empty($proposal_node->field_partner_organization_ref)) {
+      $partner_ref = $proposal_node->field_partner_organization_ref[LANGUAGE_NONE][0]['target_id'];
+    }
+  }
+
+  if (!isset($active_project) || empty($active_project))
+    return array();
+
+  $i = 0;
+  if ($active_project) {
+    $output = '<div class="row-fluid">';
+    $output .= '<div style="position:relative" class="nav-tabbox span12">';
+    foreach ($navigation_items as $item) {
+      $active_class = ($i == 0) ? 'active' : '';
+      $output .= '<div class="' . $active_class . '">';
+      $output .= '<a href = "/projects/partners/'.$partner_ref.'/'.$proposal_node->nid.'/cockpit/'.$active_project->nid.'#' . drupal_html_class(transliteration_get($item)) . '" class="statictab ' . drupal_html_class(transliteration_get($item)) . '">';
+      $output .= $item;
+      $output .= '</a>';
+      $output .= '</div>';
+
+      $i++;
+    }
+
+    $output .= '</div>';
+    $output .= '</div>';
+  }
+
+  return $output;
 }
 
 function _section_projects_project_cockpit_tabs_view() {
