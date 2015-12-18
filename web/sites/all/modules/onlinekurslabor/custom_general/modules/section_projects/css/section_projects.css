@@ -53,7 +53,7 @@ Redundant with section_spaces.css - but spaces is deactivated for now!
 
 }
 
-.nav-tabbox .active a.tab,
+.nav-tabbox .active a.tab
 {
     background-color: #45364b;
 }
