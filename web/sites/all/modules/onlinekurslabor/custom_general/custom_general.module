@@ -860,3 +860,19 @@ function custom_general_user_insert(&$edit, $account, $category) {
   //$account = user_load($account, TRUE);
   realname_update($account);
 }*/
+
+
+/**
+ * Implementation of hook_mail_alter().
+ * Here we allow the site name to be used as the senders name for outgoing email.
+ * see http://drupal.org/node/209672
+ */
+function custom_general_mail_alter(&$message){
+  $default_from = variable_get('site_mail', ini_get('sendmail_from'));
+
+  if($message['from'] == $default_from){
+    $default_from = 'onlinekurslabor@medienlabor-uni-augsburg.de';
+    $message['from'] = '"'. variable_get('site_name', 'Drupal') .'" <'. $default_from .'>';
+    $message['headers']['From'] = $message['headers']['Sender'] = $message['headers']['Return-Path'] = $message['headers']['Errors-To'] = $message['headers']['Reply-To'] = $message['from'];
+  }
+}
