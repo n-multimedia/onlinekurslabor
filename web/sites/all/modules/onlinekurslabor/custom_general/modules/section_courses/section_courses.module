@@ -1763,6 +1763,42 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
         $f_item['second']['#format'] = NM_FILTER_FORMAT_FILTERED_HTML;
       }
     }
+
+    //aufgabenstellung: die textbox wird bei jedem bearbeiten um eine mehr
+    //renive empty fields
+
+
+    $empty_entries = array();
+    if(!empty($form['field_generic_task_entry'][LANGUAGE_NONE])){
+      if(count($form['field_generic_task_entry'][LANGUAGE_NONE])>1){
+        foreach ($form['field_generic_task_entry'][LANGUAGE_NONE]  as $key=>$item) {
+          //get elements only
+          if(is_numeric($key)){
+            if($item['first']['#default_value'] == NULL && $item['second']['#default_value']==0){
+              $empty_entries[$key] = $key;
+            }
+          }
+        }
+
+        /*
+        asort($empty_entries);
+        if(!empty($empty_entries)) {
+          $form_state['rebuild'] = TRUE;
+          foreach ($empty_entries as $key) {
+            unset($form['field_generic_task_entry'][LANGUAGE_NONE][$key]);
+          }
+        }*/
+        //remove empty forms
+
+        $js_settings['task_remove_empty_fields'] = $empty_entries;
+
+        drupal_add_js(drupal_get_path('module', 'section_courses') . '/js/section_courses_tasks.js');
+        drupal_add_js(array('section_courses' => $js_settings), 'setting');
+
+      }
+    }
+
+
     if (isset($f_item)) {
       unset($f_item);
     }

@@ -81,16 +81,9 @@ function nm_section_courses_features_views_default_views() {
       'label' => '',
     ),
     'action::section_courses_clone_course' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::section_courses_clone_content' => array(
       'selected' => 1,
       'postpone_processing' => 0,
-      'skip_confirmation' => 1,
+      'skip_confirmation' => 0,
       'override_label' => 1,
       'label' => 'In Kurs kopieren',
     ),

@@ -34,7 +34,8 @@ Redundant with section_spaces.css - but spaces is deactivated for now!
     border-bottom:0;
     margin-left:-1px;
 }
-.nav-tabbox a.tab{
+.nav-tabbox a.tab,
+.nav-tabbox a.statictab {
     padding:11px 15px;
     display: block;
     background-color: #5d455c;
@@ -44,13 +45,16 @@ Redundant with section_spaces.css - but spaces is deactivated for now!
     text-shadow: none;
 }
 
-.nav-tabbox a.tab:hover{
+.nav-tabbox a.tab:hover,
+.nav-tabbox a.statictab:hover
+{
     text-decoration: none;
     background-color: #4f3f56;
 
 }
 
-.nav-tabbox .active a.tab{
+.nav-tabbox .active a.tab
+{
     background-color: #45364b;
 }
 
