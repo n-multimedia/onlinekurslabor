@@ -174,7 +174,8 @@ function _courses_tasks_get_task_period_label($task_id, $solution_id = 0) {
     $endtime = $node->field_task_handling_period[LANGUAGE_NONE][0][value2];
     $starttime_secs = strtotime($starttime);
     $endtime_secs = strtotime($endtime);
-
+    $has_endtime = $starttime_secs != $endtime_secs  ;
+    
     if ($solution_id) {
         $solution = node_load($solution_id);
         $state = workflow_node_current_state($solution);
@@ -187,7 +188,7 @@ function _courses_tasks_get_task_period_label($task_id, $solution_id = 0) {
 
         if ($changed < $starttime_secs)
             $markup = '<span class="label label-important" ' . $title . '><strong>Zu früh eingereicht</strong></span>';
-        elseif ($changed > $endtime_secs)
+        elseif ($has_endtime && $changed > $endtime_secs)
             $markup = '<span class="label label-important" ' . $title . '><strong>Zu spät eingereicht</strong></span>';
         else
             $markup = '<span class="label label-info" ' . $title . '><strong>Pünktlich eingereicht</strong></span>';
@@ -196,7 +197,7 @@ function _courses_tasks_get_task_period_label($task_id, $solution_id = 0) {
     //keine solultion vorhanden oder im draft-modus
     if ($starttime_secs > time())
         $markup = '<span class="label label-important"><strong>Noch kein Bearbeitungszeitraum</strong></span>';
-    elseif (time() > $endtime_secs)
+    elseif ($has_endtime && time() > $endtime_secs)
         $markup = '<span class="label label-important"><strong>Einreichungsfrist verpasst</strong></span>';
     else
         $markup = '<span class="label label-info"><strong>Bearbeitungszeitraum aktiv</strong></span>';
