@@ -53,7 +53,7 @@ function h5p_integration_menu() {
 
 
 function _h5p_integration_autocomplete($search = NULL) {
-    
+
   $search = $_GET['s'];
   $enabled_plugins = linkit_get_profile_plugins();
 
@@ -84,7 +84,7 @@ function _h5p_integration_h5p_autocomplete_search($search_string, $enabled_plugi
   $matches = array();
   if ($search_string) {
     $profile = linkit_profile_load("h5p_interactive_content");
-  
+
     foreach ($enabled_plugins as $plugin) {
       // Get an instance of the handler for this plugin.
       $handler = linkit_get_plugin_handler($plugin, $profile);
@@ -222,7 +222,38 @@ function _h5p_integration_h5p_replacements($matches) {
     $nid = $matches[1];
     $node = node_load($nid);
 
+    //visibility checks
+    //will the content will be visible
+    $arg0 = arg(0);
+    $arg1 = arg(1);
+    $arg2 = arg(2);
+    $arg3 = arg(3);
+    $course_context = $arg0 == 'course' && $arg1 == 'text' && is_numeric($arg3);
+    $domain_context = $arg0 == 'domain' && $arg1 == 'text' && is_numeric($arg2);
+    if($course_context || $domain_context){
+      if($arg0 == 'course' ){
+        $content_node = node_load($arg3);
+      }else if($arg0 == 'domain') {
+        $content_node = node_load($arg2);
+      }
+
+      //get content domain
+      if(!empty($content_node->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
+        $domain_nid = $content_node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        //check if user may adit h5p and domain content node
+        if(node_access('update', $node) && node_access('update', $content_node)) {
+          //check if h5p content is visible in active domain
+          if(!og_is_member('node', $domain_nid, 'node', $node)) {
+            drupal_set_message("Es wurde ein H5P Inhalt eingebettet, der nicht für dieses Thema freigeschaltet ist. " . l("Bitte schalten Sie diesen Inhalt hier frei.", 'domain/edit/'.$node->nid), 'warning');
+          }
+        }
+      }
+
+    }
+
+
     if ($node != FALSE && node_access('view', $node) && $node->status) {
+
       $node_view = node_view($node, 'full', NULL);
 
       //28.05.2013 - 12:22 - SN hack, title must be unset at another place (template)
