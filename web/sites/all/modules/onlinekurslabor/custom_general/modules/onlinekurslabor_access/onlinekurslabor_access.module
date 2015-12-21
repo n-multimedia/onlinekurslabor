@@ -240,6 +240,24 @@ function onlinekurslabor_access_node_access_records($node) {
   }
 
 
+  //additional visibility
+  //h5p is beeing used in different domains
+  if (in_array($node->type, array(NM_INTERACTIVE_CONTENT))) {
+    if (!empty($node->og_domain_ref[LANGUAGE_NONE])) {
+      foreach($node->og_domain_ref[LANGUAGE_NONE] as $item){
+        $grants[] = array(
+          'realm' => 'onlinekurslabor_domain_content',
+          'gid' => $item['target_id'],
+          'grant_view' => 1,
+          'grant_update' => 0,
+          'grant_delete' => 0,
+          'priority' => 1,
+        );
+      }
+    }
+  }
+
+
 
   return !empty($grants) ? $grants : array();
 }
