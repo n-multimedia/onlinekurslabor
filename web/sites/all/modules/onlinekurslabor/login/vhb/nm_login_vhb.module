@@ -108,6 +108,8 @@ function nm_login_vhb() {
         //reactivate user
         nm_login_vhb_reactivate_user($archivated_uid, $params);
         watchdog("LOGIN VHB", 'User reactivated', array(), WATCHDOG_INFO);
+        //fix missing var
+        $account = user_load($archivated_uid);
       }
       else {
         $account = nm_login_vhb_add_user($params);
@@ -124,10 +126,13 @@ function nm_login_vhb() {
 
         //redirect to course page
         $course = nm_login_vhb_get_course($params['LVNR']);
-        drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
+        if(!$course->nid)
+            drupal_set_message ("Course ".$params['LVNR']." could not be found. Please contact site-admin.",'error');
+        else
+            drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
       }
       else {
-        $message = "Logged in user tryed to create an account and log in UID: " . $user->uid;
+        $message = "Logged in user tried to create an account and log in UID: " . $user->uid;
         //drupal_set_message("Matrikelnummer stimmt nicht mit der Emailadresse überein.", 'error');
         watchdog("LOGIN VHB", $message, array(), WATCHDOG_ALERT);
       }
@@ -174,6 +179,7 @@ function nm_login_vhb() {
 
           $message = "User could not be redirected or subscribed to course LVNR: " . $params['LVNR'];
           //drupal_set_message("Matrikelnummer stimmt nicht mit der Emailadresse überein.", 'error');
+          drupal_set_message($message, 'error');
           watchdog("LOGIN VHB", $message, array(), WATCHDOG_ALERT);
         }
       }
@@ -184,7 +190,7 @@ function nm_login_vhb() {
     }
   }
   else {
-    drupal_set_message("Hashes stimmen <strong>nicht</strong> überein.$hash", 'error');
+    drupal_set_message("Hashes stimmen <strong>nicht</strong> überein.", 'error');
   }
 
 
@@ -496,7 +502,7 @@ function nm_login_vhb_user_subscribe($account, $course) {
  */
 function nm_login_vhb_get_course($lvnr) {
 
-  $result = custom_general_get_course_by_lvnr($lvnr);
+  $result = custom_general_get_course_by_lvnr($lvnr, true);
   if (!empty($result)) {
     return node_load(current($result)->nid);
   }
