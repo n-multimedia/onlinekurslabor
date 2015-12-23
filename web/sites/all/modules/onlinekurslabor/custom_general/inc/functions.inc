@@ -379,16 +379,12 @@ function custom_general_node_ids_by_type($type) {
   return (array_keys($results['node']));
 }
 
-function custom_general_get_course_by_lvnr($lvnr, $bypass_node_check = false) {
+function custom_general_get_course_by_lvnr($lvnr) {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
       ->entityCondition('bundle', NM_COURSE)
       ->propertyCondition('status', 1)
       ->fieldCondition('field_vhb_lvnr', 'value', $lvnr, '=');
-  if($bypass_node_check)
-  {
-      $query->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT');
-  }
 
   $result = $query->execute();
 
