@@ -5,7 +5,7 @@ module_load_include('inc', 'section_courses', 'inc/realms');
 module_load_include('inc', 'section_courses', 'inc/tasks');
 module_load_include('inc', 'section_courses', 'inc/actions');
 
-//add course header 
+//add course header
 //16.07.2013 - 11:58 - SN - now done by context module
 function section_courses_preprocess_panels_pane(&$variables) {
   /*
@@ -29,7 +29,7 @@ function section_courses_preprocess_panels_pane(&$variables) {
   }
 
   /*course groups panel*/
-  if (is_array($variables['content']) && !empty($variables['content']['#object']->nid) ) {
+  if (is_array($variables['content']) && !empty($variables['content']['#object']->nid)) {
     $node = node_load($variables['content']['#object']->nid);
     node_tag_new($node);
   }
@@ -39,7 +39,6 @@ function section_courses_preprocess_panels_pane(&$variables) {
 /**
  * Implements hook_menu
  *
-
  * @return array
  */
 function section_courses_menu() {
@@ -62,7 +61,6 @@ function section_courses_menu() {
  *  - current semester
  *  -...
  *
-
  * @return type
  */
 function section_courses_onlinekurslabor_admin_settings_page() {
@@ -150,10 +148,12 @@ function _section_courses_string_ToSemesterID($str) {
 
     if (strstr($str, 'SS')) {
 
-      $result = (($id + 100 - NM_VHB_SEMESTERID_START_YEAR ) * 2 - 1);
+      $result = (($id + 100 - NM_VHB_SEMESTERID_START_YEAR) * 2 - 1);
     }
-    else if (strstr($str, 'WS')) {
-      $result = (($id + 100 - NM_VHB_SEMESTERID_START_YEAR ) * 2);
+    else {
+      if (strstr($str, 'WS')) {
+        $result = (($id + 100 - NM_VHB_SEMESTERID_START_YEAR) * 2);
+      }
     }
 
     return $result;
@@ -179,7 +179,7 @@ function section_courses_render_course_link($course, $account = NULL) {
     return NULL;
   }
 
-   $url_course = '/course/home/' . $course->nid;
+  $url_course = '/course/home/' . $course->nid;
   if (!empty($course->uid) && ($course->uid == $account->uid)) {
     // User is the group manager.
     $result = '<div class="btn-group">';
@@ -192,8 +192,12 @@ function section_courses_render_course_link($course, $account = NULL) {
     //check if node type is course
     if ($course->type == NM_COURSE) {
       //check if user is member
-      if (og_is_member('node', $course->nid, 'user', $account, array(OG_STATE_ACTIVE, OG_STATE_PENDING))) {
+      if (og_is_member('node', $course->nid, 'user', $account, array(
+        OG_STATE_ACTIVE,
+        OG_STATE_PENDING
+      ))) {
         $unsubscribe_url = '/group/node/' . $course->nid . '/unsubscribe?destination=courses';
+
         $result = '<div class="btn-group">';
         $result .= '<a href="' . $url_course . '" class="btn btn-success">Zum Kurs</a>';
         $result .= '<a href="' . $unsubscribe_url . '" class="btn btn-inverse">Abmelden</a>';
@@ -201,8 +205,18 @@ function section_courses_render_course_link($course, $account = NULL) {
       }
       else {
         $subscribe_url = 'group/node/' . $course->nid . '/subscribe';
-        $subscribe_link = l('Anmelden', $subscribe_url, array('query' => array('destination' => 'course/home/' . $course->nid), 'attributes' => array('class' => array('btn', 'btn-primary'))));
-        $info_link = l('Kursinfo', 'course/info/' . $course->nid, array('attributes' => array('class' => array('btn', 'btn-info'))));
+        $subscribe_link = l('Anmelden', $subscribe_url, array(
+          'query' => array('destination' => 'course/home/' . $course->nid),
+          'attributes' => array('class' => array('btn', 'btn-primary'))
+        ));
+        $info_link = l('Kursinfo', 'course/info/' . $course->nid, array(
+          'attributes' => array(
+            'class' => array(
+              'btn',
+              'btn-info'
+            )
+          )
+        ));
 
         $result = '<div class="btn-group">';
         $result .= $info_link;
@@ -339,15 +353,12 @@ function section_courses_block_view($delta = '') {
   return $block;
 
 
-
 }
 
 /**
  *
-
  * Implements hook_menu_breadcrumb_alter
  *
-
  * @global type $user
  * @param type $active_trail
  * @param type $item
@@ -375,7 +386,6 @@ function section_courses_context_load_alter(&$context) {
 /**
  * Determins which course is beeing active/selected
  *
-
  * @return active course object or FALSE
  */
 function _section_courses_get_active_course($reset = FALSE) {
@@ -391,8 +401,9 @@ function _section_courses_get_active_course($reset = FALSE) {
     $context = context_isset("context", "section_courses");
   }
 
-  if (empty($context))
+  if (empty($context)) {
     return FALSE;
+  }
 
 
   if (!isset($course) || $reset) {
@@ -417,9 +428,15 @@ function _section_courses_get_active_course($reset = FALSE) {
     }
 
     if (is_object($node) && in_array($node->type, array(
-        NM_COURSE_DOCS, NM_COURSE_NEWS, NM_COURSE, NM_COURSE_GROUP,
-        NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION,
-        NM_COURSE_FORUMTOPIC))) {
+        NM_COURSE_DOCS,
+        NM_COURSE_NEWS,
+        NM_COURSE,
+        NM_COURSE_GROUP,
+        NM_COURSE_GENERIC_TASK,
+        NM_COURSE_GENERIC_TASK_SOLUTION,
+        NM_COURSE_FORUMTOPIC
+      ))
+    ) {
       if ($node->type == NM_COURSE_GROUP) {
         //get course which this group is assigned to
         if (isset($node->og_group_ref)) {
@@ -462,9 +479,11 @@ function _section_courses_course_get_domain_id($course) {
       $domain_ref = $course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id'];
     }
     //fallback to normal text if no demo text is set
-    else if (!empty($course->field_domain_ref)) {
-      //$lang = field_language('node', $course, 'field_domain_ref');
-      $domain_ref = $course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
+    else {
+      if (!empty($course->field_domain_ref)) {
+        //$lang = field_language('node', $course, 'field_domain_ref');
+        $domain_ref = $course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
+      }
     }
   }
   else {
@@ -480,7 +499,7 @@ function _section_courses_course_get_domain_id($course) {
 function _section_courses_get_forum_href($course, $forum_term_id = NULL) {
   if (!$forum_term_id) {
     $forum_term = _section_courses_get_forum_term($course);
-    if(empty($forum_term)){
+    if (empty($forum_term)) {
       return '';
     }
     $forum_term_id = $forum_term->tid;
@@ -491,7 +510,6 @@ function _section_courses_get_forum_href($course, $forum_term_id = NULL) {
 /**
  * Assign og administrator role for instructors (dozenten)
  *
-
  * Implements hook_entity_insert
  *
 
@@ -511,10 +529,8 @@ function _section_courses_get_forum_href($course, $forum_term_id = NULL) {
 /**
  * Remove Outline Tabs from various sites.
  *
-
  * Implements hook_preprocess_page
  *
-
  * @global type $user
  * @param type $vars
  * @return type
@@ -550,7 +566,6 @@ function _section_courses_get_forum_href($course, $forum_term_id = NULL) {
   } */
 
 
-
 function _section_courses_text_outline_add_active_path(&$subtree_pointer) {
 
   $parents = array();
@@ -573,7 +588,6 @@ function _section_courses_text_outline_add_active_path(&$subtree_pointer) {
       $domain_id = _section_courses_course_get_domain_id($active_course);
       $domain_node = node_load($domain_id);
     }
-
 
 
     if ($domain_node->book) {
@@ -638,7 +652,7 @@ function section_courses_text_outline() {
     if ($config['depth'] > 0) {
     menu_tree_depth_trim($tree, $config['depth']);
     }
-   * 
+   *
 
    */
 
@@ -803,7 +817,7 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
 
   if ($course) {
     /*
-     * 
+     *
 
      * forum node links
      */
@@ -819,127 +833,154 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
       }
     }
     //comment reply
-    else if (strstr($path, "comment/reply/")) {
-      $regex = '#^comment/reply/([0-9]+/*[0-9]*)#s';
-      preg_match($regex, $path, $matches);
-      if (!empty($matches)) {
-        $tid = $matches[1];
-        $path = "course/forumcontent/" . $course->nid . '/' . $tid . '/reply';
+    else {
+      if (strstr($path, "comment/reply/")) {
+        $regex = '#^comment/reply/([0-9]+/*[0-9]*)#s';
+        preg_match($regex, $path, $matches);
+        if (!empty($matches)) {
+          $tid = $matches[1];
+          $path = "course/forumcontent/" . $course->nid . '/' . $tid . '/reply';
+        }
       }
-    }
-    //delete
-    else if (strstr($path, "comment/") && strstr($path, "/delete")) {
-      $regex = '#^comment/([0-9]+)/delete$#s';
-      preg_match($regex, $path, $matches);
-      if (!empty($matches)) {
-        $tid = $matches[1];
-        $comment = comment_load($tid);
-        $path = "course/forumcontent/" . $course->nid . '/' . $comment->nid . '/' . $tid . '/delete';
-      }
-    }
-    //view
-    else if (strstr($path, "comment/")) {
-      $regex = '@^comment/([0-9]+)#*@s';
-      preg_match($regex, $path, $matches);
-      if (!empty($matches)) {
-        $tid = $matches[1];
-        $comment = comment_load($tid);
-        //18.02.2014 - 14:49 - SN
-        //anchor is defined in $options (assumption)
-        $path = "course/forumcontent/" . $course->nid . '/' . $comment->nid . '/' . $tid;
-      }
-    }
-    else if (strstr($path, "node/add/forum/")) {
-      $regex = '#^node/add/forum/([0-9]+)$#s';
-      preg_match($regex, $path, $matches);
-      if (!empty($matches)) {
-        $tid = arg(3);
-        $path = "course/forumcontent/" . $course->nid . '/' . $tid . '/add';
-      }
-    }
-    else if (strstr($path, "forum/")) {
-      $regex = '#^forum/([0-9]+)$#s';
-      preg_match($regex, $path, $matches);
-      if (!empty($matches)) {
-        $tid = $matches[1];
-        $path = _section_courses_get_forum_href($course, $tid);
-        $original_path = $path;
-      }
-    }
+      //delete
+      else {
+        if (strstr($path, "comment/") && strstr($path, "/delete")) {
+          $regex = '#^comment/([0-9]+)/delete$#s';
+          preg_match($regex, $path, $matches);
+          if (!empty($matches)) {
+            $tid = $matches[1];
+            $comment = comment_load($tid);
+            $path = "course/forumcontent/" . $course->nid . '/' . $comment->nid . '/' . $tid . '/delete';
+          }
+        }
+        //view
+        else {
+          if (strstr($path, "comment/")) {
+            $regex = '@^comment/([0-9]+)#*@s';
+            preg_match($regex, $path, $matches);
+            if (!empty($matches)) {
+              $tid = $matches[1];
+              $comment = comment_load($tid);
+              //18.02.2014 - 14:49 - SN
+              //anchor is defined in $options (assumption)
+              $path = "course/forumcontent/" . $course->nid . '/' . $comment->nid . '/' . $tid;
+            }
+          }
+          else {
+            if (strstr($path, "node/add/forum/")) {
+              $regex = '#^node/add/forum/([0-9]+)$#s';
+              preg_match($regex, $path, $matches);
+              if (!empty($matches)) {
+                $tid = arg(3);
+                $path = "course/forumcontent/" . $course->nid . '/' . $tid . '/add';
+              }
+            }
+            else {
+              if (strstr($path, "forum/")) {
+                $regex = '#^forum/([0-9]+)$#s';
+                preg_match($regex, $path, $matches);
+                if (!empty($matches)) {
+                  $tid = $matches[1];
+                  $path = _section_courses_get_forum_href($course, $tid);
+                  $original_path = $path;
+                }
+              }
 
-    /*
-     * 13.06.2013 - 15:12 - SN
-     * unsauber . todo fix
-     */
-    /* replace links for book navigation and titles
-     * [todo] Solution to avoid this overkill!
-     *  Probably a performance killing thing....
-     * 
+              /*
+               * 13.06.2013 - 15:12 - SN
+               * unsauber . todo fix
+               */
+              /* replace links for book navigation and titles
+               * [todo] Solution to avoid this overkill!
+               *  Probably a performance killing thing....
+               *
 
-     */
-    else if (strstr($path, "node/")) {
-      $regex = '#^node/([0-9]+)$#s';
-      preg_match($regex, $path, $matches);
-      if (!empty($matches)) {
-        $nid = $matches[1];
+               */
+              else {
+                if (strstr($path, "node/")) {
+                  $regex = '#^node/([0-9]+)$#s';
+                  preg_match($regex, $path, $matches);
+                  if (!empty($matches)) {
+                    $nid = $matches[1];
 //solution for biblio and course text needed
-        $type = _custom_general_get_node_type($nid);
+                    $type = _custom_general_get_node_type($nid);
 
-        if ($type == NM_COURSE_FORUMTOPIC) {
-          $path = "course/forumcontent/" . $course->nid . '/' . $nid;
-        }
-        else if ($type == NM_COURSE_GROUP) {
-          $path = "course/groups/" . $course->nid . '/' . $nid;
-        }
-        else if ($type == NM_COURSE) {
-          $path = "course/home/" . $nid;
-        }
-        else if ($type == NM_COURSE_NEWS) {
-          $path = "course/news/" . $course->nid . '/' . $nid;
-        }
-        else if ($type == NM_COURSE_DOCS) {
-          $path = "course/doc/" . $course->nid . '/' . $nid;
-        }//Study Text / Lehrtext
-        else if (in_array($type, array(NM_CONTENT_DOMAIN, NM_CONTENT_CHAPTER))) {
-          $path = "course/text/" . $course->nid . '/' . $nid;
-        }
-        else if ($type == NM_BIBLIO) {
-          $path = "course/text/" . $course->nid . '/' . $nid;
-        }
+                    if ($type == NM_COURSE_FORUMTOPIC) {
+                      $path = "course/forumcontent/" . $course->nid . '/' . $nid;
+                    }
+                    else {
+                      if ($type == NM_COURSE_GROUP) {
+                        $path = "course/groups/" . $course->nid . '/' . $nid;
+                      }
+                      else {
+                        if ($type == NM_COURSE) {
+                          $path = "course/home/" . $nid;
+                        }
+                        else {
+                          if ($type == NM_COURSE_NEWS) {
+                            $path = "course/news/" . $course->nid . '/' . $nid;
+                          }
+                          else {
+                            if ($type == NM_COURSE_DOCS) {
+                              $path = "course/doc/" . $course->nid . '/' . $nid;
+                            }//Study Text / Lehrtext
+                            else {
+                              if (in_array($type, array(
+                                NM_CONTENT_DOMAIN,
+                                NM_CONTENT_CHAPTER
+                              ))) {
+                                $path = "course/text/" . $course->nid . '/' . $nid;
+                              }
+                              else {
+                                if ($type == NM_BIBLIO) {
+                                  $path = "course/text/" . $course->nid . '/' . $nid;
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
 
-        $original_path = $path;
-      }
-      $regex = '#^node/([0-9]+)/edit$#s';
-      preg_match($regex, $path, $matches);
-      if (!empty($matches)) {
-        $nid = $matches[1];
-        //solution for biblio and course text needed
-        $type = _custom_general_get_node_type($nid);
+                    $original_path = $path;
+                  }
+                  $regex = '#^node/([0-9]+)/edit$#s';
+                  preg_match($regex, $path, $matches);
+                  if (!empty($matches)) {
+                    $nid = $matches[1];
+                    //solution for biblio and course text needed
+                    $type = _custom_general_get_node_type($nid);
 
-        if ($type == NM_COURSE_FORUMTOPIC) {
-          $path = "course/forumcontent/" . $course->nid . '/' . $nid . '/edit';
+                    if ($type == NM_COURSE_FORUMTOPIC) {
+                      $path = "course/forumcontent/" . $course->nid . '/' . $nid . '/edit';
+                    }
+                    $original_path = $path;
+
+                    //edit -> delete not working because of destination query parameter -> unset
+                    $options['query'] = array();
+                  }
+                  $regex = '#^node/([0-9]+)/delete$#s';
+                  preg_match($regex, $path, $matches);
+                  if (!empty($matches)) {
+                    $nid = $matches[1];
+                    //solution for biblio and course text needed
+                    $type = _custom_general_get_node_type($nid);
+
+                    if ($type == NM_COURSE_FORUMTOPIC) {
+                      $path = NM_CONTENT_DELETE_CONTENT_PATH . '/' . $nid;
+
+                      $node = node_load($nid);
+                      $topic_term_id = $node->taxonomy_forums[LANGUAGE_NONE][0]['tid'];
+
+                      $options['query'] = array('destination' => NM_COURSE_FORUM_PATH . '/' . $course->nid . '/' . $topic_term_id);
+                    }
+                    $original_path = $path;
+                  }
+                }
+              }
+            }
+          }
         }
-        $original_path = $path;
-
-        //edit -> delete not working because of destination query parameter -> unset
-        $options['query'] = array();
-      }
-      $regex = '#^node/([0-9]+)/delete$#s';
-      preg_match($regex, $path, $matches);
-      if (!empty($matches)) {
-        $nid = $matches[1];
-        //solution for biblio and course text needed
-        $type = _custom_general_get_node_type($nid);
-
-        if ($type == NM_COURSE_FORUMTOPIC) {
-          $path = NM_CONTENT_DELETE_CONTENT_PATH . '/' . $nid;
-
-          $node = node_load($nid);
-          $topic_term_id = $node->taxonomy_forums[LANGUAGE_NONE][0]['tid'];
-
-          $options['query'] = array('destination' => NM_COURSE_FORUM_PATH . '/' . $course->nid . '/' . $topic_term_id);
-        }
-        $original_path = $path;
       }
     }
 
@@ -975,13 +1016,15 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
 
         if ($type == NM_COURSE_GROUP) {
           $course_group = node_load($nid);
-          if(!empty($course_group->og_group_ref)) {
+          if (!empty($course_group->og_group_ref)) {
             $course_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
             $path = "course/groups/" . $course_nid . '/' . $nid;
           }
         }
-        else if ($type == NM_COURSE) {
-          $path = "course/home/" . $nid;
+        else {
+          if ($type == NM_COURSE) {
+            $path = "course/home/" . $nid;
+          }
         }
       }
 
@@ -1021,7 +1064,7 @@ function section_courses_node_access($node, $op, $account) {
 
     // Returning nothing from this function would have the same effect.
     return NODE_ACCESS_IGNORE;
-   * 
+   *
 
    */
 }
@@ -1043,15 +1086,13 @@ function section_courses_node_access($node, $op, $account) {
   }
   }
   }
- * 
+ *
 
  * */
 
 /**
  *
  *
-
-
  * @param type $implementations
  * @param type $hook
  */
@@ -1060,10 +1101,11 @@ function section_courses_module_implements_alter(&$implementations, $hook) {
   //[todo] BIG TODO HERE
   //Prove correctness - hacked really badly
   $context = context_get("context", "section_courses");
-  if (empty($context))
+  if (empty($context)) {
     return;
+  }
 
-  //hack for showing the node menu items! deactivates node_access!!!! need more legitimation checks here  
+  //hack for showing the node menu items! deactivates node_access!!!! need more legitimation checks here
 
   if ($hook == 'field_access') {
     //unset($implementations['og']);
@@ -1082,7 +1124,6 @@ function section_courses_module_implements_alter(&$implementations, $hook) {
 /**
  * get the student's course group of the active course
  *
-
  * @global type $user
  * @return Group ID of the first course group that matched
  *
@@ -1097,7 +1138,6 @@ function _section_courses_student_get_coursegroup_gid() {
 /**
  * get the users's course group in the active course
  *
-
  * @param type $uid
  * @return Group ID of the first course group that matched
  */
@@ -1106,7 +1146,10 @@ function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
 
   //we want to redirect students directly to their course group
   //check fo role
-  if (array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $account->roles)) {
+  if (array_intersect(array(
+    NM_ROLE_STUDENT,
+    NM_ROLE_TEST_STUDENT
+  ), $account->roles)) {
     //get all gids the user belongs to
     $groups = og_get_groups_by_user($account);
     $groups = $groups['node'] ? $groups['node'] : array();
@@ -1134,7 +1177,6 @@ function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
 /**
  * Add students form
  *
-
  * @param type $form
  * @param type $form_state
  * @return type
@@ -1162,17 +1204,17 @@ function section_courses_student_registration_form($form, &$form_state) {
   }
 
 
-
   $form['import_container']['import_users'] = array(
     '#title' => t('Import List'),
     '#type' => 'textarea',
-    '#description' => t('Import existing users: enter their email-adresses <em>One email address per line</em> (accounts will be unlocked)').
-                       '<br/>'.
-                       t('Create new accounts: enter "Firstname Lastname; example@email.com". <em>One entry per line</em> (if an account with that email address already exists, the user will be imported)')
-                       
+    '#description' => t('Import existing users: enter their email-adresses <em>One email address per line</em> (accounts will be unlocked)') .
+
+
+      '<br/>' .
+      t('Create new accounts: enter "Firstname Lastname; example@email.com". <em>One entry per line</em> (if an account with that email address already exists, the user will be imported)')
+
+
   );
-
-
   $form['import_container']['import'] = array(
     '#type' => 'button',
     '#value' => '<i class="icon-user icon-white"></i> Import',
@@ -1185,8 +1227,6 @@ function section_courses_student_registration_form($form, &$form_state) {
       'wrapper' => 'students-import-wrapper',
     ),
   );
-
-
 
 
 //
@@ -1253,7 +1293,7 @@ function section_courses_student_registration_form($form, &$form_state) {
     $type_name = 'student';
     $form_state['profiles'][$type_name] = profile2_create(array('type' => $type_name));
     profile2_attach_form($form, $form_state);
-   * 
+   *
 
    */
 
@@ -1293,15 +1333,15 @@ function _section_courses_student_registration_import($input) {
     $emails = array();
     $rows_data = array();
 
-    if(strpos($input, ';') > 0) {
+    if (strpos($input, ';') > 0) {
       //separators are in the input textares => account creation
       $rows = explode("\n", $input);
-      foreach($rows as $row){
-        $row =  html_entity_decode($row, ENT_QUOTES);
+      foreach ($rows as $row) {
+        $row = html_entity_decode($row, ENT_QUOTES);
         $row = explode(';', $row);
-        $data['first_name'] = substr($row[0], 0, strrpos($row[0], ' '));
-        $data['last_name'] = substr($row[0], strrpos($row[0], ' ')+1);
-        $data['email'] = $row[1];
+        $data['first_name'] = trim(substr($row[0], 0, strrpos($row[0], ' ')));
+        $data['last_name'] = trim(substr($row[0], strrpos($row[0], ' ') + 1));
+        $data['email'] = trim($row[1]);
 
         $emails[] = $data['email'];
         $rows_data[$data['email']] = $data;
@@ -1309,7 +1349,7 @@ function _section_courses_student_registration_import($input) {
     }
 
     //account activation
-    if(strpos($input, ';') === FALSE) {
+    if (strpos($input, ';') === FALSE) {
       $emails = explode("\n", $input);
     }
 
@@ -1371,13 +1411,13 @@ function _section_courses_student_registration_import($input) {
       }
       else {
 
-        if(strpos($input, ';') === FALSE) {
+        if (strpos($input, ';') === FALSE) {
           // fill missing aacounts array for status message, or create accounts if
           // the structure of the request contains ';' separators
           $missing_accounts[] = $email;
 
-        }else
-        {
+        }
+        else {
 
           //add user
           $role = user_role_load_by_name(NM_ROLE_STUDENT);
@@ -1464,20 +1504,21 @@ function _section_courses_student_registration_import($input) {
     }
 
 
-
     $output = '';
 
 
-
     //missing
-    if ($missing_accounts)
+    if ($missing_accounts) {
       $output .= '<div class="alert alert-error"><h3>Kein Account vorhanden</h3><h5>Für folgende Einträge</h5>' . '<ol style="padding:0 0 0 25px;margin:0;margin-bottom: 20px;"><li>' . implode('</li><li>', $missing_accounts) . "</li>" . '</ol></div>';
+    }
     //already in
-    if ($already_in)
+    if ($already_in) {
       $output .= '<div class="alert alert-warning"><h3>Bereits im Kurs</h3><h5>Für folgende Einträge</h5>' . '<ol style="padding:0 0 0 25px;margin:0;margin-bottom: 20px;"><li>' . implode('</li><li>', $already_in) . "</li>" . '</ol></div>';
+    }
     //successfully addded
-    if ($success)
+    if ($success) {
       $output .= '<div class="alert alert-success"><h3>Erfolgreich hinzugefügt</h3><h5>Für folgende Einträge</h5>' . '<ol style="padding:0 0 0 25px;margin:0;margin-bottom: 20px;"><li>' . implode('</li><li>', $success) . "</li>" . '</ol></div>';
+    }
   }
 
   return $output;
@@ -1502,7 +1543,8 @@ function section_courses_student_registration_import_submit($form, &$form_state)
 function section_courses_student_registration_fields_add_one($form, &$form_state) {
   if ($form['users_container']['add_user_num']['#value'] &&
     $form['users_container']['add_user_num']['#value'] > 0 &&
-    $form['users_container']['add_user_num']['#value'] <= 99) {
+    $form['users_container']['add_user_num']['#value'] <= 99
+  ) {
 
     $form_state['users_num'] += $form['users_container']['add_user_num']['#value'];
   }
@@ -1523,7 +1565,10 @@ function section_courses_student_registration_fields() {
     '#prefix' => '<div class="input-prepend"><span class="add-on"><i class="icon-user"></i></span>',
     '#suffix' => '</div>',
     //'#title' => t('Username'),
-    '#attributes' => array('placeholder' => t('Username'), 'class' => array('input-small')),
+    '#attributes' => array(
+      'placeholder' => t('Username'),
+      'class' => array('input-small')
+    ),
     //'#description' => 'choose a username',
     '#type' => 'textfield',
   );
@@ -1534,7 +1579,10 @@ function section_courses_student_registration_fields() {
     '#prefix' => '<div class="input-prepend"><span class="add-on">@</span>',
     '#suffix' => '</div>',
     //'#title' => t('Email'),
-    '#attributes' => array('placeholder' => t('Email'), 'class' => array('input-large')),
+    '#attributes' => array(
+      'placeholder' => t('Email'),
+      'class' => array('input-large')
+    ),
     //'#description' => 'enter a valid email address',
     '#type' => 'textfield',
   );
@@ -1543,7 +1591,10 @@ function section_courses_student_registration_fields() {
     //'#prefix' => '<div class="input-prepend"><span class="add-on"></span>',
     //'#suffix' => '</div>',
     //'#title' => t('Email'),
-    '#attributes' => array('placeholder' => 'Vorname', 'class' => array('input-small')),
+    '#attributes' => array(
+      'placeholder' => 'Vorname',
+      'class' => array('input-small')
+    ),
     //'#description' => 'enter a valid email address',
     '#type' => 'textfield',
   );
@@ -1553,12 +1604,13 @@ function section_courses_student_registration_fields() {
     //'#prefix' => '<div class="input-prepend"><span class="add-on"></span>',
     //'#suffix' => '</div>',
     //'#title' => t('Email'),
-    '#attributes' => array('placeholder' => 'Nachname', 'class' => array('input-small')),
+    '#attributes' => array(
+      'placeholder' => 'Nachname',
+      'class' => array('input-small')
+    ),
     //'#description' => 'enter a valid email address',
     '#type' => 'textfield',
   );
-
-
 
 
   return $form;
@@ -1581,7 +1633,14 @@ function section_courses_student_registration_form_validate($form, &$form_state)
     foreach ($form_state['values']['users_container']['items'] as $key => $ci) {
       $name = check_plain($ci['users_item_container']['name']);
       $mail = check_plain($ci['users_item_container']['mail']);
-      if ((bool) db_select('users')->fields('users', array('uid'))->condition('uid', $account->uid, '<>')->condition('name', db_like($ci['users_item_container']['name']), 'LIKE')->range(0, 1)->execute()->fetchField()) {
+      if ((bool) db_select('users')
+        ->fields('users', array('uid'))
+        ->condition('uid', $account->uid, '<>')
+        ->condition('name', db_like($ci['users_item_container']['name']), 'LIKE')
+        ->range(0, 1)
+        ->execute()
+        ->fetchField()
+      ) {
         form_set_error('users_container][items][' . $key, t('The name %name is already taken.', array('%name' => $name)));
       }
       $uname_check = user_validate_name($name);
@@ -1594,7 +1653,14 @@ function section_courses_student_registration_form_validate($form, &$form_state)
       if ($error) {
         form_set_error('users_container][items][', $error);
       }
-      elseif ((bool) db_select('users')->fields('users', array('uid'))->condition('uid', $account->uid, '<>')->condition('mail', db_like($mail), 'LIKE')->range(0, 1)->execute()->fetchField()) {
+      elseif ((bool) db_select('users')
+        ->fields('users', array('uid'))
+        ->condition('uid', $account->uid, '<>')
+        ->condition('mail', db_like($mail), 'LIKE')
+        ->range(0, 1)
+        ->execute()
+        ->fetchField()
+      ) {
         form_set_error('users_container][items][', t('The e-mail address %email is already taken.', array('%email' => $mail)));
       }
     }
@@ -1702,10 +1768,10 @@ function _section_courses_book_add_active_path(&$subtree_pointer, $active_mlid, 
 }
 
 /*
- * assign kurs_student role for students 
+ * assign kurs_student role for students
  * Assign og administrator role for instructors (dozenten)
- * 
- * 
+ *
+ *
 
 
  *  Implements hook_og_membership_insert
@@ -1729,7 +1795,10 @@ function section_courses_og_membership_insert(OgMembership $og_membership) {
       }
     }
 
-    if (array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $account->roles)) {
+    if (array_intersect(array(
+      NM_ROLE_STUDENT,
+      NM_ROLE_TEST_STUDENT
+    ), $account->roles)) {
       $roles = og_roles('node', NM_COURSE, $og_membership->gid);
 
       foreach ($roles as $key => $value) {
@@ -1744,7 +1813,6 @@ function section_courses_og_membership_insert(OgMembership $og_membership) {
 /**
  * add WYSIWYG Editor to Task Fields
  *
-
  * @param string $form
  * @param type $form_state
  * @param type $form_id
@@ -1769,12 +1837,12 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
 
 
     $empty_entries = array();
-    if(!empty($form['field_generic_task_entry'][LANGUAGE_NONE])){
-      if(count($form['field_generic_task_entry'][LANGUAGE_NONE])>1){
-        foreach ($form['field_generic_task_entry'][LANGUAGE_NONE]  as $key=>$item) {
+    if (!empty($form['field_generic_task_entry'][LANGUAGE_NONE])) {
+      if (count($form['field_generic_task_entry'][LANGUAGE_NONE]) > 1) {
+        foreach ($form['field_generic_task_entry'][LANGUAGE_NONE] as $key => $item) {
           //get elements only
-          if(is_numeric($key)){
-            if($item['first']['#default_value'] == NULL && $item['second']['#default_value']==0){
+          if (is_numeric($key)) {
+            if ($item['first']['#default_value'] == NULL && $item['second']['#default_value'] == 0) {
               $empty_entries[$key] = $key;
             }
           }
@@ -1822,7 +1890,16 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
   }
 
   //adapting redirects for section courses
-  if (stristr($form_id, '_node_form') && in_array($form['#node']->type, array(NM_COURSE, NM_COURSE_NEWS, NM_COURSE_DOCS, NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION, NM_COURSE_GROUP, NM_COURSE_FORUMTOPIC))) {
+  if (stristr($form_id, '_node_form') && in_array($form['#node']->type, array(
+      NM_COURSE,
+      NM_COURSE_NEWS,
+      NM_COURSE_DOCS,
+      NM_COURSE_GENERIC_TASK,
+      NM_COURSE_GENERIC_TASK_SOLUTION,
+      NM_COURSE_GROUP,
+      NM_COURSE_FORUMTOPIC
+    ))
+  ) {
     $form['actions']['delete']['#submit'] = array('section_courses_node_form_delete_submit');
     array_push($form['actions']['submit']['#submit'], 'section_courses_node_form_submit');
 
@@ -1851,7 +1928,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
       'vertical-tabs' => drupal_get_path('module', 'save_draft') . '/save_draft.js',
       ),
       ); */
-    $form['options']['status'] = false;
+    $form['options']['status'] = FALSE;
     if (empty($form['#validate'])) {
       $form['#validate'] = array();
     }
@@ -1916,7 +1993,6 @@ function section_courses_save_draft_submit($form, &$form_state) {
  * alter taxonomy reference widget for forum references
  * we need to only show the options which are possible in course section
  *
-
  * @param type $element
  * @param type $form_state
  * @param type $context
@@ -1944,7 +2020,12 @@ function section_courses_field_widget_form_alter(&$element, &$form_state, $conte
               $options = array('_none' => $element['#options']['_none']);
             }
             else {
-              $options = array('_none' => theme('options_none', array('instance' => $context['instance'], 'option' => $element['#properties']['empty_option'])));
+              $options = array(
+                '_none' => theme('options_none', array(
+                  'instance' => $context['instance'],
+                  'option' => $element['#properties']['empty_option']
+                ))
+              );
             }
             $options += array_intersect_key($element['#options'], $allowed);
 
@@ -1965,8 +2046,8 @@ function section_courses_field_widget_form_alter(&$element, &$form_state, $conte
           $options += array_intersect_key($allowed, $element['#options']);
           $element['#options'] = $options;
           }
-         * 
-         * 
+         *
+         *
 
 
          */
@@ -1978,7 +2059,6 @@ function section_courses_field_widget_form_alter(&$element, &$form_state, $conte
 /**
  * Unset field format values to avoid db errors
  *
-
  * @param type $form
  * @param type $form_state
  */
@@ -2027,7 +2107,6 @@ function section_courses_courses_generic_task_node_form_after_build($form) {
  * Implements hook_og_user_access_alter().
  *
  *
-
  * Permit group-subscription for Course Groups, if course configuration forces is
  *
 
@@ -2046,7 +2125,10 @@ function section_courses_og_user_access_alter(&$perm, $context) {
     //Course Group - Content Type
     if ($group_type == 'node' && $group->type == NM_COURSE_GROUP) {
       //Student
-      if (array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $account->roles)) {
+      if (array_intersect(array(
+        NM_ROLE_STUDENT,
+        NM_ROLE_TEST_STUDENT
+      ), $account->roles)) {
         //lock group feature active
         $group_locked = _section_courses_feature_active($course, NM_COURSE_FEATURE_COURSE_GROUP_LOCK);
         //deny access
@@ -2224,7 +2306,7 @@ function section_courses_node_form_submit($form, &$form_state) {
 /*
  *  DB QUERY ALTER
  *  Needed to display overview of courses, where the usere is not signed up for yet
- * 
+ *
 
  */
 
@@ -2244,7 +2326,6 @@ function section_courses_views_query_alter(&$view, &$query) {
 /**
  * get timespan progress in percent
  *
-
  * @param type $node
  * @return int
  */
@@ -2263,11 +2344,13 @@ function _section_courses_get_timespan_percentage($node, &$start_text = NULL, &$
     if ($now <= $start) {
       $percent = 0;
     }
-    else if ($now >= $end) {
-      $percent = 1;
-    }
     else {
-      $percent = (($now - $start) / ($end - $start));
+      if ($now >= $end) {
+        $percent = 1;
+      }
+      else {
+        $percent = (($now - $start) / ($end - $start));
+      }
     }
 
     $percent *= 100;
@@ -2292,7 +2375,6 @@ function _section_courses_get_timespan_percentage($node, &$start_text = NULL, &$
 /**
  * Add students form
  *
-
  * @param type $form
  * @param type $form_state
  * @return type
@@ -2367,7 +2449,6 @@ function section_courses_group_projects_form($form, &$form_state) {
   }
 
 
-
   /*
     $form['import_container']['import'] = array(
     '#type' => 'button',
@@ -2381,7 +2462,7 @@ function section_courses_group_projects_form($form, &$form_state) {
     'wrapper' => 'students-import-wrapper',
     ),
     );
-   * 
+   *
 
    */
 
@@ -2426,44 +2507,42 @@ function _section_courses_course_group_get_proposal($course_group) {
   return $nid;
 }
 
- /**
-  * copy an existing content to another course
- * given: content-id , course-id 
+/**
+ * copy an existing content to another course
+ * given: content-id , course-id
  * applicable for: news, aufgaben, kursdokument. für weitere typen anpassen.
-  *
-  * @param string $content_id   ID des Contents, der kopiert werden soll
-  * @param string $new_course_id ID des Zielkurses
-  */
-function _section_courses_clone_content($content_id, $new_course_id)
-{         
-    
-        $content_object = node_load($content_id);
-    
-        $clone_object = _section_courses_clone_node_prepare($content_object);
- 
-        if(isset($clone_object->field_course_docs ))
-        {
-            /*kopiere attachments auf dateieebnee*/
-            $docs = $clone_object->field_course_docs[LANGUAGE_NONE];
-            foreach($docs as $counter => $entry)
-            {
-               $fid = $entry['fid'];
-               $file = file_load($fid);
-               //clone file
-               $new_file = file_copy($file, $file->uri ,FILE_EXISTS_RENAME);
-               //on success set new id
-               if($new_file)
-                $clone_object->field_course_docs[LANGUAGE_NONE][$counter]['fid'] = $new_file->fid;
-    
-            }
-        }
-        if (isset($content_object->og_group_ref)) {
-          /* unnecessary
-          $copy_ogr = $cn->og_group_ref;
-          $clone_cn->og_group_ref = $copy_ogr;*/
-          //set new group audience
-          $clone_object->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $new_course_id;
-          node_save($clone_object);
-         # dpm('node',$clone_cn);
-        }
+ *
+ * @param string $content_id ID des Contents, der kopiert werden soll
+ * @param string $new_course_id ID des Zielkurses
+ */
+function _section_courses_clone_content($content_id, $new_course_id) {
+
+  $content_object = node_load($content_id);
+
+  $clone_object = _section_courses_clone_node_prepare($content_object);
+
+  if (isset($clone_object->field_course_docs)) {
+    /*kopiere attachments auf dateieebnee*/
+    $docs = $clone_object->field_course_docs[LANGUAGE_NONE];
+    foreach ($docs as $counter => $entry) {
+      $fid = $entry['fid'];
+      $file = file_load($fid);
+      //clone file
+      $new_file = file_copy($file, $file->uri, FILE_EXISTS_RENAME);
+      //on success set new id
+      if ($new_file) {
+        $clone_object->field_course_docs[LANGUAGE_NONE][$counter]['fid'] = $new_file->fid;
+      }
+
+    }
+  }
+  if (isset($content_object->og_group_ref)) {
+    /* unnecessary
+    $copy_ogr = $cn->og_group_ref;
+    $clone_cn->og_group_ref = $copy_ogr;*/
+    //set new group audience
+    $clone_object->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $new_course_id;
+    node_save($clone_object);
+    # dpm('node',$clone_cn);
+  }
 }
