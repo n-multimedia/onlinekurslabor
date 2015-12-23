@@ -502,7 +502,7 @@ function nm_login_vhb_user_subscribe($account, $course) {
  */
 function nm_login_vhb_get_course($lvnr) {
 
-  $result = custom_general_get_course_by_lvnr($lvnr, true);
+  $result = custom_general_get_course_by_lvnr($lvnr);
   if (!empty($result)) {
     return node_load(current($result)->nid);
   }
