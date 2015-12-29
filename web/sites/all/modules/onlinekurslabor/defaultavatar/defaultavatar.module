@@ -46,21 +46,21 @@ function _DefaultAvatar_createDefaultAvatarForUser($user_id)
 }
 /*lädt ein bild herunter und manipuliert das übergebene objekt $profile (muss bereits vom typ master sein) mit entsprechenden einträgen*/
 function _DefaultAvatar_alterProfileWithDefaultAvatar($profile) {
-    
-    
+    //var
+    $file = null;
     $account = user_load($profile->uid);
     //kein bild existiert
-    if (!$profile->field_photo[LANGUAGE_NONE]) {
+    if (! isset($profile->field_photo) || ! $profile->field_photo[LANGUAGE_NONE]) {
         $localfilename = 'avatar_' . _DefaultAvatar_getUserIdentifier($account) . '.png';
         //Nutzer möchte Bild löschen
         //ist das bild der default-avatar, dann zwangsweise löschen verhindern
-        if ($profile->original->field_photo[LANGUAGE_NONE][0][filename] == $localfilename)
+        if (isset($profile->original->field_photo) && $profile->original->field_photo[LANGUAGE_NONE][0]['filename'] == $localfilename)
         {
             drupal_set_message (t("You can't delete the default profile picture. To remove it, upload a custom picture."));
             $file = file_load($profile->original->field_photo[LANGUAGE_NONE][0]['fid']);
         }
         //ist das bild der default-avatar, dann zwangsweise löschen verhindern
-        elseif($profile->original->field_photo[LANGUAGE_NONE][0][filename])
+        elseif(isset($profile->original->field_photo) && $profile->original->field_photo[LANGUAGE_NONE][0][filename])
         {
               drupal_set_message (t("A default picture was created for you!"));
          
