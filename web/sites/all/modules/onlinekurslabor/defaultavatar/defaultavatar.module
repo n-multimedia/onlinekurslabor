@@ -59,7 +59,7 @@ function _DefaultAvatar_alterProfileWithDefaultAvatar($profile) {
             drupal_set_message (t("You can't delete the default profile picture. To remove it, upload a custom picture."));
             $file = file_load($profile->original->field_photo[LANGUAGE_NONE][0]['fid']);
         }
-        //ist das bild der default-avatar, dann zwangsweise löschen verhindern
+        //altes user-bild geloescht, es wird ein roboter erstellt
         elseif(isset($profile->original->field_photo) && $profile->original->field_photo[LANGUAGE_NONE][0][filename])
         {
               drupal_set_message (t("A default picture was created for you!"));
