@@ -472,7 +472,7 @@ return;
    * ===============================
    * IMPORTANT
    * @TODO
-   *  bei Student hats was mit den Berechtigungschecks verhauen. �berpr�fen!!
+   *  bei Student hats was mit den Berechtigungschecks verhauen. Überprüfen!!
    * IMPORTANT
    * =====================================
    */
@@ -495,14 +495,14 @@ return;
     $perm['update field_objective_matching field'] = TRUE;
     $perm['update field_objective_task field'] = TRUE;
 
-    /* studenten, die auf dokumentation zugeifen d�rfne,. d�rfen auch die felder editieren */
+    /* studenten, die auf dokumentation zugeifen dürfne,. dürfen auch die felder editieren */
     /* todo kein zugriff auf wysiwyg */
     $perm['create ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
     $perm['update any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
     $perm['update body field'] = TRUE;
 
 
-    /* studenten, die auf lernzielvereinbarungen zugeifen d�rfne,. d�rfen auch die felder editieren */
+    /* studenten, die auf lernzielvereinbarungen zugeifen dürfne,. dürfen auch die felder editieren */
     if (node_access('view', $context['group'])) {
       $perm['update any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
       $perm['update field_objective_motivation field'] = TRUE;
@@ -594,7 +594,7 @@ function section_projects_node_access($node, $op, $account) {
 
   ) {
     // Check if the node is published.
-    { //das w�rde dann auch beim view ausl�sen. deshalb nicht anzeigen...
+    { //das würde dann auch beim view auslösen. deshalb nicht anzeigen...
       #drupal_set_message('Dies kann nicht bearbeitet werden, da bereits alle Beteiligten unterschrieben haben.','warning');
 
       return NODE_ACCESS_DENY;
