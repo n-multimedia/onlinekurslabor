@@ -50,11 +50,16 @@ function _section_domain_author_section_active() {
   $domain_edit_active = (arg(0) == 'domain' && arg(1) == 'edit');
   $domain_delete_active = (arg(0) == 'domain' && arg(1) == 'delete');
 
+  //ajax
+  $ajax_linkit_tasks = (arg(0) == 'section_content' && arg(1) == 'tasks' && arg(2) == 'autocomplete');
+  $ajax_linkit_h5p = (arg(0) == 'h5p_integration' && arg(1) == 'item' && arg(2) == 'autocomplete');
+
   return $biblio_active || $biblio_overview_active ||
       $media_active || $book_active ||
       $tasks_overview_active || $domain_text_active ||
       $domain_add_active || $domain_edit_active ||
-      $domain_delete_active || $h5p_overview_active;
+      $domain_delete_active || $h5p_overview_active || $ajax_linkit_tasks ||
+      $ajax_linkit_h5p;
 }
 
 /**

@@ -875,3 +875,38 @@ function custom_general_mail_alter(&$message){
     $message['headers']['Reply-To'] = '"'. variable_get('site_name', 'Drupal') .'" <'. $default_from .'>';
   }
 }
+
+
+/**
+ * @param \QueryAlterableInterface $query
+ */
+function custom_general_query_alter(QueryAlterableInterface $query) {
+  if ($query->hasTag('linkit_entity_autocomplete')) {
+
+    dpm((string) $query);
+
+    $domain = _section_content_get_active_domain(TRUE);
+    $course = _section_courses_get_active_course(TRUE);
+
+    dpm($domain);
+    dpm($course);
+
+    $group = NULL;
+    if ($domain) {
+      $group = $domain;
+    }
+    else {
+      if ($course) {
+        $group = $course;
+      }
+    }
+
+    if ($group) {
+      //dpm((string) $query);
+      $ogm_alias = $query->leftJoin('og_membership', 'ogm', 'ogm.etid = node.nid'); // AND ogm.tid = :entity_id
+      $query->condition("$ogm_alias.gid", $group->nid); // AND ogm.tid = :entity_id
+    }
+
+
+  }
+}
