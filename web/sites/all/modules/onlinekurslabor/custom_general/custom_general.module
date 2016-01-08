@@ -883,13 +883,10 @@ function custom_general_mail_alter(&$message){
 function custom_general_query_alter(QueryAlterableInterface $query) {
   if ($query->hasTag('linkit_entity_autocomplete')) {
 
-    dpm((string) $query);
+    //dpm((string) $query);
 
     $domain = _section_content_get_active_domain(TRUE);
     $course = _section_courses_get_active_course(TRUE);
-
-    dpm($domain);
-    dpm($course);
 
     $group = NULL;
     if ($domain) {
