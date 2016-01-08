@@ -897,7 +897,8 @@ function custom_general_query_alter(QueryAlterableInterface $query) {
     }
     else {
       if ($course) {
-        $group = $course;
+        //$group = $course;
+        $group = node_load(_section_courses_course_get_domain_id($course));
       }
     }
 

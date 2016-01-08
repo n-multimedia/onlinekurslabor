@@ -873,7 +873,6 @@ function _section_courses_fix_solution_og(){
 
   $result = $query->execute()->fetchAll();
 
-  dpm($result);
 
   foreach($result as $n){
 
