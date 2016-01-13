@@ -1284,8 +1284,8 @@ function _section_content_get_active_domain($reset = FALSE) {
       $referer_url['path'] = substr(parse_url($referer_url['path'], PHP_URL_PATH), 1);
 
       if (arg(0, $referer_url['path']) == 'domain' && arg(1, $referer_url['path']) == 'edit') {
-        $node_nid = arg(2, $referer_url['path']);
-        $domain = node_load(_custom_general_get_group($node_nid));
+        $node = node_load(arg(2, $referer_url['path']));
+        $domain = node_load(_custom_general_get_group($node));
       }
     }
 
