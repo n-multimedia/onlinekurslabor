@@ -1285,6 +1285,7 @@ function _section_content_get_active_domain($reset = FALSE) {
 
       if (arg(0, $referer_url['path']) == 'domain' && arg(1, $referer_url['path']) == 'edit') {
         $domain = node_load(arg(2, $referer_url['path']));
+        $domain = _custom_general_get_group($domain);
       }
     }
 
