@@ -13,6 +13,9 @@ drush image-flush --all
 
 drush updatedb --yes
 
+#revert view after updatedb changed the table column definition
+drush fr nm_login_vhb_features --yes
+
 drush language-import-translations de ../language/alpha3.po --replace --groups=default
 
 #rebuild node access

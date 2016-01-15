@@ -879,12 +879,22 @@ function _section_projects_project_cockpit_tabs_view_static() {
   $po_node = section_projects_get_active_project();
 
   if ($po_node->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
+    $active_tab = 1;
+
     $ca = $po_node;
     $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
     $partner_nid = _custom_general_get_group($proposal);
     $po_node = node_load($partner_nid);
   }
   else if (in_array($po_node->type, array(NM_PROJECTS_ZIELVEREINBARUNG, NM_PROJECTS_DOKUMENTATION, NM_PROJECTS_TAGEBUCH))) {
+
+    if($po_node->type == NM_PROJECTS_ZIELVEREINBARUNG){
+      $active_tab = 2;
+    }
+    if($po_node->type == NM_PROJECTS_DOKUMENTATION){
+      $active_tab = 3;
+    }
+
     $tmp = $po_node;
     if (!empty($tmp->field_ca_ref)) {
       $ca = node_load($tmp->field_ca_ref[LANGUAGE_NONE][0]['target_id']);
@@ -898,6 +908,19 @@ function _section_projects_project_cockpit_tabs_view_static() {
     $po_node = node_load($partner_nid);
   }
 
+  //override active menu trail on add
+  //active tab, highlight menu item
+
+  if(arg(0) == 'projects' && arg(1) == 'admin' && arg(2) == 'add'){
+     if (arg(3) == NM_PROJECTS_ZIELVEREINBARUNG) {
+      $active_tab = 2;
+    }else if (arg(3) == NM_PROJECTS_DOKUMENTATION) {
+      $active_tab = 3;
+    }else if (arg(3) == NM_PROJECTS_TAGEBUCH) {
+      $active_tab = 0;
+    }
+  }
+
   //get project and partner ids
   if (empty($ca) || empty($proposal) || empty($po_node)) {
       return "";
@@ -909,7 +932,7 @@ function _section_projects_project_cockpit_tabs_view_static() {
   $output = '<div class="row-fluid">';
   $output .= '<div style="position:relative" class="nav-tabbox span12">';
   foreach ($navigation_items as $item) {
-    $active_class = ($i == 0) ? 'active' : '';
+    $active_class = ($i == $active_tab) ? 'active' : '';
     $output .= '<div class="' . $active_class . '">';
     $output .= '<a href = "/projects/partners/'.$po_node->nid.'/'.$proposal->nid.'/cockpit/'.$ca->nid.'#' . drupal_html_class(transliteration_get($item)) . '" class="statictab ' . drupal_html_class(transliteration_get($item)) . '">';
     $output .= $item;
