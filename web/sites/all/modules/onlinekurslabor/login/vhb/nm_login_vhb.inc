@@ -30,15 +30,15 @@ function nm_login_vhb_db_insert($user) {
 
 /**
  * check if user has been archivated
- * @param type $matrikelnummer
+ * @param type $vhb_login
  */
-function nm_login_vhb_user_is_archivated($matrikelnummer) {
+function nm_login_vhb_user_is_archivated($vhb_login) {
 
-  $obf_matrikelnummer = nm_login_vhb_obfuscate_matrikelnummer($matrikelnummer);
+  $obf_vhblogin = nm_login_vhb_obfuscate_matrikelnummer($vhb_login);
   $query = db_select('nm_login_vhb', 'nm');
   $query->fields('nm', array('uid'));
   $query->condition('nm.archivated', 1);
-  $query->condition('nm.matrikelnummer', $obf_matrikelnummer);
+  $query->condition('nm.login_uid', $obf_vhblogin);
   $res = $query->execute()->fetchField();
   //check if uid was found
   if (isset($res) && $res > 0) {
@@ -120,6 +120,15 @@ function nm_login_vhb_reactivate_user($uid, $params) {
   }
   $wrapper->save();
 
+  //data profile
+  $profile2 = profile2_load_by_user($account, 'data');
+
+  //Populate profile fields
+  $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+  $wrapper->field_nm_login_vhb_login->set($params['LOGIN']);
+
+  $wrapper->save();
+
   realname_update($account);
 
   //drupal_set_message('Student ' . $edit['name'] . ' wurde angelegt.');
@@ -169,6 +178,7 @@ function nm_login_vhb_archivate_user($user) {
   //refactor new generic function
   //course/admin/%1/members/add
   $role = user_role_load_by_name(NM_ROLE_STUDENT);
+  $user_mail = $user->mail;
   $edit = array(
     //22.01.2014 - 16:27 - SN
     //real init name will get lost, but should be no problem,
@@ -200,18 +210,15 @@ function nm_login_vhb_archivate_user($user) {
   $profile2 = profile2_load_by_user($account, 'student');
 
   //load matrikelnummer from profile2 data
-  // if (isset($profile2->field_matrikelnummer) && !empty($profile2->field_matrikelnummer[LANGUAGE_NONE])) {
-if (isset($profile2->field_matrikelnummer_varchar) && !empty($profile2->field_matrikelnummer_varchar[LANGUAGE_NONE])) {
-    $matrikelnummer = $profile2->field_matrikelnummer_varchar[LANGUAGE_NONE][0]['value'];
+  if (isset($profile2->field_matrikelnummer_varchar) && !empty($profile2->field_matrikelnummer_varchar[LANGUAGE_NONE])) {
     //Populate profile fields
     $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+    $term_hochschule = $wrapper->field_hochschule->value();
+    $matrikelnummer = $wrapper->field_matrikelnummer_varchar->value();
+
     $wrapper->field_matrikelnummer_varchar->set(NULL);
     $wrapper->field_studienfach->set(NULL);
-    //load term id and set hochschule field
-    //$terms = taxonomy_get_term_by_name...;
-    //if (!empty($terms)) {
     $wrapper->field_hochschule->set(NULL);
-    //}
 
     $wrapper->save();
 
@@ -229,17 +236,40 @@ if (isset($profile2->field_matrikelnummer_varchar) && !empty($profile2->field_ma
 
     $wrapper->save();
 
+    //master profile
+    $profile2 = profile2_load_by_user($account, 'data');
+
+    if ($profile2) {
+      //Populate profile fields
+      $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+      $vhb_login = $wrapper->field_nm_login_vhb_login->value();
+      $wrapper->field_nm_login_vhb_login->set(NULL);
+      $obscured_login = nm_login_vhb_obfuscate_matrikelnummer($vhb_login);
+    }
+
+    //if no data (vhb LOGIN) is available for that user we take matrikelnummer + hochschule as unique identifier
+    if (!$profile2 || empty($vhb_login)) {
+      if(!empty($term_hochschule->name) && !empty($matrikelnummer)){
+        $vhb_login = $term_hochschule->name . $matrikelnummer;
+        $obscured_login = "deprecated(h+m):".nm_login_vhb_obfuscate_matrikelnummer($vhb_login);
+      }else {
+        $obscured_login = "deprecated(e):".nm_login_vhb_obfuscate_matrikelnummer($user_mail);
+      }
+    }
+
+    $wrapper->save();
+
     //realname_update($account);
 
     drupal_set_message('Student ' . $edit['name'] . ' wurde archiviert.');
 
     //update db entry
     $num_c = db_update('nm_login_vhb')->fields(array(
-          'archivated' => 1,
-          'matrikelnummer' => nm_login_vhb_obfuscate_matrikelnummer($matrikelnummer),
-        ))
-        ->condition('uid', $user->uid)
-        ->execute();
+      'archivated' => 1,
+      'login_uid' => $obscured_login,
+    ))
+      ->condition('uid', $user->uid)
+      ->execute();
 
     if ($num_c) {
       drupal_set_message($user->uid . " has been archivated");
@@ -268,12 +298,12 @@ if (isset($profile2->field_matrikelnummer_varchar) && !empty($profile2->field_ma
  * @param type $matrikelnummer
  * @return type
  */
-function nm_login_vhb_obfuscate_matrikelnummer($matrikelnummer) {
+function nm_login_vhb_obfuscate_matrikelnummer($vhb_login) {
 
   require_once './includes/password.inc';
 
   $salt = NM_LOGIN_VHB_LOGIN_ENTRY_SALT;
-  $hash_bin = hash('sha512', $salt . $matrikelnummer, TRUE);
+  $hash_bin = hash('sha512', $salt . $vhb_login, TRUE);
   $len = strlen($hash_bin);
   $hash = _password_base64_encode($hash_bin, $len);
 

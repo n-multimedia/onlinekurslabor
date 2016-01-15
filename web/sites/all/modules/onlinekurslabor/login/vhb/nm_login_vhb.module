@@ -103,7 +103,10 @@ function nm_login_vhb() {
       //user is new -> create new account and subscribe for course
       //drupal_set_message("Benutzer ist neu -> Neuen Account anlegen");
       //before creating new user, check if user data has been archivated
-      $archivated_uid = nm_login_vhb_user_is_archivated($params['MATRIKELNUMMER']);
+      $archivated_uid = nm_login_vhb_user_is_archivated($params['LOGIN']);
+
+      //15.01.2016 - 20:12 - SN
+      //check for deprecated users possible here.
       if ($archivated_uid) {
         //reactivate user
         nm_login_vhb_reactivate_user($archivated_uid, $params);
@@ -284,29 +287,6 @@ function nm_login_vhb_add_user($params) {
   //Populate profile fields
   $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
 
-  //28.04.2014 - 14:40 - SN
-  //matrikelnummer must not have >11 characters
-  if (drupal_strlen($params['MATRIKELNUMMER']) > 11) {
-    $message = 'Matrikelnummer is to long! (uid: @uid)';
-    drupal_set_message($message, 'error');
-    watchdog("LOGIN VHB", $message, array('@uid' => $account->uid), WATCHDOG_ERROR);
-    $params['MATRIKELNUMMER'] = '';
-  }
-  //matrikelnummer must be numeric
-
-  // if (!is_numeric($params['MATRIKELNUMMER'])) {
-  //   $message = 'Matrikelnummer is not numeric! (uid: @uid)';
-  //   drupal_set_message($message, 'error');
-  //   watchdog("LOGIN VHB", $message, array('@uid' => $account->uid), WATCHDOG_ERROR);
-  //   //$params['MATRIKELNUMMER'] = '';
-  // }
-  //
-  // $wrapper->field_matrikelnummer->set($params['MATRIKELNUMMER']);
-  //
-  // 20.11.2014 - 11:39 - SN
-  // matrikelnummer field changed to matrikelnummer_varchar
-  //
-
   $wrapper->field_matrikelnummer_varchar->set($params['MATRIKELNUMMER']);
 
   $wrapper->field_studienfach->set($params['STUDIENFACH']);
@@ -336,6 +316,16 @@ function nm_login_vhb_add_user($params) {
   else {
     $wrapper->field_gender->set('male');
   }
+  $wrapper->save();
+
+  //data profile
+  //master profile
+  $profile2 = profile2_create(array('type' => 'data'));
+  $profile2->setUser($account);
+  profile2_save($profile2);
+  //Populate profile fields
+  $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+  $wrapper->field_nm_login_vhb_login->set($params['LOGIN']);
   $wrapper->save();
 
   realname_update($account);
@@ -389,24 +379,6 @@ function nm_login_vhb_update_empty_profile_fields($account, $params) {
   //Populate profile fields
   $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
 
-  //28.04.2014 - 14:40 - SN
-  //matrikelnummer must not have >11 characters
-  if (drupal_strlen($params['MATRIKELNUMMER']) > 11) {
-    $message = 'Matrikelnummer is to long! (uid: @uid)';
-    drupal_set_message($message, 'error');
-    watchdog("LOGIN VHB", $message, array('@uid' => $account->uid), WATCHDOG_ERROR);
-    $params['MATRIKELNUMMER'] = '';
-  }
-  //matrikelnummer must be numeric
-
-  // if (!is_numeric($params['MATRIKELNUMMER'])) {
-  //   $message = 'Matrikelnummer is not numeric! (uid: @uid)';
-  //   drupal_set_message($message, 'error');
-  //   watchdog("LOGIN VHB", $message, array('@uid' => $account->uid), WATCHDOG_ERROR);
-  //   //$params['MATRIKELNUMMER'] = '';
-  // }
-  // //set new value if field is empty
-  // $tmp = $wrapper->field_matrikelnummer->value();
 
   //20.11.2014 - 11:40 - SN matrikelnummer int changed to varchar
   $tmp = $wrapper->field_matrikelnummer_varchar->value();
@@ -472,6 +444,25 @@ function nm_login_vhb_update_empty_profile_fields($account, $params) {
       $wrapper->field_gender->set('male');
     }
   }
+  $wrapper->save();
+
+  //master profile
+  $profile2 = profile2_load_by_user($account, 'data');
+
+  if(!$profile2) {
+    //master profile
+    $profile2 = profile2_create(array('type' => 'data'));
+    $profile2->setUser($account);
+    profile2_save($profile2);
+  }
+
+  $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+
+  $tmp = $wrapper->field_nm_login_vhb_login->value();
+  if (empty($tmp)) {
+    $wrapper->field_nm_login_vhb_login->set($params['LOGIN']);
+  }
+
   $wrapper->save();
 
   realname_update($account);
