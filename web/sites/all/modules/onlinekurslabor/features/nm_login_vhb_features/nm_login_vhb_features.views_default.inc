@@ -263,11 +263,6 @@ function nm_login_vhb_features_views_default_views() {
   $handler->display->display_options['fields']['field_matrikelnummer_varchar']['table'] = 'field_data_field_matrikelnummer_varchar';
   $handler->display->display_options['fields']['field_matrikelnummer_varchar']['field'] = 'field_matrikelnummer_varchar';
   $handler->display->display_options['fields']['field_matrikelnummer_varchar']['relationship'] = 'profile';
-  /* Field: NM Login VHB: Matrikelnummer field */
-  $handler->display->display_options['fields']['matrikelnummer']['id'] = 'matrikelnummer';
-  $handler->display->display_options['fields']['matrikelnummer']['table'] = 'nm_login_vhb';
-  $handler->display->display_options['fields']['matrikelnummer']['field'] = 'matrikelnummer';
-  $handler->display->display_options['fields']['matrikelnummer']['label'] = 'Matrikelnummer verschlüsselt';
   /* Field: NM Login VHB: Timestamp field */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'nm_login_vhb';
@@ -282,6 +277,10 @@ function nm_login_vhb_features_views_default_views() {
   $handler->display->display_options['fields']['access']['label'] = 'Letzter Zugriff';
   $handler->display->display_options['fields']['access']['date_format'] = 'long';
   $handler->display->display_options['fields']['access']['second_date_format'] = 'long';
+  /* Field: NM Login VHB: VHB LOGIN field */
+  $handler->display->display_options['fields']['login_uid']['id'] = 'login_uid';
+  $handler->display->display_options['fields']['login_uid']['table'] = 'nm_login_vhb';
+  $handler->display->display_options['fields']['login_uid']['field'] = 'login_uid';
   /* Field: User: Last login */
   $handler->display->display_options['fields']['login']['id'] = 'login';
   $handler->display->display_options['fields']['login']['table'] = 'users';
@@ -338,9 +337,9 @@ function nm_login_vhb_features_views_default_views() {
     t('Name'),
     t('E-mail'),
     t('Matrikelnummer'),
-    t('Matrikelnummer verschlüsselt'),
     t('Created on'),
     t('Letzter Zugriff'),
+    t('VHB LOGIN field'),
     t('Letzte Anmeldung'),
     t('Active'),
     t('archivated'),

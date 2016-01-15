@@ -18,3 +18,22 @@ function custom_general_update_3001(){
   variable_set('site_mail', 'noreply@onlinekurslabor.de');
 }
 
+
+/**
+ * add additional profile for existing users
+ */
+function custom_general_update_3002(){
+  $users = entity_load('user');
+  foreach ($users as $user_id => $account) {
+    //student profile
+    $profile2 = profile2_load_by_user($account, 'data');
+
+    if(!$profile2) {
+      //student profile
+      $profile2 = profile2_create(array('type' => 'data'));
+      $profile2->setUser($account);
+      profile2_save($profile2);
+    }
+  }
+}
+

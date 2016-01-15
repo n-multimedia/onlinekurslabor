@@ -207,81 +207,78 @@ function nm_login_vhb_archivate_user($user) {
   }
 
   //student profile
-  $profile2 = profile2_load_by_user($account, 'student');
+  $profile2_student = profile2_load_by_user($account, 'student');
+  $wrapper_student = entity_metadata_wrapper('profile2', $profile2_student->pid);
+  $term_hochschule = $wrapper_student->field_hochschule->value();
+  $matrikelnummer = $wrapper_student->field_matrikelnummer_varchar->value();
+
+  //master profile
+  $profile2_master = profile2_load_by_user($account, 'master');
+  $wrapper_master = entity_metadata_wrapper('profile2', $profile2_master->pid);
+
+  //data profile
+  $profile2_data = profile2_load_by_user($account, 'data');
+  $wrapper_data = entity_metadata_wrapper('profile2', $profile2_data->pid);
+
+
+  //1
+  if ($profile2_data) {
+    //Populate profile fields
+    $vhb_login = $wrapper_data->field_nm_login_vhb_login->value();
+  }
+
+  //2 - neeeded for fallback only
+  if(!empty($term_hochschule->name) && !empty($matrikelnummer)){
+    $hochschule_matrikelnummer = $term_hochschule->name . $matrikelnummer;
+  }
+
+  $obscured_login = NULL;
+  if(!empty($vhb_login)){
+    //1 - VHB LOGIN
+    $obscured_login = nm_login_vhb_obfuscate_matrikelnummer($vhb_login);
+  }else if(!empty($hochschule_matrikelnummer)){
+    //2 - fallback. matrikelnummer + hochschule as unique identifier
+    $obscured_login = "deprecated(h+m):".nm_login_vhb_obfuscate_matrikelnummer($hochschule_matrikelnummer);
+  }else {
+    //3 - fallback - mail
+    $obscured_login = "deprecated(e):".nm_login_vhb_obfuscate_matrikelnummer($user_mail);
+  }
+
+  //RESET  Values
+
+  //master profile
+  $wrapper_master->field_birthday->set(NULL);
+  //not knowing which SEX options possible
+  //weiblich = female so everything !female will be male
+  $wrapper_master->field_gender->set('fa');
+  $wrapper_master->save();
 
   //load matrikelnummer from profile2 data
-  if (isset($profile2->field_matrikelnummer_varchar) && !empty($profile2->field_matrikelnummer_varchar[LANGUAGE_NONE])) {
-    //Populate profile fields
-    $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
-    $term_hochschule = $wrapper->field_hochschule->value();
-    $matrikelnummer = $wrapper->field_matrikelnummer_varchar->value();
+  //Populate profile fields
+  $wrapper_student->field_matrikelnummer_varchar->set(NULL);
+  $wrapper_student->field_studienfach->set(NULL);
+  $wrapper_student->field_hochschule->set(NULL);
+  $wrapper_student->save();
 
-    $wrapper->field_matrikelnummer_varchar->set(NULL);
-    $wrapper->field_studienfach->set(NULL);
-    $wrapper->field_hochschule->set(NULL);
+  //data
+  $wrapper_data->field_nm_login_vhb_login->set(NULL);
+  $wrapper_data->save();
 
-    $wrapper->save();
+  drupal_set_message('Student ' . $edit['name'] . ' wurde archiviert.');
 
-    //master profile
-    $profile2 = profile2_load_by_user($account, 'master');
+  //update db entry
+  $num_c = db_update('nm_login_vhb')->fields(array(
+    'archivated' => 1,
+    'login_uid' => $obscured_login,
+  ))
+    ->condition('uid', $user->uid)
+    ->execute();
 
-    //Populate profile fields
-    $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
-    //$wrapper->field_first_name->set('');
-    //$wrapper->field_last_name->set('');
-    $wrapper->field_birthday->set(NULL);
-    //not knowing which SEX options possible
-    //weiblich = female so everything !female will be male
-    $wrapper->field_gender->set('fa');
-
-    $wrapper->save();
-
-    //master profile
-    $profile2 = profile2_load_by_user($account, 'data');
-
-    if ($profile2) {
-      //Populate profile fields
-      $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
-      $vhb_login = $wrapper->field_nm_login_vhb_login->value();
-      $wrapper->field_nm_login_vhb_login->set(NULL);
-      $obscured_login = nm_login_vhb_obfuscate_matrikelnummer($vhb_login);
-    }
-
-    //if no data (vhb LOGIN) is available for that user we take matrikelnummer + hochschule as unique identifier
-    if (!$profile2 || empty($vhb_login)) {
-      if(!empty($term_hochschule->name) && !empty($matrikelnummer)){
-        $vhb_login = $term_hochschule->name . $matrikelnummer;
-        $obscured_login = "deprecated(h+m):".nm_login_vhb_obfuscate_matrikelnummer($vhb_login);
-      }else {
-        $obscured_login = "deprecated(e):".nm_login_vhb_obfuscate_matrikelnummer($user_mail);
-      }
-    }
-
-    $wrapper->save();
-
-    //realname_update($account);
-
-    drupal_set_message('Student ' . $edit['name'] . ' wurde archiviert.');
-
-    //update db entry
-    $num_c = db_update('nm_login_vhb')->fields(array(
-      'archivated' => 1,
-      'login_uid' => $obscured_login,
-    ))
-      ->condition('uid', $user->uid)
-      ->execute();
-
-    if ($num_c) {
-      drupal_set_message($user->uid . " has been archivated");
-    }
-
-    return $account;
-  }
-  else {
-    drupal_set_message("Der Benutzer " . $user->name . ' konnte nicht archiviert werden, da dieser keine Matrikelnummer besitzt.', 'error');
-    return NULL;
+  if ($num_c) {
+    drupal_set_message($user->uid . " has been archivated");
   }
 
+  return $account;
 
   //assign user to defined course
   //load course by LVNR
