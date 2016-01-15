@@ -929,6 +929,8 @@ function custom_general_query_alter(QueryAlterableInterface $query) {
     $domain = _section_content_get_active_domain(TRUE);
     $course = _section_courses_get_active_course(TRUE);
 
+
+
     $group = NULL;
     if ($domain) {
       $group = $domain;
