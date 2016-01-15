@@ -95,14 +95,18 @@ function _section_course_instructor_section_active() {
   $projects_visible = (arg(0) == 'course' && arg(1) == 'projects');
   $biblio_visible = _section_course_biblio_visible();
 
+  //ajax
+  $ajax_linkit_tasks = (arg(0) == 'section_content' && arg(1) == 'tasks' && arg(2) == 'autocomplete');
+  $ajax_linkit_h5p = (arg(0) == 'h5p_integration' && arg(1) == 'item' && arg(2) == 'autocomplete');
+
 
   $section_courses = $docs_visible || $info_visible ||
       $groups_visible || $members_visible ||
       $text_visible || $forum_visible ||
       $admin_section_visible ||
       $home_visible || $tasks_visible || $biblio_visible ||
-      $news_visible || $projects_visible;
-
+      $news_visible || $projects_visible ||
+      $ajax_linkit_tasks || $ajax_linkit_h5p;
 
 
   if ($section_courses) {

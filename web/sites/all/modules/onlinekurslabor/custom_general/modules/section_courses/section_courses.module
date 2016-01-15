@@ -454,6 +454,21 @@ function _section_courses_get_active_course($reset = FALSE) {
       $course = is_numeric($c_nid) ? node_load($c_nid) : NULL;
     }
 
+    //check linkin ajax requests
+    if (
+      (arg(0) == 'admin' && strstr(arg(1), "_dashboard")) ||
+      (arg(0) == 'section_content' && arg(1) == 'tasks' && arg(2) == 'autocomplete') ||
+      (arg(0) == 'h5p_integration' && arg(1) == 'item' && arg(2) == 'autocomplete')
+    ) {
+      $referer_url = drupal_parse_url($_SERVER['HTTP_REFERER']);
+      $referer_url['path'] = substr(parse_url($referer_url['path'], PHP_URL_PATH), 1);
+
+      if (arg(0, $referer_url['path']) == 'course' && (arg(1, $referer_url['path']) == 'admin' || arg(1, $referer_url['path']) == 'forumcontent')) {
+        $node = node_load(arg(2, $referer_url['path']));
+        $course = node_load(_custom_general_get_group($node));
+      }
+    }
+
     if (!empty($course) && $course->type == NM_COURSE) {
 
       return $course;
