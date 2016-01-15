@@ -8,6 +8,11 @@
  */
 function h5p_integration_wysiwyg_plugin($editor, $version) {
 
+  //do not show H5P Plugin in Projects section
+  if(section_projects_get_active_project()){
+    return;
+  }
+
   //_linkit_add_settings($editor);
   switch ($editor) {
     case 'ckeditor':

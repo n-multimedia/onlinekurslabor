@@ -693,6 +693,12 @@ function section_content_og_user_access_alter(&$perm, $context) {
  */
 function section_content_wysiwyg_plugin($editor, $version) {
 
+
+  //do not show TASKS Plugin in Projects section
+  if(section_projects_get_active_project()){
+    return;
+  }
+
   _linkit_add_settings($editor);
 
   switch ($editor) {
