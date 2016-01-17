@@ -1783,7 +1783,7 @@ function section_projects_features_field_default_field_instances() {
     'ds_extras_field_template' => '',
     'entity_type' => 'node',
     'field_name' => 'field_objective_motivation',
-    'label' => 'Motivantion und Ziele',
+    'label' => 'Motivation und Ziele',
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
@@ -3299,7 +3299,7 @@ function section_projects_features_field_default_field_instances() {
   t('Kurzberschreibung');
   t('Laufzeit des Projekts von einem bestimmten Datum bis zu einem bestimmten Datum');
   t('Logo');
-  t('Motivantion und Ziele');
+  t('Motivation und Ziele');
   t('Partnerorganisation');
   t('Privacy');
   t('Projektvorschlag');
