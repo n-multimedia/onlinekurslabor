@@ -568,7 +568,7 @@ dasddasdasd',
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'site_mail';
-  $strongarm->value = 'info@onlinekurslabor.de';
+  $strongarm->value = 'noreply@onlinekurslabor.de';
   $export['site_mail'] = $strongarm;
 
   $strongarm = new stdClass();
