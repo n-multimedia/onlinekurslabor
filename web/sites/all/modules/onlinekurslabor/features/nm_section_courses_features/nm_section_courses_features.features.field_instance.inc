@@ -820,6 +820,53 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-courses_course-field_other_features'
+  $field_instances['node-courses_course-field_other_features'] = array(
+    'bundle' => 'courses_course',
+    'default_value' => array(
+      0 => array(
+        'value' => 'domain_text',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 19,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_other_features',
+    'label' => 'Sonstige Features',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 11,
+    ),
+  );
+
   // Exported field_instance: 'node-courses_course-field_semester'
   $field_instances['node-courses_course-field_semester'] = array(
     'bundle' => 'courses_course',
@@ -3011,6 +3058,7 @@ function nm_section_courses_features_field_default_field_instances() {
   t('Projektvorschlag');
   t('Projektvorschläge');
   t('Semester');
+  t('Sonstige Features');
   t('Sponsoren');
   t('Studienfach');
   t('Thema');
