@@ -399,7 +399,7 @@ function section_content_context_load_alter(&$context) {
 function _section_content_alter_breadcrumb_for_role(&$active_trail) {
   global $user;
 
-//Check if user has role Autor or a certain path is beeing viewd (e.g. domain media)
+//Check if user has role Autor or a certain path is being viewd (e.g. domain media)
   $path_match = strpos(request_uri(), NM_MEDIA_PATH);
   $path_match = strpos(request_uri(), NM_BIBLIO_PATH) || $path_match;
   $path_match = strpos(request_uri(), NM_TASKS_PATH) || $path_match;
@@ -881,7 +881,7 @@ function _section_content_tasks_dashboard_form($form, &$form_state) {
 function section_content_filter_info() {
   $filters['filter_content_tasks'] = array(
     'title' => t('Content - Tasks Filter'),
-    'description' => t('Every [task](node_id)[/task] pattern is beeing replaced by its content.'),
+    'description' => t('Every [task](node_id)[/task] pattern is being replaced by its content.'),
     'process callback' => '_section_content_filter_tasks_process',
     'tips callback' => '_section_content_filter_tasks_tips',
     'cache' => FALSE,
@@ -941,7 +941,7 @@ function _section_content_task_replacements($matches) {
  */
 function _section_content_filter_tasks_tips($filter, $format, $long = FALSE) {
 
-  return t('Every [task](node_id)[/task] pattern is beeing replaced by its content.');
+  return t('Every [task](node_id)[/task] pattern is being replaced by its content.');
 }
 
 function _section_content_multiple_choice_form() {
@@ -1234,7 +1234,7 @@ function section_content_text_outline() {
 }
 
 /**
- * Determins which domain is beeing active/selected
+ * Determins which domain is being active/selected
  * 
  * @return active domain object or FALSE
  */

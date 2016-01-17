@@ -34,7 +34,7 @@ function _section_courses_breadcrumb_alter(&$active_trail, $item) {
 function _section_courses_alter_breadcrumb_for_role(&$active_trail) {
   global $user;
 
-//Check if user has role Autor or a certain path is beeing viewd (e.g. domain media)
+//Check if user has role Autor or a certain path is being viewd (e.g. domain media)
   $path_match = strpos(request_uri(), NM_COURSE_DOCS_PATH);
   $path_match = strpos(request_uri(), NM_COURSE_HOME_PATH) || $path_match;
   $path_match = strpos(request_uri(), NM_COURSE_NEWS_PATH) || $path_match;

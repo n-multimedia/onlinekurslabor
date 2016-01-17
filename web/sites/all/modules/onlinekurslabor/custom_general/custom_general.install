@@ -42,11 +42,21 @@ function custom_general_update_3002(){
  * set standard value
  * courses other features (domain_text = TRUE)
  */
-/*
 function custom_general_update_3003(){
-  $courses = _section_course_get_courses();
-  foreach($courses as $course){
 
+  $field_instances = field_info_instances('node', NM_COURSE);
+  $default_value = $field_instances['field_other_features']['default_value'][0]['value'];
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node');
+  $query->entityCondition('bundle', NM_COURSE);
+  $result = $query->execute();
+
+  foreach ($result['node'] as $course_item) {
+    $entity = node_load($course_item->nid);
+    $entity->field_other_features[LANGUAGE_NONE][0]['value'] = $default_value;
+    //save field data for an entity
+    field_attach_update('node', $entity);
   }
-}*/
+}
 
