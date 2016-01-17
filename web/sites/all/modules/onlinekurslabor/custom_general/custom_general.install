@@ -37,3 +37,16 @@ function custom_general_update_3002(){
   }
 }
 
+
+/**
+ * set standard value
+ * courses other features (domain_text = TRUE)
+ */
+/*
+function custom_general_update_3003(){
+  $courses = _section_course_get_courses();
+  foreach($courses as $course){
+
+  }
+}*/
+

@@ -812,6 +812,15 @@ function _section_courses_feature_active($course, $feature) {
         }
       }
       break;
+    case NM_COURSE_FEATURE_TEXT:
+      if (!empty($course->field_other_features)) {
+        foreach ($course->field_other_features[LANGUAGE_NONE] as $feature) {
+          if ($feature['value'] == NM_COURSE_FEATURE_TEXT) {
+            return TRUE;
+          }
+        }
+      }
+      break;
     default:
   }
 

@@ -566,7 +566,17 @@ function _course_top_navigation_view() {
   foreach ($nav_items_single as $si) {
     $text_link = _section_courses_navtext_to_link($course, $si);
 
-    $options = array('link' => $text_link['link'], 'path' => $text_link['path'], 'attributes' => array('class' => array('btn')));
+    //only render this item, if feature is turned on.
+    // render as disabled button if no text is assigned
+    if($si == "Lehrtext" && !_section_courses_feature_active($course, NM_COURSE_FEATURE_TEXT)){
+      continue;
+    }
+
+    $options = array(
+      'link' => $text_link['link'],
+      'path' => $text_link['path'],
+      'attributes' => array('class' => array('btn'))
+    );
     //disable path buttons where user doen't have access to
     if (!drupal_valid_path($options['path'])) {
       $options['path'] = '#';
@@ -577,6 +587,7 @@ function _course_top_navigation_view() {
 
 
     $single_links[] = $options;
+
 //$si_link = _section_courses_navtext_to_link($course, $si);
 //$output_single .= "<li>" . $si_link . "</li>";
   }
@@ -765,14 +776,16 @@ function _section_courses_navtext_to_link($course, $text) {
       }
       break;
     case "Lehrtext":
-      if (_section_course_text_visible()) {
-        $options['attributes'] = array('class' => array('active'));
-      }
-      if ($domain_ref = _section_courses_course_get_domain_id($course)) {
+      if (_section_courses_feature_active($course, NM_COURSE_FEATURE_TEXT)) {
+        if (_section_course_text_visible()) {
+          $options['attributes'] = array('class' => array('active'));
+        }
+        if ($domain_ref = _section_courses_course_get_domain_id($course)) {
 
-        $path = "course/text/" . $course_nid . '/' . $domain_ref;
-        $result['path'] = $path;
-        $result['link'] = l($text, $path, $options);
+          $path = "course/text/" . $course_nid . '/' . $domain_ref;
+          $result['path'] = $path;
+          $result['link'] = l($text, $path, $options);
+        }
       }
       break;
     case "Aufgaben":

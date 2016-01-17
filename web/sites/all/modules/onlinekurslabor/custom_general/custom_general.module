@@ -106,6 +106,7 @@ define("NM_SPACE", "spaces_space");
 //define('NM_COURSE_FEATURE_WIKI', $value)
 define('NM_COURSE_FEATURE_FORUM', 'forum');
 define('NM_COURSE_FEATURE_COURSE_GROUP_LOCK', 'course_group_lock');
+define('NM_COURSE_FEATURE_TEXT', 'domain_text');
 
 define("NM_COURSES_ROLE_ADMINISTRATOR", "kurs-dozent");
 define("NM_COURSES_ROLE_TUTOR", "kurs-tutor");
