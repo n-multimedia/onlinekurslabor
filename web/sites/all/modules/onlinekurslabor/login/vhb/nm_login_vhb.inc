@@ -45,8 +45,28 @@ function nm_login_vhb_user_is_archivated($vhb_login) {
     return $res;
   }
 
-  return false;
+  return FALSE;
 }
+
+
+
+/**
+ * check if user is vhb user
+ * @param int $uid
+ */
+function nm_login_vhb_is_vhb_user($uid) {
+
+  $query = db_select('nm_login_vhb', 'nm');
+  $query->fields('nm', array('uid'));
+  $query->condition('nm.uid', $uid);
+  $res = $query->execute()->fetchField();
+  //check if uid was found
+  if (isset($res) && $res > 0) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
 
 /**
  * reactivate archivated users
