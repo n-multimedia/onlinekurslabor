@@ -223,7 +223,7 @@ function nm_login_vhb_archivate_user($user) {
 
   //1
   $vhb_login = null;
-  if ($profile2_data) {
+  if ($profile2_data && isset($wrapper_data->field_nm_login_vhb_login)) {
     //Populate profile fields
     $vhb_login = $wrapper_data->field_nm_login_vhb_login->value();
   }

@@ -178,6 +178,28 @@ function nm_general_features_node_info() {
  */
 function nm_general_features_default_profile2_type() {
   $items = array();
+  $items['data'] = entity_import('profile2_type', '{
+    "userCategory" : true,
+    "userView" : true,
+    "type" : "data",
+    "label" : "Data",
+    "weight" : "0",
+    "data" : {
+      "registration" : 0,
+      "roles" : {
+        "30037204" : "30037204",
+        "2" : "2",
+        "197637936" : "197637936",
+        "16675960" : "16675960",
+        "106505419" : "106505419",
+        "126456107" : "126456107",
+        "66784200" : "66784200",
+        "24708420" : "24708420",
+        "140204299" : "140204299"
+      }
+    },
+    "rdf_mapping" : []
+  }');
   $items['master'] = entity_import('profile2_type', '{
     "userCategory" : true,
     "userView" : true,

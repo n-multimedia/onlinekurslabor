@@ -44,8 +44,6 @@ function custom_general_update_3002(){
  */
 function custom_general_update_3003(){
 
-  module_load_include('module', 'section_courses', 'section_courses');
-
   $field_instances = field_info_instances('node', NM_COURSE);
   $default_value = $field_instances['field_other_features']['default_value'][0]['value'];
 
