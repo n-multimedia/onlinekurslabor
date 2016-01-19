@@ -222,6 +222,7 @@ function nm_login_vhb_archivate_user($user) {
 
 
   //1
+  $vhb_login = null;
   if ($profile2_data) {
     //Populate profile fields
     $vhb_login = $wrapper_data->field_nm_login_vhb_login->value();
@@ -295,12 +296,12 @@ function nm_login_vhb_archivate_user($user) {
  * @param type $matrikelnummer
  * @return type
  */
-function nm_login_vhb_obfuscate_matrikelnummer($vhb_login) {
+function nm_login_vhb_obfuscate_matrikelnummer($vhb_identifier) {
 
   require_once './includes/password.inc';
 
   $salt = NM_LOGIN_VHB_LOGIN_ENTRY_SALT;
-  $hash_bin = hash('sha512', $salt . $vhb_login, TRUE);
+  $hash_bin = hash('sha512', $salt . $vhb_identifier, TRUE);
   $len = strlen($hash_bin);
   $hash = _password_base64_encode($hash_bin, $len);
 
