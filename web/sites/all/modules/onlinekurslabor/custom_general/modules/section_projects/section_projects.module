@@ -1300,6 +1300,14 @@ function _section_projects_tools_access($account = NULL) {
   return FALSE;
 }
 
+/**
+ * Liefert was zurueck, was zum derzeit gewählten Projekt gehoert. Kann 
+ * NM_PROJECTS_KOOPERATIONSVEREINBARUNG , NM_PROJECTS_TAGEBUCH
+ * NM_PROJECTS_ZIELVEREINBARUNG, NM_PROJECTS_DOKUMENTATION sein
+ *
+ * @deprecated Don't use - code will be difficult
+ * @return StdClass $something 
+ */
 function section_projects_get_active_project($reset = FALSE) {
   static $project;
 
