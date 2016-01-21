@@ -750,31 +750,70 @@ Project's Tools
 }
 
 
-#projects_tools-container .btn#projektvorschlag a:before
+#projects_tools-container .btn#tools_projektvorschlag a:before
 {
     background-position: -300px -150px;
 }
-#projects_tools-container .btn#projektvorschlag a:hover:before, #projects_tools-container .btn#projektvorschlag a.active:before
+#projects_tools-container .btn#tools_projektvorschlag a:hover:before, #projects_tools-container .btn#tools_projektvorschlag a.active:before
 {
     background-position: -300px -100px;
 }
 
-#projects_tools-container .btn#kooperationsvereinbarung a:before
+#projects_tools-container .btn#tools_kooperationsvereinbarung a:before
 {
     background-position: -60px -100px;
 }
-#projects_tools-container .btn#kooperationsvereinbarung a:hover:before, #projects_tools-container .btn#kooperationsvereinbarung a.active:before
+#projects_tools-container .btn#tools_kooperationsvereinbarung a:hover:before, #projects_tools-container .btn#tools_kooperationsvereinbarung a.active:before
 {
     background-position: -60px -150px;
 }
 
-#projects_tools-container .btn#cockpit a:before
+#projects_tools-container .btn#tools_cockpit a:before
 {
     background-position: -180px -100px;
 }
-#projects_tools-container .btn#cockpit a:hover:before, #projects_tools-container .btn#cockpit a.active:before
+#projects_tools-container .btn#tools_cockpit a:hover:before, #projects_tools-container .btn#tools_cockpit a.active:before
 {
     background-position: -180px -150px;
+}
+
+#projects_tools-container .btn#tools_tagebuch a:before
+{
+    background-position: -60px 0px;
+}
+#projects_tools-container .btn#tools_tagebuch a:hover:before, #projects_tools-container .btn#tools_tagebuch a.active:before
+{
+    background-position: -60px -50px;
+}
+
+#projects_tools-container .btn#tools_dokumentation a:before
+{
+    background-position: -60px 0px;
+}
+#projects_tools-container .btn#tools_dokumentation a:hover:before, #projects_tools-container .btn#tools_dokumentation a.active:before
+{
+    background-position: -60px -50px;
+}
+
+#projects_tools-container .btn#tools_lernzielvereinbarung a:before
+{
+    background-position: -60px 0px;
+}
+#projects_tools-container .btn#tools_lernzielvereinbarung a:hover:before, #projects_tools-container .btn#tools_lernzielvereinbarung a.active:before
+{
+    background-position: -60px -50px;
+}
+
+
+#projects_tools-container .btn#tools_edit a:before
+{
+    background-image: url(../images/icons/transparent-icons---instructor.png);
+    background-position: 0px -100px;
+}
+#projects_tools-container .btn#tools_edit a:hover:before, #projects_tools-container .btn#tools__edit a.active:before
+{
+    background-image: url(../images/icons/transparent-icons---instructor.png);
+    background-position: 0px -150px;
 }
 /*interactive video*/
 #projects_tools-container .btn#author_h5p_overview a:before
@@ -849,44 +888,6 @@ Project's Tools
     background-position: -120px -150px;
 }
 
-#projects_tools-container .btn#tagebuch a:before
-{
-    background-position: -60px 0px;
-}
-#projects_tools-container .btn#tagebuch a:hover:before, #projects_tools-container .btn#tagebuch a.active:before
-{
-    background-position: -60px -50px;
-}
-
-#projects_tools-container .btn#dokumentation a:before
-{
-    background-position: -60px 0px;
-}
-#projects_tools-container .btn#dokumentation a:hover:before, #projects_tools-container .btn#dokumentation a.active:before
-{
-    background-position: -60px -50px;
-}
-
-#projects_tools-container .btn#lernzielvereinbarung a:before
-{
-    background-position: -60px 0px;
-}
-#projects_tools-container .btn#lernzielvereinbarung a:hover:before, #projects_tools-container .btn#lernzielvereinbarung a.active:before
-{
-    background-position: -60px -50px;
-}
-
-
-#projects_tools-container .btn#cooperationagreement a:before
-{
-    background-image: url(../images/icons/transparent-icons---instructor.png);
-    background-position: 0px -100px;
-}
-#projects_tools-container .btn#cooperationagreement a:hover:before, #projects_tools-container .btn#cooperationagreement a.active:before
-{
-    background-image: url(../images/icons/transparent-icons---instructor.png);
-    background-position: 0px -150px;
-}
 
 
 #projects_tools-toolbar 

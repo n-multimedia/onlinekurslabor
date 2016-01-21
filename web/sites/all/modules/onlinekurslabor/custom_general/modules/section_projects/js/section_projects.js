@@ -13,15 +13,7 @@
         $('.tab').parent('div').removeClass('active');
         $(this).parent('div').addClass('active');
 
-        /*
-        if(lastClass == "kurse") {
-          console.log($(this));
-          console.log($(this).parent('.span4'));
-          $(this).closest('.span4').removeClass('span4').addClass('span3').next('.span8').removeClass('span8').addClass('span9');
-
-        }*/
-
-        return false;
+      
       });
 
       $('a.noaction').click(function(){

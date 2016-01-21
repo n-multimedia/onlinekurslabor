@@ -1034,7 +1034,7 @@ function _section_projects_po_tools_view() {
       if (arg(0) == 'projects' && arg(4) != 'cockpit') {
         if(og_user_access('node', $active_project->nid, 'create ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content')) {
           $context_items['items'][] = array(
-            'name' => 'projektvorschlag',
+            'name' => 'tools_projektvorschlag',
             'path' => url('projects/admin/add/' . NM_PROJECTS_PROJEKTVORSCHLAG),
             'link' => l('Idee', 'projects/admin/add/' . NM_PROJECTS_PROJEKTVORSCHLAG, array(
               'query' => array(
@@ -1052,7 +1052,7 @@ function _section_projects_po_tools_view() {
           if(node_access('update', $active_project)) {
             //setting / edit partner organisation
             $context_items['items'][] = array(
-              'name' => 'cooperationagreement',
+              'name' => 'tools_edit',
               'path' => url('projects/admin/' . $active_project->nid . '/edit'),
               'link' => l('Partnerorg', 'projects/admin/' . $active_project->nid . '/edit', array(
                 //'query' => array(
@@ -1075,9 +1075,10 @@ function _section_projects_po_tools_view() {
     if (node_access('create', $tmp)) {
       if (arg(1) == 'partners' && is_numeric(arg(3))) {
         $context_items['items'][] = array(
-          'name' => 'kooperationsvereinbarung',
+          'name' => 'tools_kooperationsvereinbarung',
           'path' => url('projects/admin/add/' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG),
-          'link' => l('Koop Ver', 'projects/admin/add/' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG, array(
+          'link' => l('Koop-VB', 'projects/admin/add/' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG, array(
+            'attributes'=> array('title' => 'Kooperationsvereinbarung erstellen'),
             'query' => array(
               'field_partner_organization_ref' => $active_project->nid,
               'field_ca_proposal_ref' => arg(3),
@@ -1103,9 +1104,10 @@ function _section_projects_po_tools_view() {
           //check if lernzielverinbarung already exists
           if (empty($objective_node)) {
               $context_items['items'][] = array(
-                'name' => 'lernzielvereinbarung',
+                'name' => 'tools_lernzielvereinbarung',
                 'path' => url('projects/admin/add/' . NM_PROJECTS_ZIELVEREINBARUNG),
-                'link' => l('Lernzielvereinbarung erstellen', 'projects/admin/add/' . NM_PROJECTS_ZIELVEREINBARUNG, array(
+                'link' => l('Lernzielvereinbarung', 'projects/admin/add/' . NM_PROJECTS_ZIELVEREINBARUNG, array(
+                  'attributes'=> array('title' => 'Lernzielvereinbarung erstellen'),
                   'query' => array(
                     'field_ca_ref' => arg(5),
               ))));
@@ -1121,9 +1123,10 @@ function _section_projects_po_tools_view() {
         $documentation_node = _section_projects_get_documentation_by_ca($ca_node);
         if (empty($documentation_node)) {
           $context_items['items'][] = array(
-            'name' => 'dokumentation',
+            'name' => 'tools_dokumentation',
             'path' => url('projects/admin/' . $active_project->nid . '/edit'),
-            'link' => l('Dokumentation erstellen', 'projects/admin/add/' . NM_PROJECTS_DOKUMENTATION, array(
+            'link' => l('Dokumentation', 'projects/admin/add/' . NM_PROJECTS_DOKUMENTATION, array(
+              'attributes'=> array('title' => 'Lernzielvereinbarung erstellen'),
               'query' => array(
                 'field_ca_ref' => arg(5),
           ))));
@@ -1146,7 +1149,7 @@ function _section_projects_po_tools_view() {
         //18.06.2014 - 17:46 - SN
         //taking latest ca, possibility to select another context in cockpit section
         $context_items['items'][] = array(
-          'name' => 'cockpit',
+          'name' => 'tools_cockpit',
           'path' => url('projects/partners/' . $active_project->nid . '/' . arg(3) . '/cockpit/' . $ca->nid),
           'link' => l('Cockpit', 'projects/partners/' . $active_project->nid . '/' . arg(3) . '/cockpit/' . $ca->nid));
 
@@ -1156,7 +1159,7 @@ function _section_projects_po_tools_view() {
         //Proposal
         if(node_access('update', $proposal)) {
           $context_items['items'][] = array(
-            'name' => 'cooperationagreement',
+            'name' => 'tools_edit',
             'path' => url('projects/admin/' . $proposal->nid . '/edit'),
             'link' => l('Idee', 'projects/admin/' . $proposal->nid . '/edit', array(
               //'query' => array(
@@ -1171,28 +1174,16 @@ function _section_projects_po_tools_view() {
       if (is_numeric(arg(4)) || (arg(4) == 'cockpit') && is_numeric(arg(5))) {
         //check context -> cockpit
         $context_items['items'][] = array(
-          'name' => 'tagebuch',
+          'name' => 'tools_tagebuch',
           'path' => url('projects/admin/add/' . NM_PROJECTS_TAGEBUCH),
-          'link' => l(' Tagebuch', 'projects/admin/add/' . NM_PROJECTS_TAGEBUCH, array(
+          'link' => l('Tagebuch', 'projects/admin/add/' . NM_PROJECTS_TAGEBUCH, array(
+            'attributes'=> array('title' => 'Tagebucheintrag erstellen'),
             'query' => array(
               'og_group_ref' => arg(5),
         ))));
 
 
-        $ca = node_load(arg(5));
-
-        //setting / edit cooperation agreement
-        if(node_access('update', $ca)) {
-          $context_items['items'][] = array(
-            'name' => 'cooperationagreement',
-            'path' => url('projects/admin/' . $ca->nid . '/edit'),
-            'link' => l('Projekt', 'projects/admin/' . $ca->nid . '/edit', array(
-              'query' => array(
-                'og_group_ref' => arg(5),
-              )
-            ))
-          );
-        }
+    
       }
 
     }
