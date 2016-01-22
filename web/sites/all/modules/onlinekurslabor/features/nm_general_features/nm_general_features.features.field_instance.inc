@@ -10,7 +10,7 @@
 function nm_general_features_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-page-body'
+  // Exported field_instance: 'node-page-body'.
   $field_instances['node-page-body'] = array(
     'bundle' => 'page',
     'default_value' => NULL,
@@ -60,7 +60,7 @@ function nm_general_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-plattform_log-body'
+  // Exported field_instance: 'node-plattform_log-body'.
   $field_instances['node-plattform_log-body'] = array(
     'bundle' => 'plattform_log',
     'default_value' => NULL,
@@ -110,7 +110,7 @@ function nm_general_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-data-field_nm_login_vhb_login'
+  // Exported field_instance: 'profile2-data-field_nm_login_vhb_login'.
   $field_instances['profile2-data-field_nm_login_vhb_login'] = array(
     'bundle' => 'data',
     'default_value' => NULL,
@@ -179,7 +179,7 @@ function nm_general_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-master-field_about_me'
+  // Exported field_instance: 'profile2-master-field_about_me'.
   $field_instances['profile2-master-field_about_me'] = array(
     'bundle' => 'master',
     'default_value' => NULL,
@@ -248,7 +248,7 @@ function nm_general_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-master-field_birthday'
+  // Exported field_instance: 'profile2-master-field_birthday'.
   $field_instances['profile2-master-field_birthday'] = array(
     'bundle' => 'master',
     'deleted' => 0,
@@ -299,7 +299,7 @@ function nm_general_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-master-field_first_name'
+  // Exported field_instance: 'profile2-master-field_first_name'.
   $field_instances['profile2-master-field_first_name'] = array(
     'bundle' => 'master',
     'default_value' => NULL,
@@ -368,7 +368,7 @@ function nm_general_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-master-field_gender'
+  // Exported field_instance: 'profile2-master-field_gender'.
   $field_instances['profile2-master-field_gender'] = array(
     'bundle' => 'master',
     'default_value' => array(
@@ -405,7 +405,7 @@ function nm_general_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-master-field_last_name'
+  // Exported field_instance: 'profile2-master-field_last_name'.
   $field_instances['profile2-master-field_last_name'] = array(
     'bundle' => 'master',
     'default_value' => NULL,
@@ -474,7 +474,7 @@ function nm_general_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-master-field_photo'
+  // Exported field_instance: 'profile2-master-field_photo'.
   $field_instances['profile2-master-field_photo'] = array(
     'bundle' => 'master',
     'deleted' => 0,

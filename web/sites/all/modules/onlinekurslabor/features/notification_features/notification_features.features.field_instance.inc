@@ -10,7 +10,7 @@
 function notification_features_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'message-message_new_node-field_message_node_ref'
+  // Exported field_instance: 'message-message_new_node-field_message_node_ref'.
   $field_instances['message-message_new_node-field_message_node_ref'] = array(
     'bundle' => 'message_new_node',
     'default_value' => NULL,
@@ -56,7 +56,7 @@ function notification_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'message_type-message_type-message_text'
+  // Exported field_instance: 'message_type-message_type-message_text'.
   $field_instances['message_type-message_type-message_text'] = array(
     'bundle' => 'message_type',
     'default_value' => NULL,

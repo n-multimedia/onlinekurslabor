@@ -10,14 +10,13 @@
 function nm_general_features_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_birthday'
+  // Exported field_base: 'field_birthday'.
   $field_bases['field_birthday'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_birthday',
-    'foreign keys' => array(),
     'indexes' => array(),
     'locked' => 0,
     'module' => 'date',
@@ -41,21 +40,13 @@ function nm_general_features_field_default_field_bases() {
     'type' => 'datetime',
   );
 
-  // Exported field_base: 'field_first_name'
+  // Exported field_base: 'field_first_name'.
   $field_bases['field_first_name'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_first_name',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -71,21 +62,13 @@ function nm_general_features_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_last_name'
+  // Exported field_base: 'field_last_name'.
   $field_bases['field_last_name'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_last_name',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -101,21 +84,13 @@ function nm_general_features_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_nm_login_vhb_login'
+  // Exported field_base: 'field_nm_login_vhb_login'.
   $field_bases['field_nm_login_vhb_login'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_nm_login_vhb_login',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -131,21 +106,13 @@ function nm_general_features_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_photo'
+  // Exported field_base: 'field_photo'.
   $field_bases['field_photo'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_photo',
-    'foreign keys' => array(
-      'fid' => array(
-        'columns' => array(
-          'fid' => 'fid',
-        ),
-        'table' => 'file_managed',
-      ),
-    ),
     'indexes' => array(
       'fid' => array(
         0 => 'fid',

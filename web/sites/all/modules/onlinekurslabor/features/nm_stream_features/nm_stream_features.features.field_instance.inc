@@ -10,7 +10,7 @@
 function nm_stream_features_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'comment-comment_node_nm_stream-comment_body'
+  // Exported field_instance: 'comment-comment_node_nm_stream-comment_body'.
   $field_instances['comment-comment_node_nm_stream-comment_body'] = array(
     'bundle' => 'comment_node_nm_stream',
     'default_value' => NULL,
@@ -43,7 +43,7 @@ function nm_stream_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-nm_stream-body'
+  // Exported field_instance: 'node-nm_stream-body'.
   $field_instances['node-nm_stream-body'] = array(
     'bundle' => 'nm_stream',
     'default_value' => NULL,
@@ -125,7 +125,7 @@ function nm_stream_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-nm_stream-field_nm_attachments'
+  // Exported field_instance: 'node-nm_stream-field_nm_attachments'.
   $field_instances['node-nm_stream-field_nm_attachments'] = array(
     'bundle' => 'nm_stream',
     'deleted' => 0,
@@ -174,7 +174,7 @@ function nm_stream_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-nm_stream-field_nm_privacy'
+  // Exported field_instance: 'node-nm_stream-field_nm_privacy'.
   $field_instances['node-nm_stream-field_nm_privacy'] = array(
     'bundle' => 'nm_stream',
     'default_value' => NULL,
@@ -228,7 +228,7 @@ function nm_stream_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-nm_stream-group_content_access'
+  // Exported field_instance: 'node-nm_stream-group_content_access'.
   $field_instances['node-nm_stream-group_content_access'] = array(
     'bundle' => 'nm_stream',
     'default_value' => array(
@@ -285,7 +285,7 @@ function nm_stream_features_field_default_field_instances() {
     'widget_type' => 'options_select',
   );
 
-  // Exported field_instance: 'node-nm_stream-og_group_ref'
+  // Exported field_instance: 'node-nm_stream-og_group_ref'.
   $field_instances['node-nm_stream-og_group_ref'] = array(
     'bundle' => 'nm_stream',
     'default_value' => NULL,

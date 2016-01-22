@@ -40,17 +40,9 @@ function nm_general_features_image_default_styles() {
 
   // Exported image style: profile_main_thumbnail.
   $styles['profile_main_thumbnail'] = array(
-    'name' => 'profile_main_thumbnail',
     'label' => 'profile_main_thumbnail',
     'effects' => array(
       2 => array(
-        'label' => 'Skalieren und zuschneiden',
-        'help' => 'Skalieren und zuschneiden wird das Seitenverhältnis des ursprünglichen Bildes erhalten, und dann die überstehenden Ränder entfernen. Dies ist besonders nützlich für die Erstellung von perfekt quadratischen Vorschaubildern ohne Verzerrung des Bildes.',
-        'effect callback' => 'image_scale_and_crop_effect',
-        'dimensions callback' => 'image_resize_dimensions',
-        'form callback' => 'image_resize_form',
-        'summary theme' => 'image_resize_summary',
-        'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
           'width' => 180,
@@ -63,17 +55,9 @@ function nm_general_features_image_default_styles() {
 
   // Exported image style: profile_mini_thumbnail.
   $styles['profile_mini_thumbnail'] = array(
-    'name' => 'profile_mini_thumbnail',
     'label' => 'profile_mini_thumbnail',
     'effects' => array(
       1 => array(
-        'label' => 'Skalieren und zuschneiden',
-        'help' => 'Skalieren und zuschneiden wird das Seitenverhältnis des ursprünglichen Bildes erhalten, und dann die überstehenden Ränder entfernen. Dies ist besonders nützlich für die Erstellung von perfekt quadratischen Vorschaubildern ohne Verzerrung des Bildes.',
-        'effect callback' => 'image_scale_and_crop_effect',
-        'dimensions callback' => 'image_resize_dimensions',
-        'form callback' => 'image_resize_form',
-        'summary theme' => 'image_resize_summary',
-        'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
           'width' => 32,
@@ -86,17 +70,9 @@ function nm_general_features_image_default_styles() {
 
   // Exported image style: profile_nano_thumbnail.
   $styles['profile_nano_thumbnail'] = array(
-    'name' => 'profile_nano_thumbnail',
     'label' => 'profile_nano_thumbnail',
     'effects' => array(
       1 => array(
-        'label' => 'Skalieren und zuschneiden',
-        'help' => 'Skalieren und zuschneiden wird das Seitenverhältnis des ursprünglichen Bildes erhalten, und dann die überstehenden Ränder entfernen. Dies ist besonders nützlich für die Erstellung von perfekt quadratischen Vorschaubildern ohne Verzerrung des Bildes.',
-        'effect callback' => 'image_scale_and_crop_effect',
-        'dimensions callback' => 'image_resize_dimensions',
-        'form callback' => 'image_resize_form',
-        'summary theme' => 'image_resize_summary',
-        'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
           'width' => 25,
@@ -105,13 +81,6 @@ function nm_general_features_image_default_styles() {
         'weight' => 1,
       ),
       2 => array(
-        'label' => 'Rounded Corners',
-        'help' => 'This is true cropping, not overlays, so the result <em>can</em> be transparent.',
-        'effect callback' => 'canvasactions_roundedcorners_effect',
-        'dimensions passthrough' => TRUE,
-        'form callback' => 'canvasactions_roundedcorners_form',
-        'summary theme' => 'canvasactions_roundedcorners_summary',
-        'module' => 'imagecache_canvasactions',
         'name' => 'canvasactions_roundedcorners',
         'data' => array(
           'radius' => 12,
@@ -128,13 +97,6 @@ function nm_general_features_image_default_styles() {
         'weight' => 2,
       ),
       3 => array(
-        'label' => 'Change file format',
-        'help' => 'Choose to save the image as a different filetype.',
-        'effect callback' => 'coloractions_convert_image',
-        'dimensions passthrough' => TRUE,
-        'form callback' => 'coloractions_convert_form',
-        'summary theme' => 'coloractions_convert_summary',
-        'module' => 'imagecache_coloractions',
         'name' => 'coloractions_convert',
         'data' => array(
           'format' => 'image/png',
@@ -170,6 +132,7 @@ function nm_general_features_node_info() {
       'help' => '',
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }
 

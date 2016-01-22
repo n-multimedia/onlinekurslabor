@@ -1,8 +1,8 @@
 name = nm_h5p_features
 description = Provides h5p integration possibility
 core = 7.x
-version = 7.x-1.0-alpha1
 package = Features
+version = 7.x-1.0-alpha3
 dependencies[] = features
 dependencies[] = h5p
 dependencies[] = h5peditor
@@ -67,4 +67,3 @@ features[views_view][] = content_h5p_overview
 features_exclude[dependencies][views] = views
 features_exclude[dependencies][views_content] = views_content
 features_exclude[dependencies][nm_section_content_features] = nm_section_content_features
-mtime = 1449218463

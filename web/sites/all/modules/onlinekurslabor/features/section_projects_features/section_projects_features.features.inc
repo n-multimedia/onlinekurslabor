@@ -34,17 +34,9 @@ function section_projects_features_image_default_styles() {
 
   // Exported image style: projects_logo.
   $styles['projects_logo'] = array(
-    'name' => 'projects_logo',
     'label' => 'projects_logo',
     'effects' => array(
       17 => array(
-        'label' => 'Skalierung',
-        'help' => 'Eine Skalierung behält das Seitenverhältnis des Originalbildes bei. Sofern nur eine Seitenlänge angegeben ist, wird die andere berechnet.',
-        'effect callback' => 'image_scale_effect',
-        'dimensions callback' => 'image_scale_dimensions',
-        'form callback' => 'image_scale_form',
-        'summary theme' => 'image_scale_summary',
-        'module' => 'image',
         'name' => 'image_scale',
         'data' => array(
           'width' => 220,
@@ -113,6 +105,7 @@ function section_projects_features_node_info() {
       'help' => '',
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }
 
