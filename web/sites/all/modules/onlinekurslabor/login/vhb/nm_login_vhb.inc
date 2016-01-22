@@ -30,11 +30,13 @@ function nm_login_vhb_db_insert($user) {
 
 /**
  * check if user has been archivated
- * @param type $vhb_login
+ * @param type $vhb_login vhb_login_id
+ *  @param type $hochschule_matrikelnummer
+ *  ONE OF PARAMS HAVE TO BE PRESENT
  */
-function nm_login_vhb_user_is_archivated($vhb_login) {
+function nm_login_vhb_user_is_archivated($vhb_login= null, $hochschule_matrikelnummer = null) {
 
-  $obf_vhblogin = nm_login_vhb_obfuscate_matrikelnummer($vhb_login);
+  $obf_vhblogin = nm_login_vhb_obfuscate_data($vhb_login, $hochschule_matrikelnummer);
   $query = db_select('nm_login_vhb', 'nm');
   $query->fields('nm', array('uid'));
   $query->condition('nm.archivated', 1);
@@ -253,17 +255,7 @@ function nm_login_vhb_archivate_user($user) {
     $hochschule_matrikelnummer = $term_hochschule->name . $matrikelnummer;
   }
 
-  $obscured_login = NULL;
-  if(!empty($vhb_login)){
-    //1 - VHB LOGIN
-    $obscured_login = nm_login_vhb_obfuscate_matrikelnummer($vhb_login);
-  }else if(!empty($hochschule_matrikelnummer)){
-    //2 - fallback. matrikelnummer + hochschule as unique identifier
-    $obscured_login = "deprecated(h+m):".nm_login_vhb_obfuscate_matrikelnummer($hochschule_matrikelnummer);
-  }else {
-    //3 - fallback - mail
-    $obscured_login = "deprecated(e):".nm_login_vhb_obfuscate_matrikelnummer($user_mail);
-  }
+  $obscured_login =  nm_login_vhb_obfuscate_data($vhb_login,$hochschule_matrikelnummer,$user_mail); 
 
   //RESET  Values
 
@@ -284,7 +276,7 @@ function nm_login_vhb_archivate_user($user) {
   //data
   $wrapper_data->field_nm_login_vhb_login->set(NULL);
   $wrapper_data->save();
-
+  drupal_set_message('$obscured_login'.$obscured_login);
   drupal_set_message('Student ' . $edit['name'] . ' wurde archiviert.');
 
   //update db entry
@@ -312,22 +304,40 @@ function nm_login_vhb_archivate_user($user) {
 }
 
 /**
- * function used to obfuscate a matrikelnummer
- * @param type $matrikelnummer
+ * function used to obfuscate user_login-data
+ * @param string $vhb_login vhb-login-id
+ * @param string $hochschule_matrikelnummer  string containing hs and matrikelnummer
+ * @param string $email the user's email
+ * // one of the parameters need to be set!
  * @return type
  */
-function nm_login_vhb_obfuscate_matrikelnummer($vhb_identifier) {
+function nm_login_vhb_obfuscate_data($vhb_login = null, $hochschule_matrikelnummer = null, $email = null) {
+    require_once './includes/password.inc';
 
-  require_once './includes/password.inc';
+    $prependix = "";
+    $data = null;
+    if ($vhb_login) {
+        //default
+        $data = $vhb_login;
+    } else if ($hochschule_matrikelnummer) {
+        //2 - fallback. matrikelnummer + hochschule as unique identifier
+        $prependix = "deprecated(h+m):";
+        $data = $hochschule_matrikelnummer;
+    } elseif ($email) {
+        //3 - fallback - mail
+        $prependix = "deprecated(e):";
+        $data = $email;
+    } else
+        throw new Exception("No valid data given!");
 
-  $salt = NM_LOGIN_VHB_LOGIN_ENTRY_SALT;
-  $hash_bin = hash('sha512', $salt . $vhb_identifier, TRUE);
-  $len = strlen($hash_bin);
-  $hash = _password_base64_encode($hash_bin, $len);
 
-  return $hash;
+    $salt = NM_LOGIN_VHB_LOGIN_ENTRY_SALT;
+    $hash_bin = hash('sha512', $salt . $data, TRUE);
+    $len = strlen($hash_bin);
+    $hash = $prependix . _password_base64_encode($hash_bin, $len);
+
+    return $hash;
 }
-
 
 /**
  * import all users that have a matrikelnummer set into
