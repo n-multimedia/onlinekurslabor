@@ -554,6 +554,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     }*/
   }
 
+  /*Feature Lehrtext deaktivieren + Link auf Lehrtext erstellen*/
   if($form_id == 'courses_course_node_form'){
      $description ="<ul>";
     //add domain add link to
