@@ -51,7 +51,8 @@ function nm_login_vhb_user_is_archivated($vhb_login = null, $hochschule_matrikel
 
 /**
  * check if user is vhb user
- * @param int $uid
+ * @param int $uid User-ID
+ * @return boolean is_vhb_member
  */
 function nm_login_vhb_is_vhb_user($uid) {
 

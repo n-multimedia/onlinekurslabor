@@ -78,6 +78,29 @@ function nm_login_vhb_menu() {
     return $items;
 }
 
+/*
+ * hook__form_user_profile_form_alter veraendert die nutzerbarbeiten-maske
+ */
+
+function nm_login_vhb_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
+    global $user;
+    if ($form['#user_category'] == 'account') {
+        $account = $form['#user'];
+        if (nm_login_vhb_is_vhb_user($account->uid)) {
+            //"ZUgangsdaten"-Feldtyp von container zu fieldset
+            $form['account']['#type'] = "fieldset";
+            $form['account']['#title'] = t('This is a VHB-User!');
+            $form['account']['#description'] = '<span style="color:red;  font-weight:bold;">' . t('Editing of such an account is highly disencouraged!') . '</span><br>';
+            //warnung fuer admins
+            if (in_array('Moderator', $user->roles) || in_array('administrator', $user->roles))
+                $form['account']['#description'].=t('Only edit it if you know what you\'re doing.');
+            //hinweis an vhb-user selbst
+            if ($user->uid == $account->uid)
+                $form['account']['#description'].=t('Please change your personal information directly at the VHB.');
+        }
+    }
+}
+
 function nm_login_vhb() {
     $output = '';
 
