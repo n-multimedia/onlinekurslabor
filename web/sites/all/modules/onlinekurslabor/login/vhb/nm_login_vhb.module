@@ -23,6 +23,13 @@ function nm_login_vhb_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+  
+  $items['login/vhb_testformular'] = array(
+    'title' => 'Loginformular VHB',
+    'page callback' => 'nm_login_vhb_testform',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
   /*
     $items['nm_vhb_login/admin/list'] = array(
     'title' => 'Login Interface VHB',
@@ -96,181 +103,82 @@ function nm_login_vhb() {
     $hash = md5($attribute);
 
     nm_login_vhb_load_user_by_parameters($params);
-    if ($hash != $_POST['HASH'])
-        {
-        drupal_set_message("Hashes stimmen <strong>nicht</strong> überein.".$hash, 'error');
+    if ($hash != $_POST['HASH']) {
+        drupal_set_message("Hashes stimmen <strong>nicht</strong> überein." , 'error');
         return "";
     }
-        
-        
-        //sign in logic for students
-        watchdog("LOGIN VHB", 'Valid request: <pre>' . print_r($params, TRUE) . '</pre>', array(), WATCHDOG_INFO);
-        
-        $vhb_user = nm_login_vhb_load_user_by_parameters($params);
-
-        if ($vhb_user) {//reaktivieren falls archiviert
-            if ($vhb_user->is_archivated) {
-                nm_login_vhb_reactivate_user($vhb_user->uid, $params);
-                drupal_set_message('Willkommen zurück! Account wurde erfolgreich reaktiviert');
-                watchdog("LOGIN VHB", 'User reactivated', array(), WATCHDOG_INFO);
-            }
-            else
-            {
-                 drupal_set_message('Willkommen zurück!');
-            }
-        }
-        //kein user gefunden, anlegen..
-        else {
-            drupal_set_message('User wird angelegt...');
-            $vhb_user = nm_login_vhb_add_user($params);
-            //add db entry after adding a new account
-            nm_login_vhb_db_insert($vhb_user);
-            watchdog("LOGIN VHB", 'New user entry added', array(), WATCHDOG_INFO);
-        }
-        
-        
-        //jetzt ist angelegt, wir können einloggen..
-        if ($vhb_user && count($vhb_user->roles) == 2 && array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $vhb_user->roles)) {
-            global $user;
-            //ggf. eingeloggte nutzer werden somit ausgeloggt
-            $user = $vhb_user;
-            drupal_session_regenerate();
-            $vhb_user = clone $user;
-            nm_login_vhb_update_empty_profile_fields($vhb_user, $params);
-
-            $course = nm_login_vhb_get_course($params['LVNR']);
-            if (!$course->nid)
-                drupal_set_message("Course " . $params['LVNR'] . " could not be found. Please contact site-admin.", 'error');
-            else {
-                //user might not be signed up for that course yet!
-                if (!og_is_member('node', $course->nid, 'user', $user, array(OG_STATE_ACTIVE))) {
-                    //subscribe
-                    nm_login_vhb_user_subscribe($user, $course);
-                }
-                drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
-            }
-            
-        } else {
-            drupal_set_message('Problems accured regarding your account. Please contact site admin', 'error');
-        }
-        
-
-return "";
-
-
-    if ($hash == $_POST['HASH']) {
-   
-    if (nm_login_vhb_user_is_new($params)) {
-      //user is new -> create new account and subscribe for course
-      //drupal_set_message("Benutzer ist neu -> Neuen Account anlegen");
-      //before creating new user, check if user data has been archivated
-      $archivated_uid = nm_login_vhb_user_is_archivated($params['LOGIN']);
-
-      //15.01.2016 - 20:12 - SN
-      //check for deprecated users possible here.
-      if ($archivated_uid) {
-        //reactivate user
-        nm_login_vhb_reactivate_user($archivated_uid, $params);
-        watchdog("LOGIN VHB", 'User reactivated', array(), WATCHDOG_INFO);
-        //fix missing var
-        $account = user_load($archivated_uid);
-      }
-      else {
-        $account = nm_login_vhb_add_user($params);
-        //add db entry after adding a new account
-        nm_login_vhb_db_insert($account);
-        watchdog("LOGIN VHB", 'New user entry added', array(), WATCHDOG_INFO);
-      }
-
-      global $user;
-      //check if user is not already logged in
-      if (!$user->uid) {
-        $user = user_load($account->uid);
-        drupal_session_regenerate();
-
-        //redirect to course page
-        $course = nm_login_vhb_get_course($params['LVNR']);
-        if(!$course->nid)
-            drupal_set_message ("Course ".$params['LVNR']." could not be found. Please contact site-admin.",'error');
-        else
-            drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
-      }
-      else {
-        $message = "Logged in user tried to create an account and log in UID: " . $user->uid;
-        //drupal_set_message("Matrikelnummer stimmt nicht mit der Emailadresse überein.", 'error');
-        watchdog("LOGIN VHB", $message, array(), WATCHDOG_ALERT);
-      }
+    //Kursexistenz auch fuer neunutzer prüfen
+    $course = nm_login_vhb_get_course($params['LVNR']);
+    if (!$course->nid) {
+        drupal_set_message("Kurs " . $params['LVNR'] . " wurde nicht gefunden. Bitte kontaktieren Sie uns.", 'error');
+        return "";
     }
+
+
+    //sign in logic for students
+    watchdog("LOGIN VHB", 'Valid request: <pre>' . print_r($params, TRUE) . '</pre>', array(), WATCHDOG_INFO);
+
+    $vhb_user = nm_login_vhb_load_user_by_parameters($params);
+
+    if ($vhb_user) {//reaktivieren falls archiviert
+        if ($vhb_user->is_archivated) {
+            $vhb_user = nm_login_vhb_reactivate_user($vhb_user->uid, $params);
+            drupal_set_message('Willkommen zurück! Account wurde erfolgreich reaktiviert');
+            watchdog("LOGIN VHB", 'User reactivated', array(), WATCHDOG_INFO);
+        }
+        // Letzte Integrity-Checks, Überschreiben von Alt-Daten 
+        if (!nm_login_vhb_check_update_basicdata($vhb_user, $params)) {
+            drupal_set_message('Es gab Unstimmigkeiten mit Ihrem Account. Aus Datenschutzgründen wurde der Zugang verweigert. Bitte kontaktieren Sie uns zur Klärung der Angelegenheit', 'error');
+            watchdog("LOGIN VHB", 'User locked: ' . print_r($vhb_user, true) . '; Does not comply with: ' . print_r($params, TRUE), array(), WATCHDOG_INFO);
+            return "";
+        }
+    }
+    //kein user gefunden, anlegen..
     else {
-      //user account exists -> login and redirect to course
-      //drupal_set_message("Benutzer existiert -> einloggen");
-      //assuming that we don't need the transfered VHB - password
-      $account = user_load_by_mail($params['EMAIL']);
-      //check if user is set and has role student, dismiss else
-      if ($account && count($account->roles) == 2 && array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $account->roles)) {
-        global $user;
-        //check if user is not already logged in
-        if (!$user->uid) {
-          $user = user_load($account->uid);
-          drupal_session_regenerate();
-          $account = clone $user;
-          //add db entry after loging in, useful for users which have not
-          //been added to the db yet
-          //28.04.2014 - 15:24 - SN
-          //not deployed yet, because the timestamps would be different
-          //adding missing entries manually
-          //nm_login_vhb_db_insert($account);
-        }
-
-        //02.10.2014 - 16:20 - SN
-        //update !empty! fields
-        nm_login_vhb_update_empty_profile_fields($account, $params);
-
-        $course = nm_login_vhb_get_course($params['LVNR']);
-
-        if ($course) {
-          //user might not be signed up for that course yet!
-          //check first
-          //28.04.2014 - 14:49 - SN check if state is active
-          if (!og_is_member('node', $course->nid, 'user', $account, array(OG_STATE_ACTIVE))) {
-            //subscribe
-            nm_login_vhb_user_subscribe($account, $course);
-          }
-          //redirect to course page
-          drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
-        }
-        else {
-
-          $message = "User could not be redirected or subscribed to course LVNR: " . $params['LVNR'];
-          //drupal_set_message("Matrikelnummer stimmt nicht mit der Emailadresse überein.", 'error');
-          drupal_set_message($message, 'error');
-          watchdog("LOGIN VHB", $message, array(), WATCHDOG_ALERT);
-        }
-      }
-      else {
-        //redirect to user login page
-        drupal_goto('user');
-      }
+        drupal_set_message('User wird angelegt...');
+        $vhb_user = nm_login_vhb_add_user($params);
+        watchdog("LOGIN VHB", 'New user entry added', array(), WATCHDOG_INFO);
     }
-  }
-  else {
-    drupal_set_message("Hashes stimmen <strong>nicht</strong> überein.".$hash, 'error');
-  }
 
 
-  return $output;
+    //jetzt ist angelegt, wir können einloggen..
+    if ($vhb_user && count($vhb_user->roles) == 2 && array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $vhb_user->roles)) {
+        global $user;
+        //ggf. eingeloggte nutzer werden somit ausgeloggt und mit anderem acc eingeloggt
+        $user = $vhb_user;
+        drupal_session_regenerate();
+        $vhb_user = clone $user;
+        nm_login_vhb_update_empty_profile_fields($vhb_user, $params);
+
+        //kursexistenz geprüft, falls nicht eingetragen nun zum mitglied machen
+        if (!og_is_member('node', $course->nid, 'user', $user, array(OG_STATE_ACTIVE))) {
+            //subscribe
+            nm_login_vhb_user_subscribe($user, $course);
+            drupal_set_message("Erfolgreich in Kurs " . $course->title . " eingetragen");
+        }
+        drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
+    } else {
+        
+        drupal_set_message(var_export($vhb_user, true), 'error');
+        drupal_set_message('Problems accured regarding your account. Please contact site admin', 'error');
+    }
+
+
+    return "";
 }
+
 /**
- * loads a user by the iven paramaters sent via vhb
+ * loads a user by the given paramaters sent via vhb
  * @param array $params 
  * @return type
  */
 function nm_login_vhb_load_user_by_parameters($params)
 { 
-       $param_user_id =$params['LOGIN'] ;;#"623423466456X15";# "223456X15"; # #"666456X15";
-    $param_matrikel= $params['MATRIKELNUMMER'];#275352;#2086288 
-    $param_hochschule =  $params['HOCHSCHULE'] ; #'FH Kempten';;#'Uni Würzburg';#
-    $param_email = $params['EMAIL'] ; 
+       $param_user_id =$params['LOGIN'] ; 
+    $param_matrikel= $params['MATRIKELNUMMER']; 
+    $param_hochschule =  $params['HOCHSCHULE'] ;  
+   //Reaktivieren von E-Mail gibts nich
+   // $param_email = $params['EMAIL'] ; 
         
    
     $user = nm_login_vhb_load_user_by_entity('vhb_login_id',$param_user_id);
@@ -283,10 +191,11 @@ function nm_login_vhb_load_user_by_parameters($params)
 
 /**
  * loads a user by different entities
+ *  @param $entity_type string :  "vhb_login_id" OR 'matrikelnummer_hochschule'
  * @param string $entity1 vhb-login-id OR matrikelnummer
  * @param string $entity2 hochschule, only if $entity_type = matrikelnummer_hochschule 
- * $entity_type = vhb_login_id OR 'matrikelnummer_hochschule
- * @return type
+
+ * @return Stdclass $user
  */
 function nm_login_vhb_load_user_by_entity($entity_type, $entity1, $entity2 = null) {
     switch ($entity_type) {
@@ -306,6 +215,7 @@ function nm_login_vhb_load_user_by_entity($entity_type, $entity1, $entity2 = nul
             throw new Exception($entity_type.' is not a valid entity-type!');
     }
 
+    //suche nach regulaeren nutzern
     $profile_query = new EntityFieldQuery();
     $profile_query->entityCondition('entity_type', 'profile2')
             ->entityCondition('bundle', $bundle);
@@ -361,45 +271,7 @@ function nm_login_vhb_load_user_by_entity($entity_type, $entity1, $entity2 = nul
     return $user;
 }
 
-
-function nm_login_vhb_user_is_new($params) {
-  $mail = $params['EMAIL'];
-  $user = user_load_by_mail($mail);
-
-  if ($user) {
-    return FALSE;
-  }
-
-  //check if matrikelnummer is already set for any other account
-  if (nm_login_vhb_load_count_matrikelnummer($params['MATRIKELNUMMER']) > 0) {
-    //if so - we need to solve the conflict manually
-    //inform the user
-    $message = '
-                <p>(' . $params['EMAIL'] . ' - ' . $params['MATRIKELNUMMER'] . ").</p>
-                <p>Matrikelnummer stimmt nicht mit der Emailadresse überein.</p>
-
-                ";
-
-    //drupal_set_message("Matrikelnummer stimmt nicht mit der Emailadresse überein.", 'error');
-    watchdog("LOGIN VHB", $message, array(), WATCHDOG_ALERT);
-
-    return FALSE;
-  }
-
-  return TRUE;
-}
-
-function nm_login_vhb_load_count_matrikelnummer($matrikelnummer) {
-  $query = new EntityFieldQuery();
-
-  $query->entityCondition('entity_type', 'profile2')
-      ->entityCondition('bundle', 'student')
-      ->fieldCondition('field_matrikelnummer_varchar', 'value', $matrikelnummer, '=');
-
-  $result = $query->count()->execute();
-
-  return $result;
-}
+        
 
 /**
  * Create a new user account by using attributes submitted
@@ -494,6 +366,7 @@ function nm_login_vhb_add_user($params) {
 
   drupal_set_message('Student ' . $edit['name'] . ' wurde angelegt.');
 
+ //kursexistenz wird bereits einen Schritt vorher geprueft 
   //assign user to defined course
   //load course by LVNR
   $course = nm_login_vhb_get_course($params['LVNR']);
@@ -503,132 +376,13 @@ function nm_login_vhb_add_user($params) {
   _user_mail_notify('register_admin_created', $account);
 
   //add db entry
-  //nm_login_vhb_db_insert($account);
+  nm_login_vhb_db_insert($account);
 
   return $account;
 }
 
-/**
- * Update empty profile2 fields of existing user
- * by a VHB POST request
- *
- * @param $params VHB encoded POST parameters
- *
- * @return $account user account object
- *
- */
-function nm_login_vhb_update_empty_profile_fields($account, $params) {
-  //some redundand aspects
-  //refactor new generic function
-  //course/admin/%1/members/add
-  $role = user_role_load_by_name(NM_ROLE_STUDENT);
-
-  if (!$account) {
-    drupal_set_message("Account konnte nicht gespeichert werden.", 'error');
-    return;
-  }
-
-  //student profile
-  $profile2 = profile2_load_by_user($account, 'student');
-
-  if(!$profile2) {
-    //student profile
-    $profile2 = profile2_create(array('type' => 'student'));
-    $profile2->setUser($account);
-    profile2_save($profile2);
-  }
-
-  //Populate profile fields
-  $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
 
 
-  //20.11.2014 - 11:40 - SN matrikelnummer int changed to varchar
-  $tmp = $wrapper->field_matrikelnummer_varchar->value();
-  if (empty($tmp)) {
-    $wrapper->field_matrikelnummer_varchar->set($params['MATRIKELNUMMER']);
-  }
-
-
-  $tmp = $wrapper->field_studienfach->value();
-  if (empty($tmp)) {
-    $wrapper->field_studienfach->set($params['STUDIENFACH']);
-  }
-
-  $tmp = $wrapper->field_hochschule->value();
-  if (empty($tmp)) {
-    //load term id and set hochschule field
-    $terms = taxonomy_get_term_by_name($params['HOCHSCHULE']);
-
-    if (!empty($terms)) {
-      $wrapper->field_hochschule->set(current($terms)->tid);
-    }
-  }
-
-  $wrapper->save();
-
-  //master profile
-  $profile2 = profile2_load_by_user($account, 'master');
-
-  if(!$profile2) {
-    //master profile
-    $profile2 = profile2_create(array('type' => 'master'));
-    $profile2->setUser($account);
-    profile2_save($profile2);
-  }
-
-  $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
-
-  $tmp = $wrapper->field_first_name->value();
-  if (empty($tmp)) {
-    $wrapper->field_first_name->set($params['VORNAME']);
-  }
-
-  $tmp = $wrapper->field_last_name->value();
-  if (empty($tmp)) {
-    $wrapper->field_last_name->set($params['NACHNAME']);
-  }
-
-
-  $tmp = $wrapper->field_birthday->value();
-  if (empty($tmp)) {
-    $wrapper->field_birthday->set(strtotime($params['GEBDAT']));
-  }
-
-  $tmp = $wrapper->field_gender->value();
-
-  if ($tmp == 'fa') {
-    //not knowing which SEX options posiible
-    //weiblich = female so everything !female will be male
-    if ($params['SEX'] == 'weiblich') {
-      $wrapper->field_gender->set('female');
-    }
-    else {
-      $wrapper->field_gender->set('male');
-    }
-  }
-  $wrapper->save();
-
-  //master profile
-  $profile2 = profile2_load_by_user($account, 'data');
-
-  if(!$profile2) {
-    //master profile
-    $profile2 = profile2_create(array('type' => 'data'));
-    $profile2->setUser($account);
-    profile2_save($profile2);
-  }
-
-  $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
-
-  $tmp = $wrapper->field_nm_login_vhb_login->value();
-  if (empty($tmp)) {
-    $wrapper->field_nm_login_vhb_login->set($params['LOGIN']);
-  }
-
-  $wrapper->save();
-
-  realname_update($account);
-}
 
 /**
  * subscribe user for a course
@@ -667,6 +421,18 @@ function nm_login_vhb_get_course($lvnr) {
   return NULL;
 }
 
+
+
+function nm_login_vhb_testform() {
+    global $base_url;
+
+    ob_start();
+    include(dirname(__FILE__).'/vhb_testform.html');
+    #ob_end_clean();
+    $form = ob_get_clean();
+    return $form;
+    
+}
 function nm_login_vhb_test() {
 
   $output = '';

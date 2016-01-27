@@ -80,7 +80,7 @@ function nm_login_vhb_reactivate_user($uid, $params) {
   //some redundand aspects
   //refactor new generic function
   //course/admin/%1/members/add
-  $role = user_role_load_by_name(NM_ROLE_STUDENT);
+  $role = user_role_load_by_name(NM_ROLE_STUDENT);#
   $edit = array(
     'name' => $params['VORNAME'] . ' ' . $params['NACHNAME'],
     'pass' => user_password(),
@@ -102,6 +102,9 @@ function nm_login_vhb_reactivate_user($uid, $params) {
 
   //save and notify the user
   $account = user_save($user, $edit);
+  //im return nach save fehlt die rolle authentifizierter benutzer
+  //account neu laden, dann is sie wieder da.
+  $account = user_load($account->uid);
 
   if (!$account) {
     drupal_set_message("Account konnte nicht gespeichert werden.", 'error');
@@ -162,7 +165,7 @@ function nm_login_vhb_reactivate_user($uid, $params) {
 
   $num_c = db_update('nm_login_vhb')->fields(array(
         'archivated' => 0,
-        'matrikelnummer' => '',
+        'login_uid' => '',
       ))
       ->condition('uid', $user->uid)
       ->execute();
@@ -178,6 +181,158 @@ function nm_login_vhb_reactivate_user($uid, $params) {
   return $account;
 }
 
+
+/**
+ * Update empty profile2 fields of existing user
+ * by a VHB POST request
+ *
+ * @param $params VHB encoded POST parameters
+ *
+ * @return $account user account object
+ *
+ */
+function nm_login_vhb_update_empty_profile_fields($account, $params) {
+  //some redundand aspects
+  //refactor new generic function
+  //course/admin/%1/members/add
+  $role = user_role_load_by_name(NM_ROLE_STUDENT);
+
+  if (!$account) {
+    drupal_set_message("Account konnte nicht geladen werden.", 'error');
+    return;
+  }
+
+  //student profile
+  $profile2 = profile2_load_by_user($account, 'student');
+
+  if(!$profile2) {
+    //student profile
+    $profile2 = profile2_create(array('type' => 'student'));
+    $profile2->setUser($account);
+    profile2_save($profile2);
+  }
+
+  //Populate profile fields
+  $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+
+
+  //20.11.2014 - 11:40 - SN matrikelnummer int changed to varchar
+  $tmp = $wrapper->field_matrikelnummer_varchar->value();
+  if (empty($tmp)) {
+    $wrapper->field_matrikelnummer_varchar->set($params['MATRIKELNUMMER']);
+  }
+
+
+  $tmp = $wrapper->field_studienfach->value();
+  if (empty($tmp)) {
+    $wrapper->field_studienfach->set($params['STUDIENFACH']);
+  }
+
+  $tmp = $wrapper->field_hochschule->value();
+  if (empty($tmp)) {
+    //load term id and set hochschule field
+    $terms = taxonomy_get_term_by_name($params['HOCHSCHULE']);
+
+    if (!empty($terms)) {
+      $wrapper->field_hochschule->set(current($terms)->tid);
+    }
+  }
+
+  $wrapper->save();
+
+  //master profile
+  $profile2 = profile2_load_by_user($account, 'master');
+
+  if(!$profile2) {
+    //master profile
+    $profile2 = profile2_create(array('type' => 'master'));
+    $profile2->setUser($account);
+    profile2_save($profile2);
+  }
+
+  $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+
+  $tmp = $wrapper->field_first_name->value();
+  if (empty($tmp)) {
+    $wrapper->field_first_name->set($params['VORNAME']);
+  }
+
+  $tmp = $wrapper->field_last_name->value();
+  if (empty($tmp)) {
+    $wrapper->field_last_name->set($params['NACHNAME']);
+  }
+
+
+  $tmp = $wrapper->field_birthday->value();
+  if (empty($tmp)) {
+    $wrapper->field_birthday->set(strtotime($params['GEBDAT']));
+  }
+
+  $tmp = $wrapper->field_gender->value();
+
+  if ($tmp == 'fa') {
+    //not knowing which SEX options posiible
+    //weiblich = female so everything !female will be male
+    if ($params['SEX'] == 'weiblich') {
+      $wrapper->field_gender->set('female');
+    }
+    else {
+      $wrapper->field_gender->set('male');
+    }
+  }
+  $wrapper->save();
+
+  //master profile
+  $profile2 = profile2_load_by_user($account, 'data');
+
+  if(!$profile2) {
+    //master profile
+    $profile2 = profile2_create(array('type' => 'data'));
+    $profile2->setUser($account);
+    profile2_save($profile2);
+  }
+
+  $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+
+  $tmp = $wrapper->field_nm_login_vhb_login->value();
+  if (empty($tmp)) {
+    $wrapper->field_nm_login_vhb_login->set($params['LOGIN']);
+  }
+
+  $wrapper->save();
+
+  realname_update($account);
+}
+
+/**
+ * führt einen Check auf Basis-Daten durch, und updated diese ggf
+ *
+ * @param StdClass $vhb_user user-object
+ * @param array $params - die uebergebenen post-daten
+ */
+function nm_login_vhb_check_update_basicdata($vhb_user, $params) {
+    //master profile
+    $profile2 = profile2_load_by_user($vhb_user, 'master');
+
+    if (!$profile2) {
+        return false;
+    }
+    $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+
+    //Vor- und Nachname passen nicht zu gespeichertem - seltsam!
+    if ($wrapper->field_first_name->value() != $params['VORNAME'] && $wrapper->field_last_name->value() != $params['NACHNAME'])
+        return false;
+
+
+    $wrapper->field_first_name->set($params['VORNAME']);
+    $wrapper->field_last_name->set($params['NACHNAME']);
+    $wrapper->save();
+    
+    $vhb_user->mail = $params['EMAIL'];
+    user_save($vhb_user);
+
+    return true;
+}
 /**
  * delete db entry
  * @param type $user
