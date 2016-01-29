@@ -125,7 +125,6 @@ function nm_login_vhb() {
 
     $hash = md5($attribute);
 
-    nm_login_vhb_load_user_by_parameters($params);
     if ($hash != $_POST['HASH']) {
         drupal_set_message("Hashes stimmen <strong>nicht</strong> überein.", 'error');
         return "";
@@ -158,7 +157,7 @@ function nm_login_vhb() {
     }
     //kein user gefunden, anlegen..
     else {
-        drupal_set_message('User wird angelegt...');
+        drupal_set_message('Benutzer wird angelegt...');
         $vhb_user = nm_login_vhb_add_user($params);
         watchdog("LOGIN VHB", 'New user entry added', array(), WATCHDOG_INFO);
     }
@@ -204,8 +203,9 @@ function nm_login_vhb_load_user_by_parameters($params) {
 
 
     $user = nm_login_vhb_load_user_by_entity('vhb_login_id', $param_user_id);
-    if (!$user)
+    if (!$user) {
         $user = nm_login_vhb_load_user_by_entity('matrikelnummer_hochschule', $param_matrikel, $param_hochschule);
+    }
 
     return $user;
 }

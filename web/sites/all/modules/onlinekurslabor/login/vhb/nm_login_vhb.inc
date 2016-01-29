@@ -186,7 +186,7 @@ function nm_login_vhb_reactivate_user($uid, $params) {
  * @return $account user account object
  *
  */
-function nm_login_vhb_update_empty_profile_fields($account, $params) {
+function nm_login_vhb_update_empty_profile_fields($account, $params, $force = FALSE) {
     //some redundand aspects
     //refactor new generic function
     //course/admin/%1/members/add
@@ -213,18 +213,18 @@ function nm_login_vhb_update_empty_profile_fields($account, $params) {
 
     //20.11.2014 - 11:40 - SN matrikelnummer int changed to varchar
     $tmp = $wrapper->field_matrikelnummer_varchar->value();
-    if (empty($tmp)) {
+    if (empty($tmp) || $force) {
         $wrapper->field_matrikelnummer_varchar->set($params['MATRIKELNUMMER']);
     }
 
 
     $tmp = $wrapper->field_studienfach->value();
-    if (empty($tmp)) {
+    if (empty($tmp) || $force) {
         $wrapper->field_studienfach->set($params['STUDIENFACH']);
     }
 
     $tmp = $wrapper->field_hochschule->value();
-    if (empty($tmp)) {
+    if (empty($tmp) || $force) {
         //load term id and set hochschule field
         $terms = taxonomy_get_term_by_name($params['HOCHSCHULE']);
 
@@ -248,18 +248,18 @@ function nm_login_vhb_update_empty_profile_fields($account, $params) {
     $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
 
     $tmp = $wrapper->field_first_name->value();
-    if (empty($tmp)) {
+    if (empty($tmp) || $force) {
         $wrapper->field_first_name->set($params['VORNAME']);
     }
 
     $tmp = $wrapper->field_last_name->value();
-    if (empty($tmp)) {
+    if (empty($tmp) || $force) {
         $wrapper->field_last_name->set($params['NACHNAME']);
     }
 
 
     $tmp = $wrapper->field_birthday->value();
-    if (empty($tmp)) {
+    if (empty($tmp) || $force) {
         $wrapper->field_birthday->set(strtotime($params['GEBDAT']));
     }
 
@@ -289,7 +289,7 @@ function nm_login_vhb_update_empty_profile_fields($account, $params) {
     $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
 
     $tmp = $wrapper->field_nm_login_vhb_login->value();
-    if (empty($tmp)) {
+    if (empty($tmp) || $force) {
         $wrapper->field_nm_login_vhb_login->set($params['LOGIN']);
     }
 
