@@ -177,16 +177,35 @@ function nm_login_vhb_reactivate_user($uid, $params) {
     return $account;
 }
 
+
 /**
  * Update empty profile2 fields of existing user
  * by a VHB POST request
- *
+ *@param StdClass $account A user-account object
  * @param $params VHB encoded POST parameters
  *
- * @return $account user account object
+ * @return void
  *
  */
-function nm_login_vhb_update_empty_profile_fields($account, $params, $force = FALSE) {
+function nm_login_vhb_update_empty_profile_fields($account, $params)
+{
+    return nm_login_vhb_set_profile_fields($account, $params);
+}
+
+/**
+ * Sets profile2 fields of existing user
+ * by a VHB POST request.
+ * By default only empty fields will be set. If parameter $force is set,
+ * existing fields will be overwritten
+ *
+  *@param StdClass $account A user-account object
+ * @param array $params VHB encoded POST parameters
+ * @param boolean $force Existing fields will be overwritten
+ *
+ * @return void
+ *
+ */
+function nm_login_vhb_set_profile_fields($account, $params, $force = FALSE) {
     //some redundand aspects
     //refactor new generic function
     //course/admin/%1/members/add
@@ -299,12 +318,13 @@ function nm_login_vhb_update_empty_profile_fields($account, $params, $force = FA
 }
 
 /**
- * führt einen Check auf Basis-Daten durch, und updated diese ggf
+ * führt einen Check auf Basis-Daten durch
  *
  * @param StdClass $vhb_user user-object
  * @param array $params - die uebergebenen post-daten
+ * @return bool $allowed - true ok, false denied
  */
-function nm_login_vhb_check_update_basicdata($vhb_user, $params) {
+function nm_login_vhb_check_basicdata($vhb_user, $params) {
     //master profile
     $profile2 = profile2_load_by_user($vhb_user, 'master');
 
@@ -317,13 +337,23 @@ function nm_login_vhb_check_update_basicdata($vhb_user, $params) {
     if ($wrapper->field_first_name->value() != $params['VORNAME'] && $wrapper->field_last_name->value() != $params['NACHNAME'])
         return false;
 
+    //student profile
+    $profile2 = profile2_load_by_user($account, 'student');
+    if (!$profile2) {
+        return false;
+    }
+    $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
+    $hs_stored_id = $wrapper->field_hochschule->value();
+    $provided_hs_term = taxonomy_get_term_by_name($params['HOCHSCHULE']);
+    $provided_hs_term_id = current($provided_hs_term)->tid;
+    $stored_matrikelnummer = $wrapper->field_matrikelnummer_varchar->value();
+    $provided_matrikelnummer = $params['MATRIKELNUMMER'];
+    //hochschule und matrikelnummer passen nicht zusammen. 
+    if (($hs_stored_id != $provided_hs_term_id) xor ($stored_matrikelnummer != $provided_matrikelnummer ))
+        return false;
 
-    $wrapper->field_first_name->set($params['VORNAME']);
-    $wrapper->field_last_name->set($params['NACHNAME']);
-    $wrapper->save();
 
-    $vhb_user->mail = $params['EMAIL'];
-    user_save($vhb_user);
+
 
     return true;
 }
