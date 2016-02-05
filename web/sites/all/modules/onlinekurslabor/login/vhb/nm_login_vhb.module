@@ -30,6 +30,12 @@ function nm_login_vhb_menu() {
         'access callback' => TRUE,
         'type' => MENU_CALLBACK,
     );
+     $items['login/vhb_createPHPcode'] = array(
+        'title' => 'PHP-Code für Reaktivierung',
+        'page callback' => 'nm_login_vhb_creeatePHPcode',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
     /*
       $items['nm_vhb_login/admin/list'] = array(
       'title' => 'Login Interface VHB',
@@ -101,6 +107,15 @@ function nm_login_vhb_form_user_profile_form_alter(&$form, &$form_state, $form_i
     }
 }
 
+function nm_login_vhb_convert_to_utf8($array_of_values)
+{
+    $params = array();
+    foreach ($array_of_values as $key => $value) {
+        $params[$key] = check_plain(utf8_encode($value));
+    }
+    return $params;
+}
+
 function nm_login_vhb() {
     $output = '';
 
@@ -116,10 +131,7 @@ function nm_login_vhb() {
     //$_POST['DATAVERSION'] >= NM_LOGIN_VHB_DATAVERSION
     //UTF-8 konvertierte Parameter: diese werden im System weiterverwendet
     //safe checked plain text values
-    $params = array();
-    foreach ($_POST as $key => $value) {
-        $params[$key] = check_plain(utf8_encode($value));
-    }
+    $params = nm_login_vhb_convert_to_utf8($_POST);
 
     $attribute = $_POST['LOGIN'] . $_POST['PASSWORT'] . $_POST['LVNR'] . $_POST['BEZEICHNUNG'] . $_POST['VORNAME'] . $_POST['NACHNAME'] . $_POST['STRASSE'] . $_POST['PLZ'] . $_POST['ORT'] . $_POST['EMAIL'] . $_POST['HOCHSCHULE'] . $_POST['STUDIENFACH'] . $_POST['ABSCHLUSS'] . NM_LOGIN_VHB_SALT;
 
@@ -149,11 +161,13 @@ function nm_login_vhb() {
             watchdog("LOGIN VHB", 'User reactivated', array(), WATCHDOG_INFO);
         }
         // Letzte Integrity-Checks, Überschreiben von Alt-Daten 
-        if (!nm_login_vhb_check_update_basicdata($vhb_user, $params)) {
+        if (!nm_login_vhb_check_basicdata($vhb_user, $params)) {
             drupal_set_message('Es gab Unstimmigkeiten mit Ihrem Account. Aus Datenschutzgründen wurde der Zugang verweigert. Bitte kontaktieren Sie uns zur Klärung der Angelegenheit', 'error');
             watchdog("LOGIN VHB", 'User locked: ' . print_r($vhb_user, true) . '; Does not comply with: ' . print_r($params, TRUE), array(), WATCHDOG_INFO);
             return "";
         }
+        //checks sind durchgelaufen, jetzt updaten wir noch ggf veränderte profile-fields
+        nm_login_vhb_set_profile_fields($vhb_user, $params, true);
     }
     //kein user gefunden, anlegen..
     else {
@@ -181,7 +195,7 @@ function nm_login_vhb() {
         drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
     } else {
 
-        drupal_set_message(var_export($vhb_user, true), 'error');
+       // drupal_set_message(var_export($vhb_user, true), 'error');
         drupal_set_message('Problems accured regarding your account. Please contact site admin', 'error');
     }
 
@@ -442,6 +456,33 @@ function nm_login_vhb_testform() {
     include(dirname(__FILE__) . '/vhb_testform.html');
     #ob_end_clean();
     $form = ob_get_clean();
+    return $form;
+}
+
+/**
+ * Erstellt PHP-Code um händisch einen Nutzer wieder reaktivieren zu können
+ *
+ * @param array $_POST
+ *  
+ */
+function nm_login_vhb_creeatePHPcode() {
+    global $base_url;
+global $user;
+if (!in_array('administrator', $user->roles)) 
+        return "Nur für die Administratoren-Rolle verfügbar";
+    $params = nm_login_vhb_convert_to_utf8($_POST);
+    $uid =   $params['uid'];;#
+    if(!$_POST)
+        return "";
+    if(!$uid)
+        return "Keine User-ID übergeben!";
+    unset($params['uid']);
+    unset($params['HASH']);
+    $param_string = var_export($params,true);
+    $php_code = 'nm_login_vhb_reactivate_user('.$uid.', '.$param_string.');';
+    #$param_string = str_replace('array (', '', $param_string);
+    #$param_string = str_replace(', )', '', $param_string);
+    $form = '<b>Folgenden Code nun unter "execute PHP" eingeben:</b><br><pre>'. $php_code.'</pre>';
     return $form;
 }
 

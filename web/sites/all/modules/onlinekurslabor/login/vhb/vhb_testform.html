@@ -38,7 +38,10 @@ MATRIKELNUMMER<br>
 <input type = "text" name = "MATRIKELNUMMER" value = "123456"/> <br>
 HASH<br>
 <input type = "text" name = "HASH" value = ""/><br>
+NUR für Code-Erzeugung nötig: User-ID<br>
+<input type = "text" name = "uid" value = ""/><br>
 
-<input type="submit" value="Absenden">
+<input type="submit" value="Mit diesen Daten einloggen">
+<input type="submit" value="PHP-Code für Reaktivierung erzeugen" formaction="<?=$base_url?>/login/vhb_createPHPcode">
 </form>
     
