@@ -62,7 +62,7 @@ function _custom_general_theme_top_nav($variables = NULL) {
     //$user_link .= l("Abmelden", "user/logout");
   }
   else {
-    $user_link = l("Einloggen", "user/");
+    $user_link = l("Anmelden", "user/");
     $user_link_classes = " lock";
   }
 
