@@ -951,3 +951,135 @@ function custom_general_query_alter(QueryAlterableInterface $query) {
 
 }
 
+
+/**
+ * node-delete-confirm
+ * alter node deletion form
+ */
+
+function custom_general_form_node_delete_confirm_alter(&$form, &$form_state){
+  $attachment_fields = array(
+    'field_course_docs',
+    'field_attachments',
+    'field_nm_attachments',
+  );
+
+  $has_attachments = FALSE;
+  $node = $form['#node'];
+  $nid = $node->nid;
+
+  $file_attachments = array();
+  foreach ($attachment_fields as $field) {
+    if (!empty($node->$field)) {
+      $has_attachments = TRUE;
+      $items = $node->{$field}[LANGUAGE_NONE];
+      foreach ($items as $file) {
+        $file = file_load($file['fid']);
+        $file_attachments[$file->fid] = $file;
+        //$usage = file_usage_list($file);
+        $usage_list = custom_general_file_entity_usage_page($file);
+        $usage_output = drupal_render($usage_list);
+        $form['usage_list_' . $file->fid] = array(
+          '#markup' => "<br/><br/><div><h4>" . t("File") . ": " . $file->filename . "</h4></div><hr>" . $usage_output,
+        );
+      }
+    }
+  }
+
+
+  if($has_attachments){
+    $form['#prefix'] = "<div>" . t("Please check, if the file attachments are not used elsewhere."). "</div><br/>";
+    $form['actions']['#prefix'] = "<br/><br/>";
+
+    $form['actions']['keep_files'] = array(
+      '#type' => 'submit',
+      '#value' => 'Delete node and files',
+      '#weight' => -10,
+      '#attributes' => array('class' => array('btn-danger')),
+      '#submit' => array('custom_general_form_node_delete_node_and_files_submit'),
+    );
+
+    $form['actions']['submit']['#value'] = 'Delete (node only)';
+    $form['actions']['submit']['#attributes'] = array('class' => array('btn-danger'));
+    $form['actions']['submit']['#weight'] = -11;
+
+    $form_state['file_attachments'] = $file_attachments;
+  }
+
+}
+
+
+function custom_general_form_node_delete_node_and_files_submit($form, &$form_state) {
+
+  //delete node
+  node_delete_confirm_submit($form, $form_state);
+
+  //delete attachments
+  if(!empty($form_state['file_attachments'])) {
+    file_delete_multiple(array_keys($form_state['file_attachments']));
+  }
+
+}
+
+
+/**
+ * overriding file_entity_usage_page for our usage
+ * respecting access
+ * Page callback to show file usage information.
+ */
+function custom_general_file_entity_usage_page($file) {
+  $rows = array();
+  $occured_entities = array();
+
+  foreach (file_usage_list($file) as $module => $usage) {
+    $info = system_get_info('module', $module);
+
+    // There are cases, where actual entitiy doesen't exist.
+    // We have to handle this.
+    foreach ($usage as $entity_type => $entity_ids) {
+      $entity_info = entity_get_info($entity_type);
+      $entities = empty($entity_info) ? NULL : entity_load($entity_type, array_keys($entity_ids));
+
+      foreach ($entity_ids as $entity_id => $count) {
+        // If some other module already added this entity just sum all counts.
+        if (isset($occured_entities[$entity_type][$entity_id])) {
+          $rows[$occured_entities[$entity_type][$entity_id]][2] += $count;
+          continue;
+        }
+
+        //view - access check
+        if(!entity_access('view', $entity_type, $entities[$entity_id])){
+          $label = t("Access denied").". ".t("Please contact the site administrator.");
+          $entity_uri = "";
+        }else {
+          $label = empty($entities[$entity_id]) ? $module : entity_label($entity_type, $entities[$entity_id]);
+          $entity_uri = empty($entities[$entity_id]) ? NULL : entity_uri($entity_type, $entities[$entity_id]);
+        }
+
+        // Some entities do not have URL.
+        if (empty($entity_uri)) {
+          $rows[] = array(check_plain($label), $count);
+        }
+        else {
+          $uri = $entity_uri['path'];
+          $rows[] = array(l($label, $uri), $count);
+        }
+
+        $occured_entities[$entity_type][$entity_id] = count($rows) - 1;
+      }
+    }
+  }
+  $header[] = array(
+    'data' => t('Entity'),
+  );
+  $header[] = array(
+    'data' => t('Use count'),
+  );
+  $build['usage_table'] = array(
+    '#theme' => 'table',
+    '#header' => $header,
+    '#rows' => $rows
+  );
+
+  return $build;
+}
