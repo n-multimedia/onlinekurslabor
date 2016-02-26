@@ -14,6 +14,9 @@ define("NM_FILTER_FORMAT_FILTERED_HTML", 'filtered_html');
 //Blocks
 define("NM_BLOCK_AUTOREN", 53);
 
+//Global Forum
+define("NM_GLOBAL_FORUM_TID", 180);
+
 //Content
 define("NM_DOMAIN_OVERVIEW_ID", 7); //deprecated
 define("NM_DOMAIN_OVERVIEW_PATH", "domains");
@@ -659,8 +662,11 @@ function custom_general_onlinekurslabor_admin_page() {
 }
 
 function custom_general_menu_alter(&$items) {
+
   // Example - disable the page at node/add
   $items['node']['access callback'] = FALSE;
+  $items['forum']['access callback'] = 'custom_general_user_is_okl_admin';
+  $items['forum']['access arguments'] = array(array('administrator'));
 }
 
 function _custom_general_biblio_dashboard() {
@@ -726,6 +732,7 @@ function custom_general_preprocess_page(&$variables) {
   drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/spin.js");
 
   drupal_add_library('system', 'ui.progressbar');
+
 }
 
 function custom_general_append_active_class($path, &$options) {
@@ -951,3 +958,303 @@ function custom_general_query_alter(QueryAlterableInterface $query) {
 
 }
 
+
+/**
+ * node-delete-confirm
+ * alter node deletion form
+ */
+
+function custom_general_form_node_delete_confirm_alter(&$form, &$form_state){
+  $attachment_fields = array(
+    'field_course_docs',
+    'field_attachments',
+    'field_nm_attachments',
+  );
+
+  $has_attachments = FALSE;
+  $node = $form['#node'];
+  $nid = $node->nid;
+
+  $file_attachments = array();
+  foreach ($attachment_fields as $field) {
+    if (!empty($node->$field)) {
+      $has_attachments = TRUE;
+      $items = $node->{$field}[LANGUAGE_NONE];
+      foreach ($items as $file) {
+        $file = file_load($file['fid']);
+        $file_attachments[$file->fid] = $file;
+        //$usage = file_usage_list($file);
+        $usage_list = custom_general_file_entity_usage_page($file);
+        $usage_output = drupal_render($usage_list);
+        $form['usage_list_' . $file->fid] = array(
+          '#markup' => "<br/><br/><div><h4>" . t("File") . ": " . $file->filename . "</h4></div><hr>" . $usage_output,
+        );
+      }
+    }
+  }
+
+
+  if($has_attachments){
+    $form['#prefix'] = "<div>" . t("Please check, if the file attachments are not used elsewhere."). "</div><br/>";
+    $form['actions']['#prefix'] = "<br/><br/>";
+
+    $form['actions']['keep_files'] = array(
+      '#type' => 'submit',
+      '#value' => 'Delete node and files',
+      '#weight' => -10,
+      '#attributes' => array('class' => array('btn-danger')),
+      '#submit' => array('custom_general_form_node_delete_node_and_files_submit'),
+    );
+
+    $form['actions']['submit']['#value'] = 'Delete (node only)';
+    $form['actions']['submit']['#attributes'] = array('class' => array('btn-danger'));
+    $form['actions']['submit']['#weight'] = -11;
+
+    $form_state['file_attachments'] = $file_attachments;
+  }
+
+}
+
+
+function custom_general_form_node_delete_node_and_files_submit($form, &$form_state) {
+
+  //delete node
+  node_delete_confirm_submit($form, $form_state);
+
+  //delete attachments
+  if(!empty($form_state['file_attachments'])) {
+    file_delete_multiple(array_keys($form_state['file_attachments']));
+  }
+
+}
+
+
+/**
+ * overriding file_entity_usage_page for our usage
+ * respecting access
+ * Page callback to show file usage information.
+ */
+function custom_general_file_entity_usage_page($file) {
+  $rows = array();
+  $occured_entities = array();
+
+  foreach (file_usage_list($file) as $module => $usage) {
+    $info = system_get_info('module', $module);
+
+    // There are cases, where actual entitiy doesen't exist.
+    // We have to handle this.
+    foreach ($usage as $entity_type => $entity_ids) {
+      $entity_info = entity_get_info($entity_type);
+      $entities = empty($entity_info) ? NULL : entity_load($entity_type, array_keys($entity_ids));
+
+      foreach ($entity_ids as $entity_id => $count) {
+        // If some other module already added this entity just sum all counts.
+        if (isset($occured_entities[$entity_type][$entity_id])) {
+          $rows[$occured_entities[$entity_type][$entity_id]][2] += $count;
+          continue;
+        }
+
+        //view - access check
+        if(!entity_access('view', $entity_type, $entities[$entity_id])){
+          $label = t("Access denied").". ".t("Please contact the site administrator.");
+          $entity_uri = "";
+        }else {
+          $label = empty($entities[$entity_id]) ? $module : entity_label($entity_type, $entities[$entity_id]);
+          $entity_uri = empty($entities[$entity_id]) ? NULL : entity_uri($entity_type, $entities[$entity_id]);
+        }
+
+        // Some entities do not have URL.
+        if (empty($entity_uri)) {
+          $rows[] = array(check_plain($label), $count);
+        }
+        else {
+          $uri = $entity_uri['path'];
+          $rows[] = array(l($label, $uri), $count);
+        }
+
+        $occured_entities[$entity_type][$entity_id] = count($rows) - 1;
+      }
+    }
+  }
+  $header[] = array(
+    'data' => t('Used in'),
+  );
+  $header[] = array(
+    'data' => t('Use count'),
+  );
+  $build['usage_table'] = array(
+    '#theme' => 'table',
+    '#header' => $header,
+    '#rows' => $rows
+  );
+
+  return $build;
+}
+
+/**
+ *
+ */
+function custom_general_forum_set_breadcrumb(){
+
+
+  switch(arg(0)){
+    case  'node':
+      $nid = arg(1);
+      $node = node_load($nid);
+      if (!empty($node->taxonomy_forums)) {
+        reset($node->taxonomy_forums);
+        $langcode = key($node->taxonomy_forums);
+        if (!empty($node->taxonomy_forums[$langcode])) {
+          $fid = $node->taxonomy_forums[$langcode][0]['tid'];
+        }
+      }
+      break;
+    case  'forum':
+      $fid = arg(1);
+      break;
+  }
+
+  $term = taxonomy_term_load($fid);
+  // Build Breadcrumbs
+  $breadcrumb = array();
+  //$breadcrumb[] = l('Forum', 'forum/178');
+  //get forum parents
+  $parents = taxonomy_get_parents_all($term->tid);
+
+  //render as text not as link
+  $parent_last = array_shift($parents);
+
+  while ($parent = array_pop($parents)) {
+    $breadcrumb[] = l($parent->name, 'forum/' . $parent->tid);
+  }
+
+
+  $breadcrumb[] = $parent_last->name;
+
+  // Set Breadcrumbs
+  drupal_set_breadcrumb($breadcrumb);
+}
+
+
+/**
+ * Implements hook_access().
+ * from forum_access_query_term_access_alter
+ *
+ */
+
+function custom_general_query_term_access_alter(QueryAlterableInterface $query) {
+  global $user;
+
+  // Read meta-data from query, if provided.
+  if (!$account = $query->getMetaData('account')) {
+    $account = $user;
+  }
+  if (!$op = $query->getMetaData('op')) {
+    $op = 'view';
+  }
+
+  // If $account can bypass node access, or there are no node access
+  // modules, we don't need to alter the query.
+  if (user_access('bypass node access', $account)) {
+    return;
+  }
+
+  // Prevent duplicate records.
+  $query->distinct();
+
+  // Find all instances of the {taxonomy_term_data} table being joined --
+  // could appear more than once in the query, and could be aliased.
+  // Join each one to the forum_access table.
+
+
+  //19.02.2016 - 17:39 - SN
+  //get forum terms the user may see
+  $user_courses = _section_course_get_courses_by_uid($account->uid);
+  $course_nids = array_map(function($o) { return $o->nid; }, $user_courses);
+  if(empty($course_nids)) {
+    $course_nids = array(-1);
+  }
+
+
+  $sub_query = db_select('og_membership', 'om')
+    ->fields('om', array('etid', 'entity_type'))
+    ->condition('om.type', 'og_membership_type_default')
+    ->condition('om.entity_type', 'taxonomy_term')
+    ->condition('om.state',OG_STATE_ACTIVE)
+    ->condition('om.gid', $course_nids, 'IN');
+  $results = $sub_query->execute()->fetchAll();
+
+
+  $forum_term_ids = array_map(function($o) { return $o->etid; }, $results);
+  if(empty($forum_term_ids)) {
+    $forum_term_ids = array(-1);
+  }
+
+  //add global forum term ids for auth users
+  if($user->uid > 0) {
+    $forum_term_ids[] = NM_GLOBAL_FORUM_TID;
+    $child_terms = _custom_general_taxonomy_get_children_all(NM_GLOBAL_FORUM_TID);
+    $forum_term_ids = array_merge($forum_term_ids, $child_terms);
+  }
+
+  $tables = $query->getTables();
+  foreach ($tables as $talias => $tableinfo) {
+    $table = $tableinfo['table'];
+    if (!($table instanceof SelectQueryInterface) && $table == 'taxonomy_term_data') {
+      //restrict tid for Forum Vid only!
+      $query->condition(db_or()->condition("$talias.tid", $forum_term_ids, 'IN')->condition("$talias.vid", 2, '<>'));
+    }
+  }
+
+}
+
+
+/**
+ * get plane taxonomy children
+ * userful to get all tids
+ * @param $tid
+ * @param int $vid
+ * @param string $key
+ * @return array
+ */
+function _custom_general_taxonomy_get_children_all($tid, $vid = 0){
+  $c = _custom_general_taxonomy_get_children($tid, $vid);
+  $result = array();
+  foreach ($c as $d) {
+    $result[] = $d;
+    $below = array();
+    $below = _custom_general_taxonomy_get_children_all($d, $vid);
+    if (!empty($below)) {
+      $result = array_merge($result, $below);
+    }
+  }
+  return $result;
+}
+
+
+/**
+ * avoid recursion. needed to remove the term access tag
+ * sorry future me
+ * @param $tid
+ * @param int $vid
+ * @return array
+ */
+function _custom_general_taxonomy_get_children($tid, $vid = 0) {
+  $children = &drupal_static(__FUNCTION__, array());
+
+  if ($tid && !isset($children[$tid])) {
+    $query = db_select('taxonomy_term_data', 't');
+    $query->join('taxonomy_term_hierarchy', 'h', 'h.tid = t.tid');
+    $query->addField('t', 'tid');
+    $query->condition('h.parent', $tid);
+    if ($vid) {
+      $query->condition('t.vid', $vid);
+    }
+    $query->orderBy('t.weight');
+    $query->orderBy('t.name');
+    $tids = $query->execute()->fetchCol();
+    $children[$tid] = $tids;
+  }
+
+  return isset($children[$tid]) ? $children[$tid] : array();
+}
