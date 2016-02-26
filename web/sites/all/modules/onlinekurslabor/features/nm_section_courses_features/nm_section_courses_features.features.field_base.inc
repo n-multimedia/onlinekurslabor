@@ -10,21 +10,13 @@
 function nm_section_courses_features_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_about_me'
+  // Exported field_base: 'field_about_me'.
   $field_bases['field_about_me'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_about_me',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -39,14 +31,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_access_features'
+  // Exported field_base: 'field_access_features'.
   $field_bases['field_access_features'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_access_features',
-    'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
         0 => 'value',
@@ -65,14 +56,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_collaborative_features'
+  // Exported field_base: 'field_collaborative_features'.
   $field_bases['field_collaborative_features'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_collaborative_features',
-    'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
         0 => 'value',
@@ -91,21 +81,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_course_docs'
+  // Exported field_base: 'field_course_docs'.
   $field_bases['field_course_docs'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_course_docs',
-    'foreign keys' => array(
-      'file_managed' => array(
-        'columns' => array(
-          'fid' => 'fid',
-        ),
-        'table' => 'file_managed',
-      ),
-    ),
     'indexes' => array(
       'fid' => array(
         0 => 'fid',
@@ -120,21 +102,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'media',
   );
 
-  // Exported field_base: 'field_course_group_proposal'
+  // Exported field_base: 'field_course_group_proposal'.
   $field_bases['field_course_group_proposal'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_course_group_proposal',
-    'foreign keys' => array(
-      'node' => array(
-        'columns' => array(
-          'target_id' => 'nid',
-        ),
-        'table' => 'node',
-      ),
-    ),
     'indexes' => array(
       'target_id' => array(
         0 => 'target_id',
@@ -164,21 +138,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_course_header'
+  // Exported field_base: 'field_course_header'.
   $field_bases['field_course_header'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_course_header',
-    'foreign keys' => array(
-      'fid' => array(
-        'columns' => array(
-          'fid' => 'fid',
-        ),
-        'table' => 'file_managed',
-      ),
-    ),
     'indexes' => array(
       'fid' => array(
         0 => 'fid',
@@ -187,7 +153,7 @@ function nm_section_courses_features_field_default_field_bases() {
     'locked' => 0,
     'module' => 'image',
     'settings' => array(
-      'default_image' => 188,
+      'default_image' => 310,
       'profile2_private' => FALSE,
       'uri_scheme' => 'public',
     ),
@@ -195,21 +161,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'image',
   );
 
-  // Exported field_base: 'field_course_picture'
+  // Exported field_base: 'field_course_picture'.
   $field_bases['field_course_picture'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_course_picture',
-    'foreign keys' => array(
-      'fid' => array(
-        'columns' => array(
-          'fid' => 'fid',
-        ),
-        'table' => 'file_managed',
-      ),
-    ),
     'indexes' => array(
       'fid' => array(
         0 => 'fid',
@@ -218,7 +176,7 @@ function nm_section_courses_features_field_default_field_bases() {
     'locked' => 0,
     'module' => 'image',
     'settings' => array(
-      'default_image' => 188,
+      'default_image' => 310,
       'profile2_private' => FALSE,
       'uri_scheme' => 'public',
     ),
@@ -226,21 +184,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'image',
   );
 
-  // Exported field_base: 'field_course_proposals'
+  // Exported field_base: 'field_course_proposals'.
   $field_bases['field_course_proposals'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_course_proposals',
-    'foreign keys' => array(
-      'node' => array(
-        'columns' => array(
-          'target_id' => 'nid',
-        ),
-        'table' => 'node',
-      ),
-    ),
     'indexes' => array(
       'target_id' => array(
         0 => 'target_id',
@@ -270,21 +220,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_domain_demo_ref'
+  // Exported field_base: 'field_domain_demo_ref'.
   $field_bases['field_domain_demo_ref'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_domain_demo_ref',
-    'foreign keys' => array(
-      'node' => array(
-        'columns' => array(
-          'target_id' => 'nid',
-        ),
-        'table' => 'node',
-      ),
-    ),
     'indexes' => array(
       'target_id' => array(
         0 => 'target_id',
@@ -314,21 +256,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_domain_ref'
+  // Exported field_base: 'field_domain_ref'.
   $field_bases['field_domain_ref'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_domain_ref',
-    'foreign keys' => array(
-      'node' => array(
-        'columns' => array(
-          'target_id' => 'nid',
-        ),
-        'table' => 'node',
-      ),
-    ),
     'indexes' => array(
       'target_id' => array(
         0 => 'target_id',
@@ -358,21 +292,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_field_courses_sponsors'
+  // Exported field_base: 'field_field_courses_sponsors'.
   $field_bases['field_field_courses_sponsors'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_field_courses_sponsors',
-    'foreign keys' => array(
-      'tid' => array(
-        'columns' => array(
-          'tid' => 'tid',
-        ),
-        'table' => 'taxonomy_term_data',
-      ),
-    ),
     'indexes' => array(
       'tid' => array(
         0 => 'tid',
@@ -393,14 +319,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_gender'
+  // Exported field_base: 'field_gender'.
   $field_bases['field_gender'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_gender',
-    'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
         0 => 'value',
@@ -421,21 +346,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_generic_solution_entry'
+  // Exported field_base: 'field_generic_solution_entry'.
   $field_bases['field_generic_solution_entry'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_generic_solution_entry',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -450,21 +367,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_generic_task'
+  // Exported field_base: 'field_generic_task'.
   $field_bases['field_generic_task'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_generic_task',
-    'foreign keys' => array(
-      'node' => array(
-        'columns' => array(
-          'target_id' => 'nid',
-        ),
-        'table' => 'node',
-      ),
-    ),
     'indexes' => array(
       'target_id' => array(
         0 => 'target_id',
@@ -494,21 +403,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_generic_task_assessment'
+  // Exported field_base: 'field_generic_task_assessment'.
   $field_bases['field_generic_task_assessment'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_generic_task_assessment',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -523,14 +424,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_generic_task_entry'
+  // Exported field_base: 'field_generic_task_entry'.
   $field_bases['field_generic_task_entry'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_generic_task_entry',
-    'foreign keys' => array(),
     'indexes' => array(),
     'locked' => 0,
     'module' => 'double_field',
@@ -555,21 +455,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'double_field',
   );
 
-  // Exported field_base: 'field_hochschule'
+  // Exported field_base: 'field_hochschule'.
   $field_bases['field_hochschule'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_hochschule',
-    'foreign keys' => array(
-      'tid' => array(
-        'columns' => array(
-          'tid' => 'tid',
-        ),
-        'table' => 'taxonomy_term_data',
-      ),
-    ),
     'indexes' => array(
       'tid' => array(
         0 => 'tid',
@@ -590,21 +482,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_image'
+  // Exported field_base: 'field_image'.
   $field_bases['field_image'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_image',
-    'foreign keys' => array(
-      'fid' => array(
-        'columns' => array(
-          'fid' => 'fid',
-        ),
-        'table' => 'file_managed',
-      ),
-    ),
     'indexes' => array(
       'fid' => array(
         0 => 'fid',
@@ -620,21 +504,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'image',
   );
 
-  // Exported field_base: 'field_long_description'
+  // Exported field_base: 'field_long_description'.
   $field_bases['field_long_description'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_long_description',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -649,21 +525,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_matrikelnummer_varchar'
+  // Exported field_base: 'field_matrikelnummer_varchar'.
   $field_bases['field_matrikelnummer_varchar'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_matrikelnummer_varchar',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -679,21 +547,38 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_semester'
+  // Exported field_base: 'field_other_features'.
+  $field_bases['field_other_features'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_other_features',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'domain_text' => 'Lehrtext',
+      ),
+      'allowed_values_function' => '',
+      'profile2_private' => FALSE,
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
+  // Exported field_base: 'field_semester'.
   $field_bases['field_semester'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_semester',
-    'foreign keys' => array(
-      'tid' => array(
-        'columns' => array(
-          'tid' => 'tid',
-        ),
-        'table' => 'taxonomy_term_data',
-      ),
-    ),
     'indexes' => array(
       'tid' => array(
         0 => 'tid',
@@ -714,21 +599,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_short_description'
+  // Exported field_base: 'field_short_description'.
   $field_bases['field_short_description'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_short_description',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -743,21 +620,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_sponsors_image'
+  // Exported field_base: 'field_sponsors_image'.
   $field_bases['field_sponsors_image'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_sponsors_image',
-    'foreign keys' => array(
-      'fid' => array(
-        'columns' => array(
-          'fid' => 'fid',
-        ),
-        'table' => 'file_managed',
-      ),
-    ),
     'indexes' => array(
       'fid' => array(
         0 => 'fid',
@@ -774,21 +643,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'image',
   );
 
-  // Exported field_base: 'field_sponsors_url'
+  // Exported field_base: 'field_sponsors_url'.
   $field_bases['field_sponsors_url'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_sponsors_url',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -803,21 +664,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_studienfach'
+  // Exported field_base: 'field_studienfach'.
   $field_bases['field_studienfach'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_studienfach',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -833,21 +686,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_subtitle'
+  // Exported field_base: 'field_subtitle'.
   $field_bases['field_subtitle'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_subtitle',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -863,21 +708,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_tags'
+  // Exported field_base: 'field_tags'.
   $field_bases['field_tags'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_tags',
-    'foreign keys' => array(
-      'tid' => array(
-        'columns' => array(
-          'tid' => 'tid',
-        ),
-        'table' => 'taxonomy_term_data',
-      ),
-    ),
     'indexes' => array(
       'tid' => array(
         0 => 'tid',
@@ -897,14 +734,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_task_handling_period'
+  // Exported field_base: 'field_task_handling_period'.
   $field_bases['field_task_handling_period'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_task_handling_period',
-    'foreign keys' => array(),
     'indexes' => array(),
     'locked' => 0,
     'module' => 'date',
@@ -928,14 +764,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'datetime',
   );
 
-  // Exported field_base: 'field_task_type'
+  // Exported field_base: 'field_task_type'.
   $field_bases['field_task_type'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_task_type',
-    'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
         0 => 'value',
@@ -955,14 +790,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_time_span'
+  // Exported field_base: 'field_time_span'.
   $field_bases['field_time_span'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_time_span',
-    'foreign keys' => array(),
     'indexes' => array(),
     'locked' => 0,
     'module' => 'date',
@@ -986,21 +820,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'date',
   );
 
-  // Exported field_base: 'field_vhb_lvnr'
+  // Exported field_base: 'field_vhb_lvnr'.
   $field_bases['field_vhb_lvnr'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_vhb_lvnr',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -1016,21 +842,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_workload'
+  // Exported field_base: 'field_workload'.
   $field_bases['field_workload'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_workload',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -1046,21 +864,13 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'taxonomy_forums'
+  // Exported field_base: 'taxonomy_forums'.
   $field_bases['taxonomy_forums'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'taxonomy_forums',
-    'foreign keys' => array(
-      'tid' => array(
-        'columns' => array(
-          'tid' => 'tid',
-        ),
-        'table' => 'taxonomy_term_data',
-      ),
-    ),
     'indexes' => array(
       'tid' => array(
         0 => 'tid',

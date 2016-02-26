@@ -16,7 +16,10 @@ function section_projects_features_default_page_manager_pages() {
   $page->admin_title = 'Partners - Partner - Projektvorschlag';
   $page->admin_description = '';
   $page->path = 'projects/partners/%1/%2';
-  $page->access = array();
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
   $page->menu = array();
   $page->arguments = array(
     1 => array(
@@ -296,6 +299,8 @@ function section_projects_features_default_page_manager_pages() {
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -732,7 +737,10 @@ echo _section_projects_render_node_tabs($node);
   $page->admin_title = 'Projects- Partners';
   $page->admin_description = '';
   $page->path = 'projects/partners';
-  $page->access = array();
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
   $page->menu = array();
   $page->arguments = array();
   $page->conf = array(
@@ -849,7 +857,10 @@ echo \'<p><a class="btn" href="/node/add/projects-organization">Neue Partnerorga
   $page->admin_title = 'Projects - Partners - Partner';
   $page->admin_description = '';
   $page->path = 'projects/partners/%node';
-  $page->access = array();
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
   $page->menu = array();
   $page->arguments = array(
     'node' => array(

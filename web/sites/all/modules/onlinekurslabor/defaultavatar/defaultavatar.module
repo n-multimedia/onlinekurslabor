@@ -1,0 +1,99 @@
+<?php
+
+/**
+ * 
+ * Ersetzt das User-Bild in profile2 durch einen robohash.
+ * benötigt genau die im Code genannten Feldnamen.
+ * 
+ */
+define('AVATARSERVICE_URL','https://robohash.org/%s?size=400x400&bgset=bg1');
+define('AVATARSERVICE_SALT','EMeMH6348v8kYbQH'); 
+/**
+ * Implements hook_init().
+ */
+function defaultavatar_init() { 
+  
+}
+
+
+ function _DefaultAvatar_getUserIdentifier($user_account)
+ {
+     return md5($user_account->uid . AVATARSERVICE_SALT);
+ }
+
+function _DefaultAvatar_getPictureURL($user_account)
+{ 
+    return sprintf(AVATARSERVICE_URL, _DefaultAvatar_getUserIdentifier($user_account)) ;
+}
+
+/*Funktion, die mit einer User-ID aufgerufen werden kann.*/
+function _DefaultAvatar_createDefaultAvatarForUser($user_id)
+{   if (!$user_id) {
+        echo "Keine User-ID übergeben!";
+        return false;
+    }
+    $account = user_load($user_id);
+
+    $profile = profile2_load_by_user($account, 'master');
+    if (!$profile)
+        $profile = profile_create(array(
+            'user' => $account,
+            'type' => 'master'));
+    //setze bild
+    _DefaultAvatar_alterProfileWithDefaultAvatar($profile);
+    //speichere
+    profile2_save($profile);
+}
+/*lädt ein bild herunter und manipuliert das übergebene objekt $profile (muss bereits vom typ master sein) mit entsprechenden einträgen*/
+function _DefaultAvatar_alterProfileWithDefaultAvatar($profile) {
+    //var
+    $file = null;
+    $account = user_load($profile->uid);
+    //kein bild existiert
+    if (! isset($profile->field_photo) || ! $profile->field_photo[LANGUAGE_NONE]) {
+        $localfilename = 'avatar_' . _DefaultAvatar_getUserIdentifier($account) . '.png';
+        //Nutzer möchte Bild löschen
+        //ist das bild der default-avatar, dann zwangsweise löschen verhindern
+        if (isset($profile->original->field_photo) && $profile->original->field_photo[LANGUAGE_NONE][0]['filename'] == $localfilename)
+        {
+            drupal_set_message (t("You can't delete the default profile picture. To remove it, upload a custom picture."));
+            $file = file_load($profile->original->field_photo[LANGUAGE_NONE][0]['fid']);
+        }
+        //altes user-bild geloescht, es wird ein roboter erstellt
+        elseif(isset($profile->original->field_photo) && $profile->original->field_photo[LANGUAGE_NONE][0][filename])
+        {
+              drupal_set_message (t("A default picture was created for you!"));
+         
+        }
+
+        //download picture
+        if(!$file)
+            $file = system_retrieve_file(_DefaultAvatar_getPictureURL($account), 'public://' . $localfilename, true, FILE_EXISTS_REPLACE);
+        //fehler beim erstellen, nicht weitermachen
+        if (!$file)
+            return false;
+
+        $img_info = image_get_info(drupal_realpath($file->uri));
+        $profile->field_photo[
+                LANGUAGE_NONE][0]['fid'] = $file->fid;
+        $profile->field_photo[
+                LANGUAGE_NONE][0]['width'] = $img_info['width'];
+        $profile->field_photo[
+                LANGUAGE_NONE][0]['height'] = $img_info['height'];
+ 
+    }
+   
+}
+
+/*hook_profile2_presave
+ * Beim Anlegen eines Nutzers / wenn das Profil bearbeitet wird, wird dieser Hook angesprochen
+ */
+function defaultavatar_profile2_presave($profile) {
+   
+    if(is_object($profile) && $profile->type=="master")
+    {
+        _DefaultAvatar_alterProfileWithDefaultAvatar($profile);
+    }
+    
+    
+}

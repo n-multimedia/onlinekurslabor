@@ -568,6 +568,9 @@ function section_projects_block_info() {
   $blocks['projects_course_group_actions'] = array(
     'info' => t('Project - Course Group - Actions'),
   );
+    $blocks['projects_course_group_userlink'] = array(
+    'info' => t('Project - Course Group - Link to Usermanagement'),
+  );
 
   $blocks['project_cockpit_main'] = array(
     'info' => t('Projects - Cockpit - Main'),
@@ -613,6 +616,9 @@ function section_projects_block_view($delta = '') {
     case 'projects_course_group_actions' :
       $block['content'] = _section_projects_course_group_actions_view();
       break;
+    case  'projects_course_group_userlink' :
+       $block['content'] =   _section_projects_course_group_actions_userlink();
+    break;
     case 'project_cockpit_main' :
       $block['content'] = _section_projects_project_cockpit_main_view();
       break;
@@ -624,6 +630,9 @@ function section_projects_block_view($delta = '') {
 function _section_projects_header_and_navigation_view() {
 
   $output = '';
+
+  $arg0 = arg(0);
+  $arg1 = arg(1);
 
   //partnerübersicht
   $arg2 = arg(2);
@@ -804,6 +813,8 @@ function _section_projects_header_and_navigation_view() {
   if (is_numeric($arg2) && is_numeric($arg3) && ($arg4 == 'cockpit')) {
     //projects overview page
     $output .= _section_projects_project_cockpit_tabs_view();
+  }else if(($arg0 == 'projects') && ($arg1 == 'admin')) {
+    $output .= _section_projects_project_cockpit_tabs_view_static();
   }
 
   $block = array(
@@ -854,6 +865,88 @@ function _section_projects_project_cockpit_main_view() {
   }
 
   return $block;
+}
+
+
+/**
+ * in add and edit forms we need static lincs instead of tabs
+ * @return array|string
+ */
+function _section_projects_project_cockpit_tabs_view_static() {
+  $navigation_items = _section_projects_get_navigation_items();
+
+  $block = array();
+  $po_node = section_projects_get_active_project();
+
+  if ($po_node->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
+    $active_tab = 1;
+
+    $ca = $po_node;
+    $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
+    $partner_nid = _custom_general_get_group($proposal);
+    $po_node = node_load($partner_nid);
+  }
+  else if (in_array($po_node->type, array(NM_PROJECTS_ZIELVEREINBARUNG, NM_PROJECTS_DOKUMENTATION, NM_PROJECTS_TAGEBUCH))) {
+
+    if($po_node->type == NM_PROJECTS_ZIELVEREINBARUNG){
+      $active_tab = 2;
+    }
+    if($po_node->type == NM_PROJECTS_DOKUMENTATION){
+      $active_tab = 3;
+    }
+
+    $tmp = $po_node;
+    if (!empty($tmp->field_ca_ref)) {
+      $ca = node_load($tmp->field_ca_ref[LANGUAGE_NONE][0]['target_id']);
+    }
+    else {
+      $ca = node_load($tmp->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+    }
+
+    $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
+    $partner_nid = _custom_general_get_group($proposal);
+    $po_node = node_load($partner_nid);
+  }
+
+  //override active menu trail on add
+  //active tab, highlight menu item
+
+  if(arg(0) == 'projects' && arg(1) == 'admin' && arg(2) == 'add'){
+     if (arg(3) == NM_PROJECTS_ZIELVEREINBARUNG) {
+      $active_tab = 2;
+    }else if (arg(3) == NM_PROJECTS_DOKUMENTATION) {
+      $active_tab = 3;
+    }else if (arg(3) == NM_PROJECTS_TAGEBUCH) {
+      $active_tab = 0;
+    }
+  }
+
+  //get project and partner ids
+  if (empty($ca) || empty($proposal) || empty($po_node)) {
+      return "";
+
+  }
+
+  $i = 0;
+
+  $output = '<div class="row-fluid">';
+  $output .= '<div style="position:relative" class="nav-tabbox span12">';
+  foreach ($navigation_items as $item) {
+    $active_class = ($i == $active_tab) ? 'active' : '';
+    $output .= '<div class="' . $active_class . '">';
+    $output .= '<a href = "/projects/partners/'.$po_node->nid.'/'.$proposal->nid.'/cockpit/'.$ca->nid.'#' . drupal_html_class(transliteration_get($item)) . '" class="statictab ' . drupal_html_class(transliteration_get($item)) . '">';
+    $output .= $item;
+    $output .= '</a>';
+    $output .= '</div>';
+
+    $i++;
+  }
+
+  $output .= '</div>';
+  $output .= '</div>';
+
+
+  return $output;
 }
 
 function _section_projects_project_cockpit_tabs_view() {
@@ -941,7 +1034,7 @@ function _section_projects_po_tools_view() {
       if (arg(0) == 'projects' && arg(4) != 'cockpit') {
         if(og_user_access('node', $active_project->nid, 'create ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content')) {
           $context_items['items'][] = array(
-            'name' => 'projektvorschlag',
+            'name' => 'tools_projektvorschlag',
             'path' => url('projects/admin/add/' . NM_PROJECTS_PROJEKTVORSCHLAG),
             'link' => l('Idee', 'projects/admin/add/' . NM_PROJECTS_PROJEKTVORSCHLAG, array(
               'query' => array(
@@ -959,7 +1052,7 @@ function _section_projects_po_tools_view() {
           if(node_access('update', $active_project)) {
             //setting / edit partner organisation
             $context_items['items'][] = array(
-              'name' => 'cooperationagreement',
+              'name' => 'tools_edit',
               'path' => url('projects/admin/' . $active_project->nid . '/edit'),
               'link' => l('Partnerorg', 'projects/admin/' . $active_project->nid . '/edit', array(
                 //'query' => array(
@@ -982,9 +1075,10 @@ function _section_projects_po_tools_view() {
     if (node_access('create', $tmp)) {
       if (arg(1) == 'partners' && is_numeric(arg(3))) {
         $context_items['items'][] = array(
-          'name' => 'kooperationsvereinbarung',
+          'name' => 'tools_kooperationsvereinbarung',
           'path' => url('projects/admin/add/' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG),
-          'link' => l('Koop Ver', 'projects/admin/add/' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG, array(
+          'link' => l('Koop-VB', 'projects/admin/add/' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG, array(
+            'attributes'=> array('title' => 'Kooperationsvereinbarung erstellen'),
             'query' => array(
               'field_partner_organization_ref' => $active_project->nid,
               'field_ca_proposal_ref' => arg(3),
@@ -1010,9 +1104,10 @@ function _section_projects_po_tools_view() {
           //check if lernzielverinbarung already exists
           if (empty($objective_node)) {
               $context_items['items'][] = array(
-                'name' => 'lernzielvereinbarung',
+                'name' => 'tools_lernzielvereinbarung',
                 'path' => url('projects/admin/add/' . NM_PROJECTS_ZIELVEREINBARUNG),
-                'link' => l('Lernzielvereinbarung erstellen', 'projects/admin/add/' . NM_PROJECTS_ZIELVEREINBARUNG, array(
+                'link' => l('Lernzielvereinbarung', 'projects/admin/add/' . NM_PROJECTS_ZIELVEREINBARUNG, array(
+                  'attributes'=> array('title' => 'Lernzielvereinbarung erstellen'),
                   'query' => array(
                     'field_ca_ref' => arg(5),
               ))));
@@ -1028,9 +1123,10 @@ function _section_projects_po_tools_view() {
         $documentation_node = _section_projects_get_documentation_by_ca($ca_node);
         if (empty($documentation_node)) {
           $context_items['items'][] = array(
-            'name' => 'dokumentation',
+            'name' => 'tools_dokumentation',
             'path' => url('projects/admin/' . $active_project->nid . '/edit'),
-            'link' => l('Dokumentation erstellen', 'projects/admin/add/' . NM_PROJECTS_DOKUMENTATION, array(
+            'link' => l('Dokumentation', 'projects/admin/add/' . NM_PROJECTS_DOKUMENTATION, array(
+              'attributes'=> array('title' => 'Lernzielvereinbarung erstellen'),
               'query' => array(
                 'field_ca_ref' => arg(5),
           ))));
@@ -1053,7 +1149,7 @@ function _section_projects_po_tools_view() {
         //18.06.2014 - 17:46 - SN
         //taking latest ca, possibility to select another context in cockpit section
         $context_items['items'][] = array(
-          'name' => 'cockpit',
+          'name' => 'tools_cockpit',
           'path' => url('projects/partners/' . $active_project->nid . '/' . arg(3) . '/cockpit/' . $ca->nid),
           'link' => l('Cockpit', 'projects/partners/' . $active_project->nid . '/' . arg(3) . '/cockpit/' . $ca->nid));
 
@@ -1063,7 +1159,7 @@ function _section_projects_po_tools_view() {
         //Proposal
         if(node_access('update', $proposal)) {
           $context_items['items'][] = array(
-            'name' => 'cooperationagreement',
+            'name' => 'tools_edit',
             'path' => url('projects/admin/' . $proposal->nid . '/edit'),
             'link' => l('Idee', 'projects/admin/' . $proposal->nid . '/edit', array(
               //'query' => array(
@@ -1078,28 +1174,16 @@ function _section_projects_po_tools_view() {
       if (is_numeric(arg(4)) || (arg(4) == 'cockpit') && is_numeric(arg(5))) {
         //check context -> cockpit
         $context_items['items'][] = array(
-          'name' => 'tagebuch',
+          'name' => 'tools_tagebuch',
           'path' => url('projects/admin/add/' . NM_PROJECTS_TAGEBUCH),
-          'link' => l(' Tagebuch', 'projects/admin/add/' . NM_PROJECTS_TAGEBUCH, array(
+          'link' => l('Tagebuch', 'projects/admin/add/' . NM_PROJECTS_TAGEBUCH, array(
+            'attributes'=> array('title' => 'Tagebucheintrag erstellen'),
             'query' => array(
               'og_group_ref' => arg(5),
         ))));
 
 
-        $ca = node_load(arg(5));
-
-        //setting / edit cooperation agreement
-        if(node_access('update', $ca)) {
-          $context_items['items'][] = array(
-            'name' => 'cooperationagreement',
-            'path' => url('projects/admin/' . $ca->nid . '/edit'),
-            'link' => l('Projekt', 'projects/admin/' . $ca->nid . '/edit', array(
-              'query' => array(
-                'og_group_ref' => arg(5),
-              )
-            ))
-          );
-        }
+    
       }
 
     }
@@ -1152,6 +1236,23 @@ function _section_projects_course_group_actions_view() {
   return $output;
 }
 
+/*liefert lediglich einen Link zur Teilnehmerverwaltung zurück. Useful wenn man in einer Kursgruppe ist.*/
+function _section_projects_course_group_actions_userlink($linktext = "Gruppenmitglieder hinzufügen") {
+    $output = '';
+    $active_course = _section_courses_get_active_course();
+    //check if course group has a project assigned to it
+    if ($active_course && node_access('update', $active_course)) {
+        $output .= '<div>';
+        $output .= '<a href="/' . NM_COURSE_ADMIN_PREFIX_PATH . '/' . $active_course->nid . '/members?og_group_ref=' . $active_course->nid . '">'.$linktext.'</a>';
+        $output .= '</div>';
+    }
+
+
+    return $output;
+}
+
+
+
 /*
   function _section_projects_node_tabs_view() {
   $output = '';
@@ -1199,6 +1300,14 @@ function _section_projects_tools_access($account = NULL) {
   return FALSE;
 }
 
+/**
+ * Liefert was zurueck, was zum derzeit gewählten Projekt gehoert. Kann 
+ * NM_PROJECTS_KOOPERATIONSVEREINBARUNG , NM_PROJECTS_TAGEBUCH
+ * NM_PROJECTS_ZIELVEREINBARUNG, NM_PROJECTS_DOKUMENTATION sein
+ *
+ * @deprecated Don't use - code will be difficult
+ * @return StdClass $something 
+ */
 function section_projects_get_active_project($reset = FALSE) {
   static $project;
 

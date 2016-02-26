@@ -10,21 +10,13 @@
 function nm_stream_features_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_nm_attachments'
+  // Exported field_base: 'field_nm_attachments'.
   $field_bases['field_nm_attachments'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_nm_attachments',
-    'foreign keys' => array(
-      'fid' => array(
-        'columns' => array(
-          'fid' => 'fid',
-        ),
-        'table' => 'file_managed',
-      ),
-    ),
     'indexes' => array(
       'fid' => array(
         0 => 'fid',
@@ -42,14 +34,13 @@ function nm_stream_features_field_default_field_bases() {
     'type' => 'file',
   );
 
-  // Exported field_base: 'field_nm_privacy'
+  // Exported field_base: 'field_nm_privacy'.
   $field_bases['field_nm_privacy'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_nm_privacy',
-    'foreign keys' => array(),
     'indexes' => array(),
     'locked' => 0,
     'module' => 'number',
@@ -60,14 +51,13 @@ function nm_stream_features_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'group_content_access'
+  // Exported field_base: 'group_content_access'.
   $field_bases['group_content_access'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'group_content_access',
-    'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
         0 => 'value',

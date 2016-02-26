@@ -23,8 +23,8 @@ function nm_section_courses_features_field_group_info() {
     'label' => 'Design',
     'weight' => '7',
     'children' => array(
-      0 => 'field_course_picture',
-      1 => 'field_course_header',
+      0 => 'field_course_header',
+      1 => 'field_course_picture',
       2 => 'field_field_courses_sponsors',
     ),
     'format_type' => 'htab',
@@ -54,6 +54,7 @@ function nm_section_courses_features_field_group_info() {
     'children' => array(
       0 => 'field_collaborative_features',
       1 => 'field_access_features',
+      2 => 'field_other_features',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -80,11 +81,11 @@ function nm_section_courses_features_field_group_info() {
     'label' => 'Allgemein / Kursinfo',
     'weight' => '6',
     'children' => array(
-      0 => 'field_subtitle',
-      1 => 'field_workload',
-      2 => 'field_long_description',
-      3 => 'field_short_description',
-      4 => 'field_time_span',
+      0 => 'field_long_description',
+      1 => 'field_short_description',
+      2 => 'field_subtitle',
+      3 => 'field_time_span',
+      4 => 'field_workload',
       5 => 'field_semester',
       6 => 'title',
     ),
@@ -115,11 +116,11 @@ function nm_section_courses_features_field_group_info() {
     'weight' => '0',
     'children' => array(
       0 => 'group_course_design',
-      1 => 'group_course_general_data',
-      2 => 'group_course_features',
-      3 => 'group_courses_vhb',
+      1 => 'group_course_features',
+      2 => 'group_course_general_data',
+      3 => 'group_course_projects',
       4 => 'group_courses_text',
-      5 => 'group_course_projects',
+      5 => 'group_courses_vhb',
     ),
     'format_type' => 'htabs',
     'format_settings' => array(

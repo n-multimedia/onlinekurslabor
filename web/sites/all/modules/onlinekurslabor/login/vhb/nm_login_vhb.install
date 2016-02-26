@@ -18,12 +18,12 @@ function nm_login_vhb_schema() {
         'default' => 0,
         'unsigned' => TRUE,
       ),
-      'matrikelnummer' => array(
+      'login_uid' => array(
         'type' => 'varchar',
-        'length' => 128,
+        'length' => 255,
         'not null' => TRUE,
         'default' => '',
-        'description' => "Obfuscated Matrikelnummer",
+        'description' => "VHB LOGIN UID.",
       ),
       'created' => array(
         'type' => 'int',
@@ -48,6 +48,17 @@ function nm_login_vhb_schema() {
 function nm_login_vhb_install() {
   
 }
+
+/**
+ * changing identifier from matrikelnummer to vhb login id
+ */
+function nm_login_vhb_update_3003(){
+  $schema = nm_login_vhb_schema();
+
+  //alter field
+  db_change_field('nm_login_vhb', 'matrikelnummer', 'login_uid', $schema['nm_login_vhb']['fields']['login_uid']);
+}
+
 
 function nm_login_vhb_uninstall() {
   

@@ -1,0 +1,62 @@
+<?php
+/**
+ * User: naumenko-multimedia
+ * Date: 04.12.2015
+ * Time: 15:01
+ */
+
+function custom_general_update_3000(){
+  $users = entity_load('user');
+  foreach ($users as $user_id => $user) {
+
+    _DefaultAvatar_createDefaultAvatarForUser($user->uid);
+
+  }
+}
+
+function custom_general_update_3001(){
+  variable_set('site_mail', 'noreply@onlinekurslabor.de');
+}
+
+
+/**
+ * add additional profile for existing users
+ */
+function custom_general_update_3002(){
+  $users = entity_load('user');
+  foreach ($users as $user_id => $account) {
+    //student profile
+    $profile2 = profile2_load_by_user($account, 'data');
+
+    if(!$profile2) {
+      //student profile
+      $profile2 = profile2_create(array('type' => 'data'));
+      $profile2->setUser($account);
+      profile2_save($profile2);
+    }
+  }
+}
+
+
+/**
+ * set standard value
+ * courses other features (domain_text = TRUE)
+ */
+function custom_general_update_3003(){
+
+  $field_instances = field_info_instances('node', NM_COURSE);
+  $default_value = $field_instances['field_other_features']['default_value'][0]['value'];
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node');
+  $query->entityCondition('bundle', NM_COURSE);
+  $result = $query->execute();
+
+  foreach ($result['node'] as $course_item) {
+    $entity = node_load($course_item->nid);
+    $entity->field_other_features[LANGUAGE_NONE][0]['value'] = $default_value;
+    //save field data for an entity
+    field_attach_update('node', $entity);
+  }
+}
+

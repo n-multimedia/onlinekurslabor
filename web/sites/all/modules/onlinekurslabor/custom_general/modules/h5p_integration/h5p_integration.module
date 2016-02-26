@@ -8,6 +8,11 @@
  */
 function h5p_integration_wysiwyg_plugin($editor, $version) {
 
+  //do not show H5P Plugin in Projects section
+  if(section_projects_get_active_project()){
+    return;
+  }
+
   //_linkit_add_settings($editor);
   switch ($editor) {
     case 'ckeditor':
@@ -189,7 +194,7 @@ function _h5p_integration_dashboard_form($form, &$form_state) {
 function h5p_integration_filter_info() {
   $filters['filter_content_h5p'] = array(
     'title' => t('Content - H5 Filter'),
-    'description' => t('Every [h5p](node_id)[/h5p] pattern is beeing replaced by its content.'),
+    'description' => t('Every [h5p](node_id)[/h5p] pattern is being replaced by its content.'),
     'process callback' => '_h5p_integration_filter_h5p_process',
     'tips callback' => '_h5p_integration_filter_h5p_tips',
     'cache' => FALSE,
@@ -280,5 +285,5 @@ function _h5p_integration_h5p_replacements($matches) {
  */
 function _h5p_integration_filter_h5p_tips($filter, $format, $long = FALSE) {
 
-  return t('Every [h5p](node_id)[/h5p] pattern is beeing replaced by its content.');
+  return t('Every [h5p](node_id)[/h5p] pattern is being replaced by its content.');
 }

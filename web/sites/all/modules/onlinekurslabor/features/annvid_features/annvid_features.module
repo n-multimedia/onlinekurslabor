@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the AnnVid Features feature.
+ */
+
+include_once 'annvid_features.features.inc';

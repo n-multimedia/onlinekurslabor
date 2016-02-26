@@ -40,17 +40,9 @@ function nm_general_features_image_default_styles() {
 
   // Exported image style: profile_main_thumbnail.
   $styles['profile_main_thumbnail'] = array(
-    'name' => 'profile_main_thumbnail',
     'label' => 'profile_main_thumbnail',
     'effects' => array(
       2 => array(
-        'label' => 'Skalieren und zuschneiden',
-        'help' => 'Skalieren und zuschneiden wird das Seitenverhältnis des ursprünglichen Bildes erhalten, und dann die überstehenden Ränder entfernen. Dies ist besonders nützlich für die Erstellung von perfekt quadratischen Vorschaubildern ohne Verzerrung des Bildes.',
-        'effect callback' => 'image_scale_and_crop_effect',
-        'dimensions callback' => 'image_resize_dimensions',
-        'form callback' => 'image_resize_form',
-        'summary theme' => 'image_resize_summary',
-        'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
           'width' => 180,
@@ -63,17 +55,9 @@ function nm_general_features_image_default_styles() {
 
   // Exported image style: profile_mini_thumbnail.
   $styles['profile_mini_thumbnail'] = array(
-    'name' => 'profile_mini_thumbnail',
     'label' => 'profile_mini_thumbnail',
     'effects' => array(
       1 => array(
-        'label' => 'Skalieren und zuschneiden',
-        'help' => 'Skalieren und zuschneiden wird das Seitenverhältnis des ursprünglichen Bildes erhalten, und dann die überstehenden Ränder entfernen. Dies ist besonders nützlich für die Erstellung von perfekt quadratischen Vorschaubildern ohne Verzerrung des Bildes.',
-        'effect callback' => 'image_scale_and_crop_effect',
-        'dimensions callback' => 'image_resize_dimensions',
-        'form callback' => 'image_resize_form',
-        'summary theme' => 'image_resize_summary',
-        'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
           'width' => 32,
@@ -86,23 +70,39 @@ function nm_general_features_image_default_styles() {
 
   // Exported image style: profile_nano_thumbnail.
   $styles['profile_nano_thumbnail'] = array(
-    'name' => 'profile_nano_thumbnail',
     'label' => 'profile_nano_thumbnail',
     'effects' => array(
-      4 => array(
-        'label' => 'Skalieren und zuschneiden',
-        'help' => 'Skalieren und zuschneiden wird das Seitenverhältnis des ursprünglichen Bildes erhalten, und dann die überstehenden Ränder entfernen. Dies ist besonders nützlich für die Erstellung von perfekt quadratischen Vorschaubildern ohne Verzerrung des Bildes.',
-        'effect callback' => 'image_scale_and_crop_effect',
-        'dimensions callback' => 'image_resize_dimensions',
-        'form callback' => 'image_resize_form',
-        'summary theme' => 'image_resize_summary',
-        'module' => 'image',
+      1 => array(
         'name' => 'image_scale_and_crop',
         'data' => array(
           'width' => 25,
           'height' => 25,
         ),
         'weight' => 1,
+      ),
+      2 => array(
+        'name' => 'canvasactions_roundedcorners',
+        'data' => array(
+          'radius' => 12,
+          'independent_corners_set' => array(
+            'independent_corners' => 0,
+            'radii' => array(
+              'tl' => 0,
+              'tr' => 0,
+              'bl' => 0,
+              'br' => 0,
+            ),
+          ),
+        ),
+        'weight' => 2,
+      ),
+      3 => array(
+        'name' => 'coloractions_convert',
+        'data' => array(
+          'format' => 'image/png',
+          'quality' => 95,
+        ),
+        'weight' => 3,
       ),
     ),
   );
@@ -116,11 +116,11 @@ function nm_general_features_image_default_styles() {
 function nm_general_features_node_info() {
   $items = array(
     'page' => array(
-      'name' => t('Basic page'),
+      'name' => t('Einfache Seite'),
       'base' => 'node_content',
-      'description' => t('Use <em>basic pages</em> for your static content, such as an \'About us\' page.'),
+      'description' => t('Benutzen Sie <em>Einfache Seiten</em> für statischen Inhalt, wie z.B. eine „Über uns“ Seite.'),
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'plattform_log' => array(
@@ -132,6 +132,7 @@ function nm_general_features_node_info() {
       'help' => '',
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }
 
@@ -140,6 +141,28 @@ function nm_general_features_node_info() {
  */
 function nm_general_features_default_profile2_type() {
   $items = array();
+  $items['data'] = entity_import('profile2_type', '{
+    "userCategory" : true,
+    "userView" : true,
+    "type" : "data",
+    "label" : "Data",
+    "weight" : "0",
+    "data" : {
+      "registration" : 0,
+      "roles" : {
+        "30037204" : "30037204",
+        "2" : "2",
+        "197637936" : "197637936",
+        "16675960" : "16675960",
+        "106505419" : "106505419",
+        "126456107" : "126456107",
+        "66784200" : "66784200",
+        "24708420" : "24708420",
+        "140204299" : "140204299"
+      }
+    },
+    "rdf_mapping" : []
+  }');
   $items['master'] = entity_import('profile2_type', '{
     "userCategory" : true,
     "userView" : true,

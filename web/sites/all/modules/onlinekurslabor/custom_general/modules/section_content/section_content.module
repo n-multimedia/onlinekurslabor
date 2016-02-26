@@ -399,7 +399,7 @@ function section_content_context_load_alter(&$context) {
 function _section_content_alter_breadcrumb_for_role(&$active_trail) {
   global $user;
 
-//Check if user has role Autor or a certain path is beeing viewd (e.g. domain media)
+//Check if user has role Autor or a certain path is being viewd (e.g. domain media)
   $path_match = strpos(request_uri(), NM_MEDIA_PATH);
   $path_match = strpos(request_uri(), NM_BIBLIO_PATH) || $path_match;
   $path_match = strpos(request_uri(), NM_TASKS_PATH) || $path_match;
@@ -519,30 +519,60 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
       //$form['book']['#type'] = 'hidden';
     }
   }
-  //Only hide book options for authors, so admin has all fields available
-  $hide_book_options = in_array(NM_ROLE_AUTOR, $user->roles);
+  //Only hide book options for users who dont have admin permission
+  $hide_book_options = !user_access('administer content');
+
   //remove book settings from biblio content type for authors (Role Autor)
   if (!empty($form['#node_edit_form']) && $hide_book_options) {
-    $node = $form['#node'];
+    //should be easier
+    //09.12.2015 - 18:09 - SN
+    //outline should be shown for admins only!
+    $form['book']['#type'] = 'hidden';
+
+    /*$node = $form['#node'];
     $type = $form['type']['#value'];
     // Not a book || not a domain => Nothing to do
     if (($type != NM_BIBLIO) || !isset($node->book)) {
-      
+
     }
     else {
       $form['book']['#type'] = 'hidden';
     }
-  }
 
-  //hide book form options for certain content types
-  if(!empty($form['#entity_type']) && $form['#entity_type'] == 'node'){
-    if(!in_array($form['#bundle'], array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN))){
-      if(!empty($form['book']) && !user_access('administer content')) {
-        hide($form['book']);
+    //hide book form options for certain content types
+    if(!empty($form['#entity_type']) && $form['#entity_type'] == 'node') {
+      if (!in_array($form['#bundle'], array(
+        NM_CONTENT_CHAPTER,
+        NM_CONTENT_DOMAIN,
+        'book'
+      ))
+      ) {
+        if (!empty($form['book']) && !user_access('administer content')) {
+          hide($form['book']);
+        }
       }
-    }
+    }*/
   }
 
+  /*Feature Lehrtext deaktivieren + Link auf Lehrtext erstellen*/
+  if($form_id == 'courses_course_node_form'){
+     $description ="<ul>";
+    //add domain add link to
+    $description .= "<li>".'Den Lehrtext komplett deaktivieren können Sie im Tab "Features".'."</li>";
+    section_courses_instructors_tools_access();
+    $description .= '<li>';
+    if(node_access('create', NM_CONTENT_DOMAIN)){
+      $description .= "<p>Falls Sie noch keinen Lehrtext zu Ihrem Kurs haben können Sie einen ".l('neuen Lehrtext erstellen', 'node/add/content-domain', array('attributes'=>array('target'=>'_blank'))).".</p>";
+    }else {
+      $description .= "<p>Falls Sie keinen Lehrtext zur Auswahl haben, kontaktieren Sie unseren Support. Dieser kann Ihnen die benötigten Rechte freischalten.</p>";
+      $description .= l('Kontakt', 'kontakt', array('attributes'=>array('target'=>'_blank')));
+    }
+    $description .= '</li></ul>';
+
+    $form['field_domain_demo_ref']['#suffix'] = $description;
+  }
+
+      
   return $form;
 }
 
@@ -662,6 +692,12 @@ function section_content_og_user_access_alter(&$perm, $context) {
  * @return type
  */
 function section_content_wysiwyg_plugin($editor, $version) {
+
+
+  //do not show TASKS Plugin in Projects section
+  if(section_projects_get_active_project()){
+    return;
+  }
 
   _linkit_add_settings($editor);
 
@@ -845,7 +881,7 @@ function _section_content_tasks_dashboard_form($form, &$form_state) {
 function section_content_filter_info() {
   $filters['filter_content_tasks'] = array(
     'title' => t('Content - Tasks Filter'),
-    'description' => t('Every [task](node_id)[/task] pattern is beeing replaced by its content.'),
+    'description' => t('Every [task](node_id)[/task] pattern is being replaced by its content.'),
     'process callback' => '_section_content_filter_tasks_process',
     'tips callback' => '_section_content_filter_tasks_tips',
     'cache' => FALSE,
@@ -905,7 +941,7 @@ function _section_content_task_replacements($matches) {
  */
 function _section_content_filter_tasks_tips($filter, $format, $long = FALSE) {
 
-  return t('Every [task](node_id)[/task] pattern is beeing replaced by its content.');
+  return t('Every [task](node_id)[/task] pattern is being replaced by its content.');
 }
 
 function _section_content_multiple_choice_form() {
@@ -1198,7 +1234,7 @@ function section_content_text_outline() {
 }
 
 /**
- * Determins which domain is beeing active/selected
+ * Determins which domain is being active/selected
  * 
  * @return active domain object or FALSE
  */
@@ -1244,12 +1280,29 @@ function _section_content_get_active_domain($reset = FALSE) {
       $domain = node_load(_custom_general_get_group($domain_tmp));
     }
 
+    //check linkin ajax requests
+    if (
+      (arg(0) == 'admin' && strstr(arg(1), "_dashboard")) ||
+      (arg(0) == 'section_content' && arg(1) == 'tasks' && arg(2) == 'autocomplete') ||
+      (arg(0) == 'h5p_integration' && arg(1) == 'item' && arg(2) == 'autocomplete')
+    ) {
+      $referer_url = drupal_parse_url($_SERVER['HTTP_REFERER']);
+      $referer_url['path'] = substr(parse_url($referer_url['path'], PHP_URL_PATH), 1);
+
+      //add and edit
+      if (arg(0, $referer_url['path']) == 'domain' && (arg(1, $referer_url['path']) == 'edit' || arg(1, $referer_url['path']) == 'add')) {
+        $node = node_load(arg(2, $referer_url['path']));
+        $domain = node_load(_custom_general_get_group($node));
+      }
+    }
+
     if (!empty($domain) && $domain->type == NM_CONTENT_DOMAIN) {
 
       return $domain;
     }
 
     $domain = FALSE;
+
   }
 
   return $domain;

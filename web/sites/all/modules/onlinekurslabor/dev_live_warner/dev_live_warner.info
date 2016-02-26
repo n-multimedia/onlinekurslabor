@@ -1,0 +1,3 @@
+name = dev_live_warner
+description = Checks if you are on a Live- or Testsystem and changes the layout
+core = 7.x

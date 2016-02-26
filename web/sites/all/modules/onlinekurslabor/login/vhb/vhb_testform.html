@@ -1,0 +1,47 @@
+<form name = "DATA" action =
+      "<?=$base_url?>/login/vhb" method = "post" accept-charset="ISO-8859-1" target="_blank"> 
+LOGIN<br>
+<input type = "text" name = "LOGIN" value = "123456X15"/><br>
+PASSWORT<br>
+<input type = "text" name = "PASSWORT" value = "71500119"/><br>
+<input type = "hidden" name = "DATAVERSION" value = "2.0"/>
+LVNR<br>
+<input type = "text" name = "LVNR" value = "LV_1"/> <br>
+BEZEICHNUNG<br>
+<input type = "text" name = "BEZEICHNUNG" value = "test - Testlehrveranstaltung"/><br>
+VORNAME<br>
+<input type = "text" name = "VORNAME" value = "Ingo"/> <br>
+NACHNAME<br>
+<input type = "text" name = "NACHNAME" value = "Müller"/><br>
+STRASSE<br>
+<input type = "text" name = "STRASSE" value = "Feldkirchenstraße 21a"/><br>
+PLZ<br>
+<input type = "text" name = "PLZ" value = "96052"/> <br>
+ORT<br>
+<input type = "text" name = "ORT" value = "Bamberg1"/><br>
+EMAIL<br>
+<input type = "text" name = "EMAIL" value = ""/><br>
+HOCHSCHULE<br>
+<input type = "text" name = "HOCHSCHULE" value = "Uni Erlangen-Nürnberg (FAU)"/><br>
+SEX<br>
+<input type = "text" name = "SEX" value = "weiblich"/><br>
+GEBDAT<br>
+<input type = "text" name = "GEBDAT" value = "15.10.1976"/><br>
+<input type = "hidden" name = "STATUS" value = "offen"/><br>
+ANMELDUNG<br>
+<input type = "text" name = "ANMELDUNG" value = "06.08.2010 13:10:43.000"/><br>
+STUDIENFACH<br>
+<input type = "text" name = "STUDIENFACH" value = "Psychologie"/> <br>
+ABSCHLUSS<br>
+<input type = "text" name = "ABSCHLUSS" value = "Abschlussprüfung im Ausland"/> <br>
+MATRIKELNUMMER<br>
+<input type = "text" name = "MATRIKELNUMMER" value = "123456"/> <br>
+HASH<br>
+<input type = "text" name = "HASH" value = ""/><br>
+NUR für Code-Erzeugung nötig: User-ID<br>
+<input type = "text" name = "uid" value = ""/><br>
+
+<input type="submit" value="Mit diesen Daten einloggen">
+<input type="submit" value="PHP-Code für Reaktivierung erzeugen" formaction="<?=$base_url?>/login/vhb_createPHPcode">
+</form>
+    

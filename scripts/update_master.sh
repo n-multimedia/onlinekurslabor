@@ -1,25 +1,25 @@
 ##!/bin/sh
 
+#drush vset maintenance_mode 1
 
-drush dl h5p-7.x-1.0-beta4 --yes
+drush en userprotect defaultavatar dev_live_warner --yes
 
-drush vset maintenance_mode 1
-
-#enable modules
-drush en section_projects_features notification_features email_registration htmlmail nm_activity_stream --yes
-
-#revert features
-drush fra --yes
-
-drush cc all
-
-drush updatedb --yes
-
-#rebuild node access
-drush php-eval 'node_access_rebuild();'
+drush fr nm_section_content_features nm_section_courses_features nm_general_features --yes
 
 #clear cache
 drush cc all
 
+drush image-flush --all
 
-drush vset maintenance_mode 0
+drush updatedb --yes
+
+#revert view after updatedb changed the table column definition
+drush fr nm_login_vhb_features --yes
+
+drush language-import-translations de ../language/alpha3.po --replace --groups=default
+
+#rebuild node access
+drush php-eval 'node_access_rebuild();'
+
+
+#drush vset maintenance_mode 0

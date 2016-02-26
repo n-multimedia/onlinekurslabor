@@ -10,7 +10,7 @@
 function nm_general_features_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-page-body'
+  // Exported field_instance: 'node-page-body'.
   $field_instances['node-page-body'] = array(
     'bundle' => 'page',
     'default_value' => NULL,
@@ -60,7 +60,7 @@ function nm_general_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-plattform_log-body'
+  // Exported field_instance: 'node-plattform_log-body'.
   $field_instances['node-plattform_log-body'] = array(
     'bundle' => 'plattform_log',
     'default_value' => NULL,
@@ -110,7 +110,76 @@ function nm_general_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-master-field_about_me'
+  // Exported field_instance: 'profile2-data-field_nm_login_vhb_login'.
+  $field_instances['profile2-data-field_nm_login_vhb_login'] = array(
+    'bundle' => 'data',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'profile2',
+    'field_name' => 'field_nm_login_vhb_login',
+    'label' => 'VHB LOGIN',
+    'required' => 0,
+    'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'ds_code' => 'ds_code',
+          'filtered_html' => 'filtered_html',
+          'full_html' => 'full_html',
+          'php_code' => 'php_code',
+          'plain_text' => 'plain_text',
+        ),
+        'allowed_formats_toggle' => 0,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'ds_code' => array(
+              'weight' => 12,
+            ),
+            'filtered_html' => array(
+              'weight' => 0,
+            ),
+            'full_html' => array(
+              'weight' => 1,
+            ),
+            'php_code' => array(
+              'weight' => 11,
+            ),
+            'plain_text' => array(
+              'weight' => 10,
+            ),
+          ),
+        ),
+      ),
+      'linkit' => array(
+        'enable' => 0,
+        'insert_plugin' => '',
+      ),
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance: 'profile2-master-field_about_me'.
   $field_instances['profile2-master-field_about_me'] = array(
     'bundle' => 'master',
     'default_value' => NULL,
@@ -179,7 +248,7 @@ function nm_general_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-master-field_birthday'
+  // Exported field_instance: 'profile2-master-field_birthday'.
   $field_instances['profile2-master-field_birthday'] = array(
     'bundle' => 'master',
     'deleted' => 0,
@@ -194,6 +263,7 @@ function nm_general_features_field_default_field_instances() {
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
+          'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
         'weight' => 3,
@@ -229,7 +299,7 @@ function nm_general_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-master-field_first_name'
+  // Exported field_instance: 'profile2-master-field_first_name'.
   $field_instances['profile2-master-field_first_name'] = array(
     'bundle' => 'master',
     'default_value' => NULL,
@@ -298,7 +368,7 @@ function nm_general_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-master-field_gender'
+  // Exported field_instance: 'profile2-master-field_gender'.
   $field_instances['profile2-master-field_gender'] = array(
     'bundle' => 'master',
     'default_value' => array(
@@ -335,7 +405,7 @@ function nm_general_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-master-field_last_name'
+  // Exported field_instance: 'profile2-master-field_last_name'.
   $field_instances['profile2-master-field_last_name'] = array(
     'bundle' => 'master',
     'default_value' => NULL,
@@ -404,7 +474,7 @@ function nm_general_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-master-field_photo'
+  // Exported field_instance: 'profile2-master-field_photo'.
   $field_instances['profile2-master-field_photo'] = array(
     'bundle' => 'master',
     'deleted' => 0,
@@ -457,6 +527,7 @@ function nm_general_features_field_default_field_instances() {
   t('Geburtstag');
   t('Geschlecht');
   t('Nachname');
+  t('VHB LOGIN');
   t('Vorname');
   t('Über mich');
 

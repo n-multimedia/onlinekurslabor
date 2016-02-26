@@ -10,7 +10,8 @@
 function nm_section_courses_features_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'comment-comment_node_courses_course-comment_body'
+  // Exported field_instance:
+  // 'comment-comment_node_courses_course-comment_body'.
   $field_instances['comment-comment_node_courses_course-comment_body'] = array(
     'bundle' => 'comment_node_courses_course',
     'default_value' => NULL,
@@ -43,7 +44,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_courses_docs-comment_body'
+  // Exported field_instance: 'comment-comment_node_courses_docs-comment_body'.
   $field_instances['comment-comment_node_courses_docs-comment_body'] = array(
     'bundle' => 'comment_node_courses_docs',
     'default_value' => NULL,
@@ -76,7 +77,8 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_courses_generic_task-comment_body'
+  // Exported field_instance:
+  // 'comment-comment_node_courses_generic_task-comment_body'.
   $field_instances['comment-comment_node_courses_generic_task-comment_body'] = array(
     'bundle' => 'comment_node_courses_generic_task',
     'default_value' => NULL,
@@ -109,7 +111,8 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_courses_generic_task_solution-comment_body'
+  // Exported field_instance:
+  // 'comment-comment_node_courses_generic_task_solution-comment_body'.
   $field_instances['comment-comment_node_courses_generic_task_solution-comment_body'] = array(
     'bundle' => 'comment_node_courses_generic_task_solution',
     'default_value' => NULL,
@@ -142,7 +145,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_courses_group-comment_body'
+  // Exported field_instance: 'comment-comment_node_courses_group-comment_body'.
   $field_instances['comment-comment_node_courses_group-comment_body'] = array(
     'bundle' => 'comment_node_courses_group',
     'default_value' => NULL,
@@ -175,7 +178,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_courses_news-comment_body'
+  // Exported field_instance: 'comment-comment_node_courses_news-comment_body'.
   $field_instances['comment-comment_node_courses_news-comment_body'] = array(
     'bundle' => 'comment_node_courses_news',
     'default_value' => NULL,
@@ -208,7 +211,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_forum-comment_body'
+  // Exported field_instance: 'comment-comment_node_forum-comment_body'.
   $field_instances['comment-comment_node_forum-comment_body'] = array(
     'bundle' => 'comment_node_forum',
     'default_value' => NULL,
@@ -277,7 +280,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-book-body'
+  // Exported field_instance: 'node-book-body'.
   $field_instances['node-book-body'] = array(
     'bundle' => 'book',
     'default_value' => NULL,
@@ -327,7 +330,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_access_features'
+  // Exported field_instance: 'node-courses_course-field_access_features'.
   $field_instances['node-courses_course-field_access_features'] = array(
     'bundle' => 'courses_course',
     'default_value' => NULL,
@@ -372,7 +375,8 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_collaborative_features'
+  // Exported field_instance:
+  // 'node-courses_course-field_collaborative_features'.
   $field_instances['node-courses_course-field_collaborative_features'] = array(
     'bundle' => 'courses_course',
     'default_value' => NULL,
@@ -417,7 +421,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_course_header'
+  // Exported field_instance: 'node-courses_course-field_course_header'.
   $field_instances['node-courses_course-field_course_header'] = array(
     'bundle' => 'courses_course',
     'deleted' => 0,
@@ -474,7 +478,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_course_picture'
+  // Exported field_instance: 'node-courses_course-field_course_picture'.
   $field_instances['node-courses_course-field_course_picture'] = array(
     'bundle' => 'courses_course',
     'deleted' => 0,
@@ -531,7 +535,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_course_proposals'
+  // Exported field_instance: 'node-courses_course-field_course_proposals'.
   $field_instances['node-courses_course-field_course_proposals'] = array(
     'bundle' => 'courses_course',
     'default_value' => NULL,
@@ -582,7 +586,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_domain_demo_ref'
+  // Exported field_instance: 'node-courses_course-field_domain_demo_ref'.
   $field_instances['node-courses_course-field_domain_demo_ref'] = array(
     'bundle' => 'courses_course',
     'default_value' => NULL,
@@ -638,7 +642,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_domain_ref'
+  // Exported field_instance: 'node-courses_course-field_domain_ref'.
   $field_instances['node-courses_course-field_domain_ref'] = array(
     'bundle' => 'courses_course',
     'default_value' => NULL,
@@ -694,7 +698,8 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_field_courses_sponsors'
+  // Exported field_instance:
+  // 'node-courses_course-field_field_courses_sponsors'.
   $field_instances['node-courses_course-field_field_courses_sponsors'] = array(
     'bundle' => 'courses_course',
     'default_value' => NULL,
@@ -739,7 +744,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_long_description'
+  // Exported field_instance: 'node-courses_course-field_long_description'.
   $field_instances['node-courses_course-field_long_description'] = array(
     'bundle' => 'courses_course',
     'default_value' => NULL,
@@ -820,7 +825,54 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_semester'
+  // Exported field_instance: 'node-courses_course-field_other_features'.
+  $field_instances['node-courses_course-field_other_features'] = array(
+    'bundle' => 'courses_course',
+    'default_value' => array(
+      0 => array(
+        'value' => 'domain_text',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 19,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_other_features',
+    'label' => 'Sonstige Features',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 11,
+    ),
+  );
+
+  // Exported field_instance: 'node-courses_course-field_semester'.
   $field_instances['node-courses_course-field_semester'] = array(
     'bundle' => 'courses_course',
     'default_value' => NULL,
@@ -863,7 +915,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_short_description'
+  // Exported field_instance: 'node-courses_course-field_short_description'.
   $field_instances['node-courses_course-field_short_description'] = array(
     'bundle' => 'courses_course',
     'default_value' => NULL,
@@ -944,7 +996,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_subtitle'
+  // Exported field_instance: 'node-courses_course-field_subtitle'.
   $field_instances['node-courses_course-field_subtitle'] = array(
     'bundle' => 'courses_course',
     'default_value' => NULL,
@@ -990,7 +1042,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_time_span'
+  // Exported field_instance: 'node-courses_course-field_time_span'.
   $field_instances['node-courses_course-field_time_span'] = array(
     'bundle' => 'courses_course',
     'deleted' => 0,
@@ -1005,6 +1057,7 @@ function nm_section_courses_features_field_default_field_instances() {
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
+          'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
         'weight' => 11,
@@ -1050,7 +1103,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_vhb_lvnr'
+  // Exported field_instance: 'node-courses_course-field_vhb_lvnr'.
   $field_instances['node-courses_course-field_vhb_lvnr'] = array(
     'bundle' => 'courses_course',
     'default_value' => NULL,
@@ -1131,7 +1184,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-field_workload'
+  // Exported field_instance: 'node-courses_course-field_workload'.
   $field_instances['node-courses_course-field_workload'] = array(
     'bundle' => 'courses_course',
     'default_value' => NULL,
@@ -1177,7 +1230,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_course-group_group'
+  // Exported field_instance: 'node-courses_course-group_group'.
   $field_instances['node-courses_course-group_group'] = array(
     'bundle' => 'courses_course',
     'default_value' => array(
@@ -1241,7 +1294,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_docs-body'
+  // Exported field_instance: 'node-courses_docs-body'.
   $field_instances['node-courses_docs-body'] = array(
     'bundle' => 'courses_docs',
     'default_value' => NULL,
@@ -1322,7 +1375,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_docs-field_course_docs'
+  // Exported field_instance: 'node-courses_docs-field_course_docs'.
   $field_instances['node-courses_docs-field_course_docs'] = array(
     'bundle' => 'courses_docs',
     'deleted' => 0,
@@ -1390,7 +1443,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_docs-og_group_ref'
+  // Exported field_instance: 'node-courses_docs-og_group_ref'.
   $field_instances['node-courses_docs-og_group_ref'] = array(
     'bundle' => 'courses_docs',
     'default_value' => NULL,
@@ -1464,7 +1517,8 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_generic_task-field_generic_task_entry'
+  // Exported field_instance:
+  // 'node-courses_generic_task-field_generic_task_entry'.
   $field_instances['node-courses_generic_task-field_generic_task_entry'] = array(
     'bundle' => 'courses_generic_task',
     'default_value' => NULL,
@@ -1553,7 +1607,8 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_generic_task-field_task_handling_period'
+  // Exported field_instance:
+  // 'node-courses_generic_task-field_task_handling_period'.
   $field_instances['node-courses_generic_task-field_task_handling_period'] = array(
     'bundle' => 'courses_generic_task',
     'deleted' => 0,
@@ -1568,6 +1623,7 @@ function nm_section_courses_features_field_default_field_instances() {
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
+          'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
         'weight' => 3,
@@ -1613,7 +1669,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_generic_task-field_task_type'
+  // Exported field_instance: 'node-courses_generic_task-field_task_type'.
   $field_instances['node-courses_generic_task-field_task_type'] = array(
     'bundle' => 'courses_generic_task',
     'default_value' => array(
@@ -1662,7 +1718,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_generic_task-og_group_ref'
+  // Exported field_instance: 'node-courses_generic_task-og_group_ref'.
   $field_instances['node-courses_generic_task-og_group_ref'] = array(
     'bundle' => 'courses_generic_task',
     'default_value' => NULL,
@@ -1739,7 +1795,8 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_generic_task_solution-field_generic_solution_entry'
+  // Exported field_instance:
+  // 'node-courses_generic_task_solution-field_generic_solution_entry'.
   $field_instances['node-courses_generic_task_solution-field_generic_solution_entry'] = array(
     'bundle' => 'courses_generic_task_solution',
     'default_value' => NULL,
@@ -1820,7 +1877,8 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_generic_task_solution-field_generic_task'
+  // Exported field_instance:
+  // 'node-courses_generic_task_solution-field_generic_task'.
   $field_instances['node-courses_generic_task_solution-field_generic_task'] = array(
     'bundle' => 'courses_generic_task_solution',
     'default_value' => NULL,
@@ -1878,7 +1936,8 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_generic_task_solution-field_generic_task_assessment'
+  // Exported field_instance:
+  // 'node-courses_generic_task_solution-field_generic_task_assessment'.
   $field_instances['node-courses_generic_task_solution-field_generic_task_assessment'] = array(
     'bundle' => 'courses_generic_task_solution',
     'default_value' => NULL,
@@ -1959,7 +2018,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_generic_task_solution-og_group_ref'
+  // Exported field_instance: 'node-courses_generic_task_solution-og_group_ref'.
   $field_instances['node-courses_generic_task_solution-og_group_ref'] = array(
     'bundle' => 'courses_generic_task_solution',
     'default_value' => NULL,
@@ -2024,7 +2083,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_group-body'
+  // Exported field_instance: 'node-courses_group-body'.
   $field_instances['node-courses_group-body'] = array(
     'bundle' => 'courses_group',
     'default_value' => NULL,
@@ -2106,7 +2165,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_group-field_course_group_proposal'
+  // Exported field_instance: 'node-courses_group-field_course_group_proposal'.
   $field_instances['node-courses_group-field_course_group_proposal'] = array(
     'bundle' => 'courses_group',
     'default_value' => NULL,
@@ -2157,7 +2216,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_group-group_group'
+  // Exported field_instance: 'node-courses_group-group_group'.
   $field_instances['node-courses_group-group_group'] = array(
     'bundle' => 'courses_group',
     'default_value' => array(
@@ -2222,7 +2281,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_group-og_group_ref'
+  // Exported field_instance: 'node-courses_group-og_group_ref'.
   $field_instances['node-courses_group-og_group_ref'] = array(
     'bundle' => 'courses_group',
     'default_value' => NULL,
@@ -2302,7 +2361,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_news-body'
+  // Exported field_instance: 'node-courses_news-body'.
   $field_instances['node-courses_news-body'] = array(
     'bundle' => 'courses_news',
     'default_value' => NULL,
@@ -2383,7 +2442,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_news-field_attachments'
+  // Exported field_instance: 'node-courses_news-field_attachments'.
   $field_instances['node-courses_news-field_attachments'] = array(
     'bundle' => 'courses_news',
     'deleted' => 0,
@@ -2452,7 +2511,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_news-og_group_ref'
+  // Exported field_instance: 'node-courses_news-og_group_ref'.
   $field_instances['node-courses_news-og_group_ref'] = array(
     'bundle' => 'courses_news',
     'default_value' => NULL,
@@ -2526,7 +2585,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-forum-body'
+  // Exported field_instance: 'node-forum-body'.
   $field_instances['node-forum-body'] = array(
     'bundle' => 'forum',
     'default_value' => NULL,
@@ -2608,7 +2667,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-forum-og_group_ref'
+  // Exported field_instance: 'node-forum-og_group_ref'.
   $field_instances['node-forum-og_group_ref'] = array(
     'bundle' => 'forum',
     'default_value' => NULL,
@@ -2672,7 +2731,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-forum-taxonomy_forums'
+  // Exported field_instance: 'node-forum-taxonomy_forums'.
   $field_instances['node-forum-taxonomy_forums'] = array(
     'bundle' => 'forum',
     'default_value' => NULL,
@@ -2715,7 +2774,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-student-field_hochschule'
+  // Exported field_instance: 'profile2-student-field_hochschule'.
   $field_instances['profile2-student-field_hochschule'] = array(
     'bundle' => 'student',
     'default_value' => NULL,
@@ -2750,7 +2809,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-student-field_matrikelnummer_varchar'
+  // Exported field_instance: 'profile2-student-field_matrikelnummer_varchar'.
   $field_instances['profile2-student-field_matrikelnummer_varchar'] = array(
     'bundle' => 'student',
     'default_value' => NULL,
@@ -2819,7 +2878,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'profile2-student-field_studienfach'
+  // Exported field_instance: 'profile2-student-field_studienfach'.
   $field_instances['profile2-student-field_studienfach'] = array(
     'bundle' => 'student',
     'default_value' => NULL,
@@ -2888,7 +2947,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'taxonomy_term-sponsors-field_sponsors_image'
+  // Exported field_instance: 'taxonomy_term-sponsors-field_sponsors_image'.
   $field_instances['taxonomy_term-sponsors-field_sponsors_image'] = array(
     'bundle' => 'sponsors',
     'deleted' => 0,
@@ -2943,7 +3002,7 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'taxonomy_term-sponsors-field_sponsors_url'
+  // Exported field_instance: 'taxonomy_term-sponsors-field_sponsors_url'.
   $field_instances['taxonomy_term-sponsors-field_sponsors_url'] = array(
     'bundle' => 'sponsors',
     'default_value' => NULL,
@@ -3009,6 +3068,7 @@ function nm_section_courses_features_field_default_field_instances() {
   t('Projektvorschlag');
   t('Projektvorschläge');
   t('Semester');
+  t('Sonstige Features');
   t('Sponsoren');
   t('Studienfach');
   t('Thema');

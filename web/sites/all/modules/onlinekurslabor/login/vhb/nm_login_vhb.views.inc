@@ -36,7 +36,7 @@ function nm_login_vhb_views_data() {
   // User ID table field.
   $data['nm_login_vhb']['uid'] = array(
     'title' => t('uid field'),
-    'help' => t('Arhive information that reverences to a user.'),
+    'help' => t('Arhive information that references to a user.'),
     // Define a relationship to the {node} table, so example_table views can
     // add a relationship to nodes. If you want to define a relationship the
     // other direction, use hook_views_data_alter(), or use the 'implicit' join
@@ -82,9 +82,9 @@ function nm_login_vhb_views_data() {
   );
 
 // Example timestamp field.
-  $data['nm_login_vhb']['matrikelnummer'] = array(
-    'title' => t('Matrikelnummer field'),
-    'help' => t("user's Matrikelnummer"),
+  $data['nm_login_vhb']['login_uid'] = array(
+    'title' => t('VHB LOGIN field'),
+    'help' => t("user's vhb LOGIN"),
     'field' => array(
       'handler' => 'views_handler_field',
       'click sortable' => TRUE,

@@ -713,6 +713,9 @@ function nm_section_courses_features_strongarm() {
       'revision' => array(
         'custom_settings' => FALSE,
       ),
+      'nm_stream' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(),

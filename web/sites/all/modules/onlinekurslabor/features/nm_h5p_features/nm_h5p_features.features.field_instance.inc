@@ -10,7 +10,7 @@
 function nm_h5p_features_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'comment-comment_node_h5p_content-comment_body'
+  // Exported field_instance: 'comment-comment_node_h5p_content-comment_body'.
   $field_instances['comment-comment_node_h5p_content-comment_body'] = array(
     'bundle' => 'comment_node_h5p_content',
     'default_value' => NULL,
@@ -43,7 +43,7 @@ function nm_h5p_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-h5p_content-og_group_ref'
+  // Exported field_instance: 'node-h5p_content-og_group_ref'.
   $field_instances['node-h5p_content-og_group_ref'] = array(
     'bundle' => 'h5p_content',
     'default_value' => NULL,

@@ -10,7 +10,7 @@
 function section_projects_features_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-projects_blog-body'
+  // Exported field_instance: 'node-projects_blog-body'.
   $field_instances['node-projects_blog-body'] = array(
     'bundle' => 'projects_blog',
     'default_value' => NULL,
@@ -92,7 +92,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_blog-field_blog_type'
+  // Exported field_instance: 'node-projects_blog-field_blog_type'.
   $field_instances['node-projects_blog-field_blog_type'] = array(
     'bundle' => 'projects_blog',
     'default_value' => array(
@@ -140,7 +140,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_blog-field_nm_attachments'
+  // Exported field_instance: 'node-projects_blog-field_nm_attachments'.
   $field_instances['node-projects_blog-field_nm_attachments'] = array(
     'bundle' => 'projects_blog',
     'deleted' => 0,
@@ -189,7 +189,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_blog-field_nm_privacy'
+  // Exported field_instance: 'node-projects_blog-field_nm_privacy'.
   $field_instances['node-projects_blog-field_nm_privacy'] = array(
     'bundle' => 'projects_blog',
     'default_value' => array(
@@ -247,7 +247,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_blog-og_group_ref'
+  // Exported field_instance: 'node-projects_blog-og_group_ref'.
   $field_instances['node-projects_blog-og_group_ref'] = array(
     'bundle' => 'projects_blog',
     'default_value' => NULL,
@@ -327,7 +327,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_cooperation_agreement-body'
+  // Exported field_instance: 'node-projects_cooperation_agreement-body'.
   $field_instances['node-projects_cooperation_agreement-body'] = array(
     'bundle' => 'projects_cooperation_agreement',
     'default_value' => NULL,
@@ -409,7 +409,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_cooperation_agreement-field_ca_cooperation_rules'
+  // Exported field_instance:
+  // 'node-projects_cooperation_agreement-field_ca_cooperation_rules'.
   $field_instances['node-projects_cooperation_agreement-field_ca_cooperation_rules'] = array(
     'bundle' => 'projects_cooperation_agreement',
     'default_value' => array(
@@ -500,7 +501,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_cooperation_agreement-field_ca_course_group_ref'
+  // Exported field_instance:
+  // 'node-projects_cooperation_agreement-field_ca_course_group_ref'.
   $field_instances['node-projects_cooperation_agreement-field_ca_course_group_ref'] = array(
     'bundle' => 'projects_cooperation_agreement',
     'default_value' => NULL,
@@ -562,7 +564,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_cooperation_agreement-field_ca_expectation_academy'
+  // Exported field_instance:
+  // 'node-projects_cooperation_agreement-field_ca_expectation_academy'.
   $field_instances['node-projects_cooperation_agreement-field_ca_expectation_academy'] = array(
     'bundle' => 'projects_cooperation_agreement',
     'default_value' => NULL,
@@ -645,7 +648,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_cooperation_agreement-field_ca_expectation_po'
+  // Exported field_instance:
+  // 'node-projects_cooperation_agreement-field_ca_expectation_po'.
   $field_instances['node-projects_cooperation_agreement-field_ca_expectation_po'] = array(
     'bundle' => 'projects_cooperation_agreement',
     'default_value' => NULL,
@@ -727,7 +731,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_cooperation_agreement-field_ca_instructors_role'
+  // Exported field_instance:
+  // 'node-projects_cooperation_agreement-field_ca_instructors_role'.
   $field_instances['node-projects_cooperation_agreement-field_ca_instructors_role'] = array(
     'bundle' => 'projects_cooperation_agreement',
     'default_value' => NULL,
@@ -809,7 +814,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_cooperation_agreement-field_ca_partners_role'
+  // Exported field_instance:
+  // 'node-projects_cooperation_agreement-field_ca_partners_role'.
   $field_instances['node-projects_cooperation_agreement-field_ca_partners_role'] = array(
     'bundle' => 'projects_cooperation_agreement',
     'default_value' => NULL,
@@ -892,7 +898,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_cooperation_agreement-field_ca_proposal_ref'
+  // Exported field_instance:
+  // 'node-projects_cooperation_agreement-field_ca_proposal_ref'.
   $field_instances['node-projects_cooperation_agreement-field_ca_proposal_ref'] = array(
     'bundle' => 'projects_cooperation_agreement',
     'default_value' => NULL,
@@ -955,7 +962,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_cooperation_agreement-field_ca_result'
+  // Exported field_instance:
+  // 'node-projects_cooperation_agreement-field_ca_result'.
   $field_instances['node-projects_cooperation_agreement-field_ca_result'] = array(
     'bundle' => 'projects_cooperation_agreement',
     'default_value' => NULL,
@@ -1037,7 +1045,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_cooperation_agreement-field_ca_student_refs'
+  // Exported field_instance:
+  // 'node-projects_cooperation_agreement-field_ca_student_refs'.
   $field_instances['node-projects_cooperation_agreement-field_ca_student_refs'] = array(
     'bundle' => 'projects_cooperation_agreement',
     'default_value' => NULL,
@@ -1100,7 +1109,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_cooperation_agreement-field_ca_students_role'
+  // Exported field_instance:
+  // 'node-projects_cooperation_agreement-field_ca_students_role'.
   $field_instances['node-projects_cooperation_agreement-field_ca_students_role'] = array(
     'bundle' => 'projects_cooperation_agreement',
     'default_value' => NULL,
@@ -1182,7 +1192,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_cooperation_agreement-field_ca_timespan'
+  // Exported field_instance:
+  // 'node-projects_cooperation_agreement-field_ca_timespan'.
   $field_instances['node-projects_cooperation_agreement-field_ca_timespan'] = array(
     'bundle' => 'projects_cooperation_agreement',
     'deleted' => 0,
@@ -1197,6 +1208,7 @@ function section_projects_features_field_default_field_instances() {
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
+          'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
         'weight' => 1,
@@ -1243,7 +1255,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_cooperation_agreement-field_seal'
+  // Exported field_instance: 'node-projects_cooperation_agreement-field_seal'.
   $field_instances['node-projects_cooperation_agreement-field_seal'] = array(
     'bundle' => 'projects_cooperation_agreement',
     'default_value' => array(
@@ -1301,7 +1313,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_cooperation_agreement-group_group'
+  // Exported field_instance: 'node-projects_cooperation_agreement-group_group'.
   $field_instances['node-projects_cooperation_agreement-group_group'] = array(
     'bundle' => 'projects_cooperation_agreement',
     'default_value' => array(
@@ -1365,7 +1377,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_documentation-body'
+  // Exported field_instance: 'node-projects_documentation-body'.
   $field_instances['node-projects_documentation-body'] = array(
     'bundle' => 'projects_documentation',
     'default_value' => NULL,
@@ -1447,7 +1459,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_documentation-field_ca_ref'
+  // Exported field_instance: 'node-projects_documentation-field_ca_ref'.
   $field_instances['node-projects_documentation-field_ca_ref'] = array(
     'bundle' => 'projects_documentation',
     'default_value' => NULL,
@@ -1517,7 +1529,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_objective-body'
+  // Exported field_instance: 'node-projects_objective-body'.
   $field_instances['node-projects_objective-body'] = array(
     'bundle' => 'projects_objective',
     'default_value' => NULL,
@@ -1599,7 +1611,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_objective-field_ca_ref'
+  // Exported field_instance: 'node-projects_objective-field_ca_ref'.
   $field_instances['node-projects_objective-field_ca_ref'] = array(
     'bundle' => 'projects_objective',
     'default_value' => NULL,
@@ -1669,7 +1681,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_objective-field_objective_matching'
+  // Exported field_instance:
+  // 'node-projects_objective-field_objective_matching'.
   $field_instances['node-projects_objective-field_objective_matching'] = array(
     'bundle' => 'projects_objective',
     'default_value' => NULL,
@@ -1752,7 +1765,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_objective-field_objective_motivation'
+  // Exported field_instance:
+  // 'node-projects_objective-field_objective_motivation'.
   $field_instances['node-projects_objective-field_objective_motivation'] = array(
     'bundle' => 'projects_objective',
     'default_value' => NULL,
@@ -1782,7 +1796,7 @@ function section_projects_features_field_default_field_instances() {
     'ds_extras_field_template' => '',
     'entity_type' => 'node',
     'field_name' => 'field_objective_motivation',
-    'label' => 'Motivantion und Ziele',
+    'label' => 'Motivation und Ziele',
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
@@ -1834,7 +1848,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_objective-field_objective_task'
+  // Exported field_instance: 'node-projects_objective-field_objective_task'.
   $field_instances['node-projects_objective-field_objective_task'] = array(
     'bundle' => 'projects_objective',
     'default_value' => NULL,
@@ -1916,7 +1930,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_objective-field_seal'
+  // Exported field_instance: 'node-projects_objective-field_seal'.
   $field_instances['node-projects_objective-field_seal'] = array(
     'bundle' => 'projects_objective',
     'default_value' => array(
@@ -1974,7 +1988,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_organization-body'
+  // Exported field_instance: 'node-projects_organization-body'.
   $field_instances['node-projects_organization-body'] = array(
     'bundle' => 'projects_organization',
     'default_value' => NULL,
@@ -2056,7 +2070,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_organization-field_field_po_contact_person'
+  // Exported field_instance:
+  // 'node-projects_organization-field_field_po_contact_person'.
   $field_instances['node-projects_organization-field_field_po_contact_person'] = array(
     'bundle' => 'projects_organization',
     'default_value' => NULL,
@@ -2111,7 +2126,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_organization-field_operational_area'
+  // Exported field_instance:
+  // 'node-projects_organization-field_operational_area'.
   $field_instances['node-projects_organization-field_operational_area'] = array(
     'bundle' => 'projects_organization',
     'default_value' => NULL,
@@ -2155,7 +2171,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_organization-field_po_contact'
+  // Exported field_instance: 'node-projects_organization-field_po_contact'.
   $field_instances['node-projects_organization-field_po_contact'] = array(
     'bundle' => 'projects_organization',
     'default_value' => NULL,
@@ -2236,7 +2252,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_organization-field_po_header'
+  // Exported field_instance: 'node-projects_organization-field_po_header'.
   $field_instances['node-projects_organization-field_po_header'] = array(
     'bundle' => 'projects_organization',
     'deleted' => 0,
@@ -2294,7 +2310,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_organization-field_po_logo'
+  // Exported field_instance: 'node-projects_organization-field_po_logo'.
   $field_instances['node-projects_organization-field_po_logo'] = array(
     'bundle' => 'projects_organization',
     'deleted' => 0,
@@ -2352,7 +2368,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_organization-field_po_short_description'
+  // Exported field_instance:
+  // 'node-projects_organization-field_po_short_description'.
   $field_instances['node-projects_organization-field_po_short_description'] = array(
     'bundle' => 'projects_organization',
     'default_value' => NULL,
@@ -2434,7 +2451,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_organization-field_task_area'
+  // Exported field_instance: 'node-projects_organization-field_task_area'.
   $field_instances['node-projects_organization-field_task_area'] = array(
     'bundle' => 'projects_organization',
     'default_value' => NULL,
@@ -2478,7 +2495,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_organization-group_group'
+  // Exported field_instance: 'node-projects_organization-group_group'.
   $field_instances['node-projects_organization-group_group'] = array(
     'bundle' => 'projects_organization',
     'default_value' => array(
@@ -2542,7 +2559,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_proposal-body'
+  // Exported field_instance: 'node-projects_proposal-body'.
   $field_instances['node-projects_proposal-body'] = array(
     'bundle' => 'projects_proposal',
     'default_value' => NULL,
@@ -2624,7 +2641,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_proposal-field_partner_organization_ref'
+  // Exported field_instance:
+  // 'node-projects_proposal-field_partner_organization_ref'.
   $field_instances['node-projects_proposal-field_partner_organization_ref'] = array(
     'bundle' => 'projects_proposal',
     'default_value' => NULL,
@@ -2691,7 +2709,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_proposal-field_proposal_contact'
+  // Exported field_instance: 'node-projects_proposal-field_proposal_contact'.
   $field_instances['node-projects_proposal-field_proposal_contact'] = array(
     'bundle' => 'projects_proposal',
     'default_value' => NULL,
@@ -2772,7 +2790,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_proposal-field_proposal_expectation'
+  // Exported field_instance:
+  // 'node-projects_proposal-field_proposal_expectation'.
   $field_instances['node-projects_proposal-field_proposal_expectation'] = array(
     'bundle' => 'projects_proposal',
     'default_value' => NULL,
@@ -2854,7 +2873,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_proposal-field_proposal_partners_role'
+  // Exported field_instance:
+  // 'node-projects_proposal-field_proposal_partners_role'.
   $field_instances['node-projects_proposal-field_proposal_partners_role'] = array(
     'bundle' => 'projects_proposal',
     'default_value' => NULL,
@@ -2937,7 +2957,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_proposal-field_proposal_result'
+  // Exported field_instance: 'node-projects_proposal-field_proposal_result'.
   $field_instances['node-projects_proposal-field_proposal_result'] = array(
     'bundle' => 'projects_proposal',
     'default_value' => NULL,
@@ -3019,7 +3039,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_proposal-field_proposal_status'
+  // Exported field_instance: 'node-projects_proposal-field_proposal_status'.
   $field_instances['node-projects_proposal-field_proposal_status'] = array(
     'bundle' => 'projects_proposal',
     'default_value' => array(
@@ -3066,7 +3086,8 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_proposal-field_proposal_students_role'
+  // Exported field_instance:
+  // 'node-projects_proposal-field_proposal_students_role'.
   $field_instances['node-projects_proposal-field_proposal_students_role'] = array(
     'bundle' => 'projects_proposal',
     'default_value' => NULL,
@@ -3148,7 +3169,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_proposal-field_proposal_task_area'
+  // Exported field_instance: 'node-projects_proposal-field_proposal_task_area'.
   $field_instances['node-projects_proposal-field_proposal_task_area'] = array(
     'bundle' => 'projects_proposal',
     'default_value' => NULL,
@@ -3192,7 +3213,7 @@ function section_projects_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-projects_proposal-field_proposal_timespan'
+  // Exported field_instance: 'node-projects_proposal-field_proposal_timespan'.
   $field_instances['node-projects_proposal-field_proposal_timespan'] = array(
     'bundle' => 'projects_proposal',
     'default_value' => NULL,
@@ -3298,7 +3319,7 @@ function section_projects_features_field_default_field_instances() {
   t('Kurzberschreibung');
   t('Laufzeit des Projekts von einem bestimmten Datum bis zu einem bestimmten Datum');
   t('Logo');
-  t('Motivantion und Ziele');
+  t('Motivation und Ziele');
   t('Partnerorganisation');
   t('Privacy');
   t('Projektvorschlag');

@@ -22,6 +22,7 @@ function nm_section_courses_features_og_features_default_permissions() {
   $permissions['node:courses_course:administer group'] = array(
     'roles' => array(
       'kurs-dozent' => 'kurs-dozent',
+      'kurs-tutor' => 'kurs-tutor',
     ),
   );
 
@@ -193,6 +194,7 @@ function nm_section_courses_features_og_features_default_permissions() {
   $permissions['node:courses_course:manage permissions'] = array(
     'roles' => array(
       'kurs-dozent' => 'kurs-dozent',
+      'kurs-tutor' => 'kurs-tutor',
     ),
   );
 
@@ -200,6 +202,7 @@ function nm_section_courses_features_og_features_default_permissions() {
   $permissions['node:courses_course:manage roles'] = array(
     'roles' => array(
       'kurs-dozent' => 'kurs-dozent',
+      'kurs-tutor' => 'kurs-tutor',
     ),
   );
 

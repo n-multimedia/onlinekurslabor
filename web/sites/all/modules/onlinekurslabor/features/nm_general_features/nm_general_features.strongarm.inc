@@ -349,7 +349,7 @@ dasddasdasd',
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => '1TlkjsuNO5z4SxSwWZa_1KaqvQG-nvILEIFs2B5Y-yw',
+    'javascript' => 'EggYBiNpxU7lngxf-6m5j86_Wv5SXR6PtPwdhQOtum4',
   );
   $export['language_default'] = $strongarm;
 
@@ -568,7 +568,7 @@ dasddasdasd',
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'site_mail';
-  $strongarm->value = 'info@onlinekurslabor.de';
+  $strongarm->value = 'noreply@onlinekurslabor.de';
   $export['site_mail'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -794,6 +794,143 @@ dasddasdasd',
   $strongarm->name = 'transliteration_file_uploads';
   $strongarm->value = 1;
   $export['transliteration_file_uploads'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'userprotect_administrator_bypass_defaults';
+  $strongarm->value = array(
+    'up_edit' => 'up_edit',
+    'up_name' => 0,
+    'up_mail' => 0,
+    'up_pass' => 0,
+    'up_status' => 0,
+    'up_roles' => 0,
+    'up_openid' => 0,
+    'up_cancel' => 0,
+  );
+  $export['userprotect_administrator_bypass_defaults'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'userprotect_autoprotect';
+  $strongarm->value = 0;
+  $export['userprotect_autoprotect'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'userprotect_protection_defaults';
+  $strongarm->value = array(
+    'up_mail' => 'up_mail',
+    'up_status' => 'up_status',
+    'up_cancel' => 'up_cancel',
+    'up_name' => 0,
+    'up_pass' => 0,
+    'up_roles' => 0,
+    'up_openid' => 0,
+    'up_edit' => 0,
+  );
+  $export['userprotect_protection_defaults'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'userprotect_role_protections';
+  $strongarm->value = array(
+    30037204 => array(
+      'up_name' => 0,
+      'up_mail' => 0,
+      'up_pass' => 0,
+      'up_status' => 0,
+      'up_roles' => 0,
+      'up_openid' => 0,
+      'up_cancel' => 0,
+      'up_edit' => 0,
+    ),
+    2 => array(
+      'up_name' => 0,
+      'up_mail' => 0,
+      'up_pass' => 0,
+      'up_status' => 0,
+      'up_roles' => 0,
+      'up_openid' => 0,
+      'up_cancel' => 0,
+      'up_edit' => 0,
+    ),
+    197637936 => array(
+      'up_name' => 0,
+      'up_mail' => 0,
+      'up_pass' => 0,
+      'up_status' => 0,
+      'up_roles' => 0,
+      'up_openid' => 0,
+      'up_cancel' => 0,
+      'up_edit' => 0,
+    ),
+    16675960 => array(
+      'up_name' => 0,
+      'up_mail' => 0,
+      'up_pass' => 0,
+      'up_status' => 0,
+      'up_roles' => 0,
+      'up_openid' => 0,
+      'up_cancel' => 0,
+      'up_edit' => 0,
+    ),
+    106505419 => array(
+      'up_name' => 0,
+      'up_mail' => 0,
+      'up_pass' => 0,
+      'up_status' => 0,
+      'up_roles' => 0,
+      'up_openid' => 0,
+      'up_cancel' => 0,
+      'up_edit' => 0,
+    ),
+    126456107 => array(
+      'up_name' => 0,
+      'up_mail' => 0,
+      'up_pass' => 0,
+      'up_status' => 0,
+      'up_roles' => 0,
+      'up_openid' => 0,
+      'up_cancel' => 0,
+      'up_edit' => 0,
+    ),
+    66784200 => array(
+      'up_name' => 0,
+      'up_mail' => 0,
+      'up_pass' => 0,
+      'up_status' => 0,
+      'up_roles' => 0,
+      'up_openid' => 0,
+      'up_cancel' => 0,
+      'up_edit' => 0,
+    ),
+    24708420 => array(
+      'up_name' => 0,
+      'up_mail' => 0,
+      'up_pass' => 0,
+      'up_status' => 0,
+      'up_roles' => 0,
+      'up_openid' => 0,
+      'up_cancel' => 0,
+      'up_edit' => 0,
+    ),
+    140204299 => array(
+      'up_name' => 0,
+      'up_mail' => 0,
+      'up_pass' => 0,
+      'up_status' => 0,
+      'up_roles' => 0,
+      'up_openid' => 0,
+      'up_cancel' => 0,
+      'up_edit' => 0,
+    ),
+  );
+  $export['userprotect_role_protections'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -1090,7 +1227,7 @@ Ihr Benutzerkonto auf [site:name] wurde gelöscht.
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'user_register';
-  $strongarm->value = '2';
+  $strongarm->value = '0';
   $export['user_register'] = $strongarm;
 
   $strongarm = new stdClass();

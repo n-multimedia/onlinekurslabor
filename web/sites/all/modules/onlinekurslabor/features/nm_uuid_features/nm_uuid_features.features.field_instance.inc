@@ -10,7 +10,7 @@
 function nm_uuid_features_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'taxonomy_term-forums-og_group_ref'
+  // Exported field_instance: 'taxonomy_term-forums-og_group_ref'.
   $field_instances['taxonomy_term-forums-og_group_ref'] = array(
     'bundle' => 'forums',
     'default_value' => NULL,

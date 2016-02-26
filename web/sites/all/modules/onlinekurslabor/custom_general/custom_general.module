@@ -92,6 +92,10 @@ define("NM_COURSE_PROJECTS_PATH", "projects/");
 
 define("NM_COURSE_PROJECTS_PARTNERS_PATH", "projects/partners/");
 
+//Videosafe Contenttype
+define("NM_VIDEOSAFE_PATH", "videosafe");
+define("NM_VIDEOSAFE_FOLDER", "videosafe_folder");
+define("NM_VIDEOSAFE_VIDEO", "videosafe_video");
 
 //Domains
 //Contet Types
@@ -102,6 +106,7 @@ define("NM_SPACE", "spaces_space");
 //define('NM_COURSE_FEATURE_WIKI', $value)
 define('NM_COURSE_FEATURE_FORUM', 'forum');
 define('NM_COURSE_FEATURE_COURSE_GROUP_LOCK', 'course_group_lock');
+define('NM_COURSE_FEATURE_TEXT', 'domain_text');
 
 define("NM_COURSES_ROLE_ADMINISTRATOR", "kurs-dozent");
 define("NM_COURSES_ROLE_TUTOR", "kurs-tutor");
@@ -527,7 +532,7 @@ function _custom_general_theme_tools_block($tool_links, $id = "", $class = "sect
       $output .= '</div>';
     }
     //$output .= '</div>';
-    $output .= '</div>';
+    //$output .= '</div>';
   }
   //no groups configured - render horizontal toolbar
   else {
@@ -856,3 +861,93 @@ function custom_general_user_insert(&$edit, $account, $category) {
   //$account = user_load($account, TRUE);
   realname_update($account);
 }*/
+
+
+/**
+ * Implementation of hook_mail_alter().
+ * Here we allow the site name to be used as the senders name for outgoing email.
+ * see http://drupal.org/node/209672
+ */
+function custom_general_mail_alter(&$message){
+  $default_from = variable_get('site_mail', ini_get('sendmail_from'));
+
+  if($message['from'] == $default_from){
+    $default_from = 'onlinekurslabor@medienlabor-uni-augsburg.de';
+    $message['headers']['Reply-To'] = '"'. variable_get('site_name', 'Drupal') .'" <'. $default_from .'>';
+  }
+}
+
+
+/**
+ * helper function for linkit autocomplete
+ * checks if referer is one of context relevant nodes
+ * todo project
+ * @return bool
+ */
+function _custom_general_referer_node_add() {
+  //check linkin ajax requests
+  if (
+    (arg(0) == 'admin' && strstr(arg(1), "_dashboard")) ||
+    (arg(0) == 'section_content' && arg(1) == 'tasks' && arg(2) == 'autocomplete') ||
+    (arg(0) == 'h5p_integration' && arg(1) == 'item' && arg(2) == 'autocomplete')
+  ) {
+    $referer_url = drupal_parse_url($_SERVER['HTTP_REFERER']);
+    $referer_url['path'] = substr(parse_url($referer_url['path'], PHP_URL_PATH), 1);
+
+    $referer_path = $referer_url['path'];
+    if (arg(0, $referer_path) == 'node' &&
+      arg(1, $referer_path) == 'add'
+      && in_array(arg(2, $referer_path), array(
+        "courses-course",
+        "content-domain"
+      ))
+    ) {
+      //FORCE no results
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
+/**
+ * @param \QueryAlterableInterface $query
+ */
+function custom_general_query_alter(QueryAlterableInterface $query) {
+  if ($query->hasTag('linkit_entity_autocomplete')) {
+
+    //node add special case
+    //adding domain, course
+
+    //check linkin ajax requests
+    //return empty list result, when adding course and domain. no context is set yet.
+      //so no course/domain h5p and other content exist.
+      if (_custom_general_referer_node_add()) {
+        $query->condition("node.nid", "-1");
+      }
+
+
+    $domain = _section_content_get_active_domain(TRUE);
+    $course = _section_courses_get_active_course(TRUE);
+
+
+
+    $group = NULL;
+    if ($domain) {
+      $group = $domain;
+    }
+    else {
+      if ($course) {
+        $group = node_load(_section_courses_course_get_domain_id($course));
+      }
+    }
+
+    if ($group) {
+      //dpm((string) $query);
+      $ogm_alias = $query->leftJoin('og_membership', 'ogm', 'ogm.etid = node.nid'); // AND ogm.tid = :entity_id
+      $query->condition("$ogm_alias.gid", $group->nid); // AND ogm.tid = :entity_id
+    }
+  }
+
+}
+

@@ -11,6 +11,9 @@ define('NM_STREAM_PUBLIC', 4);
 //Projects Blog
 define('NM_STREAM_PROJECT', 5);
 
+define('NM_STREAM_ALLOWED_HTML_TAGS', serialize(array('a', 'em', 'b','u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
+    'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot')));
+
 /**
  * Implements hook_block_info().
  */
@@ -482,9 +485,7 @@ function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
   }
 
   //update end
-  $allowed_tags = array('a', 'em', 'u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
-    'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot');
-  $body = isset($_REQUEST['body']) ? filter_xss($_REQUEST['body'], $allowed_tags) : '';
+  $body = _nm_stream_filter_xss($_REQUEST['body']) ;
 
   $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
   $iframe = isset($_REQUEST['iframe']) ? TRUE : FALSE;
@@ -603,10 +604,7 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
   }
 
   //consider adapting for in add callback too!
-  $allowed_tags = array('a', 'em', 'u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
-    'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot');
-  $body = isset($_REQUEST['body']) ? filter_xss($_REQUEST['body'], $allowed_tags) : '';
-
+  $body = _nm_stream_filter_xss($_REQUEST['body']) ;
   $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
   $iframe = isset($_REQUEST['iframe']) ? TRUE : FALSE;
 
@@ -793,11 +791,8 @@ function nm_stream_nm_stream_comment_add_callback($node) {
 
 
   //consider adapting for in edit callback too!
-  $allowed_tags = array('a', 'em', 'u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
-    'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot');
-  $body = isset($_REQUEST['body']) ? filter_xss($_REQUEST['body'], $allowed_tags) : '';
+  $body = _nm_stream_filter_xss($_REQUEST['body']) ;
 
-  //$body = isset($_REQUEST['body']) ? check_plain($_REQUEST['body']) : '';
 
   //error handling
   if (!($node) || empty($body)) {
@@ -869,9 +864,8 @@ function nm_stream_nm_stream_comment_edit_callback($comment) {
 
   $response = array();
 
-  $allowed_tags = array('a', 'em', 'u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
-    'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot');
-  $body = isset($_REQUEST['body']) ? filter_xss($_REQUEST['body'], $allowed_tags) : '';
+  $body = _nm_stream_filter_xss($_REQUEST['body']) ;
+
 
   if (isset($_REQUEST['body'])) {
 
@@ -951,6 +945,15 @@ function nm_stream_nm_stream_comment_delete_callback($comment, $token) {
  */
 function nm_stream_block_view($delta = '') {
   $block = array();
+
+
+
+
+  if(arg(0) == 'admin'){
+    //do not render any output in admin section
+    //problem: nm_stream_stream_node_form searching for context
+    return $block;
+  }
 
   switch ($delta) {
     case 'nm_stream_form_add_edit' :
@@ -1236,6 +1239,19 @@ function nm_stream_og_context() {
   $active_course = _section_courses_get_active_course();
   $active_project = section_projects_get_active_project();
 
+  //anvid_content
+  $active_annvid_nid = arg(1);
+  $active_annvid = node_load($active_annvid_nid);
+  if($active_annvid) {
+    //edition a proposal
+    if ($active_annvid->type ==ANNVID_CONTENTTYPE) {
+      return $active_annvid;
+    }
+
+  }
+
+
+
   if ($active_course) {
     if (_section_course_course_group_visible()) {
       //course_group_nid  /course/groups/%course_nid/%group_nid/
@@ -1265,6 +1281,16 @@ function nm_stream_og_context() {
       //project section
       if (_section_projects_cockpit_visible($referer_url['path'])) {
         $context = node_load(arg(5, $referer_url['path']));
+      }
+
+      //annvid
+      if ((arg(0, $referer_url['path']) == 'node')) {
+
+          $active_annvid_nid = arg(1, $referer_url['path']);
+          $active_annvid = node_load($active_annvid_nid);
+          if (!empty($active_annvid) && $active_annvid->type == ANNVID_CONTENTTYPE) {
+            $context = node_load($active_annvid_nid);
+          }
       }
     }
   }
@@ -1458,6 +1484,31 @@ function _nm_stream_get_action_links($content) {
   return $output;
 }
 
+
+/**
+ * gets the rendered gui inkludiing add-new-comment
+ * and the list of the comments
+ * @param string $context : a node-id
+ * @return string gui
+ */
+function _nm_stream_get_renderedGUI($context)
+{
+
+$ret =  _nm_stream_form_add_edit_view() ;
+
+$my_view_name = 'nm_stream';
+$my_display_name = 'default';
+$args = array($context);
+
+$my_view = views_get_view($my_view_name);
+if ( is_object($my_view) ) {
+  $my_view->set_display($my_display_name);
+$my_view->set_arguments($args);
+  $my_view->pre_execute();
+  $ret.= $my_view->render($my_display_name);
+}
+return $ret ;
+}
 /**
  * need to reverse order
  * modified comment_get_thread
@@ -1554,6 +1605,15 @@ function _nm_stream_add_js_and_css() {
     //upload
     drupal_add_css(drupal_get_path('module', 'nm_stream') . "/js/jQuery-File-Upload-9.5.7/css/jquery.fileupload.css");
   }
+}
+
+function _nm_stream_filter_xss($text)
+{   /*einen mit <b>bold</b> <u>underline</u> und <script>alert(123);</script>*/
+   $NM_STREAM_ALLOWED_HTML_TAGS = unserialize(NM_STREAM_ALLOWED_HTML_TAGS);
+   if($text)
+       return filter_xss($text, $NM_STREAM_ALLOWED_HTML_TAGS);
+   else
+       return  '';
 }
 
 /*

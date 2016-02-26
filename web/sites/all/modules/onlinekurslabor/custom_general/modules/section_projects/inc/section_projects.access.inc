@@ -54,17 +54,19 @@ function section_projects_node_access_records($node) {
       return $grants;
     }
 
+    //always set private realm for view update delete
+    $grants[] = array(
+      'realm' => 'section_projects_nm_stream_private',
+      'gid' => $node->uid,
+      'grant_view' => 1,
+      'grant_update' => 1,
+      'grant_delete' => 1,
+      'priority' => 1,
+    );
+
     switch ($privacy) {
       case NM_STREAM_PRIVATE:
-
-        $grants[] = array(
-          'realm' => 'section_projects_nm_stream_private',
-          'gid' => $node->uid,
-          'grant_view' => 1,
-          'grant_update' => 1,
-          'grant_delete' => 1,
-          'priority' => 1,
-        );
+        //always set private realm for view update delete
         break;
       case NM_STREAM_TEAM:
 
@@ -470,7 +472,7 @@ return;
    * ===============================
    * IMPORTANT
    * @TODO
-   *  bei Student hats was mit den Berechtigungschecks verhauen. Überprüfen!!
+   *  bei Student hats was mit den Berechtigungschecks verhauen. ÃœberprÃ¼fen!!
    * IMPORTANT
    * =====================================
    */
@@ -493,14 +495,14 @@ return;
     $perm['update field_objective_matching field'] = TRUE;
     $perm['update field_objective_task field'] = TRUE;
 
-    /* studenten, die auf dokumentation zugeifen dürfne,. dürfen auch die felder editieren */
+    /* studenten, die auf dokumentation zugeifen dÃ¼rfne,. dÃ¼rfen auch die felder editieren */
     /* todo kein zugriff auf wysiwyg */
     $perm['create ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
     $perm['update any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
     $perm['update body field'] = TRUE;
 
 
-    /* studenten, die auf lernzielvereinbarungen zugeifen dürfne,. dürfen auch die felder editieren */
+    /* studenten, die auf lernzielvereinbarungen zugeifen dÃ¼rfne,. dÃ¼rfen auch die felder editieren */
     if (node_access('view', $context['group'])) {
       $perm['update any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
       $perm['update field_objective_motivation field'] = TRUE;
@@ -592,7 +594,7 @@ function section_projects_node_access($node, $op, $account) {
 
   ) {
     // Check if the node is published.
-    { //das würde dann auch beim view auslösen. deshalb nicht anzeigen...
+    { //das wÃ¼rde dann auch beim view auslÃ¶sen. deshalb nicht anzeigen...
       #drupal_set_message('Dies kann nicht bearbeitet werden, da bereits alle Beteiligten unterschrieben haben.','warning');
 
       return NODE_ACCESS_DENY;

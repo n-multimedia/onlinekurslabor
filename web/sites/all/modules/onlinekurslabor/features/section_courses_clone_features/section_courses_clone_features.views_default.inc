@@ -27,6 +27,7 @@ function section_courses_clone_features_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '50';
@@ -65,11 +66,11 @@ function section_courses_clone_features_views_default_views() {
       'empty_column' => 0,
     ),
   );
-  /* Relationship: Inhalt: Semester (field_semester) */
+  /* Relationship: Content: Semester (field_semester) */
   $handler->display->display_options['relationships']['field_semester_tid']['id'] = 'field_semester_tid';
   $handler->display->display_options['relationships']['field_semester_tid']['table'] = 'field_data_field_semester';
   $handler->display->display_options['relationships']['field_semester_tid']['field'] = 'field_semester_tid';
-  /* Feld: Bulk operations: Inhalt */
+  /* Field: Bulk operations: Content */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'node';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
@@ -241,28 +242,28 @@ function section_courses_clone_features_views_default_views() {
       'label' => '',
     ),
   );
-  /* Feld: Inhalt: Titel */
+  /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Feld: Inhalt: Semester */
+  /* Field: Content: Semester */
   $handler->display->display_options['fields']['field_semester']['id'] = 'field_semester';
   $handler->display->display_options['fields']['field_semester']['table'] = 'field_data_field_semester';
   $handler->display->display_options['fields']['field_semester']['field'] = 'field_semester';
-  /* Sort criterion: Inhalt: Semester (field_semester) */
+  /* Sort criterion: Content: Semester (field_semester) */
   $handler->display->display_options['sorts']['field_semester_tid']['id'] = 'field_semester_tid';
   $handler->display->display_options['sorts']['field_semester_tid']['table'] = 'field_data_field_semester';
   $handler->display->display_options['sorts']['field_semester_tid']['field'] = 'field_semester_tid';
   $handler->display->display_options['sorts']['field_semester_tid']['order'] = 'DESC';
-  /* Sort criterion: Inhalt: Post date */
+  /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Filter criterion: Inhalt: Typ */
+  /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
@@ -272,7 +273,7 @@ function section_courses_clone_features_views_default_views() {
   $translatables['nm_courses_clone'] = array(
     t('Master'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
     t('Sort by'),
     t('Asc'),
@@ -285,7 +286,7 @@ function section_courses_clone_features_views_default_views() {
     t('nächste Seite ›'),
     t('letzte Seite »'),
     t('term from field_semester'),
-    t('Inhalt'),
+    t('Content'),
     t('- Choose an operation -'),
     t('Kurs Klonen'),
     t('Semester'),

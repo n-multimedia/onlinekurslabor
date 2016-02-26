@@ -1,0 +1,52 @@
+
+body.dev{
+    background: #FCF2E3 !important;
+}
+body.dev #navbar .navbar-inner
+{
+    background-image: url("../img/dev-bg.png") !important;
+    background-color: orange !important;
+}
+body.dev #navbar  a.logo img{
+    transform: rotate(180deg);
+}
+
+div.dev_overlay
+{
+    position:absolute;
+    top:0px;
+    z-index:9999;
+    background: red;
+    color: blue;
+    font-weight:bold;
+    width:100%;
+    height:100%;
+}
+div.dev_overlay .dev_overlay_inner
+{
+   width:50%;
+   height:50%;
+   text-align: center;
+   margin: auto;
+   margin-top: 10%;
+}
+a#goto_dev
+{
+    font-weight:normal;
+    font-size:7px;
+}
+/*admin-funktionalität */ 
+body.dev div#overlay, body.dev div#branding
+{   
+    background-image: url("../img/dev-bg.png") !important;
+    background-color: rgba(255, 165, 0, 0.7) !important;
+}
+body.dev h1#overlay-title
+{
+    color:black;
+} 
+body.dev div.overlay-modal-background
+{
+       background-image: url("../img/dev-bg.png") !important;
+    background-color: rgba(255, 165, 0, 0.7) !important;
+}

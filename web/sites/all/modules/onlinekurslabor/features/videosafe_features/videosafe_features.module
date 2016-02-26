@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the VideoSafe - Features feature.
+ */
+
+include_once 'videosafe_features.features.inc';

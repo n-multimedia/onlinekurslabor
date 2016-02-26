@@ -43,17 +43,9 @@ function nm_section_courses_features_image_default_styles() {
 
   // Exported image style: course_header.
   $styles['course_header'] = array(
-    'name' => 'course_header',
     'label' => 'course_header',
     'effects' => array(
       6 => array(
-        'label' => 'Skalieren und zuschneiden',
-        'help' => 'Skalieren und zuschneiden wird das Seitenverhältnis des ursprünglichen Bildes erhalten, und dann die überstehenden Ränder entfernen. Dies ist besonders nützlich für die Erstellung von perfekt quadratischen Vorschaubildern ohne Verzerrung des Bildes.',
-        'effect callback' => 'image_scale_and_crop_effect',
-        'dimensions callback' => 'image_resize_dimensions',
-        'form callback' => 'image_resize_form',
-        'summary theme' => 'image_resize_summary',
-        'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
           'width' => 1170,
@@ -66,17 +58,9 @@ function nm_section_courses_features_image_default_styles() {
 
   // Exported image style: course_header_list_item.
   $styles['course_header_list_item'] = array(
-    'name' => 'course_header_list_item',
     'label' => 'course_header_list_item',
     'effects' => array(
       15 => array(
-        'label' => 'Skalieren und zuschneiden',
-        'help' => 'Skalieren und zuschneiden wird das Seitenverhältnis des ursprünglichen Bildes erhalten, und dann die überstehenden Ränder entfernen. Dies ist besonders nützlich für die Erstellung von perfekt quadratischen Vorschaubildern ohne Verzerrung des Bildes.',
-        'effect callback' => 'image_scale_and_crop_effect',
-        'dimensions callback' => 'image_resize_dimensions',
-        'form callback' => 'image_resize_form',
-        'summary theme' => 'image_resize_summary',
-        'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
           'width' => 600,
@@ -89,17 +73,9 @@ function nm_section_courses_features_image_default_styles() {
 
   // Exported image style: course_overview_image.
   $styles['course_overview_image'] = array(
-    'name' => 'course_overview_image',
     'label' => 'course_overview_image',
     'effects' => array(
       12 => array(
-        'label' => 'Skalieren und zuschneiden',
-        'help' => 'Skalieren und zuschneiden wird das Seitenverhältnis des ursprünglichen Bildes erhalten, und dann die überstehenden Ränder entfernen. Dies ist besonders nützlich für die Erstellung von perfekt quadratischen Vorschaubildern ohne Verzerrung des Bildes.',
-        'effect callback' => 'image_scale_and_crop_effect',
-        'dimensions callback' => 'image_resize_dimensions',
-        'form callback' => 'image_resize_form',
-        'summary theme' => 'image_resize_summary',
-        'module' => 'image',
         'name' => 'image_scale_and_crop',
         'data' => array(
           'width' => 200,
@@ -112,17 +88,9 @@ function nm_section_courses_features_image_default_styles() {
 
   // Exported image style: course_sponsor_logo.
   $styles['course_sponsor_logo'] = array(
-    'name' => 'course_sponsor_logo',
     'label' => 'course_sponsor_logo',
     'effects' => array(
       13 => array(
-        'label' => 'Skalierung',
-        'help' => 'Eine Skalierung behält das Seitenverhältnis des Originalbildes bei. Sofern nur eine Seitenlänge angegeben ist, wird die andere berechnet.',
-        'effect callback' => 'image_scale_effect',
-        'dimensions callback' => 'image_scale_dimensions',
-        'form callback' => 'image_scale_form',
-        'summary theme' => 'image_scale_summary',
-        'module' => 'image',
         'name' => 'image_scale',
         'data' => array(
           'width' => 85,
@@ -147,7 +115,7 @@ function nm_section_courses_features_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'courses_docs' => array(
@@ -155,7 +123,7 @@ function nm_section_courses_features_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'courses_generic_task' => array(
@@ -163,7 +131,7 @@ function nm_section_courses_features_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'courses_generic_task_solution' => array(
@@ -171,7 +139,7 @@ function nm_section_courses_features_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'courses_group' => array(
@@ -179,7 +147,7 @@ function nm_section_courses_features_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'courses_news' => array(
@@ -187,10 +155,11 @@ function nm_section_courses_features_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }
 

@@ -50,11 +50,16 @@ function _section_domain_author_section_active() {
   $domain_edit_active = (arg(0) == 'domain' && arg(1) == 'edit');
   $domain_delete_active = (arg(0) == 'domain' && arg(1) == 'delete');
 
+  //ajax
+  $ajax_linkit_tasks = (arg(0) == 'section_content' && arg(1) == 'tasks' && arg(2) == 'autocomplete');
+  $ajax_linkit_h5p = (arg(0) == 'h5p_integration' && arg(1) == 'item' && arg(2) == 'autocomplete');
+
   return $biblio_active || $biblio_overview_active ||
       $media_active || $book_active ||
       $tasks_overview_active || $domain_text_active ||
       $domain_add_active || $domain_edit_active ||
-      $domain_delete_active || $h5p_overview_active;
+      $domain_delete_active || $h5p_overview_active || $ajax_linkit_tasks ||
+      $ajax_linkit_h5p;
 }
 
 /**
@@ -90,14 +95,18 @@ function _section_course_instructor_section_active() {
   $projects_visible = (arg(0) == 'course' && arg(1) == 'projects');
   $biblio_visible = _section_course_biblio_visible();
 
+  //ajax
+  $ajax_linkit_tasks = (arg(0) == 'section_content' && arg(1) == 'tasks' && arg(2) == 'autocomplete');
+  $ajax_linkit_h5p = (arg(0) == 'h5p_integration' && arg(1) == 'item' && arg(2) == 'autocomplete');
+
 
   $section_courses = $docs_visible || $info_visible ||
       $groups_visible || $members_visible ||
       $text_visible || $forum_visible ||
       $admin_section_visible ||
       $home_visible || $tasks_visible || $biblio_visible ||
-      $news_visible || $projects_visible;
-
+      $news_visible || $projects_visible ||
+      $ajax_linkit_tasks || $ajax_linkit_h5p;
 
 
   if ($section_courses) {
@@ -610,6 +619,27 @@ function _section_course_get_coursegroups($course) {
   return $result->fetchAll();
 }
 
+/**
+ * get all kurs-dokumente of a course -object
+ *
+ * @param StdClass  $course object
+ * @return mixed
+ */
+function _section_course_get_documents($course) {
+
+  $query = db_select('node', 'n');
+
+  $query->condition('n.nid', 0, '<>')
+      ->condition('n.status', 1, '=')
+      ->condition('n.type', NM_COURSE_DOCS)
+      ->fields('n', array('nid', 'title', 'type'))
+      ->join('og_membership', 'ogm', "ogm.gid = :gid AND n.nid = ogm.etid AND ogm.entity_type = 'node'", array(':gid' => $course->nid));
+
+  $result = $query->execute();
+
+
+  return $result->fetchAll();
+}
 function _section_course_get_solutions($course) {
 
   $query = db_select('node', 'n');
@@ -694,6 +724,88 @@ function _section_course_get_courses_by_uid($uid) {
 
 }
 
+/**
+ * get a course-object // e.g. drupal-node-object
+ *
+ * @param int $course_id
+ * @return StdClass
+ */
+function _section_course_get_course($course_id)
+{
+    return  node_load($course_id);
+}
+
+/**
+ * get the written name of a semester for a course
+ *
+ * @param StdClass / int $course - the course-object or just the id
+ * @return String name
+ */
+function _section_course_get_Semestername($course)
+ {
+    if (!is_object($course))
+        $course = _section_course_get_course($course);
+
+    $semester_id = $course->field_semester[LANGUAGE_NONE][0]['tid'];
+
+    $term = taxonomy_term_load($semester_id);
+    $name = $term->name;
+    return $name;
+}
+
+/**
+ * get all courses a user with $user_uid may edit
+ *
+ * @param String $user_uid
+ * @return array node_object $courses
+ */
+function _section_course_get_courses_for_course_admin($user_uid, $sort_field='')
+{
+   /*some odd actions*/
+    $field = field_info_field('og_group_ref');
+$instance = field_info_instance('node', 'og_group_ref', 'courses_news');
+$refs = entityreference_get_selection_handler($field , $instance)->getReferencableEntities();
+#dpm($refs);
+$courses = $refs['courses_course'];
+
+$real_courses = array();
+foreach($courses as $course_id => $bla)
+{
+   $a_course = _section_course_get_course($course_id);
+     if (node_access('update', $a_course))
+              $real_courses[$course_id] = $a_course;
+}
+  
+
+if($sort_field)
+    usort($real_courses, create_function('$a, $b', 'return _section_course_sort_courses_by_field($a, $b, "'.$sort_field.'");'));
+
+return $real_courses;
+}
+/**
+ * needed for usort, dont touch this. 
+ *
+ * @param node_object course $a
+ * @param node_object course $b
+ * 
+ * @return in -1 ,0 , 1
+ */
+function _section_course_sort_courses_by_field($a, $b, $name_of_field)
+{
+    
+    //flatten the array withouth the need for foreaches or array_keys
+     $it1 = new RecursiveIteratorIterator(new RecursiveArrayIterator($a->$name_of_field));
+     $it2 = new RecursiveIteratorIterator(new RecursiveArrayIterator($b->$name_of_field));
+   
+     $var1 = iterator_to_array($it1, false);
+     $var2 = iterator_to_array($it2, false);
+     $var1 = $var1[0];
+     $var2 = $var2[0];
+     //sort the int
+        return ($var1 - $var2);
+        
+}
+
 function _section_course_get_num_coursegroups($course) {
 
   return count(_section_course_get_coursegroups($course));
@@ -749,4 +861,39 @@ function _section_content_get_domains() {
   $result = $query->execute();
 
   return $result->fetchAll();
+}
+
+
+
+function _section_courses_fix_solution_og(){
+  $query = db_select('node', 'n');
+
+  $query->condition('n.nid', 0, '<>')
+    ->condition('n.status', 1, '=')
+    ->condition('n.type', NM_COURSE_GENERIC_TASK_SOLUTION)
+    ->fields('n', array('nid'))
+    ->leftJoin('og_membership', 'ogm', "n.nid = ogm.etid AND ogm.entity_type = 'node'");
+  $query->isNull('ogm.gid');
+
+  $result = $query->execute()->fetchAll();
+
+
+  foreach($result as $n){
+
+    /*
+    $solution = node_load($node->nid);
+    dpm(format_date($solution->created, 'short'));
+    dpm($solution);
+    */
+
+    $node = node_load($n->nid);
+    if(empty($node->og_group_ref[LANGUAGE_NONE][0]['target_id']) && !empty($node->field_generic_task[LANGUAGE_NONE][0]['target_id'])) {
+      $tid = $node->field_generic_task[LANGUAGE_NONE][0]['target_id'];
+      $task = node_load($tid);
+      $course_nid = $task->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+      $node->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $course_nid;
+      node_save($node);
+    }
+  }
+
 }
