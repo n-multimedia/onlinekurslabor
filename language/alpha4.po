@@ -12,3 +12,10 @@ msgstr "Inhalt und Anhänge löschen"
 msgid "First unread"
 msgstr "Erster ungelesener Beitrag"
 
+msgid "Use count"
+msgstr "Nutzungszahlen"
+
+msgid "Used in"
+msgstr "Verwendet in"
+
+

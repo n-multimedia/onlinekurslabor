@@ -1077,7 +1077,7 @@ function custom_general_file_entity_usage_page($file) {
     }
   }
   $header[] = array(
-    'data' => t('Entity'),
+    'data' => t('Used in'),
   );
   $header[] = array(
     'data' => t('Use count'),
