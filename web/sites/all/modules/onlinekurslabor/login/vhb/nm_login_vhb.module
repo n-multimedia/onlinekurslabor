@@ -138,7 +138,7 @@ function nm_login_vhb() {
     $hash = md5($attribute);
 
     if ($hash != $_POST['HASH']) {
-        drupal_set_message("Hashes stimmen <strong>nicht</strong> überein.", 'error');
+        drupal_set_message("Hashes stimmen <strong>nicht</strong> überein."/*.$hash*/, 'error');
         return "";
     }
     //Kursexistenz generell prüfen
@@ -160,17 +160,24 @@ function nm_login_vhb() {
             drupal_set_message('Willkommen zurück! Account wurde erfolgreich reaktiviert');
             watchdog("LOGIN VHB", 'User reactivated', array(), WATCHDOG_INFO);
         }
-        // Letzte Integrity-Checks, Überschreiben von Alt-Daten 
+        // Letzte Integrity-Checks
         if (!nm_login_vhb_check_basicdata($vhb_user, $params)) {
             drupal_set_message('Es gab Unstimmigkeiten mit Ihrem Account. Aus Datenschutzgründen wurde der Zugang verweigert. Bitte kontaktieren Sie uns zur Klärung der Angelegenheit', 'error');
-            watchdog("LOGIN VHB", 'User locked: ' . print_r($vhb_user, true) . '; Does not comply with: ' . print_r($params, TRUE), array(), WATCHDOG_INFO);
+            watchdog("LOGIN VHB", 'User locked: ' . print_r($vhb_user, true) . '; Does not comply with: ' . print_r($params, TRUE), array(), WATCHDOG_ALERT);
             return "";
         }
         //checks sind durchgelaufen, jetzt updaten wir noch ggf veränderte profile-fields
-        nm_login_vhb_set_profile_fields($vhb_user, $params, true);
+        //falls Fehler beim Speichern, Abbruch
+        if (!nm_login_vhb_set_profile_fields($vhb_user, $params, true))
+        {
+        	  drupal_set_message('Ihr Account konnte nicht gespeichert werden. Bitte kontaktieren Sie uns!', 'error');
+            watchdog("LOGIN VHB", 'Fehler beim Speichern von '. print_r($vhb_user, true) . '; Übergebene Werte: ' . print_r($params, TRUE), array(), WATCHDOG_ALERT);
+            return "";
+        }
     }
     //kein user gefunden, anlegen..
     else {
+        //hier fehlt eigentlich eine Fehlerbehandlung bei unbekannter Hochschule. Dafür refactor notwendig
         drupal_set_message('Benutzer wird angelegt...');
         $vhb_user = nm_login_vhb_add_user($params);
         watchdog("LOGIN VHB", 'New user entry added', array(), WATCHDOG_INFO);
@@ -205,7 +212,7 @@ function nm_login_vhb() {
 
 /**
  * loads a user by the given paramaters sent via vhb
- * @param array $params 
+ * @param array $params
  * @return type
  */
 function nm_login_vhb_load_user_by_parameters($params) {
@@ -213,7 +220,7 @@ function nm_login_vhb_load_user_by_parameters($params) {
     $param_matrikel = $params['MATRIKELNUMMER'];
     $param_hochschule = $params['HOCHSCHULE'];
     //Reaktivieren von E-Mail gibts nich
-    // $param_email = $params['EMAIL'] ; 
+    // $param_email = $params['EMAIL'] ;
 
 
     $user = nm_login_vhb_load_user_by_entity('vhb_login_id', $param_user_id);
@@ -228,7 +235,7 @@ function nm_login_vhb_load_user_by_parameters($params) {
  * loads a user by different entities
  *  @param $entity_type string :  "vhb_login_id" OR 'matrikelnummer_hochschule'
  * @param string $entity1 vhb-login-id OR matrikelnummer
- * @param string $entity2 hochschule, only if $entity_type = matrikelnummer_hochschule 
+ * @param string $entity2 hochschule, only if $entity_type = matrikelnummer_hochschule
 
  * @return Stdclass $user
  */
@@ -395,9 +402,9 @@ function nm_login_vhb_add_user($params) {
 
     realname_update($account);
 
-    drupal_set_message('Student ' . $edit['name'] . ' wurde angelegt.');
+    drupal_set_message('Student/in ' . $edit['name'] . ' wurde angelegt.');
 
-    //kursexistenz wird bereits einen Schritt vorher geprueft 
+    //kursexistenz wird bereits einen Schritt vorher geprueft
     //assign user to defined course
     //load course by LVNR
     $course = nm_login_vhb_get_course($params['LVNR']);
@@ -463,12 +470,12 @@ function nm_login_vhb_testform() {
  * Erstellt PHP-Code um händisch einen Nutzer wieder reaktivieren zu können
  *
  * @param array $_POST
- *  
+ *
  */
 function nm_login_vhb_creeatePHPcode() {
     global $base_url;
 global $user;
-if (!in_array('administrator', $user->roles)) 
+if (!in_array('administrator', $user->roles))
         return "Nur für die Administratoren-Rolle verfügbar";
     $params = nm_login_vhb_convert_to_utf8($_POST);
     $uid =   $params['uid'];;#

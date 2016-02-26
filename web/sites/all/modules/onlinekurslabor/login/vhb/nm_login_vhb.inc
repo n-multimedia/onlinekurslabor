@@ -213,7 +213,7 @@ function nm_login_vhb_set_profile_fields($account, $params, $force = FALSE) {
 
     if (!$account) {
         drupal_set_message("Account konnte nicht geladen werden.", 'error');
-        return;
+        return false;
     }
 
     //student profile
@@ -250,6 +250,11 @@ function nm_login_vhb_set_profile_fields($account, $params, $force = FALSE) {
         if (!empty($terms)) {
             $wrapper->field_hochschule->set(current($terms)->tid);
         }
+        else
+        {
+        drupal_set_message('Hochschule '.$params['HOCHSCHULE'].' nicht gefunden!', 'error');
+        return false;
+				}
     }
 
     $wrapper->save();
@@ -283,7 +288,7 @@ function nm_login_vhb_set_profile_fields($account, $params, $force = FALSE) {
     }
 
     $tmp = $wrapper->field_gender->value();
-
+		//ändert sex nur, wenn noch keine Angabe vorliegt
     if ($tmp == 'fa') {
         //not knowing which SEX options posiible
         //weiblich = female so everything !female will be male
@@ -313,8 +318,11 @@ function nm_login_vhb_set_profile_fields($account, $params, $force = FALSE) {
     }
 
     $wrapper->save();
-
     realname_update($account);
+    //update email
+    $account->mail = $params['EMAIL'];
+    user_save($account);
+    return true;
 }
 
 /**
@@ -332,22 +340,22 @@ function nm_login_vhb_check_basicdata($vhb_user, $params) {
         return false;
     }
     $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
-
     //Vor- und Nachname passen nicht zu gespeichertem - seltsam!
     if ($wrapper->field_first_name->value() != $params['VORNAME'] && $wrapper->field_last_name->value() != $params['NACHNAME'])
         return false;
 
     //student profile
-    $profile2 = profile2_load_by_user($account, 'student');
+    $profile2 = profile2_load_by_user($vhb_user, 'student');
     if (!$profile2) {
         return false;
     }
     $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
-    $hs_stored_id = $wrapper->field_hochschule->value();
+    $hs_stored_id = $wrapper->field_hochschule->value()->tid;
     $provided_hs_term = taxonomy_get_term_by_name($params['HOCHSCHULE']);
     $provided_hs_term_id = current($provided_hs_term)->tid;
     $stored_matrikelnummer = $wrapper->field_matrikelnummer_varchar->value();
     $provided_matrikelnummer = $params['MATRIKELNUMMER'];
+    
     //hochschule und matrikelnummer passen nicht zusammen. 
     if (($hs_stored_id != $provided_hs_term_id) xor ($stored_matrikelnummer != $provided_matrikelnummer ))
         return false;
