@@ -9,3 +9,6 @@ msgstr "Nur den Inhalt löschen"
 msgid "Delete node and files"
 msgstr "Inhalt und Anhänge löschen"
 
+msgid "First unread"
+msgstr "Erster ungelesener Beitrag"
+

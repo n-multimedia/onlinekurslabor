@@ -1062,4 +1062,11 @@ PROJECTS
     min-height: 0;
 }
 
+.breadcrumb {
+    padding: 0;
+    background: none;
+}
 
+.forum-tools {
+    display: none;
+}

@@ -82,6 +82,14 @@ function _custom_general_theme_top_nav($variables = NULL) {
     $output .= '<li><a href="/domains">Themenübersicht</a></li>';
   }
 
+  //forum link for all users
+  $forum_path = 'forum/'.NM_GLOBAL_FORUM_TID;
+  if(drupal_valid_path($forum_path)){
+    $output .= '<li class="border-left"><a href="'.$forum_path.'">Forum</a></li>';
+  }
+
+
+
   $output .= '<li class="border-left"><a href="/help">Hilfe</a></li>';
   $output .= '<li class="border-left ' . $user_link_classes . '">' . $user_link . '</li>';
   $output .= '</ul>';

@@ -149,7 +149,7 @@ function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
     switch ($node->type) {
       case NM_COURSE_FORUMTOPIC:
         //deny access, if forum is not assigned to any special course (in general)
-        drupal_access_denied();
+        //drupal_access_denied();
         break;
       //redirect rules for domains and chapters
       case NM_CONTENT_DOMAIN:
