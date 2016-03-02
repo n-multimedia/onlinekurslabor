@@ -126,13 +126,20 @@ Um das Template zu bearbeiten, bitte folgendermaßen vorgehn:
 - HTML-Bereich durch http://inlinestyler.torchboxapps.com/styler/convert/ jagen
 - PHP-Anweisungen wiederherstellen (werden korrupt)
 - unteren HTML-Bereich durch die komprimierte Version ersetzen. 
+- Footer-Bereich durch <?require_once(dirname(__FILE__).'/htmlmail-footer.tpl.php')?> ersetzen (also zw. Kommentaren)
+- $slogan-Anweisung wiederherstellen
 
 */
+?>
+<?
+/*slogan der mail*/
+if(!isset($slogan))
+    $slogan =  'Informationen aus dem Onlinekurslabor';
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Onlinekurslabor</title>
+    <title><?=variable_get('site_name');?></title>
   </head>
   <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;margin: 0;padding: 0;height: 100% !important;width: 100% !important;background-color: #FFF">
     	<center>
@@ -141,7 +148,7 @@ Um das Template zu bearbeiten, bitte folgendermaßen vorgehn:
                     	<table border="0" cellpadding="0" cellspacing="0" id="templateContainer" style="-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0;mso-table-rspace: 0;border-collapse: collapse !important;width: 600px;border: 1px solid #BBB"><tr><td align="center" valign="top" style="-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0;mso-table-rspace: 0">
                                 	<!-- BEGIN PREHEADER // -->
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templatePreheader" style="-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0;mso-table-rspace: 0;border-collapse: collapse !important;background-color: #E9E9E9;border-bottom: 1px solid #CCC"><tr><td valign="top" class="preheaderContent" style="padding-top: 10px;padding-right: 20px;padding-bottom: 10px;padding-left: 20px;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0;mso-table-rspace: 0;color: #808080;font-family: Helvetica;font-size: 10px;line-height: 125%;text-align: left" mc:edit="preheader_content00">
-                                               Informationen aus dem Onlinekurslabor
+                                               <?=$slogan?>
                                             </td>
                                             <!-- *|IFNOT:ARCHIVE_PAGE|* -->
                                             <td valign="top" width="180" class="preheaderContent" style="padding-top: 10px;padding-right: 20px;padding-bottom: 10px;padding-left: 0;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0;mso-table-rspace: 0;color: #808080;font-family: Helvetica;font-size: 10px;line-height: 125%;text-align: left" mc:edit="preheader_content01">
@@ -165,13 +172,8 @@ Um das Template zu bearbeiten, bitte folgendermaßen vorgehn:
                                         </td></tr></table><!-- // END BODY --></td>
                             </tr><tr><td align="center" valign="top" style="-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0;mso-table-rspace: 0">
                                 	<!-- BEGIN FOOTER // -->
-                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateFooter" style="-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0;mso-table-rspace: 0;border-collapse: collapse !important;background-color: #E9E9E9;border-top: 1px solid #FFF"><tr><td valign="top" class="footerContent" style="padding-top: 0;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0;mso-table-rspace: 0;color: #808080;font-family: Helvetica;font-size: 10px;line-height: 150%;padding-right: 20px;padding-bottom: 20px;padding-left: 20px;text-align: left" mc:edit="footer_content00">
-                                                <br /><em>Sie erhalten diese Mail, da Sie im Onlinekurslabor registriert sind.</em>
-                                                <br /></td>
-                                        </tr><tr><td valign="top" class="footerContent" style="padding-top: 0;padding-bottom: 40px;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0;mso-table-rspace: 0;color: #808080;font-family: Helvetica;font-size: 10px;line-height: 150%;padding-right: 20px;padding-left: 20px;text-align: left" mc:edit="footer_content01">
-                                                Diese E-Mail wurde automatisch erstellt. Sie können darauf nicht antworten. Für Fragen und Anregungen wenden Sie sich an <a href="mailto:onlinekurslabor@medienlabor-uni-augsburg.de">onlinekurslabor@medienlabor-uni-augsburg.de</a>
-                                            </td>
-                                        </tr></table><!-- // END FOOTER --></td>
+                                        <?require(dirname(__FILE__).'/htmlmail-footer.tpl.php')?>
+                                    <!-- // END FOOTER --></td>
                             </tr></table><!-- // END TEMPLATE --></td>
                 </tr></table></center>
     </body>

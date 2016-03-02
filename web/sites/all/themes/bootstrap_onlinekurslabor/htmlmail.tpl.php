@@ -1,0 +1,1 @@
+<?require(dirname(__FILE__).'/templates/htmlmail.tpl.php');?>
