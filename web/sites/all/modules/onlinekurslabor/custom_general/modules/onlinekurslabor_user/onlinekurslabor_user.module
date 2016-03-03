@@ -164,7 +164,7 @@ function user_modify_course_membership_state_form($context) {
   $form['state'] = array(
     '#title' => t('State'),
     '#type' => 'select',
-    '#options' => og_group_content_states(),
+    '#options' => array_merge(og_group_content_states(), array('delete' => t('Remove from course'))),
     '#default_value' => OG_STATE_ACTIVE,
     '#description' => t('Choose the state to set for the selected users in the group.'),
   );
@@ -477,8 +477,12 @@ function user_modify_course_membership_state(&$entity, $context = array()) {
     return;
   }
 
-  $og_membership->state = $state;
-  $og_membership->save();
+  if ($state === "delete") {
+        $og_membership->delete();
+    } else {
+        $og_membership->state = $state;
+        $og_membership->save();
+    }
 }
 
 /**

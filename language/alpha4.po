@@ -18,4 +18,8 @@ msgstr "Nutzungszahlen"
 msgid "Used in"
 msgstr "Verwendet in"
 
+msgid "Choose the state to set for the selected users in the group."
+msgstr "Wählen Sie den neuen Status."
 
+msgid "Remove from course"
+msgstr "Aus Kurs austragen"
