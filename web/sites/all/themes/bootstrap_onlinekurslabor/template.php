@@ -320,7 +320,7 @@ function bootstrap_onlinekurslabor_preprocess_html(&$vars) {
                 'href' => '/' . $icon_description['file'],
                 'rel' => $icon_description['rel']
         ));
-        if ($icon_description['sizes'])
+        if (@$icon_description['sizes'])
             $icon['#attributes']['sizes'] = $icon_description['sizes'];
 
         drupal_add_html_head($icon, strstr($icon_description['file'], '.png', true));
