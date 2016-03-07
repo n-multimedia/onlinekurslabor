@@ -199,11 +199,11 @@ function _courses_tasks_get_task_period_label($task_id, $solution_id = 0) {
         $eingereicht_secs = format_date($eingereicht_date, 'custom', 'U', $eingereicht_time['timezone']);
         
         if ($eingereicht_secs < $starttime_secs)
-            $markup = '<span class="label label-important" ' . $title . '><strong>Zu früh eingereicht</strong></span>';
+            $markup = '<span class="label label-important"><strong>Zu früh eingereicht</strong></span>';
         elseif ($has_endtime && $eingereicht_secs > $endtime_secs)
-            $markup = '<span class="label label-important" ' . $title . '><strong>Zu spät eingereicht</strong></span>';
+            $markup = '<span class="label label-important"><strong>Zu spät eingereicht</strong></span>';
         else
-            $markup = '<span class="label label-info" ' . $title . '><strong>Pünktlich eingereicht</strong></span>';
+            $markup = '<span class="label label-info"><strong>Pünktlich eingereicht</strong></span>';
         return $markup;
     }
     //keine solultion vorhanden oder im draft-modus
