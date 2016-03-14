@@ -2133,14 +2133,13 @@ function section_projects_sign_inform_action($entity, $context) {
     $the_course_group = node_load($the_course_group_id);
 
     /* lade kursgruppenmitglieder aus db */
-   /* $course_group_query = new EntityFieldQuery();
-    $course_group_query->entityCondition('entity_type', 'user')
-      ->fieldCondition('og_user_node', 'target_id', $the_course_group->nid, '=');
-    $results = $course_group_query->execute();
-    $course_group_user_uids = array_keys($results['user']);
-     user_load_multiple($course_group_user_uids);  // $users is now an array of user entity objects*/
-    $course_group_users = custom_general_get_users_in_group($the_course_group->nid);
-
+    
+    //laden und nutzeraccounts laden
+    $course_group_user_ids = custom_general_get_users_in_group($the_course_group->nid);
+     foreach ($course_group_user_ids as $mini_coursegroup) {
+         $c_g_ids[] = $mini_coursegroup->uid;
+      }
+      $course_group_users = user_load_multiple($c_g_ids);
     /* der echte Kurs, also die Lehrveranstaltung */
     /* $the_course = node_load($the_course_group->og_group_ref['und'][0]['target_id']);
       dpm($the_course); */
@@ -2221,9 +2220,9 @@ function section_projects_sign_inform_action($entity, $context) {
         break;
     }
 
-    $mail_content_tpl_add = ('Der %s %s im Projekt %s wurde eine Unterschrift hinzugefügt.');
-    $mail_content_tpl_remove = ('Es %s aus der %s %s  im Projekt %s  gestrichen!');
-    $mail_content_tpl_all_sigs = ('Die %s %s im Projekt %s wurde von allen Beteiligten unterzeichnet. Eine Änderung ist nicht mehr möglich. Viel Gelingen!');
+    $mail_content_tpl_add = ('Der %s %s im Projekt "%s" wurde eine Unterschrift hinzugefügt.');
+    $mail_content_tpl_remove = ('Es %s aus der %s %s  im Projekt "%s"  gestrichen!');
+    $mail_content_tpl_all_sigs = ('Die %s %s im Projekt "%s" wurde von allen Beteiligten unterzeichnet. Eine Änderung ist nicht mehr möglich. Viel Gelingen!');
     $mail_content_tpl_missings = ('Es fehl%s noch die Unterschrift%s von:');
     $tpl_readable_users = array(
       'partner' => 'Kooperationspartner',
@@ -2299,6 +2298,7 @@ function section_projects_sign_inform_action($entity, $context) {
       }
 
     }
+    
     //  alle mails, dies interessiert
     foreach ($singular_affected_users as $user_to_mail_to) {
       $params_new = $params;

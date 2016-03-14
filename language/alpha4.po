@@ -23,3 +23,6 @@ msgstr "Wählen Sie den neuen Status."
 
 msgid "Remove from course"
 msgstr "Aus Kurs austragen"
+
+msgid "Hello"
+msgstr "Hallo"
