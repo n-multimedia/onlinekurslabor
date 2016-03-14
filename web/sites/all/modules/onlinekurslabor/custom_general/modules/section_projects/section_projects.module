@@ -1606,12 +1606,16 @@ function _section_projects_render_node_tabs($node) {
   }
   $tabs['overview'] = $result;
 
-  $path = 'projects/admin/' . $node->nid . '/edit';
-  $result['path'] = $path;
-  $result['link'] = l("Bearbeiten", $path, $options);
-  $tabs['edit'] = $result;
-
-  return _custom_general_theme_tools_block($tabs, "content_node_tabs", "btn-grop");
+    $signing_state = _section_projects_get_signing_states_array($node->nid);
+    /* alle unterschrieben ? Kein Bearbeiten */
+    if (!(((count($signing_state) == 2 ) && $node->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) || ((count($signing_state) == 2) && $node->type == NM_PROJECTS_ZIELVEREINBARUNG)))
+    {
+        $path = 'projects/admin/' . $node->nid . '/edit';
+        $result['path'] = $path;
+        $result['link'] = l("Bearbeiten", $path, $options);
+        $tabs['edit'] = $result;
+    }
+    return _custom_general_theme_tools_block($tabs, "content_node_tabs", "btn-grop");
 }
 
 function projects_cockpit_main_kooperationsvereinbarung_view() {
@@ -1926,7 +1930,7 @@ function section_projects_reset_signatures($entity, $context) {
     //reset signature
     $the_node = node_load($the_node->nid, NULL, TRUE);
     $the_node->field_seal['und'][0]['value'] = 0;
-    node_save_action($the_node);
+    node_save($the_node);
     drupal_set_message(("Alle Unterschriften wurden automatisch zurückgezogen, da sich der Inhalt verändert hat."));
 
   }
@@ -2074,35 +2078,13 @@ function section_projects_sign_inform_action($entity, $context) {
   if ($signing_state_new == $signing_state_old) {
     return TRUE;
   }
-
-  $signed_all_old = array();
-
-  if (($signing_state_old & bindec('100')) == bindec('100')) {
-    $signed_all_old[] = 'dozent';
-  }
-  if (($signing_state_old & bindec('010')) == bindec('010')) {
-    $signed_all_old[] = 'student';
-  }
-  if (($signing_state_old & bindec('001')) == bindec('001')) {
-    $signed_all_old[] = 'partner';
-  }
-
-  $signed_all_new = array();
-  if (($signing_state_new & bindec('100')) == bindec('100')) {
-    $signed_all_new[] = 'dozent';
-  }
-  if (($signing_state_new & bindec('010')) == bindec('010')) {
-    $signed_all_new[] = 'student';
-  }
-  if (($signing_state_new & bindec('001')) == bindec('001')) {
-    $signed_all_new[] = 'partner';
-  }
+  $signed_all_old = _section_projects_seal_get_signing_states_array($signing_state_old); 
+  $signed_all_new =  _section_projects_seal_get_signing_states_array($signing_state_new); 
 
   $sign_intersect = array_intersect($signed_all_new, $signed_all_old);
   $new_sigs = array_diff($signed_all_new, $signed_all_old);
-
   $lost_sigs = array_diff($signed_all_old, $signed_all_new);
-
+/*
   #  dpm($lost_sigs);
   if (count($new_sigs)) {
     //neue unterschrift
@@ -2113,7 +2095,7 @@ function section_projects_sign_inform_action($entity, $context) {
     //unterschrift weg
     $diff = array_diff($signed_all_old, $signed_all_new);
     $text = t("Signatures withdrawn by");
-  }
+  }*/
 
   //betroffene nutzer laden und Mail bauen
   //der naechste abschnitt ist nur dafuer da um die nutzer zu laden
@@ -2151,12 +2133,13 @@ function section_projects_sign_inform_action($entity, $context) {
     $the_course_group = node_load($the_course_group_id);
 
     /* lade kursgruppenmitglieder aus db */
-    $course_group_query = new EntityFieldQuery();
+   /* $course_group_query = new EntityFieldQuery();
     $course_group_query->entityCondition('entity_type', 'user')
       ->fieldCondition('og_user_node', 'target_id', $the_course_group->nid, '=');
     $results = $course_group_query->execute();
     $course_group_user_uids = array_keys($results['user']);
-    $course_group_users = user_load_multiple($course_group_user_uids);  // $users is now an array of user entity objects
+     user_load_multiple($course_group_user_uids);  // $users is now an array of user entity objects*/
+    $course_group_users = custom_general_get_users_in_group($the_course_group->nid);
 
     /* der echte Kurs, also die Lehrveranstaltung */
     /* $the_course = node_load($the_course_group->og_group_ref['und'][0]['target_id']);
@@ -2171,22 +2154,7 @@ function section_projects_sign_inform_action($entity, $context) {
     }
     $organisation_users = user_load_multiple($the_org_contacts_ids);
     #dpm($organisation_users);
-// braucht man das??
-    /*
-      $course_query = new EntityFieldQuery();
-      $course_query->entityCondition('entity_type', 'user')
-      ->fieldCondition('og_user_node', 'target_id', $the_course_group->og_group_ref['und'][0]['target_id'], '=');
 
-      $results = $course_query->execute();*/
-
-    /*
-              // Or,
-              $course_user_uids = array_keys($results['user']);
-              $course_users = user_load_multiple($course_user_uids);  // $users is now an array of user entity objects
-              dpm("kursmitglierd");
-              dpm($course_users);
-
-             */
 
     switch ($the_node->type) {
       case 'projects_cooperation_agreement':
@@ -2336,8 +2304,8 @@ function section_projects_sign_inform_action($entity, $context) {
       $params_new = $params;
       $params_new['@name'] = $user_to_mail_to->name;
       # dpm($params_new);
-      drupal_mail($module, $key, 'bernhard.strehl@gmail.com', $language, $params_new);
-      //drupal_mail($module, $key, $user_to_mail_to->mail, $language, $params_new);
+      //drupal_mail($module, $key, 'bernhard.strehl@gmail.com', $language, $params_new);
+      drupal_mail($module, $key, $user_to_mail_to->mail, $language, $params_new);
     }
   }
   //es hat sich nichts getan - donothing
@@ -2362,6 +2330,36 @@ function section_projects_mail($key, &$message, $params)
     }
 }
 
+/**
+ * Liefert zu einer Node-ID, welche Rollen unterschrieben haben
+ * @param int  $node_id
+ */
+function _section_projects_get_signing_states_array($node_id)
+{
+    $the_node =  node_load($node_id);
+     $signing_state = @$the_node->field_seal;
+     if(!$signing_state)
+         return false;
+     
+    $signing_state = (int) ($signing_state['und'][0]['value']);
+return _section_projects_seal_get_signing_states_array($signing_state);
+
+}
+/**
+ * Liefert zu einem Signierstatus, welche Rollen unterschrieben haben
+ * @param int  $signing_state
+ */
+ function _section_projects_seal_get_signing_states_array($signing_state)
+{
+         $signatures = array();
+    if (($signing_state & bindec('100')) == bindec('100'))
+        $signatures[] = 'dozent';
+    if (($signing_state & bindec('010')) == bindec('010'))
+        $signatures[] = 'student';
+    if (($signing_state & bindec('001')) == bindec('001'))
+        $signatures[] = 'partner';
+    return $signatures;
+ }
 /**
  * Implementing hook_preprocess_HOOK
  * @param type $vars
