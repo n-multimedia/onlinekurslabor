@@ -1608,7 +1608,7 @@ function _section_projects_render_node_tabs($node) {
 
     $signing_state = _section_projects_get_signing_states_array($node->nid);
     /* alle unterschrieben ? Kein Bearbeiten */
-    if (!(((count($signing_state) == 2 ) && $node->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) || ((count($signing_state) == 2) && $node->type == NM_PROJECTS_ZIELVEREINBARUNG)))
+    if (!(((count($signing_state) == 3 ) && $node->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) || ((count($signing_state) == 2) && $node->type == NM_PROJECTS_ZIELVEREINBARUNG)))
     {
         $path = 'projects/admin/' . $node->nid . '/edit';
         $result['path'] = $path;
