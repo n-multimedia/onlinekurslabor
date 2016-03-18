@@ -259,7 +259,8 @@ function _h5p_integration_h5p_replacements($matches) {
 
     if ($node != FALSE && node_access('view', $node) && $node->status) {
 
-      $node_view = node_view($node, 'full', NULL);
+      //bei embed auch den view-mode anpassen
+      $node_view = node_view($node, 'embed', NULL);
 
       //28.05.2013 - 12:22 - SN hack, title must be unset at another place (template)
       if (isset($node_view['#node']->title)) {
