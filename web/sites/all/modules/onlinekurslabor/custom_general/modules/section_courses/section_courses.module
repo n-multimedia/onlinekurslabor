@@ -1997,9 +1997,8 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
     if ($form_id == 'courses_generic_task_solution_node_form') {
 
         //hat eintrag - verstecken
-        if (is_array($form['field_submitted_on'][LANGUAGE_NONE][0]['#date_items'])) {
-            $form['field_submitted_on']['#attributes']['style'] = 'display:none';
-        }
+          $form['field_submitted_on']['#access'] = user_access('administer content');
+        
     }
 }
 
