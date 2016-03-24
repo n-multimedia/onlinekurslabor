@@ -2,6 +2,7 @@
 
 #drush vset maintenance_mode 1
 
+drush en h5p_connector_api --yes
 drush fr nm_general_features --yes
 drush fr nm_section_courses_features --yes
 
