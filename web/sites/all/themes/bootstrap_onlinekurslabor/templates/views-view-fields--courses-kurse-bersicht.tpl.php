@@ -31,6 +31,7 @@ $label = !$node->status ? '<span class="label label-important">Entwurf</span> ' 
 $start_text = '';
 $end_text = '';
 $percent = _section_courses_get_timespan_percentage($node, $start_text, $end_text);
+/*@TODO die funktion hat den "bug", dass sie auch admins mit Schreibrechten liefert, obwohl diese keine echten Dozenten sind. Muss gradgezogen werden, deswegen auskommentiert unten*/
 $kurs_dozent_ids =  custom_general_get_users_in_group_by_role($nid, array('kurs-dozent'));
 foreach ($kurs_dozent_ids as $dozent) {
     $dozent_acc = user_load($dozent->uid);
@@ -53,11 +54,11 @@ foreach ($kurs_dozent_ids as $dozent) {
     <div class="span4">
       <div class="course-title"><h2><?php echo $label ?><?php echo $fields['title']->content ?></h2></div>
       <div class="course-subtitle"><?php echo $fields['field_subtitle']->content; ?></div>
-      <div class="course-dozenten"><small>
+      <!--<div class="course-dozenten"><small>
               <strong>Lehrende: </strong>
                 <?echo implode($kurs_dozenten, ', ')?>
               </small>
-      </div>
+      </div>-->
       <div class="course-time row-fluid">
         <div class="course-start-date"><strong>Beginn:</strong> <?php echo $start_text; ?></div>
         <div class="course-end-date"><strong>Ende:</strong> <?php echo $end_text; ?></div>
