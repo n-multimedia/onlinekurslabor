@@ -55,6 +55,7 @@
       
            
         /*erstellt neuen hash und redirected die url*/
+        /*@deprecated, jtezt in  API!*/
          redirect: function(newfragment) {
             var hash = window.location.hash;
             var new_hash = hash;
@@ -77,6 +78,7 @@
         },
         
 /*       (*) Rückgabe: form  [["pdf", "8"], ["video", "260"]]*/
+ /*@deprecated, jtezt in  API!*/
         splitHash: function(hash)
         {  
             var matches = hash.match(/\w+\.\d+/g);
@@ -93,6 +95,7 @@
             }
             return pro;
         },
+         /*@deprecated, jtezt in  API!*/
         processHash: function()
         {    
              var hash = window.location.hash;
@@ -302,6 +305,7 @@ jQuery(document).ready(function() {
     
 });
 /*dom-funktion*/
+/*@deprecated jetzt in API!*/
 jQuery(window).on('hashchange', function(e){
    //nach umleitung auf hash: entsprechende befehle durchführen
     Drupal.behaviors.annvid.processHash();

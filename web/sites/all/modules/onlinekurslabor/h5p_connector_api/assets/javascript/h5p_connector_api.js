@@ -1,10 +1,116 @@
+(function($) {
+    $.fn.convertTextToLinks = function(options) {
+        if (typeof options === 'undefined' || options.length === 0)
+            options = ['pdf', 'video'];
+
+        //geht durch die einzelnen inhalte
+        $(this).each(function(index) {
+            var text = $(this).html();
+
+
+            /*ersetze Seite 8 (etc) durch Link Seite 8 */
+            if (options.indexOf('pdf') >= 0)
+            {
+                text = text.replace(Drupal.behaviors.h5p_connector_api.text.regex_pdffeature, "<a data=\"pdf.$2\">$1 $2</a>");
+            }
+            /*VIDEO-MARKE  */
+            if (options.indexOf('video') >= 0)
+            {
+                text = text.replace(Drupal.behaviors.h5p_connector_api.text.regex_timestampfeature, function(s, m1, m2, m3) {
+                    return m1 + "<a   data=\"video." + Drupal.behaviors.h5p_connector_api.interactivevideo.computerizeTime(m2) + "\">" + m2 + "</a>" + m3;
+                });
+            }
+
+            $(this).html(text);
+            //jetzt noch die a-data-links in links mit sprungziel und click-event konvertierern
+            $("a[data^='video.'],a[data^='pdf.']", this).each(function() {
+                $(this).attr('href', '#' + $(this).attr('data')).click(function() {
+                    Drupal.behaviors.h5p_connector_api.event.redirect($(this).attr("data"));
+                    return false;
+                })
+            });
+        }); 
+    }; 
+    
+}(jQuery));
+
 
 (function($) {
     Drupal.behaviors.h5p_connector_api = {
         /*wenn h5p geladen hat, wird der uebergebene callback ausgefuehrt*/
         onH5Pready: function(callback)
-        { 
+        {
             (typeof H5P !== 'object' || typeof H5P.instances !== 'object' || H5P.instances.length === 0) ? setTimeout(Drupal.behaviors.h5p_connector_api.onH5Pready, 1000, callback) : callback();
+        }
+    };
+    Drupal.behaviors.h5p_connector_api.text = {
+        regex_pdffeature: /(seite|page|site|p|pp|folie)\s*(\d+)/igm,
+        /*VIDEO-MARKE Pflicht: %startzeichen, optional 1 digit und :, optional 0 - 5 und pflicht ein digit und :
+         * dann pflicht 0 - 5 und ein digit und : und dann  %not-a gefolgt von %endzeichen
+         * %startzeichen = leerzeichen, zeilenstart, html-Zeichen > oder  &nbsp;
+         * %not-a = Nicht die kombination </a um Doppel-Replacements zu vermeiden
+         * %endzeichen = komma, punkt , leerzeichen , &nbsp; zeilenende oder html-Zeichen <
+         * match auf  %startzeichen, zeitstamp und %endzeichen. /greedy, multiline*/
+        regex_timestampfeature: /( |^|>|&nbsp;)((?:\d:){0,1}[0-5]{0,1}\d:[0-5]\d)(?!<\/a)([\,\. ]|&nbsp;|$|<)/gm,
+    };
+
+    Drupal.behaviors.h5p_connector_api.event = {
+        /*erstellt neuen hash und redirected die url*/
+        redirect: function(newfragment) {
+            var hash = window.location.hash;
+            var new_hash = hash;
+            //  var fragment = url.substring(url.indexOf('#')); // '#foo'
+            // console.debug(newfragment);
+            if (hash.length <= 1)
+                new_hash = "#" + newfragment;
+            else
+            {   //erkenne typ des neuen fragments
+                var type = newfragment.substr(0, newfragment.indexOf('.'));
+                //entferne altvorkommen diesen typs
+                var re = new RegExp(type + "\\.\\d+", "g");
+                new_hash = hash.replace(re, '');
+                //häng frgament an
+                new_hash += newfragment;
+            }
+
+            // console.debug(hash, new_hash);
+            window.location = new_hash;
+        },
+        /*       (*) Rückgabe: form  [["pdf", "8"], ["video", "260"]]*/
+        splitHash: function(hash)
+        {
+            var matches = hash.match(/\w+\.\d+/g);
+            var counter;
+            var pro = new Array();
+
+
+            if (matches)
+                for (counter = 0; counter < matches.length; ++counter)
+                {
+                    var entry = matches[counter];
+                    var fullentry = entry.match(/(\w+)/g);
+                    pro[counter] = fullentry;
+                }
+            return pro;
+        },
+        processHash: function()
+        {
+            var hash = window.location.hash;
+            var matches = this.splitHash(hash);
+
+            var counter;
+            for (counter = 0; counter < matches.length; ++counter)
+            {
+                entry = matches[counter];
+
+                if (entry[0] == "pdf")
+                    Drupal.behaviors.annvid.getPDFRenderObject().goToPage(entry[1]);
+                if (entry[0] == "video")
+                    Drupal.behaviors.h5p_connector_api.interactivevideo.goTo(entry[1]);
+
+            }
+
+
         }
     };
 
@@ -34,7 +140,7 @@
         getAllAnnotations: function( )
         {
             //wird das erste genommen. schöner waere es aber mit der ID, die oben geliefert wird. delay oder sowas..
-            var videojson =   H5PIntegration.contents['cid-'+this.getH5P_ID()];
+            var videojson = H5PIntegration.contents['cid-' + this.getH5P_ID()];
 
             if (typeof videojson !== undefined)
             {
@@ -88,8 +194,31 @@
                 }, click_delay * 2);
             }
 
+        },
+        humanizeTime: function(timeinsecs)
+        {
+            return H5P.InteractiveVideo.humanizeTime(timeinsecs);
         }
-
+        ,
+        computerizeTime: function(timestampstring)
+        {//credit:http://stackoverflow.com/questions/6312993/javascript-seconds-to-time-string-with-format-hhmmss
+            var ts = timestampstring.split(':');
+            if (ts.length == 2)
+                return Date.UTC(1970, 0, 1, 0, ts[0], ts[1]) / 1000;
+            else
+                return Date.UTC(1970, 0, 1, ts[0], ts[1], ts[2]) / 1000;
+        },
     }
 }(jQuery));
 
+jQuery(window).on('hashchange', function(e) {
+    //nach umleitung auf hash: entsprechende befehle durchführen
+    Drupal.behaviors.h5p_connector_api.event.processHash();
+});
+
+/*verlinkt man auf ein video und ein hash ist in der adresszeile soll der beim seiteladen ausgefuehrt werden*/
+jQuery(document).ready(function() {
+    Drupal.behaviors.h5p_connector_api.onH5Pready(function() {
+        Drupal.behaviors.h5p_connector_api.event.processHash();
+    });
+});

@@ -12,46 +12,7 @@
          
          },*/
 
-          
-        /*
-         save_video_objects: ueberscrheibt temporär die funktion  H5P.InteractiveVideo.prototype.attach um sich einklinken zu koennen. führt die originalversion anschließend aus.
-         */
-        save_video_objects: function()
-        { 
            
-             if (typeof H5P === 'undefined' || typeof(H5PIntegration) === 'undefined' || typeof H5P.InteractiveVideo === 'undefined')
-                return false;
-          
-              /*
-               * 
-               * ggf bei neuen versionen anpassen, ist das js-objekt des original-h5p-plugins
-               * 
-               * 
-               */
-              this.h5p_data_container = H5PIntegration.contents;
-            
-
-            var saved_object = null;
-           
-            var originalInteractiveVideoPrototypeAttachMethod = H5P.InteractiveVideo.prototype.attach;
-            //Ueberschreibe original Funktionsaufruf
-            H5P.InteractiveVideo.prototype.attach = function()
-            {
-                //Schreibe Object in Array
-                var video_object = new Drupal.behaviors.h5p_annotationlist.video_object(this, arguments[0]);
-
-                //speichert videoobjekt in einer liste
-                Drupal.behaviors.h5p_annotationlist.addVideoContainerObjectToList(video_object);
-                //fuegt dem videoobjekt eine sidebar hinzu
-                Drupal.behaviors.h5p_annotationlist.addSideBarToVideoObject(video_object)
-
-
-                //Rufe Originalfunktion auf
-                var result = originalInteractiveVideoPrototypeAttachMethod.apply(this, arguments);
-                return result;
-            }
-
-        },
         /*fuegt neben ein videoobjekt auf der webseite einen html-schnipsel ein, in dem spaeter eine liste der annotationen auftaucht*/
         attachSideBarToInteractiveVideo: function()
         {
@@ -66,8 +27,7 @@
             jQuery.each(Drupal.behaviors.h5p_annotationlist.annotations_sortby, function(index, item)
             {
                 the_great_list += '<input type=radio name=annotations_sortby value="' + item + '">&nbsp;' +
-                        Drupal.behaviors.h5p_annotationlist.annotations_sortby_label[index] + '</input><br>';
-                //'<label for="'+item+'">'+ Drupal.behaviors.h5p_annotationlist.annotations_sortby_label[index]+'</label>';
+                        Drupal.behaviors.h5p_annotationlist.annotations_sortby_label[index] + '</input><br>';             
             });
             the_great_list += '</div>' +
                     '</div>'; //sortregion
@@ -80,7 +40,7 @@
             }
             else
             { //fall view interactive content ohne einbettung
-                video.$container.prevObject.after(the_great_list);
+                video.$container.prevObject.parents('.h5p-frame').after(the_great_list);
 
             }
 
@@ -131,12 +91,12 @@
             new_annotation_template =
                     '<div class="h5p_annotationlist_annotation_item annotation_%s">' +
                     '<div class="interaction_icon">' +
-                    '<a href=# data="%s" class="interaction_icon_%s fa fa-inverse  fa-1">' +
+                    '<a data="video.%s" class="interaction_icon_%s fa fa-inverse  fa-1">' +
                     '</a>' +
                     '</div>' +
                     '<div class="interaction_content">' +
-                    '<h3><a href=# data="%s">%s&nbsp;</a></h3>' +
-                    '<span class="duration"><a href=# data="%s">%s</a>&nbsp;-&nbsp;<a href=# data="%s">%s</a></span>' +
+                    '<h3><a data="video.%s">%s&nbsp;</a></h3>' +
+                    '<span class="duration">%s&nbsp;-&nbsp;%s</span>' +
                     '</div>' +
                     '</div>';
             var item_label;
@@ -144,8 +104,15 @@
                 item_label = item.label;
                 if ((typeof item_label === 'undefined') || item_label.length === 0 )
                 {
+                    item_label = item.action.params.title;
+                }
+                if ((typeof item_label === 'undefined') || item_label.length === 0 )
+                {
                     item_label = '- ohne -';
                 }
+                if(item_label.length > 40)
+                    item_label = item_label.substr(0,37 + '...');
+                
                 //entferne formatierungen
                 item_label = item_label.replace(/<[^>]*>?/g, '');
                 /*fuelle das oben definierte HTMl-Template mit den echten Daten*/
@@ -156,9 +123,7 @@
                         annotation_type_minimized,
                         item.duration.from,
                         item_label,
-                        item.duration.from,
                         H5P.InteractiveVideo.humanizeTime(item.duration.from),
-                        item.duration.to,
                         H5P.InteractiveVideo.humanizeTime(item.duration.to)
                         );
 
@@ -172,8 +137,9 @@
             var total_width = sidebar_div.find("div.h5p_annotationlist_annotation_item").width() * all_interactions.length;
 
             sidebar_div.find("div.h5p_annotationlist_annotation_container_nowrap").css('width', total_width * 1.2);
-            //mache nun die zeitmarken in der annotationsliste anspringbar
-            Drupal.behaviors.h5p_annotationlist.convertElementToVideoSeekable('#h5p_annotationlist_' + video.contentId, video);
+            //mache nun die zeitmarken in der annotationsliste anspringbar#
+            jQuery('#h5p_annotationlist_' + video.contentId+' .h5p_annotationlist_annotation_item').convertTextToLinks(['video']);
+      /*      Drupal.behaviors.h5p_annotationlist.convertElementToVideoSeekable('#h5p_annotationlist_' + video.contentId, video);*/
             if (all_interactions.length === 0)
             {
                 sidebar_div.find("div.h5p_annotationlist_annotation_container").html('<i>Keine Annotationen vorhanden</i>');

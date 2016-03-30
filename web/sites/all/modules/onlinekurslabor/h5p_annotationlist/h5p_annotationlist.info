@@ -4,3 +4,4 @@ core = 7.x
 
 
 dependencies[] = h5p
+dependencies[] = h5p_connector_api
