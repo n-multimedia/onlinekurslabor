@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * api fuer h5p
+ */ 
+
+/**
+ * Implements hook_init().
+ */
+
+function h5p_text_annotations_init() {
+ 
+
+  $nid = (arg(0) == 'node' && is_numeric(arg(1))) ? arg(1) : NULL;
+  
+  drupal_add_js(drupal_get_path('module', 'h5p_text_annotations') . '/assets/javascript/h5p_text_annotations.js');
+ 
+} 
