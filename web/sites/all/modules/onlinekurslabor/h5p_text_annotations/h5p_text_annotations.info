@@ -1,0 +1,7 @@
+name = h5p_text_annotations
+description = enables the possibility to convert text to timestamps using the css-class h5p_timestamps
+core = 7.x
+
+
+dependencies[] = h5p
+dependencies[] = h5p_connector_api

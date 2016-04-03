@@ -563,4 +563,5 @@ features_exclude[dependencies][entityreference] = entityreference
 features_exclude[dependencies][views_content] = views_content
 features_exclude[dependencies][role_export] = role_export
 features_exclude[dependencies][views] = views
+features_exclude[dependencies][workflow] = workflow
 features_exclude[taxonomy][tags] = tags
