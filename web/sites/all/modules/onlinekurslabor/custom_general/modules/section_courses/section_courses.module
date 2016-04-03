@@ -95,6 +95,14 @@ function section_courses_onlinekurslabor_admin_settings_page() {
     '#required' => TRUE,
   );
 
+  $form['okl_global_forum_tid'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Global Forum Term ID'),
+    '#default_value' => variable_get('okl_global_forum_tid', NM_GLOBAL_FORUM_TID),
+    '#description' => t("Main Navigation Link Target"),
+    '#required' => TRUE,
+  );
+
   return system_settings_form($form);
 }
 
@@ -905,8 +913,13 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
                 preg_match($regex, $path, $matches);
                 if (!empty($matches)) {
                   $tid = $matches[1];
-                  $path = _section_courses_get_forum_href($course, $tid);
-                  $original_path = $path;
+                  $term = taxonomy_term_load($tid);
+                  //check if forum is assigned to a group
+                  //if not.. its a global form. Do not rewrite the link.
+                  if(!empty($term->og_group_ref)) {
+                    $path = _section_courses_get_forum_href($course, $tid);
+                    $original_path = $path;
+                  }
                 }
               }
 
