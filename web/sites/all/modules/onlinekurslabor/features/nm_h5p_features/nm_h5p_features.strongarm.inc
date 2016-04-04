@@ -136,7 +136,13 @@ function nm_h5p_features_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '3',
+          'weight' => '6',
+        ),
+        'h5p_type' => array(
+          'weight' => '2',
+        ),
+        'h5p_editor' => array(
+          'weight' => '4',
         ),
       ),
       'display' => array(
@@ -197,7 +203,7 @@ function nm_h5p_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'h5p_whitelist';
-  $strongarm->value = 'json png jpg jpeg gif bmp tif tiff svg eot ttf woff otf webm mp4 ogg mp3 txt pdf rtf doc docx xls xlsx ppt pptx odt ods odp xml csv diff patch swf md textile';
+  $strongarm->value = 'json png jpg jpeg gif bmp tif tiff svg eot ttf woff otf webm mp4 ogg mp3 txt pdf rtf doc docx xls xlsx ppt pptx odt ods odp xml csv diff patch swf textile';
   $export['h5p_whitelist'] = $strongarm;
 
   $strongarm = new stdClass();

@@ -67,15 +67,6 @@ function nm_uuid_features_uuid_features_default_terms() {
     'vocabulary_machine_name' => 'hochschulen',
   );
   $terms[] = array(
-    'name' => 'Kursforen',
-    'description' => '',
-    'format' => NULL,
-    'weight' => 103,
-    'uuid' => '201741a8-6506-4e61-921b-27c57027d96a',
-    'vocabulary_machine_name' => 'forums',
-    'og_group_ref' => array(),
-  );
-  $terms[] = array(
     'name' => 'Uni Würzburg',
     'description' => '',
     'format' => 'plain_text',
