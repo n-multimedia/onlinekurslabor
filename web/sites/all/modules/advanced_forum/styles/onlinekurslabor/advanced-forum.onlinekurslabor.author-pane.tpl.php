@@ -37,12 +37,6 @@
         </div>
       <?php endif; ?>
 
-      <?php /* Last active */ ?>
-      <?php if (!empty($last_active)): ?>
-        <div class="author-pane-line">
-           <span class="author-pane-label"><?php print t('Last seen'); ?>:</span> <?php print t('!time ago', array('!time' => $last_active)); ?>
-        </div>
-      <?php endif; ?>
 
       <?php /* User title */ ?>
       <?php if (!empty($user_title)): ?>
@@ -58,26 +52,7 @@
         </div>
       <?php endif; ?>
 
-      <?php /* Joined */ ?>
-      <?php if (!empty($joined)): ?>
-        <div class="author-pane-line author-joined">
-          <span class="author-pane-label"><?php print t('Joined'); ?>:</span> <?php print $joined; ?>
-        </div>
-      <?php endif; ?>
 
-      <?php /* Posts */ ?>
-      <?php if (isset($user_stats_posts)): ?>
-        <div class="author-pane-line author-posts">
-          <span class="author-pane-label"><?php print t('Posts'); ?>:</span> <?php print $user_stats_posts; ?>
-        </div>
-      <?php endif; ?>
-
-      <?php /* Points */ ?>
-      <?php if (isset($userpoints_points)): ?>
-        <div class="author-pane-line author-points">
-          <span class="author-pane-label"><?php print t('!Points', userpoints_translation()); ?></span>: <?php print $userpoints_points; ?>
-        </div>
-      <?php endif; ?>
     </div>
 
     <?php /* Contact section */ ?>
@@ -93,13 +68,6 @@
       <?php if (!empty($privatemsg)): ?>
         <div class="author-pane-line author-pane-link-line author-privatemsg">
           <?php print $privatemsg; ?>
-        </div>
-      <?php endif; ?>
-
-      <?php /* User relationships */ ?>
-      <?php if (!empty($user_relationships)): ?>
-        <div class="author-pane-line author-pane-link-line author-user-relationship">
-          <?php print $user_relationships; ?>
         </div>
       <?php endif; ?>
 

@@ -1,0 +1,6 @@
+name = h5p Connector API
+description = API, um unterschiedliche Versionen der H5P-Content-Types zu unterstuetzen
+core = 7.x
+
+
+dependencies[] = h5p

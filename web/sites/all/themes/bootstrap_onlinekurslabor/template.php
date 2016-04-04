@@ -45,6 +45,32 @@ function bootstrap_onlinekurslabor_mark($variables) {
 }
 
 /**
+ * Override theme_breadrumb().
+ *
+ * Print breadcrumbs as a list, with separators.
+ */
+function bootstrap_onlinekurslabor_breadcrumb($variables) {
+  $breadcrumb = $variables['breadcrumb'];
+
+  if (!empty($breadcrumb)) {
+    $breadcrumbs = '<ul class="breadcrumb">';
+
+    $count = count($breadcrumb) - 1;
+    foreach ($breadcrumb as $key => $value) {
+      if ($count != $key) {
+        $breadcrumbs .= '<li>' . $value . '<span class="divider">»</span></li>';
+      }
+      else{
+        $breadcrumbs .= '<li>' . $value . '</li>';
+      }
+    }
+    $breadcrumbs .= '</ul>';
+
+    return $breadcrumbs;
+  }
+}
+
+/**
  * Returns HTML for an image using a specific image style.
  *
  * @param $variables
@@ -272,7 +298,31 @@ function bootstrap_onlinekurslabor_theme(&$existing, $type, $theme, $path) {
 }
 
 function bootstrap_onlinekurslabor_preprocess_html(&$vars) {
-  if (drupal_is_front_page()) {
-    $vars['classes_array'][] = 'okl-home-container';
-  }
+    if (drupal_is_front_page()) {
+        $vars['classes_array'][] = 'okl-home-container';
+    }
+    /* definiere standardicons */
+    $all_icons = array(
+        array('file' => 'apple-touch-icon.png', 'rel' => 'apple-touch-icon'),
+        array('file' => 'apple-touch-icon-precomposed.png', 'rel' => 'apple-touch-icon-precomposed'),
+        array('file' => 'touch-icon-192x192.png', 'rel' => 'icon', 'sizes' => '192x192')
+    );
+    /* definiere apple-icons */
+    $apple_icon_sizes = array(57, 72, 76, 114, 144,152,180,192);
+    foreach ($apple_icon_sizes as $size) {
+        $all_icons[] = array('file' => 'apple-touch-icon-' . $size . 'x' . $size . '.png', 'rel' => 'apple-touch-icon', 'sizes' => $size . 'x' . $size);
+    }
+    /* erstelle aus definition head-einträge */
+    foreach ($all_icons as $icon_description) {
+        $icon = array(
+            '#tag' => 'link',
+            '#attributes' => array(
+                'href' => '/' . $icon_description['file'],
+                'rel' => $icon_description['rel']
+        ));
+        if (@$icon_description['sizes'])
+            $icon['#attributes']['sizes'] = $icon_description['sizes'];
+
+        drupal_add_html_head($icon, strstr($icon_description['file'], '.png', true));
+    }
 }

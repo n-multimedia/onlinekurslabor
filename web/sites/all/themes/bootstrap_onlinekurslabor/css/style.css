@@ -209,8 +209,16 @@ body.cke_show_borders{
 
 }
 */
-#navbar #custom-top-nav li.lock a:before
-{
+.home-layout-container .home-container-partner {
+    width: 100%;
+}
+
+.home-layout-container .home-container-partner img {
+    margin-left: 20px;
+    margin-bottom: 40px;
+}
+
+#navbar #custom-top-nav li.lock a:before {
     content: ' ';
     background-image: url(../images/icons/lock.jpg);
     padding-left:20px;
@@ -554,6 +562,13 @@ Responsive Features
     .courses_sponsors_col {
         width: 60px;
     }
+
+    .home-layout-container .home-container-partner {
+        text-align: center;
+    }
+    .home-layout-container .home-container-partner img {
+        float:none !important;
+    }
 }
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) { 
@@ -871,17 +886,15 @@ powered by
     text-align:left;
 }
 
-.footer_region_left ul.nav-list li.leaf{
-   float:left;
-   margin-left:0.5em;
+.footer_region_left li {
+    float:left;
 }
-.footer_region_left ul.nav-list li a{
-padding: 0px;
-margin:0px;
+.footer_region_left li a {
+    float:none;
+    display: block;
+    margin:0;
 }
-.footer_region_left li.leaf > a:hover, .footer_region_left li.leaf > a:focus, .footer_region_left li.active > a:link{
-    background: none;
-}
+
 
 .footer_region_right {
     text-align:right;
@@ -1049,9 +1062,11 @@ PROJECTS
     min-height: 0;
 }
 
+.breadcrumb {
+    padding: 0;
+    background: none;
+}
 
-/*selbes cursorverhalten fuer alle disableds*/
-.btn.disabled, .btn[disabled], .btn.disabled *, .btn[disabled] *
-{
-    cursor: default ;
+.forum-tools {
+    display: none;
 }

@@ -1647,9 +1647,9 @@ function nm_section_courses_features_field_default_field_instances() {
     'required' => 0,
     'settings' => array(
       'default_value' => 'now',
-      'default_value2' => 'same',
+      'default_value2' => 'strtotime',
       'default_value_code' => '',
-      'default_value_code2' => '',
+      'default_value_code2' => '+14 days',
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -1657,10 +1657,11 @@ function nm_section_courses_features_field_default_field_instances() {
       'module' => 'date',
       'settings' => array(
         'increment' => 15,
-        'input_format' => 'm/d/Y - H:i:s',
+        'input_format' => 'd.m.Y - H:i:s',
         'input_format_custom' => '',
         'label_position' => 'above',
         'multiple_value_widget' => 'table',
+        'no_fieldset' => 0,
         'text_parts' => array(),
         'year_range' => '-3:+3',
       ),
@@ -2015,6 +2016,69 @@ function nm_section_courses_features_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-courses_generic_task_solution-field_submitted_on'.
+  $field_instances['node-courses_generic_task_solution-field_submitted_on'] = array(
+    'bundle' => 'courses_generic_task_solution',
+    'deleted' => 0,
+    'description' => 'wird programmatisch gesetzt',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'date',
+        'settings' => array(
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+          'show_remaining_days' => FALSE,
+        ),
+        'type' => 'date_default',
+        'weight' => 5,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_submitted_on',
+    'label' => 'eingereicht am',
+    'required' => 0,
+    'settings' => array(
+      'default_value' => 'now',
+      'default_value2' => 'same',
+      'default_value_code' => '',
+      'default_value_code2' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'date',
+      'settings' => array(
+        'increment' => 1,
+        'input_format' => 'd.m.Y - H:i:s',
+        'input_format_custom' => '',
+        'label_position' => 'above',
+        'multiple_value_widget' => 'table',
+        'no_fieldset' => 0,
+        'text_parts' => array(),
+        'year_range' => '-3:+3',
+      ),
+      'type' => 'date_popup',
+      'weight' => 7,
     ),
   );
 
@@ -3079,6 +3143,8 @@ function nm_section_courses_features_field_default_field_instances() {
   t('Untertitel');
   t('VHB-LVNR');
   t('Zugriffseinstellungen');
+  t('eingereicht am');
+  t('wird programmatisch gesetzt');
 
   return $field_instances;
 }

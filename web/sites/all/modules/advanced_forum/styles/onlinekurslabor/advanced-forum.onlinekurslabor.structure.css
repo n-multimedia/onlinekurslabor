@@ -134,6 +134,7 @@ td.forum-details .forum-description {
 td.forum-details .forum-subforums,
 td.forum-details .forum-subcontainers {
     margin-left: 10px;
+    font-size:90%;
 }
 
 th.forum-topics,
@@ -328,18 +329,18 @@ div.forum-post {
     display:inline;
     font-weight:bold;
     position:absolute;
-    left:160px;
+    left:190px;
 }
 
 /* Author information pane */
 .forum-post-panel-sub {
     float: left;
     line-height: 100%;
-    width: 150px;
+    width: 180px;
 }
 
 .forum-post-panel-sub .author-pane {
-    margin: 10px;
+    margin: 15px;
 }
 
 .forum-post-panel-sub .author-pane .author-name {
@@ -366,7 +367,7 @@ div.forum-post {
 
 /* Post text area */
 .forum-post-panel-main {
-    margin-left: 150px; /*Set left margin to LeftColumnWidth*/
+    margin-left: 180px; /*Set left margin to LeftColumnWidth*/
 
     /* These heights keep the AP items from jumping out of the bottom. Depending
        on how many items you display, there, this number may need to be adjusted
@@ -544,7 +545,7 @@ topic list
 .pane-forum-topic-list table {
     border-collapse: separate;
     border-spacing: 0px 3px;
-}  
+}
 
 .pane-forum-topic-list thead tr, .pane-forum-topic-list thead tr:hover  {
     background-color: transparent;
@@ -563,7 +564,7 @@ posts
 .forum-post {
     border-top: 1px solid #333;
     border-bottom: 1px solid #333;
-    
+
 }
 .forum-post .forum-post-wrapper {
     background-color: transparent;
@@ -672,7 +673,8 @@ fieldset[disabled] .af-button-large {
 }
 
 .af-button-large {
-  color: #fff;
+  color: #ffffff !important;
+  font-weight: normal !important;
   border-color: #cccccc;
   background-color: #467DBD;
   

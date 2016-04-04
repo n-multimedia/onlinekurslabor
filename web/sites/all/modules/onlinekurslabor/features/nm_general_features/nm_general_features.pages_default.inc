@@ -5,6 +5,140 @@
  */
 
 /**
+ * Implements hook_default_page_manager_handlers().
+ */
+function nm_general_features_default_page_manager_handlers() {
+  $export = array();
+
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'node_view__panel_context_8cc74b1f-7b01-4772-9ae8-0a1dccc2e52a';
+  $handler->task = 'node_view';
+  $handler->subtask = '';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Forum',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'name' => '',
+    'access' => array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'node_type',
+          'settings' => array(
+            'type' => array(
+              'forum' => 'forum',
+            ),
+          ),
+          'context' => 'argument_entity_id:node_1',
+          'not' => FALSE,
+        ),
+      ),
+      'logic' => 'and',
+    ),
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible:span12';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'center' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '368af4f3-b256-4f2c-b63d-6cbc234786ac';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass();
+    $pane->pid = 'new-152e0c58-9d31-485d-ae6c-8032d339008c';
+    $pane->panel = 'center';
+    $pane->type = 'page_breadcrumb';
+    $pane->subtype = 'page_breadcrumb';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '152e0c58-9d31-485d-ae6c-8032d339008c';
+    $display->content['new-152e0c58-9d31-485d-ae6c-8032d339008c'] = $pane;
+    $display->panels['center'][0] = 'new-152e0c58-9d31-485d-ae6c-8032d339008c';
+    $pane = new stdClass();
+    $pane->pid = 'new-76ed2890-74af-4af6-b12a-cc873e6bd41b';
+    $pane->panel = 'center';
+    $pane->type = 'entity_view';
+    $pane->subtype = 'node';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'view_mode' => 'full',
+      'context' => 'argument_entity_id:node_1',
+      'override_title' => 0,
+      'override_title_text' => '',
+      'override_title_heading' => 'h2',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $pane->uuid = '76ed2890-74af-4af6-b12a-cc873e6bd41b';
+    $display->content['new-76ed2890-74af-4af6-b12a-cc873e6bd41b'] = $pane;
+    $display->panels['center'][1] = 'new-76ed2890-74af-4af6-b12a-cc873e6bd41b';
+    $pane = new stdClass();
+    $pane->pid = 'new-f88a6e16-f2cb-4d43-92f8-c8ded355539d';
+    $pane->panel = 'center';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'Set Breadcrumb (Important: Position After Node View!)',
+      'title' => '',
+      'body' => '<?php
+custom_general_forum_set_breadcrumb();
+?>',
+      'format' => 'php_code',
+      'substitute' => 0,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = 'f88a6e16-f2cb-4d43-92f8-c8ded355539d';
+    $display->content['new-f88a6e16-f2cb-4d43-92f8-c8ded355539d'] = $pane;
+    $display->panels['center'][2] = 'new-f88a6e16-f2cb-4d43-92f8-c8ded355539d';
+  $display->hide_title = PANELS_TITLE_NONE;
+  $display->title_pane = 'new-152e0c58-9d31-485d-ae6c-8032d339008c';
+  $handler->conf['display'] = $display;
+  $export['node_view__panel_context_8cc74b1f-7b01-4772-9ae8-0a1dccc2e52a'] = $handler;
+
+  return $export;
+}
+
+/**
  * Implements hook_default_page_manager_pages().
  */
 function nm_general_features_default_page_manager_pages() {
@@ -46,8 +180,126 @@ function nm_general_features_default_page_manager_pages() {
     'relationships' => array(),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:home_layout';
-  $display->layout_settings = array();
+  $display->layout = 'flexible';
+  $display->layout_settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+        ),
+        'parent' => NULL,
+        'class' => 'home-layout-container',
+        'column_class' => '',
+        'row_class' => '',
+        'region_class' => '',
+        'no_scale' => FALSE,
+        'fixed_width' => '',
+        'column_separation' => '0.5em',
+        'region_separation' => '0.5em',
+        'row_separation' => '0.5em',
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
+        'children' => array(
+          0 => 1,
+          1 => 'main-row',
+          2 => 2,
+        ),
+        'parent' => 'canvas',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'student',
+          1 => 'lehrender',
+          2 => 'partner_',
+        ),
+        'parent' => 'main',
+        'class' => 'row-fluid column-region',
+      ),
+      1 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'test',
+          1 => 'image_video',
+          2 => 'platzhalter',
+        ),
+        'parent' => 'main',
+        'class' => 'row-fluid',
+      ),
+      2 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'partner',
+        ),
+        'parent' => 'main',
+        'class' => 'row-fluid',
+      ),
+      'test' => array(
+        'type' => 'region',
+        'title' => 'Titel_OKL',
+        'width' => '64.94139740527254',
+        'width_type' => '%',
+        'parent' => '1',
+        'class' => 'span7',
+      ),
+      'partner' => array(
+        'type' => 'region',
+        'title' => 'Förderer',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '2',
+        'class' => 'home-container-partner',
+      ),
+      'lehrender' => array(
+        'type' => 'region',
+        'title' => 'lehrender',
+        'width' => '26.88529876382778',
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'span4',
+      ),
+      'partner_' => array(
+        'type' => 'region',
+        'title' => 'Partner',
+        'width' => '26.893250953042525',
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'span4',
+      ),
+      'student' => array(
+        'type' => 'region',
+        'title' => 'Student',
+        'width' => '26.83567332159516',
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'span4',
+      ),
+      'image_video' => array(
+        'type' => 'region',
+        'title' => 'Platzhalter',
+        'width' => '5.050505050505102',
+        'width_type' => '%',
+        'parent' => '1',
+        'class' => '',
+      ),
+      'platzhalter' => array(
+        'type' => 'region',
+        'title' => 'Image-Video',
+        'width' => '30.008097544223233',
+        'width_type' => '%',
+        'parent' => '1',
+        'class' => 'span5',
+      ),
+    ),
+  );
   $display->panel_settings = array(
     'style_settings' => array(
       'default' => NULL,
@@ -56,6 +308,34 @@ function nm_general_features_default_page_manager_pages() {
       'col1' => NULL,
       'col2' => NULL,
       'col3' => NULL,
+      'center' => NULL,
+      'test' => NULL,
+      'bilder' => NULL,
+      'partner' => NULL,
+      'bild_studierende' => NULL,
+      'bild_lehrende' => NULL,
+      'platzhalter' => NULL,
+      'platzhalter_' => NULL,
+      'platzhalter__' => NULL,
+      'platzhalter___' => NULL,
+      'partner_' => NULL,
+      'bild_partner' => NULL,
+      'studierende' => NULL,
+      'test_' => NULL,
+      'right' => NULL,
+      'middle' => NULL,
+      'lehrender' => NULL,
+      'student' => NULL,
+      'image_video' => NULL,
+    ),
+    'media' => array(
+      'style' => '-1',
+    ),
+    'bild_partner' => array(
+      'style' => '-1',
+    ),
+    'studierende' => array(
+      'style' => '-1',
     ),
   );
   $display->cache = array();
@@ -64,118 +344,16 @@ function nm_general_features_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-a6cac502-08d2-48b6-a3e2-6ad16c61d7eb';
-    $pane->panel = 'col1';
+    $pane->pid = 'new-966f2e7b-0041-496d-ac97-0252d1e68b4c';
+    $pane->panel = 'image_video';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'admin_title' => '',
+      'admin_title' => 'spacer',
       'title' => '',
-      'body' => '<?php
-$vars = array();
-$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/1_lehrende_oT.png" class="span12"  />\';
-$vars[\'description\'] = "für Hochschullehrende";
-$vars[\'middle\'] = "Nutzen Sie unseren KursCreator<sup>&trade;</sup>, um Kurse mit innovativer Didaktik anzubieten, die Studierenden wertvolle Erfahrungen in Projekten ermöglichen!";
-$vars[\'bottom\'] = \'<a href="/courses">Eigenen Kurs gestalten</a>\';
-
-return theme(\'nm_fancy_box\', $vars);
-
-?>',
-      'format' => 'php_code',
-      'substitute' => TRUE,
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $pane->uuid = 'a6cac502-08d2-48b6-a3e2-6ad16c61d7eb';
-    $display->content['new-a6cac502-08d2-48b6-a3e2-6ad16c61d7eb'] = $pane;
-    $display->panels['col1'][0] = 'new-a6cac502-08d2-48b6-a3e2-6ad16c61d7eb';
-    $pane = new stdClass();
-    $pane->pid = 'new-aefbc85a-eeb0-4fa7-8e74-8bb600a6e318';
-    $pane->panel = 'col2';
-    $pane->type = 'custom';
-    $pane->subtype = 'custom';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'admin_title' => '',
-      'title' => '',
-      'body' => '<?php
-$vars = array();
-$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/2_studierende_oT.png"  class="span12" />\';
-$vars[\'description\'] = \'für Studierende\';
-$vars[\'middle\'] = \'Belegen Sie Kurse, in denen Sie konkrete Projekte machen, die Ihren Kompetenzerwerb mit gesellschaftlichem Engagement verbinden!\';
-$vars[\'bottom\'] = \'<a href="/courses">Kürsübersicht anzeigen</a>\';
-
-return theme(\'nm_fancy_box\', $vars);
-
-?>',
-      'format' => 'php_code',
-      'substitute' => TRUE,
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $pane->uuid = 'aefbc85a-eeb0-4fa7-8e74-8bb600a6e318';
-    $display->content['new-aefbc85a-eeb0-4fa7-8e74-8bb600a6e318'] = $pane;
-    $display->panels['col2'][0] = 'new-aefbc85a-eeb0-4fa7-8e74-8bb600a6e318';
-    $pane = new stdClass();
-    $pane->pid = 'new-e4d5cbbb-f92f-4352-9a4a-c7277e2bc077';
-    $pane->panel = 'col3';
-    $pane->type = 'custom';
-    $pane->subtype = 'custom';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'admin_title' => '',
-      'title' => '',
-      'body' => '<?php
-$vars = array();
-$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/3_partner_oT.png" class="span12" />\';
-$vars[\'description\'] = "für Partner vor Ort";
-$vars[\'middle\'] = "Gewinnen Sie Studierende für Ihre gemeinwohlorientierten Projekte, um von deren Ideen und fachlichem Know-How zu profitieren!";
-$vars[\'bottom\'] = \'<a href="projects/partners">Projektvorschlag einreichen</a>\';
-
-return theme(\'nm_fancy_box\', $vars);
-
-?>',
-      'format' => 'php_code',
-      'substitute' => TRUE,
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $pane->uuid = 'e4d5cbbb-f92f-4352-9a4a-c7277e2bc077';
-    $display->content['new-e4d5cbbb-f92f-4352-9a4a-c7277e2bc077'] = $pane;
-    $display->panels['col3'][0] = 'new-e4d5cbbb-f92f-4352-9a4a-c7277e2bc077';
-    $pane = new stdClass();
-    $pane->pid = 'new-80d5d10a-5ab9-48d3-a886-6cd17d252f55';
-    $pane->panel = 'left';
-    $pane->type = 'custom';
-    $pane->subtype = 'custom';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'admin_title' => '',
-      'title' => '',
-      'body' => '<h3>Werden Sie Teil des</h3><h2><a href="/">Online-Kurslabors!</a></h2><p>Das Online-Kurslabor ist ein Ort zur Förderung von Engagement in Studium und Lehre. Zeitgemäße Hochschullehre nutzt digitale Medien und ermöglicht den Studierenden erfahrungsorientiertes Lernen in echten Projekten.</p><p>Wir bieten Ihnen ein einfach zu bedienendes Werkzeug zur Erstellung und Nutzung von Online-Kursen, das für <a class="nm_home_sh" href="#"> verschiedene Zielgruppen </a> optimiert ist.</p><p>&nbsp;</p><div class="nm_fancy_box_bottom"><a href="/user/register">Jetzt kostenlos anmelden</a></div>',
+      'body' => '&nbsp;',
       'format' => 'filtered_html',
       'substitute' => TRUE,
     );
@@ -187,12 +365,12 @@ return theme(\'nm_fancy_box\', $vars);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = '80d5d10a-5ab9-48d3-a886-6cd17d252f55';
-    $display->content['new-80d5d10a-5ab9-48d3-a886-6cd17d252f55'] = $pane;
-    $display->panels['left'][0] = 'new-80d5d10a-5ab9-48d3-a886-6cd17d252f55';
+    $pane->uuid = '966f2e7b-0041-496d-ac97-0252d1e68b4c';
+    $display->content['new-966f2e7b-0041-496d-ac97-0252d1e68b4c'] = $pane;
+    $display->panels['image_video'][0] = 'new-966f2e7b-0041-496d-ac97-0252d1e68b4c';
     $pane = new stdClass();
-    $pane->pid = 'new-b6ed1914-5b2f-4651-9469-31406f3dd63d';
-    $pane->panel = 'media';
+    $pane->pid = 'new-875794f9-d9c8-416f-a60a-06600be3b6f9';
+    $pane->panel = 'lehrender';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
     $pane->shown = TRUE;
@@ -200,8 +378,16 @@ return theme(\'nm_fancy_box\', $vars);
     $pane->configuration = array(
       'admin_title' => '',
       'title' => '',
-      'body' => '<p><img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo.png"  class="span12"/></p>',
-      'format' => 'filtered_html',
+      'body' => '<?php
+$vars = array();
+$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_lehrender.png" class="span12"  />\';
+$vars[\'description\'] = "Informationen für Hochschullehrende";
+$vars[\'link\'] = "informationen?mode=lehrende";
+
+return theme(\'nm_fancy_box\', $vars);
+
+?>',
+      'format' => 'php_code',
       'substitute' => TRUE,
     );
     $pane->cache = array();
@@ -212,11 +398,165 @@ return theme(\'nm_fancy_box\', $vars);
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $pane->uuid = 'b6ed1914-5b2f-4651-9469-31406f3dd63d';
-    $display->content['new-b6ed1914-5b2f-4651-9469-31406f3dd63d'] = $pane;
-    $display->panels['media'][0] = 'new-b6ed1914-5b2f-4651-9469-31406f3dd63d';
+    $pane->uuid = '875794f9-d9c8-416f-a60a-06600be3b6f9';
+    $display->content['new-875794f9-d9c8-416f-a60a-06600be3b6f9'] = $pane;
+    $display->panels['lehrender'][0] = 'new-875794f9-d9c8-416f-a60a-06600be3b6f9';
+    $pane = new stdClass();
+    $pane->pid = 'new-e5330c0c-4c13-4df3-a353-92107fee92b7';
+    $pane->panel = 'partner';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => '',
+      'title' => '',
+      'body' => '<a href="http://www.bmas.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_BMAS.png" style="float:right" /></a>
+<a href="https://www.bmbf.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_BMBF.png" style="float:right" /></a>
+<a href="https://www.stiftung-mercator.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_mercator.png" style="float:right" /></a>
+<a href="http://www.uni-augsburg.de/de/projekte/lehet/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_lehet.png" style="float:right" /></a>
+<a href="http://www.uni-augsburg.de/projekte/bildung-durch-verantwortung" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_bdv.png" style="float:right" /></a>',
+      'format' => 'php_code',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'span12',
+    );
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'e5330c0c-4c13-4df3-a353-92107fee92b7';
+    $display->content['new-e5330c0c-4c13-4df3-a353-92107fee92b7'] = $pane;
+    $display->panels['partner'][0] = 'new-e5330c0c-4c13-4df3-a353-92107fee92b7';
+    $pane = new stdClass();
+    $pane->pid = 'new-c38e1c99-7f8e-406c-8368-1804779f25bf';
+    $pane->panel = 'partner_';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => '',
+      'title' => '',
+      'body' => '<?php
+$vars = array();
+$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_partner.png" class="span12"  />\';
+$vars[\'description\'] = "Informationen für Kooperationspartner";
+$vars[\'link\'] = "informationen?mode=partner";
+
+return theme(\'nm_fancy_box\', $vars);
+
+?>',
+      'format' => 'php_code',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'c38e1c99-7f8e-406c-8368-1804779f25bf';
+    $display->content['new-c38e1c99-7f8e-406c-8368-1804779f25bf'] = $pane;
+    $display->panels['partner_'][0] = 'new-c38e1c99-7f8e-406c-8368-1804779f25bf';
+    $pane = new stdClass();
+    $pane->pid = 'new-273be677-8e9f-4671-8e2b-c04a78baf7ce';
+    $pane->panel = 'platzhalter';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'Video',
+      'title' => '',
+      'body' => ' <video width="100%" controls="controls" poster="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo2.png">
+  <source src="https://onlinekurslabor.phil.uni-augsburg.de/sites/default/files/imagefilm_onlinekurslabor.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video> ',
+      'format' => 'full_html',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '273be677-8e9f-4671-8e2b-c04a78baf7ce';
+    $display->content['new-273be677-8e9f-4671-8e2b-c04a78baf7ce'] = $pane;
+    $display->panels['platzhalter'][0] = 'new-273be677-8e9f-4671-8e2b-c04a78baf7ce';
+    $pane = new stdClass();
+    $pane->pid = 'new-b656ed25-75c4-4397-97e4-243d47158514';
+    $pane->panel = 'student';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => '',
+      'title' => '',
+      'body' => '<?php
+$vars = array();
+$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_student.png" class="span12"  />\';
+$vars[\'description\'] = "Informationen für Studierende";
+$vars[\'link\'] = "/informationen?mode=studierende";
+
+return theme(\'nm_fancy_box\', $vars);
+
+?>',
+      'format' => 'php_code',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = 'b656ed25-75c4-4397-97e4-243d47158514';
+    $display->content['new-b656ed25-75c4-4397-97e4-243d47158514'] = $pane;
+    $display->panels['student'][0] = 'new-b656ed25-75c4-4397-97e4-243d47158514';
+    $pane = new stdClass();
+    $pane->pid = 'new-70609a2f-52b9-4e16-b881-1c2c87d28eb8';
+    $pane->panel = 'test';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => '',
+      'title' => '',
+      'body' => '<h2 style="color: #EB690B;">Onlinekurslabor</h2><p style="text-align: justify;">Das Onlinekurslabor ist eine digitale Lernplattform des Medienlabors für Studierende, Hochschullehrende und Partnerorganisationen.</p><p style="text-align: justify;">Im Fokus liegen insbesondere erfahrungsorientiertes und forschendes Lernen in realen Projekten. Hier werden Ihnen virtuelle Werkzeuge zur Begleitung der Präsenzlehre, zur Erstellung von E-Learning-Kursen und zur Organisation von Projektseminaren bereitgestellt.</p><p>&nbsp;</p>',
+      'format' => 'filtered_html',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'span12',
+    );
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '70609a2f-52b9-4e16-b881-1c2c87d28eb8';
+    $display->content['new-70609a2f-52b9-4e16-b881-1c2c87d28eb8'] = $pane;
+    $display->panels['test'][0] = 'new-70609a2f-52b9-4e16-b881-1c2c87d28eb8';
   $display->hide_title = PANELS_TITLE_NONE;
-  $display->title_pane = 'new-b6ed1914-5b2f-4651-9469-31406f3dd63d';
+  $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['home_layout'] = $page;

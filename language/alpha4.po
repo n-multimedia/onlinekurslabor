@@ -1,0 +1,28 @@
+#Translation File - onlinekurslabor
+
+msgid "Please check, if the file attachments are not used elsewhere."
+msgstr "Bitte stellen Sie sicher, dass die folgenden Dateien nich mehr benötigt werden."
+
+msgid "Delete (node only)"
+msgstr "Nur den Inhalt löschen"
+
+msgid "Delete node and files"
+msgstr "Inhalt und Anhänge löschen"
+
+msgid "First unread"
+msgstr "Erster ungelesener Beitrag"
+
+msgid "Use count"
+msgstr "Nutzungszahlen"
+
+msgid "Used in"
+msgstr "Verwendet in"
+
+msgid "Choose the state to set for the selected users in the group."
+msgstr "Wählen Sie den neuen Status."
+
+msgid "Remove from course"
+msgstr "Aus Kurs austragen"
+
+msgid "Hello"
+msgstr "Hallo"

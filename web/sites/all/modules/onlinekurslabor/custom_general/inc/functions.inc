@@ -587,7 +587,7 @@ function custom_general_get_users_in_group($gid) {
 }
 
 function custom_general_get_users_in_group_by_role($gid, $roles) {
-  $query = db_select('users', 'u');
+  $query = db_select('users', 'u')->distinct();
 
   $query->condition('u.uid', 0, '<>')
       ->condition('u.status', 1, '=')

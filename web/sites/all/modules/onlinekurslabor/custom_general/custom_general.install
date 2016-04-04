@@ -60,3 +60,17 @@ function custom_general_update_3003(){
   }
 }
 
+/**
+ * set standard value
+ * courses other features (domain_text = TRUE)
+ */
+function custom_general_update_3004(){
+
+  //delete path alias forum/
+  db_delete('url_alias')
+    ->condition('source', db_like("forum/") . '%', 'LIKE')
+    ->execute();
+
+}
+
+

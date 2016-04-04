@@ -167,14 +167,21 @@ function _courses_tasks_solution_workflow_label($sid = 0) {
 
 /*
 liefert texte bzw icons um für aufgabe einreichungszeitraum festzulegen
- * sowie für ggf angegebene solution eine bewertung */
+ * sowie für ggf angegebene solution eine bewertung, ob im bearbeitungszeitrum */
 function _courses_tasks_get_task_period_label($task_id, $solution_id = 0) {
     $node = node_load($task_id);
-    $starttime = $node->field_task_handling_period[LANGUAGE_NONE][0][value];
-    $endtime = $node->field_task_handling_period[LANGUAGE_NONE][0][value2];
-    $starttime_secs = strtotime($starttime);
-    $endtime_secs = strtotime($endtime);
-    $has_endtime = $starttime_secs != $endtime_secs  ;
+    
+    $timezone = $node->field_task_handling_period[LANGUAGE_NONE][0]['timezone_db'];
+    $timezone_new = $node->field_task_handling_period[LANGUAGE_NONE][0]['timezone'];
+    
+     $start_string = strtotime($node->field_task_handling_period[LANGUAGE_NONE][0]['value'].' '.$timezone);
+    $starttime_secs = format_date($start_string,'custom','U',$timezone_new);
+    
+    $endtime_string = strtotime($node->field_task_handling_period[LANGUAGE_NONE][0]['value2'].' '.$timezone);
+    $endtime_secs = format_date($endtime_string,'custom','U',$timezone_new);
+    
+    //ohne endtime wird dise automatisch auf starttime gesetzt
+    $has_endtime =  $endtime_secs  > $starttime_secs;
     
     if ($solution_id) {
         $solution = node_load($solution_id);
@@ -183,15 +190,20 @@ function _courses_tasks_get_task_period_label($task_id, $solution_id = 0) {
     //aw nicht im entwurfsmodus
     if ($solution_id && !($state == NM_COURSES_TASK_WORKFLOW_DRAFT)) {
 
-        $created = $solution->created;
-        $changed = $solution->changed;
-
-        if ($changed < $starttime_secs)
-            $markup = '<span class="label label-important" ' . $title . '><strong>Zu früh eingereicht</strong></span>';
-        elseif ($has_endtime && $changed > $endtime_secs)
-            $markup = '<span class="label label-important" ' . $title . '><strong>Zu spät eingereicht</strong></span>';
+        $eingereicht_time = $solution->field_submitted_on[LANGUAGE_NONE][0];
+    
+        //keine daten - kein markup
+        if (empty($eingereicht_time))
+            return '';
+        $eingereicht_date = strtotime($eingereicht_time['value'] . ' ' . $eingereicht_time['timezone_db']);
+        $eingereicht_secs = format_date($eingereicht_date, 'custom', 'U', $eingereicht_time['timezone']);
+        
+        if ($eingereicht_secs < $starttime_secs)
+            $markup = '<span class="label label-important"><strong>Zu früh eingereicht</strong></span>';
+        elseif ($has_endtime && $eingereicht_secs > $endtime_secs)
+            $markup = '<span class="label label-important"><strong>Zu spät eingereicht</strong></span>';
         else
-            $markup = '<span class="label label-info" ' . $title . '><strong>Pünktlich eingereicht</strong></span>';
+            $markup = '<span class="label label-info"><strong>Pünktlich eingereicht</strong></span>';
         return $markup;
     }
     //keine solultion vorhanden oder im draft-modus
@@ -310,30 +322,7 @@ function _course_tasks_generic_solution_form_view() {
 
       $output .= render($fview[$key]);
     }
-    /* moving this part to the right sidebar!
-     * 
-      //allow assessment if node is in state 3
-      $current = workflow_node_current_state($solution_node);
-
-
-      if ($current == 3 && array_intersect(array(NM_ROLE_ADMIN, NM_ROLE_DOZENT), $user->roles)) {
-      //add bewertung feld
-      $form = drupal_get_form('_section_courses_task_solution_assesment_form', $solution_node->nid);
-      $form['assessment']['format']['#attributes']['style'] = 'display:none';
-      $output .= drupal_render($form);
-      }
-      //Bewertet
-      else if (($current == 4)) {
-      $output .= "<h2>Bewertung</h2>";
-      //$assessment_field = ($solution_wrapper->field_generic_task_assessment->value());
-      $fview = field_view_field('node', $solution_node, 'field_generic_task_assessment');
-      //hide field label
-      $fview['#label_display'] = 'hidden';
-      $output .= render($fview);
-      //$output .= $assessment_field['value'];
-      }
-     * 
-     */
+    
   }
   else {
     //check if a solution has already been submitted
@@ -431,9 +420,6 @@ function _section_courses_task_solution_assesment_form_submit($form, &$form_stat
   $node->field_generic_task_assessment[LANGUAGE_NONE][0]['value'] = $form_state['values']['assessment']['value'];
   $node->field_generic_task_assessment[LANGUAGE_NONE][0]['format'] = NM_FILTER_FORMAT_FILTERED_HTML;
 
-  // 'node' is default,
-  // Other possible values are "user" and  "taxonomy_term" 
-  $node = node_submit($node); // Prepare node for saving
 
   node_save($node);
 
@@ -508,7 +494,7 @@ function _section_courses_task_solution_form($form, &$form_state, $task_nid) {
 
   return $form;
 }
-
+//wird beim abgeben / speichern einer lösung ausgeführt
 function _section_courses_task_solution_form_submit($form, &$form_state) {
   global $user;
 
@@ -535,6 +521,7 @@ function _section_courses_task_solution_form_submit($form, &$form_state) {
     $node->comment = 0; // 0 = comments disabled, 1 = read only, 2 = read/write
     $node->og_group_ref[LANGUAGE_NONE][0] = array('target_id' => $active_course->nid);
     $node->field_generic_task[LANGUAGE_NONE][]['target_id'] = $form_state['values']['task_nid'];
+    $node = node_submit($node); // Prepare node for saving
   }
 
   //check if any solution fields were committed first
@@ -545,10 +532,18 @@ function _section_courses_task_solution_form_submit($form, &$form_state) {
       $node->field_generic_solution_entry[LANGUAGE_NONE][] = array('value' => $val, 'format' => NM_FILTER_FORMAT_FILTERED_HTML);
     }
   }
-
-
-  $node = node_submit($node); // Prepare node for saving
-
+  //noch nie gesetzt und status ist einreichen
+  if(empty($node->field_submitted_on) && $form_state['values']['save_submit'] == $form_state['triggering_element']['#value'])
+  {
+        $eingereicht_date = new DateTime(date('Y-m-d H:i:s'));
+        //save as UTC and convert when reading again - default behaviour
+        $eingereicht_date->setTimezone(timezone_open('UTC'));
+        $eingereicht_string = $eingereicht_date->format('Y-m-d H:i:s');
+        //timezone is set automatically
+        $node->field_submitted_on[LANGUAGE_NONE][0]['value'] = $eingereicht_string;
+    
+    }
+    
   node_save($node);
 
   //check which button was clicked

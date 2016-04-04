@@ -106,44 +106,42 @@ div.interaction_icon   a:link, div.interaction_icon   a:visited, div.interaction
 {
     color:white;
     text-decoration: none;
-}
-div.interaction_icon   a:hover
-{
-border-radius:0px;
-}
+} 
 /*
 Definitionen fuer die einzelnen Interaction-Buttons
 */
 /*blauer hintergrund*/
-a.interaction_icon_h5ptext10,a.interaction_icon_h5pimage10,a.interaction_icon_h5ptable10{
-background: linear-gradient(to top, #1D5CFF 50%, #5BA7FF 50%, #1D5CFF 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+a.interaction_icon_h5ptext,a.interaction_icon_h5pimage,a.interaction_icon_h5ptable{
+background: #1d5cff ;
 }
 /*pinker hintergrund*/
-a.interaction_icon_h5pmultichoice10,a.interaction_icon_h5pblanks10,a.interaction_icon_h5pdragquestion10,a.interaction_icon_h5psummary10
+a.interaction_icon_h5pmultichoice,a.interaction_icon_h5pblanks,a.interaction_icon_h5pdragquestion,a.interaction_icon_h5psummary,a.interaction_icon_h5plink
 {
-background:linear-gradient(to top, #981D99 50%, #CE6CD8 50%, #981D99 100%) repeat scroll 0 0 rgba(0, 0, 0, 0)
+background: #981D99;
 }
-a.interaction_icon_h5ptext10:before {
-  content: "\f05a";
+a.interaction_icon_h5ptext:before {
+  content: "\f055";
 }
-
-a.interaction_icon_h5pimage10:before {
+a.interaction_icon_h5plink:before {
+  content: "\f0c1";
+}
+a.interaction_icon_h5pimage:before {
   content:  "\f03e";
 }
-a.interaction_icon_h5ptable10:before {
+a.interaction_icon_h5ptable:before {
   content:  "\f0ce";
 }
-a.interaction_icon_h5pmultichoice10:before {
+a.interaction_icon_h5pmultichoice:before {
   content: "\f046";
 }
   
-a.interaction_icon_h5pblanks10:before {
+a.interaction_icon_h5pblanks:before {
   content: "\f0ae";
 }  
-a.interaction_icon_h5pdragquestion10:before {
+a.interaction_icon_h5pdragquestion:before {
   content: "\f126";
 }  
-a.interaction_icon_h5psummary10:before {
+a.interaction_icon_h5psummary:before {
   content: "\f0ca";
 } 
  
