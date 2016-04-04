@@ -1235,7 +1235,7 @@ function section_courses_student_registration_form($form, &$form_state) {
 
 
       '<br/>' .
-      t('Create new accounts: enter "Firstname Lastname; example@email.com". <em>One entry per line</em> (if an account with that email address already exists, the user will be imported)')
+      t('Create new accounts: enter "Firstname Lastname example@email.com". <em>One entry per line</em> (if an account with that email address already exists, the user will be imported)')
 
 
   );
@@ -1344,112 +1344,78 @@ function section_courses_student_registration_import_callback($form, $form_state
 
   return $form['import_container']; //$form['import_container'];
 }
-
-function _section_courses_student_registration_import($input) {
-
-  $input = check_plain($input);
-
-  if (!empty($input)) {
-    watchdog('section_courses', 'Importing user list %input', array('%input' => $input), WATCHDOG_INFO);
-
-    //email list = account activation
-    //first + lastname; emaillist =  account creation!
-    $emails = array();
-    $rows_data = array();
-
-    if (strpos($input, ';') > 0) {
-      //separators are in the input textares => account creation
-      $rows = explode("\n", $input);
-      foreach ($rows as $row) {
-        $row = html_entity_decode($row, ENT_QUOTES);
-        $row = explode(';', $row);
-        $data['first_name'] = trim(substr($row[0], 0, strrpos($row[0], ' ')));
-        $data['last_name'] = trim(substr($row[0], strrpos($row[0], ' ') + 1));
-        $data['email'] = trim($row[1]);
-
-        $emails[] = $data['email'];
-        $rows_data[$data['email']] = $data;
+/**
+ * Looks up active course and handels occasional AJAX callbacks
+ * 
+ * @return String active course
+ */
+function _section_course_create_register_active_course(){
+    $active_course = NULL;
+    
+    if (arg(0) == 'system' && arg(1) == 'ajax') {
+      $referer_url = drupal_parse_url($_SERVER['HTTP_REFERER']);
+      $referer_url['path'] = substr(parse_url($referer_url['path'], PHP_URL_PATH), 1);
+      if (arg(0, $referer_url['path']) == 'course' && arg(1, $referer_url['path']) == 'admin') {
+        $active_course = node_load(arg(2, $referer_url['path']));
       }
     }
-
-    //account activation
-    if (strpos($input, ';') === FALSE) {
-      $emails = explode("\n", $input);
+    else {
+      //assign user to active group
+      $active_course = _section_courses_get_active_course();
     }
-
-    $success = array();
-    $already_in = array();
-    $missing_accounts = array();
-    foreach ($emails as $email) {
-      if (empty($email)) {
-        //ignore empty lines
-        continue;
-      }
-
-      $acc = user_load_by_mail($email);
-
+    
+    return $active_course;
+}
+/**
+ * Looks up user and reeturns the state of the account
+ * 
+ * @param array   $userdata        Array containing the user information
+ * 
+ * @return String State of the account                   
+ */
+function _section_course_get_user_info_assign_course($userdata){
+    $acc            = user_load_by_mail($userdata['email']);
+    $member         = False;
+    $user_already   = False;
+    $user_state     = 'NONE';
+    //$active_course  = get_active_course();
       if ($acc) {
+        $active_course  = _section_course_create_register_active_course();
         //account activation, if account has not been activated yet
         if (!$acc->status) {
-
           //activate
-          $acc->status = 1;
-
+          $acc->status  = 1;
           //add role
-          $role = user_role_load_by_name(NM_ROLE_STUDENT);
-          $acc->roles = array($role->rid => $role->name);
-
+          $role         = user_role_load_by_name(NM_ROLE_STUDENT);
+          $acc->roles   = array($role->rid => $role->name);
+          // save changes
           user_save($acc);
         }
-
-        //hadnle ajax callbacks
-        if (arg(0) == 'system' && arg(1) == 'ajax') {
-          $referer_url = drupal_parse_url($_SERVER['HTTP_REFERER']);
-          $referer_url['path'] = substr(parse_url($referer_url['path'], PHP_URL_PATH), 1);
-
-          if (arg(0, $referer_url['path']) == 'course' && arg(1, $referer_url['path']) == 'admin') {
-            $active_course = node_load(arg(2, $referer_url['path']));
-          }
-        }
-        else {
-          //assign user to active group
-          $active_course = _section_courses_get_active_course();
-        }
-
-
         if (og_is_member('node', $active_course->nid, 'user', $acc, array(OG_STATE_ACTIVE))) {
           //already member
-          $already_in[] = $email;
+          $user_state   = 'ALREADY_IN'; 
+          $member       = True;
         }
         else {
-          //not a member yet
-          //add to group
-          $values = array(
-            'entity type' => 'user',
-            'entity' => $acc,
-          );
-          og_group('node', $active_course->nid, $values);
-
-          $success[] = $email;
+           $user_state   = 'SUCCESS';
+          $user_already = True;
         }
       }
+      // No account found
       else {
-
-        if (strpos($input, ';') === FALSE) {
-          // fill missing aacounts array for status message, or create accounts if
-          // the structure of the request contains ';' separators
-          $missing_accounts[] = $email;
-
+        if (!$userdata['first_name']) {
+          // fill missing account array for status message, or create accounts
+           $user_state   = 'MISSING';
+           return $user_state;
         }
         else {
-
           //add user
           $role = user_role_load_by_name(NM_ROLE_STUDENT);
           $edit = array(
-            'name' => $rows_data[$email]['first_name'] . ' ' . $rows_data[$email]['last_name'],
+            'name' => $userdata['first_name'] . ' ' . $userdata['last_name'],
             'pass' => user_password(),
-            'mail' => $rows_data[$email]['email'],
-            'init' => $rows_data[$email]['email'],
+            'mail' => $userdata['email'],
+            'init' => $userdata['email'],
             'status' => 1,
             'access' => REQUEST_TIME,
             'roles' => array($role->rid => $role->name),
@@ -1464,73 +1430,144 @@ function _section_courses_student_registration_import($input) {
           $edit['name'] = $user_name;
 
           //save and notify the user
-          $account = user_save(drupal_anonymous_user(), $edit);
+          $acc = user_save(drupal_anonymous_user(), $edit);
 
-          if (!$account) {
+          if (!$acc) {
             drupal_set_message("Account konnte nicht gespeichert werden.", 'error');
             return;
           }
-
+          $active_course  = _section_course_create_register_active_course();
           //student profile
           $profile2 = profile2_create(array('type' => 'student'));
-          $profile2->setUser($account);
+          $profile2->setUser($acc);
           profile2_save($profile2);
           //Populate profile fields
           $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
-
           //master profile
           $profile2 = profile2_create(array('type' => 'master'));
-          $profile2->setUser($account);
+          $profile2->setUser($acc);
           profile2_save($profile2);
           //Populate profile fields
           $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
-          $wrapper->field_first_name->set($rows_data[$email]['first_name']);
-          $wrapper->field_last_name->set($rows_data[$email]['last_name']);
-
+          $wrapper->field_first_name->set($userdata['first_name']);
+          $wrapper->field_last_name->set($userdata['last_name']);
           $wrapper->save();
-
-          realname_update($account);
-          $account = user_load($account->uid, TRUE);
-
+          realname_update($acc);
+          $account = user_load($acc->uid, TRUE);
           //Notification. we need the realname first!
           // Set operation.
           $op = 'register_no_approval_required';
           // Send an email.
-          _user_mail_notify($op, $account);
-
-          //hadnle ajax callbacks
-          if (arg(0) == 'system' && arg(1) == 'ajax') {
-            $referer_url = drupal_parse_url($_SERVER['HTTP_REFERER']);
-            $referer_url['path'] = substr(parse_url($referer_url['path'], PHP_URL_PATH), 1);
-
-            if (arg(0, $referer_url['path']) == 'course' && arg(1, $referer_url['path']) == 'admin') {
-              $active_course = node_load(arg(2, $referer_url['path']));
-            }
-          }
-          else {
-            //assign user to active group
-            $active_course = _section_courses_get_active_course();
-          }
-
-          //not a member yet
-          //add to group
-          $values = array(
-            'entity type' => 'user',
-            'entity' => $account,
-          );
-          og_group('node', $active_course->nid, $values);
-
-          drupal_set_message('Student ' . $edit['name'] . ' wurde angelegt.');
-        }
-
-
+          _user_mail_notify($op, $acc);
       }
+    }
+    // add to group
+
+    if(!$member){
+      $values = array(
+          'entity type' => 'user',
+          'entity' => $acc,
+      );
+        og_group('node', $active_course->nid, $values);
+        if(!$user_already){
+        drupal_set_message('Student ' . $edit['name'] . ' wurde angelegt.');
+        }
+    }
+    
+    return $user_state;
+}
+/**
+ * Takes input from Form-Field and extracts user data from it.
+ * Valid users will be added to the course:
+ * 
+ *      e.g. Billy@billmail.com
+ * 
+ * New Users will be created and added:
+ * 
+ *      e.g. Billy Bafög Billy@billmail.com
+ * 
+ * @return HTML-DIV containing the proper course entrance information(success, failure, etc)
+ */
+function _section_courses_student_registration_import($input) {
+
+  $input = check_plain($input);
+  
+  if (!empty($input)) {
+    watchdog('section_courses', 'Importing user list %input', array('%input' => $input), WATCHDOG_INFO);
+
+    //email list = account activation
+    //first + lastname; emaillist =  account creation!
+    //$emails             = array();
+    $rows_data          = array();
+    $users              = array();
+    $user_parameters    = 0;
+    $success            = array();
+    $already_in         = array();
+    $missing_accounts   = array();
+
+    // Split input into rows representing users
+    $rows = explode("\n", $input);
+
+    foreach ($rows as $row) {
+        // Count Parameters given
+        $row = html_entity_decode($row, ENT_QUOTES);
+
+        $row = preg_replace("/[\t\",:;]/", " ", $row);
+        $user_parameters    = count(explode(" ", $row));
+        // Create New User  
+        if($user_parameters > 1){
+            // Decode HTML-safe data
+            $row = ucfirst($row);
+            // Email Pattern
+            preg_match( '/[a-zäöüÄÖßÜA-Z]+[a-zA-ZäöüÄßÖÜ0-9+\.\-_]*[@]{1}[a-zA-Z0-9äößüÄÖÜ\.\-+_]*[\.]{1}[\.a-zäöüÄÖßÜA-Z0-9]*/', $row, $email_matches);
+            // Remove Email from Input, leaving only names
+            $names = trim($row, $email_matches[0]);
+            // Cut Names @ whitespace
+            //var_dump($row);
+            $names                = explode(" ", $names);
+            // Replace Character not beloning in names
+            $names                = preg_replace("/[0-9\^\%\",;]/", "", $names);
+            $names = array_values(array_filter(preg_replace( '/[a-zäöüÄÖßÜA-Z]+[a-zA-ZäöüÄßÖÜ0-9+\.\-_]*[@]{1}[a-zA-Z0-9äößüÄÖÜ\.\-+_]*[\.]{1}[\.a-zäöüÄÖßÜA-Z0-9]*/',"", $names )));
+            // Extracting 1st & last name
+            $first_name           = implode(' ', array_slice($names, 0, -1));
+            $last_name            = end($names);
+            $data['first_name']   = $first_name;
+            $data['last_name']    = $last_name;
+            $data['email']        = $email_matches[0];
+            $rows_data[$data['email']] = $data;
+        }
+        // Add existing User
+        else{
+            $data['email'] = $row;
+            $rows_data[$data['email']] = $data;
+        }
     }
 
 
+    foreach($rows_data as $email => $userdata) {
+      if (empty($email)) {
+        //ignore empty lines
+        continue;
+      }
+      
+      $user_state = _section_course_get_user_info_assign_course($userdata);
+      
+      switch($user_state){
+            case 'MISSING':
+                $missing_accounts[] = $email;
+                break;
+            case 'SUCCESS':
+                $success[] = $email;
+                break;
+            case 'ALREADY_IN':
+                $already_in[] = $email;
+                break;
+            default:
+                break;
+      }
+    }
     $output = '';
-
-
+    
     //missing
     if ($missing_accounts) {
       $output .= '<div class="alert alert-error"><h3>Kein Account vorhanden</h3><h5>Für folgende Einträge</h5>' . '<ol style="padding:0 0 0 25px;margin:0;margin-bottom: 20px;"><li>' . implode('</li><li>', $missing_accounts) . "</li>" . '</ol></div>';
@@ -1544,9 +1581,9 @@ function _section_courses_student_registration_import($input) {
       $output .= '<div class="alert alert-success"><h3>Erfolgreich hinzugefügt</h3><h5>Für folgende Einträge</h5>' . '<ol style="padding:0 0 0 25px;margin:0;margin-bottom: 20px;"><li>' . implode('</li><li>', $success) . "</li>" . '</ol></div>';
     }
   }
-
   return $output;
 }
+    
 
 /**
  * Submit handler for the "add-one-more" button.
@@ -1650,7 +1687,6 @@ function section_courses_student_registration_form_validate($form, &$form_state)
   $mail = "";
   if (isset($form_state['clicked_button'])) {
 
-
   }
   // Random example, if the title is 'test' throw an error
   if ($form_state['values']['users_container']['items'] > 0) {
@@ -1671,7 +1707,6 @@ function section_courses_student_registration_form_validate($form, &$form_state)
       if (!empty($uname_check)) {
         form_set_error('users_container][items][' . $key, $uname_check);
       }
-
       // Validate the e-mail address, and check if it is taken by an existing user.
       $error = user_validate_mail($mail);
       if ($error) {
@@ -1714,7 +1749,6 @@ function section_courses_student_registration_form_submit($form, &$form_state) {
         );
 
         if (!user_load_by_name($edit['name'])) {
-
           //save and notify the user
           $account = user_save(drupal_anonymous_user(), $edit);
 
@@ -1727,12 +1761,12 @@ function section_courses_student_registration_form_submit($form, &$form_state) {
           $profile2 = profile2_create(array('type' => 'master'));
           $profile2->setUser($account);
           profile2_save($profile2);
+
           //Populate profile fields
           $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
           $wrapper->field_first_name->set(check_plain($ci['users_item_container']['first_name']));
           $wrapper->field_last_name->set(check_plain($ci['users_item_container']['last_name']));
           $wrapper->save();
-
 
           if (!$account) {
             drupal_set_message("Account konnte nicht gespeichert werden.", 'error');
@@ -1747,8 +1781,6 @@ function section_courses_student_registration_form_submit($form, &$form_state) {
             'entity' => $account,
           );
           og_group('node', $active_course->nid, $values);
-
-
           _user_mail_notify('register_admin_created', $account);
           //profile2_load_by_user($account);
           //profile2_save();
@@ -1767,6 +1799,9 @@ function section_courses_student_registration_form_submit($form, &$form_state) {
   }
 }
 
+/**
+ *
+ */
 function _section_courses_book_add_active_path(&$subtree_pointer, $active_mlid, $parents) {
   if (in_array($active_mlid, $parents)) {
     foreach (array_keys($subtree_pointer) as $key) {
