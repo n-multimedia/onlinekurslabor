@@ -1097,6 +1097,7 @@ function custom_general_file_entity_usage_page($file) {
 function custom_general_forum_set_breadcrumb(){
 
 
+  $node = NULL;
   switch(arg(0)){
     case  'node':
       $nid = arg(1);
@@ -1122,7 +1123,14 @@ function custom_general_forum_set_breadcrumb(){
   $parents = taxonomy_get_parents_all($term->tid);
 
   //render as text not as link
-  $parent_last = array_shift($parents);
+  switch(arg(0)) {
+    case  'node':
+      $parent_last = (object)array('name' => $node->title);
+      break;
+    case  'forum':
+      $parent_last = array_shift($parents);
+      break;
+  }
 
   while ($parent = array_pop($parents)) {
     $breadcrumb[] = l($parent->name, 'forum/' . $parent->tid);
@@ -1192,8 +1200,8 @@ function custom_general_query_term_access_alter(QueryAlterableInterface $query) 
 
   //add global forum term ids for auth users
   if($user->uid > 0) {
-    $forum_term_ids[] = NM_GLOBAL_FORUM_TID;
-    $child_terms = _custom_general_taxonomy_get_children_all(NM_GLOBAL_FORUM_TID);
+    $forum_term_ids[] = variable_get('okl_global_forum_tid', NM_GLOBAL_FORUM_TID);
+    $child_terms = _custom_general_taxonomy_get_children_all(variable_get('okl_global_forum_tid', NM_GLOBAL_FORUM_TID));
     $forum_term_ids = array_merge($forum_term_ids, $child_terms);
   }
 
