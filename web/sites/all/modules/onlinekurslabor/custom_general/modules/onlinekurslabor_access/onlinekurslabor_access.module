@@ -58,6 +58,11 @@ function onlinekurslabor_access_node_grants($account, $op) {
   //PUBLIC
   $grants['onlinekurslabor_course_public'][] = 1;
 
+  if ($account->uid > 0) {
+    $grants['onlinekurslabor_authentificated'][] = 1;
+  }
+
+
   $courses = _section_course_get_courses_by_uid($account->uid);
 
   $realm_content = 'onlinekurslabor_course_content';
@@ -203,9 +208,20 @@ function onlinekurslabor_access_node_access_records($node) {
               'priority' => 1,
             );
           }
+          else {
+            //global forum
+            $grants[] = array(
+              'realm' => 'onlinekurslabor_authentificated',
+              'gid' => 1,
+              'grant_view' => 1,
+              'grant_update' => 0,
+              'grant_delete' => 0,
+              'priority' => 1,
+            );
+          }
         }
       }
-      watchdog('onlinekurslabor_access', 'Course content without course reference (%d)', array('%d' => $node->nid . ' ' . $node->title), WATCHDOG_ALERT);
+      //watchdog('onlinekurslabor_access', 'Course content without course reference (%d)', array('%d' => $node->nid . ' ' . $node->title), WATCHDOG_ALERT);
     }
 
   }
