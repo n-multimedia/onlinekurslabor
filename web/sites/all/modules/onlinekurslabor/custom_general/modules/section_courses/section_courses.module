@@ -2465,7 +2465,7 @@ function section_courses_group_projects_form($form, &$form_state) {
       $proposal_node = node_load($proposal['target_id']);
       $options[$proposal_node->nid] = $proposal_node->title;
     }
-
+    $counter = 0;
     foreach ($course_groups as $course_group) {
 
       $selected_proposal_nid = _section_courses_course_group_get_proposal($course_group);
@@ -2473,7 +2473,7 @@ function section_courses_group_projects_form($form, &$form_state) {
       //dpm(node_load($course_group->nid));
       //dpm($default_value);
 
-      $form['proposals'][] = array(
+      $form['proposals'][$counter++] = array(
         '#markup' => '<h4>' . $course_group->title . '</h4>',
       );
       $form['proposals'][$course_group->nid] = array(
@@ -2486,7 +2486,7 @@ function section_courses_group_projects_form($form, &$form_state) {
 
     $form['submit'] = array(
       '#type' => 'submit',
-      '#value' => 'Submit'
+      '#value' => t('Submit')
     );
   }
   else {
