@@ -102,6 +102,24 @@ function section_courses_onlinekurslabor_admin_settings_page() {
     '#description' => t("Main Navigation Link Target"),
     '#required' => TRUE,
   );
+  
+   $form['okl_help_bid'] = array(
+    '#type' => 'textfield',
+    '#title' => t('ID of the help-book'),
+    '#default_value' => variable_get('okl_help_bid', NM_HELP_BID),
+    '#description' => t("The help is written in a book. Enter the ID."),
+    '#required' => TRUE,
+  );
+   
+   
+   $form['okl_help_header_fid'] = array(
+    '#type' => 'textfield',
+    '#title' => t('fid of header for help'),
+    '#default_value' => variable_get('okl_help_header_fid', NM_HELP_HEADER_FID),
+    '#description' => t("The file-ID of the header-image in help-section."),
+    '#required' => TRUE,
+  );
+    
 
   return system_settings_form($form);
 }

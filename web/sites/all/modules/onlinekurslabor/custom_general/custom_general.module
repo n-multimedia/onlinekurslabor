@@ -17,6 +17,10 @@ define("NM_BLOCK_AUTOREN", 53);
 //Global Forum
 define("NM_GLOBAL_FORUM_TID", 180);
 
+//Section Help: Variables
+define("NM_HELP_BID", 197);
+define("NM_HELP_HEADER_FID", 3769);
+
 //Content
 define("NM_DOMAIN_OVERVIEW_ID", 7); //deprecated
 define("NM_DOMAIN_OVERVIEW_PATH", "domains");
