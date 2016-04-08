@@ -55,7 +55,7 @@ function nm_h5p_features_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 1,
+        'weight' => 2,
       ),
       'nm_stream' => array(
         'label' => 'above',
@@ -118,7 +118,7 @@ function nm_h5p_features_field_default_field_instances() {
         'multiple_value_widget' => 'table',
       ),
       'type' => 'og_complex',
-      'weight' => 2,
+      'weight' => 3,
     ),
   );
 
