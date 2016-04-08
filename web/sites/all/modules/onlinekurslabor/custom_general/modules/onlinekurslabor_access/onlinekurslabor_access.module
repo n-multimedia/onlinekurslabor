@@ -59,7 +59,7 @@ function onlinekurslabor_access_node_grants($account, $op) {
   $grants['onlinekurslabor_course_public'][] = 1;
 
   if ($account->uid > 0) {
-    $grants['onlinekurslabor_authentificated'][] = 1;
+    $grants['onlinekurslabor_authenticated'][] = 1;
   }
 
 
@@ -211,7 +211,7 @@ function onlinekurslabor_access_node_access_records($node) {
           else {
             //global forum
             $grants[] = array(
-              'realm' => 'onlinekurslabor_authentificated',
+              'realm' => 'onlinekurslabor_authenticated',
               'gid' => 1,
               'grant_view' => 1,
               'grant_update' => 0,
