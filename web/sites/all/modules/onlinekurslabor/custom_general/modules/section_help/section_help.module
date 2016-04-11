@@ -4,7 +4,6 @@
  * book-navigation auf hilfe-start raus
  */
 function section_help_node_view($node, $view_mode, $langcode) {
-
     $help_bid = variable_get('okl_help_bid', NM_HELP_BID);
     if (@$node->book['bid'] == $help_bid) {
         if ($node->nid == $help_bid) {
@@ -17,20 +16,23 @@ function section_help_node_view($node, $view_mode, $langcode) {
  * header fuer hilfe rendern */
 function section_help_preprocess_page(&$variables) {
     $help_bid = variable_get('okl_help_bid', NM_HELP_BID);
+
     $node = $variables['node'];
-   
+
     if (!empty($node)) {
-        if ($node->nid == $help_bid || $variables[node]->book[bid] == $help_bid) {
-             $fid =  variable_get('okl_help_header_fid', NM_HELP_HEADER_FID);
-             
+        if ($node->nid == $help_bid || @$variables[node]->book[bid] == $help_bid) {
+            $help_book = node_load($help_bid);
+            $fid = variable_get('okl_help_header_fid', NM_HELP_HEADER_FID);
+            $header_file = file_load($fid);
             $variables['page']['header']['help_header_section'] = array(
-                //todo FID laden und einen header wie in kurs/projectsection bauen
-                '#markup' => '<a href="/help"><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/header-help.jpg" title="<?=$title?>"></a>',
+                //erstellt den header
+                '#markup' => '<a href="/help"><img src="' . file_create_url($header_file->uri) . '" title="' . $help_book->title . '"></a>',
                 '#weight' => -10
             );
+            //blendet einen abstandshalter aus
             unset($variables['page']['header']['custom_general_custom_general_space']);
+            //blendet die ueberschrift aus
             $variables['title'] = '';
-            #dpm($variables);
         }
     }
 }
