@@ -475,7 +475,7 @@ function user_modify_course_membership_state(&$entity, $context = array()) {
     $group = entity_load_single($og_membership->group_type, $og_membership->gid);
     if (!empty($group->uid) && $group->uid == $og_membership->etid && $og_membership->entity_type == 'user') {
         $owner = user_load($og_membership->etid);
-        drupal_set_message(sprintf(t('%s is the course creator and cannot be removed.'), realname_load($owner)),'error');
+        drupal_set_message(t('%accountname is the course creator and cannot be removed.', array('%accountname'=> realname_load($owner))) ,'error');
         return;
     }
 

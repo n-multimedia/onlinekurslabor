@@ -1,7 +1,7 @@
 #Translation File - onlinekurslabor
 
-msgid "%s is the course creator and cannot be removed."
-msgstr "%s ist der Kursersteller und kann nicht entfernt werden."
+msgid "%accountname is the course creator and cannot be removed."
+msgstr "%accountname ist der Kursersteller und kann nicht entfernt werden."
 
 msgid "Submit"
 msgstr "Absenden"
