@@ -168,6 +168,16 @@ function _h5p_integration_dashboard_form($form, &$form_state) {
   );
 
 
+  $form['h5p_timestamps'] = array(
+    '#type' => 'checkbox',
+    '#title' => '&nbsp;'.t('Add timestamp area'),
+    '#description' => t('Written timestamps in this area will automatically be converted to links'),
+    '#required' => false,
+    '#maxlength' => NULL,
+    '#default_value' => '',
+    '#weight' => 0
+    
+  );
 
 
   $form['h5p_insert'] = array(
