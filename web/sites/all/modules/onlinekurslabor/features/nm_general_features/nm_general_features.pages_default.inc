@@ -227,6 +227,8 @@ function nm_general_features_default_page_manager_pages() {
         'contains' => 'region',
         'children' => array(
           0 => 'test',
+          1 => 'image_video',
+          2 => 'platzhalter',
         ),
         'parent' => 'main',
         'class' => 'row-fluid',
@@ -243,10 +245,10 @@ function nm_general_features_default_page_manager_pages() {
       'test' => array(
         'type' => 'region',
         'title' => 'Titel_OKL',
-        'width' => 100,
+        'width' => '64.94139740527254',
         'width_type' => '%',
         'parent' => '1',
-        'class' => 'Titel_OKL',
+        'class' => 'span7',
       ),
       'partner' => array(
         'type' => 'region',
@@ -280,6 +282,22 @@ function nm_general_features_default_page_manager_pages() {
         'parent' => 'main-row',
         'class' => 'span4',
       ),
+      'image_video' => array(
+        'type' => 'region',
+        'title' => 'Platzhalter',
+        'width' => '5.050505050505102',
+        'width_type' => '%',
+        'parent' => '1',
+        'class' => '',
+      ),
+      'platzhalter' => array(
+        'type' => 'region',
+        'title' => 'Image-Video',
+        'width' => '30.008097544223233',
+        'width_type' => '%',
+        'parent' => '1',
+        'class' => 'span5',
+      ),
     ),
   );
   $display->panel_settings = array(
@@ -308,6 +326,7 @@ function nm_general_features_default_page_manager_pages() {
       'middle' => NULL,
       'lehrender' => NULL,
       'student' => NULL,
+      'image_video' => NULL,
     ),
     'media' => array(
       'style' => '-1',
@@ -325,6 +344,31 @@ function nm_general_features_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
+    $pane->pid = 'new-966f2e7b-0041-496d-ac97-0252d1e68b4c';
+    $pane->panel = 'image_video';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'spacer',
+      'title' => '',
+      'body' => '&nbsp;',
+      'format' => 'filtered_html',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '966f2e7b-0041-496d-ac97-0252d1e68b4c';
+    $display->content['new-966f2e7b-0041-496d-ac97-0252d1e68b4c'] = $pane;
+    $display->panels['image_video'][0] = 'new-966f2e7b-0041-496d-ac97-0252d1e68b4c';
+    $pane = new stdClass();
     $pane->pid = 'new-875794f9-d9c8-416f-a60a-06600be3b6f9';
     $pane->panel = 'lehrender';
     $pane->type = 'custom';
@@ -338,7 +382,7 @@ function nm_general_features_default_page_manager_pages() {
 $vars = array();
 $vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_lehrender.png" class="span12"  />\';
 $vars[\'description\'] = "Informationen für Hochschullehrende";
-$vars[\'link\'] = "registrieren?mode=lehrende";
+$vars[\'link\'] = "informationen?mode=lehrende";
 
 return theme(\'nm_fancy_box\', $vars);
 
@@ -403,7 +447,7 @@ return theme(\'nm_fancy_box\', $vars);
 $vars = array();
 $vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_partner.png" class="span12"  />\';
 $vars[\'description\'] = "Informationen für Kooperationspartner";
-$vars[\'link\'] = "registrieren?mode=partner";
+$vars[\'link\'] = "informationen?mode=partner";
 
 return theme(\'nm_fancy_box\', $vars);
 
@@ -423,6 +467,34 @@ return theme(\'nm_fancy_box\', $vars);
     $display->content['new-c38e1c99-7f8e-406c-8368-1804779f25bf'] = $pane;
     $display->panels['partner_'][0] = 'new-c38e1c99-7f8e-406c-8368-1804779f25bf';
     $pane = new stdClass();
+    $pane->pid = 'new-273be677-8e9f-4671-8e2b-c04a78baf7ce';
+    $pane->panel = 'platzhalter';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'Video',
+      'title' => '',
+      'body' => ' <video width="100%" controls="controls" poster="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo2.png">
+  <source src="https://onlinekurslabor.phil.uni-augsburg.de/sites/default/files/imagefilm_onlinekurslabor.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video> ',
+      'format' => 'full_html',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $pane->locks = array();
+    $pane->uuid = '273be677-8e9f-4671-8e2b-c04a78baf7ce';
+    $display->content['new-273be677-8e9f-4671-8e2b-c04a78baf7ce'] = $pane;
+    $display->panels['platzhalter'][0] = 'new-273be677-8e9f-4671-8e2b-c04a78baf7ce';
+    $pane = new stdClass();
     $pane->pid = 'new-b656ed25-75c4-4397-97e4-243d47158514';
     $pane->panel = 'student';
     $pane->type = 'custom';
@@ -436,7 +508,7 @@ return theme(\'nm_fancy_box\', $vars);
 $vars = array();
 $vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_student.png" class="span12"  />\';
 $vars[\'description\'] = "Informationen für Studierende";
-$vars[\'link\'] = "/registrieren?mode=studierende";
+$vars[\'link\'] = "/informationen?mode=studierende";
 
 return theme(\'nm_fancy_box\', $vars);
 
@@ -465,7 +537,7 @@ return theme(\'nm_fancy_box\', $vars);
     $pane->configuration = array(
       'admin_title' => '',
       'title' => '',
-      'body' => '<h2 style="text-align: center;"><a href="/onlinekurslabor">Onlinekurslabor</a></h2><p style="text-align: center;"><strong>Das Onlinekurslabor ist eine digitale Lernplattform des Medienlabors für Studierende, Hochschullehrende und Partnerorganisationen.</strong></p><p style="text-align: center;">Im Fokus liegen insbesondere erfahrungsorientiertes und forschendes Lernen in realen Projekten. Hier werden Ihnen virtuelle Werkzeuge zur Begleitung der Präsenzlehre,</p><p style="text-align: center;">zur Erstellung von E-Learning-Kursen und zur Organisation von Projektseminaren bereitgestellt.</p><p style="text-align: center;">&nbsp;</p>',
+      'body' => '<h2 style="color: #EB690B;">Onlinekurslabor</h2><p style="text-align: justify;">Das Onlinekurslabor ist eine digitale Lernplattform des Medienlabors für Studierende, Hochschullehrende und Partnerorganisationen.</p><p style="text-align: justify;">Im Fokus liegen insbesondere erfahrungsorientiertes und forschendes Lernen in realen Projekten. Hier werden Ihnen virtuelle Werkzeuge zur Begleitung der Präsenzlehre, zur Erstellung von E-Learning-Kursen und zur Organisation von Projektseminaren bereitgestellt.</p><p>&nbsp;</p>',
       'format' => 'filtered_html',
       'substitute' => TRUE,
     );

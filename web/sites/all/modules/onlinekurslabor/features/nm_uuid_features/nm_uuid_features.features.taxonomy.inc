@@ -13,7 +13,7 @@ function nm_uuid_features_taxonomy_default_vocabularies() {
       'name' => 'Foren',
       'machine_name' => 'forums',
       'description' => 'Forum Navigations-Vokabular',
-      'hierarchy' => 0,
+      'hierarchy' => 1,
       'module' => 'forum',
       'weight' => -10,
       'rdf_mapping' => array(

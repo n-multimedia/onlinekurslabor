@@ -463,21 +463,23 @@ function og_membership_assign_course_role(&$entity, $context = array()) {
 
 function user_modify_course_membership_state(&$entity, $context = array()) {
 
-  $course_nid = $context['course_nid'];
-  $state = $context['state'];
-  $og_membership = og_get_membership('node', $course_nid, 'user', $entity->uid);
+    $course_nid = $context['course_nid'];
+    $state = $context['state'];
+    $og_membership = og_get_membership('node', $course_nid, 'user', $entity->uid);
 
-  if ($og_membership->state == $state) {
-    return;
-  }
+    if ($og_membership->state == $state) {
+        return;
+    }
 
-  // Don't process the group manager, if exists.
-  $group = entity_load_single($og_membership->group_type, $og_membership->gid);
-  if (!empty($group->uid) && $group->uid == $og_membership->etid && $og_membership->entity_type == 'user') {
-    return;
-  }
+    // Don't process the group manager, if exists.
+    $group = entity_load_single($og_membership->group_type, $og_membership->gid);
+    if (!empty($group->uid) && $group->uid == $og_membership->etid && $og_membership->entity_type == 'user') {
+        $owner = user_load($og_membership->etid);
+        drupal_set_message(t('%accountname is the course creator and cannot be removed.', array('%accountname'=> realname_load($owner))) ,'error');
+        return;
+    }
 
-  if ($state === "delete") {
+    if ($state === "delete") {
         $og_membership->delete();
     } else {
         $og_membership->state = $state;

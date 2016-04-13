@@ -26,3 +26,7 @@ msgstr "Aus Kurs austragen"
 
 msgid "Create new accounts: enter \"Firstname Lastname example@email.com\". <em>One entry per line</em> (if an account with that email address already exists, the user will be imported)"
 msgstr "Neue Nutzer anlegen: Syntax \"Vorname Nachname example@email.com\". Ein Eintrag pro Zeile (existiert bereits ein entsprechender Account, wird der Nutzer in den Kurs eingetragen)"
+
+msgid "Hello"
+msgstr "Hallo"
+

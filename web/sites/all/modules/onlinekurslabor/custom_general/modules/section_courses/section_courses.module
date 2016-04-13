@@ -95,6 +95,32 @@ function section_courses_onlinekurslabor_admin_settings_page() {
     '#required' => TRUE,
   );
 
+  $form['okl_global_forum_tid'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Global Forum Term ID'),
+    '#default_value' => variable_get('okl_global_forum_tid', NM_GLOBAL_FORUM_TID),
+    '#description' => t("Main Navigation Link Target"),
+    '#required' => TRUE,
+  );
+  
+   $form['okl_help_bid'] = array(
+    '#type' => 'textfield',
+    '#title' => t('ID of the help-book'),
+    '#default_value' => variable_get('okl_help_bid', NM_HELP_BID),
+    '#description' => t("The help is written in a book. Enter the ID."),
+    '#required' => TRUE,
+  );
+   
+   
+   $form['okl_help_header_fid'] = array(
+    '#type' => 'textfield',
+    '#title' => t('fid of header for help'),
+    '#default_value' => variable_get('okl_help_header_fid', NM_HELP_HEADER_FID),
+    '#description' => t("The file-ID of the header-image in help-section."),
+    '#required' => TRUE,
+  );
+    
+
   return system_settings_form($form);
 }
 
@@ -905,8 +931,13 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
                 preg_match($regex, $path, $matches);
                 if (!empty($matches)) {
                   $tid = $matches[1];
-                  $path = _section_courses_get_forum_href($course, $tid);
-                  $original_path = $path;
+                  $term = taxonomy_term_load($tid);
+                  //check if forum is assigned to a group
+                  //if not.. its a global form. Do not rewrite the link.
+                  if(!empty($term->og_group_ref)) {
+                    $path = _section_courses_get_forum_href($course, $tid);
+                    $original_path = $path;
+                  }
                 }
               }
 
@@ -2025,6 +2056,16 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
       $form['actions']['submit']['#value'] = t('Publish');
     }
   }
+  
+  /**
+     * Generische Lösung: Eingereicht-am-Feld
+     */
+    if ($form_id == 'courses_generic_task_solution_node_form') {
+
+        //hat eintrag - verstecken
+          $form['field_submitted_on']['#access'] = user_access('administer content');
+        
+    }
 }
 
 /**
@@ -2477,7 +2518,7 @@ function section_courses_group_projects_form($form, &$form_state) {
       $proposal_node = node_load($proposal['target_id']);
       $options[$proposal_node->nid] = $proposal_node->title;
     }
-
+    $counter = 0;
     foreach ($course_groups as $course_group) {
 
       $selected_proposal_nid = _section_courses_course_group_get_proposal($course_group);
@@ -2485,7 +2526,7 @@ function section_courses_group_projects_form($form, &$form_state) {
       //dpm(node_load($course_group->nid));
       //dpm($default_value);
 
-      $form['proposals'][] = array(
+      $form['proposals'][$counter++] = array(
         '#markup' => '<h4>' . $course_group->title . '</h4>',
       );
       $form['proposals'][$course_group->nid] = array(
@@ -2498,7 +2539,7 @@ function section_courses_group_projects_form($form, &$form_state) {
 
     $form['submit'] = array(
       '#type' => 'submit',
-      '#value' => 'Submit'
+      '#value' => t('Submit')
     );
   }
   else {

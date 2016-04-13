@@ -329,18 +329,18 @@ div.forum-post {
     display:inline;
     font-weight:bold;
     position:absolute;
-    left:160px;
+    left:190px;
 }
 
 /* Author information pane */
 .forum-post-panel-sub {
     float: left;
     line-height: 100%;
-    width: 150px;
+    width: 180px;
 }
 
 .forum-post-panel-sub .author-pane {
-    margin: 10px;
+    margin: 15px;
 }
 
 .forum-post-panel-sub .author-pane .author-name {
@@ -367,7 +367,7 @@ div.forum-post {
 
 /* Post text area */
 .forum-post-panel-main {
-    margin-left: 150px; /*Set left margin to LeftColumnWidth*/
+    margin-left: 180px; /*Set left margin to LeftColumnWidth*/
 
     /* These heights keep the AP items from jumping out of the bottom. Depending
        on how many items you display, there, this number may need to be adjusted
