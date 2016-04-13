@@ -2104,6 +2104,19 @@ function nm_section_courses_features_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'In diesem Kurs wurde noch keine Kursdokumente angelegt.
+
+
+<hr>
+<div class="visible-dozent visible-admin">
+Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <code>Dokument+</code>
+</div>';
+  $handler->display->display_options['empty']['area']['format'] = 'full_html';
   /* Relationship: OG membership: OG membership from Node */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
@@ -2237,6 +2250,13 @@ function nm_section_courses_features_views_default_views() {
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
+    t('In diesem Kurs wurde noch keine Kursdokumente angelegt.
+
+
+<hr>
+<div class="visible-dozent visible-admin">
+Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <code>Dokument+</code>
+</div>'),
     t('OG membership from node'),
     t('Herunterladen'),
     t('Typ'),
@@ -2303,6 +2323,13 @@ function nm_section_courses_features_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'In diesem Kurs wurde noch keine Kursgruppen angelegt.';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   /* Relationship: OG membership: OG membership from Node */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
@@ -2420,6 +2447,7 @@ function nm_section_courses_features_views_default_views() {
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
+    t('In diesem Kurs wurde noch keine Kursgruppen angelegt.'),
     t('OG membership from node'),
     t('Name'),
     t('Beschreibung'),
@@ -2798,6 +2826,19 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['style_options']['row_class'] = 'row-fluid';
   $handler->display->display_options['row_plugin'] = 'fields';
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'Keine aktuellen Ankündigungen für diesen Kurs.
+
+<hr>
+<div class="visible-dozent visible-admin">
+Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <code>Neuigkeit+</code>
+</div>
+';
+  $handler->display->display_options['empty']['area']['format'] = 'full_html';
   /* Relationship: OG membership: OG membership from Node */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
@@ -2918,6 +2959,13 @@ function nm_section_courses_features_views_default_views() {
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
+    t('Keine aktuellen Ankündigungen für diesen Kurs.
+
+<hr>
+<div class="visible-dozent visible-admin">
+Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <code>Neuigkeit+</code>
+</div>
+'),
     t('OG membership from node'),
     t('author'),
     t('Alle'),
@@ -3190,6 +3238,14 @@ function nm_section_courses_features_views_default_views() {
   $handler = $view->new_display('panel_pane', 'My Courses', 'panel_pane_2');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Meine Kurse';
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'In diesem Kurs wurde noch keine Kursübersicht angelegt.';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: OG membership: OG membership from Node group */
   $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
@@ -3306,6 +3362,7 @@ function nm_section_courses_features_views_default_views() {
     t('Alle'),
     t('My Courses'),
     t('Meine Kurse'),
+    t('In diesem Kurs wurde noch keine Kursübersicht angelegt.'),
     t('user from OG membership'),
     t('View panes'),
     t('Courses Offer'),
@@ -3402,6 +3459,14 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['footer']['result']['table'] = 'views';
   $handler->display->display_options['footer']['result']['field'] = 'result';
   $handler->display->display_options['footer']['result']['content'] = 'Anzahl: @total';
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'Es wurde noch keine Lösung für diese Aufgabe angelegt.
+<hr>';
+  $handler->display->display_options['empty']['area']['format'] = 'full_html';
   /* Relationship: Content: Author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
@@ -3542,6 +3607,8 @@ function nm_section_courses_features_views_default_views() {
     t('nächste Seite ›'),
     t('letzte Seite »'),
     t('Anzahl: @total'),
+    t('Es wurde noch keine Lösung für diese Aufgabe angelegt.
+<hr>'),
     t('author'),
     t('OG membership from node'),
     t('.'),
@@ -3583,6 +3650,19 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
   $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['style_plugin'] = 'table';
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'In diesem Kurs wurde noch keine Aufgaben angelegt.
+
+<hr>
+
+<div class="visible-dozent visible-admin">
+Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <code>Aufgabe+</code>
+</div>';
+  $handler->display->display_options['empty']['area']['format'] = 'full_html';
   /* Relationship: OG membership: OG membership from Node */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
@@ -3705,6 +3785,13 @@ function nm_section_courses_features_views_default_views() {
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
+    t('In diesem Kurs wurde noch keine Aufgaben angelegt.
+
+<hr>
+
+<div class="visible-dozent visible-admin">
+Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <code>Aufgabe+</code>
+</div>'),
     t('OG membership from node'),
     t('Status'),
     t('Typ'),

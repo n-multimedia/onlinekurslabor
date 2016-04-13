@@ -52,6 +52,18 @@ function nm_h5p_features_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'Für dieses Lehrthema wurden noch keine interaktiven Medien hinzugefügt.
+
+<hr>
+<div class="visible-autor visible-admin">
+Hinzufügen über die Werkzeugleiste (rechts) -> <code>H5P</code> -> <code>H5P+</code>
+</div>';
+  $handler->display->display_options['empty']['area']['format'] = 'full_html';
   /* Relationship: OG membership: OG membership from Node */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
@@ -129,6 +141,12 @@ function nm_h5p_features_views_default_views() {
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
+    t('Für dieses Lehrthema wurden noch keine interaktiven Medien hinzugefügt.
+
+<hr>
+<div class="visible-autor visible-admin">
+Hinzufügen über die Werkzeugleiste (rechts) -> <code>H5P</code> -> <code>H5P+</code>
+</div>'),
     t('OG membership from node'),
     t('Aufgabe'),
     t('Delete link'),

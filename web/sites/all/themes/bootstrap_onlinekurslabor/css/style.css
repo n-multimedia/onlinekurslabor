@@ -1070,3 +1070,24 @@ PROJECTS
 .forum-tools {
     display: none;
 }
+
+.qaa_solution_button {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.qaa_solution_button btn active{
+    color: white;
+}
+.solution {
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 1em;
+}
+
+/* PrivateMSG */
+
+#privatemsg-list-form .control-group{
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+

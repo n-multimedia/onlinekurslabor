@@ -2399,7 +2399,7 @@ function section_projects_features_field_default_field_instances() {
     'ds_extras_field_template' => '',
     'entity_type' => 'node',
     'field_name' => 'field_po_short_description',
-    'label' => 'Kurzberschreibung',
+    'label' => 'Kurzberschreibung', // CHANGE
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
@@ -3316,7 +3316,7 @@ function section_projects_features_field_default_field_instances() {
 ');
   t('Kooperationsvereinbarung');
   t('Kursgruppe');
-  t('Kurzberschreibung');
+  t('Kurzberschreibung'); // CHANGE! 
   t('Laufzeit des Projekts von einem bestimmten Datum bis zu einem bestimmten Datum');
   t('Logo');
   t('Motivation und Ziele');

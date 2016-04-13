@@ -67,7 +67,13 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = '<span style="color:#ccc;">Keine Einträge</span>';
+  $handler->display->display_options['empty']['area']['content'] = '<span style="color:#ccc;">Keine Einträge</span>
+
+
+<hr>
+<div class="visible-autor visible-admin">
+Oben <code>Neues Thema anlegen</code> drücken.
+</div>';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   /* Field: Content: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
@@ -134,7 +140,13 @@ function nm_section_content_features_views_default_views() {
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
-    t('<span style="color:#ccc;">Keine Einträge</span>'),
+    t('<span style="color:#ccc;">Keine Einträge</span>
+
+
+<hr>
+<div class="visible-autor visible-admin">
+Oben <code>Neues Thema anlegen</code> drücken.
+</div>'),
     t('Name'),
     t('Status'),
     t('Content pane'),
@@ -563,11 +575,35 @@ function nm_section_content_features_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'In diesem Kurs wurden noch keine Medien angelegt.
+
+<div class="visible-dozent visible-admin">
+Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; gewünschten Inhalt auswählen
+</div>';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   $handler->display->display_options['path'] = 'domain-media';
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'Noch keine Medien im Lehrtext vorhanden
+<hr>
+<div class="visible-admin visible-dozent">
+Alle Medien aus dem <code>Lehrtext</code> werden hier aufgelistet.
+</div>';
+  $handler->display->display_options['empty']['area']['format'] = 'full_html';
   $handler->display->display_options['argument_input'] = array(
     'gid' => array(
       'type' => 'panel',
@@ -610,7 +646,17 @@ function nm_section_content_features_views_default_views() {
     t('Alle'),
     t('Typ'),
     t('Page'),
+    t('In diesem Kurs wurden noch keine Medien angelegt.
+
+<div class="visible-dozent visible-admin">
+Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; gewünschten Inhalt auswählen
+</div>'),
     t('Content pane'),
+    t('Noch keine Medien im Lehrtext vorhanden
+<hr>
+<div class="visible-admin visible-dozent">
+Alle Medien aus dem <code>Lehrtext</code> werden hier aufgelistet.
+</div>'),
     t('View panes'),
     t('Media browser tab'),
   );

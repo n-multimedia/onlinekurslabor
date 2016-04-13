@@ -268,6 +268,23 @@ function custom_general_init() {
       $plugin->execute($group);
     }
   }
+  
+  global $user;
+  $role = 'student';
+    // Check to see if $user has the administrator role.
+
+  if (in_array( NM_ROLE_ADMIN , array_values($user->roles)) or in_array( NM_ROLE_MODERATOR , array_values($user->roles)) ) {
+     $role = 'admin';
+     
+  }
+  else if (in_array( NM_ROLE_DOZENT , array_values($user->roles)) ) {
+      $role = 'dozent';
+  }
+  else if (in_array( NM_ROLE_AUTOR , array_values($user->roles)) ) {
+      $role = 'autor';
+  }
+  drupal_add_css(drupal_get_path('module', 'custom_general') .'/css/' . $role . '.css');
+
 }
 
 function custom_general_context_page_reaction() {
