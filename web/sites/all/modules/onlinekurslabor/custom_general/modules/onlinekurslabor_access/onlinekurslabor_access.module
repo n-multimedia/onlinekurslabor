@@ -1,4 +1,4 @@
-<?
+<?php
 
 //restrict access to other users solutions
 //restrict access for instructors to see group streams
