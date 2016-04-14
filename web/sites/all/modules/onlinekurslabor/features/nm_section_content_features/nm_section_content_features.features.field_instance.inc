@@ -1108,7 +1108,7 @@ function nm_section_content_features_field_default_field_instances() {
     'settings' => array(
       'description_field' => 0,
       'file_directory' => 'chapter',
-      'file_extensions' => 'png gif jpg jpeg txt pdf ppt doc docx',
+      'file_extensions' => 'jpg jpeg gif png txt doc docx xls xlsx pdf ppt pptx pps ppsx odt ods odp mp3 mov mp4 m4a m4v mpeg avi ogg oga ogv weba webp webm wmv ico',
       'max_filesize' => '',
       'user_register_form' => FALSE,
     ),
@@ -1124,6 +1124,7 @@ function nm_section_content_features_field_default_field_instances() {
           'public' => 'public',
         ),
         'allowed_types' => array(
+          'application' => 0,
           'audio' => 'audio',
           'document' => 'document',
           'image' => 'image',
@@ -1137,6 +1138,7 @@ function nm_section_content_features_field_default_field_instances() {
           'remote_file' => 0,
           'upload' => 0,
         ),
+        'multiple_value_widget' => 'table',
         'progress_indicator' => 'throbber',
       ),
       'type' => 'media_generic',
