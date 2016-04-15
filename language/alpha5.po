@@ -1,13 +1,17 @@
 #Translation File - onlinekurslabor
 
-msgid "%accountname is the course creator and cannot be removed."
-msgstr "%accountname ist der Kursersteller und kann nicht entfernt werden."
+msgid ""
+msgstr ""
 
-msgid "Submit"
-msgstr "Absenden"
+msgid ""
+msgstr ""
 
-msgid "Add timestamp area"
-msgstr "Zeitstempel-Bereich hinzufügen"
+msgid ""
+msgstr ""
 
-msgid "Written timestamps in this area will automatically be converted to links"
-msgstr "Zeitstempel in diesem Bereich werden automatisch in Videosprungstellen konvertiert"
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
