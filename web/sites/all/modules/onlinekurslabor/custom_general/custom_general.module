@@ -1231,7 +1231,7 @@ function custom_general_query_term_access_alter(QueryAlterableInterface $query) 
     $table = $tableinfo['table'];
     if (!($table instanceof SelectQueryInterface) && $table == 'taxonomy_term_data') {
       //restrict tid for Forum Vid only!
-      $query->condition(db_or()->condition("$talias.tid", $forum_term_ids, 'IN')->condition("$talias.vid", 2, '<>'));
+      $query->condition(db_or()->condition("$talias.vid", 2, '<>')->condition("$talias.tid", $forum_term_ids, 'IN'));
     }
   }
 
