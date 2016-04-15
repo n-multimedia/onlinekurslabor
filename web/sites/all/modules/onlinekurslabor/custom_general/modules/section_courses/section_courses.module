@@ -2074,7 +2074,12 @@ function section_courses_field_widget_form_alter(&$element, &$form_state, $conte
                 ))
               );
             }
-            $options += array_intersect_key($element['#options'], $allowed);
+            //denied access to root term (tid=10), so the widget options cannot be rendered properly.
+            //alternative solution here
+            //advantage: the options dont need to be build and removed afterwards
+            //$options += array_intersect_key($element['#options'], $allowed);
+
+            $options += $allowed;
 
             $element['#options'] = $options;
           }
