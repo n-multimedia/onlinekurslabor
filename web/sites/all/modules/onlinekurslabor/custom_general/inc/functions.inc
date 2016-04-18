@@ -607,8 +607,8 @@ function custom_general_get_users_in_group_by_role($gid, $roles) {
   return $result->fetchAll();
 }
 /**
- * get user's solution of a tasks
- * real, da die Funktion wirklich das macht
+ * get the members of a user in a course having the given role-name
+ * real, da die Funktion wirklich das macht, was der name sagt
  * @param int  $gid Group ID - like node-id of a course (problably won't work if group is not a node)
  * @param string $role_name like "kurs-dozent"
  * @param int $og_state see OG_STATE_... constants
