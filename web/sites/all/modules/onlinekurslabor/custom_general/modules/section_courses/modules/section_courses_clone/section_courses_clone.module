@@ -207,10 +207,10 @@ function section_courses_clone_course(&$entity, $context = array()) {
     $dozenten = $tutoren = array();
     if ($clone_persons['professor']){
         // returns too much people. e.g. Sergej instead of only the professors
-        $dozenten = custom_general_get_users_in_group_by_role($entity->nid, array('kurs-dozent',NM_ROLE_DOZENT));  
+        $dozenten = custom_general_get_users_in_group_by_role_real($entity->nid, 'kurs-dozent');  
     }
     if($clone_persons['tutor']){
-        $tutoren = custom_general_get_users_in_group_by_role($entity->nid, array('kurs-tutoren'));
+        $tutoren = custom_general_get_users_in_group_by_role_real($entity->nid, 'kurs-tutor');
     }
     
     foreach ($dozenten as $dozent){
