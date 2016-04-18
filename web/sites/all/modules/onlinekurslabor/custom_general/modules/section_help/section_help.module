@@ -17,7 +17,7 @@ function section_help_node_view($node, $view_mode, $langcode) {
 function section_help_preprocess_page(&$variables) {
     $help_bid = variable_get('okl_help_bid', NM_HELP_BID);
 
-    $node = $variables['node'];
+    $node = @$variables['node'];
 
     if (!empty($node)) {
         if ($node->nid == $help_bid || @$variables[node]->book[bid] == $help_bid) {

@@ -320,6 +320,10 @@ Margin between content and navigation
     margin-bottom:0;
 }
 
+/*fuer alle disabled-buttons not-allowed-cursor setzen*/
+.btn.disabled a{
+    cursor: not-allowed;
+}
 
 /*
 */

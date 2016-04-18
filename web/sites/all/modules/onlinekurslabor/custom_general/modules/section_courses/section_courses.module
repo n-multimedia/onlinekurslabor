@@ -2594,6 +2594,7 @@ function section_courses_group_projects_form_submit($form, &$form_state) {
     //$wrapper->field_course_group_proposal->set(node_load($proposal_nid));
     //$wrapper->save();
   }
+    drupal_set_message('Zuweisung gespeichert','status');
 }
 
 function _section_courses_course_group_get_proposal($course_group) {
