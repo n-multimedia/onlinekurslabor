@@ -301,3 +301,15 @@ function onlinekurslabor_access_node_access_records($node) {
 
   return !empty($grants) ? $grants : array();
 }
+
+/**
+ * Implements hook_media_browser_plugins_alter().
+ * deaktiviere library für non-admins
+ */
+function onlinekurslabor_access_media_browser_plugins_alter(&$plugins) {
+    global $user;
+    if (!in_array('administrator', array_values($user->roles))) {
+        // Hide the "Library" tab on the WYSIWYG media upload widget.
+        unset($plugins['media_default--media_browser_1']);
+    }
+}
