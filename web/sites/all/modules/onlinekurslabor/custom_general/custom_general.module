@@ -296,11 +296,17 @@ function custom_general_context_page_reaction() {
 }
 
 
-function custom_general_form_alter($form, $form_state, $form_id) {
+function custom_general_form_alter(&$form, &$form_state, $form_id) {
+    global $user;
 
+  // Check to see if $user has does not have the administrator role.
+  if (!in_array('administrator', array_values($user->roles))) {
+    $form['#group_children']['biblio_fieldset']['#access'] = FALSE; 
+  }
+  
   if ($form_id != "book_admin_edit")
     return;
-
+  
   $plugin = context_get_plugin('condition', 'custom_general_condition_section_content');
   if ($plugin) {
 
@@ -1287,3 +1293,4 @@ function _custom_general_taxonomy_get_children($tid, $vid = 0) {
 
   return isset($children[$tid]) ? $children[$tid] : array();
 }
+
