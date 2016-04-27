@@ -274,18 +274,18 @@ function custom_general_init() {
   }
   
     global $user;
-    $role       = 'student';
+    $role       = array();
     // Check to see if $user has the administrator role.
     $gid        = _section_courses_get_active_course();
     if (in_array( NM_ROLE_ADMIN , array_values($user->roles)) or in_array( NM_ROLE_MODERATOR , array_values($user->roles)) ) {
-       $role = 'admin';
+       $role[] = 'admin';
 
     }
-    else if (in_array( NM_ROLE_DOZENT , array_values($user->roles)) ) {
-        $role = 'dozent';
+    if (in_array( NM_ROLE_DOZENT , array_values($user->roles)) ) {
+        $role[] = 'dozent';
     }
-    else if (in_array( NM_ROLE_AUTOR , array_values($user->roles)) ) {
-        $role = 'autor';
+    if (in_array( NM_ROLE_AUTOR , array_values($user->roles)) ) {
+        $role[] = 'autor';
     }
     
     if ($gid != null){
@@ -293,11 +293,18 @@ function custom_general_init() {
         $teachers   = custom_general_get_users_in_group_by_role_real($gid->nid, NM_ROLE_DOZENT);
         
         if( (array_values($tutors) != false && in_array($user, array_values($tutors))) || (array_values($teachers) != false && in_array($user, array_values($teachers)))){
-            $role = 'dozent';
+            $role[] = 'dozent';
         }
     }
+    if (count($role) < 1){
+        $role[] = 'student';
+    }
+    $role = array_unique($role);
+    foreach ( $role as $position)
+        {
+            drupal_add_css(drupal_get_path('module', 'custom_general') .'/css/' . $position . '.css');
+        }
     
-    drupal_add_css(drupal_get_path('module', 'custom_general') .'/css/' . $role . '.css');
 }
 
 function custom_general_context_page_reaction() {
