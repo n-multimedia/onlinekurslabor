@@ -279,6 +279,8 @@ function custom_general_init() {
     $gid        = _section_courses_get_active_course();
     if (in_array( NM_ROLE_ADMIN , array_values($user->roles)) or in_array( NM_ROLE_MODERATOR , array_values($user->roles)) ) {
        $role[] = 'admin';
+       $role[] = 'dozent';
+       $role[] = 'autor';
 
     }
     if (in_array( NM_ROLE_DOZENT , array_values($user->roles)) ) {
