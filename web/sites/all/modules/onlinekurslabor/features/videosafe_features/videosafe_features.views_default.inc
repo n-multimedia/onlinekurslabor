@@ -36,7 +36,7 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Feld: Inhalt: Ordner */
+  /* Field: Content: Ordner */
   $handler->display->display_options['fields']['field_parent_folder']['id'] = 'field_parent_folder';
   $handler->display->display_options['fields']['field_parent_folder']['table'] = 'field_data_field_parent_folder';
   $handler->display->display_options['fields']['field_parent_folder']['field'] = 'field_parent_folder';
@@ -47,12 +47,12 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['fields']['field_parent_folder']['settings'] = array(
     'link' => 0,
   );
-  /* Sort criterion: Inhalt: Post date */
+  /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: Inhalt: Nid */
+  /* Contextual filter: Content: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
   $handler->display->display_options['arguments']['nid']['field'] = 'nid';
@@ -62,14 +62,14 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
-  /* Filter criterion: Inhalt: Veröffentlicht */
+  /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Inhalt: Typ */
+  /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
@@ -98,7 +98,7 @@ function videosafe_features_views_default_views() {
   );
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Feld: Inhalt: Ordner */
+  /* Field: Content: Ordner */
   $handler->display->display_options['fields']['field_parent_folder']['id'] = 'field_parent_folder';
   $handler->display->display_options['fields']['field_parent_folder']['table'] = 'field_data_field_parent_folder';
   $handler->display->display_options['fields']['field_parent_folder']['field'] = 'field_parent_folder';
@@ -108,7 +108,7 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['fields']['field_parent_folder']['settings'] = array(
     'link' => 1,
   );
-  /* Feld: Inhalt: Nid */
+  /* Field: Content: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
@@ -116,7 +116,7 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['fields']['nid']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['nid']['alter']['text'] = '&nbsp;&gt;&nbsp;';
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Feld: Inhalt: Titel */
+  /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
@@ -125,14 +125,14 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Inhalt: Veröffentlicht */
+  /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Inhalt: Typ */
+  /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
@@ -200,16 +200,17 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Feld: Inhalt: Titel */
+  /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  /* Feld: Inhalt: Body */
+  $handler->display->display_options['fields']['title']['label'] = 'Unterordner';
+  /* Field: Content: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
   $handler->display->display_options['fields']['body']['label'] = 'Beschreibung';
-  /* Feld: Inhalt: Updated/commented date */
+  /* Field: Content: Updated/commented date */
   $handler->display->display_options['fields']['last_updated']['id'] = 'last_updated';
   $handler->display->display_options['fields']['last_updated']['table'] = 'node_comment_statistics';
   $handler->display->display_options['fields']['last_updated']['field'] = 'last_updated';
@@ -217,14 +218,14 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['fields']['last_updated']['date_format'] = 'custom';
   $handler->display->display_options['fields']['last_updated']['custom_date_format'] = 'd.m.Y H:i:s';
   $handler->display->display_options['fields']['last_updated']['second_date_format'] = 'long';
-  /* Feld: Inhalt: Edit link */
+  /* Field: Content: Edit link */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['label'] = '';
   $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Inhalt: Ordner (field_parent_folder) */
+  /* Contextual filter: Content: Ordner (field_parent_folder) */
   $handler->display->display_options['arguments']['field_parent_folder_target_id']['id'] = 'field_parent_folder_target_id';
   $handler->display->display_options['arguments']['field_parent_folder_target_id']['table'] = 'field_data_field_parent_folder';
   $handler->display->display_options['arguments']['field_parent_folder_target_id']['field'] = 'field_parent_folder_target_id';
@@ -245,7 +246,7 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['allow']['fields_override'] = 0;
   $handler->display->display_options['argument_input'] = array(
     'field_parent_folder_target_id' => array(
-      'type' => 'panel',
+      'type' => 'user',
       'context' => 'entity:node.members--1',
       'context_optional' => 0,
       'panel' => '0',
@@ -272,15 +273,13 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['style_options']['default'] = 'field_video';
   $handler->display->display_options['style_options']['info'] = array(
     'title' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'field_video' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -315,25 +314,17 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Feld: Inhalt: Titel */
+  /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  /* Feld: Inhalt: Video */
-  $handler->display->display_options['fields']['field_video']['id'] = 'field_video';
-  $handler->display->display_options['fields']['field_video']['table'] = 'field_data_field_video';
-  $handler->display->display_options['fields']['field_video']['field'] = 'field_video';
-  $handler->display->display_options['fields']['field_video']['label'] = 'Dateiname';
-  $handler->display->display_options['fields']['field_video']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['field_video']['settings'] = array(
-    'file_view_mode' => 'media_12',
-  );
-  /* Feld: Inhalt: Body */
+  $handler->display->display_options['fields']['title']['label'] = 'Videos';
+  /* Field: Content: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
   $handler->display->display_options['fields']['body']['label'] = 'Beschreibung';
-  /* Feld: Inhalt: Updated/commented date */
+  /* Field: Content: Updated/commented date */
   $handler->display->display_options['fields']['last_updated']['id'] = 'last_updated';
   $handler->display->display_options['fields']['last_updated']['table'] = 'node_comment_statistics';
   $handler->display->display_options['fields']['last_updated']['field'] = 'last_updated';
@@ -341,7 +332,7 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['fields']['last_updated']['date_format'] = 'custom';
   $handler->display->display_options['fields']['last_updated']['custom_date_format'] = 'd.m.Y H:i:s';
   $handler->display->display_options['fields']['last_updated']['second_date_format'] = 'long';
-  /* Feld: Inhalt: Verfügbar in */
+  /* Field: Content: Verfügbar in */
   $handler->display->display_options['fields']['field_available_in']['id'] = 'field_available_in';
   $handler->display->display_options['fields']['field_available_in']['table'] = 'field_data_field_available_in';
   $handler->display->display_options['fields']['field_available_in']['field'] = 'field_available_in';
@@ -352,14 +343,14 @@ function videosafe_features_views_default_views() {
   );
   $handler->display->display_options['fields']['field_available_in']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_available_in']['multi_type'] = 'ul';
-  /* Feld: Inhalt: Edit link */
+  /* Field: Content: Edit link */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['label'] = '';
   $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Inhalt: Ordner (field_parent_folder) */
+  /* Contextual filter: Content: Ordner (field_parent_folder) */
   $handler->display->display_options['arguments']['field_parent_folder_target_id']['id'] = 'field_parent_folder_target_id';
   $handler->display->display_options['arguments']['field_parent_folder_target_id']['table'] = 'field_data_field_parent_folder';
   $handler->display->display_options['arguments']['field_parent_folder_target_id']['field'] = 'field_parent_folder_target_id';
@@ -370,14 +361,14 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['arguments']['field_parent_folder_target_id']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Inhalt: Veröffentlicht */
+  /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Inhalt: Typ */
+  /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
@@ -395,7 +386,156 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['allow']['fields_override'] = 0;
   $handler->display->display_options['argument_input'] = array(
     'field_parent_folder_target_id' => array(
-      'type' => 'panel',
+      'type' => 'user',
+      'context' => 'entity:node.members--1',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Inhalt: parent_folder (field_parent_folder)',
+    ),
+  );
+
+  /* Display: subfolders_ajax */
+  $handler = $view->new_display('panel_pane', 'subfolders_ajax', 'panel_pane_4');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Unterordner';
+  $handler->display->display_options['display_description'] = 'used for Ajax-GUI';
+  $handler->display->display_options['defaults']['use_ajax'] = FALSE;
+  $handler->display->display_options['use_ajax'] = TRUE;
+  $handler->display->display_options['defaults']['exposed_form'] = FALSE;
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'title' => 'title',
+    'edit_node' => 'edit_node',
+  );
+  $handler->display->display_options['style_options']['default'] = 'title';
+  $handler->display->display_options['style_options']['info'] = array(
+    'title' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'edit_node' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'node';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['label'] = '';
+  $handler->display->display_options['fields']['type']['element_label_colon'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  /* Field: Content: Edit link */
+  $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
+  $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
+  $handler->display->display_options['fields']['edit_node']['label'] = '';
+  $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Type */
+  $handler->display->display_options['sorts']['type']['id'] = 'type';
+  $handler->display->display_options['sorts']['type']['table'] = 'node';
+  $handler->display->display_options['sorts']['type']['field'] = 'type';
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'videosafe_folder' => 'videosafe_folder',
+    'videosafe_video' => 'videosafe_video',
+  );
+  /* Filter criterion: Content: Ordner (field_parent_folder) */
+  $handler->display->display_options['filters']['field_parent_folder_target_id']['id'] = 'field_parent_folder_target_id';
+  $handler->display->display_options['filters']['field_parent_folder_target_id']['table'] = 'field_data_field_parent_folder';
+  $handler->display->display_options['filters']['field_parent_folder_target_id']['field'] = 'field_parent_folder_target_id';
+  $handler->display->display_options['filters']['field_parent_folder_target_id']['value']['value'] = '2438';
+  $handler->display->display_options['filters']['field_parent_folder_target_id']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_parent_folder_target_id']['expose']['operator_id'] = 'field_parent_folder_target_id_op';
+  $handler->display->display_options['filters']['field_parent_folder_target_id']['expose']['label'] = 'Ordner (field_parent_folder)';
+  $handler->display->display_options['filters']['field_parent_folder_target_id']['expose']['operator_label'] = 'test';
+  $handler->display->display_options['filters']['field_parent_folder_target_id']['expose']['operator'] = 'field_parent_folder_target_id_op';
+  $handler->display->display_options['filters']['field_parent_folder_target_id']['expose']['identifier'] = 'field_parent_folder_target_id';
+  $handler->display->display_options['filters']['field_parent_folder_target_id']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_parent_folder_target_id']['expose']['remember_roles'] = array(
+    2 => '2',
+    30037204 => '30037204',
+    197637936 => '197637936',
+    16675960 => '16675960',
+    106505419 => '106505419',
+    126456107 => '126456107',
+    66784200 => '66784200',
+    24708420 => '24708420',
+    140204299 => '140204299',
+    1 => 0,
+  );
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Titel';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+    30037204 => 0,
+    1 => 0,
+    197637936 => 0,
+    16675960 => 0,
+    106505419 => 0,
+    126456107 => 0,
+    66784200 => 0,
+    24708420 => 0,
+    140204299 => 0,
+  );
+  $handler->display->display_options['allow']['use_pager'] = 0;
+  $handler->display->display_options['allow']['items_per_page'] = 0;
+  $handler->display->display_options['allow']['offset'] = 0;
+  $handler->display->display_options['allow']['link_to_view'] = 0;
+  $handler->display->display_options['allow']['more_link'] = 0;
+  $handler->display->display_options['allow']['path_override'] = 0;
+  $handler->display->display_options['allow']['title_override'] = 0;
+  $handler->display->display_options['allow']['exposed_form'] = 0;
+  $handler->display->display_options['allow']['fields_override'] = 0;
+  $handler->display->display_options['argument_input'] = array(
+    'field_parent_folder_target_id' => array(
+      'type' => 'user',
       'context' => 'entity:node.members--1',
       'context_optional' => 0,
       'panel' => '0',
@@ -426,14 +566,18 @@ function videosafe_features_views_default_views() {
     t('subfolders'),
     t('Unterordner'),
     t('shows a list of the subfolders'),
-    t('Titel'),
     t('Beschreibung'),
     t('Letzte Änderung'),
     t('videos'),
     t('Videodateien'),
     t('shows a list of the videos in this folder'),
-    t('Dateiname'),
+    t('Videos'),
     t('Verfügbar in'),
+    t('subfolders_ajax'),
+    t('used for Ajax-GUI'),
+    t('Ordner (field_parent_folder)'),
+    t('test'),
+    t('Titel'),
   );
   $export['videosafe_folderview'] = $view;
 
