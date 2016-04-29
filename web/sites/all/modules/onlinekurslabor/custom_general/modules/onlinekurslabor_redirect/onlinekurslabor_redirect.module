@@ -7,6 +7,7 @@
 
 function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
 
+  return;
   //check if we are in node/%nid/context
   if (arg(0) != 'node' || arg(2) == 'revisions') {
     return;
