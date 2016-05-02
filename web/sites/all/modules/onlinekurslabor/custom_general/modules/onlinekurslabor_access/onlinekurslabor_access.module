@@ -93,7 +93,7 @@ foreach($all_videosafe_videos as $video_node)
       if(!empty($course_solutions)) {
         $og_membership = og_get_membership('node', $course->nid, 'user', $account->uid);
 
-        $roles = og_roles('node', NM_COURSE, $og_membership->gid);
+        $roles = og_get_user_roles('node', $og_membership->gid, $account->uid, true, ($og_membership->state < OG_STATE_BLOCKED));
 
         foreach ($roles as $key => $value) {
           //grant permission for dozenz and tutor only
@@ -212,8 +212,10 @@ function onlinekurslabor_access_node_access_records($node) {
         }
     }
 
-    //course content
-  if (in_array($node->type, array(NM_COURSE_GROUP, NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION, NM_COURSE_NEWS, NM_COURSE_DOCS, NM_COURSE_FORUMTOPIC))) {
+
+
+  //course content
+  if (in_array($node->type, array(NM_COURSE_GROUP, NM_COURSE_GENERIC_TASK, NM_COURSE_NEWS, NM_COURSE_DOCS, NM_COURSE_FORUMTOPIC))) {
 
     //should never be empty
     if(!empty($node->og_group_ref[LANGUAGE_NONE][0]['target_id'])){

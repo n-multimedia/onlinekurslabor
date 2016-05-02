@@ -14,6 +14,8 @@ drush cc all
 
 drush updatedb --yes
 
+drush php-eval 'node_access_rebuild();'
+
 
 drush language-import-translations de ../language/alpha5.po --replace --groups=default
 

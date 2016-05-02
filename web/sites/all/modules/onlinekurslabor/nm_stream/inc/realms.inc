@@ -140,7 +140,7 @@ function nm_stream_node_grants($account, $op) {
       if(!empty($course_groups)) {
         $og_membership = og_get_membership('node', $course->nid, 'user', $account->uid);
 
-        $roles = og_roles('node', NM_COURSE, $og_membership->gid);
+        $roles = og_get_user_roles('node', $og_membership->gid, $account->uid, true, ($og_membership->state < OG_STATE_BLOCKED));
 
         foreach ($roles as $key => $value) {
           //grant permission for dozenz and tutor only
@@ -184,7 +184,8 @@ function nm_stream_og_user_access_alter(&$perm, $context) {
     if($course_group) {
       $og_membership = og_get_membership('node', $course->nid, 'user', $account->uid);
 
-      $roles = og_roles('node', NM_COURSE, $og_membership->gid);
+      //$roles = og_roles('node', NM_COURSE, $og_membership->gid);
+      $roles = og_get_user_roles('node', $og_membership->gid, $account->uid, true, ($og_membership->state < OG_STATE_BLOCKED));
 
       foreach ($roles as $key => $value) {
         //grant permission for dozenz and tutor only
