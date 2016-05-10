@@ -649,6 +649,9 @@ Responsive Features
         bottom:15px;
         padding:0px 4px;
     }
+    .btn.disabled a{
+        text-decoration: line-through;
+    }
 }
 
 @media (max-width: 340px) { 

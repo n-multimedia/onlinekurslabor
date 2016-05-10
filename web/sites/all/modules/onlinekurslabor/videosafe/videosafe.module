@@ -1,0 +1,450 @@
+<?php
+
+ 
+/*
+ * hook_form_alter
+
+function videosafe_form_alter(&$form, $form_state, $form_id) {
+#dpm($form_id);
+  if (($form_id == 'videosafe_folder_node_form' || $form_id == 'videosafe_video_node_form')  && arg(3)) {
+      
+    $form['field_parent_folder'][LANGUAGE_NONE]['#default_value'] = arg(3);
+   $form['field_parent_folder']['#access'] = false;
+    #dpm($form);
+  }
+
+} */
+
+
+function videosafe_folder_node_access($node, $op, $account) {
+  // just in case the $node parameter is not really a node object or
+  // the $node->type is one other than our own
+  $type = is_string($node) ? $node : $node->type;
+  if (! is_object($node) || $type != 'videosafe_folder') {
+    return NODE_ACCESS_IGNORE;
+  }
+}
+  function videosafe_video_node_access($node, $op, $account) {
+  // just in case the $node parameter is not really a node object or
+  // the $node->type is one other than our own
+  $type = is_string($node) ? $node : $node->type;
+  if (! is_object($node) || $type != 'videosafe_video') {
+    return NODE_ACCESS_IGNORE;
+  }
+  }
+  
+/**
+ * Implements hook_init().
+ */
+function videosafe_init() { 
+    //fuegt beim hinzufuegen von h5p ein weiteres js ein. 
+    $request = $_SERVER['REQUEST_URI'] ;
+$reqcut = explode('?', $request);
+     $request = $reqcut[0];
+     
+    $add = strstr($request, '/node/add/h5p-content')  || preg_match("/\/domain\/add\/(\d+\/)h5p_content/i",$request); ;
+    //js nur laden, falls auf edit oder h5p hinzufuegen
+    if(strstr($request, '/domain/edit') || $add)
+    { $node = node_load(arg(2));
+        if(( is_object($node) && $node->type == 'h5p_content') || $add)
+         drupal_add_js(drupal_get_path('module', 'videosafe') . '/assets/js/videosafe.js');
+    }
+    if(isset($_GET['prepoulate_domain']))
+        $_SESSION['videosafe_prepoulate_domain'] = $_GET['prepoulate_domain'];
+      
+} 
+/**
+* Implements hook_content_build_modes().
+*
+* Provide a build mode for use with a view used on the recipient landing page.
+*
+* @TODO Belongs in a general-purpose CMA utility module, not a fit with media.
+*/
+function videosafe_content_build_modes() {
+  return array(
+    'videosafe' => array(
+      'title' => t('Videosafe - panel - description'),
+      'build modes' => array(
+        'videosafe_panel_description' => array(
+          'title' => t('Videosafe Node description'),
+          'views style' => TRUE,
+        ),
+      ),
+    ),
+  );
+}
+
+function videosafe_entity_info_alter(&$entity_info) {
+
+//NB: media_ prefix required.
+//You can repeat the following section for any view modes you'd like to create.
+
+// First View Mode
+// tag 1 references the entity type, ex. node or file
+// tag 3 provides a machine name for your mode
+  $entity_info['node']['view modes']['videosafe_description'] = array(
+    'label' => t('Videosafe - description'), // This is what you'll see in your "Manage Display" tab.
+    'custom settings' => false,
+   #   'view callback' => 'videosafe_node_formatter_viewmode_description'
+  );
+
+}
+
+
+function videosafe_preprocess_node(&$vars) {
+  if (/*$vars['node']->type == 'node_type' && */$vars['view_mode'] == 'videosafe_description') {
+    $vars['theme_hook_suggestions'][] = 'node__videosafe__description';
+  }
+}
+
+
+function videosafe_file_formatter_info($k)
+{return "KSDFLK";
+    
+}
+function videosafe_node_formatter_viewmode_description($node, $display, $langcode) {
+    dpm("KSDFJKLASFD0");
+    echo rumpelstilzchen;
+return "§JKLSDF";
+}
+
+ /**
+* Implementation of hook_menu().
+*/
+function videosafe_menu() {
+      
+   /*   $items['videosafe'] = array(
+    'type' => MENU_CALLBACK,
+   # 'access arguments' => array('access content'),
+    'delivery callback' => 'videosafe_goto_root',  // Magic goes here
+  );*/
+  $items['videosafe/ajax'] = array(
+    'page callback' => 'videosafe_ajax_get_ajax', // Render HTML
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+    'delivery callback' => 'videosafe_ajax_callback',  // Magic goes here
+  );
+ 
+    $items['videosafe/getvideo'] = array(
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+    'delivery callback' => 'videosafe_getvideo',  // Magic goes here
+  );
+  
+  return $items;
+}
+/*menu_callback
+auf url /videosafe/ leitet er aufs rootverzeichnis */
+function videosafe_goto_root()
+{
+    drupal_goto('/videosafe/'._videosafe_get_root_directory()->nid);
+}
+
+function videosafe_ajax_get_ajax() {
+    //permissionsachen
+    global $user;
+    $og_group = $_GET['og_group_ref'];
+
+    // The function will receive the array of arguments after the "get/ajax" prefix
+    $path = implode('/', func_get_args());
+    $args = func_get_args();
+    $render_string = menu_execute_active_handler('videosafe/2438', FALSE);
+    # return("HANS");
+
+    $items = _videosafe_load_ajax_nodes($args[0]);
+    if ($args[0]) {
+        $requested_node = node_load($args[0]);
+        if ($requested_node->type == "videosafe_video")
+            $showing_video = true;
+    }
+    if (!count($items))
+        return "<i>" . t("empty") . "</i>";
+    #  var_dump($items);
+    $linktpl = "<a href=/videosafe/ajax/%d>%s</a>";
+    $html_tpl = "<div>%s<div class=videosafe-sibling>%s</div></div>";
+    $loading = '<img src=' . url('/sites/all/modules/onlinekurslabor/custom_general/images/icons/throbber-active.gif') . ' alt=Loading>';
+    if (!count($args))
+        $string = "<style>.videosafe-sibling {padding: 5px; display:none; margin-left: 4%;}"
+                . ".videosafe_container{text-align:left;} "
+                . ".videosafe_container a {text-decoration: underline;}"
+                . "</style>";
+    else
+        $string = "";
+
+    foreach ($items as $item) {
+        if (!$showing_video) {
+            if ($item->type == 'videosafe_folder') {
+                $title = $item->title;
+            } else {
+                $file = file_load($item->field_video[LANGUAGE_NONE][0]['fid']);
+                $title = $file->filename;
+            }
+
+
+            $link = sprintf($linktpl, $item->nid, $title);
+            $string .= sprintf($html_tpl, $link, $loading);
+        } else {
+            #$string .= t('Name').': '.$item->
+            #  $string .= t('Description') . ': ' . 
+            $string .= $item->body[LANGUAGE_NONE][0]['value'];
+            #$string .= var_export($item);
+            $string .= '<br>';
+            //flatten the arrays
+            $it1 = new RecursiveIteratorIterator(new RecursiveArrayIterator($item->field_available_in));
+            $allowed_groups = iterator_to_array($it1, false);
+           
+            $it2 = new RecursiveIteratorIterator(new RecursiveArrayIterator($item->field_exclusive_access));
+            $exclusive_access = iterator_to_array($it2, false);
+            ;
+
+
+          
+            #$string .= var_export($allowed_groups);
+            if (count($exclusive_access)) {
+                if (in_array('administrator', $user->roles) || in_array('moderator', $user->roles) || in_array($user->uid, $exclusive_access)) {
+                    $allow_override = true;
+                } else {
+                    $no_access = true;
+                    $string .= '<i>' . t('This video has a blocking notice and can therefore not be used by you') . '</i>';
+                }
+            } else {
+                if (array_intersect($user->roles, array('tutor', 'dozent', 'moderator', 'administrator')))
+                    $allow_override = true;
+            }
+            if (!in_array($og_group, $allowed_groups)) {
+                $no_access = true;
+                $string .= '<i>' . t('This video cannot be used since it isn\'t open for this topic.') . '</i>';
+                ;
+            }
+            if ($no_access && $allow_override)
+            {
+                $string .= ' ' . t('You can change this here') . 'TODO:LINK';
+                $string .="<br>";
+                $string .= t('Still use the video: ');
+            }
+            elseif($no_access && !$allow_override)
+                    $string .="<br>";
+           
+
+            #   $string .="<br>";
+            #  $string.=drupal_render($item->field_video);
+            if (!$no_access || $allow_override) {
+                
+                $file = file_load($item->field_video[LANGUAGE_NONE][0]['fid']);
+                $string .="<button type=submit name=use_video value=" . file_create_url($file->uri) . ">" . t("Select") . "</button>";
+            }
+        }
+    }
+
+    return $string;
+}
+
+//http://okldev2.naumenko-multimedia.de/videosafe/ajax
+function _videosafe_load_ajax_nodes($node_id)
+{
+    if(!$node_id)
+        $node_id = 2438;
+    $nids = array();
+    $result = array();
+    $node = node_load($node_id);
+  
+    $query = new EntityFieldQuery();
+  if($node->type == 'videosafe_folder')
+  {
+      $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', array(NM_VIDEOSAFE_FOLDER, NM_VIDEOSAFE_VIDEO))
+  ->propertyCondition('status', NODE_PUBLISHED)
+        ->fieldCondition('field_parent_folder', 'target_id', $node_id);
+      $result = $query->execute();
+  }
+  else
+  {
+        $nids = array($node_id);
+  }
+ 
+
+$nids = array_merge($nids, (array)array_keys($result['node']));      
+
+ 
+ return   entity_load('node', $nids);
+ 
+}
+function videosafe_ajax_callback($page_callback_result) {
+  // Only render content and validates return
+    echo  ($page_callback_result);
+    drupal_exit();
+
+
+}
+
+function videosafe_getvideo()
+{
+    $realurl = 'http://okldev2.naumenko-multimedia.de/sites/default/files/h5p/content/5024/videos/files-56388bc0152f2.mp4';
+     $filepath =  getcwd(). '/sites/default/files/cat.mp4';
+$ranges = _videosafe_headers_getRanges();
+ //mit dem Get-Parameter ranges kann man ermitteln, ob ein Video über den Player ausgeliefert wird. Einfaches Debug->neuer Tab geht dann nicht.
+            if (  ($ranges))  {
+   
+
+    if (is_file($filepath)){
+        header("Content-type: video/mp4"); // change mimetype
+
+        if (isset($_SERVER['HTTP_RANGE'])){ // do it for any device that supports byte-ranges not only iPhone
+            drupal_goto($realurl);
+            #rangeDownload($filepath);
+        } else {
+            drupal_goto($realurl);
+            #header("Content-length: " . filesize($filepath));
+            #readfile($filepath);
+            
+        } // fim do if
+    } // fim do if
+ 
+    exit(0);
+} else {
+     echo "access denied";
+        exit;
+    #show403('bad credentials');
+}
+
+}
+  
+/**
+ * gets objects of type NM_VIDEOSAFE_VIDEO
+ * @return array<NM_VIDEOSAFE_VIDEO> stored videos
+ */
+function videosafe_get_all_videos() {
+
+    $nids = db_select('node', 'n')
+            ->fields('n', array('nid'))
+            ->fields('n', array('type'))
+            ->condition('n.type', NM_VIDEOSAFE_VIDEO)
+            ->execute()
+            ->fetchCol(); // returns an unindexed array
+    $nodes = node_load_multiple($nids);
+    return $nodes;
+}
+/**
+ * gets objects of type NM_VIDEOSAFE_VIDEO, not sorted in  a tree!
+ * @return array<NM_VIDEOSAFE_FOLDER> stored folders
+ */
+function _videosafe_get_all_folders() {
+
+    $nids = db_select('node', 'n')
+            ->fields('n', array('nid'))
+            ->fields('n', array('type'))
+            ->condition('n.type', NM_VIDEOSAFE_FOLDER)
+            ->execute()
+            ->fetchCol(); // returns an unindexed array
+    $nodes = node_load_multiple($nids);
+    return $nodes;
+}
+/**
+ * returns the root directory
+ * @return StdClass<NM_VIDEOSAFE_FOLDER> root-directory
+ */
+function _videosafe_get_root_directory() {
+    $all_folders = _videosafe_get_all_folders();
+    foreach ($all_folders as $folder) {
+        if (empty($folder->field_parent_folder))
+            return $folder;
+    }
+}
+
+function _videosafe_headers_getRanges()
+{
+    return preg_match('/^bytes=((\d*-\d*,? ?)+)$/', @$_SERVER['HTTP_RANGE'], $matches) ? $matches[1] : array();
+}
+
+  function rangeDownload($file){
+        $fp = @fopen($file, 'rb');
+
+        $size   = filesize($file); // File size
+        $length = $size;           // Content length
+        $start  = 0;               // Start byte
+        $end    = $size - 1;       // End byte
+        // Now that we've gotten so far without errors we send the accept range header
+        /* At the moment we only support single ranges.
+         * Multiple ranges requires some more work to ensure it works correctly
+         * and comply with the spesifications: http://www.w3.org/Protocols/rfc2616/rfc2616-sec19.html#sec19.2
+         *
+         * Multirange support annouces itself with:
+         * header('Accept-Ranges: bytes');
+         *
+         * Multirange content must be sent with multipart/byteranges mediatype,
+         * (mediatype = mimetype)
+         * as well as a boundry header to indicate the various chunks of data.
+         */
+        header("Accept-Ranges: 0-$length");
+        // header('Accept-Ranges: bytes');
+        // multipart/byteranges
+        // http://www.w3.org/Protocols/rfc2616/rfc2616-sec19.html#sec19.2
+        if (isset($_SERVER['HTTP_RANGE'])){
+            $c_start = $start;
+            $c_end   = $end;
+
+            // Extract the range string
+            list(, $range) = explode('=', $_SERVER['HTTP_RANGE'], 2);
+            // Make sure the client hasn't sent us a multibyte range
+            if (strpos($range, ',') !== false){
+                // (?) Shoud this be issued here, or should the first
+                // range be used? Or should the header be ignored and
+                // we output the whole content?
+                header('HTTP/1.1 416 Requested Range Not Satisfiable');
+                header("Content-Range: bytes $start-$end/$size");
+                // (?) Echo some info to the client?
+                exit;
+            } // fim do if
+            // If the range starts with an '-' we start from the beginning
+            // If not, we forward the file pointer
+            // And make sure to get the end byte if spesified
+            if ($range{0} == '-'){
+                // The n-number of the last bytes is requested
+                $c_start = $size - substr($range, 1);
+            } else {
+                $range  = explode('-', $range);
+                $c_start = $range[0];
+                $c_end   = (isset($range[1]) && is_numeric($range[1])) ? $range[1] : $size;
+            } // fim do if
+            /* Check the range and make sure it's treated according to the specs.
+             * http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
+             */
+            // End bytes can not be larger than $end.
+            $c_end = ($c_end > $end) ? $end : $c_end;
+            // Validate the requested range and return an error if it's not correct.
+            if ($c_start > $c_end || $c_start > $size - 1 || $c_end >= $size){
+                header('HTTP/1.1 416 Requested Range Not Satisfiable');
+                header("Content-Range: bytes $start-$end/$size");
+                // (?) Echo some info to the client?
+                exit;
+            } // fim do if
+
+            $start  = $c_start;
+            $end    = $c_end;
+            $length = $end - $start + 1; // Calculate new content length
+            fseek($fp, $start);
+            header('HTTP/1.1 206 Partial Content');
+        } // fim do if
+
+        // Notify the client the byte range we'll be outputting
+        header("Content-Range: bytes $start-$end/$size");
+        header("Content-Length: $length");
+
+        // Start buffered download
+        $buffer = 1024 * 8;
+        while(!feof($fp) && ($p = ftell($fp)) <= $end){
+            if ($p + $buffer > $end){
+                // In case we're only outputtin a chunk, make sure we don't
+                // read past the length
+                $buffer = $end - $p + 1;
+            } // fim do if
+
+            set_time_limit(0); // Reset time limit for big files
+            echo fread($fp, $buffer);
+            flush(); // Free up memory. Otherwise large files will trigger PHP's memory limit.
+        } // fim do while
+
+        fclose($fp);
+    } // fim do function
+    
+    

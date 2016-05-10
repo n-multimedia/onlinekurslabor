@@ -14,8 +14,15 @@ drush cc all
 
 drush updatedb --yes
 
+drush php-eval 'node_access_rebuild();'
+
 
 drush language-import-translations de ../language/alpha5.po --replace --groups=default
 
 
 drush vset maintenance_mode 0
+
+
+drush en videosafe --yes
+mkdir private:
+chmod 0777 private\:/

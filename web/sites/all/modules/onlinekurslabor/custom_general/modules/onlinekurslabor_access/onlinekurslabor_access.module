@@ -61,8 +61,22 @@ function onlinekurslabor_access_node_grants($account, $op) {
   if ($account->uid > 0) {
     $grants['onlinekurslabor_authenticated'][] = 1;
   }
-
-
+ 
+ //grant exclusive access to videosafe-videos
+$all_videosafe_videos = videosafe_get_all_videos();
+foreach($all_videosafe_videos as $video_node)
+{
+    $flattened_exclusive_access_iterator =   new RecursiveIteratorIterator(new RecursiveArrayIterator($video_node->field_exclusive_access));
+    foreach($flattened_exclusive_access_iterator as $it  => $v)
+        $flattened_exclusive_access[] = $v;
+    if(in_array($account->uid, $flattened_exclusive_access)|| count($flattened_exclusive_access)==0)
+            $grants['onlinekurslabor_videosafe_video'][] = $video_node->nid ;
+}
+        
+  /*
+  
+  */
+  
   $courses = _section_course_get_courses_by_uid($account->uid);
 
   $realm_content = 'onlinekurslabor_course_content';
@@ -79,7 +93,7 @@ function onlinekurslabor_access_node_grants($account, $op) {
       if(!empty($course_solutions)) {
         $og_membership = og_get_membership('node', $course->nid, 'user', $account->uid);
 
-        $roles = og_roles('node', NM_COURSE, $og_membership->gid);
+        $roles = og_get_user_roles('node', $og_membership->gid, $account->uid, true, ($og_membership->state < OG_STATE_BLOCKED));
 
         foreach ($roles as $key => $value) {
           //grant permission for dozenz and tutor only
@@ -179,9 +193,29 @@ function onlinekurslabor_access_node_access_records($node) {
       'priority' => 1,
     );
   }
+  if ($node->type == NM_VIDEOSAFE_VIDEO) {
+        $realm = 'onlinekurslabor_videosafe_video';
+        if ($node->field_exclusive_access) {
+            $flattened_exclusive_access_iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($node->field_exclusive_access));
+            foreach ($flattened_exclusive_access_iterator as $it => $v)
+                $flattened_exclusive_access[] = $v;
+            if (count($flattened_exclusive_access)) {
+                $grants[] = array(
+                    'realm' => $realm,
+                    'gid' => $node->nid,
+                    'grant_view' => 1,
+                    'grant_update' => 0,
+                    'grant_delete' => 0,
+                    'priority' => 1,
+                );
+            }
+        }
+    }
+
+
 
   //course content
-  if (in_array($node->type, array(NM_COURSE_GROUP, NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION, NM_COURSE_NEWS, NM_COURSE_DOCS, NM_COURSE_FORUMTOPIC))) {
+  if (in_array($node->type, array(NM_COURSE_GROUP, NM_COURSE_GENERIC_TASK, NM_COURSE_NEWS, NM_COURSE_DOCS, NM_COURSE_FORUMTOPIC))) {
 
     //should never be empty
     if(!empty($node->og_group_ref[LANGUAGE_NONE][0]['target_id'])){
@@ -283,7 +317,7 @@ function onlinekurslabor_access_node_access_records($node) {
   }
 
   //additional visibility
-  //h5p is beeing used in different domains
+  //h5p is being used in different domains
   if (in_array($node->type, array(NM_INTERACTIVE_CONTENT))) {
     if (!empty($node->og_domain_ref[LANGUAGE_NONE])) {
       foreach($node->og_domain_ref[LANGUAGE_NONE] as $item){

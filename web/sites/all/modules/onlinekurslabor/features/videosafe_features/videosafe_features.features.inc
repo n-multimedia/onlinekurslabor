@@ -41,9 +41,10 @@ function videosafe_features_node_info() {
       'base' => 'node_content',
       'description' => t('Ein geschütztes Video, das in einer Folder organisiert wird'),
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }
