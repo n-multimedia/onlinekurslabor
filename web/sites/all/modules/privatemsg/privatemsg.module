@@ -205,8 +205,9 @@ function privatemsg_menu() {
     'weight'           => -5,
     'menu_name'        => 'user-menu',
   );
-    
-    if (in_array( NM_ROLE_ADMIN , array_values($user->roles)) ) {
+    $roles = array();
+    $roles .= array_values($user->roles);
+    if (in_array( NM_ROLE_ADMIN , $roles ) {
         $items['messages/delete/%privatemsg_thread/%privatemsg_message'] = array(
           'title'            => 'Delete message',
           'page callback'    => 'drupal_get_form',
