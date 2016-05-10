@@ -6,7 +6,7 @@ drush fr nm_section_courses_features --yes
 drush fr nm_section_content_features --yes
 drush fr section_projects_features --yes
 drush fr nm_h5p_features --yes
-
+drush en privatemsg
 
 #clear cache
 drush cc all
