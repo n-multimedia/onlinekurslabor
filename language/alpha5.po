@@ -25,6 +25,9 @@ msgstr "Zeitstempel-Bereich hinzufügen"
 msgid "Written timestamps in this area will automatically be converted to links"
 msgstr "In diesem Bereich eingegebene Zeitstempel werden automatisch zu Videosprungstellen"
 
+msgid "Created by"
+msgstr "Erstellt von"
+
 msgid ""
 msgstr ""
 

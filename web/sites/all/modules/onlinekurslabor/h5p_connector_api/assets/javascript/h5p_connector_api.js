@@ -37,12 +37,22 @@
 
 (function($) {
     Drupal.behaviors.h5p_connector_api = {
+        h5pEditorreadyCount: 0,
         /*wenn h5p geladen hat, wird der uebergebene callback ausgefuehrt*/
         onH5Pready: function(callback)
         {
             (typeof H5P !== 'object' || typeof H5P.instances !== 'object' || H5P.instances.length === 0) ? setTimeout(Drupal.behaviors.h5p_connector_api.onH5Pready, 1000, callback) : callback();
+        },
+        /*API-Funktion beim Erstellen eines neuen H5P-Contents / editieren eines vorhandenen*/
+         onH5PEditorready: function(callback)
+        { 
+            //bricht nach 15 sec ab
+            if(Drupal.behaviors.h5p_connector_api.h5pEditorreadyCount++ >15)
+                return false;
+             (typeof H5PEditor === 'undefined' || typeof H5PEditor.widgets === 'undefined' || typeof H5PEditor.widgets.video === 'undefined') ? setTimeout(Drupal.behaviors.h5p_connector_api.onH5PEditorready, 1000, callback) : callback();
         }
     };
+    
     Drupal.behaviors.h5p_connector_api.text = {
         regex_pdffeature: /(seite|page|site|p|pp|folie)\s*(\d+)/igm,
         /*VIDEO-MARKE Pflicht: %startzeichen, optional 1 digit und :, optional 0 - 5 und pflicht ein digit und :
@@ -155,7 +165,7 @@
             /*extrahiere annotationsdaten und sortiere diese*/
             var videojsonparsed = jQuery.parseJSON(videojson);
             //Anpassung neue JS-Struktur
-            if (typeof videojsonparsed === 'undefined' || typeof videojsonparsed.interactiveVideo === 'undefined' || (typeof videojsonparsed.interactiveVideo.interactions === 'undefined' && typeof videojsonparsed.interactiveVideo.assets.interactions === 'undefined'))
+            if (typeof videojsonparsed === 'undefined' || typeof videojsonparsed.interactiveVideo === 'undefined' || (typeof videojsonparsed.interactiveVideo.interactions === 'undefined' && ( typeof  videojsonparsed.interactiveVideo.assets ==='undefined' || typeof videojsonparsed.interactiveVideo.assets.interactions === 'undefined')))
                 return null;
             var all_interactions = null;
             //fallbackauswahl

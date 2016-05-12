@@ -14,4 +14,4 @@ web/.htaccess
 web/tmp
 web/stats
 web/sites/*/settings*.php
-
+web/private:

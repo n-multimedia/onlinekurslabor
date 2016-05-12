@@ -2,6 +2,7 @@ name = Onlinekurslabor Access
 description = provides access (restrictions) for users
 package = custom
 dependencies[] = custom_general
+dependencies[] = videosafe
 
 core = 7.x
 

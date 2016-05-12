@@ -61,19 +61,30 @@ function onlinekurslabor_access_node_grants($account, $op) {
   if ($account->uid > 0) {
     $grants['onlinekurslabor_authenticated'][] = 1;
   }
- 
- //grant exclusive access to videosafe-videos
-$all_videosafe_videos = videosafe_get_all_videos();
-foreach($all_videosafe_videos as $video_node)
-{
-    $flattened_exclusive_access_iterator =   new RecursiveIteratorIterator(new RecursiveArrayIterator($video_node->field_exclusive_access));
-    foreach($flattened_exclusive_access_iterator as $it  => $v)
-        $flattened_exclusive_access[] = $v;
-    if(in_array($account->uid, $flattened_exclusive_access)|| count($flattened_exclusive_access)==0)
-            $grants['onlinekurslabor_videosafe_video'][] = $video_node->nid ;
-}
-        
-  /*
+  //grant  access to videosafe-videos
+    $all_videosafe_videos = _videosafe_get_all_videos();
+    foreach ($all_videosafe_videos as $video_node) {
+        $flattened_exclusive_access = array();
+        if (count($video_node->field_exclusive_access)) {
+            //fülle sperrvermerk-array
+            $flattened_exclusive_access_iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($video_node->field_exclusive_access));
+            foreach ($flattened_exclusive_access_iterator as $it => $v)
+                $flattened_exclusive_access[] = $v;
+        }
+        //sperrvermerk - nur die exklusivpersonen haben zugriff
+        if (count($flattened_exclusive_access) && in_array($account->uid, $flattened_exclusive_access)) {
+            #$grants['onlinekurslabor_videosafe_exclusive'][] = $video_node->nid;
+            $grants['onlinekurslabor_videosafe_lock'][] = $video_node->nid;
+        }
+        //freigabe fuer fuer moderator und autoren, falls kein sperrvermerk
+        if (in_array(NM_ROLE_MODERATOR, array_values($account->roles)) || (!count($flattened_exclusive_access) && in_array(NM_ROLE_AUTOR, array_values($account->roles))))
+            $grants['onlinekurslabor_videosafe_lock'][] = $video_node->nid;
+    }
+
+
+
+
+    /*
   
   */
   
@@ -194,22 +205,33 @@ function onlinekurslabor_access_node_access_records($node) {
     );
   }
   if ($node->type == NM_VIDEOSAFE_VIDEO) {
-        $realm = 'onlinekurslabor_videosafe_video';
+      /* warum gehen mehrere realms nicht???
         if ($node->field_exclusive_access) {
             $flattened_exclusive_access_iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($node->field_exclusive_access));
             foreach ($flattened_exclusive_access_iterator as $it => $v)
                 $flattened_exclusive_access[] = $v;
             if (count($flattened_exclusive_access)) {
-                $grants[] = array(
-                    'realm' => $realm,
+                $grants[] = array( 
+                    'realm' => 'onlinekurslabor_videosafe_exclusive',
                     'gid' => $node->nid,
                     'grant_view' => 1,
-                    'grant_update' => 0,
+                    'grant_update' => 1,
                     'grant_delete' => 0,
                     'priority' => 1,
                 );
             }
-        }
+            }*/
+            { //wir muessen den zugriff erstmal sperren, um ihn spaeter fuer autoren etc wieder freizugeben
+                    $grants[] = array(
+                    'realm' => 'onlinekurslabor_videosafe_lock',
+                    'gid' => $node->nid,
+                    'grant_view' => 1,
+                    'grant_update' => 0,
+                    'grant_delete' => 0,
+                    'priority' => 2,
+                );
+            }
+        
     }
 
 
@@ -346,4 +368,85 @@ function onlinekurslabor_access_media_browser_plugins_alter(&$plugins) {
         // Hide the "Library" tab on the WYSIWYG media upload widget.
         unset($plugins['media_default--media_browser_1']);
     }
+}
+
+
+
+
+/**
+ * Implements hook_file_download().
+ */
+function onlinekurslabor_access_file_download($uri) {
+    # drupal_set_message("access" . $uri);
+    # denie access:
+
+    global $user;
+    $account = clone $user;
+    $access_allowed = false;
+    //laedt file-usage, also wo eine datei genutzt wird
+    $query = db_select('file_usage', 'fu');
+    $query->addField('fu', 'id');
+    $query->addField('fu', 'type');
+    $query->join('file_managed', 'fm', 'fm.fid = fu.fid');
+    $query->condition('fm.uri', $uri, '=');
+    $query->condition('fu.type', array('default_image', 'node', 'profile2'), 'IN');
+    $result = $query->execute();
+
+    #   $allowd = true;
+    # drupal_set_message("db_result" . var_export($result, true));
+    # dpm(count($result));
+    #return -1;
+    $entryfound = false;
+    foreach ($result as $record) {
+        $entryfound = true;
+        #    dpm($record);
+        if (in_array($record->type, array('default_image', 'profile2')))
+        {
+            $access_allowed = true;
+        }
+        if ($record->type == 'node') {
+            $node = node_load($record->id);
+            #     drupal_set_message("access" . var_export($record, true) . 'to' . node_access('view', node_load($record->id), $account));
+            if (node_access('view', $node, $account))
+                $access_allowed = true;
+            //Video protecten
+            if ($node->type == NM_VIDEOSAFE_VIDEO) {
+                /*leider leider zicken die browser, wenn man dann als student und autor abwechselnd testen möchte. das erste geladene bleibt im cache..*/
+                header('Expires: Sun, 01 Jan 2014 00:00:00 GMT');
+                header('Cache-Control: no-store, no-cache, must-revalidate');
+                header('Cache-Control: post-check=0, pre-check=0', FALSE);
+                header('Pragma: no-cache');
+                if (count($node->field_available_in)) {
+                    $flattened_group_iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($node->field_available_in));
+                    foreach ($flattened_group_iterator as $it => $group_id) {  
+                        if (node_access('view', node_load($group_id), $account))
+                            $access_allowed = true;
+                    }
+                }
+             #  return -1;
+                 /* video denied */
+                if (!$access_allowed )
+                {
+                    drupal_goto(drupal_get_path('module', 'onlinekurslabor_access').'/assets/video/403.mp4');
+                }
+                /* verhindert herunterladen, wenn nicht in einem html5-player abgespielt */
+                elseif ($access_allowed && !_videosafe_is_video_streaming())
+                {
+                    drupal_goto(drupal_get_path('module', 'onlinekurslabor_access').'/assets/video/403_dl.mp4');
+                }
+                else
+                {
+                    
+                }
+            }
+        }
+    }
+    if (!$entryfound)
+        $access_allowed = true;
+
+    if ($access_allowed) {
+        $info = image_get_info($uri);
+        return array('Content-Type' => $info['mime_type']);
+    }
+    return -1;
 }

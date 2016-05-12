@@ -47,11 +47,17 @@ $reqcut = explode('?', $request);
     if(strstr($request, '/domain/edit') || $add)
     { $node = node_load(arg(2));
         if(( is_object($node) && $node->type == 'h5p_content') || $add)
-         drupal_add_js(drupal_get_path('module', 'videosafe') . '/assets/js/videosafe.js');
+         drupal_add_js(drupal_get_path('module', 'videosafe') . '/assets/js/videosafe_edit.js');
     }
+   /* else
+    {
+         drupal_add_js(drupal_get_path('module', 'videosafe') . '/assets/js/videosafe_view.js');
+    }*/
+    
+    //prepopulate cachen - tritt auf, wenn man auf den videosafe mit populate-link klickt
     if(isset($_GET['prepoulate_domain']))
         $_SESSION['videosafe_prepoulate_domain'] = $_GET['prepoulate_domain'];
-      
+    
 } 
 /**
 * Implements hook_content_build_modes().
@@ -59,7 +65,7 @@ $reqcut = explode('?', $request);
 * Provide a build mode for use with a view used on the recipient landing page.
 *
 * @TODO Belongs in a general-purpose CMA utility module, not a fit with media.
-*/
+*//*
 function videosafe_content_build_modes() {
   return array(
     'videosafe' => array(
@@ -73,6 +79,7 @@ function videosafe_content_build_modes() {
     ),
   );
 }
+*/
 
 function videosafe_entity_info_alter(&$entity_info) {
 
@@ -98,16 +105,6 @@ function videosafe_preprocess_node(&$vars) {
 }
 
 
-function videosafe_file_formatter_info($k)
-{return "KSDFLK";
-    
-}
-function videosafe_node_formatter_viewmode_description($node, $display, $langcode) {
-    dpm("KSDFJKLASFD0");
-    echo rumpelstilzchen;
-return "§JKLSDF";
-}
-
  /**
 * Implementation of hook_menu().
 */
@@ -118,14 +115,14 @@ function videosafe_menu() {
    # 'access arguments' => array('access content'),
     'delivery callback' => 'videosafe_goto_root',  // Magic goes here
   );*/
-  $items['videosafe/ajax'] = array(
+  $items['videosafe_ajax'] = array(
     'page callback' => 'videosafe_ajax_get_ajax', // Render HTML
     'type' => MENU_CALLBACK,
     'access arguments' => array('access content'),
     'delivery callback' => 'videosafe_ajax_callback',  // Magic goes here
   );
  
-    $items['videosafe/getvideo'] = array(
+    $items['videosafe_getvideo'] = array(
     'type' => MENU_CALLBACK,
     'access arguments' => array('access content'),
     'delivery callback' => 'videosafe_getvideo',  // Magic goes here
@@ -276,29 +273,57 @@ function videosafe_ajax_callback($page_callback_result) {
 
 
 }
-
-function videosafe_getvideo()
+/**
+ * checkt ob der html5-parameter GET-Parameter RANGES gesetzt ist, 
+ * was bedeutet, dass der Aufruf von einem Player und nicht von einem file-download kommt
+ * @return bool is_streaming
+ */
+function _videosafe_is_video_streaming()
 {
-    $realurl = 'http://okldev2.naumenko-multimedia.de/sites/default/files/h5p/content/5024/videos/files-56388bc0152f2.mp4';
-     $filepath =  getcwd(). '/sites/default/files/cat.mp4';
+   
+    if(!_videosafe_headers_getRanges())
+        return false;
+    return true;
+    
+}
+
+/**
+ *  
+ * @deprecated derzeit werden einfach die private-file-URLs genutzt
+ */
+function videosafe_getvideo()
+{/*  1. parameter: file-id*/
+    //@todo
+     #$videosafe_video_nid = (arg(1));
+      $file_id =(arg(1));
+      $file = file_load($file_id);
+     
+      $filename =(arg(2));
+      //verhindert caching - evtl wieder raus#
+      //nachdem im privaten dateisystem ist keine weitere accessprüfung notwendig, das passiert in der entspr. methode
+       $uri =   file_create_url($file->uri).'?'.drupal_random_key(6) ;
+   #var_dump($uri);
+    $mime = file_get_mimetype($file->uri);
+    
+    
+   # $realurl = 'http://okldev2.naumenko-multimedia.de/sites/default/files/h5p/content/5024/videos/files-56388bc0152f2.mp4';
+    # $filepath =  getcwd(). '/sites/default/files/cat.mp4';
 $ranges = _videosafe_headers_getRanges();
  //mit dem Get-Parameter ranges kann man ermitteln, ob ein Video über den Player ausgeliefert wird. Einfaches Debug->neuer Tab geht dann nicht.
-            if (  ($ranges))  {
+//todo if true entfernen
+            if ( true || ($ranges))  {
    
-
-    if (is_file($filepath)){
-        header("Content-type: video/mp4"); // change mimetype
+        header("Content-type:".$mime); // change mimetype
 
         if (isset($_SERVER['HTTP_RANGE'])){ // do it for any device that supports byte-ranges not only iPhone
-            drupal_goto($realurl);
+            drupal_goto($uri);
             #rangeDownload($filepath);
         } else {
-            drupal_goto($realurl);
+            drupal_goto($uri);
             #header("Content-length: " . filesize($filepath));
             #readfile($filepath);
             
         } // fim do if
-    } // fim do if
  
     exit(0);
 } else {
@@ -308,22 +333,7 @@ $ranges = _videosafe_headers_getRanges();
 }
 
 }
-  
-/**
- * gets objects of type NM_VIDEOSAFE_VIDEO
- * @return array<NM_VIDEOSAFE_VIDEO> stored videos
- */
-function videosafe_get_all_videos() {
-
-    $nids = db_select('node', 'n')
-            ->fields('n', array('nid'))
-            ->fields('n', array('type'))
-            ->condition('n.type', NM_VIDEOSAFE_VIDEO)
-            ->execute()
-            ->fetchCol(); // returns an unindexed array
-    $nodes = node_load_multiple($nids);
-    return $nodes;
-}
+ 
 /**
  * gets objects of type NM_VIDEOSAFE_VIDEO, not sorted in  a tree!
  * @return array<NM_VIDEOSAFE_FOLDER> stored folders
@@ -338,6 +348,38 @@ function _videosafe_get_all_folders() {
             ->fetchCol(); // returns an unindexed array
     $nodes = node_load_multiple($nids);
     return $nodes;
+}
+ 
+/**
+ * gets objects of type NM_VIDEOSAFE_VIDEO
+ * @return array<NM_VIDEOSAFE_VIDEO> stored videos
+ */
+function _videosafe_get_all_videos() {
+
+    $nids = db_select('node', 'n')
+            ->fields('n', array('nid'))
+            ->fields('n', array('type'))
+            ->condition('n.type', NM_VIDEOSAFE_VIDEO)
+            ->execute()
+            ->fetchCol(); // returns an unindexed array
+    $nodes = node_load_multiple($nids);
+    return $nodes;
+}
+
+
+    function _videosafe_get_video_urls($videsafe_video_id) {
+    global $base_url;
+    $node = node_load($videsafe_video_id);
+ #   dpm($node->field_video);
+    #dpm($node);
+    foreach (@$node->field_video[LANGUAGE_NONE] as $video_data) {
+        if (count($video_data)) {
+            $file = file_load($video_data['fid']);
+            $urls[] = file_create_url($file->uri);
+            #$urls[] = $base_url . '/videosafe_getvideo/' .  $file->fid . '/' . $file->filename;
+        }
+    }
+    return($urls);
 }
 /**
  * returns the root directory
@@ -447,4 +489,9 @@ function _videosafe_headers_getRanges()
         fclose($fp);
     } // fim do function
     
-    
+   
+  /*  function _videosafe_create_file_url($file_object)
+    {
+         return file_create_url($file_object->uri).'?'.drupal_random_key(6) ;
+    }*/
+     
