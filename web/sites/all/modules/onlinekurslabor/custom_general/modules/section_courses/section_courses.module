@@ -467,7 +467,7 @@ function _section_courses_get_active_course($reset = FALSE) {
         //get course which this group is assigned to
         if (isset($node->og_group_ref)) {
           //$lang_og = field_language('node', $node, 'og_group_ref');
-          $group_tmp = node_load($node->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+          $group_tmp = node_load(@$node->og_group_ref[LANGUAGE_NONE][0]['target_id']);
           $course = node_load(_custom_general_get_group($group_tmp));
         }
       }
