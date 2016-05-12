@@ -119,6 +119,14 @@ function section_courses_onlinekurslabor_admin_settings_page() {
     '#description' => t("The file-ID of the header-image in help-section."),
     '#required' => TRUE,
   );
+   
+   $form['okl_support_email'] = array(
+    '#type' => 'textfield',
+    '#title' => t('support team'),
+    '#default_value' => variable_get('okl_support_email', NM_SUPPORT_EMAIL),
+    '#description' => t("Email adress of the support team."),
+    '#required' => TRUE,
+  );
     
 
   return system_settings_form($form);
