@@ -36,7 +36,7 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Field: Content: Ordner */
+  /* Field: Content: Übergeordneter Ordner */
   $handler->display->display_options['fields']['field_parent_folder']['id'] = 'field_parent_folder';
   $handler->display->display_options['fields']['field_parent_folder']['table'] = 'field_data_field_parent_folder';
   $handler->display->display_options['fields']['field_parent_folder']['field'] = 'field_parent_folder';
@@ -88,17 +88,17 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'panels_fields';
   $handler->display->display_options['row_options']['inline'] = array(
     'field_parent_folder' => 'field_parent_folder',
-    'nid' => 'nid',
+    'field_parent_folder_1' => 'field_parent_folder_1',
     'title' => 'title',
   );
   $handler->display->display_options['row_options']['regions'] = array(
     'field_parent_folder' => 'left',
-    'nid' => 'left',
+    'field_parent_folder_1' => 'left',
     'title' => 'left',
   );
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Ordner */
+  /* Field: Content: Übergeordneter Ordner */
   $handler->display->display_options['fields']['field_parent_folder']['id'] = 'field_parent_folder';
   $handler->display->display_options['fields']['field_parent_folder']['table'] = 'field_data_field_parent_folder';
   $handler->display->display_options['fields']['field_parent_folder']['field'] = 'field_parent_folder';
@@ -108,14 +108,18 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['fields']['field_parent_folder']['settings'] = array(
     'link' => 1,
   );
-  /* Field: Content: Nid */
-  $handler->display->display_options['fields']['nid']['id'] = 'nid';
-  $handler->display->display_options['fields']['nid']['table'] = 'node';
-  $handler->display->display_options['fields']['nid']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid']['label'] = '';
-  $handler->display->display_options['fields']['nid']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['nid']['alter']['text'] = '&nbsp;&gt;&nbsp;';
-  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Content: Übergeordneter Ordner */
+  $handler->display->display_options['fields']['field_parent_folder_1']['id'] = 'field_parent_folder_1';
+  $handler->display->display_options['fields']['field_parent_folder_1']['table'] = 'field_data_field_parent_folder';
+  $handler->display->display_options['fields']['field_parent_folder_1']['field'] = 'field_parent_folder';
+  $handler->display->display_options['fields']['field_parent_folder_1']['label'] = '';
+  $handler->display->display_options['fields']['field_parent_folder_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_parent_folder_1']['alter']['text'] = '&nbsp;&gt;&nbsp;';
+  $handler->display->display_options['fields']['field_parent_folder_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_parent_folder_1']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['field_parent_folder_1']['settings'] = array(
+    'link' => 0,
+  );
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -225,7 +229,7 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['fields']['edit_node']['label'] = '';
   $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Ordner (field_parent_folder) */
+  /* Contextual filter: Content: Übergeordneter Ordner (field_parent_folder) */
   $handler->display->display_options['arguments']['field_parent_folder_target_id']['id'] = 'field_parent_folder_target_id';
   $handler->display->display_options['arguments']['field_parent_folder_target_id']['table'] = 'field_data_field_parent_folder';
   $handler->display->display_options['arguments']['field_parent_folder_target_id']['field'] = 'field_parent_folder_target_id';
@@ -319,6 +323,18 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = 'Videos';
+  /* Field: Content: Bearbeitbar für */
+  $handler->display->display_options['fields']['field_exclusive_access']['id'] = 'field_exclusive_access';
+  $handler->display->display_options['fields']['field_exclusive_access']['table'] = 'field_data_field_exclusive_access';
+  $handler->display->display_options['fields']['field_exclusive_access']['field'] = 'field_exclusive_access';
+  $handler->display->display_options['fields']['field_exclusive_access']['label'] = 'Sperrvermerk';
+  $handler->display->display_options['fields']['field_exclusive_access']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_exclusive_access']['alter']['text'] = 'ja';
+  $handler->display->display_options['fields']['field_exclusive_access']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['field_exclusive_access']['settings'] = array(
+    'link' => 0,
+  );
+  $handler->display->display_options['fields']['field_exclusive_access']['delta_offset'] = '0';
   /* Field: Content: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
@@ -350,7 +366,7 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['fields']['edit_node']['label'] = '';
   $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Ordner (field_parent_folder) */
+  /* Contextual filter: Content: Übergeordneter Ordner (field_parent_folder) */
   $handler->display->display_options['arguments']['field_parent_folder_target_id']['id'] = 'field_parent_folder_target_id';
   $handler->display->display_options['arguments']['field_parent_folder_target_id']['table'] = 'field_data_field_parent_folder';
   $handler->display->display_options['arguments']['field_parent_folder_target_id']['field'] = 'field_parent_folder_target_id';
@@ -478,7 +494,7 @@ function videosafe_features_views_default_views() {
     'videosafe_folder' => 'videosafe_folder',
     'videosafe_video' => 'videosafe_video',
   );
-  /* Filter criterion: Content: Ordner (field_parent_folder) */
+  /* Filter criterion: Content: Übergeordneter Ordner (field_parent_folder) */
   $handler->display->display_options['filters']['field_parent_folder_target_id']['id'] = 'field_parent_folder_target_id';
   $handler->display->display_options['filters']['field_parent_folder_target_id']['table'] = 'field_data_field_parent_folder';
   $handler->display->display_options['filters']['field_parent_folder_target_id']['field'] = 'field_parent_folder_target_id';
@@ -572,6 +588,8 @@ function videosafe_features_views_default_views() {
     t('Videodateien'),
     t('shows a list of the videos in this folder'),
     t('Videos'),
+    t('Sperrvermerk'),
+    t('ja'),
     t('Verfügbar in'),
     t('subfolders_ajax'),
     t('used for Ajax-GUI'),

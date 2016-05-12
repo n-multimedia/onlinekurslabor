@@ -340,16 +340,15 @@ function videosafe_features_field_default_field_instances() {
   $field_instances['node-videosafe_video-field_video'] = array(
     'bundle' => 'videosafe_video',
     'deleted' => 0,
-    'description' => 'Wählen Sie mindest ein Video. Sie können das gleiche Video in verschiedenen Dateiformaten hinterlegen, um möglichst viele Browser zu unterstützen',
+    'description' => 'Wählen Sie mindest ein Video. Sie können das gleiche Video in verschiedenen Dateiformaten hinterlegen, um möglichst viele Browser zu unterstützen.
+Die Videodateien selbst sollten sinnvoll benannt sein.',
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'mediafield',
-        'settings' => array(
-          'file_view_mode' => 'default',
-        ),
-        'type' => 'media',
-        'weight' => 2,
+        'module' => 'file',
+        'settings' => array(),
+        'type' => 'file_default',
+        'weight' => 7,
       ),
     ),
     'entity_type' => 'node',
@@ -357,40 +356,20 @@ function videosafe_features_field_default_field_instances() {
     'label' => 'Video-Dateien',
     'required' => 1,
     'settings' => array(
+      'description_field' => 0,
+      'file_directory' => 'videosafe',
       'file_extensions' => 'mp4 m4v avi ogg ogm ogv webm weba',
+      'max_filesize' => '',
       'user_register_form' => FALSE,
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'media',
+      'module' => 'file',
       'settings' => array(
-        'allowed_schemes' => array(
-          'feed' => 0,
-          'http' => 0,
-          'https' => 0,
-          'oembed' => 0,
-          'private' => 'private',
-          'public' => 0,
-        ),
-        'allowed_types' => array(
-          'application' => 0,
-          'audio' => 0,
-          'document' => 0,
-          'image' => 0,
-          'video' => 'video',
-        ),
-        'browser_plugins' => array(
-          'domain_media--media_browser_1' => 0,
-          'media_default--media_browser_1' => 0,
-          'media_default--media_browser_my_files' => 0,
-          'media_internet' => 0,
-          'remote_file' => 0,
-          'upload' => 'upload',
-        ),
-        'multiple_value_widget' => 'accordion',
+        'multiple_value_widget' => 'table',
         'progress_indicator' => 'throbber',
       ),
-      'type' => 'media_generic',
+      'type' => 'file_generic',
       'weight' => 3,
     ),
   );
@@ -406,7 +385,8 @@ function videosafe_features_field_default_field_instances() {
   t('Verfügbar in');
   t('Video-Dateien');
   t('Wählen Sie die Lehrtexte aus, deren Teilnehmer das Video sehen dürfen. ');
-  t('Wählen Sie mindest ein Video. Sie können das gleiche Video in verschiedenen Dateiformaten hinterlegen, um möglichst viele Browser zu unterstützen');
+  t('Wählen Sie mindest ein Video. Sie können das gleiche Video in verschiedenen Dateiformaten hinterlegen, um möglichst viele Browser zu unterstützen.
+Die Videodateien selbst sollten sinnvoll benannt sein.');
   t('Übergeordneter Ordner');
 
   return $field_instances;
