@@ -206,7 +206,7 @@ function privatemsg_menu() {
     'menu_name'        => 'user-menu',
   );
     $roles = array();
-    $roles[] = array_values($user->roles);
+    $roles[] = ($user->roles);
     if (in_array( NM_ROLE_ADMIN , $roles )) {
         $items['messages/delete/%privatemsg_thread/%privatemsg_message'] = array(
           'title'            => 'Delete message',
