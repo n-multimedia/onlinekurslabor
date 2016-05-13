@@ -1311,4 +1311,3 @@ function _custom_general_taxonomy_get_children($tid, $vid = 0) {
 
   return isset($children[$tid]) ? $children[$tid] : array();
 }
-
