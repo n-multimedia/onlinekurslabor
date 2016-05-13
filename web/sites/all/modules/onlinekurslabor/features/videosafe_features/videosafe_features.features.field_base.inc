@@ -129,12 +129,15 @@ function videosafe_features_field_default_field_bases() {
       ),
     ),
     'locked' => 0,
-    'module' => 'mediafield',
+    'module' => 'file',
     'settings' => array(
+      'display_default' => 0,
+      'display_field' => 0,
       'profile2_private' => FALSE,
+      'uri_scheme' => 'private',
     ),
     'translatable' => 0,
-    'type' => 'media',
+    'type' => 'file',
   );
 
   return $field_bases;

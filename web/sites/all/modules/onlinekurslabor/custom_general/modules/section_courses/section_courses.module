@@ -119,6 +119,14 @@ function section_courses_onlinekurslabor_admin_settings_page() {
     '#description' => t("The file-ID of the header-image in help-section."),
     '#required' => TRUE,
   );
+   
+   $form['okl_support_email'] = array(
+    '#type' => 'textfield',
+    '#title' => t('support team'),
+    '#default_value' => variable_get('okl_support_email', NM_SUPPORT_EMAIL),
+    '#description' => t("Email adress of the support team."),
+    '#required' => TRUE,
+  );
     
 
   return system_settings_form($form);
@@ -467,7 +475,7 @@ function _section_courses_get_active_course($reset = FALSE) {
         //get course which this group is assigned to
         if (isset($node->og_group_ref)) {
           //$lang_og = field_language('node', $node, 'og_group_ref');
-          $group_tmp = node_load($node->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+          $group_tmp = node_load(@$node->og_group_ref[LANGUAGE_NONE][0]['target_id']);
           $course = node_load(_custom_general_get_group($group_tmp));
         }
       }
@@ -2478,100 +2486,70 @@ function _section_courses_get_timespan_percentage($node, &$start_text = NULL, &$
  */
 
 /**
- * Add students form
+ * Form: Zuweisung von Projekten zu Kursgruppen
  *
- * @param type $form
+ * @param array $form
  * @param type $form_state
- * @return type
+ * @return StdClass $form
  */
 function section_courses_group_projects_form($form, &$form_state) {
+    
+    $form['#tree'] = TRUE;
 
-  // Creation of a phone field and its container, hidden by default.
+    
+    $active_course = _section_courses_get_active_course();
 
-  $form['#tree'] = TRUE;
+    $course_groups = _section_course_get_coursegroups($active_course);
 
-
-  /*
-    $form['import_container'] = array(
-    '#type' => 'fieldset',
-    '#prefix' => '<div id="students-import-wrapper">',
-    '#suffix' => '</div>',
-    //'#title' => 'Student(en) hinzufügen',
-    // Set up the wrapper so that AJAX will be able to replace the fieldset.
+    $form['description'][] = array(
+        '#markup' => '<h3 class="page-header">Projektvorschläge zu Kursgruppen zuweisen<h3>',
     );
 
-    if (isset($form_state['triggering_element']['#id']) && strstr($form_state['triggering_element']['#id'], 'import')) {
-    $output_msg = _section_courses_student_registration_import($form_state['values']['import_container']['import_users']);
-    $form['import_container']['import_message'] = array(
-    '#markup' => $output_msg,
-    );
-    } */
+    $form['proposals'] = array();
+    if (!empty($active_course->field_course_proposals)) {
 
-  $active_course = _section_courses_get_active_course();
+        $options = array(0 => '---');
+        foreach ($active_course->field_course_proposals[LANGUAGE_NONE] as $proposal) {
+            $proposal_node = node_load($proposal['target_id']);
+            $options[$proposal_node->nid] = $proposal_node->title;
+        }
 
-  $course_groups = _section_course_get_coursegroups($active_course);
+        if (count($course_groups)) {
 
-  $form['description'][] = array(
-    '#markup' => '<h3 class="page-header">Projektvorschläge zu Kursgruppen zuweisen<h3>',
-  );
+            $counter = 0;
+            foreach ($course_groups as $course_group) {
 
-  $form['proposals'] = array();
-  if (!empty($active_course->field_course_proposals)) {
+                $selected_proposal_nid = _section_courses_course_group_get_proposal($course_group);
+                $default_value = $selected_proposal_nid ? $selected_proposal_nid : 0;
+    
+                $form['proposals'][$counter++] = array(
+                    '#markup' => '<h4>' . $course_group->title . '</h4>',
+                );
+                $form['proposals'][$course_group->nid] = array(
+                    '#type' => 'select',
+                    '#options' => $options,
+                    '#default_value' => $default_value
+    
+                );
+            }
 
-    $options = array(0 => '---');
-    foreach ($active_course->field_course_proposals[LANGUAGE_NONE] as $proposal) {
-      $proposal_node = node_load($proposal['target_id']);
-      $options[$proposal_node->nid] = $proposal_node->title;
-    }
-    $counter = 0;
-    foreach ($course_groups as $course_group) {
+            $form['submit'] = array(
+                '#type' => 'submit',
+                '#value' => t('Submit')
+            );
+        }
+        else {
+            $form['warning'][] = array(
+                '#markup' => '<h5 class="page-header"><span class="badge badge-important">Es wurden noch keine Kursgruppen angelegt.</span><h5>',
+              );
+        }
+    } else {
+        $form['warning'][] = array(
+            '#markup' => '<h5 class="page-header"><span class="badge badge-important">Damit Sie fortfahren können, müssen Sie zuerst relevante Projektvorschläge in den Kurseinstellungen auswählen. </span><h5>',
+        );
+    } 
 
-      $selected_proposal_nid = _section_courses_course_group_get_proposal($course_group);
-      $default_value = $selected_proposal_nid ? $selected_proposal_nid : 0;
-      //dpm(node_load($course_group->nid));
-      //dpm($default_value);
-
-      $form['proposals'][$counter++] = array(
-        '#markup' => '<h4>' . $course_group->title . '</h4>',
-      );
-      $form['proposals'][$course_group->nid] = array(
-        '#type' => 'select',
-        '#options' => $options,
-        '#default_value' => $default_value
-        //'#title' => t('In what country is your college or university located?'),
-      );
-    }
-
-    $form['submit'] = array(
-      '#type' => 'submit',
-      '#value' => t('Submit')
-    );
-  }
-  else {
-    $form['warning'][] = array(
-      '#markup' => '<h5 class="page-header"><span class="badge badge-important">Damit Sie fortfahren können, müssen Sie zuerst relevante Projektvorschläge in den Kurseinstellungen auswählen. </span><h5>',
-    );
-  }
-
-
-  /*
-    $form['import_container']['import'] = array(
-    '#type' => 'button',
-    '#value' => '<i class="icon-user icon-white"></i> Import',
-    '#submit' => array('section_courses_student_registration_import_submit'),
-    '#attributes' => array('class' => array('btn-warning')),
-    // See the examples in ajax_example.module for more details on the
-    // properties of #ajax.
-    '#ajax' => array(
-    'callback' => 'section_courses_student_registration_import_callback',
-    'wrapper' => 'students-import-wrapper',
-    ),
-    );
-   *
-
-   */
-
-  return $form;
+    return $form;
 }
 
 function section_courses_group_projects_form_submit($form, &$form_state) {

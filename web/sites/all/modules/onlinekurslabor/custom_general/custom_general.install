@@ -76,28 +76,31 @@ function custom_general_update_3004(){
 // Set default semester
 function custom_general_update_3005(){
     $taxo = current(taxonomy_get_term_by_name('Sonstige', $vocabulary = NULL));
-  taxonomy_term_save((object) array(
-  'name' => 'Sonstige',
-  'vid' => $taxo->vid,
-    ));
-  $field_instances = field_info_instances('node', NM_COURSE);
+    if ($taxo){
+        taxonomy_term_save((object) array(
+        'name' => 'Sonstige',
+        'vid' => $taxo->vid,
+          ));
+        $field_instances = field_info_instances('node', NM_COURSE);
 
-  $default_value = $field_instances['field_semester'];
+        $default_value = $field_instances['field_semester'];
+
+        $query = new EntityFieldQuery();
+        $query->entityCondition('entity_type', 'node');
+        $query->entityCondition('bundle', NM_COURSE);
+        $result = $query->execute();
+
+        foreach ($result['node'] as $course_item) {
+          $entity = node_load($course_item->nid);
+
+         if(!$entity->field_semester[LANGUAGE_NONE][0]['tid']){ 
+             $entity->field_semester[LANGUAGE_NONE][0]['tid'] = $taxo->tid; 
+         }
+          //save field data for an entity
+         field_attach_update('node', $entity);
+        }
+    }
   
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'node');
-  $query->entityCondition('bundle', NM_COURSE);
-  $result = $query->execute();
-
-  foreach ($result['node'] as $course_item) {
-    $entity = node_load($course_item->nid);
-
-   if(!$entity->field_semester[LANGUAGE_NONE][0]['tid']){ 
-       $entity->field_semester[LANGUAGE_NONE][0]['tid'] = $taxo->tid; 
-   }
-    //save field data for an entity
-   field_attach_update('node', $entity);
-  }
   
   
 }

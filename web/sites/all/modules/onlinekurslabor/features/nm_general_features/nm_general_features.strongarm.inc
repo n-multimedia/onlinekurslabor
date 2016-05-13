@@ -246,14 +246,21 @@ function nm_general_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'file_default_scheme';
-  $strongarm->value = 'public';
+  $strongarm->value = 'private';
   $export['file_default_scheme'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'file_entity_file_upload_wizard_skip_scheme';
+  $strongarm->value = 1;
+  $export['file_entity_file_upload_wizard_skip_scheme'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'file_private_path';
-  $strongarm->value = '';
+  $strongarm->value = 'private:';
   $export['file_private_path'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -349,7 +356,7 @@ dasddasdasd',
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => 'YyLXbonwIT9VZ6qJFVVHnzhfbLIJzt-NW7-shZRD6bc',
+    'javascript' => 'EggYBiNpxU7lngxf-6m5j86_Wv5SXR6PtPwdhQOtum4',
   );
   $export['language_default'] = $strongarm;
 

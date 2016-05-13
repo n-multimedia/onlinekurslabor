@@ -32,6 +32,8 @@ function videosafe_features_default_page_manager_pages() {
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array();
   $page->arguments = array(
@@ -391,7 +393,10 @@ function videosafe_features_default_page_manager_pages() {
   $page->admin_title = 'Videosafe - root';
   $page->admin_description = 'root-view of videosafe';
   $page->path = 'videosafe/';
-  $page->access = array();
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
   $page->menu = array();
   $page->arguments = array();
   $page->conf = array(
