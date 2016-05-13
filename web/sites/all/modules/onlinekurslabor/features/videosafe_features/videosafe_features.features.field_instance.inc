@@ -149,18 +149,18 @@ function videosafe_features_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'body',
-    'label' => 'Bemerkung',
+    'label' => 'Interne Bemerkung',
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
         'allowed_formats' => array(
-          'ds_code' => 'ds_code',
-          'filtered_html' => 'filtered_html',
-          'full_html' => 'full_html',
-          'php_code' => 'php_code',
+          'ds_code' => 0,
+          'filtered_html' => 0,
+          'full_html' => 0,
+          'php_code' => 0,
           'plain_text' => 'plain_text',
         ),
-        'allowed_formats_toggle' => 0,
+        'allowed_formats_toggle' => 1,
         'default_order_toggle' => 0,
         'default_order_wrapper' => array(
           'formats' => array(
@@ -183,7 +183,7 @@ function videosafe_features_field_default_field_instances() {
         ),
       ),
       'display_summary' => 0,
-      'text_processing' => 0,
+      'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -191,58 +191,11 @@ function videosafe_features_field_default_field_instances() {
       'module' => 'text',
       'settings' => array(
         'multiple_value_widget' => 'table',
-        'rows' => 20,
+        'rows' => 2,
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
       'weight' => 2,
-    ),
-  );
-
-  // Exported field_instance: 'node-videosafe_video-field_available_in'.
-  $field_instances['node-videosafe_video-field_available_in'] = array(
-    'bundle' => 'videosafe_video',
-    'default_value' => NULL,
-    'default_value_function' => 'entityreference_prepopulate_field_default_value',
-    'deleted' => 0,
-    'description' => 'Wählen Sie die Lehrtexte aus, deren Teilnehmer das Video sehen dürfen. ',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'link' => FALSE,
-        ),
-        'type' => 'entityreference_label',
-        'weight' => 3,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_available_in',
-    'label' => 'Verfügbar in',
-    'required' => 0,
-    'settings' => array(
-      'behaviors' => array(
-        'prepopulate' => array(
-          'action' => 'none',
-          'action_on_edit' => 0,
-          'fallback' => 'none',
-          'providers' => array(
-            'og_context' => 0,
-            'url' => 1,
-          ),
-          'skip_perm' => 0,
-          'status' => 1,
-        ),
-      ),
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 5,
     ),
   );
 
@@ -252,7 +205,7 @@ function videosafe_features_field_default_field_instances() {
     'default_value' => NULL,
     'default_value_function' => '',
     'deleted' => 0,
-    'description' => 'Hat das Video einen Sperrvermerk, so können hier einzelne Nutzer ausgewählt werden, die exklusiv die Rechte erhalten, das Video freizugeben und zu bearbeiten.  ',
+    'description' => 'Hat das Video einen Sperrvermerk, so können hier einzelne Nutzer ausgewählt werden, die exklusiv die Rechte erhalten, das Video einzusehen und in Lehrtexten einzubetten.  ',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -266,7 +219,7 @@ function videosafe_features_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_exclusive_access',
-    'label' => 'Bearbeitbar für',
+    'label' => 'Einsehbar für',
     'required' => 0,
     'settings' => array(
       'behaviors' => array(
@@ -376,15 +329,13 @@ Die Videodateien selbst sollten sinnvoll benannt sein.',
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Bearbeitbar für');
-  t('Bemerkung');
   t('Body');
-  t('Hat das Video einen Sperrvermerk, so können hier einzelne Nutzer ausgewählt werden, die exklusiv die Rechte erhalten, das Video freizugeben und zu bearbeiten.  ');
+  t('Einsehbar für');
+  t('Hat das Video einen Sperrvermerk, so können hier einzelne Nutzer ausgewählt werden, die exklusiv die Rechte erhalten, das Video einzusehen und in Lehrtexten einzubetten.  ');
+  t('Interne Bemerkung');
   t('Oberordner');
   t('Ordner');
-  t('Verfügbar in');
   t('Video-Dateien');
-  t('Wählen Sie die Lehrtexte aus, deren Teilnehmer das Video sehen dürfen. ');
   t('Wählen Sie mindest ein Video. Sie können das gleiche Video in verschiedenen Dateiformaten hinterlegen, um möglichst viele Browser zu unterstützen.
 Die Videodateien selbst sollten sinnvoll benannt sein.');
   t('Übergeordneter Ordner');

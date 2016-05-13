@@ -54,9 +54,7 @@ $reqcut = explode('?', $request);
          drupal_add_js(drupal_get_path('module', 'videosafe') . '/assets/js/videosafe_view.js');
     }*/
     
-    //prepopulate cachen - tritt auf, wenn man auf den videosafe mit populate-link klickt
-    if(isset($_GET['prepoulate_domain']))
-        $_SESSION['videosafe_prepoulate_domain'] = $_GET['prepoulate_domain'];
+    
     
 } 
 /**
@@ -367,7 +365,26 @@ function _videosafe_get_all_videos() {
 }
 
 
-    function _videosafe_get_video_urls($videsafe_video_id) {
+
+/**
+ * gets h5ps that use this video file
+ * @param string $file_uri like private://my_video.avi
+ * @return array<StdClass> nodes of type h5p
+ */
+function _videosafe_get_h5p_usage($file_uri) {
+    $video_base_uri = substr($file_uri, strpos($file_uri, '//') + 2);
+    $query = db_select('h5p_nodes', 'n');
+    $query->condition('json_content', '%' . $video_base_uri . '%', 'like')
+            ->fields('n', array('nid'));
+    $hp_nids = $query->execute()->fetchAll(PDO::FETCH_COLUMN);
+    return node_load_multiple($hp_nids);
+}
+/**
+ * gets urls to a videosafe-id
+ * @param string $videsafe_video_id 1111
+ * @return array<String> urls in the form http://.. for all videos in a videosafe
+ */
+function _videosafe_get_video_urls($videsafe_video_id) {
     global $base_url;
     $node = node_load($videsafe_video_id);
  #   dpm($node->field_video);

@@ -416,23 +416,26 @@ function onlinekurslabor_access_file_download($uri) {
                 header('Cache-Control: no-store, no-cache, must-revalidate');
                 header('Cache-Control: post-check=0, pre-check=0', FALSE);
                 header('Pragma: no-cache');
-                if (count($node->field_available_in)) {
-                    $flattened_group_iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($node->field_available_in));
-                    foreach ($flattened_group_iterator as $it => $group_id) {  
-                        if (node_access('view', node_load($group_id), $account))
-                            $access_allowed = true;
-                    }
+               
+                //wir schauen nach, in welchem h5p-content das gelistet wird  
+                $h5p_nodes =   _videosafe_get_h5p_usage($uri);
+               
+                foreach($h5p_nodes as $h5p_node)
+                {   //zugriff auf einen h5p, dann auf das video, egal wo
+                     if (node_access('view', $h5p_node, $account))
+                     {
+                         $access_allowed = true;
+                         break;
+                     }
                 }
-             #  return -1;
-                 /* video denied */
                 if (!$access_allowed )
                 {
-                    drupal_goto(drupal_get_path('module', 'onlinekurslabor_access').'/assets/video/403.mp4');
+                    drupal_goto(drupal_get_path('module', 'onlinekurslabor_access').'/assets/video/403.mp4', array(), 307);
                 }
                 /* verhindert herunterladen, wenn nicht in einem html5-player abgespielt */
                 elseif ($access_allowed && !_videosafe_is_video_streaming())
                 {
-                    drupal_goto(drupal_get_path('module', 'onlinekurslabor_access').'/assets/video/403_dl.mp4');
+                    drupal_goto(drupal_get_path('module', 'onlinekurslabor_access').'/assets/video/403_dl.mp4', array(), 307);
                 }
                 else
                 {

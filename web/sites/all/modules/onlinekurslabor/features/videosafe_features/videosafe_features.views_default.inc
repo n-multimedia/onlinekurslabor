@@ -323,7 +323,7 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = 'Videos';
-  /* Field: Content: Bearbeitbar für */
+  /* Field: Content: Einsehbar für */
   $handler->display->display_options['fields']['field_exclusive_access']['id'] = 'field_exclusive_access';
   $handler->display->display_options['fields']['field_exclusive_access']['table'] = 'field_data_field_exclusive_access';
   $handler->display->display_options['fields']['field_exclusive_access']['field'] = 'field_exclusive_access';
@@ -339,7 +339,7 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
-  $handler->display->display_options['fields']['body']['label'] = 'Beschreibung';
+  $handler->display->display_options['fields']['body']['label'] = 'Bemerkung';
   /* Field: Content: Updated/commented date */
   $handler->display->display_options['fields']['last_updated']['id'] = 'last_updated';
   $handler->display->display_options['fields']['last_updated']['table'] = 'node_comment_statistics';
@@ -348,17 +348,6 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['fields']['last_updated']['date_format'] = 'custom';
   $handler->display->display_options['fields']['last_updated']['custom_date_format'] = 'd.m.Y H:i:s';
   $handler->display->display_options['fields']['last_updated']['second_date_format'] = 'long';
-  /* Field: Content: Verfügbar in */
-  $handler->display->display_options['fields']['field_available_in']['id'] = 'field_available_in';
-  $handler->display->display_options['fields']['field_available_in']['table'] = 'field_data_field_available_in';
-  $handler->display->display_options['fields']['field_available_in']['field'] = 'field_available_in';
-  $handler->display->display_options['fields']['field_available_in']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_available_in']['alter']['path'] = 'domain/text/[field_available_in-target_id]';
-  $handler->display->display_options['fields']['field_available_in']['settings'] = array(
-    'link' => 0,
-  );
-  $handler->display->display_options['fields']['field_available_in']['delta_offset'] = '0';
-  $handler->display->display_options['fields']['field_available_in']['multi_type'] = 'ul';
   /* Field: Content: Edit link */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
@@ -590,7 +579,7 @@ function videosafe_features_views_default_views() {
     t('Videos'),
     t('Sperrvermerk'),
     t('ja'),
-    t('Verfügbar in'),
+    t('Bemerkung'),
     t('subfolders_ajax'),
     t('used for Ajax-GUI'),
     t('Ordner (field_parent_folder)'),
