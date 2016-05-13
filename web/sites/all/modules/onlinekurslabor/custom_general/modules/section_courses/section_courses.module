@@ -2493,61 +2493,62 @@ function _section_courses_get_timespan_percentage($node, &$start_text = NULL, &$
  * @return StdClass $form
  */
 function section_courses_group_projects_form($form, &$form_state) {
-    
-    $form['#tree'] = TRUE;
 
-    
-    $active_course = _section_courses_get_active_course();
+  $form['#tree'] = TRUE;
 
-    $course_groups = _section_course_get_coursegroups($active_course);
 
-    $form['description'][] = array(
-        '#markup' => '<h3 class="page-header">Projektvorschläge zu Kursgruppen zuweisen<h3>',
-    );
+  $active_course = _section_courses_get_active_course();
 
-    $form['proposals'] = array();
-    if (!empty($active_course->field_course_proposals)) {
+  $course_groups = _section_course_get_coursegroups($active_course);
 
-        $options = array(0 => '---');
-        foreach ($active_course->field_course_proposals[LANGUAGE_NONE] as $proposal) {
-            $proposal_node = node_load($proposal['target_id']);
-            $options[$proposal_node->nid] = $proposal_node->title;
-        }
+  $form['description'][] = array(
+    '#markup' => '<h3 class="page-header">Projektvorschläge zu Kursgruppen zuweisen<h3>',
+  );
 
-        if (count($course_groups)) {
+  $form['proposals'] = array();
+  if (!empty($active_course->field_course_proposals)) {
 
-            $counter = 0;
-            foreach ($course_groups as $course_group) {
+    $options = array(0 => '---');
+    foreach ($active_course->field_course_proposals[LANGUAGE_NONE] as $proposal) {
+      $proposal_node = node_load($proposal['target_id']);
+      $options[$proposal_node->nid] = $proposal_node->title;
+    }
 
-                $selected_proposal_nid = _section_courses_course_group_get_proposal($course_group);
-                $default_value = $selected_proposal_nid ? $selected_proposal_nid : 0;
-    
-                $form['proposals'][$counter++] = array(
-                    '#markup' => '<h4>' . $course_group->title . '</h4>',
-                );
-                $form['proposals'][$course_group->nid] = array(
-                    '#type' => 'select',
-                    '#options' => $options,
-                    '#default_value' => $default_value
-    
-                );
-            }
+    if (count($course_groups)) {
 
-            $form['submit'] = array(
-                '#type' => 'submit',
-                '#value' => t('Submit')
-            );
-        }
-        else {
-            $form['warning'][] = array(
-                '#markup' => '<h5 class="page-header"><span class="badge badge-important">Es wurden noch keine Kursgruppen angelegt.</span><h5>',
-              );
-        }
-    } else {
-        $form['warning'][] = array(
-            '#markup' => '<h5 class="page-header"><span class="badge badge-important">Damit Sie fortfahren können, müssen Sie zuerst relevante Projektvorschläge in den Kurseinstellungen auswählen. </span><h5>',
+      $counter = 0;
+      foreach ($course_groups as $course_group) {
+
+        $selected_proposal_nid = _section_courses_course_group_get_proposal($course_group);
+        $default_value = $selected_proposal_nid ? $selected_proposal_nid : 0;
+
+        $form['proposals'][$counter++] = array(
+          '#markup' => '<h4>' . $course_group->title . '</h4>',
         );
-    } 
+        $form['proposals'][$course_group->nid] = array(
+          '#type' => 'select',
+          '#options' => $options,
+          '#default_value' => $default_value
+
+        );
+      }
+
+      $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Submit')
+      );
+    }
+    else {
+      $form['warning'][] = array(
+        '#markup' => '<h5 class="page-header"><span class="badge badge-important">Es wurden noch keine Kursgruppen angelegt.</span><h5>',
+      );
+    }
+  }
+  else {
+    $form['warning'][] = array(
+      '#markup' => '<h5 class="page-header"><span class="badge badge-important">Damit Sie fortfahren können, müssen Sie zuerst relevante Projektvorschläge in den Kurseinstellungen auswählen. </span><h5>',
+    );
+  }
 
     return $form;
 }
