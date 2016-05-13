@@ -43,6 +43,78 @@ function nm_h5p_features_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-h5p_content-og_domain_ref'.
+  $field_instances['node-h5p_content-og_domain_ref'] = array(
+    'bundle' => 'h5p_content',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => 'Dieser Inhalt wird für die ausgewählten Themen freigeschaltet',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'og_domain_ref',
+    'label' => 'Thema',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'og_widget' => array(
+          'access_override' => 0,
+          'admin' => array(
+            'widget_type' => 'entityreference_autocomplete',
+          ),
+          'default' => array(
+            'widget_type' => 'options_buttons',
+          ),
+          'status' => TRUE,
+        ),
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'view modes' => array(
+      'full' => array(
+        'custom settings' => FALSE,
+        'label' => 'Full',
+        'type' => 'og_list_default',
+      ),
+      'teaser' => array(
+        'custom settings' => FALSE,
+        'label' => 'Anrisstext',
+        'type' => 'og_list_default',
+      ),
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'og',
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+      ),
+      'type' => 'og_complex',
+      'weight' => 5,
+    ),
+  );
+
   // Exported field_instance: 'node-h5p_content-og_group_ref'.
   $field_instances['node-h5p_content-og_group_ref'] = array(
     'bundle' => 'h5p_content',
@@ -125,7 +197,9 @@ function nm_h5p_features_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Comment');
+  t('Dieser Inhalt wird für die ausgewählten Themen freigeschaltet');
   t('Groups audience');
+  t('Thema');
 
   return $field_instances;
 }
