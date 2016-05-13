@@ -184,6 +184,11 @@ function nm_stream_og_user_access_alter(&$perm, $context) {
     if($course_group) {
       $og_membership = og_get_membership('node', $course->nid, 'user', $account->uid);
 
+      //do not process if user is not member of this course
+      if(empty($og_membership)) {
+        return;
+      }
+
       //$roles = og_roles('node', NM_COURSE, $og_membership->gid);
       $roles = og_get_user_roles('node', $og_membership->gid, $account->uid, true, ($og_membership->state < OG_STATE_BLOCKED));
 

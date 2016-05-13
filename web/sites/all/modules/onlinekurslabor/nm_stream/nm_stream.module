@@ -1239,18 +1239,17 @@ function nm_stream_og_context() {
   $active_course = _section_courses_get_active_course();
   $active_project = section_projects_get_active_project();
 
-  /*
+
   //anvid_content
   $active_annvid_nid = arg(1);
   $active_annvid = node_load($active_annvid_nid);
-  if($active_annvid) {
+  if ($active_annvid) {
     //edition a proposal
-    if ($active_annvid->type ==ANNVID_CONTENTTYPE) {
+    if ($active_annvid->type == ANNVID_CONTENTTYPE) {
       return $active_annvid;
     }
 
   }
-*/
 
 
   if ($active_course) {
@@ -1451,7 +1450,6 @@ function _nm_stream_get_user_pic($account) {
 
   return $user_pic;
 }
-
 
 /**
  * get action links for a node
