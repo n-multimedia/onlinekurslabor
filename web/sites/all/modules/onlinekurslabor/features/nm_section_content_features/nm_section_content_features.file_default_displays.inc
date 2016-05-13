@@ -1757,7 +1757,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__media_12__file_field_file_default';
-  $file_display->weight = 0;
+  $file_display->weight = -42;
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['video__media_12__file_field_file_default'] = $file_display;
@@ -1765,7 +1765,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__media_12__file_field_file_download_link';
-  $file_display->weight = 0;
+  $file_display->weight = -44;
   $file_display->status = FALSE;
   $file_display->settings = array(
     'text' => 'Download [file:name]',
@@ -1785,7 +1785,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__media_12__file_field_file_table';
-  $file_display->weight = 0;
+  $file_display->weight = -50;
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['video__media_12__file_field_file_table'] = $file_display;
@@ -1793,7 +1793,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__media_12__file_field_file_url_plain';
-  $file_display->weight = 0;
+  $file_display->weight = -49;
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['video__media_12__file_field_file_url_plain'] = $file_display;
@@ -1801,13 +1801,13 @@ function nm_section_content_features_file_default_displays() {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__media_12__file_field_file_video';
-  $file_display->weight = 0;
+  $file_display->weight = -46;
   $file_display->status = FALSE;
   $file_display->settings = array(
     'controls' => 1,
     'autoplay' => 0,
     'loop' => 0,
-    'width' => '',
+    'width' => '100',
     'height' => '',
     'multiple_file_behavior' => 'tags',
   );
@@ -1816,7 +1816,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__media_12__file_field_media_large_icon';
-  $file_display->weight = 0;
+  $file_display->weight = -43;
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['video__media_12__file_field_media_large_icon'] = $file_display;
@@ -1836,7 +1836,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__media_12__oembed';
-  $file_display->weight = 0;
+  $file_display->weight = -48;
   $file_display->status = TRUE;
   $file_display->settings = array(
     'width' => '768',
@@ -1860,7 +1860,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__media_12__oembed_thumbnail';
-  $file_display->weight = 0;
+  $file_display->weight = -45;
   $file_display->status = FALSE;
   $file_display->settings = array(
     'width' => '180',
@@ -2495,7 +2495,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display->api_version = 1;
   $file_display->name = 'video__wysiwyg__file_field_media_large_icon';
   $file_display->weight = 0;
-  $file_display->status = FALSE;
+  $file_display->status = TRUE;
   $file_display->settings = '';
   $export['video__wysiwyg__file_field_media_large_icon'] = $file_display;
 
@@ -2515,7 +2515,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display->api_version = 1;
   $file_display->name = 'video__wysiwyg__oembed_thumbnail';
   $file_display->weight = 0;
-  $file_display->status = TRUE;
+  $file_display->status = FALSE;
   $file_display->settings = array(
     'width' => '',
     'height' => '',

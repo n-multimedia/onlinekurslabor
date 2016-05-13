@@ -905,8 +905,9 @@ function nm_section_content_features_field_default_field_instances() {
     'settings' => array(
       'behaviors' => array(
         'og_widget' => array(
+          'access_override' => 0,
           'admin' => array(
-            'widget_type' => 'options_buttons',
+            'widget_type' => 'entityreference_autocomplete',
           ),
           'default' => array(
             'widget_type' => 'options_select',
