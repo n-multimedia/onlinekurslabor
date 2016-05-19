@@ -6,11 +6,10 @@
 $edit_button = '<li class="btn" id=""><a title="bearbeiten" href="/node/'.$node->nid.'/edit">bearbeiten</a></li>';
 ?>
 
-
+<small><?print render($content['body']);?></small>
 <small><i><?= t('Created by'); ?> <?= realname_load(user_load($node->uid)); ?></i></small>
 <br>
-<?php
-print render($content['body']);
+<?php 
 if ($node->type == 'videosafe_video') {
     foreach (_videosafe_get_video_urls($node->nid) as $url) {
         $urls[] = '<li>' . $url . '</li>'; #'<li>' . file_create_url($file_entry['file']->uri) . '</li>';

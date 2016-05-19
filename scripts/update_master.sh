@@ -1,7 +1,7 @@
 ##!/bin/sh
 drush en videosafe --yes
-mkdir private:
-chmod 0777 private\:/
+mkdir -p ../files_private/videosafe
+chmod -R 0777  ../files_private
 
 drush vset maintenance_mode 1
 drush fr nm_general_features --yes
@@ -13,11 +13,13 @@ drush en privatemsg
 drush en media_wysiwyg
 
 
+echo -e  "RewriteEngine on \nRewriteRule ^content/([0-9]+)/videos/(.*)$ /system/files/videosafe/\$2 [R=307,L]" > sites/default/files/h5p/.htaccess
+ 
+find sites/default/files/h5p -type f -iname "files-*.*" -exec  cp {}  ../files_private/videosafe/  \;
+
+
 #clear cache
 drush cc all
-
-
-
 drush updatedb --yes
 
 drush php-eval 'node_access_rebuild();'

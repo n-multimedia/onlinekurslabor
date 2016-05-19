@@ -286,6 +286,31 @@ function _videosafe_is_video_streaming()
 }
 
 /**
+ * checkt, ob man gerade einen videosafe editiert hat. dann wird filepermission auch
+ * gecheckt und würd einen auf 403 leiten.
+ *  unsicher und unschön  aber nicht zu aendern
+ * @return bool is_streaming
+ */
+function _videosafe_was_node_edited($node)
+{
+    global $user;
+   # dpm($user);
+        if (array_intersect($user->roles, array('autor', 'dozent', 'moderator', 'administrator')))
+        {
+          /* //check wird vor save durchgefuehrt if(time() - $node->changed <= 60 )
+                return true;*/
+             $referer = $_SERVER['HTTP_REFERER'];
+             if(strstr( $referer,'edit'))
+                     return true;
+        }
+  #
+        return false;
+   
+    
+}
+
+
+/**
  *  
  * @deprecated derzeit werden einfach die private-file-URLs genutzt
  */
@@ -382,13 +407,14 @@ function _videosafe_get_h5p_usage($file_uri) {
 /**
  * gets urls to a videosafe-id
  * @param string $videsafe_video_id 1111
- * @return array<String> urls in the form http://.. for all videos in a videosafe
+ * @return array<String> $urls in the form http://.. for all videos in a videosafe
  */
 function _videosafe_get_video_urls($videsafe_video_id) {
     global $base_url;
     $node = node_load($videsafe_video_id);
  #   dpm($node->field_video);
     #dpm($node);
+    $urls = array();
     foreach (@$node->field_video[LANGUAGE_NONE] as $video_data) {
         if (count($video_data)) {
             $file = file_load($video_data['fid']);

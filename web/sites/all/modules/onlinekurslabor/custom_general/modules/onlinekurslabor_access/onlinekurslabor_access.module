@@ -378,8 +378,6 @@ function onlinekurslabor_access_media_browser_plugins_alter(&$plugins) {
  */
 function onlinekurslabor_access_file_download($uri) {
     # drupal_set_message("access" . $uri);
-    # denie access:
-
     global $user;
     $account = clone $user;
     $access_allowed = false;
@@ -428,13 +426,14 @@ function onlinekurslabor_access_file_download($uri) {
                          break;
                      }
                 }
+                
                 if (!$access_allowed )
                 {
-                    drupal_goto(drupal_get_path('module', 'onlinekurslabor_access').'/assets/video/403.mp4', array(), 307);
+                 drupal_goto(drupal_get_path('module', 'onlinekurslabor_access').'/assets/video/403.mp4', array(), 307);
                 }
                 /* verhindert herunterladen, wenn nicht in einem html5-player abgespielt */
-                elseif ($access_allowed && !_videosafe_is_video_streaming())
-                {
+                elseif ($access_allowed && !_videosafe_is_video_streaming() &&  !_videosafe_was_node_edited($node))
+                { 
                     drupal_goto(drupal_get_path('module', 'onlinekurslabor_access').'/assets/video/403_dl.mp4', array(), 307);
                 }
                 else
