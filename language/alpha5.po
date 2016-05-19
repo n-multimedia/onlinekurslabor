@@ -28,6 +28,29 @@ msgstr "In diesem Bereich eingegebene Zeitstempel werden automatisch zu Videospr
 msgid "Created by"
 msgstr "Erstellt von"
 
+msgid "When this value is >= 3, you will no longer be able to change your author id mapping.  Contact your system administrator to reset this value."
+msgstr "Wenn dieser Wert >= 3 ist, können Sie die Zuordnung ihrer AutorenID nicht mehr verändern. Kontaktieren Sie einen Systemadministrator, um die Einstellungen zurückzusetzen."
+
+
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+
+
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
 msgid ""
 msgstr ""
 
