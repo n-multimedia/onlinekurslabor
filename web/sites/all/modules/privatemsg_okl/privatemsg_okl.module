@@ -1,0 +1,19 @@
+<?php
+function private_msg_menu_alter(&$items) {
+    $roles = array();
+    global $user;
+    $roles[] = ($user->roles);
+    if (in_array( NM_ROLE_ADMIN , $roles )) {
+        $items['messages/delete/%privatemsg_thread/%privatemsg_message'] = array(
+          'title'            => 'Delete message',
+          'page callback'    => 'drupal_get_form',
+          'page arguments'   => array('privatemsg_delete', 2, 3),
+          'file'             => 'privatemsg.pages.inc',
+          'access callback'  => 'privatemsg_user_access',
+          'access arguments' => array('delete privatemsg'),
+          'type'             => MENU_CALLBACK,
+          'weight'           => -10,
+          'menu_name'        => 'user-menu',
+        );
+    }
+}
