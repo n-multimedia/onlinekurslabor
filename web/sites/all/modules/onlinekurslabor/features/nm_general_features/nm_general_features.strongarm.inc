@@ -252,15 +252,8 @@ function nm_general_features_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'file_entity_file_upload_wizard_skip_scheme';
-  $strongarm->value = 1;
-  $export['file_entity_file_upload_wizard_skip_scheme'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'file_private_path';
-  $strongarm->value = 'private:';
+  $strongarm->value = '../files_private';
   $export['file_private_path'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -274,7 +267,7 @@ function nm_general_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'file_temporary_path';
-  $strongarm->value = 'tmp';
+  $strongarm->value = '../tmp';
   $export['file_temporary_path'] = $strongarm;
 
   $strongarm = new stdClass();

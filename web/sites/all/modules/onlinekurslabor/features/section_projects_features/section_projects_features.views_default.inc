@@ -301,7 +301,7 @@ function section_projects_features_views_default_views() {
     'image_style' => 'course_overview_image',
     'image_link' => '',
   );
-  /* Field: Content: Kurzbeschreibung */
+  /* Field: Content: Kurzberschreibung */
   $handler->display->display_options['fields']['field_po_short_description']['id'] = 'field_po_short_description';
   $handler->display->display_options['fields']['field_po_short_description']['table'] = 'field_data_field_po_short_description';
   $handler->display->display_options['fields']['field_po_short_description']['field'] = 'field_po_short_description';

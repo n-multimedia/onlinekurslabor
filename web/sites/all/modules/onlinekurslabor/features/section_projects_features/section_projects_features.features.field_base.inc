@@ -561,7 +561,7 @@ function section_projects_features_field_default_field_bases() {
     'settings' => array(
       'default_image' => 0,
       'profile2_private' => FALSE,
-      'uri_scheme' => 'public',
+      'uri_scheme' => 'private',
     ),
     'translatable' => 0,
     'type' => 'image',
@@ -584,7 +584,7 @@ function section_projects_features_field_default_field_bases() {
     'settings' => array(
       'default_image' => 0,
       'profile2_private' => FALSE,
-      'uri_scheme' => 'public',
+      'uri_scheme' => 'private',
     ),
     'translatable' => 0,
     'type' => 'image',
