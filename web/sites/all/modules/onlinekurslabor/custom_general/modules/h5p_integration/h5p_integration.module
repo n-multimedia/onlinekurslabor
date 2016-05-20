@@ -255,12 +255,15 @@ function _h5p_integration_h5p_replacements($matches) {
       //get content domain
       if(!empty($content_node->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
         $domain_nid = $content_node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
-        //check if user may edit h5p and domain content node
-        if(node_access('update', $node) && node_access('update', $content_node)) {
-          //check if h5p content is visible in active domain
+         //check if h5p content is visible in active domain
           if(!og_is_member('node', $domain_nid, 'node', $node)) {
-            drupal_set_message("Es wurde ein H5P Inhalt eingebettet, der nicht für dieses Thema freigeschaltet ist. " . l("Bitte schalten Sie diesen Inhalt hier frei.", 'domain/edit/'.$node->nid), 'warning');
-          }
+                //check if user may edit h5p and domain content node
+                if(node_access('update', $node) && node_access('update', $content_node)) {
+                    drupal_set_message("Es wurde ein H5P Inhalt eingebettet, der nicht für dieses Thema freigeschaltet ist. " . l("Bitte schalten Sie diesen Inhalt hier frei.", 'domain/edit/'.$node->nid), 'warning');
+                  }
+                else {
+                    drupal_set_message("Es wurde ein H5P Inhalt eingebettet, der nicht für dieses Thema freigeschaltet ist! Dieser ist für Kursteilnehmer nicht sichtbar. ", 'error');
+                  }
         }
       }
 
