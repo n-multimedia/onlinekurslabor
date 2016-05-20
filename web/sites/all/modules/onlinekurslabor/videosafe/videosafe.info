@@ -6,3 +6,4 @@ package = custom
 
 
 dependencies[] = videosafe_features
+dependencies[] = h5p

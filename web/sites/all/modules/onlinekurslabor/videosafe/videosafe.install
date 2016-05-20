@@ -1,10 +1,43 @@
 <?php
 
+
+/**
+ * Implements hook_install()
+ */
+function videosafe_install(){
+   _videosafe_setup_create_root();
+   _videosafe_setup_create_migration_folder();
+    _videosafe_setup_migrate_h5p_files();
+}
+
 /**
  * erstelle initial root-Ordner fuer videosafe
  */
 function videosafe_update_1000() {
-    global $user;
+   return _videosafe_setup_create_root();
+}
+
+/**
+ * erstelle Ordner fuer alte H5Ps
+ */
+function videosafe_update_1001() {
+      return _videosafe_setup_create_migration_folder();
+   
+}
+
+/**
+ * migriere alt-h5p-files in videosafe
+ */
+function videosafe_update_1002() {
+ return _videosafe_setup_migrate_h5p_files();
+}
+
+/*
+ *
+ * erstellt videosafe-root-dir  */
+function  _videosafe_setup_create_root()
+{
+     global $user;
 
     $node = new stdClass();
     $node->title = "Videosafe";
@@ -21,11 +54,12 @@ function videosafe_update_1000() {
     node_save($node);
 }
 
-/**
- * erstelle Ordner fuer alte H5Ps
- */
-function videosafe_update_1001() {
-    global $user;
+/*
+ *
+ * erstellt platzhalterordner fuer zu migrierende h5p-files  */
+function _videosafe_setup_create_migration_folder()
+{
+     global $user;
      
     $first = _videosafe_get_root_directory();
 
@@ -45,11 +79,15 @@ function videosafe_update_1001() {
     node_save($node);
 }
 
-/**
- * migriere alt-h5p-files in videosafe
+
+/*
+ *
+ * migriert h5p-files in den erstellten migrationsfolder
+ * nur einmal auszuführen!
  */
-function videosafe_update_1002() {
-    global $user;
+function _videosafe_setup_migrate_h5p_files()
+{
+       global $user;
     $folders = _videosafe_get_all_folders();
     $last = end($folders);
 

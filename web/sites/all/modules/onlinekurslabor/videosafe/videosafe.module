@@ -397,13 +397,51 @@ function _videosafe_get_all_videos() {
  * @return array<StdClass> nodes of type h5p
  */
 function _videosafe_get_h5p_usage($file_uri) {
-    $video_base_uri = substr($file_uri, strpos($file_uri, '//') + 2);
+    $video_base_uri = _videosafe_get_relative_url($file_uri);
     $query = db_select('h5p_nodes', 'n');
     $query->condition('json_content', '%' . $video_base_uri . '%', 'like')
             ->fields('n', array('nid'));
     $hp_nids = $query->execute()->fetchAll(PDO::FETCH_COLUMN);
     return node_load_multiple($hp_nids);
 }
+
+
+/**
+ * gets array with information where $videosafe_node is used
+ * @param StdClass $videosafe_video_object - a node
+ * @return array<> usage
+ */
+function _videosafe_get_usage($videosafe_video_object) {
+    $h5ps = array();
+ 
+    foreach ($videosafe_video_object->field_video[LANGUAGE_NONE] as $video_data) {
+        if (count($video_data)) {
+            $file = file_load($video_data['fid']);
+            $h5ps = array_merge($h5ps, _videosafe_get_h5p_usage($file->uri));
+        }
+       
+}
+return($h5ps);
+}
+
+/**
+ * gets refs to h5p-object
+ * @param StdClass $h5p_node - a node
+ * @return array<StdClass> referenced topics
+ */
+function _videosafe_h5p_get_refs($h5p_node) {
+
+    $it1 = new RecursiveIteratorIterator(new RecursiveArrayIterator($h5p_node->og_group_ref));
+    $group_ref = iterator_to_array($it1, false);
+    $it2 = new RecursiveIteratorIterator(new RecursiveArrayIterator($h5p_node->og_domain_ref));
+    $domain_ref = iterator_to_array($it2, false);
+
+    $refs = array_merge($group_ref, $domain_ref);
+    if (count($refs))
+        return node_load_multiple($refs);
+    return array();
+}
+
 /**
  * gets urls to a videosafe-id
  * @param string $videsafe_video_id 1111
@@ -418,12 +456,23 @@ function _videosafe_get_video_urls($videsafe_video_id) {
     foreach (@$node->field_video[LANGUAGE_NONE] as $video_data) {
         if (count($video_data)) {
             $file = file_load($video_data['fid']);
-            $urls[] = file_create_url($file->uri);
-            #$urls[] = $base_url . '/videosafe_getvideo/' .  $file->fid . '/' . $file->filename;
+            $urls[] = _videosafe_get_relative_url($file->uri);
+          
         }
     }
     return($urls);
 }
+
+/**
+ * we're using relative urls in h5p. this converts  a normal file-uri to a relative one
+ * @param string $uri Uri of a file
+ * @return string $relative_url like videosafe/name_of_video.mp4
+ */
+function _videosafe_get_relative_url($uri)
+{
+            $uri_array = explode('://',$uri);
+            return  $uri_array[1];
+} 
 /**
  * returns the root directory
  * @return StdClass<NM_VIDEOSAFE_FOLDER> root-directory

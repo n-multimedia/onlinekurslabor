@@ -213,6 +213,37 @@ function videosafe_features_default_page_manager_pages() {
     $pane->uuid = 'e687ecd6-4117-40bb-8f3a-c47c6ce6fc82';
     $display->content['new-e687ecd6-4117-40bb-8f3a-c47c6ce6fc82'] = $pane;
     $display->panels['left'][1] = 'new-e687ecd6-4117-40bb-8f3a-c47c6ce6fc82';
+    $pane = new stdClass();
+    $pane->pid = 'new-ae59bdad-52bb-4140-9019-6d2d41624b45';
+    $pane->panel = 'left';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'videosafe_folderview-panel_pane_5';
+    $pane->shown = TRUE;
+    $pane->access = array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'php',
+          'settings' => array(
+            'description' => 'node_is_videosafe_root',
+            'php' => '$arg = array_values($contexts);
+return $arg[0]->argument == _videosafe_get_root_directory()->nid;',
+          ),
+          'not' => FALSE,
+        ),
+      ),
+    );
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = 'ae59bdad-52bb-4140-9019-6d2d41624b45';
+    $display->content['new-ae59bdad-52bb-4140-9019-6d2d41624b45'] = $pane;
+    $display->panels['left'][2] = 'new-ae59bdad-52bb-4140-9019-6d2d41624b45';
   $display->hide_title = PANELS_TITLE_PANE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
