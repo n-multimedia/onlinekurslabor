@@ -2,66 +2,71 @@
   // Calles on load
     function support_form_init(){
       // Menu_HOOK
-
     }
 
     function support_form_menu(){
-      $items = array();
-      $items['support'] = array(
-        'title'=>'Support',
-        'description'=> 'Wir helfen gerne',
-        'page callback'=>'drupal_get_form',
-        'page arguments'=>array('support_form_show'),
-        'type'=>MENU_NORMAL_ITEM
-      );
-      return $items;
-    }
-    
+        $items = array();
+        $items['support'] = array(
+          'title'=>'Support',
+          'description'=> 'Wir helfen gerne',
+          'page callback'=>'drupal_get_form',
+          'page arguments'=>array('support_form_show'),
+          'type'=>MENU_NORMAL_ITEM
+        );
+        return $items; 
+    }      
+
     function get_options(){
         return array('Kurs', 'Kursinhalte', 'Stream','Nachrichten', 'Benutzerkonto', 'Sonstiges');
 
     }
-
+    
     function support_form_show(){
-      $form     = array();
-      $options  = get_options();
+        $form     = array();
+        $options  = get_options();
 
-      $form['category']=array(
-        '#type'=>'select',
-        '#title'=>'Kategorie',
-        '#options' =>$options
-      );
+        $form['category']=array(
+          '#type'=>'select',
+          '#title'=>'Kategorie',
+          '#options' =>$options
+        );
 
-      $form['problem']=array(
-        '#type'=>'textarea',
-        '#title'=>'Problemstellung',
-        '#attributes' => array('class' => array('form-control'),'placeholder'=>'Wie können wir helfen?', 'rows'=> '5'),
-      );
+        $form['problem']=array(
+          '#type'=>'textarea',
+          '#title'=>'Problemstellung',
+          '#attributes' => array('class' => array('form-control'),'placeholder'=>'Wie können wir helfen?', 'rows'=> '5'),
+        );
 
-      $form['submit']=array(
-        '#type'=>'submit',
-        '#value'=>'Senden',
-        '#attributes' => array('class' => array('btn-warning'),)
-      );
+        $form['submit']=array(
+          '#type'=>'submit',
+          '#value'=>'Senden',
+          '#attributes' => array('class' => array('btn-warning'),)
+        );
 
-      $form['#submit'][] = 'support_form_submit';
+        $form['#submit'][] = 'support_form_submit';
 
-      return $form;
+        return $form;
     }
 
     function support_form_submit($form, &$form_state){
-    // Always set content-type when sending HTML email
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $txt = "<html><body></body><hr>";
+        
+        // Always set content-type when sending HTML email
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $txt = "<html><body><hr>";
+        $params = array();
+        $module = 'support_form';
+        $key = 'support_mail';
+        $language = language_default();
+        
         if ($form_state['values']['problem'] != "" ){
             global $user;
             $options = get_options();
-            $to = variable_get('okl_support_email', NM_SUPPORT_EMAIL);
-            $subject = "Problem bei: " . $options[$form_state['values']['category']];
-            $txt .= wordwrap("Art des Fehlers:\n" . $options[$form_state['values']['category']]. "<hr>\n User-Nachricht:\n\n<p>". $form_state['values']['problem'] . "</p><hr>\n Von: " . $user->name . "</body></html>", 70);
-            $headers .= "From: " . $user->mail;
-            mail($to,$subject,$txt,$headers);
+            $params['@to'] = variable_get('okl_support_email', NM_SUPPORT_EMAIL);
+            $params['@subject'] = "Problem bei: " . $options[$form_state['values']['category']];
+            $params['@body'] = wordwrap("Art des Fehlers:\n" . $options[$form_state['values']['category']]. "<hr>\n User-Nachricht:\n\n<p>". $form_state['values']['problem'] . "</p><hr>\n Von: " . $user->name , 70);
+            $params['@headers'] = $headers . "From: " . $user->mail;
+            drupal_mail($module, $key, $params['@to'], $language, $params);
             drupal_set_message(t('Ihre Nachricht wurde versendet.'));
         }
         else {
@@ -69,3 +74,15 @@
         }
 
     }
+    
+    function support_form_mail($key, &$message, $params){
+        $message['subject'] = t($params['@subject']);
+        $message['body']    = t(drupal_html_to_text($params['@body']));    
+    }
+    
+    function support_form_render(){
+        print drupal_render(drupal_get_form('support_form_show')); 
+    }
+    
+    
+    

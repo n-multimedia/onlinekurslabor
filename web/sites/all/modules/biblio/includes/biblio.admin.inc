@@ -1799,7 +1799,7 @@ function _biblio_drupal_author_user_map($profile_user, $allow_edit = TRUE) {
       '#title' => t('Drupal UserID to Biblio AuthorID mapping change count:'),
       '#default_value' => isset($profile_user->data['biblio_id_change_count']) ?  $profile_user->data['biblio_id_change_count'] : 0,
       '#disabled' => ($user->uid == 1 || user_access('administer biblio')) ? FALSE : TRUE,
-      '#description' => 'When this value is >= 3, you will no longer be able to change your author id mapping.  Contact your system administrator to reset this value.',
+      '#description' => t('When this value is >= 3, you will no longer be able to change your author id mapping.  Contact your system administrator to reset this value.'),
   );
 
   return $form;

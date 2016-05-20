@@ -122,7 +122,6 @@ function _privatemsg_generate_user_array($string, $slice = NULL) {
  *   String with formatted user objects, like user1, user2.
  */
 function _privatemsg_format_participants($part_array, $limit = NULL, $no_text = FALSE) {
-  global $user;
   if (count($part_array) > 0) {
     $to = array();
     $limited = FALSE;
@@ -171,6 +170,7 @@ function _privatemsg_format_participants($part_array, $limit = NULL, $no_text = 
  * Implements hook_menu().
  */
 function privatemsg_menu() {
+    global $user;
   $items['messages'] = array(
     'title'            => 'Messages',
     'title callback'   => 'privatemsg_title_callback',
@@ -205,9 +205,7 @@ function privatemsg_menu() {
     'weight'           => -5,
     'menu_name'        => 'user-menu',
   );
-    $roles = array();
-    $roles[] = ($user->roles);
-    if (in_array( NM_ROLE_ADMIN , $roles )) {
+    
         $items['messages/delete/%privatemsg_thread/%privatemsg_message'] = array(
           'title'            => 'Delete message',
           'page callback'    => 'drupal_get_form',
@@ -219,7 +217,7 @@ function privatemsg_menu() {
           'weight'           => -10,
           'menu_name'        => 'user-menu',
         );
-    }
+    
   $items['messages/new'] = array(
     'title'            => 'Write new message',
     'page callback'    => 'drupal_get_form',
@@ -724,8 +722,6 @@ function privatemsg_theme() {
 }
 
 function template_preprocess_privatemsg_view(&$vars) {
-  global $user;
-
   $message = $vars['message'];
   $vars['mid'] = isset($message->mid) ? $message->mid : NULL;
   $vars['message_classes'] = isset($message->classes) ? $message->classes : array();
