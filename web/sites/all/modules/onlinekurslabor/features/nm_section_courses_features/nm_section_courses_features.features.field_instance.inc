@@ -875,7 +875,11 @@ function nm_section_courses_features_field_default_field_instances() {
   // Exported field_instance: 'node-courses_course-field_semester'.
   $field_instances['node-courses_course-field_semester'] = array(
     'bundle' => 'courses_course',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'tid' => 182,
+      ),
+    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(
