@@ -1,50 +1,11 @@
-<?php
-  
+<?
 /**
- * Implements hook_init().
+ * hook fuer das h5p-content-formular
  */
-function videosafe_init() { 
-    //fuegt beim hinzufuegen von h5p ein weiteres js ein. 
-    $request = $_SERVER['REQUEST_URI'] ;
-$reqcut = explode('?', $request);
-     $request = $reqcut[0];
-     
-    $add = strstr($request, '/node/add/h5p-content')  || preg_match("/\/domain\/add\/(\d+\/)h5p_content/i",$request); ;
-    //js nur laden, falls auf edit oder h5p hinzufuegen
-    if(strstr($request, '/domain/edit') || $add)
-    { $node = node_load(arg(2));
-        if(( is_object($node) && $node->type == 'h5p_content') || $add)
-         drupal_add_js(drupal_get_path('module', 'videosafe') . '/assets/js/videosafe_edit.js');
-    }
-   /* else
-    {
-         drupal_add_js(drupal_get_path('module', 'videosafe') . '/assets/js/videosafe_view.js');
-    }*/
-    
-    
-    
+function videosafe_form_h5p_content_node_form_alter(&$form, &$form_state, $form_id) {
+ 
+       drupal_add_js(drupal_get_path('module', 'videosafe') . '/assets/js/videosafe_edit.js');
 } 
-/**
-* Implements hook_content_build_modes().
-*
-* Provide a build mode for use with a view used on the recipient landing page.
-*
-* @TODO Belongs in a general-purpose CMA utility module, not a fit with media.
-*//*
-function videosafe_content_build_modes() {
-  return array(
-    'videosafe' => array(
-      'title' => t('Videosafe - panel - description'),
-      'build modes' => array(
-        'videosafe_panel_description' => array(
-          'title' => t('Videosafe Node description'),
-          'views style' => TRUE,
-        ),
-      ),
-    ),
-  );
-}
-*/
 
 function videosafe_entity_info_alter(&$entity_info) {
 
