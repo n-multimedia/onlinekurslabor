@@ -1,37 +1,4 @@
 <?php
-
- 
-/*
- * hook_form_alter
-
-function videosafe_form_alter(&$form, $form_state, $form_id) {
-#dpm($form_id);
-  if (($form_id == 'videosafe_folder_node_form' || $form_id == 'videosafe_video_node_form')  && arg(3)) {
-      
-    $form['field_parent_folder'][LANGUAGE_NONE]['#default_value'] = arg(3);
-   $form['field_parent_folder']['#access'] = false;
-    #dpm($form);
-  }
-
-} */
-
-
-function videosafe_folder_node_access($node, $op, $account) {
-  // just in case the $node parameter is not really a node object or
-  // the $node->type is one other than our own
-  $type = is_string($node) ? $node : $node->type;
-  if (! is_object($node) || $type != 'videosafe_folder') {
-    return NODE_ACCESS_IGNORE;
-  }
-}
-  function videosafe_video_node_access($node, $op, $account) {
-  // just in case the $node parameter is not really a node object or
-  // the $node->type is one other than our own
-  $type = is_string($node) ? $node : $node->type;
-  if (! is_object($node) || $type != 'videosafe_video') {
-    return NODE_ACCESS_IGNORE;
-  }
-  }
   
 /**
  * Implements hook_init().
