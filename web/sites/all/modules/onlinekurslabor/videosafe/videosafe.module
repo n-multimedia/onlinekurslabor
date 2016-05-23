@@ -222,13 +222,10 @@ function _videosafe_is_video_streaming()
 function _videosafe_was_node_edited($node)
 {
     global $user;
-   # dpm($user);
-        if (array_intersect($user->roles, array('autor', 'dozent', 'moderator', 'administrator')))
+        //hat entsprechende berechtigungen und der Post-Parameter ist gesetzt
+        if (array_intersect($user->roles, array(NM_ROLE_ADMIN, NM_ROLE_AUTOR, NM_ROLE_MODERATOR)))
         {
-          /* //check wird vor save durchgefuehrt if(time() - $node->changed <= 60 )
-                return true;*/
-             $referer = $_SERVER['HTTP_REFERER'];
-             if(strstr( $referer,'edit'))
+           if($_POST['form_id'] == "videosafe_video_node_form")
                      return true;
         }
   #
