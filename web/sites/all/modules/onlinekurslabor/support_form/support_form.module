@@ -1,0 +1,243 @@
+<?php
+  // Calles on load
+    function support_form_init(){
+      // Menu_HOOK
+    }
+    /**
+    function support_form_menu(){
+      $items = array();
+      //20.05.2016 - 12:14 - SN
+      //support ist irgendwie immer noch im Menu registriert.
+      //Cache leeren hat keine Abhilfe geschaffen
+      //Check: Ist das vielleicht irgendwo in einem anderen Modul definiert?
+      $items['support_help'] = array(
+        'title'=>'Support',
+        'description'=> 'Wir helfen gerne',
+        'page callback' => 'support_page_callback',
+        'access callback' => TRUE,
+        'type'=>MENU_NORMAL_ITEM
+      );
+      return $items;
+    }
+    */
+
+    function support_get_options(){
+        return array('Kurs', 'Kursinhalte', 'Stream','Nachrichten', 'Benutzerkonto', 'Sonstiges');
+
+    }
+
+
+
+/**
+ * 20.05.2016 - 12:11 - SN
+ * Tipp: page callback. Hier kann man das Formular wrappen
+ * [support_page_callback description]
+ * @return [type] [description]
+ */
+    /**
+    function support_page_callback() {
+
+      $form = drupal_get_form("support_form");
+      $output = drupal_render($form);
+
+      //modal bootstrap modal popup here
+      //siehe http://getbootstrap.com/2.3.2/javascript.html#modals
+      //Achtung: wir haben Bootstrap 2 im Einsatz (nicht 3)
+
+      return (get_popup_prefix() ."". $output ."". get_popup_suffix());
+
+    }*/
+
+
+    function support_form(){
+        $form     = array();
+        $options  = support_get_options();
+
+        $form['category']=array(
+          '#type'=>'select',
+          '#title'=>'Kategorie',
+          '#options' =>$options
+        );
+
+        $form['problem']=array(
+          '#type'=>'textarea',
+          '#title'=>'Problemstellung',
+          '#attributes' => array('class' => array('form-control'),'placeholder'=>'Wie können wir helfen?', 'rows'=> '5'),
+        );
+
+
+        $form['submit']=array(
+          '#type'=>'submit',
+          '#prefix' => "wapper_prefix",
+          '#suffix' => "wapper_suffix",
+          '#value'=>'Senden',
+          '#attributes' => array('class' => array('btn-warning'),)
+        );
+
+        //Tipp
+        //Form API AJAX
+        //https://www.drupal.org/node/752056
+
+        //20.05.2016 - 12:12 - SN
+        //überflüssig, wenn der name des formulars passt
+        //$form['#submit'][] = 'support_form_submit';
+
+        return $form;
+    }
+    
+    function support_form_submit($form, &$form_state){
+
+        // Always set content-type when sending HTML email
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $txt = "<html><body><hr>";
+        $params = array();
+        $module = 'support_form';
+        $key = 'support_mail';
+        $language = language_default();
+
+        if ($form_state['values']['problem'] != "" ){
+            global $user;
+            $options = support_get_options();
+            $params['@to'] = variable_get('okl_support_email', NM_SUPPORT_EMAIL);
+            $params['@subject'] = "Problem bei: " . $options[$form_state['values']['category']];
+            $params['@body'] = wordwrap("Art des Fehlers:\n" . $options[$form_state['values']['category']]. "<hr>\n User-Nachricht:\n\n<p>". $form_state['values']['problem'] . "</p><hr>\n Von: " . $user->name , 70);
+            $params['@headers'] = $headers . "From: " . $user->mail;
+            drupal_mail($module, $key, $params['@to'], $language, $params);
+            drupal_set_message(t('Ihre Nachricht wurde versendet.'));
+        }
+        else {
+            drupal_set_message('Bitte geben Sie eine Nachricht für den Support ein','error');
+        }
+
+    }
+
+    function support_form_mail($key, &$message, $params){
+        $message['subject'] = t($params['@subject']);
+        $message['body']    = t(drupal_html_to_text($params['@body']));
+    }
+
+    function support_form_render(){
+        print drupal_render(drupal_get_form('support_form'));
+    }
+
+
+    function get_popup_prefix(){
+        return '<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel">Wie können wir helfen</h3>
+                    </div>
+                <div class="modal-body">';
+    }
+
+    function get_popup_suffix(){
+        return '</div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary">Save changes</button>
+  </div>
+</div>';
+    }
+    
+   function suport_form_menu() {
+     $items = array();
+
+     $items['support/page'] = array(
+       'page callback' => 'support_form_page',
+       'access callback' => TRUE,
+       'type' => MENU_CALLBACK,
+     );
+
+     $items['support/%ctools_js'] = array(
+       'page callback' => 'support_form_callback',
+       'page arguments' => array(1),
+       'access callback' => TRUE,
+       'type' => MENU_CALLBACK,
+     );
+
+     return $items;
+   }
+
+  
+   /**
+    * Helper function to make a link.
+    */
+   function _support_form_make_link($link_text = '') {
+     // Set a default value if no text in supplied.
+     if (empty($link_text)) {
+       $link_text = 'Magical Modal';
+     }
+
+     return '<div id="magical-modal-link">' . l($link_text, 'support_form/nojs', array('attributes' => array('class' => 'ctools-use-modal'))) . '</div>';
+   }
+
+   
+   /**
+    * An example page.
+    */
+   function support_form_page() {
+     // Load the modal library and add the modal javascript.
+     ctools_include('modal');
+     ctools_modal_add_js();
+     return _support_form_make_link('Magical modal');
+   }
+
+  
+   function support_form_callback($ajax) {
+     if ($ajax) {
+       ctools_include('ajax');
+       ctools_include('modal');
+
+       $form_state = array(
+         'ajax' => TRUE,
+         'title' => t('MyModule Modal Form'),
+       );
+
+       // Use ctools to generate ajax instructions for the browser to create
+       // a form in a modal popup.
+       $output = ctools_modal_form_wrapper('support_form_form', $form_state);
+
+       // If the form has been submitted, there may be additional instructions
+       // such as dismissing the modal popup.
+       if (!empty($form_state['ajax_commands'])) {
+         $output = $form_state['ajax_commands'];
+       }
+
+       // Return the ajax instructions to the browser via ajax_render().
+       print ajax_render($output);
+       drupal_exit();
+     }
+     else {
+       return drupal_get_form('support_form_form');
+     }
+   }
+
+   function support_form_form($form, $form_state) {
+     $form = array();
+
+     $form['new_link_text'] = array(
+       '#type' => 'textfield',
+       '#title' => t('Link text'),
+     );
+
+     $form['submit'] = array(
+       '#type' => 'submit',
+       '#value' => t('Submit'),
+     );
+
+     return $form;
+   }
+
+  
+   function support_form_form_submit(&$form, &$form_state) {
+     // Generate the new link using the submitted text value.
+     $link = _support_form_make_link($form_state['values']['new_link_text']);
+
+     // Tell the browser to close the modal.
+     $form_state['ajax_commands'][] = ctools_modal_command_dismiss();
+
+     // Tell the browser to replace the old link with the new one.
+     $form_state['ajax_commands'][] = ajax_command_replace('#magical-modal-link', $link);
+   }
+
