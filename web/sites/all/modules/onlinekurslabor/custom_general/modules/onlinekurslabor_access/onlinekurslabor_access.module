@@ -61,7 +61,11 @@ function onlinekurslabor_access_node_grants($account, $op) {
   if ($account->uid > 0) {
     $grants['onlinekurslabor_authenticated'][] = 1;
   }
-  //grant  access to videosafe-videos
+  
+  //Videosafe-Videos
+  if(in_array(NM_ROLE_AUTOR, array_values($account->roles)))
+  {
+      //grant  access to videosafe-videos
     $all_videosafe_videos = _videosafe_get_all_videos();
     foreach ($all_videosafe_videos as $video_node) {
         $flattened_exclusive_access = array();
@@ -73,13 +77,14 @@ function onlinekurslabor_access_node_grants($account, $op) {
         }
         //sperrvermerk - nur die exklusivpersonen haben zugriff
         if (count($flattened_exclusive_access) && in_array($account->uid, $flattened_exclusive_access)) {
-            #$grants['onlinekurslabor_videosafe_exclusive'][] = $video_node->nid;
             $grants['onlinekurslabor_videosafe_lock'][] = $video_node->nid;
         }
-        //freigabe fuer fuer moderator und autoren, falls kein sperrvermerk
-        if (in_array(NM_ROLE_MODERATOR, array_values($account->roles)) || (!count($flattened_exclusive_access) && in_array(NM_ROLE_AUTOR, array_values($account->roles))))
+        //freigabe  falls kein sperrvermerk
+        elseif (!count($flattened_exclusive_access))
             $grants['onlinekurslabor_videosafe_lock'][] = $video_node->nid;
     }
+  }
+  
 
 
 
@@ -433,7 +438,7 @@ function onlinekurslabor_access_file_download($uri) {
                 }
                 /* verhindert herunterladen, wenn nicht in einem html5-player abgespielt */
                 elseif ($access_allowed && !_videosafe_is_video_streaming() &&  !_videosafe_was_node_edited($node))
-                { 
+                {  
                     drupal_goto(drupal_get_path('module', 'onlinekurslabor_access').'/assets/video/403_dl.mp4', array(), 307);
                 }
                 else
