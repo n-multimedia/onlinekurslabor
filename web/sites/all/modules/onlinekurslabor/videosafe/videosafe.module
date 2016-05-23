@@ -36,16 +36,17 @@ function videosafe_preprocess_node(&$vars) {
 */
 function videosafe_menu() {
       
-   /*   $items['videosafe'] = array(
-    'type' => MENU_CALLBACK,
-   # 'access arguments' => array('access content'),
-    'delivery callback' => 'videosafe_goto_root',  // Magic goes here
-  );*/
   $items['videosafe_ajax'] = array(
     'page callback' => 'videosafe_ajax_get_ajax', // Render HTML
     'type' => MENU_CALLBACK,
     'access arguments' => array('access content'),
     'delivery callback' => 'videosafe_ajax_callback',  // Magic goes here
+  );
+  
+    $items['videosafe'] = array(
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+    'page callback' => 'videosafe_goto_root',
   );
  
     $items['videosafe_getvideo'] = array(

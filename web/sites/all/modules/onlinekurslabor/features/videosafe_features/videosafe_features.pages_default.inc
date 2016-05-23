@@ -416,43 +416,6 @@ return $arg[0]->argument == _videosafe_get_root_directory()->nid;',
   $page->default_handlers[$handler->name] = $handler;
   $pages['videosafe'] = $page;
 
-  $page = new stdClass();
-  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
-  $page->api_version = 1;
-  $page->name = 'videosafe_root';
-  $page->task = 'page';
-  $page->admin_title = 'Videosafe - root';
-  $page->admin_description = 'root-view of videosafe';
-  $page->path = 'videosafe/';
-  $page->access = array(
-    'type' => 'none',
-    'settings' => NULL,
-  );
-  $page->menu = array();
-  $page->arguments = array();
-  $page->conf = array(
-    'admin_paths' => FALSE,
-  );
-  $page->default_handlers = array();
-  $handler = new stdClass();
-  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
-  $handler->api_version = 1;
-  $handler->name = 'page-videosafe_root__redirect_to_root';
-  $handler->task = 'page';
-  $handler->subtask = 'videosafe_root';
-  $handler->handler = 'http_response';
-  $handler->weight = 0;
-  $handler->conf = array(
-    'title' => 'Videosafe - Redirect to root',
-    'contexts' => array(),
-    'relationships' => array(),
-    'code' => '301',
-    'destination' => 'videosafe/2438',
-    'name' => 'redirect_to_root',
-  );
-  $page->default_handlers[$handler->name] = $handler;
-  $pages['videosafe_root'] = $page;
-
   return $pages;
 
 }
