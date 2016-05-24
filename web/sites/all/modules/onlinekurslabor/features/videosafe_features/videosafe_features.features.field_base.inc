@@ -25,17 +25,18 @@ function videosafe_features_field_default_field_bases() {
     'locked' => 0,
     'module' => 'entityreference',
     'settings' => array(
-      'handler' => 'base',
+      'handler' => 'views',
       'handler_settings' => array(
         'behaviors' => array(
           'views-select-list' => array(
-            'status' => 1,
+            'status' => 0,
           ),
         ),
-        'sort' => array(
-          'type' => 'none',
+        'view' => array(
+          'args' => array(),
+          'display_name' => 'users_roles_autor',
+          'view_name' => 'user_role_view',
         ),
-        'target_bundles' => array(),
       ),
       'profile2_private' => FALSE,
       'target_type' => 'user',
