@@ -1,7 +1,7 @@
 ##!/bin/sh
 drush vset maintenance_mode 1
 
-drush privatize --yes
+#drush privatize --yes
 
 drush fr  videosafe_features --yes
 drush en videosafe --yes
