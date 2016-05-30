@@ -29,9 +29,9 @@ if ($node->type == 'videosafe_video') {
     }
     $video_referenced_in_string = ' - ohne - ';
     if (count($h5p_ref_strings))
-        $video_referenced_in_string = 'den Texten: ' . implode(', ', $h5p_ref_strings);
+        $video_referenced_in_string = ((count($h5p_strings)>1)?'den Texten: ':'dem Text: ') . implode(', ', $h5p_ref_strings);
     if (count($h5p_strings))
-        $video_referenced_in_string .= '<br>in den interaktiven Inhalten: ' . implode(', ', $h5p_strings);
+        $video_referenced_in_string .= ((count($h5p_strings)>1)?'<br>in den interaktiven Inhalten: ':'<br>im interaktiven Inhalt: ') . implode(', ', $h5p_strings);
 }
 ?>
 

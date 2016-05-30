@@ -324,9 +324,14 @@ function _videosafe_get_all_videos() {
  */
 function _videosafe_get_h5p_usage($file_uri) {
     $video_base_uri = _videosafe_get_relative_url($file_uri);
-    $query = db_select('h5p_nodes', 'n');
-    $query->condition('json_content', '%' . $video_base_uri . '%', 'like')
-            ->fields('n', array('nid'));
+    $query = db_select('h5p_nodes', 'n')->fields('n', array('nid'));;
+
+    $db_or = db_or();
+    //alt-eintraege von h5p werden auch gesucht.
+    $db_or->condition('json_content', '%' . $video_base_uri . '%', 'like');
+    $db_or->condition('json_content', '%' . str_replace('videosafe','videos',$video_base_uri) . '%', 'like');
+    $query->condition($db_or);
+          
     $hp_nids = $query->execute()->fetchAll(PDO::FETCH_COLUMN);
     return node_load_multiple($hp_nids);
 }
