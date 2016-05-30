@@ -138,6 +138,8 @@ define("NM_VIEW_DOMAIN_MEDIA", "domain_media");
 //Content
 define("NM_CHAPTER_SEPARATOR", ".");
 
+define("NM_SUPPORT_MAIL", "support@medienlabor-uni-augsburg.de");
+
 
 module_load_include('inc', 'custom_general', 'inc/functions');
 module_load_include('inc', 'custom_general', 'inc/blocks');
