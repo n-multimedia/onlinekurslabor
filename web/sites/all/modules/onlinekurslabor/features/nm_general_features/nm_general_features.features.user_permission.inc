@@ -203,6 +203,15 @@ function nm_general_features_user_default_permissions() {
     'module' => 'og',
   );
 
+  // Exported permission: 'administer media wysiwyg view mode'.
+  $permissions['administer media wysiwyg view mode'] = array(
+    'name' => 'administer media wysiwyg view mode',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'media_wysiwyg_view_mode',
+  );
+
   // Exported permission: 'administer modules'.
   $permissions['administer modules'] = array(
     'name' => 'administer modules',
@@ -675,6 +684,22 @@ function nm_general_features_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'search',
+  );
+
+  // Exported permission: 'use media wysiwyg'.
+  $permissions['use media wysiwyg'] = array(
+    'name' => 'use media wysiwyg',
+    'roles' => array(
+      'Autor' => 'Autor',
+      'Dozent' => 'Dozent',
+      'Kooperationspartner' => 'Kooperationspartner',
+      'Moderator' => 'Moderator',
+      'Student' => 'Student',
+      'Test Student' => 'Test Student',
+      'Tutor' => 'Tutor',
+      'administrator' => 'administrator',
+    ),
+    'module' => 'media_wysiwyg',
   );
 
   // Exported permission: 'view any master profile'.
