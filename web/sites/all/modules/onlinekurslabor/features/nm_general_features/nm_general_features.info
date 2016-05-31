@@ -25,6 +25,7 @@ dependencies[] = rules
 dependencies[] = taxonomy
 dependencies[] = userprotect
 dependencies[] = uuid
+dependencies[] = workflow
 features[context][] = roles_hide_actions
 features[ctools][] = context:context:3
 features[ctools][] = ds:ds:1
