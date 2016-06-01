@@ -3,65 +3,92 @@
     function support_form_init(){
       // Menu_HOOK
     }
-
+    /**
+     * Initializes the site-options and callback
+     * 
+     * @return Array containing module-information
+     */
     function support_form_menu(){
       $items = array();
-      //20.05.2016 - 12:14 - SN
-      //support ist irgendwie immer noch im Menu registriert.
-      //Cache leeren hat keine Abhilfe geschaffen
-      //Check: Ist das vielleicht irgendwo in einem anderen Modul definiert?
       $items['support_help'] = array(
         'title'=>'Support',
         'description'=> 'Wir helfen gerne',
-        'page callback' => 'support_page_callback',
+        'page callback' => 'support_form_page_callback',
         'access callback' => TRUE,
         'type'=>MENU_NORMAL_ITEM
       );
       return $items;
     }
 
-
-    function _support_get_options(){
+    /**
+     * Returns the categories, which the user can choose from
+     * 
+     * @return  Array(String) of options
+     */
+    function _support_form_get_options(){
         return array('Kurs', 'Kursinhalte', 'Stream','Nachrichten', 'Benutzerkonto', 'Sonstiges');
 
     }
 
-
-
-/**
- * 20.05.2016 - 12:11 - SN
- * Tipp: page callback. Hier kann man das Formular wrappen
- * [support_page_callback description]
- * @return [type] [description]
- */
-    function support_page_callback() {
-        
-        $form = drupal_get_form("support_form");
-        $output = drupal_render($form);
-
-        //modal bootstrap modal popup here
-        //siehe http://getbootstrap.com/2.3.2/javascript.html#modals
-        //Achtung: wir haben Bootstrap 2 im Einsatz (nicht 3)
-
-        return ( _get_popup_prefix() ."". $output ."". _get_popup_suffix());
-
+   /**
+    * Handels errors in case, no message was typed
+    * 
+    * @return Form with highlighted point of failure or success message
+    */
+   function support_form_missing_message($form, &$form_state) {
+    if (form_get_errors()) {
+      return $form;
     }
-    
-    function my_callback($form, &$form_state){
-        return "Nachricht wurde gesendet.<br>" . _get_mod_body_end() . _get_mod_btn("Schließen");
+    $element = array();
+    $element['#type'] = 'markup';
+    $element['#markup'] = "Die Nachricht wurde verschickt.";
+
+    return $element;
+  }
+  /**
+   * returns the rendered form
+   * 
+   * @return Support-Form
+   */
+    function support_form_page_callback() {
+      $form = drupal_get_form("support_form");
+      $output = drupal_render($form);
+      return ( _support_form_popup_render_prefix() ."". $output ."". _support_form_popup_render_suffix());
     }
-    
-    function after_sub_form(){
-        $form = array();
-        $form['category']=array(
-          '#type'=>'select',
-          '#title'=>'Kategorie',
-          '#options' =>$options,
-        );
+    /**
+     * If the form was filled out validly,
+     * the message gets send and the user will be notified
+     * 
+     * Else the appropoate errormessage will be shown in th rebuild form
+     * 
+     * @return Form with error-/successmessage
+     */
+    function support_form_sent_callback($form, &$form_state){
+      $error = form_get_errors();
+      // Clear error for all the cases.
+      drupal_get_messages();
+      // Logic behind error.
+      if (!empty($error) && $error['title']) {
+        $form_state['rebuild'] = TRUE;
+        return "error";
+      }
+      if ($form_state['values']['problem'] != "" ){
+          $message = "Nachricht wurde gesendet.";
+          return $message . _support_form_render_modal_body_end() . _support_form_render_modal_btn("Schließen");
+      }
     }
+    /**
+     * Creates the supportz-form and returns it
+     * 
+     * @return Support-form
+     */
     function support_form(){
+      global $user;
+      $current_site =  $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+      $user_agent = $_SERVER['HTTP_USER_AGENT'];
+      $disclaimer = "\n\nDiese Informationen werden zusammen mit Ihrer Anfrage gesendet.\nDies dient der gezielten Fehlerbehebung";
         $form     = array();
-        $options  = _support_get_options();
+        $options  = _support_form_get_options();
         $form['kontakt'] = array(
             '#type' => 'fieldset',
             '#title' => t('Kontaktformular'),
@@ -77,40 +104,50 @@
         $form['kontakt']['problem']=array(
             '#type'=>'textarea',
             '#title'=>'Problemstellung',
+            '#required' => TRUE,
             '#attributes' => array('class' => array('form-control'),'placeholder'=>'Wie können wir helfen?', 'rows'=> '5'),
-            
         );
 
-
+        $form['kontakt']['personal_data'] = array(
+            '#type' => 'fieldset',
+            '#title' => t('<small>Was wird gesendet?</small>'),
+            '#prefix' => '<div id="daten-div">',
+            '#suffix' => '</div>',
+            '#collapsible' => TRUE,
+            '#collapsed' => TRUE,
+        );
+        
+        $form['kontakt']['personal_data']['data']=array(
+            '#type'=>'textarea',
+            '#title'=>'Name',
+            '#value' => $user->name ."\n". $user->mail . "\n" . $current_site . "\n" . $user_agent . $disclaimer,
+            '#attributes' => array('class' => array('form-control disabled'), 'disabled' => True, 'rows'=>8),
+        );
+        
         $form['kontakt']['submit']=array(
           '#type'=>'submit',
-          '#prefix' => _get_mod_body_end(),
-          '#suffix' => _get_mod_btn("Senden"),
+          '#prefix' => _support_form_render_modal_body_end(),
+          '#suffix' => _support_form_render_modal_btn("Abbrechen"),
           '#value'=>'Senden',
           '#attributes' => array('class' => array('btn-warning'), 'data-dismiss' => array("modal")),
            '#ajax' => array(
-            'callback' => 'my_callback',
+            'callback' => 'support_form_missing_message',
             'wrapper' => 'kontakt-div',
             'method' => 'replace',
             'effect' => 'fade',
-                     
-    ),
-
+          ),
         );
-
-        //Tipp
-        //Form API AJAX
-        //https://www.drupal.org/node/752056
-
-        //20.05.2016 - 12:12 - SN
-        //überflüssig, wenn der name des formulars passt
-        //$form['#submit'][] = 'support_form_submit';
-
         return $form;
     }
-
+    /**
+     * Takes form-data and generates a support-mail and sends it
+     * 
+     * If no user-message is given, an error will show up 
+     * 
+     * @param $form         form-object 
+     * @param &$form_state  information on form-processing
+     */
     function support_form_submit($form, &$form_state){
-
         // Always set content-type when sending HTML email
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
@@ -119,52 +156,73 @@
         $module = 'support_form';
         $key = 'support_mail';
         $language = language_default();
-
         if ($form_state['values']['problem'] != "" ){
             global $user;
-            $options = _support_get_options();
+            $options = _support_form_get_options();
             $params['@to'] = variable_get('okl_support_email', NM_SUPPORT_EMAIL);
             $params['@subject'] = "Problem bei: " . $options[$form_state['values']['category']];
-            $params['@body'] = wordwrap("Art des Fehlers:\n" . $options[$form_state['values']['category']]. "<hr>\n User-Nachricht:\n\n<p>". $form_state['values']['problem'] . "</p><hr>\n Von: " . $user->name , 70);
+            $params['@body'] = wordwrap("Art des Fehlers:\n" . $options[$form_state['values']['category']]. "\nPfad: " . ($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) ."\nSpezifikation:" . $_SERVER['HTTP_USER_AGENT'] ."<hr>\n User-Nachricht:\n\n<p>". $form_state['values']['problem'] . "</p><hr>\n Von: " . $user->name . " - " . $user->mail, 70);
             $params['@headers'] = $headers . "From: " . $user->mail;
             drupal_mail($module, $key, $params['@to'], $language, $params);
         }
-        else {
-            drupal_set_message('Bitte geben Sie eine Nachricht für den Support ein','error');
-        }
-
     }
-
+    /**
+     * Builds TEXT-msg from given HTML-msg and sends it
+     * 
+     * @param $key      needed for the mail_hook
+     * @param $message  array containing message information
+     * @param $params   array containing form information
+     */
     function support_form_mail($key, &$message, $params){
         $message['subject'] = t($params['@subject']);
         $message['body']    = t(drupal_html_to_text($params['@body']));
     }
-
+    
+    /**
+     * Prints the rendered form
+     */
     function support_form_render(){
         print drupal_render(drupal_get_form('support_form'));
     }
 
-
-    function _get_popup_prefix(){
-        return '<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    /**
+     * Returns the prefix for the modal-popup
+     * 
+     * @return Prefix for modal-popup
+     */
+    function _support_form_popup_render_prefix(){
+        return '<div id="supportModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="supportModalLabel" aria-hidden="true">
                     <div class="modal-header">
-                    <h3 id="myModalLabel">Wie können wir helfen</h3>
+                    <h3 id="supportModalLabel">Wie können wir helfen</h3>
                     </div>
                 <div class="modal-body">';
     }
-
-    function _get_popup_suffix(){
-        return '
-  
-    
-</div><a class="btn btn-primary btn-large" href="#myModal" data-toggle="modal">Hilfe</a>';
+     /**
+     * Returns the suffix for the modal-popup
+     * 
+     * @return String Suffix for modal-popup
+     */
+    function _support_form_popup_render_suffix(){
+        return '</div>';
     }
     
-    function _get_mod_body_end(){
+    function _support_form_render_modal_body_end(){
         return '</div><div class="modal-footer">';
     }
-    
-    function _get_mod_btn($label){
+     /**
+     * Render HTML-button for the form to de-/activate modal
+     * @param String $label Label of the button
+     * @return HTML-code for the Button
+     */
+    function _support_form_render_modal_btn($label){
         return '<button class="btn" data-dismiss="modal" aria-hidden="true">' . $label .'</button>
   </div>';
+    }
+    /**
+     * Render HTML-button for the form
+     * @param String $label Label of the button
+     * @return HTML-code for the Button
+     */
+    function _support_form_render_support_button($label){
+      return '<a class="btn btn-warning btn-large" href="#supportModal" data-toggle="modal">'. $label .'</a>';
     }
