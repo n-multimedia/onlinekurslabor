@@ -382,7 +382,7 @@ function onlinekurslabor_access_media_browser_plugins_alter(&$plugins) {
  * Implements hook_file_download().
  */
 function onlinekurslabor_access_file_download($uri) {
-    # drupal_set_message("access" . $uri);
+ #    drupal_set_message("access" . $uri); return -1;
     global $user;
     $account = clone $user;
     $access_allowed = false;
@@ -393,21 +393,24 @@ function onlinekurslabor_access_file_download($uri) {
     $query->join('file_managed', 'fm', 'fm.fid = fu.fid');
     $query->condition('fm.uri', $uri, '=');
     $query->condition('fu.type', array('default_image', 'node', 'profile2'), 'IN');
+    
+    
+   
+     
     $result = $query->execute();
 
     #   $allowd = true;
-    # drupal_set_message("db_result" . var_export($result, true));
-    # dpm(count($result));
-    #return -1;
+   #  drupal_set_message("db_result" . var_export($result, true));  dpm(count($result)); return -1;
     $entryfound = false;
     foreach ($result as $record) {
         $entryfound = true;
-        #    dpm($record);
+        #    dpm($record); return -1;
         if (in_array($record->type, array('default_image', 'profile2')))
         {
             $access_allowed = true;
         }
         if ($record->type == 'node') {
+           # dpm($node); return -1;
             $node = node_load($record->id);
             #     drupal_set_message("access" . var_export($record, true) . 'to' . node_access('view', node_load($record->id), $account));
             if (node_access('view', $node, $account))

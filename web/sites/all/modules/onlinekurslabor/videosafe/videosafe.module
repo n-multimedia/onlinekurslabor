@@ -329,7 +329,7 @@ function _videosafe_get_h5p_usage($file_uri) {
     $db_or = db_or();
     //alt-eintraege von h5p werden auch gesucht.
     $db_or->condition('json_content', '%' . $video_base_uri . '%', 'like');
-    $db_or->condition('json_content', '%' . str_replace('videosafe','videos',$video_base_uri) . '%', 'like');
+    $db_or->condition('json_content', '%' .  preg_replace('/h5p\/content\/[0-9]+\//', '', $video_base_uri). '%', 'like');
     $query->condition($db_or);
           
     $hp_nids = $query->execute()->fetchAll(PDO::FETCH_COLUMN);
