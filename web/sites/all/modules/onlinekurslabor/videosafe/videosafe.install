@@ -8,6 +8,7 @@ function videosafe_install(){
    _videosafe_setup_create_root();
    _videosafe_setup_create_migration_folder();
     _videosafe_setup_migrate_h5p_files();
+    _videosafe_setup_migrate_slashes();
 }
 
 /**
@@ -31,6 +32,14 @@ function videosafe_update_1001() {
 function videosafe_update_1002() {
  return _videosafe_setup_migrate_h5p_files();
 }
+
+/**
+ * ersetzt komische private:/// durch ://
+ */
+function videosafe_update_1003() {
+ return _videosafe_setup_migrate_slashes();
+}
+
 
 /*
  *
@@ -98,18 +107,7 @@ function _videosafe_setup_migrate_h5p_files()
             ->execute()
             ->fetchCol(); // returns an unindexed array
     $files = file_load_multiple($file_sql);
-    foreach ($files as $fid => $file) {
-        $treffer = array();
-#$file = file_load(591);
-        preg_match('/files-.+/', $file->uri, $treffer);
-        $pure_filename = $treffer[0];
-
-#dpm($file->filename ."  |  ". $pure_filename);
-        $file->filename = $pure_filename;
-        $new_path = "private://videosafe/" . $pure_filename;
-#dpm($file->uri ."  |  ".$new_path);
-        $file->uri = $new_path;
-        file_save($file);
+    foreach ($files as $fid => $file) { 
 
         $filename = $file->filename;
         $file->display = 1;
@@ -132,3 +130,13 @@ function _videosafe_setup_migrate_h5p_files()
         node_save($node);
     }
 }
+
+
+/**
+ * ersetzt komische private:/// durch ://
+ */
+function _videosafe_setup_migrate_slashes() {
+   db_update('file_managed')
+            ->expression('uri', 'replace(uri, :three_s, :two_s)', array(':three_s' => '///', ':two_s' => '//'))->execute();
+}
+
