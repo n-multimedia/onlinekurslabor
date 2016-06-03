@@ -137,6 +137,6 @@ function _videosafe_setup_migrate_h5p_files()
  */
 function _videosafe_setup_migrate_slashes() {
    db_update('file_managed')
-            ->expression('uri', 'replace(uri, ":three_s", ":two_s")', array(':three_s' => '///', ':two_s' => '//'))->execute();
+            ->expression('uri', 'replace(uri, :three_s, :two_s)', array(':three_s' => '///', ':two_s' => '//'))->execute();
 }
 
