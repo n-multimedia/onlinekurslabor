@@ -322,7 +322,6 @@ function _course_tasks_generic_solution_form_view() {
 
       $output .= render($fview[$key]);
     }
-    
   }
   else {
     //check if a solution has already been submitted
@@ -351,10 +350,12 @@ function _course_tasks_generic_solution_form_view() {
     }
 
     $output .= drupal_render($form);
+
   }
 
   $output = '<div class="alert alert-warning">' . $output;
   $output .= '</div>';
+
 
 
   return $output;
@@ -454,7 +455,7 @@ function _section_courses_task_solution_form($form, &$form_state, $task_nid) {
   foreach ($description_items as $item) {
     $form['solutions'][] = array(
       '#type' => 'text_format',
-      '#title' => $item['second'],
+      '#title' => check_markup($item['second'], "filtered_html"),
       '#base_type' => 'textarea',
       '#format' => NM_FILTER_FORMAT_FILTERED_HTML,
     );
@@ -583,6 +584,10 @@ function _course_tasks_generic_section_view($field_val, $id) {
 
     $output .= '</div>';
   }
+
+
+  //apply filters
+  $output = check_markup($output, 'filtered_html');
 
   return $output;
 }
