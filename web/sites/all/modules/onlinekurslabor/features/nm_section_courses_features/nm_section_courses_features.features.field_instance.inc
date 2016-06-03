@@ -877,7 +877,7 @@ function nm_section_courses_features_field_default_field_instances() {
     'bundle' => 'courses_course',
     'default_value' => array(
       0 => array(
-        'tid' => 182,
+        'tid' => 183,
       ),
     ),
     'deleted' => 0,
@@ -906,7 +906,7 @@ function nm_section_courses_features_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_semester',
     'label' => 'Semester',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -1442,6 +1442,8 @@ function nm_section_courses_features_field_default_field_instances() {
           'remote_file' => 0,
           'upload' => 'upload',
         ),
+        'multiple_value_widget' => 'table',
+        'progress_indicator' => 'throbber',
       ),
       'type' => 'media_generic',
       'weight' => 2,
