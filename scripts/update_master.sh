@@ -1,11 +1,13 @@
 ##!/bin/sh
 drush vset maintenance_mode 1
 
-#drush privatize --yes
+drush fr nm_general_features --yes
+drush privatize --yes
+
+drush fr nm_general_features --yes
 
 mkdir -p ../files_private/videosafe
 chmod -R 0777  ../files_private
-
 
 drush en privatemsg --yes
 drush en media_wysiwyg --yes
@@ -17,7 +19,6 @@ drush fr  videosafe_features --yes
 echo   "RewriteEngine on \nRewriteRule ^content/([0-9]+)/videos/(.*)$ /system/files/videosafe/\$2 [R=301,L]\nRewriteRule ^content/([0-9]+)/videosafe/(.*)$ /system/files/videosafe/\$2 [R=301,L]" > sites/default/files/h5p/.htaccess
 find sites/default/files/h5p -type f -iname "files-*.*" -exec  cp {}  ../files_private/videosafe/  \;
 drush en videosafe --yes
-
 
 drush fr nm_general_features --yes
 drush fr nm_section_courses_features --yes
