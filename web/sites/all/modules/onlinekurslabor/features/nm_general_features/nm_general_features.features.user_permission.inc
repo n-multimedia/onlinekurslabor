@@ -690,14 +690,8 @@ function nm_general_features_user_default_permissions() {
   $permissions['use media wysiwyg'] = array(
     'name' => 'use media wysiwyg',
     'roles' => array(
-      'Autor' => 'Autor',
-      'Dozent' => 'Dozent',
-      'Kooperationspartner' => 'Kooperationspartner',
-      'Moderator' => 'Moderator',
-      'Student' => 'Student',
-      'Test Student' => 'Test Student',
-      'Tutor' => 'Tutor',
       'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
     ),
     'module' => 'media_wysiwyg',
   );
