@@ -152,10 +152,10 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['name']['label'] = '';
   $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
-  /* Sort criterion: User: Created date */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'users';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  /* Sort criterion: User: Name */
+  $handler->display->display_options['sorts']['name']['id'] = 'name';
+  $handler->display->display_options['sorts']['name']['table'] = 'users';
+  $handler->display->display_options['sorts']['name']['field'] = 'name';
   /* Filter criterion: User: Active */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'users';
