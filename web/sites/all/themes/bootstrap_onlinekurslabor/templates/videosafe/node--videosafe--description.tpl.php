@@ -41,9 +41,11 @@ if ($node->type == 'videosafe_video') {
 <?php
 if ($node->type == 'videosafe_video') {
     $content['field_exclusive_access']['#title']='Sperrvermerk, einsehbar für';
-
-    print render(file_view(file_load($node->field_video[LANGUAGE_NONE][0]['fid']), 'media_6'));
-    ?><div class="urls"><b>URLs zum Kopieren:</b>
+?>
+    <div class="media-element-container media-media_6">
+        <?print render(file_view(file_load($node->field_video[LANGUAGE_NONE][0]['fid']), 'media_6'));?>
+    </div>
+    <div class="urls"><b>URLs zum Kopieren:</b>
         <ul><?= implode('', $urls) ?></ul>
     </div>
 
@@ -58,12 +60,11 @@ if ($node->type == 'videosafe_video') {
 } else if ($node->type == 'videosafe_folder') {
     ?>
     <ul>
-        <?
-        echo $node_edit_button;
-        ?>
+        <? echo $node_edit_button;?>
         <li class="btn" id=""><a title="Unterordner erstellen" href="/node/add/videosafe-folder?field_parent_folder=<?= $node->nid ?>">Unterordner erstellen</a></li>
-
-        <li class="btn" id=""><a title="Video hochladen" href="/node/add/videosafe-video?field_parent_folder=<?= $node->nid ?>">Video hochladen</a></li>
+        <?php if ($node->nid != _videosafe_get_root_directory()->nid): ?>
+            <li class="btn" id=""><a title="Video hochladen" href="/node/add/videosafe-video?field_parent_folder=<?= $node->nid ?>">Video hochladen</a></li>
+        <?php endif; ?>    
     </ul>
     <?
 }
