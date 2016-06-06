@@ -16,7 +16,7 @@ drush en media_wysiwyg --yes
 drush fr nm_general_features --yes
 drush en  videosafe_features --yes
 drush fr  videosafe_features --yes
-echo   "#verweise auf bilder etc falls in private\nRewriteEngine on \nRewriteCond %{REQUEST_FILENAME} !-f\nRewriteRule ^content/([0-9]+)/(.*)/(.*)$ /system/files/h5p/content/\$1/\$2/\$3 [R=301,L]\n#zwinge bei videos, in private zu gehen\nRewriteEngine on \nRewriteRule ^content/([0-9]+)/videos/(.*)$ /system/files/h5p/content/\$1/videos/\$2 [R=301,L]\nRewriteRule ^content/([0-9]+)/videosafe/(.*)$ /system/files/videosafe/\$2 [R=301,L]\n" > sites/default/files/h5p/.htaccess
+echo   "#verweise auf bilder etc falls in private\nRewriteEngine on\nRewriteCond %{REQUEST_FILENAME} !-f\nRewriteCond %{REQUEST_FILENAME} !videosafe\nRewriteRule ^content/([0-9]+)/(.*)/(.*)$ /system/files/h5p/content/\$1/\$2/\$3 [R=301,L]\n#videosafe immer in private\nRewriteEngine on \nRewriteCond %{REQUEST_URI} videosafe\nRewriteRule ^content/([0-9]+)/videosafe/(.*)$ /system/files/videosafe/\$2 [R=301,L]\n" > sites/default/files/h5p/.htaccess
 #find sites/default/files/h5p -type f -iname "files-*.*" -exec  cp {}  ../files_private/videosafe/  \;
 drush en videosafe --yes
 
