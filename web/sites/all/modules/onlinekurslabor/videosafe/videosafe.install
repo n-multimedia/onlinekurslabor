@@ -116,7 +116,7 @@ function _videosafe_setup_migrate_h5p_files() {
     $node->type = NM_VIDEOSAFE_VIDEO;
     node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
     $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
-    $node->uid = $user->uid;
+    $node->uid = $file->uid;
     $node->status = 1; //(1 or 0): published or not
     #$node->body = 'In diesem Bereich werden Videos hinterlegt. Diese sind dann geschützt und ein Download wird unterbunden';
     $node->promote = 0; //(1 or 0): promoted to front page
