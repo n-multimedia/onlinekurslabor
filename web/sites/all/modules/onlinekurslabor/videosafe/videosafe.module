@@ -335,7 +335,23 @@ function _videosafe_get_all_videos() {
   $nodes = node_load_multiple($nids);
   return $nodes;
 }
-
+        
+        
+/**
+ * gets objects of type NM_VIDEOSAFE_VIDEO
+ * holt videos, bei denen die $uid im feld exclusive_access hinterlegt ist
+ * @return array<NM_VIDEOSAFE_VIDEO> stored videos
+ */
+function _videosafe_get_videos_for_exclusive_user_id($uid) {
+    //dummes EntityFieldQuery funzt hier nicht
+    $query = db_select('node', 'n')
+            ->fields('n', array('nid'))
+            ->condition('type', NM_VIDEOSAFE_VIDEO);
+    $query->leftJoin('field_data_field_exclusive_access', 'exclusive_access', 'n.nid = exclusive_access.entity_id');
+    $query->condition('exclusive_access.field_exclusive_access_target_id', $uid, '=');
+    $foundrecords = $query->execute()->fetchCol();
+    return node_load_multiple($foundrecords);
+}
 
 /**
  * gets h5ps that use this video file

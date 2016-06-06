@@ -63,26 +63,13 @@ function onlinekurslabor_access_node_grants($account, $op) {
   }
   
   //Videosafe-Videos
-  if(in_array(NM_ROLE_AUTOR, array_values($account->roles)))
+  if (in_array(NM_ROLE_AUTOR, array_values($account->roles)))
   {
-      //grant  access to videosafe-videos
-    $all_videosafe_videos = _videosafe_get_all_videos();
-    foreach ($all_videosafe_videos as $video_node) {
-        $flattened_exclusive_access = array();
-        if (count($video_node->field_exclusive_access)) {
-            //fülle sperrvermerk-array
-            $flattened_exclusive_access_iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($video_node->field_exclusive_access));
-            foreach ($flattened_exclusive_access_iterator as $it => $v)
-                $flattened_exclusive_access[] = $v;
-        }
-        //sperrvermerk - nur die exklusivpersonen haben zugriff
-        if (count($flattened_exclusive_access) && in_array($account->uid, $flattened_exclusive_access)) {
-            $grants['onlinekurslabor_videosafe_lock'][] = $video_node->nid;
-        }
-        //freigabe  falls kein sperrvermerk
-        elseif (!count($flattened_exclusive_access))
-            $grants['onlinekurslabor_videosafe_lock'][] = $video_node->nid;
-    }
+      $users_videosafe_videos = _videosafe_get_videos_for_exclusive_user_id($account->uid);
+          foreach ($users_videosafe_videos as $video_node) {
+                 $grants['onlinekurslabor_videosafe_exclusive_access'][] = $video_node->nid;
+          }
+    $grants['onlinekurslabor_author_access'][] = 1;
   }
   
 
@@ -210,14 +197,15 @@ function onlinekurslabor_access_node_access_records($node) {
     );
   }
   if ($node->type == NM_VIDEOSAFE_VIDEO) {
-      /* warum gehen mehrere realms nicht???
+      
+      /*video mit sperrvermerk*/
         if ($node->field_exclusive_access) {
             $flattened_exclusive_access_iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($node->field_exclusive_access));
             foreach ($flattened_exclusive_access_iterator as $it => $v)
                 $flattened_exclusive_access[] = $v;
             if (count($flattened_exclusive_access)) {
-                $grants[] = array( 
-                    'realm' => 'onlinekurslabor_videosafe_exclusive',
+                $grants[] = array(
+                    'realm' => 'onlinekurslabor_videosafe_exclusive_access',
                     'gid' => $node->nid,
                     'grant_view' => 1,
                     'grant_update' => 1,
@@ -225,18 +213,16 @@ function onlinekurslabor_access_node_access_records($node) {
                     'priority' => 1,
                 );
             }
-            }*/
-            { //wir muessen den zugriff erstmal sperren, um ihn spaeter fuer autoren etc wieder freizugeben
-                    $grants[] = array(
-                    'realm' => 'onlinekurslabor_videosafe_lock',
-                    'gid' => $node->nid,
-                    'grant_view' => 1,
-                    'grant_update' => 0,
-                    'grant_delete' => 0,
-                    'priority' => 2,
-                );
-            }
-        
+        } else { //kein sperrvermerk dann sperren mit gid=1
+            $grants[] = array(
+                'realm' => 'onlinekurslabor_author_access',
+                'gid' => 1,
+                'grant_view' => 1,
+                'grant_update' => 0,
+                'grant_delete' => 0,
+                'priority' => 2,
+            );
+        }
     }
 
 
@@ -460,6 +446,7 @@ function onlinekurslabor_access_file_download($uri) {
         if (!$mime)
             $mime = file_get_mimetype($uri);
         return array('Content-Type' => $mime);
+        #'Accept-Ranges' => 'bytes')
     }
     return -1;
 }
