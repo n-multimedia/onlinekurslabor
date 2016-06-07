@@ -92,7 +92,6 @@
         $options  = _support_form_get_options();
         $form['kontakt'] = array(
             '#type' => 'fieldset',
-            
             '#prefix' => '<div id="kontakt-div">',
             '#suffix' => '</div>',
         );
@@ -120,7 +119,6 @@
         
         $form['kontakt']['personal_data']['data']=array(
             '#type'=>'textarea',
-            '#title'=>'Name',
             '#value' => $user->name ."\n". $user->mail . "\n" . $current_site . "\n" . $user_agent . $disclaimer,
             '#attributes' => array('class' => array('form-control disabled'), 'disabled' => True, 'rows'=>8),
         );
