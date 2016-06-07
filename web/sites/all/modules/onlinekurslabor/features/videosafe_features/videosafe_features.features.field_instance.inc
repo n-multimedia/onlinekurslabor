@@ -205,7 +205,7 @@ function videosafe_features_field_default_field_instances() {
     'default_value' => NULL,
     'default_value_function' => '',
     'deleted' => 0,
-    'description' => 'Hat das Video einen Sperrvermerk, so können hier einzelne Nutzer ausgewählt werden, die exklusiv die Rechte erhalten, das Video einzusehen und in Lehrtexten einzubetten.  ',
+    'description' => 'Hat das Video einen <strong>Sperrvermerk</strong>, so können hier einzelne Autoren ausgewählt werden, die exklusiv die Berechtigung erhalten, das Video einzusehen und in Lehrtexten zu nutzen.  <strong>Mehrere Werte kommagetrennt</strong>',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -237,7 +237,7 @@ function videosafe_features_field_default_field_instances() {
         'path' => '',
         'size' => 60,
       ),
-      'type' => 'entityreference_autocomplete',
+      'type' => 'entityreference_autocomplete_tags',
       'weight' => 6,
     ),
   );
@@ -331,7 +331,7 @@ Die Videodateien selbst sollten sinnvoll benannt sein.',
   // Included for use with string extractors like potx.
   t('Body');
   t('Einsehbar für');
-  t('Hat das Video einen Sperrvermerk, so können hier einzelne Nutzer ausgewählt werden, die exklusiv die Rechte erhalten, das Video einzusehen und in Lehrtexten einzubetten.  ');
+  t('Hat das Video einen <strong>Sperrvermerk</strong>, so können hier einzelne Autoren ausgewählt werden, die exklusiv die Berechtigung erhalten, das Video einzusehen und in Lehrtexten zu nutzen.  <strong>Mehrere Werte kommagetrennt</strong>');
   t('Interne Bemerkung');
   t('Oberordner');
   t('Ordner');

@@ -1122,7 +1122,8 @@ function nm_section_content_features_field_default_field_instances() {
           'http' => 0,
           'https' => 0,
           'oembed' => 0,
-          'public' => 'public',
+          'private' => 'private',
+          'public' => 0,
         ),
         'allowed_types' => array(
           'application' => 0,

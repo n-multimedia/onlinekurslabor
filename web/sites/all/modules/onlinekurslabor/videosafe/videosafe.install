@@ -4,79 +4,86 @@
 /**
  * Implements hook_install()
  */
-function videosafe_install(){
-   _videosafe_setup_create_root();
-   _videosafe_setup_create_migration_folder();
-    _videosafe_setup_migrate_h5p_files();
+function videosafe_install() {
+  _videosafe_setup_create_root();
+  _videosafe_setup_create_migration_folder();
+  _videosafe_setup_migrate_h5p_files();
+  _videosafe_setup_migrate_slashes();
 }
 
 /**
  * erstelle initial root-Ordner fuer videosafe
  */
 function videosafe_update_1000() {
-   return _videosafe_setup_create_root();
+  return _videosafe_setup_create_root();
 }
 
 /**
  * erstelle Ordner fuer alte H5Ps
  */
 function videosafe_update_1001() {
-      return _videosafe_setup_create_migration_folder();
-   
+  return _videosafe_setup_create_migration_folder();
+
 }
 
 /**
  * migriere alt-h5p-files in videosafe
  */
 function videosafe_update_1002() {
- return _videosafe_setup_migrate_h5p_files();
+  return _videosafe_setup_migrate_h5p_files();
 }
+
+/**
+ * ersetzt komische private:/// durch ://
+ */
+function videosafe_update_1003() {
+  return _videosafe_setup_migrate_slashes();
+}
+
 
 /*
  *
  * erstellt videosafe-root-dir  */
-function  _videosafe_setup_create_root()
-{
-     global $user;
+function _videosafe_setup_create_root() {
+  global $user;
 
-    $node = new stdClass();
-    $node->title = "Videosafe";
-    $node->type = NM_VIDEOSAFE_FOLDER;
-    node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
-    $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
-    $node->uid = $user->uid;
-    $node->status = 1; //(1 or 0): published or not
-    #$node->body = 'In diesem Bereich werden Videos hinterlegt. Diese sind dann geschützt und ein Download wird unterbunden';
-    $node->promote = 0; //(1 or 0): promoted to front page
-    $node->comment = 0; // 0 = comments disabled, 1 = read only, 2 = read/write
+  $node = new stdClass();
+  $node->title = "Videosafe";
+  $node->type = NM_VIDEOSAFE_FOLDER;
+  node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
+  $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
+  $node->uid = $user->uid;
+  $node->status = 1; //(1 or 0): published or not
+  #$node->body = 'In diesem Bereich werden Videos hinterlegt. Diese sind dann geschützt und ein Download wird unterbunden';
+  $node->promote = 0; //(1 or 0): promoted to front page
+  $node->comment = 0; // 0 = comments disabled, 1 = read only, 2 = read/write
 
-    $node = node_submit($node); // Prepare node for saving
-    node_save($node);
+  $node = node_submit($node); // Prepare node for saving
+  node_save($node);
 }
 
 /*
  *
  * erstellt platzhalterordner fuer zu migrierende h5p-files  */
-function _videosafe_setup_create_migration_folder()
-{
-     global $user;
-     
-    $first = _videosafe_get_root_directory();
+function _videosafe_setup_create_migration_folder() {
+  global $user;
 
-    $node = new stdClass();
-    $node->title = "Migrierte Altdateien";
-    $node->type = NM_VIDEOSAFE_FOLDER;
-    node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
-    $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
-    $node->uid = $user->uid;
-    $node->status = 1; //(1 or 0): published or not
-    $node->field_parent_folder[LANGUAGE_NONE][0]['target_id'] = $first->nid;
-    #$node->body = 'In diesem Bereich werden Videos hinterlegt. Diese sind dann geschützt und ein Download wird unterbunden';
-    $node->promote = 0; //(1 or 0): promoted to front page
-    $node->comment = 0; // 0 = comments disabled, 1 = read only, 2 = read/write
+  $first = _videosafe_get_root_directory();
 
-    $node = node_submit($node); // Prepare node for saving
-    node_save($node);
+  $node = new stdClass();
+  $node->title = "Migrierte Altdateien";
+  $node->type = NM_VIDEOSAFE_FOLDER;
+  node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
+  $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
+  $node->uid = $user->uid;
+  $node->status = 1; //(1 or 0): published or not
+  $node->field_parent_folder[LANGUAGE_NONE][0]['target_id'] = $first->nid;
+  #$node->body = 'In diesem Bereich werden Videos hinterlegt. Diese sind dann geschützt und ein Download wird unterbunden';
+  $node->promote = 0; //(1 or 0): promoted to front page
+  $node->comment = 0; // 0 = comments disabled, 1 = read only, 2 = read/write
+
+  $node = node_submit($node); // Prepare node for saving
+  node_save($node);
 }
 
 
@@ -85,50 +92,51 @@ function _videosafe_setup_create_migration_folder()
  * migriert h5p-files in den erstellten migrationsfolder
  * nur einmal auszuführen!
  */
-function _videosafe_setup_migrate_h5p_files()
-{
-       global $user;
-    $folders = _videosafe_get_all_folders();
-    $last = end($folders);
+function _videosafe_setup_migrate_h5p_files() {
+  global $user;
+  $folders = _videosafe_get_all_folders();
+  $last = end($folders);
 
-     
- $file_sql = db_select('file_managed', 'n')
-            ->fields('n', array('fid'))
-            ->condition('n.uri', '%/videos/files-%', 'LIKE')
-            ->execute()
-            ->fetchCol(); // returns an unindexed array
-    $files = file_load_multiple($file_sql);
-    foreach ($files as $fid => $file) {
-        $treffer = array();
-#$file = file_load(591);
-        preg_match('/files-.+/', $file->uri, $treffer);
-        $pure_filename = $treffer[0];
 
-#dpm($file->filename ."  |  ". $pure_filename);
-        $file->filename = $pure_filename;
-        $new_path = "private://videosafe/" . $pure_filename;
-#dpm($file->uri ."  |  ".$new_path);
-        $file->uri = $new_path;
-        file_save($file);
+  $file_sql = db_select('file_managed', 'n')
+    ->fields('n', array('fid'))
+    ->condition('n.uri', '%/videos/files-%', 'LIKE')
+    ->execute()
+    ->fetchCol(); // returns an unindexed array
+  $files = file_load_multiple($file_sql);
+  foreach ($files as $fid => $file) {
 
-        $filename = $file->filename;
-        $file->display = 1;
-        $exported_file_array = (get_object_vars($file));
-        $exported_file_array['field_video_display'] = 1;
+    $filename = $file->filename;
+    $file->display = 1;
+    $exported_file_array = (get_object_vars($file));
+    $exported_file_array['field_video_display'] = 1;
 
-        $node = new stdClass();
-        $node->title = str_replace('videos/', '', $filename);
-        $node->type = NM_VIDEOSAFE_VIDEO;
-        node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
-        $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
-        $node->uid = $user->uid; 
-        $node->status = 1; //(1 or 0): published or not
-        #$node->body = 'In diesem Bereich werden Videos hinterlegt. Diese sind dann geschützt und ein Download wird unterbunden';
-        $node->promote = 0; //(1 or 0): promoted to front page
-        $node->comment = 0; // 0 = comments disabled, 1 = read only, 2 = read/write
-         $node->field_parent_folder[LANGUAGE_NONE][0]['target_id'] = $last->nid;
-        $node->field_video[LANGUAGE_NONE][] = $exported_file_array;
-        $node = node_submit($node); // Prepare node for saving
-        node_save($node);
-    }
+    $node = new stdClass();
+    $node->title = str_replace('videos/', '', $filename);
+    $node->type = NM_VIDEOSAFE_VIDEO;
+    node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
+    $node->language = LANGUAGE_NONE; // Or e.g. 'en' if locale is enabled
+    $node->uid = $file->uid;
+    $node->status = 1; //(1 or 0): published or not
+    #$node->body = 'In diesem Bereich werden Videos hinterlegt. Diese sind dann geschützt und ein Download wird unterbunden';
+    $node->promote = 0; //(1 or 0): promoted to front page
+    $node->comment = 0; // 0 = comments disabled, 1 = read only, 2 = read/write
+    $node->field_parent_folder[LANGUAGE_NONE][0]['target_id'] = $last->nid;
+    $node->field_video[LANGUAGE_NONE][] = $exported_file_array;
+    $node = node_submit($node); // Prepare node for saving
+    node_save($node);
+  }
 }
+
+
+/**
+ * ersetzt komische private:/// durch ://
+ */
+function _videosafe_setup_migrate_slashes() {
+  db_update('file_managed')
+    ->expression('uri', 'replace(uri, :three_s, :two_s)', array(
+      ':three_s' => '///',
+      ':two_s' => '//'
+    ))->execute();
+}
+

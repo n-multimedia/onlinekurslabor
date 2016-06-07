@@ -330,10 +330,13 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['fields']['field_exclusive_access']['label'] = 'Sperrvermerk';
   $handler->display->display_options['fields']['field_exclusive_access']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['field_exclusive_access']['alter']['text'] = 'ja';
+  $handler->display->display_options['fields']['field_exclusive_access']['alter']['max_length'] = '1';
+  $handler->display->display_options['fields']['field_exclusive_access']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['field_exclusive_access']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['field_exclusive_access']['settings'] = array(
     'link' => 0,
   );
+  $handler->display->display_options['fields']['field_exclusive_access']['delta_limit'] = '1';
   $handler->display->display_options['fields']['field_exclusive_access']['delta_offset'] = '0';
   /* Field: Content: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
