@@ -563,12 +563,19 @@ function user_send_email($entity, $context) {
     $language = language_default();
   }
   $params = array('context' => $context);
-
-  if (drupal_mail('system', 'action_send_email', $recipient, $language, $params)) {
-    watchdog('action', 'Sent email to %recipient', array('%recipient' => $recipient));
+// Send the message.
+  $return = privatemsg_new_thread(array($recipient_account), $context['subject'], $context['message']);  
+  if ($return['success']) {
+    // Message has been sent, display confirmation message.
+    drupal_set_message(t('Message has been sent.'));
+    watchdog('action', 'Sent message to %recipient', array('%recipient' => $recipient));
   }
   else {
-    watchdog('error', 'Unable to send email to %recipient', array('%recipient' => $recipient));
+    // Display possible errors...
+    foreach ($return['messages']['error'] as $error) {
+      drupal_set_message($error, 'error');
+      watchdog('error', 'Unable to send message to %recipient', array('%recipient' => $recipient));
+    }
   }
 }
 
