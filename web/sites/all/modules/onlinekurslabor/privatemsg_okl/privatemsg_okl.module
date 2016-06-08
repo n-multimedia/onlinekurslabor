@@ -1,14 +1,12 @@
 <?php
 function private_msg_menu_alter(&$items) {
-    
   $items['messages/delete/%privatemsg_thread/%privatemsg_message']['access callback']  = 'privatemsg_user_access';
-          
-    
 }
 
 function privatemsg_okl_privatemsg_thread_operations() {
+  global $user;
   $operations = array();
-    
+
   $roles[] = ($user->roles);
     if (in_array( NM_ROLE_ADMIN , $roles ) && privatemsg_user_access('delete privatemsg')) {
     $operations['delete'] = array(
