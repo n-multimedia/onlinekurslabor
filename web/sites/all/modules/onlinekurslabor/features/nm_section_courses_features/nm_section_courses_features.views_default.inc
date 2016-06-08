@@ -1160,7 +1160,7 @@ function nm_section_courses_features_views_default_views() {
         'url' => '',
       ),
     ),
-    'action::user_send_email' => array(
+    'action::user_send_message' => array(
       'selected' => 1,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
@@ -1568,7 +1568,7 @@ function nm_section_courses_features_views_default_views() {
         'url' => '',
       ),
     ),
-    'action::user_send_email' => array(
+    'action::user_send_message' => array(
       'selected' => 1,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
