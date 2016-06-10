@@ -268,8 +268,6 @@ function _support_form_render_modal_btn($label) {
  * @return HTML-code for the Button
  */
 function _support_form_render_support_button($label) {
-  global $user;
-  if ($user->uid && array_intersect(array('authenticated user'), $user->roles)) {
-    return '<a class="btn btn-warning btn-large" id="support_form_btn" href="#supportModal" data-toggle="modal">' . $label . '</a>';
-  }
+  return '<a class="btn btn-warning btn-large" id="support_form_btn" href="#supportModal" data-toggle="modal">' . $label . '</a>';
+
 }
