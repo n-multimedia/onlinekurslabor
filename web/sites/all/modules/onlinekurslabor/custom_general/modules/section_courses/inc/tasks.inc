@@ -317,6 +317,9 @@ function _course_tasks_generic_solution_form_view() {
     $fview = field_view_field('node', $solution_node, 'field_generic_solution_entry', $solutions_field_vals);
 
     foreach ($description_items as $key => $item) {
+      //apply filters
+      $item['second'] = check_markup($item['second'], 'filtered_html');
+
       $output .= "<h3>" . $item['second'] . "</h3>";
       //$output .= $solutions_field_vals[$key]['value'];
 
