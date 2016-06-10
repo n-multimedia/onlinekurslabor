@@ -64,9 +64,18 @@ function support_form_sendform_callback($form, &$form_state) {
  * @return Support-Form
  */
 function support_form_page_callback() {
-  $form = drupal_get_form("support_form");
-  $output = drupal_render($form);
-  return (_support_form_popup_render_prefix() . "" . $output . "" . _support_form_popup_render_suffix());
+  global $user;
+
+  //just for authentificated in users
+  if($user->uid > 0){
+    drupal_add_css(drupal_get_path('module', 'support_form') .'/css/support_form.css');
+
+    $form = drupal_get_form("support_form");
+    $output = drupal_render($form);
+    return (_support_form_popup_render_prefix() . "" . $output . "" . _support_form_popup_render_suffix()) . _support_form_render_support_button(t("Support request"));
+  }
+
+  return "";
 }
 
 /**

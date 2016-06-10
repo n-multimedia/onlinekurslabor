@@ -42,8 +42,8 @@ msgstr ""
 
 
 
-msgid ""
-msgstr ""
+msgid "Support request"
+msgstr "Unterstützung"
 
 msgid ""
 msgstr ""
