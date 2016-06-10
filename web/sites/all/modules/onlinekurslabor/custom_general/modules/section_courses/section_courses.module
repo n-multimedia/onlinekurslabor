@@ -344,10 +344,6 @@ function section_courses_block_info() {
   $blocks['course_text_biblio'] = array(
     'info' => t('Course - Text Biblio'),
   );
-  
-  $blocks['support_form'] = array(
-    'info' => t('Support - Form'),
-  );
 
   return $blocks;
 }
@@ -383,11 +379,7 @@ function section_courses_block_view($delta = '') {
     case 'course_forum_breadcrumbs' :
       $block['content'] = _section_courses_forum_breadcrumb_view();
       break;
-      
-    case 'support_form' :
-      $block['content'] = support_form_render();
-      break;
-  
+
     case 'course_text_biblio' :
       $block['content'] = _section_courses_text_biblio_view();
       break;

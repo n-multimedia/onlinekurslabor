@@ -58,24 +58,46 @@ function support_form_sendform_callback($form, &$form_state) {
   return $element;
 }
 
+
+/**
+ * Implements hook_block_info().
+ */
+
+function support_form_block_info() {
+  $blocks = array();
+
+  $blocks['support_form'] = array(
+    'info' => t('Support - Form'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function support_form_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'support_form' :
+      $block['content'] = support_form_render();
+      break;
+
+  }
+
+  return $block;
+
+
+}
+
 /**
  * returns the rendered form
  *
  * @return Support-Form
  */
 function support_form_page_callback() {
-  global $user;
-
-  //just for authentificated in users
-  if($user->uid > 0){
-    drupal_add_css(drupal_get_path('module', 'support_form') .'/css/support_form.css');
-
-    $form = drupal_get_form("support_form");
-    $output = drupal_render($form);
-    return (_support_form_popup_render_prefix() . "" . $output . "" . _support_form_popup_render_suffix()) . _support_form_render_support_button(t("Support request"));
-  }
-
-  return "";
+  return support_form_render();
 }
 
 /**
@@ -99,6 +121,24 @@ function support_form_sent_callback($form, &$form_state) {
     $message = "Nachricht wurde gesendet.";
     return $message . _support_form_render_modal_body_end() . _support_form_render_modal_btn("Schließen");
   }
+}
+
+
+/**
+ * Implements hook_page_build().
+ */
+function support_form_page_build(&$page) {
+  $block = module_invoke('support_form', 'block_view', 'support_form');
+  $blocks['support_form'] = array('#markup' => $block['content']);
+
+  $region = 'footer';
+  if (isset($page[$region])) {
+    $page[$region] = array_merge($page[$region], $blocks);
+  }
+  else {
+    $page[$region] = $blocks;
+  }
+
 }
 
 /**
@@ -223,7 +263,18 @@ function support_form_mail($key, &$message, $params) {
  * Prints the rendered form
  */
 function support_form_render() {
-  print drupal_render(drupal_get_form('support_form'));
+  global $user;
+
+  //just for authentificated in users
+  if($user->uid > 0){
+    drupal_add_css(drupal_get_path('module', 'support_form') .'/css/support_form.css');
+
+    $form = drupal_get_form("support_form");
+    $output = drupal_render($form);
+    return (_support_form_popup_render_prefix() . "" . $output . "" . _support_form_popup_render_suffix()) . _support_form_render_support_button(t("Support request"));
+  }
+
+  return "";
 }
 
 /**

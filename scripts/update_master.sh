@@ -10,6 +10,7 @@ mkdir -p ../files_private/videosafe
 chmod -R 0777  ../files_private
 
 drush en privatemsg --yes
+drush en support_form --yes
 drush en media_wysiwyg --yes
 
 #videosafe-reihenfolge
