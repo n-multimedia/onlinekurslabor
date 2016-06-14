@@ -240,6 +240,15 @@ function nm_general_features_user_default_permissions() {
     'module' => 'user',
   );
 
+  // Exported permission: 'administer privatemsg settings'.
+  $permissions['administer privatemsg settings'] = array(
+    'name' => 'administer privatemsg settings',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'privatemsg',
+  );
+
   // Exported permission: 'administer realname'.
   $permissions['administer realname'] = array(
     'name' => 'administer realname',
@@ -376,6 +385,16 @@ function nm_general_features_user_default_permissions() {
     'module' => 'workflow_admin_ui',
   );
 
+  // Exported permission: 'allow disabling privatemsg'.
+  $permissions['allow disabling privatemsg'] = array(
+    'name' => 'allow disabling privatemsg',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'privatemsg',
+  );
+
   // Exported permission: 'block IP addresses'.
   $permissions['block IP addresses'] = array(
     'name' => 'block IP addresses',
@@ -467,6 +486,16 @@ function nm_general_features_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'create private message tags'.
+  $permissions['create private message tags'] = array(
+    'name' => 'create private message tags',
+    'roles' => array(
+      'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
+    ),
+    'module' => 'privatemsg_filter',
+  );
+
   // Exported permission: 'create relations'.
   $permissions['create relations'] = array(
     'name' => 'create relations',
@@ -488,6 +517,16 @@ function nm_general_features_user_default_permissions() {
     'name' => 'delete own plattform_log content',
     'roles' => array(),
     'module' => 'node',
+  );
+
+  // Exported permission: 'delete privatemsg'.
+  $permissions['delete privatemsg'] = array(
+    'name' => 'delete privatemsg',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'privatemsg',
   );
 
   // Exported permission: 'delete relations'.
@@ -585,6 +624,16 @@ function nm_general_features_user_default_permissions() {
     'module' => 'relation',
   );
 
+  // Exported permission: 'filter private messages'.
+  $permissions['filter private messages'] = array(
+    'name' => 'filter private messages',
+    'roles' => array(
+      'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
+    ),
+    'module' => 'privatemsg_filter',
+  );
+
   // Exported permission: 'flush caches'.
   $permissions['flush caches'] = array(
     'name' => 'flush caches',
@@ -624,6 +673,39 @@ function nm_general_features_user_default_permissions() {
     'module' => 'comment',
   );
 
+  // Exported permission: 'read all private messages'.
+  $permissions['read all private messages'] = array(
+    'name' => 'read all private messages',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'privatemsg',
+  );
+
+  // Exported permission: 'read privatemsg'.
+  $permissions['read privatemsg'] = array(
+    'name' => 'read privatemsg',
+    'roles' => array(
+      'Dozent' => 'Dozent',
+      'Moderator' => 'Moderator',
+      'Student' => 'Student',
+      'Tutor' => 'Tutor',
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'privatemsg',
+  );
+
+  // Exported permission: 'reply only privatemsg'.
+  $permissions['reply only privatemsg'] = array(
+    'name' => 'reply only privatemsg',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'privatemsg',
+  );
+
   // Exported permission: 'schedule workflow transitions'.
   $permissions['schedule workflow transitions'] = array(
     'name' => 'schedule workflow transitions',
@@ -651,6 +733,15 @@ function nm_general_features_user_default_permissions() {
     'module' => 'user',
   );
 
+  // Exported permission: 'select text format for privatemsg'.
+  $permissions['select text format for privatemsg'] = array(
+    'name' => 'select text format for privatemsg',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'privatemsg',
+  );
+
   // Exported permission: 'show workflow state form'.
   $permissions['show workflow state form'] = array(
     'name' => 'show workflow state form',
@@ -666,6 +757,16 @@ function nm_general_features_user_default_permissions() {
       'authenticated user' => 'authenticated user',
     ),
     'module' => 'comment',
+  );
+
+  // Exported permission: 'tag private messages'.
+  $permissions['tag private messages'] = array(
+    'name' => 'tag private messages',
+    'roles' => array(
+      'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
+    ),
+    'module' => 'privatemsg_filter',
   );
 
   // Exported permission: 'use PHP for settings'.
@@ -694,6 +795,15 @@ function nm_general_features_user_default_permissions() {
       'authenticated user' => 'authenticated user',
     ),
     'module' => 'media_wysiwyg',
+  );
+
+  // Exported permission: 'use tokens in privatemsg'.
+  $permissions['use tokens in privatemsg'] = array(
+    'name' => 'use tokens in privatemsg',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'privatemsg',
   );
 
   // Exported permission: 'view any master profile'.
@@ -730,6 +840,16 @@ function nm_general_features_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'workflow_extensions',
+  );
+
+  // Exported permission: 'write privatemsg'.
+  $permissions['write privatemsg'] = array(
+    'name' => 'write privatemsg',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'privatemsg',
   );
 
   return $permissions;
