@@ -59,3 +59,81 @@ msgstr ""
 
 msgid ""
 msgstr ""
+
+msgid "Write new message"
+msgstr "Nachricht verfassen"
+
+msgid "Enter the recipient, separate recipients with commas"
+msgstr "Empfänger angeben (getrennt durch Kommata)"
+
+msgid "Inbox"
+msgstr "Postfach"
+
+msgid "Sent Messages"
+msgstr "Gesendete nachrichten"
+
+msgid "Enter a user name to write a message to a user."
+msgstr "Geben Sie einen Empfänger an"
+
+msgid "No messages available."
+msgstr "Keine Nachrichten"
+
+msgid "Participants"
+msgstr "Teilnehmer / Geprächspartner"
+
+msgid "Last updated"
+msgstr "Letzte Antwort"
+
+msgid "You must include a subject line with your message."
+msgstr "Bitte geben Sie einen Betreff an."
+
+msgid "A message has been sent to !recipients."
+msgstr "Nachricht versendet an !recipients."
+
+msgid "Between !participants and !last"
+msgstr "Zwischen !participants und !last"
+
+msgid "Between you and @author"
+msgstr "Zwischen Ihnen und @author"
+
+msgid "@time ago"
+msgstr "vor @time"
+
+msgid "@interval ago"
+msgstr "vor @interval"
+
+msgid "Reply"
+msgstr "Antwort"
+
+msgid "clear"
+msgstr "Abbrechen"
+
+msgid "tag this conversation"
+msgstr "Tags hinzufügen"
+
+msgid "apply tag"
+msgstr "Tags hinzufügen"
+
+msgid "mark as read"
+msgstr "als gelesen markieren"
+
+msgid "mark as unread"
+msgstr "als ungelesen markieren"
+
+msgid "filter messages"
+msgstr "Nachrichten Filtern"
+
+msgid "You have <a href="@messages">@count unread messages</a>"
+msgstr "Sie haben <a href="@messages">@count ungelesene Nachrichten</a">
+
+msgid "You have <a href="@messages">1 unread message</a>"
+msgstr "Sie haben <a href="@messages">1 ungelesene Nachricht</a>"
+ 
+msgid "Private messages"
+msgstr "Nachricht verfassen"
+
+msgid "Messages (1 new)"
+msgstr "Nachricht (1 neu)"
+
+msgid "Messages (@count new)"
+msgstr "Nachrichten (@count neu)"
