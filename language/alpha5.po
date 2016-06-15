@@ -124,7 +124,7 @@ msgid "filter messages"
 msgstr "Nachrichten Filtern"
 
 msgid "You have <a href="@messages">@count unread messages</a>"
-msgstr "Sie haben <a href="@messages">@count ungelesene Nachrichten</a">
+msgstr "Sie haben <a href="@messages">@count ungelesene Nachrichten</a>"
 
 msgid "You have <a href="@messages">1 unread message</a>"
 msgstr "Sie haben <a href="@messages">1 ungelesene Nachricht</a>"
