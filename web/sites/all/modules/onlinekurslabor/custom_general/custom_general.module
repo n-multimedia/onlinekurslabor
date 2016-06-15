@@ -296,7 +296,7 @@ function custom_general_init() {
         $tutors     = custom_general_get_users_in_group_by_role_real($gid->nid, NM_ROLE_TUTOR);
         $teachers   = custom_general_get_users_in_group_by_role_real($gid->nid, NM_ROLE_DOZENT);
         
-        if( (array_values($tutors) != false && in_array($user, array_values($tutors))) || (array_values($teachers) != false && in_array($user, array_values($teachers)))){
+        if( ($tutors && (array_values($tutors) != false) && in_array($user, array_values($tutors))) || ($teachers && (array_values($teachers) != false) && in_array($user, array_values($teachers)))){
             $role[] = 'dozent';
         }
     }

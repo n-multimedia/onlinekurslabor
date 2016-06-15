@@ -31,6 +31,7 @@ function support_form_menu() {
  */
 function _support_form_get_options() {
   return array(
+    'Allgemein',
     'Kurs',
     'Kursinhalte',
     'Stream',
@@ -53,7 +54,7 @@ function support_form_sendform_callback($form, &$form_state) {
   $element = array();
   $element['#type'] = 'markup';
   $element['#markup'] = "Die Nachricht wurde verschickt.";
-  $element['#suffix'] = '<br><br>' . _support_form_render_modal_btn("Abbrechen");
+  $element['#suffix'] = '<br><br>' . _support_form_render_modal_btn("schließen");
 
   return $element;
 }
@@ -150,7 +151,7 @@ function support_form() {
   global $user;
   $current_site = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
   $user_agent = $_SERVER['HTTP_USER_AGENT'];
-  $disclaimer = "\n\nDiese Informationen werden zusammen mit Ihrer Anfrage gesendet.\nDies dient der gezielten Fehlerbehebung";
+  $disclaimer = "\n\nDiese Informationen werden zusammen mit Ihrer Anfrage gesendet.\nDies dient der gezielten Fehlerbehebung.";
   $form = array();
   $options = _support_form_get_options();
   $form['kontakt'] = array(
@@ -225,17 +226,19 @@ function support_form_submit($form, &$form_state) {
   // Always set content-type when sending HTML email
   $headers = "MIME-Version: 1.0" . "\r\n";
   $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-  $txt = "<html><body><hr>";
   $params = array();
   $module = 'support_form';
   $key = 'support_mail';
   $language = language_default();
+    
   if ($form_state['values']['problem'] != "") {
     global $user;
     $options = _support_form_get_options();
     $params['@to'] = variable_get('okl_support_email', NM_SUPPORT_EMAIL);
     $params['@subject'] = "Problem bei: " . $options[$form_state['values']['category']];
-    $params['@body'] = wordwrap("Art des Fehlers:\n" . $options[$form_state['values']['category']] . "\nPfad: " . ($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) . "\nSpezifikation:" . $_SERVER['HTTP_USER_AGENT'] . "<hr>\n User-Nachricht:\n\n<p>" . $form_state['values']['problem'] . "</p><hr>\n Von: " . $user->name . " - " . $user->mail, 70);
+    $params['@body'] = wordwrap("Art der Anfrage: " 
+            . $options[$form_state['values']['category']]."\n". "<hr>\n Nachricht:\n\n<p>" .
+            $form_state['values']['problem'] . "</p><hr>\nDebuginfos: \n" .$form_state['values']['data'], 70);
     $params['@headers'] = $headers . "From: " . $user->mail;
     $params['@from'] = $user->mail;
     drupal_mail($module, $key, $params['@to'], $language, $params);
@@ -254,6 +257,7 @@ function support_form_mail($key, &$message, $params) {
   $from = $params['@from'];
   $message['subject'] = t($params['@subject']);
   $message['body'] = t(drupal_html_to_text($params['@body']));
+  $message['slogan'] = "Benutzer-Anfrage";
   $message['from'] = $from;
   $message['headers']['From'] = $from;
 
@@ -319,5 +323,5 @@ function _support_form_render_modal_btn($label) {
  * @return HTML-code for the Button
  */
 function _support_form_render_support_button($label) {
-  return '<a class="btn btn-warning btn-large" id="support_form_btn" href="#supportModal" data-toggle="modal">' . $label . '</a>';
+  return '<a class="btn btn-warning btn-large hidden-phone" id="support_form_btn" href="#supportModal" data-toggle="modal">' . $label . '</a>';
 }
