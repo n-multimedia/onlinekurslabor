@@ -368,7 +368,7 @@ function onlinekurslabor_access_media_browser_plugins_alter(&$plugins) {
  * Implements hook_file_download().
  */
 function onlinekurslabor_access_file_download($uri) {
- #    drupal_set_message("access" . $uri); return -1;
+    #    drupal_set_message("access" . $uri); return -1;
     global $user;
     $account = clone $user;
     $access_allowed = false;
@@ -379,60 +379,56 @@ function onlinekurslabor_access_file_download($uri) {
     $query->join('file_managed', 'fm', 'fm.fid = fu.fid');
     $query->condition('fm.uri', $uri, '=');
     $query->condition('fu.type', array('default_image', 'node', 'profile2'), 'IN');
-    
-    
-   
-     
-    $result = $query->execute();
+    $fileusage_result = $query->execute();
 
-    #   $allowd = true;
-   #  drupal_set_message("db_result" . var_export($result, true));  dpm(count($result)); return -1;
+    $info = image_get_info($uri);
+    $mime = $info['mime_type'];
+    if (!$mime)
+        $mime = file_get_mimetype($uri);
+
+    #drupal_set_message("db_result" . var_export($fileusage_result, true));  dpm(count($fileusage_result)); return -1;
     $entryfound = false;
-    foreach ($result as $record) {
+    foreach ($fileusage_result as $record) {
         $entryfound = true;
         #    dpm($record); return -1;
-        if (in_array($record->type, array('default_image', 'profile2')))
-        {
+        if (in_array($record->type, array('default_image', 'profile2'))) {
             $access_allowed = true;
         }
         if ($record->type == 'node') {
-           # dpm($node); return -1;
             $node = node_load($record->id);
-            #     drupal_set_message("access" . var_export($record, true) . 'to' . node_access('view', node_load($record->id), $account));
+            #dpm($node); return -1;
+            #drupal_set_message("access" . var_export(node_load($record->id),true) . 'to' . node_access('view', node_load($record->id), $account)); return -1;
             if (node_access('view', $node, $account))
                 $access_allowed = true;
             //Video protecten
             if ($node->type == NM_VIDEOSAFE_VIDEO) {
-                /*leider leider zicken die browser, wenn man dann als student und autor abwechselnd testen möchte. das erste geladene bleibt im cache..*/
+                /* leider leider zicken sonst die browser, wenn man dann als student und autor abwechselnd testen möchte.
+                 *  das erste geladene bleibt im cache.. 
+                 */
+                //watchdog('videosafe-file-stream', "requesting" . var_export($_SERVER, true), array(), WATCHDOG_DEBUG);
                 header('Expires: Sun, 01 Jan 2014 00:00:00 GMT');
                 header('Cache-Control: no-store, no-cache, must-revalidate');
                 header('Cache-Control: post-check=0, pre-check=0', FALSE);
                 header('Pragma: no-cache');
-               
+
                 //wir schauen nach, in welchem h5p-content das gelistet wird  
-                $h5p_nodes =   _videosafe_get_h5p_usage($uri);
-               
-                foreach($h5p_nodes as $h5p_node)
-                {   //zugriff auf einen h5p, dann auf das video, egal wo
-                     if (node_access('view', $h5p_node, $account))
-                     {
-                         $access_allowed = true;
-                         break;
-                     }
+                $h5p_nodes = _videosafe_get_h5p_usage($uri);
+
+                foreach ($h5p_nodes as $h5p_node) {   //zugriff auf einen h5p, dann auf das video, egal wo
+                    if (node_access('view', $h5p_node, $account)) {
+                        $access_allowed = true;
+                        break;
+                    }
                 }
-                
-                if (!$access_allowed )
-                {
-                 drupal_goto(drupal_get_path('module', 'onlinekurslabor_access').'/assets/video/403.mp4', array(), 307);
-                }
-                /* verhindert herunterladen, wenn nicht in einem html5-player abgespielt */
-                elseif ($access_allowed && !_videosafe_is_video_streaming() &&  !_videosafe_was_node_edited($node))
-                {  
-                    drupal_goto(drupal_get_path('module', 'onlinekurslabor_access').'/assets/video/403_dl.mp4', array(), 307);
-                }
-                else
-                {
-                    
+
+                if (!$access_allowed) {
+                    drupal_goto(drupal_get_path('module', 'onlinekurslabor_access') . '/assets/video/403.mp4', array(), 307);
+                } //_videosafe_was_node_edited: wuerde nach node-bearbeiten aufs video leiten
+                elseif (!_videosafe_was_node_edited($node) && $access_allowed) {
+
+                    # return array('Content-Type' => $mime);
+                    $real_file_path = drupal_realpath($uri);
+                    _videosafe_downloadRange($real_file_path);
                 }
             }
         }
@@ -441,12 +437,8 @@ function onlinekurslabor_access_file_download($uri) {
         $access_allowed = true;
 
     if ($access_allowed) {
-        $info = image_get_info($uri);
-        $mime = $info['mime_type'];
-        if (!$mime)
-            $mime = file_get_mimetype($uri);
+
         return array('Content-Type' => $mime);
-        #'Accept-Ranges' => 'bytes')
     }
     return -1;
 }
