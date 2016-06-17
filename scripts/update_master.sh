@@ -31,6 +31,8 @@ drush fr  videosafe_features --yes
 
 
 drush en privatemsg_okl --yes
+drush en pm_block_user --yes
+drush en privatemsg_filter  --yes
 
 
 #clear cache
