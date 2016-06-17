@@ -30,7 +30,7 @@ drush fr nm_h5p_features --yes
 drush fr  videosafe_features --yes
 
 
-drush en privatemsg_okl --yes
+drush en privatemsg_okl pm_email_notify privatemsg_filter privatemsg_realname privatemsg_rules --yes
 
 
 #clear cache

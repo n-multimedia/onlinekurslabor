@@ -43,7 +43,7 @@ msgstr ""
 
 
 msgid "Support request"
-msgstr "Unterstützung"
+msgstr "Hilfe & Kontakt"
 
 msgid ""
 msgstr ""
