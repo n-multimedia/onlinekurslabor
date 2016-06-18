@@ -136,9 +136,6 @@ function support_form_page_build(&$page) {
   if (isset($page[$region])) {
     $page[$region] = array_merge($page[$region], $blocks);
   }
-  else {
-    $page[$region] = $blocks;
-  }
 
 }
 
