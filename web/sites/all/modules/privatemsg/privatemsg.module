@@ -21,8 +21,6 @@ define('PRIVATEMSG_UNLIMITED', 'unlimited');
 /**
  * Implements hook_permission().
  */
-global $user;
-
 function privatemsg_permission() {
   return array(
     'administer privatemsg settings' => array(
@@ -122,6 +120,7 @@ function _privatemsg_generate_user_array($string, $slice = NULL) {
  *   String with formatted user objects, like user1, user2.
  */
 function _privatemsg_format_participants($part_array, $limit = NULL, $no_text = FALSE) {
+  global $user;
   if (count($part_array) > 0) {
     $to = array();
     $limited = FALSE;
@@ -170,7 +169,6 @@ function _privatemsg_format_participants($part_array, $limit = NULL, $no_text = 
  * Implements hook_menu().
  */
 function privatemsg_menu() {
-    global $user;
   $items['messages'] = array(
     'title'            => 'Messages',
     'title callback'   => 'privatemsg_title_callback',
@@ -205,19 +203,17 @@ function privatemsg_menu() {
     'weight'           => -5,
     'menu_name'        => 'user-menu',
   );
-    
-        $items['messages/delete/%privatemsg_thread/%privatemsg_message'] = array(
-          'title'            => 'Delete message',
-          'page callback'    => 'drupal_get_form',
-          'page arguments'   => array('privatemsg_delete', 2, 3),
-          'file'             => 'privatemsg.pages.inc',
-          'access callback'  => 'privatemsg_user_access',
-          'access arguments' => array('delete privatemsg'),
-          'type'             => MENU_CALLBACK,
-          'weight'           => -10,
-          'menu_name'        => 'user-menu',
-        );
-    
+  $items['messages/delete/%privatemsg_thread/%privatemsg_message'] = array(
+    'title'            => 'Delete message',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('privatemsg_delete', 2, 3),
+    'file'             => 'privatemsg.pages.inc',
+    'access callback'  => 'privatemsg_user_access',
+    'access arguments' => array('delete privatemsg'),
+    'type'             => MENU_CALLBACK,
+    'weight'           => -10,
+    'menu_name'        => 'user-menu',
+  );
   $items['messages/new'] = array(
     'title'            => 'Write new message',
     'page callback'    => 'drupal_get_form',
@@ -722,6 +718,8 @@ function privatemsg_theme() {
 }
 
 function template_preprocess_privatemsg_view(&$vars) {
+  global $user;
+
   $message = $vars['message'];
   $vars['mid'] = isset($message->mid) ? $message->mid : NULL;
   $vars['message_classes'] = isset($message->classes) ? $message->classes : array();
@@ -756,7 +754,7 @@ function template_preprocess_privatemsg_view(&$vars) {
 
   // Render message body.
   $vars['message_body'] =  drupal_render($message->content);
-  if (in_array( NM_ROLE_ADMIN , array_values($user->roles)) && isset($vars['mid']) && isset($vars['thread_id']) && privatemsg_user_access('delete privatemsg')) {
+  if (isset($vars['mid']) && isset($vars['thread_id']) && privatemsg_user_access('delete privatemsg')) {
     $vars['message_actions'][] = array('title' => t('Delete'), 'href' => 'messages/delete/' . $vars['thread_id'] . '/' . $vars['mid']);
   }
   $vars['message_anchors'][] = 'privatemsg-mid-' . $vars['mid'];
@@ -1238,9 +1236,9 @@ function privatemsg_user_view($account) {
 function privatemsg_user_login(&$edit, $account) {
   if (variable_get('privatemsg_display_loginmessage', TRUE) && privatemsg_user_access()) {
     $count = privatemsg_unread_count();
-    /*if ($count) {
+    if ($count) {
       drupal_set_message(format_plural($count, 'You have <a href="@messages">1 unread message</a>.', 'You have <a href="@messages">@count unread messages</a>', array('@messages' => url('messages'))));
-    }*/
+    }
   }
 }
 

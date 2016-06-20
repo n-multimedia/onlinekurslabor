@@ -21,7 +21,7 @@
  */
 function _privatemsg_action_form($type) {
   $form = array(
-      '#prefix'      => '<div class="container-inline privatemsg-action">',
+      '#prefix'      => '<div class="container-inline">',
       '#suffix'      => '</div>',
       '#weight'      => -5,
   );
@@ -886,4 +886,3 @@ function privatemsg_load_recipients($mid, $recipient, &$context) {
       ->execute();
   }
 }
-

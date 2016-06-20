@@ -581,7 +581,7 @@ function privatemsg_filter_form_privatemsg_list_alter(&$form, $form_state) {
  * Form callback for removing a tag to threads.
  */
 function privatemsg_filter_privatemsg_thread_operations($type) {
-  /*if ($type == 'inbox') {
+  if ($type == 'inbox') {
     $archive = array(
       'label' => t('Archive'),
       'callback' => 'privatemsg_filter_remove_tags',
@@ -591,7 +591,7 @@ function privatemsg_filter_privatemsg_thread_operations($type) {
       'undo callback arguments' => array('tag_id' => variable_get('privatemsg_filter_inbox_tag', '')),
     );
     return array('archive' => $archive);
-  }*/
+  }
 }
 
 /**
