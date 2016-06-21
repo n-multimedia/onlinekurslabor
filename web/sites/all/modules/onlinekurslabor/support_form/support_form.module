@@ -1,13 +1,6 @@
 <?php
 
 /**
- * Calles on load
- */
-function support_form_init() {
-  // Menu_HOOK
-}
-
-/**
  * Initializes the site-options and callback
  *
  * @return Array containing module-information
@@ -129,14 +122,12 @@ function support_form_sent_callback($form, &$form_state) {
  * Implements hook_page_build().
  */
 function support_form_page_build(&$page) {
-  $block = module_invoke('support_form', 'block_view', 'support_form');
-  $blocks['support_form'] = array('#markup' => $block['content']);
 
-  $region = 'footer';
-  if (isset($page[$region])) {
-    $page[$region] = array_merge($page[$region], $blocks);
-  }
-
+    if (isset($page['footer_region_left'])) {
+        $block = module_invoke('support_form', 'block_view', 'support_form');
+        $blocks = array('#markup' => $block['content']);
+        $page['footer_region_left']['support_form'] = $blocks;
+    }
 }
 
 /**
@@ -266,7 +257,7 @@ function support_form_mail($key, &$message, $params) {
 function support_form_render() {
   global $user;
 
-  //just for authentificated in users
+  //just for authenticated users
   if($user->uid > 0){
     drupal_add_css(drupal_get_path('module', 'support_form') .'/css/support_form.css');
 
