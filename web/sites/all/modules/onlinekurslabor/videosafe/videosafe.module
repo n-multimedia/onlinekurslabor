@@ -559,11 +559,24 @@ function _videosafe_downloadRange($location) {
  * @return float $duration
  */
 function _videosafe_get_videoduration_for_file($location) {
+    //php-package
     if (class_exists('ffmpeg_movie')) {
         $movie_object = new ffmpeg_movie($location, false);
         return number_format($movie_object->getDuration(), 2, '.', '');
-    } else {
-        trigger_error('PHP-Package php5-ffmpeg is not installed. Install it via apt-get install php5-ffmpeg', E_NOTICE);
-        return 0;
+    } else {//ffmpeg auf konsole
+        ob_start();
+        @passthru("/usr/bin/ffmpeg -i \"{$location}\" 2>&1");
+        $duration_string = ob_get_contents();
+        ob_end_clean();
+        //program not found
+        if (!strstr($duration_string, "ffmpeg: not found")) {
+            $search = '/Duration: (.*?),/';
+            $duration_string = preg_match($search, $duration_string, $matches, PREG_OFFSET_CAPTURE, 3);
+            dpm($matches);
+            $time = $matches[1][0]; # '21:30:10';
+            return strtotime("1970-01-01 $time UTC");
+        }
     }
+    trigger_error('neither PHP-Package php5-ffmpeg nor ffmpeg is installed. ', E_NOTICE);
+    return 0;
 }
