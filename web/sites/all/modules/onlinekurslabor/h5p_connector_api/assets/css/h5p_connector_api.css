@@ -1,0 +1,24 @@
+
+div#h5p_connector_loading
+{
+    width:100%;
+    height:350px;
+    background:none;
+    position:absolute;
+    z-index:10;
+    background-color: black;
+    filter:alpha(opacity=90); /* IE 5-7 */
+    opacity: 0.9; /* CSS3 Standard */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+    background-image: url('../img/loader.gif');
+    background-repeat: no-repeat;    
+    background-position: center;
+
+}
+div#h5p_connector_loading div.h5p_connector_loading_inner
+{ margin:auto;
+  margin-top:25%;
+  text-align:center;
+  width:25%;
+  color:white;
+}

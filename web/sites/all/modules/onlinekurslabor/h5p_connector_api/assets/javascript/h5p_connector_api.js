@@ -129,6 +129,29 @@
 
 
         },
+        onVideoReady: function(callback)
+        {
+         Drupal.behaviors.h5p_connector_api.onH5Pready(function(){Drupal.behaviors.h5p_connector_api.interactivevideo.onVideoReadyhelper(callback)})   ;
+                   
+        },
+        onVideoReadyhelper: function(callback)
+        {
+            var vidobject = Drupal.behaviors.h5p_connector_api.interactivevideo.getH5P().video;
+            (typeof vidobject === 'undefined' || typeof vidobject.getDuration() === 'undefined') ? setTimeout(Drupal.behaviors.h5p_connector_api.interactivevideo.onVideoReadyhelper,  500, callback) : callback();
+        },
+        /*
+         * Problem: das drupal-filesystem ist nicht das schnellste und wenn man zu früh auf Play drückt,
+         * funktioniert die Zeitanzeige im Player nicht. Deswegen verstecken.. 
+         */
+        showLoadingAnimation: function()
+        {
+            var loading_animation = '<div class="h5p_connector_loading_inner"><h3>lädt</h3><div>';   
+            jQuery("div.h5p-interactive-video").before("<div id='h5p_connector_loading'    >"+loading_animation+"</div>");
+        },
+        removeLoadingAnimation: function()
+        {
+            jQuery("div.#h5p_connector_loading").fadeOut();
+        },
         /*holt das interactivevideo-object*/
         getH5P: function()
         {
@@ -228,7 +251,16 @@ jQuery(window).on('hashchange', function(e) {
 
 /*verlinkt man auf ein video und ein hash ist in der adresszeile soll der beim seiteladen ausgefuehrt werden*/
 jQuery(document).ready(function() {
+
     Drupal.behaviors.h5p_connector_api.onH5Pready(function() {
-        Drupal.behaviors.h5p_connector_api.event.processHash();
+        Drupal.behaviors.h5p_connector_api.interactivevideo.showLoadingAnimation();
     });
+
+    Drupal.behaviors.h5p_connector_api.interactivevideo.onVideoReady(function() {
+        Drupal.behaviors.h5p_connector_api.event.processHash();
+        Drupal.behaviors.h5p_connector_api.interactivevideo.removeLoadingAnimation();
+    });
+    // FF mobil und sonstige Fälle in denen Video nicht auto-geladen wird
+    setTimeout( Drupal.behaviors.h5p_connector_api.interactivevideo.removeLoadingAnimation, 10000);
+
 });
