@@ -28,3 +28,82 @@ function private_msg_get_profile_btn(){
     return '<br><a href="' . $base_url . '/messages/new/'. $user_id . '" id="privateMsgBtn"><button type="button" class="btn btn-default"> Nachricht schreiben </button></a>';
   }
 }
+
+
+/**
+ * Implements hook_form_alter() to imitate the admin's tabs.
+ * greift nicht fuer admins, da diese schon tabs haben
+*/
+function privatemsg_okl_form_alter(&$form, &$form_state, $form_id) {
+    if (!user_access('administer users') && in_array($form_id, array('pm_block_user_list', 'privatemsg_list')))
+    {
+        _privatemsg_okl_add_fake_tabs_to_content($form);
+    }
+}
+
+/*
+ * das selbe fuer view message:
+ * hook_entitiy_view_alter
+ */
+function privatemsg_okl_privatemsg_view_alter(&$content) {
+    _privatemsg_okl_add_fake_tabs_to_content($content);
+}
+
+ 
+/*
+ * fügt einem content-array tabs zum wechseln zw. msg-bereichen hinzu
+ */
+function _privatemsg_okl_add_fake_tabs_to_content(&$content) {
+    $content['navigtion_tabs'] = array(
+        '#type' => 'fieldset',
+        '#title' => '',
+        '#collapsible' => false,
+        '#collapsed' => false,
+        '#weight' => -100,
+    );
+
+    $item = menu_get_item('messages/sent/');
+    $content['navigtion_tabs']['links'] = array(
+        '#markup' => _privatemsg_okl_get_navigation_tabs()
+    );
+}
+
+/**
+ * liefert tabs fuer privatemsg
+ */
+function _privatemsg_okl_get_navigation_tabs() {
+    $navigation = _privatemsg_okl_get_navigation_links();
+    $tabs = '<span class="grepformenu_ioj70uzh8sfd"></span>'
+            . '<ul class="nav nav-tabs">';
+    foreach ($navigation as $nav) {
+        $active = $nav['active'] ? 'active' : '';
+        $tabs .= sprintf('<li class="%s"><a class="%s" href="%s">%s</a></li>', $active, $active, $nav['href'], $nav['title']);
+    }
+    $tabs.='</ul>';
+    return $tabs;
+}
+
+/**
+ * liefert die privatemsg-links aus der navigation
+ * muss bei weiteren msg-plugins erweitert werden
+ */
+function _privatemsg_okl_get_navigation_links() {
+    $current_path = current_path();
+#dpm($current_path); 
+    $pathes = array('messages', 'messages/sent', 'messages/list');
+    if (strstr($current_path, 'messages/view'))
+        $pathes[] = $current_path;
+    if (module_exists('pm_block_user'))
+        $pathes[] = 'messages/blocked';
+    
+    $links = array();
+    foreach ($pathes as $path) {
+        $menu_item = menu_get_item($path);
+        if($path ==='messages')
+            $menu_item['title']= 'Inbox';
+        
+        
+        $links[] = array('href' => '/' . $menu_item['href'], 'title' => t($menu_item['title']), 'active' => ($current_path == $menu_item['href']));
+    }
+    return $links;
+}
