@@ -44,9 +44,11 @@ function privatemsg_okl_form_alter(&$form, &$form_state, $form_id) {
 /*
  * das selbe fuer view message:
  * hook_entitiy_view_alter
+ * auch nicht fuer admins
  */
 function privatemsg_okl_privatemsg_view_alter(&$content) {
-    _privatemsg_okl_add_fake_tabs_to_content($content);
+   if (!user_access('administer users'))
+           _privatemsg_okl_add_fake_tabs_to_content($content);
 }
 
  
