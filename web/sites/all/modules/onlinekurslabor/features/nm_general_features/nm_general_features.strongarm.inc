@@ -349,7 +349,7 @@ dasddasdasd',
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => 'EggYBiNpxU7lngxf-6m5j86_Wv5SXR6PtPwdhQOtum4',
+    'javascript' => 'QAxg9f6Oj57xxazv0dBXOAMhhdJsVBaAVFrKmVrVIK8',
   );
   $export['language_default'] = $strongarm;
 
@@ -1071,6 +1071,47 @@ dasddasdasd',
   $strongarm->name = 'pathauto_user_pattern';
   $strongarm->value = 'users/[user:name]';
   $export['pathauto_user_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pm_email_notify_body';
+  $strongarm->value = 'Hallo [privatemsg_message:recipient],
+das ist eine automatische Erinnerung von [site:name]). Sie haben eine neue Nachricht von [privatemsg_message:author] erhalten.
+
+Um die Nachricht zu lesen, klicken Sie auf folgenden Link: [privatemsg_message:url]
+
+Wenn Sie in Zukunft nicht mehr über neue Nachrichten informiert werden wollen, ändern Sie hier ihre Einstellungen: [privatemsg_message:recipient:edit-url]
+';
+  $export['pm_email_notify_body'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pm_email_notify_default';
+  $strongarm->value = 1;
+  $export['pm_email_notify_default'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pm_email_notify_subject';
+  $strongarm->value = 'Neue Nachricht auf [site:name].';
+  $export['pm_email_notify_subject'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'privatemsg_flush_days';
+  $strongarm->value = '30';
+  $export['privatemsg_flush_days'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'privatemsg_flush_enabled';
+  $strongarm->value = 1;
+  $export['privatemsg_flush_enabled'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */

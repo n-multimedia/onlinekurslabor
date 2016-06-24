@@ -389,8 +389,8 @@ function nm_general_features_user_default_permissions() {
   $permissions['allow disabling privatemsg'] = array(
     'name' => 'allow disabling privatemsg',
     'roles' => array(
+      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
-      'authenticated user' => 'authenticated user',
     ),
     'module' => 'privatemsg',
   );
@@ -630,6 +630,7 @@ function nm_general_features_user_default_permissions() {
     'roles' => array(
       'Moderator' => 'Moderator',
       'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
     ),
     'module' => 'privatemsg_filter',
   );
