@@ -477,7 +477,7 @@ return theme(\'nm_fancy_box\', $vars);
       'admin_title' => 'Video',
       'title' => '',
       'body' => ' <video width="100%" controls="controls" poster="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo2.png">
-  <source src="https://onlinekurslabor.phil.uni-augsburg.de/sites/default/files/imagefilm_onlinekurslabor.mp4" type="video/mp4">
+  <source src="https://onlinekurslabor.phil.uni-augsburg.de/system/files/imagefilm_onlinekurslabor.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video> ',
       'format' => 'full_html',
