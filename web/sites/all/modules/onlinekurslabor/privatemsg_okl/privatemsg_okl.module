@@ -33,10 +33,9 @@ function private_msg_get_profile_btn(){
 /**
  * Implements hook_form_alter() to imitate the admin's tabs.
  * greift nicht fuer admins, da diese schon tabs haben
-*/
+ */
 function privatemsg_okl_form_alter(&$form, &$form_state, $form_id) {
-    if (!user_access('administer users') && in_array($form_id, array('pm_block_user_list', 'privatemsg_list')))
-    {
+    if (!user_access('administer users') && (in_array($form_id, array('pm_block_user_list', 'privatemsg_list'))) || ($form_id == 'privatemsg_new' && empty($form['thread_id']))) {
         _privatemsg_okl_add_fake_tabs_to_content($form);
     }
 }
