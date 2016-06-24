@@ -586,6 +586,10 @@ function custom_general_get_users_in_group($gid) {
   return $result->fetchAll();
 }
 
+/*
+ *@deprecated
+ * liefert auch einträge für personen, die die übergeben Rolle NICHT haben. 
+ */
 function custom_general_get_users_in_group_by_role($gid, $roles) {
   $query = db_select('users', 'u')->distinct();
 
@@ -602,6 +606,29 @@ function custom_general_get_users_in_group_by_role($gid, $roles) {
 
   return $result->fetchAll();
 }
+/**
+ * get the members of a og_group having the given role-name
+ * real, da die Funktion wirklich das macht, was der name sagt
+ * @param int  $gid Group ID - like node-id of a course (problably won't work if group is not a node)
+ * @param string $role_name like "kurs-dozent"
+ * @param int $og_state see OG_STATE_... constants
+ * @return array $users array with loaded user objects
+ */
+function custom_general_get_users_in_group_by_role_real($gid, $role_name, $og_state = OG_STATE_ACTIVE) {
+
+    $uids = og_get_group_members_properties(entity_load_single('node', $gid), array(), 'members__' . $og_state, 'node');
+    $real_uids = array();
+    foreach ($uids as $uid) {
+        //alle rollen holen und einen check auf aktiv machen, wenn wir nicht-geblockten Status haben
+        if (in_array($role_name, og_get_user_roles('node', $gid, $uid, true, ($og_state < OG_STATE_BLOCKED))))
+            $real_uids[] = $uid;
+    }
+    if (count($real_uids))
+        return user_load_multiple($real_uids);
+    else 
+        return false;
+}
+
 
 function _section_course_get_coursegroups($course) {
 

@@ -127,9 +127,9 @@ function onlinekurslabor_user_action_info() {
     'configurable' => TRUE,
     'triggers' => array('any'),
   );
-  $actions['user_send_email'] = array(
+  $actions['user_send_message'] = array(
     'type' => 'user',
-    'label' => t('Send e-mail (user)'),
+    'label' => t('Send message (user)'),
     'configurable' => TRUE,
     'triggers' => array('any'),
   );
@@ -282,7 +282,7 @@ function og_membership_assign_course_role_form($context) {
  * @see system_send_email_validate()
  * @see system_send_email_submit()
  */
-function user_send_email_form($context) {
+function user_send_message_form($context) {
   // Set default values for form.
   if (!isset($context['subject'])) {
     $context['subject'] = '';
@@ -382,9 +382,9 @@ function user_assign_to_course_group_submit($form_id, $form_state) {
 }
 
 /**
- * Process user_send_email form submissions.
+ * Process user_send_message form submissions.
  */
-function user_send_email_submit($form, $form_state) {
+function user_send_message_submit($form, $form_state) {
   $form_values = $form_state['values'];
   // Process the HTML form to store configuration. The keyed array that
   // we return will be serialized to the database.
@@ -463,21 +463,23 @@ function og_membership_assign_course_role(&$entity, $context = array()) {
 
 function user_modify_course_membership_state(&$entity, $context = array()) {
 
-  $course_nid = $context['course_nid'];
-  $state = $context['state'];
-  $og_membership = og_get_membership('node', $course_nid, 'user', $entity->uid);
+    $course_nid = $context['course_nid'];
+    $state = $context['state'];
+    $og_membership = og_get_membership('node', $course_nid, 'user', $entity->uid);
 
-  if ($og_membership->state == $state) {
-    return;
-  }
+    if ($og_membership->state == $state) {
+        return;
+    }
 
-  // Don't process the group manager, if exists.
-  $group = entity_load_single($og_membership->group_type, $og_membership->gid);
-  if (!empty($group->uid) && $group->uid == $og_membership->etid && $og_membership->entity_type == 'user') {
-    return;
-  }
+    // Don't process the group manager, if exists.
+    $group = entity_load_single($og_membership->group_type, $og_membership->gid);
+    if (!empty($group->uid) && $group->uid == $og_membership->etid && $og_membership->entity_type == 'user') {
+        $owner = user_load($og_membership->etid);
+        drupal_set_message(t('%accountname is the course creator and cannot be removed.', array('%accountname'=> realname_load($owner))) ,'error');
+        return;
+    }
 
-  if ($state === "delete") {
+    if ($state === "delete") {
         $og_membership->delete();
     } else {
         $og_membership->state = $state;
@@ -544,7 +546,7 @@ function user_assign_to_course_group(&$entity, $context = array()) {
  *
  * @ingroup actions
  */
-function user_send_email($entity, $context) {
+function user_send_message($entity, $context) {
   if (empty($context['user'])) {
     $context['user'] = $entity;
   }
@@ -561,12 +563,19 @@ function user_send_email($entity, $context) {
     $language = language_default();
   }
   $params = array('context' => $context);
-
-  if (drupal_mail('system', 'action_send_email', $recipient, $language, $params)) {
-    watchdog('action', 'Sent email to %recipient', array('%recipient' => $recipient));
+// Send the message.
+  $return = privatemsg_new_thread(array($recipient_account), $context['subject'], $context['message']);  
+  if ($return['success']) {
+    // Message has been sent, display confirmation message.
+    drupal_set_message(t('Message has been sent.'));
+    watchdog('action', 'Sent message to %recipient', array('%recipient' => $recipient));
   }
   else {
-    watchdog('error', 'Unable to send email to %recipient', array('%recipient' => $recipient));
+    // Display possible errors...
+    foreach ($return['messages']['error'] as $error) {
+      drupal_set_message($error, 'error');
+      watchdog('error', 'Unable to send message to %recipient', array('%recipient' => $recipient));
+    }
   }
 }
 

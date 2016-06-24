@@ -68,6 +68,20 @@ function _custom_general_theme_top_nav($variables = NULL) {
 
   $output = "";
   $output .= '<ul id="custom-top-nav" class="nav pull-right">';
+  
+  // TINKERING
+  
+  if (module_exists('privatemsg') && $user->uid && array_intersect(array('authenticated user'), $user->roles)) {
+      $unread_msg = privatemsg_unread_count();
+      if ($unread_msg > 0){
+        $output .= '<li><a href="/messages">Nachrichten <span class="badge badge-warning">'.$unread_msg.'</span></a></li>';
+
+      }
+      else{
+        $output .= '<li><a href="/messages">Nachrichten</a></li>';
+
+      }
+  }
 
   if (array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT, NM_ROLE_ADMIN, NM_ROLE_TUTOR, NM_ROLE_MODERATOR), $user->roles) || $user->uid == 0) {
     $output .= '<li><a href="/courses">Kursübersicht</a></li>';

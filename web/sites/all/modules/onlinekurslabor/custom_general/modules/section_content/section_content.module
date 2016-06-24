@@ -630,7 +630,8 @@ function section_content_node_form_submit($form, &$form_state) {
 function section_content_media_browser_plugins_alter(&$info) {
   if (isset($info['domain_media--media_browser_1'])) {
     $node = node_load(_media_browser_get_referer_nid());
-    if ($node && !in_array($node->type, array(NM_CONTENT_DOMAIN, NM_CONTENT_CHAPTER))) {
+
+    if (empty($node) || !in_array($node->type, array(NM_CONTENT_DOMAIN, NM_CONTENT_CHAPTER))) {
       unset($info['domain_media--media_browser_1']);
     }
   }
@@ -973,6 +974,24 @@ function section_content_field_formatter_info() {
       'label' => t('Multiple Choice'),
       'field types' => array('double_field'),
     ),
+    'section_content_formatter_video' => array(
+      'label' => t('okl Video'),
+      'description' => t('Render the file using an HTML5 video tag and additional parameters.'),
+      'field types' => array('file'),
+      'settings' => array(
+        'controls' => TRUE,
+        'autoplay' => FALSE,
+        'loop' => FALSE,
+        'muted' => FALSE,
+        'width' => NULL,
+        'height' => NULL,
+        'multiple_file_behavior' => 'tags',
+        'classes' => array(),
+      ),
+      'file formatter' => array(
+        'mime types' => array('video/*'),
+      ),
+    )
   );
 }
 
@@ -982,6 +1001,7 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
   }
 
   $element = array();
+  $settings = $display['settings'];
 
   switch ($display['type']) {
     case 'double_field_mc_answers':
@@ -993,6 +1013,48 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
         );
       }
       break;
+    case 'section_content_formatter_video':
+      // Use the media_thumbnail image style so that the output in media browser
+      // is consistent.
+      $multiple_file_behavior = $settings['multiple_file_behavior'];
+
+      // Prevent 'empty' fields from causing a WSOD.
+      $items = array_filter($items);
+
+      // Build an array of sources for each <video> element.
+      $source_lists = array();
+      if ($multiple_file_behavior == 'tags') {
+        foreach ($items as $delta => $item) {
+          if ($item['type'] == 'video') {
+            $source_lists[] = array($item);
+          }
+        }
+      }
+      else {
+        foreach ($items as $delta => $item) {
+          if ($item['type'] == 'video') {
+            $source_lists[0][] = $item;
+          }
+        }
+      }
+
+      // Render each source list as an <video> element.
+      foreach ($source_lists as $delta => $sources) {
+        $width = $settings['width'];
+        $height = $settings['height'];
+        $element[$delta] = array(
+          '#theme' => 'section_content_formatter_video',
+          '#files' => $sources,
+          '#controls' => $settings['controls'],
+          '#autoplay' => $settings['autoplay'],
+          '#loop' => $settings['loop'],
+          '#muted' => $settings['muted'],
+          '#width' => $width,
+          '#height' => $height,
+          '#classes' => $settings['classes'],
+        );
+      }
+
   }
 
   return $element;
@@ -1044,6 +1106,18 @@ function section_content_theme() {
     'multiple_choice_field' => array('render element' => 'element'),
     'multiple_choice_field_group' => array('render element' => 'element'),
     'question_and_answer_field' => array('render element' => 'element'),
+    'section_content_formatter_video' => array(
+      'variables' => array(
+        'files' => array(),
+        'controls' => TRUE,
+        'autoplay' => FALSE,
+        'loop' => FALSE,
+        'muted' => FALSE,
+        'width' => NULL,
+        'height' => NULL,
+        'classes' => NULL
+      )
+    ),
   );
 }
 
@@ -1389,4 +1463,126 @@ function _section_content_authors_tools_role_access() {
   $one_of_needed_roles = array_intersect($user->roles, array(NM_ROLE_ADMIN, NM_ROLE_AUTOR));
 
   return !empty($one_of_needed_roles);
+}
+
+
+/**
+ * inspired by theme_file_entity_file_video
+ * Returns HTML for displaying an HTML5 <video> tag.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - file: Associative array of file data, which must include "uri".
+ *   - controls: Boolean indicating whether or not controls should be displayed.
+ *   - autoplay: Boolean indicating whether or not the video should start
+ *     playing automatically.
+ *   - loop: Boolean indicating whether or not the video should loop.
+ *   - muted: Boolean indicating whether or not the sound should be muted.
+ *   - width: Width, in pixels, of the video player.
+ *   - height: Height, in pixels, of the video player.
+ *
+ * @ingroup themeable
+ */
+function theme_section_content_formatter_video($variables) {
+  $files = $variables['files'];
+  $output = '';
+
+  $video_attributes = array();
+  if ($variables['controls']) {
+    $video_attributes['controls'] = 'controls';
+  }
+  if ($variables['autoplay']) {
+    $video_attributes['autoplay'] = 'autoplay';
+  }
+  if ($variables['loop']) {
+    $video_attributes['loop'] = 'loop';
+  }
+  if ($variables['muted']) {
+    $video_attributes['muted'] = 'muted';
+  }
+  if ($variables['width']) {
+    $video_attributes['width'] = $variables['width'];
+  }
+  if ($variables['height']) {
+    $video_attributes['height'] = $variables['height'];
+  }
+
+  if ($variables['classes']) {
+    $classes = 'class="' . $variables['classes'] . '""';
+  }
+
+
+  $output .= '<video' . drupal_attributes($video_attributes) . ' ' . $classes . '>';
+  foreach ($files as $delta => $file) {
+    $source_attributes = array(
+      'src' => file_create_url($file['uri']),
+      'type' => $file['filemime'],
+    );
+    $output .= '<source' . drupal_attributes($source_attributes) . ' />';
+  }
+  $output .= '</video>';
+  return $output;
+}
+
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function section_content_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  $element = array();
+
+  if ($display['type'] == 'section_content_formatter_video') {
+    $element['controls'] = array(
+      '#title' => t('Show video controls'),
+      '#type' => 'checkbox',
+      '#default_value' => $settings['controls'],
+    );
+    $element['autoplay'] = array(
+      '#title' => t('Autoplay'),
+      '#type' => 'checkbox',
+      '#default_value' => $settings['autoplay'],
+    );
+    $element['loop'] = array(
+      '#title' => t('Loop'),
+      '#type' => 'checkbox',
+      '#default_value' => $settings['loop'],
+    );
+    $element['width'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Width'),
+      '#default_value' => $settings['width'],
+      '#size' => 5,
+      '#maxlength' => 5,
+      //'#field_suffix' => t('pixels'),
+    );
+    $element['height'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Height'),
+      '#default_value' => $settings['height'],
+      '#size' => 5,
+      '#maxlength' => 5,
+      //'#field_suffix' => t('pixels'),
+    );
+    $element['multiple_file_behavior'] = array(
+      '#title' => t('Display of multiple files'),
+      '#type' => 'radios',
+      '#options' => array(
+        'tags' => t('Use multiple @tag tags, each with a single source', array('@tag' => '<video>')),
+        'sources' => t('Use multiple sources within a single @tag tag', array('@tag' => '<video>')),
+      ),
+      '#default_value' => $settings['multiple_file_behavior'],
+      // Hide this setting in the manage file display configuration.
+      '#access' => !empty($field),
+    );
+    $element['classes'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Classes'),
+      '#default_value' => $settings['classes'],
+      '#field_suffix' => t('separated by a space'),
+    );
+  }
+
+  return $element;
 }

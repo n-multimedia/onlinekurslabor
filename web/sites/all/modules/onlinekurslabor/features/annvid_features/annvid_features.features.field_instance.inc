@@ -10,7 +10,7 @@
 function annvid_features_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-annvid-body'
+  // Exported field_instance: 'node-annvid-body'.
   $field_instances['node-annvid-body'] = array(
     'bundle' => 'annvid',
     'default_value' => NULL,
@@ -59,7 +59,7 @@ function annvid_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-annvid-field_h5preference'
+  // Exported field_instance: 'node-annvid-field_h5preference'.
   $field_instances['node-annvid-field_h5preference'] = array(
     'bundle' => 'annvid',
     'default_value' => NULL,
@@ -115,7 +115,7 @@ function annvid_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-annvid-field_pdffile'
+  // Exported field_instance: 'node-annvid-field_pdffile'.
   $field_instances['node-annvid-field_pdffile'] = array(
     'bundle' => 'annvid',
     'deleted' => 0,
@@ -164,7 +164,7 @@ function annvid_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-annvid-field_show_h5p_annotationlist'
+  // Exported field_instance: 'node-annvid-field_show_h5p_annotationlist'.
   $field_instances['node-annvid-field_show_h5p_annotationlist'] = array(
     'bundle' => 'annvid',
     'default_value' => array(
@@ -213,7 +213,7 @@ function annvid_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-annvid-group_group'
+  // Exported field_instance: 'node-annvid-group_group'.
   $field_instances['node-annvid-group_group'] = array(
     'bundle' => 'annvid',
     'default_value' => array(
@@ -274,7 +274,7 @@ function annvid_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-annvid-og_group_ref'
+  // Exported field_instance: 'node-annvid-og_group_ref'.
   $field_instances['node-annvid-og_group_ref'] = array(
     'bundle' => 'annvid',
     'default_value' => NULL,

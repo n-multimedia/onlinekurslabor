@@ -102,6 +102,7 @@ function bootstrap_onlinekurslabor_image_style($variables) {
   $variables['width'] = $dimensions['width'];
   $variables['height'] = $dimensions['height'];
 
+  /*
   //29.07.2013 - 16:37 - SN
   if (stristr($variables['style_name'], 'media_')) {
     $num = str_replace('media_', '', $variables['style_name']);
@@ -114,6 +115,7 @@ function bootstrap_onlinekurslabor_image_style($variables) {
       }
     }
   }
+  */
 
   // Determine the URL for the styled image.
   $variables['path'] = image_style_url($variables['style_name'], $variables['path']);

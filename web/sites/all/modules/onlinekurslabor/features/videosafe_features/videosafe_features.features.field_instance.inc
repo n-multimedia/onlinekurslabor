@@ -10,7 +10,7 @@
 function videosafe_features_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-videosafe_folder-body'
+  // Exported field_instance: 'node-videosafe_folder-body'.
   $field_instances['node-videosafe_folder-body'] = array(
     'bundle' => 'videosafe_folder',
     'default_value' => NULL,
@@ -60,11 +60,15 @@ function videosafe_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-videosafe_folder-field_parent_folder'
+  // Exported field_instance: 'node-videosafe_folder-field_parent_folder'.
   $field_instances['node-videosafe_folder-field_parent_folder'] = array(
     'bundle' => 'videosafe_folder',
-    'default_value' => NULL,
-    'default_value_function' => '',
+    'default_value' => array(
+      0 => array(
+        'target_id' => 2438,
+      ),
+    ),
+    'default_value_function' => 'entityreference_prepopulate_field_default_value',
     'deleted' => 0,
     'description' => 'Oberordner',
     'display' => array(
@@ -92,12 +96,20 @@ function videosafe_features_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_parent_folder',
-    'label' => 'parent_folder',
+    'label' => 'Übergeordneter Ordner',
     'required' => 1,
     'settings' => array(
       'behaviors' => array(
         'prepopulate' => array(
-          'status' => 0,
+          'action' => 'hide',
+          'action_on_edit' => 0,
+          'fallback' => 'none',
+          'providers' => array(
+            'og_context' => 0,
+            'url' => 1,
+          ),
+          'skip_perm' => 0,
+          'status' => 1,
         ),
       ),
       'user_register_form' => FALSE,
@@ -111,7 +123,7 @@ function videosafe_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-videosafe_video-body'
+  // Exported field_instance: 'node-videosafe_video-body'.
   $field_instances['node-videosafe_video-body'] = array(
     'bundle' => 'videosafe_video',
     'default_value' => NULL,
@@ -137,18 +149,18 @@ function videosafe_features_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'body',
-    'label' => 'Bemerkung',
+    'label' => 'Interne Bemerkung',
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
         'allowed_formats' => array(
-          'ds_code' => 'ds_code',
-          'filtered_html' => 'filtered_html',
-          'full_html' => 'full_html',
-          'php_code' => 'php_code',
+          'ds_code' => 0,
+          'filtered_html' => 0,
+          'full_html' => 0,
+          'php_code' => 0,
           'plain_text' => 'plain_text',
         ),
-        'allowed_formats_toggle' => 0,
+        'allowed_formats_toggle' => 1,
         'default_order_toggle' => 0,
         'default_order_wrapper' => array(
           'formats' => array(
@@ -171,7 +183,7 @@ function videosafe_features_field_default_field_instances() {
         ),
       ),
       'display_summary' => 0,
-      'text_processing' => 0,
+      'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -179,7 +191,7 @@ function videosafe_features_field_default_field_instances() {
       'module' => 'text',
       'settings' => array(
         'multiple_value_widget' => 'table',
-        'rows' => 20,
+        'rows' => 2,
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
@@ -187,52 +199,13 @@ function videosafe_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-videosafe_video-field_available_in'
-  $field_instances['node-videosafe_video-field_available_in'] = array(
-    'bundle' => 'videosafe_video',
-    'default_value' => NULL,
-    'default_value_function' => '',
-    'deleted' => 0,
-    'description' => 'Wählen Sie die Lehrtexte aus, deren Teilnehmer das Video sehen dürfen. ',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'link' => FALSE,
-        ),
-        'type' => 'entityreference_label',
-        'weight' => 3,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_available_in',
-    'label' => 'Verfügbar in',
-    'required' => 0,
-    'settings' => array(
-      'behaviors' => array(
-        'prepopulate' => array(
-          'status' => 0,
-        ),
-      ),
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 5,
-    ),
-  );
-
-  // Exported field_instance: 'node-videosafe_video-field_exclusive_access'
+  // Exported field_instance: 'node-videosafe_video-field_exclusive_access'.
   $field_instances['node-videosafe_video-field_exclusive_access'] = array(
     'bundle' => 'videosafe_video',
     'default_value' => NULL,
     'default_value_function' => '',
     'deleted' => 0,
-    'description' => 'Hat das Video einen Sperrvermerk, so können hier einzelne Nutzer ausgewählt werden, die exklusiv die Rechte erhalten, das Video freizugeben und zu bearbeiten.  ',
+    'description' => 'Hat das Video einen <strong>Sperrvermerk</strong>, so können hier einzelne Autoren ausgewählt werden, die exklusiv die Berechtigung erhalten, das Video einzusehen und in Lehrtexten zu nutzen.  <strong>Mehrere Werte kommagetrennt</strong>',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -246,7 +219,7 @@ function videosafe_features_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_exclusive_access',
-    'label' => 'Bearbeitbar für',
+    'label' => 'Einsehbar für',
     'required' => 0,
     'settings' => array(
       'behaviors' => array(
@@ -269,11 +242,11 @@ function videosafe_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-videosafe_video-field_parent_folder'
+  // Exported field_instance: 'node-videosafe_video-field_parent_folder'.
   $field_instances['node-videosafe_video-field_parent_folder'] = array(
     'bundle' => 'videosafe_video',
     'default_value' => NULL,
-    'default_value_function' => '',
+    'default_value_function' => 'entityreference_prepopulate_field_default_value',
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -294,7 +267,15 @@ function videosafe_features_field_default_field_instances() {
     'settings' => array(
       'behaviors' => array(
         'prepopulate' => array(
-          'status' => 0,
+          'action' => 'hide',
+          'action_on_edit' => 0,
+          'fallback' => 'none',
+          'providers' => array(
+            'og_context' => 0,
+            'url' => 1,
+          ),
+          'skip_perm' => 0,
+          'status' => 1,
         ),
       ),
       'user_register_form' => FALSE,
@@ -308,77 +289,56 @@ function videosafe_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-videosafe_video-field_video'
+  // Exported field_instance: 'node-videosafe_video-field_video'.
   $field_instances['node-videosafe_video-field_video'] = array(
     'bundle' => 'videosafe_video',
     'deleted' => 0,
-    'description' => 'Das Video muss vor Hochladen bereits einen sinnvollen Namen tragen!',
+    'description' => 'Wählen Sie mindest ein Video. Sie können das gleiche Video in verschiedenen Dateiformaten hinterlegen, um möglichst viele Browser zu unterstützen.
+Die Videodateien selbst sollten sinnvoll benannt sein.',
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'mediafield',
-        'settings' => array(
-          'file_view_mode' => 'default',
-        ),
-        'type' => 'media',
-        'weight' => 2,
+        'module' => 'file',
+        'settings' => array(),
+        'type' => 'file_default',
+        'weight' => 7,
       ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_video',
-    'label' => 'Video',
-    'required' => 0,
+    'label' => 'Video-Dateien',
+    'required' => 1,
     'settings' => array(
-      'file_extensions' => 'mp4 avi',
+      'description_field' => 0,
+      'file_directory' => 'videosafe',
+      'file_extensions' => 'mp4 m4v avi ogg ogm ogv webm weba',
+      'max_filesize' => '',
       'user_register_form' => FALSE,
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'media',
+      'module' => 'file',
       'settings' => array(
-        'allowed_schemes' => array(
-          'feed' => 0,
-          'http' => 0,
-          'https' => 0,
-          'oembed' => 0,
-          'public' => 'public',
-        ),
-        'allowed_types' => array(
-          'application' => 0,
-          'audio' => 0,
-          'document' => 0,
-          'image' => 0,
-          'video' => 'video',
-        ),
-        'browser_plugins' => array(
-          'domain_media--media_browser_1' => 0,
-          'media_default--media_browser_1' => 0,
-          'media_default--media_browser_my_files' => 0,
-          'media_internet' => 0,
-          'remote_file' => 0,
-          'upload' => 'upload',
-        ),
         'multiple_value_widget' => 'table',
         'progress_indicator' => 'throbber',
       ),
-      'type' => 'media_generic',
+      'type' => 'file_generic',
       'weight' => 3,
     ),
   );
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Bearbeitbar für');
-  t('Bemerkung');
   t('Body');
-  t('Das Video muss vor Hochladen bereits einen sinnvollen Namen tragen!');
-  t('Hat das Video einen Sperrvermerk, so können hier einzelne Nutzer ausgewählt werden, die exklusiv die Rechte erhalten, das Video freizugeben und zu bearbeiten.  ');
+  t('Einsehbar für');
+  t('Hat das Video einen <strong>Sperrvermerk</strong>, so können hier einzelne Autoren ausgewählt werden, die exklusiv die Berechtigung erhalten, das Video einzusehen und in Lehrtexten zu nutzen.  <strong>Mehrere Werte kommagetrennt</strong>');
+  t('Interne Bemerkung');
   t('Oberordner');
   t('Ordner');
-  t('Verfügbar in');
-  t('Video');
-  t('Wählen Sie die Lehrtexte aus, deren Teilnehmer das Video sehen dürfen. ');
-  t('parent_folder');
+  t('Video-Dateien');
+  t('Wählen Sie mindest ein Video. Sie können das gleiche Video in verschiedenen Dateiformaten hinterlegen, um möglichst viele Browser zu unterstützen.
+Die Videodateien selbst sollten sinnvoll benannt sein.');
+  t('Übergeordneter Ordner');
 
   return $field_instances;
 }

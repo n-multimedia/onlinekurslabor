@@ -387,13 +387,6 @@ function nm_section_content_features_user_default_permissions() {
     'module' => 'biblio',
   );
 
-  // Exported permission: 'import media'.
-  $permissions['import media'] = array(
-    'name' => 'import media',
-    'roles' => array(),
-    'module' => 'media',
-  );
-
   // Exported permission: 'revert revisions'.
   $permissions['revert revisions'] = array(
     'name' => 'revert revisions',

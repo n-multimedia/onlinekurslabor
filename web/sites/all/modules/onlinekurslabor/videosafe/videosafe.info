@@ -1,0 +1,9 @@
+name = videosafe
+description = replaces H5P's video-upload-button by a video-selector
+core = 7.x
+version = 7.x-1.0-alpha5
+package = custom
+
+
+dependencies[] = videosafe_features
+dependencies[] = h5p

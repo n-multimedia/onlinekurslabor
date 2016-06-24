@@ -73,4 +73,44 @@ function custom_general_update_3004(){
 
 }
 
+/**
+ * Set default semester to "Sonstige"
+ */
 
+function custom_general_update_3006() {
+
+  $vocabulary = taxonomy_vocabulary_machine_name_load('semester');
+  $term = current(taxonomy_get_term_by_name('Sonstige', 'semester'));
+
+  //create sonstiges term, if it does not exist yet
+  if (empty($term)) {
+    $term = new stdClass();
+    $term->name = "Sonstige";
+    $term->vid = $vocabulary->vid;
+    taxonomy_term_save($term);
+  }
+
+  if($term){
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node');
+    $query->entityCondition('bundle', NM_COURSE);
+    $result = $query->execute();
+
+    foreach ($result['node'] as $course_item) {
+      $entity = node_load($course_item->nid);
+
+      if (empty($entity->field_semester[LANGUAGE_NONE][0]['tid'])) {
+        $entity->field_semester[LANGUAGE_NONE][0]['tid'] = $term->tid;
+      }
+      //save field data for an entity
+      field_attach_update('node', $entity);
+
+      //set field instance default value
+      $field_instance_info = field_info_instance("node", "field_semester", NM_COURSE);
+      $field_instance_info['default_value'][0]['tid'] = $term->tid;
+      field_update_instance($field_instance_info);
+    }
+  }
+}
+
+ 

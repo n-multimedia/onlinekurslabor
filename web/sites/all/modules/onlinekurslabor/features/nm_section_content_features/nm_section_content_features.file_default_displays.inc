@@ -101,11 +101,254 @@ function nm_section_content_features_file_default_displays() {
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
+  $file_display->name = 'audio__filename__file_field_file_audio';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'controls' => 1,
+    'autoplay' => 0,
+    'loop' => 0,
+    'preload' => '',
+    'multiple_file_behavior' => 'tags',
+  );
+  $export['audio__filename__file_field_file_audio'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__filename__file_field_file_default';
+  $file_display->weight = 0;
+  $file_display->status = TRUE;
+  $file_display->settings = '';
+  $export['audio__filename__file_field_file_default'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__filename__file_field_file_download_link';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'text' => 'Download [file:name]',
+  );
+  $export['audio__filename__file_field_file_download_link'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__filename__file_field_file_table';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = '';
+  $export['audio__filename__file_field_file_table'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__filename__file_field_file_url_plain';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = '';
+  $export['audio__filename__file_field_file_url_plain'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__filename__file_field_media_large_icon';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'image_style' => '',
+  );
+  $export['audio__filename__file_field_media_large_icon'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__filename__oembed';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'width' => '560',
+    'height' => '340',
+    'wmode' => '',
+  );
+  $export['audio__filename__oembed'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__filename__oembed_thumbnail';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'width' => '180',
+    'height' => '',
+  );
+  $export['audio__filename__oembed_thumbnail'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__full__file_field_file_audio';
+  $file_display->weight = 0;
+  $file_display->status = TRUE;
+  $file_display->settings = array(
+    'controls' => 1,
+    'autoplay' => 0,
+    'loop' => 0,
+    'preload' => '',
+    'multiple_file_behavior' => 'tags',
+  );
+  $export['audio__full__file_field_file_audio'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__full__file_field_file_default';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = '';
+  $export['audio__full__file_field_file_default'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__full__file_field_file_download_link';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'text' => 'Download [file:name]',
+  );
+  $export['audio__full__file_field_file_download_link'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__full__file_field_file_table';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = '';
+  $export['audio__full__file_field_file_table'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__full__file_field_file_url_plain';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = '';
+  $export['audio__full__file_field_file_url_plain'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__full__file_field_media_large_icon';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'image_style' => '',
+  );
+  $export['audio__full__file_field_media_large_icon'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__full__oembed';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'width' => '560',
+    'height' => '340',
+    'wmode' => '',
+  );
+  $export['audio__full__oembed'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__full__oembed_thumbnail';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'width' => '180',
+    'height' => '',
+  );
+  $export['audio__full__oembed_thumbnail'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
   $file_display->name = 'audio__preview__file_field_media_large_icon';
   $file_display->weight = 50;
   $file_display->status = TRUE;
   $file_display->settings = '';
   $export['audio__preview__file_field_media_large_icon'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__wysiwyg__file_field_file_audio';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'controls' => 1,
+    'autoplay' => 0,
+    'loop' => 0,
+    'preload' => '',
+    'multiple_file_behavior' => 'tags',
+  );
+  $export['audio__wysiwyg__file_field_file_audio'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__wysiwyg__file_field_file_default';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = '';
+  $export['audio__wysiwyg__file_field_file_default'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__wysiwyg__file_field_file_download_link';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'text' => 'Download [file:name]',
+  );
+  $export['audio__wysiwyg__file_field_file_download_link'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__wysiwyg__file_field_file_table';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = '';
+  $export['audio__wysiwyg__file_field_file_table'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__wysiwyg__file_field_file_url_plain';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = '';
+  $export['audio__wysiwyg__file_field_file_url_plain'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__wysiwyg__file_field_media_large_icon';
+  $file_display->weight = 0;
+  $file_display->status = TRUE;
+  $file_display->settings = array(
+    'image_style' => 'medium',
+  );
+  $export['audio__wysiwyg__file_field_media_large_icon'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__wysiwyg__oembed';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'width' => '560',
+    'height' => '340',
+    'wmode' => '',
+  );
+  $export['audio__wysiwyg__oembed'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'audio__wysiwyg__oembed_thumbnail';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'width' => '180',
+    'height' => '',
+  );
+  $export['audio__wysiwyg__oembed_thumbnail'] = $file_display;
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
@@ -257,6 +500,16 @@ function nm_section_content_features_file_default_displays() {
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['image__default__file_field_file_default'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'image__default__file_field_file_download_link';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'text' => 'Download [file:name]',
+  );
+  $export['image__default__file_field_file_download_link'] = $file_display;
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
@@ -638,6 +891,16 @@ function nm_section_content_features_file_default_displays() {
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
+  $file_display->name = 'image__media_12__file_field_file_download_link';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'text' => 'Download [file:name]',
+  );
+  $export['image__media_12__file_field_file_download_link'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
   $file_display->name = 'image__media_12__file_field_file_rendered';
   $file_display->weight = 0;
   $file_display->status = FALSE;
@@ -661,6 +924,17 @@ function nm_section_content_features_file_default_displays() {
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['image__media_12__file_field_file_url_plain'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'image__media_12__file_field_image';
+  $file_display->weight = 0;
+  $file_display->status = TRUE;
+  $file_display->settings = array(
+    'image_style' => 'media_12',
+    'image_link' => '',
+  );
+  $export['image__media_12__file_field_image'] = $file_display;
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
@@ -727,6 +1001,16 @@ function nm_section_content_features_file_default_displays() {
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
+  $file_display->name = 'image__media_3__file_field_file_download_link';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'text' => 'Download [file:name]',
+  );
+  $export['image__media_3__file_field_file_download_link'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
   $file_display->name = 'image__media_3__file_field_file_rendered';
   $file_display->weight = 0;
   $file_display->status = FALSE;
@@ -750,6 +1034,17 @@ function nm_section_content_features_file_default_displays() {
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['image__media_3__file_field_file_url_plain'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'image__media_3__file_field_image';
+  $file_display->weight = 0;
+  $file_display->status = TRUE;
+  $file_display->settings = array(
+    'image_style' => 'media_3',
+    'image_link' => '',
+  );
+  $export['image__media_3__file_field_image'] = $file_display;
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
@@ -816,6 +1111,16 @@ function nm_section_content_features_file_default_displays() {
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
+  $file_display->name = 'image__media_4__file_field_file_download_link';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'text' => 'Download [file:name]',
+  );
+  $export['image__media_4__file_field_file_download_link'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
   $file_display->name = 'image__media_4__file_field_file_rendered';
   $file_display->weight = 0;
   $file_display->status = FALSE;
@@ -839,6 +1144,17 @@ function nm_section_content_features_file_default_displays() {
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['image__media_4__file_field_file_url_plain'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'image__media_4__file_field_image';
+  $file_display->weight = 0;
+  $file_display->status = TRUE;
+  $file_display->settings = array(
+    'image_style' => 'media_4',
+    'image_link' => '',
+  );
+  $export['image__media_4__file_field_image'] = $file_display;
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
@@ -1009,6 +1325,16 @@ function nm_section_content_features_file_default_displays() {
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
+  $file_display->name = 'image__media_6__file_field_file_download_link';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'text' => 'Download [file:name]',
+  );
+  $export['image__media_6__file_field_file_download_link'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
   $file_display->name = 'image__media_6__file_field_file_rendered';
   $file_display->weight = 0;
   $file_display->status = FALSE;
@@ -1032,6 +1358,17 @@ function nm_section_content_features_file_default_displays() {
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['image__media_6__file_field_file_url_plain'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'image__media_6__file_field_image';
+  $file_display->weight = 0;
+  $file_display->status = TRUE;
+  $file_display->settings = array(
+    'image_style' => 'media_6',
+    'image_link' => '',
+  );
+  $export['image__media_6__file_field_image'] = $file_display;
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
@@ -1098,6 +1435,16 @@ function nm_section_content_features_file_default_displays() {
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
+  $file_display->name = 'image__media_9__file_field_file_download_link';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'text' => 'Download [file:name]',
+  );
+  $export['image__media_9__file_field_file_download_link'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
   $file_display->name = 'image__media_9__file_field_file_rendered';
   $file_display->weight = 0;
   $file_display->status = FALSE;
@@ -1121,6 +1468,17 @@ function nm_section_content_features_file_default_displays() {
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['image__media_9__file_field_file_url_plain'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'image__media_9__file_field_image';
+  $file_display->weight = 0;
+  $file_display->status = TRUE;
+  $file_display->settings = array(
+    'image_style' => 'media_9',
+    'image_link' => '',
+  );
+  $export['image__media_9__file_field_image'] = $file_display;
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
@@ -1184,6 +1542,16 @@ function nm_section_content_features_file_default_displays() {
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['image__preview__file_field_file_default'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'image__preview__file_field_file_download_link';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'text' => 'Download [file:name]',
+  );
+  $export['image__preview__file_field_file_download_link'] = $file_display;
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
@@ -1358,8 +1726,26 @@ function nm_section_content_features_file_default_displays() {
   $file_display->name = 'video__default__file_field_media_large_icon';
   $file_display->weight = 0;
   $file_display->status = FALSE;
-  $file_display->settings = '';
+  $file_display->settings = array(
+    'image_style' => '',
+  );
   $export['video__default__file_field_media_large_icon'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'video__default__file_field_section_content_formatter_video';
+  $file_display->weight = 0;
+  $file_display->status = TRUE;
+  $file_display->settings = array(
+    'controls' => 1,
+    'autoplay' => 0,
+    'loop' => 0,
+    'width' => '',
+    'height' => '',
+    'multiple_file_behavior' => 'tags',
+    'classes' => '',
+  );
+  $export['video__default__file_field_section_content_formatter_video'] = $file_display;
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
@@ -1757,7 +2143,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__media_12__file_field_file_default';
-  $file_display->weight = 0;
+  $file_display->weight = -42;
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['video__media_12__file_field_file_default'] = $file_display;
@@ -1765,7 +2151,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__media_12__file_field_file_download_link';
-  $file_display->weight = 0;
+  $file_display->weight = -44;
   $file_display->status = FALSE;
   $file_display->settings = array(
     'text' => 'Download [file:name]',
@@ -1785,7 +2171,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__media_12__file_field_file_table';
-  $file_display->weight = 0;
+  $file_display->weight = -50;
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['video__media_12__file_field_file_table'] = $file_display;
@@ -1793,7 +2179,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__media_12__file_field_file_url_plain';
-  $file_display->weight = 0;
+  $file_display->weight = -49;
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['video__media_12__file_field_file_url_plain'] = $file_display;
@@ -1801,13 +2187,13 @@ function nm_section_content_features_file_default_displays() {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__media_12__file_field_file_video';
-  $file_display->weight = 0;
+  $file_display->weight = -46;
   $file_display->status = FALSE;
   $file_display->settings = array(
     'controls' => 1,
     'autoplay' => 0,
     'loop' => 0,
-    'width' => '',
+    'width' => '100',
     'height' => '',
     'multiple_file_behavior' => 'tags',
   );
@@ -1815,11 +2201,44 @@ function nm_section_content_features_file_default_displays() {
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
+  $file_display->name = 'video__media_12__file_field_jplayer_player';
+  $file_display->weight = -47;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'mode' => 'single',
+    'autoplay' => '0',
+    'solution' => 'flash, html',
+    'preload' => 'metadata',
+    'volume' => '80',
+    'muted' => '0',
+    'repeat' => 'none',
+    'backgroundColor' => '000000',
+  );
+  $export['video__media_12__file_field_jplayer_player'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
   $file_display->name = 'video__media_12__file_field_media_large_icon';
-  $file_display->weight = 0;
+  $file_display->weight = -43;
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['video__media_12__file_field_media_large_icon'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'video__media_12__file_field_section_content_formatter_video';
+  $file_display->weight = 0;
+  $file_display->status = TRUE;
+  $file_display->settings = array(
+    'controls' => 1,
+    'autoplay' => 0,
+    'loop' => 0,
+    'width' => '',
+    'height' => '',
+    'multiple_file_behavior' => 'tags',
+    'classes' => '',
+  );
+  $export['video__media_12__file_field_section_content_formatter_video'] = $file_display;
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
@@ -1836,7 +2255,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__media_12__oembed';
-  $file_display->weight = 0;
+  $file_display->weight = -48;
   $file_display->status = TRUE;
   $file_display->settings = array(
     'width' => '768',
@@ -1860,7 +2279,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display = new stdClass();
   $file_display->api_version = 1;
   $file_display->name = 'video__media_12__oembed_thumbnail';
-  $file_display->weight = 0;
+  $file_display->weight = -45;
   $file_display->status = FALSE;
   $file_display->settings = array(
     'width' => '180',
@@ -2115,6 +2534,22 @@ function nm_section_content_features_file_default_displays() {
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
+  $file_display->name = 'video__media_6__file_field_section_content_formatter_video';
+  $file_display->weight = 0;
+  $file_display->status = TRUE;
+  $file_display->settings = array(
+    'controls' => 1,
+    'autoplay' => 0,
+    'loop' => 0,
+    'width' => '',
+    'height' => '',
+    'multiple_file_behavior' => 'tags',
+    'classes' => '',
+  );
+  $export['video__media_6__file_field_section_content_formatter_video'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
   $file_display->name = 'video__media_6__file_image';
   $file_display->weight = 0;
   $file_display->status = FALSE;
@@ -2170,6 +2605,16 @@ function nm_section_content_features_file_default_displays() {
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
+  $file_display->name = 'video__media_9__file_field_file_download_link';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'text' => 'Download [file:name]',
+  );
+  $export['video__media_9__file_field_file_download_link'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
   $file_display->name = 'video__media_9__file_field_file_rendered';
   $file_display->weight = 0;
   $file_display->status = FALSE;
@@ -2196,11 +2641,42 @@ function nm_section_content_features_file_default_displays() {
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
+  $file_display->name = 'video__media_9__file_field_file_video';
+  $file_display->weight = 0;
+  $file_display->status = FALSE;
+  $file_display->settings = array(
+    'controls' => 1,
+    'autoplay' => 0,
+    'loop' => 0,
+    'width' => '',
+    'height' => '',
+    'multiple_file_behavior' => 'tags',
+  );
+  $export['video__media_9__file_field_file_video'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
   $file_display->name = 'video__media_9__file_field_media_large_icon';
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = '';
   $export['video__media_9__file_field_media_large_icon'] = $file_display;
+
+  $file_display = new stdClass();
+  $file_display->api_version = 1;
+  $file_display->name = 'video__media_9__file_field_section_content_formatter_video';
+  $file_display->weight = 0;
+  $file_display->status = TRUE;
+  $file_display->settings = array(
+    'controls' => 1,
+    'autoplay' => 0,
+    'loop' => 0,
+    'width' => '',
+    'height' => '',
+    'multiple_file_behavior' => 'tags',
+    'classes' => '',
+  );
+  $export['video__media_9__file_field_section_content_formatter_video'] = $file_display;
 
   $file_display = new stdClass();
   $file_display->api_version = 1;
@@ -2495,7 +2971,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display->api_version = 1;
   $file_display->name = 'video__wysiwyg__file_field_media_large_icon';
   $file_display->weight = 0;
-  $file_display->status = FALSE;
+  $file_display->status = TRUE;
   $file_display->settings = '';
   $export['video__wysiwyg__file_field_media_large_icon'] = $file_display;
 
@@ -2515,7 +2991,7 @@ function nm_section_content_features_file_default_displays() {
   $file_display->api_version = 1;
   $file_display->name = 'video__wysiwyg__oembed_thumbnail';
   $file_display->weight = 0;
-  $file_display->status = TRUE;
+  $file_display->status = FALSE;
   $file_display->settings = array(
     'width' => '',
     'height' => '',

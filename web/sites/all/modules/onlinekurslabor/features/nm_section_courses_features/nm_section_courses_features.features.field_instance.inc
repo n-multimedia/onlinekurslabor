@@ -875,7 +875,11 @@ function nm_section_courses_features_field_default_field_instances() {
   // Exported field_instance: 'node-courses_course-field_semester'.
   $field_instances['node-courses_course-field_semester'] = array(
     'bundle' => 'courses_course',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'tid' => 183,
+      ),
+    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -902,7 +906,7 @@ function nm_section_courses_features_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_semester',
     'label' => 'Semester',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -1420,9 +1424,11 @@ function nm_section_courses_features_field_default_field_instances() {
           'http' => 0,
           'https' => 0,
           'oembed' => 0,
-          'public' => 'public',
+          'private' => 'private',
+          'public' => 0,
         ),
         'allowed_types' => array(
+          'application' => 0,
           'audio' => 'audio',
           'document' => 'document',
           'image' => 'image',
@@ -2552,9 +2558,11 @@ function nm_section_courses_features_field_default_field_instances() {
           'http' => 0,
           'https' => 0,
           'oembed' => 0,
-          'public' => 'public',
+          'private' => 'private',
+          'public' => 0,
         ),
         'allowed_types' => array(
+          'application' => 0,
           'audio' => 'audio',
           'document' => 'document',
           'image' => 'image',

@@ -15,6 +15,16 @@ ADAPING BOOTSTRAP
     float:left;
 }
 
+.main-content h1,
+.main-content h2,
+.main-content h3,
+.main-content h4,
+.main-content h5,
+.main-content h5,
+.book-navigation {
+    clear:both;
+}
+
 /*
 CONTENT IMAGES FLOAT
 */
@@ -320,6 +330,10 @@ Margin between content and navigation
     margin-bottom:0;
 }
 
+/*fuer alle disabled-buttons not-allowed-cursor setzen*/
+.btn.disabled a{
+    cursor: not-allowed;
+}
 
 /*
 */
@@ -644,6 +658,9 @@ Responsive Features
         right:30px;
         bottom:15px;
         padding:0px 4px;
+    }
+    .btn.disabled a{
+        text-decoration: line-through;
     }
 }
 
@@ -1070,3 +1087,24 @@ PROJECTS
 .forum-tools {
     display: none;
 }
+
+.qaa_solution_button {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.qaa_solution_button btn active{
+    color: white;
+}
+.solution {
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 1em;
+}
+
+/* PrivateMSG */
+
+#privatemsg-list-form .control-group{
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+

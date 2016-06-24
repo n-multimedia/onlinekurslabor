@@ -1,0 +1,189 @@
+# German translation File for onlinekurslabor
+# Copyright (c) 2016 by the German translation team
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: onlinekurslabor alpha \n"
+"POT-Creation-Date: 2016-04-09 17:06+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Language-Team: German\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+
+msgid "%accountname is the course creator and cannot be removed."
+msgstr "%accountname ist der Kursersteller und kann nicht entfernt werden."
+
+msgid "Submit"
+msgstr "Absenden"
+
+msgid "Add timestamp area"
+msgstr "Zeitstempel-Bereich hinzufügen"
+
+msgid "Written timestamps in this area will automatically be converted to links"
+msgstr "In diesem Bereich eingegebene Zeitstempel werden automatisch zu Videosprungstellen"
+
+msgid "Created by"
+msgstr "Erstellt von"
+
+msgid "When this value is >= 3, you will no longer be able to change your author id mapping.  Contact your system administrator to reset this value."
+msgstr "Wenn dieser Wert >= 3 ist, können Sie die Zuordnung ihrer AutorenID nicht mehr verändern. Kontaktieren Sie einen Systemadministrator, um die Einstellungen zurückzusetzen."
+
+
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+
+
+
+msgid "Support request"
+msgstr "Hilfe & Kontakt"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Write new message"
+msgstr "Nachricht verfassen"
+
+msgid "Enter the recipient, separate recipients with commas"
+msgstr "Empfänger angeben (getrennt durch Kommata)"
+
+msgid "Inbox"
+msgstr "Postfach"
+
+msgid "Sent Messages"
+msgstr "Gesendete Nachrichten"
+
+msgid "Enter a user name to write a message to a user."
+msgstr "Geben Sie einen Empfänger an"
+
+msgid "No messages available."
+msgstr "Keine Nachrichten"
+
+msgid "Actions..."
+msgstr "Aktionen..."
+
+msgid "Participants"
+msgstr "Teilnehmer / Geprächspartner"
+
+msgid "Last updated"
+msgstr "Letzte Antwort"
+
+msgid "You must include a subject line with your message."
+msgstr "Bitte geben Sie einen Betreff an."
+
+msgid "A message has been sent to !recipients."
+msgstr "Nachricht versendet an !recipients."
+
+msgid "Between !participants and !last"
+msgstr "Zwischen !participants und !last"
+
+msgid "Between you and @author"
+msgstr "Zwischen Ihnen und @author"
+
+msgid "@time ago"
+msgstr "vor @time"
+
+msgid "@interval ago"
+msgstr "vor @interval"
+
+msgid "Reply"
+msgstr "Antwort"
+
+msgid "clear"
+msgstr "Abbrechen"
+
+msgid "Clear"
+msgstr "Abbrechen"
+
+msgid "tag this conversation"
+msgstr "Tags hinzufügen"
+
+msgid "Remove Tag..."
+msgstr "Tag entfernen"
+
+msgid "apply tag"
+msgstr "Tags hinzufügen"
+
+msgid "Apply Tag"
+msgstr "Tags hinzufügen"
+
+msgid "mark as read"
+msgstr "als gelesen markieren"
+
+msgid "mark as unread"
+msgstr "als ungelesen markieren"
+
+msgid "Mark as read"
+msgstr "Als gelesen markieren"
+
+msgid "Mark as unread"
+msgstr "Als ungelesen markieren"
+
+
+msgid "filter messages"
+msgstr "Nachrichten filtern"
+
+msgid "Filter Messages"
+msgstr "Nachrichten filtern"
+
+
+msgid "You have <a href=\"@messages\">@count unread messages</a>"
+msgstr "Sie haben <a href=\"@messages\">@count ungelesene Nachrichten</a>"
+
+msgid "You have <a href=\"@messages\">1 unread message</a>"
+msgstr "Sie haben <a href=\"@messages\">1 ungelesene Nachricht</a>"
+ 
+msgid "Private messages"
+msgstr "Nachricht verfassen"
+
+msgid "Messages"
+msgstr "Nachrichten"
+
+msgid "Messages (1 new)"
+msgstr "Nachricht (1 neu)"
+
+msgid "Messages (@count new)"
+msgstr "Nachrichten (@count neu)"
+
+msgid "You"
+msgstr "Ich"
+
+msgid "you"
+msgstr "mir"
+
+msgid "Block a user"
+msgstr "Einen Benutzer blockieren"
+
+msgid "Block user"
+msgstr "Benutzer blockieren"
+
+msgid "Block users"
+msgstr "Benutzer blockieren"
+
+msgid "Blocked users"
+msgstr "Blockierte Benutzer"
+
+msgid "Last Updated"
+msgstr "Zuletzt aktualisiert"
+
+msgid "Separate multiple names with commas."
+msgstr "Mehrere Namen werden via Komma getrennt."

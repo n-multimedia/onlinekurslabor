@@ -8,6 +8,14 @@ Drupal.h5p_integration.h5pDialogButtons = Drupal.h5p_integration.h5pDialogButton
 
     CKEDITOR.plugins.add('h5p_integration_plugin', {
         init: function(editor) {
+            //der iframe des Editors ist noch nicht geladen, deswegen warten wir darauf und weisen dann CSS an.
+            $('body').on('DOMNodeInserted', 'iframe', function () {
+                setTimeout(function(){
+                    var $head = $("iframe[title^=WYSIWYG]").first().contents().find("head"); 
+                    $head.append('<style type="text/css">.h5p_timestamps{border-left:1px solid #ebebeb; background:#FDFEFE; padding:1em;}</style>');
+                },1000);
+            });
+           
             editor.ui.addButton('h5p_button', {
                 label: 'Interactive Media', //this is the tooltip text for the button
                 command: 'h5p_command',
@@ -77,15 +85,16 @@ Drupal.h5p_integration.h5pDialogButtons = Drupal.h5p_integration.h5pDialogButton
 
             });
 
-            function insertH5PTag(data, editor) {
+            function insertH5PTag(data,use_timestamps, editor) {
                 var linkitCache = Drupal.linkit.getLinkitCache(),
                         selection = editor.getSelection();
-
                 data = CKEDITOR.tools.trim(data);
-
-                editor.insertHtml('[h5p]' + data + '[/h5p]');
-
-            }
+                var html = '[h5p]' + data + '[/h5p]';
+                if(use_timestamps)
+                    html+='<div class="h5p_timestamps">0:00 Beispiel</div><p></p>';
+                        
+                editor.insertHtml(html);
+              }
             ;
 
         }
@@ -96,6 +105,9 @@ Drupal.h5p_integration.h5pDialogButtons = Drupal.h5p_integration.h5pDialogButton
     Drupal.h5p_integration.getH5PTag = function() {
         return $('#linkit-modal #edit-h5p-tag').val();
     };
+     Drupal.h5p_integration.getH5PTimestampsOption= function() {
+        return $('#linkit-modal #edit-h5p-timestamps:checked').length > 0 ;
+    };
 
     Drupal.behaviors.h5pDialogButtons = {
         attach: function(context, settings) {
@@ -104,7 +116,7 @@ Drupal.h5p_integration.h5pDialogButtons = Drupal.h5p_integration.h5pDialogButton
                 var linkitCache = Drupal.linkit.getLinkitCache();
                 //console.log(linkitCache);
                 // Call the insertLink() function.
-                Drupal.linkit.editorDialog[linkitCache.editorName].insertH5PTag(Drupal.h5p_integration.getH5PTag());
+                Drupal.linkit.editorDialog[linkitCache.editorName].insertH5PTag(Drupal.h5p_integration.getH5PTag(),Drupal.h5p_integration.getH5PTimestampsOption());
                 // Close the dialog.
                 Drupal.linkit.dialog.close();
 
@@ -122,11 +134,10 @@ Drupal.h5p_integration.h5pDialogButtons = Drupal.h5p_integration.h5pDialogButton
 
     Drupal.behaviors.h5p_integration = {
         attach: function(context, settings) {
-
             if ($('#linkit-modal #edit-h5p-search', context).length == 0) {
                 return;
             }
-
+            
             Drupal.linkit.$searchInput = $('#linkit-modal #edit-h5p-search', context);
 
             // Create a "Better Autocomplete" object, see betterautocomplete.js
@@ -199,9 +210,9 @@ Drupal.h5p_integration.h5pDialogButtons = Drupal.h5p_integration.h5pDialogButton
 
 (function($) {
 
-    Drupal.linkit.editorDialog.ckeditor.insertH5PTag = function(link) {
+    Drupal.linkit.editorDialog.ckeditor.insertH5PTag = function(link, use_timestamps) {
         var linkitCache = Drupal.linkit.getLinkitCache();
-        CKEDITOR.tools.callFunction(linkitCache.editor._.linkitFnNum, link, linkitCache.editor);
+        CKEDITOR.tools.callFunction(linkitCache.editor._.linkitFnNum, link, use_timestamps, linkitCache.editor);
     };
-
+  
 })(jQuery);

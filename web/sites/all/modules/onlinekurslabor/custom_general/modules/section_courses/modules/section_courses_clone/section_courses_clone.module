@@ -49,6 +49,12 @@ function section_courses_clone_course_form($context) {
       'kursdokumente' => 'Kursdokumente'
   );
 
+    $clone_persons = array(
+    'professor' => 'Professors',
+    'tutor' => 'Tutors'
+  );
+
+  // Personen-klonen
   $clone_structure = array(
     'forum' => 'Forum',
   );
@@ -63,7 +69,15 @@ function section_courses_clone_course_form($context) {
     '#options' => $clone_items,
     '#description' => t('Select which content you would like to clone.'),
   );
-
+  
+  //Personen-klonen
+    $form['clone_persons'] = array(
+    '#title' => t('Persons'),
+    '#type' => 'checkboxes',
+    '#options' => $clone_persons,
+    '#description' => t('Select which groups you would like to clone.'),
+  );
+    
   $form['clone_structure'] = array(
     '#title' => t('Structure'),
     '#type' => 'checkboxes',
@@ -86,6 +100,8 @@ function section_courses_clone_course_submit($form_id, $form_state) {
   $result['clone_items'] = $form_state['values']['clone_items'];
   $result['clone_structure'] = $form_state['values']['clone_structure'];
   $result['clone_properties'] = $form_state['values']['clone_properties'];
+  // Personen-klonen
+  $result['clone_persons'] = $form_state['values']['clone_persons'];
 
   return $result;
 }
@@ -94,57 +110,49 @@ function section_courses_clone_course_submit($form_id, $form_state) {
  * Action function: hier wird das klonen durchgefuehrt
  */
 function section_courses_clone_course(&$entity, $context = array()) {
-
-  watchdog('section_courses_clone', 'Cloning Course %nid', array('%nid' => $entity->nid), WATCHDOG_INFO);
-  
-  //clone entity
-  //unset($entity->nid);
-  //node_save($entiy);
-
-  $clone_node = _section_courses_clone_node_prepare($entity);
-
-  $clone_items = $context['clone_items'];
-  $clone_structure = $context['clone_structure'];
-  $clone_properties = $context['clone_properties'];
-
-  /*
-   *  B E F O R E   S A V I N G
-   */
-
-  //Structure before save
-  if (!$clone_structure['forum']) {
-    foreach ($clone_node->field_collaborative_features[LANGUAGE_NONE] as $key => $feature) {
-      if ($feature['value'] == 'forum') {
-        //unset form feature, if it was set
-        unset($clone_node->field_collaborative_features[LANGUAGE_NONE][$key]);
+    watchdog('section_courses_clone', 'Cloning Course %nid', array('%nid' => $entity->nid), WATCHDOG_INFO);
+    $clone_node = _section_courses_clone_node_prepare($entity);
+    $clone_items = $context['clone_items'];
+    $clone_structure = $context['clone_structure'];
+    $clone_properties = $context['clone_properties'];
+    // Personen-klonen
+    $clone_persons = $context['clone_persons'];
+    /*
+    *  B E F O R E   S A V I N G
+    */
+    //Structure before save
+    if (!$clone_structure['forum']) {
+      foreach ($clone_node->field_collaborative_features[LANGUAGE_NONE] as $key => $feature) {
+        if ($feature['value'] == 'forum') {
+          //unset form feature, if it was set
+          unset($clone_node->field_collaborative_features[LANGUAGE_NONE][$key]);
+        }
       }
     }
-  }
-  $clone_node->title .= ' (KOPIE)';
-  //PROPERTIES
-  $clone_node->status = $clone_properties['status'] ? 1 : 0;
-
-  node_save($clone_node);
-
-
-  /*
-   *  A F T E R   S A V I N G
-   */
-  //ITEMS
-  //initialize to array to prevent warnings
-  $course_news =  $course_groups = $aufgaben = $kursdokumente = array();
-  //clone news
-  if ($clone_items['news'])  
-    $course_news = _section_course_get_news($entity); 
-  //clone course_groups
-  if ($clone_items['course_groups']) 
-    $course_groups = _section_course_get_coursegroups($entity);
-  if ($clone_items['aufgaben']) 
-    $aufgaben = _section_course_get_tasks ($entity);   
-  if ($clone_items['kursdokumente']) 
-     $kursdokumente = _section_course_get_documents ($entity);    
-  
-   
+    $clone_node->title .= ' (KOPIE)';
+    //PROPERTIES
+    $clone_node->status = $clone_properties['status'] ? 1 : 0;
+    node_save($clone_node);
+    /*
+    *  A F T E R   S A V I N G
+    */
+    //ITEMS
+    //initialize to array to prevent warnings
+    $course_news =  $course_groups = $aufgaben = $kursdokumente = array();
+    //clone news
+    if ($clone_items['news']){  
+        $course_news = _section_course_get_news($entity); 
+    }
+    //clone course_groups
+    if ($clone_items['course_groups']) {
+        $course_groups = _section_course_get_coursegroups($entity);
+    }
+    if ($clone_items['aufgaben']) {
+        $aufgaben = _section_course_get_tasks ($entity);   
+    }
+    if ($clone_items['kursdokumente']){ 
+        $kursdokumente = _section_course_get_documents ($entity);    
+    }
   
     $content_entities = array_merge(array(),$course_news, $course_groups,$aufgaben,$kursdokumente);
    
@@ -153,61 +161,74 @@ function section_courses_clone_course(&$entity, $context = array()) {
       foreach ($content_entities as $cg) {
            _section_courses_clone_content($cg->nid, $clone_node->nid);
         }
-      }
-    
-  
-  //STRUCTURE
-  if ($clone_structure['forum']) {
-    //copy taxonomy structure
-    $old_forum_term = _section_courses_get_forum_term($entity);
-    //dpm($old_forum_term);
-    $new_forum_term = _section_courses_get_forum_term($clone_node);
-    //dpm($new_forum_term);
-    $old_children = taxonomy_get_tree($new_forum_term->vid, $old_forum_term->tid);
-
-    //map for new tree structure
-    $map = array();
-    $map[$old_forum_term->tid] = $new_forum_term->tid;
-
-    $buffer = array();
-    $counter = count($old_children);
-    while ($counter >= 0) {
-      //dpm($old_children);
-      foreach ($old_children as $child) {
-        if (!isset($map[$child->parents[0]])) {
-          //mapping not set yet
-          $buffer[] = $child;
-          continue;
+      } 
+    //STRUCTURE
+    if ($clone_structure['forum']) {
+      //copy taxonomy structure
+      $old_forum_term = _section_courses_get_forum_term($entity);
+      $new_forum_term = _section_courses_get_forum_term($clone_node);
+      $old_children = taxonomy_get_tree($new_forum_term->vid, $old_forum_term->tid);
+      //map for new tree structure
+      $map = array();
+      $map[$old_forum_term->tid] = $new_forum_term->tid;
+      $buffer = array();
+      $counter = count($old_children);
+      while ($counter >= 0) {
+        foreach ($old_children as $child) {
+            if (!isset($map[$child->parents[0]])) {
+              //mapping not set yet
+              $buffer[] = $child;
+              continue;
+            }
+            $nt = (object) array(
+                  'name' => $child->name,
+                  'vid' => $new_forum_term->vid,
+                  'parent' => array($map[$child->parents[0]]),
+            );
+            taxonomy_term_save($nt);
+            //add taxonomy to og
+            //Set the values
+            $values = array(
+              'entity_type' => 'taxonomy_term',
+              'entity' => $nt,
+              'state' => OG_STATE_ACTIVE,
+            );
+            $og_membership_entity = og_group('node', $clone_node->nid, $values);
+            //map old term to new added term
+            if (!isset($map[$child->tid]) && isset($nt->tid)) {
+              $map[$child->tid] = $nt->tid;
+              }
         }
-        //dpm('adding child');
-        //dpm($child);
-        $nt = (object) array(
-              'name' => $child->name,
-              'vid' => $new_forum_term->vid,
-              'parent' => array($map[$child->parents[0]]),
-        );
-        taxonomy_term_save($nt);
-
-        //add taxonomy to og
-        //Set the values
-        $values = array(
-          'entity_type' => 'taxonomy_term',
-          'entity' => $nt,
-          'state' => OG_STATE_ACTIVE,
-        );
-
-        $og_membership_entity = og_group('node', $clone_node->nid, $values);
-
-        //map old term to new added term
-        if (!isset($map[$child->tid]) && isset($nt->tid)) {
-          $map[$child->tid] = $nt->tid;
-        }
+        $old_children = $buffer;
+        $counter--;
       }
-      $old_children = $buffer;
-
-      $counter--;
     }
-  }
+    //Personen-klonen
+    $dozenten = $tutoren = array();
+    if ($clone_persons['professor']){
+        // returns too much people. e.g. Sergej instead of only the professors
+        $dozenten = custom_general_get_users_in_group_by_role_real($entity->nid, 'kurs-dozent');  
+    }
+    if($clone_persons['tutor']){
+        $tutoren = custom_general_get_users_in_group_by_role_real($entity->nid, 'kurs-tutor');
+    }
+    
+    foreach ($dozenten as $dozent){
+        $acc = user_load($dozent->uid);
+        $values = array(
+          'entity type' => 'user',
+          'entity' => $acc,
+        );
+        og_group('node', $clone_node->nid, $values);
+    }
+    foreach ($tutoren as $tutor){
+        $acc = user_load($tutor->uid);
+        $values = array(
+          'entity type' => 'user',
+          'entity' => $acc,
+        );
+        og_group('node', $clone_node->nid, $values);
+    }
 }
 
 /**

@@ -1,0 +1,5 @@
+name = privatemsg_okl
+description = Altered PrivateMsg
+core = 7.x
+package = custom
+dependencies[] = privatemsg

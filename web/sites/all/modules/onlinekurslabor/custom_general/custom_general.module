@@ -17,6 +17,10 @@ define("NM_BLOCK_AUTOREN", 53);
 //Global Forum
 define("NM_GLOBAL_FORUM_TID", 180);
 
+//Section Help: Variables
+define("NM_HELP_BID", 197);
+define("NM_HELP_HEADER_FID", 3769);
+
 //Content
 define("NM_DOMAIN_OVERVIEW_ID", 7); //deprecated
 define("NM_DOMAIN_OVERVIEW_PATH", "domains");
@@ -133,6 +137,8 @@ define("NM_VIEW_DOMAIN_MEDIA", "domain_media");
 
 //Content
 define("NM_CHAPTER_SEPARATOR", ".");
+
+define("NM_SUPPORT_MAIL", "support@medienlabor-uni-augsburg.de");
 
 
 module_load_include('inc', 'custom_general', 'inc/functions');
@@ -268,6 +274,41 @@ function custom_general_init() {
       $plugin->execute($group);
     }
   }
+  
+    global $user;
+    $role       = array();
+    // Check to see if $user has the administrator role.
+    $gid        = _section_courses_get_active_course();
+    if (in_array( NM_ROLE_ADMIN , array_values($user->roles)) or in_array( NM_ROLE_MODERATOR , array_values($user->roles)) ) {
+       $role[] = 'admin';
+       $role[] = 'dozent';
+       $role[] = 'autor';
+
+    }
+    if (in_array( NM_ROLE_DOZENT , array_values($user->roles)) ) {
+        $role[] = 'dozent';
+    }
+    if (in_array( NM_ROLE_AUTOR , array_values($user->roles)) ) {
+        $role[] = 'autor';
+    }
+    
+    if ($gid != null){
+        $tutors     = custom_general_get_users_in_group_by_role_real($gid->nid, NM_ROLE_TUTOR);
+        $teachers   = custom_general_get_users_in_group_by_role_real($gid->nid, NM_ROLE_DOZENT);
+        
+        if( ($tutors && (array_values($tutors) != false) && in_array($user, array_values($tutors))) || ($teachers && (array_values($teachers) != false) && in_array($user, array_values($teachers)))){
+            $role[] = 'dozent';
+        }
+    }
+    if (count($role) < 1){
+        $role[] = 'student';
+    }
+    $role = array_unique($role);
+    foreach ( $role as $position)
+        {
+            drupal_add_css(drupal_get_path('module', 'custom_general') .'/css/' . $position . '.css');
+        }
+    
 }
 
 function custom_general_context_page_reaction() {
@@ -275,11 +316,17 @@ function custom_general_context_page_reaction() {
 }
 
 
-function custom_general_form_alter($form, $form_state, $form_id) {
+function custom_general_form_alter(&$form, &$form_state, $form_id) {
+    global $user;
 
+  // Check to see if $user has does not have the administrator role.
+  if (!in_array('administrator', array_values($user->roles))) {
+    $form['#group_children']['biblio_fieldset']['#access'] = FALSE; 
+  }
+  
   if ($form_id != "book_admin_edit")
     return;
-
+  
   $plugin = context_get_plugin('condition', 'custom_general_condition_section_content');
   if ($plugin) {
 

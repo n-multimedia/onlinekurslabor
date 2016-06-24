@@ -1,0 +1,4 @@
+name = Support Form
+description = Support Module that sends an email
+core = 7.x
+package = Support

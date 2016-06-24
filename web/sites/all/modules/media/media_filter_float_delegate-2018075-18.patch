@@ -1,0 +1,73 @@
+diff --git a/modules/media_wysiwyg/includes/media_wysiwyg.filter.inc b/modules/media_wysiwyg/includes/media_wysiwyg.filter.inc
+index 22a7297..59af645 100644
+--- a/modules/media_wysiwyg/includes/media_wysiwyg.filter.inc
++++ b/modules/media_wysiwyg/includes/media_wysiwyg.filter.inc
+@@ -155,6 +155,11 @@ function media_wysiwyg_token_to_markup($match, $wysiwyg = FALSE) {
+             $settings[$dimension] = $settings['attributes'][$dimension];
+           }
+         }
++        // If the element is floated via WYSIWYG editor functionality, delegate
++        // that information to the outer element.
++        if (!empty($css_properties['float'])) {
++          $settings['float'] = $css_properties['float'];
++        }
+       }
+     }
+   }
+@@ -215,6 +220,11 @@ function media_wysiwyg_token_to_markup($match, $wysiwyg = FALSE) {
+       field_attach_prepare_view('file', array($file->fid => $file), $tag_info['view_mode']);
+       entity_prepare_view('file', array($file->fid => $file));
+       $element['content'] += field_attach_view('file', $file, $tag_info['view_mode']);
++
++      // Add any float information via an extra class
++      if (!empty($settings['float'])) {
++        $element['content']['file']['#attributes']['class'][] = drupal_html_class('media-float-' . $settings['float']);
++      }
+     }
+     if (count(element_children($element['content'])) > 1) {
+       // Add surrounding divs to group them together.
+@@ -226,6 +236,10 @@ function media_wysiwyg_token_to_markup($match, $wysiwyg = FALSE) {
+         'media-element-container',
+         'media-' . $element['content']['file']['#view_mode']
+       );
++      // Add the float information to the outer element.
++      if (!empty($settings['float'])) {
++        $element['content']['#attributes']['class'][] = drupal_html_class('media-float-' . $settings['float']);
++      }
+     }
+ 
+     // Conditionally add a pre-render if the media filter output is be cached.
+diff --git a/modules/media_wysiwyg/tests/media_wysiwyg.macro.test b/modules/media_wysiwyg/tests/media_wysiwyg.macro.test
+index 7ac1bc4..82af18a 100644
+--- a/modules/media_wysiwyg/tests/media_wysiwyg.macro.test
++++ b/modules/media_wysiwyg/tests/media_wysiwyg.macro.test
+@@ -92,4 +92,29 @@ class MediaWYSIWYGWYSIWYGOverridesTest extends MediaWYSIWYGTestHelper {
+     // Ensure that the alt/title from attributes display rather the field ones.
+     $this->assertRaw(drupal_attributes($attributes), t('Image displays with alt/title set as attributes overriding field values.'));
+   }
++
++  /**
++   * Test image media overrides on images with fields attached.
++   */
++  public function testAttributeOverridesWithFields() {
++    // First make images display the title field on the preview mode we use.
++    $instance = field_read_instance('file', 'field_file_image_title_text', 'image');
++    $instance['display']['preview']['type'] = 'text_default';
++    $instance['display']['preview']['module'] = 'text';
++    field_update_instance($instance);
++
++    $files = $this->drupalGetTestFiles('image');
++    $file = file_save($files[0]);
++
++    $attributes = array(
++      'style' => 'float: left;',
++    );
++    $fields = array(
++      'field_file_image_title_text[und][0][value]' => $this->randomName(),
++    );
++    $nid = $this->createNode($file->fid, $attributes, $fields);
++    $this->drupalGet('node/' . $nid);
++    $this->assertRaw('float: left;', 'Image displays with overriden attributes when displays with fields.');
++    $this->assertRaw('media-float-left', 'Media float class added.');
++  }
+ }

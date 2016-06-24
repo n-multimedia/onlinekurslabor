@@ -123,7 +123,7 @@ function nm_general_features_field_default_field_bases() {
     'settings' => array(
       'default_image' => 311,
       'profile2_private' => 0,
-      'uri_scheme' => 'public',
+      'uri_scheme' => 'private',
     ),
     'translatable' => 0,
     'type' => 'image',
