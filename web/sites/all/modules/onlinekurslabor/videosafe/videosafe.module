@@ -407,8 +407,6 @@ function _videosafe_h5p_get_refs($h5p_node) {
 function _videosafe_get_video_urls($videsafe_video_id) {
   global $base_url;
   $node = node_load($videsafe_video_id);
-  #   dpm($node->field_video);
-  #dpm($node);
   $urls = array();
   foreach (@$node->field_video[LANGUAGE_NONE] as $video_data) {
     if (count($video_data)) {
@@ -572,7 +570,6 @@ function _videosafe_get_videoduration_for_file($location) {
         if (!strstr($duration_string, "ffmpeg: not found")) {
             $search = '/Duration: (.*?),/';
             $duration_string = preg_match($search, $duration_string, $matches, PREG_OFFSET_CAPTURE, 3);
-            dpm($matches);
             $time = $matches[1][0]; # '21:30:10';
             return strtotime("1970-01-01 $time UTC");
         }
