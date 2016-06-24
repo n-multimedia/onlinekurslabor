@@ -140,10 +140,10 @@ msgstr "Als ungelesen markieren"
 
 
 msgid "filter messages"
-msgstr "Nachrichten Filtern"
+msgstr "Nachrichten filtern"
 
 msgid "Filter Messages"
-msgstr "Nachrichten Filtern"
+msgstr "Nachrichten filtern"
 
 
 msgid "You have <a href=\"@messages\">@count unread messages</a>"
