@@ -70,13 +70,16 @@ msgid "Inbox"
 msgstr "Postfach"
 
 msgid "Sent Messages"
-msgstr "Gesendete nachrichten"
+msgstr "Gesendete Nachrichten"
 
 msgid "Enter a user name to write a message to a user."
 msgstr "Geben Sie einen Empfänger an"
 
 msgid "No messages available."
 msgstr "Keine Nachrichten"
+
+msgid "Actions..."
+msgstr "Aktionen..."
 
 msgid "Participants"
 msgstr "Teilnehmer / Geprächspartner"
@@ -108,10 +111,19 @@ msgstr "Antwort"
 msgid "clear"
 msgstr "Abbrechen"
 
+msgid "Clear"
+msgstr "Abbrechen"
+
 msgid "tag this conversation"
 msgstr "Tags hinzufügen"
 
+msgid "Remove Tag..."
+msgstr "Tag entfernen"
+
 msgid "apply tag"
+msgstr "Tags hinzufügen"
+
+msgid "Apply Tag"
 msgstr "Tags hinzufügen"
 
 msgid "mark as read"
@@ -120,20 +132,58 @@ msgstr "als gelesen markieren"
 msgid "mark as unread"
 msgstr "als ungelesen markieren"
 
+msgid "Mark as read"
+msgstr "Als gelesen markieren"
+
+msgid "Mark as unread"
+msgstr "Als ungelesen markieren"
+
+
 msgid "filter messages"
-msgstr "Nachrichten Filtern"
+msgstr "Nachrichten filtern"
 
-msgid "You have <a href="@messages">@count unread messages</a>"
-msgstr "Sie haben <a href="@messages">@count ungelesene Nachrichten</a>"
+msgid "Filter Messages"
+msgstr "Nachrichten filtern"
 
-msgid "You have <a href="@messages">1 unread message</a>"
-msgstr "Sie haben <a href="@messages">1 ungelesene Nachricht</a>"
+
+msgid "You have <a href=\"@messages\">@count unread messages</a>"
+msgstr "Sie haben <a href=\"@messages\">@count ungelesene Nachrichten</a>"
+
+msgid "You have <a href=\"@messages\">1 unread message</a>"
+msgstr "Sie haben <a href=\"@messages\">1 ungelesene Nachricht</a>"
  
 msgid "Private messages"
 msgstr "Nachricht verfassen"
+
+msgid "Messages"
+msgstr "Nachrichten"
 
 msgid "Messages (1 new)"
 msgstr "Nachricht (1 neu)"
 
 msgid "Messages (@count new)"
 msgstr "Nachrichten (@count neu)"
+
+msgid "You"
+msgstr "Ich"
+
+msgid "you"
+msgstr "mir"
+
+msgid "Block a user"
+msgstr "Einen Benutzer blockieren"
+
+msgid "Block user"
+msgstr "Benutzer blockieren"
+
+msgid "Block users"
+msgstr "Benutzer blockieren"
+
+msgid "Blocked users"
+msgstr "Blockierte Benutzer"
+
+msgid "Last Updated"
+msgstr "Zuletzt aktualisiert"
+
+msgid "Separate multiple names with commas."
+msgstr "Mehrere Namen werden via Komma getrennt."
