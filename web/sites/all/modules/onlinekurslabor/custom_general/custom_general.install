@@ -113,4 +113,55 @@ function custom_general_update_3006() {
   }
 }
 
- 
+/**
+ * migrates db-entries from public filesystem 
+ * to private filesystem and get rid of old domain
+ */
+function custom_general_update_3007() {
+    $tables_fields = array(
+        'field_data_field_generic_task_entry' => 'field_generic_task_entry_second',
+        'field_data_field_generic_task_assessment' => 'field_generic_task_assessment_value',
+        'field_data_field_generic_solution_entry' => 'field_generic_solution_entry_value',
+        'field_data_body' => 'body_value',
+        'field_data_comment_body' => ' comment_body_value',
+        'field_data_field_chapter_text' => 'field_chapter_text_value',
+        //und die alten revisions auch...
+        'field_revision_body' => 'body_value',
+        'field_revision_field_generic_task_entry' => 'field_generic_task_entry_second',
+        'field_revision_field_chapter_text' => 'field_chapter_text_value',
+        'field_revision_comment_body' => 'comment_body_value',
+        'field_revision_field_generic_solution_entry' => 'field_generic_solution_entry_value',
+        'field_revision_field_generic_task_assessment' => 'field_generic_task_assessment_value',
+        'field_revision_field_domain_description' => 'field_domain_description_value'
+    );
+    $pattern_okl = 'onlinekurslabor.imb-uni-augsburg.de';
+    $value_okl = 'onlinekurslabor.phil.uni-augsburg.de';
+    $pattern_fs = '://onlinekurslabor.phil.uni-augsburg.de/sites/default/files';
+    $value_fs = '://onlinekurslabor.phil.uni-augsburg.de/system/files';
+    $pattern_fsrelative = '"/sites/default/files';
+    $value_fsrelative = '"/system/files';
+
+    foreach ($tables_fields as $table => $field) {
+        //alte imb-domain ausmerzen
+        db_update($table)
+                ->expression($field, 'replace(' . $field . ', :pattern, :value)', array(
+                    ':pattern' => $pattern_okl,
+                    ':value' => $value_okl
+                ))->condition($field, '%' . db_like($pattern_okl) . '%', 'LIKE')
+                ->execute();
+        //verweise von public auf private
+        db_update($table)
+                ->expression($field, 'replace(' . $field . ', :pattern, :value)', array(
+                    ':pattern' => $pattern_fs,
+                    ':value' => $value_fs
+                ))->condition($field, '%' . db_like($pattern_fs) . '%', 'LIKE')
+                ->execute();
+        //verweise von public auf private - version2
+        db_update($table)
+                ->expression($field, 'replace(' . $field . ', :pattern, :value)', array(
+                    ':pattern' => $pattern_fsrelative,
+                    ':value' => $value_fsrelative
+                ))->condition($field, '%' . db_like($pattern_fsrelative) . '%', 'LIKE')
+                ->execute();
+    }
+}
