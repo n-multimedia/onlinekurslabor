@@ -61,6 +61,7 @@ function onlinekurslabor_access_node_grants($account, $op) {
   if ($account->uid > 0) {
     $grants['onlinekurslabor_authenticated'][] = 1;
   }
+
   
   //Videosafe-Videos
   if (in_array(NM_ROLE_AUTOR, array_values($account->roles)))
@@ -79,6 +80,7 @@ function onlinekurslabor_access_node_grants($account, $op) {
     /*
   
   */
+  
   
   $courses = _section_course_get_courses_by_uid($account->uid);
 

@@ -44,4 +44,3 @@ drush language-import-translations de ../language/alpha5.po --replace --groups=d
 
 
 drush vset maintenance_mode 0
-
