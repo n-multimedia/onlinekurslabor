@@ -140,16 +140,22 @@ function nm_stream_node_grants($account, $op) {
       if(!empty($course_groups)) {
         $og_membership = og_get_membership('node', $course->nid, 'user', $account->uid);
 
-        $roles = og_get_user_roles('node', $og_membership->gid, $account->uid, true, ($og_membership->state < OG_STATE_BLOCKED));
+        //do not process if user is not member of this course
+        if (!empty($og_membership)) {
+          $roles = og_get_user_roles('node', $og_membership->gid, $account->uid, TRUE, ($og_membership->state < OG_STATE_BLOCKED));
 
-        foreach ($roles as $key => $value) {
-          //grant permission for dozenz and tutor only
-          if (in_array($value, array(NM_COURSES_ROLE_ADMINISTRATOR, NM_COURSES_ROLE_TUTOR))) {
-            foreach($course_groups as $course_group){
-              $grants["nm_stream_team"][] = $course_group->nid;
-              $grants["nm_stream_course"][] = $course_group->nid;
+          foreach ($roles as $key => $value) {
+            //grant permission for dozenz and tutor only
+            if (in_array($value, array(
+              NM_COURSES_ROLE_ADMINISTRATOR,
+              NM_COURSES_ROLE_TUTOR
+            ))) {
+              foreach ($course_groups as $course_group) {
+                $grants["nm_stream_team"][] = $course_group->nid;
+                $grants["nm_stream_course"][] = $course_group->nid;
+              }
+              break;
             }
-            break;
           }
         }
       }
@@ -185,22 +191,22 @@ function nm_stream_og_user_access_alter(&$perm, $context) {
       $og_membership = og_get_membership('node', $course->nid, 'user', $account->uid);
 
       //do not process if user is not member of this course
-      if(empty($og_membership)) {
-        return;
-      }
+      if (!empty($og_membership)) {
+        $roles = og_get_user_roles('node', $og_membership->gid, $account->uid, TRUE, ($og_membership->state < OG_STATE_BLOCKED));
 
-      //$roles = og_roles('node', NM_COURSE, $og_membership->gid);
-      $roles = og_get_user_roles('node', $og_membership->gid, $account->uid, true, ($og_membership->state < OG_STATE_BLOCKED));
-
-      foreach ($roles as $key => $value) {
-        //grant permission for dozenz and tutor only
-        if (in_array($value, array(NM_COURSES_ROLE_ADMINISTRATOR, NM_COURSES_ROLE_TUTOR))) {
-          $perm['update own ' . "nm_stream" . ' content'] = TRUE;
-          //$perm['update any ' . "nm_stream" . ' content'] = TRUE;
-          $perm['create ' . "nm_stream" . ' content'] = TRUE;
-          $perm['delete own ' . "nm_stream" . ' content'] = TRUE;
-          $perm['delete any ' . "nm_stream" . ' content'] = TRUE;
-          break;
+        foreach ($roles as $key => $value) {
+          //grant permission for dozenz and tutor only
+          if (in_array($value, array(
+            NM_COURSES_ROLE_ADMINISTRATOR,
+            NM_COURSES_ROLE_TUTOR
+          ))) {
+            $perm['update own ' . "nm_stream" . ' content'] = TRUE;
+            //$perm['update any ' . "nm_stream" . ' content'] = TRUE;
+            $perm['create ' . "nm_stream" . ' content'] = TRUE;
+            $perm['delete own ' . "nm_stream" . ' content'] = TRUE;
+            $perm['delete any ' . "nm_stream" . ' content'] = TRUE;
+            break;
+          }
         }
       }
     }

@@ -97,16 +97,21 @@ function onlinekurslabor_access_node_grants($account, $op) {
       $course_solutions = _section_course_get_solutions($course);
       if(!empty($course_solutions)) {
         $og_membership = og_get_membership('node', $course->nid, 'user', $account->uid);
+        //do not process if user is not member of this course
+        if (!empty($og_membership)) {
+          $roles = og_get_user_roles('node', $og_membership->gid, $account->uid, TRUE, ($og_membership->state < OG_STATE_BLOCKED));
 
-        $roles = og_get_user_roles('node', $og_membership->gid, $account->uid, true, ($og_membership->state < OG_STATE_BLOCKED));
-
-        foreach ($roles as $key => $value) {
-          //grant permission for dozenz and tutor only
-          if (in_array($value, array(NM_COURSES_ROLE_ADMINISTRATOR, NM_COURSES_ROLE_TUTOR))) {
-            foreach($course_solutions as $solution){
-              $grants[$realm_solution][] = $solution->nid;
+          foreach ($roles as $key => $value) {
+            //grant permission for dozenz and tutor only
+            if (in_array($value, array(
+              NM_COURSES_ROLE_ADMINISTRATOR,
+              NM_COURSES_ROLE_TUTOR
+            ))) {
+              foreach ($course_solutions as $solution) {
+                $grants[$realm_solution][] = $solution->nid;
+              }
+              break;
             }
-            break;
           }
         }
       }
