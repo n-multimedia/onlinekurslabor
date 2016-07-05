@@ -593,7 +593,7 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
 
   $files = array();
   for ($i = 0; $i < $num_files; $i++) {
-    $file = file_save_upload($i, null, 'private://' . $type);
+    $file = file_save_upload($i, null, _nm_stream_getFileSystemtype(). $type);
 
     if ($file) {
       $files[$i] = $file;
