@@ -461,7 +461,7 @@ function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
 
   $files = array();
   for ($i = 0; $i < $num_files; $i++) {
-    $file = file_save_upload($i, $validators, 'public://nm_stream');
+    $file = file_save_upload($i, $validators, _nm_stream_getFileSystemtype().'nm_stream');
 
     if ($file) {
       $files[$i] = $file;
@@ -593,7 +593,7 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
 
   $files = array();
   for ($i = 0; $i < $num_files; $i++) {
-    $file = file_save_upload($i, null, 'public://' . $type);
+    $file = file_save_upload($i, null, 'private://' . $type);
 
     if ($file) {
       $files[$i] = $file;
@@ -1701,4 +1701,19 @@ function nm_stream_node_presave($node) {
     $node->created = $node->modified;
     $node->changed = $node->modified;
   }
+}
+
+
+
+/**
+ * how to write to filesystem
+ * @global type $conf
+ * @return string filesystemstring
+ */
+function _nm_stream_getFileSystemtype() {
+    global $conf;
+    if (@$conf['file_private_path'])
+        return "private://";
+    else
+        return "public://";
 }

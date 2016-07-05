@@ -68,7 +68,7 @@ function _DefaultAvatar_alterProfileWithDefaultAvatar($profile) {
 
         //download picture
         if(!$file)
-            $file = system_retrieve_file(_DefaultAvatar_getPictureURL($account), 'public://' . $localfilename, true, FILE_EXISTS_REPLACE);
+            $file = system_retrieve_file(_DefaultAvatar_getPictureURL($account), _DefaultAvatar_getFileSystemtype(). $localfilename, true, FILE_EXISTS_REPLACE);
         //fehler beim erstellen, nicht weitermachen
         if (!$file)
             return false;
@@ -96,4 +96,18 @@ function defaultavatar_profile2_presave($profile) {
     }
     
     
+}
+
+
+/**
+ * how to write to filesystem
+ * @global type $conf
+ * @return string filesystemstring
+ */
+function _DefaultAvatar_getFileSystemtype() {
+    global $conf;
+    if (@$conf['file_private_path'])
+        return "private://";
+    else
+        return "public://";
 }
