@@ -1026,7 +1026,6 @@ function nm_stream_preprocess_node(&$vars) {
     $vars['nm_author_path'] = url('user/' . $account->uid);
     $vars['nm_author_pic'] = _nm_stream_get_user_pic($account);
     $vars['nm_created'] = 'vor ' . format_interval(time() - $node->created); //format_date($node->created);
-    $vars['nm_created'] = str_replace('Tage', 'Tagen', $vars['nm_created']);
 
     $body = field_get_items('node', $node, 'body');
     $vars['nm_modified'] = ($node->created != $node->changed) ? 'geändert am ' . format_date($node->changed) : '';
@@ -1116,7 +1115,6 @@ function _nm_stream_get_node_information($node) {
 }
 
 function nm_stream_preprocess_nm_stream_node_comment(&$vars) {
-
   $comment = $vars['comment'];
 
   $account = user_load($comment->uid);
@@ -1138,7 +1136,6 @@ function nm_stream_preprocess_nm_stream_node_comment(&$vars) {
   $vars['nm_author_path'] = url('user/' . $account->uid);
   $vars['nm_author_pic'] = _nm_stream_get_user_pic($account);
   $vars['nm_created'] = 'vor ' . format_interval(time() - $comment->created);
-  $vars['nm_created'] = str_replace('Tage', 'Tagen', $vars['nm_created']);
   $vars['nm_modified'] = ($comment->changed - $comment->created > 5) ? 'geändert am ' . format_date($comment->changed) : '';
   $vars['nm_body'] = $comment->comment_body[LANGUAGE_NONE][0]['value'];
   $vars['nm_actions'] = _nm_stream_get_action_links($comment);
