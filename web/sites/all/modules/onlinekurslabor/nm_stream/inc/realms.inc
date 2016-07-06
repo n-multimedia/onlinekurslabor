@@ -182,7 +182,8 @@ function nm_stream_og_user_access_alter(&$perm, $context) {
   $account = clone $user;
 
   /**
-   *  Dozent and Tutor in his own course
+   *  Dozent and Tutor in his own course;
+   *  zugriff auf field_nm_attachments
    */
   if ($context['group']->type == NM_COURSE_GROUP) {
     $course_group = $context['group'];
@@ -192,6 +193,8 @@ function nm_stream_og_user_access_alter(&$perm, $context) {
 
       //do not process if user is not member of this course
       if (!empty($og_membership)) {
+        //erlaube uneingeschränkt zugriff auf das field; permission auf den stream selbst wird ja separat geregelt
+        $perm['view field_nm_attachments field'] = true;
         $roles = og_get_user_roles('node', $og_membership->gid, $account->uid, TRUE, ($og_membership->state < OG_STATE_BLOCKED));
 
         foreach ($roles as $key => $value) {
