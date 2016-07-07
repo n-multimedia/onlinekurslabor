@@ -349,7 +349,7 @@ dasddasdasd',
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => 'q8hU7bcUW8rGRHOIq_MELH5OppEz3lJ8aPUtLnFKF-Y',
+    'javascript' => 'YyLXbonwIT9VZ6qJFVVHnzhfbLIJzt-NW7-shZRD6bc',
   );
   $export['language_default'] = $strongarm;
 
@@ -1077,7 +1077,7 @@ dasddasdasd',
   $strongarm->api_version = 1;
   $strongarm->name = 'pm_email_notify_body';
   $strongarm->value = 'Hallo [privatemsg_message:recipient],
-das ist eine automatische Erinnerung von [site:name]). Sie haben eine neue Nachricht von [privatemsg_message:author] erhalten.
+Sie haben eine neue Nachricht von [privatemsg_message:author] erhalten.
 
 Um die Nachricht zu lesen, klicken Sie auf folgenden Link: [privatemsg_message:url]
 
@@ -1096,7 +1096,7 @@ Wenn Sie in Zukunft nicht mehr über neue Nachrichten informiert werden wollen, 
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pm_email_notify_subject';
-  $strongarm->value = 'Neue Nachricht auf [site:name].';
+  $strongarm->value = 'Neue Nachricht im [site:name].';
   $export['pm_email_notify_subject'] = $strongarm;
 
   $strongarm = new stdClass();
