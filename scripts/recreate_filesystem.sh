@@ -15,7 +15,7 @@ sleep 10s
 
 rm -rf private\:/
 rm -rf ../files_private/*
-#totest
+
 sleep 10s
 rsync -au --progress onlinekurslabor@onlinekurslabor.phil.uni-augsburg.de:/var/www/vhosts/onlinekurslabor.phil.uni-augsburg.de/web/web/sites/default/files/*  ./sites/default/files/
 

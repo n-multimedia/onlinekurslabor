@@ -41,6 +41,6 @@ drush php-eval 'node_access_rebuild();'
 
 
 drush language-import-translations de ../language/alpha5.po --replace --groups=default
-
+drush fr nm_general_features --yes
 
 drush vset maintenance_mode 0
