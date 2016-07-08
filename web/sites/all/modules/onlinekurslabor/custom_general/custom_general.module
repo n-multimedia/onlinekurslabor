@@ -842,6 +842,7 @@ function custom_general_block_view($delta = '') {
  * @param &$fields
  *   By reference. The fields that have been declared by another feature.
  */
+/*
 function custom_general_field_default_field_bases_alter(&$fields) {
   $source_dir = drupal_get_path('module', 'custom_general') . '/images/default_images';
   $field_default_images = array(
@@ -857,7 +858,7 @@ function custom_general_field_default_field_bases_alter(&$fields) {
       _custom_general_set_default_image($fields[$field_name], $filename, $source, $destination);
     }
   }
-}
+}*/
 
 /**
  * Custom function to set the default image.
@@ -868,6 +869,7 @@ function custom_general_field_default_field_bases_alter(&$fields) {
  * @param  string $source Filepath of the source image.
  * @param  string $destination Filepath you want to save to.
  */
+/*
 function _custom_general_set_default_image(&$field, $filename, $source, $destination) {
   // See if a default image hasn't been set for this field yet
   //if (empty($field['settings']['default_image'])) {
@@ -904,7 +906,7 @@ function _custom_general_set_default_image(&$field, $filename, $source, $destina
   // Use this instead.
   $field['settings']['default_image'] = (string) $fid;
   //}
-}
+}*/
 
 /**
  * fix realname

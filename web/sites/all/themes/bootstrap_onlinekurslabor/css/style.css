@@ -889,7 +889,7 @@ TASKS ALERT BOXES
 Footer
 */
 
-.footer container, .footer_powered_by_wrapper{
+.footer .container, .footer_powered_by_wrapper{
     position:relative;
 }
 /*
@@ -991,7 +991,7 @@ jQuery UI adaption
 .ui-widget-content a {
     color: #0088cc;
 }
-.ui-widget-content a:hove {
+.ui-widget-content a:hover {
     color: #005580;
 }
 
@@ -1092,7 +1092,7 @@ PROJECTS
     margin-top: 1em;
     margin-bottom: 1em;
 }
-.qaa_solution_button btn active{
+.qaa_solution_button .btn .active{
     color: white;
 }
 .solution {
