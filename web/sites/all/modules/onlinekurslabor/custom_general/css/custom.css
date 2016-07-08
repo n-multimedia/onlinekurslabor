@@ -474,11 +474,6 @@ Authors's Tools
     position:relative;
 }
 
-#authors_tools-container .row-fluid:hover 
-{
-    background-color: rgba(0,136,204, 0.03);
-}
-
 #authors_tools-container
 {
     width:60px;
@@ -490,7 +485,15 @@ Authors's Tools
     position:absolute;
     right:0;
     background-color: rgba(200,200,200, 0.3);
+	z-index: 10;
 }
+
+
+#authors_tools-container .row-fluid:hover 
+{
+    background-color: rgba(0,136,204, 0.03);
+}
+
 
 #authors_tools-container ul{
     padding: 0;

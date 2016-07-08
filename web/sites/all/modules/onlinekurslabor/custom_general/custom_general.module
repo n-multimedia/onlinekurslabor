@@ -714,7 +714,20 @@ function custom_general_menu_alter(&$items) {
   $items['node']['access callback'] = FALSE;
   $items['forum']['access callback'] = 'custom_general_user_is_okl_admin';
   $items['forum']['access arguments'] = array(array('administrator'));
+  
+  //also see custom_general_admin_menu_output_alter hook
+  $items['admin_menu/toggle-modules']['access callback'] = FALSE;
+
 }
+
+/**
+* Implements hook_admin_menu_output_alter().
+*/
+function custom_general_admin_menu_output_alter(&$content) {
+	// remove the 'Disable developer modules' link
+	unset($content['icon']['icon']['toggle-modules']);
+}
+
 
 function _custom_general_biblio_dashboard() {
   /**
