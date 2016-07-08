@@ -1,5 +1,5 @@
 ##!/bin/sh
-MYSQL_DUMP="../private/dump-28-6-userencrypted.sql"
+MYSQL_DUMP="../private/dump-7-7-userencrypted.sql"
 LOG_PATH="../private/update_log"
 
 if [ $USER != "root" ];
