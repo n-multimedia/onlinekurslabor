@@ -1,0 +1,62 @@
+<?php
+
+/**
+ * fixt folgendes:
+ * - unterstuetzung von https-urls
+ * - zu große regex kann nicht geparst werden und es wird nie ein provider gefunden
+ * 
+ */
+if (!function_exists('oembed_get_provider')) {
+
+
+    /**
+     * Returns the provider for a url.
+     *
+     * @param string $url
+     *  Teh url to get the provider for.
+     * @return mixed
+     *  A valid callback or FALSE
+     */
+    function oembed_get_provider($url, &$matches, $role = 'consumer') {
+        ctools_include('plugins');
+        $plugins = ctools_get_plugins('oembed', 'providers');
+        uasort($plugins, 'ctools_plugin_sort');
+        $url = str_replace('https://', 'http://', $url);
+        // This function may need check twice if a provider matches the URL. The first check
+        // is to determine if the plugin's callback can handle the URL. The second check
+        // returns the name of the child plugin that can fulfill the request.
+        foreach ($plugins as $plugin) {
+
+            // Plugins will only be checked if they are enabled for the role.
+            if ($plugin[$role]) {
+                //remove '#' and '#i' from the begining and end.
+                $scheme = substr($plugin['scheme'], 1, -2);
+                $sub_schemes = explode('|', $scheme);
+                foreach ($sub_schemes as $pattern) {
+                    // Plugins will only be checked if they are enabled for the role.
+                    if (preg_match("#{$pattern}#i", $url, $matches)) {
+
+                        // A scheme map is used to match a URL to a specific child plugin.
+                        if (!empty($plugin['scheme map'])) {
+                            foreach ($plugin['scheme map'] as $id => $scheme) {
+                                if (preg_match($scheme, $url, $matches)) {
+
+                                    // This forces the 'get child' callback to the loaded.
+                                    ctools_plugin_get_function($plugin, 'get child');
+                                    $plugin = ctools_get_plugins('oembed', 'providers', $id);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return $plugin;
+            }
+        }
+        return FALSE;
+    }
+
+} else {
+    drupal_set_message("Don't forget to remove the function oembed_get_provider from module oembed. If it has been fixed, remove this module.", 'error');
+}

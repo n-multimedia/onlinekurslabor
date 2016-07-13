@@ -1,0 +1,8 @@
+name = oembed_fix
+description = fixes a broken behaviour of oembed
+core = 7.x
+version = 7.x-1.0-alpha3
+package = custom
+
+
+dependencies[] = oembed
