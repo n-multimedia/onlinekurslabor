@@ -106,3 +106,58 @@ return _AnnVid_getStreamTimeLine();
 
   return $export;
 }
+
+/**
+ * Implements hook_ds_layout_settings_info().
+ */
+function annvid_features_ds_layout_settings_info() {
+  $export = array();
+
+  $ds_layout = new stdClass();
+  $ds_layout->api_version = 1;
+  $ds_layout->id = 'node|annvid|default';
+  $ds_layout->entity_type = 'node';
+  $ds_layout->bundle = 'annvid';
+  $ds_layout->view_mode = 'default';
+  $ds_layout->layout = 'ds_2col_stacked_fluid';
+  $ds_layout->settings = array(
+    'regions' => array(
+      'left' => array(
+        0 => 'field_h5preference',
+        3 => 'annvid_codefield_streamtimeline',
+        4 => 'annvid_codefield_load_stream',
+      ),
+      'header' => array(
+        1 => 'field_show_h5p_annotationlist',
+        2 => 'annvid_codefield_get_player_code',
+      ),
+      'right' => array(
+        5 => 'field_pdffile',
+      ),
+    ),
+    'fields' => array(
+      'field_h5preference' => 'left',
+      'field_show_h5p_annotationlist' => 'header',
+      'annvid_codefield_get_player_code' => 'header',
+      'annvid_codefield_streamtimeline' => 'left',
+      'annvid_codefield_load_stream' => 'left',
+      'field_pdffile' => 'right',
+    ),
+    'classes' => array(),
+    'wrappers' => array(
+      'header' => 'div',
+      'left' => 'div',
+      'right' => 'div',
+      'footer' => 'div',
+    ),
+    'layout_wrapper' => 'div',
+    'layout_attributes' => '',
+    'layout_attributes_merge' => 1,
+    'layout_link_attribute' => '',
+    'layout_link_custom' => '',
+    'layout_disable_css' => 0,
+  );
+  $export['node|annvid|default'] = $ds_layout;
+
+  return $export;
+}

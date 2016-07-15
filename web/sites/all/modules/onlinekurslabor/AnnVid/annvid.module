@@ -48,6 +48,7 @@ function _AnnVid_getPlayerCode($node_id)
                      <script src="$js2_path"></script>
                     
 EOF;
+      
        if($node->field_show_h5p_annotationlist[LANGUAGE_NONE][0]['value'] === "0")
        { /*annotationlist verstecken */
            $html_code .=

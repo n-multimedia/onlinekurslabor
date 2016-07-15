@@ -98,6 +98,9 @@ function annvid_features_strongarm() {
       'revision' => array(
         'custom_settings' => FALSE,
       ),
+      'videosafe_description' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(

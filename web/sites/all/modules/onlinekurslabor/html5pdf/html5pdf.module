@@ -25,7 +25,7 @@ function html5pdf_init() {
   
 
   //add plugin-js
-  drupal_add_js(base_path().drupal_get_path('module', 'html5pdf') . '/assets/javascript/drupal-html5pdf.js');
+  drupal_add_js(drupal_get_path('module', 'html5pdf') . '/assets/javascript/drupal-html5pdf.js');
   //add plugin-js for controlss
   drupal_add_css(drupal_get_path('module', 'html5pdf') . '/assets/css/main.css');
   
