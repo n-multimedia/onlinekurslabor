@@ -59,9 +59,9 @@
          * dann pflicht 0 - 5 und ein digit und : und dann  %not-a gefolgt von %endzeichen
          * %startzeichen = leerzeichen, zeilenstart, html-Zeichen > oder  &nbsp;
          * %not-a = Nicht die kombination </a um Doppel-Replacements zu vermeiden
-         * %endzeichen = komma, punkt , leerzeichen , &nbsp; zeilenende oder html-Zeichen <
+         * %endzeichen = komma, punkt , leerzeichen , fragezeichen , &nbsp; zeilenende oder html-Zeichen < oder "?"
          * match auf  %startzeichen, zeitstamp und %endzeichen. /greedy, multiline*/
-        regex_timestampfeature: /( |^|>|&nbsp;)((?:\d:){0,1}[0-5]{0,1}\d:[0-5]\d)(?!<\/a)([\,\. ]|&nbsp;|$|<)/gm,
+        regex_timestampfeature: /( |^|>|&nbsp;)((?:\d:){0,1}[0-5]{0,1}\d:[0-5]\d)(?!<\/a)([\,\. \?]|&nbsp;|$|<)/gm,
     };
 
     Drupal.behaviors.h5p_connector_api.event = {

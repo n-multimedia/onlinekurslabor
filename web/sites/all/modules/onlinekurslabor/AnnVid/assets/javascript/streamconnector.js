@@ -18,7 +18,7 @@
         highlightAnnotations: function(at_time_in_secs)
         {
             //suche annotations, die den timestamp zu at_time_in_secs  beinhalten
-            var regex_time = new RegExp("( |^||0>)(" + Drupal.behaviors.h5p_connector_api.interactivevideo.humanizeTime(at_time_in_secs) + ")(?!<\/a)([\,\. ]|$|<)", "gm");
+            var regex_time = new RegExp("( |^|>|&nbsp;|0)(" + Drupal.behaviors.h5p_connector_api.interactivevideo.humanizeTime(at_time_in_secs) + ")(?!<\/a)([\,\. \?]|&nbsp;|$|<)", "gm");
             var annolist = jQuery(".nm_stream .nm-stream-main-body").filter(function() {
                 return regex_time.test($(this).text());
             });

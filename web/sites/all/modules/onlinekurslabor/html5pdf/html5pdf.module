@@ -41,7 +41,7 @@ function _html5pdf_getPDFReader($identifier,$pdf_url)
                        <div id="{$identifier}-html5pdf" style="width:500px;">
                           <div class=html5pdf_control id="{$identifier}_control">
                            <i id="{$identifier}_prev" class="html5pdfsprite html5pdfsprite-last"></i> 
-                            <span><span id="{$identifier}_page_num">-</span> / <span id="{$identifier}_page_count">-</span></span>
+                            <span class="html5pdf_pager"><span id="{$identifier}_page_num">-</span> / <span id="{$identifier}_page_count">-</span></span>
                              <i id="{$identifier}_next" class="html5pdfsprite html5pdfsprite-next"></i>
                              <i id="{$identifier}_zoomin" class="html5pdfsprite html5pdfsprite-zoomin"></i>
                              <i id="{$identifier}_zoomout" class="html5pdfsprite html5pdfsprite-zoomout"></i>
