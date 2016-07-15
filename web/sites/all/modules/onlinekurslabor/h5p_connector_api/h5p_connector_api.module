@@ -6,12 +6,9 @@
  */ 
 
 /**
- * Implements hook_init().
+ * Implements hook_page_build().
  */
-function h5p_connector_api_init() {
- 
-
-  $nid = (arg(0) == 'node' && is_numeric(arg(1))) ? arg(1) : NULL;
+function h5p_connector_api_page_build() {
   
   drupal_add_js(drupal_get_path('module', 'h5p_connector_api') . '/assets/javascript/h5p_connector_api.js');
    drupal_add_css(drupal_get_path('module', 'h5p_connector_api') . '/assets/css/h5p_connector_api.css',  array('group' => CSS_DEFAULT, 'every_page' => TRUE));

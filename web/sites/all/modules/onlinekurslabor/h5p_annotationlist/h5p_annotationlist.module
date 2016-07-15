@@ -10,9 +10,9 @@
  */
 
 /**
- * Implements hook_init().
+ * Implements hook_page_build().
  */
-function h5p_annotationlist_init() {
+function h5p_annotationlist_page_build() {
 
   //17.10.2015 - 00:06 - SN
   //todo - include if necessarry only. e.g. page_view callback

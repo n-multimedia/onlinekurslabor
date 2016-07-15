@@ -95,7 +95,7 @@
                     '</a>' +
                     '</div>' +
                     '<div class="interaction_content">' +
-                    '<h3><a data="video.%s">%s&nbsp;</a></h3>' +
+                    '<h3><a data="video.%s">%s</a></h3>' +
                     '<span class="duration">%s&nbsp;-&nbsp;%s</span>' +
                     '</div>' +
                     '</div>';
@@ -111,10 +111,11 @@
                     item_label = '- ohne -';
                 }
                 if(item_label.length > 40)
-                    item_label = item_label.substr(0,37 + '...');
-                
+                    item_label = item_label.substr(0,37)+ '...';
+             
                 //entferne formatierungen
                 item_label = item_label.replace(/<[^>]*>?/g, '');
+                item_label = item_label.replace('&nbsp;', ' ');
                 /*fuelle das oben definierte HTMl-Template mit den echten Daten*/
                 var annotation_type_minimized = item.action.library.removeeverythingbutchars();
                 new_annotation_html += sprintf(new_annotation_template,
