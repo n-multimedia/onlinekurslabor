@@ -99,7 +99,7 @@ function _custom_general_theme_top_nav($variables = NULL) {
   //forum link for all users
   $forum_path = 'forum/'.variable_get('okl_global_forum_tid', NM_GLOBAL_FORUM_TID);
   if(drupal_valid_path($forum_path)){
-    $output .= '<li class="border-left"><a href="'.url($forum_path).'">Forum</a></li>';
+    $output .= '<li class="border-left"><a href="/'.$forum_path.'">Forum</a></li>';
   }
 
 
