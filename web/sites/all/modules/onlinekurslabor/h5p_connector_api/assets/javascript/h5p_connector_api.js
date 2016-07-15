@@ -125,6 +125,7 @@
     };
 
     Drupal.behaviors.h5p_connector_api.interactivevideo = {
+        last_seen_time: null,//zuletzt geprüfte zeit
         attach: function(context, settings) {
 
 
@@ -231,6 +232,38 @@
         humanizeTime: function(timeinsecs)
         {
             return H5P.InteractiveVideo.humanizeTime(timeinsecs);
+        }
+        ,
+         /*prüft ob der player weitergelaufen ist*/
+        checkTime: function()
+        {  //lese momentane zeit aus videoobjekt
+             var obj = this.getH5P();
+             var currvideotime = obj.video.getCurrentTime();
+             var new_time  =  Math.floor(currvideotime); 
+        //console.debug("9ihnkbdf variable, comparing: "+new_time+" , "+this.last_seen_time);
+         if(new_time != this.last_seen_time)
+         { 
+           
+             //trigger event to listen to
+                jQuery.event.trigger({
+                       type: "videotimechanged",
+                       message: new_time,
+                       time: new Date()
+               }); 
+                this.last_seen_time = new_time;
+         }
+        },
+        /*
+         * startet einen listener auf videotime und wirft ein event
+         * videotimechanged bei einer neuen Zeitmarke
+         * @returns {undefined}
+         */
+        startVideotimeListener: function()
+        { 
+             setInterval(function () {
+                 Drupal.behaviors.h5p_connector_api.interactivevideo.checkTime();
+               
+            },1000);
         }
         ,
         computerizeTime: function(timestampstring)

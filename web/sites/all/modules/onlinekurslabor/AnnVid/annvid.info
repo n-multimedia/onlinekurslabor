@@ -6,3 +6,5 @@ core = 7.x
 dependencies[] = h5p
 dependencies[] = nm_stream
 dependencies[] = html5pdf
+dependencies[] = annvid_features
+dependencies[] = h5p_connector_api
