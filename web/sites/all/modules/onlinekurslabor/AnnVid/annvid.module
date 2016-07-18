@@ -249,3 +249,15 @@ function _AnnVid_getPlayer($h5p_node_id, $pdf_file_url)
 EOF;
     return  $html_code;
 }
+/**
+ * hook_node_view um im h5p-video auf annvid den titel auszublenden
+ * @param type $node
+ * @param type $view_mode
+ * @param type $langcode
+ */
+function AnnVid_node_view($node, $view_mode, $langcode) {
+  $page_node = menu_get_object();
+  if ($page_node->type ==  ANNVID_CONTENTTYPE && $node->type == NM_INTERACTIVE_CONTENT &&  $node->nid != $page_node->nid) {
+    $node->title = NULL;
+  }
+}
