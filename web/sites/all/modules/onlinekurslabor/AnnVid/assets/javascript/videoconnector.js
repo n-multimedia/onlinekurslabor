@@ -28,8 +28,8 @@
               
                 jQuery(".annvid_container").addClass("annvid_container_loaded");
                 jQuery(".annvid_loading_div").fadeOut("slow");
-                Drupal.behaviors.annvid.stream.createStreamTimeline()   ;
-                  
+                Drupal.behaviors.annvid.stream.fillStreamTimeline()   ;
+                Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.interactivevideo.getH5P().video.getCurrentTime());  
                 
             }
             
@@ -86,6 +86,7 @@ jQuery(document).ready(function() {
     Drupal.behaviors.annvid.setPDFRenderObject(Drupal.behaviors.html5pdf.getPDFRenderer());//todo: mit Identifier
     jQuery(document).on("videotimechanged", function(e){ 
             //   Drupal.behaviors.annvid.redirect("video:"+e.message);
+              Drupal.behaviors.h5p_connector_api.event.redirect("video."+e.message);
                 console.log('new time!' + e.message);
     });
    

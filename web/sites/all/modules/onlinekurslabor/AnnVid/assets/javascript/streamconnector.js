@@ -2,10 +2,15 @@
 
 (function($) {
     Drupal.behaviors.annvid.stream = {
-        attach: function(context, settings) { 
-            jQuery(".nm_stream .nm-stream-main-body",context).convertTextToLinks();
-            jQuery(".nm-stream-comment .nm-stream-main-body",context).convertTextToLinks();;
+        attach: function(context, settings) {
+            jQuery(".nm_stream .nm-stream-main-body", context).convertTextToLinks();
+            jQuery(".nm-stream-comment .nm-stream-main-body", context).convertTextToLinks();
             jQuery(".nm-stream-node-form").html("Beispiel: Ab 14:30 wird Seite 8 im Skript erklärt");
+            //Fehler beim ersten Aufruf, deswegen Video abwarten.. 
+            Drupal.behaviors.h5p_connector_api.interactivevideo.onVideoReady(function() {
+                Drupal.behaviors.annvid.stream.fillStreamTimeline();
+            });
+
         },
          active_annotations: new Array(),
          timeline_div_id : "#stream_timeline",
@@ -51,7 +56,7 @@
                     entries[counter] = new Array();
                     entries[counter]["img"] = jQuery(".field-name-field-photo  img", this).attr("src");
                     entries[counter]["time"] = Drupal.behaviors.h5p_connector_api.interactivevideo.computerizeTime(jQuery("a[data^='video.']", this).html());
-                    var anno_text = jQuery(".nm-stream-main-body",this).text().replace(/(\r\n|\n|\r)/gm,"").replace(Drupal.behaviors.annvid.stream.regex_timestampfeature," ");;
+                    var anno_text = jQuery(".nm-stream-main-body",this).text().replace(/(\r\n|\n|\r)/gm,"").replace(Drupal.behaviors.h5p_connector_api.text.regex_timestampfeature," ");;
                     if(anno_text.length >30)
                         anno_text = anno_text.substr(0,27)+"...";
                     entries[counter]["text"] = anno_text; 
@@ -67,10 +72,10 @@
             return(entries);
         },
         /**
-         * erstellt unterhalb des h5p eine zeitleiste mit avataren der kommentatoren
+         * füllt die zeitleiste unterhalb des h5p mit avataren der kommentatoren
          * 
          */
-        createStreamTimeline: function()
+        fillStreamTimeline: function()
         {
             var jqdiv = jQuery(this.timeline_div_id);
 
@@ -83,13 +88,15 @@
             jQuery(allannotations).each(function(index, value) {
                 // -10 um bildmitte zu treffen, bild = 20x20
                 var offset = Math.floor(value["time"] * pixelspersec) - 10;
-                var href = "#video." + value["time"];
+                var data_str = "video." + value["time"];
                 
-                html += "<a data=\"" + href + "\" href=\"" + href + "\" title=\""+value["text"]+"\"><img src=" + value["img"] + " class=\"timeline_profile\" style=\"margin-left:  " + offset + "px;\"></a>";
+                html += "<a data=\"" + data_str + "\" title=\""+value["text"]+"\"><img src=" + value["img"] + " class=\"timeline_profile\" style=\"margin-left:  " + offset + "px;\"></a>";
 
             })
-            jQuery(html).convertTextToLinks();
             jqdiv.html(html);
+            jQuery(this.timeline_div_id).makeControlLinksClickable();
+          
+            
         },
         /**
          * positioniert den zeitbalken in der annotation-timeline neu

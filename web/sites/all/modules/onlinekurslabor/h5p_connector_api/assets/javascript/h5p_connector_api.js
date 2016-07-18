@@ -22,16 +22,21 @@
             }
 
             $(this).html(text);
-            //jetzt noch die a-data-links in links mit sprungziel und click-event konvertierern
+            
+          $(this).makeControlLinksClickable();
+        });
+    };
+    $.fn.makeControlLinksClickable = function()
+    {
+          //jetzt noch die a-data-links in links mit sprungziel und click-event konvertierern
             $("a[data^='video.'],a[data^='pdf.']", this).each(function() {
                 $(this).attr('href', '#' + $(this).attr('data')).click(function() {
+                    Drupal.behaviors.h5p_connector_api.event.processControlString(Drupal.behaviors.h5p_connector_api.event.getNewHash($(this).attr("data")));
                     Drupal.behaviors.h5p_connector_api.event.redirect($(this).attr("data"));
                     return false;
                 })
             });
-        }); 
-    }; 
-    
+    }
 }(jQuery));
 
 
@@ -67,7 +72,16 @@
     Drupal.behaviors.h5p_connector_api.event = {
         /*erstellt neuen hash und redirected die url*/
         redirect: function(newfragment) {
-            var hash = window.location.hash;
+         
+            // console.debug(hash, new_hash);
+            window.location = this.getNewHash(newfragment);
+        },
+        /**
+         *  erstellt neuen hash basierend auf einer neuen steuerungsinformation
+         */
+        getNewHash: function(newfragment)
+        {
+               var hash = window.location.hash;
             var new_hash = hash;
             //  var fragment = url.substring(url.indexOf('#')); // '#foo'
             // console.debug(newfragment);
@@ -82,9 +96,7 @@
                 //häng frgament an
                 new_hash += newfragment;
             }
-
-            // console.debug(hash, new_hash);
-            window.location = new_hash;
+        return new_hash;
         },
         /*       (*) Rückgabe: form  [["pdf", "8"], ["video", "260"]]*/
         splitHash: function(hash)
@@ -103,11 +115,23 @@
                 }
             return pro;
         },
+        /**
+         * verarbeitetet den Hash in der Adresszeile und springt entsprechend an die Videoposition
+         * muss händisch aufgerufen werden
+         * 
+         */
         processHash: function()
         {
-            var hash = window.location.hash;
-            var matches = this.splitHash(hash);
-
+           this.processControlString(window.location.hash);
+        },
+        /***
+         *
+         * @param {string} controlstring wie "#pdf.2video.66
+         * @returns {undefined}         
+         */
+        processControlString: function(controlstring)
+        {
+            var matches = this.splitHash(controlstring);
             var counter;
             for (counter = 0; counter < matches.length; ++counter)
             {
@@ -119,8 +143,6 @@
                     Drupal.behaviors.h5p_connector_api.interactivevideo.goTo(entry[1]);
 
             }
-
-
         }
     };
 
@@ -279,7 +301,7 @@
 
 jQuery(window).on('hashchange', function(e) {
     //nach umleitung auf hash: entsprechende befehle durchführen
-    Drupal.behaviors.h5p_connector_api.event.processHash();
+  //  Drupal.behaviors.h5p_connector_api.event.processHash();
 });
 
 /*verlinkt man auf ein video und ein hash ist in der adresszeile soll der beim seiteladen ausgefuehrt werden*/
