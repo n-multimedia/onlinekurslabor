@@ -58,3 +58,12 @@ div#stream_timeline img.timeline_profile
     position:absolute;
     z-index: 2;
 }
+div#annvid_pdfbutton
+{
+    text-align: right;
+    margin-bottom:1em;
+}
+#annvid_pdfdiv
+{
+    display:none;
+}
