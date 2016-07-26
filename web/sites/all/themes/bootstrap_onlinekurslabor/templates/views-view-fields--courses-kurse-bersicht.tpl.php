@@ -27,6 +27,7 @@ $nid = $fields['nid']->raw;
 $node = node_load($nid);
 $course_actions = section_courses_render_course_link($node);
 $label = !$node->status ? '<span class="label label-important">Entwurf</span> ' : '';
+$course_main_link = _section_courses_render_course_main_link($node);
 
 $start_text = '';
 $end_text = '';
@@ -51,7 +52,7 @@ foreach ($kurs_dozent_objects as $dozent_acc) {
   <div class="course-item span12">
     <div class="span3"><?php echo $fields['field_course_picture']->content; ?></div>
     <div class="span4">
-      <div class="course-title"><h2><?php echo $label ?><?php echo $fields['title']->content ?></h2></div>
+      <div class="course-title"><h2><?php echo $label ?><?php echo $course_main_link ?></h2></div>
       <div class="course-subtitle"><?php echo $fields['field_subtitle']->content; ?></div>
       <div class="course-dozenten"><small>
               <strong>Lehrende: </strong>
