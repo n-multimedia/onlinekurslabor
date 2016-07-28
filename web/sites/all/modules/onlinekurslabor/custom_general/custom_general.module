@@ -324,6 +324,11 @@ function custom_general_form_alter(&$form, &$form_state, $form_id) {
     $form['#group_children']['biblio_fieldset']['#access'] = FALSE; 
   }
   
+  if ($form_id == 'devel_switch_user_form') {
+    $form['username']['#size'] = (int) ($form['username']['#size'] * 2.5);
+  }
+
+  
   if ($form_id != "book_admin_edit")
     return;
   
