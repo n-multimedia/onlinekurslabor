@@ -1327,6 +1327,7 @@ echo \'<p><a class="btn" href="/node/add/content-domain">Neues Thema anlegen</a>
           'name' => 'node_type',
           'settings' => array(
             'type' => array(
+              'annvid' => 'annvid',
               'h5p_content' => 'h5p_content',
               'content_chapter' => 'content_chapter',
               'content_domain' => 'content_domain',
