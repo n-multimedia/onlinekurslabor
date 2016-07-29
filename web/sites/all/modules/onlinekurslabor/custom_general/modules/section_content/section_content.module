@@ -166,8 +166,9 @@ function book_preprocess(&$variables, $hook) {
 
   if ($hook == 'book_navigation') {
 
-//TOC functionality. Numbering Chapters
-//check if numbering is enabled in domain settings
+
+    //TOC functionality. Numbering Chapters
+    //check if numbering is enabled in domain settings
     if (!_custom_general_toc_enabled($variables['book_id']))
       return;
 
@@ -1306,7 +1307,6 @@ function section_content_text_outline() {
 
   //$output = '<div><h5><u>' . l($active_domain->title, 'domain/text/' . $active_domain->nid) . '</u></h5></div>' . $output;
 
-
   return $output;
 }
 
@@ -1317,10 +1317,8 @@ function section_content_text_outline() {
  */
 function _section_content_get_active_domain($reset = FALSE) {
   static $domain;
- //@todo, hier ist ein buch festeinkodiert");
-  return node_load(2335);
-  $context = context_get("context", "section_content");
 
+  $context = context_get("context", "section_content");
 
   if (empty($context)) {
     return FALSE;
@@ -1355,7 +1353,8 @@ function _section_content_get_active_domain($reset = FALSE) {
       $domain_tmp = is_numeric($c_nid) ? node_load($c_nid) : NULL;
 
       //arg 2 may be a chapter
-      $domain = node_load(_custom_general_get_group($domain_tmp));
+      $domain = node_load(_custom_general_get_group($domain_tmp, TRUE));
+
     }
 
     //check linkin ajax requests
@@ -1370,7 +1369,7 @@ function _section_content_get_active_domain($reset = FALSE) {
       //add and edit
       if (arg(0, $referer_url['path']) == 'domain' && (arg(1, $referer_url['path']) == 'edit' || arg(1, $referer_url['path']) == 'add')) {
         $node = node_load(arg(2, $referer_url['path']));
-        $domain = node_load(_custom_general_get_group($node));
+        $domain = node_load(_custom_general_get_group($node, TRUE));
       }
     }
 
@@ -1382,6 +1381,7 @@ function _section_content_get_active_domain($reset = FALSE) {
     $domain = FALSE;
 
   }
+
 
   return $domain;
 }

@@ -13,7 +13,9 @@
     print _AnnVid_getPlayerCode($node->nid);
     print  _AnnVid_getStreamTimeLine();;
     module_load_include('inc', 'nm_stream', 'inc/blocks');
-print _nm_stream_get_renderedGUI(arg(1));
+
+  //caution arg should be determinded dynamically!
+print _nm_stream_get_renderedGUI(arg(2));
 ?>
 </div>
 <div class="span6"  id="annvid_pdfdiv">

@@ -395,11 +395,13 @@ function custom_general_form_biblio_node_form_alter(&$form, &$form_state, $form_
 
 /**
  * Get the group id the node belongs to
- * 
- * @param type $referer_node
- * @return nid
+ *
+ * @param $referer_node
+ * @param bool $enforce_parent do not return if content is a group itself. search for the parent group
+ * @return mixed|null
  */
-function _custom_general_get_group($referer_node) {
+
+function _custom_general_get_group($referer_node, $enforce_parent = FALSE) {
   $domain_id = NULL;
   //passed value can be FALSE
   if (!isset($referer_node) || $referer_node === FALSE) {
@@ -407,7 +409,7 @@ function _custom_general_get_group($referer_node) {
   }
 
   //if referer is group -> nid == gid, else look up the gid
-  if (og_is_group('node', $referer_node)) {
+  if (og_is_group('node', $referer_node) && !$enforce_parent) {
     $domain_id = $referer_node->nid;
   }
   else {
