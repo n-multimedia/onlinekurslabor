@@ -1237,16 +1237,15 @@ function nm_stream_og_context() {
   $active_project = section_projects_get_active_project();
 
 
-  //anvid_content
-  $active_annvid_nid = arg(1);
-  $active_annvid = node_load($active_annvid_nid);
-  if ($active_annvid) {
-    //edition a proposal
-    if ($active_annvid->type == ANNVID_CONTENTTYPE) {
-      return $active_annvid;
+ 
+//anvid_content
+    $active_annvid =  node_load(arg(1));
+    if (empty($active_annvid)) {
+        $active_annvid = node_load(arg(2));
     }
-
-  }
+    if ($active_annvid->type == ANNVID_CONTENTTYPE) {
+        return $active_annvid;
+    }
 
 
   if ($active_course) {

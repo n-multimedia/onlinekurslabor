@@ -38,16 +38,21 @@ function AnnVid_init() {
  * ist, aufgerufen und fügt   benötigtes js dem html-code hinzui */
 function _AnnVid_getPlayerCode($node_id)
 { $node = node_load($node_id);
+ 
+ 
 
-      $js_path = base_path().drupal_get_path('module', 'AnnVid') . '/assets/javascript/videoconnector.js';
-         $js2_path = base_path().drupal_get_path('module', 'AnnVid') . '/assets/javascript/streamconnector.js';
+      $js_path = base_path().drupal_get_path('module', 'AnnVid') . '/assets/javascript/annvid.js';
+         $js2_path = base_path().drupal_get_path('module', 'AnnVid') . '/assets/javascript/videoconnector.js';
+          $js3_path = base_path().drupal_get_path('module', 'AnnVid') . '/assets/javascript/streamconnector.js';
           $image_path = base_path().drupal_get_path('module', 'AnnVid') . '/assets/images/ajax-loader.gif';
            
       $html_code =  <<<EOF
                      <script src="$js_path"></script>
                      <script src="$js2_path"></script>
+               <script src="$js3_path"></script>
                     
 EOF;
+      
       
        if($node->field_show_h5p_annotationlist[LANGUAGE_NONE][0]['value'] === "0")
        { /*annotationlist verstecken */
@@ -60,6 +65,20 @@ EOF;
        
     return $html_code ;
 }
+
+    /**
+     * Implements hook_theme().
+     */
+    function AnnVid_theme($existing, $type, $theme, $path) {
+      $theme = array();
+      $theme['node__annvid'] = array(
+        'render element' => 'content',
+        'base hook' => 'node',
+        'template' => 'node--annvid',
+        'path' => drupal_get_path('module', 'AnnVid') . '/templates',
+       );
+      return $theme;
+    }
   /*
 function AnnVid_hook_page_alter($page) {
   if (true) {
@@ -248,4 +267,21 @@ function _AnnVid_getPlayer($h5p_node_id, $pdf_file_url)
              </style>
 EOF;
     return  $html_code;
+}
+/**
+ * hook_node_view um im h5p-video auf annvid den titel auszublenden
+ * @param type $node
+ * @param type $view_mode
+ * @param type $langcode
+ */
+function AnnVid_node_view($node, $view_mode, $langcode) {
+
+  $page_node = menu_get_object();
+  if(empty($page_node))
+      /*@todo hat das auswirkungen auf andere seiten, zb taxonomy*/
+      $page_node = node_load(arg(2));#menu_get_object (ANNVID_CONTENTTYPE, 2);
+  
+  if (!empty($page_node) && $page_node->type ==  ANNVID_CONTENTTYPE && $node->type == NM_INTERACTIVE_CONTENT &&  $node->nid != $page_node->nid) {
+    $node->title = NULL;
+  }
 }

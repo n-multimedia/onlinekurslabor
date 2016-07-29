@@ -263,6 +263,29 @@ function section_courses_render_course_link($course, $account = NULL) {
   return $result;
 }
 
+/**
+ * renders link to course/home or course/info (dependent on membership)
+ * @param node $course node-object
+ * @param Stdclass $account user-account
+ */
+function _section_courses_render_course_main_link($course, $account = NULL) {
+
+    global $user;
+
+    if (!$account) {
+        $account = clone $user;
+    }
+    if (og_is_member('node', $course->nid, 'user', $account, array(
+                OG_STATE_ACTIVE,
+                OG_STATE_PENDING
+            ))) {
+        $target = 'course/home/';
+    } else
+        $target = 'course/info/';
+
+    return l($course->title, $target . $course->nid);
+}
+
 function section_courses_preprocess_views_view_fields(&$variables) {
   global $user;
   if (isset($variables['view']) && $variables['view']->name == 'courses_course_news') {

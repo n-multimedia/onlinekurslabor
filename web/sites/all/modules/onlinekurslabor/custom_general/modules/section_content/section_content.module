@@ -84,7 +84,7 @@ function section_content_node_view($node, $view_mode, $langcode) {
 
 //test todo remove
 //dpm(section_author($node->nid));
-  if (in_array($node->type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN))) {
+  if (in_array($node->type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN, ANNVID_CONTENTTYPE))) {
 //disable book navigation
     //unset($node->content['book_navigation']);
 
@@ -258,7 +258,7 @@ function section_content_node_view_alter(&$build) {
 function section_content_preprocess_node(&$variables) {
 
   //04.06.2013 - 11:34 - SN testing todo
-  if (in_array($variables['type'], array(NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER))) {
+  if (in_array($variables['type'], array(NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER, ANNVID_CONTENTTYPE))) {
     drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/tasks.js");
   }
 }
@@ -1246,6 +1246,7 @@ function array_search_i($str, $array) {
 function section_content_text_outline() {
   $active_domain = _section_content_get_active_domain();
 
+
   if (!$active_domain)
     return;
   $domain_ref = $active_domain->nid;
@@ -1316,7 +1317,8 @@ function section_content_text_outline() {
  */
 function _section_content_get_active_domain($reset = FALSE) {
   static $domain;
-
+ //@todo, hier ist ein buch festeinkodiert");
+  return node_load(2335);
   $context = context_get("context", "section_content");
 
 
@@ -1335,7 +1337,7 @@ function _section_content_get_active_domain($reset = FALSE) {
       $domain = $node;
     }
 
-    if (is_object($node) && in_array($node->type, array(NM_FILE, NM_CONTENT_CHAPTER, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_DOMAIN))) {
+    if (is_object($node) && in_array($node->type, array(NM_FILE, NM_CONTENT_CHAPTER, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_DOMAIN, ANNVID_CONTENTTYPE))) {
       if ($node->type == NM_CONTENT_DOMAIN) {
         //get course which this group is assigned to
         if (isset($node->og_group_ref)) {
