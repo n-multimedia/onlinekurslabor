@@ -877,7 +877,7 @@ function nm_section_courses_features_field_default_field_instances() {
     'bundle' => 'courses_course',
     'default_value' => array(
       0 => array(
-        'tid' => 183,
+        'tid' => 228,
       ),
     ),
     'deleted' => 0,
