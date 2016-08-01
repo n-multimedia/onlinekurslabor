@@ -26,7 +26,7 @@ jQuery(document).ready(function() {
     jQuery(document).on("videotimechanged", function(e){ 
             //   Drupal.behaviors.annvid.redirect("video:"+e.message);
               Drupal.behaviors.h5p_connector_api.event.redirect("video."+e.message);
-                console.log('new time!' + e.message);
+                //console.log('new time!' + e.message);
     });
    
     

@@ -1,10 +1,11 @@
 <div class="span12">
     <?print render ($content['body']);?>
 </div>
-<div id="annvid_pdfbutton">
-    <a class="btn" href=# id="annvid_pdftoggle">PDF anzeigen</a>
-     
-</div>
+<?if(!empty($content['field_pdffile'])):?>
+    <div id="annvid_pdfbutton">
+        <a class="btn" href=# id="annvid_pdftoggle">PDF anzeigen</a>
+    </div>
+<?endif?>
 <div class="span12" id="annvid_videodiv">
    
   <? print render($content['field_h5preference']); ?>
@@ -14,8 +15,7 @@
     print  _AnnVid_getStreamTimeLine();;
     module_load_include('inc', 'nm_stream', 'inc/blocks');
 
-  //caution arg should be determinded dynamically!
-print _nm_stream_get_renderedGUI(arg(2));
+    print _nm_stream_get_renderedGUI($node->nid);
 ?>
 </div>
 <div class="span6"  id="annvid_pdfdiv">

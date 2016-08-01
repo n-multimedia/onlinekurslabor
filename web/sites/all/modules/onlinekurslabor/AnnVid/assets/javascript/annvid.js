@@ -24,6 +24,7 @@
                     jQuery("#annvid_pdfdiv").hide();
                     jQuery(".span3").show();
                     jQuery(".span1").show();
+                    Drupal.behaviors.annvid.stream.fillStreamTimeline();
                     jQuery(this).html("PDF anzeigen");
                 } else
                 {
@@ -32,7 +33,7 @@
                     jQuery("#annvid_pdfdiv").show();
                     jQuery(".span3").hide();
                     jQuery(".span1").hide();
-
+                    Drupal.behaviors.annvid.stream.fillStreamTimeline();
                     jQuery(this).html("PDF verstecken");
                 }
                 return false;
