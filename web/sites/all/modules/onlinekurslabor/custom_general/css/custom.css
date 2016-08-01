@@ -579,11 +579,11 @@ Authors's Tools
     background-position: -120px -50px;
 }
 /*interactive video*/
-#authors_tools-container .btn#author_h5p_overview a:before
+#authors_tools-container .btn#author_interactive_overview a:before
 {
     background-position: -180px 0px;
 }
-#authors_tools-container .btn#author_h5p_overview a:hover:before, #authors_tools-container .btn#author_h5p_overview a.active:before
+#authors_tools-container .btn#author_interactive_overview a:hover:before, #authors_tools-container .btn#author_interactive_overview a.active:before
 {
     background-position: -180px -50px;
 }
@@ -595,6 +595,15 @@ Authors's Tools
 #authors_tools-container .btn#author_h5p_add a:hover:before, #authors_tools-container .btn#author_h5p_add a.active:before
 {
     background-position: -180px -150px;
+}
+
+#authors_tools-container .btn#author_annvid_add a:before
+{
+    background-position: -412px -100px;
+}
+#authors_tools-container .btn#author_annvid_add a:hover:before, #authors_tools-container .btn#author_annvid_add a.active:before
+{
+    background-position: -412px -100px;
 }
 
 #authors_tools-container .btn#author_chapter_add a:before
@@ -819,11 +828,11 @@ Project's Tools
     background-position: 0px -150px;
 }
 /*interactive video*/
-#projects_tools-container .btn#author_h5p_overview a:before
+#projects_tools-container .btn#author_interactive_overview a:before
 {
     background-position: -180px 0px;
 }
-#projects_tools-container .btn#author_h5p_overview a:hover:before, #projects_tools-container .btn#author_h5p_overview a.active:before
+#projects_tools-container .btn#author_interactive_overview a:hover:before, #projects_tools-container .btn#author_interactive_overview a.active:before
 {
     background-position: -180px -50px;
 }
