@@ -1353,7 +1353,7 @@ function _section_content_get_active_domain($reset = FALSE) {
       $domain_tmp = is_numeric($c_nid) ? node_load($c_nid) : NULL;
 
       //arg 2 may be a chapter
-      $domain = node_load(_custom_general_get_group($domain_tmp, TRUE));
+      $domain = node_load(_custom_general_get_group($domain_tmp));
 
     }
 
@@ -1369,7 +1369,7 @@ function _section_content_get_active_domain($reset = FALSE) {
       //add and edit
       if (arg(0, $referer_url['path']) == 'domain' && (arg(1, $referer_url['path']) == 'edit' || arg(1, $referer_url['path']) == 'add')) {
         $node = node_load(arg(2, $referer_url['path']));
-        $domain = node_load(_custom_general_get_group($node, TRUE));
+        $domain = node_load(_custom_general_get_group($node));
       }
     }
 
