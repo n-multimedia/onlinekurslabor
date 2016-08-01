@@ -166,14 +166,15 @@ function _section_courses_get_authors_tools() {
     $add_chapter_options['query']['parent'] = $plid;
 
     //disable subchapter creatin, if mlid == plid
+    $subchapter_disabled = false;
     if ($plid != $mlid) {
-      $add_subchapter_options = $default_options;
-      $add_subchapter_options['query']['parent'] = $mlid;
+            $add_subchapter_options = $default_options;
+            $add_subchapter_options['query']['parent'] = $mlid;
+        } else {
+            $subchapter_disabled = true;
+        }
     }
-  }
-  else {
-    
-  }
+
 
   $links = array();
 
@@ -259,14 +260,16 @@ function _section_courses_get_authors_tools() {
     }
 
     $id = 'author_subchapter_add';
-    $label = $links[$id]['label'];
-    if (!empty($add_subchapter_options)) {
-      $path = 'domain/add/' . $group_id . '/' . NM_CONTENT_CHAPTER;
-      $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $add_subchapter_options);
+    if (!$subchapter_disabled) {
+        $label = $links[$id]['label'];
+        $path = 'domain/add/' . $group_id . '/' . NM_CONTENT_CHAPTER;
+        $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $add_subchapter_options);
     }
     else {
-      $links[$id] += _custom_general_get_structered_tool_link($id, $label, "/", array('attributes' => array('class' => array('disabled'))));
+        unset($links[$id]);
     }
+        
+
 
     $path = 'domain/text/' . $group_id . '/rearrange';
     $id = 'author_chapter_order';
