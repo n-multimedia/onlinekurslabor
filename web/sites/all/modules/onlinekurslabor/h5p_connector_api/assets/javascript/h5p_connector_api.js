@@ -180,7 +180,7 @@
         },
         removeLoadingAnimation: function()
         {
-            jQuery("div.#h5p_connector_loading").fadeOut();
+            jQuery("div#h5p_connector_loading").fadeOut();
         },
         /*holt das interactivevideo-object*/
         getH5P: function()
