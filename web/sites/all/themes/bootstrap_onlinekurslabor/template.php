@@ -1,5 +1,27 @@
 <?php
 
+
+/**
+ * Returns the correct span class for a region
+ */
+function _bootstrap_content_span($columns = 1) {
+  $class = FALSE;
+  
+  switch($columns) {
+    case 1:
+      $class = 'span12';
+      break;
+    case 2:
+      $class = 'span9';
+      break;
+    case 3:
+      $class = 'span6';
+      break;
+  }
+  
+  return $class;
+}
+
 /**
  * 08.09.2013 - 14:23 - SN
  * remove fieldset from date fields

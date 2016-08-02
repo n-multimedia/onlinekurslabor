@@ -9,72 +9,56 @@
 function _custom_general_theme_top_nav($variables = NULL) {
   global $user;
 
-  $user_link = "#";
-  $user_link_classes = "";
+  $user__li_link = "";
+   
 
 
   if ($user->uid) {
     $profile = profile2_load_by_user($user, 'master');
     $user_pic = "";
     if (isset($profile->field_photo)) {
-      $field_view = field_view_field('profile2', $profile, 'field_photo', array('settings' => array('image_style' => 'profile_nano_thumbnail')));
-      $field_view['#label_display'] = 'hidden';
-      $user_pic = drupal_render($field_view);
+      $user_picture_field = field_view_field('profile2', $profile, 'field_photo', 'value');
+      $user_pic = '<img src="'.(image_style_url('profile_nano_thumbnail', $user_picture_field['#items'][0]['uri'])).'" class="navigation_user_picture"/>';
     }
     $realname = realname_load($user);
     if (empty($realname))
       $realname = $user->name;
 
     //user menu here
-    //$user_link = '<div class="btn-group">';
-    //$user_link .= '<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">';
-    $user_link = "";
-    $user_link .= '<li class="dropdown">';
-    $user_link .= '<a class="dropdown-toggle" data-toggle="dropdown" href="/user/' . $user->uid . '">';
+    $user__li_link = "";
+    $user__li_link .= '<li class="dropdown">';
+    $user__li_link .= '<a class="dropdown-toggle" data-toggle="dropdown" href="/user/' . $user->uid . '">';
 
-    $user_link .= $user_pic;
-    /*
-    if (in_array(NM_ROLE_TEST_STUDENT, $user->roles)) {
-      $user_link .= ' <span class="label">Testkonto</span> ';
-    }
-    else if (in_array(NM_ROLE_ADMIN, $user->roles)) {
-      $user_link .= ' <span class="label">Admin</span> ';
-    }
-    else if (in_array(NM_ROLE_DOZENT, $user->roles)) {
-      $user_link .= ' <span class="label">Dozent</span> ';
-    }
-    else if (in_array(NM_ROLE_AUTOR, $user->roles)) {
-      $user_link .= ' <span class="label">Autor</span> ';
-    }*/
+    $user__li_link .= $user_pic;
+  
 
-    $user_link .= $realname . ' ';
+    $user__li_link .= $realname . ' ';
 
-    $user_link .= ' ';
+    $user__li_link .= ' ';
 
 
-    $user_link .='<span class="caret"></span>';
-    $user_link .='</a>';
-    $user_link .='<ul class="dropdown-menu">';
-    $user_link .='<li><a href="/user/' . $user->uid . '"><i class="icon-user"></i> Mein Profil</a></li>';
-    $user_link .='<li><a href="/user/logout"><i class="icon-lock"></i> Ausloggen</a></li>';
-    //$user_link .='</ul>';
+    $user__li_link .='<span class="caret"></span>';
+    $user__li_link .='</a>';
+    $user__li_link .='<ul class="dropdown-menu">';
+    $user__li_link .='<li><a href="/user/' . $user->uid . '"><span class="glyphicon glyphicon-user"></span> Mein Profil</a></li>';
+    $user__li_link .='<li><a href="/user/logout"><span class="glyphicon glyphicon-log-out"></span> Ausloggen</a></li>';
+    $user__li_link .='</ul></li>';
     //$user_link .='</div>';
     //$user_link .= l("Abmelden", "user/logout");
   }
   else {
-    $user_link = l("Anmelden", "user/");
-    $user_link_classes = " lock";
+    $user__li_link = '<li>'.l('<span class="glyphicon glyphicon-log-in"></span> Anmelden', "user/", array('html'=>true)).'</li>';
   }
-
+#$user_link =
   $output = "";
-  $output .= '<ul id="custom-top-nav" class="nav pull-right">';
+  $output .= '<ul id="custom-top-nav" class="nav navbar-nav navbar-right">';
   
   // TINKERING
   
   if (module_exists('privatemsg') && $user->uid && array_intersect(array('authenticated user'), $user->roles)) {
       $unread_msg = privatemsg_unread_count();
       if ($unread_msg > 0){
-        $output .= '<li><a href="/messages">Nachrichten <span class="badge badge-warning">'.$unread_msg.'</span></a></li>';
+        $output .= '<li><a href="/messages">Nachrichten <span class="badge progress-bar-warning">'.$unread_msg.'</span></a></li>';
 
       }
       else{
@@ -105,7 +89,7 @@ function _custom_general_theme_top_nav($variables = NULL) {
 
 
   $output .= '<li class="border-left"><a href="/help">Hilfe</a></li>';
-  $output .= '<li class="border-left ' . $user_link_classes . '">' . $user_link . '</li>';
+  $output .=  $user__li_link ;
   $output .= '</ul>';
 
 
