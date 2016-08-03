@@ -107,7 +107,7 @@ function nm_h5p_features_default_page_manager_pages() {
     $pane->configuration = array(
       'admin_title' => '',
       'title' => '',
-      'body' => '<h2>H5P-Inhalte</h2>',
+      'body' => '<h2>Interaktives</h2>',
       'format' => 'filtered_html',
       'substitute' => 1,
     );
@@ -132,7 +132,7 @@ function nm_h5p_features_default_page_manager_pages() {
     $pane->configuration = array(
       'override_pager_settings' => 0,
       'use_pager' => 1,
-      'nodes_per_page' => '0',
+      'nodes_per_page' => '25',
       'pager_id' => '0',
       'offset' => '0',
       'more_link' => 0,
@@ -145,8 +145,9 @@ function nm_h5p_features_default_page_manager_pages() {
       'context' => array(
         0 => 'argument_entity_id:node_1.nid',
       ),
-      'override_title' => 0,
-      'override_title_text' => '',
+      'override_title' => 1,
+      'override_title_text' => 'H5P-Inhalte',
+      'override_title_heading' => 'h3',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -159,6 +160,44 @@ function nm_h5p_features_default_page_manager_pages() {
     $pane->uuid = 'ab840438-01bd-4ca9-84c5-813c59110e4a';
     $display->content['new-ab840438-01bd-4ca9-84c5-813c59110e4a'] = $pane;
     $display->panels['center'][1] = 'new-ab840438-01bd-4ca9-84c5-813c59110e4a';
+    $pane = new stdClass();
+    $pane->pid = 'new-30d9dee4-6bfa-428e-ad1f-23e2f2812a28';
+    $pane->panel = 'center';
+    $pane->type = 'views';
+    $pane->subtype = 'content_annvid_overview';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_pager_settings' => 0,
+      'use_pager' => 1,
+      'nodes_per_page' => '25',
+      'pager_id' => '0',
+      'offset' => '0',
+      'more_link' => 0,
+      'feed_icons' => 0,
+      'panel_args' => 0,
+      'link_to_view' => 0,
+      'args' => '',
+      'url' => '',
+      'display' => 'default',
+      'context' => array(
+        0 => 'argument_entity_id:node_1.nid',
+      ),
+      'override_title' => 1,
+      'override_title_text' => 'AnnVid-Player',
+      'override_title_heading' => 'h3',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $pane->locks = array();
+    $pane->uuid = '30d9dee4-6bfa-428e-ad1f-23e2f2812a28';
+    $display->content['new-30d9dee4-6bfa-428e-ad1f-23e2f2812a28'] = $pane;
+    $display->panels['center'][2] = 'new-30d9dee4-6bfa-428e-ad1f-23e2f2812a28';
     $pane = new stdClass();
     $pane->pid = 'new-a1c743fc-3dd6-4e8d-8350-f02358f08561';
     $pane->panel = 'outline';
