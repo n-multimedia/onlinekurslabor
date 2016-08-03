@@ -189,7 +189,7 @@ function support_form() {
     '#suffix' => _support_form_render_modal_btn("Abbrechen"),
     '#value' => 'Senden',
     '#attributes' => array(
-      'class' => array('btn-warning'),
+      'class' => array('btn','btn-warning'),
       'data-dismiss' => array("modal")
     ),
     '#ajax' => array(
@@ -301,7 +301,7 @@ function _support_form_render_modal_body_end() {
  * @return HTML-code for the Button
  */
 function _support_form_render_modal_btn($label) {
-  return '<button class="btn" data-dismiss="modal" aria-hidden="true">' . $label . '</button>
+  return '<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">' . $label . '</button>
   </div>';
 }
 

@@ -500,7 +500,7 @@ return node_access(\'create\', $tmp_node);',
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span11',
+        'class' => 'col-md-11',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -525,7 +525,7 @@ return node_access(\'create\', $tmp_node);',
         'children' => array(
           0 => 2,
         ),
-        'class' => 'span1',
+        'class' => 'col-md-1',
       ),
       2 => array(
         'type' => 'row',
@@ -792,7 +792,7 @@ echo _section_projects_render_node_tabs($node);
       'title' => '',
       'body' => '<?php
 if(user_access(\'create projects_organization content\'))
-echo \'<p><a class="btn" href="/node/add/projects-organization">Neue Partnerorganisation anlegen</a></p>\';
+echo \'<p><a class="btn-default" href="/node/add/projects-organization">Neue Partnerorganisation anlegen</a></p>\';
 
 ?>',
       'format' => 'php_code',

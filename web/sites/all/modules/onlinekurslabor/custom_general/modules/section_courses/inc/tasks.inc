@@ -394,17 +394,17 @@ function _section_courses_task_solution_assesment_form($form, &$form_state, $sol
     case NM_COURSES_TASK_WORKFLOW_SUBMITTED:
       $form['save'] = array(
         '#type' => 'submit',
-        '#attributes' => array('class' => array('btn-primary')),
+        '#attributes' => array('class' => array('btn','btn-primary')),
         '#value' => 'Speichern',
       );
       $form['store_assets'] = array(
         '#type' => 'submit',
-        '#attributes' => array('class' => array('btn-success')),
+        '#attributes' => array('class' => array('btn','btn-success')),
         '#value' => 'Speichern und Bewerten',
       );
       $form['store_cancel_submission'] = array(
         '#type' => 'submit',
-        '#attributes' => array('class' => array('btn-default')),
+        '#attributes' => array('class' => array('btn','btn-default')),
         '#value' => 'Speichern und Einreichung aufheben',
       );
       break;
@@ -471,7 +471,7 @@ function _section_courses_task_solution_form($form, &$form_state, $task_nid) {
 
   $form['save'] = array(
     '#type' => 'submit',
-    '#attributes' => array('class' => array('btn-primary')),
+    '#attributes' => array('class' => array('btn','btn-primary')),
     '#value' => 'Als Entwurf speichern',
   );
 
@@ -490,7 +490,7 @@ function _section_courses_task_solution_form($form, &$form_state, $task_nid) {
     case NM_COURSES_TASK_WORKFLOW_DRAFT:
       $form['save_submit'] = array(
         '#type' => 'submit',
-        '#attributes' => array('class' => array('btn-info')),
+        '#attributes' => array('class' => array('btn','btn-info')),
         '#value' => 'Speichern und Einreichen',
       );
       break;

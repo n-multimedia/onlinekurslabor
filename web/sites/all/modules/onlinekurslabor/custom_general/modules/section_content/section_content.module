@@ -864,7 +864,7 @@ function _section_content_tasks_dashboard_form($form, &$form_state) {
   $form['tasks_insert'] = array(
     '#type' => 'submit',
     '#value' => 'Aufgabe einfügen',
-    '#suffix' => '<a id="tasks-cancel" class="btn" href="#">' . t('Cancel') . '</a>',
+    '#suffix' => '<a id="tasks-cancel" class="btn btn-default" href="#">' . t('Cancel') . '</a>',
     '#weight' => 100,
     '#attributes' => array('class' => array('btn', 'btn-primary')),
   );
@@ -1139,7 +1139,7 @@ function theme_multiple_choice_field_group($vars) {
  */
 function theme_question_and_answer_field($vars) {
 
-  $output = '<div class="qaa_solution_button field-label"><button class="btn">Lösung</button></div>';
+  $output = '<div class="qaa_solution_button field-label"><button class="btn btn-default">Lösung</button></div>';
   $output .= '<div class="solution" style="display:none;">';
   $output .= drupal_render($vars['items']);
   $output .= '</div>';

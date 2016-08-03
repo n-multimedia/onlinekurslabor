@@ -42,16 +42,16 @@ unset($fields['nid']);
 ?>
 
 
-<div class="row-fluid partners-po-item">
+<div class="row partners-po-item">
 
-  <div class="partners-projects-item-image span3" >
+  <div class="partners-projects-item-image col-md-3" >
     <?php echo $fields['field_po_logo']->content; ?>
   </div>
-  <div class="partners-projects-item-title span5" >
+  <div class="partners-projects-item-title col-md-5" >
     <?php echo $fields['title']->content; ?>
     <?php echo $fields['field_po_short_description']->content; ?>
   </div>
-  <div class="partners-projects-item-list span4" >
+  <div class="partners-projects-item-list col-md-4" >
     <h3>Projektvorschläge</h3>
     <?php echo $fields['view']->content; ?>
   </div>

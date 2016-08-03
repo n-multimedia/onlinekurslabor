@@ -24,9 +24,9 @@ function _nm_stream_form_add_edit_view($type='nm_stream') {
 
   $form['container'] = array(
   '#type' => 'container',
-  '#prefix' => '<div class="row-fluid">',
+  '#prefix' => '<div class="row">',
   '#suffix' => '</div>',
-  '#attributes' => array('class' => array('span12'))
+  '#attributes' => array('class' => array('col-md-12'))
   );
 
   $form['container']['body'] = array(
@@ -37,13 +37,13 @@ function _nm_stream_form_add_edit_view($type='nm_stream') {
 
   $form['container']['controls'] = array(
   '#type' => 'container',
-  '#prefix' => '<div class="row-fluid">',
+  '#prefix' => '<div class="row">',
   '#suffix' => '</div>',
   );
   $form['container']['controls']['privacy'] = array(
   '#type' => 'select',
   '#options' => $options['items'],
-  '#prefix' => '<div class="offset5 span5">',
+  '#prefix' => '<div class="offset5 col-md-5">',
   '#suffix' => '</div>',
   '#default_value' => $options['default'],
   //'#title' => t('Privacy settings'),
@@ -51,7 +51,7 @@ function _nm_stream_form_add_edit_view($type='nm_stream') {
   $form['container']['controls']['submit'] = array(
   '#type' => 'submit',
   '#value' => t('Post'),
-  '#prefix' => '<div class="buttons span2">',
+  '#prefix' => '<div class="buttons col-md-2">',
   '#suffix' => '</div>',
   '#attributes' => array('class' => array('btn', 'btn-primary')),
   );

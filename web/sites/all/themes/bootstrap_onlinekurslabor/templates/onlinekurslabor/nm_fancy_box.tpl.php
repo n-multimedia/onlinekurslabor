@@ -1,9 +1,9 @@
-<a class="nm_fancy_box_link span12" href="<?php echo $link; ?>">
+<a class="nm_fancy_box_link col-md-12" href="<?php echo $link; ?>">
 
 
 <div class="nm_fancy_box_container">
     <div class="nm_fancy_box_image"><?php echo $image; ?></div>
-    <div class="nm_fancy_box_desc span12"><?php echo $description; ?></div>
+    <div class="nm_fancy_box_desc col-md-12"><?php echo $description; ?></div>
 </div>
 
 

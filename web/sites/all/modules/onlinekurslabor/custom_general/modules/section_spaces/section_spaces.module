@@ -70,8 +70,8 @@ function _section_spaces_header_view() {
     $output = "";
     $output .= '<div style="position:relative">';
 
-    $output .= '<div id="space_header" class="row-fluid">';
-    $output .= '<div class="span12">';
+    $output .= '<div id="space_header" class="row">';
+    $output .= '<div class="col-md-12">';
 
     $output .= '<div id="space_header_title">';
     $output .= '<h1>';
@@ -299,7 +299,7 @@ function section_spaces_main_kurse_view() {
 
       $course_node = node_load($course_id['target_id']);
       $vars = array();
-      //$vars['image'] = '<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/2_studierende_oT.png"  class="span12" />';
+      //$vars['image'] = '<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/2_studierende_oT.png"  class="col-md-12" />';
       if (isset($course_node->field_course_picture)) {
         //$field_items = field_get_items('node', $active_course, 'field_course_header');
         $field_view = field_view_field('node', $course_node, 'field_course_picture', array('settings' => array('image_style' => 'course_header_list_item')));

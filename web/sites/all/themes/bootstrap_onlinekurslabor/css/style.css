@@ -29,7 +29,7 @@ ADAPING BOOTSTRAP
 CONTENT IMAGES FLOAT
 */
 
-.row-fluid img[class*="span"]{
+.row img[class*="span"]{
     float:none;
 }
 
@@ -60,7 +60,7 @@ Panels reset - homepage
 PANELS
 */
 
-[class*="panels-flexible-region-row-fluid"]{
+[class*="panels-flexible-region-row"]{
     float:none;
     width:auto;
 }
@@ -195,46 +195,6 @@ body.cke_show_borders{
 
 }
 
-#navbar{
-    position:fixed;
-}
-.navbar .btn-navbar {
-    padding:3px;
-}
-
-.navbar .nav>li>a{
-    text-shadow: none;
-    color: #ffffff;
-}
-
-
-#navbar li.dropdown.open a
-{
-    background-color:transparent;
-}
-
-.navbar .nav li.dropdown.open>.dropdown-toggle, #navbar .nav li a:hover, #navbar .nav li a:focus
-{
-    color: #ccc;
-}
-
-#navbar #custom-top-nav .field-type-image{
-    display:inline-block;
-    margin-right:10px;
-}
-
-#navbar #custom-top-nav>li>a
-{
-    padding:5px 10px;
-    margin-top: 12px;
-}
-
-#navbar #custom-top-nav li.dropdown>a:hover .caret
-{
-    border-top-color: #fff;
-    border-bottom-color: #fff;
-}
-
 .home-layout-container .home-container-partner {
     width: 100%;
 }
@@ -243,29 +203,7 @@ body.cke_show_borders{
     margin-left: 20px;
     margin-bottom: 40px;
 }
- 
-#navbar #custom-top-nav .btn-group .dropdown-menu {
-    min-width:100px;
-}
-#navbar #custom-top-nav .btn-group .dropdown-menu a{
-    color: #333333;
-}
-#navbar #custom-top-nav .btn-group .dropdown-menu a:hover, #navbar #custom-top-nav .btn-group .dropdown-menu a:focus{
-    color:#fff;
-    background:none;
-    background-color: #29323D;
-}
-#navbar #custom-top-nav .btn-group .dropdown-menu li{
-    margin:0;
-}
-#navbar #custom-top-nav .btn-group .dropdown-menu li a{
-    padding: 3px 20px;
-}
-#navbar #custom-top-nav .btn-group li
-{
-    display:block;
-}
-
+  
 
 
 /*
@@ -690,42 +628,42 @@ Responsive Features
 FORUM
 */
 /*
-.row-fluid .forum-table-wrap .forum-table-superheader, .row-fluid .forum-table-topics thead tr  {
+.row .forum-table-wrap .forum-table-superheader, .row .forum-table-topics thead tr  {
   background:none;
   background-color: #eee;
   border-top: 1px solid #ccc;
 }
 
-.row-fluid .forum-table-wrap .forum-table-name {
+.row .forum-table-wrap .forum-table-name {
   display:none;
 }
 
-.row-fluid .forum-table-wrap thead tr
+.row .forum-table-wrap thead tr
 {
   border: 1px solid #aaa;
 }
 
-.row-fluid .forum-table {
+.row .forum-table {
   border: 1px solid #ddd;
 }
-.row-fluid .forum-table tr.even {
+.row .forum-table tr.even {
   background:none;
   background-color: #ddd;
 }
 
-.row-fluid .forum-table tr.odd {
+.row .forum-table tr.odd {
   background:none;
   background-color: #eee;
 }
 
-.row-fluid .af-button-large, .row-fluid .af-button-small {
+.row .af-button-large, .row-fluid .af-button-small {
   background:none;
   background-color: #ccc;
   color: #000;
   border-top: 1px solid #aaa;
 }
 
-.row-fluid a.af-button-large:hover, .row-fluid a.af-button-small:hover {
+.row a.af-button-large:hover, .row a.af-button-small:hover {
   background-color: #eee;
 }
 
@@ -733,7 +671,8 @@ FORUM
 BUTTONS
 */
 
-
+/*
+warum custom?
 .btn {
     display: inline-block;
     text-shadow: none;
@@ -761,13 +700,13 @@ BUTTONS
 .btn-info:hover{
     background-color: #3e93ad;
 }
-
+/*
 
 .row-fluid div.forum-post {
     border: 1px solid #aaa;
 }
 
-.row-fluid .forum-post-info {
+.row .forum-post-info {
     background:none;
     background-color: #eee;
     border: none;
@@ -775,16 +714,16 @@ BUTTONS
 }
 
 
-.row-fluid .forum-post-title {
+.row .forum-post-title {
 
 }
-.row-fluid .forum-post-panel-main {
+.row .forum-post-panel-main {
     border-left: 1px solid #666;
 }
-.row-fluid .forum-post-footer {
+.row .forum-post-footer {
     border-top: 1px solid #666;
 }
-.row-fluid .view-advanced-forum-topic-list .view-empty {
+.row .view-advanced-forum-topic-list .view-empty {
     border: 1px solid #aaa;
 }
 
@@ -824,12 +763,12 @@ BIBLIO
 Large form. smaller widht for input fields
 */
 
-.span8 input.form-autocomplete
+.col-md-8 input.form-autocomplete
 {
     max-width:160px;
 }
 
-.span8 select
+.col-md-8 select
 {
     max-width:125px;
 }
@@ -868,7 +807,7 @@ Book Navigation
 }
 
 
-.row-fluid img[class*='file-'] {
+.row img[class*='file-'] {
     float: none;
     display: inline-block;
 }

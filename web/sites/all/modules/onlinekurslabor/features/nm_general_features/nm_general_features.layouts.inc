@@ -56,7 +56,7 @@ function nm_general_features_default_panels_layout() {
           2 => 'col3',
         ),
         'parent' => 'main',
-        'class' => 'row-fluid column-region',
+        'class' => 'row column-region',
       ),
       1 => array(
         'type' => 'row',
@@ -66,7 +66,7 @@ function nm_general_features_default_panels_layout() {
           1 => 'media',
         ),
         'parent' => 'main',
-        'class' => 'row-fluid',
+        'class' => 'row',
       ),
       'media' => array(
         'type' => 'region',
@@ -74,7 +74,7 @@ function nm_general_features_default_panels_layout() {
         'width' => 50,
         'width_type' => '%',
         'parent' => '1',
-        'class' => 'span6',
+        'class' => 'col-md-6',
       ),
       'left' => array(
         'type' => 'region',
@@ -82,7 +82,7 @@ function nm_general_features_default_panels_layout() {
         'width' => 50,
         'width_type' => '%',
         'parent' => '1',
-        'class' => 'span6',
+        'class' => 'col-md-6',
       ),
       'col1' => array(
         'type' => 'region',
@@ -90,7 +90,7 @@ function nm_general_features_default_panels_layout() {
         'width' => '33.61592111592112',
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'span4',
+        'class' => 'col-md-4',
       ),
       'col2' => array(
         'type' => 'region',
@@ -98,7 +98,7 @@ function nm_general_features_default_panels_layout() {
         'width' => '33.11387926695681',
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'span4',
+        'class' => 'col-md-4',
       ),
       'col3' => array(
         'type' => 'region',
@@ -106,7 +106,7 @@ function nm_general_features_default_panels_layout() {
         'width' => '33.27019961712209',
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'span4',
+        'class' => 'col-md-4',
       ),
     ),
   );
@@ -116,7 +116,7 @@ function nm_general_features_default_panels_layout() {
   $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
   $layout->api_version = 1;
   $layout->name = 'span11span1';
-  $layout->admin_title = 'span11span1';
+  $layout->admin_title = 'col-md-11col-md-1';
   $layout->admin_description = '';
   $layout->category = '';
   $layout->plugin = 'flexible';
@@ -139,7 +139,7 @@ function nm_general_features_default_panels_layout() {
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span11',
+        'class' => 'col-md-11',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -165,7 +165,7 @@ function nm_general_features_default_panels_layout() {
         'children' => array(
           0 => 2,
         ),
-        'class' => 'span1',
+        'class' => 'col-md-1',
       ),
       2 => array(
         'type' => 'row',
@@ -192,7 +192,7 @@ function nm_general_features_default_panels_layout() {
   $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
   $layout->api_version = 1;
   $layout->name = 'span12';
-  $layout->admin_title = 'span12';
+  $layout->admin_title = 'col-md-12';
   $layout->admin_description = '';
   $layout->category = '';
   $layout->plugin = 'flexible';
@@ -205,7 +205,7 @@ function nm_general_features_default_panels_layout() {
           0 => 'main',
         ),
         'parent' => NULL,
-        'class' => 'row-fluid',
+        'class' => 'row',
         'column_class' => '',
         'row_class' => '',
         'region_class' => '',
@@ -223,7 +223,7 @@ function nm_general_features_default_panels_layout() {
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span12',
+        'class' => 'col-md-12',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -232,7 +232,7 @@ function nm_general_features_default_panels_layout() {
           0 => 'center',
         ),
         'parent' => 'main',
-        'class' => 'span12',
+        'class' => 'col-md-12',
       ),
       'center' => array(
         'type' => 'region',
@@ -240,7 +240,7 @@ function nm_general_features_default_panels_layout() {
         'width' => 100,
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'span12',
+        'class' => 'col-md-12',
       ),
     ),
   );
@@ -250,7 +250,7 @@ function nm_general_features_default_panels_layout() {
   $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
   $layout->api_version = 1;
   $layout->name = 'span3span6span3';
-  $layout->admin_title = 'span3span6span3';
+  $layout->admin_title = 'col-md-3col-md-6col-md-3';
   $layout->admin_description = '';
   $layout->category = '';
   $layout->plugin = 'flexible';
@@ -265,7 +265,7 @@ function nm_general_features_default_panels_layout() {
           2 => 2,
         ),
         'parent' => NULL,
-        'class' => 'row-fluid',
+        'class' => 'row',
         'column_class' => '',
         'row_class' => '',
         'region_class' => '',
@@ -283,7 +283,7 @@ function nm_general_features_default_panels_layout() {
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span6',
+        'class' => 'col-md-6',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -309,7 +309,7 @@ function nm_general_features_default_panels_layout() {
         'children' => array(
           0 => 3,
         ),
-        'class' => 'left span3',
+        'class' => 'left col-md-3',
       ),
       2 => array(
         'type' => 'column',
@@ -319,7 +319,7 @@ function nm_general_features_default_panels_layout() {
         'children' => array(
           0 => 4,
         ),
-        'class' => 'right span3',
+        'class' => 'right col-md-3',
       ),
       3 => array(
         'type' => 'row',
@@ -363,7 +363,7 @@ function nm_general_features_default_panels_layout() {
   $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
   $layout->api_version = 1;
   $layout->name = 'span3span8span1';
-  $layout->admin_title = 'span3span8span1';
+  $layout->admin_title = 'col-md-3col-md-8col-md-1';
   $layout->admin_description = '';
   $layout->category = '';
   $layout->plugin = 'flexible';
@@ -378,7 +378,7 @@ function nm_general_features_default_panels_layout() {
           2 => 3,
         ),
         'parent' => NULL,
-        'class' => 'row-fluid',
+        'class' => 'row',
         'column_class' => '',
         'row_class' => '',
         'region_class' => '',
@@ -396,7 +396,7 @@ function nm_general_features_default_panels_layout() {
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span8',
+        'class' => 'col-md-8',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -422,7 +422,7 @@ function nm_general_features_default_panels_layout() {
         'children' => array(
           0 => 2,
         ),
-        'class' => 'span3',
+        'class' => 'col-md-3',
       ),
       2 => array(
         'type' => 'row',
@@ -449,7 +449,7 @@ function nm_general_features_default_panels_layout() {
         'children' => array(
           0 => 4,
         ),
-        'class' => 'span1',
+        'class' => 'col-md-1',
       ),
       4 => array(
         'type' => 'row',
@@ -476,7 +476,7 @@ function nm_general_features_default_panels_layout() {
   $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
   $layout->api_version = 1;
   $layout->name = 'span4span8';
-  $layout->admin_title = 'span4span8';
+  $layout->admin_title = 'col-md-4col-md-8';
   $layout->admin_description = '';
   $layout->category = '';
   $layout->plugin = 'flexible';
@@ -490,7 +490,7 @@ function nm_general_features_default_panels_layout() {
           1 => 'main',
         ),
         'parent' => NULL,
-        'class' => 'row-fluid',
+        'class' => 'row',
         'column_class' => '',
         'row_class' => '',
         'region_class' => '',
@@ -508,7 +508,7 @@ function nm_general_features_default_panels_layout() {
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span8',
+        'class' => 'col-md-8',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -534,7 +534,7 @@ function nm_general_features_default_panels_layout() {
         'children' => array(
           0 => 2,
         ),
-        'class' => 'span4',
+        'class' => 'col-md-4',
       ),
       2 => array(
         'type' => 'row',
@@ -561,7 +561,7 @@ function nm_general_features_default_panels_layout() {
   $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
   $layout->api_version = 1;
   $layout->name = 'span6span6';
-  $layout->admin_title = 'span6span6';
+  $layout->admin_title = 'col-md-6col-md-6';
   $layout->admin_description = '';
   $layout->category = '';
   $layout->plugin = 'flexible';
@@ -575,7 +575,7 @@ function nm_general_features_default_panels_layout() {
           1 => 'main',
         ),
         'parent' => NULL,
-        'class' => 'row-fluid',
+        'class' => 'row',
         'column_class' => '',
         'row_class' => '',
         'region_class' => '',
@@ -593,7 +593,7 @@ function nm_general_features_default_panels_layout() {
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span6',
+        'class' => 'col-md-6',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -619,7 +619,7 @@ function nm_general_features_default_panels_layout() {
         'children' => array(
           0 => 2,
         ),
-        'class' => 'span6',
+        'class' => 'col-md-6',
       ),
       2 => array(
         'type' => 'row',
@@ -646,7 +646,7 @@ function nm_general_features_default_panels_layout() {
   $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
   $layout->api_version = 1;
   $layout->name = 'span8span4';
-  $layout->admin_title = 'span8span4';
+  $layout->admin_title = 'col-md-8col-md-4';
   $layout->admin_description = '';
   $layout->category = '';
   $layout->plugin = 'flexible';
@@ -660,7 +660,7 @@ function nm_general_features_default_panels_layout() {
           1 => 1,
         ),
         'parent' => NULL,
-        'class' => 'row-fluid',
+        'class' => 'row',
         'column_class' => '',
         'row_class' => '',
         'region_class' => '',
@@ -678,7 +678,7 @@ function nm_general_features_default_panels_layout() {
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span8',
+        'class' => 'col-md-8',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -704,7 +704,7 @@ function nm_general_features_default_panels_layout() {
         'children' => array(
           0 => 2,
         ),
-        'class' => 'span4',
+        'class' => 'col-md-4',
       ),
       2 => array(
         'type' => 'row',

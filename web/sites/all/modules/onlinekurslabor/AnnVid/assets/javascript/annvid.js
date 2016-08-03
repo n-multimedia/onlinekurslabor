@@ -19,20 +19,20 @@
             jQuery("#annvid_pdftoggle").click(function() {
                 if (jQuery("#annvid_pdfdiv").is(":visible") == true)
                 {
-                    jQuery("#annvid_videodiv").removeClass("span5").addClass("span12");
-                    jQuery(".page_maincontent").removeClass("span12").addClass("span8") ;
+                    jQuery("#annvid_videodiv").removeClass("col-md-5").addClass("col-md-12");
+                    jQuery(".page_maincontent").removeClass("col-md-12").addClass("col-md-8") ;
                     jQuery("#annvid_pdfdiv").hide();
-                    jQuery(".span3").show();
-                    jQuery(".span1").show();
+                    jQuery(".col-md-3").show();
+                    jQuery(".col-md-1").show();
                     Drupal.behaviors.annvid.stream.fillStreamTimeline();
                     jQuery(this).html("PDF anzeigen");
                 } else
                 {
-                    jQuery("#annvid_videodiv").removeClass("span12").addClass("span5");
-                    jQuery(".span8").removeClass("span8").addClass("span12").addClass("page_maincontent");
+                    jQuery("#annvid_videodiv").removeClass("col-md-12").addClass("col-md-5");
+                    jQuery(".col-md-8").removeClass("col-md-8").addClass("col-md-12").addClass("page_maincontent");
                     jQuery("#annvid_pdfdiv").show();
-                    jQuery(".span3").hide();
-                    jQuery(".span1").hide();
+                    jQuery(".col-md-3").hide();
+                    jQuery(".col-md-1").hide();
                     Drupal.behaviors.annvid.stream.fillStreamTimeline();
                     jQuery(this).html("PDF verstecken");
                 }

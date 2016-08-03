@@ -220,7 +220,7 @@ function nm_general_features_default_page_manager_pages() {
           2 => 'partner_',
         ),
         'parent' => 'main',
-        'class' => 'row-fluid column-region',
+        'class' => 'row column-region',
       ),
       1 => array(
         'type' => 'row',
@@ -231,7 +231,7 @@ function nm_general_features_default_page_manager_pages() {
           2 => 'platzhalter',
         ),
         'parent' => 'main',
-        'class' => 'row-fluid',
+        'class' => 'row',
       ),
       2 => array(
         'type' => 'row',
@@ -240,7 +240,7 @@ function nm_general_features_default_page_manager_pages() {
           0 => 'partner',
         ),
         'parent' => 'main',
-        'class' => 'row-fluid',
+        'class' => 'row',
       ),
       'test' => array(
         'type' => 'region',
@@ -248,7 +248,7 @@ function nm_general_features_default_page_manager_pages() {
         'width' => '64.94139740527254',
         'width_type' => '%',
         'parent' => '1',
-        'class' => 'span7',
+        'class' => 'col-md-7',
       ),
       'partner' => array(
         'type' => 'region',
@@ -264,7 +264,7 @@ function nm_general_features_default_page_manager_pages() {
         'width' => '26.88529876382778',
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'span4',
+        'class' => 'col-md-4',
       ),
       'partner_' => array(
         'type' => 'region',
@@ -272,7 +272,7 @@ function nm_general_features_default_page_manager_pages() {
         'width' => '26.893250953042525',
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'span4',
+        'class' => 'col-md-4',
       ),
       'student' => array(
         'type' => 'region',
@@ -280,7 +280,7 @@ function nm_general_features_default_page_manager_pages() {
         'width' => '26.83567332159516',
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'span4',
+        'class' => 'col-md-4',
       ),
       'image_video' => array(
         'type' => 'region',
@@ -296,7 +296,7 @@ function nm_general_features_default_page_manager_pages() {
         'width' => '30.008097544223233',
         'width_type' => '%',
         'parent' => '1',
-        'class' => 'span5',
+        'class' => 'col-md-5',
       ),
     ),
   );
@@ -380,7 +380,7 @@ function nm_general_features_default_page_manager_pages() {
       'title' => '',
       'body' => '<?php
 $vars = array();
-$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_lehrender.png" class="span12"  />\';
+$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_lehrender.png" class="col-md-12"  />\';
 $vars[\'description\'] = "Informationen für Hochschullehrende";
 $vars[\'link\'] = "informationen?mode=lehrende";
 
@@ -425,7 +425,7 @@ return theme(\'nm_fancy_box\', $vars);
     );
     $pane->css = array(
       'css_id' => '',
-      'css_class' => 'span12',
+      'css_class' => 'col-md-12',
     );
     $pane->extras = array();
     $pane->position = 0;
@@ -445,7 +445,7 @@ return theme(\'nm_fancy_box\', $vars);
       'title' => '',
       'body' => '<?php
 $vars = array();
-$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_partner.png" class="span12"  />\';
+$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_partner.png" class="col-md-12"  />\';
 $vars[\'description\'] = "Informationen für Kooperationspartner";
 $vars[\'link\'] = "informationen?mode=partner";
 
@@ -506,7 +506,7 @@ return theme(\'nm_fancy_box\', $vars);
       'title' => '',
       'body' => '<?php
 $vars = array();
-$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_student.png" class="span12"  />\';
+$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_student.png" class="col-md-12"  />\';
 $vars[\'description\'] = "Informationen für Studierende";
 $vars[\'link\'] = "/informationen?mode=studierende";
 
@@ -547,7 +547,7 @@ return theme(\'nm_fancy_box\', $vars);
     );
     $pane->css = array(
       'css_id' => '',
-      'css_class' => 'span12',
+      'css_class' => 'col-md-12',
     );
     $pane->extras = array();
     $pane->position = 0;

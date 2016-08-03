@@ -31,9 +31,9 @@
  *
  * @ingroup themeable
  */
-$nm_booknav_span1 = 'span5';
-$nm_booknav_span2 = 'span2';
-$nm_booknav_span3 = 'span5';
+$nm_booknav_span1 = 'col-md-5';
+$nm_booknav_span2 = 'col-md-2';
+$nm_booknav_span3 = 'col-md-5';
 $nm_booknav_extra = '';
 
 if($prev_url && empty($parent_url) && empty($next_url)) {
@@ -49,7 +49,7 @@ if(empty($prev_url) && empty($parent_url) && $next_url) {
     <?php print $tree; ?>
 
     <?php if ($has_links): ?>
-    <div class="page-links clearfix row-fluid">
+    <div class="page-links clearfix row">
       <?php if ($prev_url): ?>
         <a href="<?php print $prev_url; ?>" class="page-previous <?php print $nm_booknav_span1. ' ' . $nm_booknav_extra; ?>" title="<?php print t('Go to previous page'); ?>"><?php print $prev_title; ?></a>
       <?php endif; ?>

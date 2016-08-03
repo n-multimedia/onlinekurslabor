@@ -130,8 +130,8 @@ function _course_header_section_view() {
       $output .= '</div>';
     }
 
-    $output .= '<div id="course_header" class="row-fluid">';
-    $output .= '<div class="span12">';
+    $output .= '<div id="course_header" class="row">';
+    $output .= '<div class="col-md-12">';
 
 
     $sponsors_out = '';
@@ -274,7 +274,7 @@ function _section_courses_theme_instructor_tools($variables = NULL) {
 
     $tool_links = _section_courses_get_instructor_tools();
 
-    //$output = '<div class="row-fluid">';
+    //$output = '<div class="row">';
     $output = _custom_general_theme_tools_block($tool_links, "instructors_tools", "btn-group btn-group-vertical", 1);
     //$output .= '</div">';
   }
@@ -516,7 +516,7 @@ function _section_courses_get_instructor_tools() {
 
   $result = array();
   foreach ($links as $name => $link) {
-    $attributes = array('attributes' => array('id' => $name, 'class' => array('btn')));
+    $attributes = array('attributes' => array('id' => $name, 'class' => array('btn','btn-default')));
     if (isset($link['path'])) {
       custom_general_append_active_class(($link['path']), $attributes);
     }
@@ -575,7 +575,7 @@ function _course_top_navigation_view() {
     $options = array(
       'link' => $text_link['link'],
       'path' => $text_link['path'],
-      'attributes' => array('class' => array('btn'))
+      'attributes' => array('class' => array('btn','btn-default'))
     );
     //disable path buttons where user doen't have access to
     if (!drupal_valid_path($options['path'])) {
@@ -599,7 +599,7 @@ function _course_top_navigation_view() {
   foreach ($nav_items_collab as $si) {
     $text_link = _section_courses_navtext_to_link($course, $si);
     if (strtolower($si) != strtolower($text_link['link'])) {
-      $options = array('link' => $text_link['link'], 'path' => $text_link['path'], 'attributes' => array('class' => array('btn')));
+      $options = array('link' => $text_link['link'], 'path' => $text_link['path'], 'attributes' => array('class' => array('btn','btn-default')));
 
       //disable path buttons where user doen't have access to
       if (!drupal_valid_path($options['path'])) {
@@ -622,18 +622,18 @@ function _course_top_navigation_view() {
 // Block output in HTML with div wrapper
   $block = array(
     'prefix' => array(
-      '#prefix' => '<div id="course_top_navigation" class="btn-toolbar row-fluid">',
+      '#prefix' => '<div id="course_top_navigation" class="btn-toolbar row">',
       '#type' => 'markup',
       '#markup' => "",
     ),
     'single' => array(
-      '#prefix' => '<div id="course_tools_single" class="btn-group span6">',
+      '#prefix' => '<div id="course_tools_single" class="btn-group col-md-6">',
       '#type' => 'markup',
       '#markup' => $output_single,
       '#suffix' => '</div>',
     ),
     'collab' => array(
-      '#prefix' => '<div id="course_tools_collab" class="btn-group span6">',
+      '#prefix' => '<div id="course_tools_collab" class="btn-group col-md-6">',
       '#type' => 'markup',
       '#markup' => $output_collab,
       '#suffix' => '</div>',
@@ -805,7 +805,7 @@ function _section_courses_navtext_to_link($course, $text) {
     case "Ansicht":
       if (is_numeric($active_node_nid)) {
         //active link not set properly, using url() function to avoid this probplem
-        $options['attributes']['class'] = array('btn');
+        $options['attributes']['class'] = array('btn','btn-default');
         if (substr(url('node/' . $active_node_nid), 0, 1) == '/') {
           $path = substr(url('node/' . $active_node_nid), 1);
           $result['path'] = $path;
@@ -820,7 +820,7 @@ function _section_courses_navtext_to_link($course, $text) {
       break;
     case "Bearbeiten":
       if (is_numeric($active_node_nid)) {
-        $options['attributes']['class'] = array('btn');
+        $options['attributes']['class'] = array('btn','btn-default');
         $path = 'course/admin/' . $course_nid . '/' . $active_node_nid . '/edit';
         $result['path'] = $path;
         $result['link'] = l($text, $path, $options);

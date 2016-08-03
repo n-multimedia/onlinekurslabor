@@ -43,9 +43,9 @@ $percent = _section_courses_get_timespan_percentage($node, $start_text, $end_tex
 ?>
 
 
-<div class="row-fluid">
+<div class="row">
   <a href="<?php echo $node_path; ?>" class="user-courses-item">
-    <div class="span3" style="
+    <div class="col-md-3" style="
          background-image:url(<?php echo $path; ?>);
          -webkit-background-size: cover;
          -moz-background-size: cover;
@@ -57,7 +57,7 @@ $percent = _section_courses_get_timespan_percentage($node, $start_text, $end_tex
          ">
       <div class="user-courses-item-progress" style="display:block;background-color:#fff;opacity:0.8;height:50px;padding-top:5px;display:none;"><?php echo section_courses_theme_progressbar($node, 38, FALSE); ?></div>
     </div>
-    <div class="user-courses-item-title span9" >
+    <div class="user-courses-item-title col-md-9" >
       <?php echo $node->title; ?>  
     </div>
   </a>

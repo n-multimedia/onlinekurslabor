@@ -699,8 +699,8 @@ function _section_projects_header_and_navigation_view() {
 
     $output .= '<div style="position:relative">';
 
-    $output .= '<div id="course_header" class="row-fluid">';
-    $output .= '<div class="span12">';
+    $output .= '<div id="course_header" class="row">';
+    $output .= '<div class="col-md-12">';
 
     $output .= '<div id="course_header_title">';
     $output .= '<h1>';
@@ -790,16 +790,16 @@ function _section_projects_header_and_navigation_view() {
     //partner logo
     $field_view = field_view_field('node', $po_node, 'field_po_logo', array('settings' => array('image_style' => 'projects_logo')));
     $field_view['#label_display'] = 'hidden';
-    $output .= '<div class="row-fluid" style="position:absolute; height:100%">';
-    $output .= '<div style="height:100%;" class="offset8 span4">';
+    $output .= '<div class="row" style="position:absolute; height:100%">';
+    $output .= '<div style="height:100%;" class="offset8 col-md-4">';
     $output .= '<div style="position:absolute; bottom:20px; z-index:10; width:32%; text-align:center;">';
     $output .= '<a href="' . url("node/" . $po_node->nid) . '">';
     $output .= drupal_render($field_view);
     $output .= '</a>';
     $output .= '</div>';
     $output .= '</div>';
-    $output .= '<div class="row-fluid" style="position:absolute; height:100%">';
-    $output .= '<div style="position:absolute; background-color: #fff; opacity:0.6; height:100%;" class="offset8  span4">';
+    $output .= '<div class="row" style="position:absolute; height:100%">';
+    $output .= '<div style="position:absolute; background-color: #fff; opacity:0.6; height:100%;" class="offset8  col-md-4">';
     $output .= '</div>';
     $output .= '</div>';
     $output .= '</div>';
@@ -844,9 +844,9 @@ function _section_projects_project_cockpit_main_view() {
     foreach ($navigation_items as $item) {
       $active_class = ($i == 0) ? 'active' : '';
 
-      $output .= '<div class = "tabpanel ' . drupal_html_class(transliteration_get($item)) . ' ' . $active_class . ' row-fluid">';
+      $output .= '<div class = "tabpanel ' . drupal_html_class(transliteration_get($item)) . ' ' . $active_class . ' row">';
 
-      $output .= '<div class = "span12" >';
+      $output .= '<div class = "col-md-12" >';
       //dpm('projects_cockpit_main_' . drupal_html_class($item) . '_view');
       $output .= call_user_func('projects_cockpit_main_' . drupal_html_class(transliteration_get($item)) . '_view');
       $output .= '</div>';
@@ -929,8 +929,8 @@ function _section_projects_project_cockpit_tabs_view_static() {
 
   $i = 0;
 
-  $output = '<div class="row-fluid">';
-  $output .= '<div style="position:relative" class="nav-tabbox span12">';
+  $output = '<div class="row">';
+  $output .= '<div style="position:relative" class="nav-tabbox col-md-12">';
   foreach ($navigation_items as $item) {
     $active_class = ($i == $active_tab) ? 'active' : '';
     $output .= '<div class="' . $active_class . '">';
@@ -962,8 +962,8 @@ function _section_projects_project_cockpit_tabs_view() {
 
   $i = 0;
   if ($active_project) {
-    $output = '<div class="row-fluid">';
-    $output .= '<div style="position:relative" class="nav-tabbox span12">';
+    $output = '<div class="row">';
+    $output .= '<div style="position:relative" class="nav-tabbox col-md-12">';
     foreach ($navigation_items as $item) {
       $active_class = ($i == 0) ? 'active' : '';
       $output .= '<div class="' . $active_class . '">';
@@ -1253,31 +1253,6 @@ function _section_projects_course_group_actions_userlink($linktext = "Gruppenmit
 
 
 
-/*
-  function _section_projects_node_tabs_view() {
-  $output = '';
-
-  if (_section_projects_tools_access()) {
-  $output .= '<div id="content_node_tabs-container" class="btn-grop row-fluid">';
-  $output .= '<ul class="span12">';
-  $output .= '<li>';
-  $output .= l('Ansicht', 'projects/partners/1419');
-  $output .= '</li>';
-  $output .= '<li>';
-  $output .= l('Bearbeiten', 'projects/admin/1419/edit');
-  $output .= '</li>';
-  $output .= '</ul>';
-  $output .= '</div>';
-  }
-  $block = array(
-  'content' => array(
-  '#type' => 'markup',
-  '#markup' => $output,
-  ));
-
-  return $block;
-  }
- */
 
 /**
  * HELPER FUNCTIONS
@@ -1566,7 +1541,7 @@ function _section_projects_render_node_tabs($node) {
     'attributes' => array(),
     'query' => array()
   );
-  $options['attributes']['class'] = array('btn');
+  $options['attributes']['class'] = array('btn','btn-default');
 
   if(!node_access('update', $node)){
      return '';
@@ -1592,7 +1567,7 @@ function _section_projects_render_node_tabs($node) {
   $options['fragment'] = $fragment;
 
   //active link not set properly, using url() function to avoid this probplem
-  $options['attributes']['class'] = array('btn');
+  $options['attributes']['class'] = array('btn','btn-default');
   $tabs = array();
   if (substr(url('node/' . $node->nid), 0, 1) == '/') {
     $path = substr(url('node/' . $node->nid), 1);

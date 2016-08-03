@@ -9,13 +9,13 @@ function _bootstrap_content_span($columns = 1) {
   
   switch($columns) {
     case 1:
-      $class = 'span12';
+      $class = 'col-md-12';
       break;
     case 2:
-      $class = 'span9';
+      $class = 'col-md-9';
       break;
     case 3:
-      $class = 'span6';
+      $class = 'col-md-6';
       break;
   }
   

@@ -58,7 +58,7 @@ function _section_content_navtext_to_link($domain, $text) {
 
   $options = array(
     'attributes' => array(
-      'class' => array('btn'),
+      'class' => array('btn','btn-default'),
     ),
     'query' => array(
       'og_group_ref' => $domain_nid,
@@ -114,7 +114,7 @@ function _section_content_theme_authors_tools($variables = NULL) {
 
     $tool_links = _section_courses_get_authors_tools();
 
-    //$output = '<div class="row-fluid">';
+    //$output = '<div class="row">';
     $output = _custom_general_theme_tools_block($tool_links, "authors_tools", "btn-group btn-group-vertical", 1);
     //$output .= '</div">';
   }
@@ -329,7 +329,7 @@ function _section_courses_get_authors_tools() {
 
   $result = array();
   foreach ($links as $name => $link) {
-    $attributes = array('attributes' => array('id' => $name, 'class' => array('btn')));
+    $attributes = array('attributes' => array('id' => $name, 'class' => array('btn','btn-default')));
     if (isset($link['path']))
       custom_general_append_active_class(($link['path']), $attributes);
 

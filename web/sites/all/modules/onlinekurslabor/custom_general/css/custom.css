@@ -206,7 +206,7 @@ div ul.section_nav_tools li a
 AUTHOR AND INSTRUCOT'S TOOLS
 */
 
-.row-fluid .panels-flexible-column {
+.row .panels-flexible-column {
     position:relative;
 }
 
@@ -279,7 +279,7 @@ Instructor's Tools
     position:relative;
 }
 
-#instructors_tools-container .row-fluid:hover 
+#instructors_tools-container .row:hover 
 {
     background-color: rgba(0,136,204, 0.03);
 }
@@ -321,7 +321,7 @@ a.disabled {
     color: #333;
 }
 
-.span1 .pane-block
+.col-md-1 .pane-block
 {
     width:100%;
     position:relative;
@@ -489,7 +489,7 @@ Authors's Tools
 }
 
 
-#authors_tools-container .row-fluid:hover 
+#authors_tools-container .row:hover 
 {
     background-color: rgba(0,136,204, 0.03);
 }
@@ -686,7 +686,7 @@ Project's Tools
     position:relative;
 }
 
-#projects_tools-container .row-fluid:hover 
+#projects_tools-container .row:hover 
 {
     background-color: rgba(0,136,204, 0.03);
 }
@@ -1272,7 +1272,7 @@ Student
 * Video Embed
 */
 
-.row-fluid .span12 .node iframe{
+.row .col-md-12 .node iframe{
     margin: 0;
 }
 

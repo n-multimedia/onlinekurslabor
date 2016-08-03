@@ -30,7 +30,7 @@
   foreach($context_items['items'] as $item){
 
     //check access to path first
-    $attributes = array('attributes' => array('id' => $item['name'], 'class' => array('btn')));
+    $attributes = array('attributes' => array('id' => $item['name'], 'class' => array('btn','btn-default')));
 
     if (isset($item['path'])) {
       custom_general_append_active_class(($item['path']), $attributes);

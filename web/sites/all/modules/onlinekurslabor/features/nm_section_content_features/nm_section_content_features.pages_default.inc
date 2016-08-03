@@ -1195,7 +1195,7 @@ echo section_content_text_outline();
       'title' => '',
       'body' => '<?php
 if(section_content_authors_tools_access())
-echo \'<p><a class="btn" href="/node/add/content-domain">Neues Thema anlegen</a></p>\';
+echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neues Thema anlegen</a></p>\';
 
 ?>',
       'format' => 'php_code',

@@ -50,48 +50,48 @@
             /*
              * Video resizing
              */
-            var iframe = $('.row-fluid .span12 iframe');
+            var iframe = $('.row .col-md-12 iframe');
 
             if (iframe.length >= 1) {
                 for (var i = 0; i < iframe.length; i++) {
                     iframetmp = $(iframe[i]);
                     if (iframetmp.width() < 400) {
-                        var row = $(iframetmp).wrap('<div class="row-fluid" />').addClass("span6").parent();
+                        var row = $(iframetmp).wrap('<div class="row" />').addClass("col-md-6").parent();
 
-                        row.append('<div class="span3" />');
-                        row.prepend('<div class="span3" />');
+                        row.append('<div class="col-md-3" />');
+                        row.prepend('<div class="col-md-3" />');
                         //26.02.2014 - 15:55 - SN
                         //videos to tiny, -> expanding height
                         iframetmp.height(iframetmp.height()+70);
 
                     } else if (iframetmp.width() < 500) {
-                        var row = $(iframetmp).wrap('<div class="row-fluid" />').addClass("span8").parent();
+                        var row = $(iframetmp).wrap('<div class="row" />').addClass("col-md-8").parent();
 
-                        row.append('<div class="span2" />');
-                        row.prepend('<div class="span2" />');
+                        row.append('<div class="col-md-2" />');
+                        row.prepend('<div class="col-md-2" />');
                         //26.02.2014 - 15:55 - SN
                         //videos to tiny, -> expanding height
                         iframetmp.height(iframetmp.height()+20);
 
                     } else {
-                        $(iframetmp).addClass("span12").wrap('<div class="row-fluid" />');
+                        $(iframetmp).addClass("col-md-12").wrap('<div class="row" />');
                     }
                 }
 
             } else {
 
                 if (iframe.width() < 400) {
-                    var row = $(iframe).wrap('<div class="row-fluid" />').addClass("span8").parent();
+                    var row = $(iframe).wrap('<div class="row" />').addClass("col-md-8").parent();
 
-                    row.append('<div class="span2" />');
-                    row.prepend('<div class="span2" />');
+                    row.append('<div class="col-md-2" />');
+                    row.prepend('<div class="col-md-2" />');
                 } else if (iframe.width() < 500) {
-                    var row = $(iframe).wrap('<div class="row-fluid" />').addClass("span6").parent();
+                    var row = $(iframe).wrap('<div class="row" />').addClass("col-md-6").parent();
 
-                    row.append('<div class="span3" />');
-                    row.prepend('<div class="span3" />');
+                    row.append('<div class="col-md-3" />');
+                    row.prepend('<div class="col-md-3" />');
                 } else {
-                    $(iframe).addClass("span12").wrap('<div class="row-fluid" />');
+                    $(iframe).addClass("col-md-12").wrap('<div class="row" />');
                 }
             }
 

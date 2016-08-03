@@ -5,7 +5,7 @@
   $exclusive_persons[] = l($persons_name, drupal_get_path_alias('user/' . $exclusive_entry['entity']->uid));
   } */
 if ($node->nid != _videosafe_get_root_directory()->nid)
-    $node_edit_button = '<li class="btn" id=""><a title="bearbeiten" href="/node/' . $node->nid . '/edit">bearbeiten</a></li>';
+    $node_edit_button = '<li class="btn btn-default" id=""><a title="bearbeiten" href="/node/' . $node->nid . '/edit">bearbeiten</a></li>';
 else
     $node_edit_button = '';
 if ($node->type == 'videosafe_video') {
@@ -61,9 +61,9 @@ if ($node->type == 'videosafe_video') {
     ?>
     <ul>
         <? echo $node_edit_button;?>
-        <li class="btn" id=""><a title="Unterordner erstellen" href="/node/add/videosafe-folder?field_parent_folder=<?= $node->nid ?>">Unterordner erstellen</a></li>
+        <li class="btn btn-default" id=""><a title="Unterordner erstellen" href="/node/add/videosafe-folder?field_parent_folder=<?= $node->nid ?>">Unterordner erstellen</a></li>
         <?php if ($node->nid != _videosafe_get_root_directory()->nid): ?>
-            <li class="btn" id=""><a title="Video hochladen" href="/node/add/videosafe-video?field_parent_folder=<?= $node->nid ?>">Video hochladen</a></li>
+            <li class="btn btn-default" id=""><a title="Video hochladen" href="/node/add/videosafe-video?field_parent_folder=<?= $node->nid ?>">Video hochladen</a></li>
         <?php endif; ?>    
     </ul>
     <?

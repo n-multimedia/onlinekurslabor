@@ -26,7 +26,7 @@
 $nid = $fields['nid']->raw;
 $node = node_load($nid);
 $course_actions = section_courses_render_course_link($node);
-$label = !$node->status ? '<span class="label label-important">Entwurf</span> ' : '';
+$label = !$node->status ? '<span class="label label-danger">Entwurf</span> ' : '';
 $course_main_link = _section_courses_render_course_main_link($node);
 
 $start_text = '';
@@ -48,10 +48,10 @@ foreach ($kurs_dozent_objects as $dozent_acc) {
   });
 </script>
 
-<div class="row-fluid">
-  <div class="course-item span12">
-    <div class="span3"><?php echo $fields['field_course_picture']->content; ?></div>
-    <div class="span4">
+<div class="row">
+  <div class="course-item col-md-12">
+    <div class="col-md-3"><?php echo $fields['field_course_picture']->content; ?></div>
+    <div class="col-md-4">
       <div class="course-title"><h2><?php echo $label ?><?php echo $course_main_link ?></h2></div>
       <div class="course-subtitle"><?php echo $fields['field_subtitle']->content; ?></div>
       <div class="course-dozenten"><small>
@@ -59,13 +59,13 @@ foreach ($kurs_dozent_objects as $dozent_acc) {
                 <?echo implode($kurs_dozenten, ', ')?>
               </small>
       </div>
-      <div class="course-time row-fluid">
+      <div class="course-time row">
         <div class="course-start-date"><strong>Beginn:</strong> <?php echo $start_text; ?></div>
         <div class="course-end-date"><strong>Ende:</strong> <?php echo $end_text; ?></div>
         <div id="progressbar_<?php echo $nid ?>" ></div>
       </div>
     </div>
-    <div class="span5">
+    <div class="col-md-5">
       <div class="course-short-description"><?php echo $fields['field_short_description']->content; ?></div>
       <div class="course-actions"><?php echo $course_actions ?></div>
     </div>

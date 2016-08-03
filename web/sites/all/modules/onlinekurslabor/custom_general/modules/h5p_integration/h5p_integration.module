@@ -183,7 +183,7 @@ function _h5p_integration_dashboard_form($form, &$form_state) {
   $form['h5p_insert'] = array(
     '#type' => 'submit',
     '#value' => 'H5P-Content einfügen',
-    '#suffix' => '<a id="h5p-cancel" class="btn" href="#">' . t('Cancel') . '</a>',
+    '#suffix' => '<a id="h5p-cancel" class="btn btn-default" href="#">' . t('Cancel') . '</a>',
     '#weight' => 100,
     '#attributes' => array('class' => array('btn', 'btn-primary')),
   );

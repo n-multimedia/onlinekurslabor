@@ -50,15 +50,15 @@ $proposal_status = drupal_render($field_view);
 
 ?>
 <?if($nid !== arg(3)):?>
-<div class="row-fluid partners-projects-item">
+<div class="row partners-projects-item">
 
-  <div class="partners-projects-item-title span5" >
+  <div class="partners-projects-item-title col-md-5" >
     <a href="<?php echo $node_path; ?>" class="partners-projects-item"><?php echo $node->title; ?>    </a>
   </div>
-  <div class="partners-projects-item-changed span3" >
+  <div class="partners-projects-item-changed col-md-3" >
     <?php echo format_date($node->changed); ?>  
   </div>
-  <div class="partners-projects-item-status span4" >
+  <div class="partners-projects-item-status col-md-4" >
     <span class="<?php echo $proposal_status_class; ?>" style="float:left; margin-right:7px; line-height:12px">&nbsp;</span> <?php echo $proposal_status ?>  
   </div>
 

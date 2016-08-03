@@ -1654,7 +1654,7 @@ return section_courses_text_outline();
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span8',
+        'class' => 'col-md-8',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -1679,7 +1679,7 @@ return section_courses_text_outline();
         'children' => array(
           0 => 2,
         ),
-        'class' => 'span4',
+        'class' => 'col-md-4',
       ),
       2 => array(
         'type' => 'row',
@@ -2354,7 +2354,7 @@ return section_courses_text_outline();
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span8',
+        'class' => 'col-md-8',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -2379,7 +2379,7 @@ return section_courses_text_outline();
         'children' => array(
           0 => 2,
         ),
-        'class' => 'span4',
+        'class' => 'col-md-4',
       ),
       2 => array(
         'type' => 'row',
@@ -2988,7 +2988,7 @@ return section_courses_text_outline();
           2 => 2,
         ),
         'parent' => 'canvas',
-        'class' => 'span11 course-info',
+        'class' => 'col-md-11 course-info',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -2998,7 +2998,7 @@ return section_courses_text_outline();
           1 => 'rechts',
         ),
         'parent' => 'main',
-        'class' => 'header row-fluid',
+        'class' => 'header row',
       ),
       'links' => array(
         'type' => 'region',
@@ -3006,7 +3006,7 @@ return section_courses_text_outline();
         'width' => '65.40245299300852',
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'header_left span8',
+        'class' => 'header_left col-md-8',
       ),
       'rechts' => array(
         'type' => 'region',
@@ -3014,7 +3014,7 @@ return section_courses_text_outline();
         'width' => '34.597547006991476',
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'header_right span4',
+        'class' => 'header_right col-md-4',
       ),
       1 => array(
         'type' => 'row',
@@ -3032,7 +3032,7 @@ return section_courses_text_outline();
         'width' => '65.40245205837297',
         'width_type' => '%',
         'parent' => '1',
-        'class' => 'subheader_left span8',
+        'class' => 'subheader_left col-md-8',
       ),
       'rechts_' => array(
         'type' => 'region',
@@ -3040,7 +3040,7 @@ return section_courses_text_outline();
         'width' => '34.59754794162703',
         'width_type' => '%',
         'parent' => '1',
-        'class' => 'subheader_right span4',
+        'class' => 'subheader_right col-md-4',
       ),
       2 => array(
         'type' => 'row',
@@ -3049,7 +3049,7 @@ return section_courses_text_outline();
           0 => 'content',
         ),
         'parent' => 'main',
-        'class' => 'content row-fluid',
+        'class' => 'content row',
       ),
       'content' => array(
         'type' => 'region',
@@ -3057,7 +3057,7 @@ return section_courses_text_outline();
         'width' => 100,
         'width_type' => '%',
         'parent' => '2',
-        'class' => 'span12',
+        'class' => 'col-md-12',
       ),
       3 => array(
         'type' => 'column',
@@ -3067,7 +3067,7 @@ return section_courses_text_outline();
         'children' => array(
           0 => 4,
         ),
-        'class' => 'span1',
+        'class' => 'col-md-1',
       ),
       4 => array(
         'type' => 'row',
@@ -3544,7 +3544,7 @@ echo section_courses_render_course_link($course);
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span11',
+        'class' => 'col-md-11',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -3569,7 +3569,7 @@ echo section_courses_render_course_link($course);
         'children' => array(
           0 => 2,
         ),
-        'class' => 'span1',
+        'class' => 'col-md-1',
       ),
       2 => array(
         'type' => 'row',
@@ -3750,7 +3750,7 @@ echo section_courses_render_course_link($course);
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span11',
+        'class' => 'col-md-11',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -3760,7 +3760,7 @@ echo section_courses_render_course_link($course);
           1 => 2,
         ),
         'parent' => 'main',
-        'class' => 'row-fluid',
+        'class' => 'row',
       ),
       1 => array(
         'type' => 'column',
@@ -3770,7 +3770,7 @@ echo section_courses_render_course_link($course);
         'children' => array(
           0 => 4,
         ),
-        'class' => 'span1',
+        'class' => 'col-md-1',
       ),
       2 => array(
         'type' => 'column',
@@ -3780,7 +3780,7 @@ echo section_courses_render_course_link($course);
         'children' => array(
           0 => 6,
         ),
-        'class' => 'span6',
+        'class' => 'col-md-6',
       ),
       3 => array(
         'type' => 'column',
@@ -3790,7 +3790,7 @@ echo section_courses_render_course_link($course);
         'children' => array(
           0 => 5,
         ),
-        'class' => 'span6',
+        'class' => 'col-md-6',
       ),
       4 => array(
         'type' => 'row',
@@ -4390,7 +4390,7 @@ echo section_courses_render_course_link($course);
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span11',
+        'class' => 'col-md-11',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -4415,7 +4415,7 @@ echo section_courses_render_course_link($course);
         'children' => array(
           0 => 2,
         ),
-        'class' => 'span1',
+        'class' => 'col-md-1',
       ),
       2 => array(
         'type' => 'row',
@@ -5070,7 +5070,7 @@ echo section_courses_theme_progressbar();
       'title' => '',
       'body' => '<?php
 if(section_courses_instructors_tools_access())
-echo \'<p><a class="btn" href="/node/add/courses-course">Neuen Kurs anlegen</a></p>\';
+echo \'<p><a class="btn btn-default" href="/node/add/courses-course">Neuen Kurs anlegen</a></p>\';
 
 ?>',
       'format' => 'php_code',
@@ -6787,7 +6787,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span8',
+        'class' => 'col-md-8',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -6812,7 +6812,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
         'children' => array(
           0 => 2,
         ),
-        'class' => 'span4',
+        'class' => 'col-md-4',
       ),
       2 => array(
         'type' => 'row',
@@ -7017,7 +7017,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     if (arg(0) == \'course\' && arg(1) == \'text\' && is_numeric(arg(3))) {
       $nid = arg(3);
       if (node_access(\'update\', node_load($nid))) {
-        echo \'<a class="btn" href="/domain/edit/\' . $nid . \'">Lehrtext bearbeiten (Themenbereich)</a>\';
+        echo \'<a class="btn-default" href="/domain/edit/\' . $nid . \'">Lehrtext bearbeiten (Themenbereich)</a>\';
       }
     }
   }
@@ -7234,7 +7234,7 @@ return section_courses_text_outline();
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span8',
+        'class' => 'col-md-8',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -7259,7 +7259,7 @@ return section_courses_text_outline();
         'children' => array(
           0 => 2,
         ),
-        'class' => 'span4',
+        'class' => 'col-md-4',
       ),
       2 => array(
         'type' => 'row',
@@ -7437,7 +7437,7 @@ return section_courses_text_outline();
           1 => 8,
         ),
         'parent' => 'canvas',
-        'class' => 'span8',
+        'class' => 'col-md-8',
       ),
       1 => array(
         'type' => 'column',
@@ -7474,7 +7474,7 @@ return section_courses_text_outline();
           1 => 5,
         ),
         'parent' => 'main',
-        'class' => 'row-fluid',
+        'class' => 'row',
       ),
       4 => array(
         'type' => 'column',
@@ -7484,7 +7484,7 @@ return section_courses_text_outline();
         'children' => array(
           0 => 7,
         ),
-        'class' => 'span6',
+        'class' => 'col-md-6',
       ),
       5 => array(
         'type' => 'column',
@@ -7494,7 +7494,7 @@ return section_courses_text_outline();
         'children' => array(
           0 => 6,
         ),
-        'class' => 'span6',
+        'class' => 'col-md-6',
       ),
       6 => array(
         'type' => 'row',
@@ -7537,7 +7537,7 @@ return section_courses_text_outline();
           0 => 'main_',
         ),
         'parent' => 'main',
-        'class' => 'row-fluid',
+        'class' => 'row',
       ),
       'main_' => array(
         'type' => 'region',
@@ -7545,7 +7545,7 @@ return section_courses_text_outline();
         'width' => 100,
         'width_type' => '%',
         'parent' => '8',
-        'class' => 'span12',
+        'class' => 'col-md-12',
       ),
     ),
   );

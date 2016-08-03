@@ -13,11 +13,11 @@
 <?php if ($node): ?>
   <?php /* edit */ ?>
   <form id="nm-stream-edit-node-<?php echo $node->nid; ?>" method="post" enctype="multipart/form-data" target="nm_stream_hidden_upload" action="/nm_stream/node/<?php echo $node->nid; ?>/edit">
-    <textarea class="nm-stream-node-body span12" name="body"><?php echo $node->body[LANGUAGE_NONE][0]['value']; ?></textarea>
-    <div class="row-fluid">
-      <div class="nm-stream-edit-node-actions span12">
-        <div class="row-fluid">
-          <div class="span12">
+    <textarea class="nm-stream-node-body col-md-12" name="body"><?php echo $node->body[LANGUAGE_NONE][0]['value']; ?></textarea>
+    <div class="row">
+      <div class="nm-stream-edit-node-actions col-md-12">
+        <div class="row">
+          <div class="col-md-12">
             <div class="nm-stream-edit-node-attachments">
               <span class="btn btn-success fileinput-button">
                 <i class="icon-white icon-plus"></i>
@@ -40,21 +40,21 @@
 <?php else: ?>
   <?php /* add */ ?>
   <div class="nm-stream-node-form-container">
-    <div class="row-fluid">
-      <div class="nm-stream-top span12">
-        <div class="row-fluid">
-          <div class="nm-stream-left span1"><?php echo $nm_author_pic; ?></div>
-          <div class="span11">
-            <div class="row-fluid">
+    <div class="row">
+      <div class="nm-stream-top col-md-12">
+        <div class="row">
+          <div class="nm-stream-left col-md-1"><?php echo $nm_author_pic; ?></div>
+          <div class="col-md-11">
+            <div class="row">
               <div class="nm-stream-node-form">
                 <?php echo $nm_node_form_dummy; ?>
               </div>
               <form id="nm-stream-add-node" method="post" enctype="multipart/form-data" target="nm_stream_hidden_upload" action="/nm_stream/node/add/<?php echo $type; ?>">
-                <textarea class="nm-stream-node-body span12" name="body"></textarea>
-                <div class="row-fluid">
-                  <div class="nm-stream-add-node-attachments span12">
-                    <div class="row-fluid">
-                      <div class="span12">
+                <textarea class="nm-stream-node-body col-md-12" name="body"></textarea>
+                <div class="row">
+                  <div class="nm-stream-add-node-attachments col-md-12">
+                    <div class="row">
+                      <div class="col-md-12">
                         <span class="btn btn-success fileinput-button">
                           <i class="icon-white icon-plus"></i>
                           <span>Dateien hinzufügen...</span>
@@ -64,10 +64,10 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row-fluid">
-                    <div class="nm-stream-add-node-actions span12">
-                      <div class="row-fluid">
-                        <div class="span12">
+                  <div class="row">
+                    <div class="nm-stream-add-node-actions col-md-12">
+                      <div class="row">
+                        <div class="col-md-12">
                           <div id="nm-stream-add-node-privacy"><?php echo $nm_privacy; ?></div>
                           <input type="hidden" name="iframe" value="" />
                           <input class="nm-stream-form-token" type="hidden" name="form_token" value="<?php echo drupal_get_token(); ?>" />

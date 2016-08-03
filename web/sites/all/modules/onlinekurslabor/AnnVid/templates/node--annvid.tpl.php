@@ -1,12 +1,12 @@
-<div class="span12">
+<div class="col-md-12">
     <?print render ($content['body']);?>
 </div>
 <?if(!empty($content['field_pdffile'])):?>
     <div id="annvid_pdfbutton">
-        <a class="btn" href=# id="annvid_pdftoggle">PDF anzeigen</a>
+        <a class="btn btn-default" href=# id="annvid_pdftoggle">PDF anzeigen</a>
     </div>
 <?endif?>
-<div class="span12" id="annvid_videodiv">
+<div class="col-md-12" id="annvid_videodiv">
    
   <? print render($content['field_h5preference']); ?>
     
@@ -18,7 +18,7 @@
     print _nm_stream_get_renderedGUI($node->nid);
 ?>
 </div>
-<div class="span6"  id="annvid_pdfdiv">
+<div class="col-md-6"  id="annvid_pdfdiv">
     <? print render($content['field_pdffile']); ?>
 </div>
 <?php 

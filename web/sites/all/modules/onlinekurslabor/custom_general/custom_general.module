@@ -324,10 +324,6 @@ function custom_general_form_alter(&$form, &$form_state, $form_id) {
     $form['#group_children']['biblio_fieldset']['#access'] = FALSE; 
   }
   
-  if ($form_id == 'devel_switch_user_form') {
-    $form['username']['#size'] = (int) ($form['username']['#size'] * 2.5);
-  }
-
   
   if ($form_id != "book_admin_edit")
     return;
@@ -522,7 +518,7 @@ function _media_browser_get_referer_nid() {
   return $referer_args['nid'];
 }
 
-function _custom_general_theme_tools_block($tool_links, $id = "", $class = "section_nav_tools", $span_grouping = 12) {
+function _custom_general_theme_tools_block($tool_links, $id = "", $class = "section_nav_tools", $col_group = 12) {
 
   //$output = '<div id="' . $id . '-container">';
   //$output = '<div id="' . $id . '-container" class="navbar">';
@@ -534,10 +530,10 @@ function _custom_general_theme_tools_block($tool_links, $id = "", $class = "sect
     }
   }
 
-  $span_class = 'span' . $span_grouping;
+  $span_class = 'col-md-' . $col_group;
 
   //$output .= '<div class="navbar-inner">';
-  $output = '<div id="' . $id . '-container" class="' . $class . ' row-fluid">';
+  $output = '<div id="' . $id . '-container" class="' . $class . ' row">';
   //$output .= '<div id="' . $id . '-icon"></div>';
   //$output .= '<ul id="' . $id . '" class="' . $class . ' nav">';
 
@@ -557,12 +553,10 @@ function _custom_general_theme_tools_block($tool_links, $id = "", $class = "sect
 
   //if group is set - assume that we want to have a vertical toolbar
   if (!empty($groups)) {
-    //$output .= '<div class="span12"></div>';
-    //$output .= '<div class="span4">';
     foreach ($groups as $g) {
       $group_items = ($g['items']);
-      $output .= '<div class="row-fluid">';
-      $output .= '<div class="span12">';
+      $output .= '<div class="row">';
+      $output .= '<div class="col-md-12">';
       $output .= '<ul>';
       $depth = 0;
       foreach ($group_items as $gi) {
@@ -598,10 +592,10 @@ function _custom_general_theme_tools_block($tool_links, $id = "", $class = "sect
       $append = "";
       $prepend = "";
 
-      if ($span_counter % ($span_grouping) == 0) {
+      if ($span_counter % ($col_group) == 0) {
         $prepend = '<ul class="' . $span_class . '">';
       }
-      if ((($span_counter % $span_grouping) == $span_grouping - 1) || $span_counter == count($tool_links) - 1) {
+      if ((($span_counter % $col_group) == $col_group - 1) || $span_counter == count($tool_links) - 1) {
         $append = '</ul>';
       }
 
@@ -783,9 +777,9 @@ function _custom_general_biblio_dashboard_form($form, &$form_state) {
   $form['biblio_insert'] = array(
     '#type' => 'submit',
     '#value' => 'Biblio einfügen',
-    '#suffix' => '<a id="biblio-cancel" class="btn" href="#">' . t('Cancel') . '</a>',
+    '#suffix' => '<a id="biblio-cancel" class="btn btn-default" href="#">' . t('Cancel') . '</a>',
     '#weight' => 100,
-    '#attributes' => array('class' => array('btn', 'btn-primary')),
+    '#attributes' => array('class' => array('btn','btn-default', 'btn-primary')),
   );
 
   return $form;
@@ -1071,12 +1065,12 @@ function custom_general_form_node_delete_confirm_alter(&$form, &$form_state){
       '#type' => 'submit',
       '#value' => 'Delete node and files',
       '#weight' => -10,
-      '#attributes' => array('class' => array('btn-danger')),
+      '#attributes' => array('class' => array('btn','btn-danger')),
       '#submit' => array('custom_general_form_node_delete_node_and_files_submit'),
     );
 
     $form['actions']['submit']['#value'] = 'Delete (node only)';
-    $form['actions']['submit']['#attributes'] = array('class' => array('btn-danger'));
+    $form['actions']['submit']['#attributes'] = array('class' => array('btn','btn-danger'));
     $form['actions']['submit']['#weight'] = -11;
 
     $form_state['file_attachments'] = $file_attachments;
