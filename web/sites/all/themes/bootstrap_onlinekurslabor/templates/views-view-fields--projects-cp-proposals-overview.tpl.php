@@ -36,11 +36,11 @@ $proposal_field_key = $node->field_proposal_status[LANGUAGE_NONE][0]['value'];
 $proposal_status_class = '';
 
 if($proposal_field_key == 0) {
-  $proposal_status_class = 'badge badge-success';
+  $proposal_status_class = 'badge progress-bar-success';
 }else if($proposal_field_key == 1){
-  $proposal_status_class = 'badge badge-warning';
+  $proposal_status_class = 'badge progress-bar-warning';
 }else {
-  $proposal_status_class = 'badge badge-important';
+  $proposal_status_class = 'badge progress-bar-danger';
 }
 
 $field_view = field_view_field('node', $node, 'field_proposal_status');

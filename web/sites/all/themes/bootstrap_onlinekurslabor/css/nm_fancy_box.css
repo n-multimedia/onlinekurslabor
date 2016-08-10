@@ -17,11 +17,22 @@
 padding: 0px;
 }
 
+
+a.nm_fancy_box_link:hover{
+    opacity: 0.8;
+}
+
 .nm_fancy_box_container{
     position:relative;
      width:100%;
     margin-bottom:30px;
     border: 1px solid #333;
+    padding:0;
+}
+
+.nm_fancy_box_image 
+{
+     padding:0;
 }
 
 .nm_fancy_box_desc{
@@ -30,17 +41,14 @@ padding: 0px;
     color:#fff;
     font-size:18px;
     padding: 15px ;
+    line-height: 1.25em;
     padding-left:10px;
     opacity:0.9;
     bottom:0px;
     margin:0px !important;
 }
-
+/*
 .pane-content  {
     position:relative;
 }
-
-
-a.nm_fancy_box_link:hover{
-    opacity: 0.8;
-}
+*/

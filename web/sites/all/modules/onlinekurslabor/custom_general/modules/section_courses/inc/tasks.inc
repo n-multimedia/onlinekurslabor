@@ -153,7 +153,7 @@ function _courses_tasks_solution_workflow_label($sid = 0) {
 
   $markup = "";
   if ($current == NM_COURSES_TASK_WORKFLOW_DRAFT || $sid == 0) {
-    $markup = '<span class="label">Offen</span>';
+    $markup = '<span class="label label-default">Offen</span>';
   }
   elseif ($current == NM_COURSES_TASK_WORKFLOW_SUBMITTED) {
     $markup = '<span class="label label-info">Eingereicht</span>';
@@ -199,18 +199,18 @@ function _courses_tasks_get_task_period_label($task_id, $solution_id = 0) {
         $eingereicht_secs = format_date($eingereicht_date, 'custom', 'U', $eingereicht_time['timezone']);
         
         if ($eingereicht_secs < $starttime_secs)
-            $markup = '<span class="label label-important"><strong>Zu früh eingereicht</strong></span>';
+            $markup = '<span class="label label-danger"><strong>Zu früh eingereicht</strong></span>';
         elseif ($has_endtime && $eingereicht_secs > $endtime_secs)
-            $markup = '<span class="label label-important"><strong>Zu spät eingereicht</strong></span>';
+            $markup = '<span class="label label-danger"><strong>Zu spät eingereicht</strong></span>';
         else
             $markup = '<span class="label label-info"><strong>Pünktlich eingereicht</strong></span>';
         return $markup;
     }
     //keine solultion vorhanden oder im draft-modus
     if ($starttime_secs > time())
-        $markup = '<span class="label label-important"><strong>Noch kein Bearbeitungszeitraum</strong></span>';
+        $markup = '<span class="label label-danger"><strong>Noch kein Bearbeitungszeitraum</strong></span>';
     elseif ($has_endtime && time() > $endtime_secs)
-        $markup = '<span class="label label-important"><strong>Einreichungsfrist verpasst</strong></span>';
+        $markup = '<span class="label label-danger"><strong>Einreichungsfrist verpasst</strong></span>';
     else
         $markup = '<span class="label label-info"><strong>Bearbeitungszeitraum aktiv</strong></span>';
     return $markup;
@@ -266,7 +266,7 @@ function _course_tasks_generic_description_view() {
   $einreichungsfristlabel = _courses_tasks_get_task_period_label($task_nid, @$solution->nid);
   $output = "";
   //$output .= '<div class="alert alert-info">';
-  $output .= "<h1>" . $task->title . ' ' . $label .' '. $einreichungsfristlabel."</h1>";
+  $output .= "<div class='row'><h1 class='col-md-8'>" . $task->title."</h1>". "<span  class='col-md-4'>" . $label .' '. $einreichungsfristlabel.'</span></div>';
   //$output .= '</div>';
   $output .= '<div class="alert alert-info">';
   $output .= _course_tasks_generic_section_view($field_val, NM_COURSES_TASK_DESCRIPTION);

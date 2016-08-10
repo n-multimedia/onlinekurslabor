@@ -25,7 +25,7 @@ foreach ($rows as &$row_item) {
     $new = _section_courses_course_get_num_unread_by_type(NULL, NM_COURSE_GENERIC_TASK, $row_item['nid']);
     $new_label = "";
     if($new) {
-      $new_label = '<small class="badge badge-important">neu</small>';
+      $new_label = '<small class="badge progress-bar-danger">neu</small>';
     }
       
     

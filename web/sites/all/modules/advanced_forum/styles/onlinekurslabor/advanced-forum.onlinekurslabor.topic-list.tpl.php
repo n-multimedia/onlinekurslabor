@@ -57,10 +57,10 @@
     $topic_new = "";
     if ($topic->new) {
       if ($topic->new_replies > 0) {
-        $topic_new = ' <span class="badge badge-important">' . t('updated') . '</span>';
+        $topic_new = ' <span class="badge progress-bar-danger">' . t('updated') . '</span>';
       }
       else {
-        $topic_new = ' <span class="badge badge-important">' . t('new') . '</span>';
+        $topic_new = ' <span class="badge progress-bar-danger">' . t('new') . '</span>';
       }
     }
     ?>

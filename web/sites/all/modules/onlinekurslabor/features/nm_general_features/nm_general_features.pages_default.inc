@@ -380,7 +380,7 @@ function nm_general_features_default_page_manager_pages() {
       'title' => '',
       'body' => '<?php
 $vars = array();
-$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_lehrender.png" class="col-md-12"  />\';
+$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_lehrender.png" style="width:100%;"    />\';
 $vars[\'description\'] = "Informationen für Hochschullehrende";
 $vars[\'link\'] = "informationen?mode=lehrende";
 
@@ -445,7 +445,7 @@ return theme(\'nm_fancy_box\', $vars);
       'title' => '',
       'body' => '<?php
 $vars = array();
-$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_partner.png" class="col-md-12"  />\';
+$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_partner.png" style="width:100%;"   />\';
 $vars[\'description\'] = "Informationen für Kooperationspartner";
 $vars[\'link\'] = "informationen?mode=partner";
 
@@ -506,7 +506,7 @@ return theme(\'nm_fancy_box\', $vars);
       'title' => '',
       'body' => '<?php
 $vars = array();
-$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_student.png" class="col-md-12"  />\';
+$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_student.png" style="width:100%;"    />\';
 $vars[\'description\'] = "Informationen für Studierende";
 $vars[\'link\'] = "/informationen?mode=studierende";
 

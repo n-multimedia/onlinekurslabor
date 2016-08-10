@@ -2564,13 +2564,13 @@ function section_courses_group_projects_form($form, &$form_state) {
     }
     else {
       $form['warning'][] = array(
-        '#markup' => '<h5 class="page-header"><span class="badge badge-important">Es wurden noch keine Kursgruppen angelegt.</span><h5>',
+        '#markup' => '<h5 class="page-header"><span class="badge progress-bar-danger">Es wurden noch keine Kursgruppen angelegt.</span><h5>',
       );
     }
   }
   else {
     $form['warning'][] = array(
-      '#markup' => '<h5 class="page-header"><span class="badge badge-important">Damit Sie fortfahren können, müssen Sie zuerst relevante Projektvorschläge in den Kurseinstellungen auswählen. </span><h5>',
+      '#markup' => '<h5 class="page-header"><span class="badge progress-bar-danger">Damit Sie fortfahren können, müssen Sie zuerst relevante Projektvorschläge in den Kurseinstellungen auswählen. </span><h5>',
     );
   }
 

@@ -55,10 +55,10 @@ function bootstrap_onlinekurslabor_mark($variables) {
   $output = "";
   switch ($variables['type']) {
     case 1:
-      $output = ' <span class="badge badge-important">' . t('new') . '</span>';
+      $output = ' <span class="badge progress-bar-danger">' . t('new') . '</span>';
       break;
     case 2:
-      $output = ' <span class="badge badge-important">' . t('updated') . '</span>';
+      $output = ' <span class="badge progress-bar-danger">' . t('updated') . '</span>';
       break;
   }
 

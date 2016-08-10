@@ -792,7 +792,7 @@ echo _section_projects_render_node_tabs($node);
       'title' => '',
       'body' => '<?php
 if(user_access(\'create projects_organization content\'))
-echo \'<p><a class="btn-default" href="/node/add/projects-organization">Neue Partnerorganisation anlegen</a></p>\';
+echo \'<p><a class="btn btn-default" href="/node/add/projects-organization">Neue Partnerorganisation anlegen</a></p>\';
 
 ?>',
       'format' => 'php_code',
