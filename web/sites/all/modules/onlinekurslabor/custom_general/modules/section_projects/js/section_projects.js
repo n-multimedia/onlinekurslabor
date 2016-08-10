@@ -5,15 +5,14 @@
     attach: function(context, settings) {
 
 
-      $(".nav-tabbox .tab").click(function()
+      $(".section_navigation_cockpit .tab").click(function()
       {
-        var lastClass = $(this).attr('class').substr( $(this).attr('class').lastIndexOf(' ') + 1);
+        var linktarget = $(this).attr('href').substring( 1);
         $('.tabpanel').removeClass('active');
-        $('.tabpanel.' + lastClass).addClass('active');
-        $('.tab').parent('div').removeClass('active');
-        $(this).parent('div').addClass('active');
+        $('.tabpanel.' + linktarget).addClass('active');
+        $('.tab').removeClass('active');
+        $(this).addClass('active');
 
-      
       });
 
       $('a.noaction').click(function(){
@@ -24,16 +23,17 @@
        var hash = window.location.hash;
        var hashid = hash.substring(1);
        if(hashid) {
-        $(".nav-tabbox a." + hashid).click();
+        $(".section_navigation_cockpit a." + hashid).click();
        }
 
-        window.addEventListener("popstate", function(e) {
+        jQuery(window).on('hashchange', function(e) {
             hash = window.location.hash;
             hashid = hash.substring(1);
-            if(hashid) {
-             $(".nav-tabbox a." + hashid).click();
+            if (hashid) {
+                $(".section_navigation_cockpit a." + hashid).click();
             }
         });
+ 
 
       //seal logic
 

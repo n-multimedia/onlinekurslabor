@@ -160,47 +160,10 @@ div ul.section_nav_tools li a
 
 }
 
-#course_top_navigation li a:hover, #course_top_navigation li a.active
-{
-
-  background-color: #aaa;
-  transition-duration: 0.25s;
-  -webkit-transition-duration: 0.25s;
-  text-decoration: none;
-}
+ 
 */
 
-
-#course_top_navigation .btn
-{
-    position:relative;
-    border-top:0;
-    border-bottom:0;
-    -webkit-border-radius:0px;
-    border-radius: 0px;
-    -moz-border-radius: 0px;
-    padding:0;
-    display:inline-block;
-    height:42px;
-    margin-left:-1px;
-    left:1px;
-}
-#course_top_navigation .btn a
-{
-    padding: 11px 15px;
-    position:relative;
-    display:inline-block;
-
-}
-
-#course_top_navigation {
-
-}
-
-#course_top_navigation ul{
-    margin:0;
-}
-
+ 
 
 /*
 AUTHOR AND INSTRUCOT'S TOOLS
@@ -920,10 +883,9 @@ END  - Project's Tools
 Course Toolbar items
 */
 
-
 #course_top_nav_single-icon, #course_top_nav_collab-icon
 {
-    display:inline-block;
+   float:left;
     width: 45px;
     height:42px;
     background-image:  url(../images/icons/transparent-icons---course.png);
@@ -945,7 +907,7 @@ Course Toolbar items
   padding:2px 5px;
   display:inline-block;
   position:relative;
-  background-color: #666666;
+  
 }
 
 #course_top_nav_single-icon, #course_top_nav_collab-icon{
@@ -970,9 +932,7 @@ Course Toolbar items
 {
   margin-left:30px;
 }
-
-*/
-
+ */
 
 
 /*

@@ -130,7 +130,7 @@ function _course_header_section_view() {
       $output .= '</div>';
     }
 
-    $output .= '<div id="course_header" class="row">';
+    $output .= '<div id="course_header" >';
     $output .= '<div class="col-md-12">';
 
 
@@ -530,6 +530,7 @@ function _section_courses_get_instructor_tools() {
   return $result;
 }
 
+
 /**
  * Custom function to assemble renderable array for block content.
  * Returns a renderable array with the block content.
@@ -537,6 +538,9 @@ function _section_courses_get_instructor_tools() {
  *   returns a renderable array of block content.
  */
 function _course_top_navigation_view() {
+     $options = array('class'=>'section_navigation_course');
+     
+   
   $block = array();
   $course = _section_courses_get_active_course();
 
@@ -574,10 +578,12 @@ function _course_top_navigation_view() {
 
     $options = array(
       'link' => $text_link['link'],
+      'text' => $text_link['text'],
       'path' => $text_link['path'],
-      'attributes' => array('class' => array('btn','btn-default'))
+      'data' => $text_link['data'],
+      'attributes' => array('class' => array('btn'))
     );
-    //disable path buttons where user doen't have access to
+    //disable path buttons user doesn't have access to
     if (!drupal_valid_path($options['path'])) {
       $options['path'] = '#';
       $options['link'] = '<a href="#">' . $si . '</a>';
@@ -591,15 +597,17 @@ function _course_top_navigation_view() {
 //$si_link = _section_courses_navtext_to_link($course, $si);
 //$output_single .= "<li>" . $si_link . "</li>";
   }
+
 //$output_single .= "</ul>";
 //collaborative links
   $collab_links = array();
 //$output_collab = '';
 //$output_collab .= '<ul class="links inline clearfix">';
+  /* Waruuum? Selber Code doppelt, nur fuer andere Variable!*/
   foreach ($nav_items_collab as $si) {
     $text_link = _section_courses_navtext_to_link($course, $si);
     if (strtolower($si) != strtolower($text_link['link'])) {
-      $options = array('link' => $text_link['link'], 'path' => $text_link['path'], 'attributes' => array('class' => array('btn','btn-default')));
+      $options = array('link' => $text_link['link'], 'path' => $text_link['path'], 'data' => $text_link['data'],'text' => $text_link['text'],'attributes' => array('class' => array('btn')));
 
       //disable path buttons where user doen't have access to
       if (!drupal_valid_path($options['path'])) {
@@ -614,8 +622,27 @@ function _course_top_navigation_view() {
 //$si_link = _section_courses_navtext_to_link($course, $si);
 //$output_collab .= '<li>' . $si_link . '</li>';
   }
+    
+    
 //$output_collab .= '</ul>';
-
+    $navigation_options = array('class' => 'section_navigation_course');
+    $navigation_items = array(
+        'single' => array(
+            'header' => '<div id="course_top_nav_single-icon"></div>',
+            'prefix' => '<div class="col-md-6">',
+            'suffix' => '</div>',
+            'urls' => $single_links
+        ),
+        'collab' => array(
+            'header' => '<div id="course_top_nav_collab-icon"></div>',
+            'prefix' => '<div class="col-md-6">',
+            'suffix' => '</div>',
+            'urls' => $collab_links
+        )
+    );
+      
+ return _onlinekurslabor_misc_get_renderable_section_navigation($navigation_items , $navigation_options);
+    /*
   $output_single = _custom_general_theme_tools_block($single_links, "course_top_nav_single");
   $output_collab = _custom_general_theme_tools_block($collab_links, "course_top_nav_collab");
 
@@ -627,7 +654,7 @@ function _course_top_navigation_view() {
       '#markup' => "",
     ),
     'single' => array(
-      '#prefix' => '<div id="course_tools_single" class="btn-group col-md-6">',
+      '#prefix' => '<div id="course_tools_single" class="btn-group col-md-5">',
       '#type' => 'markup',
       '#markup' => $output_single,
       '#suffix' => '</div>',
@@ -645,8 +672,7 @@ function _course_top_navigation_view() {
     ),
   );
 
-
-  return $block;
+  return $block;*/
 }
 
 /**
@@ -660,6 +686,7 @@ function _section_courses_navtext_to_link($course, $text) {
   global $user;
   $result = array();
   $result['link'] = $text;
+  $result['text'] = $text;
   $result['path'] = "";
 
   if (!$course)
@@ -686,7 +713,8 @@ function _section_courses_navtext_to_link($course, $text) {
 
   $text_temp = $text;
   $text = ($text);
-
+ 
+  
   switch ($text_temp) {
     case "Aktuelles":
       $num_unread = _section_courses_course_get_num_unread_by_type($user->uid, NM_COURSE_NEWS);
@@ -698,7 +726,7 @@ function _section_courses_navtext_to_link($course, $text) {
       $path = "course/home/" . $course_nid;
       $result['path'] = $path;
       $result['link'] = l($text, $path, $options);
-
+      $result['data']['unread'] = $num_unread;
       _section_courses_theme_tiny_unread_box($result['link'], $num_unread);
 
       break;
@@ -712,7 +740,7 @@ function _section_courses_navtext_to_link($course, $text) {
       $path = "course/docs/" . $course_nid;
       $result['path'] = $path;
       $result['link'] = l($text, $path, $options);
-
+      $result['data']['unread'] = $num_unread;
       _section_courses_theme_tiny_unread_box($result['link'], $num_unread);
 
       break;
@@ -771,6 +799,7 @@ function _section_courses_navtext_to_link($course, $text) {
         $result['link'] = l($text, $path, $options);
 
         if ($num_unread > 0) {
+            $result['data']['unread'] = $num_unread;
           _section_courses_theme_tiny_unread_box($result['link'], $num_unread);
         }
       }
@@ -799,7 +828,7 @@ function _section_courses_navtext_to_link($course, $text) {
       $path = "course/tasks/" . $course_nid;
       $result['path'] = $path;
       $result['link'] = l($text, $path, $options);
-
+      $result['data']['unread'] = $num_unread;
       _section_courses_theme_tiny_unread_box($result['link'], $num_unread);
       break;
     case "Ansicht":

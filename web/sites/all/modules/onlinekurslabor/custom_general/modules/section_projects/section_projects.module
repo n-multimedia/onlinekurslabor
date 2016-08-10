@@ -808,23 +808,23 @@ function _section_projects_header_and_navigation_view() {
     //container
     $output .= "</div>";
   }
-
-  //+navigation
-  if (is_numeric($arg2) && is_numeric($arg3) && ($arg4 == 'cockpit')) {
-    //projects overview page
-    $output .= _section_projects_project_cockpit_tabs_view();
-  }else if(($arg0 == 'projects') && ($arg1 == 'admin')) {
-    $output .= _section_projects_project_cockpit_tabs_view_static();
-  }
-
+    
+    
+  $blocks = array();
   $block = array(
     'content' => array(
       '#type' => 'markup',
       '#markup' => $output,
   ));
-
-
-  return $block;
+  $blocks[] = $block;
+    //+navigation
+  if (is_numeric($arg2) && is_numeric($arg3) && ($arg4 == 'cockpit')) {
+     $blocks[] = _section_projects_project_cockpit_tabs_view();
+  }else if(($arg0 == 'projects') && ($arg1 == 'admin')) {
+     $blocks[] = _section_projects_project_cockpit_tabs_view_static();
+  }
+ 
+  RETURN $blocks;
 }
 
 function _section_projects_project_cockpit_main_view() {
@@ -870,85 +870,92 @@ function _section_projects_project_cockpit_main_view() {
 
 /**
  * in add and edit forms we need static lincs instead of tabs
- * @return array|string
+ * @return array block-definition of a menu
  */
 function _section_projects_project_cockpit_tabs_view_static() {
-  $navigation_items = _section_projects_get_navigation_items();
+    $navigation_items = _section_projects_get_navigation_items();
 
-  $block = array();
-  $po_node = section_projects_get_active_project();
+    $block = array();
+    $po_node = section_projects_get_active_project();
 
-  if ($po_node->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
-    $active_tab = 1;
+    if ($po_node->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
+        $active_tab = 1;
 
-    $ca = $po_node;
-    $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
-    $partner_nid = _custom_general_get_group($proposal);
-    $po_node = node_load($partner_nid);
-  }
-  else if (in_array($po_node->type, array(NM_PROJECTS_ZIELVEREINBARUNG, NM_PROJECTS_DOKUMENTATION, NM_PROJECTS_TAGEBUCH))) {
+        $ca = $po_node;
+        $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
+        $partner_nid = _custom_general_get_group($proposal);
+        $po_node = node_load($partner_nid);
+    } else if (in_array($po_node->type, array(NM_PROJECTS_ZIELVEREINBARUNG, NM_PROJECTS_DOKUMENTATION, NM_PROJECTS_TAGEBUCH))) {
 
-    if($po_node->type == NM_PROJECTS_ZIELVEREINBARUNG){
-      $active_tab = 2;
+        if ($po_node->type == NM_PROJECTS_ZIELVEREINBARUNG) {
+            $active_tab = 2;
+        }
+        if ($po_node->type == NM_PROJECTS_DOKUMENTATION) {
+            $active_tab = 3;
+        }
+
+        $tmp = $po_node;
+        if (!empty($tmp->field_ca_ref)) {
+            $ca = node_load($tmp->field_ca_ref[LANGUAGE_NONE][0]['target_id']);
+        } else {
+            $ca = node_load($tmp->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+        }
+
+        $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
+        $partner_nid = _custom_general_get_group($proposal);
+        $po_node = node_load($partner_nid);
     }
-    if($po_node->type == NM_PROJECTS_DOKUMENTATION){
-      $active_tab = 3;
+
+    //override active menu trail on add
+    //active tab, highlight menu item
+
+    if (arg(0) == 'projects' && arg(1) == 'admin' && arg(2) == 'add') {
+        if (arg(3) == NM_PROJECTS_ZIELVEREINBARUNG) {
+            $active_tab = 2;
+        } else if (arg(3) == NM_PROJECTS_DOKUMENTATION) {
+            $active_tab = 3;
+        } else if (arg(3) == NM_PROJECTS_TAGEBUCH) {
+            $active_tab = 0;
+        }
     }
 
-    $tmp = $po_node;
-    if (!empty($tmp->field_ca_ref)) {
-      $ca = node_load($tmp->field_ca_ref[LANGUAGE_NONE][0]['target_id']);
-    }
-    else {
-      $ca = node_load($tmp->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+    //get project and partner ids
+    if (empty($ca) || empty($proposal) || empty($po_node)) {
+        return "";
     }
 
-    $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
-    $partner_nid = _custom_general_get_group($proposal);
-    $po_node = node_load($partner_nid);
-  }
+    $i = 0;
+    $urls = array();
 
-  //override active menu trail on add
-  //active tab, highlight menu item
 
-  if(arg(0) == 'projects' && arg(1) == 'admin' && arg(2) == 'add'){
-     if (arg(3) == NM_PROJECTS_ZIELVEREINBARUNG) {
-      $active_tab = 2;
-    }else if (arg(3) == NM_PROJECTS_DOKUMENTATION) {
-      $active_tab = 3;
-    }else if (arg(3) == NM_PROJECTS_TAGEBUCH) {
-      $active_tab = 0;
+    foreach ($navigation_items as $item) {
+        $items_url = '/projects/partners/' . $po_node->nid . '/' . $proposal->nid . '/cockpit/' . $ca->nid . '#' . drupal_html_class(transliteration_get($item));
+        $active_class = ($i == $active_tab) ? 'active' : '';
+        $urldef = array('url' => $items_url,
+            'text' => $item,
+            'attributes' => array('class' => array('tab', drupal_html_class(transliteration_get($item)), $active_class)));
+        $urls[] = $urldef;
+        $i++;
     }
-  }
+    $navigation_items_for_menu = array(
+        'single' => array(
+            'header' => '',
+            'prefix' => '',
+            'suffix' => '',
+            'urls' => $urls
+        )
+    );
 
-  //get project and partner ids
-  if (empty($ca) || empty($proposal) || empty($po_node)) {
-      return "";
-
-  }
-
-  $i = 0;
-
-  $output = '<div class="row">';
-  $output .= '<div style="position:relative" class="nav-tabbox col-md-12">';
-  foreach ($navigation_items as $item) {
-    $active_class = ($i == $active_tab) ? 'active' : '';
-    $output .= '<div class="' . $active_class . '">';
-    $output .= '<a href = "/projects/partners/'.$po_node->nid.'/'.$proposal->nid.'/cockpit/'.$ca->nid.'#' . drupal_html_class(transliteration_get($item)) . '" class="statictab ' . drupal_html_class(transliteration_get($item)) . '">';
-    $output .= $item;
-    $output .= '</a>';
-    $output .= '</div>';
-
-    $i++;
-  }
-
-  $output .= '</div>';
-  $output .= '</div>';
-
-
-  return $output;
+    return _onlinekurslabor_misc_get_renderable_section_navigation($navigation_items_for_menu, array('class' => 'section_navigation_cockpit'));
 }
 
+/**
+ * 
+ * laedt das aktuelle projekt und erstellt ein block-renderbares menue, das auf 
+ * einen hash fuehrt
+ * ist block-renderable
+ * @return array menu
+ */
 function _section_projects_project_cockpit_tabs_view() {
 
   $navigation_items = _section_projects_get_navigation_items();
@@ -962,24 +969,26 @@ function _section_projects_project_cockpit_tabs_view() {
 
   $i = 0;
   if ($active_project) {
-    $output = '<div class="row">';
-    $output .= '<div style="position:relative" class="nav-tabbox col-md-12">';
+    
     foreach ($navigation_items as $item) {
-      $active_class = ($i == 0) ? 'active' : '';
-      $output .= '<div class="' . $active_class . '">';
-      $output .= '<a href = "#' . drupal_html_class(transliteration_get($item)) . '" class="tab ' . drupal_html_class(transliteration_get($item)) . '">';
-      $output .= $item;
-      $output .= '</a>';
-      $output .= '</div>';
-
+       $urldef = array('url' => '#' . drupal_html_class(transliteration_get($item)),
+                        'text' => $item,
+                        'attributes' => array('class' => array('tab', drupal_html_class(transliteration_get($item)),($i == 0) ? 'active' : '')));
       $i++;
+       $urls[] =$urldef;
     }
-
-    $output .= '</div>';
-    $output .= '</div>';
   }
-
-  return $output;
+    
+   $navigation_items_for_menu = array(
+        'single' => array(
+            'header' => '',
+            'prefix' => '',
+            'suffix' => '',
+            'urls' => $urls
+           )
+       );
+    
+   return _onlinekurslabor_misc_get_renderable_section_navigation($navigation_items_for_menu,  array('class' => 'section_navigation_cockpit'));
 }
 
 function _section_projects_po_tools_view() {

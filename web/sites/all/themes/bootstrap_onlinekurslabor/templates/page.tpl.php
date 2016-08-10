@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse ">
+<nav class="navbar navbar-inverse" id="page_top_navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -48,7 +48,7 @@
       </aside>  <!-- /#sidebar-first -->
     <?php endif; ?>  
 
-    <section class="<?php print _bootstrap_content_span($columns); ?>">  
+    <section class="<?php print @_bootstrap_content_span($columns); ?>">  
       <?php if (!empty($page['highlighted'])): ?>
         <div class="highlighted hero-unit"><?php print render($page['highlighted']); ?></div>
       <?php endif; ?>

@@ -267,3 +267,75 @@ function onlinekurslabor_misc_form_alter($form, $form_state, $form_id) {
     drupal_set_title($title);
   }
 }
+
+/**
+ * New default method for rendering horizontal menus. 
+ * Use without any parameters to get an example.
+ * Output will be renderable block-syntax
+ * @param array $navigation_items. The navigation-items, see example
+ * @param array $options currently supported:  $options['class']  (the css-class for your menu)
+ * @return string
+ */
+function _onlinekurslabor_misc_get_renderable_section_navigation($navigation_items = null, $options = array()) {
+    if (!count($navigation_items)) {
+        $navigation_items = array(
+            'single' => array(
+                'header' => 'EXAMPLE',
+                'prefix' => '',
+                'suffix' => '',
+                'urls' =>
+                array(
+                    array(
+                        'url' => '#',
+                        'text' => 'Menu1',
+                        'attributes' => array('class' => array('active'))
+                    ),
+                    array(
+                        'url' => '#',
+                        'text' => 'Menu2',
+                        'attributes' => array('class' => array('disabled'))
+                    )
+                ),
+            )
+        );
+    }
+
+
+    $block = array(
+        'prefix' => array(
+            '#prefix' => '<nav class="navbar navbar-default ' . $options['class'] . '" id="section_navigation"><div class="container-fluid">',
+            '#type' => 'markup',
+            '#markup' => "",
+    ));
+    foreach ($navigation_items as $id => $definition) {
+        $nav_entries = '';
+        foreach ($definition['urls'] as $url_def) {
+            $unread_badge = "";
+            $unread_count = $url_def['data']['unread'];
+            if ($unread_count) {
+                $unread_badge = '<div class="unread_tiny_box"><div style="" class="arrow-down"></div>' . $unread_count . '</div>';
+            }
+            $nav_entries .= sprintf('<li class="%s"><a href="%s" class="%s">%s %s</a></li>', _onlinekurslabor_misc_umlaut_to_text(strtolower($url_def['text'])), $url_def['url'], implode(' ', $url_def['attributes']['class']), $url_def['text'], $unread_badge);
+        }
+
+        $block[$id] = array(
+            '#prefix' => $definition['prefix'],
+            '#type' => 'markup',
+            '#markup' => '<div class="navbar-header">' . $definition['header'] . '</div>
+                          <ul class="nav navbar-nav">' . $nav_entries . '</ul>',
+            '#suffix' => $definition['suffix'],
+        );
+    }
+    $block['suffix'] = array(
+        '#type' => 'markup',
+        '#markup' => "",
+        '#suffix' => '</div></nav>',
+    );
+    return $block;
+}
+
+function _onlinekurslabor_misc_umlaut_to_text($string) {
+    $search = array("Ä", "Ö", "Ü", "ä", "ö", "ü", "ß", "´");
+    $replace = array("Ae", "Oe", "Ue", "ae", "oe", "ue", "ss", "");
+    return str_replace($search, $replace, $string);
+}
