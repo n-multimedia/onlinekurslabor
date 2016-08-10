@@ -2,12 +2,12 @@
 body.dev{
     background: #FCF2E3 !important;
 }
-body.dev #navbar .navbar-inner
+body.dev #page_top_navigation
 {
     background-image: url("../img/dev-bg.png") !important;
     background-color: orange !important;
 }
-body.dev #navbar  a.logo img{
+body.dev #page_top_navigation  a.navbar-brand img{
     transform: rotate(180deg);
 }
 
