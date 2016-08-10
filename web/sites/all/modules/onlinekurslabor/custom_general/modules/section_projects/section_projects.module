@@ -929,11 +929,13 @@ function _section_projects_project_cockpit_tabs_view_static() {
 
 
     foreach ($navigation_items as $item) {
-        $items_url = '/projects/partners/' . $po_node->nid . '/' . $proposal->nid . '/cockpit/' . $ca->nid . '#' . drupal_html_class(transliteration_get($item));
+        $items_url = '/projects/partners/' . $po_node->nid . '/' . $proposal->nid . '/cockpit/' . $ca->nid ;
         $active_class = ($i == $active_tab) ? 'active' : '';
-        $urldef = array('url' => $items_url,
-            'text' => $item,
-            'attributes' => array('class' => array('tab', drupal_html_class(transliteration_get($item)), $active_class)));
+        $urldef = 
+           array('path' => $items_url,
+                 'fragment'=>  drupal_html_class(transliteration_get($item)),
+                 'text' => $item,
+                 'attributes' => array('class' => array('tab', drupal_html_class(transliteration_get($item)), $active_class)));
         $urls[] = $urldef;
         $i++;
     }
@@ -971,7 +973,8 @@ function _section_projects_project_cockpit_tabs_view() {
   if ($active_project) {
     
     foreach ($navigation_items as $item) {
-       $urldef = array('url' => '#' . drupal_html_class(transliteration_get($item)),
+       $urldef = array( 'path' => request_uri(),
+                        'fragment'=> drupal_html_class(transliteration_get($item)),
                         'text' => $item,
                         'attributes' => array('class' => array('tab', drupal_html_class(transliteration_get($item)),($i == 0) ? 'active' : '')));
       $i++;

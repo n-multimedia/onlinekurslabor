@@ -286,12 +286,13 @@ function _onlinekurslabor_misc_get_renderable_section_navigation($navigation_ite
                 'urls' =>
                 array(
                     array(
-                        'url' => '#',
+                        'url' => '/',
+                        'fragment'=>'internallink',
                         'text' => 'Menu1',
                         'attributes' => array('class' => array('active'))
                     ),
                     array(
-                        'url' => '#',
+                        'url' => '/otherplace',
                         'text' => 'Menu2',
                         'attributes' => array('class' => array('disabled'))
                     )
@@ -315,8 +316,11 @@ function _onlinekurslabor_misc_get_renderable_section_navigation($navigation_ite
             if ($unread_count) {
                 $unread_badge = '<div class="unread_tiny_box"><div style="" class="arrow-down"></div>' . $unread_count . '</div>';
             }
-            $nav_entries .= sprintf('<li class="%s"><a href="%s" class="%s">%s %s</a></li>', _onlinekurslabor_misc_umlaut_to_text(strtolower($url_def['text'])), $url_def['url'], implode(' ', $url_def['attributes']['class']), $url_def['text'], $unread_badge);
-        }
+            #$nav_entries .= sprintf('<li class="%s"><a href="%s" class="%s">%s %s</a></li>', _onlinekurslabor_misc_umlaut_to_text(strtolower($url_def['text'])), $url_def['url'], implode(' ', $url_def['attributes']['class']), $url_def['text'], $unread_badge);
+            $nav_entries .= '<li class="'._onlinekurslabor_misc_umlaut_to_text(strtolower($url_def['text'])).'">'
+                             . l( $url_def['text'] .' '. $unread_badge, $url_def['path'], array('fragment' => $url_def['fragment'],'attributes'=>array('class'=>  $url_def['attributes']['class']))) # <a href="%s" class="%s">%s %s</a></li>', , $url_def['url'],, $url_def['text'], $unread_badge);
+                             .'</li>';
+            }                    
 
         $block[$id] = array(
             '#prefix' => $definition['prefix'],

@@ -120,6 +120,12 @@ BOOTSTRAP 3
     min-height: 40px;
     border: none;
 }
+#section_navigation.navbar ul.navbar-nav > li:first-child{
+    border-left:1px solid #CCCCCC;
+}
+#section_navigation.navbar ul.navbar-nav > li{
+    border-right:1px solid #CCCCCC;
+}
 #section_navigation.navbar .navbar-nav > li > a {
     padding-bottom: 12px;
     padding-top: 10px;
@@ -135,12 +141,9 @@ BOOTSTRAP 3
 .section_navigation_course.navbar{
     background: #467DBD;
 }
-.section_navigation_course.navbar-default .navbar-nav > li{
 
-}
 .section_navigation_course.navbar-default .navbar-nav > li > a {
     color: #ffffff;
-        border-right:1px solid #CCCCCC;
     background-color: #426DA0;
 }
 
@@ -161,7 +164,6 @@ BOOTSTRAP 3
 }
 .section_navigation_cockpit.navbar-default .navbar-nav > li > a {
     color: #ffffff;
-        border-right:1px solid #CCCCCC;
     background-color: #4F3F56;
 }
 

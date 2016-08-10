@@ -7,7 +7,7 @@
 
       $(".section_navigation_cockpit .tab").click(function()
       {
-        var linktarget = $(this).attr('href').substring( 1);
+        var linktarget = $(this).attr('href').substring($(this).attr('href').lastIndexOf('#')+1);
         $('.tabpanel').removeClass('active');
         $('.tabpanel.' + linktarget).addClass('active');
         $('.tab').removeClass('active');
