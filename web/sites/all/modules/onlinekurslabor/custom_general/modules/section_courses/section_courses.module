@@ -1304,7 +1304,7 @@ function section_courses_student_registration_form($form, &$form_state) {
   );
   $form['import_container']['import'] = array(
     '#type' => 'button',
-    '#value' => '<i class="icon-user icon-white"></i> Import',
+    '#value' => '<i class="glyphicon glyphicon-user"></i> Import',
     '#submit' => array('section_courses_student_registration_import_submit'),
     '#attributes' => array('class' => array('btn-warning')),
     // See the examples in ajax_example.module for more details on the
@@ -1686,7 +1686,7 @@ function section_courses_student_registration_fields() {
   );
 
   $form['users_item_container']['name'] = array(
-    '#prefix' => '<div class="input-prepend"><span class="add-on"><i class="icon-user"></i></span>',
+    '#prefix' => '<div class="input-prepend"><span class="add-on"><i class="glyphicon glyphicon-user"></i></span>',
     '#suffix' => '</div>',
     //'#title' => t('Username'),
     '#attributes' => array(

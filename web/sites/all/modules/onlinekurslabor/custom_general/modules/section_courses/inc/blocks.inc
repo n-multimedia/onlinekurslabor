@@ -54,7 +54,7 @@ function _section_courses_node_tabs_view() {
     $nav_items_single['edit'] = "Profil bearbeiten";
 
     //pre + suffix
-    $nav_items_single['edit'] = '<button class="btn btn-default edit-profile"><i class="icon-pencil" style="color:white;"></i> ' . $nav_items_single['edit'];
+    $nav_items_single['edit'] = '<button class="btn btn-default edit-profile"><i class="glyphicon glyphicon-pencil" style="color:white;"></i> ' . $nav_items_single['edit'];
     $nav_items_single['edit'] .= '</button>';
 
     $path = 'user/' . arg(1) . '/edit';

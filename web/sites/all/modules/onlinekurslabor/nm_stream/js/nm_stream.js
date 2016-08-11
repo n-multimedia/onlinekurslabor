@@ -1187,7 +1187,7 @@
                 list: '.fileupload-list',
                 STRING: {
                     remove: '<span class="btn btn-danger fileinput-button">\n\
-                            <i class="icon-white icon-remove"></i>\n\
+                            <i class="glyphicon glyphicon-trash"></i>\n\
                             <span>entfernen</span>\n\
                         </span>',
                     duplicate: '<h3>Diese Datei wurde bereits ausgewählt!</h3>\n<br/>$file'

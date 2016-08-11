@@ -20,7 +20,7 @@
           <div class="col-md-12">
             <div class="nm-stream-edit-node-attachments">
               <span class="btn btn-success fileinput-button">
-                <i class="icon-white icon-plus"></i>
+                <i class="glyphicon glyphicon-plus-sign"></i>
                 <span>Dateien hinzufügen...</span>
                 <input class="fileupload" type="file" name="files[]">
               </span>
@@ -56,7 +56,7 @@
                     <div class="row">
                       <div class="col-md-12">
                         <span class="btn btn-success fileinput-button">
-                          <i class="icon-white icon-plus"></i>
+                          <i class="glyphicon glyphicon-plus-sign"></i>
                           <span>Dateien hinzufügen...</span>
                           <input class="fileupload" type="file" name="files[]">
                         </span>

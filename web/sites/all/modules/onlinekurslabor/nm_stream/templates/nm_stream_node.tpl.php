@@ -17,7 +17,7 @@
             <div class="row">
               <div class="nm-stream-middle col-md-5">
                 <div class="nm-stream-name"><?php echo $nm_author_link; ?></div>
-                <div class="nm-stream-created"><i class="icon icon-time"></i> <?php echo $nm_created; ?></div>
+                <div class="nm-stream-created"><i class="glyphicon glyphicon-time"></i> <?php echo $nm_created; ?></div>
               </div>
               <div class="nm-stream-top-right col-md-7">
                 <div class="nm-stream-privacy">
@@ -40,7 +40,7 @@
     <div class="row">
       <?php if (!empty($nm_attachments)): ?>
         <div class="nm-stream-attachments offset1 col-md-11">
-          <div class="nm-stream-attachments-title"><i class="icon  icon-download"></i> Anhänge:</div>
+          <div class="nm-stream-attachments-title"><i class="glyphicon glyphicon-download-alt"></i> Anhänge:</div>
           <div class="nm-stream-attachments-main"><?php echo $nm_attachments; ?></div>
         </div>
       <?php endif; ?>
