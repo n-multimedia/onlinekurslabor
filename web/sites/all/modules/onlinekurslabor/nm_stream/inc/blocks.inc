@@ -43,7 +43,7 @@ function _nm_stream_form_add_edit_view($type='nm_stream') {
   $form['container']['controls']['privacy'] = array(
   '#type' => 'select',
   '#options' => $options['items'],
-  '#prefix' => '<div class="offset5 col-md-5">',
+  '#prefix' => '<div class="col-md-offset-5 col-md-5">',
   '#suffix' => '</div>',
   '#default_value' => $options['default'],
   //'#title' => t('Privacy settings'),

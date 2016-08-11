@@ -362,3 +362,12 @@ infinite scroll
 .nm-stream-context{
     text-align:right;
 }
+/*specialfixes bootstrap3*/
+.nm-stream-middle.col-md-5, .nm-stream-left.col-md-1, .nm-stream-top .col-md-12
+{
+    padding:0px;
+}
+.nm-stream-main.col-md-offset-1.col-md-11
+{
+    padding-left:25px;
+}

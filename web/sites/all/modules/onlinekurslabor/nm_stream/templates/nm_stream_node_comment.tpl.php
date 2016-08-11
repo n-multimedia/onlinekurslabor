@@ -34,7 +34,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="nm-stream-main offset1 col-md-11">
+    <div class="nm-stream-main col-md-offset-1 col-md-11">
       <div class="nm-stream-main-body"><?php echo $nm_body; ?></div>
     </div>
   </div>

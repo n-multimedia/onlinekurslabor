@@ -39,7 +39,7 @@
 
     <div class="row">
       <?php if (!empty($nm_attachments)): ?>
-        <div class="nm-stream-attachments offset1 col-md-11">
+        <div class="nm-stream-attachments col-md-offset-1 col-md-11">
           <div class="nm-stream-attachments-title"><i class="glyphicon glyphicon-download-alt"></i> Anhänge:</div>
           <div class="nm-stream-attachments-main"><?php echo $nm_attachments; ?></div>
         </div>
@@ -47,7 +47,7 @@
 
       <?php if ($nm_num_comments == 0 && !empty($comments_form)) : ?>
         <div class="row">
-          <div class="nm-stream-comments-form offset1 col-md-11"><?php echo $comments_form; ?></div>
+          <div class="nm-stream-comments-form col-md-offset-1 col-md-11"><?php echo $comments_form; ?></div>
         </div>
       <?php endif; ?>
     </div>
@@ -56,7 +56,7 @@
 
     <div class="nm-stream-comments-section">
       <div class="row">
-        <div class="nm-stream-comments offset1 col-md-11">
+        <div class="nm-stream-comments col-md-offset-1 col-md-11">
           <div class="nm-stream-node-information"><?php echo $comments_information; ?></div>
           <div class="nm-stream-comments-form"><?php echo $comments_form; ?></div>
           <div class="nm-stream-comments-container"><?php echo $comments_container; ?></div>   
