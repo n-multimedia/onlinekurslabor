@@ -7017,7 +7017,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     if (arg(0) == \'course\' && arg(1) == \'text\' && is_numeric(arg(3))) {
       $nid = arg(3);
       if (node_access(\'update\', node_load($nid))) {
-        echo \'<a class="btn-default" href="/domain/edit/\' . $nid . \'">Lehrtext bearbeiten (Themenbereich)</a>\';
+        echo \'<a class="btn btn-default" href="/domain/edit/\' . $nid . \'">Lehrtext bearbeiten (Themenbereich)</a>\';
       }
     }
   }

@@ -293,10 +293,12 @@ body.cke_show_borders{
     margin-left: 20px;
     margin-bottom: 40px;
 }
-  
 
-
-/*AB HIER KEINE PROBLEME*/
+/*ueberlaufender content im kurs*/
+.main-container .row
+{
+    margin:0px;
+}
  
 /*
 Course Header
