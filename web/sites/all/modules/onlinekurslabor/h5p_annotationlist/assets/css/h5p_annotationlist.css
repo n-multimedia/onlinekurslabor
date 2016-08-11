@@ -98,9 +98,10 @@ font-size:12px;
 div.interaction_icon   a
 {
 border-radius:50%;
-padding:3px;
+padding:1px;
 width:1em;
 height:1em;
+margin-left:4px;
 }
 div.interaction_icon   a:link, div.interaction_icon   a:visited, div.interaction_icon   a:hover
 {
