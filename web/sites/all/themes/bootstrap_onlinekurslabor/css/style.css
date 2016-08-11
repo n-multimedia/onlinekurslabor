@@ -580,7 +580,21 @@ warum custom?
 }
 /*
 
-.row-fluid div.forum-post {
+*/
+
+/*
+SECTION CONTENT
+*/
+
+/*
+Outline left sidebar
+*/ 
+
+/*
+forum
+*/
+
+.row div.forum-post {
     border: 1px solid #aaa;
 }
 
@@ -604,16 +618,6 @@ warum custom?
 .row .view-advanced-forum-topic-list .view-empty {
     border: 1px solid #aaa;
 }
-
-*/
-
-/*
-SECTION CONTENT
-*/
-
-/*
-Outline left sidebar
-*/ 
 
 
 #custom_general_space{
