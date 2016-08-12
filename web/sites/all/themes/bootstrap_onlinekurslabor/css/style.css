@@ -598,6 +598,31 @@ Outline left sidebar
 */ 
 
 /*
+Outline left sidebar
+*/
+.nav-list {
+    padding:0;
+}
+.nav-list li li {
+    padding-left: 15px;
+}
+
+.nav-list>.active>a, .nav-list>.active>a:hover{
+    background-color: #dee9ef;
+    text-shadow:none;
+    color: #005580;
+}
+
+/*buchsortierung
+bootstrap3 macht eingaben immer breit, im bedarfsfall verkleinern
+*/
+form#book-admin-edit .form-control 
+{
+    display:inline;
+    width: auto;
+    
+}
+/*
 forum
 */
 
