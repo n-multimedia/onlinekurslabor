@@ -1,5 +1,12 @@
 <?php
-
+/*profilbilder inline*/
+function bootstrap_onlinekurslabor_preprocess_image(&$vars)
+{ 
+    if($vars['style_name']=='profile_mini_thumbnail')
+    {
+        $vars['attributes']['class'] = 'okl_inline_image';
+    }
+}
 
 /**
  * Returns the correct span class for a region

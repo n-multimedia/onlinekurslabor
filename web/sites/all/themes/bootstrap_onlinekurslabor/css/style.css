@@ -451,6 +451,11 @@ News
     margin-bottom: 30px;
 }
 
+.okl_inline_image
+{
+    display: inline;
+}
+
 /*
 ICONS
 */
