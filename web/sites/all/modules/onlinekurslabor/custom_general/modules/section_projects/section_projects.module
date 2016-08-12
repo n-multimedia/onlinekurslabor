@@ -790,15 +790,15 @@ function _section_projects_header_and_navigation_view() {
     //partner logo
     $field_view = field_view_field('node', $po_node, 'field_po_logo', array('settings' => array('image_style' => 'projects_logo')));
     $field_view['#label_display'] = 'hidden';
-    $output .= '<div class="row" style="position:absolute; height:100%">';
-    $output .= '<div style="height:100%;" class="col-md-offset-8 col-md-4">';
-    $output .= '<div style="position:absolute; bottom:20px; z-index:10; width:32%; text-align:center;">';
+    $output .= '<div class="container" style="position:absolute; height:100%">';
+    $output .= '<div style="height:100%;" class="col-md-offset-9 col-md-3">';
+    $output .= '<div style="position:absolute; bottom:20px; z-index:10;  text-align:center;">';
     $output .= '<a href="' . url("node/" . $po_node->nid) . '">';
     $output .= drupal_render($field_view);
     $output .= '</a>';
     $output .= '</div>';
     $output .= '</div>';
-    $output .= '<div class="row" style="position:absolute; height:100%">';
+    $output .= '<div class="container" style="position:absolute; height:100%">';
     $output .= '<div style="position:absolute; background-color: #fff; opacity:0.6; height:100%;" class="col-md-offset-8  col-md-4">';
     $output .= '</div>';
     $output .= '</div>';

@@ -114,109 +114,21 @@ BOOTSTRAP 3
 
 .navbar{
     border-radius: 0px;
-}
-/*general styles section navigation (bspw im kurs)*/
-#section_navigation.navbar {
-    min-height: 40px;
-    border: none;
-}
-#section_navigation.navbar ul.navbar-nav > li:first-child{
-    border-left:1px solid #CCCCCC;
-}
-#section_navigation.navbar ul.navbar-nav > li{
-    border-right:1px solid #CCCCCC;
-}
-#section_navigation.navbar .navbar-nav > li > a {
-    padding-bottom: 12px;
-    padding-top: 10px;
-       font-size: 12px;
-}
-#section_navigation.navbar ul.navbar-nav a.disabled
-{
-    opacity: 0.65;
- /* geht nicht   cursor: not-allowed;*/
-}
-
-/*Navigationsleiste im Kurs*/
-.section_navigation_course.navbar{
-    background: #467DBD;
-}
-
-.section_navigation_course.navbar-default .navbar-nav > li > a {
-    color: #ffffff;
-    background-color: #426DA0;
-}
-
-.section_navigation_course.navbar-default .navbar-nav > li > a.active{
-    background-color: #374555;
-}
-.section_navigation_course.navbar-default .navbar-nav > li > a:hover{
-    background-color: #46596B;
-}
-
-
-/*Navigationsleiste im Projekt-Cockpit*/
-.section_navigation_cockpit.navbar{
-    background: #604A7B;
-}
-.section_navigation_cockpit.navbar-default .navbar-nav > li{
-
-}
-.section_navigation_cockpit.navbar-default .navbar-nav > li > a {
-    color: #ffffff;
-    background-color: #4F3F56;
-}
-
-.section_navigation_cockpit.navbar-default .navbar-nav > li > a.active{
-    background-color: #45364B;
-}
-.section_navigation_cockpit.navbar-default .navbar-nav > li > a:hover{
-    background-color: #4F3F56;
-}
-
-
-/*collapsed section-menu*/
-@media (max-width: 999px) { 
-    
-    #section_navigation.navbar ul.navbar-nav  {
-        text-align: center;
-        
-    }
-     #section_navigation.navbar ul.navbar-nav a.disabled
-     {
-       text-decoration: line-through;
-     }
- 
-    .section_navigation_course.navbar-default .navbar-nav > li > a 
-    {
-        border:none;
-    }
-}
-
-
-
-
-/*schwarze top-navigation*/
-#page_top_navigation .navbar{
    padding-top: 7px;
 }
-#page_top_navigation.navbar-inverse .navbar-nav > li > a {
-    color: #ffffff;
-}
-#page_top_navigation.navbar-inverse .navbar-nav > li > a:hover {
-    color: #9d9d9d
-}
-	
 
-#page_top_navigation .navbar-brand
+.navbar-brand
 {
     padding: 0px;
     padding-top: 10px;
 }
-#page_top_navigation .navbar-inverse{
+.navbar-inverse{
     background: #333333;
 }
-#page_top_navigation ul.navbar-nav > li > a{
+body{
+    
+}
+ul.navbar-nav > li > a{
     padding-bottom: 0px;
     margin-top: 5px
 }
@@ -253,7 +165,9 @@ BOOTSTRAP 3
 /*
 ENDE BOOTSTRAP 3
 */
- 
+#course_top_navigation li.btn a{
+    
+}
 
 /*user-picture in navigation*/
 .navigation_user_picture
@@ -293,13 +207,44 @@ body.cke_show_borders{
     margin-left: 20px;
     margin-bottom: 40px;
 }
+  
 
-/*ueberlaufender content im kurs*/
-.main-container .row
+
+/*
+top Nav
+*/
+#course_top_navigation
 {
-    margin:0px;
+    position:relative;
+    background-color: #467DBD;
+    margin-top:0;
+    z-index:40;
+    margin:0;
 }
  
+
+
+#course_top_navigation .btn a{
+    background-color: #426DA0;
+    text-shadow:none;
+    color: #fff;
+    border-right:1px solid #ffffff;
+    padding-bottom:13px;
+
+}
+#course_top_navigation .btn a.active
+{
+    padding-bottom:14px;
+
+}
+
+#course_top_navigation .btn a:hover{
+    background-color: #46596B;
+}
+#course_top_navigation .btn a.active{
+    background-color: #374555;
+}
+
 /*
 Course Header
 */
@@ -339,7 +284,10 @@ Course Header
 Margin between content and navigation
 */
 
- 
+#course_top_navigation
+{
+    margin-bottom:0;
+}
 
 /*fuer alle disabled-buttons not-allowed-cursor setzen*/
 .btn.disabled a{
@@ -451,11 +399,6 @@ News
     margin-bottom: 30px;
 }
 
-.okl_inline_image
-{
-    display: inline;
-}
-
 /*
 ICONS
 */
@@ -506,6 +449,195 @@ Docs
 
 
 
+
+/*
+Responsive Features
+*/
+
+@media (min-width: 1200px) { 
+    #course_top_navigation .btn a
+    {
+        font-size:12px;
+    }
+}
+
+@media (max-width: 1200px) { 
+    #course_top_navigation .btn a
+    {
+        font-size:12px;
+    }
+}
+
+/* Landscape phone to portrait tablet */
+@media (min-width: 768px) and (max-width: 979px) {
+    #course_top_navigation .btn a
+    {
+        font-size:12px;
+        padding:13px 6px;
+    }
+
+    .navbar-fixed-top .navbar-inner
+    {
+        padding:0 20px 0 20px;
+    }
+
+}
+
+/* collapsed navbar colors*/
+@media (max-width: 979px) {
+/*
+    #navbar .dropdown-menu
+    {
+        display: block;
+    }
+    #navbar .nav li.dropdown a:hover
+    {
+        background-color: #f2f2f2;
+        color:#333;
+    }
+    #navbar .nav li.dropdown a:hover [class^="icon-"]
+    {
+        background-image: url("../img/glyphicons-halflings.png");
+    }
+
+    #navbar .nav li.dropdown a:hover {
+        background:none;
+        background-color: #f2f2f2;
+    }
+
+    #navbar .nav li a:hover
+    {
+        color: #333;
+    }
+    #navbar .navbar-collapse .dropdown-menu a
+    {
+        color: #fff;
+    }
+    #navbar .dropdown-menu>li>a>[class^="icon-"]{
+        background-image: url("../img/glyphicons-halflings-white.png");
+    }
+
+    #navbar #custom-top-nav li.dropdown>a:hover .caret
+    {
+        border-top-color: #333;
+        border-bottom-color: #333;
+    }
+
+    #course_demo_info {
+        position:relative;
+        top:0;
+        left:0;
+    }
+    #course_header {
+        height:150px;
+    }
+
+    .courses_sponsors_col {
+        width: 60px;
+    }
+
+    .home-layout-container .home-container-partner {
+        text-align: center;
+    }
+    .home-layout-container .home-container-partner img {
+        float:none !important;
+    }
+*/
+}
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) { 
+    #course_top_navigation .btn a
+    {
+        font-size:11px;
+        padding:11px 2px;
+    }
+    .navbar-fixed-top .navbar-inner
+    {
+        padding:0 20px 0 20px;
+    }
+
+    #course_top_navigation .btn a
+    {
+        width: 85px;
+    }
+
+    #course_header_title h1 {
+        font-size: 30px;
+    }
+
+    #course_header {
+        height:130px;
+    }
+
+    .courses_sponsors_col {
+        width: 55px;
+    }
+    .courses_sponsors_col a {
+        margin-bottom:3px;
+    }
+
+
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) { 
+    #course_top_navigation li.btn, #course_top_navigation li.btn a {
+        display:block;
+        color:red;
+    }
+
+    .courses_sponsors{
+        display:none;
+    }
+    #course_header {
+        height:100px;
+    }
+    #course_header_title h1 {
+        font-size: 26px;
+    }
+
+    #course_top_navigation ul {
+        text-align: center;
+    }
+    #course_top_navigation .btn a
+    {
+        font-size:12px;
+        padding:5px 7px;
+    }
+
+    .navbar-fixed-top .navbar-inner
+    {
+        padding:0 20px 0 20px;
+    }
+
+    #course_top_navigation li.btn a, #course_top_navigation li.btn
+    {
+        width: auto;
+        height: auto;
+    }
+    .unread_tiny_box {
+        right:30px;
+        bottom:15px;
+        padding:0px 4px;
+    }
+    .btn.disabled a{
+        text-decoration: line-through;
+    }
+}
+
+@media (max-width: 340px) { 
+   #course_top_navigation .btn a
+    {
+        font-size:7px;
+        padding:11px 3px;
+    }
+
+
+    #course_top_navigation .btn a
+    {
+        width: 46px;
+    }
+}
 
 
 
@@ -587,21 +719,7 @@ warum custom?
 }
 /*
 
-*/
-
-/*
-SECTION CONTENT
-*/
-
-/*
-Outline left sidebar
-*/ 
-
-/*
-forum
-*/
-
-.row div.forum-post {
+.row-fluid div.forum-post {
     border: 1px solid #aaa;
 }
 
@@ -626,6 +744,28 @@ forum
     border: 1px solid #aaa;
 }
 
+*/
+
+/*
+SECTION CONTENT
+*/
+
+/*
+Outline left sidebar
+*/
+.nav-list {
+    padding:0;
+}
+.nav-list li li {
+    padding-left: 15px;
+}
+
+.nav-list>.active>a, .nav-list>.active>a:hover{
+    background-color: #dee9ef;
+    text-shadow:none;
+    color: #005580;
+}
+
 
 #custom_general_space{
     height:25px;
@@ -639,7 +779,18 @@ BIBLIO
 /*
 Large form. smaller widht for input fields
 */
- 
+
+.col-md-8 input.form-autocomplete
+{
+    max-width:160px;
+}
+
+.col-md-8 select
+{
+    max-width:125px;
+}
+
+
 /*
 Book Navigation
 */
@@ -857,18 +1008,6 @@ USER PROFILE
 PROJECTS
 */
 
-.partners-po-item{
-    border-bottom:1px solid #dddddd;
-    padding: 10px 10px;
-    margin-bottom: 20px;
-    margin-left:0;
-    position:relative;
-}
-.partners-po-item:hover{
-    background-color: #eee;
-}
-
-/*
 .partners-projects-item {
     padding: 5px 0;
 }
@@ -878,6 +1017,17 @@ PROJECTS
 
 .partners-projects-item.active {
     background-color: #efefef;
+}
+
+.partners-po-item{
+    border-bottom:1px solid #dddddd;
+    padding: 10px 10px;
+    margin-bottom: 20px;
+    margin-left:0;
+    position:relative;
+}
+.partners-po-item:hover{
+    background-color: #eee;
 }
 
 .partners-po-item .partners-projects-item-title h2, .partners-po-item .partners-projects-item-list h3{
@@ -890,7 +1040,7 @@ PROJECTS
     padding: 0;
     min-height: 0;
 }
-*/
+
 .breadcrumb {
     padding: 0;
     background: none;

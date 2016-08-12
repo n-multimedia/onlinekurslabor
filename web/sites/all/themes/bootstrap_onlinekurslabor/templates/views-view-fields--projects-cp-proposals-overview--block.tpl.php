@@ -55,7 +55,7 @@ $proposal_status = drupal_render($field_view);
   <div class="partners-projects-item-status col-md-1" >
     <span class="<?php echo $proposal_status_class; ?>" style="float:left; margin-right:7px; line-height:12px">&nbsp;</span>
   </div>
-  <div class="partners-projects-item-changed col-md-11" >
+  <div class="partners-projects-item-changed col-md-10" >
     
     <?php echo $fields['title']->content; ?>  
   </div>
