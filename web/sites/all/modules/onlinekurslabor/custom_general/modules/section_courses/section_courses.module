@@ -217,8 +217,8 @@ function section_courses_render_course_link($course, $account = NULL) {
   if (!empty($course->uid) && ($course->uid == $account->uid)) {
     // User is the group manager.
     $result = '<div class="btn-group">';
-    $result .= '<a href="' . $url_course . '" class="btn btn-success">Zum Kurs</a>';
-    $result .= '<a href="#" class="btn disabled">Sie sind der Kursgründer</a>';
+    $result .= '<a href="' . $url_course . '" class="btn btn-success"><i class="glyphicon glyphicon-triangle-right"> </i> Zum Kurs</a>';
+    $result .= '<a href="#" class="btn btn-warning disabled">Sie sind der Kursgründer</a>';
     //$result .= '<a href="/course/admin/' . $course->nid . '/settings" class="btn btn-inverse">Kurseinstellungen</a>';
     $result .= '</div>';
   }
@@ -233,17 +233,20 @@ function section_courses_render_course_link($course, $account = NULL) {
         $unsubscribe_url = '/group/node/' . $course->nid . '/unsubscribe?destination=courses';
 
         $result = '<div class="btn-group">';
-        $result .= '<a href="' . $url_course . '" class="btn btn-success">Zum Kurs</a>';
-        $result .= '<a href="' . $unsubscribe_url . '" class="btn btn-inverse">Abmelden</a>';
+        $result .= '<a href="' . $url_course . '" class="btn btn-success"><i class="glyphicon glyphicon-triangle-right"> </i> Zum Kurs</a>';
+        $result .= '<a href="' . $unsubscribe_url . '" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Abmelden</a>';
         $result .= '</div>';
       }
       else {
         $subscribe_url = 'group/node/' . $course->nid . '/subscribe';
-        $subscribe_link = l('Anmelden', $subscribe_url, array(
+        $subscribe_link = l('<i class="glyphicon glyphicon-ok-circle"> </i> Anmelden', $subscribe_url, array(
+          'html'=>true,
           'query' => array('destination' => 'course/home/' . $course->nid),
           'attributes' => array('class' => array('btn', 'btn-primary'))
         ));
-        $info_link = l('Kursinfo', 'course/info/' . $course->nid, array(
+        $info_link = l('<i class="glyphicon glyphicon-info-sign"> </i> Kursinfo', 'course/info/' . $course->nid, 
+          array(  
+          'html'=> true,
           'attributes' => array(
             'class' => array(
               'btn',
@@ -1306,7 +1309,7 @@ function section_courses_student_registration_form($form, &$form_state) {
     '#type' => 'button',
     '#value' => '<i class="glyphicon glyphicon-user"></i> Import',
     '#submit' => array('section_courses_student_registration_import_submit'),
-    '#attributes' => array('class' => array('btn-warning')),
+    '#attributes' => array('class' => array('btn','btn-warning')),
     // See the examples in ajax_example.module for more details on the
     // properties of #ajax.
     '#ajax' => array(
