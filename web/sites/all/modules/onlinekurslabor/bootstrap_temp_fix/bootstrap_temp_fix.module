@@ -1,0 +1,13 @@
+<?php
+/**
+ * Implements hook_init().
+ */
+function bootstrap_temp_fix_init() {
+    
+  global $theme_key;
+  if (strpos($theme_key, 'bootstrap')===FALSE) {
+    include_once(drupal_get_path('theme', 'bootstrap') . '/theme/process.inc');
+  }
+    module_invoke('bootstrap', 'element_info');
+    module_invoke('bootstrap', 'element_info_alter');
+}
