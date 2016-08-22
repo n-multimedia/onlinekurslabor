@@ -7447,7 +7447,7 @@ return section_courses_text_outline();
         'children' => array(
           0 => 2,
         ),
-        'class' => 'span4',
+        'class' => 'col-md-4',
       ),
       2 => array(
         'type' => 'row',

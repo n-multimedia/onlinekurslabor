@@ -218,7 +218,7 @@ Instructor's Tools
 */
 
 
-#instructors_tools-container
+#instructors_tools-container, #authors_tools-container
 {
     width:60px;
     overflow: hidden;
@@ -231,6 +231,12 @@ Instructor's Tools
     background-color: rgba(200,200,200, 0.3);
     z-index: 500;
 }
+
+#instructors_tools-container div, #instructors_tools-container ul, #authors_tools-container div, #authors_tools-container ul{
+    margin:0;
+    padding:0;
+}
+
 
 #instructors_tools-container ul{
     margin:0;
@@ -247,7 +253,7 @@ Instructor's Tools
     background-color: rgba(0,136,204, 0.03);
 }
 
-#instructors_tools-container .btn
+#instructors_tools-container .btn , #authors_tools-container .btn
 {
     display: inline-block;
     width: 58px;
@@ -262,6 +268,12 @@ Instructor's Tools
     left:1px;
 
 }
+/*same, nur geringfuegig anders*/
+ #authors_tools-container .btn
+{
+    height: 65px;
+    width:60px;
+}
 
 #instructors_tools-container .one_item_toobar
 {
@@ -272,6 +284,9 @@ Instructor's Tools
 {
 
 }
+/*fuer hover-funktionalitaet siehe ganz unten*/ 
+
+
 
 #content_node_tabs-container li {
     display: inline-block;
@@ -437,19 +452,6 @@ Authors's Tools
     position:relative;
 }
 
-#authors_tools-container
-{
-    width:60px;
-    overflow: hidden;
-    display: block;
-    padding:0;
-    direction:rtl;
-    text-align: right;
-    position:absolute;
-    right:0;
-    background-color: rgba(200,200,200, 0.3);
-	z-index: 10;
-}
 
 
 #authors_tools-container .row:hover 
@@ -463,21 +465,7 @@ Authors's Tools
     margin:0;
 }
 
-#authors_tools-container .btn
-{
-    display: inline-block;
-    width: 58px;
-    white-space: normal;
-    font-size:  10px;
-    word-wrap: break-word;
-    height: 65px;
-    padding:0;
-    font-weight: bold;
-    line-height: 8px;
-    margin-left:-1px;
-    left:1px;
 
-}
 
 #authors_tools-container .one_item_toobar
 {
@@ -1278,4 +1266,19 @@ for timespan span problem
 
 div.field-name-field-proposal-timespan {
     margin:0 !important;
+}
+
+
+/*hover-funktionalitaet ganz unten wegen überschreibgefahr*/
+#instructors_tools-container:hover, #authors_tools-container:hover
+{
+    width:240px;
+}
+#instructors_tools-container .toolbar_hidden,  #authors_tools-container  .toolbar_hidden
+{
+    display: none;
+}
+#instructors_tools-container:hover .toolbar_hidden, #authors_tools-container:hover  .toolbar_hidden
+{
+    display: inline-block;
 }

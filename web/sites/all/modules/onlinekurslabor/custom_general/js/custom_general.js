@@ -4,46 +4,6 @@
         /*toggle solution for qaa questions*/
         attach: function(context, settings) {
             
-            var temp_toolbar_width = 0;
-            $('#instructors_tools-container').once('custom_general').mouseenter(function() {
-                //cache base width
-                if (temp_toolbar_width == 0)
-                    temp_toolbar_width = $('#instructors_tools-container').width();
-
-                $('#instructors_tools-toolbar').stop(false, true);
-
-                $('#instructors_tools-container').css('overflow', 'visible');
-                $('#instructors_tools-container').width(240);
-
-            }).mouseleave(function() {
-
-                $('#instructors_tools-toolbar').stop(false, true);
-
-                $('#instructors_tools-container').width(temp_toolbar_width);
-                $('#instructors_tools-container').css('overflow', 'hidden');
-                //$('#instructors_tools-container').animate({ width: temp_toolbar_width }, 'fast');
-            });
-
-            
-            $('#authors_tools-container').once('custom_general').mouseenter(function() {
-                //cache base width
-                if (temp_toolbar_width == 0)
-                    temp_toolbar_width = $('#authors_tools-container').width();
-
-                $('#instructors_tools-toolbar').stop(false, true);
-
-                $('#authors_tools-container').css('overflow', 'visible');
-                $('#authors_tools-container').width(180);
-
-            }).mouseleave(function() {
-
-                $('#instructors_tools-toolbar').stop(false, true);
-
-                $('#authors_tools-container').width(temp_toolbar_width);
-                $('#authors_tools-container').css('overflow', 'hidden');
-                //$('#authors_tools-container').animate({ width: temp_toolbar_width }, 'fast');
-            });
-
             /*
              * Media
              */
