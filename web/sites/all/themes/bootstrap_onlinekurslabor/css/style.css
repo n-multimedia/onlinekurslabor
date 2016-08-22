@@ -552,6 +552,13 @@ FORUM
   background-color: #eee;
 }
 */
+/*evtl fuer alle img wichtig*/
+.author-pane img {
+    border: 0 none;
+    height: auto;
+    max-width: 100%;
+    vertical-align: middle;
+}
 /*
 BUTTONS
 */
@@ -919,6 +926,14 @@ PROJECTS
 .breadcrumb {
     padding: 0;
     background: none;
+}
+/*overwrite bootstrap*/
+.breadcrumb > li + li::before{
+    content:none;
+}
+.breadcrumb > li > .divider {
+    color: #ccc;
+    padding: 0 5px;
 }
 
 .forum-tools {
