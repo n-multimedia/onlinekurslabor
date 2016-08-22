@@ -21,11 +21,11 @@ function nm_section_courses_features_default_fe_block_settings() {
     'pages' => '',
     'roles' => array(),
     'themes' => array(
-      'bartik' => array(
+      'bootstrap' => array(
         'region' => '',
         'status' => 0,
-        'theme' => 'bartik',
-        'weight' => 0,
+        'theme' => 'bootstrap',
+        'weight' => -37,
       ),
       'bootstrap_onlinekurslabor' => array(
         'region' => '',
@@ -47,11 +47,11 @@ function nm_section_courses_features_default_fe_block_settings() {
     'pages' => '',
     'roles' => array(),
     'themes' => array(
-      'bartik' => array(
+      'bootstrap' => array(
         'region' => '',
         'status' => 0,
-        'theme' => 'bartik',
-        'weight' => 0,
+        'theme' => 'bootstrap',
+        'weight' => -35,
       ),
       'bootstrap_onlinekurslabor' => array(
         'region' => '',
@@ -73,11 +73,11 @@ function nm_section_courses_features_default_fe_block_settings() {
     'pages' => '',
     'roles' => array(),
     'themes' => array(
-      'bartik' => array(
+      'bootstrap' => array(
         'region' => '',
         'status' => 0,
-        'theme' => 'bartik',
-        'weight' => 0,
+        'theme' => 'bootstrap',
+        'weight' => -29,
       ),
       'bootstrap_onlinekurslabor' => array(
         'region' => '',
@@ -99,11 +99,11 @@ function nm_section_courses_features_default_fe_block_settings() {
     'pages' => '',
     'roles' => array(),
     'themes' => array(
-      'bartik' => array(
+      'bootstrap' => array(
         'region' => '',
         'status' => 0,
-        'theme' => 'bartik',
-        'weight' => 0,
+        'theme' => 'bootstrap',
+        'weight' => -32,
       ),
       'bootstrap_onlinekurslabor' => array(
         'region' => '',
@@ -125,11 +125,11 @@ function nm_section_courses_features_default_fe_block_settings() {
     'pages' => '',
     'roles' => array(),
     'themes' => array(
-      'bartik' => array(
+      'bootstrap' => array(
         'region' => '',
         'status' => 0,
-        'theme' => 'bartik',
-        'weight' => 0,
+        'theme' => 'bootstrap',
+        'weight' => -31,
       ),
       'bootstrap_onlinekurslabor' => array(
         'region' => '',
@@ -151,11 +151,11 @@ function nm_section_courses_features_default_fe_block_settings() {
     'pages' => '',
     'roles' => array(),
     'themes' => array(
-      'bartik' => array(
+      'bootstrap' => array(
         'region' => '',
         'status' => 0,
-        'theme' => 'bartik',
-        'weight' => 0,
+        'theme' => 'bootstrap',
+        'weight' => -28,
       ),
       'bootstrap_onlinekurslabor' => array(
         'region' => '',
@@ -177,11 +177,11 @@ function nm_section_courses_features_default_fe_block_settings() {
     'pages' => '',
     'roles' => array(),
     'themes' => array(
-      'bartik' => array(
+      'bootstrap' => array(
         'region' => '',
         'status' => 0,
-        'theme' => 'bartik',
-        'weight' => 0,
+        'theme' => 'bootstrap',
+        'weight' => -27,
       ),
       'bootstrap_onlinekurslabor' => array(
         'region' => '',
@@ -203,11 +203,11 @@ function nm_section_courses_features_default_fe_block_settings() {
     'pages' => '',
     'roles' => array(),
     'themes' => array(
-      'bartik' => array(
+      'bootstrap' => array(
         'region' => '',
         'status' => 0,
-        'theme' => 'bartik',
-        'weight' => 0,
+        'theme' => 'bootstrap',
+        'weight' => -26,
       ),
       'bootstrap_onlinekurslabor' => array(
         'region' => '',
@@ -229,11 +229,11 @@ function nm_section_courses_features_default_fe_block_settings() {
     'pages' => '',
     'roles' => array(),
     'themes' => array(
-      'bartik' => array(
+      'bootstrap' => array(
         'region' => '',
         'status' => 0,
-        'theme' => 'bartik',
-        'weight' => 0,
+        'theme' => 'bootstrap',
+        'weight' => -25,
       ),
       'bootstrap_onlinekurslabor' => array(
         'region' => '',

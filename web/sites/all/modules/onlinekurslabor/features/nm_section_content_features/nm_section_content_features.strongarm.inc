@@ -342,7 +342,7 @@ function nm_section_content_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'biblio_orphan_clean_next_execution';
-  $strongarm->value = 1470121311;
+  $strongarm->value = 1471937239;
   $export['biblio_orphan_clean_next_execution'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -1621,7 +1621,7 @@ function nm_section_content_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'jquery_update_jquery_version';
-  $strongarm->value = '1.7';
+  $strongarm->value = '1.10';
   $export['jquery_update_jquery_version'] = $strongarm;
 
   $strongarm = new stdClass();

@@ -21,11 +21,11 @@ function nm_general_features_default_fe_block_settings() {
     'pages' => '',
     'roles' => array(),
     'themes' => array(
-      'bartik' => array(
-        'region' => '',
-        'status' => 0,
-        'theme' => 'bartik',
-        'weight' => 0,
+      'bootstrap' => array(
+        'region' => 'header',
+        'status' => 1,
+        'theme' => 'bootstrap',
+        'weight' => 10,
       ),
       'bootstrap_onlinekurslabor' => array(
         'region' => 'header',
@@ -47,11 +47,11 @@ function nm_general_features_default_fe_block_settings() {
     'pages' => '',
     'roles' => array(),
     'themes' => array(
-      'bartik' => array(
-        'region' => '',
-        'status' => 0,
-        'theme' => 'bartik',
-        'weight' => 0,
+      'bootstrap' => array(
+        'region' => 'navigation',
+        'status' => 1,
+        'theme' => 'bootstrap',
+        'weight' => -25,
       ),
       'bootstrap_onlinekurslabor' => array(
         'region' => 'navigation',

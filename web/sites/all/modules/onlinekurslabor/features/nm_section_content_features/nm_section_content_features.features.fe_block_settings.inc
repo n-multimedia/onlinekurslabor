@@ -21,11 +21,11 @@ function nm_section_content_features_default_fe_block_settings() {
     'pages' => '',
     'roles' => array(),
     'themes' => array(
-      'bartik' => array(
+      'bootstrap' => array(
         'region' => '',
         'status' => 0,
-        'theme' => 'bartik',
-        'weight' => -13,
+        'theme' => 'bootstrap',
+        'weight' => -20,
       ),
       'bootstrap_onlinekurslabor' => array(
         'region' => '',
