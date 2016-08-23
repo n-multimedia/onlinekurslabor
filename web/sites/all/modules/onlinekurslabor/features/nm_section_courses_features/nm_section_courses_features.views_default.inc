@@ -2491,9 +2491,12 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['style_options']['columns'] = array(
     'uid' => 'uid',
     'field_photo' => 'name',
+    'field_first_name' => 'field_first_name',
+    'field_last_name' => 'field_last_name',
     'name' => 'name',
+    'view' => 'view',
   );
-  $handler->display->display_options['style_options']['default'] = 'name';
+  $handler->display->display_options['style_options']['default'] = 'field_last_name';
   $handler->display->display_options['style_options']['info'] = array(
     'uid' => array(
       'sortable' => 0,
@@ -2509,9 +2512,28 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
       'separator' => '',
       'empty_column' => 0,
     ),
+    'field_first_name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_last_name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'name' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'view' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -2553,24 +2575,48 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     'image_style' => 'profile_mini_thumbnail',
     'image_link' => 'content',
   );
+  /* Field: Profile: Vorname */
+  $handler->display->display_options['fields']['field_first_name']['id'] = 'field_first_name';
+  $handler->display->display_options['fields']['field_first_name']['table'] = 'field_data_field_first_name';
+  $handler->display->display_options['fields']['field_first_name']['field'] = 'field_first_name';
+  $handler->display->display_options['fields']['field_first_name']['relationship'] = 'profile';
+  $handler->display->display_options['fields']['field_first_name']['label'] = '';
+  $handler->display->display_options['fields']['field_first_name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_first_name']['element_label_colon'] = FALSE;
+  /* Field: Profile: Nachname */
+  $handler->display->display_options['fields']['field_last_name']['id'] = 'field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['table'] = 'field_data_field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['field'] = 'field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['relationship'] = 'profile';
+  $handler->display->display_options['fields']['field_last_name']['label'] = '';
+  $handler->display->display_options['fields']['field_last_name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_last_name']['element_label_colon'] = FALSE;
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['label'] = '';
+  $handler->display->display_options['fields']['name']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['name']['alter']['text'] = '[field_first_name]&nbsp;[field_last_name]';
+  $handler->display->display_options['fields']['name']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['name']['alter']['path'] = '/user/[uid]';
+  $handler->display->display_options['fields']['name']['alter']['absolute'] = TRUE;
+  $handler->display->display_options['fields']['name']['alter']['link_class'] = 'username';
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
   /* Field: Global: View */
   $handler->display->display_options['fields']['view']['id'] = 'view';
   $handler->display->display_options['fields']['view']['table'] = 'views';
   $handler->display->display_options['fields']['view']['field'] = 'view';
   $handler->display->display_options['fields']['view']['label'] = '';
+  $handler->display->display_options['fields']['view']['exclude'] = TRUE;
   $handler->display->display_options['fields']['view']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['view']['view'] = 'courses_user_course_groups';
   $handler->display->display_options['fields']['view']['arguments'] = '[!uid]/!1';
-  /* Sort criterion: User: Name */
-  $handler->display->display_options['sorts']['name']['id'] = 'name';
-  $handler->display->display_options['sorts']['name']['table'] = 'users';
-  $handler->display->display_options['sorts']['name']['field'] = 'name';
+  /* Sort criterion: Profile: Nachname (field_last_name) */
+  $handler->display->display_options['sorts']['field_last_name_value']['id'] = 'field_last_name_value';
+  $handler->display->display_options['sorts']['field_last_name_value']['table'] = 'field_data_field_last_name';
+  $handler->display->display_options['sorts']['field_last_name_value']['field'] = 'field_last_name_value';
+  $handler->display->display_options['sorts']['field_last_name_value']['relationship'] = 'profile';
   /* Sort criterion: OG membership: Created */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'og_membership';
@@ -2669,32 +2715,6 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
 
   /* Display: Block-Dozenten */
   $handler = $view->new_display('block', 'Block-Dozenten', 'block_3');
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: User: Uid */
-  $handler->display->display_options['fields']['uid']['id'] = 'uid';
-  $handler->display->display_options['fields']['uid']['table'] = 'users';
-  $handler->display->display_options['fields']['uid']['field'] = 'uid';
-  $handler->display->display_options['fields']['uid']['label'] = '';
-  $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
-  /* Field: Profile: Foto */
-  $handler->display->display_options['fields']['field_photo']['id'] = 'field_photo';
-  $handler->display->display_options['fields']['field_photo']['table'] = 'field_data_field_photo';
-  $handler->display->display_options['fields']['field_photo']['field'] = 'field_photo';
-  $handler->display->display_options['fields']['field_photo']['relationship'] = 'profile';
-  $handler->display->display_options['fields']['field_photo']['label'] = '';
-  $handler->display->display_options['fields']['field_photo']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_photo']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['field_photo']['settings'] = array(
-    'image_style' => 'profile_mini_thumbnail',
-    'image_link' => 'content',
-  );
-  /* Field: User: Name */
-  $handler->display->display_options['fields']['name']['id'] = 'name';
-  $handler->display->display_options['fields']['name']['table'] = 'users';
-  $handler->display->display_options['fields']['name']['field'] = 'name';
-  $handler->display->display_options['fields']['name']['label'] = '';
-  $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: User: Active */
@@ -2721,32 +2741,6 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
 
   /* Display: Block-Tutoren */
   $handler = $view->new_display('block', 'Block-Tutoren', 'block_4');
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: User: Uid */
-  $handler->display->display_options['fields']['uid']['id'] = 'uid';
-  $handler->display->display_options['fields']['uid']['table'] = 'users';
-  $handler->display->display_options['fields']['uid']['field'] = 'uid';
-  $handler->display->display_options['fields']['uid']['label'] = '';
-  $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
-  /* Field: Profile: Foto */
-  $handler->display->display_options['fields']['field_photo']['id'] = 'field_photo';
-  $handler->display->display_options['fields']['field_photo']['table'] = 'field_data_field_photo';
-  $handler->display->display_options['fields']['field_photo']['field'] = 'field_photo';
-  $handler->display->display_options['fields']['field_photo']['relationship'] = 'profile';
-  $handler->display->display_options['fields']['field_photo']['label'] = '';
-  $handler->display->display_options['fields']['field_photo']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_photo']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['field_photo']['settings'] = array(
-    'image_style' => 'profile_mini_thumbnail',
-    'image_link' => 'content',
-  );
-  /* Field: User: Name */
-  $handler->display->display_options['fields']['name']['id'] = 'name';
-  $handler->display->display_options['fields']['name']['table'] = 'users';
-  $handler->display->display_options['fields']['name']['field'] = 'name';
-  $handler->display->display_options['fields']['name']['label'] = '';
-  $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: User: Active */
@@ -2788,6 +2782,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('OG membership from user'),
     t('Profile'),
     t('OG Roles from OG membership'),
+    t('[field_first_name]&nbsp;[field_last_name]'),
     t('Alle'),
     t('Block'),
     t('Content pane'),
