@@ -944,6 +944,8 @@ function nm_section_courses_features_views_default_views() {
     'views_bulk_operations' => 'views_bulk_operations',
     'uid' => 'uid',
     'field_photo' => 'field_photo',
+    'field_first_name_1' => 'field_first_name_1',
+    'field_last_name_1' => 'field_last_name_1',
     'name' => 'name',
     'realname' => 'realname',
     'og_roles' => 'og_roles',
@@ -955,7 +957,7 @@ function nm_section_courses_features_views_default_views() {
     'access' => 'access',
     'edit_node' => 'edit_node',
   );
-  $handler->display->display_options['style_options']['default'] = 'name';
+  $handler->display->display_options['style_options']['default'] = 'field_last_name_1';
   $handler->display->display_options['style_options']['info'] = array(
     'views_bulk_operations' => array(
       'align' => '',
@@ -971,6 +973,20 @@ function nm_section_courses_features_views_default_views() {
     ),
     'field_photo' => array(
       'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_first_name_1' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_last_name_1' => array(
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
@@ -1030,7 +1046,7 @@ function nm_section_courses_features_views_default_views() {
     ),
     'access' => array(
       'sortable' => 1,
-      'default_sort_order' => 'asc',
+      'default_sort_order' => 'desc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -1051,6 +1067,8 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['relationships']['profile']['id'] = 'profile';
   $handler->display->display_options['relationships']['profile']['table'] = 'users';
   $handler->display->display_options['relationships']['profile']['field'] = 'profile';
+  $handler->display->display_options['relationships']['profile']['label'] = 'Profil';
+  $handler->display->display_options['relationships']['profile']['required'] = TRUE;
   $handler->display->display_options['relationships']['profile']['bundle_types'] = array(
     'student' => 'student',
   );
@@ -1065,6 +1083,15 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['relationships']['og_users_roles']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_users_roles']['field'] = 'og_users_roles';
   $handler->display->display_options['relationships']['og_users_roles']['relationship'] = 'og_membership_rel';
+  /* Relationship: User: Profile */
+  $handler->display->display_options['relationships']['profile_1']['id'] = 'profile_1';
+  $handler->display->display_options['relationships']['profile_1']['table'] = 'users';
+  $handler->display->display_options['relationships']['profile_1']['field'] = 'profile';
+  $handler->display->display_options['relationships']['profile_1']['label'] = 'Profil_master';
+  $handler->display->display_options['relationships']['profile_1']['required'] = TRUE;
+  $handler->display->display_options['relationships']['profile_1']['bundle_types'] = array(
+    'master' => 'master',
+  );
   /* Field: Bulk operations: User */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'users';
@@ -1201,16 +1228,34 @@ function nm_section_courses_features_views_default_views() {
     'image_style' => 'profile_mini_thumbnail',
     'image_link' => '',
   );
+  /* Field: Profile: Vorname */
+  $handler->display->display_options['fields']['field_first_name_1']['id'] = 'field_first_name_1';
+  $handler->display->display_options['fields']['field_first_name_1']['table'] = 'field_data_field_first_name';
+  $handler->display->display_options['fields']['field_first_name_1']['field'] = 'field_first_name';
+  $handler->display->display_options['fields']['field_first_name_1']['relationship'] = 'profile_1';
+  $handler->display->display_options['fields']['field_first_name_1']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_first_name_1']['alter']['path'] = 'user/[uid]';
+  $handler->display->display_options['fields']['field_first_name_1']['alter']['absolute'] = TRUE;
+  /* Field: Profile: Nachname */
+  $handler->display->display_options['fields']['field_last_name_1']['id'] = 'field_last_name_1';
+  $handler->display->display_options['fields']['field_last_name_1']['table'] = 'field_data_field_last_name';
+  $handler->display->display_options['fields']['field_last_name_1']['field'] = 'field_last_name';
+  $handler->display->display_options['fields']['field_last_name_1']['relationship'] = 'profile_1';
+  $handler->display->display_options['fields']['field_last_name_1']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_last_name_1']['alter']['path'] = 'user/[uid]';
+  $handler->display->display_options['fields']['field_last_name_1']['alter']['absolute'] = TRUE;
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['name']['alter']['make_link'] = TRUE;
   /* Field: Realname: Real name */
   $handler->display->display_options['fields']['realname']['id'] = 'realname';
   $handler->display->display_options['fields']['realname']['table'] = 'realname';
   $handler->display->display_options['fields']['realname']['field'] = 'realname';
   $handler->display->display_options['fields']['realname']['label'] = 'Name';
+  $handler->display->display_options['fields']['realname']['exclude'] = TRUE;
   /* Field: OG membership: OG user roles in group */
   $handler->display->display_options['fields']['og_roles']['id'] = 'og_roles';
   $handler->display->display_options['fields']['og_roles']['table'] = 'og_membership';
@@ -1258,6 +1303,8 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'users';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
+  $handler->display->display_options['fields']['edit_node']['label'] = '';
+  $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
   /* Sort criterion: User: Name */
   $handler->display->display_options['sorts']['name']['id'] = 'name';
   $handler->display->display_options['sorts']['name']['table'] = 'users';
@@ -1716,15 +1763,18 @@ function nm_section_courses_features_views_default_views() {
     t('nächste Seite ›'),
     t('letzte Seite »'),
     t('Teilnehmer @start - @end aus insgesamt @total'),
-    t('Profile'),
+    t('Profil'),
     t('OG membership from user'),
     t('OG Roles from OG membership'),
+    t('Profil_master'),
     t('User'),
     t('- Choose an operation -'),
     t('Benutzerkonto sperren'),
     t('Einer Kursgruppe zuweisen'),
     t('Benutzerkonto löschen'),
     t('Status und Kursgruppe(n) zuweisen'),
+    t('Vorname'),
+    t('Nachname'),
     t('Name'),
     t('Kurs-Rolle'),
     t('Matrikelnummer'),
@@ -1734,7 +1784,6 @@ function nm_section_courses_features_views_default_views() {
     t('E-mail'),
     t('Last access'),
     t('vor [access]'),
-    t('Edit link'),
     t('Alle'),
     t('Block'),
     t('Content pane'),
@@ -2599,7 +2648,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['name']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['name']['alter']['text'] = '[field_first_name]&nbsp;[field_last_name]';
   $handler->display->display_options['fields']['name']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['name']['alter']['path'] = '/user/[uid]';
+  $handler->display->display_options['fields']['name']['alter']['path'] = 'user/[uid]';
   $handler->display->display_options['fields']['name']['alter']['absolute'] = TRUE;
   $handler->display->display_options['fields']['name']['alter']['link_class'] = 'username';
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
