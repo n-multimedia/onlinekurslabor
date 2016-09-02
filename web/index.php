@@ -15,7 +15,9 @@
  * Root directory of Drupal installation.
  */
 define('DRUPAL_ROOT', getcwd());
-
+//todo this is a hack
+//machts forum haesslich, aber ohne geht form-submit nicht. @todo
+require_once(DRUPAL_ROOT.'/sites/all/themes/bootstrap' . '/includes/process.inc');
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 menu_execute_active_handler();
