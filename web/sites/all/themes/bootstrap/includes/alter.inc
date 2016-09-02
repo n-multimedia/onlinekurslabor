@@ -75,7 +75,7 @@ function bootstrap_css_alter(&$css) {
 /**
  * Implements hook_element_info_alter().
  */
-function bootstrap_element_info_alter(&$info=array()) {
+function bootstrap_element_info_alter(&$info) {
   global $theme_key;
 
   $cid = "theme_registry:bootstrap:element_info";
