@@ -46,6 +46,7 @@ a.nm_fancy_box_link:hover{
     opacity:0.9;
     bottom:0px;
     margin:0px !important;
+    width:100%;
 }
 /*
 .pane-content  {
