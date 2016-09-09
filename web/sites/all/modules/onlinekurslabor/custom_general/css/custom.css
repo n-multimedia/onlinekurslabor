@@ -8,7 +8,6 @@ input[disabled].knob {
 }
 
 
-
 .nm_circle_progress_bar {
     width:200px;
     position:relative;
@@ -52,11 +51,16 @@ user profile smaller
     left:28px;
 }
 
+.nm_cb_title_1 {
+    font-weight: bold;
+}
 .nm_cb_title_2 {
     margin-bottom:0;
+    font-weight: bold;
 }
 .nm_cb_title_3 {
     margin-top:0;
+    font-weight: bold;
 }
 
 

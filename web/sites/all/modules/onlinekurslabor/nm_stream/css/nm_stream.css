@@ -11,6 +11,10 @@
 Project Blog adaptions
 */
 
+.nm-stream-node {
+    padding: 15px;
+}
+
 .nm-stream-node-container.projects_blog .nm-stream-node{
     border-right: 2px solid #604a7b !important;
     margin:0;
@@ -50,11 +54,16 @@ Project Blog adaptions
 
 
 .nm-stream-top {
-
+    padding: 0 !important;
 }
 .nm-stream-left{
 
 }
+
+.nm-stream-right {
+    padding-right: 0 !important;
+}
+
 
 .nm-stream-top-middle {
 
@@ -66,9 +75,11 @@ Project Blog adaptions
 
 .nm-stream-main{
     margin-top:10px;
+    padding: 0 !important;
 }
 .nm-stream-main-body{
     margin-bottom: 20px;
+    padding: 0;
 }
 
 .nm-stream-modified {
@@ -99,6 +110,7 @@ Project Blog adaptions
 }
 .nm-stream-top-right{
     position:relative;
+    padding-right: 0 !important;
 }
 /*
     hover
@@ -369,5 +381,6 @@ infinite scroll
 }
 .nm-stream-main.col-md-offset-1.col-md-11
 {
-    padding-left:25px;
+    padding-left: 15px !important;
 }
+

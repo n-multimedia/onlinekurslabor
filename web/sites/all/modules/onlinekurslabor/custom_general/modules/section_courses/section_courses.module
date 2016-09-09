@@ -218,7 +218,7 @@ function section_courses_render_course_link($course, $account = NULL) {
     // User is the group manager.
     $result = '<div class="btn-group">';
     $result .= '<a href="' . $url_course . '" class="btn btn-success"><i class="glyphicon glyphicon-triangle-right"> </i> Zum Kurs</a>';
-    $result .= '<a href="#" class="btn btn-warning disabled">Sie sind der Kursgründer</a>';
+    $result .= '<a href="#" class="btn btn-default disabled">Sie sind der Kursgründer</a>';
     //$result .= '<a href="/course/admin/' . $course->nid . '/settings" class="btn btn-inverse">Kurseinstellungen</a>';
     $result .= '</div>';
   }
@@ -234,7 +234,7 @@ function section_courses_render_course_link($course, $account = NULL) {
 
         $result = '<div class="btn-group">';
         $result .= '<a href="' . $url_course . '" class="btn btn-success"><i class="glyphicon glyphicon-triangle-right"> </i> Zum Kurs</a>';
-        $result .= '<a href="' . $unsubscribe_url . '" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Abmelden</a>';
+        $result .= '<a href="' . $unsubscribe_url . '" class="btn btn-inverse"><i class="glyphicon glyphicon-remove"></i> Abmelden</a>';
         $result .= '</div>';
       }
       else {
@@ -749,6 +749,14 @@ function section_courses_text_outline() {
   }
   else {
     $data['content'] = '';
+  }
+
+  //Outline retraction by domain setting
+  if(_custom_general_outline_retraction_enabled($domain_ref)) {
+    drupal_add_js(drupal_get_path('module', 'section_content') . "/js/section_content.js");
+    drupal_add_js(drupal_get_path('module', 'section_content') . "/js/bootstrap-treeview.min.js");
+    drupal_add_css(drupal_get_path('module', 'section_content') . "/css/bootstrap-treeview.min.css");
+    drupal_add_css(drupal_get_path('module', 'section_content') . "/css/nm-bootstrap-treeview.css");
   }
 
   return drupal_render($data);

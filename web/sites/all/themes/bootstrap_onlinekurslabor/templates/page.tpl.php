@@ -8,7 +8,7 @@
       </button>
           <?php if (!empty($logo)): ?>
                 <a class="navbar-brand" href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>">
-                    <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" height="27"/>
+                    <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>"/>
                 </a>
       <?endif?>
     </div>

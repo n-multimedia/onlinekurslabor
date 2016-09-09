@@ -1,0 +1,87 @@
+.panels-flexible-column-first .treeview .node-disabled {
+    display: none;
+}
+.panels-flexible-column-first .treeview .node-selected {
+    background-color: transparent !important;
+    color: #000000 !important;
+}
+
+.panels-flexible-column-first .treeview span.icon:not(.expand-icon),
+.panels-flexible-column-first .treeview span.icon.node-icon {
+    display: none;
+}
+
+.panels-flexible-column-first .icon.expand-icon {
+    font-size: 10px;
+}
+
+.panels-flexible-column-first .treeview li {
+    border: 0;
+    padding-left: 0;
+    position: relative;
+    display: block;
+    height: auto;
+}
+
+.panels-flexible-column-first .treeview li:hover {
+    background-color: transparent;
+}
+
+.panels-flexible-column-first .treeview a {
+    color: #337ab7 !important;
+    margin-left: 25px;
+}
+
+.panels-flexible-column-first .treeview a:hover {
+    color: #23527c !important;
+    text-decoration: underline !important;
+}
+
+.panels-flexible-column-first .treeview .search-result a {
+    color: #D9534F !important;
+}
+
+.panels-flexible-column-first .treeview span.icon.expand-icon {
+    position: absolute;
+    top: 10px;
+    padding: 4px;
+}
+
+.panels-flexible-column-first .treeview > a  {
+    /*position: absolute;
+    left: 25px;*/
+    margin-left: 25px;
+}
+
+
+.panels-flexible-column-first .treeview span.indent {
+    display: none;
+}
+
+.panels-flexible-column-first .treeview table,
+.panels-flexible-column-first .treeview a {
+    display: inline-block;
+    width: 97%;
+}
+
+#countent_outline_search {
+    width: 100%;
+}
+
+#countent-outline-search {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#content-outline-expand-all,
+#content-outline-collapse-all {
+    text-align: right;
+    margin-bottom: 10px;
+    display: block;
+    float: right;
+    margin-left: 15px;
+}
+
+.menu.nav.nav-list.treeview {
+    clear: both;
+}

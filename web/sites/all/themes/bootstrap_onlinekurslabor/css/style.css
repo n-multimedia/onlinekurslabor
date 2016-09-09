@@ -6,7 +6,11 @@
 /*
 ADAPING BOOTSTRAP
 */
-
+.btn.btn-inverse {
+    background-color: #666;
+    border-color: #666;
+    color: #fff;
+}
 
 .book-navigation .nm_float_right {
     float:right;
@@ -197,8 +201,9 @@ BOOTSTRAP 3
 
 
 /*schwarze top-navigation*/
-#page_top_navigation .navbar{
+#page_top_navigation.navbar{
    padding-top: 7px;
+   margin: 0;
 }
 #page_top_navigation.navbar-inverse .navbar-nav > li > a {
     color: #ffffff;
@@ -208,11 +213,12 @@ BOOTSTRAP 3
 }
 	
 
-#page_top_navigation .navbar-brand
-{
+#page_top_navigation .navbar-brand {
     padding: 0px;
-    padding-top: 10px;
+    padding-top: 5px;
+    margin-left: 15px;
 }
+
 #page_top_navigation .navbar-inverse{
     background: #333333;
 }
@@ -299,7 +305,7 @@ body.cke_show_borders{
 {
     margin:0px;
 }
- 
+
 /*
 Course Header
 */
@@ -565,6 +571,9 @@ BUTTONS
 
 /*
 warum custom?
+02.09.2016 - 17:41 - SN
+nach design vorlage
+*/
 .btn {
     display: inline-block;
     text-shadow: none;
@@ -578,23 +587,23 @@ warum custom?
     padding:4px 8px;
 }
 
-.btn-primary{
+.btn.btn-primary {
     background-color: #467DBD;
+    border-color: #467DBD;
 }
-.btn-primary:hover{
+.btn.btn-primary:hover {
     background-color: #426DA0;
+    border-color: #426DA0;
 }
 
-.btn-info{
+.btn.btn-info{
     background-color: #49afcd;
 }
 
-.btn-info:hover{
+.btn.btn-info:hover{
     background-color: #3e93ad;
 }
-/*
 
-*/
 
 /*
 SECTION CONTENT
@@ -629,6 +638,8 @@ form#book-admin-edit .form-control
     width: auto;
     
 }
+
+
 /*
 forum
 */
@@ -881,7 +892,7 @@ USER PROFILE
   background-color: #f7f7f7;
 }
 .user-courses-item-title {
-  padding: 2px 3px 0 0;
+  padding: 2px 3px 0 5px;
 
 }
 
