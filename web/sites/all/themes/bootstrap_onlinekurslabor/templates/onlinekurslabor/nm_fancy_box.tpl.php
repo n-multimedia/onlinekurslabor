@@ -3,7 +3,7 @@
 
 <div class="nm_fancy_box_container col-md-12">
     <div class="nm_fancy_box_image col-md-12"><?php echo $image; ?></div>
-    <div class="nm_fancy_box_desc col-md-12"><?php echo $description; ?></div>
+    <div class="nm_fancy_box_desc"><?php echo $description; ?></div>
 </div>
 
 

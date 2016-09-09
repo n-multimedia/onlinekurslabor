@@ -222,7 +222,7 @@ Instructor's Tools
 */
 
 
-#instructors_tools-container, #authors_tools-container
+#instructors_tools-container, #authors_tools-container, #projects_tools-container
 {
     width:60px;
     overflow: hidden;
@@ -235,16 +235,18 @@ Instructor's Tools
     background-color: rgba(200,200,200, 0.3);
     z-index: 500;
 }
+ #projects_tools-container
+ {
+     background:none;
+ }
 
-#instructors_tools-container div, #instructors_tools-container ul, #authors_tools-container div, #authors_tools-container ul{
+#instructors_tools-container div, #instructors_tools-container ul, #authors_tools-container div, #authors_tools-container ul, #projects_tools-container div , #projects_tools-container ul{
     margin:0;
     padding:0;
 }
 
 
-#instructors_tools-container ul{
-    margin:0;
-}
+ 
 
 #instructors_tools
 {
@@ -252,12 +254,9 @@ Instructor's Tools
     position:relative;
 }
 
-#instructors_tools-container .row:hover 
-{
-    background-color: rgba(0,136,204, 0.03);
-}
 
-#instructors_tools-container .btn , #authors_tools-container .btn
+
+#instructors_tools-container .btn , #authors_tools-container .btn , #projects_tools-container .btn
 {
     display: inline-block;
     width: 58px;
@@ -278,16 +277,18 @@ Instructor's Tools
     height: 65px;
     width:60px;
 }
-
-#instructors_tools-container .one_item_toobar
+#projects_tools-container .btn
 {
-    overflow:hidden;
+     height: 65px;
+    width:58px; 
+}
+#instructors_tools-container .row:hover , #projects_tools-container .row:hover {
+
+    background-color: rgba(0,136,204, 0.03);
 }
 
-#instructors_tools-container .btn:not(:last-child) 
-{
 
-}
+  
 /*fuer hover-funktionalitaet siehe ganz unten*/ 
 
 
@@ -464,23 +465,8 @@ Authors's Tools
 }
 
 
-#authors_tools-container ul{
-    padding: 0;
-    margin:0;
-}
 
-
-
-#authors_tools-container .one_item_toobar
-{
-    overflow:hidden;
-}
-
-#authors_tools-container .btn:not(:last-child) 
-{
-
-}
-
+  
 #block-block-4, .pane-block-4
 {
     width:100%;
@@ -641,55 +627,13 @@ Project's Tools
     position:relative;
 }
 
-#projects_tools-container .row:hover 
-{
-    background-color: rgba(0,136,204, 0.03);
-}
 
-#projects_tools-container
-{
-    width:60px;
-    overflow: hidden;
-    display: block;
-    padding:0;
-    direction:rtl;
-    text-align: right;
-    position:absolute;
-    right:0;
-    background-color: rgba(200,200,200, 0.3);
-    z-index: 500;
-}
-
-#projects_tools-container ul{
-    padding: 0;
-    margin:0;
-}
-
-#projects_tools-container .btn
-{
-    display: inline-block;
-    width: 58px;
-    white-space: normal;
-    font-size:  10px;
-    word-wrap: break-word;
-    height: 65px;
-    padding:0;
-    font-weight: bold;
-    line-height: 8px;
-    margin-left:-1px;
-    left:1px;
-
-}
-
-#projects_tools-container .one_item_toobar
+ 
+#instructors_tools-container .one_item_toobar #projects_tools-container .one_item_toobar , #authors_tools-container .one_item_toobar
 {
     overflow:hidden;
 }
-
-#projects_tools-container .btn:not(:last-child) 
-{
-
-}
+ 
 
 #block-block-4, .pane-block-4
 {

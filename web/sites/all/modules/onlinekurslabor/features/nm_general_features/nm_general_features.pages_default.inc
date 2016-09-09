@@ -227,8 +227,7 @@ function nm_general_features_default_page_manager_pages() {
         'contains' => 'region',
         'children' => array(
           0 => 'test',
-          1 => 'image_video',
-          2 => 'platzhalter',
+          1 => 'platzhalter',
         ),
         'parent' => 'main',
         'class' => 'row',
@@ -248,7 +247,7 @@ function nm_general_features_default_page_manager_pages() {
         'width' => '64.94139740527254',
         'width_type' => '%',
         'parent' => '1',
-        'class' => 'col-md-7',
+        'class' => 'col-xs-12 col-md-6 col-lg-7',
       ),
       'partner' => array(
         'type' => 'region',
@@ -264,7 +263,7 @@ function nm_general_features_default_page_manager_pages() {
         'width' => '26.88529876382778',
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'col-md-4',
+        'class' => 'col-xs-12 col-md-4',
       ),
       'partner_' => array(
         'type' => 'region',
@@ -272,7 +271,7 @@ function nm_general_features_default_page_manager_pages() {
         'width' => '26.893250953042525',
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'col-md-4',
+        'class' => 'col-xs-12 col-md-4',
       ),
       'student' => array(
         'type' => 'region',
@@ -280,23 +279,15 @@ function nm_general_features_default_page_manager_pages() {
         'width' => '26.83567332159516',
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'col-md-4',
-      ),
-      'image_video' => array(
-        'type' => 'region',
-        'title' => 'Platzhalter',
-        'width' => '5.050505050505102',
-        'width_type' => '%',
-        'parent' => '1',
-        'class' => '',
+        'class' => 'col-xs-12 col-md-4',
       ),
       'platzhalter' => array(
         'type' => 'region',
         'title' => 'Image-Video',
-        'width' => '30.008097544223233',
+        'width' => 35.058602594728,
         'width_type' => '%',
         'parent' => '1',
-        'class' => 'col-md-5',
+        'class' => 'col-xs-12 col-md-6 col-lg-5',
       ),
     ),
   );
@@ -343,31 +334,6 @@ function nm_general_features_default_page_manager_pages() {
   $display->uuid = '5b7b8396-726b-4f00-8c15-16d56daff70d';
   $display->content = array();
   $display->panels = array();
-    $pane = new stdClass();
-    $pane->pid = 'new-966f2e7b-0041-496d-ac97-0252d1e68b4c';
-    $pane->panel = 'image_video';
-    $pane->type = 'custom';
-    $pane->subtype = 'custom';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'admin_title' => 'spacer',
-      'title' => '',
-      'body' => '&nbsp;',
-      'format' => 'filtered_html',
-      'substitute' => TRUE,
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $pane->uuid = '966f2e7b-0041-496d-ac97-0252d1e68b4c';
-    $display->content['new-966f2e7b-0041-496d-ac97-0252d1e68b4c'] = $pane;
-    $display->panels['image_video'][0] = 'new-966f2e7b-0041-496d-ac97-0252d1e68b4c';
     $pane = new stdClass();
     $pane->pid = 'new-875794f9-d9c8-416f-a60a-06600be3b6f9';
     $pane->panel = 'lehrender';
@@ -476,10 +442,12 @@ return theme(\'nm_fancy_box\', $vars);
     $pane->configuration = array(
       'admin_title' => 'Video',
       'title' => '',
-      'body' => ' <video width="100%" controls="controls" poster="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo2.png">
+      'body' => '<div class="col-md-12">
+ <video width="100%" controls="controls" poster="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo2.png">
   <source src="https://onlinekurslabor.phil.uni-augsburg.de/system/files/imagefilm_onlinekurslabor.mp4" type="video/mp4">
   Your browser does not support the video tag.
-</video> ',
+</video> 
+</div>',
       'format' => 'full_html',
       'substitute' => TRUE,
     );
