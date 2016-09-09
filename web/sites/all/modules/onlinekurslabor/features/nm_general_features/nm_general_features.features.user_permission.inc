@@ -203,15 +203,6 @@ function nm_general_features_user_default_permissions() {
     'module' => 'og',
   );
 
-  // Exported permission: 'administer media wysiwyg view mode'.
-  $permissions['administer media wysiwyg view mode'] = array(
-    'name' => 'administer media wysiwyg view mode',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'media_wysiwyg_view_mode',
-  );
-
   // Exported permission: 'administer modules'.
   $permissions['administer modules'] = array(
     'name' => 'administer modules',

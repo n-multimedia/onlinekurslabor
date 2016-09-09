@@ -8,7 +8,7 @@
  * Implements hook_field_group_info().
  */
 function nm_section_courses_features_field_group_info() {
-  $export = array();
+  $field_groups = array();
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -37,7 +37,7 @@ function nm_section_courses_features_field_group_info() {
       ),
     ),
   );
-  $export['group_course_design|node|courses_course|form'] = $field_group;
+  $field_groups['group_course_design|node|courses_course|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -66,7 +66,7 @@ function nm_section_courses_features_field_group_info() {
       ),
     ),
   );
-  $export['group_course_features|node|courses_course|form'] = $field_group;
+  $field_groups['group_course_features|node|courses_course|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -100,7 +100,7 @@ function nm_section_courses_features_field_group_info() {
       'formatter' => 'closed',
     ),
   );
-  $export['group_course_general_data|node|courses_course|form'] = $field_group;
+  $field_groups['group_course_general_data|node|courses_course|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -130,7 +130,7 @@ function nm_section_courses_features_field_group_info() {
       ),
     ),
   );
-  $export['group_course_general|node|courses_course|form'] = $field_group;
+  $field_groups['group_course_general|node|courses_course|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -158,7 +158,7 @@ function nm_section_courses_features_field_group_info() {
       ),
     ),
   );
-  $export['group_course_projects|node|courses_course|form'] = $field_group;
+  $field_groups['group_course_projects|node|courses_course|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -187,7 +187,7 @@ function nm_section_courses_features_field_group_info() {
       ),
     ),
   );
-  $export['group_courses_text|node|courses_course|form'] = $field_group;
+  $field_groups['group_courses_text|node|courses_course|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -214,7 +214,7 @@ function nm_section_courses_features_field_group_info() {
       ),
     ),
   );
-  $export['group_courses_vhb|node|courses_course|form'] = $field_group;
+  $field_groups['group_courses_vhb|node|courses_course|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -240,7 +240,7 @@ function nm_section_courses_features_field_group_info() {
       ),
     ),
   );
-  $export['group_user_account_tab|user|user|form'] = $field_group;
+  $field_groups['group_user_account_tab|user|user|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -266,7 +266,7 @@ function nm_section_courses_features_field_group_info() {
       ),
     ),
   );
-  $export['group_user_master_tab|user|user|form'] = $field_group;
+  $field_groups['group_user_master_tab|user|user|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -295,7 +295,7 @@ function nm_section_courses_features_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_user_personal_info|profile2|student|default'] = $field_group;
+  $field_groups['group_user_personal_info|profile2|student|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -326,7 +326,7 @@ function nm_section_courses_features_field_group_info() {
       ),
     ),
   );
-  $export['group_user_settings_tab|user|user|form'] = $field_group;
+  $field_groups['group_user_settings_tab|user|user|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -353,7 +353,7 @@ function nm_section_courses_features_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_user_stream|profile2|student|default'] = $field_group;
+  $field_groups['group_user_stream|profile2|student|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -379,7 +379,7 @@ function nm_section_courses_features_field_group_info() {
       ),
     ),
   );
-  $export['group_user_student_tab|user|user|form'] = $field_group;
+  $field_groups['group_user_student_tab|user|user|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -407,7 +407,7 @@ function nm_section_courses_features_field_group_info() {
       ),
     ),
   );
-  $export['group_user_tabs|user|user|form'] = $field_group;
+  $field_groups['group_user_tabs|user|user|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -434,7 +434,25 @@ function nm_section_courses_features_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_users_courses|profile2|student|default'] = $field_group;
+  $field_groups['group_users_courses|profile2|student|default'] = $field_group;
 
-  return $export;
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Allgemein / Kursinfo');
+  t('Design');
+  t('Einstellungen');
+  t('Features');
+  t('Kurs - Allgemein');
+  t('Lehrtext');
+  t('Meine Kurse');
+  t('Persönliche Informationen');
+  t('Projekte');
+  t('Stammdaten');
+  t('Stream');
+  t('Studentendaten');
+  t('Tab Container');
+  t('VHB Einstellungen');
+  t('Zugangsdaten');
+
+  return $field_groups;
 }
