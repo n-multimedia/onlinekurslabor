@@ -1359,8 +1359,6 @@ function nm_section_courses_features_views_default_views() {
     t('- Choose an operation -'),
     t('Benutzerkonto sperren'),
     t('Einer Kursgruppe zuweisen'),
-    t('Benutzerkonto löschen'),
-    t('Status und Kursgruppe(n) zuweisen'),
     t('Vorname'),
     t('Nachname'),
     t('Name'),
