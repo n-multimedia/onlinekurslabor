@@ -33,6 +33,12 @@ function nm_section_content_features_default_fe_block_settings() {
         'theme' => 'bootstrap_onlinekurslabor',
         'weight' => -20,
       ),
+      'seven' => array(
+        'region' => '',
+        'status' => 0,
+        'theme' => 'seven',
+        'weight' => 0,
+      ),
     ),
     'title' => '',
     'visibility' => 0,

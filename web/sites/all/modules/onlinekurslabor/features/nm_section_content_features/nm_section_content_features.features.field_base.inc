@@ -153,6 +153,31 @@ function nm_section_content_features_field_default_field_bases() {
     'type' => 'text_long',
   );
 
+  // Exported field_base: 'field_domain_outline_retractable'.
+  $field_bases['field_domain_outline_retractable'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_domain_outline_retractable',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => 'Gliederung einklappbar',
+      ),
+      'allowed_values_function' => '',
+      'profile2_private' => FALSE,
+    ),
+    'translatable' => 0,
+    'type' => 'list_integer',
+  );
+
   // Exported field_base: 'field_domain_picture'.
   $field_bases['field_domain_picture'] = array(
     'active' => 1,

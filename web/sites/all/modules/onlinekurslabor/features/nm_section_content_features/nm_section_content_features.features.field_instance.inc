@@ -1385,6 +1385,50 @@ function nm_section_content_features_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'node-content_domain-field_domain_outline_retractable'.
+  $field_instances['node-content_domain-field_domain_outline_retractable'] = array(
+    'bundle' => 'content_domain',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 5,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_domain_outline_retractable',
+    'label' => 'Gliederung',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 2,
+    ),
+  );
+
   // Exported field_instance: 'node-content_domain-field_domain_picture'.
   $field_instances['node-content_domain-field_domain_picture'] = array(
     'bundle' => 'content_domain',
@@ -2243,6 +2287,7 @@ function nm_section_content_features_field_default_field_instances() {
   t('Comment');
   t('Determine if this is an OG group.');
   t('Frage');
+  t('Gliederung');
   t('Group visibility');
   t('Groups audience');
   t('Gruppe');
