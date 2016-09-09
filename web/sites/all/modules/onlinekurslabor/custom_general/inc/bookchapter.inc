@@ -5,6 +5,39 @@
  *   Helper functions for automated numbering for book sections.
  */
 
+
+function _custom_general_outline_retraction_enabled($nid) {
+
+  $node = current(entity_load('node', array($nid)));
+
+  if (isset($node->book)) {
+    //parent book ID
+    //$bid = $node->book['bid'];
+    $domain_id = _custom_general_get_group($node);
+
+    if (!$domain_id) {
+      return FALSE;
+    }
+
+    $domain_node = node_load($domain_id);
+    $f_val = field_get_items('node', $domain_node, 'field_domain_outline_retractable', $node->language);
+
+    //check if setting is set for this domain
+    if (!empty($f_val)) {
+      $values = field_get_items('node', $domain_node, 'field_domain_outline_retractable', $node->language);
+
+      foreach($values as $val) {
+        if($val['value'] == 0) {
+          //key = 0 Outline setting
+          return TRUE;
+        }
+      }
+    }
+  }
+
+  return FALSE;
+}
+
 /**
  * Helper functions for Domain-Settings
  */

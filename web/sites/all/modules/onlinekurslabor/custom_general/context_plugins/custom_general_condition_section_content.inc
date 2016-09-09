@@ -57,6 +57,7 @@ class custom_general_condition_section_content extends context_condition {
       $this->condition_met($context, NM_CONTENT_DOMAIN);
     }
   }
+
   
   
   //22.04.2013 - 23:50 - SN
@@ -67,7 +68,8 @@ class custom_general_condition_section_content extends context_condition {
     $node = menu_get_object();
     
     $ui_active = _section_domain_author_section_active();
-    
+
+
     $domain_overview_active = (isset($node) && $node->nid == NM_DOMAIN_OVERVIEW_ID) ? TRUE : FALSE;
        
     $section_content = $domain_overview_active || $ui_active;
