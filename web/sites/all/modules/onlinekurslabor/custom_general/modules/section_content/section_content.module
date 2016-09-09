@@ -166,23 +166,23 @@ function book_preprocess(&$variables, $hook) {
 
   if ($hook == 'book_navigation') {
 
-
     //TOC functionality. Numbering Chapters
     //check if numbering is enabled in domain settings
     if (!_custom_general_toc_enabled($variables['book_id']))
       return;
 
+
     $book_link = $variables['book_link'];
 
     $flat = book_get_flat_menu($book_link);
 
-// DO THE WHOLE TREE
+    // DO THE WHOLE TREE
     if ($book_link['has_children']) {
-// Walk through the array until we find the current page.
+    // Walk through the array until we find the current page.
       do {
         $link = array_shift($flat);
       } while ($link && ($link['mlid'] != $book_link['mlid']));
-// Continue though the array and collect the links whose parent is this page.
+      // Continue though the array and collect the links whose parent is this page.
       while (($link = array_shift($flat)) && $link['plid'] == $book_link['mlid']) {
         $numbering = nm_bookchapters_get_chapter_numbering_mlid($link['mlid']);
 
@@ -206,7 +206,7 @@ function book_preprocess(&$variables, $hook) {
       $variables['tree'] = drupal_render($elements);
     }
 
-// DO PREV
+    // DO PREV
     if ($variables['prev_url']) {
       $prev = book_prev($book_link);
       $pnumbering = nm_bookchapters_get_chapter_numbering_mlid($prev['mlid']);
@@ -220,7 +220,7 @@ function book_preprocess(&$variables, $hook) {
       }
     }
 
-// DO NEXT
+    // DO NEXT
     if ($variables['next_url']) {
       $next = book_next($book_link);
       $nnumbering = nm_bookchapters_get_chapter_numbering_mlid($next['mlid']);
@@ -703,7 +703,6 @@ function section_content_wysiwyg_plugin($editor, $version) {
     return;
   }
 
-//_linkit_add_settings($editor);
 
   switch ($editor) {
     case 'ckeditor':
@@ -716,11 +715,11 @@ function section_content_wysiwyg_plugin($editor, $version) {
           'load' => TRUE,
         ),
       );
+      
   }
 }
 
 
-    
 /**
  *  FILTER
  */
@@ -1153,6 +1152,15 @@ function section_content_text_outline() {
 
 
   //$output = '<div><h5><u>' . l($active_domain->title, 'domain/text/' . $active_domain->nid) . '</u></h5></div>' . $output;
+
+  //Outline retraction by domain setting
+  if(_custom_general_outline_retraction_enabled($domain_ref)) {
+    drupal_add_js(drupal_get_path('module', 'section_content') . "/js/section_content.js");
+    drupal_add_js(drupal_get_path('module', 'section_content') . "/js/bootstrap-treeview.min.js");
+    drupal_add_css(drupal_get_path('module', 'section_content') . "/css/bootstrap-treeview.min.css");
+    drupal_add_css(drupal_get_path('module', 'section_content') . "/css/nm-bootstrap-treeview.css");
+  }
+
 
   return $output;
 }
