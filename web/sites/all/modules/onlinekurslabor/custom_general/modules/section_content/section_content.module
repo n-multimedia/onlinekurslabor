@@ -716,7 +716,6 @@ function section_content_wysiwyg_plugin($editor, $version) {
           'load' => TRUE,
         ),
       );
-      break;
   }
 }
 

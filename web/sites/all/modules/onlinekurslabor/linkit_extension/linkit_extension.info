@@ -1,0 +1,4 @@
+name = linkit_extension
+description = extends linkit
+core = 7.x
+dependencies[] = linkit
