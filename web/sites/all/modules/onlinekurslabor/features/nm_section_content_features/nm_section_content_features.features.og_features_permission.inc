@@ -10,6 +10,16 @@
 function nm_section_content_features_og_features_default_permissions() {
   $permissions = array();
 
+  // Exported og permission: 'node:annvid:update field_domain_outline_retractable field'
+  $permissions['node:annvid:update field_domain_outline_retractable field'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:annvid:view field_domain_outline_retractable field'
+  $permissions['node:annvid:view field_domain_outline_retractable field'] = array(
+    'roles' => array(),
+  );
+
   // Exported og permission: 'node:content_domain:add user'
   $permissions['node:content_domain:add user'] = array(
     'roles' => array(
@@ -241,6 +251,13 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
+  // Exported og permission: 'node:content_domain:update field_domain_outline_retractable field'
+  $permissions['node:content_domain:update field_domain_outline_retractable field'] = array(
+    'roles' => array(
+      'member' => 'member',
+    ),
+  );
+
   // Exported og permission: 'node:content_domain:update field_domain_picture field'
   $permissions['node:content_domain:update field_domain_picture field'] = array(
     'roles' => array(
@@ -410,6 +427,14 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
+  // Exported og permission: 'node:content_domain:view field_domain_outline_retractable field'
+  $permissions['node:content_domain:view field_domain_outline_retractable field'] = array(
+    'roles' => array(
+      'member' => 'member',
+      'non-member' => 'non-member',
+    ),
+  );
+
   // Exported og permission: 'node:content_domain:view field_domain_picture field'
   $permissions['node:content_domain:view field_domain_picture field'] = array(
     'roles' => array(
@@ -500,6 +525,46 @@ function nm_section_content_features_og_features_default_permissions() {
     'roles' => array(
       'member' => 'member',
     ),
+  );
+
+  // Exported og permission: 'node:courses_course:update field_domain_outline_retractable field'
+  $permissions['node:courses_course:update field_domain_outline_retractable field'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:courses_course:view field_domain_outline_retractable field'
+  $permissions['node:courses_course:view field_domain_outline_retractable field'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:courses_group:update field_domain_outline_retractable field'
+  $permissions['node:courses_group:update field_domain_outline_retractable field'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:courses_group:view field_domain_outline_retractable field'
+  $permissions['node:courses_group:view field_domain_outline_retractable field'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:projects_cooperation_agreement:update field_domain_outline_retractable field'
+  $permissions['node:projects_cooperation_agreement:update field_domain_outline_retractable field'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:projects_cooperation_agreement:view field_domain_outline_retractable field'
+  $permissions['node:projects_cooperation_agreement:view field_domain_outline_retractable field'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:projects_organization:update field_domain_outline_retractable field'
+  $permissions['node:projects_organization:update field_domain_outline_retractable field'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:projects_organization:view field_domain_outline_retractable field'
+  $permissions['node:projects_organization:view field_domain_outline_retractable field'] = array(
+    'roles' => array(),
   );
 
   return $permissions;
