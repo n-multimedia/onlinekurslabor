@@ -21,7 +21,7 @@ class MessageTypeUIController extends EntityDefaultUIController {
     form_state_values_clean($form_state);
     foreach ($form_state['values'] as $key => $value) {
       if ($key != 'message_type_fields') {
-        $entity->$key = $value;
+        $entity->{$key} = $value;
       }
     }
     // Invoke all specified builders for copying form values to entity
@@ -104,6 +104,13 @@ function message_user_admin_settings($form_state) {
       '#markup' => l(t('Copy messages text fields from one language to others'), 'admin/config/system/message/text-copy'),
     );
   }
+
+  $form['message_use_queue'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use queue'),
+    '#description' => t('Delete messages without existing reference via queue.'),
+    '#default_value' => variable_get('message_use_queue', FALSE),
+  );
 
   return system_settings_form($form);
 }

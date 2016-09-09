@@ -467,6 +467,7 @@ function section_projects_features_views_default_views() {
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
+    t('Load more'),
     t('<div class="view-content">
 <div class="views-row"></div>
 </div>'),

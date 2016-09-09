@@ -133,18 +133,22 @@ function template_preprocess_panels_ipe_pane_wrapper(&$vars) {
 function theme_panels_ipe_pane_wrapper($vars) {
   $output = $vars['output'];
   $pane = $vars['pane'];
+  $display = $vars['display'];
 
   $attributes = array(
     'class' => 'panels-ipe-linkbar',
   );
 
+  $type = ctools_get_content_type($pane->type);
+  $title ='<span class = "panels-ipe-dragbar-admin-title">' . ctools_content_admin_title($type, $pane->subtype, $pane->configuration, $display->context) . '</span>';
+
   $links = theme('links', array('links' => $vars['links'], 'attributes' => $attributes));
 
   if (!empty($pane->locks['type']) && $pane->locks['type'] == 'immovable') {
-    $links = '<div class="panels-ipe-dragbar panels-ipe-nodraghandle clearfix">' . $links . '</div>';
+    $links = '<div class="panels-ipe-dragbar panels-ipe-nodraghandle clearfix">' . $links .$title .'</div>';
   }
   else {
-    $links = '<div class="panels-ipe-dragbar panels-ipe-draghandle clearfix">' . $links . '<span class="panels-ipe-draghandle-icon"><span class="panels-ipe-draghandle-icon-inner"></span></span></div>';
+    $links = '<div class="panels-ipe-dragbar panels-ipe-draghandle clearfix">' . $links . $title . '<span class="panels-ipe-draghandle-icon"><span class="panels-ipe-draghandle-icon-inner"></span></span></div>';
   }
 
   $handlebar = '<div class="panels-ipe-handlebar-wrapper panels-ipe-on">' . $links . '</div>';
@@ -217,6 +221,7 @@ function panels_ipe_get_cache_key($key = NULL) {
  */
 function panels_ipe_toolbar_add_button($cache_key, $id, $button) {
   $buttons = &drupal_static('panels_ipe_toolbar_buttons', array());
+  drupal_alter('panels_ipe_button', $button, $id, $cache_key);
   $buttons[$cache_key][$id] = $button;
 }
 
@@ -242,9 +247,11 @@ function panels_ipe_page_alter(&$page) {
 
 function theme_panels_ipe_toolbar($vars) {
   $buttons = $vars['buttons'];
+  ctools_include('cleanstring');
 
   $output = "<div id='panels-ipe-control-container' class='clearfix'>";
   foreach ($buttons as $key => $ipe_buttons) {
+    $key = ctools_cleanstring($key);
     $output .= "<div id='panels-ipe-control-$key' class='panels-ipe-control'>";
 
     // Controls in this container will appear when the IPE is not on.

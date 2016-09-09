@@ -166,23 +166,23 @@ function book_preprocess(&$variables, $hook) {
 
   if ($hook == 'book_navigation') {
 
+
     //TOC functionality. Numbering Chapters
     //check if numbering is enabled in domain settings
     if (!_custom_general_toc_enabled($variables['book_id']))
       return;
 
-
     $book_link = $variables['book_link'];
 
     $flat = book_get_flat_menu($book_link);
 
-    // DO THE WHOLE TREE
+// DO THE WHOLE TREE
     if ($book_link['has_children']) {
-    // Walk through the array until we find the current page.
+// Walk through the array until we find the current page.
       do {
         $link = array_shift($flat);
       } while ($link && ($link['mlid'] != $book_link['mlid']));
-      // Continue though the array and collect the links whose parent is this page.
+// Continue though the array and collect the links whose parent is this page.
       while (($link = array_shift($flat)) && $link['plid'] == $book_link['mlid']) {
         $numbering = nm_bookchapters_get_chapter_numbering_mlid($link['mlid']);
 
@@ -206,7 +206,7 @@ function book_preprocess(&$variables, $hook) {
       $variables['tree'] = drupal_render($elements);
     }
 
-    // DO PREV
+// DO PREV
     if ($variables['prev_url']) {
       $prev = book_prev($book_link);
       $pnumbering = nm_bookchapters_get_chapter_numbering_mlid($prev['mlid']);
@@ -220,7 +220,7 @@ function book_preprocess(&$variables, $hook) {
       }
     }
 
-    // DO NEXT
+// DO NEXT
     if ($variables['next_url']) {
       $next = book_next($book_link);
       $nnumbering = nm_bookchapters_get_chapter_numbering_mlid($next['mlid']);
@@ -703,7 +703,7 @@ function section_content_wysiwyg_plugin($editor, $version) {
     return;
   }
 
-  _linkit_add_settings($editor);
+//_linkit_add_settings($editor);
 
   switch ($editor) {
     case 'ckeditor':
@@ -716,164 +716,11 @@ function section_content_wysiwyg_plugin($editor, $version) {
           'load' => TRUE,
         ),
       );
-      break;
   }
 }
 
-/**
- * Implements hook_menu
- * 
- * @return array
- */
-function section_content_menu() {
 
-  $items = array();
-
-  $items['admin/tasks_dashboard'] = array(
-    'title' => 'Tasks',
-    'description' => 'Aufgaben Auswahl',
-    'page callback' => '_section_content_tasks_dashboard',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-    'page arguments' => array(2),
-      //'theme callback' => '_linkit_dashboard_theme',
-  );
-  $items['section_content/tasks/autocomplete'] = array(
-    'title' => 'Content autocomplete response function',
-    'page callback' => '_section_content_tasks_autocomplete',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-
-  return $items;
-}
-
-function _section_content_tasks_autocomplete($search = NULL) {
-
-  $search = $_GET['s'];
-  $enabled_plugins = linkit_get_profile_plugins();
-
-  // Absolute URL
-  if ($result = _linkit_result_from_url($search, $enabled_plugins)) {
-    $results = array($result);
-  }
-  elseif (!$results = _section_content_tasks_autocomplete_search($search, $enabled_plugins)) {
-    $results = array(array(
-        'title' => t('No results'),
-        'addClass' => 'status-notice',
-        'disabled' => TRUE,
-    ));
-  }
-  drupal_json_output($results);
-  drupal_exit();
-}
-
-/**
- * Perform internal autocomplete search.
- *
- * @param $search_string
- *   The search string.
- * @return $results
- *   An array with the result objects.
- */
-function _section_content_tasks_autocomplete_search($search_string, $enabled_plugins) {
-  $matches = array();
-  if ($search_string) {
-    $profile = linkit_profile_load("tasks");
-    ;
-
-    foreach ($enabled_plugins as $plugin) {
-      // Get an instance of the handler for this plugin.
-      $handler = linkit_get_plugin_handler($plugin, $profile);
-      // If the handler is broken, just continue.
-      if ($handler->broken()) {
-        continue;
-      }
-      // Add the search string.
-      $handler->setSearchString($search_string);
-      // Call the plugin search metod.
-      $results = $handler->autocomplete_callback();
-      // Merge the results.
-      $matches = array_merge($matches, $results);
-    }
-    // Special for link to frontpage.
-    if (strpos($search_string, 'front') !== FALSE) {
-      $results = array(
-        array(
-          'title' => t('Frontpage'),
-          'description' => 'The frontpage for this site.',
-          'path' => url('<front>'),
-          'group' => t('System'),
-        )
-      );
-      $matches = array_merge($matches, $results);
-    }
-  }
-  if (!empty($matches)) {
-    return $matches;
-  }
-  return FALSE;
-}
-
-function _section_content_tasks_dashboard() {
-  /**
-   * Creates the dashboard.
-   */
-  $form = drupal_get_form('_section_content_tasks_dashboard_form');
-  print drupal_render($form);
-  drupal_exit();
-}
-
-/**
- * Implements hook_form().
- */
-function _section_content_tasks_dashboard_form($form, &$form_state) {
-  $profile = linkit_profile_load("tasks");
-
-  if (is_null($profile)) {
-    drupal_set_message(t('You need a linkit profile named <em>biblio</em> to continue!'), 'error');
-    return $form;
-  }
-
-  $form['tasks_search'] = array(
-//'#prefix' => '<div>' . l('Aufgabe hinzufügen', 'node/add/biblio', array('attributes' => array('target'=>'_blank'))). '</div>',
-    '#type' => 'textfield',
-    //'#title' => t('Search Tasks'),
-    //'#description' => t('Start typing to find a tasks entry. Use the arrow keys to navigate.'),
-    '#maxlength' => 255,
-    '#size' => 60,
-    '#default_value' => '',
-    '#weight' => -10,
-    '#attributes' => array('placeholder' => 'Suche - Aufgaben Titel'),
-  );
-
-  $form['tasks_tag'] = array(
-    '#type' => 'textfield',
-    //'#title' => t('Task-ID (nid)'),
-    '#required' => TRUE,
-    '#maxlength' => NULL,
-    '#size' => 60,
-    '#default_value' => '',
-    '#weight' => -1,
-    '#attributes' => array('placeholder' => 'Task ID (nid)'),
-  );
-
-
-
-
-  $form['tasks_insert'] = array(
-    '#type' => 'submit',
-    '#value' => 'Aufgabe einfügen',
-    '#suffix' => '<a id="tasks-cancel" class="btn btn-default" href="#">' . t('Cancel') . '</a>',
-    '#weight' => 100,
-    '#attributes' => array('class' => array('btn', 'btn-primary')),
-  );
-
-
-
-  return $form;
-}
-
+    
 /**
  *  FILTER
  */
@@ -1306,15 +1153,6 @@ function section_content_text_outline() {
 
 
   //$output = '<div><h5><u>' . l($active_domain->title, 'domain/text/' . $active_domain->nid) . '</u></h5></div>' . $output;
-
-  //Outline retraction by domain setting
-  if(_custom_general_outline_retraction_enabled($domain_ref)) {
-    drupal_add_js(drupal_get_path('module', 'section_content') . "/js/section_content.js");
-    drupal_add_js(drupal_get_path('module', 'section_content') . "/js/bootstrap-treeview.min.js");
-    drupal_add_css(drupal_get_path('module', 'section_content') . "/css/bootstrap-treeview.min.css");
-    drupal_add_css(drupal_get_path('module', 'section_content') . "/css/nm-bootstrap-treeview.css");
-  }
-
 
   return $output;
 }

@@ -580,7 +580,7 @@ function _course_top_navigation_view() {
       'link' => $text_link['link'],
       'text' => $text_link['text'],
       'path' => $text_link['path'],
-      'data' => $text_link['data'],
+      'data' => @$text_link['data'],
       'attributes' => array('class' => array('btn'))
     );
     //disable path buttons user doesn't have access to
@@ -607,7 +607,7 @@ function _course_top_navigation_view() {
   foreach ($nav_items_collab as $si) {
     $text_link = _section_courses_navtext_to_link($course, $si);
     if (strtolower($si) != strtolower($text_link['link'])) {
-      $options = array('link' => $text_link['link'], 'path' => $text_link['path'], 'data' => $text_link['data'],'text' => $text_link['text'],'attributes' => array('class' => array('btn')));
+      $options = array('link' => $text_link['link'], 'path' => $text_link['path'], 'data' => @$text_link['data'],'text' => $text_link['text'],'attributes' => array('class' => array('btn')));
 
       //disable path buttons where user doen't have access to
       if (!drupal_valid_path($options['path'])) {

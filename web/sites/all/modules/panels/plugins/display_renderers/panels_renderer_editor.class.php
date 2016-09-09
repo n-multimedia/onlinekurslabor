@@ -61,6 +61,7 @@ class panels_renderer_editor extends panels_renderer_standard {
       ctools_add_js('display_editor', 'panels');
       ctools_add_css('panels_dnd', 'panels');
       ctools_add_css('panels_admin', 'panels');
+      drupal_add_library('system', 'ui');
     }
   }
 
@@ -161,7 +162,7 @@ class panels_renderer_editor extends panels_renderer_standard {
     if ($buttons) {
       $output .= '<span class="buttons">' . $buttons . '</span>';
     }
-    $output .= '<span class="text">' . $title . '</span>';
+    $output .= '<span class="text" title="' . check_plain($title) . '">' . $title . '</span>';
     $output .= '</div>'; // grabber
 
     $output .= '<div class="panel-pane-collapsible">';
@@ -467,21 +468,24 @@ class panels_renderer_editor extends panels_renderer_standard {
     drupal_alter('get_pane_links', $links, $pane, $content_type);
 
     $dropdown_links = $links['top'];
-    foreach (array(
-  'style' => 'Style',
-  'visibility' => 'Visibility rules',
-  'lock' => 'Locking',
-  'cache' => 'Caching'
-    ) as $category => $label) {
-      $dropdown_links[] = array(
-        'title' => '<hr />',
-        'html' => TRUE,
-      );
-      $dropdown_links[] = array(
-        'title' => '<span class="dropdown-header">' . t($label) . '</span>' . theme_links(array('links' => $links[$category], 'attributes' => array(), 'heading' => array())),
-        'html' => TRUE,
-        'attributes' => array('class' => array('panels-sub-menu')),
-      );
+    $category_labels = array(
+      'style' => 'Style',
+      'visibility' => 'Visibility rules',
+      'lock' => 'Locking',
+      'cache' => 'Caching',
+    );
+    foreach ($category_labels as $category => $label) {
+      if (array_key_exists($category, $links)) {
+        $dropdown_links[] = array(
+          'title' => '<hr />',
+          'html' => TRUE,
+        );
+        $dropdown_links[] = array(
+          'title' => '<span class="dropdown-header">' . t($label) . '</span>' . theme_links(array('links' => $links[$category], 'attributes' => array(), 'heading' => array())),
+          'html' => TRUE,
+          'attributes' => array('class' => array('panels-sub-menu')),
+        );
+      }
     }
 
     $dropdown_links[] = array(
@@ -508,6 +512,40 @@ class panels_renderer_editor extends panels_renderer_standard {
     }
 
     return $url;
+  }
+
+  /**
+   * Get the Panels storage oparation for a given renderer AJAX method.
+   *
+   * @param string $method
+   *   The method name.
+   *
+   * @return string
+   *   The Panels storage op.
+   */
+  function get_panels_storage_op_for_ajax($method) {
+    switch ($method) {
+      case 'ajax_show':
+      case 'ajax_hide':
+      case 'ajax_select_content':
+      case 'ajax_add_pane':
+      case 'ajax_edit_pane':
+      case 'ajax_panel_title':
+      case 'ajax_cache_method':
+      case 'ajax_cache_settings':
+      case 'ajax_style_type':
+      case 'ajax_style_settings':
+      case 'ajax_pane_css':
+      case 'ajax_lock':
+      case 'ajax_access_settings':
+      case 'ajax_access_add_test':
+      case 'ajax_access_configure_test':
+      case 'ajax_layout':
+      case 'ajax_style':
+        return 'update';
+    }
+
+    return parent::get_panels_storage_op_for_ajax($method);
   }
 
   /**
@@ -557,6 +595,11 @@ class panels_renderer_editor extends panels_renderer_standard {
       $output = theme('panels_add_content_modal', array('renderer' => $this, 'categories' => $categories, 'category' => $category, 'region' => $region));
     }
     $this->commands[] = ctools_modal_command_display($title, $output);
+
+    // Give keybord focus to the first item in the category we just loaded.
+    if (!empty($category)) {
+      $this->commands[] = ajax_command_invoke(".panels-add-content-modal .panels-section-columns :focusable:first", 'focus');
+    }
   }
 
   /**
@@ -944,8 +987,11 @@ class panels_renderer_editor extends panels_renderer_standard {
         ctools_include('content');
         $pane = &$this->display->content[$pid];
         $style = isset($pane->style['style']) ? $pane->style['style'] : 'default';
-        $subtype = ctools_content_get_subtype($pane->type, $pane->subtype);
-        $title = t('Pane style for "!pane"', array('!pane' => $subtype['title']));
+        $title = ctools_content_admin_title($pane->type, $pane->subtype, $pane->configuration, $this->display->context);
+        if (!$title) {
+          $title = $pane->type;
+        }
+        $title = t('Pane style for "!title"', array('!title' => $title));
         break;
 
       default:
@@ -1160,9 +1206,21 @@ class panels_renderer_editor extends panels_renderer_standard {
       unset($this->cache->style);
     }
 
+    if (!empty($form_state['cancel'])) {
+      // The cache must be saved prior to dismissing the modal.
+      panels_edit_cache_set($this->cache);
+      $this->commands[] = ctools_modal_command_dismiss();
+      return;
+    }
+
     // Copy settings from form state back into the cache.
     if(!empty($form_state['values']['settings'])) {
-      $this->cache->display->content[$pid]->style['settings'] = $form_state['values']['settings'];
+      if ($type == 'pane') {
+        $this->cache->display->content[$pid]->style['settings'] = $form_state['values']['settings'];
+      }
+      else if($type == 'region') {
+        $this->cache->display->panel_settings['style_settings'][$pid] = $form_state['values']['settings'];
+      }
     }
 
     panels_edit_cache_set($this->cache);
@@ -1482,7 +1540,7 @@ function panels_ajax_edit_pane_next(&$form_state) {
 }
 
 /**
- * Handle the 'finish' click on teh add/edit pane form wizard.
+ * Handle the 'finish' click on the add/edit pane form wizard.
  *
  * All we need to do is set a flag so the return can handle adding
  * the pane.
@@ -1697,7 +1755,26 @@ function panels_edit_style_settings_form($form, &$form_state) {
     '#value' => t('Save'),
   );
 
+
+  // Need a cancel button since the style cache can persist and impact the wrong
+  // pane (or region, or display).
+  $form['cancel_style'] = array(
+    '#type' => 'submit',
+    '#value' => t('Cancel'),
+    '#submit' => array('panels_edit_style_settings_form_cancel'),
+  );
+
   return $form;
+}
+
+/**
+ * Cancel style settings form.
+ *
+ * Clears the editing cache to prevent styles being applied to incorrect regions
+ * or panes.
+ */
+function panels_edit_style_settings_form_cancel($form, &$form_state) {
+  $form_state['cancel'] = TRUE;
 }
 
 /**
@@ -1736,13 +1813,13 @@ function panels_edit_configure_pane_css_form($form, &$form_state) {
     '#type' => 'textfield',
     '#default_value' => isset($pane->css['css_id']) ? $pane->css['css_id'] : '',
     '#title' => t('CSS ID'),
-    '#description' => t('CSS ID to apply to this pane. This may be blank.'),
+    '#description' => t('CSS ID to apply to this pane. This may be blank. Keywords from context are allowed.'),
   );
   $form['css_class'] = array(
     '#type' => 'textfield',
     '#default_value' => isset($pane->css['css_class']) ? $pane->css['css_class'] : '',
     '#title' => t('CSS class'),
-    '#description' => t('CSS class to apply to this pane. This may be blank.'),
+    '#description' => t('CSS class to apply to this pane. This may be blank. Keywords from context are allowed.'),
   );
 
   $form['next'] = array(

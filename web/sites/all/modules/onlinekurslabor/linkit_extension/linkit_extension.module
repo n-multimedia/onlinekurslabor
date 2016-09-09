@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * 
+ * todo
+ * 
+ */
+ 
+/**
+ * Implements hook_init().
+ */
+function linkit_extension_page_build() { 
+     
+     drupal_add_js(drupal_get_path('module', 'linkit') . '/better-autocomplete/jquery.better-autocomplete.js');
+     drupal_add_css(drupal_get_path('module', 'linkit') . '/better-autocomplete/better-autocomplete.css', array('type'=>'file'));
+  drupal_add_js(drupal_get_path('module', 'linkit_extension') . '/assets/js/linkit_extension.js');
+ 
+}
+  

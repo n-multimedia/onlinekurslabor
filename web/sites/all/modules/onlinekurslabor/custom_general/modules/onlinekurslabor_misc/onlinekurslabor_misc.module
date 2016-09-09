@@ -318,7 +318,7 @@ function _onlinekurslabor_misc_get_renderable_section_navigation($navigation_ite
             }
             #$nav_entries .= sprintf('<li class="%s"><a href="%s" class="%s">%s %s</a></li>', _onlinekurslabor_misc_umlaut_to_text(strtolower($url_def['text'])), $url_def['url'], implode(' ', $url_def['attributes']['class']), $url_def['text'], $unread_badge);
             $nav_entries .= '<li class="'._onlinekurslabor_misc_umlaut_to_text(strtolower($url_def['text'])).'">'
-                             . l( $url_def['text'] .' '. $unread_badge, $url_def['path'], array('fragment' => $url_def['fragment'],'html'=>true,'attributes'=>array('class'=>  $url_def['attributes']['class']))) # <a href="%s" class="%s">%s %s</a></li>', , $url_def['url'],, $url_def['text'], $unread_badge);
+                             . l( $url_def['text'] .' '. $unread_badge, $url_def['path'], array('fragment' => @$url_def['fragment'],'html'=>true,'attributes'=>array('class'=>  $url_def['attributes']['class']))) # <a href="%s" class="%s">%s %s</a></li>', , $url_def['url'],, $url_def['text'], $unread_badge);
                              .'</li>';
             }                    
 

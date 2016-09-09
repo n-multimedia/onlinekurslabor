@@ -110,12 +110,17 @@
                 {
                     item_label = '- ohne -';
                 }
+                 //entferne formatierungen
+                item_label = item_label.replace(/<[^>]*>?/g, '');
+                item_label = item_label.replace('&nbsp;', ' ');
+                 if ( item_label.length === 0 )
+                {
+                    item_label = '- ohne -';
+                }
                 if(item_label.length > 40)
                     item_label = item_label.substr(0,37)+ '...';
              
-                //entferne formatierungen
-                item_label = item_label.replace(/<[^>]*>?/g, '');
-                item_label = item_label.replace('&nbsp;', ' ');
+               
                 /*fuelle das oben definierte HTMl-Template mit den echten Daten*/
                 var annotation_type_minimized = item.action.library.removeeverythingbutchars();
                 new_annotation_html += sprintf(new_annotation_template,

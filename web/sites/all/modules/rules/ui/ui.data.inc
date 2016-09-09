@@ -301,6 +301,23 @@ class RulesDataUIInteger extends RulesDataUIText {
 }
 
 /**
+ * UI for IP addresses.
+ */
+class RulesDataUIIPAddress extends RulesDataUIText {
+
+  public static function inputForm($name, $info, $settings, RulesPlugin $element) {
+    $form = parent::inputForm($name, $info, $settings, $element);
+    if (empty($info['options list'])) {
+      $form[$name]['#type'] = 'textfield';
+      $form[$name]['#description'] = t('If not provided, the IP address of the current user will be used.');
+    }
+    $form[$name]['#element_validate'][] = 'rules_ui_element_ip_address_validate';
+    $form[$name]['#rows'] = 1;
+    return $form;
+  }
+}
+
+/**
  * UI for boolean data.
  */
 class RulesDataUIBoolean extends RulesDataUI implements RulesDataDirectInputFormInterface {
@@ -313,9 +330,12 @@ class RulesDataUIBoolean extends RulesDataUI implements RulesDataDirectInputForm
     $settings += array($name => isset($info['default value']) ? $info['default value'] : NULL);
     // Note: Due to the checkbox even optional parameter always receive a value.
     $form[$name] = array(
-      '#type' => 'checkbox',
-      '#title' => check_plain($info['label']),
+      '#type' => 'radios',
       '#default_value' => $settings[$name],
+      '#options' => array(
+        TRUE => t('@label: True.', array('@label' => $info['label'])),
+        FALSE => t('@label: False.', array('@label' => $info['label'])),
+      ),
     );
     return $form;
   }

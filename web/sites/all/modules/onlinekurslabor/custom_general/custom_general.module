@@ -655,7 +655,7 @@ function _section_courses_get_group_others($group, $tool_links) {
  */
 function custom_general_wysiwyg_plugin($editor, $version) {
 
-  _linkit_add_settings($editor);
+  #_linkit_add_settings($editor);
 
   //css rules
   drupal_add_css(drupal_get_path('module', 'custom_general') . '/css/wysiwyg.css');
@@ -683,16 +683,7 @@ function custom_general_wysiwyg_plugin($editor, $version) {
 function custom_general_menu() {
 
   $items = array();
-
-  $items['admin/biblio_dashboard'] = array(
-    'title' => 'Biblio',
-    'description' => 'Biblio Auswahl',
-    'page callback' => '_custom_general_biblio_dashboard',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-    'page arguments' => array(2),
-      //'theme callback' => '_linkit_dashboard_theme',
-  );
+    
 
   $items['admin/onlinekurslabor'] = array(
     'title' => 'Onlinekurslabor',
@@ -728,62 +719,7 @@ function custom_general_admin_menu_output_alter(&$content) {
 	// remove the 'Disable developer modules' link
 	unset($content['icon']['icon']['toggle-modules']);
 }
-
-
-function _custom_general_biblio_dashboard() {
-  /**
-   * Creates the dashboard.
-   */
-  $form = drupal_get_form('_custom_general_biblio_dashboard_form');
-  print drupal_render($form);
-  drupal_exit();
-}
-
-/**
- * Implements hook_form().
- */
-function _custom_general_biblio_dashboard_form($form, &$form_state) {
-  $profile = linkit_profile_load("biblio");
-
-
-  if (is_null($profile)) {
-    drupal_set_message(t('You need a linkit profile named <em>biblio</em> to continue!'), 'error');
-    return $form;
-  }
-
-  $form['biblio_search'] = array(
-    //'#prefix' => '<div>' . l('Biblio hinzufügen', 'node/add/biblio', array('attributes' => array('target' => '_blank'))) . '</div>',
-    '#type' => 'textfield',
-    //'#title' => t('Search Biblio'),
-    //'#description' => t('Start typing to find a biblio entry. Use the arrow keys to navigate.'),
-    '#maxlength' => 255,
-    '#size' => 60,
-    '#default_value' => '',
-    '#weight' => -10,
-    '#attributes' => array('placeholder' => 'Suche - Biblio Titel'),
-  );
-
-  $form['biblio_tag'] = array(
-    '#type' => 'textfield',
-    //'#title' => t('Biblio-ID (nid)'),
-    '#required' => TRUE,
-    '#maxlength' => NULL,
-    '#size' => 60,
-    '#default_value' => '',
-    '#weight' => -1,
-    '#attributes' => array('placeholder' => 'Biblio ID (nid)'),
-  );
-
-  $form['biblio_insert'] = array(
-    '#type' => 'submit',
-    '#value' => 'Biblio einfügen',
-    '#suffix' => '<a id="biblio-cancel" class="btn btn-default" href="#">' . t('Cancel') . '</a>',
-    '#weight' => 100,
-    '#attributes' => array('class' => array('btn','btn-default', 'btn-primary')),
-  );
-
-  return $form;
-}
+    
 
 function custom_general_preprocess_page(&$variables) {
   //include js needed for every page

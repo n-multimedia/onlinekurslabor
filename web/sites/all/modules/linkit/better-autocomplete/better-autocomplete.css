@@ -8,10 +8,7 @@
  */
 
 /* Reset styles for lists */
-ul.better-autocomplete {
-  madding: 0 !important;
-  margin: 0 !important;
-}
+
 .better-autocomplete,
 .better-autocomplete > .result {
   list-style: none;
@@ -27,6 +24,9 @@ ul.better-autocomplete {
   cursor: default;
   background: white;
   border-bottom: 1px solid #bfbfbf;
+  z-index: 10;
+  max-height: 330px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Visually indicate that results are in the topmost layer */
 }
 
 /* Groups */
@@ -84,4 +84,14 @@ ul.better-autocomplete {
 .better-autocomplete > .result.highlight > h4,
 .better-autocomplete > .result.highlight > p {
   color: white;
+}
+
+/* ARIA */
+
+.better-autocomplete-aria {
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
+  overflow: hidden;
+  height: 1px;
 }
