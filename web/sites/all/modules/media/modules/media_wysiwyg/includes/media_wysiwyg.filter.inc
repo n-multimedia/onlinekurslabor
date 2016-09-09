@@ -155,11 +155,6 @@ function media_wysiwyg_token_to_markup($match, $wysiwyg = FALSE) {
             $settings[$dimension] = $settings['attributes'][$dimension];
           }
         }
-        // If the element is floated via WYSIWYG editor functionality, delegate
-        // that information to the outer element.
-        if (!empty($css_properties['float'])) {
-          $settings['float'] = $css_properties['float'];
-        }
       }
     }
   }
@@ -220,11 +215,6 @@ function media_wysiwyg_token_to_markup($match, $wysiwyg = FALSE) {
       field_attach_prepare_view('file', array($file->fid => $file), $tag_info['view_mode']);
       entity_prepare_view('file', array($file->fid => $file));
       $element['content'] += field_attach_view('file', $file, $tag_info['view_mode']);
-
-      // Add any float information via an extra class
-      if (!empty($settings['float'])) {
-        $element['content']['file']['#attributes']['class'][] = drupal_html_class('media-float-' . $settings['float']);
-      }
     }
     if (count(element_children($element['content'])) > 1) {
       // Add surrounding divs to group them together.
@@ -236,10 +226,6 @@ function media_wysiwyg_token_to_markup($match, $wysiwyg = FALSE) {
         'media-element-container',
         'media-' . $element['content']['file']['#view_mode']
       );
-      // Add the float information to the outer element.
-      if (!empty($settings['float'])) {
-        $element['content']['#attributes']['class'][] = drupal_html_class('media-float-' . $settings['float']);
-      }
     }
 
     // Conditionally add a pre-render if the media filter output is be cached.
@@ -335,6 +321,8 @@ function _media_wysiwyg_generate_tagMap($text) {
  * @return array
  *   An array of view modes that can be used on the file when embedded in the
  *   WYSIWYG.
+ *
+ * @deprecated
  */
 function media_wysiwyg_get_wysiwyg_allowed_view_modes($file) {
   $enabled_view_modes = &drupal_static(__FUNCTION__, array());
@@ -368,6 +356,8 @@ function media_wysiwyg_get_wysiwyg_allowed_view_modes($file) {
   }
 
   $view_modes = $enabled_view_modes[$file->type];
+  drupal_alter('media_wysiwyg_allowed_view_modes', $view_modes, $file);
+  // Invoke the deprecated/misspelled alter hook as well.
   drupal_alter('media_wysiwyg_wysiwyg_allowed_view_modes', $view_modes, $file);
   return $view_modes;
 }

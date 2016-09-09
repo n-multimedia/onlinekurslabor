@@ -111,7 +111,7 @@ function image_resize_filter_file_download($uri) {
 }
 
 /**
- * Implements hook_form_[form_id]_alter().
+ * Implements hook_form_FORM_ID_alter().
  */
 function image_resize_filter_form_system_file_system_settings_alter($form, $form_state) {
   $form['#submit'][] = 'image_resize_filter_file_system_settings_submit';
@@ -143,7 +143,7 @@ function image_resize_filter_form($form, &$form_state, $filter, $format, $defaul
     '#title' => t('Resize images stored'),
     '#options' => array('local' => t('Locally'), 'remote' => t('On remote servers (note: this copies <em>all</em> remote images locally)')),
     '#default_value' => $filter->settings['image_locations'],
-    '#description' => t('This option will determine which images will be analyzed for &lt;img&gt; tag differences. Enabling resizing of remote images can have performance impacts, as all images in the filtered text needs to be transfered via HTTP each time the filter cache is cleared.'),
+    '#description' => t('This option will determine which images will be analyzed for &lt;img&gt; tag differences. Enabling resizing of remote images can have performance impacts, as all images in the filtered text needs to be transferred via HTTP each time the filter cache is cleared.'),
   );
 
   $settings['image_resize']['link'] = array(
@@ -174,7 +174,6 @@ function image_resize_filter_form($form, &$form_state, $filter, $format, $defaul
  */
 function theme_image_resize_filter_form($variables) {
   $form = $variables['form'];
-  $format = $form['#format'];
 
   $link = 'link';
   $class = 'link_class';
@@ -239,7 +238,7 @@ function image_resize_filter_get_images($settings, $text) {
   preg_match_all('/((<a [^>]*>)[ ]*)?(<img[^>]*?src[ ]*=[ ]*"([^"]+)"[^>]*>)/i', $text, $matches);
 
   // Loop through matches and find if replacements are necessary.
-  // $matches[0]: All complete image tags and preceeding anchors.
+  // $matches[0]: All complete image tags and preceding anchors.
   // $matches[1]: The anchor tag of each match (if any).
   // $matches[2]: The anchor tag and trailing whitespace of each match (if any).
   // $matches[3]: The complete img tag.
@@ -247,7 +246,15 @@ function image_resize_filter_get_images($settings, $text) {
   foreach ($matches[0] as $key => $match) {
     $has_link = (bool) $matches[1][$key];
     $img_tag = $matches[3][$key];
-    $src = $matches[4][$key];
+
+    // Extract the query string (image style token) if any from the url.
+    $src_query = parse_url($matches[4][$key], PHP_URL_QUERY);
+    if ($src_query) {
+      $src = substr($matches[4][$key], 0, - strlen($src_query) - 1);
+    }
+    else {
+      $src = $matches[4][$key];
+    }
 
     $resize = NULL;
     $image_size = NULL;
@@ -255,7 +262,7 @@ function image_resize_filter_get_images($settings, $text) {
 
     // Find attributes of this image tag.
     $attribute_matches = array();
-    preg_match_all('/([a-z]+)[ ]*=[ ]*"([^"]*)"/i', $img_tag, $attribute_matches);
+    preg_match_all('/([\w\-]+)[ ]*=[ ]*"([^"]*)"/i', $img_tag, $attribute_matches);
     foreach ($attribute_matches[0] as $key => $match) {
       $attribute = $attribute_matches[1][$key];
       $attribute_value = $attribute_matches[2][$key];
@@ -343,7 +350,6 @@ function image_resize_filter_get_images($settings, $text) {
       $style_name = $image_style_matches[1];
       $original_path = $scheme . '://' . $image_style_matches[3];
       if ($style = image_style_load($style_name)) {
-        $derivative_path = image_style_path($style_name, $original_path);
         image_style_create_derivative($style, $original_path, $local_path);
       }
     }
@@ -383,16 +389,16 @@ function image_resize_filter_get_images($settings, $text) {
     $actual_height = (int) $image_size[1];
 
     // If either height or width is missing, calculate the other.
-    if (!$attributes['width'] && !$attributes['height']) {
+    if (empty($attributes['width']) && empty($attributes['height'])) {
       $attributes['width'] = $actual_width;
       $attributes['height'] = $actual_height;
     }
-    if (!$attributes['height'] && is_numeric($attributes['width'])) {
-      $ratio = $actual_height/$actual_width;
+    if (empty($attributes['height']) && is_numeric($attributes['width'])) {
+      $ratio = $actual_height / $actual_width;
       $attributes['height'] = (int) round($ratio * $attributes['width']);
     }
-    elseif (!$attributes['width'] && is_numeric($attributes['height'])) {
-      $ratio = $actual_width/$actual_height;
+    elseif (empty($attributes['width']) && is_numeric($attributes['height'])) {
+      $ratio = $actual_width / $actual_height;
       $attributes['width'] = (int) round($ratio * $attributes['height']);
     }
 
@@ -447,6 +453,7 @@ function image_resize_filter_get_images($settings, $text) {
       'img_tag' => $img_tag,
       'has_link' => $has_link,
       'original' => $src,
+      'original_query' => $src_query,
       'location' => $location,
       'local_path' => $local_path,
       'mime' => $image_size['mime'],
@@ -480,7 +487,6 @@ function image_resize_filter_process_images($images, $text, $settings) {
     }
     // Destination and local path are the same if we're just adding attributes.
     elseif (!$image['resize']) {
-      $local_file_path = '';
       $image['destination'] = $image['local_path'];
     }
     else {
@@ -512,8 +518,16 @@ function image_resize_filter_process_images($images, $text, $settings) {
       // Resize the local image if the sizes don't match.
       elseif ($image['resize']) {
         $res = image_load($image['local_path']);
-        image_resize($res, $image['expected_size']['width'], $image['expected_size']['height']);
-        image_save($res, $image['destination']);
+        if ($res) {
+          // Image loaded successfully; resize
+          image_resize($res, $image['expected_size']['width'], $image['expected_size']['height']);
+          image_save($res, $image['destination']);
+        } else {
+          // Image failed to load - type doesn't match extension or invalid; keep original file
+          $handle = fopen($image['destination'], 'w');
+          fwrite($handle, file_get_contents($image['local_path']));
+          fclose($handle);
+        }
       }
       @chmod($image['destination'], 0664);
     }
@@ -539,14 +553,19 @@ function image_resize_filter_process_images($images, $text, $settings) {
  *   Settings for the input filter.
  */
 function image_resize_filter_image_tag($image = NULL, $settings = NULL) {
-  global $base_url;
-
   $src = file_create_url($image['destination']);
 
   // Strip the http:// from the path if the original did not include it.
   if (!preg_match('/^http[s]?:\/\/' . preg_quote($_SERVER['HTTP_HOST']) . '/', $image['original'])) {
     $src = preg_replace('/^http[s]?:\/\/' . preg_quote($_SERVER['HTTP_HOST']) . '/', '', $src);
   }
+
+  // Restore any URL query.
+  if (isset($image['original_query'])) {
+    $src .= '?' . $image['original_query'];
+    $image['original'] .= '?' . $image['original_query'];
+  }
+
   $image['attributes']['src'] = $src;
 
   // Set the link properties if necessary.
@@ -579,7 +598,6 @@ function image_resize_filter_image_tag($image = NULL, $settings = NULL) {
  */
 function theme_image_resize_filter_image($variables) {
   $image = $variables['image'];
-  $settings = $variables['settings'];
 
   $output = '<img' . drupal_attributes($image['attributes']) . ' />';
   if ($image['link']) {
@@ -608,7 +626,7 @@ function image_resize_filter_delete_derivatives($original_uri) {
   $directory = str_replace($path_info['scheme'] . '://', $path_info['scheme'] . '://resize/', $path_info['dirname']);
 
   // Delete all the derivatives.
-  $files = file_scan_directory($directory, '/' . preg_quote($basename, '/') . '-[0-9]+[x][0-9]+\.' . preg_quote($extension, '/') . '/', array('callback' => 'file_unmanaged_delete'));
+  file_scan_directory($directory, '/' . preg_quote($basename, '/') . '-[0-9]+[x][0-9]+\.' . preg_quote($extension, '/') . '/', array('callback' => 'file_unmanaged_delete'));
 
   // Then work up the directories and delete any empty ones.
   $folders = explode('/', $directory);

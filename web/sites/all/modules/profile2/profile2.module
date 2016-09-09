@@ -914,12 +914,13 @@ class Profile extends Entity {
     }
     $this->changed = REQUEST_TIME;
 
-    parent::save();
+    $result = parent::save();
     // Update the static cache from profile2_load_by_user().
     $cache = &drupal_static('profile2_load_by_user', array());
     if (isset($cache[$this->uid])) {
       $cache[$this->uid][$this->type] = $this->pid;
     }
+    return $result;
   }
 }
 

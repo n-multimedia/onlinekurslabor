@@ -655,7 +655,7 @@ function _section_courses_get_group_others($group, $tool_links) {
  */
 function custom_general_wysiwyg_plugin($editor, $version) {
 
-  _linkit_add_settings($editor);
+  #_linkit_add_settings($editor);
 
   //css rules
   drupal_add_css(drupal_get_path('module', 'custom_general') . '/css/wysiwyg.css');

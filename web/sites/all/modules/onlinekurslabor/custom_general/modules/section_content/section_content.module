@@ -703,7 +703,7 @@ function section_content_wysiwyg_plugin($editor, $version) {
     return;
   }
 
-  _linkit_add_settings($editor);
+//_linkit_add_settings($editor);
 
   switch ($editor) {
     case 'ckeditor':
