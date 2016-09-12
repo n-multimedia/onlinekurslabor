@@ -983,3 +983,9 @@ PROJECTS
     color: grey;
     content: "X";
 }
+/*kursdokumente buttons*/
+.ctools-modal-media-file-edit
+{
+margin-right:0.5em;
+margin-left:0.5em;
+}
