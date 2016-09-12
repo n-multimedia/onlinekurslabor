@@ -1,0 +1,8 @@
+.linkit_xt_fetch {
+    background-image: url("../img/throbber.gif") !important;
+    background-repeat: no-repeat !important;
+     background-position: 98% 4px !important;
+}
+.linkit_xt_fetch_on {
+     background-position: 98% -16px !important;
+  }

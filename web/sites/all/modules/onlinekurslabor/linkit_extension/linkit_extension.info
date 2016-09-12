@@ -1,4 +1,4 @@
 name = linkit_extension
-description = stellt eine API zur Verfügung, um einfach wysiwyg-module zu schreiben und content per autocomplete zu finden
+description = stellt eine API zur Verfügung, um einfach wysiwyg-module zu schreiben und content per autocomplete zu finden. See attached example-module.zip
 core = 7.x
 dependencies[] = linkit

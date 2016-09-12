@@ -2,18 +2,18 @@
 
 /**
  * 
- * todo
+ * stellt eine API zur Verfügung, um einfach wysiwyg-module zu schreiben und content per autocomplete zu finden
+ * See attached example-module.zip
  * 
  */
- 
+
 /**
- * Implements hook_init().
+ * Implements hook_page_build().
  */
-function linkit_extension_page_build() { 
-     
-     drupal_add_js(drupal_get_path('module', 'linkit') . '/better-autocomplete/jquery.better-autocomplete.js');
-     drupal_add_css(drupal_get_path('module', 'linkit') . '/better-autocomplete/better-autocomplete.css', array('type'=>'file'));
-  drupal_add_js(drupal_get_path('module', 'linkit_extension') . '/assets/js/linkit_extension.js');
- 
+function linkit_extension_page_build() {
+
+    drupal_add_js(drupal_get_path('module', 'linkit') . '/better-autocomplete/jquery.better-autocomplete.js');
+    drupal_add_css(drupal_get_path('module', 'linkit') . '/better-autocomplete/better-autocomplete.css', array('type' => 'file'));
+    drupal_add_css(drupal_get_path('module', 'linkit_extension') . '/assets/css/linkit_xt.css', array('type' => 'file'));
+    drupal_add_js(drupal_get_path('module', 'linkit_extension') . '/assets/js/linkit_extension.js');
 }
-  

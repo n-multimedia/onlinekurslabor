@@ -67,9 +67,38 @@
                         //verstecke markup-input, input hidden gibbet nich
                         jQuery('#' + dialog.getContentElement('tab-basic', 'markup')._.inputId).hide();
                         //aktiviere betterautocomplete
-                        jQuery('#' + dialog.getContentElement('tab-basic', 'input')._.inputId).betterAutocomplete('init', Drupal.settings.linkit.autocompletePath.replace("___profile___?s=", "") + options["linkit_profile_id"], {charLimit: 0}, {
+                        
+                        /*hier folgte eine längere auflistung der better-autocomplete-funktionalität
+                         * Referenz fuer Funktionen:
+                         * https://github.com/betamos/Better-Autocomplete/blob/develop/src/jquery.better-autocomplete.js
+                         */
+                        jQuery('#' + dialog.getContentElement('tab-basic', 'input')._.inputId).addClass("linkit_xt_fetch").betterAutocomplete('init', Drupal.settings.linkit.autocompletePath.replace("___profile___?s=", "") + options["linkit_profile_id"], {charLimit: 0}, {
                             constructURL: function(path, query) {
                                 return path + (path.indexOf('?') > -1 ? '&' : '?') + 's=' + encodeURIComponent(query);
+                            },
+                            /**
+                             * Called when remote fetching begins.
+                             *
+                             * <br /><br /><em>Default behavior: Adds the CSS class "fetching" to the
+                             * input field, for styling purposes.</em>
+                             *
+                             * @param {Object} $input
+                             *   The input DOM element, wrapped in jQuery.
+                             */
+                            beginFetching: function($input) {
+                                $input.addClass('linkit_xt_fetch_on');
+                            },
+                            /**
+                             * Called when fetching is finished. All active requests must finish before
+                             * this function is called.
+                             *
+                             * <br /><br /><em>Default behavior: Removes the "fetching" class.</em>
+                             *
+                             * @param {Object} $input
+                             *   The input DOM element, wrapped in jQuery.
+                             */
+                            finishFetching: function($input) {
+                                $input.removeClass('linkit_xt_fetch_on');
                             },
                             themeResult: function(result) {
                                 var output;
@@ -79,10 +108,10 @@
                             },
                             select: function(result, $input) { // Custom select callback
                                 $input.blur();
-                                console.debug($input);
                                 $input.val(result.title);
 
                                 var callbackfunc = options["markup_callback"];
+                                //betterautocomplete loest gleich in pfad auf. wir brauchen aber die nid
                                 var node_id;
                                 var node_path = result.path;
                                 node_id = node_path.replace(/[^0-9.]/g, "");
@@ -92,7 +121,7 @@
 
 
                             }
-                        });
+                        }); //ende betterautocomplete
                     },
                     // This method is invoked once a user clicks the OK button, confirming the dialog.
                     onOk: function() {
@@ -102,8 +131,8 @@
                         //optional: use a different onOk-Function
                         if (options["onOk"])
                         {
-                            var clbck = options["onOk"];
-                            return    clbck(dialog, editor);
+                            var custom_onOK = options["onOk"];
+                            return    custom_onOK(dialog, editor);
 
                         }
 
@@ -112,17 +141,6 @@
                         var markup = dialog.getValueOf('tab-basic', 'markup');
                         editor.insertText(markup);
                         return;
-                        // Create a new <abbr> element.
-                        var abbr = editor.document.createElement('abbr');
-
-                        // Set element attribute and text by getting the defined field values.
-                        abbr.setAttribute('title', dialog.getValueOf('tab-basic', 'input'));
-                        abbr.setText(dialog.getValueOf('tab-basic', 'input'));
-
-
-
-                        // Finally, insert the element into the editor at the caret position.
-                        editor.insertElement(abbr);
                     }
                 };
             });
