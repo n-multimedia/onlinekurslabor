@@ -979,10 +979,7 @@ PROJECTS
 .media-modal-frame {
   width: 100% !important;
 }
-.ui-dialog .ui-dialog-titlebar-close::before {
-    color: grey;
-    content: "X";
-}
+
 /*kursdokumente buttons*/
 .ctools-modal-media-file-edit
 {
