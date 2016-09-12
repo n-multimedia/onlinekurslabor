@@ -986,3 +986,10 @@ PROJECTS
 margin-right:0.5em;
 margin-left:0.5em;
 }
+
+/*cke: cancel-button: ueberlauf bei deutscher Bezeichnung*/
+.cke_skin_kama a.cke_dialog_ui_button_cancel span
+{
+    width: 90px !important;
+    padding-left: 10px !important;
+}
