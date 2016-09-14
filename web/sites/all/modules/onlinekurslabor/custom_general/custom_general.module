@@ -1265,3 +1265,58 @@ function _custom_general_taxonomy_get_children($tid, $vid = 0) {
 
   return isset($children[$tid]) ? $children[$tid] : array();
 }
+
+
+/**
+ * hook_theme um templates im Ordner templates des Moduls auszuliefern
+ * wird genutzt, wenn bspw theme('custom_html5_video', array(...)); ausgeführt wird
+ */
+function custom_general_theme() {
+    return array(
+        // Name to be called with theme(). theme('my_custom_gallery', $images)
+        'custom_html5_video' => array(
+            // Which .tpl.php file to use custom-html5-video.tpl.php
+            'template' => 'custom-html5-video',
+            'path' => drupal_get_path('module', 'custom_general') . '/templates')
+            )
+    ;
+}
+
+/**
+ * Erstellt einen einfachen HTML-5-Videoplayer fuer verschiedene Bildschirmgrößen und unterschiedlichen 
+ * Videoauflösungen
+ * Die $video_base_url wird ergänzt um eine weitere Variante mit -sm-xs angehängt, aus imagefilm_onlinekurslabor.mp4 
+ * wird also imagefilm_onlinekurslabor-sm-xs.mp4. Diese Datei muss natürlich unter der URL erreichbar sein.
+ * Für mobil werden Dateigrößen < 99 MB empfohlen!
+ * 
+ * @param string $video_base_url URL zum Originalvideo für hohe Auflösungen wie Laptop, bspw http://.../imagefilm_onlinekurslabor.mp4
+ * @param string $video_poster img-src-Pfad fuer Vorschaubild des Videos, bspw /sites/all/.../poster.png
+ * @param string $other_formats liegen andere Varianten wie bspw. "webm" für das Video imagefilm_onlinekurslabor.mp4 vor, hier als Array angeben
+ * @return string html5-markup-string
+ */
+function _custom_general_get_rendered_html5_video_tag($video_base_url, $video_poster, $other_formats = array("mp4")) {
+    if (count($other_formats) > 1)
+        drupal_set_message('Sorry, feature other_formats is not implemented. Do it on your own ;) ');
+
+    $video_splitted = explode(".", $video_base_url);
+    $video_filetype = array_pop($video_splitted);
+    $video_base = implode(".", $video_splitted);
+    //for $other_formats (like ogg, webm etc) you would implement a loop here
+    //this only adds a smaller-size-identifier to the video_base_url
+    $video_small = $video_base . "-sm-xs" . "." . $video_filetype;
+
+    $video_def = array
+        (
+        array('bootstrap' =>
+            array('class' => 'col-md-12', 'hidden_class' => 'hidden-xs hidden-sm'),
+            'poster' => $video_poster,
+            'videos' => array(array('url' => $video_base_url, "type" => "video/" . $video_filetype))),
+        array('bootstrap' =>
+            array('class' => 'col-xs-12', 'hidden_class' => 'hidden-md hidden-lg'),
+            'poster' => $video_poster,
+            'videos' => array(array('url' => $video_small, "type" => "video/" . $video_filetype))),
+    );
+
+    $output = theme('custom_html5_video', array('video_definition' => $video_def));
+    return $output;
+}

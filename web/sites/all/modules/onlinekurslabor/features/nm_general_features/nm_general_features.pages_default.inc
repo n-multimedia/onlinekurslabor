@@ -437,7 +437,7 @@ return theme(\'nm_fancy_box\', $vars);
   $display->content['new-c38e1c99-7f8e-406c-8368-1804779f25bf'] = $pane;
   $display->panels['partner_'][0] = 'new-c38e1c99-7f8e-406c-8368-1804779f25bf';
   $pane = new stdClass();
-  $pane->pid = 'new-273be677-8e9f-4671-8e2b-c04a78baf7ce';
+  $pane->pid = 'new-fa88a807-8049-45e2-8aab-a4e36639ae7b';
   $pane->panel = 'platzhalter';
   $pane->type = 'custom';
   $pane->subtype = 'custom';
@@ -446,13 +446,9 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->configuration = array(
     'admin_title' => 'Video',
     'title' => '',
-    'body' => '<div class="col-md-12">
- <video width="100%" controls="controls" poster="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo2.png">
-  <source src="https://onlinekurslabor.phil.uni-augsburg.de/system/files/imagefilm_onlinekurslabor.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video> 
-</div>',
-    'format' => 'full_html',
+    'title_heading' => 'h2',
+    'body' => '<?php echo _custom_general_get_rendered_html5_video_tag("https://onlinekurslabor.phil.uni-augsburg.de/system/files/imagefilm_onlinekurslabor.mp4", "/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo2.png"); ?>',
+    'format' => 'php_code',
     'substitute' => TRUE,
   );
   $pane->cache = array();
@@ -463,9 +459,9 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
-  $pane->uuid = '273be677-8e9f-4671-8e2b-c04a78baf7ce';
-  $display->content['new-273be677-8e9f-4671-8e2b-c04a78baf7ce'] = $pane;
-  $display->panels['platzhalter'][0] = 'new-273be677-8e9f-4671-8e2b-c04a78baf7ce';
+  $pane->uuid = 'fa88a807-8049-45e2-8aab-a4e36639ae7b';
+  $display->content['new-fa88a807-8049-45e2-8aab-a4e36639ae7b'] = $pane;
+  $display->panels['platzhalter'][0] = 'new-fa88a807-8049-45e2-8aab-a4e36639ae7b';
   $pane = new stdClass();
   $pane->pid = 'new-b656ed25-75c4-4397-97e4-243d47158514';
   $pane->panel = 'student';
