@@ -70,6 +70,7 @@ EOF;
      * Implements hook_theme().
      */
     function AnnVid_theme($existing, $type, $theme, $path) {
+    #    exit;
       $theme = array();
       $theme['node__annvid'] = array(
         'render element' => 'content',
@@ -143,7 +144,7 @@ function _AnnVid_getStreamTimeLine()
 
        return $html_code ;
 }
-
+/*
 function _AnnVid_getPlayer($h5p_node_id, $pdf_file_url)
 {
     $pdfreader =  _html5pdf_getPDFReader($h5p_node_id,$pdf_file_url);
@@ -259,7 +260,7 @@ function _AnnVid_getPlayer($h5p_node_id, $pdf_file_url)
              </table>
              </div>
              <style>
-             /*annotationlist verstecken, stört per default... */
+             //annotationlist verstecken, stört per default... 
                 .h5p_annotationlist 
                 {
                     display:none !important;
@@ -267,7 +268,7 @@ function _AnnVid_getPlayer($h5p_node_id, $pdf_file_url)
              </style>
 EOF;
     return  $html_code;
-}
+}*/
 /**
  * hook_node_view um im h5p-video auf annvid den titel auszublenden
  * @param type $node

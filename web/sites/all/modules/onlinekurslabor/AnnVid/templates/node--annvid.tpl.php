@@ -18,8 +18,6 @@
     print _nm_stream_get_renderedGUI($node->nid);
 ?>
 </div>
-<div class="col-md-6"  id="annvid_pdfdiv">
+<div class="col-md-6"  id="annvid_pdfdiv"> 
     <? print render($content['field_pdffile']); ?>
 </div>
-<?php 
- 
