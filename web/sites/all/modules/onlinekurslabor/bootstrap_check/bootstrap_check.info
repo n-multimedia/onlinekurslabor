@@ -1,0 +1,5 @@
+name = bootstrap_check
+description = checks if a needed hack was applied to drupal to make bootstrap work with the caches
+core = 7.x
+version = 7.x-1.0-alpha6
+package = custom

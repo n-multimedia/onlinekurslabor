@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * überprüft, ob in der form.inc ein hack stattgefunden hat.
+ * Wenn nicht, zeigt er einen Fehler an
+ * 
+ */
+if (!function_exists('_drupal_form_hack_applied') || !_drupal_form_hack_applied()) {    
+   drupal_set_message("Apply the hack! Replace form_builder by <br>\" ".nl2br('function _drupal_form_hack_applied() {return true;}
+function form_builder($form_id, &$element, &$form_state) {
+    /* before processing the callback, we have to be sure, the theme was loaded   */
+    global $theme;
+    if (!$theme) {
+        drupal_theme_initialize();
+    } "'), 'error');
+}

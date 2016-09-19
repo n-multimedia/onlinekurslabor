@@ -2,6 +2,7 @@
 drush vset maintenance_mode 1
 
 drush en linkit_extension --yes
+drush en bootstrap_check --yes
 
 drush fr nm_section_content_features --yes
 drush dis oembed_fix  --yes
