@@ -5,6 +5,7 @@ package = custom
 
 dependencies[] = h5p_annotationlist
 dependencies[] = h5p_text_annotations
+dependencies[] = section_projects
 
 core = 7.x
 

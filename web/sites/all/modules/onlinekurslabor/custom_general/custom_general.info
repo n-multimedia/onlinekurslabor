@@ -3,6 +3,7 @@ description = used for platform adjustments
 package = custom
 dependencies[] = entity
 dependencies[] = og
+dependencies[] = og_context
 dependencies[] = media
 dependencies[] = media_internet
 dependencies[] = oembed
@@ -11,6 +12,7 @@ dependencies[] = context
 dependencies[] = linkit
 dependencies[] = menu_block
 dependencies[] = book
+dependencies[] = section_courses
 
 
 core = 7.x
