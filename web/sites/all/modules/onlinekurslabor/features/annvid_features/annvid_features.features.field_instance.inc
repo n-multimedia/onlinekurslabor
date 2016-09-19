@@ -66,7 +66,8 @@ function annvid_features_field_default_field_instances() {
     'default_value' => NULL,
     'default_value_function' => '',
     'deleted' => 0,
-    'description' => 'Enter the name of an interactive-video-content or create one here --todo--',
+    'description' => 'Beginnen Sie damit, den Namen eines H5P-Videos einzutippen. 
+<em>Das Video muss in diesem Lehrtext unter "Interaktiv" gelistet sein</em>',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -93,8 +94,8 @@ function annvid_features_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_h5preference',
-    'label' => 'h5preference',
-    'required' => 0,
+    'label' => 'H5P-Inhalt',
+    'required' => 1,
     'settings' => array(
       'behaviors' => array(
         'prepopulate' => array(
@@ -120,7 +121,7 @@ function annvid_features_field_default_field_instances() {
   $field_instances['node-annvid-field_pdffile'] = array(
     'bundle' => 'annvid',
     'deleted' => 0,
-    'description' => 'Upload a PDF',
+    'description' => 'Hier können Sie eine PDF-Datei hochladen, die neben dem Video angezeigt werden kann ',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -144,7 +145,7 @@ function annvid_features_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_pdffile',
-    'label' => 'pdffile',
+    'label' => 'PDF-Datei (z.B. Skript)',
     'required' => 0,
     'settings' => array(
       'description_field' => 0,
@@ -362,15 +363,16 @@ function annvid_features_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Annotationsliste anzeigen');
+  t('Beginnen Sie damit, den Namen eines H5P-Videos einzutippen. 
+<em>Das Video muss in diesem Lehrtext unter "Interaktiv" gelistet sein</em>');
   t('Body');
   t('Determine if this is an OG group.');
-  t('Enter the name of an interactive-video-content or create one here --todo--');
   t('Groups audience');
   t('Gruppe');
-  t('Upload a PDF');
+  t('H5P-Inhalt');
+  t('Hier können Sie eine PDF-Datei hochladen, die neben dem Video angezeigt werden kann ');
+  t('PDF-Datei (z.B. Skript)');
   t('Wenn sich im Video Annotationen befinden, so werden diese in einer Liste unterhalb des Videos dargestellt. Diese Anzeige kann hier unterbunden werden');
-  t('h5preference');
-  t('pdffile');
 
   return $field_instances;
 }
