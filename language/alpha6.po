@@ -22,6 +22,9 @@ msgstr "Alles ausklappen"
 msgid "Collapse all"
 msgstr "Alles einklappen"
 
+msgid "Block"
+msgstr "Blockieren"
+
 msgid ""
 msgstr ""
 
