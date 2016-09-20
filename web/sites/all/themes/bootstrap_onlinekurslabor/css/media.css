@@ -1,96 +1,17 @@
-/*ckeditor*/
-.onlinekurslabor_user_class img.media-element.file-media-3,
-/*output*/
-.main-content .media-element-container.media-media_3 video,
-.main-content .media-element-container.media-media_3 img {
-    width: 25%;
+div.media-element-container
+{
+    display:inline;
 }
-
-/*ckeditor*/
-.onlinekurslabor_user_class img.media-element.file-media-4,
-/*output*/
-.main-content .media-element-container.media-media_4 video,
-.main-content .media-element-container.media-media_4 img {
-    width: 33%;
+/*paddings fuer image-container  mit floatenden images*/
+div.media-element-container img[style*="float: "][style*="right"]
+{
+    padding-left:2em;
 }
-
-/*ckeditor*/
-.onlinekurslabor_user_class img.media-element.file-media-6,
-/*output*/
-.main-content .media-element-container.media-media_6 video,
-.main-content .media-element-container.media-media_6 img {
-    width: 50%;
+div.media-element-container img[style*="float: "][style*="left"]
+{
+    padding-right:2em;
 }
-/*ckeditor*/
-.onlinekurslabor_user_class img.media-element.file-media-8,
-/*output*/
-.main-content .media-element-container.media-media_8 video,
-.main-content .media-element-container.media-media_8 img {
-    width: 66%;
-}
-/*ckeditor*/
-.onlinekurslabor_user_class img.media-element.file-media-9,
-/*output*/
-.main-content .media-element-container.media-media_9 video,
-.main-content .media-element-container.media-media_9 img {
-    width: 75%;
-}
-
-/*ckeditor*/
-.onlinekurslabor_user_class img.media-element.file-media-12,
-/*output*/
-.main-content .media-element-container.media-media_12 video,
-.main-content .media-element-container.media-media_12 img {
-    width: 100%;
-}
-
-@media (max-width: 767px) {
-
-    .main-content .media-element-container.media-media_3 video,
-    .main-content .media-element-container.media-media_3 img,
-    .main-content .media-element-container.media-media_4 video,
-    .main-content .media-element-container.media-media_4 img,
-    .main-content .media-element-container.media-media_6 video,
-    .main-content .media-element-container.media-media_6 img,
-    .main-content .media-element-container.media-media_8 video,
-    .main-content .media-element-container.media-media_8 img,
-    .main-content .media-element-container.media-media_9 video,
-    .main-content .media-element-container.media-media_9 img,
-    .main-content .media-element-container.media-media_12 video,
-    .main-content .media-element-container.media-media_12 img {
-        width: 100% !important;
-    }
-
-
-}
-
-.media-float-left img,
-.media-float-right img,
-.media-float-center img,
-/*.main-content table td img,*/
-.media-float-left video,
-.media-float-right video,
-.media-float-center video,
-.main-content table td video {
-    max-width: inherit !important;
-    min-width: inherit !important;
-    width: inherit !important;
-    height: inherit !important;
-}
-
-
-.media-element-container {
-    margin:0;
-}
-
-.media-float-left {
-    float: left;
-}
-.media-float-right {
-    float: right;
-}
-
-
+/*alt-code*/
 /*MEDIA BROWSER*/
 .ui-widget.media-wrapper .ui-dialog-titlebar-close {
     line-height: 10px;

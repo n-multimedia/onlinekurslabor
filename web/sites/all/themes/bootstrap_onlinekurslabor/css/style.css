@@ -974,7 +974,7 @@ PROJECTS
 /*fixing media-browser overflow*/
 .media-wrapper {
   width: 90% !important;
-  top: 10% !important;
+   z-index: 500; /*versteck edit-menu*/
 }
 .media-modal-frame {
   width: 100% !important;
