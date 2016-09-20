@@ -56,16 +56,9 @@ function privatemsg_okl_privatemsg_view_alter(&$content) {
  */
 function _privatemsg_okl_add_fake_tabs_to_content(&$content) {
     $content['navigtion_tabs'] = array(
-        '#type' => 'fieldset',
-        '#title' => '',
-        '#collapsible' => false,
-        '#collapsed' => false,
+        '#type' => 'markup',
+        '#markup' => _privatemsg_okl_get_navigation_tabs(),
         '#weight' => -100,
-    );
-
-    $item = menu_get_item('messages/sent/');
-    $content['navigtion_tabs']['links'] = array(
-        '#markup' => _privatemsg_okl_get_navigation_tabs()
     );
 }
 
