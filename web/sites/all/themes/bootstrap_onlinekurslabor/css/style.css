@@ -878,22 +878,34 @@ blockquote p {
 
 /*
 USER PROFILE
+siehe auch custom.css
 */
 .user-courses-item {
-  display:block;
-  border-top: 1px solid #cecece;
-  border-bottom: 1px solid #eee;
-  padding:0px 0;
-  margin-bottom: 10px;
-  min-height:55px;
-  position:relative;
+    display:block;
+    border-top: 1px solid #cecece;
+    border-bottom: 1px solid #eee;
+    padding:0px 0;
+    margin-bottom: 10px;
+    min-height:55px;
+    position:relative;
 }
 .user-courses-item:hover{
-  background-color: #f7f7f7;
+    background-color: #f7f7f7;
+}
+.user-courses-item_background {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    margin:0;
+    padding:0;
+    height:55px;
 }
 .user-courses-item-title {
-  padding: 2px 3px 0 5px;
-
+    padding: 2px 3px 0 5px;
+}
+.user-courses-item-title:hover{
+    background-color: #f7f7f7;
 }
 
 /*

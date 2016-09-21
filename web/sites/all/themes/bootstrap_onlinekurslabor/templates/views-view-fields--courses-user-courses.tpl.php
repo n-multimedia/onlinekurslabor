@@ -44,21 +44,17 @@ $percent = _section_courses_get_timespan_percentage($node, $start_text, $end_tex
 
 
 <div class="row">
-  <a href="<?php echo $node_path; ?>" class="user-courses-item">
-    <div class="col-md-3" style="
-         background-image:url(<?php echo $path; ?>);
-         -webkit-background-size: cover;
-         -moz-background-size: cover;
-         -o-background-size: cover;
-         background-size: cover;
-         margin:0;
-         padding:0;
-         height:55px;
-         ">
-      <div class="user-courses-item-progress" style="display:block;background-color:#fff;opacity:0.8;height:50px;padding-top:5px;display:none;"><?php echo section_courses_theme_progressbar($node, 38, FALSE); ?></div>
+  <a href="<?php echo $node_path; ?>" class="user-courses-item"  title="<?php echo trim($node->title); ?>">
+    <div class="col-md-3 user-courses-item_background" style="background-image:url(<?php echo $path; ?>);">
+      <div class="user-courses-item-progress" ><?php echo section_courses_theme_progressbar($node, 38, FALSE); ?></div>
     </div>
     <div class="user-courses-item-title col-md-9" >
-      <?php echo $node->title; ?>  
+      <?php
+        $node_titel = trim($node->title);
+        if(strlen($node_titel) >55)
+            $node_titel = substr($node_titel, 0, 51).'...';
+        echo $node_titel;
+        ?>
     </div>
   </a>
 </div>

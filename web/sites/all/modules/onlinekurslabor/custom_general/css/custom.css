@@ -29,6 +29,13 @@ user profile smaller
   height: 38px !important;
   overflow:hidden;
 }
+.user-courses-item .user-courses-item-progress{
+    background-color:#fff;
+    opacity:0.8;
+    height:100%;
+    padding-top:5px;
+    display:none;
+}
 .user-courses-item:hover .user-courses-item-progress{
   display:block !important;
 }
