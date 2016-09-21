@@ -724,7 +724,6 @@ function custom_general_admin_menu_output_alter(&$content) {
 function custom_general_preprocess_page(&$variables) {
   //include js needed for every page
   drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/custom_general.js");
-  drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/jquery.autogrow-textarea.js");
   drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/jquery.knob.js");
   drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/spin.js");
 
