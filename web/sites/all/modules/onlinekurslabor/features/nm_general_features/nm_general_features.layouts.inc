@@ -53,7 +53,7 @@ function nm_general_features_default_panels_layout() {
         'width' => 25,
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'col-md-3',
+        'class' => 'col-md-3 col-xs-11',
       ),
       'left' => array(
         'type' => 'region',
@@ -61,7 +61,7 @@ function nm_general_features_default_panels_layout() {
         'width' => 50,
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'col-md-8',
+        'class' => 'col-md-8 col-xs-12',
       ),
       'col_md_1' => array(
         'type' => 'region',
@@ -69,7 +69,7 @@ function nm_general_features_default_panels_layout() {
         'width' => 25,
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'col-md-1',
+        'class' => 'col-md-1 col-xs-1',
       ),
     ),
   );
