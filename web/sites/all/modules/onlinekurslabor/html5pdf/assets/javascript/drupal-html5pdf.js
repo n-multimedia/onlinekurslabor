@@ -36,10 +36,7 @@
         },
         //todo: set und get jeweils mit identifier!
         getPDFRenderer: function() {
-            return renderer;
-        },
-        doStuff: function(cheese) {
-            alert("bloedsinn");
+            return this.renderer;
         }
     }
 }(jQuery));
