@@ -7031,6 +7031,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
           'name' => 'node_type',
           'settings' => array(
             'type' => array(
+              'annvid' => 'annvid',
               'content_chapter' => 'content_chapter',
               'content_domain' => 'content_domain',
               'biblio' => 'biblio',
