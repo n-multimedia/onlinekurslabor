@@ -1196,11 +1196,11 @@ function _section_content_get_active_domain($reset = FALSE) {
         if (isset($node->og_group_ref)) {
           //$lang_og = field_language('node', $node, 'og_group_ref');
           $group_tmp = node_load($node->og_group_ref[LANGUAGE_NONE][0]['target_id']);
-          $domain = node_load(_custom_general_get_group($group_tmp));
+          $domain = node_load(_custom_general_get_group($group_tmp, TRUE));
         }
       }
       else {
-        $domain = node_load(_custom_general_get_group($node));
+        $domain = node_load(_custom_general_get_group($node, TRUE));
       }
     }
     if (!isset($domain)) {
@@ -1208,7 +1208,7 @@ function _section_content_get_active_domain($reset = FALSE) {
       $domain_tmp = is_numeric($c_nid) ? node_load($c_nid) : NULL;
 
       //arg 2 may be a chapter
-      $domain = node_load(_custom_general_get_group($domain_tmp));
+      $domain = node_load(_custom_general_get_group($domain_tmp, TRUE));
 
     }
 
@@ -1224,7 +1224,7 @@ function _section_content_get_active_domain($reset = FALSE) {
       //add and edit
       if (arg(0, $referer_url['path']) == 'domain' && (arg(1, $referer_url['path']) == 'edit' || arg(1, $referer_url['path']) == 'add')) {
         $node = node_load(arg(2, $referer_url['path']));
-        $domain = node_load(_custom_general_get_group($node));
+        $domain = node_load(_custom_general_get_group($node, TRUE));
       }
     }
 
