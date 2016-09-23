@@ -30,7 +30,6 @@
 
       // search callback
       var search = function (e) {
-        console.log("search");
         var pattern = search_input.val();
         if (pattern === lastPattern) {
           return;
@@ -113,8 +112,6 @@
         return tree;
       }
 
-
-      console.log("outline_tree");
 
       //init tree
       outline_tree.treeview({

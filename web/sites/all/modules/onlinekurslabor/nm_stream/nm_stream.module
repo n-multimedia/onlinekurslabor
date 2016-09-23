@@ -1181,9 +1181,9 @@ function nm_stream_preprocess_nm_stream_node_comment_form(&$vars) {
  */
 function nm_stream_preprocess_nm_stream_stream_node_form(&$vars, $hook) {
   global $user;
-
+  
   //$vars['type']
-  if (!isset($vars['context'])) {
+  if (empty($vars['context'])) {
     $context = nm_stream_og_context();
   }
 
