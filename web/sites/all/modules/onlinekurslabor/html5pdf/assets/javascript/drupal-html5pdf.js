@@ -20,13 +20,23 @@
             }, options);
             renderer = new HTML5PDF(settings);
             
-            renderer.loadPDF( function(){  $("#"+identifierstring+'_pdfcanvas').addClass('pdf_canvas_loaded');  
-              //trigger event to listen to
-                $.event.trigger({
-                       type: "annvid_entity_loaded",
-                       message: "pdf",
-                       time: new Date()
-               }); });
+            renderer.loadPDF(
+                    //callback
+                    function() {
+                        $("#" + identifierstring + '_pdfcanvas').addClass('pdf_canvas_loaded');
+                        //trigger event to listen to
+                        $.event.trigger({
+                            type: "annvid_entity_loaded",
+                            message: "pdf",
+                            time: new Date()
+                        });
+                    }
+            ,
+            //errorcallback
+                    function(error) {
+                        $('#'+identifierstring+'_pdfscrollcontainer').html('<div style="background:white;min-height: 70px;"><div class="alert alert-block alert-danger messages error">Fehler beim Laden des PDFs!</div></div>');
+                    }
+            );
 
             /*bind created controls to actions*/
             $('#'+identifierstring+'_zoomin').click(function(){renderer.zoomIn()});           
