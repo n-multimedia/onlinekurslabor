@@ -21,6 +21,7 @@ function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
         case NM_CONTENT_DOMAIN:
         case NM_CONTENT_CHAPTER:
         case NM_INTERACTIVE_CONTENT:
+        case ANNVID_CONTENTTYPE:
             if($view_mode ==  'full')
             {
                 /*das ist alt... bei h5p wird in den themenbereich umgeleitet. aber nur wenns vollansicht ist. */

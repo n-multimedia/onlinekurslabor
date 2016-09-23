@@ -1,82 +1,4 @@
-(function ( $ ) {
-    
-    var renderer;
- 
-    $.fn.html5pdf = function( options ) {
- /*ACHTUNG
-  * 
-  * 
-  * 
-  * 
-  * 
-  * 
-  * LÖSCHEN WAR NUR ZUM TESTEN GEDACHT
-  * 
-  * 
-  * 
-  * 
-  * 
-  * */
-        // This is the easiest way to have default options.
-        var settings = $.extend({
-            // These are the defaults.
-            pdffile: 'http://okldev2.naumenko-multimedia.de/sites/default/files/227-1230-1-pb.pdf',
-            html_pagecount_id: 'page_count',
-            html_currentpage_id: 'page_num',
-            backgroundColor: "#ff66ee",
-            pdfcanvas: 'the-canvas',
-            containerwidth: $(this).css('width'),
-            pdfjspath : 'http://okldev2.naumenko-multimedia.de/sites/all/modules/onlinekurslabor/html5pdf/assets/javascript/'
-        }, options );
- 
-        // Greenify the collection based on the settings variable.
-        this.css({
-          /*  backgroundColor: settings.backgroundColor*/
-        });
-       // alert(settings.pdffile);
-            /**
-             * Asynchronously downloads PDF.
-             */
-       /*     PDFJS.getDocument(settings.pdffile).then(function (pdfDoc_) {
-              pdfDoc = pdfDoc_;
-                 alert(pdfDoc_);
-                 alert(pdfDoc_.numPages);
-                 
-            //  document.getElementById('page_count').textContent = pdfDoc.numPages;
-             
-              // Initial/first page rendering
-              //renderPage(pageNum);
-            });*/
-        
-       
-        this.html(      '<div class=html5pdf_control>'
-                           +'<i id="prev" class="html5pdfhtml5pdfsprite html5pdfsprite-last"></i>'
-                           + '<span><span id="page_num"></span> / <span id="page_count">-</span></span>'
-                            + '<i id="next" class="html5pdfhtml5pdfsprite html5pdfsprite-next"></i>'
-                            + '<i id="zoomout" class="html5pdfhtml5pdfsprite html5pdfsprite-zoomout"></i>'
-                            + '<i id="zoomin" class="html5pdfhtml5pdfsprite html5pdfsprite-zoomin"></i>'
-                            +'</div><div style="clear:both;"></div>'
-                           +'<div style="overflow: scroll; width:100%"><div><canvas id="'+settings.pdfcanvas+'" class="pdf_canvas"></canvas></div></div>');
-     
-          renderer = new HTML5PDF(settings);
-        var innerthis = this; 
-        //uerbergebe callback, damit nach erfolgreichem laden die anzahl pdf-seiten angezeigt wird
-        renderer.loadPDF( function(){  $("#"+settings.pdfcanvas, innerthis).css('display', 'block')});
-       
-          $("#page_num" ).html(renderer.getpageNum());
-    //     $("#page_count", this).html(renderer.getPageCount());
-                $("#zoomin", this).click(function(){renderer.zoomIn()});           
-        $("#zoomout", this).click(function(){renderer.zoomOut()});      
-            $("#next" , this).click(function(){renderer.pageUp(); $("#page_num" ).html(renderer.getpageNum())});           
-        $("#prev", this).click(function(){renderer.pageDown(); $("#page_num").html(renderer.getpageNum())});     
-                   return this; 
-    };
-     $.fn.getPDFRenderer = function(  ) {
-         return renderer;
-     }
-}( jQuery ));
- 
-  
+
 
 // Define a class like this
 function HTML5PDF(options, jqueryelement)
@@ -180,7 +102,7 @@ HTML5PDF.prototype.zoomOut = function()
 }
 
 /*public function, loads the library first and afterwards a pdf specified in settings*/
-HTML5PDF.prototype.loadPDF = function(optionalcallback)
+HTML5PDF.prototype.loadPDF = function(optionalcallback, errorcallback)
 {
     var innerthis = this;
     PDFJS.getDocument(this.pdffile).then(function(pdfDoc_) {
@@ -189,7 +111,7 @@ HTML5PDF.prototype.loadPDF = function(optionalcallback)
         //optionales callback nach Aufruf der renderPage
         optionalcallback() ;
     }, function(reason) {
-        alert("Failure when loading PDF!");
+      errorcallback(reason);
     });
 
 }
