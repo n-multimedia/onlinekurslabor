@@ -53,7 +53,7 @@ function nm_general_features_default_panels_layout() {
         'width' => 25,
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'col-md-3',
+        'class' => 'col-md-3 col-xs-11',
       ),
       'left' => array(
         'type' => 'region',
@@ -61,7 +61,7 @@ function nm_general_features_default_panels_layout() {
         'width' => 50,
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'col-md-8',
+        'class' => 'col-md-8 col-xs-12',
       ),
       'col_md_1' => array(
         'type' => 'region',
@@ -69,7 +69,7 @@ function nm_general_features_default_panels_layout() {
         'width' => 25,
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => 'col-md-1',
+        'class' => 'col-md-1 col-xs-1',
       ),
     ),
   );
@@ -461,7 +461,7 @@ function nm_general_features_default_panels_layout() {
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'col-md-8',
+        'class' => 'col-md-8 col-xs-11',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -487,7 +487,7 @@ function nm_general_features_default_panels_layout() {
         'children' => array(
           0 => 2,
         ),
-        'class' => 'col-md-3',
+        'class' => 'col-md-3 col-xs-12',
       ),
       2 => array(
         'type' => 'row',
@@ -514,7 +514,7 @@ function nm_general_features_default_panels_layout() {
         'children' => array(
           0 => 4,
         ),
-        'class' => 'col-md-1',
+        'class' => 'col-md-1 col-xs-1',
       ),
       4 => array(
         'type' => 'row',
@@ -828,7 +828,7 @@ function nm_general_features_default_panels_layout() {
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'col-md-8',
+        'class' => 'col-md-8 col-xs-12',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -854,7 +854,7 @@ function nm_general_features_default_panels_layout() {
         'children' => array(
           0 => 2,
         ),
-        'class' => 'col-md-4',
+        'class' => 'col-md-4 col-xs-12',
       ),
       2 => array(
         'type' => 'row',
