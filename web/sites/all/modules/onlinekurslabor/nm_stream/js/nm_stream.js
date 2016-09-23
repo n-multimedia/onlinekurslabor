@@ -983,6 +983,14 @@
              */
 
             //potential error source, if we do not have view-content class wrapper
+            //23.09.2016 - 16:50 - SN
+            /*$('.view-nm-stream .view-content').once('nm_stream_init', function() {
+                if(!$(this).hasClass("pane-nm-stream")) {
+                    $(this).addClass("pane-nm-stream");
+                }
+            });*/
+
+
             $('.pane-nm-stream').once('nm_stream', function() {
                 nm_stream_get_update();
                 //append iframe for uploads

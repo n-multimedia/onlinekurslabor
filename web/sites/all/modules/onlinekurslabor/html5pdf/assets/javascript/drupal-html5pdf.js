@@ -36,7 +36,9 @@
         },
         //todo: set und get jeweils mit identifier!
         getPDFRenderer: function() {
-            return renderer;
+            //23.09.2016 - 14:32 - SN
+            //do not commit, just to avoid js error
+            //return renderer;
         },
         doStuff: function(cheese) {
             alert("bloedsinn");

@@ -38,21 +38,21 @@ function _section_course_active($group) {
  *
  * @return boolean
  */
-function _section_domain_author_section_active() {
-  $book_active = (arg(0) == 'admin' && arg(1) == 'content' && arg(2) == 'book' );
-  $biblio_active = (arg(0) == 'node' && arg(1) == 'add' && arg(2) == 'biblio' ); //not necessary ?
-  $media_active = (arg(0) == 'domain' && arg(1) == 'media');
-  $biblio_overview_active = (arg(0) == 'domain' && arg(1) == 'biblio');
-  $tasks_overview_active = (arg(0) == 'domain' && arg(1) == 'tasks');
-  $h5p_overview_active = (arg(0) == 'domain' && arg(1) == 'h5p');
-  $domain_text_active = (arg(0) == 'domain' && arg(1) == 'text');
-  $domain_add_active = (arg(0) == 'domain' && arg(1) == 'add');
-  $domain_edit_active = (arg(0) == 'domain' && arg(1) == 'edit');
-  $domain_delete_active = (arg(0) == 'domain' && arg(1) == 'delete');
+function _section_domain_author_section_active($path = NULL) {
+  $book_active = (arg(0, $path) == 'admin' && arg(1, $path) == 'content' && arg(2, $path) == 'book' );
+  $biblio_active = (arg(0, $path) == 'node' && arg(1, $path) == 'add' && arg(2, $path) == 'biblio' ); //not necessary ?
+  $media_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'media');
+  $biblio_overview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'biblio');
+  $tasks_overview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'tasks');
+  $h5p_overview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'h5p');
+  $domain_text_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'text');
+  $domain_add_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'add');
+  $domain_edit_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'edit');
+  $domain_delete_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'delete');
 
   //ajax
-  $ajax_linkit_tasks = (arg(0) == 'section_content' && arg(1) == 'tasks' && arg(2) == 'autocomplete');
-  $ajax_linkit_h5p = (arg(0) == 'h5p_integration' && arg(1) == 'item' && arg(2) == 'autocomplete');
+  $ajax_linkit_tasks = (arg(0, $path) == 'section_content' && arg(1, $path) == 'tasks' && arg(2, $path) == 'autocomplete');
+  $ajax_linkit_h5p = (arg(0, $path) == 'h5p_integration' && arg(1, $path) == 'item' && arg(2, $path) == 'autocomplete');
 
   return $biblio_active || $biblio_overview_active ||
       $media_active || $book_active ||

@@ -421,6 +421,9 @@ function _custom_general_get_group($referer_node, $enforce_parent = FALSE) {
       $entities = og_get_entity_groups('node', $referer_node->nid);
       if (!empty($entities)) {
         $domain_id = current(current($entities));
+      }else {
+        //root group
+        $domain_id = $referer_node->nid;
       }
     }
   }
