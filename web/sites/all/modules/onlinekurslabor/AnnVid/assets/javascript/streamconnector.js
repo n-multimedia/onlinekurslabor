@@ -76,18 +76,18 @@
          * 
          */
         fillStreamTimeline: function()
-        {
+        {   var this_object = this;
             var jqdiv = jQuery(this.timeline_div_id);
-
-
-
             var pixelspersec = this.getPixelsPerSecond();
 
             var allannotations = this.getAllEntriesWithTimecode();
             var html = "<div id=timemark></div>";
+            //-12 um genau Ende + Border des timelinecontainers zu erwischen
+            var max_anno_offset = this_object.getTimelineWidth()-12;
             jQuery(allannotations).each(function(index, value) {
+                //Math.min um nicht drueber hinauszuschreiben, wenn invalider timecode drin ist
                 // -10 um bildmitte zu treffen, bild = 20x20
-                var offset = Math.floor(value["time"] * pixelspersec) - 10;
+                var offset = Math.min(max_anno_offset, Math.floor(value["time"] * pixelspersec)) - 10;
                 var data_str = "video." + value["time"];
                 
                 html += "<a data=\"" + data_str + "\" title=\""+value["text"]+"\"><img src=" + value["img"] + " class=\"timeline_profile\" style=\"margin-left:  " + offset + "px;\"></a>";
@@ -113,12 +113,18 @@
         /*private*/
         getPixelsPerSecond: function()
         {
-            var jqdiv = jQuery(this.timeline_div_id);
-            var width = jqdiv.css('width').replace("px", "");
-            var videolength = Drupal.behaviors.h5p_connector_api.interactivevideo.getH5P().video.getDuration();
+           
+            var width = this.getTimelineWidth();
+            var videolength = Math.floor( Drupal.behaviors.h5p_connector_api.interactivevideo.getH5P().video.getDuration());
 
-            var pixelspersec = Math.floor(width) / Math.floor(videolength);
+            var pixelspersec = Math.floor(width) / videolength;
             return pixelspersec;
+        },
+        /*private*/
+        getTimelineWidth: function()
+        {
+              var jqdiv = jQuery(this.timeline_div_id);
+            return jqdiv.css('width').replace("px", "");            
         }
         
     

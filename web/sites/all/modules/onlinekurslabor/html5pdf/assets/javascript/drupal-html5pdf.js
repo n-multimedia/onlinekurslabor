@@ -18,9 +18,9 @@
                 html_pdfcanvas_id: identifierstring+'_pdfcanvas',
                 width: $('#'+identifierstring+'-html5pdf').css('width')
             }, options);
-            renderer = new HTML5PDF(settings);
+            this.renderer = new HTML5PDF(settings);
             
-            renderer.loadPDF(
+            this.renderer.loadPDF(
                     //callback
                     function() {
                         $("#" + identifierstring + '_pdfcanvas').addClass('pdf_canvas_loaded');
@@ -37,12 +37,12 @@
                         $('#'+identifierstring+'_pdfscrollcontainer').html('<div style="background:white;min-height: 70px;"><div class="alert alert-block alert-danger messages error">Fehler beim Laden des PDFs!</div></div>');
                     }
             );
-
+            var that = this;
             /*bind created controls to actions*/
-            $('#'+identifierstring+'_zoomin').click(function(){renderer.zoomIn()});           
-            $('#'+identifierstring+'_zoomout').click(function(){renderer.zoomOut()});      
-            $('#'+identifierstring+'_next').click(function(){renderer.pageUp();});           
-            $('#'+identifierstring+'_prev').click(function(){renderer.pageDown(); });     
+            $('#'+identifierstring+'_zoomin').click(function(){that.renderer.zoomIn()});           
+            $('#'+identifierstring+'_zoomout').click(function(){that.renderer.zoomOut()});      
+            $('#'+identifierstring+'_next').click(function(){that.renderer.pageUp();});           
+            $('#'+identifierstring+'_prev').click(function(){that.renderer.pageDown(); });     
         },
         //todo: set und get jeweils mit identifier!
         getPDFRenderer: function() {
