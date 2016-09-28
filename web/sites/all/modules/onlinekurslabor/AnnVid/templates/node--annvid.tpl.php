@@ -6,6 +6,7 @@
         <a class="btn btn-default" href=# id="annvid_pdftoggle">PDF anzeigen</a>
     </div>
 <?endif?>
+<?/*klassen werden ueber js dynamisch geandert*/?>
 <div class="col-md-12" id="annvid_videodiv">
    
   <? print render($content['field_h5preference']); ?>
