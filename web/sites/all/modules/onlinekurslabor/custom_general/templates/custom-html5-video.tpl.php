@@ -1,4 +1,5 @@
-<?php/**
+<?php
+/**
  * Erstellt mehrere Varianten eines Videos mit sichtbar für kleine- bzw mittlere+ Bildschirmgrößen
  * siehe _custom_general_get_html5_video_tag()
 **/
