@@ -160,6 +160,13 @@ function nm_h5p_features_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'h5p_allow_communication_with_h5p_org';
+  $strongarm->value = 0;
+  $export['h5p_allow_communication_with_h5p_org'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'h5p_content_dev_mode';
   $strongarm->value = 0;
   $export['h5p_content_dev_mode'] = $strongarm;
