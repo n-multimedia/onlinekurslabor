@@ -1462,6 +1462,12 @@ function nm_section_content_features_strongarm() {
       'task' => array(
         'custom_settings' => FALSE,
       ),
+      'nm_stream' => array(
+        'custom_settings' => TRUE,
+      ),
+      'videosafe_description' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
