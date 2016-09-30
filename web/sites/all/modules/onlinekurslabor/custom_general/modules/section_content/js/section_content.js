@@ -135,6 +135,7 @@
 
         collapse_button.on('click', function () {
           outline_tree.treeview('collapseAll');
+          outline_tree.treeview('expandNode', 0);
         });
       });
 
