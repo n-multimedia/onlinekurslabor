@@ -124,6 +124,12 @@ function onlinekurslabor_user_action_info() {
   $actions['user_assign_to_course_group'] = array(
     'label' => t('Assign to course group'),
     'type' => 'user',
+    /*
+     *
+     *
+     * this is fucking important!
+     */
+    'behavior' => array('dont_kill_og'),
     'configurable' => TRUE,
     'triggers' => array('any'),
   );
