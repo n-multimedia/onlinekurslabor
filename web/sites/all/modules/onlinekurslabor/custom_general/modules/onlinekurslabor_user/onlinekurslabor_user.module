@@ -112,6 +112,12 @@ function onlinekurslabor_user_action_info() {
   $actions['user_assign_course_role'] = array(
     'label' => t('Assign course role'),
     'type' => 'user',
+    /*
+    *
+    *
+    * this is fucking important!
+    */
+    'behavior' => array('dont_kill_og'),
     'configurable' => TRUE,
     'triggers' => array('any'),
   );
