@@ -4,6 +4,7 @@ drush vset maintenance_mode 1
 drush en linkit_extension --yes
 drush en bootstrap_check --yes
 drush pm-disable bartik --yes
+drush pm-disable seven  --yes
 
 drush fr nm_section_content_features nm_general_features nm_h5p_features nm_section_content_features nm_section_courses_features section_courses_clone_features section_projects_features --yes
 drush dis oembed_fix  --yes

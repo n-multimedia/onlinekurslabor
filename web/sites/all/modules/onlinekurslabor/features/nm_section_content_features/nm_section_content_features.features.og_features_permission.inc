@@ -10,16 +10,6 @@
 function nm_section_content_features_og_features_default_permissions() {
   $permissions = array();
 
-  // Exported og permission: 'node:annvid:update field_domain_outline_retractable field'
-  $permissions['node:annvid:update field_domain_outline_retractable field'] = array(
-    'roles' => array(),
-  );
-
-  // Exported og permission: 'node:annvid:view field_domain_outline_retractable field'
-  $permissions['node:annvid:view field_domain_outline_retractable field'] = array(
-    'roles' => array(),
-  );
-
   // Exported og permission: 'node:content_domain:add user'
   $permissions['node:content_domain:add user'] = array(
     'roles' => array(
