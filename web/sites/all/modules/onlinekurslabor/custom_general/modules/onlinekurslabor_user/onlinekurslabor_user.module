@@ -147,6 +147,12 @@ function onlinekurslabor_user_action_info() {
   );
   $actions['user_send_message'] = array(
     'type' => 'user',
+    /*
+    *
+    *
+    * this is fucking important!
+    */
+    'behavior' => array('dont_kill_og'),
     'label' => t('Send message (user)'),
     'configurable' => TRUE,
     'triggers' => array('any'),
