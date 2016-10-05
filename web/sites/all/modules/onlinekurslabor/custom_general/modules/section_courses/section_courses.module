@@ -1224,6 +1224,52 @@ function section_courses_module_implements_alter(&$implementations, $hook) {
   }
 }
 
+
+/**
+ * remove user_id from all coursegroups belonging to the give course-nid
+ * @param type $user_uid uid of a user
+ * @param type $course_nid nid of a course
+ */
+function _section_courses_user_remove_from_coursegroups( $user_uid,$course_nid)
+{
+    
+    $courses_course_groups = _section_course_get_coursegroups(node_load($course_nid));
+
+    /**
+     *delete membership in all coursegroups
+     */
+    foreach ($courses_course_groups as $course_group) {
+      $og_membership = og_get_membership('node', $course_group->nid, 'user', $user_uid);
+      if ($og_membership) {
+        og_membership_delete($og_membership->id);
+      }
+    }
+}
+
+
+/**
+ * add user to a coursegroup. all memberships to other coursegroups in this course will be revoked 
+ * @param type $user_uid uid of a user
+ * @param type $coursegroup_nid nid of a coursegroup
+ */
+function _section_courses_user_add_to_coursegroup( $user_uid,$coursegroup_nid)
+{$coursegroup = node_load($coursegroup_nid);
+    $course_to_group_nid = $coursegroup->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+    //remove from all coursegroups first
+    _section_courses_user_remove_from_coursegroups( $user_uid,$course_to_group_nid);
+    
+    //assign to selected group
+    $values = array(
+      'entity type' => 'user',
+      'entity' => user_load($user_uid),
+      'state' => OG_STATE_ACTIVE,
+    );
+    og_group('node', $coursegroup_nid, $values);
+    
+}
+
+
+
 /**
  * get the student's course group of the active course
  *

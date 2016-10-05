@@ -515,41 +515,15 @@ function user_modify_course_membership_state(&$entity, $context = array()) {
  * Action function for user_assign__to_course_group
  */
 function user_assign_to_course_group(&$entity, $context = array()) {
-  global $user;
-  $course_nid = $context['course_nid'];
-  $new_course_group_nid = $context['course_group_nid'];
-  //if nid was set
-  if ($new_course_group_nid) {
-    $active_course = node_load($course_nid);
-    $course_groups = _section_course_get_coursegroups($active_course);
-
-    /**
-     * 13.02.2014 - 10:02 - SN
-     * todo performance boost by 1 query?
-     * get users course group in course
-     */
-    foreach ($course_groups as $course_group) {
-      $og_membership = og_get_membership('node', $course_group->nid, 'user', $entity->uid);
-      if ($og_membership) {
-        og_membership_delete($og_membership->id);
-        //delete all ids... without continue..
-        //continue would just delete the membership of the first match
-        //.. that would be enough actually
-        //continue;
-      }
+    global $user;
+    $course_nid = $context['course_nid'];
+    $new_course_group_nid = $context['course_group_nid'];
+    //if nid was set
+    if ($new_course_group_nid) {
+        _section_courses_user_add_to_coursegroup($entity->uid, $new_course_group_nid);
+    } else {
+        drupal_set_message(t('No entry could be assigned to a course group because no course group was selected.'), 'warning');
     }
-
-    //assign to selected group
-    $values = array(
-      'entity type' => 'user',
-      'entity' => $entity,
-      'state' => OG_STATE_ACTIVE,
-    );
-    og_group('node', $new_course_group_nid, $values);
-  }
-  else {
-    drupal_set_message(t('No entry could be assigned to a course group because no course group was selected.'), 'warning');
-  }
 }
 
 /**
