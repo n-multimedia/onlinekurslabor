@@ -239,10 +239,15 @@ function section_courses_render_course_link($course, $account = NULL) {
       }
       else {
         $subscribe_url = 'group/node/' . $course->nid . '/subscribe';
+        $subscribe_url = '';
         $subscribe_link = l('<i class="glyphicon glyphicon-ok-circle"> </i> Anmelden', $subscribe_url, array(
+          'fragment' => 'register',
+          'external' => TRUE,
           'html'=>true,
-          'query' => array('destination' => 'course/home/' . $course->nid),
-          'attributes' => array('class' => array('btn', 'btn-primary'))
+          //'query' => array('destination' => 'course/home/' . $course->nid),
+          'attributes' => array(
+              'class' => array('btn', 'btn-primary', 'btn-disabled'),
+              'onclick' => 'alert(\'Zur Anmeldung wenden Sie sich bitte an die Lehrenden.\'); return false;')
         ));
         $info_link = l('<i class="glyphicon glyphicon-info-sign"> </i> Kursinfo', 'course/info/' . $course->nid, 
           array(  
