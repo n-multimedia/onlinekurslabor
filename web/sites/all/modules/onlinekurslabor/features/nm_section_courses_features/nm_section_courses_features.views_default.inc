@@ -2839,7 +2839,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = 'In diesem Kurs wurde noch keine Kursübersicht angelegt.';
+  $handler->display->display_options['empty']['area']['content'] = 'No courses available.';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: OG membership: OG membership from Node group */
@@ -2957,7 +2957,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('Alle'),
     t('My Courses'),
     t('Meine Kurse'),
-    t('In diesem Kurs wurde noch keine Kursübersicht angelegt.'),
+    t('No courses available.'),
     t('user from OG membership'),
     t('View panes'),
     t('Courses Offer'),

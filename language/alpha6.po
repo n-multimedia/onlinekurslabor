@@ -25,6 +25,9 @@ msgstr "Alles einklappen"
 msgid "Block"
 msgstr "Blockieren"
 
+msgid "No courses available."
+msgstr "Keine Kurse vorhanden."
+
 msgid ""
 msgstr ""
 
