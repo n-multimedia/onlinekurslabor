@@ -125,7 +125,7 @@ function _course_header_section_view() {
 
       $url = 'group/node/' . $active_course->nid . '/subscribe';
       $subscribe_link = l('Melden Sie sich am Kurs an', $url, array('query' => array('destination' => 'course/home/' . $active_course->nid)));
-      $output .= '<p>' . $subscribe_link . ', um weitere Werkzeuge freizuschalten.</p> ';
+      //$output .= '<p>' . $subscribe_link . ', um weitere Werkzeuge freizuschalten.</p> ';
 
       $output .= '</div>';
     }
