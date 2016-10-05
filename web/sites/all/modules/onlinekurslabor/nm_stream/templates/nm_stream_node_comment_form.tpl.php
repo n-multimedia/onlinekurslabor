@@ -8,7 +8,7 @@
 <?php if ($comment): ?>
 
   <form id="nm-stream-edit-comment-<?php echo $comment->cid ?>" >
-    <textarea class="nm-stream-comment-body col-md-12"><?php echo $comment->comment_body[LANGUAGE_NONE][0]['value']; ?></textarea>
+    <textarea class="nm-stream-comment-body form-control form-textarea"><?php echo $comment->comment_body[LANGUAGE_NONE][0]['value']; ?></textarea>
     <div class="row">
       <div class="nm-stream-edit-comment-actions">
         <button class="nm-stream-comment-cancel btn btn-danger"><?php echo t('Cancel'); ?></button>
@@ -29,7 +29,7 @@
                 <?php echo $nm_comment_form_dummy; ?>
               </div>
               <form id="nm-stream-add-comment-<?php echo $nm_node_id ?>" >
-                <textarea class="nm-stream-comment-body col-md-12"></textarea>
+                <textarea class="nm-stream-comment-body  form-control form-textarea"></textarea>
                 <div class="row">
                   <div class="nm-stream-add-comment-actions">
                     <input class="nm-stream-form-token" type="hidden" name="form_token" value="<?php echo drupal_get_token(); ?>" />

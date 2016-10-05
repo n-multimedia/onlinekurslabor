@@ -13,7 +13,7 @@
 <?php if ($node): ?>
   <?php /* edit */ ?>
   <form id="nm-stream-edit-node-<?php echo $node->nid; ?>" method="post" enctype="multipart/form-data" target="nm_stream_hidden_upload" action="/nm_stream/node/<?php echo $node->nid; ?>/edit">
-    <textarea class="nm-stream-node-body col-md-12" name="body"><?php echo $node->body[LANGUAGE_NONE][0]['value']; ?></textarea>
+    <textarea class="nm-stream-node-body form-control form-textarea" name="body"><?php echo $node->body[LANGUAGE_NONE][0]['value']; ?></textarea>
     <div class="row">
       <div class="nm-stream-edit-node-actions col-md-12">
         <div class="row">
@@ -50,7 +50,7 @@
                 <?php echo $nm_node_form_dummy; ?>
               </div>
               <form id="nm-stream-add-node" method="post" enctype="multipart/form-data" target="nm_stream_hidden_upload" action="/nm_stream/node/add/<?php echo $type; ?>">
-                <textarea class="nm-stream-node-body col-md-12" name="body"></textarea>
+                <textarea class="nm-stream-node-body form-control form-textarea" name="body"></textarea>
                 <div class="row">
                   <div class="nm-stream-add-node-attachments col-md-12">
                     <div class="row">

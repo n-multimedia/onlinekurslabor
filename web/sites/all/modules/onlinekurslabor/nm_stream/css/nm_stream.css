@@ -262,6 +262,10 @@ ADD NODE FORM
     line-height:22px !important;
 }
 
+textarea.nm-stream-node-body , textarea.nm-stream-comment-body  
+{
+    margin-bottom:10px;
+}
 
 /*
 Upload
@@ -271,8 +275,13 @@ Upload
     margin-bottom:10px;
     background-color: #eee;
     border-bottom:1px solid #ccc;
-    padding:5px 0;
+    padding:5px 0 !important;
     text-align: left;
+}
+/*bei edit weisser bg*/
+.nm-stream-edit-node-attachments
+{
+    background-color: #fff;
 }
 
 .fileinput-button {
