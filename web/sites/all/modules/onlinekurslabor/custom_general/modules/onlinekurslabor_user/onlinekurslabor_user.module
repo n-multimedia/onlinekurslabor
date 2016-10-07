@@ -504,7 +504,7 @@ function user_modify_course_membership_state(&$entity, $context = array()) {
     }
 
     if ($state === "delete") {
-        _section_courses_user_remove_from_coursegroups($entity->uid, $course_nid);
+        //entfernung aus den zugehoerigen coursegrups dann via hook
         $og_membership->delete();
     } else {
         $og_membership->state = $state;

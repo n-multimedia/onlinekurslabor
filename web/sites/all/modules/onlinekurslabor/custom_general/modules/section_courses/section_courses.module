@@ -131,6 +131,25 @@ function section_courses_onlinekurslabor_admin_settings_page() {
 
   return system_settings_form($form);
 }
+/**
+ * This hook is invoked after the OG membership has been removed from the database.
+ *
+ * @param  OgMembership $og_membership:   The OG membership that is being deleted
+ */
+function section_courses_og_membership_delete (OgMembership $og_membership){
+    //prüfe: wurde jmd aus nem kurs ausgetragen (selbst und rauswurf), dann course_group zugriff entfernen
+    if($og_membership->entity_type  ==='user' && $og_membership->group_type === 'node')
+    {   $user_uid_affected = $og_membership->etid;
+        $node_affected =  node_load($og_membership->gid);
+        //pruefe auf kurs
+        if($node_affected->type === NM_COURSE)
+        {  //entferne coursegroups
+           _section_courses_user_remove_from_coursegroups($user_uid_affected, $node_affected->nid);
+        }
+    }
+
+}
+
 
 /**
  * Convert VHB-Semester-ID to readable string
