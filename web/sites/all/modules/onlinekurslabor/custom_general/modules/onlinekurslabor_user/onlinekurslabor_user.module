@@ -221,9 +221,8 @@ function user_assign_to_course_group_form($context) {
     '#title' => t('Course Groups'),
     '#type' => 'radios',
     '#options' => $course_group_options,
-    '#description' => t('Select which course the user(s) should be assigned to.'),
+    '#description' => t('Select the appropriate coursegroup.'),
   );
-
   $form['course_nid'] = array('#type' => 'hidden', '#value' => $active_course->nid);
 
 
