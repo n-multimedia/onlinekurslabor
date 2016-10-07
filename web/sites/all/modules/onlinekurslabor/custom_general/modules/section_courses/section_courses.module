@@ -1944,6 +1944,46 @@ function section_courses_student_registration_form_submit($form, &$form_state) {
 }
 
 /**
+ * @private function checks if a user hast at least one of the given roles. usually used for admin-access in course.
+ * 
+ * private function. check the implementations below.
+ * @param object $user_account  the user to check
+ * @param object $course the course to check
+ * @param array $permissions various permissions, if one of them is included, the answer is true.
+ * @return boolean true if above condition is met.
+ */
+function _section_courses_user_has_role_in_course($user_account, $course, $permissions) {
+    $og_membership = og_get_membership('node', $course->nid, 'user', $user_account->uid);
+    //do not process if user is not member of this course
+    if (!empty($og_membership)) {
+        $roles = og_get_user_roles('node', $og_membership->gid, $user_account->uid, TRUE, ($og_membership->state < OG_STATE_BLOCKED));
+
+        foreach ($roles as $key => $value) {
+            //if one of the given permissions is included, return true
+            if (in_array($value, $permissions)) {
+                return true;
+            }
+        }
+    }
+    //requirements not met
+    return false;
+}
+
+
+/**
+ * checks if a user is dozent or tutor in a course.
+ *
+ * @param object $user_account  the user to check
+ * @param object $course the course to check
+ * @return boolean true if user has edit-perms in a course and is not locked
+ */
+function _section_courses_user_can_edit_course($user_account, $course) {
+    return _section_courses_user_has_role_in_course($user_account, $course,  array(NM_COURSES_ROLE_ADMINISTRATOR, NM_COURSES_ROLE_TUTOR));
+            
+}
+
+
+/**
  *
  */
 function _section_courses_book_add_active_path(&$subtree_pointer, $active_mlid, $parents) {
