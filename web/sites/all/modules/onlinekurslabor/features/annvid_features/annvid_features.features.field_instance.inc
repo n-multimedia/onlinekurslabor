@@ -42,16 +42,53 @@ function annvid_features_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'body',
-    'label' => 'Body',
-    'required' => FALSE,
+    'label' => 'Kurzinfos',
+    'required' => 0,
     'settings' => array(
-      'display_summary' => TRUE,
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'ds_code' => 'ds_code',
+          'filtered_html' => 'filtered_html',
+          'full_html' => 'full_html',
+          'php_code' => 'php_code',
+          'plain_text' => 'plain_text',
+        ),
+        'allowed_formats_toggle' => 0,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'ds_code' => array(
+              'weight' => 12,
+            ),
+            'filtered_html' => array(
+              'weight' => 0,
+            ),
+            'full_html' => array(
+              'weight' => 1,
+            ),
+            'php_code' => array(
+              'weight' => 11,
+            ),
+            'plain_text' => array(
+              'weight' => 10,
+            ),
+          ),
+        ),
+      ),
+      'display_summary' => 0,
+      'linkit' => array(
+        'button_text' => 'Suche',
+        'enable' => 0,
+        'profile' => '',
+      ),
       'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
+      'active' => 1,
       'module' => 'text',
       'settings' => array(
+        'multiple_value_widget' => 'table',
         'rows' => 20,
         'summary_rows' => 5,
       ),
@@ -74,6 +111,7 @@ function annvid_features_field_default_field_instances() {
         'module' => 'entityreference',
         'settings' => array(
           'links' => TRUE,
+          'use_content_language' => TRUE,
           'view_mode' => 'default',
         ),
         'type' => 'entityreference_entity_view',
@@ -162,7 +200,7 @@ function annvid_features_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 8,
+      'weight' => 7,
     ),
   );
 
@@ -246,31 +284,19 @@ function annvid_features_field_default_field_instances() {
         'weight' => 0,
       ),
     ),
-    'display_label' => 1,
     'entity_type' => 'node',
     'field_name' => 'group_group',
     'label' => 'Gruppe',
-    'required' => FALSE,
+    'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
-    'view modes' => array(
-      'full' => array(
-        'custom settings' => FALSE,
-        'label' => 'Full',
-        'type' => 'og_group_subscribe',
-      ),
-      'teaser' => array(
-        'custom settings' => FALSE,
-        'label' => 'Anrisstext',
-        'type' => 'og_group_subscribe',
-      ),
-    ),
     'widget' => array(
+      'active' => 1,
       'module' => 'options',
       'settings' => array(
         'display_label' => 0,
-        'og_hide' => TRUE,
+        'og_hide' => 1,
       ),
       'type' => 'options_onoff',
       'weight' => 1,
@@ -328,7 +354,7 @@ function annvid_features_field_default_field_instances() {
           'action_on_edit' => 0,
           'fallback' => 'none',
           'providers' => array(
-            'og_context' => 1,
+            'og_context' => 0,
             'url' => 1,
           ),
           'skip_perm' => 0,
@@ -365,12 +391,12 @@ function annvid_features_field_default_field_instances() {
   t('Annotationsliste anzeigen');
   t('Beginnen Sie damit, den Namen eines H5P-Videos einzutippen. 
 <em>Das Video muss in diesem Lehrtext unter "Interaktiv" gelistet sein</em>');
-  t('Body');
   t('Determine if this is an OG group.');
   t('Groups audience');
   t('Gruppe');
   t('H5P-Inhalt');
   t('Hier können Sie eine PDF-Datei hochladen, die neben dem Video angezeigt werden kann ');
+  t('Kurzinfos');
   t('PDF-Datei (z.B. Skript)');
   t('Wenn sich im Video Annotationen befinden, so werden diese in einer Liste unterhalb des Videos dargestellt. Diese Anzeige kann hier unterbunden werden');
 
