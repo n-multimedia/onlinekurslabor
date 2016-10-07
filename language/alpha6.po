@@ -32,7 +32,7 @@ msgid "Select the appropriate coursegroup."
 msgstr "Wählen Sie die entsprechende Kursgruppe."
 
 msgid "@realname is admin / tutor in this course and already has full access to the coursegroups. Person wasn't added."
-msgstr "@realname ist Dozent / Tutor in diesem Kurs und hat Vollzugriff auf die Kursgruppen. Person nicht hinzugefügt"
+msgstr "@realname ist Dozent / Tutor in diesem Kurs und hat Vollzugriff auf die Kursgruppen. Person nicht hinzugefügt."
 
 msgid ""
 msgstr ""
