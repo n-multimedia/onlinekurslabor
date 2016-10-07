@@ -447,7 +447,7 @@ return theme(\'nm_fancy_box\', $vars);
     'admin_title' => 'Video',
     'title' => '',
     'title_heading' => 'h2',
-    'body' => '<?php echo _custom_general_get_rendered_html5_video_tag("https://onlinekurslabor.phil.uni-augsburg.de/system/files/imagefilm_onlinekurslabor.mp4", "/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo2.png"); ?>',
+    'body' => '<?php echo _custom_general_get_rendered_html5_video_tag("https://onlinekurslabor.phil.uni-augsburg.de/sites/default/files/imagefilm_onlinekurslabor.mp4", "/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo2.png"); ?>',
     'format' => 'php_code',
     'substitute' => TRUE,
   );
