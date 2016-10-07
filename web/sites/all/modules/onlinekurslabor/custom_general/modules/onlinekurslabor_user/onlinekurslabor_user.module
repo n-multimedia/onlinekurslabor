@@ -221,9 +221,8 @@ function user_assign_to_course_group_form($context) {
     '#title' => t('Course Groups'),
     '#type' => 'radios',
     '#options' => $course_group_options,
-    '#description' => t('Select which course the user(s) should be assigned to.'),
+    '#description' => t('Select the appropriate coursegroup.'),
   );
-
   $form['course_nid'] = array('#type' => 'hidden', '#value' => $active_course->nid);
 
 
@@ -504,7 +503,7 @@ function user_modify_course_membership_state(&$entity, $context = array()) {
     }
 
     if ($state === "delete") {
-        _section_courses_user_remove_from_coursegroups($entity->uid, $course_nid);
+        //entfernung aus den zugehoerigen coursegrups dann via hook
         $og_membership->delete();
     } else {
         $og_membership->state = $state;
@@ -521,7 +520,13 @@ function user_assign_to_course_group(&$entity, $context = array()) {
     $new_course_group_nid = $context['course_group_nid'];
     //if nid was set
     if ($new_course_group_nid) {
-        _section_courses_user_add_to_coursegroup($entity->uid, $new_course_group_nid);
+        //dozenten / tutoren: macht kein sinn, sie in kursgruppen zu stecken.
+        if (_section_courses_user_can_edit_course($entity, node_load($course_nid))) {
+             drupal_set_message( t("@realname is admin / tutor in this course and already has full access to the coursegroups. Person wasn't added.", array('@realname' => $entity->realname)), 'error');
+        }
+        else {
+            _section_courses_user_add_to_coursegroup($entity->uid, $new_course_group_nid);   
+        }
     } else {
         drupal_set_message(t('No entry could be assigned to a course group because no course group was selected.'), 'warning');
     }

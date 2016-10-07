@@ -96,6 +96,11 @@ function onlinekurslabor_access_node_grants($account, $op) {
       //solutions for instructors
       $course_solutions = _section_course_get_solutions($course);
       if(!empty($course_solutions)) {
+          /**
+           * todo:  refactor!
+           * umbau auf funktion _section_courses_user_can_edit_course,
+           * vermeidle codedopplung
+           */
         $og_membership = og_get_membership('node', $course->nid, 'user', $account->uid);
         //do not process if user is not member of this course
         if (!empty($og_membership)) {
