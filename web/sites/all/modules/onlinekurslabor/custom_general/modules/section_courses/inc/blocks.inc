@@ -780,8 +780,8 @@ function _section_courses_navtext_to_link($course, $text) {
 
         $term = _section_courses_get_forum_term($course);
 
-        if(empty($term)){
-          drupal_set_message('Das Forumfeature ist in diesem Kurs aktiv aber es konnte kein passenden Forumterm gefunden werden.<br/>Bitte erstellen Sie den Term oder deaktivieren Sie das Kursfeature.', 'error');
+        if(empty($term) && _section_courses_user_can_edit_course($user, $course)){
+          drupal_set_message('Das Forumfeature ist in diesem Kurs aktiv aber es konnte kein passender Eintrag gefunden werden.<br/>Bitte kontaktieren Sie den Support.', 'error');
           break;
         }
         $num_unread = _section_courses_advanced_forum_get_num_unread($user->uid, $term->tid);
