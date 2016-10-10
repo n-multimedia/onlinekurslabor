@@ -15,9 +15,6 @@
     font-size: 10px;
 }
 
-.panels-flexible-column-first .treeview li:first-child span {
-    display: none;
-}
 
 .panels-flexible-column-first .treeview li {
     border: 0;

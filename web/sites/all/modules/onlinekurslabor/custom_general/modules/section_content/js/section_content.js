@@ -137,6 +137,8 @@
           outline_tree.treeview('collapseAll');
           outline_tree.treeview('expandNode', 0);
         });
+        //initial collapse
+        outline_tree.treeview('collapseAll');
       });
 
 
