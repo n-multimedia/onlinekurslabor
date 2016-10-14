@@ -1967,16 +1967,6 @@ function _section_courses_user_has_role_in_course($user_account, $course, $permi
     }
     //requirements not met
     return false;
-
-  $course_id = $row->roles;
-  $course = node_load($course_id);
-  $account = user_load($row->uid);
-
-  if (node_access('update', $course, $account)) {
-    return TRUE;
-  }
-
-  return FALSE;
 }
 
 
@@ -2243,7 +2233,6 @@ function section_courses_save_draft_validate($form, &$form_state) {
   elseif ($form_state['triggering_element']['#value'] == $form['actions']['submit']['#value']) {
     $form_state['values']['status'] = 1;
   }
-  _section_courses_user_has_role_in_course()
 }
 
 /**
