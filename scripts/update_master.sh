@@ -3,6 +3,7 @@ drush vset maintenance_mode 1
 
 drush en linkit_extension --yes
 drush en bootstrap_check --yes
+drush en views_php --yes
 drush pm-disable bartik --yes
 drush pm-disable seven  --yes
 
