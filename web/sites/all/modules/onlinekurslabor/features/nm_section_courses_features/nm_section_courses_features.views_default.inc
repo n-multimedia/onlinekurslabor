@@ -298,40 +298,10 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Relationship: OG membership: User from OG membership */
-  $handler->display->display_options['relationships']['og_membership_related_user']['id'] = 'og_membership_related_user';
-  $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
-  $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
-  $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
-  /* Relationship: User: Profile */
-  $handler->display->display_options['relationships']['profile']['id'] = 'profile';
-  $handler->display->display_options['relationships']['profile']['table'] = 'users';
-  $handler->display->display_options['relationships']['profile']['field'] = 'profile';
-  $handler->display->display_options['relationships']['profile']['relationship'] = 'og_membership_related_user';
-  $handler->display->display_options['relationships']['profile']['label'] = 'Profil';
-  $handler->display->display_options['relationships']['profile']['required'] = TRUE;
-  $handler->display->display_options['relationships']['profile']['bundle_types'] = array(
-    'master' => 'master',
-  );
-  /* Relationship: OG membership: OG Roles from membership */
-  $handler->display->display_options['relationships']['og_users_roles']['id'] = 'og_users_roles';
-  $handler->display->display_options['relationships']['og_users_roles']['table'] = 'og_membership';
-  $handler->display->display_options['relationships']['og_users_roles']['field'] = 'og_users_roles';
-  $handler->display->display_options['relationships']['og_users_roles']['relationship'] = 'og_membership_related_user';
-  $handler->display->display_options['relationships']['og_users_roles']['required'] = TRUE;
-  /* Relationship: OG membership: Group Node from OG membership */
-  $handler->display->display_options['relationships']['og_membership_related_node_group']['id'] = 'og_membership_related_node_group';
-  $handler->display->display_options['relationships']['og_membership_related_node_group']['table'] = 'og_membership';
-  $handler->display->display_options['relationships']['og_membership_related_node_group']['field'] = 'og_membership_related_node_group';
-  $handler->display->display_options['relationships']['og_membership_related_node_group']['label'] = 'Course Group node from OG membership';
-  $handler->display->display_options['relationships']['og_membership_related_node_group']['required'] = TRUE;
-  /* Relationship: Entity Reference: Referenced Entity */
-  $handler->display->display_options['relationships']['og_group_ref_target_id']['id'] = 'og_group_ref_target_id';
-  $handler->display->display_options['relationships']['og_group_ref_target_id']['table'] = 'og_membership';
-  $handler->display->display_options['relationships']['og_group_ref_target_id']['field'] = 'og_group_ref_target_id';
-  $handler->display->display_options['relationships']['og_group_ref_target_id']['relationship'] = 'og_membership_related_node_group';
-  $handler->display->display_options['relationships']['og_group_ref_target_id']['label'] = 'Course Inhalt entity referenced from og_group_ref';
-  $handler->display->display_options['relationships']['og_group_ref_target_id']['required'] = TRUE;
+  /* Relationship: OG membership: OG membership from User */
+  $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
+  $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'users';
+  $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
   /* Field: User: Uid */
   $handler->display->display_options['fields']['uid']['id'] = 'uid';
   $handler->display->display_options['fields']['uid']['table'] = 'users';
@@ -349,12 +319,13 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'og_membership';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['relationship'] = 'og_membership_related_node_group';
+  $handler->display->display_options['sorts']['created']['relationship'] = 'og_membership_rel';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
   /* Contextual filter: OG membership: Group ID */
   $handler->display->display_options['arguments']['gid']['id'] = 'gid';
   $handler->display->display_options['arguments']['gid']['table'] = 'og_membership';
   $handler->display->display_options['arguments']['gid']['field'] = 'gid';
+  $handler->display->display_options['arguments']['gid']['default_action'] = 'empty';
   $handler->display->display_options['arguments']['gid']['exception']['title'] = 'Alle';
   $handler->display->display_options['arguments']['gid']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['gid']['summary']['number_of_records'] = '0';
@@ -365,17 +336,23 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['status']['table'] = 'users';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = '1';
-  /* Filter criterion: OG user roles: Role Name */
-  $handler->display->display_options['filters']['name']['id'] = 'name';
-  $handler->display->display_options['filters']['name']['table'] = 'og_role';
-  $handler->display->display_options['filters']['name']['field'] = 'name';
-  $handler->display->display_options['filters']['name']['relationship'] = 'og_users_roles';
-  $handler->display->display_options['filters']['name']['value'] = array(
-    'kurs-student' => 'kurs-student',
-  );
+  /* Filter criterion: Global: PHP */
+  $handler->display->display_options['filters']['php']['id'] = 'php';
+  $handler->display->display_options['filters']['php']['table'] = 'views';
+  $handler->display->display_options['filters']['php']['field'] = 'php';
+  $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php']['php_filter'] = '  $course_id = $row->og_roles;
+  $course = node_load($course_id);
+  $account = user_load($row->uid);
 
-  /* Display: Block_mit_Avatar */
-  $handler = $view->new_display('block', 'Block_mit_Avatar', 'block_1');
+  if (node_access(\'update\', $course, $account)) {
+    return TRUE;
+  }
+
+  return FALSE;';
+
+  /* Display: Block */
+  $handler = $view->new_display('block', 'Block', 'block_1');
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
@@ -386,6 +363,42 @@ function nm_section_courses_features_views_default_views() {
     'name' => 'name',
   );
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: OG membership: User from OG membership */
+  $handler->display->display_options['relationships']['og_membership_related_user']['id'] = 'og_membership_related_user';
+  $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
+  $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
+  $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
+  /* Relationship: User: Profile */
+  $handler->display->display_options['relationships']['profile']['id'] = 'profile';
+  $handler->display->display_options['relationships']['profile']['table'] = 'users';
+  $handler->display->display_options['relationships']['profile']['field'] = 'profile';
+  $handler->display->display_options['relationships']['profile']['relationship'] = 'og_membership_related_user';
+  $handler->display->display_options['relationships']['profile']['label'] = 'Profil';
+  $handler->display->display_options['relationships']['profile']['required'] = TRUE;
+  $handler->display->display_options['relationships']['profile']['bundle_types'] = array(
+    'master' => 'master',
+  );
+  /* Relationship: OG membership: Group Node from OG membership */
+  $handler->display->display_options['relationships']['og_membership_related_node_group']['id'] = 'og_membership_related_node_group';
+  $handler->display->display_options['relationships']['og_membership_related_node_group']['table'] = 'og_membership';
+  $handler->display->display_options['relationships']['og_membership_related_node_group']['field'] = 'og_membership_related_node_group';
+  $handler->display->display_options['relationships']['og_membership_related_node_group']['label'] = 'Course Group node from OG membership';
+  $handler->display->display_options['relationships']['og_membership_related_node_group']['required'] = TRUE;
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['og_group_ref_target_id']['id'] = 'og_group_ref_target_id';
+  $handler->display->display_options['relationships']['og_group_ref_target_id']['table'] = 'og_membership';
+  $handler->display->display_options['relationships']['og_group_ref_target_id']['field'] = 'og_group_ref_target_id';
+  $handler->display->display_options['relationships']['og_group_ref_target_id']['relationship'] = 'og_membership_related_node_group';
+  $handler->display->display_options['relationships']['og_group_ref_target_id']['label'] = 'Course Inhalt entity referenced from og_group_ref';
+  $handler->display->display_options['relationships']['og_group_ref_target_id']['required'] = TRUE;
+  /* Relationship: OG membership: OG membership from Node group */
+  $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['relationship'] = 'og_group_ref_target_id';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['label'] = 'Course OG membership from node group';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['required'] = TRUE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: User: Uid */
   $handler->display->display_options['fields']['uid']['id'] = 'uid';
@@ -412,6 +425,12 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['label'] = '';
+  /* Field: OG membership: OG user roles in group */
+  $handler->display->display_options['fields']['og_roles']['id'] = 'og_roles';
+  $handler->display->display_options['fields']['og_roles']['table'] = 'og_membership';
+  $handler->display->display_options['fields']['og_roles']['field'] = 'og_roles';
+  $handler->display->display_options['fields']['og_roles']['relationship'] = 'og_membership_rel_group';
+  $handler->display->display_options['fields']['og_roles']['exclude'] = TRUE;
   $translatables['courses_admin_course_members'] = array(
     t('Defaults'),
     t('more'),
@@ -420,13 +439,15 @@ function nm_section_courses_features_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
+    t('OG membership from user'),
+    t('Alle'),
+    t('Block'),
     t('user from OG membership'),
     t('Profil'),
-    t('OG Roles from OG membership'),
     t('Course Group node from OG membership'),
     t('Course Inhalt entity referenced from og_group_ref'),
-    t('Alle'),
-    t('Block_mit_Avatar'),
+    t('Course OG membership from node group'),
+    t('OG user roles in group'),
   );
   $export['courses_admin_course_members'] = $view;
 
