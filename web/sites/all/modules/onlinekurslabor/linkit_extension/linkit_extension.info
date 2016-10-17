@@ -1,4 +1,6 @@
 name = linkit_extension
 description = stellt eine API zur Verfügung, um einfach wysiwyg-module zu schreiben und content per autocomplete zu finden. See attached example-module.zip
 core = 7.x
+version = "7.x-2.x"
 dependencies[] = linkit
+files[] = plugins/linkit_search/okl_access_search_plugin.class.php 

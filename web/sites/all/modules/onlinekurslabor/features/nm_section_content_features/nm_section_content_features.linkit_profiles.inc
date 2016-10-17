@@ -219,19 +219,7 @@ function nm_section_content_features_default_linkit_profiles() {
       'ds_code' => 0,
     ),
     'search_plugins' => array(
-      'entity:comment' => array(
-        'enabled' => 0,
-        'weight' => '-10',
-      ),
-      'entity:node' => array(
-        'enabled' => 1,
-        'weight' => '-10',
-      ),
-      'entity:taxonomy_term' => array(
-        'enabled' => 0,
-        'weight' => '-10',
-      ),
-      'entity:profile2' => array(
+      'entity:user' => array(
         'enabled' => 0,
         'weight' => '-10',
       ),
@@ -239,12 +227,28 @@ function nm_section_content_features_default_linkit_profiles() {
         'enabled' => 0,
         'weight' => '-10',
       ),
+      'entity:node' => array(
+        'enabled' => 0,
+        'weight' => '-10',
+      ),
+      'entity:comment' => array(
+        'enabled' => 0,
+        'weight' => '-10',
+      ),
+      'entity:profile2' => array(
+        'enabled' => 0,
+        'weight' => '-10',
+      ),
+      'entity:taxonomy_term' => array(
+        'enabled' => 0,
+        'weight' => '-10',
+      ),
       'entity:relation' => array(
         'enabled' => 0,
         'weight' => '-10',
       ),
-      'entity:user' => array(
-        'enabled' => 0,
+      'entity:okl_access' => array(
+        'enabled' => 1,
         'weight' => '-10',
       ),
     ),
@@ -283,11 +287,11 @@ function nm_section_content_features_default_linkit_profiles() {
     'entity:node' => array(
       'result_description' => '',
       'bundles' => array(
-        'content_question_and_answer' => 'content_question_and_answer',
-        'content_multiple_choice' => 'content_multiple_choice',
         'book' => 0,
         'biblio' => 0,
+        'content_question_and_answer' => 0,
         'content_chapter' => 0,
+        'content_multiple_choice' => 0,
         'content_domain' => 0,
         'courses_news' => 0,
         'courses_generic_task' => 0,
@@ -359,6 +363,39 @@ function nm_section_content_features_default_linkit_profiles() {
     'entity:user' => array(
       'result_description' => '',
     ),
+    'entity:okl_access' => array(
+      'result_description' => '',
+      'bundles' => array(
+        'content_question_and_answer' => 'content_question_and_answer',
+        'content_multiple_choice' => 'content_multiple_choice',
+        'book' => 0,
+        'biblio' => 0,
+        'content_chapter' => 0,
+        'content_domain' => 0,
+        'courses_news' => 0,
+        'courses_generic_task' => 0,
+        'courses_generic_task_solution' => 0,
+        'courses_course' => 0,
+        'courses_docs' => 0,
+        'courses_group' => 0,
+        'page' => 0,
+        'forum' => 0,
+        'h5p_content' => 0,
+        'nm_stream' => 0,
+        'panel' => 0,
+        'plattform_log' => 0,
+        'projects_documentation' => 0,
+        'projects_cooperation_agreement' => 0,
+        'projects_objective' => 0,
+        'projects_organization' => 0,
+        'projects_proposal' => 0,
+        'projects_blog' => 0,
+        'videosafe_folder' => 0,
+        'videosafe_video' => 0,
+      ),
+      'group_by_bundle' => 0,
+      'include_unpublished' => 0,
+    ),
     'insert_plugin' => array(
       'url_method' => '2',
     ),
@@ -389,7 +426,7 @@ function nm_section_content_features_default_linkit_profiles() {
       ),
     ),
     'autocomplete' => array(
-      'charLimit' => '1',
+      'charLimit' => '2',
       'wait' => '350',
       'remoteTimeout' => '10000',
     ),
