@@ -34,6 +34,15 @@ msgstr "Wählen Sie die entsprechende Kursgruppe."
 msgid "@realname is admin / tutor in this course and already has full access to the coursegroups. Person wasn't added."
 msgstr "@realname ist Dozent / Tutor in diesem Kurs und hat Vollzugriff auf die Kursgruppen. Person nicht hinzugefügt."
 
+msgid "node with access-check"
+msgstr "Beitrag mit Zugriffsprüfung"
+
+msgid "Includes an access-check for onlinekurslabor."
+msgstr "Beinhaltet eine Zugriffsprüfung für das Onlinekurslabor."
+
+msgid ""
+msgstr ""
+
 msgid ""
 msgstr ""
 
