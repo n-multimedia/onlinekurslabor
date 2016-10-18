@@ -318,6 +318,13 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
+  // Exported og permission: 'node:content_domain:update og_domain_ref field'
+  $permissions['node:content_domain:update og_domain_ref field'] = array(
+    'roles' => array(
+      'member' => 'member',
+    ),
+  );
+
   // Exported og permission: 'node:content_domain:update og_group_ref field'
   $permissions['node:content_domain:update og_group_ref field'] = array(
     'roles' => array(
@@ -491,6 +498,13 @@ function nm_section_content_features_og_features_default_permissions() {
     'roles' => array(
       'member' => 'member',
       'non-member' => 'non-member',
+    ),
+  );
+
+  // Exported og permission: 'node:content_domain:view og_domain_ref field'
+  $permissions['node:content_domain:view og_domain_ref field'] = array(
+    'roles' => array(
+      'member' => 'member',
     ),
   );
 
