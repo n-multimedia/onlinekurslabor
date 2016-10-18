@@ -415,12 +415,11 @@ function section_projects_features_field_default_field_instances() {
     'bundle' => 'projects_cooperation_agreement',
     'default_value' => array(
       0 => array(
-        'value' => 'Wir verplfichten uns folgende Regeln einzuhalten:
- - Alle beteilgiten Personen sind püntlich bei vereinbarten Treffen
+        'value' => 'Wir verpflichten uns folgende Regeln einzuhalten:
+ - Alle beteiligten Personen sind pünktlich bei vereinbarten Treffen
  - der Kooperationspartner steht als Ansprechpartner zur Verfügung
- - Termine sind ggfs. frühzeitige abzusagen
- - Gegenseitige Information über Zwischenstände
-',
+ - Termine sind gegebenenfalls frühzeitige abzusagen
+ - Gegenseitige Information über Zwischenstände',
       ),
     ),
     'deleted' => 0,
