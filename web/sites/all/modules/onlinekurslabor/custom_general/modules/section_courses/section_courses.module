@@ -1666,8 +1666,10 @@ function _section_courses_student_registration_import($input) {
     foreach ($rows as $row) {
         // Count Parameters given
         $row = html_entity_decode($row, ENT_QUOTES);
-
-        $row = preg_replace("/[\t\",:;]/", " ", $row);
+        
+        
+        //apply any string- and character-replacement here
+        $row = preg_replace("/[\t\",:;￼]/", " ", $row);
         $user_parameters    = count(explode(" ", $row));
         // Create New User  
         if($user_parameters > 1){

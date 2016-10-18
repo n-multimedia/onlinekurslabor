@@ -40,8 +40,8 @@ msgstr "Beitrag mit Zugriffsprüfung"
 msgid "Includes an access-check for onlinekurslabor."
 msgstr "Beinhaltet eine Zugriffsprüfung für das Onlinekurslabor."
 
-msgid ""
-msgstr ""
+msgid "Create new accounts: enter \"Firstname Lastname example@email.com\". One entry per line (if an account with that email address already exists, the user will be imported)"
+msgstr "Neue Benutzer anlegen: Liste in der Form \"Vorname Nachname beispiel@email.com\" einfügen, ein Eintrag pro Zeile. (Existiert bereits ein Benutzer mit der entsprechenden E-Mail-Adresse, so wird dieser dem Kurs hinzugefügt)"
 
 msgid ""
 msgstr ""
