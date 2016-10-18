@@ -49,7 +49,7 @@ function nm_h5p_features_field_default_field_instances() {
     'default_value' => NULL,
     'default_value_function' => '',
     'deleted' => 0,
-    'description' => 'Dieser Inhalt wird für die ausgewählten Themen freigeschaltet',
+    'description' => 'Dieser Inhalt wird zusätzlich zu diesem Lehrtext auch in den ausgewählten Texten verfügbar',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -72,7 +72,7 @@ function nm_h5p_features_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'og_domain_ref',
-    'label' => 'Thema',
+    'label' => 'Außerdem verfügbar in',
     'required' => 0,
     'settings' => array(
       'behaviors' => array(
@@ -196,10 +196,10 @@ function nm_h5p_features_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Außerdem verfügbar in');
   t('Comment');
-  t('Dieser Inhalt wird für die ausgewählten Themen freigeschaltet');
+  t('Dieser Inhalt wird zusätzlich zu diesem Lehrtext auch in den ausgewählten Texten verfügbar');
   t('Groups audience');
-  t('Thema');
 
   return $field_instances;
 }
