@@ -475,8 +475,8 @@ function _onlinekurslabor_access_domain_content_is_available_in($o_domain_conten
     $available_domains = array();
     $content_is_member = false;
     if ($o_object->type == NM_COURSE) {
-        $available_domains[] = $o_og_ref->field_domain_ref[LANGUAGE_NONE][0]["target_id"];
-        $available_domains[] = $o_og_ref->field_domain_demo_ref[LANGUAGE_NONE][0]["target_id"];
+        $available_domains[] = $o_object->field_domain_ref[LANGUAGE_NONE][0]["target_id"];
+        $available_domains[] = $o_object->field_domain_demo_ref[LANGUAGE_NONE][0]["target_id"];
     } elseif ($o_object->type == NM_CONTENT_DOMAIN)
         $available_domains[] = $o_object->nid;
 
