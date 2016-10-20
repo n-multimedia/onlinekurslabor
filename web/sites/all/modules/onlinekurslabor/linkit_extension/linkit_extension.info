@@ -3,4 +3,5 @@ description = stellt eine API zur Verfügung, um einfach wysiwyg-module zu schre
 core = 7.x
 version = "7.x-2.x"
 dependencies[] = linkit
+dependencies[] = onlinekurslabor_access
 files[] = plugins/linkit_search/okl_access_search_plugin.class.php 
