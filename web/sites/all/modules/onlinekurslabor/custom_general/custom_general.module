@@ -16,6 +16,8 @@ define("NM_BLOCK_AUTOREN", 53);
 
 //Global Forum
 define("NM_GLOBAL_FORUM_TID", 180);
+//Courses Parent Forum Term
+define("NM_GLOBAL_PARENT_FORUM_TID", 10);
 
 //Section Help: Variables
 define("NM_HELP_BID", 197);
@@ -1204,6 +1206,12 @@ function custom_general_query_term_access_alter(QueryAlterableInterface $query) 
     $forum_term_ids[] = variable_get('okl_global_forum_tid', NM_GLOBAL_FORUM_TID);
     $child_terms = _custom_general_taxonomy_get_children_all(variable_get('okl_global_forum_tid', NM_GLOBAL_FORUM_TID));
     $forum_term_ids = array_merge($forum_term_ids, $child_terms);
+
+  }
+
+  //Add course Parent Forum tid
+  if($user->uid > 0) {
+    $forum_term_ids[] = NM_GLOBAL_PARENT_FORUM_TID;
   }
 
   $tables = $query->getTables();

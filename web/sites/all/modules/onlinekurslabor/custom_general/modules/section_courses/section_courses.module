@@ -814,9 +814,9 @@ function section_courses_text_outline() {
 
 //11.04.2014 - 00:51 - SN changed presave to insert hook
 //prevent errors on node creation!
-function section_content_node_insert($node) {
+function section_courses_node_insert($node) {
   //dpm('inserting');
-  _section_content_add_form_container($node);
+  _section_courses_add_form_container($node);
 
   //07.05.2014 - 16:00 - SN fix insert for generic node add form embedded in panel page
   //page_courses_admin_add_node_panel_context
@@ -827,10 +827,10 @@ function section_content_node_insert($node) {
 }
 
 function section_content_node_update($node) {
-  _section_content_add_form_container($node);
+  _section_courses_add_form_container($node);
 }
 
-function _section_content_add_form_container($node) {
+function _section_courses_add_form_container($node) {
   if ($node->type == NM_COURSE) {
     //Add Form Container for the Course, if form feature is set
     //$lang = field_language('node', $node, 'field_collaborative_features');
@@ -863,7 +863,6 @@ function _section_content_add_form_container($node) {
             'state' => OG_STATE_ACTIVE,
           );
 
-          $og_membership_entity = og_group('node', $node->nid, $values);
           //
           //mark the forum as container
           $containers = variable_get('forum_containers', array());
