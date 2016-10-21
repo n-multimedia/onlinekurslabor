@@ -189,7 +189,8 @@ function _section_courses_get_authors_tools() {
   
   $links['author_interactive_overview']['label'] = "Interaktiv";
   $links['author_h5p_add']['label'] = "H5P";
-  $links['author_annvid_add']['label'] = "AnnVid";
+  if (module_exists('AnnVid')) 
+    $links['author_annvid_add']['label'] = "AnnVid";
   
   $links['author_tasks_overview']['label'] = "Aufgaben";
   
@@ -221,7 +222,8 @@ function _section_courses_get_authors_tools() {
   $links['author_interactive_overview']['group']['gid'] = 6;
   $links['author_interactive_overview']['group']['root'] = TRUE;
   $links['author_h5p_add']['group']['gid'] = 6;
-  $links['author_annvid_add']['group']['gid'] = 6;
+  if (module_exists('AnnVid')) 
+    $links['author_annvid_add']['group']['gid'] = 6;
 
   /*
     $groups = array();
@@ -303,12 +305,13 @@ function _section_courses_get_authors_tools() {
     $label = $links[$id]['label'];
     $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
     
-    
+    if (module_exists('AnnVid')) 
+    {
     $path = 'domain/add/' . $group_id. '/' . ANNVID_CONTENTTYPE;
     $id = 'author_annvid_add';
     $label = $links[$id]['label'];
     $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-    
+    }
     
     
     $path = 'domain/tasks/' . $group_id;

@@ -90,12 +90,12 @@ function _h5p_integration_h5p_replacements($matches) {
       }else if($arg0 == 'domain') {
         $content_node = node_load($arg2);
       }
-
-      //get content domain
-      if(!empty($content_node->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
-        $domain_nid = $content_node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+      //aktuell besuchter lehrtext: entweder group ref oder book-bid (bei der ersten seite v.a.)
+       $current_domain_nid =   @$content_node->og_group_ref[LANGUAGE_NONE][0]['target_id']?: $content_node->book['bid'];
+      
+      if($current_domain_nid) {
          //check if h5p content is visible in active domain
-          if(!og_is_member('node', $domain_nid, 'node', $node)) {
+          if(!og_is_member('node', $current_domain_nid, 'node', $node)) {
                 //check if user may edit h5p and domain content node
                 if(node_access('update', $node) && node_access('update', $content_node)) {
                     drupal_set_message("Es wurde ein H5P Inhalt eingebettet, der nicht für dieses Thema freigeschaltet ist. " . l("Bitte schalten Sie diesen Inhalt hier frei.", 'domain/edit/'.$node->nid), 'warning');

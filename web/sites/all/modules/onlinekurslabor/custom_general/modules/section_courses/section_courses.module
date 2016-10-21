@@ -257,18 +257,29 @@ function section_courses_render_course_link($course, $account = NULL) {
         $result .= '</div>';
       }
       else {
+          
         $subscribe_url = 'group/node/' . $course->nid . '/subscribe';
-        $subscribe_url = '';
-        $subscribe_link = l('<i class="glyphicon glyphicon-ok-circle"> </i> Anmelden', $subscribe_url, array(
-          'fragment' => 'register',
-          'external' => TRUE,
-          'html'=>true,
-          //'query' => array('destination' => 'course/home/' . $course->nid),
-          'attributes' => array(
-              'class' => array('btn', 'btn-primary', 'btn-disabled'),
-              'onclick' => 'alert(\'Zur Anmeldung wenden Sie sich bitte an die Lehrenden.\'); return false;')
-        ));
-        $info_link = l('<i class="glyphicon glyphicon-info-sign"> </i> Kursinfo', 'course/info/' . $course->nid, 
+        //aktiviere subscribe-link fuer moderator+
+        if (array_intersect(array(NM_ROLE_ADMIN, NM_ROLE_MODERATOR), array_values($user->roles))) {
+                    $subscribe_link = l('<i class="glyphicon glyphicon-ok-circle"> </i> Anmelden', $subscribe_url, array(
+                    'html' => true,
+                    'query' => array('destination' => 'course/home/' . $course->nid),
+                    'attributes' => array('class' => array('btn', 'btn-primary'))));
+                } //deaktiviere subscribe-url da eh kaputt 
+                else {
+                    $subscribe_url = '';
+                    $subscribe_link = l('<i class="glyphicon glyphicon-ok-circle"> </i> Anmelden', $subscribe_url, array(
+                        'fragment' => 'register',
+                        'external' => TRUE,
+                        'html' => true,
+                        //'query' => array('destination' => 'course/home/' . $course->nid),
+                        'attributes' => array(
+                            'class' => array('btn', 'btn-primary', 'btn-disabled'),
+                            'onclick' => 'alert(\'Zur Anmeldung wenden Sie sich bitte an die Lehrenden.\'); return false;')
+                    ));
+                }
+
+          $info_link = l('<i class="glyphicon glyphicon-info-sign"> </i> Kursinfo', 'course/info/' . $course->nid, 
           array(  
           'html'=> true,
           'attributes' => array(
@@ -1654,8 +1665,10 @@ function _section_courses_student_registration_import($input) {
     foreach ($rows as $row) {
         // Count Parameters given
         $row = html_entity_decode($row, ENT_QUOTES);
-
-        $row = preg_replace("/[\t\",:;]/", " ", $row);
+        
+        
+        //apply any string- and character-replacement here
+        $row = preg_replace("/[\t\",:;￼]/", " ", $row);
         $user_parameters    = count(explode(" ", $row));
         // Create New User  
         if($user_parameters > 1){

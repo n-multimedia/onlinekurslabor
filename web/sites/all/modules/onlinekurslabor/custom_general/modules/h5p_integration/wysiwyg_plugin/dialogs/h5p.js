@@ -5,7 +5,7 @@ function h5p_markup_callback(node_id, node_title)
 function h5p_custom_onok(dialog, editor)
 {
     var use_ts = dialog.getValueOf('tab-basic', 'insert_timestamp');
-    console.debug(use_ts);
+    //console.debug(use_ts);
     var markup = dialog.getValueOf('tab-basic', 'markup');
     var tsarea_html = "";
     if (use_ts == 1)

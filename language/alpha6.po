@@ -34,6 +34,15 @@ msgstr "Wählen Sie die entsprechende Kursgruppe."
 msgid "@realname is admin / tutor in this course and already has full access to the coursegroups. Person wasn't added."
 msgstr "@realname ist Dozent / Tutor in diesem Kurs und hat Vollzugriff auf die Kursgruppen. Person nicht hinzugefügt."
 
+msgid "node with access-check"
+msgstr "Beitrag mit Zugriffsprüfung"
+
+msgid "Includes an access-check for onlinekurslabor."
+msgstr "Beinhaltet eine Zugriffsprüfung für das Onlinekurslabor."
+
+msgid "Create new accounts: enter \"Firstname Lastname example@email.com\". One entry per line (if an account with that email address already exists, the user will be imported)"
+msgstr "Neue Benutzer anlegen: Liste in der Form \"Vorname Nachname beispiel@email.com\" einfügen, ein Eintrag pro Zeile. (Existiert bereits ein Benutzer mit der entsprechenden E-Mail-Adresse, so wird dieser dem Kurs hinzugefügt)"
+
 msgid ""
 msgstr ""
 

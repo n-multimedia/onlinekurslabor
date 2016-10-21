@@ -17,3 +17,43 @@ function linkit_extension_page_build() {
     drupal_add_css(drupal_get_path('module', 'linkit_extension') . '/assets/css/linkit_xt.css', array('type' => 'file'));
     drupal_add_js(drupal_get_path('module', 'linkit_extension') . '/assets/js/linkit_extension.js');
 }
+
+
+/**
+ * Implements hook_linkit_plugin_entities_alter().
+ *
+ * The default behavior for entities is that they will use the default entity
+ * search plugin class, which will provide them with the basic methods they
+ * need.
+ *
+ * Tho there can be some search plugins that will extend those basic method with
+ * more advanced once, therefore the handlers for those plugins will have to be
+ * changed.
+ *
+ * Make sure that your classes is included in the regisrty.
+ * The easiest way to do this is by define them as
+ *
+ * <code> files[] = plugins/linkit_search/my_custom_plugin.class.php </code>
+ *
+ * @param $plugins
+ *   An array of all search plugins processed within Linkit entity plugin.
+ */
+function linkit_extension_linkit_search_plugin_entities_alter(&$plugins) {
+
+    $path = drupal_get_path('module', 'h5p_integration') . '/plugins/linkit_search';
+    $okl_access_plugin = array();
+
+    $handler = array(
+        'class' => 'OKLAccessSearchPlugin',
+        'file' => 'okl_access_search_plugin.class.php',
+            //path macht drupal paputt
+            //'path' => $path,
+    );
+    $okl_access_plugin['handler'] = $handler;
+    $okl_access_plugin['entity_type'] = 'node';
+    //name ist wichtig, sonst keine fkt
+    $okl_access_plugin['name'] = 'entity:okl_access';
+    $plugins['entity:okl_access'] = $okl_access_plugin;
+
+    return;
+}

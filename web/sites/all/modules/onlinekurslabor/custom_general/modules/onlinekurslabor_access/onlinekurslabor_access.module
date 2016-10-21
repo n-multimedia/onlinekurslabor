@@ -462,3 +462,40 @@ function onlinekurslabor_access_file_download($uri) {
     }
     return -1;
 }
+
+
+/**
+ * Prüft, ob der übergebene Content im Objekt $o_object verfügbar ist.
+ *  
+ * @param StdClass $o_domain_content ein Domain-Content wie Frage-Antwort oder H5P
+ * @param StdClass $o_object ein Kurs oder ein Lehrtext
+ * @return boolean true or false
+ */
+function _onlinekurslabor_access_domain_content_is_available_in($o_domain_content, $o_object) {
+    $available_domains = array();
+    $content_is_member = false;
+    if ($o_object->type == NM_COURSE) {
+        $available_domains[] = $o_object->field_domain_ref[LANGUAGE_NONE][0]["target_id"];
+        $available_domains[] = $o_object->field_domain_demo_ref[LANGUAGE_NONE][0]["target_id"];
+    } elseif ($o_object->type == NM_CONTENT_DOMAIN)
+        $available_domains[] = $o_object->nid;
+
+    /* prüfe: ist der content mitglied im lehrtext oder
+     * in einem der lehrtexte, die diesem kurs zugeordnet sind.
+     */
+    foreach ($available_domains as $domain_nid) {
+        if (og_is_member('node', $domain_nid, 'node', $o_domain_content)) {
+            $content_is_member = true;
+        }
+    }
+    switch ($o_domain_content->type) {
+        case NM_INTERACTIVE_CONTENT:
+            //h5p is  member des lehrtexts oder dozent darf den content   bearbeiten
+            return ($content_is_member || node_access('update', $o_domain_content));
+        /* aufgaben im lehrtext */
+        case NM_CONTENT_MULTIPLE_CHOICE:
+        case NM_CONTENT_QUESTION_AND_ANSWER:
+            return $content_is_member;
+    }
+    trigger_error("Given content of type " . $o_domain_content->type . " or object of type " . $o_domain_content->type . " not applicable for this", E_USER_ERROR);
+}
