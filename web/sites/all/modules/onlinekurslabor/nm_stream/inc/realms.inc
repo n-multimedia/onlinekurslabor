@@ -9,7 +9,7 @@ function nm_stream_node_access_records($node) {
   // handle the Section node itself
 
   if ($node->type == 'nm_stream') {
-    $privacy = $node->field_nm_privacy [LANGUAGE_NONE][0]['value'];
+    $privacy = $node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
 
     //always set private realm for view and edit purpose!
     $grants[] = array(
@@ -88,7 +88,7 @@ function nm_stream_node_access_records($node) {
           'grant_view' => 1,
           'grant_update' => 0,
           'grant_delete' => 0,
-          'priority' => 0,
+          'priority' => 1,
         );
         break;
       default:
