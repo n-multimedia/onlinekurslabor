@@ -12,7 +12,9 @@ drush dis oembed_fix  --yes
 #clear cache
 drush cc all
 drush updatedb --yes
-drush fr nm_h5p_features --yes
+drush fr nm_h5p_features nm_stream_features --yes
+
+drush php-eval 'node_access_rebuild();'
 
 
 drush language-import-translations de ../language/alpha6.po --replace --groups=default
