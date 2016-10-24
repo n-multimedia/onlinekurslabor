@@ -23,8 +23,8 @@
     <div class="row">
       <div class="nm-stream-top col-md-12">
         <div class="row">
-          <div class="nm-stream-left col-xs-1"><?php echo $nm_author_pic; ?></div>
-          <div class="col-md-11 col-md-offset-0 col-xs-10 col-xs-offset-1">
+          <div class="nm-stream-left col-sm-1 col-xs-12"><?php echo $nm_author_pic; ?></div>
+          <div class="col-sm-11 col-sm-offset-0 col-xs-12">
             <div class="row">
               <div class="nm-stream-comment-form">
                 <?php echo $nm_comment_form_dummy; ?>
