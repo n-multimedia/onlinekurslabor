@@ -26,11 +26,10 @@
               </span>
               <div class="fileupload-list"></div>
             </div>
-            <div id="nm-stream-edit-node-privacy--<?php echo $node->nid ?> "><?php echo _nm_stream_render_privacy_widget($node, $node->type); ?></div>
+            <div class="col-sm-3 col-xs-12" id="nm-stream-edit-node-privacy--<?php echo $node->nid ?> "><?php echo _nm_stream_render_privacy_widget($node, $node->type); ?></div>
             <input type="hidden" name="iframe" value="" />
             <input class="nm-stream-form-token" type="hidden" name="form_token" value="<?php echo drupal_get_token(); ?>" />
-            <button class="nm-stream-node-cancel btn btn-danger"><?php echo t('Cancel'); ?></button>
-            <button class="nm-stream-node-submit btn btn-primary"><?php echo t('Post'); ?></button>
+            <button class="nm-stream-node-cancel btn btn-danger"><?php echo t('Cancel'); ?></button>&nbsp;<button class="nm-stream-node-submit btn btn-primary"><?php echo t('Post'); ?></button>
 
           </div>
         </div>
@@ -71,8 +70,7 @@
                           <div id="nm-stream-add-node-privacy"><?php echo $nm_privacy; ?></div>
                           <input type="hidden" name="iframe" value="" />
                           <input class="nm-stream-form-token" type="hidden" name="form_token" value="<?php echo drupal_get_token(); ?>" />
-                          <button class="nm-stream-node-cancel btn btn-danger"><?php echo t('Cancel'); ?></button>
-                          <button class="nm-stream-node-submit btn btn-primary"><?php echo t('Post'); ?></button>
+                          <button class="nm-stream-node-cancel btn btn-danger"><?php echo t('Cancel'); ?></button>&nbsp;<button class="nm-stream-node-submit btn btn-primary"><?php echo t('Post'); ?></button>
                         </div>
                       </div>
                     </div>

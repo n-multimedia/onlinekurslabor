@@ -12,14 +12,14 @@
     <div class="row">
       <div class="nm-stream-top col-md-12">
         <div class="row">
-          <div class="nm-stream-left col-md-1"><?php echo $nm_author_pic; ?></div>
-          <div class="nm-stream-right col-md-11">
+          <div class="nm-stream-left col-xs-1"><?php echo $nm_author_pic; ?></div>
+          <div class="nm-stream-right col-md-11 col-xs-10 col-xs-offset-1">
             <div class="row">
-              <div class="nm-stream-middle col-md-5">
+              <div class="nm-stream-middle col-xs-5">
                 <div class="nm-stream-name"><?php echo $nm_author_link; ?></div>
                 <div class="nm-stream-created"><i class="glyphicon glyphicon-time"></i> <?php echo $nm_created; ?></div>
               </div>
-              <div class="nm-stream-top-right col-md-7">
+              <div class="nm-stream-top-right col-xs-7">
                 <div class="nm-stream-privacy">
                   <img height="20" width="20" style="opacity:0.9;" src="/<?php echo $nm_privacy['icon_path']; ?>" title="<?php echo $nm_privacy['label']; ?>" />
                 </div>
@@ -47,7 +47,7 @@
 
       <?php if ($nm_num_comments == 0 && !empty($comments_form)) : ?>
         <div class="row">
-          <div class="nm-stream-comments-form col-md-offset-1 col-md-11"><?php echo $comments_form; ?></div>
+          <div class="nm-stream-comments-form col-md-offset-1 col-md-11 col-xs-12 col-xs-offset-0"><?php echo $comments_form; ?></div>
         </div>
       <?php endif; ?>
     </div>
@@ -56,7 +56,7 @@
 
     <div class="nm-stream-comments-section">
       <div class="row">
-        <div class="nm-stream-comments col-md-offset-1 col-md-11">
+        <div class="nm-stream-comments col-xs-offset-1 col-xs-11">
           <div class="nm-stream-node-information"><?php echo $comments_information; ?></div>
           <div class="nm-stream-comments-form"><?php echo $comments_form; ?></div>
           <div class="nm-stream-comments-container"><?php echo $comments_container; ?></div>   

@@ -1455,33 +1455,35 @@ function _nm_stream_get_user_pic($account) {
  * @param type $content
  */
 function _nm_stream_get_action_links($content) {
-  //global $user;
+    //global $user;
 
-  if (isset($content->node_type)) {
-    //comment
-    $output = '';
-    if (comment_access('edit', $content)) {
-      $output .= '<a href="#" class="nm-stream-comment-edit"><i class="glyphicon glyphicon-edit"></i> ' . t('edit') . '</a>';
-    }
-    //delete op is not implemented yet
-    if (comment_access('delete', $content) || node_access('delete', node_load($content->nid))) {
-      $output .='<a href="#" class="nm-stream-comment-delete"><i class="glyphicon glyphicon-trash"></i> ' . t('delete') . '</a>';
-    }
-  }
-  else {
-    //node
-    $output = '';
-    if (node_access('update', $content)) {
-      $output .= '<a href="#" class="nm-stream-node-edit"><i class="glyphicon glyphicon-edit"></i> ' . t('edit') . '</a>';
-    }
-    if (node_access('delete', $content)) {
-      $output .='<a href="#" class="nm-stream-node-delete"><i class="glyphicon glyphicon-trash"></i> ' . t('delete') . '</a>';
-    }
-  }
+    $tpl = '<a href="#" class="nm-stream-%s-%s btn btn-xs"><i class="glyphicon glyphicon-%s"></i>&nbsp;%s</a>';
 
-  return $output;
+    if (isset($content->node_type)) {
+        $type = 'comment';
+        //comment
+        $output = '';
+        if (comment_access('edit', $content)) {
+            $output .= sprintf($tpl, $type, 'edit', 'edit', t('edit'), $tpl);
+        }
+        //delete op is not implemented yet
+        if (comment_access('delete', $content) || node_access('delete', node_load($content->nid))) {
+            $output .=' ' . sprintf($tpl, $type, 'delete', 'trash', t('delete'), $tpl);
+        }
+    } else {
+        $type = 'node';
+        //node
+        $output = '';
+        if (node_access('update', $content)) {
+            $output .= sprintf($tpl, $type, 'edit', 'edit', t('edit'), $tpl);
+        }
+        if (node_access('delete', $content)) {
+            $output .=' ' . sprintf($tpl, $type, 'delete', 'trash', t('delete'), $tpl);
+        }
+    }
+
+    return $output;
 }
-
 
 /**
  * gets the rendered gui inkludiing add-new-comment
