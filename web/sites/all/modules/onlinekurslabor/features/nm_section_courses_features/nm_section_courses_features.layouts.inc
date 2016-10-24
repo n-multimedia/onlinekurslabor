@@ -122,5 +122,125 @@ function nm_section_courses_features_default_panels_layout() {
   );
   $export['course_information'] = $layout;
 
+  $layout = new stdClass();
+  $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
+  $layout->api_version = 1;
+  $layout->name = 'profile_layout';
+  $layout->admin_title = 'profile-layout';
+  $layout->admin_description = 'Die Sortierung in der GUI ist falsch. middle ist tatsächlich middle, auch wenn rechts angeordnet. 
+Hintergrund ist ein bootstrap-problem';
+  $layout->category = '';
+  $layout->plugin = 'flexible';
+  $layout->settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 1,
+          1 => 'main',
+          2 => 2,
+        ),
+        'parent' => NULL,
+        'class' => 'row',
+        'column_class' => '',
+        'row_class' => '',
+        'region_class' => '',
+        'no_scale' => FALSE,
+        'fixed_width' => '',
+        'column_separation' => '0.5em',
+        'region_separation' => '0.5em',
+        'row_separation' => '0.5em',
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => '26.3311842451191',
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+        'class' => 'col-xs-12 col-sm-3 col-sm-push-6',
+        'hide_empty' => 0,
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'center',
+        ),
+        'parent' => 'main',
+      ),
+      'center' => array(
+        'type' => 'region',
+        'title' => 'right',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => '',
+        'hide_empty' => 0,
+      ),
+      1 => array(
+        'type' => 'column',
+        'width' => '25.13203096959442',
+        'width_type' => '%',
+        'parent' => 'canvas',
+        'children' => array(
+          0 => 3,
+        ),
+        'class' => 'col-xs-12 col-sm-3 ',
+        'hide_empty' => 0,
+      ),
+      2 => array(
+        'type' => 'column',
+        'width' => '48.53678478528647',
+        'width_type' => '%',
+        'parent' => 'canvas',
+        'children' => array(
+          0 => 4,
+        ),
+        'class' => 'col-xs-12 col-sm-6 col-sm-pull-3',
+        'hide_empty' => 0,
+      ),
+      3 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'left',
+        ),
+        'parent' => '1',
+        'class' => '',
+      ),
+      'left' => array(
+        'type' => 'region',
+        'title' => 'left',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '3',
+        'class' => '',
+        'hide_empty' => 0,
+      ),
+      4 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'right',
+        ),
+        'parent' => '2',
+        'class' => '',
+      ),
+      'right' => array(
+        'type' => 'region',
+        'title' => 'middle',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '4',
+        'class' => '',
+        'hide_empty' => 0,
+      ),
+    ),
+  );
+  $export['profile_layout'] = $layout;
+
   return $export;
 }
