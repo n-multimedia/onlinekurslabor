@@ -11,14 +11,14 @@
 <?php endif; ?>
 
 <?php if ($node): ?>
-  <?php /* edit */ ?>
+  <?php /* edit */ /*hmpf, warum ist hier eigtl schon wieder code gedoppelt, nur weil der node schon existiert*/ ?>
   <form id="nm-stream-edit-node-<?php echo $node->nid; ?>" method="post" enctype="multipart/form-data" target="nm_stream_hidden_upload" action="/nm_stream/node/<?php echo $node->nid; ?>/edit">
     <textarea class="nm-stream-node-body form-control form-textarea" name="body"><?php echo $node->body[LANGUAGE_NONE][0]['value']; ?></textarea>
     <div class="row">
       <div class="nm-stream-edit-node-actions col-md-12">
         <div class="row">
           <div class="col-md-12">
-            <div class="nm-stream-edit-node-attachments">
+            <div class="nm-stream-edit-node-attachments hidden-xs">
               <span class="btn btn-success fileinput-button">
                 <i class="glyphicon glyphicon-plus-sign"></i>
                 <span>Dateien hinzufügen...</span>
@@ -43,8 +43,8 @@
     <div class="row">
       <div class="nm-stream-top col-md-12">
         <div class="row">
-          <div class="nm-stream-left col-md-1"><?php echo $nm_author_pic; ?></div>
-          <div class="col-md-11">
+          <div class="nm-stream-left col-xs-1"><?php echo $nm_author_pic; ?></div>
+          <div class="col-md-11 col-md-offset-0 col-xs-10 col-xs-offset-1">
             <div class="row">
               <div class="nm-stream-node-form">
                 <?php echo $nm_node_form_dummy; ?>
@@ -52,7 +52,7 @@
               <form id="nm-stream-add-node" method="post" enctype="multipart/form-data" target="nm_stream_hidden_upload" action="/nm_stream/node/add/<?php echo $type; ?>">
                 <textarea class="nm-stream-node-body form-control form-textarea" name="body"></textarea>
                 <div class="row">
-                  <div class="nm-stream-add-node-attachments col-md-12">
+                  <div class="nm-stream-add-node-attachments col-md-12 hidden-xs">
                     <div class="row">
                       <div class="col-md-12">
                         <span class="btn btn-success fileinput-button">

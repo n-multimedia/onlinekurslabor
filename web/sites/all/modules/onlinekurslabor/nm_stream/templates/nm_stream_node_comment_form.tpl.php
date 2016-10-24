@@ -13,6 +13,7 @@
       <div class="nm-stream-edit-comment-actions">
         <button class="nm-stream-comment-cancel btn btn-danger"><?php echo t('Cancel'); ?></button>
         <button class="nm-stream-comment-submit btn btn-primary"><?php echo t('Post'); ?></button>
+        <br><br>
       </div>
     </div>
   </form>
@@ -22,8 +23,8 @@
     <div class="row">
       <div class="nm-stream-top col-md-12">
         <div class="row">
-          <div class="nm-stream-left col-md-1"><?php echo $nm_author_pic; ?></div>
-          <div class="col-md-11">
+          <div class="nm-stream-left col-xs-1"><?php echo $nm_author_pic; ?></div>
+          <div class="col-md-11 col-md-offset-0 col-xs-10 col-xs-offset-1">
             <div class="row">
               <div class="nm-stream-comment-form">
                 <?php echo $nm_comment_form_dummy; ?>
