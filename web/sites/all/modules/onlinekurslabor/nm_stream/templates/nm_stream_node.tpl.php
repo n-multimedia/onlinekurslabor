@@ -13,7 +13,7 @@
       <div class="nm-stream-top col-md-12">
         <div class="row">
           <div class="nm-stream-left col-xs-1"><?php echo $nm_author_pic; ?></div>
-          <div class="nm-stream-right col-md-11 col-xs-10 col-xs-offset-1">
+          <div class="nm-stream-right col-md-11 col-md-offset-0 col-xs-9 col-xs-offset-1">
             <div class="row">
               <div class="nm-stream-middle col-xs-5">
                 <div class="nm-stream-name"><?php echo $nm_author_link; ?></div>
