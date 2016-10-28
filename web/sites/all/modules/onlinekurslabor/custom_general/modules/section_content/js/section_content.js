@@ -98,7 +98,8 @@
 
             if (a_element.hasClass("active-trail")) {
               item.state = {expanded: true};
-
+            }else {
+              item.state = {expanded: false};
             }
 
             if (a_element.hasClass("active")) {
@@ -111,6 +112,8 @@
               var nodes = section_content_parse_tree(children);
               item.nodes = nodes;
             }
+
+
 
             tree.push(item);
           });
@@ -136,8 +139,8 @@
         collapse_button.on('click', function () {
           outline_tree.treeview('collapseAll');
         });
-        //initial collapse
-        outline_tree.treeview('collapseAll');
+        ////initial collapse
+        //outline_tree.treeview('collapseAll');
       });
 
 

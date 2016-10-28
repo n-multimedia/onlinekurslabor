@@ -126,7 +126,16 @@ function section_content_node_view($node, $view_mode, $langcode) {
  */
 function section_content_menu_block_tree_alter(&$tree, &$config) {
 
-//TOC functionality. Numbering Chapters
+  static $processed_menues = array();
+
+  if (in_array($config['menu_name'], $processed_menues)) {
+    //already handled this tree
+    return;
+  }
+
+  $processed_menues[$config['menu_name']] = $config['menu_name'];
+
+  //TOC functionality. Numbering Chapters
   $top_leaf = current($tree);
   $top_leaf_link = $top_leaf['link']['link_path'];
   $node_id = substr($top_leaf_link, strpos($top_leaf_link, '/') + 1);
