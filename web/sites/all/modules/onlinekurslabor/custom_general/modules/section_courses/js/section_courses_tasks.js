@@ -10,7 +10,9 @@
 
             if(task_empty_fields.indexOf(index) >= 0){
               //$(this).trigger('click');
-              $(this).trigger('mousedown');
+              var that = this;
+              //minimale verzoegerung, sonst probleme mit ckedit
+              setTimeout(function(){  $(that).trigger('mousedown');},100);
               $(this).closest('tr').hide();
             }
 
