@@ -43,8 +43,8 @@ msgstr "Beinhaltet eine Zugriffsprüfung für das Onlinekurslabor."
 msgid 'One entry per line! Syntax "Firstname Lastname example@email.com". Existing users can also be added by entering their e-mail-adress.'
 msgstr 'Ein Eintrag pro Zeile! Syntax "Vorname Nachname example@email.com". Personen, die bereits einen Account haben, können auch durch Angabe ihrer E-Mail-Adresse hinzugefügt werden.'
 
-msgid ""
-msgstr ""
+msgid "Course Group"
+msgstr "Kursgruppe"
 
-msgid ""
-msgstr ""
+msgid "You selected the following <strong>!count</strong>:"
+msgstr "Sie haben die folgenden Einträge gewählt:"
