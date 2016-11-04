@@ -83,6 +83,7 @@ function nm_stream_menu() {
   $items['nm_stream/node/%node/get_all_comments'] = array(
     'title' => 'Edit NM Stream Node',
     'page callback' => 'nm_stream_nm_stream_node_get_all_comments_callback',
+    'page arguments' => array(2),
     'access callback' => 'node_access',
     'access arguments' => array('view', 2),
     'type' => MENU_CALLBACK,
