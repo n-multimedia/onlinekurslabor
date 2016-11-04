@@ -1385,17 +1385,11 @@ function section_courses_student_registration_form($form, &$form_state) {
   $form['import_container']['import_users'] = array(
     '#title' => t('Import List'),
     '#type' => 'textarea',
-    '#description' => t('Import existing users: enter their email-adresses <em>One email address per line</em> (accounts will be unlocked)') .
-
-
-      '<br/>' .
-      t('Create new accounts: enter "Firstname Lastname example@email.com". <em>One entry per line</em> (if an account with that email address already exists, the user will be imported)')
-
-
+    '#description' => t('One entry per line! Syntax "Firstname Lastname example@email.com". Existing users can also be added by entering their e-mail-adress.')
   );
   $form['import_container']['import'] = array(
     '#type' => 'button',
-    '#value' => '<i class="glyphicon glyphicon-user"></i> Import',
+    '#value' => '<i class="glyphicon glyphicon-user"></i> '.t("Import"),
     '#submit' => array('section_courses_student_registration_import_submit'),
     '#attributes' => array('class' => array('btn','btn-warning')),
     // See the examples in ajax_example.module for more details on the

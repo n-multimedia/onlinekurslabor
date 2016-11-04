@@ -2188,6 +2188,49 @@ return section_courses_text_outline();
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
+  $pane->pid = 'new-b0cd8769-9c77-4e19-98d2-6e6aee43f7da';
+  $pane->panel = 'news';
+  $pane->type = 'block';
+  $pane->subtype = 'section_projects-projects_course_group_actions';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => array(
+      'title' => array(
+        'element' => '0',
+        'attributes' => array(
+          'id' => '',
+          'class' => '',
+        ),
+      ),
+      'content' => array(
+        'element' => 'h4',
+        'attributes' => array(
+          'id' => '',
+          'class' => 'visible-xs-block  visible-sm-block ',
+        ),
+      ),
+      'theme' => 0,
+    ),
+    'style' => 'wrapper_element',
+  );
+  $pane->css = array(
+    'css_id' => '',
+    'css_class' => '',
+  );
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'b0cd8769-9c77-4e19-98d2-6e6aee43f7da';
+  $display->content['new-b0cd8769-9c77-4e19-98d2-6e6aee43f7da'] = $pane;
+  $display->panels['news'][0] = 'new-b0cd8769-9c77-4e19-98d2-6e6aee43f7da';
+  $pane = new stdClass();
   $pane->pid = 'new-2d20025c-456b-4685-b55c-682553f848f4';
   $pane->panel = 'news';
   $pane->type = 'block';
@@ -2204,11 +2247,11 @@ return section_courses_text_outline();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 0;
+  $pane->position = 1;
   $pane->locks = array();
   $pane->uuid = '2d20025c-456b-4685-b55c-682553f848f4';
   $display->content['new-2d20025c-456b-4685-b55c-682553f848f4'] = $pane;
-  $display->panels['news'][0] = 'new-2d20025c-456b-4685-b55c-682553f848f4';
+  $display->panels['news'][1] = 'new-2d20025c-456b-4685-b55c-682553f848f4';
   $pane = new stdClass();
   $pane->pid = 'new-38bc2fbf-7423-4f4c-9285-de4672e0e60f';
   $pane->panel = 'news';
@@ -2226,11 +2269,11 @@ return section_courses_text_outline();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 1;
+  $pane->position = 2;
   $pane->locks = array();
   $pane->uuid = '38bc2fbf-7423-4f4c-9285-de4672e0e60f';
   $display->content['new-38bc2fbf-7423-4f4c-9285-de4672e0e60f'] = $pane;
-  $display->panels['news'][1] = 'new-38bc2fbf-7423-4f4c-9285-de4672e0e60f';
+  $display->panels['news'][2] = 'new-38bc2fbf-7423-4f4c-9285-de4672e0e60f';
   $pane = new stdClass();
   $pane->pid = 'new-56d682cf-6bbf-4b6c-b569-0df094188e3b';
   $pane->panel = 'news';
@@ -2263,11 +2306,11 @@ return section_courses_text_outline();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 2;
+  $pane->position = 3;
   $pane->locks = array();
   $pane->uuid = '56d682cf-6bbf-4b6c-b569-0df094188e3b';
   $display->content['new-56d682cf-6bbf-4b6c-b569-0df094188e3b'] = $pane;
-  $display->panels['news'][2] = 'new-56d682cf-6bbf-4b6c-b569-0df094188e3b';
+  $display->panels['news'][3] = 'new-56d682cf-6bbf-4b6c-b569-0df094188e3b';
   $pane = new stdClass();
   $pane->pid = 'new-7df02c0e-55e2-4bde-b98a-87e4a4459587';
   $pane->panel = 'tools';

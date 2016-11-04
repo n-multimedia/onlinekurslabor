@@ -835,13 +835,13 @@ function _section_projects_project_cockpit_main_view() {
 
   if ($active_project) {
     $output = "";
-    $output .= '<div style="position:relative" class="projects_cockpit_main_container">';
+    $output .= '<div style="position:relative" class="projects_cockpit_main_container row">';
     $i = 0;
 
     foreach ($navigation_items as $item) {
       $active_class = ($i == 0) ? 'active' : '';
 
-      $output .= '<div class = "tabpanel ' . drupal_html_class(transliteration_get($item)) . ' ' . $active_class . ' row">';
+      $output .= '<div class = "tabpanel ' . drupal_html_class(transliteration_get($item)) . ' ' . $active_class . ' col-md-12">';
 
       $output .= '<div class = "col-md-12" >';
       //dpm('projects_cockpit_main_' . drupal_html_class($item) . '_view');

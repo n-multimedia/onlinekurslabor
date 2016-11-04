@@ -218,7 +218,7 @@ function user_assign_to_course_group_form($context) {
   }
 
   $form['course_groups'] = array(
-    '#title' => t('Course Groups'),
+    '#title' => t('Course Group'),
     '#type' => 'radios',
     '#options' => $course_group_options,
     '#description' => t('Select the appropriate coursegroup.'),
