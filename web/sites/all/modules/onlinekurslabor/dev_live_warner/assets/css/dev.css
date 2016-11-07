@@ -7,6 +7,16 @@ body.dev #page_top_navigation
     background-image: url("../img/dev-bg.png") !important;
     background-color: orange !important;
 }
+/*navi nicht mehr erkennbar*/
+body.dev #page_top_navigation li a.top_nav_link
+{
+    color: #791B1C !important;
+}
+body.dev #page_top_navigation li a.top_nav_link:hover
+{
+    color:white !important;
+}
+
 body.dev #page_top_navigation  a.navbar-brand img{
     transform: rotate(180deg);
 }
