@@ -205,14 +205,55 @@ BOOTSTRAP 3
    padding-top: 7px;
    margin: 0;
 }
-#page_top_navigation.navbar-inverse .navbar-nav > li > a {
-    color: #ffffff;
+ 
+/*aenderungen fuer icon-navigation top*/
+#page_top_navigation a.top_nav_link span
+{
+    padding:0px;
+    margin:0px;
+    font-size: 21px;
+   
+} 
+#page_top_navigation a.top_nav_link span.nav_description_xs
+{
+    font-size: 16px;
 }
-#page_top_navigation.navbar-inverse .navbar-nav > li > a:hover {
-    color: #9d9d9d
+/*badges kann man keine klasse geben, deswegen ueberschreiben*/
+#page_top_navigation a.top_nav_link span.badge
+{
+    padding:0px;
+    margin: -20px 0 0 -15px;
+    padding: 2px 6px 2px 6px;
+    font-size: 10px;
+  
+   
 }
-	
+#page_top_navigation a.top_nav_link span.glyphicon
+{
+    padding-right:5px;
+    vertical-align: middle; 
+    position: static;
+}
 
+#page_top_navigation li a.top_nav_link:link
+{
+    color: #CCCCCC;
+}
+#page_top_navigation li a.top_nav_link:hover
+{
+     color: #ffffff;
+}
+ 
+ 
+/*tooltips fuer die topnavigation*/
+.tooltip-top-navi + .tooltip.bottom .tooltip-inner {
+    background-color:#414040;
+    color: #ffffff;
+    border-radius: 0;
+}
+.tooltip-top-navi + .tooltip.bottom .tooltip-arrow {
+    border-bottom-color: #414040;
+}   
 #page_top_navigation .navbar-brand {
     padding: 0px;
     padding-top: 5px;
@@ -222,40 +263,7 @@ BOOTSTRAP 3
 #page_top_navigation .navbar-inverse{
     background: #333333;
 }
-#page_top_navigation ul.navbar-nav > li > a{
-    padding-bottom: 0px;
-    margin-top: 5px
-}
-/*code fuer collapsen der navi unter 1000px*/
-@media (max-width: 999px) {
-    .navbar-header {
-        float: none;
-    }
-    .navbar-toggle {
-        display: block;
-    }
-    .navbar-collapse {
-        border-top: 1px solid transparent;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-    }
-    .navbar-collapse.collapse {
-        display: none!important;
-    }
-    .navbar-collapse.collapse.in {
-        display: block!important;
-    }
-    .navbar-nav {
-        float: none!important;
-        margin: 7.5px -15px;
-    }
-    .navbar-nav>li {
-        float: none;
-    }
-    .navbar-nav>li>a {
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-}
+ 
 /*
 ENDE BOOTSTRAP 3
 */
