@@ -28,8 +28,8 @@ msgstr "Ebene hoch"
 msgid "Select video"
 msgstr "Video wählen"
 
-msgid "Select one of the videos already uploaded or click \"upload\" to create
-msgstr "Wählen Sie eines der vorhandenen Videos oder klicken Sie \"hochladen\",
+msgid "Select one of the videos already uploaded or click \"upload\" to create"
+msgstr "Wählen Sie eines der vorhandenen Videos oder klicken Sie \"hochladen\""
 
 msgid ""
 msgstr ""
