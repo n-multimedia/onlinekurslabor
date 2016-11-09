@@ -22,6 +22,8 @@ define("NM_GLOBAL_PARENT_FORUM_TID", 10);
 //Section Help: Variables
 define("NM_HELP_BID", 197);
 define("NM_HELP_HEADER_FID", 3769);
+//okl-support
+define("NM_SUPPORT_EMAIL", 'onlinekurslabor@medienlabor-uni-augsburg.de');
 
 //Content
 define("NM_DOMAIN_OVERVIEW_ID", 7); //deprecated
