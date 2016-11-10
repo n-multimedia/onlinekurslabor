@@ -430,7 +430,7 @@ function onlinekurslabor_access_file_download($uri) {
                 header('Cache-Control: no-store, no-cache, must-revalidate');
                 header('Cache-Control: post-check=0, pre-check=0', FALSE);
                 header('Pragma: no-cache');
-
+                header('Content-Type: '. $mime);
                 //wir schauen nach, in welchem h5p-content das gelistet wird  
                 $h5p_nodes = _videosafe_get_h5p_usage($uri);
 
