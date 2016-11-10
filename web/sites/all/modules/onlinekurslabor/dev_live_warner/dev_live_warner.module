@@ -8,20 +8,88 @@
  * landingscreen mit link aufs live-system
  * 
  */
- 
+
 /**
- * Implements hook_init().
+ * Implements hook_page_build
  */
-function dev_live_warner_init() { 
- 
-  if(strstr($_SERVER['HTTP_HOST'], 'okldev') ||  strstr($_SERVER['HTTP_HOST'], 'okltest'))
-  {
-      //add plugin-js for controlss
-  drupal_add_css(drupal_get_path('module', 'dev_live_warner') . '/assets/css/dev.css');
-    //add plugin-js for controlss
-  drupal_add_js(drupal_get_path('module', 'dev_live_warner') . '/assets/js/dev.js');
-  
-  }
-   
+function dev_live_warner_page_build(&$page) {
+
+    if (_dev_live_warner_is_no_live_system()) {
+        //add plugin-js for controlss
+        drupal_add_css(drupal_get_path('module', 'dev_live_warner') . '/assets/css/dev.css');
+        //add plugin-js for controlss
+        drupal_add_js(drupal_get_path('module', 'dev_live_warner') . '/assets/js/dev.js');
+        //fuege link unten ans seitenende zum log
+        $link = '<a href=/last_update_log>Log des letzten Updates</a>';
+        $page['page_bottom']['dev_live_warner'] = array(
+            '#weight' => 80,
+            '#markup' => '<center>' . $link . '</center><br><br>',
+        );
+    }
 }
-  
+
+/**
+ * Implementation of hook_menu().
+ */
+function dev_live_warner_menu() {
+
+    $items['last_update_log'] = array(
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+        'page callback' => 'dev_live_warner_view_log', // Magic goes here
+    );
+
+    return $items;
+}
+
+/**
+ * schaut, ob man derzeit auf dem live-system oder einem der testsysteme ist
+ * @return boolean true false
+ */
+function _dev_live_warner_is_no_live_system() {
+    return strstr($_SERVER['HTTP_HOST'], 'okldev') || strstr($_SERVER['HTTP_HOST'], 'okltest') || strstr($_SERVER['HTTP_HOST'], 'div.onlinekurslabor');
+}
+
+/**
+ * liefert die seite mit dem letzten log aus 
+ * @return type array page-definition
+ */
+function dev_live_warner_view_log() {
+    if (_dev_live_warner_log_exists())
+        $log = file_get_contents(_dev_live_warner_get_log_path());
+    else
+        $log = "n/a";
+    return array('#markup' => '<h1>Letztes Update Log:</h1><pre>' . $log . '</pre>');
+}
+ 
+
+/**
+ * schaut ob das logtype existiert
+ * @return boolean true false
+ */
+function _dev_live_warner_log_exists() {
+    $file = _dev_live_warner_get_log_path();
+    return file_exists($file);
+}
+
+/**
+ * liefert pfad zur logfile
+ * @return type string absolute path to logfile
+ */
+function _dev_live_warner_get_log_path() {
+    $files_dir = _dev_live_warner_get_document_root() . DIRECTORY_SEPARATOR . variable_get('file_public_path', conf_path() . '/files/');
+    return $files_dir . '/last_update_log';
+}
+
+/**
+ * Get the document root for the current Drupal installation.
+ * $_SERVER['DOCUMENT_ROOT'] is not reliable across all
+ * systems, so we need a way to get the correct value.
+ *
+ * @return (string)
+ */
+function _dev_live_warner_get_document_root() {
+    $absolute_dir = dirname(__FILE__);
+    $relative_dir = drupal_get_path('module', 'dev_live_warner');
+    return substr($absolute_dir, 0, -1 * (1 + strlen($relative_dir)));
+}
