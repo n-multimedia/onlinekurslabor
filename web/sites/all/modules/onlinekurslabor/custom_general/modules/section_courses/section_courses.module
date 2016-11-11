@@ -842,6 +842,8 @@ function section_content_node_update($node) {
 }
 
 function _section_courses_add_form_container($node) {
+  global $user;
+
   if ($node->type == NM_COURSE) {
     //Add Form Container for the Course, if form feature is set
     //$lang = field_language('node', $node, 'field_collaborative_features');
@@ -858,14 +860,24 @@ function _section_courses_add_form_container($node) {
         $term_exists = current(taxonomy_get_term_by_name(_section_courses_get_forum_name($node)));
 
         if (!$term_exists) {
-          taxonomy_term_save((object) array(
+
+
+          $new_term = (object) array(
             'name' => _section_courses_get_forum_name($node),
             'vid' => $term->vid,
             'parent' => array($term->tid),
-          ));
+          );
 
-          $new_term = _section_courses_get_forum_term($node);
+          taxonomy_term_save($new_term);
 
+          //$new_term = _section_courses_get_forum_term($node);
+
+          //mark the forum as container
+          $containers = variable_get('forum_containers', array());
+          $containers[] = $new_term->tid;
+          variable_set('forum_containers', $containers);
+
+          ///$new_term = taxonomy_term_load(258);
           //add taxonomy to og
           //Set the values
           $values = array(
@@ -874,11 +886,9 @@ function _section_courses_add_form_container($node) {
             'state' => OG_STATE_ACTIVE,
           );
 
-          //
-          //mark the forum as container
-          $containers = variable_get('forum_containers', array());
-          $containers[] = $new_term->tid;
-          variable_set('forum_containers', $containers);
+          $user->term_access_bypass = TRUE;
+          og_group("node", $node->nid, $values);
+          unset($user->term_access_bypass);
         }
       }
     }

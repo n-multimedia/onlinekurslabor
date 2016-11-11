@@ -1168,7 +1168,7 @@ function custom_general_query_term_access_alter(QueryAlterableInterface $query) 
 
   // If $account can bypass node access, or there are no node access
   // modules, we don't need to alter the query.
-  if (user_access('bypass node access', $account)) {
+  if (user_access('bypass node access', $account) || $user->term_access_bypass) {
     return;
   }
 
