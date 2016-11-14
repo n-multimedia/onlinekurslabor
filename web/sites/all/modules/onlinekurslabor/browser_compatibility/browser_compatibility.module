@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * hook auf die login-form um browser-warnung auszugeben
+ * wird auch nach login nochmal angezeigt.
+ * @param type $form
+ * @param type $form_state
+ * @param type $form_id
+ */
+function browser_compatibility_form_alter(&$form, &$form_state, $form_id) {
+
+    if ($form_id == 'user_login') {
+      #  $form["browser_warning"] = array("#markup" => _browser_compatibility_get_rendered_warning());
+       drupal_set_message(_browser_compatibility_get_rendered_warning(), 'browser_compatibility_custom_message');
+    }
+}
+
+/**
+ * liefert einen platzhalter-string mit browserwarning
+ * @return string
+ */
+function _browser_compatibility_get_rendered_warning() {
+    return '
+        <div class="browser_compatibility_warning alert alert-danger alert-dismissible"  role="alert"> 
+             <strong>Sie verwenden einen nicht unterstützten Browser:</strong> <span class="browser_compatibility_warning_affected_browser">Platzhalter</span>
+             <div class="browser_compatibility_warning_details"></div>
+         Wir verbessern kontinuierlich die Browserunterstützung. Derzeit können wir Ihnen aber nur empfehlen, stattdessen einen der folgenden Browser zu nutzen: Firefox, Safari, Chrome, Edge
+        </div>';
+}
+
+/**
+ * message after login
+ * überflüssig, wird von der login-form sozusagen mitgeschleift
+ * @param array $edit
+ * @param type $account
+
+function browser_compatibility_user_login(&$edit, $account) {
+     #drupal_set_message(_browser_compatibility_get_rendered_warning(), 'browser_compatibility_custom_message');
+    
+} */

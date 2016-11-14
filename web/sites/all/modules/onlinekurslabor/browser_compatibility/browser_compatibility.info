@@ -1,0 +1,8 @@
+name = browser_compatibility
+description = fixes browser-issues OR triggers a warning
+core = 7.x
+version = 7.x-1.0-alpha6.1
+package = custom
+
+scripts[] = assets/browser_compatibility.js
+stylesheets[all][] = assets/browser_compatibility.css
