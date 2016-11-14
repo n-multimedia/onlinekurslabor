@@ -5,6 +5,7 @@ drush vset maintenance_mode 1
 #clear cache
 drush cc all
 drush updatedb --yes
+drush en browser_compatibility --yes
 
 
 drush language-import-translations de ../language/alpha7.po --replace --groups=default
