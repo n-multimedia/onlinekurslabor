@@ -9,7 +9,8 @@
         <h4 class="modal-title"><?=t("Select video");?></h4>
       </div>
       <div class="modal-body">
-          <p><?=t('Select one of the videos already uploaded or click "upload" to create a new one (opens in new tab)')?></p>
+          <p><?=t('First select a folder.')?></p>
+          <p><?=t('Then choose one of the videos already uploaded or click "upload" to create a new one.')?></p>
           <p></p>
           <div class="alert alert-warning alert-dismissible" id="just_uploaded_warning" style="display:none;" role="alert">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

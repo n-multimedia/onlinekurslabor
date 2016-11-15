@@ -6,6 +6,7 @@ drush vset maintenance_mode 1
 drush cc all
 drush updatedb --yes
 drush en browser_compatibility --yes
+drush fr  videosafe_features --yes
 
 
 drush language-import-translations de ../language/alpha7.po --replace --groups=default

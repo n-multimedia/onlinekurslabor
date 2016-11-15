@@ -28,8 +28,14 @@ msgstr "Ebene hoch"
 msgid "Select video"
 msgstr "Video wählen"
 
-msgid "Select one of the videos already uploaded or click \"upload\" to create"
-msgstr "Wählen Sie eines der vorhandenen Videos oder klicken Sie \"hochladen\""
+msgid "First select a folder."
+msgstr "Wählen Sie zunächst einen Ordner."
+
+msgid 'Then choose one of the videos already uploaded or click "upload" to create a new one.'
+msgstr 'Wählen Sie anschließend eines der vorhandenen Videos oder klicken Sie "hochladen"'
+
+msgid "Video successfully created. Please close this tab to return."
+msgstr "Video erfolgreich erstellt. Bitte schließen Sie diesen Tab, um zurückzukehren."
 
 msgid ""
 msgstr ""
