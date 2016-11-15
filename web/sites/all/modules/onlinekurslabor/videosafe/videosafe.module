@@ -520,6 +520,14 @@ function _videosafe_downloadRange($location) {
     /* header('Keep-Alive: timeout=2, max=100');
       header('Connection: Keep-Alive'); */
 
+    /*forcing http-range by sending 0 bytes in range*/
+     if (!isset($_SERVER['HTTP_RANGE'])) {
+        $DEBUG_INFO[] = "Forcing http-range is on";
+        header("Content-Range: bytes 0-0/$filesize");
+        header('Content-Length: ' . $filesize);
+        header('Connection: close');
+        $DEBUG_INFO[] = "Content-Range: bytes 0-0/$filesize ; Content-Length: ' . $filesize";
+    }
     $cur = $begin;
     fseek($fm, $begin, 0);
     //just some random value.
@@ -574,6 +582,6 @@ function _videosafe_get_videoduration_for_file($location) {
             return strtotime("1970-01-01 $time UTC");
         }
     }
-    trigger_error('neither PHP-Package php5-ffmpeg nor ffmpeg is installed. ', E_NOTICE);
+    trigger_error('neither PHP-Package php5-ffmpeg nor ffmpeg is installed. ', E_USER_WARNING);
     return 0;
 }
