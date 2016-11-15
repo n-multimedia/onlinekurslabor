@@ -1,10 +1,86 @@
 <?php
+
+/**
+ * implements function hook_views_pre_view(&$view, &$display_id, &$args) {
+ * 
+ * fuegt die ebene-hoch-+ upload-funktion in der ansicht des videosafe-ajax-browsers ein
+ * 
+ * @param type $view
+ * @param type $display_id
+ * @param type $args
+ */
+function videosafe_views_pre_view(&$view, &$display_id, &$args) {
+
+    if ($view->name == 'videosafe_folderview' && $display_id == 'ajax_browser') {
+        $exposed_input = $view->get_exposed_input();
+        $current_node_nid = @$exposed_input['field_parent_folder_target_id'];
+        if (!$current_node_nid)
+            return;
+        $curr_node = node_load($current_node_nid);
+        //fuer video laedt er nicht den view sondern ein normales template.. 
+        if ($curr_node->type == NM_VIDEOSAFE_VIDEO) {
+            $curr_node->render_ajax = true;
+            $view->display_handler->options['empty']['area']['content'] = drupal_render(node_view($curr_node, 'videosafe_description'));
+        }
+
+        $parent_dir_nid = $curr_node->field_parent_folder[LANGUAGE_NONE][0]['target_id'];
+        if ($parent_dir_nid) {
+            $folder_up_glyph = '<br><span class="glyphicon glyphicon-level-up" aria-hidden="true"></span> '.t("Level up");
+            $upload_glyph = '<span class="glyphicon glyphicon-upload" aria-hidden="true"></span> '.t("Upload"); 
+            $before_html =  '<a rel="' . $parent_dir_nid . '" href="/node/' . $parent_dir_nid . '">' . $folder_up_glyph . '</a>';;
+            if($curr_node->type == NM_VIDEOSAFE_FOLDER)
+            {
+                $before_html .= ' | <a href="/node/add/videosafe-video?field_parent_folder='.$current_node_nid.'">'.$upload_glyph.'</a>';
+            }
+            $view->attachment_before = $before_html;
+        }
+    }
+}
+
+ 
 /**
  * hook fuer das h5p-content-formular
+ * ersetzt upload durch den ajax-view
  */
 function videosafe_form_h5p_content_node_form_alter(&$form, &$form_state, $form_id) {
-
-  drupal_add_js(drupal_get_path('module', 'videosafe') . '/assets/js/videosafe_edit.js');
+  
+    //enable hook on failed validation!!
+     $form_state['no_cache'] = TRUE;
+    /* with big thx to http://stackoverflow.com/questions/4932523/embed-a-view-using-ajax for pointing in the right direction */
+    /* baut zunaecht mit php settings, die dann durch drupal in js-settings konvertiert werden */
+    $view = views_get_view('videosafe_folderview');
+    $view->set_display('ajax_browser');
+    $view->set_use_ajax(TRUE);
+    $view->set_arguments(array($tid));
+    $drupal_view_setting = array(
+        'views' => array(
+            'ajax_path' => url('views/ajax'),
+            'ajaxViews' => array(
+                array(
+                    'view_name' => $view->name,
+                    'view_display_id' => $view->current_display,
+                    'view_args' => check_plain(implode('/', $view->args)),
+                    'view_path' => check_plain($_GET['q']),
+                    'view_base_path' => $view->get_path(),
+                    'view_dom_id' => 1,
+                    'pager_element' => $view->pager['element'],
+                    #'field_parent_folder_target_id' => _videosafe_get_root_directory()->nid,
+                    'page' => 0,
+                ),
+            ),
+        ),
+    );
+    $videosafe_setting = array('videosafe' => array('root_nid' => _videosafe_get_root_directory()->nid,
+        'loading' => 'loading...<br><img src="'.base_path(). drupal_get_path('module', 'videosafe').'/assets/img/loading.gif">'));
+    drupal_add_js($videosafe_setting, 'setting');
+    drupal_add_js($drupal_view_setting, 'setting');
+    /* add the modal dialog to the form */
+    views_add_js('ajax_view');
+    /* edit: ersetzt die upload-box in h5p durch was selbstgestricktes */
+    drupal_add_js(drupal_get_path('module', 'videosafe') . '/assets/js/videosafe_edit.js');
+    drupal_add_js(drupal_get_path('module', 'videosafe') . '/assets/js/videosafe_ajax_browser.js');
+    $form['#prefix'] = theme('videosafe_modal_template');
+ 
 }
 
 function videosafe_entity_info_alter(&$entity_info) {
@@ -33,32 +109,44 @@ function videosafe_preprocess_node(&$vars) {
   }
 }
 
+/**
+ * Implements hook_theme().
+ */
+function videosafe_theme($existing, $type, $theme, $path) {
+    return array(
+        //used for rendering the modal windows
+        'videosafe_modal_template' => array(
+            'template' => 'templates/videosafe-modal-template',
+        ),
+    );
+}
+
 
 /**
  * Implementation of hook_menu().
  */
 function videosafe_menu() {
 
-  $items['videosafe_ajax'] = array(
-    'page callback' => 'videosafe_ajax_get_ajax', // Render HTML
-    'type' => MENU_CALLBACK,
-    'access arguments' => array('access content'),
-    'delivery callback' => 'videosafe_ajax_callback',  // Magic goes here
-  );
+    /* $items['videosafe_ajax'] = array(
+      'page callback' => 'videosafe_ajax_get_ajax', // Render HTML
+      'type' => MENU_CALLBACK,
+      'access arguments' => array('access content'),
+      'delivery callback' => 'videosafe_ajax_callback',  // Magic goes here
+      ); */
 
-  $items['videosafe'] = array(
-    'type' => MENU_CALLBACK,
-    'access arguments' => array('access content'),
-    'page callback' => 'videosafe_goto_root',
-  );
-
-  $items['videosafe_getvideo'] = array(
-    'type' => MENU_CALLBACK,
-    'access arguments' => array('access content'),
-    'delivery callback' => 'videosafe_getvideo',  // Magic goes here
-  );
-
-  return $items;
+    $items['videosafe'] = array(
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+        'page callback' => 'videosafe_goto_root',
+    );
+    /*
+      $items['videosafe_getvideo'] = array(
+      'type' => MENU_CALLBACK,
+      'access arguments' => array('access content'),
+      'delivery callback' => 'videosafe_getvideo',  // Magic goes here
+      );
+     */
+    return $items;
 }
 
 /*menu_callback

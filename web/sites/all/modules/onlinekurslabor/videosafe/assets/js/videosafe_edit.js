@@ -7,10 +7,52 @@
       //alert("initialize");
 
       Drupal.behaviors.h5p_connector_api.onH5PEditorready(function () {
-        Drupal.behaviors.videosafe.replaceUploadBox2();
+        Drupal.behaviors.videosafe.replaceUploadBox4();
       });
 
     },
+    /*
+    * Das ist jetzt die aktuellste Version. Öffnet unter "top" ein modales Fenster
+    * mit einem ajaxifiziertem View.
+    * Dieser gibt die Werte wieder an einen Callback zurueck
+    */
+   replaceUploadBox4: function()
+   {  //speichere originalfunktion in variable
+       var original_function = H5PEditor.widgets.video.createAdd;
+       /*callback, wenn jmd im modal-fenster ein video selectiert hat,
+        *  argument sind die video-urls*/
+       var h5p_callback_function_when_video_selected = function(json_video_data)
+       {
+           //kann mehrere urls beinhalten mit ogg, mp4 etc
+           for (var i in json_video_data) {
+              // console.debug("adding video " + i);
+               var video_url = json_video_data[i];
+               H5P.jQuery(".h5p-add-dialog .h5p-dialog-box").find("input.h5p-file-url").val(video_url);
+               H5P.jQuery(".h5p-add-dialog .h5p-buttons").find("button.h5p-insert").click();
+           }
+       };
+
+       //hier wird original-funktion ueberschrieben
+       H5PEditor.widgets.video.createAdd = function(type) {
+           //lade original html
+           var h5p_html = original_function(type);
+
+           //bei audio nicht html replacen
+           if (type === 'audio')
+               return h5p_html;
+           //statt ersatz-html auszuliefern, haengen wir einfach JS an, das das originale manipuliert
+           h5p_html += '<script type="text/javascript">H5P.jQuery(".h5p-add-dialog .h5p-file-upload").removeClass("h5p-file-upload").html("Video auswählen").click(function(){' +
+                   'top.Drupal.behaviors.videosafe_ajax_browser.openAjaxBrowser( ' + h5p_callback_function_when_video_selected + '  );' +
+                   'return false;' +
+                   '});</script>';
+           return h5p_html;
+
+       }
+   },
+   /**
+    * 
+    old3
+    */
     replaceUploadBox2: function () { //return;
       // alert("replacing");
       var originalwidgetsvideocreateAddAttachMethod = H5PEditor.widgets.video.createAdd;
@@ -50,4 +92,6 @@ jQuery(document).ready(function () {
   Drupal.behaviors.videosafe.initialize();
 
 });
-     
+//hat man ein video hochgeladen und der tab wird wieder aktiv, so refresht man die form
+//vorsicht! normales verhalten wird als focus change betrachtet! Entschärfen!
+jQuery(window).on('focus', function() { Drupal.behaviors.videosafe_ajax_browser.refreshForm() });

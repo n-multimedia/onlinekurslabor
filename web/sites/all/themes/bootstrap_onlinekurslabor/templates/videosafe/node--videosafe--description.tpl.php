@@ -9,8 +9,11 @@ if ($node->nid != _videosafe_get_root_directory()->nid)
 else
     $node_edit_button = '';
 if ($node->type == 'videosafe_video') {
+      $video_urls_with_li = $video_urls = array();
+    
     foreach (_videosafe_get_video_urls($node->nid) as $url) {
-        $urls[] = '<li>' . $url . '</li>'; #'<li>' . file_create_url($file_entry['file']->uri) . '</li>';
+        $video_urls_with_li[] = '<li>' . $url . '</li>'; #'<li>' . file_create_url($file_entry['file']->uri) . '</li>';
+        $video_urls[] = $url;
     }
 
     /* errechnet den string, wo das video verwendet wird
@@ -40,17 +43,26 @@ if ($node->type == 'videosafe_video') {
 <br>
 <?php
 if ($node->type == 'videosafe_video') {
+     
     $content['field_exclusive_access']['#title']='Sperrvermerk, einsehbar für';
 ?>
     <div class="media-element-container media-media_6">
         <?print render(file_view(file_load($node->field_video[LANGUAGE_NONE][0]['fid']), 'media_6'));?>
     </div>
-    <div class="urls"><b>URLs zum Kopieren:</b>
-        <ul><?= implode('', $urls) ?></ul>
+    <? if($node->render_ajax):?>
+    <div class="urls">
+        <br><br>
+        <button type="submit" class="btn btn-primary select_video" rel='<?=  drupal_json_encode($video_urls)?>' >Dieses Video auswählen</button>
     </div>
+        <?else:?>
+   <div class="urls"><b>URLs zum Kopieren:</b>
+        <ul><?= implode('', $video_urls_with_li) ?></ul>
+    </div>
+    <?endif?>
+ 
 
     <? print render($content['field_exclusive_access']); ?>
-
+    
     <br><b>Verwendung in </b><br>
 
     <?= $video_referenced_in_string; ?>
