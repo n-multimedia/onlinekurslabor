@@ -61,10 +61,10 @@
             ;
 
         },
-        /*
+        /* derzeit einsatzlos...
          * refresht die ajax-view-form durch klick auf den button
          * @returns {undefined}
-         */
+
         refreshForm: function()
         {
             if (this.exposed_form.button_apply)
@@ -74,6 +74,7 @@
             }
             console.debug("did i refresh`?````");
         },
+        */
         /*
          * Konvertiert Links, buttons etc die auf nodes verweise in Ajax-Elemente
          * sprich, der View wird mit den Parametern befüllt
@@ -90,8 +91,12 @@
                 that.convertToAjaxfunctionality(jQuery(this), node_id);
             });
             //zb. bearbeiten-link in neuem tab
-            jQuery('div.view-content a:not([rel]),  div.attachment-before a:not([rel])', this.view_container).each(function() {
+            jQuery('div.view-content a:not([rel]),  div.attachment-before a:not([rel]), div.view-empty a:not([rel])', this.view_container).each(function() {
                 jQuery(this).attr('target', '_blank');
+            });
+             //bei upload-klick: aktiviere meldung, um das neue video zu finden
+            jQuery('#upload_new_video', this.view_container).click(function(){
+                jQuery("#just_uploaded_warning").slideDown();
             });
             /*suche nach buttons, die select_video heißen und ein attr rel haben*/
             jQuery('button.select_video', this.view_container).not(".videosafe_processed").each(function() {

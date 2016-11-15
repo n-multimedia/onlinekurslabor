@@ -10,7 +10,11 @@
       </div>
       <div class="modal-body">
           <p><?=t('Select one of the videos already uploaded or click "upload" to create a new one (opens in new tab)')?></p>
-            <p></p>
+          <p></p>
+          <div class="alert alert-warning alert-dismissible" id="just_uploaded_warning" style="display:none;" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <strong>Video hochgeladen?</strong> Um es zu finden, mnüssen Sie nun "Anwenden" klicken.
+          </div>
         <div id="videosafe_ajax_modal_view_container">
             <!-- container füer ajax-loader -->
         </div>

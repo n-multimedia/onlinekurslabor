@@ -92,6 +92,3 @@ jQuery(document).ready(function () {
   Drupal.behaviors.videosafe.initialize();
 
 });
-//hat man ein video hochgeladen und der tab wird wieder aktiv, so refresht man die form
-//vorsicht! normales verhalten wird als focus change betrachtet! Entschärfen!
-jQuery(window).on('focus', function() { Drupal.behaviors.videosafe_ajax_browser.refreshForm() });

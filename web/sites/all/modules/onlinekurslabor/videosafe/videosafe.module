@@ -30,13 +30,26 @@ function videosafe_views_pre_view(&$view, &$display_id, &$args) {
             $before_html =  '<a rel="' . $parent_dir_nid . '" href="/node/' . $parent_dir_nid . '">' . $folder_up_glyph . '</a>';;
             if($curr_node->type == NM_VIDEOSAFE_FOLDER)
             {
-                $before_html .= ' | <a href="/node/add/videosafe-video?field_parent_folder='.$current_node_nid.'">'.$upload_glyph.'</a>';
+                $before_html .= ' | <a href="/node/add/videosafe-video?field_parent_folder='.$current_node_nid.'&upload_triggered_from_tab=true" id="upload_new_video">'.$upload_glyph.'</a>';
             }
             $view->attachment_before = $before_html;
         }
     }
 }
 
+/**
+ * Wenn ein neues Video erstellt wurde und der Upload über die ajax-select-view getriggert wurde,
+ * dann Nachricht anzeigen
+ * @param type $node
+ */
+function videosafe_node_insert($node) 
+{
+    if($node->type == NM_VIDEOSAFE_VIDEO &&  @strstr( $_SERVER["HTTP_REFERER"] , 'upload_triggered_from_tab=true'))
+    {
+        drupal_set_message(t("Video successfully created. Please close this tab to return."), 'status');;
+    }
+    
+}
  
 /**
  * hook fuer das h5p-content-formular
