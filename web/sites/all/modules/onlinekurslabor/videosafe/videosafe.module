@@ -127,6 +127,9 @@ function videosafe_preprocess_node(&$vars) {
  */
 function videosafe_theme($existing, $type, $theme, $path) {
     return array(
+        'node__videosafe__description' => array(
+            'template' => 'templates/node--videosafe--description',
+        ),
         //used for rendering the modal windows
         'videosafe_modal_template' => array(
             'template' => 'templates/videosafe-modal-template',
