@@ -4,7 +4,7 @@ jQuery( document ).ready(function() {
     {
         jQuery(".browser_compatibility_custom_message").show();
         jQuery(".browser_compatibility_warning_affected_browser").html("Internet Explorer 11");
-        jQuery(".browser_compatibility_warning_details").html("<ul><li>Das Bearbeiten von Text funktioniert nicht vollständig.</li><li>Sie werden Probleme beim Abspielen von Videos haben.</li></ul>")
+        jQuery(".browser_compatibility_warning_details").html("<ul><li>Das Bearbeiten von Text funktioniert nicht vollständig.</li></ul>")
     }
 });
 
