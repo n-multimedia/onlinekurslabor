@@ -6,6 +6,8 @@ drush vset maintenance_mode 1
 drush cc all
 drush updatedb --yes
 drush en browser_compatibility --yes
+#bug in drush - cc before FR!!
+drush cc all
 drush fr  videosafe_features --yes
 
 
