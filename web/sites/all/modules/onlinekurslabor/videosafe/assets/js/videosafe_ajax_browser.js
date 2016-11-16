@@ -95,7 +95,7 @@
                 jQuery(this).attr('target', '_blank');
             });
              //bei upload-klick: aktiviere meldung, um das neue video zu finden
-            jQuery('#upload_new_video', this.view_container).click(function(){
+            jQuery('#upload_new_video, #add_new_folder', this.view_container).click(function(){
                 jQuery("#just_uploaded_warning").slideDown();
             });
             /*suche nach buttons, die select_video heißen und ein attr rel haben*/

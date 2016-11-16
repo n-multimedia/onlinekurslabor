@@ -37,6 +37,9 @@ msgstr 'Wählen Sie anschließend eines der vorhandenen Videos oder klicken Sie 
 msgid "Video successfully created. Please close this tab to return."
 msgstr "Video erfolgreich erstellt. Bitte schließen Sie diesen Tab, um zurückzukehren."
 
+msgid "Add Subfolder"
+msgstr "Unterordner erstellen"
+
 msgid ""
 msgstr ""
 

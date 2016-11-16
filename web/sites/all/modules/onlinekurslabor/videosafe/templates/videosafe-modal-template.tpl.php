@@ -14,7 +14,7 @@
           <p></p>
           <div class="alert alert-warning alert-dismissible" id="just_uploaded_warning" style="display:none;" role="alert">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <strong>Video hochgeladen?</strong> Um es zu finden, mnüssen Sie nun "Anwenden" klicken.
+              <strong>Video hochgeladen?</strong> Um es zu finden, müssen Sie nun "Anwenden" klicken.
           </div>
         <div id="videosafe_ajax_modal_view_container">
             <!-- container füer ajax-loader -->
