@@ -205,7 +205,8 @@ function videosafe_features_field_default_field_instances() {
     'default_value' => NULL,
     'default_value_function' => '',
     'deleted' => 0,
-    'description' => 'Hat das Video einen <strong>Sperrvermerk</strong>, so können hier einzelne Autoren ausgewählt werden, die exklusiv die Berechtigung erhalten, das Video einzusehen und in Lehrtexten zu nutzen.  <strong>Mehrere Werte kommagetrennt</strong>',
+    'description' => 'Hat das Video einen <strong>Sperrvermerk</strong>, so können hier einzelne Autoren ausgewählt werden, die exklusiv die Berechtigung erhalten, das Video einzusehen und in Lehrtexten zu verwenden.  
+<br><strong>Mehrere Werte kommagetrennt.</strong>',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -219,7 +220,7 @@ function videosafe_features_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_exclusive_access',
-    'label' => 'Einsehbar für',
+    'label' => 'Optional: Zugriff nur für',
     'required' => 0,
     'settings' => array(
       'behaviors' => array(
@@ -293,7 +294,7 @@ function videosafe_features_field_default_field_instances() {
   $field_instances['node-videosafe_video-field_video'] = array(
     'bundle' => 'videosafe_video',
     'deleted' => 0,
-    'description' => 'Wählen Sie mindest ein Video. Sie können das gleiche Video in verschiedenen Dateiformaten hinterlegen, um möglichst viele Browser zu unterstützen.
+    'description' => 'Wählen Sie mindest ein Video. Für die bestmögliche Browserunterstützung sollten Sie das Video im <b>webm</b>-Format und im <b>mp4</b>-Format hochladen.<br>
 Die Videodateien selbst sollten sinnvoll benannt sein.',
     'display' => array(
       'default' => array(
@@ -330,13 +331,14 @@ Die Videodateien selbst sollten sinnvoll benannt sein.',
   // Translatables
   // Included for use with string extractors like potx.
   t('Body');
-  t('Einsehbar für');
-  t('Hat das Video einen <strong>Sperrvermerk</strong>, so können hier einzelne Autoren ausgewählt werden, die exklusiv die Berechtigung erhalten, das Video einzusehen und in Lehrtexten zu nutzen.  <strong>Mehrere Werte kommagetrennt</strong>');
+  t('Hat das Video einen <strong>Sperrvermerk</strong>, so können hier einzelne Autoren ausgewählt werden, die exklusiv die Berechtigung erhalten, das Video einzusehen und in Lehrtexten zu verwenden.  
+<br><strong>Mehrere Werte kommagetrennt.</strong>');
   t('Interne Bemerkung');
   t('Oberordner');
+  t('Optional: Zugriff nur für');
   t('Ordner');
   t('Video-Dateien');
-  t('Wählen Sie mindest ein Video. Sie können das gleiche Video in verschiedenen Dateiformaten hinterlegen, um möglichst viele Browser zu unterstützen.
+  t('Wählen Sie mindest ein Video. Für die bestmögliche Browserunterstützung sollten Sie das Video im <b>webm</b>-Format und im <b>mp4</b>-Format hochladen.<br>
 Die Videodateien selbst sollten sinnvoll benannt sein.');
   t('Übergeordneter Ordner');
 
