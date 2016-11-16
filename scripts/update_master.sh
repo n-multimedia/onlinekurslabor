@@ -8,7 +8,7 @@ drush updatedb --yes
 drush en browser_compatibility --yes
 #bug in drush - cc before FR!!
 drush cc all
-drush fr  videosafe_features  nm_section_courses_features --yes
+drush fr  videosafe_features  nm_section_courses_features  section_projects_features --yes
 
 
 drush language-import-translations de ../language/alpha7.po --replace --groups=default

@@ -1679,7 +1679,7 @@ function projects_cockpit_main_lernzielvereinbarung_view() {
     $output .= "<h4>Lernzielvereinbarung</h4>";
 
     if (empty($objective_node)) {
-      $output .= 'Es wurde noch keine Lernzielvereinbarung für dieses Projet angelegt.';
+      $output .= 'Es wurde noch keine Lernzielvereinbarung für dieses Projekt angelegt.';
 
       return $output;
     }

@@ -418,7 +418,7 @@ function section_projects_features_field_default_field_instances() {
         'value' => 'Wir verpflichten uns folgende Regeln einzuhalten:
  - Alle beteiligten Personen sind pünktlich bei vereinbarten Treffen
  - der Kooperationspartner steht als Ansprechpartner zur Verfügung
- - Termine sind gegebenenfalls frühzeitige abzusagen
+ - Termine sind gegebenenfalls frühzeitig abzusagen
  - Gegenseitige Information über Zwischenstände',
       ),
     ),
@@ -2409,7 +2409,7 @@ function section_projects_features_field_default_field_instances() {
     'ds_extras_field_template' => '',
     'entity_type' => 'node',
     'field_name' => 'field_po_short_description',
-    'label' => 'Kurzberschreibung',
+    'label' => 'Kurzbeschreibung',
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
@@ -3333,7 +3333,7 @@ function section_projects_features_field_default_field_instances() {
 ');
   t('Kooperationsvereinbarung');
   t('Kursgruppe');
-  t('Kurzberschreibung');
+  t('Kurzbeschreibung');
   t('Laufzeit des Projekts von einem bestimmten Datum bis zu einem bestimmten Datum');
   t('Logo');
   t('Motivation und Ziele');
