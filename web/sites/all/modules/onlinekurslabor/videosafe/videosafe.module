@@ -32,11 +32,11 @@ function videosafe_views_pre_view(&$view, &$display_id, &$args) {
             $upload_glyph = '<span class="glyphicon glyphicon-upload" aria-hidden="true"></span> ' . t("Upload");
 
             $before_html .= '<a rel="' . $parent_dir_nid . '" href="/node/' . $parent_dir_nid . '">' . $folder_up_glyph . '</a>';
-            $before_html .= ' | ' . $addfolder_html;
+            $before_html .= $curr_node->type != NM_VIDEOSAFE_VIDEO? ' | ' . $addfolder_html:'';
             if ($curr_node->type == NM_VIDEOSAFE_FOLDER) {
                 $before_html .= ' | <a href="/node/add/videosafe-video?field_parent_folder=' . $current_node_nid . '&upload_triggered_from_tab=true" id="upload_new_video">' . $upload_glyph . '</a>';
             }
-        } else {
+        } elseif($curr_node->type != NM_VIDEOSAFE_VIDEO) {
             $before_html = $addfolder_html;
         }
 
