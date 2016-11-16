@@ -40,6 +40,9 @@ msgstr "Video erfolgreich erstellt. Bitte schließen Sie diesen Tab, um zurückz
 msgid "Add Subfolder"
 msgstr "Unterordner erstellen"
 
+msgid "Updated date"
+msgstr "Änderungsdatum"
+
 msgid ""
 msgstr ""
 
