@@ -11,12 +11,12 @@ changed_dev=`git remote update && git status -uno | grep "Your branch is behind"
 
 if [ "$changed_dev" != "Fetching origin" ];
 then 
-	#leere log und setze start
-	echo "RUNNING UPDATE" > sites/default/files/last_update_log
-	git pull &>>  sites/default/files/last_update_log
 	#path von drush in userfolder benoetigt
 	export PATH=$PATH:~/drush/
 	cd ../web/
+	#leere log und setze start
+	echo "RUNNING UPDATE" > sites/default/files/last_update_log
+	git pull &>>  sites/default/files/last_update_log
 	sh ../scripts/update_master.sh &>>  sites/default/files/last_update_log
 	echo "" >> sites/default/files/last_update_log
 	echo "Update completed on:" >> sites/default/files/last_update_log
