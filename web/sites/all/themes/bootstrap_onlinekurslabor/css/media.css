@@ -24,3 +24,58 @@ iframe#mediaBrowser,
 iframe#mediaStyleSelector {
     padding: 0 ;
 }
+
+/*reaktiviere alte videostyles fuer videosafe*/
+/*sollte noch was fehlen, muss man das wieder hier rausziehen https://github.com/n-multimedia/onlinekurslabor/blob/7873d29cfaaa6d35420fe10a84fd12e9f074685f/web/sites/all/themes/bootstrap_onlinekurslabor/css/media.css*/
+/*output*/
+.main-content .media-element-container.media-media_4 video
+{
+    width: 33%;
+}
+
+/*output*/
+.main-content .media-element-container.media-media_6 video
+{
+    width: 50%;
+}
+/*output*/
+.main-content .media-element-container.media-media_8 video
+{
+    width: 66%;
+}
+/*output*/
+.main-content .media-element-container.media-media_9 video
+{
+    width: 75%;
+}
+
+
+/*output*/
+.main-content .media-element-container.media-media_12 video
+{
+    width: 100%;
+}
+
+@media (max-width: 767px) {
+
+    .main-content .media-element-container.media-media_3 video,
+    .main-content .media-element-container.media-media_4 video,
+    .main-content .media-element-container.media-media_6 video,
+    .main-content .media-element-container.media-media_8 video,
+    .main-content .media-element-container.media-media_9 video,
+    .main-content .media-element-container.media-media_12 video {
+        width: 100% !important;
+    }
+
+
+}
+
+.media-float-left video,
+.media-float-right video,
+.media-float-center video,
+.main-content table td video {
+    max-width: inherit !important;
+    min-width: inherit !important;
+    width: inherit !important;
+    height: inherit !important;
+}
