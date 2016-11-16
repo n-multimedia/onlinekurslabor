@@ -124,7 +124,7 @@
          */
         convertToAjaxfunctionality: function(jq_object, node_id)
         {
-            console.debug("callback registered?");
+            this.debug("callback registered?");
 
             var that = this;
             jq_object.click(function() {
