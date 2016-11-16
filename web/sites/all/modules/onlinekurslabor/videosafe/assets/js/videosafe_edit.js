@@ -25,7 +25,6 @@
        {
            //kann mehrere urls beinhalten mit ogg, mp4 etc
            for (var i in json_video_data) {
-              // console.debug("adding video " + i);
                var video_url = json_video_data[i];
                H5P.jQuery(".h5p-add-dialog .h5p-dialog-box").find("input.h5p-file-url").val(video_url);
                H5P.jQuery(".h5p-add-dialog .h5p-buttons").find("button.h5p-insert").click();
