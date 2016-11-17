@@ -157,14 +157,25 @@ function _section_courses_get_authors_tools() {
   $active_node = NULL;
   if (arg(0) == 'domain' && (arg(1) == 'text' || arg(1) == 'edit' || arg(1) == 'media' || arg(1) == 'biblio' || arg(1) == 'add') && is_numeric(arg(2))) {
     $active_node = node_load(arg(2));
+    if(isset($active_node->type) && in_array($active_node->type, array(NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER, NM_INTERACTIVE_CONTENT)))
+    {   //falls kein kapitel sondern domain-content, versuche hauptgroup zu laden
+        $an_group_nid = @($active_node->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+        if($an_group_nid)
+            $active_node = node_load($an_group_nid);
+    }
+
     $mlid = isset($active_node->book) ? $active_node->book['mlid'] : NULL;
     $bid = isset($active_node->book) ? $active_node->book['bid'] : $group_id;
     $plid = isset($active_node->book) ? $active_node->book['plid'] : NULL;
     $plid = ($plid == 0 || $plid == NULL) ? $mlid : $plid;
 
-    $add_chapter_options = $default_options;
-    $add_chapter_options['query']['parent'] = $plid;
-
+    //wenn parent gefunden, um kapitel einzusortieren (sonst würds im nirvana landen)
+    if($plid)
+    {
+        $add_chapter_options = $default_options;
+        $add_chapter_options['query']['parent'] = $plid;
+    }
+    
     //disable subchapter creatin, if mlid == plid
     $subchapter_disabled = false;
     if ($plid != $mlid) {
@@ -174,6 +185,10 @@ function _section_courses_get_authors_tools() {
             $subchapter_disabled = true;
         }
     }
+  //plid, mlid nicht kalkulierbar => subchapter abschalten
+  else {
+         $subchapter_disabled = true;
+        }
 
 
   $links = array();
