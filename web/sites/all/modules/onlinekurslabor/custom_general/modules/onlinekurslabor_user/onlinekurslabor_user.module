@@ -521,8 +521,8 @@ function user_assign_to_course_group(&$entity, $context = array()) {
     //if nid was set
     if ($new_course_group_nid) {
         //dozenten / tutoren: macht kein sinn, sie in kursgruppen zu stecken.
-        if (_section_courses_user_can_edit_course($entity, node_load($course_nid))) {
-             drupal_set_message( t("@realname is admin / tutor in this course and already has full access to the coursegroups. Person wasn't added.", array('@realname' => $entity->realname)), 'error');
+        if (node_access('update', node_load($course_nid), $entity) ) {
+             drupal_set_message( t("@realname has full access to the coursegroups. Person wasn't added.", array('@realname' => $entity->realname)), 'error');
         }
         else {
             _section_courses_user_add_to_coursegroup($entity->uid, $new_course_group_nid);   

@@ -43,6 +43,9 @@ msgstr "Unterordner erstellen"
 msgid "Updated date"
 msgstr "Änderungsdatum"
 
+msgid "@realname has full access to the coursegroups. Person wasn't added."
+msgstr "@realname hat Vollzugriff auf die Kursgruppen. Person nicht hinzugefügt."
+
 msgid ""
 msgstr ""
 
