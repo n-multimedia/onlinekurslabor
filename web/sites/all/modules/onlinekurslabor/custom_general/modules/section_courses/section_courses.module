@@ -1363,6 +1363,97 @@ function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
 }
 
 /**
+ * get all course groups the given user-id is member in
+ * ONLY if user's role in the belonging course is kurs-student
+ * @param array StdClass groups 
+ */
+function _section_courses_get_coursegroups_for_user($user_account) {
+    //get all gids the user belongs to
+    $all_groups = og_get_groups_by_user($user_account);
+    $all_groups = $all_groups['node'] ? $all_groups['node'] : array();
+    
+    $course_groups = array();
+    foreach ($all_groups as $gid) {
+        $group = node_load($gid);
+
+        //check if group's type is a course group
+        if ($group->type == NM_COURSE_GROUP) {
+          if(_section_courses_is_kurs_student_in_course_for_course_group($user_account, $group))
+          {
+                $course_groups[] = $group;
+            }
+        }
+    }
+    return $course_groups;
+}
+
+/**
+ * Hole Lösungen zu Gruppenaufgaben für einen Nutzer.
+ * Lösungen sind Gruppenlösungen, wenn es sich um eine Gruppenaufgabe handelt und der Ersteller
+ * der Lösung in der selben Kursgruppe wie ich ist.
+ * @param StdClass $user_account
+ * @return array  array "group" => $course_group, "owner" => $cgm_user,"solution" => $o_solution);
+ */
+function _section_courses_get_group_task_solutions_for_user($user_account)
+{
+    /* all meine kursgruppen laden.
+     *  fuer jede solution aller personen in meiner kursgruppe prüfen,
+     *  ob zugehörige aufgabe eine gruppenaufgabe ist UND zu diesem Kurs gehört.
+     *  wenn ja, ist es eine gruppenlösung fuer den benutzer.. */
+    $users_course_groups = _section_courses_get_coursegroups_for_user($user_account);
+    
+    $course_group_solutions = array();
+    foreach ($users_course_groups as $course_group) {
+        //hole gruppenmitglieder
+        $course_group_member_uids = og_get_group_members_properties($course_group, array(), 'members__' . OG_STATE_ACTIVE, 'node');
+    
+        $group_solution_candidates = array();
+        foreach ($course_group_member_uids as $cgm_uid) {
+            //course group member
+            $cgm_user = user_load($cgm_uid);
+            //checke if student
+            if (_section_courses_is_kurs_student_in_course_for_course_group($cgm_user, $course_group)) {
+                //jede solution aller personen in meiner kursgruppe
+                $group_solution_candidates = array_merge($group_solution_candidates, custom_general_get_all_task_solutions_by_uid($cgm_uid));
+            }
+            
+            foreach ($group_solution_candidates as $obj_group_solution_cand) {
+                $groupsolution_cand_nid = $obj_group_solution_cand->nid;
+                //the solution
+                $o_solution = node_load($groupsolution_cand_nid);
+                //die aufgabe
+                $task_to_solution = node_load($o_solution->field_generic_task['und'][0]['target_id']);
+    
+                // 1 == Gruppenaufgabe
+                if ($task_to_solution->field_task_type[LANGUAGE_NONE][0]["value"] === "1" &&
+                        //pruee ob diese aufgabe (bzw) lösung zum kurs dieser gruppe gehört
+                        $o_solution->og_group_ref[LANGUAGE_NONE][0]['target_id'] == $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id']) 
+                    {
+                    $course_group_solutions[] = array("group" => $course_group,
+                                                      "owner" => $cgm_user,
+                                                      "solution" => $o_solution);
+                }
+    
+            }
+        }
+    
+        return ($course_group_solutions);
+    }
+}
+
+/**
+ * Gegeben ist ein Nutzer und eine Kursgruppe. Ist der Nutzer in dem Kurs dieser Gruppe Kurs-Student?
+ * @param StdClass $user_account
+ * @param StdClass $course_group
+ * @return boolean
+ */
+function _section_courses_is_kurs_student_in_course_for_course_group($user_account, $course_group) {
+    //lade kurs und prüfe, ob user student darin ist
+    $course_id = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+    return _section_courses_user_is_student_in_course($user_account, node_load($course_id));
+}
+
+/**
  * Add students form
  *
  * @param type $form
@@ -1995,6 +2086,19 @@ function _section_courses_user_has_role_in_course($user_account, $course, $permi
  */
 function _section_courses_user_can_edit_course($user_account, $course) {
     return _section_courses_user_has_role_in_course($user_account, $course,  array(NM_COURSES_ROLE_ADMINISTRATOR, NM_COURSES_ROLE_TUTOR));
+            
+}
+
+
+/**
+ * checks if a user is student in a course.
+ *
+ * @param object $user_account  the user to check
+ * @param object $course the course to check
+ * @return boolean true if user has edit-perms in a course and is not locked
+ */
+function _section_courses_user_is_student_in_course($user_account, $course) {
+    return _section_courses_user_has_role_in_course($user_account, $course,  array(NM_COURSES_ROLE_STUDENT));
             
 }
 

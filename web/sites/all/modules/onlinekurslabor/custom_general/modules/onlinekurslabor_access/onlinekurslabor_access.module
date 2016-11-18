@@ -132,7 +132,13 @@ function onlinekurslabor_access_node_grants($account, $op) {
       $grants[$realm_solution][] = $solution->nid;
     }
   }
+  //zugriff auf lösungen zu gruppenaufgaben
+  $arr_my_group_solutions = _section_courses_get_group_task_solutions_for_user($account);
+  foreach ($arr_my_group_solutions as $group_solution) {
+      $grants[$realm_solution][] = $group_solution["solution"]->nid;
+    }
 
+        
   //DOMAINS
 
   $domains = _section_content_get_domains();
