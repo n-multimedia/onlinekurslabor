@@ -116,8 +116,8 @@ function _section_course_instructor_section_active() {
   return FALSE;
 }
 
-function _section_course_text_visible() {
-  return $text_visible = (arg(0) == 'course' && arg(1) == 'text');
+function _section_course_text_visible($path = NULL) {
+  return $text_visible = (arg(0, $path) == 'course' && arg(1, $path) == 'text');
 }
 
 function _section_course_biblio_visible() {
