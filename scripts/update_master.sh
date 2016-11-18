@@ -4,6 +4,9 @@ drush vset maintenance_mode 1
 
 #clear cache
 drush cc all
+
+drush dis overlay --yes
+
 drush updatedb --yes
 drush en browser_compatibility --yes
 #bug in drush - cc before FR!!
