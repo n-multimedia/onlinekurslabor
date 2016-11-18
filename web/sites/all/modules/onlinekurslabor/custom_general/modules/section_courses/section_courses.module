@@ -1414,7 +1414,7 @@ function _section_courses_get_group_task_solutions_for_user($user_account)
             //checke if student
             if (_section_courses_is_kurs_student_in_course_for_course_group($cgm_user, $course_group)) {
                 //jede solution aller personen in meiner kursgruppe
-                $group_solution_candidates = array_merge($group_solution_candidates, custom_general_get_all_task_solutions_by_uid($cgm_uid));
+                $group_solution_candidates = custom_general_get_all_task_solutions_by_uid($cgm_uid);
             }
             
             foreach ($group_solution_candidates as $obj_group_solution_cand) {
@@ -1437,8 +1437,9 @@ function _section_courses_get_group_task_solutions_for_user($user_account)
             }
         }
     
-        return ($course_group_solutions);
+       
     }
+     return ($course_group_solutions);
 }
 
 /**
