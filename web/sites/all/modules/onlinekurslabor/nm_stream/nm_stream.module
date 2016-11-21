@@ -1253,6 +1253,15 @@ function nm_stream_og_context() {
       //course_group_nid  /course/groups/%course_nid/%group_nid/
       $context = node_load(arg(3));
     }
+
+    if(arg(1) == "text" && is_numeric(arg(3))){
+      //annvid
+      $tmp_node = node_load(arg(3));
+
+      if ($tmp_node->type == ANNVID_CONTENTTYPE) {
+        $context = $tmp_node;
+      }
+    }
   }
   else if ($active_project) {
     $context = node_load(arg(5));
@@ -1275,13 +1284,15 @@ function nm_stream_og_context() {
       }
       elseif (_section_course_course_group_visible($referer_url['path'])) {
         $context = node_load(arg(3, $referer_url['path']));
-
+      }elseif (_section_course_text_visible($referer_url['path'])) {
+        $context = node_load(arg(3, $referer_url['path']));
       }
       elseif (_section_projects_cockpit_visible($referer_url['path'])) {
         //project section
         $context = node_load(arg(5, $referer_url['path']));
       }
       else {
+        //annvid node
         if ((arg(0, $referer_url['path']) == 'node')) {
           //annvid
           $active_annvid_nid = arg(1, $referer_url['path']);
