@@ -742,10 +742,10 @@
 
                             } else {
 
-                                //append new node
-                                var new_node = post_button.closest('.nm-stream-node-container').before($(data.node).fadeIn());
+                                //remove old node, append new node
+                                post_button.closest('.nm-stream-node-container').remove().before(data.node).fadeIn();
 
-                                post_button.closest('.nm-stream-node-container').hide();
+                                var new_node = post_button.closest('.nm-stream-node-container');
                                 //attach behavior
                                 Drupal.attachBehaviors(new_node);
                             }
