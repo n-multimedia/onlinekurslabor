@@ -477,11 +477,15 @@ ICONS
     background-image: url("../img/icons/single.png");
     background-position: 0px 0px;
     width:21px;
+    display:block;
+    height: 14px;
 }
 .icon-group {
     background-image: url("../img/icons/group.png");
     background-position: 0px 0px;
     width:21px;
+    display:block;
+    height: 14px;
 }
 
 /*
