@@ -28,16 +28,16 @@ function _browser_compatibility_get_rendered_warning() {
         </div>';
 }
 
+
 /**
  * message after login
  * fuer vhb, da die die loginform nicht haben
- * @param array $edit
- * @param type $account
+ * @param type $page
  */
-function browser_compatibility_user_login(&$edit, $account) {
-    if(nm_login_vhb_is_vhb_user($account->uid))
+function browser_compatibility_page_build(&$page) {
+    if(strstr(@$_SERVER['HTTP_REFERER'], 'kurse.vhb.org'))
     {
         drupal_set_message(_browser_compatibility_get_rendered_warning(), 'browser_compatibility_custom_message');
     }
-    
+  
 }
