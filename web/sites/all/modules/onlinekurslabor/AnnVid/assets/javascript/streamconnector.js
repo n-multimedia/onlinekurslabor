@@ -8,7 +8,10 @@
             jQuery(".nm-stream-node-form").html("Beispiel: Ab 14:30 wird Seite 8 im Skript erklärt");
             //Fehler beim ersten Aufruf, deswegen Video abwarten.. 
             Drupal.behaviors.h5p_connector_api.interactivevideo.onVideoReady(function() {
+                //fuelle nimeline neu
                 Drupal.behaviors.annvid.stream.fillStreamTimeline();
+                //setze fortschrittbalken auf letzten bekannten wert
+                Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.interactivevideo.last_seen_time);
             });
 
         },
