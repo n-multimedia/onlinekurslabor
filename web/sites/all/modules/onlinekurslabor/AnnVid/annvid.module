@@ -281,7 +281,10 @@ function AnnVid_node_view($node, $view_mode, $langcode) {
   if(empty($page_node))
       /*@todo hat das auswirkungen auf andere seiten, zb taxonomy*/
       $page_node = node_load(arg(2));#menu_get_object (ANNVID_CONTENTTYPE, 2);
-  
+  if($page_node->type === NM_COURSE)
+       $page_node = node_load(arg(3));
+  //unter themen ist der annvid arg(2), im kurs arg(3).. 
+ 
   if (!empty($page_node) && $page_node->type ==  ANNVID_CONTENTTYPE && $node->type == NM_INTERACTIVE_CONTENT &&  $node->nid != $page_node->nid) {
     $node->title = NULL;
   }
