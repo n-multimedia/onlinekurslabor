@@ -76,39 +76,6 @@ function _h5p_integration_h5p_replacements($matches) {
     $nid = $matches[1];
     $node = node_load($nid);
 
-    //visibility checks
-    //will the content will be visible
-    $arg0 = arg(0);
-    $arg1 = arg(1);
-    $arg2 = arg(2);
-    $arg3 = arg(3);
-    $course_context = $arg0 == 'course' && $arg1 == 'text' && is_numeric($arg3);
-    $domain_context = $arg0 == 'domain' && $arg1 == 'text' && is_numeric($arg2);
-    if($course_context || $domain_context){
-      if($arg0 == 'course' ){
-        $content_node = node_load($arg3);
-      }else if($arg0 == 'domain') {
-        $content_node = node_load($arg2);
-      }
-      //aktuell besuchter lehrtext: entweder group ref oder book-bid (bei der ersten seite v.a.)
-       $current_domain_nid =   @$content_node->og_group_ref[LANGUAGE_NONE][0]['target_id']?: $content_node->book['bid'];
-      
-      if($current_domain_nid) {
-         //check if h5p content is visible in active domain
-          if(!og_is_member('node', $current_domain_nid, 'node', $node)) {
-                //check if user may edit h5p and domain content node
-                if(node_access('update', $node) && node_access('update', $content_node)) {
-                    drupal_set_message("Es wurde ein H5P Inhalt eingebettet, der nicht für dieses Thema freigeschaltet ist. " . l("Bitte schalten Sie diesen Inhalt hier frei.", 'domain/edit/'.$node->nid), 'warning');
-                  }
-                else {
-                    drupal_set_message("Es wurde ein H5P Inhalt eingebettet, der nicht für dieses Thema freigeschaltet ist! Dieser ist für Kursteilnehmer nicht sichtbar. ", 'error');
-                  }
-        }
-      }
-
-    }
-
-
     if ($node != FALSE && node_access('view', $node) && $node->status) {
 
       //bei embed auch den view-mode anpassen
@@ -126,6 +93,49 @@ function _h5p_integration_h5p_replacements($matches) {
   }
 
   return $text;
+}
+
+/**
+ * shows a warning to dozent / autor if inserted h5p-node is not visible for students
+ * @param StdClass $h5p_node_object a h5p-node
+ * @param StdClass $contend_node where the h5p is used, eg  lehrtext-kapitel
+ */
+function _h5p_integration_show_warning_if_h5p_not_accessible($h5p_node_object, $content_node){
+     //aktuell besuchter lehrtext: entweder group ref oder book-bid (bei der ersten seite v.a.)
+       $current_domain_nid =   @$content_node->og_group_ref[LANGUAGE_NONE][0]['target_id']?: $content_node->book['bid'];
+      
+      if($current_domain_nid) {
+         //check if h5p content is visible in active domain
+          if(!og_is_member('node', $current_domain_nid, 'node', $h5p_node_object)) {
+                //check if user may edit h5p and domain content node
+                if(node_access('update', $h5p_node_object) && node_access('update', $content_node)) {
+                    drupal_set_message("Es wurde ein H5P Inhalt eingebettet, der nicht für dieses Thema freigeschaltet ist. " . l("Bitte schalten Sie diesen Inhalt hier frei.", 'domain/edit/'.$h5p_node_object->nid), 'warning');
+                  }
+                else {
+                    drupal_set_message("Es wurde ein H5P Inhalt eingebettet, der nicht für dieses Thema freigeschaltet ist! Dieser ist für Kursteilnehmer nicht sichtbar. ", 'error');
+                  }
+        }
+      }
+
+    
+}
+
+/**
+ * hook_node_view um bei eingebetteten  h5p-elementen  eine warning einzublenden
+ * @param type $node
+ * @param type $view_mode
+ * @param type $langcode
+ */
+function h5p_integration_node_view($node, $view_mode, $langcode) {
+
+  $page_node = menu_get_object();
+  if(empty($page_node))
+    
+      $page_node = node_load(arg(2)); 
+  
+  if (!empty($page_node) && $node->type == NM_INTERACTIVE_CONTENT &&  $node->nid != $page_node->nid) {
+      _h5p_integration_show_warning_if_h5p_not_accessible($node, $page_node);
+  }
 }
 
 /**
