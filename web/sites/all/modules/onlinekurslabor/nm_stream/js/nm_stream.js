@@ -1055,7 +1055,7 @@
 
                 var information_text = node_container.find('.nm-stream-node-information').html();
 
-                if (information_text !== null) {
+                if (typeof information_text !== "undefined" && information_text !== null) {
 
                     if (information_text.indexOf('Kommentare ausblenden') === -1) {
                         var new_information = node_container.find('.nm-stream-node-information').html($(new_information_data[nid]));
