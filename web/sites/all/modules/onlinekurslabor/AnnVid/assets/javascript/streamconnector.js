@@ -6,12 +6,24 @@
             jQuery(".nm_stream .nm-stream-main-body", context).convertTextToLinks();
             jQuery(".nm-stream-comment .nm-stream-main-body", context).convertTextToLinks();
             jQuery(".nm-stream-node-form").html("Beispiel: Ab 14:30 wird Seite 8 im Skript erklärt");
+
+            //prefille textareas bei focus darauf
+            jQuery("form#nm-stream-add-node .nm-stream-node-body, .nm-stream-comment-body").focus(function()
+            {   //nur leere textarea
+                if (jQuery(this).val() === "")
+                {
+                    jQuery(this).val("Um "+Drupal.behaviors.h5p_connector_api.interactivevideo.getCurrentVideoTime(true)+" ");
+                }
+
+            });
+
+            
             //Fehler beim ersten Aufruf, deswegen Video abwarten.. 
             Drupal.behaviors.h5p_connector_api.interactivevideo.onVideoReady(function() {
                 //fuelle nimeline neu
                 Drupal.behaviors.annvid.stream.fillStreamTimeline();
                 //setze fortschrittbalken auf letzten bekannten wert
-                Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.interactivevideo.last_seen_time);
+                Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.interactivevideo.getCurrentVideoTime(false));
             });
 
         },

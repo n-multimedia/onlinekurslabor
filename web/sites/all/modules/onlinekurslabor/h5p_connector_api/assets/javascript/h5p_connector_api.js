@@ -258,6 +258,19 @@
             }
 
         },
+        /*
+         * hole momentane zeit im player. leichter versatz im sekundenbereich möglich!!!
+         * @param bool humanized: menschliche zeit, sonst zeit in sec
+         * @returns {int / string }timestamp beginning from 0 / 00:00
+         */
+        getCurrentVideoTime: function(humanized)
+        {
+            if(humanized)
+                return this.humanizeTime(this.last_seen_time)
+            else
+                return this.last_seen_time;
+        }
+        ,
         humanizeTime: function(timeinsecs)
         {
             return H5P.InteractiveVideo.humanizeTime(timeinsecs);
