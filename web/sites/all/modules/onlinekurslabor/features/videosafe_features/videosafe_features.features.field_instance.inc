@@ -294,8 +294,8 @@ function videosafe_features_field_default_field_instances() {
   $field_instances['node-videosafe_video-field_video'] = array(
     'bundle' => 'videosafe_video',
     'deleted' => 0,
-    'description' => 'Wählen Sie mindest ein Video. Für die bestmögliche Browserunterstützung sollten Sie das Video im <b>webm</b>-Format und im <b>mp4</b>-Format hochladen.<br>
-Die Videodateien selbst sollten sinnvoll benannt sein.',
+    'description' => 'Wählen Sie mindest ein Video zum Upload aus. Für die bestmögliche Browserunterstützung sollten Sie das Video im  <b>.webm</b>-Format und im  <b>.mp4</b>-Format hochladen.<br>
+Achten Sie idealerweise auf eine sinnvolle Benennung der Datei!',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -338,8 +338,8 @@ Die Videodateien selbst sollten sinnvoll benannt sein.',
   t('Optional: Zugriff nur für');
   t('Ordner');
   t('Video-Dateien');
-  t('Wählen Sie mindest ein Video. Für die bestmögliche Browserunterstützung sollten Sie das Video im <b>webm</b>-Format und im <b>mp4</b>-Format hochladen.<br>
-Die Videodateien selbst sollten sinnvoll benannt sein.');
+  t('Wählen Sie mindest ein Video zum Upload aus. Für die bestmögliche Browserunterstützung sollten Sie das Video im  <b>.webm</b>-Format und im  <b>.mp4</b>-Format hochladen.<br>
+Achten Sie idealerweise auf eine sinnvolle Benennung der Datei!');
   t('Übergeordneter Ordner');
 
   return $field_instances;
