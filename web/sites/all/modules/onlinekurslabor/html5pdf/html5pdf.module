@@ -38,7 +38,7 @@ function _html5pdf_getPDFReader($identifier,$pdf_url)
    $html_code =  '<script src="'.base_path().drupal_get_path('module', 'html5pdf') . '/assets/javascript/pdf.js'.'"></script>';
    //generate html-block including IDs and some pdf-controls
    $html_code .=  <<<EOF
-                       <div id="{$identifier}-html5pdf" style="width:500px;">
+                       <div id="{$identifier}-html5pdf" style="width:700px;">
                           <div class=html5pdf_control id="{$identifier}_control">
                            <i id="{$identifier}_prev" class="html5pdfsprite html5pdfsprite-last"></i> 
                             <span class="html5pdf_pager"><span id="{$identifier}_page_num">-</span> / <span id="{$identifier}_page_count">-</span></span>

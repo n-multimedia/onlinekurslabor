@@ -24,6 +24,7 @@
                     jQuery("#annvid_pdfdiv").hide();
                     jQuery(".col-md-3").show();
                     jQuery(".col-md-1").show();
+                    jQuery(".main-container").removeAttr("style");
                     Drupal.behaviors.annvid.stream.fillStreamTimeline();
                     jQuery(this).html("PDF anzeigen");
                 } else
@@ -33,6 +34,7 @@
                     jQuery("#annvid_pdfdiv").show();
                     jQuery(".col-md-3").hide();
                     jQuery(".col-md-1").hide();
+                    jQuery(".main-container").attr("style", "width:100%;");
                     Drupal.behaviors.annvid.stream.fillStreamTimeline();
                     jQuery(this).html("PDF verstecken");
                 }
@@ -73,13 +75,9 @@
         
         /*object: pdf-renderer*/
         setPDFRenderObject: function(object)
-        {
-             this.pdfrenderobject = object;
+        { 
+            this.pdfrenderobject = object;
             return true; 
-        },
-      
-           
-          
-              
+        }     
     }
 }(jQuery));
