@@ -100,24 +100,25 @@ function _h5p_integration_h5p_replacements($matches) {
  * @param StdClass $h5p_node_object a h5p-node
  * @param StdClass $contend_node where the h5p is used, eg  lehrtext-kapitel
  */
-function _h5p_integration_show_warning_if_h5p_not_accessible($h5p_node_object, $content_node){
-     //aktuell besuchter lehrtext: entweder group ref oder book-bid (bei der ersten seite v.a.)
-       $current_domain_nid =   @$content_node->og_group_ref[LANGUAGE_NONE][0]['target_id']?: $content_node->book['bid'];
-      
-      if($current_domain_nid) {
-         //check if h5p content is visible in active domain
-          if(!og_is_member('node', $current_domain_nid, 'node', $h5p_node_object)) {
-                //check if user may edit h5p and domain content node
-                if(node_access('update', $h5p_node_object) && node_access('update', $content_node)) {
-                    drupal_set_message("Es wurde ein H5P Inhalt eingebettet, der nicht für dieses Thema freigeschaltet ist. " . l("Bitte schalten Sie diesen Inhalt hier frei.", 'domain/edit/'.$h5p_node_object->nid), 'warning');
-                  }
-                else {
-                    drupal_set_message("Es wurde ein H5P Inhalt eingebettet, der nicht für dieses Thema freigeschaltet ist! Dieser ist für Kursteilnehmer nicht sichtbar. ", 'error');
-                  }
-        }
-      }
+function _h5p_integration_show_warning_if_h5p_not_accessible($h5p_node_object, $content_node) {
+    //aktuell besuchter lehrtext: entweder group ref oder book-bid (bei der ersten seite v.a.)
+    $current_domain_nid = @$content_node->og_group_ref[LANGUAGE_NONE][0]['target_id']? : $content_node->book['bid'];
+    $h5p_domain_nid = @$h5p_node_object->og_group_ref[LANGUAGE_NONE][0]['target_id'];
 
-    
+    //falls kontext einer group / lehrtext angehört und h5p einer group angehört
+    if ($current_domain_nid && $h5p_domain_nid) {
+        //check if h5p content is visible in active domain
+        if (!og_is_member('node', $current_domain_nid, 'node', $h5p_node_object)) {
+            //check if user may edit h5p and domain content node
+            if (node_access('update', $h5p_node_object) && node_access('update', $content_node)) {
+                drupal_set_message("Es wurde ein H5P Inhalt eingebettet, der nicht für dieses Thema freigeschaltet ist. " . l("Bitte schalten Sie diesen Inhalt hier frei.", 'domain/edit/' . $h5p_node_object->nid), 'warning');
+            }
+            //zeige warning nur fuer bearbeiter des contents. Normalen Nutzern bringt das nichts. 
+            elseif (node_access('update', $content_node)) {
+                drupal_set_message("Es wurde ein H5P Inhalt eingebettet, der nicht für dieses Thema freigeschaltet ist! Dieser ist für Kursteilnehmer nicht sichtbar. ", 'error');
+            }
+        }
+    }
 }
 
 /**
