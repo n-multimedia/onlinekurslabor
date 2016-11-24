@@ -16,6 +16,9 @@
                 }
 
             });
+            
+            //klick auf anhang: neuer tab um video nicht zu killen
+            jQuery("span.file a", context).attr("target", "_blank");
 
             
             //Fehler beim ersten Aufruf, deswegen Video abwarten.. 
