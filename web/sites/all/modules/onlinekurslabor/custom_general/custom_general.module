@@ -1332,3 +1332,47 @@ function _custom_general_get_rendered_html5_video_tag($video_base_url, $video_po
     $output = theme('custom_html5_video', array('video_definition' => $video_def));
     return $output;
 }
+
+
+
+/**
+ * Sucht in einem per  $books_menu_tree = menu_tree_all_data($books_menu_name); erhaltenen baum nach dem element mit der übergebenen mlid
+ * @param array $menu_tree
+ * @param int $mlid
+ */
+function _custom_general_get_menu_tree_entry_to_mlid($menu_tree, $mlid) {
+ 
+    $found_entry = null;
+    foreach ($menu_tree as $tree_branch) {
+        //ok gleich am anfang gefunden
+        if ($tree_branch['link']['mlid'] == $mlid) {
+            $found_entry = $tree_branch;
+        }
+        //starte rekursion in "below"
+        else {
+            $found_entry = _custom_general_get_menu_tree_entry_to_mlid($tree_branch['below'], $mlid);
+        }
+        //abbruchbedingung der schleife
+        if ($found_entry)
+            break;
+    }
+    return $found_entry;
+}
+
+/**
+ * Liefert aus einem  $books_menu_tree aus den elementen ['below'] den höchsten weight-wert.
+ * @param array $tree
+ * @return int $high
+ */
+function _custom_general_get_max_weight_in_book_tree($tree) {
+    //default drupal min(weight)
+    $high = -15;
+    //gehe unter below alle eintraege durch und finde max(weight)
+    if (!empty($tree['below'])) {
+        foreach ($tree['below'] as $elem_below) {
+            $high = max(array($high, (int) $elem_below['link']['weight']));
+        }
+    }
+    return $high;
+}
+

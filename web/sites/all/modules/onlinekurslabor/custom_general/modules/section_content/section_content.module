@@ -570,16 +570,18 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     if ($form_id == 'content_chapter_node_form') {
         $parameters = drupal_get_query_parameters();
         $og_group_ref = @$parameters['og_group_ref'];
+        $parent = @$parameters['parent'];
+
         //sollte zwar gesetzt sein, aber zur sicherheit..
         if ($og_group_ref) {
+            //Suche buch zur übergebenen Group
             $books_menu_name = 'book-toc-' . $og_group_ref;
             $books_menu_tree = menu_tree_all_data($books_menu_name);
-            $books_menu_elem_helper = array_values($books_menu_tree);
-            $books_menu_tree = $books_menu_elem_helper[0]['below'];
-            $books_last_elem = array_values(array_slice($books_menu_tree, -1));
-            $weight_of_last_elemem = $books_last_elem[0]['link']['weight'];
-            dpm($weight_of_last_elemem);
-            $form['#node']->book['weight'] = $weight_of_last_elemem + 1;
+
+            $found_element = _custom_general_get_menu_tree_entry_to_mlid($books_menu_tree, $parent);
+            $maximum_weight = _custom_general_get_max_weight_in_book_tree($found_element);
+
+            $form['#node']->book['weight'] = $maximum_weight + 1;
         }
     }
 
@@ -605,6 +607,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
       
   return $form;
 }
+
 
 /*
   function section_content_node_form_delete_confirm_submit($form, &$form_state) {
