@@ -564,9 +564,27 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
         }
       }
     }*/
-  }
+  } 
+  
+  /*neu angelegte Buchkapiteln fehlt eine weight. Das führt zu Falschsortierung/-nummerierung. Fixe.*/
+    if ($form_id == 'content_chapter_node_form') {
+        $parameters = drupal_get_query_parameters();
+        $og_group_ref = @$parameters['og_group_ref'];
+        //sollte zwar gesetzt sein, aber zur sicherheit..
+        if ($og_group_ref) {
+            $books_menu_name = 'book-toc-' . $og_group_ref;
+            $books_menu_tree = menu_tree_all_data($books_menu_name);
+            $books_menu_elem_helper = array_values($books_menu_tree);
+            $books_menu_tree = $books_menu_elem_helper[0]['below'];
+            $books_last_elem = array_values(array_slice($books_menu_tree, -1));
+            $weight_of_last_elemem = $books_last_elem[0]['link']['weight'];
+            dpm($weight_of_last_elemem);
+            $form['#node']->book['weight'] = $weight_of_last_elemem + 1;
+        }
+    }
 
-  /*Feature Lehrtext deaktivieren + Link auf Lehrtext erstellen*/
+    /*Feature Lehrtext deaktivieren + Link auf Lehrtext erstellen*/
+  /*DAS gehört aber definitiv in section_courses!!!!!!*/
   if($form_id == 'courses_course_node_form'){
      $description ="<ul>";
     //add domain add link to
