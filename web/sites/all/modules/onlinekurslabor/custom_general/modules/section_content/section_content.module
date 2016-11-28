@@ -581,7 +581,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
             $found_element = _custom_general_get_menu_tree_entry_to_mlid($books_menu_tree, $parent);
             $maximum_weight = _custom_general_get_max_weight_in_book_tree($found_element);
 
-            $form['#node']->book['weight'] = $maximum_weight + 1;
+            $form['book']['weight']['#default_value'] = $maximum_weight + 1;
         }
     }
 
