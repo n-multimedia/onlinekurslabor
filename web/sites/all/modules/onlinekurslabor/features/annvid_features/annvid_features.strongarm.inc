@@ -163,5 +163,14 @@ function annvid_features_strongarm() {
   $strongarm->value = 1;
   $export['node_submitted_annvid'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'og_group_manager_default_rids_node_annvid';
+  $strongarm->value = array(
+    29 => '29',
+  );
+  $export['og_group_manager_default_rids_node_annvid'] = $strongarm;
+
   return $export;
 }
