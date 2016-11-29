@@ -2175,7 +2175,7 @@ function section_courses_og_membership_insert(OgMembership $og_membership) {
 }
 
 /**
- * add WYSIWYG Editor to Task Fields
+ * hook_form_alter
  *
  * @param string $form
  * @param type $form_state
@@ -2185,6 +2185,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
   /*
    * Task Node
    */
+    //add WYSIWYG Editor to Task Fields
   if ($form_id == 'courses_generic_task_node_form') {
 
     $field_items = &$form['field_generic_task_entry'][LANGUAGE_NONE];
@@ -2339,6 +2340,26 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
         //hat eintrag - verstecken
           $form['field_submitted_on']['#access'] = user_access('administer content');
         
+    }
+     
+    //Nachricht an Nutzer des Kurs verschicken oder E-Mail an eine Kursgruppe
+    if ($form_id == 'views_form_courses_admin_members_bl_2' && !empty($form['message']) || $form_id == 'views_form_courses_admin_groups_default' && !empty($form['message'])) {
+        $drupal_post = drupal_get_query_parameters($_POST);
+        $title_prefix = "";  
+        $active_course = _section_courses_get_active_course();
+        if(is_object($active_course))
+        {
+            $course_title = substr($active_course->title, 0, 30);
+            //bulk operation e-mail an kursgruppe schicken: veraendere title
+            if ($drupal_post['operation'] == 'action::og_group_send_email')
+                $title_prefix = t("Groupmessage") . ": ";
+
+            $courselink = l($course_title, 'node/' . $active_course->nid, array('absolute' => TRUE));
+            $course_text = "\n\n\n\n\n" . '[' . t("This message originates from !courselink", array("!courselink" => $courselink)) . " ]";
+
+            $form['subject']['#default_value'] = $title_prefix . $course_title . ": ";
+            $form['message']['#default_value'] = $course_text;
+        }
     }
 }
 

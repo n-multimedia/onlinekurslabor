@@ -46,6 +46,12 @@ msgstr "Änderungsdatum"
 msgid "@realname has full access to the coursegroups. Person wasn't added."
 msgstr "@realname hat Vollzugriff auf die Kursgruppen. Person nicht hinzugefügt."
 
+msgid "Groupmessage"
+msgstr "Gruppennachricht"
+
+msgid "This message originates from !courselink"
+msgstr "Diese Nachricht wurde über !courselink verschickt"
+
 msgid ""
 msgstr ""
 
