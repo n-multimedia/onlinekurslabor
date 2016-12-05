@@ -559,6 +559,7 @@ function _videosafe_get_root_directory() {
 /**
  * sends content to the user's browser using the http-range-info
  * THANKS https://gist.github.com/benvium/3749316
+ * bäm oida thanks a lot http://www.tuxxin.com/php-mp4-streaming/ now works on iphone
  * @param string $location  path of the file on server's filesystem
  * @return void
  */
@@ -570,36 +571,24 @@ function _videosafe_downloadRange($location) {
     $log_debug = false;
     $DEBUG_INFO = array();
     $DEBUG_INFO[] = '___________REQUEST______________';
-    $DEBUG_INFO[] = 'browser ' . $_SERVER['HTTP_USER_AGENT'] . ' with http-range ' . @ $_SERVER['HTTP_RANGE'];
+    $DEBUG_INFO[] = 'browser ' . @ $_SERVER['HTTP_USER_AGENT'] . ' with the http-range ' . @ $_SERVER['HTTP_RANGE']?:'none.';
     $DEBUG_INFO[] = '___________ANSWER______________';
     if (!file_exists($location)) {
         header("HTTP/1.1 404 Not Found");
         return;
     }
-
-    $filesize = filesize($location);
-    $filemtime = date('r', filemtime($location));
-    $filename = basename($location);
-
+    
     $fm = @fopen($location, 'rb');
     if (!$fm) {
         header("HTTP/1.1 505 Internal server error");
         return;
     }
-
-    $begin = 0;
-    $end = $filesize - 1;
-
-    if (isset($_SERVER['HTTP_RANGE'])) {
-        if (preg_match('/bytes=\h*(\d+)-(\d*)[\D.*]?/i', $_SERVER['HTTP_RANGE'], $matches)) {
-            $begin = intval($matches[1]);
-            if (!empty($matches[2])) {
-                $end = intval($matches[2]);
-            }
-        }
-    }
-    //max ca.10 mb auf einmal - Probleme mit Ipad, IE11
-    # $end = min($end, $begin + 10000000 );
+    $size = filesize($location); // File size
+    $length = $size; // Content length
+    $start = 0; // Start byte
+    $end = $size - 1; // End byte
+    //content type already set in access-module
+    //header('Content-type: video/mp4');
     if (isset($_SERVER['HTTP_RANGE'])) {
         header('HTTP/1.1 206 Partial Content');
         $DEBUG_INFO[] = ' 206 Partial Content';
@@ -608,70 +597,84 @@ function _videosafe_downloadRange($location) {
         $DEBUG_INFO[] = ' HTTP/1.1 200 OK';
     }
 
-    /* header('Cache-Control: public, must-revalidate, max-age=0');
-      header('Pragma: no-cache'); */
-    header('Accept-Ranges: bytes');
-    header('Content-Length:' . (($end - $begin) + 1));
-    if ($videolength = _videosafe_get_videoduration_for_file($location)) {
+    header("Accept-Ranges: bytes");
+    if (isset($_SERVER['HTTP_RANGE'])) {
+        $c_start = $start;
+        $c_end = $end;
+        list(, $range) = explode('=', $_SERVER['HTTP_RANGE'], 2);
+        if (strpos($range, ',') !== false) {
+            header('HTTP/1.1 416 Requested Range Not Satisfiable');
+            header("Content-Range: bytes $start-$end/$size");
+            exit;
+        }
+
+        if ($range == '-') {
+            $c_start = $size - substr($range, 1);
+        } else {
+            $range = explode('-', $range);
+            $c_start = $range[0];
+            $c_end = (isset($range[1]) && is_numeric($range[1])) ? $range[1] : $size;
+        }
+        $c_end = ($c_end > $end) ? $end : $c_end;
+
+        if ($c_start > $c_end || $c_start > $size - 1 || $c_end >= $size) {
+            header('HTTP/1.1 416 Requested Range Not Satisfiable');
+            header("Content-Range: bytes $start-$end/$size");
+            exit;
+        }
+        $start = $c_start;
+        $end = $c_end;
+        $length = $end - $start + 1;
+        fseek($fm, $start);
+        header('HTTP/1.1 206 Partial Content');
+         $DEBUG_INFO[] = "Content-Range: bytes $start-$end/$length";
+    }
+     if ($videolength = _videosafe_get_videoduration_for_file($location)) {
         header('X-Content-Duration: ' . $videolength);
         header('Content-Duration: ' . $videolength);
         $DEBUG_INFO[] = 'Calculated Videolength ' . $videolength;
     }
 
-    $DEBUG_INFO[] = 'Content-Length:' . (($end - $begin) + 1);
+    $DEBUG_INFO[] = 'Content-Length:' . (($end - $start) + 1);
 
-    if (isset($_SERVER['HTTP_RANGE'])) {
-        header("Content-Range: bytes $begin-$end/$filesize");
-        $DEBUG_INFO[] = "Content-Range: bytes $begin-$end/$filesize";
-    }
-    header("Content-Disposition: inline; filename=$filename");
-    header("Content-Transfer-Encoding: binary");
-    header("Last-Modified: $filemtime");
-    header('Connection: close');
-    /* header('Keep-Alive: timeout=2, max=100');
-      header('Connection: Keep-Alive'); */
 
-    /*forcing http-range by sending 0 bytes in range*/
-     if (!isset($_SERVER['HTTP_RANGE'])) {
-        $DEBUG_INFO[] = "Forcing http-range is on";
-        header("Content-Range: bytes 0-0/$filesize");
-        header('Content-Length: ' . $filesize);
-        header('Connection: close');
-        $DEBUG_INFO[] = "Content-Range: bytes 0-0/$filesize ; Content-Length: ' . $filesize";
-    }
-    $cur = $begin;
-    fseek($fm, $begin, 0);
-    //just some random value.
-    //$breakposition das laedt er maximal wenn die http-range nicht gesetzt ist
+    header("Content-Range: bytes $start-$end/$size");
+    header("Content-Length: " . $length);
+    //breakposition: download von video-files bricht ab (ca. 2,5mb). HTML5-Player fordern bei erreichen neue Daten an. 
     $breakposition = 2405290;
-    //probleme mit chrome mobil - schutz aushebeln
-    $breakposition = 0;
-    if ($log_debug)
+    //to disable breakposition set to zero
+    //$breakposition = 0;
+    $buffer = 1024 * 8;
+      if ($log_debug)
         watchdog('videosafe-file-stream', "debug-info for file " . $filename . "\n" . implode(" |||\n ", $DEBUG_INFO), array(), WATCHDOG_DEBUG);
-    while (!feof($fm) && $cur <= $end && (connection_status() == 0)) {
-        //breakposition funzioniert nicht mit mobile chrome. vielleicht findet sich noch was... DL-Schutz ist nun ausgehebelt.
-        if (@!$breakposition || $cur <= $breakposition || isset($_SERVER['HTTP_RANGE'])) {
-            print fread($fm, min(1024 * 16, ($end - $cur) + 1));
-            flush(); // Free up memory. Otherwise large files will trigger PHP's memory limit.
-            $cur += 1024 * 16;
+    
+    while (!feof($fm) && ($p = ftell($fm)) <= $end) {
+        if ($p + $buffer > $end) {
+            $buffer = $end - $p + 1;
+        }
+        //falls kein html-5-player sondern normaler filedownload, transfer canceln. Nur minimal-Schutz, aber besser als nix
+        if (@!$breakposition || $p <= $breakposition || isset($_SERVER['HTTP_RANGE'])) {
+            set_time_limit(0);
+            echo fread($fm, $buffer);
+            flush();  // Free up memory. Otherwise large files will trigger PHP's memory limit
         } else {
             if ($log_debug)
                 watchdog('videosafe-file-stream', "exiting due to no-http-range and break hit", array(), WATCHDOG_DEBUG);
             fclose($fm);
             /* bewirkt folgendes: An gewisser Stelle (o.g. breakposition) bricht der Transfer ab.
-              HTML5-Player hat nun einen Schnipsel und fordert erneut Daten an. Diesmal aber mit range-Parameter, da er vom
-              Server ja gesagt bekommen hat, dass das auch geht.
-             * tut nicht auf android chrome */
+              HTML5-Player hat nun einen Schnipsel und fordert erneut Daten an.
+              Download bricht aber einfach ab, ohne die Datei zu speichern. */
             exit;
         }
     }
     fclose($fm);
+    // remove flush if problems
     flush(); // Free up memory. Otherwise large files will trigger PHP's memory limit.
     exit;
 }
 
 /**
- * liefert die länge eines videos, falls  php5-ffmpeg vorhanden ist
+ * liefert die länge eines videos, falls ffmpeg oder php5-ffmpeg vorhanden ist
  * @param string $location  path of the file on server's filesystem
  * @return float $duration
  */
