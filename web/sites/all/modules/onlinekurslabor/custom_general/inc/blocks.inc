@@ -124,7 +124,7 @@ function _custom_general_get_top_nav_element($identifier, $unread_count = 0) {
             'title' => t('Help'),
             'path' => 'help')
     );
-    $nav_tpl = '<li><a href="/%s" title="%s" class="top_nav_link tooltip-top-navi"    ><span class="%s"></span> %s<span class="visible-xs-inline nav_description_xs">%s</span></li>';
+    $nav_tpl = '<li><a href="/%s" title="%s" class="top_nav_link tooltip-top-navi"    ><span class="%s"></span> %s<span class="visible-xs-inline nav_description_xs">%s</span></a></li>';
     $badge_tpl = '<span class="badge progress-bar-warning">%s</span>';
     $badge = "";
     if ($unread_count > 0)

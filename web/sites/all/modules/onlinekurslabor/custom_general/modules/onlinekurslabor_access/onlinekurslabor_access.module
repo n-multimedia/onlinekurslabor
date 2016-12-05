@@ -394,6 +394,15 @@ function onlinekurslabor_access_file_download_access($file_item, $entity_type, $
 
 /**
  * Implements hook_file_download().
+ * notice: 
+ * http://stackoverflow.com/questions/19215098/html5-video-audio-player-on-mobile-safari-ios-7-ios-10-excludes-cookies
+ * http://stackoverflow.com/questions/39636103/video-requiring-asp-net-authentication-not-working-on-ios-10
+ * IOS 10 (safari, chrome) unterstuetzt keine Videos mit Sessioncookies.
+ * beispielhafter Test: https://www.bizify.me/test-if-your-ios-device-is-broken/
+ * https://moodle.org/mod/forum/discuss.php?d=340465
+ * 
+ * 403-Workaround funktioniert nur einmalig, macht Springen kaputt
+ * 
  */
 function onlinekurslabor_access_file_download($uri) {
     #    drupal_set_message("access" . $uri); return -1;
