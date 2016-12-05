@@ -168,8 +168,8 @@ function bootstrap_onlinekurslabor_panels_flexible($vars) {
 
   //needed for course text section
   //span3span8span1 layout contains a row wich is used to display admin tools
-  //normal users do'n have to see it,so it gets hided here
-  //in case we don't need the last 1-span row, we swtich from span3span8span1 tp span4span8 layout
+  //normal users don't have to see it, so it gets hidden here
+  //in case we don't need the last 1-span row, we swtich from span3span8span1 to span4span8 layout
   //dpm($content);
   //3-8-1 Layouts wich need to be switched
   if ((!section_courses_instructors_tools_access() && !section_content_authors_tools_access()) && $layout['name'] == 'flexible:span3span8span1') {

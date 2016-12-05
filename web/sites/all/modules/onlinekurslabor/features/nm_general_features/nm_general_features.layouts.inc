@@ -573,7 +573,7 @@ function nm_general_features_default_panels_layout() {
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'span9',
+        'class' => 'col-md-9 col-xs-12',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -599,7 +599,7 @@ function nm_general_features_default_panels_layout() {
         'children' => array(
           0 => 2,
         ),
-        'class' => 'span3',
+        'class' => 'col-md-3 col-xs-12',
       ),
       2 => array(
         'type' => 'row',
@@ -658,7 +658,7 @@ function nm_general_features_default_panels_layout() {
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'col-md-8',
+        'class' => 'col-md-8 col-xs-12',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -684,7 +684,7 @@ function nm_general_features_default_panels_layout() {
         'children' => array(
           0 => 2,
         ),
-        'class' => 'col-md-4',
+        'class' => 'col-md-4 col-xs-12',
       ),
       2 => array(
         'type' => 'row',
