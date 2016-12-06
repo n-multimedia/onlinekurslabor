@@ -20,10 +20,10 @@ body.dev #page_top_navigation li a.top_nav_link:hover
 body.dev #page_top_navigation  a.navbar-brand img{
     transform: rotate(180deg);
 }
-
+/*rotes fullscreen overlay*/
 div.dev_overlay
 {
-    position:absolute;
+    position:fixed;
     top:0px;
     z-index:9999;
     background: red;
@@ -32,6 +32,7 @@ div.dev_overlay
     width:100%;
     height:100%;
 }
+/*fullscreen overlay: abstand text zu rand*/
 div.dev_overlay .dev_overlay_inner
 {
    width:50%;
@@ -40,6 +41,7 @@ div.dev_overlay .dev_overlay_inner
    margin: auto;
    margin-top: 10%;
 }
+/*fullscreen overlay ignorieren-button*/
 a#goto_dev
 {
     font-weight:normal;
