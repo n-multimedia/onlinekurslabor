@@ -188,7 +188,8 @@ function user_modify_course_membership_state_form($context) {
   $form['state'] = array(
     '#title' => t('State'),
     '#type' => 'select',
-    '#options' => array_merge(og_group_content_states(), array('delete' => t('Remove from course'))),
+    //array_merge reindexes and thus killed the key
+    '#options' => og_group_content_states() + array('delete' => t('Remove from course')),
     '#default_value' => OG_STATE_ACTIVE,
     '#description' => t('Choose the state to set for the selected users in the group.'),
   );
@@ -436,6 +437,13 @@ function user_assign_course_role(&$entity, $context = array()) {
 
   $course_nid = $context['course_nid'];
   $og_membership = og_get_membership('node', $course_nid, 'user', $entity->uid);
+  
+  //kursrolle nur auf ACTIVE MEMBERS anwenden
+  if($og_membership->state != OG_STATE_ACTIVE )
+  { 
+      drupal_set_message(t('You must set %user to "active" first. Role(s) not applied.', array("%user"=> $entity->name)), 'error');
+      return false;
+  }
 
   //check if we shall delete roles before
   if ($context['remove_roles']) {

@@ -52,6 +52,15 @@ msgstr "Gruppennachricht"
 msgid "This message originates from !courselink"
 msgstr "Diese Nachricht wurde über !courselink verschickt"
 
+msgid "Request message"
+msgstr "Beitrittsanfrage"
+
+msgid 'You must set %user to "active" first. Role(s) not applied.'
+msgstr 'Sie müssen %user erst auf "aktiv" setzen. Rolle(n) nicht zugewiesen.'
+
+msgid ""
+msgstr ""
+
 msgid ""
 msgstr ""
 
