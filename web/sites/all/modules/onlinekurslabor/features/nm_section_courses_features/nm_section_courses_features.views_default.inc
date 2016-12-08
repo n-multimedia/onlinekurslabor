@@ -3040,7 +3040,10 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     'field_generic_task' => 'field_generic_task',
     'name' => 'name',
     'state' => 'state',
-    'field_submitted_on' => 'field_submitted_on',
+    'gid_1' => 'gid_1',
+    'nid' => 'nid',
+    'php' => 'php',
+    'php_1' => 'php_1',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -3079,12 +3082,31 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_submitted_on' => array(
+    'gid_1' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
+    ),
+    'nid' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php_1' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 1,
     ),
   );
   /* Footer: Global: Result summary */
@@ -3115,6 +3137,13 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['relationships']['og_users_roles']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_users_roles']['field'] = 'og_users_roles';
   $handler->display->display_options['relationships']['og_users_roles']['relationship'] = 'uid';
+  /* Relationship: aufgabe zu dieser loesung */
+  $handler->display->display_options['relationships']['field_generic_task_target_id']['id'] = 'field_generic_task_target_id';
+  $handler->display->display_options['relationships']['field_generic_task_target_id']['table'] = 'field_data_field_generic_task';
+  $handler->display->display_options['relationships']['field_generic_task_target_id']['field'] = 'field_generic_task_target_id';
+  $handler->display->display_options['relationships']['field_generic_task_target_id']['ui_name'] = 'aufgabe zu dieser loesung';
+  $handler->display->display_options['relationships']['field_generic_task_target_id']['label'] = 'aufgabe zu dieser loesung';
+  $handler->display->display_options['relationships']['field_generic_task_target_id']['required'] = TRUE;
   /* Field: kurs-id */
   $handler->display->display_options['fields']['gid']['id'] = 'gid';
   $handler->display->display_options['fields']['gid']['table'] = 'og_membership';
@@ -3169,6 +3198,39 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['gid_1']['label'] = '';
   $handler->display->display_options['fields']['gid_1']['exclude'] = TRUE;
   $handler->display->display_options['fields']['gid_1']['element_label_colon'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['relationship'] = 'field_generic_task_target_id';
+  $handler->display->display_options['fields']['nid']['label'] = 'aufgaben-nid';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['label'] = 'Task-Type (Aufgabentyp)';
+  $handler->display->display_options['fields']['php']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_value'] = '$task_obj = node_load($data->node_field_data_field_generic_task_nid);
+return   $task_obj->field_task_type[LANGUAGE_NONE][0][\'value\'];';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
+  $handler->display->display_options['fields']['php_1']['table'] = 'views';
+  $handler->display->display_options['fields']['php_1']['field'] = 'php';
+  $handler->display->display_options['fields']['php_1']['label'] = 'Kursgruppe';
+  $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_1']['php_value'] = '/*frage nicht. ueber dpm($data) hab ich nur schrott erhalten.*/
+/*gib nur aus, falls gruppenaufgabe*/
+$task_type  = $data->views_php_7;
+
+return   ($task_type == NM_COURSES_TASK_TYPE_GROUP )? _section_courses_get_coursegroup_gid($row->uid, node_load($row->gid)): false;
+';
+  $handler->display->display_options['fields']['php_1']['php_output'] = '<?php  echo $value ?  node_load($value)->title:\'\';?>';
+  $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '3';
+  $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
   /* Sort criterion: Content: eingereicht am (field_submitted_on) */
   $handler->display->display_options['sorts']['field_submitted_on_value']['id'] = 'field_submitted_on_value';
   $handler->display->display_options['sorts']['field_submitted_on_value']['table'] = 'field_data_field_submitted_on';
@@ -3286,10 +3348,14 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('author'),
     t('OG membership from node'),
     t('OG Roles from OG membership'),
+    t('aufgabe zu dieser loesung'),
     t('.'),
     t('[field_generic_task-target_id]'),
     t('Status'),
     t(','),
+    t('aufgaben-nid'),
+    t('Task-Type (Aufgabentyp)'),
+    t('Kursgruppe'),
     t('Alle'),
     t('Role Name'),
     t('Content pane'),
