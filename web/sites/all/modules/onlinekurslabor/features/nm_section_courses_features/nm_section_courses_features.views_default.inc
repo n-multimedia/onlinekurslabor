@@ -3110,11 +3110,17 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['required'] = TRUE;
-  /* Field: OG membership: Group ID */
+  /* Relationship: OG membership: OG Roles from membership */
+  $handler->display->display_options['relationships']['og_users_roles']['id'] = 'og_users_roles';
+  $handler->display->display_options['relationships']['og_users_roles']['table'] = 'og_membership';
+  $handler->display->display_options['relationships']['og_users_roles']['field'] = 'og_users_roles';
+  $handler->display->display_options['relationships']['og_users_roles']['relationship'] = 'uid';
+  /* Field: kurs-id */
   $handler->display->display_options['fields']['gid']['id'] = 'gid';
   $handler->display->display_options['fields']['gid']['table'] = 'og_membership';
   $handler->display->display_options['fields']['gid']['field'] = 'gid';
   $handler->display->display_options['fields']['gid']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['fields']['gid']['ui_name'] = 'kurs-id';
   $handler->display->display_options['fields']['gid']['label'] = '';
   $handler->display->display_options['fields']['gid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['gid']['element_label_colon'] = FALSE;
@@ -3154,6 +3160,15 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['state']['table'] = 'workflow_states';
   $handler->display->display_options['fields']['state']['field'] = 'state';
   $handler->display->display_options['fields']['state']['label'] = 'Status';
+  /* Field: group ids of users-memberships */
+  $handler->display->display_options['fields']['gid_1']['id'] = 'gid_1';
+  $handler->display->display_options['fields']['gid_1']['table'] = 'og_membership';
+  $handler->display->display_options['fields']['gid_1']['field'] = 'gid';
+  $handler->display->display_options['fields']['gid_1']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['gid_1']['ui_name'] = 'group ids of users-memberships';
+  $handler->display->display_options['fields']['gid_1']['label'] = '';
+  $handler->display->display_options['fields']['gid_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['gid_1']['element_label_colon'] = FALSE;
   /* Sort criterion: Content: eingereicht am (field_submitted_on) */
   $handler->display->display_options['sorts']['field_submitted_on_value']['id'] = 'field_submitted_on_value';
   $handler->display->display_options['sorts']['field_submitted_on_value']['table'] = 'field_data_field_submitted_on';
@@ -3197,14 +3212,37 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['filters']['type']['value'] = array(
     'courses_generic_task_solution' => 'courses_generic_task_solution',
   );
-  /* Filter criterion: User: Roles */
-  $handler->display->display_options['filters']['rid']['id'] = 'rid';
-  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
-  $handler->display->display_options['filters']['rid']['field'] = 'rid';
-  $handler->display->display_options['filters']['rid']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['rid']['value'] = array(
-    66784200 => '66784200',
+  /* Filter criterion: OG user roles: Role Name */
+  $handler->display->display_options['filters']['name']['id'] = 'name';
+  $handler->display->display_options['filters']['name']['table'] = 'og_role';
+  $handler->display->display_options['filters']['name']['field'] = 'name';
+  $handler->display->display_options['filters']['name']['relationship'] = 'og_users_roles';
+  $handler->display->display_options['filters']['name']['value'] = array(
+    'kurs-student' => 'kurs-student',
   );
+  $handler->display->display_options['filters']['name']['expose']['operator_id'] = 'name_op';
+  $handler->display->display_options['filters']['name']['expose']['label'] = 'Role Name';
+  $handler->display->display_options['filters']['name']['expose']['operator'] = 'name_op';
+  $handler->display->display_options['filters']['name']['expose']['identifier'] = 'name';
+  $handler->display->display_options['filters']['name']['expose']['remember_roles'] = array(
+    2 => 0,
+    30037204 => 0,
+    1 => 0,
+    197637936 => 0,
+    16675960 => 0,
+    106505419 => 0,
+    126456107 => 0,
+    66784200 => 0,
+    24708420 => 0,
+    140204299 => 0,
+  );
+  /* Filter criterion: compare: group-id of loesung = users membership in course GID */
+  $handler->display->display_options['filters']['fields_compare']['id'] = 'fields_compare';
+  $handler->display->display_options['filters']['fields_compare']['table'] = 'views';
+  $handler->display->display_options['filters']['fields_compare']['field'] = 'fields_compare';
+  $handler->display->display_options['filters']['fields_compare']['ui_name'] = 'compare: group-id of loesung = users membership in course GID';
+  $handler->display->display_options['filters']['fields_compare']['right_field'] = 'gid_1';
+  $handler->display->display_options['filters']['fields_compare']['left_field'] = 'gid';
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
@@ -3247,10 +3285,13 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
 <hr>'),
     t('author'),
     t('OG membership from node'),
+    t('OG Roles from OG membership'),
     t('.'),
     t('[field_generic_task-target_id]'),
     t('Status'),
+    t(','),
     t('Alle'),
+    t('Role Name'),
     t('Content pane'),
     t('View panes'),
   );
