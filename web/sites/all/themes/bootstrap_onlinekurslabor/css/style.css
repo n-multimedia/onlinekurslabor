@@ -758,6 +758,10 @@ Footer
 .footer .container, .footer_powered_by_wrapper{
     position:relative;
 }
+
+.footer_powered_by_wrapper .menu.nav-list {
+    position:relative !important;
+}
 /*
 powered by
 */

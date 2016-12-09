@@ -88,10 +88,10 @@
 <footer class="footer container">
   <div class="footer_powered_by_wrapper row">
     <div id="footer_regions_container col-md-12">
-      <div class="col-md-4 footer_region_left">
+      <div class="col-md-4 col-xs-12 footer_region_left">
          <?php print render($page['footer_region_left']); ?>
       </div>
-      <div class="col-md-8 footer_region_right">
+      <div class="col-md-8 col-xs-12 footer_region_right">
         <?php print render($page['footer_region_right']); ?>
         <a href="http://ml.phil.uni-augsburg.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_ml.png" /></a>
       </div>
