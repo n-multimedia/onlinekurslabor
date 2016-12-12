@@ -419,7 +419,7 @@ div.forum-post {
     float: right;
     line-height: 2em;
     text-align: right;
-    margin: 10px 0 5px 5px;
+    margin: 5px 0 5px 5px;
 }
 
 .forum-post-links ul.links li {
@@ -504,6 +504,13 @@ table.forum-table-okl {
 .forum-table-okl .forum-row a{
     color: #0088cc;
     font-weight: bold;
+}
+.forum-table-okl .forum-row a.username, div#forum-topic-list a.username {
+    font-weight: normal;
+}
+div.forum-post-panel-sub, div.forum-post-footer, div.author-pane a.author-pane-link, span.forum-post-number
+{
+    font-size: 12px;
 }
 
 
@@ -614,6 +621,15 @@ posts
 
 .forum-post .post-edited {
     padding:10px;
+}
+
+.forum-post + form.comment-form{
+    margin:auto;
+    margin-top:40px;
+    width:80%;
+    padding:10px;
+    border:1px solid #EEEEEE;
+    
 }
 
 
