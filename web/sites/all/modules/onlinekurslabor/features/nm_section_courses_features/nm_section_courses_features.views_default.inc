@@ -1714,8 +1714,9 @@ function nm_section_courses_features_views_default_views() {
     'title' => 'title',
     'body' => 'body',
     'created' => 'created',
+    'changed' => 'changed',
   );
-  $handler->display->display_options['style_options']['default'] = 'created';
+  $handler->display->display_options['style_options']['default'] = 'changed';
   $handler->display->display_options['style_options']['info'] = array(
     'nid_1' => array(
       'sortable' => 0,
@@ -1749,6 +1750,13 @@ function nm_section_courses_features_views_default_views() {
       'empty_column' => 0,
     ),
     'created' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'changed' => array(
       'sortable' => 1,
       'default_sort_order' => 'desc',
       'align' => '',
@@ -1829,8 +1837,16 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['label'] = 'Datum';
+  $handler->display->display_options['fields']['created']['label'] = 'erstellt';
   $handler->display->display_options['fields']['created']['date_format'] = 'short';
+  $handler->display->display_options['fields']['created']['second_date_format'] = 'privatemsg_current_day';
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['label'] = 'geändert';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  $handler->display->display_options['fields']['changed']['second_date_format'] = 'privatemsg_current_day';
   /* Contextual filter: OG membership: Group ID */
   $handler->display->display_options['arguments']['gid']['id'] = 'gid';
   $handler->display->display_options['arguments']['gid']['table'] = 'og_membership';
@@ -1909,7 +1925,8 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('Typ'),
     t('Name'),
     t('Beschreibung'),
-    t('Datum'),
+    t('erstellt'),
+    t('geändert'),
     t('Alle'),
     t('Content pane'),
     t('View panes'),
