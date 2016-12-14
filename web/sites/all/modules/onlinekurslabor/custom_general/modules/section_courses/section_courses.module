@@ -1768,7 +1768,8 @@ function _section_courses_student_registration_import($input) {
             // Email Pattern
             preg_match( '/[a-zäöüÄÖßÜA-Z]+[a-zA-ZäöüÄßÖÜ0-9+\.\-_]*[@]{1}[a-zA-Z0-9äößüÄÖÜ\.\-+_]*[\.]{1}[\.a-zäöüÄÖßÜA-Z0-9]*/', $row, $email_matches);
             // Remove Email from Input, leaving only names
-            $names = trim($row, $email_matches[0]);
+            $name_without_mail = str_replace($email_matches[0], "", $row);
+            $names = trim($name_without_mail);
             // Cut Names @ whitespace
             //var_dump($row);
             $names                = explode(" ", $names);
