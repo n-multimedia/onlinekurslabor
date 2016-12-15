@@ -36,7 +36,7 @@ function nm_section_courses_features_default_rules_configuration() {
         { "mail" : {
             "to" : [ "account:mail" ],
             "subject" : "[site:name] - Abmeldung von [entity-course:title]",
-            "message" : "Hallo [account:name],\\r\\nDu hast dich aus dem Kurs \\u0022[entity-course:title]\\u0022 abgemeldet.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
+            "message" : "Hallo [account:name],\\r\\nSie sind nun aus dem Kurs \\u0022[entity-course:title]\\u0022 abgemeldet.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
             "language" : [ "account:language" ]
           }
         },
@@ -44,7 +44,7 @@ function nm_section_courses_features_default_rules_configuration() {
             "group" : [ "entity-course" ],
             "og_roles" : { "value" : { "kurs-dozent" : "kurs-dozent", "kurs-tutor" : "kurs-tutor" } },
             "subject" : "[entity-course:title] - Abmeldung - [account:name]",
-            "message" : "der Benutzer \\u0022[account:name]\\u0022 hat sich von dem Kurs \\u0022[entity-course:title]\\u0022 abgemeldet.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
+            "message" : "der Benutzer \\u0022[account:name]\\u0022 hat sich \\/ wurde von dem Kurs \\u0022[entity-course:title]\\u0022 abgemeldet.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
           }
         }
       ]
