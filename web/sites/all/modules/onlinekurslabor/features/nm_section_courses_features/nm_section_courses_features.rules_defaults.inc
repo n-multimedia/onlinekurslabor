@@ -84,7 +84,7 @@ function nm_section_courses_features_default_rules_configuration() {
             "group" : [ "entity-course" ],
             "og_roles" : { "value" : { "kurs-dozent" : "kurs-dozent", "kurs-tutor" : "kurs-tutor" } },
             "subject" : "[entity-course:title] - Abmeldung - [account:name]",
-            "message" : "der Benutzer \\u0022[account:name]\\u0022 hat sich \\/ wurde von dem Kurs \\u0022[entity-course:title]\\u0022 abgemeldet.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
+            "message" : "\\r\\n[account:name] hat sich \\/ wurde von dem Kurs \\u0022[entity-course:title]\\u0022 abgemeldet.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
           }
         }
       ]
@@ -252,7 +252,7 @@ function nm_section_courses_features_default_rules_configuration() {
         { "mail" : {
             "to" : [ "account:mail" ],
             "subject" : "[site:name] - Anmeldung f\\u00fcr [entity-course:title]",
-            "message" : "Hallo [account:name],\\r\\ndanke f\\u00fcr deine Anmeldung zu \\u0022[entity-course:title]\\u0022.\\r\\n\\r\\nMit diesem Link gelangst du direkt zum Kurs [entity-course:url].\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
+            "message" : "Hallo [account:name],\\r\\n\\r\\ndanke f\\u00fcr Ihre Anmeldung zu \\u0022[entity-course:title]\\u0022.\\r\\n\\r\\nDie Anfrage \\u0022[og-membership:og-membership-request]\\u0022 wurde zur \\u00dcberpr\\u00fcfung hinterlegt.\\r\\n\\r\\nLink zum Kurs: [entity-course:url].\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
             "language" : [ "account:language" ]
           }
         },
@@ -260,7 +260,7 @@ function nm_section_courses_features_default_rules_configuration() {
             "group" : [ "entity-course" ],
             "og_roles" : { "value" : { "kurs-dozent" : "kurs-dozent", "kurs-tutor" : "kurs-tutor" } },
             "subject" : "[entity-course:title] - Anmeldung - [account:name]",
-            "message" : "\\r\\nder Benutzer \\u0022[account:name]\\u0022 m\\u00f6chte am Kurs \\u0022[entity-course:title]\\u0022 mit der Anfrage \\u0022[og-membership:og-membership-request]\\u0022 teilnehmen.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
+            "message" : "\\r\\n[account:name] m\\u00f6chte am Kurs \\u0022[entity-course:title]\\u0022 mit der Anfrage \\u0022[og-membership:og-membership-request]\\u0022 teilnehmen.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
           }
         }
       ]
