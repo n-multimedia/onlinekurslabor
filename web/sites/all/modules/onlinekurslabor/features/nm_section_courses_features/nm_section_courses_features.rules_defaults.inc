@@ -9,6 +9,46 @@
  */
 function nm_section_courses_features_default_rules_configuration() {
   $items = array();
+  $items['nm_section_courses_features_courses_member_added'] = entity_import('rules_config', '{ "nm_section_courses_features_courses_member_added" : {
+      "LABEL" : "Courses Member Added",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "REQUIRES" : [ "rules", "og" ],
+      "ON" : { "og_user_insert" : [], "og_user_approved" : [] },
+      "IF" : [
+        { "AND" : [
+            { "entity_is_of_type" : { "entity" : [ "og-membership:group" ], "type" : "node" } },
+            { "node_is_of_type" : {
+                "node" : [ "og-membership:group" ],
+                "type" : { "value" : { "courses_course" : "courses_course" } }
+              }
+            },
+            { "user_has_role" : { "account" : [ "account" ], "roles" : { "value" : { "2" : "2" } } } },
+            { "og_user_in_group" : {
+                "account" : [ "account" ],
+                "group" : [ "og-membership:group" ],
+                "states" : { "value" : { "1" : "1" } }
+              }
+            }
+          ]
+        }
+      ],
+      "DO" : [
+        { "entity_fetch" : {
+            "USING" : { "type" : "node", "id" : [ "og-membership:group:nid" ] },
+            "PROVIDE" : { "entity_fetched" : { "entity_course" : "Fetched entity" } }
+          }
+        },
+        { "mail" : {
+            "to" : [ "account:mail" ],
+            "subject" : "[site:name] - Anmeldung f\\u00fcr [entity-course:title]",
+            "message" : "Hallo [account:name],\\r\\nSie sind nun im Kurs \\u0022[entity-course:title]\\u0022 eingetragen.\\r\\n\\r\\nLink zum Kurs: [entity-course:url].\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
+            "language" : [ "account:language" ]
+          }
+        }
+      ]
+    }
+  }');
   $items['nm_section_courses_features_courses_member_unsubscribe'] = entity_import('rules_config', '{ "nm_section_courses_features_courses_member_unsubscribe" : {
       "LABEL" : "Courses Member Unsubscribe",
       "PLUGIN" : "reaction rule",
