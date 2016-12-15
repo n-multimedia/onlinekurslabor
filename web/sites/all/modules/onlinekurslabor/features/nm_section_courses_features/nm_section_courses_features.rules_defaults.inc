@@ -42,9 +42,9 @@ function nm_section_courses_features_default_rules_configuration() {
         },
         { "mail_to_user_roles_in_group" : {
             "group" : [ "entity-course" ],
-            "roles" : { "value" : { "106505419" : "106505419", "126456107" : "126456107" } },
+            "og_roles" : { "value" : { "kurs-dozent" : "kurs-dozent", "kurs-tutor" : "kurs-tutor" } },
             "subject" : "[entity-course:title] - Abmeldung - [account:name]",
-            "message" : "\\r\\nder Benutzer \\u0022[account:name]\\u0022 hat sich von dem Kurs \\u0022[entity-course:title]\\u0022 abgemeldet.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
+            "message" : "der Benutzer \\u0022[account:name]\\u0022 hat sich von dem Kurs \\u0022[entity-course:title]\\u0022 abgemeldet.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
           }
         }
       ]
@@ -64,15 +64,14 @@ function nm_section_courses_features_default_rules_configuration() {
         },
         { "mail_to_user_roles_in_group" : {
             "group" : [ "course-fetched" ],
-            "roles" : { "value" : {
-                "106505419" : "106505419",
-                "126456107" : "126456107",
-                "66784200" : "66784200",
-                "24708420" : "24708420"
+            "og_roles" : { "value" : {
+                "kurs-dozent" : "kurs-dozent",
+                "kurs-tutor" : "kurs-tutor",
+                "kurs-student" : "kurs-student"
               }
             },
             "exlude_user" : [ "node:author:uid" ],
-            "subject" : "[course-fetched:title] -  Es gibt ein neues Thema im Forum",
+            "subject" : "[course-fetched:title] -  neues Thema im Forum",
             "message" : "\\r\\nes gibt ein neues Thema \\u0022[node:title]\\u0022 im Forum. \\r\\n\\r\\nLink zum Thema:\\r\\n[node:url]\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
           }
         }
@@ -172,7 +171,7 @@ function nm_section_courses_features_default_rules_configuration() {
         },
         { "mail_to_user_roles_in_group" : {
             "group" : [ "course-fetched" ],
-            "roles" : { "value" : { "106505419" : "106505419" } },
+            "og_roles" : { "value" : { "kurs-dozent" : "kurs-dozent", "kurs-tutor" : "kurs-tutor" } },
             "subject" : "[course-fetched:title] - [node:title] - wurde eingereicht",
             "message" : "eine L\\u00f6sung f\\u00fcr die Aufgabe \\u0022[node:title]\\u0022 wurde eingereicht. \\r\\n\\r\\nLink zur L\\u00f6sung:\\r\\n[node:url]\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
           }
@@ -184,7 +183,7 @@ function nm_section_courses_features_default_rules_configuration() {
       "LABEL" : "Courses Member Subscribe",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "REQUIRES" : [ "rules", "onlinekurslabor_rules", "og" ],
+      "REQUIRES" : [ "rules", "og", "onlinekurslabor_rules" ],
       "ON" : { "og_user_insert" : [] },
       "IF" : [
         { "AND" : [
@@ -194,7 +193,13 @@ function nm_section_courses_features_default_rules_configuration() {
                 "type" : { "value" : { "courses_course" : "courses_course" } }
               }
             },
-            { "user_has_role" : { "account" : [ "account" ], "roles" : { "value" : { "2" : "2" } } } }
+            { "user_has_role" : { "account" : [ "account" ], "roles" : { "value" : { "2" : "2" } } } },
+            { "og_user_in_group" : {
+                "account" : [ "account" ],
+                "group" : [ "og-membership:group" ],
+                "states" : { "value" : { "2" : "2" } }
+              }
+            }
           ]
         }
       ],
@@ -207,15 +212,15 @@ function nm_section_courses_features_default_rules_configuration() {
         { "mail" : {
             "to" : [ "account:mail" ],
             "subject" : "[site:name] - Anmeldung f\\u00fcr [entity-course:title]",
-            "message" : "Hallo [account:name],\\r\\ndanke f\\u00fcr deine Anmeldung. Du bist nun f\\u00fcr den Kurs \\u0022[entity-course:title]\\u0022 eingetragen.\\r\\n\\r\\nMit diesem Link gelangst du direkt zum Kurs [entity-course:url].\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
+            "message" : "Hallo [account:name],\\r\\ndanke f\\u00fcr deine Anmeldung zu \\u0022[entity-course:title]\\u0022.\\r\\n\\r\\nMit diesem Link gelangst du direkt zum Kurs [entity-course:url].\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
             "language" : [ "account:language" ]
           }
         },
         { "mail_to_user_roles_in_group" : {
             "group" : [ "entity-course" ],
-            "roles" : { "value" : { "106505419" : "106505419", "126456107" : "126456107" } },
+            "og_roles" : { "value" : { "kurs-dozent" : "kurs-dozent", "kurs-tutor" : "kurs-tutor" } },
             "subject" : "[entity-course:title] - Anmeldung - [account:name]",
-            "message" : "\\r\\nder Benutzer \\u0022[account:name]\\u0022 hat sich f\\u00fcr den Kurs \\u0022[entity-course:title]\\u0022 angemeldet.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
+            "message" : "\\r\\nder Benutzer \\u0022[account:name]\\u0022 m\\u00f6chte am Kurs \\u0022[entity-course:title]\\u0022 mit der Anfrage \\u0022[og-membership:og-membership-request]\\u0022 teilnehmen.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
           }
         }
       ]

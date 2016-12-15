@@ -2072,7 +2072,14 @@ function _section_courses_user_has_role_in_course($user_account, $course, $permi
     //requirements not met
     return false;
 }
-
+/**
+ * Liefert eine liste an Roles, die man innerhalb eines Kurses haben kann (derzeit stud, tutor, dozent)
+ * return array (rolename=>rolename))
+ */
+function _section_courses_get_default_course_roles()
+{ 
+    return array(NM_COURSES_ROLE_ADMINISTRATOR => NM_COURSES_ROLE_ADMINISTRATOR, NM_COURSES_ROLE_TUTOR => NM_COURSES_ROLE_TUTOR, NM_COURSES_ROLE_STUDENT => NM_COURSES_ROLE_STUDENT);
+}
 
 /**
  * checks if a user is dozent or tutor in a course.

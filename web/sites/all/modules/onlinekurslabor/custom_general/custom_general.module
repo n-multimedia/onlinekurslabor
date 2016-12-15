@@ -1376,3 +1376,13 @@ function _custom_general_get_max_weight_in_book_tree($tree) {
     return $high;
 }
 
+/**
+ * og hook_og_membership_insert
+ * used to clear cache of group a membership was inserted
+ * @param OgMembership $og_membership
+ */
+function custom_general_og_membership_insert(OgMembership $og_membership) {
+    //invalidate caches for affected group
+    if ($og_membership->gid)
+        og_invalidate_cache($og_membership->gid);
+}

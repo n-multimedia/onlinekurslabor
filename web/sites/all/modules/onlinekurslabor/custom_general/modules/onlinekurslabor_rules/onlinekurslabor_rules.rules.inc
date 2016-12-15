@@ -15,11 +15,14 @@ function onlinekurslabor_rules_rules_action_info() {
           'description' => t('The group where the members shoud be extracted from.'),
           'wrapped' => TRUE,
         ),
-        'roles' => array(
-          'type' => 'list<integer>',
-          'label' => t('Roles'),
-          'options list' => 'entity_metadata_user_roles',
-          'description' => t('Select the roles whose users should receive the mail.'),
+          
+        'og_roles' => array(
+          'type' => 'list<text>',
+          'label' => t('Select recipients\' roles'),
+          'restriction' => 'input',
+          'options list' => '_section_courses_get_default_course_roles',
+          'optional' => FALSE,
+          'description' => t('Select which role(s) the recipients must have in this group.'),
         ),
         'exlude_user' => array(
           'type' => 'integer',
@@ -53,8 +56,7 @@ function onlinekurslabor_rules_rules_action_info() {
 /**
  * Action: Send mail to all users of a specific role group(s).
  */
-function onlinekurslabor_rules_action_mail_to_user_roles_in_group(EntityDrupalWrapper $group, $roles, $exlude_user, $subject, $message, $from = NULL, $settings, RulesState $state, RulesPlugin $element) {
-
+function onlinekurslabor_rules_action_mail_to_user_roles_in_group(EntityDrupalWrapper $group, $og_roles,  $exlude_user, $subject, $message, $from = NULL, $settings, RulesState $state, RulesPlugin $element) {
   //get group members
   $res = custom_general_get_users_in_group($group->getIdentifier());
 
@@ -73,14 +75,13 @@ function onlinekurslabor_rules_action_mail_to_user_roles_in_group(EntityDrupalWr
 
     $account = user_load($member->uid);
 
-    $role_names = array_intersect_key(user_roles(TRUE), array_flip($roles));
-
-    //check role first
+     $role_names = array_intersect_key(_section_courses_get_default_course_roles(),$og_roles);
+    
+    //check og_role 
     //does the member have one of the selected roles?
-    if (!array_intersect($account->roles, $role_names)) {
-      continue;
+    if (!_section_courses_user_has_role_in_course($account, node_load($group->getIdentifier()), $role_names)) {
+        continue;
     }
-
     if ($account->status) {
 
       
@@ -111,7 +112,6 @@ function onlinekurslabor_rules_action_mail_to_user_roles_in_group(EntityDrupalWr
     }
   }
   if ($message['result']) {
-    $role_names = array_intersect_key(user_roles(TRUE), array_flip($roles));
-    watchdog('rules', 'Successfully sent email to the group members with role(s) %roles.', array('%roles' => implode(', ', $role_names)));
+    watchdog('rules', 'Sent email to the group members with role(s) %roles.', array('%roles' => implode(', ', $role_names)));
   }
 }
