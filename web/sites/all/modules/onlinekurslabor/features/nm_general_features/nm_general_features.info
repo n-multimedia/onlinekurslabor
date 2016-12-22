@@ -81,7 +81,6 @@ features[user_permission][] = access comments
 features[user_permission][] = access content overview
 features[user_permission][] = access contextual links
 features[user_permission][] = access dashboard
-features[user_permission][] = access overlay
 features[user_permission][] = access relations
 features[user_permission][] = access rules debug
 features[user_permission][] = access site in maintenance mode

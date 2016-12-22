@@ -76,15 +76,6 @@ function nm_general_features_user_default_permissions() {
     'module' => 'dashboard',
   );
 
-  // Exported permission: 'access overlay'.
-  $permissions['access overlay'] = array(
-    'name' => 'access overlay',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'overlay',
-  );
-
   // Exported permission: 'access relations'.
   $permissions['access relations'] = array(
     'name' => 'access relations',
