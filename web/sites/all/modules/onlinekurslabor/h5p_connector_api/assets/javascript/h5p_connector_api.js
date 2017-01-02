@@ -239,28 +239,26 @@
             //console.debug(this.getH5PVersion()+" <- vdersion -> state "+video_object.video.parent.currentState);
             //wenn video schon abspielt muss man keinen klick simulieren. sonst schon.
             //ab version 2 ist bei state >= 5 nichts mehr noetig
+            //moeglicih, dass versionen < 2 nun nicht mehr gehen
             if ((this.getH5PVersion() == 1.0) && !video_object.video.isPlaying()
                     || (this.getH5PVersion() > 1.0) && (video_object.video.parent.currentState > 1) && (video_object.video.parent.currentState < 5)) //1 == playing, 2 == pause 5 = nicht gestartet
             {
-                //aenderung: nimm wrapper-div mit dazu, passieren sonst seltsame sachen
-                //ist auf pause, auf play setzen (pause bedeutet, video ist pausiert, bei klick startets wieder)
-                setTimeout(function() {
-                    control_pause_objects = jQuery(".h5p-controls-left", video_object.$container).find(".h5p-pause");
-                    //wenn playing sonst undefined
-                    if (control_pause_objects.length === 1)
-                        control_pause_objects[0].click();
-                    //console.debug("trying to click control_pausobject of length" +control_pause_objects.length);
+                //Status: pause
+                if (video_object.video.parent.currentState == 2)
+                {
+                    //kurz anspielen, um laden anzustossen
+                    setTimeout(function() {
+                        video_object.play();
+                    }, click_delay);
+                    
+                    //danach wieder pause und per api neuen timestamp einpflegen
+                    setTimeout(function() {
+                        video_object.pause();
+                        video_object.timeUpdate(timestamp);
+                    }, click_delay * 2);
 
-                }, click_delay);
-                //und wieder auf pause (viceversa))
-                setTimeout(function() {
-                    //ist NICHT pausiert, dann auf Pause drücken
-                    if (control_pause_objects.length === 1)
-                    {   //verwende api wg browser-delays
-                        video_object.video.pause();
-                    }
-                    // doppelt seeken bedeutet seltsames verhalten video_object.video.seek(timestamp);
-                }, click_delay*2);
+                }
+
             }
 
         },
