@@ -245,8 +245,10 @@
                 //aenderung: nimm wrapper-div mit dazu, passieren sonst seltsame sachen
                 //ist auf pause, auf play setzen (pause bedeutet, video ist pausiert, bei klick startets wieder)
                 setTimeout(function() {
-                    control_pause_objects = jQuery(".h5p-controls-left",video_object.$container).find(".h5p-pause");
-                    control_pause_objects[0].click();
+                    control_pause_objects = jQuery(".h5p-controls-left", video_object.$container).find(".h5p-pause");
+                    //wenn playing sonst undefined
+                    if (control_pause_objects.length === 1)
+                        control_pause_objects[0].click();
                     //console.debug("trying to click control_pausobject of length" +control_pause_objects.length);
 
                 }, click_delay);
