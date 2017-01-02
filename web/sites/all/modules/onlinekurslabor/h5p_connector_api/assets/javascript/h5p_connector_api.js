@@ -232,29 +232,33 @@
         /*springt im video zum angegeben computer-timestamp, bspw. 77*/
         goTo: function(timestamp)
         {
-            //  console.debug(H5P.instances[0]);
             var video_object = this.getH5P();
             var click_delay = 100;
+            var control_pause_objects = null;
             video_object.video.seek(timestamp);
-
+            //console.debug(this.getH5PVersion()+" <- vdersion -> state "+video_object.video.parent.currentState);
             //wenn video schon abspielt muss man keinen klick simulieren. sonst schon.
+            //ab version 2 ist bei state >= 5 nichts mehr noetig
             if ((this.getH5PVersion() == 1.0) && !video_object.video.isPlaying()
-                    || (this.getH5PVersion() > 1.0) && (video_object.video.parent.currentState > 1)) //1 == playing, 2 == pause 5 = nicht gestartet
+                    || (this.getH5PVersion() > 1.0) && (video_object.video.parent.currentState > 1) && (video_object.video.parent.currentState < 5)) //1 == playing, 2 == pause 5 = nicht gestartet
             {
+                //aenderung: nimm wrapper-div mit dazu, passieren sonst seltsame sachen
                 //ist auf pause, auf play setzen (pause bedeutet, video ist pausiert, bei klick startets wieder)
                 setTimeout(function() {
-                    jQuery(video_object.$container).find(".h5p-pause")[0].click();
+                    control_pause_objects = jQuery(".h5p-controls-left",video_object.$container).find(".h5p-pause");
+                    control_pause_objects[0].click();
+                    //console.debug("trying to click control_pausobject of length" +control_pause_objects.length);
 
                 }, click_delay);
                 //und wieder auf pause (viceversa))
                 setTimeout(function() {
                     //ist NICHT pausiert, dann auf Pause drücken
-                    if (jQuery(video_object.$container).find(".h5p-pause").length == 0)
-                    {
-                        jQuery(video_object.$container).find(".h5p-play")[0].click();
+                    if (control_pause_objects.length === 1)
+                    {   //verwende api wg browser-delays
+                        video_object.video.pause();
                     }
-                    video_object.video.seek(timestamp);
-                }, click_delay * 2);
+                    // doppelt seeken bedeutet seltsames verhalten video_object.video.seek(timestamp);
+                }, click_delay*2);
             }
 
         },
@@ -319,23 +323,33 @@
     }
 }(jQuery));
 
+/* obsolet, da hashchange zu ruckelig
 jQuery(window).on('hashchange', function(e) {
     //nach umleitung auf hash: entsprechende befehle durchführen
   //  Drupal.behaviors.h5p_connector_api.event.processHash();
 });
+*/
 
-/*verlinkt man auf ein video und ein hash ist in der adresszeile soll der beim seiteladen ausgefuehrt werden*/
 jQuery(document).ready(function() {
-
+    /*blende zunächst ladeanimation ein*/
     Drupal.behaviors.h5p_connector_api.onH5Pready(function() {
         Drupal.behaviors.h5p_connector_api.interactivevideo.showLoadingAnimation();
     });
 
+    /*verlinkt man auf ein video und ein hash ist in der adresszeile soll der beim seiteladen ausgefuehrt werden*/
     Drupal.behaviors.h5p_connector_api.interactivevideo.onVideoReady(function() {
         Drupal.behaviors.h5p_connector_api.event.processHash();
         Drupal.behaviors.h5p_connector_api.interactivevideo.removeLoadingAnimation();
+        Drupal.behaviors.h5p_connector_api.interactivevideo.startVideotimeListener();
     });
     // FF mobil und sonstige Fälle in denen Video nicht auto-geladen wird
     setTimeout( Drupal.behaviors.h5p_connector_api.interactivevideo.removeLoadingAnimation, 10000);
+    
+    //event: videotimechanged: setze neuen hash in adresszeile
+    jQuery(document).on("videotimechanged", function(e){ 
+              Drupal.behaviors.h5p_connector_api.event.redirect("video."+e.message);
+                //console.log('new time!' + e.message);
+    });
 
 });
+
