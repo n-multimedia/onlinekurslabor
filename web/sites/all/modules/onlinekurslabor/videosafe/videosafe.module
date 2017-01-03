@@ -570,8 +570,12 @@ function _videosafe_downloadRange($location) {
     //debugsachen
     $log_debug = false;
     $DEBUG_INFO = array();
+    $SERVER_HTTP_RANGE = @ $_SERVER['HTTP_RANGE'];
+    //IE, Edge: force using byterange by finding parameter HTTP_GETCONTENTFEATURES_DLNA_ORG
+    if(!$SERVER_HTTP_RANGE && @$_SERVER['HTTP_GETCONTENTFEATURES_DLNA_ORG']=='1')
+        $SERVER_HTTP_RANGE = "bytes=0-";
     $DEBUG_INFO[] = '___________REQUEST______________';
-    $DEBUG_INFO[] = 'browser ' . @ $_SERVER['HTTP_USER_AGENT'] . ' with the http-range ' . @ $_SERVER['HTTP_RANGE']?:'none.';
+    $DEBUG_INFO[] = 'browser ' . @ $_SERVER['HTTP_USER_AGENT'] . ' with the http-range ' .$SERVER_HTTP_RANGE ?:'none.';
     $DEBUG_INFO[] = '___________ANSWER______________';
     if (!file_exists($location)) {
         header("HTTP/1.1 404 Not Found");
@@ -589,7 +593,7 @@ function _videosafe_downloadRange($location) {
     $end = $size - 1; // End byte
     //content type already set in access-module
     //header('Content-type: video/mp4');
-    if (isset($_SERVER['HTTP_RANGE'])) {
+    if ($SERVER_HTTP_RANGE) {
         header('HTTP/1.1 206 Partial Content');
         $DEBUG_INFO[] = ' 206 Partial Content';
     } else {
@@ -598,10 +602,10 @@ function _videosafe_downloadRange($location) {
     }
 
     header("Accept-Ranges: bytes");
-    if (isset($_SERVER['HTTP_RANGE'])) {
+    if ($SERVER_HTTP_RANGE) {
         $c_start = $start;
         $c_end = $end;
-        list(, $range) = explode('=', $_SERVER['HTTP_RANGE'], 2);
+        list(, $range) = explode('=', $SERVER_HTTP_RANGE, 2);
         if (strpos($range, ',') !== false) {
             header('HTTP/1.1 416 Requested Range Not Satisfiable');
             header("Content-Range: bytes $start-$end/$size");
@@ -653,7 +657,7 @@ function _videosafe_downloadRange($location) {
             $buffer = $end - $p + 1;
         }
         //falls kein html-5-player sondern normaler filedownload, transfer canceln. Nur minimal-Schutz, aber besser als nix
-        if (@!$breakposition || $p <= $breakposition || isset($_SERVER['HTTP_RANGE'])) {
+        if (@!$breakposition || $p <= $breakposition || $SERVER_HTTP_RANGE) {
             set_time_limit(0);
             echo fread($fm, $buffer);
             flush();  // Free up memory. Otherwise large files will trigger PHP's memory limit
@@ -661,6 +665,7 @@ function _videosafe_downloadRange($location) {
             if ($log_debug)
                 watchdog('videosafe-file-stream', "exiting due to no-http-range and break hit", array(), WATCHDOG_DEBUG);
             fclose($fm);
+            flush(); // Free up memory. Otherwise large files will trigger PHP's memory limit.
             /* bewirkt folgendes: An gewisser Stelle (o.g. breakposition) bricht der Transfer ab.
               HTML5-Player hat nun einen Schnipsel und fordert erneut Daten an.
               Download bricht aber einfach ab, ohne die Datei zu speichern. */

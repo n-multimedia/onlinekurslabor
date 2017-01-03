@@ -202,7 +202,7 @@
         /*liefert alle Annotationen zum momentanigen Video*/
         getAllAnnotations: function( )
         {
-            //wird das erste genommen. schöner waere es aber mit der ID, die oben geliefert wird. delay oder sowas..
+            //hole json-data
             var videojson = H5PIntegration.contents['cid-' + this.getH5P_ID()];
 
             if (typeof videojson !== undefined)
@@ -234,30 +234,37 @@
         {
             var video_object = this.getH5P();
             var click_delay = 100;
-            var control_pause_objects = null;
+            var click_delay_multiplicator;
             video_object.video.seek(timestamp);
             //console.debug(this.getH5PVersion()+" <- vdersion -> state "+video_object.video.parent.currentState);
-            //wenn video schon abspielt muss man keinen klick simulieren. sonst schon.
             //ab version 2 ist bei state >= 5 nichts mehr noetig
             //moeglicih, dass versionen < 2 nun nicht mehr gehen
             if ((this.getH5PVersion() == 1.0) && !video_object.video.isPlaying()
-                    || (this.getH5PVersion() > 1.0) && (video_object.video.parent.currentState > 1) && (video_object.video.parent.currentState < 5)) //1 == playing, 2 == pause 5 = nicht gestartet
+                    || (this.getH5PVersion() > 1.0) && (video_object.video.parent.currentState > 1) && (video_object.video.parent.currentState < 5)) //1 == playing, 2 == pause, 5 = nicht gestartet
             {
                 //Status: pause
+                //click_delay_multiplicator: damit vertauscht man die ausfuehrungsreihenfolge, noetig fuer ie
                 if (video_object.video.parent.currentState == 2)
                 {
-                    //kurz anspielen, um laden anzustossen
-                    setTimeout(function() {
-                        video_object.play();
-                    }, click_delay);
-                    
-                    //danach wieder pause und per api neuen timestamp einpflegen
-                    setTimeout(function() {
-                        video_object.pause();
-                        video_object.timeUpdate(timestamp);
-                    }, click_delay * 2);
-
+                    click_delay_multiplicator = 2;
                 }
+                //Status: play
+                else
+                {
+                    click_delay_multiplicator = 0.25;
+                }
+
+                //kurz anspielen, um laden anzustossen
+                setTimeout(function() {
+                    video_object.play();
+                }, click_delay);
+
+                //pause player und per api neuen timestamp einpflegen
+                setTimeout(function() {
+                    video_object.pause();
+                    video_object.timeUpdate(timestamp);
+                }, click_delay * click_delay_multiplicator);
+
 
             }
 
@@ -275,6 +282,12 @@
                 return this.last_seen_time;
         }
         ,
+        /**
+         * konvertiert Sekundenangaben in lesbare Zeit
+         * bspw: 77 secs = 1:17
+         * @param {int} timeinsecs
+         * @returns {String} time
+         */
         humanizeTime: function(timeinsecs)
         {
             return H5P.InteractiveVideo.humanizeTime(timeinsecs);
@@ -336,8 +349,9 @@ jQuery(document).ready(function() {
         Drupal.behaviors.h5p_connector_api.interactivevideo.showLoadingAnimation();
     });
 
-    /*verlinkt man auf ein video und ein hash ist in der adresszeile soll der beim seiteladen ausgefuehrt werden*/
+    /*video geladen, fuehre ein paar aktionen aus*/
     Drupal.behaviors.h5p_connector_api.interactivevideo.onVideoReady(function() {
+        /*verlinkt man auf ein video und ein hash ist in der adresszeile soll der beim seiteladen ausgefuehrt werden*/
         Drupal.behaviors.h5p_connector_api.event.processHash();
         Drupal.behaviors.h5p_connector_api.interactivevideo.removeLoadingAnimation();
         Drupal.behaviors.h5p_connector_api.interactivevideo.startVideotimeListener();
