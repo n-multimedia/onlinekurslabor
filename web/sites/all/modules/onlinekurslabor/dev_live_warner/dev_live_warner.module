@@ -93,3 +93,17 @@ function _dev_live_warner_get_document_root() {
     $relative_dir = drupal_get_path('module', 'dev_live_warner');
     return substr($absolute_dir, 0, -1 * (1 + strlen($relative_dir)));
 }
+
+
+/**
+ * Gets a name from the current system based on doc-root
+ * used for identifying systems
+ *
+ * @return (string)
+ */
+function _dev_live_warner_get_system_name() {
+    $root = str_replace("/web", "",_dev_live_warner_get_document_root());
+    $last = end(explode("/", $root));
+    $ident =  explode(".", $last) ;
+    return $ident[0];
+}
