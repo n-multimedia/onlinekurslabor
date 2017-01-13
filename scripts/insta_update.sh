@@ -1,5 +1,7 @@
 ##!/bin/bash
 cd "$(dirname "$0")"
+#cronetab needs some infos about pathes
+export PATH=$PATH:/usr/local/bin
 
 # zeit seit letztem push
 #currdate=`date +%s`
