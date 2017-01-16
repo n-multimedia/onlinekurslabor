@@ -174,7 +174,7 @@ function nm_section_courses_features_default_rules_configuration() {
         { "mail" : {
             "to" : [ "node:author:mail" ],
             "subject" : "[course_fetched:title] - [node:title] - wurde bewertet",
-            "message" : "Hallo,\\r\\nIhre L\\u00f6sung f\\u00fcr die Aufgabe [node:title] wurde bewertet. \\r\\n\\r\\nLink zur Bewertung:\\r\\n[node:url]\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
+            "message" : "Hallo [node:author],\\r\\nIhre L\\u00f6sung f\\u00fcr die Aufgabe [node:title] wurde bewertet. \\r\\n\\r\\nLink zur Bewertung:\\r\\n[node:url]\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
             "language" : [ "" ]
           }
         }
@@ -191,7 +191,7 @@ function nm_section_courses_features_default_rules_configuration() {
         { "AND" : [
             { "workflow_check_transition" : {
                 "node" : [ "node" ],
-                "old_state" : { "value" : { "2" : "2" } },
+                "old_state" : { "value" : { "1" : "1", "2" : "2" } },
                 "new_state" : { "value" : { "3" : "3" } }
               }
             },
@@ -213,7 +213,7 @@ function nm_section_courses_features_default_rules_configuration() {
             "group" : [ "course-fetched" ],
             "og_roles" : { "value" : { "kurs-dozent" : "kurs-dozent", "kurs-tutor" : "kurs-tutor" } },
             "subject" : "[course-fetched:title] - [node:title] - wurde eingereicht",
-            "message" : "eine L\\u00f6sung f\\u00fcr die Aufgabe \\u0022[node:title]\\u0022 wurde eingereicht. \\r\\n\\r\\nLink zur L\\u00f6sung:\\r\\n[node:url]\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
+            "message" : "\\r\\n\\r\\neine L\\u00f6sung f\\u00fcr die Aufgabe \\u0022[node:title]\\u0022 wurde eingereicht. \\r\\n\\r\\nLink zur L\\u00f6sung:\\r\\n[node:url]\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
           }
         }
       ]
