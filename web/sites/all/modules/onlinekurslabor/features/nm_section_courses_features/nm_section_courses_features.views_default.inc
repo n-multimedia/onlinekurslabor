@@ -1837,14 +1837,14 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['label'] = 'erstellt';
+  $handler->display->display_options['fields']['created']['label'] = 'Erstellt';
   $handler->display->display_options['fields']['created']['date_format'] = 'short';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'privatemsg_current_day';
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  $handler->display->display_options['fields']['changed']['label'] = 'geändert';
+  $handler->display->display_options['fields']['changed']['label'] = 'Geändert';
   $handler->display->display_options['fields']['changed']['date_format'] = 'short';
   $handler->display->display_options['fields']['changed']['second_date_format'] = 'privatemsg_current_day';
   /* Contextual filter: OG membership: Group ID */
@@ -1925,8 +1925,8 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('Typ'),
     t('Name'),
     t('Beschreibung'),
-    t('erstellt'),
-    t('geändert'),
+    t('Erstellt'),
+    t('Geändert'),
     t('Alle'),
     t('Content pane'),
     t('View panes'),

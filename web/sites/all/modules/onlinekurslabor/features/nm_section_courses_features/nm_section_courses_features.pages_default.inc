@@ -7529,6 +7529,38 @@ return section_courses_text_outline();
   $display->content['new-6d5f5932-34cd-428b-9717-03b5c2b33e25'] = $pane;
   $display->panels['news'][0] = 'new-6d5f5932-34cd-428b-9717-03b5c2b33e25';
   $pane = new stdClass();
+  $pane->pid = 'new-b372d922-dfb1-4cb5-aa5d-31969c655573';
+  $pane->panel = 'news';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'kursdokumente-help',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<p><em>Um die Kursdokumente zu sortieren, klicken Sie jeweils auf die obige Bezeichnung.</em></p>',
+    'format' => 'filtered_html',
+    'substitute' => 1,
+  );
+  $pane->cache = array(
+    'method' => 'simple',
+    'settings' => array(
+      'lifetime' => '300',
+      'granularity' => 'none',
+    ),
+  );
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = 'b372d922-dfb1-4cb5-aa5d-31969c655573';
+  $display->content['new-b372d922-dfb1-4cb5-aa5d-31969c655573'] = $pane;
+  $display->panels['news'][1] = 'new-b372d922-dfb1-4cb5-aa5d-31969c655573';
+  $pane = new stdClass();
   $pane->pid = 'new-2c3766a5-4fa7-4741-815f-ebab25e174e9';
   $pane->panel = 'tools';
   $pane->type = 'block';
