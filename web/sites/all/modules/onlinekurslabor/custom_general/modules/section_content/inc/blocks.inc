@@ -324,10 +324,14 @@ function _section_courses_get_authors_tools() {
     
     if (module_exists('annvid')) 
     {
-    $path = 'domain/add/' . $group_id. '/' . ANNVID_CONTENTTYPE;
-    $id = 'author_annvid_add';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+        $path = 'domain/add/' . $group_id. '/' . ANNVID_CONTENTTYPE;
+        $id = 'author_annvid_add';
+        $label = $links[$id]['label'];
+        if (!empty($add_chapter_options)) {
+                $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $add_chapter_options);
+            } else {
+                $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+            }
     }
     
     

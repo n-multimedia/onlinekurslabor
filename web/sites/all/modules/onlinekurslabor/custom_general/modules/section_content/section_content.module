@@ -566,8 +566,9 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     }*/
   } 
   
-  /*neu angelegte Buchkapiteln fehlt eine weight. Das führt zu Falschsortierung/-nummerierung. Fixe.*/
-    if ($form_id == 'content_chapter_node_form') {
+      
+  /*neu angelegte Buchkapiteln/annvid-kapiteln fehlt eine weight. Das führt zu Falschsortierung/-nummerierung. Fixe.*/
+    if (in_array($form_id ,array('annvid_node_form', 'content_chapter_node_form'))) {
         $parameters = drupal_get_query_parameters();
         $og_group_ref = @$parameters['og_group_ref'];
         $parent = @$parameters['parent'];
