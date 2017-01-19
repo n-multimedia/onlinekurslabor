@@ -487,7 +487,7 @@ return node_access(\'create\', $tmp_node);',
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1';
+  $display->layout = 'flexible:span11span1_adminonly';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(

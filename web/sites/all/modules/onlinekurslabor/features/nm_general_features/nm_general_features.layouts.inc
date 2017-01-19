@@ -256,6 +256,84 @@ function nm_general_features_default_panels_layout() {
   $layout = new stdClass();
   $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
   $layout->api_version = 1;
+  $layout->name = 'span11span1_adminonly';
+  $layout->admin_title = 'col-md-11col-md-1_adminonly';
+  $layout->admin_description = 'adds a col-md-1 to the right. used in courses and projects.
+If current person is no course-/project-admin, cold-md-1 will be hidden.
+See template.php';
+  $layout->category = '';
+  $layout->plugin = 'flexible';
+  $layout->settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+          1 => 1,
+        ),
+        'parent' => NULL,
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+        'class' => 'col-md-11',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'center',
+        ),
+        'parent' => 'main',
+      ),
+      'center' => array(
+        'type' => 'region',
+        'title' => 'main',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => '',
+      ),
+      1 => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'parent' => 'canvas',
+        'children' => array(
+          0 => 2,
+        ),
+        'class' => 'col-md-1',
+      ),
+      2 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'tools',
+        ),
+        'parent' => '1',
+        'class' => '',
+      ),
+      'tools' => array(
+        'type' => 'region',
+        'title' => 'tools',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '2',
+        'class' => '',
+      ),
+    ),
+  );
+  $export['span11span1_adminonly'] = $layout;
+
+  $layout = new stdClass();
+  $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
+  $layout->api_version = 1;
   $layout->name = 'span12';
   $layout->admin_title = 'col-md-12';
   $layout->admin_description = '';

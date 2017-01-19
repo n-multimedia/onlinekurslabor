@@ -1752,7 +1752,7 @@ return section_courses_text_outline();
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1';
+  $display->layout = 'flexible:span11span1_adminonly';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -1963,7 +1963,7 @@ return section_courses_text_outline();
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1';
+  $display->layout = 'flexible:span11span1_adminonly';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -3699,7 +3699,7 @@ echo section_courses_render_course_link($course);
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1';
+  $display->layout = 'flexible:span11span1_adminonly';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -4407,7 +4407,7 @@ echo section_courses_render_course_link($course);
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1';
+  $display->layout = 'flexible:span11span1_adminonly';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -4553,7 +4553,7 @@ echo section_courses_render_course_link($course);
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1';
+  $display->layout = 'flexible:span11span1_adminonly';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -4760,7 +4760,7 @@ echo section_courses_render_course_link($course);
     'relationships' => array(),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1';
+  $display->layout = 'flexible:span11span1_adminonly';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -5425,7 +5425,7 @@ echo \'<p><a class="btn btn-default" href="/node/add/courses-course">Neuen Kurs 
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1';
+  $display->layout = 'flexible:span11span1_adminonly';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -6286,7 +6286,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1';
+  $display->layout = 'flexible:span11span1_adminonly';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -6663,7 +6663,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1';
+  $display->layout = 'flexible:span11span1_adminonly';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -6829,7 +6829,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     'relationships' => array(),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1';
+  $display->layout = 'flexible:span11span1_adminonly';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -7550,6 +7550,7 @@ return section_courses_text_outline();
       'granularity' => 'none',
     ),
   );
+
   $pane->style = array(
     'settings' => NULL,
   );
