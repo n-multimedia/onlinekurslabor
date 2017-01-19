@@ -5203,13 +5203,22 @@ echo section_courses_theme_progressbar();
   $page->task = 'page';
   $page->admin_title = 'courses-course-overview';
   $page->admin_description = '';
-  $page->path = 'courses';
+  $page->path = 'courses/!archive';
   $page->access = array(
     'type' => 'none',
     'settings' => NULL,
   );
   $page->menu = array();
-  $page->arguments = array();
+  $page->arguments = array(
+    'archive' => array(
+      'id' => 1,
+      'identifier' => 'archive',
+      'name' => 'string',
+      'settings' => array(
+        'use_tail' => 0,
+      ),
+    ),
+  );
   $page->conf = array(
     'admin_paths' => FALSE,
   );
@@ -5223,7 +5232,7 @@ echo section_courses_theme_progressbar();
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
+    'title' => 'allgemein',
     'no_blocks' => 0,
     'pipeline' => 'standard',
     'body_classes_to_remove' => '',
@@ -5232,6 +5241,305 @@ echo section_courses_theme_progressbar();
     'css' => '',
     'contexts' => array(),
     'relationships' => array(),
+    'access' => array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'string_equal',
+          'settings' => array(
+            'operator' => '!=',
+            'value' => 'archive',
+            'case' => 1,
+          ),
+          'context' => 'argument_string_1',
+          'not' => FALSE,
+        ),
+      ),
+      'logic' => 'and',
+    ),
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible:span11span1';
+  $display->layout_settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+          1 => 1,
+        ),
+        'parent' => NULL,
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+        'class' => 'col-md-11',
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'center',
+        ),
+        'parent' => 'main',
+      ),
+      'center' => array(
+        'type' => 'region',
+        'title' => 'main',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => 'col-md-11',
+        'hide_empty' => 0,
+      ),
+      1 => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'parent' => 'canvas',
+        'children' => array(
+          0 => 2,
+        ),
+        'class' => 'col-md-1',
+      ),
+      2 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'tools',
+        ),
+        'parent' => '1',
+        'class' => '',
+      ),
+      'tools' => array(
+        'type' => 'region',
+        'title' => 'tools',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '2',
+        'class' => '',
+      ),
+    ),
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'center' => NULL,
+      'tools' => NULL,
+      'news' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '532d2f69-94b7-4a1d-be7a-340653e8ed4c';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_courses_course_overview_panel_context';
+  $display->content = array();
+  $display->panels = array();
+  $pane = new stdClass();
+  $pane->pid = 'new-ccee1c33-9999-43ce-8788-04d026746e96';
+  $pane->panel = 'center';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'courses_kurse_bersicht-panel_pane_4';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'use_pager' => 1,
+    'pager_id' => 'my_drafts',
+    'items_per_page' => '10',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'ccee1c33-9999-43ce-8788-04d026746e96';
+  $display->content['new-ccee1c33-9999-43ce-8788-04d026746e96'] = $pane;
+  $display->panels['center'][0] = 'new-ccee1c33-9999-43ce-8788-04d026746e96';
+  $pane = new stdClass();
+  $pane->pid = 'new-6abe3379-f868-49d8-aaff-095a06ec9af6';
+  $pane->panel = 'center';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'courses_kurse_bersicht-panel_pane_2';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'use_pager' => 1,
+    'pager_id' => 'my_courses',
+    'items_per_page' => '10',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = '6abe3379-f868-49d8-aaff-095a06ec9af6';
+  $display->content['new-6abe3379-f868-49d8-aaff-095a06ec9af6'] = $pane;
+  $display->panels['center'][1] = 'new-6abe3379-f868-49d8-aaff-095a06ec9af6';
+  $pane = new stdClass();
+  $pane->pid = 'new-54b42ae9-c113-4615-af7e-70a6ead03f8d';
+  $pane->panel = 'center';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'courses_kurse_bersicht-panel_pane_3';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'use_pager' => 1,
+    'pager_id' => 'courses_offer',
+    'items_per_page' => '15',
+    'exposed' => array(
+      'sort_by' => 'field_time_span_value',
+      'sort_order' => 'ASC',
+    ),
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '54b42ae9-c113-4615-af7e-70a6ead03f8d';
+  $display->content['new-54b42ae9-c113-4615-af7e-70a6ead03f8d'] = $pane;
+  $display->panels['center'][2] = 'new-54b42ae9-c113-4615-af7e-70a6ead03f8d';
+  $pane = new stdClass();
+  $pane->pid = 'new-274a2ed2-b09c-476b-aebc-2fcbf594ab31';
+  $pane->panel = 'tools';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = FALSE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'platzhalter',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<h1>&nbsp;</h1>
+',
+    'format' => 'full_html',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '274a2ed2-b09c-476b-aebc-2fcbf594ab31';
+  $display->content['new-274a2ed2-b09c-476b-aebc-2fcbf594ab31'] = $pane;
+  $display->panels['tools'][0] = 'new-274a2ed2-b09c-476b-aebc-2fcbf594ab31';
+  $pane = new stdClass();
+  $pane->pid = 'new-605e0f6d-45cc-409c-82a6-ee4bcb5732fe';
+  $pane->panel = 'tools';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'neuerkurs-link',
+    'title' => '',
+    'body' => '<?php
+if(section_courses_instructors_tools_access())
+echo \'<p><a class="btn btn-default" href="/node/add/courses-course">Neuen Kurs anlegen</a></p>\';
+
+?>',
+    'format' => 'php_code',
+    'substitute' => 1,
+    'title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = '605e0f6d-45cc-409c-82a6-ee4bcb5732fe';
+  $display->content['new-605e0f6d-45cc-409c-82a6-ee4bcb5732fe'] = $pane;
+  $display->panels['tools'][1] = 'new-605e0f6d-45cc-409c-82a6-ee4bcb5732fe';
+  $pane = new stdClass();
+  $pane->pid = 'new-88bd3aab-a455-4967-84a5-b41da40aabb9';
+  $pane->panel = 'tools';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'kursarchiv-link',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<a class="btn btn-link" href="/courses/archive">
+<?=t(\'archivated courses\');?>
+</a>',
+    'format' => 'php_code',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '88bd3aab-a455-4967-84a5-b41da40aabb9';
+  $display->content['new-88bd3aab-a455-4967-84a5-b41da40aabb9'] = $pane;
+  $display->panels['tools'][2] = 'new-88bd3aab-a455-4967-84a5-b41da40aabb9';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_courses_course_overview__archive';
+  $handler->task = 'page';
+  $handler->subtask = 'courses_course_overview';
+  $handler->handler = 'panel_context';
+  $handler->weight = 1;
+  $handler->conf = array(
+    'title' => 'archive',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'access' => array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'string_equal',
+          'settings' => array(
+            'operator' => '=',
+            'value' => 'archive',
+            'case' => 1,
+          ),
+          'context' => 'argument_string_1',
+          'not' => FALSE,
+        ),
+      ),
+      'logic' => 'and',
+    ),
+    'name' => 'archive',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span12';
@@ -5243,29 +5551,36 @@ echo section_courses_theme_progressbar();
     ),
   );
   $display->cache = array();
-  $display->title = '';
+  $display->title = 'Courses archive';
   $display->uuid = '532d2f69-94b7-4a1d-be7a-340653e8ed4c';
   $display->storage_type = 'page_manager';
   $display->storage_id = 'page_courses_course_overview_panel_context';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
-  $pane->pid = 'new-605e0f6d-45cc-409c-82a6-ee4bcb5732fe';
+  $pane->pid = 'new-54b42ae9-c113-4615-af7e-70a6ead03f8d';
   $pane->panel = 'center';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
-  $pane->shown = TRUE;
+  $pane->type = 'views_panes';
+  $pane->subtype = 'courses_kurse_bersicht-panel_pane_3';
+  $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
-    'admin_title' => '',
-    'title' => '',
-    'body' => '<?php
-if(section_courses_instructors_tools_access())
-echo \'<p><a class="btn btn-default" href="/node/add/courses-course">Neuen Kurs anlegen</a></p>\';
-
-?>',
-    'format' => 'php_code',
-    'substitute' => TRUE,
+    'exposed' => array(
+      'field_time_span_value2_op' => '<=',
+      'field_time_span_value2' => array(
+        'value' => NULL,
+        'min' => NULL,
+        'max' => NULL,
+      ),
+      'sort_by' => 'field_time_span_value',
+      'sort_order' => 'DESC',
+    ),
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+    'use_pager' => 0,
+    'pager_id' => 'course-archive',
+    'items_per_page' => '0',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -5275,17 +5590,28 @@ echo \'<p><a class="btn btn-default" href="/node/add/courses-course">Neuen Kurs 
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
-  $pane->uuid = '605e0f6d-45cc-409c-82a6-ee4bcb5732fe';
-  $display->content['new-605e0f6d-45cc-409c-82a6-ee4bcb5732fe'] = $pane;
-  $display->panels['center'][0] = 'new-605e0f6d-45cc-409c-82a6-ee4bcb5732fe';
+  $pane->uuid = '54b42ae9-c113-4615-af7e-70a6ead03f8d';
+  $display->content['new-54b42ae9-c113-4615-af7e-70a6ead03f8d'] = $pane;
+  $display->panels['center'][0] = 'new-54b42ae9-c113-4615-af7e-70a6ead03f8d';
   $pane = new stdClass();
-  $pane->pid = 'new-ccee1c33-9999-43ce-8788-04d026746e96';
+  $pane->pid = 'new-d983b15a-4dc7-47ed-bdf2-728071399f6a';
   $pane->panel = 'center';
   $pane->type = 'views_panes';
-  $pane->subtype = 'courses_kurse_bersicht-panel_pane_4';
+  $pane->subtype = 'courses_kurse_bersicht-panel_pane_1';
   $pane->shown = TRUE;
   $pane->access = array();
-  $pane->configuration = array();
+  $pane->configuration = array(
+    'use_pager' => 1,
+    'pager_id' => '0',
+    'items_per_page' => '15',
+    'exposed' => array(
+      'sort_by' => 'field_time_span_value',
+      'sort_order' => 'DESC',
+    ),
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
@@ -5294,47 +5620,9 @@ echo \'<p><a class="btn btn-default" href="/node/add/courses-course">Neuen Kurs 
   $pane->extras = array();
   $pane->position = 1;
   $pane->locks = array();
-  $pane->uuid = 'ccee1c33-9999-43ce-8788-04d026746e96';
-  $display->content['new-ccee1c33-9999-43ce-8788-04d026746e96'] = $pane;
-  $display->panels['center'][1] = 'new-ccee1c33-9999-43ce-8788-04d026746e96';
-  $pane = new stdClass();
-  $pane->pid = 'new-6abe3379-f868-49d8-aaff-095a06ec9af6';
-  $pane->panel = 'center';
-  $pane->type = 'views_panes';
-  $pane->subtype = 'courses_kurse_bersicht-panel_pane_2';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array();
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 2;
-  $pane->locks = array();
-  $pane->uuid = '6abe3379-f868-49d8-aaff-095a06ec9af6';
-  $display->content['new-6abe3379-f868-49d8-aaff-095a06ec9af6'] = $pane;
-  $display->panels['center'][2] = 'new-6abe3379-f868-49d8-aaff-095a06ec9af6';
-  $pane = new stdClass();
-  $pane->pid = 'new-54b42ae9-c113-4615-af7e-70a6ead03f8d';
-  $pane->panel = 'center';
-  $pane->type = 'views_panes';
-  $pane->subtype = 'courses_kurse_bersicht-panel_pane_3';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array();
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 3;
-  $pane->locks = array();
-  $pane->uuid = '54b42ae9-c113-4615-af7e-70a6ead03f8d';
-  $display->content['new-54b42ae9-c113-4615-af7e-70a6ead03f8d'] = $pane;
-  $display->panels['center'][3] = 'new-54b42ae9-c113-4615-af7e-70a6ead03f8d';
+  $pane->uuid = 'd983b15a-4dc7-47ed-bdf2-728071399f6a';
+  $display->content['new-d983b15a-4dc7-47ed-bdf2-728071399f6a'] = $pane;
+  $display->panels['center'][1] = 'new-d983b15a-4dc7-47ed-bdf2-728071399f6a';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -7550,7 +7838,6 @@ return section_courses_text_outline();
       'granularity' => 'none',
     ),
   );
-
   $pane->style = array(
     'settings' => NULL,
   );

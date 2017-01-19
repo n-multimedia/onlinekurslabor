@@ -2781,6 +2781,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['link_display'] = 'custom_url';
   $handler->display->display_options['access']['type'] = 'none';
@@ -2791,7 +2792,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
   $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '15';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['quantity'] = '9';
@@ -2861,7 +2862,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['sorts']['field_time_span_value']['id'] = 'field_time_span_value';
   $handler->display->display_options['sorts']['field_time_span_value']['table'] = 'field_data_field_time_span';
   $handler->display->display_options['sorts']['field_time_span_value']['field'] = 'field_time_span_value';
-  $handler->display->display_options['sorts']['field_time_span_value']['order'] = 'DESC';
+  $handler->display->display_options['sorts']['field_time_span_value']['expose']['label'] = 'Laufzeit -  start date (field_time_span)';
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
@@ -2925,7 +2926,27 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['relationship'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Laufzeit -  start date (field_time_span) */
+  $handler->display->display_options['sorts']['field_time_span_value']['id'] = 'field_time_span_value';
+  $handler->display->display_options['sorts']['field_time_span_value']['table'] = 'field_data_field_time_span';
+  $handler->display->display_options['sorts']['field_time_span_value']['field'] = 'field_time_span_value';
+  $handler->display->display_options['sorts']['field_time_span_value']['order'] = 'DESC';
+  $handler->display->display_options['sorts']['field_time_span_value']['expose']['label'] = 'Kursbeginn';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['allow']['use_pager'] = 'use_pager';
+  $handler->display->display_options['allow']['items_per_page'] = 'items_per_page';
+  $handler->display->display_options['allow']['offset'] = 0;
+  $handler->display->display_options['allow']['link_to_view'] = 0;
+  $handler->display->display_options['allow']['more_link'] = 0;
+  $handler->display->display_options['allow']['path_override'] = 0;
+  $handler->display->display_options['allow']['title_override'] = 0;
+  $handler->display->display_options['allow']['exposed_form'] = 0;
+  $handler->display->display_options['allow']['fields_override'] = 0;
 
   /* Display: Courses Offer */
   $handler = $view->new_display('panel_pane', 'Courses Offer', 'panel_pane_3');
@@ -2943,6 +2964,17 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['relationship'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Laufzeit -  start date (field_time_span) */
+  $handler->display->display_options['sorts']['field_time_span_value']['id'] = 'field_time_span_value';
+  $handler->display->display_options['sorts']['field_time_span_value']['table'] = 'field_data_field_time_span';
+  $handler->display->display_options['sorts']['field_time_span_value']['field'] = 'field_time_span_value';
+  $handler->display->display_options['sorts']['field_time_span_value']['exposed'] = TRUE;
+  $handler->display->display_options['sorts']['field_time_span_value']['expose']['label'] = 'Kursstartdatum';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -2965,8 +2997,43 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['filters']['field_time_span_value2']['table'] = 'field_data_field_time_span';
   $handler->display->display_options['filters']['field_time_span_value2']['field'] = 'field_time_span_value2';
   $handler->display->display_options['filters']['field_time_span_value2']['operator'] = '>=';
+  $handler->display->display_options['filters']['field_time_span_value2']['expose']['operator_id'] = 'field_time_span_value2_op';
+  $handler->display->display_options['filters']['field_time_span_value2']['expose']['label'] = 'Kursenddatum';
+  $handler->display->display_options['filters']['field_time_span_value2']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['field_time_span_value2']['expose']['operator'] = 'field_time_span_value2_op';
+  $handler->display->display_options['filters']['field_time_span_value2']['expose']['identifier'] = 'field_time_span_value2';
+  $handler->display->display_options['filters']['field_time_span_value2']['expose']['required'] = TRUE;
+  $handler->display->display_options['filters']['field_time_span_value2']['expose']['remember_roles'] = array(
+    2 => '2',
+    30037204 => 0,
+    1 => 0,
+    197637936 => 0,
+    16675960 => 0,
+    106505419 => 0,
+    126456107 => 0,
+    66784200 => 0,
+    24708420 => 0,
+    140204299 => 0,
+  );
+  $handler->display->display_options['filters']['field_time_span_value2']['group_info']['label'] = 'Laufzeit - end date (field_time_span:value2)';
+  $handler->display->display_options['filters']['field_time_span_value2']['group_info']['identifier'] = 'field_time_span_value2';
+  $handler->display->display_options['filters']['field_time_span_value2']['group_info']['remember'] = FALSE;
+  $handler->display->display_options['filters']['field_time_span_value2']['group_info']['group_items'] = array(
+    1 => array(),
+    2 => array(),
+    3 => array(),
+  );
   $handler->display->display_options['filters']['field_time_span_value2']['default_date'] = 'now';
   $handler->display->display_options['pane_description'] = 'views_query_alter';
+  $handler->display->display_options['allow']['use_pager'] = 'use_pager';
+  $handler->display->display_options['allow']['items_per_page'] = 'items_per_page';
+  $handler->display->display_options['allow']['offset'] = 0;
+  $handler->display->display_options['allow']['link_to_view'] = 0;
+  $handler->display->display_options['allow']['more_link'] = 0;
+  $handler->display->display_options['allow']['path_override'] = 0;
+  $handler->display->display_options['allow']['title_override'] = 'title_override';
+  $handler->display->display_options['allow']['exposed_form'] = 'exposed_form';
+  $handler->display->display_options['allow']['fields_override'] = 0;
 
   /* Display: My Courses Drafts */
   $handler = $view->new_display('panel_pane', 'My Courses Drafts', 'panel_pane_4');
@@ -2988,6 +3055,17 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['relationship'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Laufzeit -  start date (field_time_span) */
+  $handler->display->display_options['sorts']['field_time_span_value']['id'] = 'field_time_span_value';
+  $handler->display->display_options['sorts']['field_time_span_value']['table'] = 'field_data_field_time_span';
+  $handler->display->display_options['sorts']['field_time_span_value']['field'] = 'field_time_span_value';
+  $handler->display->display_options['sorts']['field_time_span_value']['order'] = 'DESC';
+  $handler->display->display_options['sorts']['field_time_span_value']['expose']['label'] = 'Laufzeit -  start date (field_time_span)';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -3009,6 +3087,105 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = '0';
+  $handler->display->display_options['allow']['use_pager'] = 'use_pager';
+  $handler->display->display_options['allow']['items_per_page'] = 'items_per_page';
+  $handler->display->display_options['allow']['offset'] = 0;
+  $handler->display->display_options['allow']['link_to_view'] = 0;
+  $handler->display->display_options['allow']['more_link'] = 0;
+  $handler->display->display_options['allow']['path_override'] = 0;
+  $handler->display->display_options['allow']['title_override'] = 0;
+  $handler->display->display_options['allow']['exposed_form'] = 0;
+  $handler->display->display_options['allow']['fields_override'] = 0;
+
+  /* Display: Courses Offer Archive */
+  $handler = $view->new_display('panel_pane', 'Courses Offer Archive', 'panel_pane_1');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Kursangebot';
+  $handler->display->display_options['display_description'] = 'archivated version of Courses';
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: OG membership: OG membership from Node group */
+  $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['required'] = TRUE;
+  /* Relationship: OG membership: User from OG membership */
+  $handler->display->display_options['relationships']['og_membership_related_user']['id'] = 'og_membership_related_user';
+  $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
+  $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
+  $handler->display->display_options['relationships']['og_membership_related_user']['relationship'] = 'og_membership_rel_group';
+  $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Laufzeit -  start date (field_time_span) */
+  $handler->display->display_options['sorts']['field_time_span_value']['id'] = 'field_time_span_value';
+  $handler->display->display_options['sorts']['field_time_span_value']['table'] = 'field_data_field_time_span';
+  $handler->display->display_options['sorts']['field_time_span_value']['field'] = 'field_time_span_value';
+  $handler->display->display_options['sorts']['field_time_span_value']['exposed'] = TRUE;
+  $handler->display->display_options['sorts']['field_time_span_value']['expose']['label'] = 'Kursstartdatum';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'courses_course' => 'courses_course',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Content: Laufzeit - end date (field_time_span:value2) */
+  $handler->display->display_options['filters']['field_time_span_value2']['id'] = 'field_time_span_value2';
+  $handler->display->display_options['filters']['field_time_span_value2']['table'] = 'field_data_field_time_span';
+  $handler->display->display_options['filters']['field_time_span_value2']['field'] = 'field_time_span_value2';
+  $handler->display->display_options['filters']['field_time_span_value2']['operator'] = '<';
+  $handler->display->display_options['filters']['field_time_span_value2']['group'] = 1;
+  $handler->display->display_options['filters']['field_time_span_value2']['expose']['operator_id'] = 'field_time_span_value2_op';
+  $handler->display->display_options['filters']['field_time_span_value2']['expose']['label'] = 'Kursenddatum';
+  $handler->display->display_options['filters']['field_time_span_value2']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['field_time_span_value2']['expose']['operator'] = 'field_time_span_value2_op';
+  $handler->display->display_options['filters']['field_time_span_value2']['expose']['identifier'] = 'field_time_span_value2';
+  $handler->display->display_options['filters']['field_time_span_value2']['expose']['required'] = TRUE;
+  $handler->display->display_options['filters']['field_time_span_value2']['expose']['remember_roles'] = array(
+    2 => '2',
+    30037204 => 0,
+    1 => 0,
+    197637936 => 0,
+    16675960 => 0,
+    106505419 => 0,
+    126456107 => 0,
+    66784200 => 0,
+    24708420 => 0,
+    140204299 => 0,
+  );
+  $handler->display->display_options['filters']['field_time_span_value2']['group_info']['label'] = 'Laufzeit - end date (field_time_span:value2)';
+  $handler->display->display_options['filters']['field_time_span_value2']['group_info']['identifier'] = 'field_time_span_value2';
+  $handler->display->display_options['filters']['field_time_span_value2']['group_info']['remember'] = FALSE;
+  $handler->display->display_options['filters']['field_time_span_value2']['group_info']['group_items'] = array(
+    1 => array(),
+    2 => array(),
+    3 => array(),
+  );
+  $handler->display->display_options['filters']['field_time_span_value2']['default_date'] = 'now';
+  $handler->display->display_options['pane_description'] = 'views_query_alter';
+  $handler->display->display_options['allow']['use_pager'] = 'use_pager';
+  $handler->display->display_options['allow']['items_per_page'] = 'items_per_page';
+  $handler->display->display_options['allow']['offset'] = 0;
+  $handler->display->display_options['allow']['link_to_view'] = 0;
+  $handler->display->display_options['allow']['more_link'] = 0;
+  $handler->display->display_options['allow']['path_override'] = 0;
+  $handler->display->display_options['allow']['title_override'] = 'title_override';
+  $handler->display->display_options['allow']['exposed_form'] = 'exposed_form';
+  $handler->display->display_options['allow']['fields_override'] = 0;
   $translatables['courses_kurse_bersicht'] = array(
     t('Master'),
     t('more'),
@@ -3026,17 +3203,24 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('letzte Seite »'),
     t('OG membership from node group'),
     t('author'),
+    t('Laufzeit -  start date (field_time_span)'),
     t('Alle'),
     t('My Courses'),
     t('Meine Kurse'),
     t('No courses available.'),
     t('user from OG membership'),
+    t('Kursbeginn'),
     t('View panes'),
     t('Courses Offer'),
     t('Kursangebot'),
+    t('Kursstartdatum'),
+    t('Kursenddatum'),
+    t('Laufzeit - end date (field_time_span:value2)'),
     t('views_query_alter'),
     t('My Courses Drafts'),
     t('Meine Entwürfe'),
+    t('Courses Offer Archive'),
+    t('archivated version of Courses'),
   );
   $export['courses_kurse_bersicht'] = $view;
 

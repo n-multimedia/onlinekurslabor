@@ -204,7 +204,8 @@ function nm_general_features_default_panels_layout() {
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'col-md-11',
+        'class' => 'col-md-11 col-xs-12',
+        'hide_empty' => 0,
       ),
       'main-row' => array(
         'type' => 'row',
@@ -230,7 +231,8 @@ function nm_general_features_default_panels_layout() {
         'children' => array(
           0 => 2,
         ),
-        'class' => 'col-md-1',
+        'class' => 'col-md-1 col-xs-12',
+        'hide_empty' => 0,
       ),
       2 => array(
         'type' => 'row',
