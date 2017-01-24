@@ -69,11 +69,11 @@
          * dann pflicht 0 - 5 und ein digit (SS)
          * dann kommt ein optionaler non-match mit ":00 - :99"(frame 0-99) um frame-angabe abzuschneiden 
          * und dann  %not-a gefolgt von %endzeichen
-         * %startzeichen = leerzeichen, zeilenstart, html-Zeichen > oder  &nbsp;
+         * %startzeichen = leerzeichen, zeilenstart, html-Zeichen > , klammer auf oder  &nbsp;
          * %not-a = Nicht die kombination </a um Doppel-Replacements zu vermeiden
-         * %endzeichen = komma, punkt , leerzeichen , fragezeichen , &nbsp; zeilenende oder html-Zeichen <
+         * %endzeichen = komma, punkt , leerzeichen , fragezeichen , &nbsp; , Klammer zu, zeilenende oder html-Zeichen <
          * match auf  %startzeichen, zeitstamp und %endzeichen. /greedy, multiline*/
-        regex_timestampfeature: /( |^|>|&nbsp;)((?:\d?\d\:){0,1}[0-5]{0,1}\d:[0-5]\d)(?:\:\d\d){0,1}(?!<\/a)([\,\. \?]|&nbsp;|$|<)/gm,
+        regex_timestampfeature: /( |^|>|\(|&nbsp;)((?:\d?\d\:){0,1}[0-5]{0,1}\d:[0-5]\d)(?:\:\d\d){0,1}(?!<\/a)([\,\. \?]|&nbsp;|\)|$|<)/gm,
     };
 
     Drupal.behaviors.h5p_connector_api.event = {
