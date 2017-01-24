@@ -2192,6 +2192,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'courses_generic_task_node_form') {
 
     $field_items = &$form['field_generic_task_entry'][LANGUAGE_NONE];
+
     foreach ($field_items as &$f_item) {
       if (is_array($f_item) && isset($f_item['second'])) {
         $f_item['second']['#type'] = 'text_format';
@@ -2460,7 +2461,8 @@ function section_courses_field_widget_form_alter(&$element, &$form_state, $conte
 }
 
 /**
- * Unset field format values to avoid db errors
+ * Unset field format values to avoid db errors. See https://www.drupal.org/node/1787454 :
+ * After submitting the form, we need to unset the format attribute again. Otherwise we get an errror, because the system tries to save the new format value into a missing field_format db-table column.
  *
  * @param type $form
  * @param type $form_state
@@ -2492,7 +2494,7 @@ function section_courses_courses_generic_task_node_form_submit($form, &$form_sta
 }
 
 function section_courses_courses_generic_task_node_form_after_build($form) {
-
+    /*blendet textformat-wahlmglk wysiwyg aus*/
   $field_items = &$form['field_generic_task_entry'][LANGUAGE_NONE];
   foreach ($field_items as &$f_item) {
     if (is_array($f_item) && isset($f_item['second'])) {
