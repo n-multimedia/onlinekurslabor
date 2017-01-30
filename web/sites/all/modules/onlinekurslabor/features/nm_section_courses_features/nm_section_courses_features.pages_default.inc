@@ -5551,48 +5551,12 @@ echo \'<p><a class="btn btn-default" href="/node/add/courses-course">Neuen Kurs 
     ),
   );
   $display->cache = array();
-  $display->title = 'Courses archive';
+  $display->title = 'Kursarchiv';
   $display->uuid = '532d2f69-94b7-4a1d-be7a-340653e8ed4c';
   $display->storage_type = 'page_manager';
   $display->storage_id = 'page_courses_course_overview_panel_context';
   $display->content = array();
   $display->panels = array();
-  $pane = new stdClass();
-  $pane->pid = 'new-54b42ae9-c113-4615-af7e-70a6ead03f8d';
-  $pane->panel = 'center';
-  $pane->type = 'views_panes';
-  $pane->subtype = 'courses_kurse_bersicht-panel_pane_3';
-  $pane->shown = FALSE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'exposed' => array(
-      'field_time_span_value2_op' => '<=',
-      'field_time_span_value2' => array(
-        'value' => NULL,
-        'min' => NULL,
-        'max' => NULL,
-      ),
-      'sort_by' => 'field_time_span_value',
-      'sort_order' => 'DESC',
-    ),
-    'override_title' => 1,
-    'override_title_text' => '',
-    'override_title_heading' => 'h2',
-    'use_pager' => 0,
-    'pager_id' => 'course-archive',
-    'items_per_page' => '0',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = '54b42ae9-c113-4615-af7e-70a6ead03f8d';
-  $display->content['new-54b42ae9-c113-4615-af7e-70a6ead03f8d'] = $pane;
-  $display->panels['center'][0] = 'new-54b42ae9-c113-4615-af7e-70a6ead03f8d';
   $pane = new stdClass();
   $pane->pid = 'new-d983b15a-4dc7-47ed-bdf2-728071399f6a';
   $pane->panel = 'center';
@@ -5618,11 +5582,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/courses-course">Neuen Kurs 
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 1;
+  $pane->position = 0;
   $pane->locks = array();
   $pane->uuid = 'd983b15a-4dc7-47ed-bdf2-728071399f6a';
   $display->content['new-d983b15a-4dc7-47ed-bdf2-728071399f6a'] = $pane;
-  $display->panels['center'][1] = 'new-d983b15a-4dc7-47ed-bdf2-728071399f6a';
+  $display->panels['center'][0] = 'new-d983b15a-4dc7-47ed-bdf2-728071399f6a';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
