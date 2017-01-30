@@ -342,7 +342,7 @@ function nm_section_content_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'biblio_orphan_clean_next_execution';
-  $strongarm->value = 1473496313;
+  $strongarm->value = 1485849863;
   $export['biblio_orphan_clean_next_execution'] = $strongarm;
 
   $strongarm = new stdClass();

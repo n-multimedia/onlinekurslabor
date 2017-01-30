@@ -75,12 +75,40 @@ function _section_content_theme_node_revisions() {
   }
 }
 
+
 /**
  * Implementation of hook_node_view().
  *
  * Dynamically modify book titles, adding numbering to the beginning.
  */
 function section_content_node_view($node, $view_mode, $langcode) {
+    /* Zeigt Verwendung: in Kursen... als Demo an */
+    //Aktueller Node ist Themen-Ansicht, aber nicht innerhalb eines Kurses
+    if (in_array($node->type, array(NM_CONTENT_DOMAIN)) && !_section_courses_get_active_course()) {
+
+        $html_output__view_usage_in = "";
+        //die zwei view-varianten: als kurs-lehrtext und als-demo-lehrtext
+        $display_ids = array('usage_lehrtext', 'usage_demo_lehrtext');
+        foreach ($display_ids as $display_id) {
+            $view_usage_in = views_get_view('content_show_usage_in_courses');
+            $view_usage_in->set_arguments(array($node->nid));
+            //die panel-variante setzen
+            $view_usage_in->set_display($display_id);
+            //ausfuehren des views
+            $view_usage_in->execute($display_id);
+            //holt anzahl eintraege
+            //gibts einträge? dann diese anzeigen; sonst: 404
+                $html_output__view_usage_in .= $view_usage_in->get_title() .( $view_usage_in->total_rows? $view_usage_in->render($display_id):"<br><i>&nbsp;&nbsp;- keine - </i>");
+      
+        }
+      
+
+        //Zeigt oberhalb des Inhaltsverzeichnis, in welchen Kursen dieser LT genutzt wird
+        if ($html_output__view_usage_in) {
+            $node->content['content_usage']['#markup'] = '<hr><h3>' . t('Verwendung in Kursen') . '</h3>' . $html_output__view_usage_in;
+            $node->content['content_usage']['#weight'] = 50;
+        }
+    }
 
 //test todo remove
 //dpm(section_author($node->nid));
@@ -591,6 +619,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
   if($form_id == 'courses_course_node_form'){
      $description ="<ul>";
     //add domain add link to
+    $description .= "<li>".'Ein als Demo genutzter Lehrtext wird dadurch öffentlich zugänglich.'."</li>";
     $description .= "<li>".'Den Lehrtext komplett deaktivieren können Sie im Tab "Features".'."</li>";
     section_courses_instructors_tools_access();
     $description .= '<li>';
