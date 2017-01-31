@@ -1759,7 +1759,10 @@ function _section_courses_student_registration_import($input) {
         
         
         //apply any string- and character-replacement here
-        $row = preg_replace("/[\t\",:;￼]/", " ", $row);
+        $row = preg_replace("/[\t\",:;]/", " ", $row);
+        //ziehe replacements von sonderchars raus, macht tw. umlaute kaputt. jedesmal zu testen:
+        //Jürgen D'Amélie Wäßnör +jue.wae@gmail.com
+        $row  = preg_replace("/￼/", " ", $row);
         $user_parameters    = count(explode(" ", $row));
         // Create New User  
         if($user_parameters > 1){
