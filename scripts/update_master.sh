@@ -9,6 +9,8 @@ drush dis overlay --yes
 
 drush updatedb --yes
 drush en browser_compatibility --yes
+drush en no_mailer --yes
+
 #bug in drush - cc before FR!!
 drush cc all
 drush fr  videosafe_features  nm_section_courses_features  section_projects_features nm_h5p_features annvid_features --yes
