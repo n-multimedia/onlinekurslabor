@@ -1386,3 +1386,42 @@ function custom_general_og_membership_insert(OgMembership $og_membership) {
     if ($og_membership->gid)
         og_invalidate_cache($og_membership->gid);
 }
+
+
+// fuegt im eigenen profil einen settings-bereich fuer eigene einstellungen hinzu, der einfach
+// mit anderen modulen erweitert werden kann.
+function custom_general_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
+
+  if ($form['#user_category'] == 'account') {
+    
+      $form['custom_general_fieldset'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Various settings'),
+        '#weight' => 5,
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        //enable this placeholder in your own module! 
+        '#access' => false,
+          );
+  }
+}
+/**
+ * in custom_general_form_user_profile_form_alter wird ein settings-fieldset deklariert.
+ * auf admin/config/people/accounts/fields kann man dieses beliebig verschieben und
+ * die sortierung speichern.
+ * @return array
+ */
+function custom_general_field_extra_fields() {
+    $extras = array();
+  $extras['user']['user'] = array(
+        'form' => array(
+            'custom_fieldset' => array(
+                'label' => t('Various settings'),
+                'description' => t('Placeholder for various custom settings'),
+                'weight' => -10,
+            ),
+        ),
+    );
+return $extras;
+}
+

@@ -64,6 +64,24 @@ msgstr "Kursarchiv"
 msgid "Courses archive"
 msgstr "Kursarchiv"
 
+msgid "Various settings"
+msgstr "Weitere Einstellungen"
+
+msgid "Choose to disable e-mail-notificatios"
+msgstr "E-Mail-Nachrichten deaktivieren"
+
+msgid "Granting this permission allows users to disable all e-mails regarding their account."
+msgstr "Benutzer mit den gewählten Rollen dürfen im eigenen Profil den E-Mail-Empfang unterbinden."
+
+msgid "Enable reception of e-mails"
+msgstr "E-Mail-Empfang aktivieren"
+
+msgid "If turned off, you agree to login on a regular basis since you will not receive any e-mails anymore."
+msgstr "Wenn Sie den Empfang von E-Mails deaktivieren, verpflichten Sie sich zugleich, sich regelmäßig einzuloggen, da Sie ansonsten nicht über Neuigkeiten informiert werden."
+
+msgid "Reception of e-mails for %recipient is disabled. Password reset not possible."
+msgstr "%recipient hat den Empfang von E-Mails deaktiviert. Somit kann kein neues Passwort gesetzt werden."
+
 msgid ""
 msgstr ""
 

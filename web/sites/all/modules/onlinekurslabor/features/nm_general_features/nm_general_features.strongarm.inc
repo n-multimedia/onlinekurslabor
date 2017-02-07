@@ -200,7 +200,7 @@ function nm_general_features_strongarm() {
           'weight' => '15',
         ),
         'timezone' => array(
-          'weight' => '3',
+          'weight' => '2',
         ),
         'profile_master' => array(
           'weight' => '10',
@@ -209,13 +209,19 @@ function nm_general_features_strongarm() {
           'weight' => '5',
         ),
         'locale' => array(
-          'weight' => '4',
+          'weight' => '3',
         ),
         'wysiwyg' => array(
-          'weight' => '6',
+          'weight' => '4',
         ),
         'biblio_fieldset' => array(
           'weight' => '1',
+        ),
+        'custom_fieldset' => array(
+          'weight' => '7',
+        ),
+        'privatemsg' => array(
+          'weight' => '6',
         ),
       ),
       'display' => array(
@@ -349,7 +355,7 @@ dasddasdasd',
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => '9c6L9WemlWMaoXJN3Qtiw-dUyc-_tgVIebqvBVHYwNg',
+    'javascript' => '09MaIXO8M3zrV_-V6DswPuhm0ALMgHjAphaLx1wO6oM',
   );
   $export['language_default'] = $strongarm;
 

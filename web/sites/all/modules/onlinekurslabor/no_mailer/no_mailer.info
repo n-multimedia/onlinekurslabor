@@ -1,0 +1,5 @@
+name = no_mailer
+description = Users can decide not to receive any mails from the drupal-environment. Must set role-permission.
+core = 7.x
+version = 7.x-1.0
+package = custom

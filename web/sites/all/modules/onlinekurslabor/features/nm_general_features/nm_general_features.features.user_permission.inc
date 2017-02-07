@@ -461,6 +461,17 @@ function nm_general_features_user_default_permissions() {
     'module' => 'workflow_extensions',
   );
 
+  // Exported permission: 'choose turn_off_email'.
+  $permissions['choose turn_off_email'] = array(
+    'name' => 'choose turn_off_email',
+    'roles' => array(
+      'Dozent' => 'Dozent',
+      'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
+    ),
+    'module' => 'no_mailer',
+  );
+
   // Exported permission: 'create plattform_log content'.
   $permissions['create plattform_log content'] = array(
     'name' => 'create plattform_log content',

@@ -1,0 +1,124 @@
+<?php
+
+
+/**
+ * Implements hook_permission().
+ *
+ * Defines a permission to disable any e-mail
+ */
+function no_mailer_permission() {
+
+    return array(
+        'choose turn_off_email' => array(
+            'title' => t('Choose to disable e-mail-notificatios'),
+            'description' => t('Granting this permission allows users to disable all e-mails regarding their account.')
+        ),
+    );
+}
+
+/**
+ * Implementation of hook_form_alter
+ * fuegt email-deaktivieren bereich in eigenem profil ein
+ */
+function no_mailer_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
+
+    if ($form['#user_category'] == 'account') {
+
+        $account = $form['#user'];
+        $disallow_setting = !user_access('choose turn_off_email') && !user_access('administer users');
+
+        $fieldset_disable_email = array('nomailer_emails_settings' =>
+            array(
+                '#type' => 'fieldset',
+                '#collapsible' => TRUE,
+                '#collapsed' => false,
+                '#title' => t('Receive e-mails')
+        ));
+
+        $fieldset_disable_email['nomailer_emails_settings']['nomailer_enable_emails'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('Enable reception of e-mails'),
+            //check if settable by user
+            '#disabled' => $disallow_setting,
+            '#default_value' => _no_mail_user_has_mail_enabled($account),
+            '#return_value' => 1,
+            '#description' => t('If turned off, you agree to login on a regular basis since you will not receive any e-mails anymore.')
+        );
+        //definiert in custom_general. falls custom_general_fieldset nicht verfuegbar, gehts aber auch. 
+        //enable placeholder first
+        $form['custom_general_fieldset']['#access'] = true;
+        $form['custom_general_fieldset'] += $fieldset_disable_email;
+    }
+}
+
+/**
+ * Hat der übergebene Nutzeraccounts den Mail-Empfang akzeptiert?
+ * 
+ * @param StdClass $account
+ * @return boolean
+ */
+function _no_mail_user_has_mail_enabled(StdClass $account) {
+
+    //noch nie eingestellt entspricht: aktiver mail-empfang
+    $value_enable_mail = !isset($account->data['nomailer_enable_emails']);
+
+    if (!$value_enable_mail) {
+        $value_enable_mail = empty($account->data['nomailer_enable_emails']) ? 0 : 1;
+    }
+
+    return $value_enable_mail;
+}
+
+/**
+ * Implements hook_user_presave().
+ * setz den email-empfangs-wert im user-object fuer die darauffolgende speicherung
+ */
+function no_mailer_user_presave(&$edit, $account, $category) {
+    //permissioncheck
+    if (user_access('choose turn_off_email') || user_access('administer users')) {
+        //wert empty: bitte kein mailempfang
+        $edit['data']['nomailer_enable_emails'] = empty($edit['nomailer_enable_emails']) ? 0 : 1;
+        unset($edit['nomailer_enable_emails']);
+    }
+}
+
+/**
+ * hook mail alter - damit kann man den e-mail-versand steuern.
+ * @param array $message
+ * @return type
+ */
+function no_mailer_mail_alter(&$message) {
+    //empfänger
+    $user_mail = $message['to'];
+    $user_acc_to = user_load_by_mail($user_mail);
+
+    //will dieser empfänger mails empfangen? setze allow
+    $allow_mails = $user_acc_to ? _no_mail_user_has_mail_enabled($user_acc_to) : true;
+
+    //user has disagreed on receiving emails. so don't send it.
+    if (!$allow_mails) {
+        //  Prevent the mail from being sent
+        $message['send'] = FALSE;
+    }
+}
+
+/**
+ * Implementation of hook_form_FORM_ID_alter()
+ * //adde validation auf passwort-reset-form
+ * Falls email deaktiviert, geht pw-reset auch nich
+ */
+function no_mailer_form_user_pass_alter(&$form, &$form_state) {
+
+    $form['#validate'][] = '_no_mailer_validate_password_reset';
+}
+
+//validation-funktion aus fkt no_mailer_form_user_pass_alter
+//falls pw-reset fuer user, der keine e-mails empfängt, error-notice statt success.
+function _no_mailer_validate_password_reset(&$form, &$form_state) {
+
+    $user_ident = $form['name']['#value'];
+    $affected_user = user_load_by_mail($user_ident)? : user_load_by_name($user_ident);
+    if ($affected_user && !_no_mail_user_has_mail_enabled($affected_user)) {   //setze error 
+        drupal_set_message(t('Reception of e-mails for %recipient is disabled. Password reset not possible.', array('%recipient' => $user_ident)), 'error');
+    }
+}
