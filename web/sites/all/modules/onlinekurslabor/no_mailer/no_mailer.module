@@ -74,6 +74,12 @@ function _no_mail_user_has_mail_enabled(StdClass $account) {
  * setz den email-empfangs-wert im user-object fuer die darauffolgende speicherung
  */
 function no_mailer_user_presave(&$edit, $account, $category) {
+    //Bei neuem Account zwangsweise auf 1 setzen und Logik beenden
+    if ($account->is_new) {
+        $edit['data']['nomailer_enable_emails'] = 1;
+        return;
+    }
+    //Bereits bestehender ACcount wird editiert
     //permissioncheck
     if (user_access('choose turn_off_email') || user_access('administer users')) {
         //wert empty: bitte kein mailempfang
