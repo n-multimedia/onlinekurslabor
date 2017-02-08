@@ -101,3 +101,18 @@ function _privatemsg_okl_get_navigation_links() {
     }
     return $links;
 }
+
+
+/**
+ * hook_views_api()
+ * Views können per default eintrgäe vom typ node anzeigen. man kann aber auch
+ * custom tables ausgeben. diese muss man in einer separaten datei definieren.
+ * hier wird auf die datei verwiesen
+ * @return type
+ */
+function privatemsg_okl_views_api() {
+    return array(
+        'api' => '3',
+        'path' => drupal_get_path('module','privatemsg_okl'). '/views',
+    );
+}

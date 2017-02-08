@@ -11,6 +11,243 @@ function nm_general_features_views_default_views() {
   $export = array();
 
   $view = new view();
+  $view->name = 'messages_list';
+  $view->description = 'shows the newest private messages';
+  $view->tag = 'default';
+  $view->base_table = 'pm_index';
+  $view->human_name = 'Private Messages - List';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'mini';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '5';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '12';
+  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹';
+  $handler->display->display_options['pager']['options']['tags']['next'] = '›';
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'mid' => 'mid',
+    'realname' => 'realname',
+    'field_photo' => 'field_photo',
+    'subject' => 'subject',
+    'timestamp' => 'timestamp',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'mid' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'realname' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_photo' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'subject' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'timestamp' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  /* Relationship: Private messages: mid */
+  $handler->display->display_options['relationships']['mid']['id'] = 'mid';
+  $handler->display->display_options['relationships']['mid']['table'] = 'pm_index';
+  $handler->display->display_options['relationships']['mid']['field'] = 'mid';
+  $handler->display->display_options['relationships']['mid']['required'] = TRUE;
+  /* Relationship: Private messages: Author */
+  $handler->display->display_options['relationships']['author']['id'] = 'author';
+  $handler->display->display_options['relationships']['author']['table'] = 'pm_message';
+  $handler->display->display_options['relationships']['author']['field'] = 'author';
+  $handler->display->display_options['relationships']['author']['relationship'] = 'mid';
+  $handler->display->display_options['relationships']['author']['required'] = TRUE;
+  /* Relationship: User: Profile */
+  $handler->display->display_options['relationships']['profile']['id'] = 'profile';
+  $handler->display->display_options['relationships']['profile']['table'] = 'users';
+  $handler->display->display_options['relationships']['profile']['field'] = 'profile';
+  $handler->display->display_options['relationships']['profile']['relationship'] = 'author';
+  $handler->display->display_options['relationships']['profile']['label'] = 'Profil';
+  $handler->display->display_options['relationships']['profile']['required'] = TRUE;
+  $handler->display->display_options['relationships']['profile']['bundle_types'] = array(
+    'master' => 'master',
+  );
+  /* Field: Private messages: mid */
+  $handler->display->display_options['fields']['mid']['id'] = 'mid';
+  $handler->display->display_options['fields']['mid']['table'] = 'pm_index';
+  $handler->display->display_options['fields']['mid']['field'] = 'mid';
+  $handler->display->display_options['fields']['mid']['label'] = '(hidden) mid';
+  $handler->display->display_options['fields']['mid']['exclude'] = TRUE;
+  /* Field: Realname: Real name */
+  $handler->display->display_options['fields']['realname']['id'] = 'realname';
+  $handler->display->display_options['fields']['realname']['table'] = 'realname';
+  $handler->display->display_options['fields']['realname']['field'] = 'realname';
+  $handler->display->display_options['fields']['realname']['relationship'] = 'author';
+  $handler->display->display_options['fields']['realname']['label'] = '(hidden) Real name';
+  $handler->display->display_options['fields']['realname']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['realname']['link_to_user'] = FALSE;
+  /* Field: Profile: Foto */
+  $handler->display->display_options['fields']['field_photo']['id'] = 'field_photo';
+  $handler->display->display_options['fields']['field_photo']['table'] = 'field_data_field_photo';
+  $handler->display->display_options['fields']['field_photo']['field'] = 'field_photo';
+  $handler->display->display_options['fields']['field_photo']['relationship'] = 'profile';
+  $handler->display->display_options['fields']['field_photo']['label'] = '';
+  $handler->display->display_options['fields']['field_photo']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_photo']['alter']['path'] = '/messages/view/[mid]';
+  $handler->display->display_options['fields']['field_photo']['alter']['absolute'] = TRUE;
+  $handler->display->display_options['fields']['field_photo']['alter']['alt'] = '[realname]';
+  $handler->display->display_options['fields']['field_photo']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_photo']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_photo']['settings'] = array(
+    'image_style' => 'profile_mini_thumbnail',
+    'image_link' => '',
+  );
+  /* Field: Private messages: Subject */
+  $handler->display->display_options['fields']['subject']['id'] = 'subject';
+  $handler->display->display_options['fields']['subject']['table'] = 'pm_message';
+  $handler->display->display_options['fields']['subject']['field'] = 'subject';
+  $handler->display->display_options['fields']['subject']['relationship'] = 'mid';
+  $handler->display->display_options['fields']['subject']['label'] = '';
+  $handler->display->display_options['fields']['subject']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['subject']['alter']['path'] = '/messages/view/[mid]';
+  $handler->display->display_options['fields']['subject']['alter']['absolute'] = TRUE;
+  $handler->display->display_options['fields']['subject']['element_label_colon'] = FALSE;
+  /* Field: Private messages: timestamp */
+  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['table'] = 'pm_message';
+  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['relationship'] = 'mid';
+  $handler->display->display_options['fields']['timestamp']['label'] = '';
+  $handler->display->display_options['fields']['timestamp']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['timestamp']['date_format'] = 'today time ago';
+  $handler->display->display_options['fields']['timestamp']['second_date_format'] = 'short';
+  /* Sort criterion: Private messages: timestamp */
+  $handler->display->display_options['sorts']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['sorts']['timestamp']['table'] = 'pm_message';
+  $handler->display->display_options['sorts']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['sorts']['timestamp']['relationship'] = 'mid';
+  $handler->display->display_options['sorts']['timestamp']['order'] = 'DESC';
+  /* Contextual filter: Private messages: recipient */
+  $handler->display->display_options['arguments']['recipient']['id'] = 'recipient';
+  $handler->display->display_options['arguments']['recipient']['table'] = 'pm_index';
+  $handler->display->display_options['arguments']['recipient']['field'] = 'recipient';
+  $handler->display->display_options['arguments']['recipient']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['recipient']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['recipient']['default_argument_type'] = 'current_user';
+  $handler->display->display_options['arguments']['recipient']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['recipient']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['recipient']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['recipient']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['recipient']['validate']['type'] = 'user';
+  $handler->display->display_options['arguments']['recipient']['validate']['fail'] = 'empty';
+  /* Contextual filter: Private messages: Author */
+  $handler->display->display_options['arguments']['author']['id'] = 'author';
+  $handler->display->display_options['arguments']['author']['table'] = 'pm_message';
+  $handler->display->display_options['arguments']['author']['field'] = 'author';
+  $handler->display->display_options['arguments']['author']['relationship'] = 'mid';
+  $handler->display->display_options['arguments']['author']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['author']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['author']['default_argument_type'] = 'current_user';
+  $handler->display->display_options['arguments']['author']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['author']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['author']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['author']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['author']['validate']['type'] = 'user';
+  $handler->display->display_options['arguments']['author']['validate']['fail'] = 'empty';
+  $handler->display->display_options['arguments']['author']['not'] = TRUE;
+  /* Filter criterion: only show non-deleted msg */
+  $handler->display->display_options['filters']['deleted']['id'] = 'deleted';
+  $handler->display->display_options['filters']['deleted']['table'] = 'pm_index';
+  $handler->display->display_options['filters']['deleted']['field'] = 'deleted';
+  $handler->display->display_options['filters']['deleted']['ui_name'] = 'only show non-deleted msg';
+  $handler->display->display_options['filters']['deleted']['value']['value'] = '0';
+  $handler->display->display_options['filters']['deleted']['expose']['operator_id'] = 'deleted_op';
+  $handler->display->display_options['filters']['deleted']['expose']['label'] = 'deleted';
+  $handler->display->display_options['filters']['deleted']['expose']['operator'] = 'deleted_op';
+  $handler->display->display_options['filters']['deleted']['expose']['identifier'] = 'deleted';
+  /* Filter criterion: Private messages: is_new */
+  $handler->display->display_options['filters']['is_new']['id'] = 'is_new';
+  $handler->display->display_options['filters']['is_new']['table'] = 'pm_index';
+  $handler->display->display_options['filters']['is_new']['field'] = 'is_new';
+  $handler->display->display_options['filters']['is_new']['operator'] = 'between';
+  $handler->display->display_options['filters']['is_new']['value']['min'] = '0';
+  $handler->display->display_options['filters']['is_new']['value']['max'] = '1';
+  $handler->display->display_options['filters']['is_new']['value']['value'] = '1';
+
+  /* Display: newest unread messages */
+  $handler = $view->new_display('panel_pane', 'newest unread messages', 'messages_unread');
+  $handler->display->display_options['display_description'] = 'List of newest unread messages';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: only show non-deleted msg */
+  $handler->display->display_options['filters']['deleted']['id'] = 'deleted';
+  $handler->display->display_options['filters']['deleted']['table'] = 'pm_index';
+  $handler->display->display_options['filters']['deleted']['field'] = 'deleted';
+  $handler->display->display_options['filters']['deleted']['ui_name'] = 'only show non-deleted msg';
+  $handler->display->display_options['filters']['deleted']['value']['value'] = '0';
+  $handler->display->display_options['filters']['deleted']['expose']['operator_id'] = 'deleted_op';
+  $handler->display->display_options['filters']['deleted']['expose']['label'] = 'deleted';
+  $handler->display->display_options['filters']['deleted']['expose']['operator'] = 'deleted_op';
+  $handler->display->display_options['filters']['deleted']['expose']['identifier'] = 'deleted';
+  /* Filter criterion: Private messages: is_new */
+  $handler->display->display_options['filters']['is_new']['id'] = 'is_new';
+  $handler->display->display_options['filters']['is_new']['table'] = 'pm_index';
+  $handler->display->display_options['filters']['is_new']['field'] = 'is_new';
+  $handler->display->display_options['filters']['is_new']['value']['min'] = '0';
+  $handler->display->display_options['filters']['is_new']['value']['max'] = '1';
+  $handler->display->display_options['filters']['is_new']['value']['value'] = '1';
+  $translatables['messages_list'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹'),
+    t('›'),
+    t('last »'),
+    t('relationship to pm_message'),
+    t('relationship from pm_message (author) to user'),
+    t('Profil'),
+    t('(hidden) mid'),
+    t('(hidden) Real name'),
+    t('[realname]'),
+    t('Alle'),
+    t('deleted'),
+    t('newest unread messages'),
+    t('List of newest unread messages'),
+    t('View panes'),
+  );
+  $export['messages_list'] = $view;
+
+  $view = new view();
   $view->name = 'plattform_log_view';
   $view->description = '';
   $view->tag = 'default';
