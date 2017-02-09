@@ -6,7 +6,13 @@
  * benötigt genau die im Code genannten Feldnamen.
  * 
  */
+
+//für debugging: erstes define auskommentieren, zweites de-kommentieren und ggf sleep-wert setzen
 define('AVATARSERVICE_URL','https://robohash.org/%s?size=400x400&bgset=bg1');
+#define('AVATARSERVICE_URL', url(drupal_get_path('module', 'defaultavatar').'/service_fake/fakeimage.php',
+#        array('absolute'=>true,'query' => array('sleep' => '0'))).'&def=%s');
+
+
 define('AVATARSERVICE_SALT','EMeMH6348v8kYbQH'); 
 /**
  * Implements hook_init().
@@ -15,18 +21,33 @@ function defaultavatar_init() {
   
 }
 
-
+/**
+ * Liefert einen unique-identifier (md5-string) anhand eines User-Accounts 
+ * @param StdClass $user_account
+ * @return String identifier (md5-string)
+ */
  function _DefaultAvatar_getUserIdentifier($user_account)
  {
      return md5($user_account->uid . AVATARSERVICE_SALT);
  }
 
+ /**
+  * liefert komplette URL zu einem user-generateden Bild
+  * anhand des User-Accounts
+  * @param StdClass $user_account
+  * @return string web-url
+  */
 function _DefaultAvatar_getPictureURL($user_account)
 { 
     return sprintf(AVATARSERVICE_URL, _DefaultAvatar_getUserIdentifier($user_account)) ;
 }
 
-/*Funktion, die mit einer User-ID aufgerufen werden kann.*/
+ 
+/**
+ * Setzt ein Default-Profilbild fuer den User mit der user_id
+ * @param int $user_id
+ * @return null
+ */
 function _DefaultAvatar_createDefaultAvatarForUser($user_id)
 {   if (!$user_id) {
         echo "Keine User-ID übergeben!";
@@ -44,9 +65,16 @@ function _DefaultAvatar_createDefaultAvatarForUser($user_id)
     //speichere
     profile2_save($profile);
 }
-/*lädt ein bild herunter und manipuliert das übergebene objekt $profile (muss bereits vom typ master sein) mit entsprechenden einträgen*/
+
+/**
+ * Speichert im übergebenen Profile2-Object ein Userbild, wenn keines gesetzt ist.
+ * Verhindert es, dass ein Userbild gelöscht wird  
+ * lädt ein bild herunter und manipuliert das übergebene objekt $profile (muss bereits vom typ master sein) mit entsprechenden einträgen 
+ * @param StdClass $profile
+ * @return null
+ */
 function _DefaultAvatar_alterProfileWithDefaultAvatar($profile) {
-    //var
+   
     $file = null;
     $account = user_load($profile->uid);
     //kein bild existiert
@@ -60,15 +88,35 @@ function _DefaultAvatar_alterProfileWithDefaultAvatar($profile) {
             $file = file_load($profile->original->field_photo[LANGUAGE_NONE][0]['fid']);
         }
         //altes user-bild geloescht, es wird ein roboter erstellt
-        elseif(isset($profile->original->field_photo) && $profile->original->field_photo[LANGUAGE_NONE][0][filename])
+        elseif(isset($profile->original->field_photo) && !empty($profile->original->field_photo[LANGUAGE_NONE][0][filename]))
         {
               drupal_set_message (t("A default picture was created for you!"));
          
         }
 
-        //download picture
-        if(!$file)
-            $file = system_retrieve_file(_DefaultAvatar_getPictureURL($account), _DefaultAvatar_getPhotoFileSystemtype(). $localfilename, true, FILE_EXISTS_REPLACE);
+        //hier wird vom avatar-service nun ein bild geladen. nach 10 sec bricht es mit timeout ab, um prozessblocken zu vermeiden
+        if (!$file) {
+            // alte version:    $file = system_retrieve_file(_DefaultAvatar_getPictureURL($account), _DefaultAvatar_getPhotoFileSystemtype(). $localfilename, true, FILE_EXISTS_REPLACE);           
+            //setze http-options. Falls robohash down / ueberlastet, nicht ewig warten sondern abbrechen.
+            $http_options = array('method' => 'GET',
+                'timeout' => 10,
+                'max_redirects' => 1,
+                'context' => stream_context_create(array(
+                    'ssl' => array(
+                        'verify_peer' => FALSE,
+                        'verify_peer_name' => FALSE,
+            )))
+            );
+
+            $httprequest_result = drupal_http_request(_DefaultAvatar_getPictureURL($account), $http_options);
+             
+            //in data ist das bild gespeichert, wenn laden nicht abgebrochen hat
+            //zusätzlich header prüfen
+            if (!empty($httprequest_result->data) && strstr($httprequest_result->headers['content-type'],'image')) {
+                file_get_mimetype($uri);
+                $file = file_save_data($httprequest_result->data, _DefaultAvatar_getPhotoFileSystemtype() . $localfilename, FILE_EXISTS_REPLACE);
+            }
+        }
         //fehler beim erstellen, nicht weitermachen
         if (!$file)
             return false;
@@ -106,4 +154,25 @@ function defaultavatar_profile2_presave($profile) {
 function _DefaultAvatar_getPhotoFileSystemtype() {
     $field_info = field_info_field('field_photo');
     return $field_info['settings']['uri_scheme'] . '://';
+}
+
+ 
+
+/**
+ * Erstellt fuer alle User, die kein Avatar-Bild haben,
+ * einen Default.
+ * ÜBERSCHREIBT _NICHT_ BESTEHENDE AVATARE
+ * 
+ * Usage: 
+ * PHP-Code ausführen: _DefaultAvatar_createDefaultForAllUsers()
+ * (Fehler "Keine ID übergeben" kann man ignorieren (liegt am anonymous user))
+ * 
+ * @return null
+ */
+function _DefaultAvatar_createDefaultForAllUsers() {
+    $users = entity_load('user');
+    foreach ($users as $user_id => $user) {
+
+        _DefaultAvatar_createDefaultAvatarForUser($user->uid);
+    }
 }
