@@ -96,9 +96,11 @@ function section_content_node_view($node, $view_mode, $langcode) {
             $view_usage_in->set_display($display_id);
             //ausfuehren des views
             $view_usage_in->execute($display_id);
+            //preview enables ajax-next-pager!!
+            $view_usage_in->preview($display_id);
             //holt anzahl eintraege
             //gibts einträge? dann diese anzeigen; sonst: 404
-                $html_output__view_usage_in .= $view_usage_in->get_title() .( $view_usage_in->total_rows? $view_usage_in->render($display_id):"<br><i>&nbsp;&nbsp;- keine - </i>");
+                $html_output__view_usage_in .= $view_usage_in->get_title() .( $view_usage_in->total_rows? $view_usage_in->render($display_id):"<br><i>&nbsp;&nbsp;- keine - </i><br>");
       
         }
       
