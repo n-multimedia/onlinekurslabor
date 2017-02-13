@@ -93,7 +93,7 @@ function annvid_features_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 4,
+      'weight' => 1,
     ),
   );
 
@@ -151,7 +151,7 @@ function annvid_features_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete_tags',
-      'weight' => 5,
+      'weight' => 3,
     ),
   );
 
@@ -200,7 +200,7 @@ function annvid_features_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 7,
+      'weight' => 5,
     ),
   );
 
@@ -246,10 +246,10 @@ function annvid_features_field_default_field_instances() {
       'active' => 1,
       'module' => 'options',
       'settings' => array(
-        'display_label' => 0,
+        'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 6,
+      'weight' => 4,
     ),
   );
 
@@ -299,7 +299,7 @@ function annvid_features_field_default_field_instances() {
         'og_hide' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 1,
+      'weight' => 6,
     ),
   );
 
@@ -382,7 +382,7 @@ function annvid_features_field_default_field_instances() {
         'multiple_value_widget' => 'table',
       ),
       'type' => 'og_complex',
-      'weight' => 2,
+      'weight' => 7,
     ),
   );
 
