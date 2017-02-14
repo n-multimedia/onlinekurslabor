@@ -2243,7 +2243,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
       unset($f_item);
     }
 
-    $form['#submit'][] = 'section_courses_courses_generic_task_node_form_submit';
+    $form['#submit'][] = '_section_courses_courses_generic_task_node_form_submit';
     $form['#after_build'][] = 'section_courses_courses_generic_task_node_form_after_build';
   }
 
@@ -2470,9 +2470,9 @@ function section_courses_field_widget_form_alter(&$element, &$form_state, $conte
  * @param type $form
  * @param type $form_state
  */
-function section_courses_courses_generic_task_node_form_submit($form, &$form_state) {
+function _section_courses_courses_generic_task_node_form_submit($form, &$form_state) {
 
-
+$form_state['values']['title'] = check_plain($form_state['values']['title']);
   $field_items = &$form_state['values']['field_generic_task_entry'][LANGUAGE_NONE];
   foreach ($field_items as &$f_item) {
     if (is_array($f_item) && isset($f_item['second'])) {
