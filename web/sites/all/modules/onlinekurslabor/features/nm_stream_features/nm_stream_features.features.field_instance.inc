@@ -282,11 +282,14 @@ function nm_stream_features_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 0,
-      'module' => 'og',
+      'module' => 'entityreference',
       'settings' => array(
+        'match_operator' => 'CONTAINS',
         'multiple_value_widget' => 'table',
+        'path' => '',
+        'size' => 60,
       ),
-      'type' => 'og_complex',
+      'type' => 'entityreference_autocomplete',
       'weight' => 6,
     ),
   );

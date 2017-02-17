@@ -859,6 +859,7 @@ function nm_section_courses_features_og_features_default_permissions() {
   $permissions['node:courses_group:update body field'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
+      'member' => 'member',
     ),
   );
 
