@@ -1202,13 +1202,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_cooperation_agreement:update group_content_access field'
-  $permissions['node:projects_cooperation_agreement:update group_content_access field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_cooperation_agreement:update group_group field'
   $permissions['node:projects_cooperation_agreement:update group_group field'] = array(
     'roles' => array(
@@ -1960,15 +1953,6 @@ function section_projects_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:projects_cooperation_agreement:view field_workload field'
   $permissions['node:projects_cooperation_agreement:view field_workload field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-      'member' => 'member',
-      'non-member' => 'non-member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_cooperation_agreement:view group_content_access field'
-  $permissions['node:projects_cooperation_agreement:view group_content_access field'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
       'member' => 'member',
@@ -2768,6 +2752,13 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
+  // Exported og permission: 'node:projects_organization:update field_nm_stream_context field'
+  $permissions['node:projects_organization:update field_nm_stream_context field'] = array(
+    'roles' => array(
+      'member' => 'member',
+    ),
+  );
+
   // Exported og permission: 'node:projects_organization:update field_objective_matching field'
   $permissions['node:projects_organization:update field_objective_matching field'] = array(
     'roles' => array(),
@@ -2942,13 +2933,6 @@ function section_projects_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:projects_organization:update group'
   $permissions['node:projects_organization:update group'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_organization:update group_content_access field'
-  $permissions['node:projects_organization:update group_content_access field'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
     ),
@@ -3410,6 +3394,13 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
+  // Exported og permission: 'node:projects_organization:view field_nm_stream_context field'
+  $permissions['node:projects_organization:view field_nm_stream_context field'] = array(
+    'roles' => array(
+      'member' => 'member',
+    ),
+  );
+
   // Exported og permission: 'node:projects_organization:view field_objective_matching field'
   $permissions['node:projects_organization:view field_objective_matching field'] = array(
     'roles' => array(),
@@ -3677,15 +3668,6 @@ function section_projects_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:projects_organization:view field_workload field'
   $permissions['node:projects_organization:view field_workload field'] = array(
-    'roles' => array(
-      'administrator member' => 'administrator member',
-      'member' => 'member',
-      'non-member' => 'non-member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_organization:view group_content_access field'
-  $permissions['node:projects_organization:view group_content_access field'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
       'member' => 'member',

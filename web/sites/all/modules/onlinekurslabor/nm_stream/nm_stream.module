@@ -10,9 +10,12 @@ define('NM_STREAM_COURSE', 3);
 define('NM_STREAM_PUBLIC', 4);
 //Projects Blog
 define('NM_STREAM_PROJECT', 5);
+//Domain (annvid)
+define('NM_STREAM_DOMAIN', 6);
 
 define('NM_STREAM_ALLOWED_HTML_TAGS', serialize(array('a', 'em', 'b','u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
     'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot')));
+
 
 /**
  * Implements hook_block_info().
@@ -62,9 +65,15 @@ function nm_stream_theme() {
 
 function nm_stream_menu() {
 
-  $items['nm_stream/node/add/%'] = array(
+  $items['admin/nm_stream/consistency_check'] = array(
+    'title' => 'NM Stream Consistency Check',
+    'page callback' => 'nm_stream_consistency_check_callback',
+    'access arguments' => array('administer content types'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['nm_stream/node/add'] = array(
     'title' => 'Add NM Stream Node',
-    'page arguments' => array(3),
     'page callback' => 'nm_stream_nm_stream_node_add_callback',
     'access callback' => 'nm_stream_user_has_role',
     'access arguments' => array(array('authenticated user')),
@@ -184,7 +193,14 @@ function nm_stream_user_has_role($roles) {
   }
 }
 
-function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON', $types = array('nm_stream', 'projects_blog')) {
+/**
+ * get node updates
+ * @param $nid
+ * @param string $format
+ */
+function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
+
+  $types = nm_stream_get_stream_content_types();
 
   //NODES
   //new added nodes
@@ -214,12 +230,42 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON', $t
     //if we are in a special context e.g. course group, we just want to see
     //filtered entries which are assign to this group
     //for now we only have course groups as special context
+    //27.01.2017 - 11:14 - SN
+    //now we also have annvid as special context
 
-    $context = nm_stream_og_context();
+    $environment = nm_stream_get_environment();
+    $context = $environment["context"];
+    $container = $environment["container"];
+
     if (!empty($context)) {
-      $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
-      $query->condition('og_membership_node.gid', $context->nid);
+      if($context->type == NM_CONTENT_DOMAIN) {
+        //in case of Domains, we just want to see content wich has the privacy setting DOMAIN or PRIVATE
+        //e.g. NM_STREAM created in course context and privacy setting DOMAIN or PRIVATE
+        //NOT: NM_STREAM created in course context having privacy setting CROUSE GROUP or COURSE
+        $query->join('field_data_field_nm_privacy', 'field_data_field_nm_privacy', "n.nid = field_data_field_nm_privacy.entity_id  AND field_data_field_nm_privacy.entity_type = 'node'"); //JOIN
+        $query->condition('field_data_field_nm_privacy.field_nm_privacy_value', array(NM_STREAM_PRIVATE, NM_STREAM_DOMAIN), "IN");
+
+      }else {
+        //In Course, we need to get stream entries from domain and course contexts!
+        if ($context->type == NM_COURSE) {
+          $domain_id = _section_courses_course_get_domain_id($context);
+          $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
+          $query->condition('og_membership_node.gid', array($domain_id, $context->nid), "IN");
+        }
+        else {
+          $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
+          $query->condition('og_membership_node.gid', $context->nid);
+        }
+
+      }
+
     }
+
+    if (!empty($container)) {
+      $query->join('og_membership', 'og_membership', "n.nid = og_membership.etid AND og_membership.entity_type = 'node'"); //JOIN
+      $query->condition('og_membership.gid', $container->nid);
+    }
+
 
     $results = $query->execute()->fetchAll();
 
@@ -440,9 +486,11 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON', $t
 function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
   global $user;
 
-  $context = nm_stream_og_context();
+  $environment = nm_stream_get_environment();
+  $context = $environment['context'];
+  $container = $environment['container'];
 
-  if (empty($context)) {
+  if (empty($container)) {
 
     drupal_set_message('NM Stream Entry could not be created. No context is set!', 'error');
     return false;
@@ -533,8 +581,12 @@ function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
   $node->comment = 2; // 0 = comments disabled, 1 = read only, 2 = read/write
 
   $node = node_submit($node); // Prepare node for saving
-  //attach to group
-  $node->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $context->nid;
+  //attach to context and group
+  if(!empty($context->nid)){
+    $node->field_nm_stream_context[LANGUAGE_NONE][0]['target_id'] = $context->nid;
+  }
+
+  $node->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $container->nid;
   //group content visibility
   $node->group_content_access[LANGUAGE_NONE][0]['value'] = OG_CONTENT_ACCESS_PRIVATE;
 
@@ -653,7 +705,7 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
     }
   }
   else {
-    $node_edit_form = theme('nm_stream_stream_node_form', array('node' => $node, 'type' => $type));
+    $node_edit_form = theme('nm_stream_stream_node_form', array('node' => $node));
 
     $response['status'] = 1;
     $response['node_edit_form'] = $node_edit_form;
@@ -1037,13 +1089,14 @@ function nm_stream_preprocess_node(&$vars) {
 
     //if we are in another context we need to
     $vars['nm_context'] = '';
-    $active_context = nm_stream_og_context();
+    $active_context = nm_stream_get_environment();
+    $container = $active_context['container'];
     $node_context = _custom_general_get_group($node);
 
     //dpm($active_context);
     //dpm($node_context);
 
-    if (empty($active_context) || $node_context != $active_context->nid) {
+    if (empty($container) || $node_context != $container->nid) {
       if(!empty($node_context)) {
         $node_context_node = node_load($node_context);
         $vars['nm_context'] = 'Beitrag aus: ' . l($node_context_node->title, 'node/' . $node_context_node->nid, array('fragment' => 'node-' . $node->nid));
@@ -1185,10 +1238,11 @@ function nm_stream_preprocess_nm_stream_stream_node_form(&$vars, $hook) {
 
   //$vars['type']
   if (empty($vars['context'])) {
-    $context = nm_stream_og_context();
+    $context = nm_stream_get_environment();
+    $container = $context['container'];
   }
 
-  if (empty($context) && empty($vars['node'])) {
+  if (empty($container) && empty($vars['node'])) {
 
     $vars['nm_error'] = 'NM Stream Form could not be created. No context is set!';
     drupal_set_message('NM Stream Form could not be created. No context is set!', 'error');
@@ -1199,6 +1253,8 @@ function nm_stream_preprocess_nm_stream_stream_node_form(&$vars, $hook) {
   $node = NULL;
   if (!empty($vars['node'])) {
     $node = $vars['node'];
+  }else {
+    $node = $container;
   }
 
   /*
@@ -1217,7 +1273,7 @@ function nm_stream_preprocess_nm_stream_stream_node_form(&$vars, $hook) {
   $vars['nm_node_form_dummy'] = 'Beitrag hinzufügen...';
 
 
-  $vars['nm_privacy'] = _nm_stream_render_privacy_widget($node, $vars['type']);
+  $vars['nm_privacy'] = _nm_stream_render_privacy_widget($node);
 }
 
 /*
@@ -1225,18 +1281,18 @@ function nm_stream_preprocess_nm_stream_stream_node_form(&$vars, $hook) {
  * get active context which the new node will be assigned to
  */
 
-function nm_stream_og_context() {
+function nm_stream_get_environment() {
   $context = array();
+  $context['container'] = NULL;
+  $context['context'] = NULL;
 
-  /*
-   * todo
-   * move this part to an independent module (hook)
-   * section_courses
-   */
-
-  $active_course = _section_courses_get_active_course();
-  $active_project = section_projects_get_active_project();
-
+  if( $active_course = _section_courses_get_active_course()) {
+    $context['context'] = $active_course;
+  }else if($active_project = section_projects_get_active_project()) {
+    $context['context'] = $active_project;
+  }else if($active_domain = _section_content_get_active_domain()) {
+    $context['context'] = $active_domain;
+  }
 
   //anvid_content
   $active_annvid = node_load(arg(1));
@@ -1244,14 +1300,14 @@ function nm_stream_og_context() {
     $active_annvid = node_load(arg(2));
   }
   if ($active_annvid->type == ANNVID_CONTENTTYPE) {
-    return $active_annvid;
+    $context['container'] = $active_annvid;
+    return $context;
   }
-
 
   if ($active_course) {
     if (_section_course_course_group_visible()) {
       //course_group_nid  /course/groups/%course_nid/%group_nid/
-      $context = node_load(arg(3));
+      $context['container'] = node_load(arg(3));
     }
 
     if(arg(1) == "text" && is_numeric(arg(3))){
@@ -1259,12 +1315,12 @@ function nm_stream_og_context() {
       $tmp_node = node_load(arg(3));
 
       if ($tmp_node->type == ANNVID_CONTENTTYPE) {
-        $context = $tmp_node;
+        $context['container'] = $tmp_node;
       }
     }
   }
   else if ($active_project) {
-    $context = node_load(arg(5));
+    $context['container'] = node_load(arg(5));
   }
   else {
     //check referer url
@@ -1280,16 +1336,20 @@ function nm_stream_og_context() {
       //dpm($referer_url['path']);
       //dpm(arg(3, $referer_url['path']));
       if (_section_domain_author_section_active($referer_url['path'])) {
-        $context = node_load(arg(2, $referer_url['path']));
+        $context['container'] = node_load(arg(2, $referer_url['path']));
+        $context['context'] =  node_load(_custom_general_get_group($context['container'], TRUE));
       }
       elseif (_section_course_course_group_visible($referer_url['path'])) {
-        $context = node_load(arg(3, $referer_url['path']));
+        $context['container'] = node_load(arg(3, $referer_url['path']));
+        $context['context'] =  node_load(_custom_general_get_group($context['container'], TRUE));
       }elseif (_section_course_text_visible($referer_url['path'])) {
-        $context = node_load(arg(3, $referer_url['path']));
+        $context['container'] = node_load(arg(3, $referer_url['path']));
+        $context['context'] =  node_load(arg(2, $referer_url['path']));
       }
       elseif (_section_projects_cockpit_visible($referer_url['path'])) {
         //project section
-        $context = node_load(arg(5, $referer_url['path']));
+        $context['container'] = node_load(arg(5, $referer_url['path']));
+        $context['context'] =  node_load(arg(2, $referer_url['path']));
       }
       else {
         //annvid node
@@ -1298,7 +1358,7 @@ function nm_stream_og_context() {
           $active_annvid_nid = arg(1, $referer_url['path']);
           $active_annvid = node_load($active_annvid_nid);
           if (!empty($active_annvid) && $active_annvid->type == ANNVID_CONTENTTYPE) {
-            $context = node_load($active_annvid_nid);
+            $context['container'] = node_load($active_annvid_nid);
           }
         }
       }
@@ -1312,9 +1372,9 @@ function nm_stream_og_context() {
   return $context;
 }
 
-function _nm_stream_render_privacy_widget($node, $type) {
+function _nm_stream_render_privacy_widget($node) {
 
-  $privacy_options = _nm_stream_privacy_options($type);
+  $privacy_options = _nm_stream_privacy_options();
 
   $result = '';
   if ($node) {
@@ -1377,8 +1437,6 @@ function nm_stream_init() {
  */
 function _nm_stream_privacy_options($type = 'nm_stream') {
 
-
-
   //04.06.2014 - 18:12 - SN
   //dynamic privacy settings for blog entries
 
@@ -1386,45 +1444,118 @@ function _nm_stream_privacy_options($type = 'nm_stream') {
   //permission options depending on current context (og group)
   $options_items = array();
 
+  $context = nm_stream_get_environment();
+
+  //private - always possible
   $options_items[NM_STREAM_PRIVATE] = array(
     'label' => t('Private'),
     'icon_path' => $module_path . '/images/privacy-icons/privacy-private.png',
     'default' => FALSE,
   );
 
-  $options_items[NM_STREAM_TEAM] = array(
-    'label' => t('Team'),
-    'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
-    'default' => FALSE,
-  );
-
-  switch ($type) {
-    case 'nm_stream':
-      $options_items[NM_STREAM_TEAM]['default'] = TRUE;
-
-      $options_items[NM_STREAM_COURSE] = array(
-        'label' => t('Course'),
-        'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
-        'default' => FALSE,
-      );
-      break;
-    case 'projects_blog':
-      $options_items[NM_STREAM_PROJECT] = array(
-        'label' => t('Project'),
-        'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
-        'default' => TRUE,
-      );
-      break;
+  //set privacy setting depending on context and container
+  if (empty($context['context'])) {
+    //context is empty
+    switch ($context['container']->type) {
+      case NM_COURSE:
+      case NM_COURSE_GROUP:
+        $options_items[NM_STREAM_TEAM] = array(
+          'label' => t('Team'),
+          'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+          'default' => FALSE,
+        );
+        $options_items[NM_STREAM_COURSE] = array(
+          'label' => t('Course'),
+          'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+          'default' => FALSE,
+        );
+        break;
+      case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
+        $options_items[NM_STREAM_TEAM] = array(
+          'label' => t('Team'),
+          'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+          'default' => FALSE,
+        );
+        $options_items[NM_STREAM_PROJECT] = array(
+          'label' => t('Project'),
+          'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+          'default' => TRUE,
+        );
+        break;
+      case NM_CONTENT_DOMAIN:
+        $options_items[NM_STREAM_DOMAIN] = array(
+          'label' => t('Domain'),
+          'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
+          'default' => TRUE,
+        );
+        break;
+      case ANNVID_CONTENTTYPE:
+        //only private is possible, without context..
+        break;
+    }
   }
+  else {
+    //context is not empty
+    switch ($context['context']->type) {
+      case NM_CONTENT_DOMAIN:
+        switch ($context['container']->type) {
+          case ANNVID_CONTENTTYPE:
+            $options_items[NM_STREAM_DOMAIN] = array(
+              'label' => t('Domain'),
+              'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
+              'default' => FALSE,
+            );
+            break;
+        }
+        break;
+      case NM_COURSE:
+        switch ($context['container']->type) {
+          case ANNVID_CONTENTTYPE:
+            $options_items[NM_STREAM_COURSE] = array(
+              'label' => t('Course'),
+              'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+              'default' => FALSE,
+            );
+            $options_items[NM_STREAM_DOMAIN] = array(
+              'label' => t('Domain'),
+              'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
+              'default' => FALSE,
+            );
+            break;
+          case NM_COURSE_GROUP:
+            $options_items[NM_STREAM_TEAM] = array(
+              'label' => t('Team'),
+              'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+              'default' => FALSE,
+            );
+            $options_items[NM_STREAM_COURSE] = array(
+              'label' => t('Course'),
+              'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+              'default' => FALSE,
+            );
+            break;
 
+        }
+        break;
+      case NM_PROJECTS_RROJEKTORGANISATION:
+        switch ($context['container']->type) {
+          case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
+            $options_items[NM_STREAM_TEAM] = array(
+              'label' => t('Team'),
+              'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+              'default' => FALSE,
+            );
+            $options_items[NM_STREAM_PROJECT] = array(
+              'label' => t('Project'),
+              'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+              'default' => FALSE,
+            );
+            break;
 
-  $options_items[NM_STREAM_PUBLIC] = array(
-    'label' => t('Public'),
-    'icon_path' => $module_path . '/images/privacy-icons/privacy-public.png',
-    'default' => FALSE,
-  );
-
-
+        }
+        break;
+    }
+  }
 
   return $options_items;
 }
@@ -1503,14 +1634,53 @@ function _nm_stream_get_action_links($content) {
  * @param string $context : a node-id
  * @return string gui
  */
-function _nm_stream_get_renderedGUI($context)
+function _nm_stream_get_renderedGUI($environment)
 {
 
   $ret = _nm_stream_form_add_edit_view();
 
   $my_view_name = 'nm_stream';
   $my_display_name = 'panel_pane_1';
-  $args = array($context);
+
+
+  if (!empty($environment['context']->nid)) {
+    //in course context we need to add the domain context
+    if (_section_course_text_visible()) {
+      //additional context domain here
+      $course = _section_courses_get_active_course();
+      $domain_id = _section_courses_course_get_domain_id($course);
+      $args = array(
+        $environment['context']->nid . "+" . $domain_id,
+        $environment['container']->nid,
+        NULL,
+      );
+    }
+    else {
+      //we are in domain context
+      //we want to see nm_stream
+      //  - with context of the current domain
+      //  - with context of course and privacy setting PRIVATE or DOMAIN
+      if($active_domain = _section_content_get_active_domain()) {
+        $args = array(
+          "all",
+          $environment['container']->nid,
+          NM_STREAM_PRIVATE. "+" . NM_STREAM_DOMAIN
+        );
+      }
+      else {
+        $args = array(
+          $environment['context']->nid,
+          $environment['container']->nid,
+          NULL
+        );
+      }
+
+    }
+  }else {
+    $args = array(NULL, $environment['container']->nid);
+  }
+
+  dpm($args);
 
   $my_view = views_get_view($my_view_name);
   if (is_object($my_view)) {
@@ -1717,8 +1887,6 @@ function nm_stream_node_presave($node) {
   }
 }
 
-
-
 /**
  * how to write to filesystem
  * @return string filesystemstring
@@ -1726,4 +1894,66 @@ function nm_stream_node_presave($node) {
 function _nm_stream_getAttachmentFileSystemtype() {
     $field_info = field_info_field('field_nm_attachments');
     return $field_info['settings']['uri_scheme'] . '://';
+}
+
+/**
+ * check if there is inconsistency in nm_stream data-structure
+ * used to check consistency status of nm_stream nodes before alpha7 deplo
+ */
+function nm_stream_consistency_check_callback() {
+
+  $results = db_select('node', 'n')
+    ->fields('n', array("nid"))
+    ->condition('type', 'nm_stream')
+    ->execute()
+    ->fetchAllKeyed(0, 0);
+  $loaded_nodes = node_load_multiple($results);
+
+  $inconsistency_header = array("node", "reason");
+  $inconsistency_rows = array();
+
+  $processed_nodes = array();
+
+  foreach ($loaded_nodes as $node) {
+    $processed_nodes[] = $node->nid;
+
+    $container = $node->og_group_ref;
+
+    if (!empty($container[LANGUAGE_NONE][0]['target_id'])) {
+      $type = _custom_general_get_node_type($container[LANGUAGE_NONE][0]['target_id']);
+
+      if ($type == NM_COURSE_GROUP) {
+        if (!empty($node->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
+          $context_nid = $node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        }
+
+      }
+      else {
+        //doestn make sense anymore
+        //we re using another CT project_blog for this purpose
+        if ($type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
+          if (!empty($node->field_ca_course_group_ref)) {
+            $course_group_nid = $node->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
+            $course_group = node_load($course_group_nid);
+            $context_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+          }
+        }
+      }
+    }else {
+      $inconsistency_rows[] = array($node->nid, "No Container is set!");
+    }
+  }
+
+  if (!node_load($context_nid)) {
+    $inconsistency_rows[] = array($node->nid, "No valid context found!");
+  }
+
+  return  theme('table', array('header' => $inconsistency_header, 'rows' => $inconsistency_rows)) . "<br> <h2>Processed</h2><p>" . implode($processed_nodes, ", ")."</p>";
+}
+
+/**
+ *
+ */
+function nm_stream_get_stream_content_types() {
+  return array('nm_stream', 'projects_blog');
 }

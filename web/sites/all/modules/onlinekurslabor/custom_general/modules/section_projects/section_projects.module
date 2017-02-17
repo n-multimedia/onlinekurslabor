@@ -674,12 +674,12 @@ function _section_projects_header_and_navigation_view() {
       if ($po_node->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
         $ca = $po_node;
         $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
-        $partner_nid = _custom_general_get_group($proposal);
+        $partner_nid = _custom_general_get_group($proposal, TRUE);
         $po_node = node_load($partner_nid);
       }
       else if ($po_node->type == NM_PROJECTS_PROJEKTVORSCHLAG) {
         $proposal = $po_node;
-        $partner_nid = _custom_general_get_group($proposal);
+        $partner_nid = _custom_general_get_group($proposal, TRUE);
         $po_node = node_load($partner_nid);
       }
       else if (in_array($po_node->type, array(NM_PROJECTS_ZIELVEREINBARUNG, NM_PROJECTS_DOKUMENTATION, NM_PROJECTS_TAGEBUCH))) {
@@ -692,7 +692,7 @@ function _section_projects_header_and_navigation_view() {
         }
 
         $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
-        $partner_nid = _custom_general_get_group($proposal);
+        $partner_nid = _custom_general_get_group($proposal, TRUE);
         $po_node = node_load($partner_nid);
       }
     }
@@ -880,7 +880,7 @@ function _section_projects_project_cockpit_tabs_view_static() {
 
         $ca = $po_node;
         $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
-        $partner_nid = _custom_general_get_group($proposal);
+        $partner_nid = _custom_general_get_group($proposal, TRUE);
         $po_node = node_load($partner_nid);
     } else if (in_array($po_node->type, array(NM_PROJECTS_ZIELVEREINBARUNG, NM_PROJECTS_DOKUMENTATION, NM_PROJECTS_TAGEBUCH))) {
 
@@ -899,7 +899,7 @@ function _section_projects_project_cockpit_tabs_view_static() {
         }
 
         $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
-        $partner_nid = _custom_general_get_group($proposal);
+        $partner_nid = _custom_general_get_group($proposal, TRUE);
         $po_node = node_load($partner_nid);
     }
 
@@ -1285,11 +1285,8 @@ function _section_projects_tools_access($account = NULL) {
 }
 
 /**
- * Liefert was zurueck, was zum derzeit gewählten Projekt gehoert. Kann 
- * NM_PROJECTS_KOOPERATIONSVEREINBARUNG , NM_PROJECTS_TAGEBUCH
- * NM_PROJECTS_ZIELVEREINBARUNG, NM_PROJECTS_DOKUMENTATION sein
+ * Liefert das aktive Projekt zurück
  *
- * @deprecated Don't use - code will be difficult
  * @return StdClass $something 
  */
 function section_projects_get_active_project($reset = FALSE) {
@@ -1307,7 +1304,7 @@ function section_projects_get_active_project($reset = FALSE) {
         $project = node_load($query['field_partner_organization_ref']);
       }else if(arg(3) == 'projects_objective' || arg(3) == 'projects_documentation') {
         $proposal = node_load($query['field_ca_ref']);
-        $partner_nid = _custom_general_get_group($proposal);
+        $partner_nid = _custom_general_get_group($proposal, TRUE);
         $project = node_load($partner_nid);
       }else {
         $project = node_load(@$query['og_group_ref']?: $query['field_ca_ref']);
@@ -1394,7 +1391,7 @@ function section_projects_url_outbound_alter(&$path, &$options, &$original_path)
         else if ($type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
           $ca = node_load($nid);
           $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
-          $partner_nid = _custom_general_get_group($proposal);
+          $partner_nid = _custom_general_get_group($proposal, TRUE);
           $path = "projects/partners/" . $partner_nid . "/" . $proposal->nid . "/cockpit/" . $nid;
         }
         else if ($type == NM_PROJECTS_ZIELVEREINBARUNG) {
@@ -1412,7 +1409,7 @@ function section_projects_url_outbound_alter(&$path, &$options, &$original_path)
           }
 
           $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
-          $partner_nid = _custom_general_get_group($proposal);
+          $partner_nid = _custom_general_get_group($proposal, TRUE);
           //$po_node = node_load($partner_nid);
 
           $path = "projects/partners/" . $partner_nid . "/" . $proposal->nid . "/cockpit/" . $ca->nid;
@@ -1429,7 +1426,7 @@ function section_projects_url_outbound_alter(&$path, &$options, &$original_path)
           }
 
           $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
-          $partner_nid = _custom_general_get_group($proposal);
+          $partner_nid = _custom_general_get_group($proposal, TRUE);
           //$po_node = node_load($partner_nid);
 
           $path = "projects/partners/" . $partner_nid . "/" . $proposal->nid . "/cockpit/" . $ca->nid;
@@ -1526,7 +1523,7 @@ function projects_cockpit_main_durchfuehrung_view() {
 
   //dpm($p_proposal);
   //submit form
-  $output .= theme('nm_stream_stream_node_form', array('node' => NULL, 'type' => 'projects_blog'));
+  $output .= theme('nm_stream_stream_node_form', array('node' => NULL));
 
   $view_name = 'projects_tagebucheintr_ge';
   $display_name = 'panel_proposal_blogs_entries';

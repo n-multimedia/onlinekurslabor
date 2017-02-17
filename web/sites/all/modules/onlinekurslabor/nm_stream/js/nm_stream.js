@@ -213,6 +213,7 @@
                                     //display new Post
                                     var new_node = $('.pane-nm-stream .view-content .views-row').first().prepend($(data.node).fadeIn());
                                     //fix, new nodes could not be edited without views-row div around
+
                                     //attach behavior
                                     Drupal.attachBehaviors(new_node);
                                 }

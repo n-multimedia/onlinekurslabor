@@ -346,6 +346,13 @@ function nm_section_courses_features_og_features_default_permissions() {
     ),
   );
 
+  // Exported og permission: 'node:courses_course:update field_nm_stream_context field'
+  $permissions['node:courses_course:update field_nm_stream_context field'] = array(
+    'roles' => array(
+      'member' => 'member',
+    ),
+  );
+
   // Exported og permission: 'node:courses_course:update field_short_description field'
   $permissions['node:courses_course:update field_short_description field'] = array(
     'roles' => array(
@@ -549,6 +556,13 @@ function nm_section_courses_features_og_features_default_permissions() {
       'kurs-tutor' => 'kurs-tutor',
       'member' => 'member',
       'non-member' => 'non-member',
+    ),
+  );
+
+  // Exported og permission: 'node:courses_course:view field_nm_stream_context field'
+  $permissions['node:courses_course:view field_nm_stream_context field'] = array(
+    'roles' => array(
+      'member' => 'member',
     ),
   );
 

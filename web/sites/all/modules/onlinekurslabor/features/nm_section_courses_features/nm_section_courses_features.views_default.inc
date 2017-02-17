@@ -51,7 +51,7 @@ function nm_section_courses_features_views_default_views() {
       'empty_column' => 0,
     ),
   );
-  /* Relationship: OG membership: OG membership from Node */
+  /* Relationship: OG membership: OG membership from Beitrag */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
@@ -298,22 +298,21 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Relationship: OG membership: User from OG membership */
+  /* Relationship: OG membership: Benutzer from OG membership */
   $handler->display->display_options['relationships']['og_membership_related_user']['id'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
-  /* Relationship: User: Profile */
+  /* Relationship: User: Profil */
   $handler->display->display_options['relationships']['profile']['id'] = 'profile';
   $handler->display->display_options['relationships']['profile']['table'] = 'users';
   $handler->display->display_options['relationships']['profile']['field'] = 'profile';
   $handler->display->display_options['relationships']['profile']['relationship'] = 'og_membership_related_user';
-  $handler->display->display_options['relationships']['profile']['label'] = 'Profil';
   $handler->display->display_options['relationships']['profile']['required'] = TRUE;
   $handler->display->display_options['relationships']['profile']['bundle_types'] = array(
     'master' => 'master',
   );
-  /* Relationship: OG membership: Group Node from OG membership */
+  /* Relationship: OG membership: Group Beitrag from OG membership */
   $handler->display->display_options['relationships']['og_membership_related_node_group']['id'] = 'og_membership_related_node_group';
   $handler->display->display_options['relationships']['og_membership_related_node_group']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_membership_related_node_group']['field'] = 'og_membership_related_node_group';
@@ -326,7 +325,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['relationships']['og_group_ref_target_id']['relationship'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_group_ref_target_id']['label'] = 'Course Inhalt entity referenced from og_group_ref';
   $handler->display->display_options['relationships']['og_group_ref_target_id']['required'] = TRUE;
-  /* Relationship: OG membership: OG membership from Node group */
+  /* Relationship: OG membership: OG membership from Beitrag group */
   $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
@@ -409,7 +408,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['uid']['link_to_user'] = FALSE;
-  /* Field: Profile: Foto */
+  /* Field: Profil: Foto */
   $handler->display->display_options['fields']['field_photo']['id'] = 'field_photo';
   $handler->display->display_options['fields']['field_photo']['table'] = 'field_data_field_photo';
   $handler->display->display_options['fields']['field_photo']['field'] = 'field_photo';
@@ -519,7 +518,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = 'Bis jetzt wurden noch keine Kursgruppen angelegt.';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
-  /* Relationship: OG membership: OG membership from Node */
+  /* Relationship: OG membership: OG membership from Beitrag */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
@@ -561,7 +560,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = 'Name der Kursgruppe';
-  /* Field: Content: Body */
+  /* Field: Beitrag: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -573,7 +572,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['view']['label'] = 'Teilnehmer';
   $handler->display->display_options['fields']['view']['view'] = 'courses_admin_course_members';
   $handler->display->display_options['fields']['view']['arguments'] = '[!nid]';
-  /* Field: Content: Projektvorschlag */
+  /* Field: Beitrag: Projektvorschlag */
   $handler->display->display_options['fields']['field_course_group_proposal']['id'] = 'field_course_group_proposal';
   $handler->display->display_options['fields']['field_course_group_proposal']['table'] = 'field_data_field_course_group_proposal';
   $handler->display->display_options['fields']['field_course_group_proposal']['field'] = 'field_course_group_proposal';
@@ -826,16 +825,15 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['footer']['result']['field'] = 'result';
   $handler->display->display_options['footer']['result']['empty'] = TRUE;
   $handler->display->display_options['footer']['result']['content'] = 'Teilnehmer @start - @end aus insgesamt @total';
-  /* Relationship: User: Profile */
+  /* Relationship: User: Profil */
   $handler->display->display_options['relationships']['profile']['id'] = 'profile';
   $handler->display->display_options['relationships']['profile']['table'] = 'users';
   $handler->display->display_options['relationships']['profile']['field'] = 'profile';
-  $handler->display->display_options['relationships']['profile']['label'] = 'Profil';
   $handler->display->display_options['relationships']['profile']['required'] = TRUE;
   $handler->display->display_options['relationships']['profile']['bundle_types'] = array(
     'student' => 'student',
   );
-  /* Relationship: OG membership: OG membership from User */
+  /* Relationship: OG membership: OG membership from Benutzer */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'users';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
@@ -846,7 +844,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['relationships']['og_users_roles']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_users_roles']['field'] = 'og_users_roles';
   $handler->display->display_options['relationships']['og_users_roles']['relationship'] = 'og_membership_rel';
-  /* Relationship: User: Profile */
+  /* Relationship: User: Profil */
   $handler->display->display_options['relationships']['profile_1']['id'] = 'profile_1';
   $handler->display->display_options['relationships']['profile_1']['table'] = 'users';
   $handler->display->display_options['relationships']['profile_1']['field'] = 'profile';
@@ -907,7 +905,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['uid']['label'] = '';
   $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
-  /* Field: Profile: Foto */
+  /* Field: Profil: Foto */
   $handler->display->display_options['fields']['field_photo']['id'] = 'field_photo';
   $handler->display->display_options['fields']['field_photo']['table'] = 'field_data_field_photo';
   $handler->display->display_options['fields']['field_photo']['field'] = 'field_photo';
@@ -919,7 +917,7 @@ function nm_section_courses_features_views_default_views() {
     'image_style' => 'profile_mini_thumbnail',
     'image_link' => '',
   );
-  /* Field: Profile: Vorname */
+  /* Field: Profil: Vorname */
   $handler->display->display_options['fields']['field_first_name_1']['id'] = 'field_first_name_1';
   $handler->display->display_options['fields']['field_first_name_1']['table'] = 'field_data_field_first_name';
   $handler->display->display_options['fields']['field_first_name_1']['field'] = 'field_first_name';
@@ -927,7 +925,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['field_first_name_1']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['field_first_name_1']['alter']['path'] = 'user/[uid]';
   $handler->display->display_options['fields']['field_first_name_1']['alter']['absolute'] = TRUE;
-  /* Field: Profile: Nachname */
+  /* Field: Profil: Nachname */
   $handler->display->display_options['fields']['field_last_name_1']['id'] = 'field_last_name_1';
   $handler->display->display_options['fields']['field_last_name_1']['table'] = 'field_data_field_last_name';
   $handler->display->display_options['fields']['field_last_name_1']['field'] = 'field_last_name';
@@ -953,20 +951,20 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['og_roles']['field'] = 'og_roles';
   $handler->display->display_options['fields']['og_roles']['relationship'] = 'og_membership_rel';
   $handler->display->display_options['fields']['og_roles']['label'] = 'Kurs-Rolle';
-  /* Field: Profile: Matrikelnummer */
+  /* Field: Profil: Matrikelnummer */
   $handler->display->display_options['fields']['field_matrikelnummer_varchar']['id'] = 'field_matrikelnummer_varchar';
   $handler->display->display_options['fields']['field_matrikelnummer_varchar']['table'] = 'field_data_field_matrikelnummer_varchar';
   $handler->display->display_options['fields']['field_matrikelnummer_varchar']['field'] = 'field_matrikelnummer_varchar';
   $handler->display->display_options['fields']['field_matrikelnummer_varchar']['relationship'] = 'profile';
   $handler->display->display_options['fields']['field_matrikelnummer_varchar']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_matrikelnummer_varchar']['type'] = 'text_plain';
-  /* Field: Profile: Hochschule */
+  /* Field: Profil: Hochschule */
   $handler->display->display_options['fields']['field_hochschule']['id'] = 'field_hochschule';
   $handler->display->display_options['fields']['field_hochschule']['table'] = 'field_data_field_hochschule';
   $handler->display->display_options['fields']['field_hochschule']['field'] = 'field_hochschule';
   $handler->display->display_options['fields']['field_hochschule']['relationship'] = 'profile';
   $handler->display->display_options['fields']['field_hochschule']['type'] = 'taxonomy_term_reference_plain';
-  /* Field: Profile: Studienfach */
+  /* Field: Profil: Studienfach */
   $handler->display->display_options['fields']['field_studienfach']['id'] = 'field_studienfach';
   $handler->display->display_options['fields']['field_studienfach']['table'] = 'field_data_field_studienfach';
   $handler->display->display_options['fields']['field_studienfach']['field'] = 'field_studienfach';
@@ -1263,7 +1261,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['uid']['label'] = '';
   $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
-  /* Field: Profile: Foto */
+  /* Field: Profil: Foto */
   $handler->display->display_options['fields']['field_photo']['id'] = 'field_photo';
   $handler->display->display_options['fields']['field_photo']['table'] = 'field_data_field_photo';
   $handler->display->display_options['fields']['field_photo']['field'] = 'field_photo';
@@ -1296,20 +1294,20 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['og_roles']['field'] = 'og_roles';
   $handler->display->display_options['fields']['og_roles']['relationship'] = 'og_membership_rel';
   $handler->display->display_options['fields']['og_roles']['label'] = 'Kurs-Rolle';
-  /* Field: Profile: Matrikelnummer */
+  /* Field: Profil: Matrikelnummer */
   $handler->display->display_options['fields']['field_matrikelnummer_varchar']['id'] = 'field_matrikelnummer_varchar';
   $handler->display->display_options['fields']['field_matrikelnummer_varchar']['table'] = 'field_data_field_matrikelnummer_varchar';
   $handler->display->display_options['fields']['field_matrikelnummer_varchar']['field'] = 'field_matrikelnummer_varchar';
   $handler->display->display_options['fields']['field_matrikelnummer_varchar']['relationship'] = 'profile';
   $handler->display->display_options['fields']['field_matrikelnummer_varchar']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_matrikelnummer_varchar']['type'] = 'text_plain';
-  /* Field: Profile: Hochschule */
+  /* Field: Profil: Hochschule */
   $handler->display->display_options['fields']['field_hochschule']['id'] = 'field_hochschule';
   $handler->display->display_options['fields']['field_hochschule']['table'] = 'field_data_field_hochschule';
   $handler->display->display_options['fields']['field_hochschule']['field'] = 'field_hochschule';
   $handler->display->display_options['fields']['field_hochschule']['relationship'] = 'profile';
   $handler->display->display_options['fields']['field_hochschule']['type'] = 'taxonomy_term_reference_plain';
-  /* Field: Profile: Studienfach */
+  /* Field: Profil: Studienfach */
   $handler->display->display_options['fields']['field_studienfach']['id'] = 'field_studienfach';
   $handler->display->display_options['fields']['field_studienfach']['table'] = 'field_data_field_studienfach';
   $handler->display->display_options['fields']['field_studienfach']['field'] = 'field_studienfach';
@@ -1513,7 +1511,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['content'] = 'No people found matching the search criteria.';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
-  /* Relationship: OG membership: OG membership from User */
+  /* Relationship: OG membership: OG membership from Benutzer */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'users';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
@@ -1777,7 +1775,7 @@ function nm_section_courses_features_views_default_views() {
 Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <code>Dokument+</code>
 </div>';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
-  /* Relationship: OG membership: OG membership from Node */
+  /* Relationship: OG membership: OG membership from Beitrag */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
@@ -1788,7 +1786,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['nid_1']['field'] = 'nid';
   $handler->display->display_options['fields']['nid_1']['label'] = '';
   $handler->display->display_options['fields']['nid_1']['element_label_colon'] = FALSE;
-  /* Field: Content: Kursdokument(e) */
+  /* Field: Beitrag: Kursdokument(e) */
   $handler->display->display_options['fields']['field_course_docs_1']['id'] = 'field_course_docs_1';
   $handler->display->display_options['fields']['field_course_docs_1']['table'] = 'field_data_field_course_docs';
   $handler->display->display_options['fields']['field_course_docs_1']['field'] = 'field_course_docs';
@@ -1802,7 +1800,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   );
   $handler->display->display_options['fields']['field_course_docs_1']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_course_docs_1']['separator'] = '';
-  /* Field: Content: Kursdokument(e) */
+  /* Field: Beitrag: Kursdokument(e) */
   $handler->display->display_options['fields']['field_course_docs']['id'] = 'field_course_docs';
   $handler->display->display_options['fields']['field_course_docs']['table'] = 'field_data_field_course_docs';
   $handler->display->display_options['fields']['field_course_docs']['field'] = 'field_course_docs';
@@ -1822,7 +1820,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['title']['label'] = 'Name';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Body */
+  /* Field: Beitrag: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -1994,7 +1992,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = 'In diesem Kurs wurde noch keine Kursgruppen angelegt.';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
-  /* Relationship: OG membership: OG membership from Node */
+  /* Relationship: OG membership: OG membership from Beitrag */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
@@ -2017,7 +2015,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Body */
+  /* Field: Beitrag: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -2027,7 +2025,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['body']['settings'] = array(
     'trim_length' => '600',
   );
-  /* Field: Content: Gruppe */
+  /* Field: Beitrag: Gruppe */
   $handler->display->display_options['fields']['group_group']['id'] = 'group_group';
   $handler->display->display_options['fields']['group_group']['table'] = 'field_data_group_group';
   $handler->display->display_options['fields']['group_group']['field'] = 'group_group';
@@ -2203,11 +2201,11 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
       'empty_column' => 0,
     ),
   );
-  /* Relationship: OG membership: OG membership from User */
+  /* Relationship: OG membership: OG membership from Benutzer */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'users';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
-  /* Relationship: User: Profile */
+  /* Relationship: User: Profil */
   $handler->display->display_options['relationships']['profile']['id'] = 'profile';
   $handler->display->display_options['relationships']['profile']['table'] = 'users';
   $handler->display->display_options['relationships']['profile']['field'] = 'profile';
@@ -2227,7 +2225,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['uid']['label'] = '';
   $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
-  /* Field: Profile: Foto */
+  /* Field: Profil: Foto */
   $handler->display->display_options['fields']['field_photo']['id'] = 'field_photo';
   $handler->display->display_options['fields']['field_photo']['table'] = 'field_data_field_photo';
   $handler->display->display_options['fields']['field_photo']['field'] = 'field_photo';
@@ -2239,7 +2237,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     'image_style' => 'profile_mini_thumbnail',
     'image_link' => 'content',
   );
-  /* Field: Profile: Vorname */
+  /* Field: Profil: Vorname */
   $handler->display->display_options['fields']['field_first_name']['id'] = 'field_first_name';
   $handler->display->display_options['fields']['field_first_name']['table'] = 'field_data_field_first_name';
   $handler->display->display_options['fields']['field_first_name']['field'] = 'field_first_name';
@@ -2247,7 +2245,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['field_first_name']['label'] = '';
   $handler->display->display_options['fields']['field_first_name']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_first_name']['element_label_colon'] = FALSE;
-  /* Field: Profile: Nachname */
+  /* Field: Profil: Nachname */
   $handler->display->display_options['fields']['field_last_name']['id'] = 'field_last_name';
   $handler->display->display_options['fields']['field_last_name']['table'] = 'field_data_field_last_name';
   $handler->display->display_options['fields']['field_last_name']['field'] = 'field_last_name';
@@ -2276,7 +2274,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['view']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['view']['view'] = 'courses_user_course_groups';
   $handler->display->display_options['fields']['view']['arguments'] = '[!uid]/!1';
-  /* Sort criterion: Profile: Nachname (field_last_name) */
+  /* Sort criterion: Profil: Nachname (field_last_name) */
   $handler->display->display_options['sorts']['field_last_name_value']['id'] = 'field_last_name_value';
   $handler->display->display_options['sorts']['field_last_name_value']['table'] = 'field_data_field_last_name';
   $handler->display->display_options['sorts']['field_last_name_value']['field'] = 'field_last_name_value';
@@ -2444,7 +2442,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('nächste Seite ›'),
     t('letzte Seite »'),
     t('OG membership from user'),
-    t('Profile'),
+    t('Profil'),
     t('OG Roles from OG membership'),
     t('[field_first_name]&nbsp;[field_last_name]'),
     t('Alle'),
@@ -2498,7 +2496,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
 </div>
 ';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
-  /* Relationship: OG membership: OG membership from Node */
+  /* Relationship: OG membership: OG membership from Beitrag */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
@@ -2537,7 +2535,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['created']['label'] = '';
   $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['created']['date_format'] = 'short';
-  /* Field: Content: Body */
+  /* Field: Beitrag: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -2674,11 +2672,11 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   );
   $handler->display->display_options['row_options']['separator'] = ',';
   $handler->display->display_options['row_options']['hide_empty'] = TRUE;
-  /* Relationship: OG membership: OG membership from User */
+  /* Relationship: OG membership: OG membership from Benutzer */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'users';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
-  /* Relationship: User: Profile */
+  /* Relationship: User: Profil */
   $handler->display->display_options['relationships']['profile']['id'] = 'profile';
   $handler->display->display_options['relationships']['profile']['table'] = 'users';
   $handler->display->display_options['relationships']['profile']['field'] = 'profile';
@@ -2762,7 +2760,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('Asc'),
     t('Desc'),
     t('OG membership from user'),
-    t('Profile'),
+    t('Profil'),
     t('OG Roles from OG membership'),
     t('Alle'),
     t('Block'),
@@ -2802,7 +2800,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Relationship: OG membership: OG membership from Node group */
+  /* Relationship: OG membership: OG membership from Beitrag group */
   $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
@@ -2816,7 +2814,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Field: Content: Bild */
+  /* Field: Beitrag: Bild */
   $handler->display->display_options['fields']['field_course_picture']['id'] = 'field_course_picture';
   $handler->display->display_options['fields']['field_course_picture']['table'] = 'field_data_field_course_picture';
   $handler->display->display_options['fields']['field_course_picture']['field'] = 'field_course_picture';
@@ -2840,13 +2838,13 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Untertitel */
+  /* Field: Beitrag: Untertitel */
   $handler->display->display_options['fields']['field_subtitle']['id'] = 'field_subtitle';
   $handler->display->display_options['fields']['field_subtitle']['table'] = 'field_data_field_subtitle';
   $handler->display->display_options['fields']['field_subtitle']['field'] = 'field_subtitle';
   $handler->display->display_options['fields']['field_subtitle']['label'] = '';
   $handler->display->display_options['fields']['field_subtitle']['element_label_colon'] = FALSE;
-  /* Field: Content: Kurzbeschreibung */
+  /* Field: Beitrag: Kurzbeschreibung */
   $handler->display->display_options['fields']['field_short_description']['id'] = 'field_short_description';
   $handler->display->display_options['fields']['field_short_description']['table'] = 'field_data_field_short_description';
   $handler->display->display_options['fields']['field_short_description']['field'] = 'field_short_description';
@@ -2858,7 +2856,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['field_short_description']['settings'] = array(
     'trim_length' => '450',
   );
-  /* Sort criterion: Content: Laufzeit -  start date (field_time_span) */
+  /* Sort criterion: Beitrag: Laufzeit -  start date (field_time_span) */
   $handler->display->display_options['sorts']['field_time_span_value']['id'] = 'field_time_span_value';
   $handler->display->display_options['sorts']['field_time_span_value']['table'] = 'field_data_field_time_span';
   $handler->display->display_options['sorts']['field_time_span_value']['field'] = 'field_time_span_value';
@@ -2889,7 +2887,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['filters']['type']['value'] = array(
     'courses_course' => 'courses_course',
   );
-  /* Filter criterion: Content: Laufzeit - end date (field_time_span:value2) */
+  /* Filter criterion: Beitrag: Laufzeit - end date (field_time_span:value2) */
   $handler->display->display_options['filters']['field_time_span_value2']['id'] = 'field_time_span_value2';
   $handler->display->display_options['filters']['field_time_span_value2']['table'] = 'field_data_field_time_span';
   $handler->display->display_options['filters']['field_time_span_value2']['field'] = 'field_time_span_value2';
@@ -2915,19 +2913,19 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['empty']['area']['content'] = 'No courses available.';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Relationship: OG membership: OG membership from Node group */
+  /* Relationship: OG membership: OG membership from Beitrag group */
   $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['required'] = TRUE;
-  /* Relationship: OG membership: User from OG membership */
+  /* Relationship: OG membership: Benutzer from OG membership */
   $handler->display->display_options['relationships']['og_membership_related_user']['id'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['relationship'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Laufzeit -  start date (field_time_span) */
+  /* Sort criterion: Beitrag: Laufzeit -  start date (field_time_span) */
   $handler->display->display_options['sorts']['field_time_span_value']['id'] = 'field_time_span_value';
   $handler->display->display_options['sorts']['field_time_span_value']['table'] = 'field_data_field_time_span';
   $handler->display->display_options['sorts']['field_time_span_value']['field'] = 'field_time_span_value';
@@ -2953,19 +2951,19 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Kursangebot';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Relationship: OG membership: OG membership from Node group */
+  /* Relationship: OG membership: OG membership from Beitrag group */
   $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['required'] = TRUE;
-  /* Relationship: OG membership: User from OG membership */
+  /* Relationship: OG membership: Benutzer from OG membership */
   $handler->display->display_options['relationships']['og_membership_related_user']['id'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['relationship'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Laufzeit -  start date (field_time_span) */
+  /* Sort criterion: Beitrag: Laufzeit -  start date (field_time_span) */
   $handler->display->display_options['sorts']['field_time_span_value']['id'] = 'field_time_span_value';
   $handler->display->display_options['sorts']['field_time_span_value']['table'] = 'field_data_field_time_span';
   $handler->display->display_options['sorts']['field_time_span_value']['field'] = 'field_time_span_value';
@@ -2992,7 +2990,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['filters']['type']['value'] = array(
     'courses_course' => 'courses_course',
   );
-  /* Filter criterion: Content: Laufzeit - end date (field_time_span:value2) */
+  /* Filter criterion: Beitrag: Laufzeit - end date (field_time_span:value2) */
   $handler->display->display_options['filters']['field_time_span_value2']['id'] = 'field_time_span_value2';
   $handler->display->display_options['filters']['field_time_span_value2']['table'] = 'field_data_field_time_span';
   $handler->display->display_options['filters']['field_time_span_value2']['field'] = 'field_time_span_value2';
@@ -3044,19 +3042,19 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['query']['options']['disable_sql_rewrite'] = TRUE;
   $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Relationship: OG membership: OG membership from Node group */
+  /* Relationship: OG membership: OG membership from Beitrag group */
   $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['required'] = TRUE;
-  /* Relationship: OG membership: User from OG membership */
+  /* Relationship: OG membership: Benutzer from OG membership */
   $handler->display->display_options['relationships']['og_membership_related_user']['id'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['relationship'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Laufzeit -  start date (field_time_span) */
+  /* Sort criterion: Beitrag: Laufzeit -  start date (field_time_span) */
   $handler->display->display_options['sorts']['field_time_span_value']['id'] = 'field_time_span_value';
   $handler->display->display_options['sorts']['field_time_span_value']['table'] = 'field_data_field_time_span';
   $handler->display->display_options['sorts']['field_time_span_value']['field'] = 'field_time_span_value';
@@ -3103,19 +3101,19 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['title'] = 'Kursangebot';
   $handler->display->display_options['display_description'] = 'archivated version of Courses';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Relationship: OG membership: OG membership from Node group */
+  /* Relationship: OG membership: OG membership from Beitrag group */
   $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['required'] = TRUE;
-  /* Relationship: OG membership: User from OG membership */
+  /* Relationship: OG membership: Benutzer from OG membership */
   $handler->display->display_options['relationships']['og_membership_related_user']['id'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['relationship'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Laufzeit -  start date (field_time_span) */
+  /* Sort criterion: Beitrag: Laufzeit -  start date (field_time_span) */
   $handler->display->display_options['sorts']['field_time_span_value']['id'] = 'field_time_span_value';
   $handler->display->display_options['sorts']['field_time_span_value']['table'] = 'field_data_field_time_span';
   $handler->display->display_options['sorts']['field_time_span_value']['field'] = 'field_time_span_value';
@@ -3143,7 +3141,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     'courses_course' => 'courses_course',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: Laufzeit - end date (field_time_span:value2) */
+  /* Filter criterion: Beitrag: Laufzeit - end date (field_time_span:value2) */
   $handler->display->display_options['filters']['field_time_span_value2']['id'] = 'field_time_span_value2';
   $handler->display->display_options['filters']['field_time_span_value2']['table'] = 'field_data_field_time_span';
   $handler->display->display_options['filters']['field_time_span_value2']['field'] = 'field_time_span_value2';
@@ -3352,7 +3350,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   $handler->display->display_options['relationships']['uid']['required'] = TRUE;
-  /* Relationship: OG membership: OG membership from Node */
+  /* Relationship: OG membership: OG membership from Beitrag */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
@@ -3387,7 +3385,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['uid']['label'] = '';
   $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
-  /* Field: Content: Aufgabe */
+  /* Field: Beitrag: Aufgabe */
   $handler->display->display_options['fields']['field_generic_task']['id'] = 'field_generic_task';
   $handler->display->display_options['fields']['field_generic_task']['table'] = 'field_data_field_generic_task';
   $handler->display->display_options['fields']['field_generic_task']['field'] = 'field_generic_task';
@@ -3456,7 +3454,7 @@ return   ($task_type == NM_COURSES_TASK_TYPE_GROUP )? _section_courses_get_cours
   $handler->display->display_options['fields']['php_1']['php_output'] = '<?php  echo $value ?  node_load($value)->title:\'\';?>';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '3';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
-  /* Sort criterion: Content: eingereicht am (field_submitted_on) */
+  /* Sort criterion: Beitrag: eingereicht am (field_submitted_on) */
   $handler->display->display_options['sorts']['field_submitted_on_value']['id'] = 'field_submitted_on_value';
   $handler->display->display_options['sorts']['field_submitted_on_value']['table'] = 'field_data_field_submitted_on';
   $handler->display->display_options['sorts']['field_submitted_on_value']['field'] = 'field_submitted_on_value';
@@ -3475,7 +3473,7 @@ return   ($task_type == NM_COURSES_TASK_TYPE_GROUP )? _section_courses_get_cours
   $handler->display->display_options['arguments']['gid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['gid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['gid']['summary_options']['items_per_page'] = '25';
-  /* Contextual filter: Content: Aufgabe (field_generic_task) */
+  /* Contextual filter: Beitrag: Aufgabe (field_generic_task) */
   $handler->display->display_options['arguments']['field_generic_task_target_id']['id'] = 'field_generic_task_target_id';
   $handler->display->display_options['arguments']['field_generic_task_target_id']['table'] = 'field_data_field_generic_task';
   $handler->display->display_options['arguments']['field_generic_task_target_id']['field'] = 'field_generic_task_target_id';
@@ -3631,7 +3629,7 @@ return   ($task_type == NM_COURSES_TASK_TYPE_GROUP )? _section_courses_get_cours
 Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <code>Aufgabe+</code>
 </div>';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
-  /* Relationship: OG membership: OG membership from Node */
+  /* Relationship: OG membership: OG membership from Beitrag */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
@@ -3648,7 +3646,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
   $handler->display->display_options['fields']['nid']['label'] = 'Status';
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Field: Content: Typ */
+  /* Field: Beitrag: Typ */
   $handler->display->display_options['fields']['field_task_type']['id'] = 'field_task_type';
   $handler->display->display_options['fields']['field_task_type']['table'] = 'field_data_field_task_type';
   $handler->display->display_options['fields']['field_task_type']['field'] = 'field_task_type';
@@ -3670,7 +3668,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['created']['exclude'] = TRUE;
   $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['created']['date_format'] = 'short';
-  /* Field: Content: Bearbeitungszeitraum */
+  /* Field: Beitrag: Bearbeitungszeitraum */
   $handler->display->display_options['fields']['field_task_handling_period']['id'] = 'field_task_handling_period';
   $handler->display->display_options['fields']['field_task_handling_period']['table'] = 'field_data_field_task_handling_period';
   $handler->display->display_options['fields']['field_task_handling_period']['field'] = 'field_task_handling_period';
@@ -3683,7 +3681,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     'multiple_to' => '',
     'show_remaining_days' => 0,
   );
-  /* Sort criterion: Content: Bearbeitungszeitraum - end date (field_task_handling_period:value2) */
+  /* Sort criterion: Beitrag: Bearbeitungszeitraum - end date (field_task_handling_period:value2) */
   $handler->display->display_options['sorts']['field_task_handling_period_value2']['id'] = 'field_task_handling_period_value2';
   $handler->display->display_options['sorts']['field_task_handling_period_value2']['table'] = 'field_data_field_task_handling_period';
   $handler->display->display_options['sorts']['field_task_handling_period_value2']['field'] = 'field_task_handling_period_value2';
@@ -3798,18 +3796,18 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Relationship: OG membership: OG membership from Node group */
+  /* Relationship: OG membership: OG membership from Beitrag group */
   $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['required'] = TRUE;
-  /* Relationship: OG membership: User from OG membership */
+  /* Relationship: OG membership: Benutzer from OG membership */
   $handler->display->display_options['relationships']['og_membership_related_user']['id'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['relationship'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
-  /* Relationship: OG membership: OG membership from Node */
+  /* Relationship: OG membership: OG membership from Beitrag */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
@@ -3919,18 +3917,18 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     ),
   );
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Relationship: OG membership: OG membership from Node group */
+  /* Relationship: OG membership: OG membership from Beitrag group */
   $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['required'] = TRUE;
-  /* Relationship: OG membership: User from OG membership */
+  /* Relationship: OG membership: Benutzer from OG membership */
   $handler->display->display_options['relationships']['og_membership_related_user']['id'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['relationship'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
-  /* Relationship: Content: Semester (field_semester) */
+  /* Relationship: Beitrag: Semester (field_semester) */
   $handler->display->display_options['relationships']['field_semester_tid']['id'] = 'field_semester_tid';
   $handler->display->display_options['relationships']['field_semester_tid']['table'] = 'field_data_field_semester';
   $handler->display->display_options['relationships']['field_semester_tid']['field'] = 'field_semester_tid';
@@ -3951,7 +3949,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Semester */
+  /* Field: Beitrag: Semester */
   $handler->display->display_options['fields']['field_semester']['id'] = 'field_semester';
   $handler->display->display_options['fields']['field_semester']['table'] = 'field_data_field_semester';
   $handler->display->display_options['fields']['field_semester']['field'] = 'field_semester';
@@ -4038,12 +4036,12 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['pager']['options']['items_per_page'] = '7';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Relationship: OG membership: OG membership from Node group */
+  /* Relationship: OG membership: OG membership from Beitrag group */
   $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['required'] = TRUE;
-  /* Relationship: OG membership: User from OG membership */
+  /* Relationship: OG membership: Benutzer from OG membership */
   $handler->display->display_options['relationships']['og_membership_related_user']['id'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';

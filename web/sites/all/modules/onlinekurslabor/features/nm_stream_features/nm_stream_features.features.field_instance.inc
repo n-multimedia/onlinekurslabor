@@ -228,6 +228,69 @@ function nm_stream_features_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-nm_stream-field_nm_stream_context'.
+  $field_instances['node-nm_stream-field_nm_stream_context'] = array(
+    'bundle' => 'nm_stream',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 4,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_nm_stream_context',
+    'label' => 'Kontext',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'og_widget' => array(
+          'access_override' => 0,
+          'admin' => array(
+            'widget_type' => 'entityreference_autocomplete',
+          ),
+          'default' => array(
+            'widget_type' => 'options_select',
+          ),
+          'status' => TRUE,
+        ),
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'og',
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+      ),
+      'type' => 'og_complex',
+      'weight' => 6,
+    ),
+  );
+
   // Exported field_instance: 'node-nm_stream-og_group_ref'.
   $field_instances['node-nm_stream-og_group_ref'] = array(
     'bundle' => 'nm_stream',
@@ -299,6 +362,7 @@ function nm_stream_features_field_default_field_instances() {
   t('Body');
   t('Comment');
   t('Groups audience');
+  t('Kontext');
   t('Privacy');
 
   return $field_instances;

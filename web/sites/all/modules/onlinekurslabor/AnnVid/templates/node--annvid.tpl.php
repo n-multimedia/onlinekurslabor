@@ -19,7 +19,8 @@
     ?>
 
   <?
-    print _nm_stream_get_renderedGUI($node->nid);
+    $environment = nm_stream_get_environment();
+    print _nm_stream_get_renderedGUI($environment);
   ?>
 
 </div>

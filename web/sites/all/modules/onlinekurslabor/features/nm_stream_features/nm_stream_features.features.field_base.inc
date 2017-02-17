@@ -51,5 +51,48 @@ function nm_stream_features_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
+  // Exported field_base: 'field_nm_stream_context'.
+  $field_bases['field_nm_stream_context'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_nm_stream_context',
+    'indexes' => array(
+      'target_id' => array(
+        0 => 'target_id',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'entityreference',
+    'settings' => array(
+      'handler' => 'og',
+      'handler_settings' => array(
+        'behaviors' => array(
+          'og_behavior' => array(
+            'status' => TRUE,
+          ),
+          'views-select-list' => array(
+            'status' => 0,
+          ),
+        ),
+        'membership_type' => 'og_membership_type_default',
+        'sort' => array(
+          'type' => 'none',
+        ),
+        'target_bundles' => array(
+          'content_domain' => 'content_domain',
+          'courses_course' => 'courses_course',
+          'projects_cooperation_agreement' => 'projects_cooperation_agreement',
+          'projects_organization' => 'projects_organization',
+        ),
+      ),
+      'profile2_private' => FALSE,
+      'target_type' => 'node',
+    ),
+    'translatable' => 0,
+    'type' => 'entityreference',
+  );
+
   return $field_bases;
 }

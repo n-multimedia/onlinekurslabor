@@ -59,6 +59,10 @@ Panels reset - homepage
     margin-left:10px;
 }
 
+.course-info-header img{
+    max-width: 100%;
+    height: auto;
+}
 
 /*
 PANELS

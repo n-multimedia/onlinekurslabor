@@ -53,11 +53,11 @@ function nm_stream_features_views_default_views() {
   $handler->display->display_options['empty']['area_text_custom']['content'] = '<div class="view-content">
 <div class="views-row"></div>
 </div>';
-  /* Relationship: OG membership: OG membership from Node */
+  /* Relationship: OG membership: OG membership from Beitrag */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
-  /* Field: Content: Body */
+  /* Field: Beitrag: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -68,16 +68,39 @@ function nm_stream_features_views_default_views() {
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: OG membership: Group ID */
+  /* Contextual filter: Context */
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['id'] = 'field_nm_stream_context_target_id';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['table'] = 'og_membership';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['field'] = 'field_nm_stream_context_target_id';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['ui_name'] = 'Context';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['break_phrase'] = TRUE;
+  /* Contextual filter: Container */
   $handler->display->display_options['arguments']['gid']['id'] = 'gid';
   $handler->display->display_options['arguments']['gid']['table'] = 'og_membership';
   $handler->display->display_options['arguments']['gid']['field'] = 'gid';
-  $handler->display->display_options['arguments']['gid']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['arguments']['gid']['ui_name'] = 'Container';
   $handler->display->display_options['arguments']['gid']['exception']['title'] = 'Alle';
   $handler->display->display_options['arguments']['gid']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['gid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['gid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['gid']['summary_options']['items_per_page'] = '25';
+  /* Contextual filter: Privacy */
+  $handler->display->display_options['arguments']['field_nm_privacy_value']['id'] = 'field_nm_privacy_value';
+  $handler->display->display_options['arguments']['field_nm_privacy_value']['table'] = 'field_data_field_nm_privacy';
+  $handler->display->display_options['arguments']['field_nm_privacy_value']['field'] = 'field_nm_privacy_value';
+  $handler->display->display_options['arguments']['field_nm_privacy_value']['ui_name'] = 'Privacy';
+  $handler->display->display_options['arguments']['field_nm_privacy_value']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['field_nm_privacy_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_nm_privacy_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_nm_privacy_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_nm_privacy_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_nm_privacy_value']['break_phrase'] = TRUE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -91,7 +114,6 @@ function nm_stream_features_views_default_views() {
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'nm_stream' => 'nm_stream',
-    'projects_blog' => 'projects_blog',
   );
 
   /* Display: Content pane */

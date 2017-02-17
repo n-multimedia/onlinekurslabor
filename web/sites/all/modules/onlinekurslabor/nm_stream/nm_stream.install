@@ -1,0 +1,59 @@
+<?php
+
+
+/**
+ * stream migration
+ * by not we have nm_stream content in projects and course_groups
+ * by itroducing the new context field we need to update the existent content
+ */
+function nm_stream_update_7000() {
+  //get all stream nodes
+
+  //get nm_stream nodes where created > $node->created
+  $results = db_select('node', 'n')
+    ->fields('n', array("nid"))
+    ->condition('type', 'nm_stream')
+    ->execute()
+    ->fetchAllKeyed(0, 0);
+
+  $loaded_nodes = node_load_multiple($results);
+
+  foreach ($loaded_nodes as $node) {
+    $container = $node->og_group_ref;
+
+    if (!empty($container[LANGUAGE_NONE][0]['target_id'])) {
+      $type = _custom_general_get_node_type($container[LANGUAGE_NONE][0]['target_id']);
+
+      if ($type == NM_COURSE_GROUP) {
+        $course_group = node_load($container[LANGUAGE_NONE][0]['target_id']);
+        if (!empty($course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
+          $context_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        }
+
+      }
+      else {
+        //doestn make sense anymore
+        //we re using another CT project_blog for this purpose
+        if ($type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG) {
+          $ca = node_load($container[LANGUAGE_NONE][0]['target_id']);
+          if (!empty($ca->field_ca_course_group_ref)) {
+            $course_group_nid = $ca->field_ca_course_group_ref[LANGUAGE_NONE][0]['target_id'];
+            $course_group = node_load($course_group_nid);
+            $context_nid = $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+          }
+        }
+      }
+    }
+
+    if (node_load($context_nid)) {
+      $node->field_nm_stream_context[LANGUAGE_NONE][0]['target_id'] = $context_nid;
+      node_save($node);
+    }
+    else {
+      watchdog('nm_stream', 'Could not find a proper context for stream node with nid %nid', array("%nid" => $node->nid), WATCHDOG_ERROR);
+    }
+
+  }
+
+
+}

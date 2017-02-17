@@ -10,7 +10,7 @@ function _nm_stream_form_add_edit_view($type='nm_stream') {
   $node->nid = 0;
   $node->type = $type;
   if(node_access('create', $node)) {
-    $output = theme('nm_stream_stream_node_form', array('node' => NULL, 'type' => $type));
+    $output = theme('nm_stream_stream_node_form');
   }
 
   return $output;
