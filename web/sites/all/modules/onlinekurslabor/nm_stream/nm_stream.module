@@ -1371,6 +1371,31 @@ function nm_stream_get_environment() {
 
   return $context;
 }
+/**
+ * 
+ * Liefert Objekte in einem Array zu den Feldern
+ *  og_group_ref
+ * und
+ *  field_nm_stream_context
+ * zu einem Node es Typs NM_STREAM
+ * @param StdClass $stream_node
+ * @return array $environment['context'] (node)
+ *               $environment['context']->parent (node)
+ *               $environment['container'] (node)
+ *               $environment['container']->parent (node)
+ */
+function _nm_stream_get_node_environment($stream_node) {
+    $environment = array();
+
+    // _nm_stream_get_node_environment(node_load(5342));
+    $container = $stream_node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+    $context = $stream_node->field_nm_stream_context[LANGUAGE_NONE][0]['target_id'];
+    $environment['context'] = node_load($context);
+    $environment['context']->parent = node_load($environment['context']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+    $environment['container'] = node_load($container);
+    $environment['container']->parent = node_load($environment['container']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+    return $environment;
+}
 
 function _nm_stream_render_privacy_widget($node) {
 

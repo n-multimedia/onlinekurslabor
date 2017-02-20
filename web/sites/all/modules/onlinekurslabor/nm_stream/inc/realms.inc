@@ -1,25 +1,18 @@
 <?php
-
+/**
 function nm_stream_node_access($op, $node) {
     
-}
+}*/
 
-function _nm_stream_get_node_environment($stream_node) {
-    $environment = array();
 
-    // _nm_stream_get_node_environment(node_load(5342));
-    $container = $stream_node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
-    $context = $stream_node->field_nm_stream_context[LANGUAGE_NONE][0]['target_id'];
-    $environment['context'] = node_load($context);
-    $environment['context']->parent = node_load($environment['context']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
-    $environment['container'] = node_load($container);
-    $environment['container']->parent = node_load($environment['container']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
-    return $environment;
-    dpm($stream_node);
-}
 
+/**
+ * Hook: setzt die locks auf einen node des typs nm_stream
+ * @param StdClass $node
+ * @return array $records
+ */
 function nm_stream_node_access_records($node) {
-    $grant_template = array(
+    $record_template = array(
         'realm' => null,
         'gid' => null,
         'grant_view' => 1,
@@ -29,14 +22,14 @@ function nm_stream_node_access_records($node) {
     );
 
 
-    $grants = array();
+    $records = array();
     // handle the Section node itself
 
     if ($node->type == 'nm_stream') {
         $privacy = $node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
 
         //always set private realm for private
-        $grants[] = array(
+        $records[] = array(
             'realm' => 'nm_stream_private',
             'gid' => $node->uid,
             'grant_view' => 1,
@@ -58,12 +51,12 @@ function nm_stream_node_access_records($node) {
 
 
                                     case NM_STREAM_COURSE:
-                                        $grants[] = array('realm' => 'nm_stream_course',
-                                            'gid' => $node_environment['context']->nid) + $grant_template;
+                                        $records[] = array('realm' => 'nm_stream_course',
+                                            'gid' => $node_environment['context']->nid) + $record_template;
                                         break;
                                     case NM_STREAM_DOMAIN:
-                                        $grants[] = array('realm' => 'nm_stream_domain',
-                                            'gid' => $node_environment['container']->parent->nid) + $grant_template;
+                                        $records[] = array('realm' => 'nm_stream_domain',
+                                            'gid' => $node_environment['container']->parent->nid) + $record_template;
                                         break;
                                 }
                             }
@@ -72,13 +65,13 @@ function nm_stream_node_access_records($node) {
                         case NM_COURSE_GROUP: {
                                 switch ($privacy) {
                                     case NM_STREAM_TEAM:
-                                        $grants[] = array('realm' => 'nm_stream_team',
-                                            'gid' => $node_environment['container']->nid) + $grant_template;
+                                        $records[] = array('realm' => 'nm_stream_team',
+                                            'gid' => $node_environment['container']->nid) + $record_template;
                                         break;
 
                                     case NM_STREAM_COURSE:
-                                        $grants[] = array('realm' => 'nm_stream_course',
-                                            'gid' => $node_environment['container']->parent->nid) + $grant_template;
+                                        $records[] = array('realm' => 'nm_stream_course',
+                                            'gid' => $node_environment['container']->parent->nid) + $record_template;
                                         break;
                                 }
                             }
@@ -92,8 +85,8 @@ function nm_stream_node_access_records($node) {
                                         break;
 
                                     case NM_STREAM_PROJECT:
-                                        $grants[] = array('realm' => 'nm_stream_project',
-                                            'gid' => $node_environment['container']->parent->nid) + $grant_template;
+                                        $records[] = array('realm' => 'nm_stream_project',
+                                            'gid' => $node_environment['container']->parent->nid) + $record_template;
                                         break;
                                 }
                             }
@@ -108,8 +101,8 @@ function nm_stream_node_access_records($node) {
 
                         switch ($privacy) {
                             case NM_STREAM_DOMAIN:
-                                $grants[] = array('realm' => 'nm_stream_domain',
-                                    'gid' => $node_environment['context']->nid) + $grant_template;
+                                $records[] = array('realm' => 'nm_stream_domain',
+                                    'gid' => $node_environment['context']->nid) + $record_template;
                                 break;
                         }
                     }
@@ -123,8 +116,8 @@ function nm_stream_node_access_records($node) {
                         switch ($privacy) {
 
                             case NM_STREAM_PROJECT:
-                                $grants[] = array('realm' => 'nm_stream_project',
-                                    'gid' => $node_environment['container']->nid) + $grant_template;
+                                $records[] = array('realm' => 'nm_stream_project',
+                                    'gid' => $node_environment['container']->nid) + $record_template;
                                 break;
                         }
                         break;
@@ -133,11 +126,12 @@ function nm_stream_node_access_records($node) {
                 break;
         }
     }
-    return $grants;
+    return $records;
 }
 
 /**
  * Implements hook_node_grants().
+ * setzt die schlüssel fuer oben gesetzten locks
  */
 function nm_stream_node_grants($account, $op) {
 
