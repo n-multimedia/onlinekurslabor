@@ -318,7 +318,7 @@ function onlinekurslabor_access_node_access_records($node) {
     );
   }
 
-  if (in_array($node->type, array(NM_CONTENT_CHAPTER, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER, NM_BIBLIO, NM_INTERACTIVE_CONTENT))) {
+  if (in_array($node->type, array(NM_CONTENT_CHAPTER, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER, NM_BIBLIO, NM_INTERACTIVE_CONTENT, ANNVID_CONTENTTYPE))) {
     //should never be empty
     if (!empty($node->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
       $grants[] = array(
