@@ -1665,14 +1665,16 @@ function _nm_stream_get_action_links($content) {
 /**
  * gets the rendered gui inkludiing add-new-comment
  * and the list of the comments
+ * Wird in einzelnen Fällen direkt aufgerufen.
  * @param string $context : a node-id
  * @return string gui
  */
-function _checkthis_nm_stream_get_renderedGUI($environment)
-{//so wie ich das sehe, wird diese funktion nie benutzt. 
-
+function _nm_stream_get_renderedGUI($environment)
+{
+   //die node-add-form. wird formatiert durch hook nm_stream_stream_node_form
   $ret = _nm_stream_form_add_edit_view();
-
+  
+  //view fuer anzeige der eintraege
   $my_view_name = 'nm_stream';
   $my_display_name = 'panel_pane_1';
 
