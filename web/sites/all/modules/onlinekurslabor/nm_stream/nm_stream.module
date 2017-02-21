@@ -1518,7 +1518,7 @@ function _nm_stream_privacy_options($type = 'nm_stream') {
         break;
       case NM_CONTENT_DOMAIN:
         $options_items[NM_STREAM_DOMAIN] = array(
-          'label' => t('Domain'),
+          'label' => t('Educational Text'),
           'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
           'default' => TRUE,
         );
