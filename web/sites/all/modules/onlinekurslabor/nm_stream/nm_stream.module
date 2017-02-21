@@ -1241,6 +1241,15 @@ function nm_stream_preprocess_nm_stream_stream_node_form(&$vars, $hook) {
     $context = nm_stream_get_environment();
     $container = $context['container'];
   }
+  /**
+   * @TODO fix comments and visibility for projects
+   */
+  if($container->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG)
+  {
+    $vars['nm_error'] = 'Sorry. At the moment comments are not possible in a project.';
+  #  drupal_set_message($vars['nm_error'], 'error');
+    return false;
+  }
 
   if (empty($container) && empty($vars['node'])) {
 
@@ -1659,8 +1668,8 @@ function _nm_stream_get_action_links($content) {
  * @param string $context : a node-id
  * @return string gui
  */
-function _nm_stream_get_renderedGUI($environment)
-{
+function _checkthis_nm_stream_get_renderedGUI($environment)
+{//so wie ich das sehe, wird diese funktion nie benutzt. 
 
   $ret = _nm_stream_form_add_edit_view();
 
