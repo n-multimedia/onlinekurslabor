@@ -237,6 +237,12 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
     $context = $environment["context"];
     $container = $environment["container"];
 
+    //24.02.2017 - 11:48 - SN
+    //prevent fetching updates of nodes without any context!
+    $query->join('field_data_field_nm_stream_context', 'field_data_field_nm_stream_context', "n.nid = field_data_field_nm_stream_context.entity_id  AND field_data_field_nm_stream_context.entity_type = 'node'"); //JOIN
+    $query->isNotNull('field_data_field_nm_stream_context.field_nm_stream_context_target_id');
+
+
     if (!empty($context)) {
       if($context->type == NM_CONTENT_DOMAIN) {
         //in case of Domains, we just want to see content wich has the privacy setting DOMAIN or PRIVATE
@@ -244,20 +250,33 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
         //NOT: NM_STREAM created in course context having privacy setting CROUSE GROUP or COURSE
         $query->join('field_data_field_nm_privacy', 'field_data_field_nm_privacy', "n.nid = field_data_field_nm_privacy.entity_id  AND field_data_field_nm_privacy.entity_type = 'node'"); //JOIN
         $query->condition('field_data_field_nm_privacy.field_nm_privacy_value', array(NM_STREAM_PRIVATE, NM_STREAM_DOMAIN), "IN");
-
-      }else {
-        //In Course, we need to get stream entries from domain and course contexts!
-        if ($context->type == NM_COURSE) {
-          $domain_id = _section_courses_course_get_domain_id($context);
-          $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
-          $query->condition('og_membership_node.gid', array($domain_id, $context->nid), "IN");
-        }
-        else {
-          $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
-          $query->condition('og_membership_node.gid', $context->nid);
-        }
-
       }
+      elseif ($context->type == NM_COURSE) {
+        //In Course, we need to get stream entries from domain and course contexts!
+        switch ($container->type) {
+          case NM_COURSE_GROUP:
+            $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
+            $query->condition('og_membership_node.gid', array($container->nid), "IN");
+            break;
+          case ANNVID_CONTENTTYPE:
+            $domain_id = _section_courses_course_get_domain_id($context);
+            $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
+            $query->condition('og_membership_node.gid', array(
+              $domain_id,
+              $context->nid,
+              $container->nid
+            ), "IN");
+            break;
+        }
+      }
+      else {
+        $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
+        $query->condition('og_membership_node.gid', array(
+          $context->nid,
+          $container->nid
+        ), "IN");
+      }
+
 
     }
 

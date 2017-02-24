@@ -68,17 +68,17 @@ function nm_stream_features_views_default_views() {
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: Broken/missing handler */
-  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['id'] = 'field_nm_stream_context_target_id';
-  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['table'] = 'og_membership';
-  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['field'] = 'field_nm_stream_context_target_id';
-  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['relationship'] = 'og_membership_rel';
-  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['ui_name'] = 'Context';
-  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['exception']['title'] = 'Alle';
-  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_nm_stream_context_target_id']['summary_options']['items_per_page'] = '25';
+  /* Contextual filter: Context */
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id_1']['id'] = 'field_nm_stream_context_target_id_1';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id_1']['table'] = 'field_data_field_nm_stream_context';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id_1']['field'] = 'field_nm_stream_context_target_id';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id_1']['ui_name'] = 'Context';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id_1']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id_1']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id_1']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id_1']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id_1']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_nm_stream_context_target_id_1']['break_phrase'] = TRUE;
   /* Contextual filter: Container */
   $handler->display->display_options['arguments']['gid']['id'] = 'gid';
   $handler->display->display_options['arguments']['gid']['table'] = 'og_membership';
