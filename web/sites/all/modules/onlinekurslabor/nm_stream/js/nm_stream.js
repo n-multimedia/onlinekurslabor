@@ -29,12 +29,9 @@
                     nm_stream_alert(str);                             // Suits for this case
                 };
             })();
-
-            /*
-             * privacy dropdown
-             */
-            $('#nm-stream-add-node-privacy').ddslick();
-            $('[id^=nm-stream-edit-node-privacy-]').ddslick();
+            //wandelt das privacy-dropdown in ein widget um (mit den bildchen)
+            this.customizePrivacyWidgets();
+            
             /*
              *  NODE
              */
@@ -1215,6 +1212,26 @@
 
             });
 
+        },
+        /**
+         * 
+         * das privacy-html-select wird zum bekannten hüsbchen drop-dpown
+         * und die description wird verschoben
+         * in das a als title-attribute (fuer hover-effekt)
+         */
+        customizePrivacyWidgets: function()
+        {
+            /*
+             * privacy dropdown
+             */
+            $('#nm-stream-add-node-privacy').ddslick();
+            $('[id^=nm-stream-edit-node-privacy-]').ddslick();
+             
+            //eigentlich ist nun pro option eine desccription vorhanden. die wollen wir aber als hover (im a[title])
+            $("ul.dd-options  a.dd-option").each(function(index) {
+                var desc = $(".dd-option-description", this).hide().text();
+                $(this).attr("title", desc);
+            });
         }
     };
 

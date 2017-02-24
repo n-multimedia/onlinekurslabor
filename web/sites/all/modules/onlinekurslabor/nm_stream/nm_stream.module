@@ -209,7 +209,7 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
   //0 is beeing transmitted if no node exists yet
   //-1 if just the update status is interesting
   if ($node || $nid == 0) {
-
+    
     //get nm_stream nodes where created > $node->created
     $query = db_select('node', 'n');
     $query->addField('n', 'nid');
@@ -265,7 +265,6 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
       $query->join('og_membership', 'og_membership', "n.nid = og_membership.etid AND og_membership.entity_type = 'node'"); //JOIN
       $query->condition('og_membership.gid', $container->nid);
     }
-
 
     $results = $query->execute()->fetchAll();
 
@@ -1406,40 +1405,50 @@ function _nm_stream_get_node_environment($stream_node) {
     return $environment;
 }
 
+/**
+ * erstellt das html-select-option-element fuer privacy-wahl. 
+ * @param Stdclass $node a stream-entry. 
+ * @return string
+ */
 function _nm_stream_render_privacy_widget($node) {
 
   $privacy_options = _nm_stream_privacy_options();
 
   $result = '';
-  if ($node) {
+  //node uebergeben & ist ein streameintrag, dann privacy-value beibehalten
+  //todo: waru wird manchmal ein nicht-nm-stream als node übergeben?
+  if ($node && $node->type=='nm_stream') {
     $result .= '<select class="nm-stream-node-edit-privacy" name="privacy">';
     $node_privacy_key = _nm_stream_get_privacy_option($node);
     foreach ($privacy_options as $key => $option) {
       $selected = '';
       if ($node_privacy_key['key'] == $key)
-        $selected = 'selected';
+        $selected = 'selected="selected"';
 
       $image_src = 'data-imagesrc="/' . $option['icon_path'] . '"';
-      $result.= '<option value="' . $key . '" ' . $selected . ' ' . $image_src . ' >';
+      $result.= '<option value="' . $key . '" ' . $selected . ' ' . $image_src . ' data-description="'.$option['description'].'" >';
       $result.= $option['label'];
       $result .= '</option>';
     }
   }
+  //new nm_stream-node
   else {
     $result .= '<select class="nm-stream-node-add-privacy"  name="privacy">';
     foreach ($privacy_options as $key => $option) {
       $selected = '';
       if ($option['default'])
-        $selected = 'selected';
+        $selected = 'selected="selected"';
 
       $image_src = 'data-imagesrc="/' . $option['icon_path'] . '"';
-      $result.= '<option value="' . $key . '" ' . $selected . ' ' . $image_src . ' >';
+      $result.= '<option value="' . $key . '" ' . $selected . ' ' . $image_src . ' data-description="'.$option['description'].'" >';
       $result.= $option['label'];
       $result .= '</option>';
     }
   }
   $result .= '</select>';
-
+  
+  
+#dpm($result);
   return $result;
 }
 
@@ -1469,6 +1478,11 @@ function nm_stream_init() {
  * get privacy options for a special content type
  * @param type content type
  */
+
+//Hier passen die Übergaben nicht. der node-type wird gar nicht berücksichtigt(und is überflüssig)
+//stattdessen werden environment, user und ggf $stream_node benötigt
+//env: klar, user: zum check, ob write-permission, node: ggf ausgeblendete vis-option wiederherstellen
+//if have_perm (edit, container->parent) then uebergreifende permission mgl
 function _nm_stream_privacy_options($type = 'nm_stream') {
 
   //04.06.2014 - 18:12 - SN
@@ -1478,47 +1492,54 @@ function _nm_stream_privacy_options($type = 'nm_stream') {
   //permission options depending on current context (og group)
   $options_items = array();
 
-  $context = nm_stream_get_environment();
+  //todo: im kontext zu pruefen, welche rechte & entsprechend privacy-options nicht einblenden
+  $environment = nm_stream_get_environment();
 
   //private - always possible
   $options_items[NM_STREAM_PRIVATE] = array(
     'label' => t('Private'),
+    'description' => t('Visible only for you (and of course site-administrators)'),
     'icon_path' => $module_path . '/images/privacy-icons/privacy-private.png',
     'default' => FALSE,
   );
 
   //set privacy setting depending on context and container
-  if (empty($context['context'])) {
+  if (empty($environment['context'])) {
     //context is empty
-    switch ($context['container']->type) {
+    switch ($environment['container']->type) {
       case NM_COURSE:
       case NM_COURSE_GROUP:
         $options_items[NM_STREAM_TEAM] = array(
-          'label' => t('Team'),
+          'label' => t('Course group'),
+          'description' => t('Visible for members of your course group'),
           'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
-          'default' => FALSE,
+          'default' => TRUE,
         );
         $options_items[NM_STREAM_COURSE] = array(
           'label' => t('Course'),
+          'description' => t('Visible for everyone in this course'),
           'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
           'default' => FALSE,
         );
         break;
       case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
         $options_items[NM_STREAM_TEAM] = array(
-          'label' => t('Team'),
+          'label' => t('Team'), //todo: wer ist team?
+          'description' => t('@TODO describe this'),
           'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
           'default' => FALSE,
         );
         $options_items[NM_STREAM_PROJECT] = array(
           'label' => t('Project'),
+          'description' => t('@TODO describe this'),
           'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
           'default' => TRUE,
         );
         break;
       case NM_CONTENT_DOMAIN:
         $options_items[NM_STREAM_DOMAIN] = array(
-          'label' => t('Educational Text'),
+          'label' => t('Educational text'),
+          'description' => t('Visible for everyone who can see this educational text'),
           'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
           'default' => TRUE,
         );
@@ -1530,40 +1551,45 @@ function _nm_stream_privacy_options($type = 'nm_stream') {
   }
   else {
     //context is not empty
-    switch ($context['context']->type) {
+    switch ($environment['context']->type) {
       case NM_CONTENT_DOMAIN:
-        switch ($context['container']->type) {
+        switch ($environment['container']->type) {
           case ANNVID_CONTENTTYPE:
             $options_items[NM_STREAM_DOMAIN] = array(
-              'label' => t('Domain'),
+              'label' => t('Educational text'),
+              'description' => t('Visible for everyone who can view this educational text'),
               'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
-              'default' => FALSE,
+              'default' => TRUE,
             );
             break;
         }
         break;
       case NM_COURSE:
-        switch ($context['container']->type) {
+        switch ($environment['container']->type) {
           case ANNVID_CONTENTTYPE:
             $options_items[NM_STREAM_COURSE] = array(
               'label' => t('Course'),
+              'description' => t('Visible for everyone in this course'),
               'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
-              'default' => FALSE,
+              'default' => TRUE,
             );
             $options_items[NM_STREAM_DOMAIN] = array(
-              'label' => t('Domain'),
+              'label' => t('Educational text'),
+              'description' => t('Visible for everyone who can view this educational text'),
               'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
               'default' => FALSE,
             );
             break;
           case NM_COURSE_GROUP:
             $options_items[NM_STREAM_TEAM] = array(
-              'label' => t('Team'),
+              'label' => t('Course group'),
+              'description' => t('Visible for members of your course group'),
               'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
-              'default' => FALSE,
+              'default' => TRUE,
             );
             $options_items[NM_STREAM_COURSE] = array(
               'label' => t('Course'),
+              'description' => t('Visible for everyone in this course'),
               'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
               'default' => FALSE,
             );
@@ -1572,15 +1598,17 @@ function _nm_stream_privacy_options($type = 'nm_stream') {
         }
         break;
       case NM_PROJECTS_RROJEKTORGANISATION:
-        switch ($context['container']->type) {
+        switch ($environment['container']->type) {
           case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
             $options_items[NM_STREAM_TEAM] = array(
-              'label' => t('Team'),
+              'label' => t('Team'), //todo: wer ist team?
+              'description' => t('@TODO describe this'),
               'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
               'default' => FALSE,
             );
             $options_items[NM_STREAM_PROJECT] = array(
-              'label' => t('Project'),
+              'label' => t('Project'), //todo: wer ist project?
+              'description' => t('@TODO describe this'),
               'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
               'default' => FALSE,
             );
@@ -1590,7 +1618,7 @@ function _nm_stream_privacy_options($type = 'nm_stream') {
         break;
     }
   }
-
+  
   return $options_items;
 }
 

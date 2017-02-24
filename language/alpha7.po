@@ -82,6 +82,27 @@ msgstr "Wenn Sie den Empfang von E-Mails deaktivieren, verpflichten Sie sich zug
 msgid "Reception of e-mails for %recipient is disabled. Password reset not possible."
 msgstr "%recipient hat den Empfang von E-Mails deaktiviert. Somit kann kein neues Passwort gesetzt werden."
 
+msgid "Educational Text"
+msgstr "Lehrtext"
+
+msgid "Visible only for you (and of course site-administrators)"
+msgstr "Nur für Sie sichtbar (sowie Seiten-Admins)"
+
+msgid "Visible for members of your course group"
+msgstr "Sichtbar nur für Kursgruppenmitglieder"
+
+msgid "Visible for everyone in this course"
+msgstr "Sichtbar für alle im Kurs"
+
+msgid "Visible for everyone who can view this educational text"
+msgstr "Sichtbar für alle, die diesen Lehrtext einsehen können."
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
 msgid ""
 msgstr ""
 

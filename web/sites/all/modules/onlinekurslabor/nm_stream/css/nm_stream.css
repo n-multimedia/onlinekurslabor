@@ -393,3 +393,8 @@ infinite scroll
     padding-left: 15px !important;
 }
 
+/*verstecke description fuer selektierte privacy-option*/
+a.dd-selected .dd-selected-description
+{
+    display: none;
+}
