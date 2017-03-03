@@ -226,6 +226,7 @@ function custom_general_context_registry() {
   } */
 
 function custom_general_init() {
+
   static $init;
 
   if ($init)
@@ -312,7 +313,7 @@ function custom_general_init() {
         {
             drupal_add_css(drupal_get_path('module', 'custom_general') .'/css/' . $position . '.css');
         }
-    
+
 }
 
 function custom_general_context_page_reaction() {
