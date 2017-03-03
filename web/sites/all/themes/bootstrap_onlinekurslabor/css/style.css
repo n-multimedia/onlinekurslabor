@@ -341,7 +341,11 @@ Course Header
 /*kurs-header und projektheader h1 in mobilansicht*/
 @media (max-width: 767px) {
 #course_header #course_header_title h1 {
-    font-size: 30px
+    font-size: 20px;
+    max-height: 37px;
+    text-align:justify;
+    //hyphens: silbentrennung
+    hyphens: auto;
 }
 }
 

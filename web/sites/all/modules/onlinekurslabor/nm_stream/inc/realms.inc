@@ -198,6 +198,11 @@ function nm_stream_node_grants($account, $op) {
       $user_groups[] = $ugn;
       $grants['nm_stream_team'][] = $ugn;
     }
+    
+    //bin als TN in einem Lehrtext eingetragen
+    if(_custom_general_get_node_type($ugn) == NM_CONTENT_DOMAIN) {
+      $my_lehrtexte[] = $ugn;
+    }
   }
   
   //lade public-lehrtexte dazu
