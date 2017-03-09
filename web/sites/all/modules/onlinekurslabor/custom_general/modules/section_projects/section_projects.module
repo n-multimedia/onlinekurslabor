@@ -1284,10 +1284,55 @@ function _section_projects_tools_access($account = NULL) {
   return FALSE;
 }
 
+
+/**
+ *
+ */
+function section_projects_get_active_partnerorganization($reset = FALSE) {
+  static $partner;
+  if (!(section_projects_context())) {
+    return FALSE;
+  }
+
+  if (!isset($partner) || $reset) {
+    if (arg(2) == 'add') {
+      $query = (drupal_get_query_parameters());
+      //30.11.2014 - 14:03 - SN
+      if(arg(3) == 'projects_proposal' || arg(3) == 'projects_cooperation_agreement') {
+        $partner = node_load($query['field_partner_organization_ref']);
+      }else if(arg(3) == 'projects_objective' || arg(3) == 'projects_documentation') {
+        $proposal = node_load($query['field_ca_ref']);
+        $partner_nid = _custom_general_get_group($proposal, TRUE);
+        $partner = node_load($partner_nid);
+      }else {
+        $partner = node_load(@$query['og_group_ref']?: $query['field_ca_ref']);
+      }
+    }
+    else {
+
+      $project_nid = arg(2);
+
+      $node = node_load($project_nid);
+      if($node) {
+        //edition a proposal
+        if ($node->type == NM_PROJECTS_PROJEKTVORSCHLAG) {
+          if (!empty($node->field_partner_organization_ref[LANGUAGE_NONE][0]['target_id'])) {
+            $partner_nid = $node->field_partner_organization_ref[LANGUAGE_NONE][0]['target_id'];
+          }
+        }
+        $partner = node_load($project_nid);
+      }
+    }
+  }
+
+  return $partner;
+
+}
 /**
  * Liefert das aktive Projekt zurück
- *
- * @return StdClass $something 
+ * @deprecated do not use!
+ * => reimplement!
+ * @return StdClass $something
  */
 function section_projects_get_active_project($reset = FALSE) {
   static $project;

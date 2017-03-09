@@ -740,10 +740,14 @@
 
                             } else {
 
-                               //append new node
-                                var new_node = post_button.closest('.nm-stream-node-container').before($(data.node).fadeIn());
+                                var view_row = post_button.closest('.views-row');
+                                post_button.closest('.views-row').find("a").remove();
+                                post_button.closest('.nm-stream-node-container').remove();
 
-                                post_button.closest('.nm-stream-node-container').hide();
+                                //append new node
+                                var new_node = view_row.html($(data.node).fadeIn());
+
+
                                 //attach behavior
                                 Drupal.attachBehaviors(new_node);
                             }

@@ -291,7 +291,9 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
     $output = '';
     foreach ($results as $result) {
       $node = node_load($result->nid);
+      $output .= '<div class="views-row">';
       $output .= drupal_render(node_view($node, 'nm_stream'));
+      $output .= '</div>';
     }
 
     if (empty($results)) {
@@ -379,9 +381,29 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
 
 
     //Comments
-    if (isset($_SESSION['nm_stream']['comments']) && is_array($_SESSION['nm_stream']['comments'])) {
-      ksort($_SESSION['nm_stream']['comments']);
-      $users_last_loaded_comment = end($_SESSION['nm_stream']['comments']);
+    //check if we are watching comments OR !!nodes!!
+    if ((isset($_SESSION['nm_stream']['comments']) && is_array($_SESSION['nm_stream']['comments'])) ||  !empty($_SESSION['nm_stream']['nodes'])) {
+
+      if ((isset($_SESSION['nm_stream']['comments']) && !empty($_SESSION['nm_stream']['comments']))) {
+        ksort($_SESSION['nm_stream']['comments']);
+        $users_last_loaded_comment = end($_SESSION['nm_stream']['comments']);
+      }
+      else {
+        //in case we are watching nodes, we want to get all the new comments..
+        $users_last_loaded_comment = array(
+          'cid' => 0, //node id
+          'changed' => 0, //last changed date of node
+          'request_time' => REQUEST_TIME //request time of node
+        );
+      }
+
+
+      $watching_nids = array();
+      foreach ($_SESSION['nm_stream']['nodes'] as $item) {
+        $watching_nids[$item['nid']] = $item['nid'];
+      }
+
+
 
       if (!empty($users_last_loaded_comment)) {
 
@@ -389,13 +411,26 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
         $query_new_comments = db_select('comment', 'c');
         $query_new_comments->addField('c', 'cid');
         $query_new_comments->addField('c', 'nid');
+        $query_new_comments->addField('c', 'created');
         $query_new_comments
-            ->condition('c.cid', $users_last_loaded_comment['cid'], '>')
+          //fix comments getting lost between pull and creation
+            //problem trying to solve: both users posting => the user posted later doestn get an update
+            ->condition('c.created', $users_last_loaded_comment['changed']-10, '>')
             ->condition('c.status', COMMENT_PUBLISHED)
+            ->condition('c.nid', $watching_nids, "IN")
             ->orderBy("c.cid", "DESC") //order important!
             ->addTag('node_access');
 
-        $results_new_comments = $query_new_comments->execute()->fetchAll();
+
+        $results_new_comments = $query_new_comments->execute()->fetchAllAssoc("cid");
+
+
+        $testvar = $users_last_loaded_comment['changed']-10;
+        //delete double entries
+        $double_key = array_intersect_key($results_new_comments, $_SESSION['nm_stream']['comments']);
+        foreach($double_key as $key => $item) {
+          unset($results_new_comments[$key]);
+        }
 
 
         if (empty($results_new_comments)) {
@@ -853,8 +888,8 @@ function nm_stream_nm_stream_comment_add_callback($node) {
     ksort($_SESSION['nm_stream']['nodes']);
     $users_last_loaded_node = end($_SESSION['nm_stream']['nodes']);
   }
-  if (!empty($users_last_loaded_comment)) {
-    $update_result = nm_stream_nm_stream_node_get_update_callback(-1, 'array');
+  if (!empty($users_last_loaded_node)) {
+    $update_result = nm_stream_nm_stream_node_get_update_callback($users_last_loaded_node, 'array');
 
     $response += $update_result;
   }
@@ -1318,7 +1353,7 @@ function nm_stream_get_environment() {
 
   if( $active_course = _section_courses_get_active_course()) {
     $context['context'] = $active_course;
-  }else if($active_project = section_projects_get_active_project()) {
+  }else if($active_project = section_projects_get_active_partnerorganization()) {
     $context['context'] = $active_project;
   }else if($active_domain = _section_content_get_active_domain()) {
     $context['context'] = $active_domain;
@@ -1722,7 +1757,7 @@ function _nm_stream_get_action_links($content) {
             $output .= sprintf($tpl, $type, 'edit', 'edit', t('edit'), $tpl);
         }
         //delete op is not implemented yet
-        if (comment_access('delete', $content) || node_access('delete', node_load($content->nid))) {
+        if (comment_access('delete', $content)) {
             $output .=' ' . sprintf($tpl, $type, 'delete', 'trash', t('delete'), $tpl);
         }
     } else {
