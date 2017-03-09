@@ -139,19 +139,16 @@ function nm_stream_node_grants($account, $op) {
     return;
   }*/
   $grants = array();
-	$my_lehrtexte = array();
-  //_section_courses_get_coursegroup_gid($uid);
+  $my_lehrtexte = array();
+  
 
   $grants['nm_stream_private'][] = $account->uid;
   $grants['nm_stream_public'][] = 1;
 
-  //get users courses
+  //get users organic_groups
   $user_group_nids = og_get_groups_by_user($account, 'node');
 
-  if (empty($user_group_nids)) {
-    return $grants;
-  }
-
+  if (!empty($user_group_nids)) {
   //dpm($account->uid);
   $user_courses = array();
   $user_groups = array();
@@ -203,6 +200,7 @@ function nm_stream_node_grants($account, $op) {
       $my_lehrtexte[] = $ugn;
     }
   }
+  }
   
   //lade public-lehrtexte dazu
   $my_lehrtexte = array_merge($my_lehrtexte, _section_content_get_public_domains());
@@ -210,30 +208,11 @@ function nm_stream_node_grants($account, $op) {
   $grants['nm_stream_domain'] = $my_lehrtexte;
   
 
-  //dpm($grants);
   return  $grants  ;
 }
 
 
 
-//@TODO move to custom general
-/**
- * Holt Lehrtexte, die in Kursen als Demo-LT eingebunden sind und somit öffentlich zugänglich sind.
- * @return array
- */
-function _section_content_get_public_domains() {
-
-  $query = db_select('field_data_field_domain_demo_ref', 'dr');
-
-  $query->condition('dr.deleted', 0, '=')
-      ->distinct()
-      ->orderBy('field_domain_demo_ref_target_id', 'ASC')
-      ->fields('dr', array('field_domain_demo_ref_target_id'));
-
-  $result = $query->execute();
-
-  return $result->fetchCol();
-}
 
  	
  	

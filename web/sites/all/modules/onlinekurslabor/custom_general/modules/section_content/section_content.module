@@ -1303,6 +1303,25 @@ function _section_content_get_active_domain($reset = FALSE) {
   return $domain;
 }
 
+
+/**
+ * Holt Lehrtexte, die in Kursen als Demo-LT eingebunden sind und somit öffentlich zugänglich sind.
+ * @return array
+ */
+function _section_content_get_public_domains() {
+
+  $query = db_select('field_data_field_domain_demo_ref', 'dr');
+
+  $query->condition('dr.deleted', 0, '=')
+      ->distinct()
+      ->orderBy('field_domain_demo_ref_target_id', 'ASC')
+      ->fields('dr', array('field_domain_demo_ref_target_id'));
+
+  $result = $query->execute();
+
+  return $result->fetchCol();
+}
+
 function _section_content_text_outline_add_active_path(&$subtree_pointer) {
 
 //Get active MLID from url structure

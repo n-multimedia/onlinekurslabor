@@ -9,3 +9,5 @@ version = 7.x-1.0-alpha4.1
 ; Information added by drupal.org packaging script on 2013-09-19
 version = "7.x-1.x"
 core = "7.x"
+
+dependencies[] = section_content
