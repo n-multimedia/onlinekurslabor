@@ -10,6 +10,7 @@
  */
 
 define('ANNVID_CONTENTTYPE','annvid');
+module_load_include('inc', 'annvid', 'inc/realms');
 /**
  * Implements hook_init().
  */
@@ -306,3 +307,4 @@ function AnnVid_form_alter(&$form, &$form_state, $form_id) {
         }
     }
 }
+

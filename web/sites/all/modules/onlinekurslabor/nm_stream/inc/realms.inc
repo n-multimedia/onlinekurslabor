@@ -1,9 +1,8 @@
 <?php
-/**
-function nm_stream_node_access($op, $node) {
-    
-}*/
 
+/**
+ * see annvid_node_access($node, $op, $account) too!
+ */
 
 
 /**
@@ -242,6 +241,7 @@ function _section_content_get_public_domains() {
  * override nm stream create, update and delete permissions
  * @param $perm
  * @param $context
+ * also see annvid_og_user_access_alter()
  */
 function nm_stream_og_user_access_alter(&$perm, $context) {
 
