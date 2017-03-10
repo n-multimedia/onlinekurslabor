@@ -107,6 +107,7 @@ function annvid_og_user_access_alter(&$perm, $context) {
                     )) ||
                     $obj_context->type == NM_CONTENT_DOMAIN && count($roles)) {
                 //wir machen hier "any" permissions. diese müssen in nm_stream_node_access weiter eingeschraenkt werden (bspw: tutor bearbeitet keine lehrtext-streameinträge)
+                $perm['update any ' . "nm_stream" . ' content'] = TRUE;
                 $perm['delete any ' . "nm_stream" . ' content'] = TRUE;
             }
         }
