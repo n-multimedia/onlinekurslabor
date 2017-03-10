@@ -10,6 +10,7 @@ drush dis overlay --yes
 drush updatedb --yes
 drush en browser_compatibility --yes
 drush en no_mailer --yes
+drush en annvid --yes
 
 #bug in drush - cc before FR!!
 drush cc all

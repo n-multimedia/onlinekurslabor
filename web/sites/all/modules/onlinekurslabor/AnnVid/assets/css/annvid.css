@@ -67,3 +67,35 @@ div#annvid_pdfbutton
 {
     display:none;
 }
+
+/*der pdf-button rechts neberm video: element wird durch rotation und position von oben nach rechts verschoben*/
+#annvid_video_fahne
+{
+    transform: rotate(90deg);
+    transform-origin: 0 0 ;       
+    border: none;
+    position: absolute; 
+    left:102%
+}
+
+#annvid_video_fahne > li > a
+{
+    cursor: pointer;   
+}
+
+#annvid_button_show_pdf_container  #annvid_button_show_pdf
+{
+    padding: 0px;
+   margin-top: -10px
+} 
+
+
+/*custom style fuer einen dunkleren button (pdf-open-close)*/
+.annvid_dark_button
+{
+     background:  #222222 !important;
+    color: #ffffff !important;;
+}
+.annvid_dark_button:focus, .annvid_dark_button:hover{
+      background: #4C4C4C !important;;
+}
