@@ -80,6 +80,9 @@ function annvid_og_user_access_alter(&$perm, $context) {
      * Deswegen permission ergänzen unabhängig von der group-logik
      */
     if ($context['group']->type == ANNVID_CONTENTTYPE) {
+
+        $perm['update own ' . "nm_stream" . ' content'] = TRUE;
+
         $stream_env = nm_stream_get_environment();
 
         $obj_context = node_load($stream_env['context']->nid);
@@ -92,7 +95,6 @@ function annvid_og_user_access_alter(&$perm, $context) {
             $roles = og_get_user_roles('node', $og_membership->gid, $account->uid, TRUE, ($og_membership->state < OG_STATE_BLOCKED));
             //hab ich rollen? dann sicher im kurs.
             if (count($roles)) {
-                $perm['update own ' . "nm_stream" . ' content'] = TRUE;
                 $perm['delete own ' . "nm_stream" . ' content'] = TRUE;
             }
 
@@ -105,7 +107,6 @@ function annvid_og_user_access_alter(&$perm, $context) {
                     )) ||
                     $obj_context->type == NM_CONTENT_DOMAIN && count($roles)) {
                 //wir machen hier "any" permissions. diese müssen in nm_stream_node_access weiter eingeschraenkt werden (bspw: tutor bearbeitet keine lehrtext-streameinträge)
-                $perm['update any ' . "nm_stream" . ' content'] = TRUE;
                 $perm['delete any ' . "nm_stream" . ' content'] = TRUE;
             }
         }
