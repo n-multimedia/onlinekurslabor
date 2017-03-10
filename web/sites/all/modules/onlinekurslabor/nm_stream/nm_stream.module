@@ -1819,7 +1819,7 @@ function _nm_stream_get_renderedGUI($environment)
       $args = array(
         $environment['context']->nid . "+" . $domain_id,
         $environment['container']->nid,
-        NULL,
+        "all",
       );
     }
     else {
@@ -1838,22 +1838,23 @@ function _nm_stream_get_renderedGUI($environment)
         $args = array(
           $environment['context']->nid,
           $environment['container']->nid,
-          NULL
+          "all"
         );
       }
 
     }
   }else {
-    $args = array(NULL, $environment['container']->nid);
+    $args = array("all", $environment['container']->nid);
   }
 
   dpm($args);
 
   $my_view = views_get_view($my_view_name);
   if (is_object($my_view)) {
-    $my_view->set_display($my_display_name);
     $my_view->set_arguments($args);
+    $my_view->set_display($my_display_name);
     $my_view->pre_execute();
+    $my_view->execute();
     $ret .= '<div class="panel-content pane-nm-stream">';
     $ret .= $my_view->render($my_display_name);
     $ret .= "</div>";
