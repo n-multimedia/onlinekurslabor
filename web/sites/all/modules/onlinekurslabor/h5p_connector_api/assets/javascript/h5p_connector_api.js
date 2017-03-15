@@ -1,3 +1,4 @@
+//möchte man neben pdf und video einen weiteren jump-typ einfügen, der im hash erscheint, muss man hier refactoren und die pdf-/video-einträge ergänzen
 (function($) {
     $.fn.convertTextToLinks = function(options) {
         if (typeof options === 'undefined' || options.length === 0)
@@ -108,7 +109,7 @@
         /*       (*) Rückgabe: form  [["pdf", "8"], ["video", "260"]]*/
         splitHash: function(hash)
         {
-            var matches = hash.match(/\w+\.\d+/g);
+            var matches = hash.match(/(video|pdf)\.\d+/g);
             var counter;
             var pro = new Array();
 
