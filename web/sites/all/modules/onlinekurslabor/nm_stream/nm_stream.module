@@ -1155,7 +1155,7 @@ function nm_stream_preprocess_node(&$vars) {
               $streamnode_environment = _nm_stream_get_node_environment($node);
 
               $node_url = NULL;
-              if ($streamnode_environment['context']->type === NM_COURSE) {
+              if ($streamnode_environment['context']->type === NM_COURSE && $node_context_node->type === ANNVID_CONTENTTYPE) {
                   $node_url = 'course/text/' . $streamnode_environment['context']->nid . '/' . $node_context_node->nid;
               } else {
                   if (node_access('view', $node_context_node->nid)) {
