@@ -97,6 +97,9 @@ msgstr "Sichtbar für alle im Kurs"
 msgid "Visible for everyone who can view this educational text"
 msgstr "Sichtbar für alle, die diesen Lehrtext einsehen können."
 
+msgid "Course group"
+msgstr "Kursgruppe"
+
 msgid ""
 msgstr ""
 
