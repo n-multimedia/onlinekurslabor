@@ -233,6 +233,22 @@ function h5p_permission() {
       'title' => t('Create restricted H5P content types'),
       'description' => t('The user is allowed to create H5P content types that has been restricted in the library administration interface.'),
     ),
+    'download all h5ps' => array(
+      'title' => t('Download enabled for all H5Ps'),
+      'description' => t("The download button will be available for all H5Ps even if download button is hidden by configuration settings. This won't have any effect if download button is globally disabled"),
+    ),
+    'download own h5ps' => array(
+      'title' => t('Download enabled for own H5Ps'),
+      'description' => t("The download button will be available for H5Ps the user has access to edit even if download button is hidden by configuration settings. This won't have any effect if download button is globally disabled"),
+    ),
+    'embed all h5ps' => array(
+      'title' => t('Embed enabled for all H5Ps'),
+      'description' => t("The embed button will be available for all H5Ps even if embed button is hidden by configuration settings. This won't have any effect if embed button is globally disabled"),
+    ),
+    'embed own h5ps' => array(
+      'title' => t('Embed enabled for own H5Ps'),
+      'description' => t("The embed button will be available for H5Ps the user has access to edit even even if embed button is hidden by configuration settings. This won't have any effect if embed button is globally disabled"),
+    ),
   );
 }
 
@@ -243,6 +259,8 @@ function h5p_form(&$node, $form_state) {
   _h5p_check_settings();
 
   _h5p_maintain_session_variables();
+
+  $core = _h5p_get_instance('core');
 
   $type = node_type_get_type($node);
 
@@ -266,7 +284,6 @@ function h5p_form(&$node, $form_state) {
 
   if (isset($node->json_content) || isset($node->translation_source) && isset($node->translation_source->json_content)) {
     $content = h5p_get_content(isset($node->translation_source) ? $node->translation_source : $node);
-    $core = _h5p_get_instance('core');
     $filtered_params = $core->filterParameters($content);
   }
   else {
@@ -310,19 +327,15 @@ function h5p_form(&$node, $form_state) {
         'class' => array('h5p-action-bar-settings')
       ),
       '#attached' => array(
-        'js' => array(drupal_get_path('module', 'h5p') . '/library/js/disable.js')
+        'js' => array(drupal_get_path('module', 'h5p') . '/library/js/h5p-display-options.js')
       )
     );
 
+    // Add display options
+    $display_options = $core->getDisplayOptionsForEdit($node->disable !== H5PCore::DISABLE_NONE ? $node->disable : NULL);
     $labels = _h5p_get_disable_labels();
-    foreach (H5PCore::$disable as $bit => $name) {
-      if (variable_get('h5p_' . ($bit & H5PCore::DISABLE_DOWNLOAD ? 'export' : $name), TRUE)) {
-        $form['h5p_options'][$name] = array(
-          '#type' => 'checkbox',
-          '#title' => $labels[$bit],
-          '#default_value' => !($node->disable & $bit)
-        );
-      }
+    foreach ($display_options as $name => $value) {
+      _h5p_add_display_option($form['h5p_options'], $name, $labels[$name], $value, ($name === H5PCore::DISPLAY_OPTION_FRAME ? '.h5p-action-bar-settings .form-item:not(.form-item-frame)' : NULL));
     }
 
     $form['#submit'][] = '_h5p_form_submit';
@@ -332,11 +345,40 @@ function h5p_form(&$node, $form_state) {
 }
 
 /**
+ * Helper function for adding display options to form
+ *
+ * @method _h5p_add_display_option
+ * @param  Array      $element               Reference to form element
+ * @param  String     $name                  Name of form element
+ * @param  String     $title
+ * @param  String     $value
+ * @param  [type]     $visibility_subject_id A jquery selector. If this is set,
+ *                    these DOM elements will be hidden when this this checkbox
+ *                    is unchecked
+ */
+function _h5p_add_display_option (&$element, $name, $title, $value, $visibility_subject_id = null) {
+  $element[$name] = array(
+    '#type' => 'checkbox',
+    '#title' => $title,
+    '#default_value' => $value,
+  );
+
+  if ($visibility_subject_id !== null) {
+    $classes = array('h5p-visibility-toggler');
+    $element[$name]['#attributes'] = array(
+      'class' => $classes,
+      'data-h5p-visibility-subject-selector' => $visibility_subject_id,
+    );
+  }
+}
+
+
+/**
  * Handle h5p node form submission
  */
 function _h5p_form_submit($form, &$form_state) {
   $core = _h5p_get_instance('core');
-  $form_state['values']['disable'] = $core->getDisable($form_state['values'], $form_state['values']['disable']);
+  $form_state['values']['disable'] = $core->getStorableDisplayOptions($form_state['values'], $form_state['values']['disable']);
 }
 
 /**
@@ -344,11 +386,11 @@ function _h5p_form_submit($form, &$form_state) {
  */
 function _h5p_get_disable_labels() {
   return array(
-    H5PCore::DISABLE_FRAME => t('Display action bar and frame'),
-    H5PCore::DISABLE_DOWNLOAD => t('Download button'),
-    H5PCore::DISABLE_EMBED => t('Embed button'),
-    H5PCore::DISABLE_COPYRIGHT => t('Copyright button'),
-    H5PCore::DISABLE_ABOUT => t('About H5P button')
+    H5PCore::DISPLAY_OPTION_FRAME => t('Display buttons (download, embed and copyright)'),
+    H5PCore::DISPLAY_OPTION_DOWNLOAD => t('Download button'),
+    H5PCore::DISPLAY_OPTION_EMBED => t('Embed button'),
+    H5PCore::DISPLAY_OPTION_COPYRIGHT => t('Copyright button'),
+    H5PCore::DISPLAY_OPTION_ABOUT => t('About H5P button')
   );
 }
 
@@ -717,11 +759,11 @@ function h5p_set_started($content_id) {
 function h5p_set_finished() {
   global $user;
 
-  if (!H5PCore::validToken('result', filter_input(INPUT_POST, 'token'))) {
+  if (!H5PCore::validToken('result', filter_input(INPUT_GET, 'token'))) {
     return H5PCore::ajaxError(t('Invalid security token.'));
   }
 
-  if ($user->uid && $_POST['contentId'] !== NULL && $_POST['score'] !== NULL && $_POST['maxScore'] !== NULL) {
+  if ($user->uid && is_numeric($_POST['contentId']) && is_numeric($_POST['score']) && is_numeric($_POST['maxScore'])) {
     db_update('h5p_points')
       ->fields(array(
         'finished' => time(),
@@ -777,14 +819,9 @@ function h5p_get_core_settings() {
     'baseUrl' => $base_url,
     'url' => base_path() . _h5p_get_h5p_path(),
     'postUserStatistics' =>  $user->uid > 0,
-    'ajaxPath' => url('h5p-ajax') . '/',
     'ajax' => array(
-      'setFinished' => url('h5p-ajax/set-finished.json'),
-      'contentUserData' => str_replace('%3A', ':', url('h5p-ajax/content-user-data/:contentId/:dataType/:subContentId'))
-    ),
-    'tokens' => array(
-      'result' => H5PCore::createToken('result'),
-      'contentUserData' => H5PCore::createToken('contentuserdata')
+      'setFinished' => url('h5p-ajax/set-finished.json', array('query' => array('token' => \H5PCore::createToken('result')))),
+      'contentUserData' => str_replace('%3A', ':', url('h5p-ajax/content-user-data/:contentId/:dataType/:subContentId', array('query' => array('token' => \H5PCore::createToken('contentuserdata')))))
     ),
     'saveFreq' => variable_get('h5p_save_content_state', 0) ? variable_get('h5p_save_content_frequency', 30) : FALSE,
     'l10n' => array(
@@ -840,10 +877,7 @@ function h5p_get_core_settings() {
 
 function h5p_get_content($node) {
   $core = _h5p_get_instance('core');
-  $node->disable |= $core->getGlobalDisable();
-  if (!($node->disable & H5PCore::DISABLE_FRAME) && !variable_get('h5p_icon_in_action_bar', TRUE)) {
-    $node->disable |= H5PCore::DISABLE_ABOUT;
-  }
+
   return array(
     'id' => h5p_get_content_id($node),
     'mainId' => $node->nid,
@@ -854,7 +888,7 @@ function h5p_get_content($node) {
     'embedType' => 'div',
     'filtered' => $node->filtered,
     'url' => url('node/' . $node->nid, array('absolute' => TRUE)),
-    'disable' => $node->disable,
+    'displayOptions' => $core->getDisplayOptionsForView($node->disable, $node->nid),
     'slug' => $node->h5p_slug
   );
 }
@@ -892,7 +926,7 @@ function h5p_get_content_settings($content) {
 
   $content_user_data = array(
     0 => array(
-      'state' => FALSE
+      'state' => '{}'
     )
   );
   foreach ($results as $result) {
@@ -910,7 +944,7 @@ function h5p_get_content_settings($content) {
     'url' => $content['url'],
     'title' => $content['title'],
     'contentUserData' => $content_user_data,
-    'disable' => $content['disable']
+    'displayOptions' => $content['displayOptions'],
   );
 }
 
@@ -1124,29 +1158,29 @@ function _h5p_get_instance($type) {
 
   if (!isset($interface)) {
     $interface = new H5PDrupal();
+    $fs = new \H5PDefaultStorage(_h5p_get_h5p_path(), file_stream_wrapper_get_instance_by_uri('public://')->getDirectoryPath() . DIRECTORY_SEPARATOR . 'h5peditor');
+    $core = new H5PCore($interface, $fs, base_path(), $language->language, (variable_get('h5p_export', '1') ? TRUE : FALSE));
 
-    $development_mode = H5PDevelopment::MODE_NONE;
+    // Override regex for converting copied files paths
+    $core->relativePathRegExp = '/^((\.\.\/){1,3})(.*content\/)?(\d+|h5peditor)\/(.+)$/';
+
 //    if (variable_get('h5p_content_dev_mode', '0') === 1) {
-//      $development_mode |= H5PDevelopment::MODE_CONTENT;
+//      $core->development_mode |= H5PDevelopment::MODE_CONTENT;
 //      drupal_set_message(t('H5P content development mode is enabled. Change <a href="@settings-page">settings</a>.', array('@settings-page' => url('admin/config/system/h5p'))), 'warning', FALSE);
 //    }
     if (variable_get('h5p_library_development', 0) === 1) {
-      $development_mode |= H5PDevelopment::MODE_LIBRARY;
-      $preprocess_css_or_js = variable_get('preprocess_css', 0) === '1' || variable_get('preprocess_js', 0) === '1';
+      $core->development_mode |= H5PDevelopment::MODE_LIBRARY;
+      $core->h5pD = new H5PDevelopment($interface, _h5p_get_h5p_path() . '/', $language->language);
 
       $message = t('H5P library development directory is enabled. Change <a href="@settings-page">settings</a>.', array('@settings-page' => url('admin/config/system/h5p')));
 
+      $preprocess_css_or_js = variable_get('preprocess_css', 0) === '1' || variable_get('preprocess_js', 0) === '1';
       if ($preprocess_css_or_js) {
         $message .= '<br/>' . t('Preprocessing of css and/or js files is enabled. This is not supported when using the development directory option. Please disable preprocessing, and clear the cache');
       }
 
       drupal_set_message($message, 'warning', FALSE);
     }
-
-    $core = new H5PCore($interface, _h5p_get_h5p_path(), base_path(), $language->language, (variable_get('h5p_export', '1') ? TRUE : FALSE), $development_mode);
-
-    // Override regex for converting copied files paths
-    $core->relativePathRegExp = '/^((\.\.\/){1,3})(.*content\/)?(\d+|h5peditor)\/(.+)$/';
   }
 
   switch ($type) {
@@ -1290,7 +1324,6 @@ function h5p_access_user_points($account = NULL) {
 
 /**
  * Handles insert, updating and deleteing content user data through AJAX.
- * TODO: Use token to prevent false deletion of data?
  *
  * @param string $content_id
  * @param string $data_id
@@ -1315,7 +1348,7 @@ function h5p_content_user_data($content_id, $data_id, $sub_content_id) {
   $preload = filter_input(INPUT_POST, 'preload');
   $invalidate = filter_input(INPUT_POST, 'invalidate');
   if ($data !== NULL && $preload !== NULL && $invalidate !== NULL) {
-    if (!H5PCore::validToken('contentuserdata', filter_input(INPUT_POST, 'token'))) {
+    if (!H5PCore::validToken('contentuserdata', filter_input(INPUT_GET, 'token'))) {
       return H5PCore::ajaxError(t('Invalid security token.'));
     }
 
@@ -1503,7 +1536,7 @@ function _h5p_dependencies_to_library_list($dependencies) {
 function h5p_views_pre_view($view, $display_id, $args) {
   if ($view->name === 'node_results' && $display_id === 'page' && $view->base_field === 'nid') {
     $node = node_load($view->args[0]);
-    if ($node) {
+    if ($node && isset($node->main_library)) {
       // Log view of results page
       new H5PEvent('results', 'content',
         $node->nid,

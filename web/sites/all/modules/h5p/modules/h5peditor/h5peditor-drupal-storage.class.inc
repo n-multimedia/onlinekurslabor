@@ -6,91 +6,62 @@
 class H5peditorDrupalStorage implements H5peditorStorage {
 
   /**
-   * Empty contructor.
-   */
-  function __construct() { }
-
-  /**
-   * TODO
+   * Load language file(JSON) from database.
+   * This is used to translate the editor fields(title, description etc.)
+   *
+   * @param string $machineName The machine readable name of the library(content type)
+   * @param int $majorVersion Major part of version number
+   * @param int $minorVersion Minor part of version number
+   * @param string $languageCode Language code
+   * @return string Translation in JSON format
    */
   public function getLanguage($machineName, $majorVersion, $minorVersion, $languageCode) {
     $lang = db_query(
-      "SELECT language_json
-      FROM {h5p_libraries_languages} hlt
-      JOIN {h5p_libraries} hl ON hl.library_id = hlt.library_id
-      WHERE hl.machine_name = :name
-      AND hl.major_version = :major
-      AND hl.minor_version = :minor
-      AND hlt.language_code = :lang",
-      array(
-        ':name' => $machineName,
-        ':major' => $majorVersion,
-        ':minor' => $minorVersion,
-        ':lang' => $languageCode,
-      ))->fetchField();
+        "SELECT language_json
+           FROM {h5p_libraries_languages} hlt
+           JOIN {h5p_libraries} hl
+             ON hl.library_id = hlt.library_id
+          WHERE hl.machine_name = :name
+            AND hl.major_version = :major
+            AND hl.minor_version = :minor
+            AND hlt.language_code = :lang",
+        array(
+          ':name' => $machineName,
+          ':major' => $majorVersion,
+          ':minor' => $minorVersion,
+          ':lang' => $languageCode,
+        ))->fetchField();
 
     return ($lang === FALSE ? NULL : $lang);
   }
 
-  /**
-   * TODO
-   */
-  public function addTmpFile($file) {
-    global $user;
-    $path = str_replace(file_stream_wrapper_get_instance_by_uri('public://')->getDirectoryPath() . '/', 'public://', $file->path);
-    $filename = explode('/', $file->name);
-    $file_managed = (object) array(
-      'uid' => $user->uid,
-      'filename' => $filename[count($filename) - 1],
-      'uri' => $path,
-      'filemime' => $file->type,
-      'filesize' => $file->size,
-      'status' => 0,
-      'timestamp' => REQUEST_TIME,
-    );
-    file_save($file_managed);
-  }
 
   /**
-   * TODO
-   */
-  public function keepFile($oldPath, $newPath) {
-    $oldCleanedPath = str_replace(DIRECTORY_SEPARATOR, '/', $oldPath);
-    $newCleanedPath = str_replace(DIRECTORY_SEPARATOR, '/', $newPath);
-    // TODO: Add to file usage?
-    $path = file_stream_wrapper_get_instance_by_uri('public://')->getDirectoryPath() . '/';
-    db_update('file_managed')
-    ->fields(array(
-      'uri' => str_replace($path, 'public://', $newCleanedPath),
-      'status' => FILE_STATUS_PERMANENT,
-    ))
-    ->condition('uri', str_replace($path, 'public://', $oldCleanedPath))
-    ->execute();
-  }
-
-  /**
-   * Delete file from drupal management.
-   * @param string $path Relative path to file
-   */
-  public function removeFile($path) {
-
-    // Get file from file managed
-    $clean_path = str_replace('\\', '/', $path);
-    $file_uri = file_build_uri(substr($clean_path, strpos($clean_path, 'h5p/'), strlen($clean_path)));
-    $fid = db_query("SELECT fid FROM {file_managed} WHERE uri = :path",
-      array(':path' => $file_uri))->fetchField();
-    if ($fid !== false) {
-
-      // Delete file and database record
-      $file_object = file_load($fid);
-      file_delete($file_object);
-    }
-  }
-
-  /**
-   * TODO
+   * "Callback" for mark the given file as a permanent file.
+   * Used when saving content that has new uploaded files.
    *
-   * This does alot of the same as getLibraries in h5p-php-library. Should we just use that instead?
+   * @param string $path To new file
+   */
+  public function keepFile($path) {
+    // Find URI
+    $uri = str_replace(file_stream_wrapper_get_instance_by_uri('public://')->getDirectoryPath() . '/', 'public://', $path);
+
+    // No longer mark the file as a tmp file
+    db_delete('file_managed')->condition('uri', $uri)->execute();
+  }
+
+  /**
+   * Decides which content types the editor should have.
+   *
+   * Two usecases:
+   * 1. No input, will list all the available content types.
+   * 2. Libraries supported are specified, load additional data and verify
+   * that the content types are available. Used by e.g. the Presentation Tool
+   * Editor that already knows which content types are supported in its
+   * slides.
+   *
+   * @param array $libraries List of library names + version to load info for
+   * @return array List of all libraries loaded
    */
   public function getLibraries($libraries = NULL) {
     $super_user = user_access('create restricted h5p content types');
@@ -166,6 +137,17 @@ class H5peditorDrupalStorage implements H5peditorStorage {
     return $libraries;
   }
 
+  /**
+   * Allow for other plugins to decide which styles and scripts are attached.
+   * This is useful for adding and/or modifing the functionality and look of
+   * the content types.
+   *
+   * @param array $files
+   *  List of files as objects with path and version as properties
+   * @param array $libraries
+   *  List of libraries indexed by machineName with objects as values. The objects
+   *  have majorVersion and minorVersion as properties.
+   */
   public function alterLibraryFiles(&$files, $libraries) {
     $mode = 'editor';
     $library_list = _h5p_dependencies_to_library_list($libraries);

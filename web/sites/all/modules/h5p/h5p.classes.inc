@@ -335,6 +335,12 @@ class H5PDrupal implements H5PFrameworkInterface {
       $libraryData['majorVersion'] . '.' . $libraryData['minorVersion']
     );
 
+    // Invoke h5p_library_installed hook for each library that has
+    // been installed
+    if (sizeof(module_implements('h5p_library_installed')) > 0) {
+      module_invoke_all('h5p_library_installed', $libraryData, $new);
+    }
+
     db_delete('h5p_libraries_languages')
     ->condition('library_id', $libraryData['libraryId'])
     ->execute();
@@ -875,5 +881,39 @@ class H5PDrupal implements H5PFrameworkInterface {
    * Implements afterExportCreated
    */
   public function afterExportCreated() {
+  }
+
+  /**
+   * Helper function to determine access
+   *
+   * @param int $nid
+   * @return boolean
+   */
+  private static function mayCurrentUserUpdateNode($nid) {
+    return node_access('update', node_load($nid));
+  }
+
+  /**
+   * Implements hasPermission
+   *
+   * @param H5PPermission $permission
+   * @param int $content_id
+   * @return bool
+   */
+  public function hasPermission($permission, $content_id = NULL) {
+    switch ($permission) {
+      case H5PPermission::DOWNLOAD_H5P:
+        return $content_id !== NULL && (
+          user_access('download all h5ps') ||
+          (self::mayCurrentUserUpdateNode($content_id) && user_access('download own h5ps'))
+        );
+
+      case H5PPermission::EMBED_H5P:
+        return $content_id !== NULL && (
+          user_access('embed all h5ps') ||
+          (self::mayCurrentUserUpdateNode($content_id) && user_access('embed own h5ps'))
+        );
+    }
+    return FALSE;
   }
 }
