@@ -2109,6 +2109,16 @@ function _section_courses_user_is_student_in_course($user_account, $course) {
             
 }
 
+/**
+ * checks if a user is active in a course (meaning, he has either student- or tutor/dozent-role
+ *
+ * @param object $user_account  the user to check
+ * @param object $course the course to check
+ * @return boolean true if user has edit-perms in a course and is not locked
+ */
+function _section_courses_user_is_active_member_in_course($user_account, $course) {
+   return _section_courses_user_is_student_in_course($user_account, $course) || _section_courses_user_can_edit_course($user_account, $course);
+}
 
 /**
  *
