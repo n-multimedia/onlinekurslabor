@@ -1814,6 +1814,11 @@ function _nm_stream_get_renderedGUI($environment)
     //in course context we need to add the domain context
     if (_section_course_text_visible()) {
       //additional context domain here
+      //we are in course context
+      //we want to see nm_stream
+      //  - with context of the current course and the courses domain_id
+      //  - with container of the current environment
+      //  - without any special privacy setting (all stream entry visbile for me)
       $course = _section_courses_get_active_course();
       $domain_id = _section_courses_course_get_domain_id($course);
       $args = array(
@@ -1823,11 +1828,13 @@ function _nm_stream_get_renderedGUI($environment)
       );
     }
     else {
-      //we are in domain context
-      //we want to see nm_stream
-      //  - with context of the current domain
-      //  - with context of course and privacy setting PRIVATE or DOMAIN
+
       if($active_domain = _section_content_get_active_domain()) {
+        //we are in domain context
+        //we want to see nm_stream
+        //  - without special context (stream content created in courses will also be selected)
+        //  - with container of the current environment
+        //  - without any special privacy setting (all stream entry visbile for me)
         $args = array(
           "all",
           $environment['container']->nid,
@@ -1835,6 +1842,11 @@ function _nm_stream_get_renderedGUI($environment)
         );
       }
       else {
+        //all other cases
+        //we want to see nm_stream
+        //  - with context of active environment
+        //  - with container of the active environment stream
+        //  - with context of course and privacy setting PRIVATE or DOMAIN
         $args = array(
           $environment['context']->nid,
           $environment['container']->nid,
@@ -1847,7 +1859,6 @@ function _nm_stream_get_renderedGUI($environment)
     $args = array("all", $environment['container']->nid);
   }
 
-  dpm($args);
 
   $my_view = views_get_view($my_view_name);
   if (is_object($my_view)) {
