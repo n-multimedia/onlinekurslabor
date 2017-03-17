@@ -1155,7 +1155,7 @@ function nm_stream_preprocess_node(&$vars) {
               $streamnode_environment = _nm_stream_get_node_environment($node);
 
               $node_url = NULL;
-              if ($streamnode_environment['context']->type === NM_COURSE) {
+              if ($streamnode_environment['context']->type === NM_COURSE && $node_context_node->type === ANNVID_CONTENTTYPE) {
                   $node_url = 'course/text/' . $streamnode_environment['context']->nid . '/' . $node_context_node->nid;
               } else {
                   if (node_access('view', $node_context_node->nid)) {
@@ -1613,7 +1613,6 @@ function  _nm_stream_privacy_options($user, $stream_node, $current_environment= 
                     'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
                     'default' => TRUE,
                 );
-              
                 if (node_access('update', $current_environment['container'], $user) || $stream_nodes_privacy_setting == NM_STREAM_COURSE) {
                     $options_items[NM_STREAM_COURSE] = array(
                         'label' => t('Course'),
@@ -1671,12 +1670,16 @@ function  _nm_stream_privacy_options($user, $stream_node, $current_environment= 
             case NM_COURSE:
                 switch ($current_environment['container']->type) {
                     case ANNVID_CONTENTTYPE:
+                    
+                        //user ist aktives mitglied im betroffenen kurs ODER privacy besteht bereits auf kurs
+                        if(_section_courses_user_is_active_member_in_course($user, $current_environment['context']) || $stream_nodes_privacy_setting == NM_STREAM_COURSE){
                         $options_items[NM_STREAM_COURSE] = array(
                             'label' => t('Course'),
                             'description' => t('Visible for everyone in this course'),
                             'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
                             'default' => TRUE,
                         );
+                        }
                         //privacy lehrtext nur als editor des lehrtexts
                         if (node_access('update', $current_environment['container']->parent, $user) || $stream_nodes_privacy_setting == NM_STREAM_DOMAIN) {
                             $options_items[NM_STREAM_DOMAIN] = array(
