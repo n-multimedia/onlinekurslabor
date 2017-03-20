@@ -14,7 +14,7 @@ drush en annvid --yes
 
 #bug in drush - cc before FR!!
 drush cc all
-drush fr  videosafe_features  nm_section_courses_features  section_projects_features nm_h5p_features annvid_features --yes
+drush features-revert-all --yes
 
 
 drush language-import-translations de ../language/alpha7.po --replace --groups=default
