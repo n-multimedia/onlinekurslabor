@@ -217,7 +217,7 @@ function nm_general_features_strongarm() {
         'biblio_fieldset' => array(
           'weight' => '1',
         ),
-        'custom_fieldset' => array(
+        'custom_general_fieldset' => array(
           'weight' => '7',
         ),
         'privatemsg' => array(

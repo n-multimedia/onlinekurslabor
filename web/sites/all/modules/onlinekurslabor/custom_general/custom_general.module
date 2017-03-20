@@ -1414,15 +1414,14 @@ function custom_general_form_user_profile_form_alter(&$form, &$form_state, $form
  */
 function custom_general_field_extra_fields() {
     $extras = array();
-  $extras['user']['user'] = array(
+    $extras['user']['user'] = array(
         'form' => array(
-            'custom_fieldset' => array(
+            'custom_general_fieldset' => array(
                 'label' => t('Various settings'),
                 'description' => t('Placeholder for various custom settings'),
-                'weight' => -10,
+                'weight' => 5,
             ),
         ),
     );
-return $extras;
+    return $extras;
 }
-
