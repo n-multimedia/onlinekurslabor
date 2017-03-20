@@ -73,6 +73,9 @@ msgstr "E-Mail-Nachrichten deaktivieren"
 msgid "Granting this permission allows users to disable all e-mails regarding their account."
 msgstr "Benutzer mit den gewählten Rollen dürfen im eigenen Profil den E-Mail-Empfang unterbinden."
 
+msgid "Receive e-mails"
+msgstr "E-Mail-Empfang"
+
 msgid "Enable reception of e-mails"
 msgstr "E-Mail-Empfang aktivieren"
 
