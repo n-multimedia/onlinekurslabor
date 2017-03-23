@@ -408,7 +408,11 @@ function _custom_general_get_group($referer_node, $enforce_parent = FALSE) {
   if (!isset($referer_node) || $referer_node === FALSE) {
     return $domain_id;
   }
-
+  //annvid ist selbst eine group, deswegen muessen wir eine ebene hoeher gehen
+  if($referer_node->type == ANNVID_CONTENTTYPE)
+  {
+      return  _custom_general_get_group(node_load($referer_node->og_group_ref[LANGUAGE_NONE][0]['target_id']), $enforce_parent);
+  }
   //if referer is group -> nid == gid, else look up the gid
   if (og_is_group('node', $referer_node) && !$enforce_parent) {
     $domain_id = $referer_node->nid;
