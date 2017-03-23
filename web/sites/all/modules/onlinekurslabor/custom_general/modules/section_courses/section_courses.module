@@ -1064,7 +1064,8 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
                             else {
                               if (in_array($type, array(
                                 NM_CONTENT_DOMAIN,
-                                NM_CONTENT_CHAPTER
+                                NM_CONTENT_CHAPTER,
+                                ANNVID_CONTENTTYPE
                               ))) {
                                 $path = "course/text/" . $course->nid . '/' . $nid;
                               }
