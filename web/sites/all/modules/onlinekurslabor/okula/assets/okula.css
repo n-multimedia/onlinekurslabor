@@ -1,0 +1,22 @@
+/*navi nicht mehr erkennbar*/
+#page_top_navigation li a.top_nav_link
+{
+    color: #A17878 !important;
+}
+body.dev #page_top_navigation li a.top_nav_link:hover
+{
+  //  color:white !important;
+}
+.tooltip-top-navi + .tooltip.bottom .tooltip-inner
+{
+    color: white !important;
+    background-color:  #A17878 !important;
+}
+a{
+    color:#5B1519  !important;
+}
+/*alte style retten*/
+#section_navigation.navbar .navbar-nav > li > a {
+  
+    color: #ffffff !important;
+}

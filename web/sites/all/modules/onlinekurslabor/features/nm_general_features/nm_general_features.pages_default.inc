@@ -364,7 +364,10 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->style = array(
     'settings' => NULL,
   );
-  $pane->css = array();
+  $pane->css = array(
+    'css_id' => 'startpage-okl-description-dozent',
+    'css_class' => '',
+  );
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
@@ -394,7 +397,7 @@ return theme(\'nm_fancy_box\', $vars);
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => '',
+    'css_id' => 'startpage-okl-description-foerderer',
     'css_class' => 'col-md-12',
   );
   $pane->extras = array();
@@ -429,7 +432,10 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->style = array(
     'settings' => NULL,
   );
-  $pane->css = array();
+  $pane->css = array(
+    'css_id' => 'startpage-okl-description-partner',
+    'css_class' => '',
+  );
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
@@ -455,7 +461,10 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->style = array(
     'settings' => NULL,
   );
-  $pane->css = array();
+  $pane->css = array(
+    'css_id' => 'startpage-okl-video',
+    'css_class' => '',
+  );
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
@@ -488,7 +497,10 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->style = array(
     'settings' => NULL,
   );
-  $pane->css = array();
+  $pane->css = array(
+    'css_id' => 'startpage-okl-description-student',
+    'css_class' => '',
+  );
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
@@ -514,7 +526,7 @@ return theme(\'nm_fancy_box\', $vars);
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => '',
+    'css_id' => 'startpage-okl-description',
     'css_class' => 'col-md-12',
   );
   $pane->extras = array();
