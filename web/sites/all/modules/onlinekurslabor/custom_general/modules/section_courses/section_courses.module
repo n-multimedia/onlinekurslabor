@@ -631,7 +631,9 @@ function _section_courses_get_forum_href($course, $forum_term_id = NULL) {
   }
   } */
 
-//solved with context module
+//solved with context module, see admin/structure/context 
+//hide tabs
+//hide primary tabs 
 /**
  * Remove Outline Tabs from various sites.
  *
