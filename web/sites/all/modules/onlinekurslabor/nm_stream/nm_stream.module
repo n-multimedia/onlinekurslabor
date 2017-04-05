@@ -713,14 +713,15 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
   $body = _nm_stream_filter_xss($_REQUEST['body']) ;
   $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
   $iframe = isset($_REQUEST['iframe']) ? TRUE : FALSE;
-
+  /*wird ausgelöst beim abspeichern eines editierten eintrags*/
   if (isset($_REQUEST['body'])) {
 
     //prevent csrf attacks
+    //@todo CSRF-Checks in einzelne Funktion auslagern & nicht 10x im Code
     $token = isset($_REQUEST['token']) ? $_REQUEST['token']: '';
     if(!drupal_valid_token($token)){
       $response['status'] = 0;
-      $response['error'] = 'CSRF!';
+      $response['error'] = 'CSRF on edit!';
 
       return drupal_json_output($response);
     }

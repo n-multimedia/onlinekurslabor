@@ -285,7 +285,6 @@
                     var url = $(form_container).attr('action'); //'/nm_stream/node/' + nid + '/edit';
                     var data = {body: body, privacy: privacy, token: token};
 
-
                     //check if attachments need to be uploaded -> user iframe form submit else post 
                     if (form_container.find('.MultiFile-wrap').children().length > 1) {
 
@@ -293,11 +292,14 @@
                         //privacy field not transmitted
                         //fix before submit .. remove after submitting
                         var privacy_input_fix = $('<input type="hidden" name="privacy" value="' + privacy + '" />');
+                        var token_input_fix = $('<input type="hidden" name="token" value="' + token + '" />');
                         form_container.append(privacy_input_fix);
+                        form_container.append(token_input_fix);
 
                         form_container.submit();
 
                         privacy_input_fix.remove();
+                        token_input_fix.remove();
 
                         //unbind all other iframe load bindings first
                         $('#nm_stream_hidden_upload').bind('load', function() {
