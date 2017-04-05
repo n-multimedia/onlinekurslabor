@@ -600,7 +600,7 @@ function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
     $response['error'] = 'Beim Speichern ist ein Fehler aufgetreten.';
 
     if ($iframe) {
-      drupal_add_http_header('Content-Type:', 'text/plain');
+      drupal_add_http_header('Content-Type', 'text/plain');
       echo drupal_json_encode($response);
       exit(0);
     }
@@ -667,7 +667,7 @@ function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
   $response['node'] = '<div class="views-row">' . $response['node'] . '</div>';
 
   if ($iframe) {
-    drupal_add_http_header('Content-Type:', 'text/plain');
+    drupal_add_http_header('Content-Type', 'text/plain');
     echo drupal_json_encode($response);
     exit(0);
   }
@@ -766,7 +766,7 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
   }
 
   if ($iframe) {
-    drupal_add_http_header('Content-Type:', 'text/plain');
+    drupal_add_http_header('Content-Type', 'text/plain');
     echo drupal_json_encode($response);
     exit(0);
   }
