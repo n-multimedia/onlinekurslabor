@@ -1120,18 +1120,18 @@ function nm_stream_preprocess_node(&$vars) {
       'request_time' => REQUEST_TIME //request time of node
     );
 
-    $account = user_load($node->uid);
+    $streamnode_owner = user_load($node->uid);
 
-    $realname = realname_load($account);
+    $realname = realname_load($streamnode_owner);
     if (empty($realname))
-      $realname = $account->name;
+      $realname = $streamnode_owner->name;
 
-    $vars['nm_author_link'] = theme('username', array('account' => $account));
+    $vars['nm_author_link'] = theme('username', array('account' => $streamnode_owner));
     $vars['nm_nid'] = $node->nid;
     $vars['nm_type'] = $node->type;
     $vars['nm_author_name'] = $realname;
-    $vars['nm_author_path'] = url('user/' . $account->uid);
-    $vars['nm_author_pic'] = _nm_stream_get_user_pic($account);
+    $vars['nm_author_path'] = url('user/' . $streamnode_owner->uid);
+    $vars['nm_author_pic'] = _nm_stream_get_user_pic($streamnode_owner);
     $vars['nm_created'] = 'vor ' . format_interval(time() - $node->created); //format_date($node->created);
 
     $body = field_get_items('node', $node, 'body');
@@ -1182,7 +1182,7 @@ function nm_stream_preprocess_node(&$vars) {
     //set privacy icon
    //existierender node: privacy ist gesetzt
     if (!empty($node->field_nm_privacy) && $node->field_nm_privacy[LANGUAGE_NONE][0]['value']) {
-      $privacy_options = _nm_stream_privacy_options($account, $node);
+      $privacy_options = _nm_stream_privacy_options($streamnode_owner, $node);
       $privacy_field_value = $node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
     
       foreach ($privacy_options as $key => $option) {
@@ -1193,7 +1193,7 @@ function nm_stream_preprocess_node(&$vars) {
       }
     }
     else {//neuer node
-      $privacy_options = _nm_stream_privacy_options($account, false, nm_stream_get_environment());
+      $privacy_options = _nm_stream_privacy_options($streamnode_owner, false, nm_stream_get_environment());
       foreach ($privacy_options as $option) {
         if ($option['default']) {
           $vars['nm_privacy'] = $option;
