@@ -1957,6 +1957,8 @@ function _nm_stream_add_js_and_css() {
 
   if (!path_is_admin(current_path())) {
     drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/nm_stream.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/nm_stream_node.js");
+    drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/nm_stream_comment.js");
     drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.autosize.js");
     drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/jquery.ddslick.js");
     drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/bootbox.js");
