@@ -1415,7 +1415,7 @@ function nm_stream_get_environment() {
     //check url for valid url path first
     //nm_stream for ajax callbacks
     //_section_course_course_group_visible() for infinite stream. in views callback all args seem to be set properly
-    if (arg(0) == 'nm_stream' || _section_course_course_group_visible()) {
+    if (arg(0) == 'nm_stream' || _section_course_course_group_visible() || _section_course_text_visible()) {
 
       $referer_url = drupal_parse_url($_SERVER['HTTP_REFERER']);
       $referer_url['path'] = substr(parse_url($referer_url['path'], PHP_URL_PATH), 1);
