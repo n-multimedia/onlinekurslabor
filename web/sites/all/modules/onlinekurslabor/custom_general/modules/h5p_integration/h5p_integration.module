@@ -1,5 +1,17 @@
 <?php
 
+
+/**
+ * Implements hook_form_alter().
+ * Temporär Fehlermeldung, da h5p-library einen Bug hat
+ */
+function h5p_integration_form_alter(&$form, &$form_state, $form_id) {
+    
+    if ($form_id == 'h5p_content_node_form') {
+        drupal_set_message('<b>Interactive Video anlegen</b>: Sie müssen vor "Speichern" einmalig auf <em>"Interaktionen hinzufügen"</em> klicken<br><i>Sonst kommt es derzeit zu einer Fehlermeldung und die Daten werden verworfen</i>','warning', null);
+    }
+}
+
 /**
  * Implements hook_wysiwyg_plugin
  * @param type $editor
