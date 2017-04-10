@@ -1483,10 +1483,11 @@ function nm_section_courses_features_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'og_group_ref',
     'label' => 'Groups audience',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'behaviors' => array(
         'og_widget' => array(
+          'access_override' => 0,
           'admin' => array(
             'widget_type' => 'entityreference_autocomplete',
           ),
@@ -1496,11 +1497,14 @@ function nm_section_courses_features_field_default_field_instances() {
           'status' => TRUE,
         ),
         'prepopulate' => array(
-          'action' => 'none',
-          'action_on_edit' => 0,
-          'fallback' => 'none',
-          'og_context' => 0,
-          'skip_perm' => 0,
+          'action' => 'hide',
+          'action_on_edit' => 1,
+          'fallback' => 'form_error',
+          'providers' => array(
+            'og_context' => 0,
+            'url' => 1,
+          ),
+          'skip_perm' => 'switch users',
           'status' => 1,
         ),
       ),
@@ -1521,7 +1525,9 @@ function nm_section_courses_features_field_default_field_instances() {
     'widget' => array(
       'active' => 0,
       'module' => 'og',
-      'settings' => array(),
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+      ),
       'type' => 'og_complex',
       'weight' => 4,
     ),
@@ -2102,6 +2108,7 @@ function nm_section_courses_features_field_default_field_instances() {
   $field_instances['node-courses_generic_task_solution-og_group_ref'] = array(
     'bundle' => 'courses_generic_task_solution',
     'default_value' => NULL,
+    'default_value_function' => 'entityreference_prepopulate_field_default_value',
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -2128,10 +2135,11 @@ function nm_section_courses_features_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'og_group_ref',
     'label' => 'Groups audience',
-    'required' => FALSE,
+    'required' => 1,
     'settings' => array(
       'behaviors' => array(
         'og_widget' => array(
+          'access_override' => 0,
           'admin' => array(
             'widget_type' => 'entityreference_autocomplete',
           ),
@@ -2139,6 +2147,17 @@ function nm_section_courses_features_field_default_field_instances() {
             'widget_type' => 'options_select',
           ),
           'status' => TRUE,
+        ),
+        'prepopulate' => array(
+          'action' => 'hide',
+          'action_on_edit' => 1,
+          'fallback' => 'form_error',
+          'providers' => array(
+            'og_context' => 0,
+            'url' => 1,
+          ),
+          'skip_perm' => 'switch users',
+          'status' => 1,
         ),
       ),
       'user_register_form' => FALSE,
@@ -2156,8 +2175,11 @@ function nm_section_courses_features_field_default_field_instances() {
       ),
     ),
     'widget' => array(
+      'active' => 0,
       'module' => 'og',
-      'settings' => array(),
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+      ),
       'type' => 'og_complex',
       'weight' => 5,
     ),
@@ -2396,6 +2418,7 @@ function nm_section_courses_features_field_default_field_instances() {
     'settings' => array(
       'behaviors' => array(
         'og_widget' => array(
+          'access_override' => 0,
           'admin' => array(
             'widget_type' => 'entityreference_autocomplete',
           ),
@@ -2407,12 +2430,12 @@ function nm_section_courses_features_field_default_field_instances() {
         'prepopulate' => array(
           'action' => 'hide',
           'action_on_edit' => 1,
-          'fallback' => 'none',
+          'fallback' => 'hide',
           'providers' => array(
             'og_context' => 0,
             'url' => 1,
           ),
-          'skip_perm' => 0,
+          'skip_perm' => 'switch users',
           'status' => 1,
         ),
       ),
@@ -2623,10 +2646,11 @@ function nm_section_courses_features_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'og_group_ref',
     'label' => 'Groups audience',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'behaviors' => array(
         'og_widget' => array(
+          'access_override' => 0,
           'admin' => array(
             'widget_type' => 'entityreference_autocomplete',
           ),
@@ -2636,11 +2660,14 @@ function nm_section_courses_features_field_default_field_instances() {
           'status' => TRUE,
         ),
         'prepopulate' => array(
-          'action' => 'none',
-          'action_on_edit' => 0,
-          'fallback' => 'none',
-          'og_context' => 0,
-          'skip_perm' => 0,
+          'action' => 'hide',
+          'action_on_edit' => 1,
+          'fallback' => 'form_error',
+          'providers' => array(
+            'og_context' => 0,
+            'url' => 1,
+          ),
+          'skip_perm' => 'switch users',
           'status' => 1,
         ),
       ),
@@ -2661,7 +2688,9 @@ function nm_section_courses_features_field_default_field_instances() {
     'widget' => array(
       'active' => 0,
       'module' => 'og',
-      'settings' => array(),
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+      ),
       'type' => 'og_complex',
       'weight' => 4,
     ),
