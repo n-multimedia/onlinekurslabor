@@ -4,7 +4,7 @@
 /**
  * stream migration
  * by not we have nm_stream content in projects and course_groups
- * by itroducing the new context field we need to update the existent content
+ * by itroducing the new context field we need to update the existent content (.. what? ;-)
  */
 function nm_stream_update_7000() {
   //get all stream nodes
@@ -47,7 +47,9 @@ function nm_stream_update_7000() {
 
     if (node_load($context_nid)) {
       $node->field_nm_stream_context[LANGUAGE_NONE][0]['target_id'] = $context_nid;
-      node_save($node);
+      //kein node-save um edit-stempel zu umgehen, via https://www.urbaninsight.com/2011/10/24/saving-nodes-fields-without-saving-node-itself
+       field_attach_presave('node', $node);
+       field_attach_update('node', $node);
     }
     else {
       watchdog('nm_stream', 'Could not find a proper context for stream node with nid %nid', array("%nid" => $node->nid), WATCHDOG_ERROR);
