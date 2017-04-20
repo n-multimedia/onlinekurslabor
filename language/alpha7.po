@@ -115,6 +115,15 @@ msgstr "Private Nachrichten"
 msgid "Write new message"
 msgstr "Nachricht schreiben"
 
+msgid "The recipient of the message."
+msgstr "Der Empfänger der Nachricht."
+
+msgid "The message cannot be sent because all recipients are blocked."
+msgstr "Diese Nachricht kann nicht gesendet werden, weil alle Empfänger blockiert sind."
+
+msgid "The site has multiple recipients named %string. Please choose your intended recipient: !list"
+msgstr "Den Namen %string gibt es öfters. Bitte gewünschten Empfänger wählen: !list"
+
 msgid ""
 msgstr ""
 
