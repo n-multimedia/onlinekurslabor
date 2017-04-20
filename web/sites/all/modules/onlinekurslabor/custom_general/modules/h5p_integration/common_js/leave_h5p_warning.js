@@ -1,10 +1,10 @@
 jQuery(document).ready(function() {
     h5p_form_modified = false;
+    //form change: modified true
     jQuery('form#h5p-content-node-form').change(function() {
         h5p_form_modified = true;
-    })
-        //zeige info nochmal vorm save-button
-            .find("button[type=submit]").before('<div class="alert alert-block alert-warning messages warning">Bei Video: Vorm Speichern auf "Interaktionen hinzufügen" klicken!</div>').click(function() {
+    })      //submit button clicked: modified = false
+            .find("button[type=submit]").click(function() {
         h5p_form_modified = false;
     });
     ;

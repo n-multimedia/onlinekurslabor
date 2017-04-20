@@ -6,10 +6,8 @@
  * Temporär Fehlermeldung, da h5p-library einen Bug hat
  */
 function h5p_integration_form_alter(&$form, &$form_state, $form_id) {
-    
+
     if ($form_id == 'h5p_content_node_form') {
-        //@todo remove warning here and in js-file when h5p was fixed
-        drupal_set_message('<b>Interactive Video anlegen</b>: Sie müssen vor "Speichern" einmalig auf <em>"Interaktionen hinzufügen"</em> klicken<br><i>Sonst kommt es derzeit zu einer Fehlermeldung und die Daten werden verworfen</i>','warning', null);
         drupal_add_js(drupal_get_path('module', 'h5p_integration') . "/common_js/leave_h5p_warning.js");
     }
 }

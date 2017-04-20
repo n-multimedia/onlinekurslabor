@@ -1,7 +1,7 @@
 ##!/bin/sh
 drush vset maintenance_mode 1
 
-
+wget -O sites/default/files/h5p/libraries/H5PEditor.InteractiveVideo-1.15/Scripts/interactive-video-editor.js https://trello-attachments.s3.amazonaws.com/559fa59ca3cc5213d6d8b07d/58e215a8bf2256697570d093/631743669be449f18d955a4909fc7220/interactive-video-editor.js
 #clear cache
 drush cc all
 
