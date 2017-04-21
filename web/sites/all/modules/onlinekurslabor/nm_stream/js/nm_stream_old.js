@@ -13,25 +13,7 @@
         /*toggle solution for qaa questions*/
         attach: function(context, settings) {
 
-            /*
-             * override alert function
-             */
-            /* new funky alert */
-            function nm_stream_alert(msg) {
-                /* here goes your funky alert implementation */
-                bootbox.alert(msg);
-            }
 
-            (function() {
-                var _alert = window.alert;                   // <-- Reference
-                window.alert = function(str) {
-                    //return _alert.apply(this, arguments);  // <-- The universal method
-                    nm_stream_alert(str);                             // Suits for this case
-                };
-            })();
-            //wandelt das privacy-dropdown in ein widget um (mit den bildchen)
-            this.customizePrivacyWidgets();
-            
             /*
              *  NODE
              */
@@ -145,21 +127,6 @@
                 });
 
                 return false;
-            });
-
-            //bind click to dummy text field
-            $('.nm-stream-node-form-container').once('nm_stream').click(function() {
-                $(this).find('.nm-stream-node-form').hide();
-                var form_container = this;
-                var form = $(this).find('form');
-                form.show();
-                form.find('textarea').autosize();
-                form.find('textarea').bind('input propertychange', function() {
-                    nm_stream_textarea_change($(this), form_container);
-                });
-                //call initial event to disable buttons
-                nm_stream_textarea_change(form.find('textarea'), form_container);
-                form.find('textarea').focus();
             });
 
             //bind click to post button
@@ -365,26 +332,6 @@
                 return false;
             });
 
-            //bind click to cancel button
-            $('.nm-stream-node-cancel').once('nm_stream').click(function() {
-
-                if ($(this).closest('.nm-stream-edit-node-actions').length === 0) {
-                    //add form
-                    $('.nm-stream-node-form').show();
-                    $(this).closest('.nm-stream-node-form-container').find('textarea').val('');
-                    $(this).closest('form').hide();
-                    //reset file upload
-                    $(this).closest('form').find('.fileupload').MultiFile('reset');
-
-                } else {
-                    //edit form
-                    $(this).closest('.nm-stream-main').find('.nm-stream-main-body').show();
-                    $(this).closest('form').remove();
-                }
-
-
-                return false;
-            });
 
             //bind toggle event
             $('.nm_stream_comment_toggle').once('nm_stream').click(function() {
@@ -823,174 +770,6 @@
                 return false;
             });
 
-            /**
-             * set disabled attribute
-             * @param {type} element
-             * @returns {undefined}
-             */
-            var post_spinner_white;
-            var post_spinner_black;
-            var post_spinner_load;
-
-            function nm_stream_disable_action_buttons(element) {
-                var submit = element.find("button[class*=-submit]");
-                //var cancel = element.find("button[class*=-cancel]");
-                submit.attr('disabled', 'disabled');
-                //cancel.attr('disabled', 'disabled');
-            }
-
-            function nm_stream_enable_action_buttons(element) {
-                var submit = element.find("button[class*=-submit]");
-                var cancel = element.find("button[class*=-cancel]");
-                submit.removeAttr('disabled');
-                cancel.removeAttr('disabled');
-            }
-
-            function nm_stream_form_set_loading(element) {
-                var body = element.find("textarea");
-                var privacy = element.find(".dd-select");
-                var submit = element.find("button[class*=-submit]");
-
-                body.attr('disabled', 'disabled');
-                privacy.hide();
-                nm_stream_disable_action_buttons(element);
-
-                post_spinner_white = nm_stream_get_post_spinner_white();
-
-                submit.prepend(post_spinner_white.el);
-
-            }
-
-            function nm_stream_get_post_spinner_white() {
-
-                var opts = {
-                    lines: 8, // The number of lines to draw
-                    length: 2, // The length of each line
-                    width: 3, // The line thickness
-                    radius: 4, // The radius of the inner circle
-                    corners: 1, // Corner roundness (0..1)
-                    rotate: 0, // The rotation offset
-                    direction: 1, // 1: clockwise, -1: counterclockwise
-                    color: '#fff', // #rgb or #rrggbb or array of colors
-                    speed: 1.2, // Rounds per second
-                    trail: 60, // Afterglow percentage
-                    shadow: false, // Whether to render a shadow
-                    hwaccel: false, // Whether to use hardware acceleration
-                    className: 'spinner', // The CSS class to assign to the spinner
-                    zIndex: 2e9, // The z-index (defaults to 2000000000)
-                    top: 'auto', // Top position relative to parent in px
-                    left: 'auto' // Left position relative to parent in px
-                };
-
-                if (!post_spinner_white) {
-                    //first call -> init spinner
-                    post_spinner_white = new Spinner(opts).spin();
-                } else {
-                    post_spinner_white.spin();
-                }
-
-                return post_spinner_white;
-            }
-
-            function nm_stream_get_post_spinner_black() {
-
-                var opts = {
-                    lines: 8, // The number of lines to draw
-                    length: 2, // The length of each line
-                    width: 3, // The line thickness
-                    radius: 4, // The radius of the inner circle
-                    corners: 1, // Corner roundness (0..1)
-                    rotate: 0, // The rotation offset
-                    direction: 1, // 1: clockwise, -1: counterclockwise
-                    color: '#333', // #rgb or #rrggbb or array of colors
-                    speed: 1.2, // Rounds per second
-                    trail: 60, // Afterglow percentage
-                    shadow: false, // Whether to render a shadow
-                    hwaccel: false, // Whether to use hardware acceleration
-                    className: 'spinner', // The CSS class to assign to the spinner
-                    zIndex: 2e9, // The z-index (defaults to 2000000000)
-                    top: 'auto', // Top position relative to parent in px
-                    left: 'auto' // Left position relative to parent in px
-                };
-
-                if (!post_spinner_black) {
-                    //first call -> init spinner
-                    post_spinner_black = new Spinner(opts).spin();
-                } else {
-                    post_spinner_black.spin();
-                }
-
-                return post_spinner_black;
-            }
-
-            function nm_stream_get_post_spinner_load() {
-
-                var opts = {
-                    lines: 8, // The number of lines to draw
-                    length: 2, // The length of each line
-                    width: 3, // The line thickness
-                    radius: 4, // The radius of the inner circle
-                    corners: 1, // Corner roundness (0..1)
-                    rotate: 0, // The rotation offset
-                    direction: 1, // 1: clockwise, -1: counterclockwise
-                    color: '#333', // #rgb or #rrggbb or array of colors
-                    speed: 1.2, // Rounds per second
-                    trail: 60, // Afterglow percentage
-                    shadow: false, // Whether to render a shadow
-                    hwaccel: false, // Whether to use hardware acceleration
-                    className: 'spinner', // The CSS class to assign to the spinner
-                    zIndex: 2e9, // The z-index (defaults to 2000000000)
-                    top: 'auto', // Top position relative to parent in px
-                    left: 'auto' // Left position relative to parent in px
-                };
-
-                if (!post_spinner_load) {
-                    //first call -> init spinner
-                    post_spinner_load = new Spinner(opts).spin();
-                } else {
-                    post_spinner_load.spin();
-                }
-
-                return post_spinner_load;
-            }
-
-            function nm_stream_textarea_change(textarea, form_container) {
-                form_container = $(form_container);
-                if (textarea.val().length > 0) {
-                    nm_stream_enable_action_buttons(form_container);
-                } else {
-                    nm_stream_disable_action_buttons(form_container);
-                }
-            }
-            /**
-             * remove disabled attribute
-             * @param {type} element
-             * @returns {undefined}
-             */
-            function nm_stream_unset_loading(element) {
-                var body = element.find("textarea");
-                var privacy = element.find(".dd-select");
-
-                body.removeAttr('disabled');
-                privacy.show();
-                nm_stream_enable_action_buttons(element);
-
-                //stop/hide spinner
-                post_spinner_white.stop();
-            }
-
-
-            /*
-             *  Update Stream
-             */
-
-            //potential error source, if we do not have view-content class wrapper
-            //23.09.2016 - 16:50 - SN
-            /*$('.view-nm-stream .view-content').once('nm_stream_init', function() {
-                if(!$(this).hasClass("pane-nm-stream")) {
-                    $(this).addClass("pane-nm-stream");
-                }
-            });*/
 
 
             $('.pane-nm-stream').once('nm_stream', function() {

@@ -9,12 +9,14 @@
     var nm_stream_get_update_timer = false;
     var nm_stream_pause_update_timer = false;
 
+
     var nm_stream = {};
 
     Drupal.behaviors.nm_stream = {
 
         attach: function(context, settings) {
             nm_stream = new NMStream(context);
+
         }
     };
 
@@ -36,6 +38,10 @@
         this.comment_add_url = '/nm_stream/node/%nid/comment/add';
         this.comment_edit_url = '/nm_stream/comment/%cid/edit';
         this.comment_delete_url = '/nm_stream/comment/%cid/delete/%token';
+
+        this.post_spinner_white = null;
+        this.post_spinner_black = null;
+        this.post_spinner_load = null;
 
         this.init();
     }
@@ -92,26 +98,91 @@
     /**
      * bind events
      */
-    NMStream.prototype.init_bind_events = function() {
+    NMStream.prototype.init_bind_events = function () {
         var self = this;
         //bind click to dummy text field
-        $('.nm-stream-node-form-container').once('nm_stream').click(function() {
+        self.init_bind_dummy_textfield_event();
+
+        //cancel button click
+        self.init_bind_cancel_button_event();
+
+        //comment toggle click
+        self.init_bind_cancel_button_event();
+
+        //post button click
+    };
+
+    /**
+     * bind click to dummy text field
+     */
+    NMStream.prototype.init_bind_dummy_textfield_event = function() {
+        var self = this;
+        //bind click to dummy text field
+        $('.nm-stream-node-form-container').once('nm_stream').click(function () {
             $(this).find('.nm-stream-node-form').hide();
             var form_container = this;
             var form = $(this).find('form');
             form.show();
             form.find('textarea').autosize();
-            form.find('textarea').bind('input propertychange', function() {
+            form.find('textarea').bind('input propertychange', function () {
                 self.textarea_change($(this), form_container);
             });
             //call initial event to disable buttons
             self.textarea_change(form.find('textarea'), form_container);
             form.find('textarea').focus();
         });
+    }
+    
+    /**
+     * bind click to cancel button
+     */
+    NMStream.prototype.init_bind_cancel_button_event = function() {
+        var self = this;
 
-    };
+        //bind click to cancel button
+        $('.nm-stream-add-node-actions .nm-stream-node-cancel').once('nm_stream').click(function() {
+
+            if ($(this).closest('.nm-stream-edit-node-actions').length === 0) {
+                //add form
+                $('.nm-stream-node-form').show();
+                $(this).closest('.nm-stream-node-form-container').find('textarea').val('');
+                $(this).closest('form').hide();
+                //reset file upload
+                $(this).closest('form').find('.fileupload').MultiFile('reset');
+
+            } else {
+                //edit form
+                $(this).closest('.nm-stream-main').find('.nm-stream-main-body').show();
+                $(this).closest('form').remove();
+            }
+
+            return false;
+        });
+    }
 
     /**
+     * bind click to comment toggle
+     */
+    NMStream.prototype.init_bind_cancel_button_event = function () {
+        var self = this;
+
+        //bind comment toggle event
+        $('.nm_stream_comment_toggle').once('nm_stream').click(function () {
+
+            return false;
+        });
+    }
+
+    /**
+     * bind post button event
+     */
+    NMStream.prototype.init_bind_post_button_event = function () {
+        var self = this;
+
+    }
+
+
+        /**
      * refresh / update stream
      */
     NMStream.prototype.refresh = function() {
@@ -156,6 +227,43 @@
     };
 
     /**
+     * Form set loading
+     * @param element
+     */
+    NMStream.prototype.nm_stream_form_set_loading = function (element) {
+        var body = element.find("textarea");
+        var privacy = element.find(".dd-select");
+        var submit = element.find("button[class*=-submit]");
+
+        body.attr('disabled', 'disabled');
+        privacy.hide();
+        nm_stream_disable_action_buttons(element);
+
+        post_spinner_white = nm_stream_get_post_spinner_white();
+
+        submit.prepend(post_spinner_white.el);
+
+    }
+
+
+    /**
+     * remove disabled attribute
+     * @param {type} element
+     * @returns {undefined}
+     */
+    NMStream.prototype.nm_stream_unset_loading = function (element) {
+        var body = element.find("textarea");
+        var privacy = element.find(".dd-select");
+
+        body.removeAttr('disabled');
+        privacy.show();
+        nm_stream_enable_action_buttons(element);
+
+        //stop/hide spinner
+        post_spinner_white.stop();
+    }
+
+    /**
      * NMSream confirmation dialog
      */
     NMStream.prototype.confirmation = function(dialog_options, callback_confirm, callback_cancel) {
@@ -179,6 +287,110 @@
         });
 
     };
+
+    /**
+     * get white loading spinner
+     * @returns {*}
+     */
+    NMStream.prototype.nm_stream_get_post_spinner_white = function () {
+
+        var opts = {
+            lines: 8, // The number of lines to draw
+            length: 2, // The length of each line
+            width: 3, // The line thickness
+            radius: 4, // The radius of the inner circle
+            corners: 1, // Corner roundness (0..1)
+            rotate: 0, // The rotation offset
+            direction: 1, // 1: clockwise, -1: counterclockwise
+            color: '#fff', // #rgb or #rrggbb or array of colors
+            speed: 1.2, // Rounds per second
+            trail: 60, // Afterglow percentage
+            shadow: false, // Whether to render a shadow
+            hwaccel: false, // Whether to use hardware acceleration
+            className: 'spinner', // The CSS class to assign to the spinner
+            zIndex: 2e9, // The z-index (defaults to 2000000000)
+            top: 'auto', // Top position relative to parent in px
+            left: 'auto' // Left position relative to parent in px
+        };
+
+        if (!post_spinner_white) {
+            //first call -> init spinner
+            post_spinner_white = new Spinner(opts).spin();
+        } else {
+            post_spinner_white.spin();
+        }
+
+        return post_spinner_white;
+    }
+
+    /**
+     * get black loading spinner
+     * @returns {*}
+     */
+    NMStream.prototype.nm_stream_get_post_spinner_black = function () {
+        var opts = {
+            lines: 8, // The number of lines to draw
+            length: 2, // The length of each line
+            width: 3, // The line thickness
+            radius: 4, // The radius of the inner circle
+            corners: 1, // Corner roundness (0..1)
+            rotate: 0, // The rotation offset
+            direction: 1, // 1: clockwise, -1: counterclockwise
+            color: '#333', // #rgb or #rrggbb or array of colors
+            speed: 1.2, // Rounds per second
+            trail: 60, // Afterglow percentage
+            shadow: false, // Whether to render a shadow
+            hwaccel: false, // Whether to use hardware acceleration
+            className: 'spinner', // The CSS class to assign to the spinner
+            zIndex: 2e9, // The z-index (defaults to 2000000000)
+            top: 'auto', // Top position relative to parent in px
+            left: 'auto' // Left position relative to parent in px
+        };
+
+        if (!post_spinner_black) {
+            //first call -> init spinner
+            post_spinner_black = new Spinner(opts).spin();
+        } else {
+            post_spinner_black.spin();
+        }
+
+        return post_spinner_black;
+    }
+
+    /**
+     * get gray post loading spinner
+     * @returns {*}
+     */
+    NMStream.prototype.nm_stream_get_post_spinner_load = function () {
+
+        var opts = {
+            lines: 8, // The number of lines to draw
+            length: 2, // The length of each line
+            width: 3, // The line thickness
+            radius: 4, // The radius of the inner circle
+            corners: 1, // Corner roundness (0..1)
+            rotate: 0, // The rotation offset
+            direction: 1, // 1: clockwise, -1: counterclockwise
+            color: '#333', // #rgb or #rrggbb or array of colors
+            speed: 1.2, // Rounds per second
+            trail: 60, // Afterglow percentage
+            shadow: false, // Whether to render a shadow
+            hwaccel: false, // Whether to use hardware acceleration
+            className: 'spinner', // The CSS class to assign to the spinner
+            zIndex: 2e9, // The z-index (defaults to 2000000000)
+            top: 'auto', // Top position relative to parent in px
+            left: 'auto' // Left position relative to parent in px
+        };
+
+        if (!post_spinner_load) {
+            //first call -> init spinner
+            post_spinner_load = new Spinner(opts).spin();
+        } else {
+            post_spinner_load.spin();
+        }
+
+        return post_spinner_load;
+    }
 
 
 }(jQuery));
