@@ -551,7 +551,7 @@ Authors's Tools
 }
 #authors_tools-container .btn#author_annvid_add a:hover:before, #authors_tools-container .btn#author_annvid_add a.active:before
 {
-    background-position: -412px -100px;
+    background-position: -412px -150px;
 }
 
 #authors_tools-container .btn#author_chapter_add a:before
