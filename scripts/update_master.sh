@@ -9,8 +9,10 @@ drush cc all
 #revert single features
 #drush features-revert-all --yes
 
+drush fr nm_section_content_features --yes
 
 drush language-import-translations de ../language/alpha8.po --replace --groups=default
+
 
 
 drush vset maintenance_mode 0
