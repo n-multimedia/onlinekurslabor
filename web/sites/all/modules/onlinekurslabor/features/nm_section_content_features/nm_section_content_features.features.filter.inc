@@ -19,36 +19,41 @@ function nm_section_content_features_filter_default_formats() {
     'weight' => 0,
     'filters' => array(
       'filter_url' => array(
-        'weight' => -48,
+        'weight' => -50,
         'status' => 1,
         'settings' => array(
           'filter_url_length' => 72,
         ),
       ),
+      'fix_content_links' => array(
+        'weight' => -49,
+        'status' => 1,
+        'settings' => array(),
+      ),
       'filter_autop' => array(
-        'weight' => -44,
+        'weight' => -48,
         'status' => 1,
         'settings' => array(),
       ),
       'biblio_filter_reference' => array(
-        'weight' => -43,
+        'weight' => -47,
         'status' => 1,
         'settings' => array(),
       ),
       'ckeditor_link_filter' => array(
-        'weight' => -41,
+        'weight' => -46,
         'status' => 1,
         'settings' => array(),
       ),
       'filter_footnotes' => array(
-        'weight' => -40,
+        'weight' => -45,
         'status' => 1,
         'settings' => array(
           'footnotes_collapse' => 0,
         ),
       ),
       'htmlpurifier_advanced' => array(
-        'weight' => -39,
+        'weight' => -44,
         'status' => 1,
         'settings' => array(
           'htmlpurifier_help' => 1,
@@ -199,22 +204,22 @@ news',
         ),
       ),
       'filter_content_tasks' => array(
-        'weight' => -37,
+        'weight' => -43,
         'status' => 1,
         'settings' => array(),
       ),
       'filter_content_h5p' => array(
-        'weight' => -36,
+        'weight' => -42,
         'status' => 1,
         'settings' => array(),
       ),
       'media_filter' => array(
-        'weight' => -35,
+        'weight' => -41,
         'status' => 1,
         'settings' => array(),
       ),
       'image_resize_filter' => array(
-        'weight' => -34,
+        'weight' => -40,
         'status' => 1,
         'settings' => array(
           'link' => 0,
