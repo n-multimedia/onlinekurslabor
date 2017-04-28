@@ -832,20 +832,20 @@ function _section_content_filter_tasks_process($text, $filter, $format) {
  * once any necessary substitutions have taken place. The example just replaces
  * foo with our custom defined string in the settings page.
  */
-function _section_content_filter_links_process($text, $filter, $format) {
+function _section_content_filter_links_process($text, $filter, $format){
 
     // 1) entfernt Verweis auf eigenen Server
-    //das macht nur Sinn, BEVOR Text gespeichert wird (Austauschbarkeit etc). Separater Task!
-    /* global $base_url;
-      $url_without_http = str_replace("http://", "", $base_url);
-      $url_without_http = str_replace("https://", "", $url_without_http);
-      $regex_domain = '#((http:\/\/|https:\/\/)' . $url_without_http . ')#s';
-      $text_without_domain = preg_replace($regex_domain, "", $text); */
-    $text_without_domain = $text;
+    global $base_url;
+    $url_without_http = str_replace("http://", "", $base_url);
+    $url_without_http = str_replace("https://", "", $url_without_http);
+    $regex_domain = '#((http:\/\/|https:\/\/)' . $url_without_http . ')#s';
+    $text_without_domain = preg_replace($regex_domain, "", $text);
+
     //2) ersetzt angaben wie course/text/1234/567 sowie domain/text/567 durch /node/567
     $regex_text = '#(\/domain\/text|\/course\/text\/\d+)\/(\d+)#s';
     return $text_new = preg_replace($regex_text, "/node/$2", $text_without_domain);
 }
+
 
 function _section_content_task_replacements($matches) {
   //preg_match($regex, $text, $matches);
