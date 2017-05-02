@@ -11,7 +11,7 @@ function nm_section_courses_features_context_default_contexts() {
   $export = array();
 
   $context = new stdClass();
-  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->disabled = TRUE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
   $context->name = 'instructor_frontpage';
   $context->description = 'Sets courses-overview as instructor\'s <front> page';
@@ -154,7 +154,7 @@ function nm_section_courses_features_context_default_contexts() {
   $export['section_courses_course_navigation'] = $context;
 
   $context = new stdClass();
-  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->disabled = TRUE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
   $context->name = 'student_frontpage';
   $context->description = 'Sets courses-overview as student\'s <front> page';

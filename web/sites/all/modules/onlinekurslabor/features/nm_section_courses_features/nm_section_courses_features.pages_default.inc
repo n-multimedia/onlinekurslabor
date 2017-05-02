@@ -138,7 +138,7 @@ return drupal_render($form);
   $export['user_edit_panel_context'] = $handler;
 
   $handler = new stdClass();
-  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->disabled = TRUE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
   $handler->name = 'user_view_panel_context';
   $handler->task = 'user_view';
@@ -529,7 +529,7 @@ return drupal_render($form);
   $export['user_view_panel_context'] = $handler;
 
   $handler = new stdClass();
-  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->disabled = TRUE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
   $handler->name = 'user_view_panel_context_2';
   $handler->task = 'user_view';
@@ -5556,7 +5556,7 @@ echo \'<p><a class="btn btn-default" href="/node/add/courses-course">Neuen Kurs 
   $display->title = 'Kursarchiv';
   $display->uuid = '532d2f69-94b7-4a1d-be7a-340653e8ed4c';
   $display->storage_type = 'page_manager';
-  $display->storage_id = 'page_courses_course_overview_panel_context';
+  $display->storage_id = 'page_courses_course_overview__archive';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();

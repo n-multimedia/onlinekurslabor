@@ -11,7 +11,7 @@ function nm_section_content_features_context_default_contexts() {
   $export = array();
 
   $context = new stdClass();
-  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->disabled = TRUE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
   $context->name = 'author_frontpage';
   $context->description = 'Sets domain-overview as author\'s <front> page';

@@ -7,9 +7,9 @@ drush updatedb --yes
 #bug in drush - cc before FR!!
 drush cc all
 #revert single features
+drush fr  nm_general_features nm_login_vhb_features  nm_section_content_features nm_section_courses_features  section_courses_clone_features --yes
 #drush features-revert-all --yes
 
-drush fr nm_section_content_features --yes
 
 drush language-import-translations de ../language/alpha8.po --replace --groups=default
 

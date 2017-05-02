@@ -89,7 +89,6 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['relationships']['profile']['table'] = 'users';
   $handler->display->display_options['relationships']['profile']['field'] = 'profile';
   $handler->display->display_options['relationships']['profile']['relationship'] = 'author';
-  $handler->display->display_options['relationships']['profile']['label'] = 'Profil';
   $handler->display->display_options['relationships']['profile']['required'] = TRUE;
   $handler->display->display_options['relationships']['profile']['bundle_types'] = array(
     'master' => 'master',
@@ -235,7 +234,7 @@ function nm_general_features_views_default_views() {
     t('last »'),
     t('relationship to pm_message'),
     t('relationship from pm_message (author) to user'),
-    t('Profil'),
+    t('Profile'),
     t('(hidden) mid'),
     t('(hidden) Real name'),
     t('[realname]'),

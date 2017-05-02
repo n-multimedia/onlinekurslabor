@@ -286,7 +286,7 @@ function nm_general_features_default_page_manager_pages() {
       'platzhalter' => array(
         'type' => 'region',
         'title' => 'Image-Video',
-        'width' => 35.058602594728,
+        'width' => 35.058602594728001,
         'width_type' => '%',
         'parent' => '1',
         'class' => 'col-xs-12 col-md-6 col-lg-5',
