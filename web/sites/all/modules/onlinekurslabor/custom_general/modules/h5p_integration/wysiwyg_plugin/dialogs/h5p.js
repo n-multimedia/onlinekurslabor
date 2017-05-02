@@ -9,7 +9,7 @@ function h5p_custom_onok(dialog, editor)
     var markup = dialog.getValueOf('tab-basic', 'markup');
     var tsarea_html = "";
     if (use_ts == 1)
-        tsarea_html = '<div class="h5p_timestamps">0:00 ' + Drupal.t('example') + '</div><p></p>';
+        tsarea_html = '<div class="h5p_timestamps ckeditor_indent1">0:00 ' + Drupal.t('example') + '</div><p></p>';
 
     editor.insertHtml(markup + "\n" + tsarea_html);
 
