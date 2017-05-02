@@ -14,6 +14,7 @@ function oembedfield_update_dependencies() {
  * Transition field formatters to oEmbed core module.
  */
 function oembedfield_update_7000() {
+  require_once DRUPAL_ROOT . '/modules/field/field.info.inc';
   foreach (field_info_field_map() as $field_name => $info) {
     if ($info['type'] == 'link_field') {
       foreach ($info['bundles'] as $entity_type => $bundles) {

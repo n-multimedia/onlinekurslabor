@@ -1,7 +1,8 @@
 // Media query variables.
-@tablet:  ~"screen and (min-width: @{screen-sm-min})";
-@normal:  ~"screen and (min-width: @{screen-md-min})";
-@wide:    ~"screen and (min-width: @{screen-lg-min})";
+@tablet:              ~"screen and (min-width: @{screen-sm-min})";
+@normal:              ~"screen and (min-width: @{screen-md-min})";
+@wide:                ~"screen and (min-width: @{screen-lg-min})";
+@grid-breakpoint:     ~"screen and (min-width: @{grid-float-breakpoint})";
 
 // Drop shadows.
 .box-shadow(@shadow) {
@@ -171,7 +172,7 @@ body {
   margin-right: -15px;
   padding-left: 15px;
   padding-right: 15px;
-  @media @tablet {
+  @media @grid-breakpoint {
     margin-right: 0;
     padding-left: 0;
   }
@@ -845,4 +846,27 @@ body.navbar-tray-open.navbar-vertical.navbar-fixed {
 }
 #navbar-administration.navbar-oriented .navbar-tray-vertical {
   width: 24rem;
+}
+
+/**
+ * Icon styles.
+ */
+a {
+  &.icon-before .glyphicon {
+    margin-right: .25em;
+  }
+  &.icon-after .glyphicon {
+    margin-left: .25em;
+  }
+}
+
+.btn {
+  &.icon-before .glyphicon {
+    margin-left: -.25em;
+    margin-right: .25em;
+  }
+  &.icon-after .glyphicon {
+    margin-left: .25em;
+    margin-right: -.25em;
+  }
 }
