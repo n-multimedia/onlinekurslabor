@@ -1797,7 +1797,14 @@ function form_error(&$element, $message = '') {
  *   was clicked when the form was submitted, as well as the sanitized
  *   $_POST data.
  */
+ function                   _drupal_form_hack_applied() {return true;}
 function form_builder($form_id, &$element, &$form_state) {
+    /* before processing the callback, we have to be sure, the theme
+was loaded   */
+    global $theme;
+    if (!$theme) {
+        drupal_theme_initialize();
+    }
   // Initialize as unprocessed.
   $element['#processed'] = FALSE;
 
