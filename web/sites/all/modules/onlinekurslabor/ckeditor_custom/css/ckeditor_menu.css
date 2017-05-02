@@ -1,0 +1,15 @@
+/*
+changes the default icon of media-upload in ckeditor
+*/
+/* 
+    Created on : 30.03.2017, 15:18:06
+    Author     : Bernhard
+*/
+
+.cke_button__media span.cke_button__media_icon
+{
+     background-image: url(../images/wysiwyg-media.gif) !important;
+}
+a.cke_button__footnotes  span.cke_button__footnotes_icon {
+    background-image: url(../images/note_add.gif) !important;
+}

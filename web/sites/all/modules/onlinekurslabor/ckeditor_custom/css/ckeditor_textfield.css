@@ -1,0 +1,8 @@
+/*hier kann man eigene Stile definieren. Wie bspw. eingerückt fuer h5p
+Diese wirken sich dann nur innerhalb des Editors aus
+*/
+.ckeditor_indent1 {
+    border-left:1px solid #ebebeb; 
+    background:#FDFEFE;
+    padding:1em;
+}

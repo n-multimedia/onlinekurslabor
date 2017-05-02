@@ -1,5 +1,18 @@
 #Translation File - onlinekurslabor
 
 
+msgid "Add a footnote"
+msgstr "Fußnote hinzufügen"
+
 msgid ""
 msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+

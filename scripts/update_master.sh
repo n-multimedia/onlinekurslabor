@@ -12,6 +12,8 @@ drush fr  nm_general_features nm_login_vhb_features  nm_section_content_features
 
 
 drush en mediamodule_fix --yes
+drush en ckeditor_custom --yes
+
 
 drush language-import-translations de ../language/alpha8.po --replace --groups=default
 
