@@ -3275,7 +3275,7 @@ return section_courses_text_outline();
     ),
   );
   $display->cache = array();
-  $display->title = '%node:title';
+  $display->title = '%1:title';
   $display->uuid = 'dc0d0009-e4d9-4e03-b9aa-05ff00c3bb9e';
   $display->storage_type = 'page_manager';
   $display->storage_id = 'page_courseinformation_in_course__panel_context_2';
@@ -3315,7 +3315,7 @@ return section_courses_text_outline();
   $pane->panel = 'links';
   $pane->type = 'node_title';
   $pane->subtype = 'node_title';
-  $pane->shown = TRUE;
+  $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
     'link' => 0,
@@ -3611,7 +3611,7 @@ echo section_courses_render_course_link($course);
   $pane->uuid = '3fbf1e35-6b7d-4fee-9ddf-e4d3ec9db14b';
   $display->content['new-3fbf1e35-6b7d-4fee-9ddf-e4d3ec9db14b'] = $pane;
   $display->panels['rechts_'][0] = 'new-3fbf1e35-6b7d-4fee-9ddf-e4d3ec9db14b';
-  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
