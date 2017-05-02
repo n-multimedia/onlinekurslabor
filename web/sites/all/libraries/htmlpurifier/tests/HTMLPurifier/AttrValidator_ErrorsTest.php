@@ -3,27 +3,31 @@
 class HTMLPurifier_AttrValidator_ErrorsTest extends HTMLPurifier_ErrorsHarness
 {
 
-    public function setup() {
+    public function setup()
+    {
         parent::setup();
         $config = HTMLPurifier_Config::createDefault();
         $this->language = HTMLPurifier_LanguageFactory::instance()->create($config, $this->context);
         $this->context->register('Locale', $this->language);
         $this->collector = new HTMLPurifier_ErrorCollector($this->context);
-        $this->context->register('Generator', new HTMLPurifier_Generator($config, $this->context));
+        $gen = new HTMLPurifier_Generator($config, $this->context);
+        $this->context->register('Generator', $gen);
     }
 
-    protected function invoke($input) {
+    protected function invoke($input)
+    {
         $validator = new HTMLPurifier_AttrValidator();
         $validator->validateToken($input, $this->config, $this->context);
     }
 
-    function testAttributesTransformedGlobalPre() {
+    public function testAttributesTransformedGlobalPre()
+    {
         $def = $this->config->getHTMLDefinition(true);
         generate_mock_once('HTMLPurifier_AttrTransform');
         $transform = new HTMLPurifier_AttrTransformMock();
         $input = array('original' => 'value');
         $output = array('class' => 'value'); // must be valid
-        $transform->setReturnValue('transform', $output, array($input, new AnythingExpectation(), new AnythingExpectation()));
+        $transform->returns('transform', $output, array($input, new AnythingExpectation(), new AnythingExpectation()));
         $def->info_attr_transform_pre[] = $transform;
 
         $token = new HTMLPurifier_Token_Start('span', $input, 1);
@@ -36,7 +40,8 @@ class HTMLPurifier_AttrValidator_ErrorsTest extends HTMLPurifier_ErrorsHarness
         $this->assertIdentical($result, $expect);
     }
 
-    function testAttributesTransformedLocalPre() {
+    public function testAttributesTransformedLocalPre()
+    {
         $this->config->set('HTML.TidyLevel', 'heavy');
         $input = array('align' => 'right');
         $output = array('style' => 'text-align:right;');
@@ -51,7 +56,8 @@ class HTMLPurifier_AttrValidator_ErrorsTest extends HTMLPurifier_ErrorsHarness
 
     // too lazy to check for global post and global pre
 
-    function testAttributeRemoved() {
+    public function testAttributeRemoved()
+    {
         $token = new HTMLPurifier_Token_Start('p', array('foobar' => 'right'), 1);
         $this->invoke($token);
         $result = $this->collector->getRaw();

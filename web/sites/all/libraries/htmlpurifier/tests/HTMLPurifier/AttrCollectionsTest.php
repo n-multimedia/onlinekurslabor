@@ -9,8 +9,8 @@ Mock::generatePartial(
 class HTMLPurifier_AttrCollectionsTest extends HTMLPurifier_Harness
 {
 
-    function testConstruction() {
-
+    public function testConstruction()
+    {
         generate_mock_once('HTMLPurifier_AttrTypes');
 
         $collections = new HTMLPurifier_AttrCollections_TestForConstruct();
@@ -42,7 +42,7 @@ class HTMLPurifier_AttrCollectionsTest extends HTMLPurifier_Harness
             'Brocolli' => array()
         );
 
-        $collections->__construct($types, $modules);
+        $collections->doConstruct($types, $modules);
         // this is without identifier expansion or inclusions
         $this->assertIdentical(
             $collections->info,
@@ -61,8 +61,8 @@ class HTMLPurifier_AttrCollectionsTest extends HTMLPurifier_Harness
 
     }
 
-    function test_performInclusions() {
-
+    public function test_performInclusions()
+    {
         generate_mock_once('HTMLPurifier_AttrTypes');
 
         $types = new HTMLPurifier_AttrTypesMock();
@@ -99,8 +99,8 @@ class HTMLPurifier_AttrCollectionsTest extends HTMLPurifier_Harness
 
     }
 
-    function test_expandIdentifiers() {
-
+    public function test_expandIdentifiers()
+    {
         generate_mock_once('HTMLPurifier_AttrTypes');
 
         $types = new HTMLPurifier_AttrTypesMock();
@@ -113,8 +113,8 @@ class HTMLPurifier_AttrCollectionsTest extends HTMLPurifier_Harness
         $c_object = new HTMLPurifier_AttrDef_HTML_Color();
         $u_object = new HTMLPurifier_AttrDef_URI();
 
-        $types->setReturnValue('get', $c_object, array('Color'));
-        $types->setReturnValue('get', $u_object, array('URI'));
+        $types->returns('get', $c_object, array('Color'));
+        $types->returns('get', $u_object, array('URI'));
 
         $collections->expandIdentifiers($attr, $types);
 
