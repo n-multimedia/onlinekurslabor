@@ -39,4 +39,9 @@ function ckeditor_custom_wysiwyg_plugin($editor, $version) {
     //add custom css to ckeditor
     //css rules
     drupal_add_css(drupal_get_path('module', 'ckeditor_custom') . '/css/ckeditor_menu.css');
+    //copy-paste-handler
+    $path = drupal_get_path('module', 'ckeditor_custom');
+    $url_default_image = file_create_url($path . '/images/picture-replace.png');
+    drupal_add_js(array('ckeditor_custom' => array('default_image' => $url_default_image)), 'setting');
+    drupal_add_js(drupal_get_path('module', 'ckeditor_custom') . '/js/ckeditor_custom_paste_handler.js');
 }
