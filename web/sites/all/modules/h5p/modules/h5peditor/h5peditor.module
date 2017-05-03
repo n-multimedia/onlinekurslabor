@@ -20,6 +20,32 @@ function h5peditor_menu() {
     'access arguments' => array(2),
     'type' => MENU_CALLBACK,
   );
+  $items['h5peditor/%/%/content-type-cache'] = array(
+    'title' => 'H5Peditor Content type cache',
+    'page callback' => 'h5peditor_content_type_cache_callback',
+    'access callback' => 'h5peditor_access',
+    'access arguments' => array(2),
+    'type' => MENU_CALLBACK
+  );
+
+  $items['h5peditor/%/%/library-install/%'] = array(
+    'title' => 'H5P Install Library',
+    'page callback' => 'h5peditor_library_install_callback',
+    'page arguments' => array(1, 4),
+    'access callback' => 'h5peditor_access',
+    'access arguments' => array(2),
+    'type' => MENU_CALLBACK
+  );
+
+  $items['h5peditor/%/%/library-upload'] = array(
+    'title' => 'H5P Upload library',
+    'page callback' => 'h5peditor_library_upload_callback',
+    'page arguments' => array(1, 2),
+    'access callback' => 'h5peditor_access',
+    'access arguments' => array(2),
+    'type' => MENU_CALLBACK
+  );
+
   $items['h5peditor/%/%/libraries/%/%/%'] = array(
     'title' => 'H5peditor Library',
     'page callback' => 'h5peditor_library_callback',
@@ -38,6 +64,18 @@ function h5peditor_menu() {
   );
 
   return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function h5peditor_permission() {
+  return array(
+    'install recommended h5p libraries' => array(
+      'title' => t('Install recommended H5P Libraries'),
+      'description' => t('Install only recommended content types available at the Hub.'),
+    )
+  );
 }
 
 /**
@@ -66,8 +104,8 @@ function h5peditor_form_h5p_content_node_form_alter(&$form, &$form_state) {
   $node = h5peditor_get_source_node($form['#node']);
   $library = isset($node->main_library) ? H5PCore::libraryToString($node->main_library) : (isset($node->h5p_library) ? $node->h5p_library : 0);
 
-  if (variable_get('h5p_first_runnable_saved', 0) === 0) {
-    drupal_set_message(t("If you don't have any H5P content types installed you may <a href=\"http://h5p.org/update-all-content-types\" target=\"_blank\">download them all at once</a> from H5P.org and upload them all at once on the <a href=\"!library_admin_url\" target=\"_blank\">library admin page</a>. Refresh this page when you've installed the libraries.", array('!library_admin_url' => url('admin/content/h5p'))));
+  if (variable_get('h5p_first_runnable_saved', 0) === 0 && !variable_get('h5p_hub_is_enabled', TRUE)) {
+    drupal_set_message(t('It looks like there are no content types installed. You can get the ones you want by using the small "Download" button in the lower left corner on any example from the <a href="https://h5p.org/content-types-and-applications" target="_blank">Examples and Downloads</a> page and then you upload the file here.'));
   }
 
   $form['h5p_type'] = array(
@@ -80,6 +118,11 @@ function h5peditor_form_h5p_content_node_form_alter(&$form, &$form_state) {
     '#default_value' => $library ? 'create' : (variable_get('h5p_first_runnable_saved', 0) ? 'create' : 'upload'),
     '#weight' => $form['h5p']['#weight'] - 1,
   );
+
+  if (variable_get('h5p_hub_is_enabled', TRUE)) {
+    $form['h5p_type']['#default_value'] = 'create';
+    $form['h5p_type']['#type'] = 'hidden';
+  }
 
   $form['h5p_editor'] = array(
     '#type' => 'item',
@@ -133,6 +176,8 @@ function h5peditor_h5p_content_node_form_after_build($form) {
       $assets['js'][] = base_path() . $h5peditor_module_path . '/h5peditor/' . $script . $cache_buster;
     }
   }
+  drupal_add_js($h5peditor_module_path . '/h5peditor/scripts/h5p-hub-client.js');
+  drupal_add_js($h5peditor_module_path . '/h5peditor/scripts/h5peditor-selector-hub.js');
   drupal_add_js($h5peditor_module_path . '/h5peditor/scripts/h5peditor-editor.js');
   drupal_add_js($h5peditor_module_path . '/scripts/application.js');
 
@@ -163,6 +208,7 @@ function h5peditor_h5p_content_node_form_after_build($form) {
       'assets' => $assets,
       'contentRelUrl' => '../h5p/content/',
       'editorRelUrl' => '../../../h5peditor/',
+      'apiVersion' => H5PCore::$coreApi
     ),
   );
 
@@ -180,7 +226,7 @@ function h5peditor_h5p_content_node_form_after_build($form) {
  * @see http://drupal.org/node/1354
  */
 function h5peditor_h5p_content_node_form_validate($form, $form_state) {
-  if ($form_state['values']['h5p_type'] == 'upload') {
+  if (!variable_get('h5p_hub_is_enabled', TRUE) && $form_state['values']['h5p_type'] == 'upload') {
     h5p_form_validate($form, $form_state);
     return;
   }
@@ -211,7 +257,7 @@ function h5peditor_h5p_content_node_form_validate($form, $form_state) {
  * Node form submit handler.
  */
 function h5peditor_h5p_content_node_form_submit($form, &$form_state) {
-  if ($form_state['values']['h5p_type'] == 'upload') {
+  if (!variable_get('h5p_hub_is_enabled', TRUE) && $form_state['values']['h5p_type'] == 'upload') {
     return;
   }
 
@@ -261,10 +307,36 @@ function _h5peditor_create_content($node) {
  */
 function h5peditor_libraries_callback() {
   $editor = h5peditor_get_instance();
+  $editor->ajax->action(H5PEditorEndpoints::LIBRARIES);
+  drupal_add_http_header('Content-Type', 'application/json');
+}
 
-  drupal_add_http_header('Cache-Control', 'no-cache');
-  drupal_add_http_header('Content-type', 'application/json');
-  print $editor->getLibraries();
+/**
+ * Upload library from endpoint
+ */
+function h5peditor_library_upload_callback($token, $contentId) {
+  $editor = h5peditor_get_instance();
+  $filePath = $_FILES['h5p']['tmp_name'];
+  $editor->ajax->action(H5PEditorEndpoints::LIBRARY_UPLOAD, $token, $filePath, $contentId);
+  drupal_add_http_header('Content-Type', 'application/json');
+}
+
+/**
+ * Install library from external file
+ */
+function h5peditor_library_install_callback($token, $machineName) {
+  $editor = h5peditor_get_instance();
+  $editor->ajax->action(H5PEditorEndpoints::LIBRARY_INSTALL, $token, $machineName);
+  drupal_add_http_header('Content-Type', 'application/json');
+}
+
+/**
+ * Callback that returns the content type cache
+ */
+function h5peditor_content_type_cache_callback() {
+  $editor = h5peditor_get_instance();
+  $editor->ajax->action(H5PEditorEndpoints::CONTENT_TYPE_CACHE);
+  drupal_add_http_header('Content-Type', 'application/json');
 }
 
 /**
@@ -275,11 +347,11 @@ function h5peditor_libraries_callback() {
 function h5peditor_library_callback($machine_name, $major_version, $minor_version) {
   global $language;
 
-  drupal_add_http_header('Cache-Control', 'no-cache');
-  drupal_add_http_header('Content-type', 'application/json');
-
   $editor = h5peditor_get_instance();
-  print $editor->getLibraryData($machine_name, $major_version, $minor_version, $language->language, _h5p_get_h5p_path());
+  $editor->ajax->action(H5PEditorEndpoints::SINGLE_LIBRARY, $machine_name,
+    $major_version, $minor_version, $language->language, _h5p_get_h5p_path()
+  );
+  drupal_add_http_header('Content-Type', 'application/json');
 
   // Log library loaded
   new H5PEvent('library', NULL, NULL, NULL,
@@ -292,38 +364,9 @@ function h5peditor_library_callback($machine_name, $major_version, $minor_versio
  * Callback for file uploads.
  */
 function h5peditor_files_callback($token, $content_id) {
-  global $user;
-
-  if (!H5PCore::validToken('editorajax', $token)) {
-    return H5PCore::ajaxError(t('Invalid security token. Please reload the editor.'));
-  }
-
-  $file = new H5peditorFile(_h5p_get_instance('interface'));
-  if (!$file->isLoaded()) {
-    H5PCore::ajaxError(__('File not found on server. Check file upload settings.', $this->plugin_slug));
-    return;
-  }
-
-  // Make sure file is valid
-  if ($file->validate()) {
-    $core = _h5p_get_instance('core');
-    // Save the valid file
-    $core->fs->saveFile($file, $content_id);
-
-    // Keep track of temporary files so they can be cleaned up later.
-    $file_managed = (object) array(
-      'uid' => $user->uid,
-      'filename' => $file->getName(),
-      'uri' => 'public://' . (empty($content_id) ?  'h5peditor/' : variable_get('h5p_default_path', 'h5p') . '/content/' . $content_id . '/') . $file->getType() . 's/' . $file->getName(),
-      'filemime' => $file->type,
-      'filesize' => $file->size,
-      'status' => 0,
-      'timestamp' => REQUEST_TIME,
-    );
-    file_save($file_managed);
-  }
-
-  $file->printResult();
+  $editor = h5peditor_get_instance();
+  $editor->ajax->action(H5PEditorEndpoints::FILES, $token, $content_id);
+  drupal_add_http_header('Content-Type', 'application/json');
 }
 
 /**
@@ -341,7 +384,8 @@ function h5peditor_get_instance() {
     }
     $instance = new H5peditor(
       _h5p_get_instance('core'),
-      new H5peditorDrupalStorage()
+      new H5peditorDrupalStorage(),
+      new H5PEditorDrupalAjax()
     );
   }
 

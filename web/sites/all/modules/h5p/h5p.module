@@ -140,8 +140,7 @@ function remove_old_log_events() {
 function h5p_fetch_libraries_metadata($fetchingDisabled = FALSE) {
   // If fetching of libraries from h5p.org is enabled and
   // It has not been run the last 24 hours, let's do it
-  // Intentionally not doing === TRUE on h5p_allow_communication_with_h5p_org test
-  if ($fetchingDisabled || (variable_get('h5p_allow_communication_with_h5p_org', TRUE) &&
+  if ($fetchingDisabled || ((variable_get('h5p_hub_is_enabled', TRUE) || variable_get('h5p_send_usage_statistics', TRUE)) &&
      (intval(variable_get('h5p_fetched_library_metadata_on', 0)) < (time() - 86400)))) {
     // Fetch the library-metadata:
     $core = _h5p_get_instance('core');
@@ -203,7 +202,7 @@ function h5p_node_info() {
     'h5p_content' => array(
       'name' => t('Interactive content'),
       'base' => 'h5p',
-      'description' => 'Upload HTML5 packages(.h5p) to create interactive content.',
+      'description' => t('Create interactive H5P content'),
     ),
   );
 }
@@ -859,7 +858,8 @@ function h5p_get_core_settings() {
         'cancelLabel' => t('Cancel'),
         'confirmLabel' => t('Confirm')
       )
-    )
+    ),
+    'hubIsEnabled' => variable_get('h5p_hub_is_enabled', TRUE) ? TRUE : FALSE
   );
 
   if ($user->uid) {
@@ -1149,7 +1149,7 @@ function _h5p_maintain_session_variables() {
  *  Core functions and storage in the h5p library
  * @param string $type
  *  Specifies the instance to be returned; validator, storage, interface or core
- * @return object
+ * @return H5PDrupal|H5PValidator|H5PStorage|H5PContentValidator|H5PExport|H5PCore
  *  The instance og h5p specified by type
  */
 function _h5p_get_instance($type) {
