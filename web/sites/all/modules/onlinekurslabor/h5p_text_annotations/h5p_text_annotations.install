@@ -1,0 +1,9 @@
+<?php
+
+/**
+ * migriere html-class der annotations. indent ist fuer ckeditor-ansicht
+ */
+function h5p_text_annotations_update_1000() {
+    db_query("UPDATE field_data_field_chapter_text SET field_chapter_text_value = REPLACE(field_chapter_text_value,:div_class, :div_class_neu)", array(':div_class' => 'div class="h5p_timestamps"', ':div_class_neu' => 'div class="h5p_timestamps ckeditor_indent1"'));
+    db_query("UPDATE field_revision_field_chapter_text SET field_chapter_text_value = REPLACE(field_chapter_text_value,:div_class, :div_class_neu)", array(':div_class' => 'div class="h5p_timestamps"', ':div_class_neu' => 'div class="h5p_timestamps ckeditor_indent1"'));
+}
