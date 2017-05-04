@@ -4435,9 +4435,15 @@ echo section_courses_render_course_link($course);
   $pane->configuration = array(
     'admin_title' => '',
     'title' => '',
-    'body' => '<p>Die Funktionalität &quot;Forumstruktur bearbeiten&quot; ist noch nicht verfügbar.</p><p><span style="line-height: 1.538em;">Bitte wenden Sie sich an den Administrator der Seite, damit dieser die gewünschten Änderungen für Sie einpflegen kann.</span></p>',
-    'format' => 'filtered_html',
+    'body' => '<?php
+/*zeigt unterforen-anlegen-GUI*/
+echo (drupal_render(drupal_get_form(\'_section_courses_forum_add_category_form\', node_load(%1:nid))));
+/*zeigt forum-verwalten-GUI*/
+echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_form\', node_load(%1:nid))));
+?>',
+    'format' => 'php_code',
     'substitute' => 1,
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(

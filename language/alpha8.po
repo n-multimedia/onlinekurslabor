@@ -4,6 +4,21 @@
 msgid "Add a footnote"
 msgstr "Fußnote hinzufügen"
 
+msgid "No category available"
+msgstr "Keine Kategorie vorhanden"
+
+msgid "Create new category"
+msgstr "Kategorie erstellen"
+
+msgid "Category's name"
+msgstr "Kategoriename"
+
+msgid "Manage categories"
+msgstr "Kategorien verwalten"
+
+msgid "Save forumstructure"
+msgstr "Forumsstruktur speichern"
+
 msgid ""
 msgstr ""
 
