@@ -23,35 +23,44 @@ function home_features_image_default_styles() {
   $styles['homescreen_profile'] = array(
     'label' => 'homescreen_profile',
     'effects' => array(
-      1 => array(
+      13 => array(
         'name' => 'image_scale_and_crop',
         'data' => array(
           'width' => 180,
           'height' => 180,
         ),
-        'weight' => 1,
+        'weight' => -10,
       ),
-      2 => array(
-        'name' => 'canvasactions_definecanvas',
+    ),
+  );
+
+  // Exported image style: homescreen_profile_background.
+  $styles['homescreen_profile_background'] = array(
+    'label' => 'homescreen_profile_background',
+    'effects' => array(
+      24 => array(
+        'name' => 'image_scale_and_crop',
         'data' => array(
-          'RGB' => array(
-            'HEX' => '#ffffff',
-          ),
-          'under' => 1,
-          'exact' => array(
-            'width' => 280,
-            'height' => 180,
-            'xpos' => 'center',
-            'ypos' => 'center',
-          ),
-          'relative' => array(
-            'leftdiff' => '',
-            'rightdiff' => '',
-            'topdiff' => '',
-            'bottomdiff' => '',
-          ),
+          'width' => 278,
+          'height' => 278,
+        ),
+        'weight' => -9,
+      ),
+      25 => array(
+        'name' => 'canvasactions_blur',
+        'data' => array(
+          'intensity' => 100,
         ),
         'weight' => 2,
+      ),
+      28 => array(
+        'name' => 'image_crop',
+        'data' => array(
+          'width' => 278,
+          'height' => 180,
+          'anchor' => 'center-center',
+        ),
+        'weight' => 3,
       ),
     ),
   );
