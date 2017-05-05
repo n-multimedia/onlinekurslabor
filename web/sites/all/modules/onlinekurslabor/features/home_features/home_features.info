@@ -1,0 +1,13 @@
+name = home_features
+description = Features für die Startseite
+core = 7.x
+package = Features
+version = 7.x-1.0-alpha8.2
+dependencies[] = ctools
+dependencies[] = image
+dependencies[] = page_manager
+features[ctools][] = page_manager:pages_default:1
+features[features_api][] = api:2
+features[image][] = homescreen_profile
+features[page_manager_pages][] = home_layout
+project path = sites/all/modules/onlinekurslabor/features

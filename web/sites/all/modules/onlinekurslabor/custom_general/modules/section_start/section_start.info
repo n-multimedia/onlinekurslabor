@@ -1,0 +1,6 @@
+name = section_start
+description = provides functions for startpage
+package = custom
+
+version = "7.x-1.x"
+core = "7.x"

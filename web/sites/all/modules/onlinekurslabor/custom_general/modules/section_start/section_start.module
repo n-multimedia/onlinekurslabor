@@ -1,0 +1,101 @@
+<?php
+
+/**
+ * Nach dem Login wird man auf die Startseite redirected
+ * es sei dem, man hat einen login-parameter...
+ * @param type $edit
+ * @param type $account
+ */
+function section_start_user_login(&$edit, $account) {
+    if (!$_GET['destination'])
+        $_GET['destination'] = '/';
+}
+
+function _section_start_getRenderedProfilePhotoHovers()
+{
+    // da muesste man einen hook finden, der auf field item render abziehlt
+    $string = '<div style="; background:grey; color:white;">Der dummy User</div>';
+  #  global $user;
+    return $string;
+}
+
+/**
+ * ##########################################################################
+ * AB HIER NICHT VERWENDETE FUNKTIONEN. MGLW SPÄTER INTERESSANT:::::
+ * ##########################################################################
+ */
+/**
+ * Die Stream-Ansicht
+ * @return String $html
+ */
+function _section_start_getRenderedStream() {
+ 
+
+    $view = _section_start_getView('nm_stream','panel_pane_1');
+     
+   # $view->set_title( t('Streamrecords'));
+    return _section_start_renderView($view, 'panel_pane_1');
+    }
+    
+/**
+ * Die Activity-Ansicht
+ * @return String $html
+ */    
+function _section_start_getRenderedActivity() {
+
+    $view = _section_start_getView('nm_activity_stream');
+ 
+   # $view->set_title(t('Activity'));
+    return _section_start_renderView($view, null, true);
+}
+
+/**
+ * Die Ungelesene-Nachrichten-Ansicht
+ * @return String $html
+ */
+function _section_start_getRenderedMessages() {
+ 
+    $view = _section_start_getView('messages_list','messages_unread');
+     
+ #   $view->set_title(t('Unread messages'));
+    return _section_start_renderView($view, 'messages_unread');
+   
+}
+
+
+/**
+ * liefert ein View-Object mit übergebenem Namen und führt notwendige Operatioen fuer Funktionsweise aus
+ * @param String  $view_name Name des Views (machine-name)
+ * @param String $display_id Name der Panel Pane (machine-name)
+ * @return View $view
+ */
+function _section_start_getView($view_name, $display_id = null)
+{        $view = views_get_view($view_name);
+        if ($display_id) {
+        //die panel-variante setzen
+        $view->set_display($display_id);
+        //ausfuehren des views
+        $view->execute($display_id);
+        //preview enables ajax-next-pager!!
+        $view->preview($display_id);
+    } 
+    return $view;
+}
+ 
+ 
+/**
+ * Rendert einen View zu HTML
+ * @param View $view der View
+ * @param type $display_id Name der Panel Pane (machine-name)
+ * @param type $override_count Bei manchen Views funktioniert die Abfrage der Anzahl der Einträge nicht. Kann hier übersprungen werden
+ * @return String $html
+ */
+function _section_start_renderView(View $view, $display_id = null, $override_count = false) {
+
+    $html = "<h3>" . $view->get_title() . "</h3>";
+    if (!$override_count)
+        $html .= $view->total_rows ? $view->render($display_id) : "<i>&nbsp;&nbsp;- keine - </i><br>";
+    else
+        $html .= $view->render($display_id);
+    return $html;
+}
