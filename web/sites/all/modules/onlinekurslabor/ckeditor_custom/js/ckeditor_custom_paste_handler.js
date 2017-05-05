@@ -11,7 +11,6 @@ jQuery(document).ready(function() {
 
         //get first index in element-list
         var first_ck_index = Object.keys(ckinstances_list)[0];
-        alert(first_ck_index);
         var the_ck_editor = ckinstances_list[first_ck_index];
 
         the_ck_editor.on('paste', function(evt) {
