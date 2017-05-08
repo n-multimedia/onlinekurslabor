@@ -3957,12 +3957,12 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['field_semester']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_semester']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_semester']['type'] = 'taxonomy_term_reference_plain';
-  /* Sort criterion: Taxonomy term: Term ID */
-  $handler->display->display_options['sorts']['tid']['id'] = 'tid';
-  $handler->display->display_options['sorts']['tid']['table'] = 'taxonomy_term_data';
-  $handler->display->display_options['sorts']['tid']['field'] = 'tid';
-  $handler->display->display_options['sorts']['tid']['relationship'] = 'field_semester_tid';
-  $handler->display->display_options['sorts']['tid']['order'] = 'DESC';
+  /* Sort criterion: Taxonomy term: Weight */
+  $handler->display->display_options['sorts']['weight']['id'] = 'weight';
+  $handler->display->display_options['sorts']['weight']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['sorts']['weight']['field'] = 'weight';
+  $handler->display->display_options['sorts']['weight']['relationship'] = 'field_semester_tid';
+  $handler->display->display_options['sorts']['weight']['order'] = 'DESC';
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
