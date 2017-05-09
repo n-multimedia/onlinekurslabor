@@ -3210,6 +3210,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Kursangebot';
   $handler->display->display_options['display_description'] = 'archivated version of Courses';
+  $handler->display->display_options['defaults']['use_ajax'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: OG membership: OG membership from Node group */
   $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
@@ -3222,17 +3223,11 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['relationship'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
-  $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Laufzeit -  start date (field_time_span) */
-  $handler->display->display_options['sorts']['field_time_span_value']['id'] = 'field_time_span_value';
-  $handler->display->display_options['sorts']['field_time_span_value']['table'] = 'field_data_field_time_span';
-  $handler->display->display_options['sorts']['field_time_span_value']['field'] = 'field_time_span_value';
-  $handler->display->display_options['sorts']['field_time_span_value']['exposed'] = TRUE;
-  $handler->display->display_options['sorts']['field_time_span_value']['expose']['label'] = 'Kursstartdatum';
-  /* Sort criterion: Content: Title */
-  $handler->display->display_options['sorts']['title']['id'] = 'title';
-  $handler->display->display_options['sorts']['title']['table'] = 'node';
-  $handler->display->display_options['sorts']['title']['field'] = 'title';
+  /* Relationship: Content: Semester (field_semester) */
+  $handler->display->display_options['relationships']['field_semester_tid']['id'] = 'field_semester_tid';
+  $handler->display->display_options['relationships']['field_semester_tid']['table'] = 'field_data_field_semester';
+  $handler->display->display_options['relationships']['field_semester_tid']['field'] = 'field_semester_tid';
+  $handler->display->display_options['relationships']['field_semester_tid']['required'] = TRUE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -3335,7 +3330,6 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('Meine Entwürfe'),
     t('Courses Offer Archive'),
     t('archivated version of Courses'),
-    t('Kursstartdatum'),
   );
   $export['courses_kurse_bersicht'] = $view;
 
