@@ -10,6 +10,9 @@ drush cc all
 drush fr  nm_general_features nm_login_vhb_features  nm_section_content_features nm_section_courses_features  section_courses_clone_features nm_h5p_features --yes
 #drush features-revert-all --yes
 
+drush dis section_start --yes
+drush pm-uninstall section_start --yes
+
 
 drush en mediamodule_fix --yes
 drush en ckeditor_custom --yes
