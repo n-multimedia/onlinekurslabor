@@ -64,7 +64,7 @@ function _section_start_render_profile_home_picture($img_uri) {
 
 /**
  * Nach dem Login wird man auf die Startseite redirected
- * es sei dem, man hat einen login-parameter...
+ * es sei dem, man hat einen destination-parameter...
  * @param type $edit
  * @param type $account
  */

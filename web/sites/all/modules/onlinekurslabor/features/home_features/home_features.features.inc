@@ -19,6 +19,22 @@ function home_features_ctools_plugin_api($module = NULL, $api = NULL) {
 function home_features_image_default_styles() {
   $styles = array();
 
+  // Exported image style: homescreen_course_header.
+  $styles['homescreen_course_header'] = array(
+    'label' => 'homescreen_course_header',
+    'effects' => array(
+      31 => array(
+        'name' => 'image_crop',
+        'data' => array(
+          'width' => 819,
+          'height' => 140,
+          'anchor' => 'left-top',
+        ),
+        'weight' => -10,
+      ),
+    ),
+  );
+
   // Exported image style: homescreen_profile.
   $styles['homescreen_profile'] = array(
     'label' => 'homescreen_profile',

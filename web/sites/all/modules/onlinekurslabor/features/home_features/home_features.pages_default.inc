@@ -712,7 +712,10 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->style = array(
     'settings' => NULL,
   );
-  $pane->css = array();
+  $pane->css = array(
+    'css_id' => '',
+    'css_class' => 'hidden-xs',
+  );
   $pane->extras = array();
   $pane->position = 1;
   $pane->locks = array();
@@ -820,11 +823,34 @@ echo _section_start_getRenderedProfilePhotoHovers();
   $display->content['new-d58d9eb9-9b01-4d7e-a3cf-26a849d7052d'] = $pane;
   $display->panels['left'][4] = 'new-d58d9eb9-9b01-4d7e-a3cf-26a849d7052d';
   $pane = new stdClass();
+  $pane->pid = 'new-e99eca97-13a1-41c7-a61a-25afab090fb0';
+  $pane->panel = 'left';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'courses_kurse_bersicht-my_courses_small';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'use_pager' => 1,
+    'pager_id' => '0',
+    'items_per_page' => '10',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 5;
+  $pane->locks = array();
+  $pane->uuid = 'e99eca97-13a1-41c7-a61a-25afab090fb0';
+  $display->content['new-e99eca97-13a1-41c7-a61a-25afab090fb0'] = $pane;
+  $display->panels['left'][5] = 'new-e99eca97-13a1-41c7-a61a-25afab090fb0';
+  $pane = new stdClass();
   $pane->pid = 'new-810d7edf-0a67-46af-879f-7b8251c0b917';
   $pane->panel = 'left';
   $pane->type = 'views';
   $pane->subtype = 'courses_user_courses';
-  $pane->shown = TRUE;
+  $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
     'override_pager_settings' => 0,
@@ -852,11 +878,11 @@ echo _section_start_getRenderedProfilePhotoHovers();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 5;
+  $pane->position = 6;
   $pane->locks = array();
   $pane->uuid = '810d7edf-0a67-46af-879f-7b8251c0b917';
   $display->content['new-810d7edf-0a67-46af-879f-7b8251c0b917'] = $pane;
-  $display->panels['left'][5] = 'new-810d7edf-0a67-46af-879f-7b8251c0b917';
+  $display->panels['left'][6] = 'new-810d7edf-0a67-46af-879f-7b8251c0b917';
   $pane = new stdClass();
   $pane->pid = 'new-d16e11ba-02cb-4679-9548-f5c87ab41d4f';
   $pane->panel = 'left';
@@ -890,11 +916,34 @@ echo _section_start_getRenderedProfilePhotoHovers();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 6;
+  $pane->position = 7;
   $pane->locks = array();
   $pane->uuid = 'd16e11ba-02cb-4679-9548-f5c87ab41d4f';
   $display->content['new-d16e11ba-02cb-4679-9548-f5c87ab41d4f'] = $pane;
-  $display->panels['left'][6] = 'new-d16e11ba-02cb-4679-9548-f5c87ab41d4f';
+  $display->panels['left'][7] = 'new-d16e11ba-02cb-4679-9548-f5c87ab41d4f';
+  $pane = new stdClass();
+  $pane->pid = 'new-5e3c9ed5-fa26-45be-8df3-48390b5c0c2b';
+  $pane->panel = 'left';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'courses_kurse_bersicht-my_courses';
+  $pane->shown = FALSE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'use_pager' => 1,
+    'pager_id' => '0',
+    'items_per_page' => '10',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 8;
+  $pane->locks = array();
+  $pane->uuid = '5e3c9ed5-fa26-45be-8df3-48390b5c0c2b';
+  $display->content['new-5e3c9ed5-fa26-45be-8df3-48390b5c0c2b'] = $pane;
+  $display->panels['left'][8] = 'new-5e3c9ed5-fa26-45be-8df3-48390b5c0c2b';
   $pane = new stdClass();
   $pane->pid = 'new-06e56185-0ec3-4ce9-b515-723a4186a397';
   $pane->panel = 'right';
