@@ -1,13 +1,13 @@
 <?php
 
-function section_start_page_build(&$page) {
-    drupal_add_css(drupal_get_path('module', 'section_start') . '/assets/css/section_start.css');
+function section_home_page_build(&$page) {
+    drupal_add_css(drupal_get_path('module', 'section_home') . '/assets/css/section_home.css');
 }
 
 /**
  * Implements hook_field_formatter_info().
  */
-function section_start_field_formatter_info() {
+function section_home_field_formatter_info() {
   return array(
     'start_profile_picture' => array(
       'label' => t('Profile picture for homepage'),
@@ -28,7 +28,7 @@ function section_start_field_formatter_info() {
  * @param type $display
  * @return type
  */
-function section_start_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+function section_home_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
 
     //generiert markup fuer das profilbild auf der startseite
     $element = array();
@@ -37,7 +37,7 @@ function section_start_field_formatter_view($entity_type, $entity, $field, $inst
 
             foreach ($items as $delta => $item) {
                 $element[$delta] = array(
-                    '#markup' => _section_start_render_profile_home_picture($item['uri']) #mymodule_crazy_fun_plain($name),
+                    '#markup' => _section_home_render_profile_home_picture($item['uri']) #mymodule_crazy_fun_plain($name),
                 );
             }
             break;
@@ -46,8 +46,8 @@ function section_start_field_formatter_view($entity_type, $entity, $field, $inst
     return $element;
 }
 
-// siehe section_start_field_formatter_view
-function _section_start_render_profile_home_picture($img_uri) {
+// siehe section_home_field_formatter_view
+function _section_home_render_profile_home_picture($img_uri) {
     global $user;
     $name = realname_load($user);
     //erstellt beide images, applied html-tags und fuegt ergänzendes html dazu
@@ -68,12 +68,12 @@ function _section_start_render_profile_home_picture($img_uri) {
  * @param type $edit
  * @param type $account
  */
-function section_start_user_login(&$edit, $account) {
+function section_home_user_login(&$edit, $account) {
     if (!$_GET['destination'])
         $_GET['destination'] = '/';
 }
 /**
-function _section_start_getRenderedProfilePhotoHovers()
+function _section_home_getRenderedProfilePhotoHovers()
 {   global $user;
     $name = realname_load($user);
    # $name
@@ -93,37 +93,37 @@ function _section_start_getRenderedProfilePhotoHovers()
  * Die Stream-Ansicht
  * @return String $html
  */
-function _section_start_getRenderedStream() {
+function _section_home_getRenderedStream() {
  
 
-    $view = _section_start_getView('nm_stream','panel_pane_1');
+    $view = _section_home_getView('nm_stream','panel_pane_1');
      
    # $view->set_title( t('Streamrecords'));
-    return _section_start_renderView($view, 'panel_pane_1');
+    return _section_home_renderView($view, 'panel_pane_1');
     }
     
 /**
  * Die Activity-Ansicht
  * @return String $html
  */    
-function _section_start_getRenderedActivity() {
+function _section_home_getRenderedActivity() {
 
-    $view = _section_start_getView('nm_activity_stream');
+    $view = _section_home_getView('nm_activity_stream');
  
    # $view->set_title(t('Activity'));
-    return _section_start_renderView($view, null, true);
+    return _section_home_renderView($view, null, true);
 }
 
 /**
  * Die Ungelesene-Nachrichten-Ansicht
  * @return String $html
  */
-function _section_start_getRenderedMessages() {
+function _section_home_getRenderedMessages() {
  
-    $view = _section_start_getView('messages_list','messages_unread');
+    $view = _section_home_getView('messages_list','messages_unread');
      
  #   $view->set_title(t('Unread messages'));
-    return _section_start_renderView($view, 'messages_unread');
+    return _section_home_renderView($view, 'messages_unread');
    
 }
 
@@ -134,7 +134,7 @@ function _section_start_getRenderedMessages() {
  * @param String $display_id Name der Panel Pane (machine-name)
  * @return View $view
  */
-function _section_start_getView($view_name, $display_id = null)
+function _section_home_getView($view_name, $display_id = null)
 {        $view = views_get_view($view_name);
         if ($display_id) {
         //die panel-variante setzen
@@ -155,7 +155,7 @@ function _section_start_getView($view_name, $display_id = null)
  * @param type $override_count Bei manchen Views funktioniert die Abfrage der Anzahl der Einträge nicht. Kann hier übersprungen werden
  * @return String $html
  */
-function _section_start_renderView(View $view, $display_id = null, $override_count = false) {
+function _section_home_renderView(View $view, $display_id = null, $override_count = false) {
 
     $html = "<h3>" . $view->get_title() . "</h3>";
     if (!$override_count)

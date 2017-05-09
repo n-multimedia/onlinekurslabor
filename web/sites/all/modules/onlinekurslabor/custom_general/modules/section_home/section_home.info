@@ -1,6 +1,7 @@
-name = section_start
+name = section_home
 description = provides functions for startpage
 package = custom
 
 version = "7.x-1.x"
 core = "7.x"
+dependencies[] = home_features
