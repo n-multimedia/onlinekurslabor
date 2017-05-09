@@ -723,106 +723,6 @@ return theme(\'nm_fancy_box\', $vars);
   $display->content['new-fda5c3e9-ad75-404b-9825-16e81a718c7d'] = $pane;
   $display->panels['left'][1] = 'new-fda5c3e9-ad75-404b-9825-16e81a718c7d';
   $pane = new stdClass();
-  $pane->pid = 'new-802d6fa8-5335-49da-a3e0-dc33831cecf4';
-  $pane->panel = 'left';
-  $pane->type = 'entity_field';
-  $pane->subtype = 'profile2:field_photo';
-  $pane->shown = FALSE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'label' => 'hidden',
-    'formatter' => 'image',
-    'delta_limit' => 0,
-    'delta_offset' => '0',
-    'delta_reversed' => FALSE,
-    'formatter_settings' => array(
-      'image_style' => 'homescreen_profile_background',
-      'image_link' => '',
-    ),
-    'context' => 'relationship_profile2_1',
-    'override_title' => 0,
-    'override_title_text' => '',
-    'override_title_heading' => 'h2',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array(
-    'css_id' => 'home_profile_background',
-    'css_class' => '',
-  );
-  $pane->extras = array();
-  $pane->position = 2;
-  $pane->locks = array();
-  $pane->uuid = '802d6fa8-5335-49da-a3e0-dc33831cecf4';
-  $display->content['new-802d6fa8-5335-49da-a3e0-dc33831cecf4'] = $pane;
-  $display->panels['left'][2] = 'new-802d6fa8-5335-49da-a3e0-dc33831cecf4';
-  $pane = new stdClass();
-  $pane->pid = 'new-c2e5bcbc-8ac5-46e6-8c2c-a864eb6701db';
-  $pane->panel = 'left';
-  $pane->type = 'entity_field';
-  $pane->subtype = 'profile2:field_photo';
-  $pane->shown = FALSE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'label' => 'hidden',
-    'formatter' => 'image',
-    'delta_limit' => 0,
-    'delta_offset' => '0',
-    'delta_reversed' => FALSE,
-    'formatter_settings' => array(
-      'image_style' => 'homescreen_profile',
-      'image_link' => '',
-    ),
-    'context' => 'relationship_profile2_1',
-    'override_title' => 0,
-    'override_title_text' => '',
-    'override_title_heading' => 'h2',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array(
-    'css_id' => 'home_profile_picture',
-    'css_class' => '',
-  );
-  $pane->extras = array();
-  $pane->position = 3;
-  $pane->locks = array();
-  $pane->uuid = 'c2e5bcbc-8ac5-46e6-8c2c-a864eb6701db';
-  $display->content['new-c2e5bcbc-8ac5-46e6-8c2c-a864eb6701db'] = $pane;
-  $display->panels['left'][3] = 'new-c2e5bcbc-8ac5-46e6-8c2c-a864eb6701db';
-  $pane = new stdClass();
-  $pane->pid = 'new-d58d9eb9-9b01-4d7e-a3cf-26a849d7052d';
-  $pane->panel = 'left';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
-  $pane->shown = FALSE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'admin_title' => 'hovers fuers profilbild',
-    'title' => '',
-    'title_heading' => 'h2',
-    'body' => '<?php
-echo _section_start_getRenderedProfilePhotoHovers();
-?>',
-    'format' => 'php_code',
-    'substitute' => 0,
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 4;
-  $pane->locks = array();
-  $pane->uuid = 'd58d9eb9-9b01-4d7e-a3cf-26a849d7052d';
-  $display->content['new-d58d9eb9-9b01-4d7e-a3cf-26a849d7052d'] = $pane;
-  $display->panels['left'][4] = 'new-d58d9eb9-9b01-4d7e-a3cf-26a849d7052d';
-  $pane = new stdClass();
   $pane->pid = 'new-e99eca97-13a1-41c7-a61a-25afab090fb0';
   $pane->panel = 'left';
   $pane->type = 'views_panes';
@@ -840,49 +740,11 @@ echo _section_start_getRenderedProfilePhotoHovers();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 5;
+  $pane->position = 2;
   $pane->locks = array();
   $pane->uuid = 'e99eca97-13a1-41c7-a61a-25afab090fb0';
   $display->content['new-e99eca97-13a1-41c7-a61a-25afab090fb0'] = $pane;
-  $display->panels['left'][5] = 'new-e99eca97-13a1-41c7-a61a-25afab090fb0';
-  $pane = new stdClass();
-  $pane->pid = 'new-810d7edf-0a67-46af-879f-7b8251c0b917';
-  $pane->panel = 'left';
-  $pane->type = 'views';
-  $pane->subtype = 'courses_user_courses';
-  $pane->shown = FALSE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '7',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
-    'args' => '',
-    'url' => '',
-    'display' => 'default',
-    'override_title' => 1,
-    'override_title_text' => 'Kurse',
-    'override_title_heading' => 'h3',
-    'context' => array(
-      0 => 'context_user_1.uid',
-    ),
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 6;
-  $pane->locks = array();
-  $pane->uuid = '810d7edf-0a67-46af-879f-7b8251c0b917';
-  $display->content['new-810d7edf-0a67-46af-879f-7b8251c0b917'] = $pane;
-  $display->panels['left'][6] = 'new-810d7edf-0a67-46af-879f-7b8251c0b917';
+  $display->panels['left'][2] = 'new-e99eca97-13a1-41c7-a61a-25afab090fb0';
   $pane = new stdClass();
   $pane->pid = 'new-d16e11ba-02cb-4679-9548-f5c87ab41d4f';
   $pane->panel = 'left';
@@ -916,34 +778,11 @@ echo _section_start_getRenderedProfilePhotoHovers();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 7;
+  $pane->position = 3;
   $pane->locks = array();
   $pane->uuid = 'd16e11ba-02cb-4679-9548-f5c87ab41d4f';
   $display->content['new-d16e11ba-02cb-4679-9548-f5c87ab41d4f'] = $pane;
-  $display->panels['left'][7] = 'new-d16e11ba-02cb-4679-9548-f5c87ab41d4f';
-  $pane = new stdClass();
-  $pane->pid = 'new-5e3c9ed5-fa26-45be-8df3-48390b5c0c2b';
-  $pane->panel = 'left';
-  $pane->type = 'views_panes';
-  $pane->subtype = 'courses_kurse_bersicht-my_courses';
-  $pane->shown = FALSE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'use_pager' => 1,
-    'pager_id' => '0',
-    'items_per_page' => '10',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 8;
-  $pane->locks = array();
-  $pane->uuid = '5e3c9ed5-fa26-45be-8df3-48390b5c0c2b';
-  $display->content['new-5e3c9ed5-fa26-45be-8df3-48390b5c0c2b'] = $pane;
-  $display->panels['left'][8] = 'new-5e3c9ed5-fa26-45be-8df3-48390b5c0c2b';
+  $display->panels['left'][3] = 'new-d16e11ba-02cb-4679-9548-f5c87ab41d4f';
   $pane = new stdClass();
   $pane->pid = 'new-06e56185-0ec3-4ce9-b515-723a4186a397';
   $pane->panel = 'right';
