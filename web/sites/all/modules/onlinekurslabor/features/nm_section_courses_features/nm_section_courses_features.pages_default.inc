@@ -4436,10 +4436,18 @@ echo section_courses_render_course_link($course);
     'admin_title' => '',
     'title' => '',
     'body' => '<?php
+if(!count(taxonomy_get_term_by_name(_section_courses_get_forum_name(node_load(%1:nid)))))
+{
+$link = \'<a href="/node/%1:nid/edit#features">\'.t(\'Please enable it first\').\'</a>\';
+drupal_set_message(t("The forum is disabled in this course and thus cannot be configured.")." ".$link, \'warning\');
+}
+else
+{
 /*zeigt unterforen-anlegen-GUI*/
 echo (drupal_render(drupal_get_form(\'_section_courses_forum_add_category_form\', node_load(%1:nid))));
 /*zeigt forum-verwalten-GUI*/
 echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_form\', node_load(%1:nid))));
+}
 ?>',
     'format' => 'php_code',
     'substitute' => 1,

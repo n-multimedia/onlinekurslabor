@@ -859,6 +859,7 @@ function _section_courses_add_form_container($node) {
         if (!$term_exists) {
              $term_title =   _section_courses_get_forum_name($node);
             _section_courses_save_forum_term($node, $term_title, true);
+            _section_courses_save_forum_term($node, t('Common'), false);
         }
       }
     }

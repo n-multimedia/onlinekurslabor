@@ -19,6 +19,15 @@ msgstr "Kategorien verwalten"
 msgid "Save forumstructure"
 msgstr "Forumsstruktur speichern"
 
+msgid "The forum is disabled in this course and thus cannot be configured."
+msgstr "Das Forum ist in diesem Kurs deaktiviert."
+
+msgid "Please enable it first"
+msgstr "Bitte aktivieren Sie es zunächst"
+
+msgid "Common"
+msgstr "Allgemein"
+
 msgid ""
 msgstr ""
 
