@@ -604,7 +604,8 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
         $parent = @$parameters['parent'];
 
         //sollte zwar gesetzt sein, aber zur sicherheit..
-        if ($og_group_ref) {
+        //hat die weight bestehender kapitel ueberschrieben. Darf nur auf neuen Kapiteln greifen (sprich: nid = null)!
+        if ($og_group_ref && $parent && isset($form['#node']->nid )) {
             //Suche buch zur übergebenen Group
             $books_menu_name = 'book-toc-' . $og_group_ref;
             $books_menu_tree = menu_tree_all_data($books_menu_name);
