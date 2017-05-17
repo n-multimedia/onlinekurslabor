@@ -858,8 +858,8 @@ function _section_courses_add_form_container($node) {
 
         if (!$term_exists) {
              $term_title =   _section_courses_get_forum_name($node);
-            _section_courses_save_forum_term($node, $term_title, true);
-            _section_courses_save_forum_term($node, t('Common'), false);
+             $main_forum_tid =  _section_courses_save_forum_term($node, $term_title,$term->tid, true);
+             _section_courses_save_forum_term($node, t('Common'), $main_forum_tid, false);
         }
       }
     }
@@ -3016,8 +3016,10 @@ function _section_courses_forum_add_category_form_submit($form, &$form_state) {
     $course_nid = $values["course_nid"];
     $node = node_load($course_nid);
     $category_title = $values["newcategoryname"];
+    $kursforum_main_term = current(taxonomy_get_term_by_name(_section_courses_get_forum_name($node)));
+
     //erstelle neue unterkategorie
-    _section_courses_save_forum_term($node, $category_title, false);
+    _section_courses_save_forum_term($node, $category_title,$kursforum_main_term->tid, false);
 }
 
 /**
@@ -3093,32 +3095,40 @@ function _section_courses_forum_manage_categories_form_submit($form, &$form_stat
 /**
  * @API erstelle Taxonomy-Term für Kursforum.
  * Version a) Erstelle Container (Kursforum-nid)
- * Version b) Erstelle Unterkategorie im Kursforum
+ * Version b) Erstelle Unterkategorie im Kursforum. 
  * für Version a): Kein Logik-Check, erstellt dumm einen zweiten Container. Doppeltes Erstellen muss abgefangen werden.
  *                  Titel des Containers musss auch übergeben werden!
+ * $parent_term_tid muss uebergeben werden!
  * 
  * @global StdClass $user eingeloggter User
  * @param StdClass $course_node Kurs-node-object
  * @param String $title Titel des Eintrags
+ * @param int $parent_term_tid Übergeordnete Foren-TID. Entweder tid von "Kursforen" oder die des entspr. Eintrags.
  * @param boolean $is_container  nur bei Version a)
+ * @return int TID des eingefügten terms
  */
-function _section_courses_save_forum_term($course_node, $title, $is_container = false) {
+function _section_courses_save_forum_term($course_node, $title, $parent_term_tid, $is_container = false) {
     global $user;
     $term = current(taxonomy_get_term_by_name('Kursforen'));
 
     $new_term = (object) array(
                 'name' => $title,
                 'vid' => $term->vid,
-                'parent' => array($term->tid),
+                'parent' => array($parent_term_tid),
     );
     if (!$is_container) {
-        $main_forum = current(taxonomy_get_term_by_name(_section_courses_get_forum_name($course_node)));
-        $children_of_main_forum = taxonomy_get_children($main_forum->tid);
+     /*   $main_forum = current(taxonomy_get_term_by_name(_section_courses_get_forum_name($course_node)));
+        if(!$main_forum)
+        {
+            drupal_set_message("Mainforum not found. Forum not created. Please contact support. Failure-Code: 90243P122", 'error');
+            return false;
+        }*/
+        $children_of_main_forum = taxonomy_get_children($parent_term_tid);
         //hole maximale weight der unterforen ; -11+1 = kleinster wertc
         $current_max_weight = -11;
         foreach ($children_of_main_forum as $sub_forum)
             $current_max_weight = max($current_max_weight, $sub_forum->weight);
-        $new_term->parent = $main_forum->tid;
+        $new_term->parent = $parent_term_tid;
         $new_term->weight = ++$current_max_weight;
     }
 
@@ -3144,5 +3154,6 @@ function _section_courses_save_forum_term($course_node, $title, $is_container = 
     $user->term_access_bypass = TRUE;
     og_group("node", $course_node->nid, $values);
     unset($user->term_access_bypass);
+    return $new_term->tid;
 }
 
