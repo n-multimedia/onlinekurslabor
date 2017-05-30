@@ -1,16 +1,6 @@
 <?php
 
 
-/**
- * Implements hook_form_alter().
- * Temporär Fehlermeldung, da h5p-library einen Bug hat
- */
-function h5p_integration_form_alter(&$form, &$form_state, $form_id) {
-
-    if ($form_id == 'h5p_content_node_form') {
-        drupal_add_js(drupal_get_path('module', 'h5p_integration') . "/common_js/leave_h5p_warning.js");
-    }
-}
 
 /**
  * Implements hook_wysiwyg_plugin

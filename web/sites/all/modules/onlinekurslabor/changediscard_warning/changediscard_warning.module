@@ -1,0 +1,31 @@
+<?php
+ 
+/**
+ * Implements hook_form_alter().
+ * warnung, falls man bspw in die navigation klickt, aber schon Inhalt in die Form eingetippt hat.
+ * Greift auf allen Forms, außer aussortierten
+ * andere Variante wäre hook_wysiwyg_plugin gewesen, dann kann man aber keine nicht-ck-Forms abfragen
+ */
+function changediscard_warning_form_alter(&$form, &$form_state, $form_id) {
+    
+    //Wir wollen nur die Hauptforms und sortieren vorab aus
+    $no_watch = array('devel_switch_user_form', 'devel_execute_block_form', 'support_form', 'statuses_box');
+    if (in_array($form_id, $no_watch) )
+        return false;
+    
+   # drupal_set_message($form_id);
+   # drupal_set_message($form['#id']);
+
+    $non_ck_form_candidates = array();
+
+    //nicht ck-Forms hinzufuegen
+    $non_ck_form_candidates[] = 'comment_node_forum_form';
+    $non_ck_form_candidates[] = 'forum_node_form';
+    $non_ck_form_candidates[] = 'user_profile_form';
+
+   //Liste aller vorhandenen Form-IDs
+    drupal_add_js(array('changediscard' =>
+        array( $form['#id'] => array('override_ck' => in_array($form_id, $non_ck_form_candidates) ) ) )
+            , array('type' => 'setting') );
+    drupal_add_js(drupal_get_path('module', 'changediscard_warning') . "/assets/changediscard_warning.js");
+}

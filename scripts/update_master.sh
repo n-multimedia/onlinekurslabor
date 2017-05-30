@@ -16,6 +16,8 @@ drush en mediamodule_fix --yes
 drush en ckeditor_custom --yes
 drush en home_features --yes
 drush en section_home --yes
+drush en changediscard_warning --yes
+ 
 
 drush language-import-translations de ../language/alpha8.po --replace --groups=default
 
