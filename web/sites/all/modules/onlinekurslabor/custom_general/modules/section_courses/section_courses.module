@@ -2349,7 +2349,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
                 $title_prefix = t("Groupmessage") . ": ";
 
             $courselink = l($course_title, 'node/' . $active_course->nid, array('absolute' => TRUE));
-            $course_text = "\n\n\n\n\n" . '[' . t("This message originates from !courselink", array("!courselink" => $courselink)) . ']';
+            $course_text = "<br><br><br>" . '[' . t("This message originates from !courselink", array("!courselink" => $courselink)) . ']';
 
             $form['subject']['#default_value'] = $title_prefix . $course_title . ": ";
             $form['message']['#default_value'] = $course_text;

@@ -296,9 +296,10 @@ function user_send_message_form($context) {
     '#description' => t('The subject of the message.'),
   );
   $form['message'] = array(
-    '#type' => 'textarea',
+    '#type' => 'text_format',
     '#title' => t('Message'),
     '#default_value' => $context['message'],
+    '#wysiwyg' => true,
     '#cols' => '80',
     '#rows' => '20',
     '#description' => t('The message that should be sent. You may include placeholders like [node:title], [user:name], and [comment:body] to represent data that will be different each time message is sent. Not all placeholders will be available in all contexts.'),
@@ -335,9 +336,10 @@ function og_group_send_email_form($context) {
     '#description' => t('The subject of the message.'),
   );
   $form['message'] = array(
-    '#type' => 'textarea',
+    '#type' => 'text_format',
     '#title' => t('Message'),
     '#default_value' => $context['message'],
+    '#wysiwyg' => true,
     '#cols' => '80',
     '#rows' => '20',
     '#description' => t('The message that should be sent. You may include placeholders like [node:title], [user:name], and [comment:body] to represent data that will be different each time message is sent. Not all placeholders will be available in all contexts.'),
@@ -385,9 +387,10 @@ function user_send_message_submit($form, $form_state) {
   $form_values = $form_state['values'];
   // Process the HTML form to store configuration. The keyed array that
   // we return will be serialized to the database.
+  
   $params = array(
     'subject' => $form_values['subject'],
-    'message' => $form_values['message'],
+    'message' => $form_values['message']['value'],
   );
   return $params;
 }
@@ -398,7 +401,7 @@ function og_group_send_email_submit($form, $form_state) {
   // we return will be serialized to the database.
   $params = array(
     'subject' => $form_values['subject'],
-    'message' => $form_values['message'],
+    'message' => $form_values['message']['value'],
   );
   return $params;
 }
