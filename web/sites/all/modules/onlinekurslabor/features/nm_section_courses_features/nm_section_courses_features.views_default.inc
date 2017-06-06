@@ -3289,6 +3289,104 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['allow']['title_override'] = 'title_override';
   $handler->display->display_options['allow']['exposed_form'] = 'exposed_form';
   $handler->display->display_options['allow']['fields_override'] = 0;
+
+  /* Display: My Drafts SMALL */
+  $handler = $view->new_display('panel_pane', 'My Drafts SMALL', 'my_drafts_small');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Meine Entwürfe';
+  $handler->display->display_options['display_description'] = 'das gleiche wie My Courses, aber durch Template andere Anzeige';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'mini';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹';
+  $handler->display->display_options['pager']['options']['tags']['next'] = '›';
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'No courses available.';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: OG membership: OG membership from Node group */
+  $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['required'] = TRUE;
+  /* Relationship: OG membership: User from OG membership */
+  $handler->display->display_options['relationships']['og_membership_related_user']['id'] = 'og_membership_related_user';
+  $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
+  $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
+  $handler->display->display_options['relationships']['og_membership_related_user']['relationship'] = 'og_membership_rel_group';
+  $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
+  /* Relationship: Content: Semester (field_semester) */
+  $handler->display->display_options['relationships']['field_semester_tid']['id'] = 'field_semester_tid';
+  $handler->display->display_options['relationships']['field_semester_tid']['table'] = 'field_data_field_semester';
+  $handler->display->display_options['relationships']['field_semester_tid']['field'] = 'field_semester_tid';
+  $handler->display->display_options['relationships']['field_semester_tid']['required'] = TRUE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '0';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'courses_course' => 'courses_course',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: User: Current */
+  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
+  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['relationship'] = 'og_membership_related_user';
+  $handler->display->display_options['filters']['uid_current']['value'] = '1';
+  $handler->display->display_options['filters']['uid_current']['group'] = 1;
+  $handler->display->display_options['filters']['uid_current']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['uid_current']['expose']['label'] = 'Is the logged in user';
+  $handler->display->display_options['filters']['uid_current']['expose']['operator'] = 'uid_current_op';
+  $handler->display->display_options['filters']['uid_current']['expose']['identifier'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['expose']['remember_roles'] = array(
+    2 => '2',
+    30037204 => 0,
+    1 => 0,
+    197637936 => 0,
+    16675960 => 0,
+    106505419 => 0,
+    126456107 => 0,
+    66784200 => 0,
+    24708420 => 0,
+    140204299 => 0,
+  );
+  $handler->display->display_options['allow']['use_pager'] = 'use_pager';
+  $handler->display->display_options['allow']['items_per_page'] = 'items_per_page';
+  $handler->display->display_options['allow']['offset'] = 0;
+  $handler->display->display_options['allow']['link_to_view'] = 0;
+  $handler->display->display_options['allow']['more_link'] = 0;
+  $handler->display->display_options['allow']['path_override'] = 0;
+  $handler->display->display_options['allow']['title_override'] = 0;
+  $handler->display->display_options['allow']['exposed_form'] = 0;
+  $handler->display->display_options['allow']['fields_override'] = 0;
+  $handler->display->display_options['argument_input'] = array(
+    'uid' => array(
+      'type' => 'context',
+      'context' => 'entity:user.uid',
+      'context_optional' => 1,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Benutzer: Uid',
+    ),
+  );
   $translatables['courses_kurse_bersicht'] = array(
     t('Master'),
     t('more'),
@@ -3330,6 +3428,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('Meine Entwürfe'),
     t('Courses Offer Archive'),
     t('archivated version of Courses'),
+    t('My Drafts SMALL'),
   );
   $export['courses_kurse_bersicht'] = $view;
 
