@@ -318,7 +318,24 @@ function bootstrap_onlinekurslabor_theme(&$existing, $type, $theme, $path) {
       'template' => 'nm_fancy_box',
       'path' => drupal_get_path('theme', 'bootstrap_onlinekurslabor') . '/templates/onlinekurslabor'
     ),
-    'nm_course_list_item' => array(
+    'tabs' => array(
+         'variables' => array(
+             'elements' => NULL
+         ),
+         'template' => 'tabs',
+         'path' => drupal_get_path('theme', 'bootstrap_onlinekurslabor') . '/templates/onlinekurslabor'
+     ),
+
+    'tabs-content' => array(
+         'variables' => array(
+             'elements' => NULL
+         ),
+         'template' => 'tabs-content',
+         'path' => drupal_get_path('theme', 'bootstrap_onlinekurslabor') . '/templates/onlinekurslabor'
+     ),
+    
+    
+     'nm_course_list_item' => array(
       'variables' => array(
         'image' => NULL,
         'title' => NULL,

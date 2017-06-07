@@ -1,0 +1,42 @@
+/**
+bootstrap_tabs
+**/
+.tab-content .tab-pane h3{
+    margin-top:0px;
+}
+/*layout wenn navigation links bei >= 768px. Kleiner rutschen die tabs nach oben u brauchen keine aenderung */
+@media (min-width: 768px) {
+
+    .bootstrap_tabs-stacked-left
+    {
+        
+    }
+    .bootstrap_tabs-stacked-left .nav > li
+    {
+     float: right;
+     padding-left: 60px;
+    }
+
+
+    .bootstrap_tabs-stacked-left .nav-tabs {
+        border-bottom: none;
+    }
+
+    .bootstrap_tabs-stacked-left   li > a {
+        border-radius: 4px 0 0 4px;
+        display: block;  
+        white-space: nowrap ;
+    }
+    .bootstrap_tabs-stacked-left li  > a {
+
+        border-right-color: #ddd;
+    }
+
+    .bootstrap_tabs-stacked-left li.active > a, .bootstrap_tabs-stacked-left li.active > a:hover, .bootstrap_tabs-stacked-left  > li.active > a:focus {
+        border-bottom-color: #ddd;
+        border-right-color: transparent;
+    }  
+}
+ 
+
+ 
