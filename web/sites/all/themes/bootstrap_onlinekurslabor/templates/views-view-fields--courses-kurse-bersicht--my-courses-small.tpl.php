@@ -22,7 +22,7 @@ foreach ($kurs_dozent_objects as $dozent_acc) {
     $dozenten_acc_pic = "";
     if (isset($dozenten_profile->field_photo)) {
       $dozenten_acc_picture_field = field_view_field('profile2', $dozenten_profile, 'field_photo', 'value');
-      $dozenten_acc_pic = '<img src="'.(image_style_url('profile_stream_thumbnail', $dozenten_acc_picture_field['#items'][0]['uri'])).'" style="padding:2px;" title="'.$dozent_realname.'"/>';
+      $dozenten_acc_pic = '<img src="'.(image_style_url('profile_mini_thumbnail', $dozenten_acc_picture_field['#items'][0]['uri'])).'" style="padding:2px;" title="'.$dozent_realname.'"/>';
       $kurs_dozenten[] = $dozenten_acc_pic;
     }
   # l($name, drupal_get_path_alias('user/' . $dozent_acc->uid));
