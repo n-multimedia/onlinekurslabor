@@ -472,7 +472,7 @@ return theme(\'nm_fancy_box\', $vars);
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:home_layout_loggedin';
+  $display->layout = 'flexible';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -482,7 +482,7 @@ return theme(\'nm_fancy_box\', $vars);
           0 => 'main',
         ),
         'parent' => NULL,
-        'class' => 'home-layout-container',
+        'class' => 'row',
         'column_class' => '',
         'row_class' => '',
         'region_class' => '',
@@ -494,92 +494,114 @@ return theme(\'nm_fancy_box\', $vars);
       ),
       'main' => array(
         'type' => 'column',
-        'width' => 100,
+        'width' => 100.00000000000061,
         'width_type' => '%',
         'children' => array(
-          0 => 1,
-          1 => 'main-row',
-          2 => 2,
+          0 => 10,
+          1 => 15,
+          2 => 16,
         ),
         'parent' => 'canvas',
+        'class' => '',
+        'hide_empty' => 0,
       ),
-      'main-row' => array(
+      10 => array(
         'type' => 'row',
-        'contains' => 'region',
+        'contains' => 'column',
         'children' => array(
-          0 => 'student',
-          1 => 'lehrender',
-          2 => 'partner_',
+          0 => 11,
+          1 => 12,
         ),
         'parent' => 'main',
-        'class' => 'row column-region',
+        'class' => 'top',
+        'hide_empty' => 0,
       ),
-      1 => array(
-        'type' => 'row',
-        'contains' => 'region',
-        'children' => array(
-          0 => 'test',
-          1 => 'platzhalter',
-        ),
-        'parent' => 'main',
-        'class' => 'row',
-      ),
-      2 => array(
-        'type' => 'row',
-        'contains' => 'region',
-        'children' => array(
-          0 => 'partner',
-        ),
-        'parent' => 'main',
-        'class' => 'row',
-      ),
-      'test' => array(
-        'type' => 'region',
-        'title' => 'Titel_OKL',
-        'width' => '64.94139740527254',
+      11 => array(
+        'type' => 'column',
+        'width' => '17.92246792246792',
         'width_type' => '%',
-        'parent' => '1',
-        'class' => 'col-xs-12 col-md-6 col-lg-7',
+        'parent' => '10',
+        'children' => array(
+          0 => 13,
+        ),
+        'class' => 'col-md-2',
+        'hide_empty' => 0,
       ),
-      'partner' => array(
+      12 => array(
+        'type' => 'column',
+        'width' => '82.07753207753208',
+        'width_type' => '%',
+        'parent' => '10',
+        'children' => array(
+          0 => 14,
+        ),
+        'class' => 'col-md-10',
+        'hide_empty' => 0,
+      ),
+      13 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'picture_',
+        ),
+        'parent' => '11',
+        'class' => '',
+        'hide_empty' => 0,
+      ),
+      'picture_' => array(
         'type' => 'region',
-        'title' => 'Förderer',
+        'title' => 'space-left md2',
         'width' => 100,
         'width_type' => '%',
-        'parent' => '2',
-        'class' => 'home-container-partner',
+        'parent' => '13',
+        'class' => '',
+        'hide_empty' => 0,
       ),
-      'lehrender' => array(
-        'type' => 'region',
-        'title' => 'lehrender',
-        'width' => '26.88529876382778',
-        'width_type' => '%',
-        'parent' => 'main-row',
-        'class' => 'col-xs-12 col-md-4',
+      14 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'main_',
+        ),
+        'parent' => '12',
+        'class' => '',
+        'hide_empty' => 0,
       ),
-      'partner_' => array(
+      'main_' => array(
         'type' => 'region',
-        'title' => 'Partner',
-        'width' => '26.893250953042525',
+        'title' => 'main',
+        'width' => 100,
         'width_type' => '%',
-        'parent' => 'main-row',
-        'class' => 'col-xs-12 col-md-4',
+        'parent' => '14',
+        'class' => '',
+        'hide_empty' => 0,
       ),
-      'student' => array(
-        'type' => 'region',
-        'title' => 'Student',
-        'width' => '26.83567332159516',
-        'width_type' => '%',
-        'parent' => 'main-row',
-        'class' => 'col-xs-12 col-md-4',
+      15 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'tabs_',
+        ),
+        'parent' => 'main',
+        'class' => 'row',
+        'hide_empty' => 0,
       ),
-      'platzhalter' => array(
+      'tabs_' => array(
         'type' => 'region',
-        'title' => 'Image-Video',
-        'width' => 35.058602594728001,
+        'title' => 'tabbed output',
+        'width' => 100,
         'width_type' => '%',
-        'parent' => '1',
-        'class' => 'col-xs-12 col-md-6 col-lg-5',
+        'parent' => '15',
+        'class' => '',
+        'hide_empty' => 0,
+      ),
+      16 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(),
+        'parent' => 'main',
+        'class' => 'row',
+        'hide_empty' => 0,
       ),
     ),
   );
@@ -639,7 +661,7 @@ return theme(\'nm_fancy_box\', $vars);
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
-  $pane->pid = 'new-6aff6d9c-43cc-4e3a-946e-f80267b9eeb4';
+  $pane->pid = 'new-86a1604f-cc2c-4133-8f81-397a7236e5a9';
   $pane->panel = 'tabs_';
   $pane->type = 'custom';
   $pane->subtype = 'custom';
@@ -649,8 +671,8 @@ return theme(\'nm_fancy_box\', $vars);
     'admin_title' => 'Aktivität',
     'title' => 'Aktivität',
     'title_heading' => 'h2',
-    'body' => ' <div class="col-md-4 col-md-push-8 col-xs-12"><?php echo _section_home_getRenderedActivity(); ?></div>
- <div class="col-md-8  col-md-pull-4 col-xs-12"><?php echo _section_home_getRenderedStream(); ?></div>',
+    'body' => '<div class="col-md-4 col-md-push-8 col-xs-12"><?php echo _section_home_getRenderedActivity(); ?></div>
+<div class="col-md-8  col-md-pull-4 col-xs-12"><?php echo _section_home_getRenderedStream(); ?></div>',
     'format' => 'php_code',
     'substitute' => 1,
   );
@@ -662,11 +684,11 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
-  $pane->uuid = '6aff6d9c-43cc-4e3a-946e-f80267b9eeb4';
-  $display->content['new-6aff6d9c-43cc-4e3a-946e-f80267b9eeb4'] = $pane;
-  $display->panels['tabs_'][0] = 'new-6aff6d9c-43cc-4e3a-946e-f80267b9eeb4';
+  $pane->uuid = '86a1604f-cc2c-4133-8f81-397a7236e5a9';
+  $display->content['new-86a1604f-cc2c-4133-8f81-397a7236e5a9'] = $pane;
+  $display->panels['tabs_'][0] = 'new-86a1604f-cc2c-4133-8f81-397a7236e5a9';
   $pane = new stdClass();
-  $pane->pid = 'new-9fe59af0-5619-4ddf-a84e-77191241ca15';
+  $pane->pid = 'new-e4193e12-6c11-4745-9026-b47e6a69ae4d';
   $pane->panel = 'tabs_';
   $pane->type = 'custom';
   $pane->subtype = 'custom';
@@ -689,11 +711,11 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->extras = array();
   $pane->position = 1;
   $pane->locks = array();
-  $pane->uuid = '9fe59af0-5619-4ddf-a84e-77191241ca15';
-  $display->content['new-9fe59af0-5619-4ddf-a84e-77191241ca15'] = $pane;
-  $display->panels['tabs_'][1] = 'new-9fe59af0-5619-4ddf-a84e-77191241ca15';
+  $pane->uuid = 'e4193e12-6c11-4745-9026-b47e6a69ae4d';
+  $display->content['new-e4193e12-6c11-4745-9026-b47e6a69ae4d'] = $pane;
+  $display->panels['tabs_'][1] = 'new-e4193e12-6c11-4745-9026-b47e6a69ae4d';
   $pane = new stdClass();
-  $pane->pid = 'new-b74ee4bd-4c57-4cde-a9fd-7bd728ef8e92';
+  $pane->pid = 'new-9f27a1bd-5814-43c3-8e77-cd22d96800d3';
   $pane->panel = 'tabs_';
   $pane->type = 'views_panes';
   $pane->subtype = 'messages_list-messages_unread';
@@ -712,9 +734,9 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->extras = array();
   $pane->position = 2;
   $pane->locks = array();
-  $pane->uuid = 'b74ee4bd-4c57-4cde-a9fd-7bd728ef8e92';
-  $display->content['new-b74ee4bd-4c57-4cde-a9fd-7bd728ef8e92'] = $pane;
-  $display->panels['tabs_'][2] = 'new-b74ee4bd-4c57-4cde-a9fd-7bd728ef8e92';
+  $pane->uuid = '9f27a1bd-5814-43c3-8e77-cd22d96800d3';
+  $display->content['new-9f27a1bd-5814-43c3-8e77-cd22d96800d3'] = $pane;
+  $display->panels['tabs_'][2] = 'new-9f27a1bd-5814-43c3-8e77-cd22d96800d3';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
