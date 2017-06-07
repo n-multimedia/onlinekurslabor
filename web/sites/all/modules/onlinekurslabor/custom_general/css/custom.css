@@ -1237,3 +1237,26 @@ div.field-name-field-proposal-timespan {
 {
     display: inline-block;
 }
+
+
+/* draft-label fuer kurse */
+.view_courses_label
+{
+    color:white; 
+    font-weight:bold;
+    text-align:center;
+    transform: rotate(-30deg);
+    width: 90px;
+    position:absolute; 
+    left: 15px;
+    top:32px;
+    z-index:2 
+}
+.view_courses_label.draft
+{
+      background: #D9534F;
+}
+.view_courses_label.unconfirmed
+{
+      background: orange;
+}

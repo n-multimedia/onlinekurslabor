@@ -472,7 +472,7 @@ return theme(\'nm_fancy_box\', $vars);
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:profile_layout';
+  $display->layout = 'flexible:home_layout_loggedin';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -610,6 +610,13 @@ return theme(\'nm_fancy_box\', $vars);
       'lehrender' => NULL,
       'student' => NULL,
       'image_video' => NULL,
+      'picture_' => NULL,
+      'main_' => NULL,
+      'tabs_' => array(
+        'region_bootstraptabs' => array(
+          'alignment' => 'left',
+        ),
+      ),
     ),
     'media' => array(
       'style' => '-1',
@@ -620,6 +627,9 @@ return theme(\'nm_fancy_box\', $vars);
     'studierende' => array(
       'style' => '-1',
     ),
+    'tabs_' => array(
+      'style' => 'bootstrap-tabs',
+    ),
   );
   $display->cache = array();
   $display->title = '';
@@ -629,53 +639,19 @@ return theme(\'nm_fancy_box\', $vars);
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
-  $pane->pid = 'new-43b97f8d-1724-43f1-9bcb-fe2380b51839';
-  $pane->panel = 'center';
-  $pane->type = 'views';
-  $pane->subtype = 'nm_activity_stream';
+  $pane->pid = 'new-6aff6d9c-43cc-4e3a-946e-f80267b9eeb4';
+  $pane->panel = 'tabs_';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 0,
-    'nodes_per_page' => '15',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
-    'args' => '',
-    'url' => '',
-    'display' => 'default',
-    'override_title' => 0,
-    'override_title_text' => '',
-    'override_title_heading' => 'h2',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = '43b97f8d-1724-43f1-9bcb-fe2380b51839';
-  $display->content['new-43b97f8d-1724-43f1-9bcb-fe2380b51839'] = $pane;
-  $display->panels['center'][0] = 'new-43b97f8d-1724-43f1-9bcb-fe2380b51839';
-  $pane = new stdClass();
-  $pane->pid = 'new-562ce51b-3ef1-4e7d-937f-46eb3e2314d2';
-  $pane->panel = 'left';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
-  $pane->shown = FALSE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'admin_title' => 'Erklärung',
-    'title' => '',
+    'admin_title' => 'Aktivität',
+    'title' => 'Aktivität',
     'title_heading' => 'h2',
-    'body' => '<p>siehe section_start_field_formatter_view... Profilbild hat einen eigenen Formatter.</p>',
-    'format' => 'filtered_html',
+    'body' => ' <div class="col-md-4 col-md-push-8 col-xs-12"><?php echo _section_home_getRenderedActivity(); ?></div>
+ <div class="col-md-8  col-md-pull-4 col-xs-12"><?php echo _section_home_getRenderedStream(); ?></div>',
+    'format' => 'php_code',
     'substitute' => 1,
   );
   $pane->cache = array();
@@ -686,53 +662,47 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
-  $pane->uuid = '562ce51b-3ef1-4e7d-937f-46eb3e2314d2';
-  $display->content['new-562ce51b-3ef1-4e7d-937f-46eb3e2314d2'] = $pane;
-  $display->panels['left'][0] = 'new-562ce51b-3ef1-4e7d-937f-46eb3e2314d2';
+  $pane->uuid = '6aff6d9c-43cc-4e3a-946e-f80267b9eeb4';
+  $display->content['new-6aff6d9c-43cc-4e3a-946e-f80267b9eeb4'] = $pane;
+  $display->panels['tabs_'][0] = 'new-6aff6d9c-43cc-4e3a-946e-f80267b9eeb4';
   $pane = new stdClass();
-  $pane->pid = 'new-fda5c3e9-ad75-404b-9825-16e81a718c7d';
-  $pane->panel = 'left';
-  $pane->type = 'entity_field';
-  $pane->subtype = 'profile2:field_photo';
+  $pane->pid = 'new-9fe59af0-5619-4ddf-a84e-77191241ca15';
+  $pane->panel = 'tabs_';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'hidden',
-    'formatter' => 'start_profile_picture',
-    'delta_limit' => 0,
-    'delta_offset' => '0',
-    'delta_reversed' => FALSE,
-    'formatter_settings' => array(),
-    'context' => 'relationship_profile2_1',
-    'override_title' => 0,
-    'override_title_text' => '',
-    'override_title_heading' => 'h2',
+    'admin_title' => 'Events',
+    'title' => 'Meine Veranstaltungen',
+    'title_heading' => 'h2',
+    'body' => '<div class="col-md-4 col-md-push-8 col-xs-12"> <?=_section_home_getRenderedDomains()?></div>
+<div class="col-md-8 col-md-pull-4 col-xs-12" ><?=_section_home_getRenderedDrafts()?><?=_section_home_getRenderedCourses()?> </div>',
+    'format' => 'php_code',
+    'substitute' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
   );
-  $pane->css = array(
-    'css_id' => '',
-    'css_class' => 'hidden-xs',
-  );
+  $pane->css = array();
   $pane->extras = array();
   $pane->position = 1;
   $pane->locks = array();
-  $pane->uuid = 'fda5c3e9-ad75-404b-9825-16e81a718c7d';
-  $display->content['new-fda5c3e9-ad75-404b-9825-16e81a718c7d'] = $pane;
-  $display->panels['left'][1] = 'new-fda5c3e9-ad75-404b-9825-16e81a718c7d';
+  $pane->uuid = '9fe59af0-5619-4ddf-a84e-77191241ca15';
+  $display->content['new-9fe59af0-5619-4ddf-a84e-77191241ca15'] = $pane;
+  $display->panels['tabs_'][1] = 'new-9fe59af0-5619-4ddf-a84e-77191241ca15';
   $pane = new stdClass();
-  $pane->pid = 'new-e99eca97-13a1-41c7-a61a-25afab090fb0';
-  $pane->panel = 'left';
+  $pane->pid = 'new-b74ee4bd-4c57-4cde-a9fd-7bd728ef8e92';
+  $pane->panel = 'tabs_';
   $pane->type = 'views_panes';
-  $pane->subtype = 'courses_kurse_bersicht-my_courses_small';
+  $pane->subtype = 'messages_list-messages_unread';
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'use_pager' => 1,
-    'pager_id' => '0',
-    'items_per_page' => '10',
+    'override_title' => 1,
+    'override_title_text' => 'Neue Nachrichten',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -742,66 +712,9 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->extras = array();
   $pane->position = 2;
   $pane->locks = array();
-  $pane->uuid = 'e99eca97-13a1-41c7-a61a-25afab090fb0';
-  $display->content['new-e99eca97-13a1-41c7-a61a-25afab090fb0'] = $pane;
-  $display->panels['left'][2] = 'new-e99eca97-13a1-41c7-a61a-25afab090fb0';
-  $pane = new stdClass();
-  $pane->pid = 'new-d16e11ba-02cb-4679-9548-f5c87ab41d4f';
-  $pane->panel = 'left';
-  $pane->type = 'views';
-  $pane->subtype = 'courses_user_domains';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 0,
-    'nodes_per_page' => '7',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 1,
-    'link_to_view' => 0,
-    'args' => '',
-    'url' => '',
-    'display' => 'default',
-    'override_title' => 1,
-    'override_title_text' => 'Lehrtexte',
-    'override_title_heading' => 'h2',
-    'context' => array(
-      0 => 'context_user_1.uid',
-    ),
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 3;
-  $pane->locks = array();
-  $pane->uuid = 'd16e11ba-02cb-4679-9548-f5c87ab41d4f';
-  $display->content['new-d16e11ba-02cb-4679-9548-f5c87ab41d4f'] = $pane;
-  $display->panels['left'][3] = 'new-d16e11ba-02cb-4679-9548-f5c87ab41d4f';
-  $pane = new stdClass();
-  $pane->pid = 'new-06e56185-0ec3-4ce9-b515-723a4186a397';
-  $pane->panel = 'right';
-  $pane->type = 'views_panes';
-  $pane->subtype = 'nm_stream-panel_pane_1';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array();
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = '06e56185-0ec3-4ce9-b515-723a4186a397';
-  $display->content['new-06e56185-0ec3-4ce9-b515-723a4186a397'] = $pane;
-  $display->panels['right'][0] = 'new-06e56185-0ec3-4ce9-b515-723a4186a397';
+  $pane->uuid = 'b74ee4bd-4c57-4cde-a9fd-7bd728ef8e92';
+  $display->content['new-b74ee4bd-4c57-4cde-a9fd-7bd728ef8e92'] = $pane;
+  $display->panels['tabs_'][2] = 'new-b74ee4bd-4c57-4cde-a9fd-7bd728ef8e92';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

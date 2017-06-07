@@ -5,3 +5,4 @@ package = custom
 version = "7.x-1.x"
 core = "7.x"
 dependencies[] = home_features
+dependencies[] = nm_stream

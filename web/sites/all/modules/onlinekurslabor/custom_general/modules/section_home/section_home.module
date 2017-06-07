@@ -1,65 +1,14 @@
 <?php
 
+/**
+ * hook_page_build
+ * @param type $page
+ */
 function section_home_page_build(&$page) {
+ if( drupal_is_front_page() )
+    {
     drupal_add_css(drupal_get_path('module', 'section_home') . '/assets/css/section_home.css');
-}
-
-/**
- * Implements hook_field_formatter_info().
- */
-function section_home_field_formatter_info() {
-  return array(
-    'start_profile_picture' => array(
-      'label' => t('Profile picture for homepage'),
-      'field types' => array('image'),
-    )
-      );
-      
-}
-/**
- * implements hook_field_formatter_view 
- * Auf der Startseite bekommt das Profilbild einen eigenen formatter
- * @param type $entity_type
- * @param type $entity
- * @param type $field
- * @param type $instance
- * @param type $langcode
- * @param type $items
- * @param type $display
- * @return type
- */
-function section_home_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-
-    //generiert markup fuer das profilbild auf der startseite
-    $element = array();
-    switch ($display['type']) {
-        case 'start_profile_picture':
-
-            foreach ($items as $delta => $item) {
-                $element[$delta] = array(
-                    '#markup' => _section_home_render_profile_home_picture($item['uri']) #mymodule_crazy_fun_plain($name),
-                );
-            }
-            break;
-        default: break;
     }
-    return $element;
-}
-
-// siehe section_home_field_formatter_view
-function _section_home_render_profile_home_picture($img_uri) {
-    global $user;
-    $name = realname_load($user);
-    //erstellt beide images, applied html-tags und fuegt ergänzendes html dazu
-    $string = theme('image_style', array('path' => $img_uri, 'style_name' => 'homescreen_profile_background'));
-    $string .= '<div id="home_profile_picture">';
-    $string .= theme('image_style', array('path' => $img_uri, 'style_name' => 'homescreen_profile'));
-    $string .="</div>";
-
-    $string.= '<div class="home_picture_hover home_profile_hover_edit"><a href="/user/' . $user->uid . '/edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></div>';
-
-    $string .= '<div class="home_picture_hover home_picture_hover_username home_background_black_transp">' . $name . '</div>';
-    return $string;
 }
 
 /**
@@ -72,23 +21,8 @@ function section_home_user_login(&$edit, $account) {
     if (!$_GET['destination'])
         $_GET['destination'] = '/';
 }
-/**
-function _section_home_getRenderedProfilePhotoHovers()
-{   global $user;
-    $name = realname_load($user);
-   # $name
-   $string = '<div class="home_picture_hover home_profile_hover_edit"><a href="/user/'.$user->uid.'/edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></div>';
-    // da muesste man einen hook finden, der auf field item render abziehlt
-    $string .= '<div class="home_picture_hover home_picture_hover_username home_background_black_transp">'.$name.'</div>';
-  #  global $user;
-    return $string;
-}
-*/
-/**
- * ##########################################################################
- * AB HIER NICHT VERWENDETE FUNKTIONEN. MGLW SPÄTER INTERESSANT:::::
- * ##########################################################################
- */
+
+
 /**
  * Die Stream-Ansicht
  * @return String $html
@@ -115,18 +49,148 @@ function _section_home_getRenderedActivity() {
 }
 
 /**
- * Die Ungelesene-Nachrichten-Ansicht
+ * Meine Lehrtexte
  * @return String $html
- */
-function _section_home_getRenderedMessages() {
+ */    
+function _section_home_getRenderedDomains() {
+    global $user;
+    $view = _section_home_getView('courses_user_domains');
+    $view->set_title('Meine Lehrtexte');
+    $view->set_title($view->get_title()._section_home_getMoreTag('domains','add'));
  
-    $view = _section_home_getView('messages_list','messages_unread');
-     
- #   $view->set_title(t('Unread messages'));
-    return _section_home_renderView($view, 'messages_unread');
-   
+    //gibts nur fuer autoren+
+    if(drupal_valid_path('domains'))
+    {
+        return _section_home_renderView($view, null, true)._section_home_getMoreTag('domains','all');
+    }
+    else
+    {
+        return "";
+    }
 }
 
+
+/**
+ * Die Meine_kurse-Ansicht
+ * @return String $html
+ */    
+function _section_home_getRenderedCourses() {
+    //css: nicht ganz sauber, aber tut fuers erste...
+    drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream.css');
+    $view = _section_home_getView('courses_kurse_bersicht', 'my_courses_small');
+    $view->set_title($view->get_title() . _section_home_getMoreTag('courses', 'add'));
+    return _section_home_renderView($view, 'my_courses_small') . _section_home_getMoreTag('courses', 'all');
+}
+
+/**
+ * Die Meine_entwürfe-Ansicht
+ * @return String $html
+ */    
+function _section_home_getRenderedDrafts() {
+    global $user;
+    //permcheck
+    if(! node_access('create', NM_COURSE)) return "";
+    $view = _section_home_getView('courses_kurse_bersicht', 'my_drafts_small'); #, array('items_per_page' => 2 ));
+    $view->set_title($view->get_title() . _section_home_getMoreTag('courses', 'add'));
+    //achtung: siehe function section_home_views_pre_build
+    return _section_home_renderView($view, 'my_drafts_small');
+}
+
+/**
+ * Für vordefinierte Bereiche kann man einfach einen more-Tag  erhalten. Dieser verlinkt bspw. auf "alle Kurse"
+ * @param String $variant
+ * @param String $type: "all" | "add" (link auf alle bzw erstellen (sofern verfügbar)
+ * @return String html-Link | "" if not available
+ */
+function _section_home_getMoreTag($variant, $type) {
+    
+    $str_add_content = '';
+    $options = array(
+        'messages' => array('path' => 'messages', 'title' => t('All messages'), 'title_create' => t('Write message'), 'path_create' => '/messages/new'),
+        'courses' => array('path' => 'courses', 'title' => t('Other courses'), 'type' => NM_COURSE, 'title_create' => t('Create course'), 'path_create' => (@node_access('create', NM_COURSE) ? '/node/add/' .  str_replace('_', '-',NM_COURSE) : '')),
+        'domains' => array('path' => 'domains', 'title' => t('All educational texts'), 'type' => NM_CONTENT_DOMAIN, 'title_create' => t('Create educational text'), 'path_create' => (@node_access('create', NM_CONTENT_DOMAIN) ? '/node/add/' . str_replace('_', '-',NM_CONTENT_DOMAIN)  : ''))
+    );
+    $curr_variant = $options[$variant];
+
+    if ($type == "all") {
+        //checke access perms auf path
+        $path_alias = drupal_get_path_alias($curr_variant['path']);
+        if (!drupal_valid_path($path_alias))
+            return $str_add_content;
+        $html_all_item = '<span class="glyphicon glyphicon-option-horizontal"></span>';
+        $str_all_content = l($html_all_item, $path_alias, array('html' => true, 'attributes' => array('title' => $curr_variant['title'])));
+
+        return '<center>' . $str_all_content . '</center>';
+    }
+    if ($type == 'add' && $curr_variant['path_create']) {
+        $html_add_item = '<span class="glyphicon glyphicon-plus"></span>';
+        $str_add_content = l($html_add_item, $curr_variant['path_create'], array('html' => true, 'attributes' => array('title' => $curr_variant['title_create'])));
+        return '<div style="float:right; font-size:45%;">' . $str_add_content . '</div>';
+    }
+}
+
+/**
+ * Die Ungelesene-Nachrichten-Ansicht
+ * @return String $html
+ * 
+ * ueberfluessig, view wird direkt in der region geladen
+function _section_home_getRenderedMessages() {
+ 
+    $view = _section_home_getView('messages_list','messages_unread'); 
+  #  $view->set_title(t('Unread messages'));
+     $view->set_title($view->get_title()._section_home_getMoreTag('courses','add'));
+  
+    return _section_home_renderView($view, 'messages_unread');
+   
+} 
+ */
+/**
+ * Implements hook_panels_pane_content_alter
+ * 
+ * Das ist so //der letzte// einer der letzten Hooks, der aufgerufen wird, 
+ * bevor ein panel geschrieben wird. 
+ * Wird benutzt, um dem View "Neue Nachrichten" ein +-Symbol und "alle-Nachrichten"-Symbol hinzuzufügen ohne
+ * dabei mit der Tab-Logik zu interferen.
+ * Außerdem wird bei zwei Panes der Title entfernt, da überflüssig
+ */
+function section_home_panels_pane_content_alter($content, $pane, $args, $contexts) {
+
+    if( drupal_is_front_page() )
+    {
+        // Don't display titles on some panes.
+        if (in_array($content->title, array(t('Activity'), t('My events')))) {
+            $content->title = null;
+        }
+
+        if ($content->delta === 'messages_list-messages_unread') {
+            $content->title .= _section_home_getMoreTag('messages', 'add');
+            $content->content['#markup'] .=   _section_home_getMoreTag('messages','all'); 
+          # dpm($content);
+        }
+    }
+}
+
+
+
+
+/**
+ * implements  hook_views_pre_build(ViewExecutable $view)
+ * das ja wieder n schmarrn. pager kann nur per hook gesetzt werden!
+ * @param type $view
+ */
+function section_home_views_pre_build(&$view)
+{
+    if(!drupal_is_front_page())
+    {
+        return;
+    }
+    
+    if($view->name === 'courses_kurse_bersicht' && $view->current_display === 'my_drafts_small')
+    {
+      $view->set_items_per_page(2);
+    }
+}
+        
 
 /**
  * liefert ein View-Object mit übergebenem Namen und führt notwendige Operatioen fuer Funktionsweise aus
@@ -135,7 +199,7 @@ function _section_home_getRenderedMessages() {
  * @return View $view
  */
 function _section_home_getView($view_name, $display_id = null)
-{        $view = views_get_view($view_name);
+{        $view = views_get_view($view_name,true);
         if ($display_id) {
         //die panel-variante setzen
         $view->set_display($display_id);

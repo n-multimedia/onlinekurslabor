@@ -28,8 +28,26 @@ msgstr "Bitte aktivieren Sie es zunächst"
 msgid "Common"
 msgstr "Allgemein"
 
-msgid ""
-msgstr ""
+msgid "My events"
+msgstr "Meine Veranstaltungen"
+
+msgid "Activity"
+msgstr "Aktivität"
+
+msgid "New messages"
+msgstr "Neue Nachrichten"
+
+msgid "Other courses"
+msgstr "Weitere Kurse"
+
+msgid "All educational texts"
+msgstr "Alle Lehrtexte"
+
+msgid "Draft"
+msgstr "Entwurf"
+
+msgid "unconfirmed"
+msgstr "unbestätigt"
 
 msgid ""
 msgstr ""
@@ -39,4 +57,8 @@ msgstr ""
 
 msgid ""
 msgstr ""
+
+msgid ""
+msgstr ""
+
 

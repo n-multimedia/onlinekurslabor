@@ -70,7 +70,10 @@ a.home_course_item:hover .home_course_preview-hover_box
 }
 
 
-
+h2.pane-title
+{
+    margin-top:0;
+}
 /*meine Lehrtexte */
 ul.ul_my_domains
 {
