@@ -68,3 +68,14 @@ a.home_course_item:hover .home_course_preview-hover_box
      height: 20px;
      overflow: hidden;
 }
+
+
+
+/*meine Lehrtexte */
+ul.ul_my_domains
+{
+    padding-inline-start: 13px;
+}
+ul.ul_my_domains li{
+    color: #337AB7;
+}
