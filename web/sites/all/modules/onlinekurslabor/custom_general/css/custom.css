@@ -1260,3 +1260,22 @@ div.field-name-field-proposal-timespan {
 {
       background: orange;
 }
+
+
+/*meine kurse-ansicht auf start*/
+div.view-courses-kurse-bersicht .nm-stream-node-container div.progress_circle_container
+{
+    display: none;
+    position: absolute;
+    padding-top:5px;
+      //  background-color: rgba(247, 247, 247, 0.5);
+}
+div.view-courses-kurse-bersicht .nm-stream-node-container:hover div.progress_circle_container
+{
+    display: block;
+
+}
+div.view-courses-kurse-bersicht .nm-stream-node-container:hover .courseitem_image_hover_transp
+{
+    opacity: 0.5;
+}
