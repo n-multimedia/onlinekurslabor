@@ -1,11 +1,11 @@
 // A $( document ).ready() block.
 jQuery( document ).ready(function() {
-    if(browser_compatibility_getIEVersion() === 11)
-    {
+   /* if(browser_compatibility_getIEVersion() === 11)
+    { ie11 wysiwyg geht nun auch
         jQuery(".browser_compatibility_custom_message").show();
         jQuery(".browser_compatibility_warning_affected_browser").html("Internet Explorer 11");
         jQuery(".browser_compatibility_warning_details").html("<ul><li>Das Bearbeiten von Text funktioniert nicht vollständig.</li></ul>")
-    }
+    }*/
 });
 
 /**
