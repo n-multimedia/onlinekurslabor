@@ -49,8 +49,11 @@ msgstr "Entwurf"
 msgid "unconfirmed"
 msgstr "unbestätigt"
 
-msgid ""
-msgstr ""
+msgid "Create course"
+msgstr "Kurs erstellen"
+
+msgid "Create educational text"
+msgstr "Lehrtext erstellen"
 
 msgid ""
 msgstr ""
@@ -61,4 +64,5 @@ msgstr ""
 msgid ""
 msgstr ""
 
-
+msgid ""
+msgstr ""
