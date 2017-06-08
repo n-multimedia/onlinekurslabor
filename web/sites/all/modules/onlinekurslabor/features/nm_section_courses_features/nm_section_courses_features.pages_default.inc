@@ -1902,6 +1902,7 @@ return section_courses_text_outline();
         'settings' => array(
           'og_rids' => array(
             0 => 'kurs-dozent',
+            1 => 'kurs-tutor',
           ),
         ),
         'context' => array(
