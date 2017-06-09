@@ -63,7 +63,7 @@ $percent = _section_courses_get_timespan_percentage($node, $start_text, $end_tex
                  <img src="<?= $url ?>" class="courseitem_image_hover_transp"> 
             </div>
             <div class="col-sm-6">
-                <h5> $node_titel ?></h5>
+                <h5> <?= $node_titel ?></h5>
                 <div class="hidden-xs"><?= implode("", $kurs_dozenten) ?></div>
 
 
