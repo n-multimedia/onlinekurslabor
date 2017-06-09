@@ -63,31 +63,12 @@ $percent = _section_courses_get_timespan_percentage($node, $start_text, $end_tex
                  <img src="<?= $url ?>" class="courseitem_image_hover_transp"> 
             </div>
             <div class="col-sm-6">
-                <h5> <?= trim($node->title) ?></h5>
+                <h5> $node_titel ?></h5>
                 <div class="hidden-xs"><?= implode("", $kurs_dozenten) ?></div>
 
 
             </div>
 
         </div>
-    </a>
-</div>
-<?php return?>
-<script>
-  jQuery(function() {
-    jQuery("#progressbar_<?php echo $nid ?>").progressbar({
-      value: <?php echo $percent; ?>
-    });
-  });
-</script>
-
-<div class="row">
-    <a href="<?php echo $node_path; ?>" class="home_course_item"  title="<?php echo trim($node->title); ?>">
-        <div class="col-md-12 home_course_preview user-courses-item" style="background-image:url(<?php echo $path; ?>); "> 
-            <div class="user-courses-item-progress" >
-            <?php echo section_courses_theme_progressbar($node, 38, FALSE); ?>
-            </div>
-        </div>
-        <div class="col-md-12 home_course_preview-hover_box home_background_black_transp"><?= $node_titel ?></div>
     </a>
 </div>
