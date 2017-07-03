@@ -1279,9 +1279,8 @@ div.view-courses-kurse-bersicht .nm-stream-node-container:hover .courseitem_imag
 {
     opacity: 0.5;
 }
-//verhinderte überlauf des kurs-bilds auf mobil
-div.view-courses-kurse-bersicht .nm-stream-node-container  .courseitem_courselogo
+/*verhinderte überlauf des kurs-bilds auf mobil*/
+div.view-courses-kurse-bersicht .nm-stream-node-container  img.courseitem_courselogo
 {
     max-width: 100%;
-    
 }
