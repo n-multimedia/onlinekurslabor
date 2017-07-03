@@ -3032,6 +3032,46 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['relationships']['field_semester_tid']['field'] = 'field_semester_tid';
   $handler->display->display_options['relationships']['field_semester_tid']['required'] = TRUE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'courses_course' => 'courses_course',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: User: Current */
+  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
+  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['relationship'] = 'og_membership_related_user';
+  $handler->display->display_options['filters']['uid_current']['value'] = '1';
+  $handler->display->display_options['filters']['uid_current']['group'] = 1;
+  $handler->display->display_options['filters']['uid_current']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['uid_current']['expose']['label'] = 'Is the logged in user';
+  $handler->display->display_options['filters']['uid_current']['expose']['operator'] = 'uid_current_op';
+  $handler->display->display_options['filters']['uid_current']['expose']['identifier'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['expose']['remember_roles'] = array(
+    2 => '2',
+    30037204 => 0,
+    1 => 0,
+    197637936 => 0,
+    16675960 => 0,
+    106505419 => 0,
+    126456107 => 0,
+    66784200 => 0,
+    24708420 => 0,
+    140204299 => 0,
+  );
+  /* Filter criterion: Content: Laufzeit - end date (field_time_span:value2) */
+  $handler->display->display_options['filters']['field_time_span_value2']['id'] = 'field_time_span_value2';
+  $handler->display->display_options['filters']['field_time_span_value2']['table'] = 'field_data_field_time_span';
+  $handler->display->display_options['filters']['field_time_span_value2']['field'] = 'field_time_span_value2';
+  $handler->display->display_options['filters']['field_time_span_value2']['operator'] = '>=';
+  $handler->display->display_options['filters']['field_time_span_value2']['group'] = 1;
+  $handler->display->display_options['filters']['field_time_span_value2']['default_date'] = '-14 day';
   $handler->display->display_options['allow']['use_pager'] = 'use_pager';
   $handler->display->display_options['allow']['items_per_page'] = 'items_per_page';
   $handler->display->display_options['allow']['offset'] = 0;
@@ -3294,7 +3334,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler = $view->new_display('panel_pane', 'My Drafts SMALL', 'my_drafts_small');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Meine Entwürfe';
-  $handler->display->display_options['display_description'] = 'das gleiche wie My Courses, aber durch Template andere Anzeige';
+  $handler->display->display_options['display_description'] = 'deprecated... not in use anymore';
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'mini';
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
@@ -3429,6 +3469,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('Courses Offer Archive'),
     t('archivated version of Courses'),
     t('My Drafts SMALL'),
+    t('deprecated... not in use anymore'),
   );
   $export['courses_kurse_bersicht'] = $view;
 
