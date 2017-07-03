@@ -208,7 +208,12 @@ BOOTSTRAP 3
    padding-top: 7px;
    margin: 0;
 }
- 
+/*logo klickbar machen in allen kontexten*/
+#page_top_navigation.navbar  .navbar-header {
+    position: relative;
+    z-index: 3;
+}
+
 /*aenderungen fuer icon-navigation top*/
 #page_top_navigation a.top_nav_link span
 {
