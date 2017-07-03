@@ -653,7 +653,7 @@ Outline left sidebar
     padding-left: 15px;
 }
 
-.nav-list>.active>a, .nav-list>.active>a:hover{
+.nav-list>li>a.active, .nav-list>li>a.active:hover{
     background-color: #dee9ef;
     text-shadow:none;
     color: #005580;
