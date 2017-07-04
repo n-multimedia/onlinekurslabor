@@ -13,12 +13,13 @@ function section_home_page_build(&$page) {
 
 /**
  * Nach dem Login wird man auf die Startseite redirected
- * es sei dem, man hat einen destination-parameter...
+ * es sei dem, man hat einen destination-parameter oder per mail resetted pw
  * @param type $edit
  * @param type $account
  */
 function section_home_user_login(&$edit, $account) {
-    if (!$_GET['destination'])
+    
+    if (!$_GET['destination'] && ! strstr ($_SERVER['REQUEST_URI'], '/user/reset'))
         $_GET['destination'] = '/';
 }
 
