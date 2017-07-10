@@ -41,29 +41,6 @@ function _section_courses_forum_breadcrumb_view() {
 function _section_courses_node_tabs_view() {
 
   $block = '';
-
-  /* refactor this
-   * rename function could also be possible
-   */
-
-  /*
-   * user controls
-   */
-  if (arg(0) == 'user' && is_numeric(arg(1))) {
-    $nav_items_single = array();
-    $nav_items_single['edit'] = "Profil bearbeiten";
-
-    //pre + suffix
-    $nav_items_single['edit'] = '<button class="btn btn-default edit-profile"><i class="glyphicon glyphicon-pencil" style="color:white;"></i> ' . $nav_items_single['edit'];
-    $nav_items_single['edit'] .= '</button>';
-
-    $path = 'user/' . arg(1) . '/edit';
-    if (drupal_valid_path($path)) {
-      $block .= l($nav_items_single['edit'], $path, array('attributes' => array(), 'html' => TRUE,));
-    }
-    return $block;
-  }
-
   /*
    * node controls
    */
