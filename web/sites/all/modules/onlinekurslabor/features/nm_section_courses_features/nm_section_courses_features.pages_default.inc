@@ -1315,7 +1315,7 @@ echo implode($roles , \', \');
     'admin_title' => 'private_msg_button',
     'title' => '',
     'body' => '<?php
-echo private_msg_get_profile_btn();
+echo privatemsg_okl_get_profile_btn();
 ?>',
     'format' => 'php_code',
     'substitute' => 1,

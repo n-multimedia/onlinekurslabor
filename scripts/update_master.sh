@@ -18,6 +18,8 @@ drush en home_features --yes
 drush en section_home --yes
 drush en changediscard_warning --yes
 
+drush en section_profile --yes
+
 #dis
 drush dis browser_compatibility --yes
 
