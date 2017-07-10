@@ -57,7 +57,7 @@ function _section_home_getRenderedDomains() {
     global $user;
     $view = _section_home_getView('courses_user_domains','nid_only');
     $view->set_title('Meine Lehrtexte');
-    $view->set_title($view->get_title()._section_home_getMoreTag('domains','add'));
+    $view->set_title($view->get_title()._section_home_iconcontainer_right(_section_home_getMoreTag('domains','add')));
  
     //gibts nur fuer autoren+
     if(drupal_valid_path('domains'))
@@ -79,7 +79,7 @@ function _section_home_getRenderedCourses() {
     //css: nicht ganz sauber, aber tut fuers erste...
     drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream.css');
     $view = _section_home_getView('courses_kurse_bersicht', 'my_courses_small');
-    $view->set_title($view->get_title() . _section_home_getMoreTag('courses', 'add'));
+    $view->set_title($view->get_title(). _section_home_iconcontainer_right( _section_home_get_search_toggle_tag('views-exposed-form-courses-kurse-bersicht-my-courses-small').'&nbsp;' ._section_home_getMoreTag('courses', 'add')));
     return _section_home_renderView($view, 'my_courses_small') . _section_home_getMoreTag('courses', 'all');
 }
 
@@ -113,10 +113,29 @@ function _section_home_getMoreTag($variant, $type) {
     if ($type == 'add' && $curr_variant['path_create']) {
         $html_add_item = '<span class="glyphicon glyphicon-plus"></span>';
         $str_add_content = l($html_add_item, $curr_variant['path_create'], array('html' => true, 'attributes' => array('title' => $curr_variant['title_create'])));
-        return '<div style="float:right; font-size:45%;">' . $str_add_content . '</div>';
+        return  $str_add_content ;
     }
 }
 
+/**
+ * die xyz-Suchen-Form wird normal ausgeblendet. Hier wird ein Button generiert,
+ * um sie wieder anzuzeigen
+ * $identifier : html-identifier der Form ohne #-Symbol
+ */
+function _section_home_get_search_toggle_tag($identifier)
+{
+    return '<a href=# onclick="jQuery(\'#'.$identifier.'\').toggle(200); return false;"><span class="glyphicon glyphicon-search"></span></a>';
+}
+
+/**
+ * packt die kleinen Symbole wie "+" in einen rechts-floatenden container
+ * @param type $html_content
+ * @return type
+ */
+function _section_home_iconcontainer_right($html_content)
+{
+    return '<div style="float:right; font-size:45%;">' . $html_content . '</div>';
+}
 /**
  * Die Ungelesene-Nachrichten-Ansicht
  * @return String $html
@@ -151,7 +170,7 @@ function section_home_panels_pane_content_alter($content, $pane, $args, $context
         }
 
         if ($content->delta === 'messages_list-messages_unread') {
-            $content->title .= _section_home_getMoreTag('messages', 'add');
+            $content->title .=_section_home_iconcontainer_right( _section_home_getMoreTag('messages', 'add'));
             $content->content['#markup'] .=   _section_home_getMoreTag('messages','all'); 
           # dpm($content);
         }

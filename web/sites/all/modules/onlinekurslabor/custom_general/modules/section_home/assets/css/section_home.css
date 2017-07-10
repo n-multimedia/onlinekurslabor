@@ -92,3 +92,9 @@ div.view-id-courses_user_domains.view-display-id-nid_only a:last-child {
        border-bottom: 1px solid #cecece;
        margin-bottom:15px;
 }
+
+/*nach-kurs-suchen-form etc wird zunächst ausgeblendet und per klick wieder angezeigt*/
+#views-exposed-form-courses-kurse-bersicht-my-courses-small
+{
+    display:none;
+}

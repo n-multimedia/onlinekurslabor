@@ -2999,6 +2999,14 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Meine Kurse';
   $handler->display->display_options['display_description'] = 'das gleiche wie My Courses, aber durch Template andere Anzeige';
+  $handler->display->display_options['defaults']['exposed_form'] = FALSE;
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Suchen';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Alle';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortieren nach';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Aufsteigend';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Absteigend';
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'mini';
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
@@ -3065,13 +3073,36 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     24708420 => 0,
     140204299 => 0,
   );
-  /* Filter criterion: Content: Laufzeit - end date (field_time_span:value2) */
-  $handler->display->display_options['filters']['field_time_span_value2']['id'] = 'field_time_span_value2';
-  $handler->display->display_options['filters']['field_time_span_value2']['table'] = 'field_data_field_time_span';
-  $handler->display->display_options['filters']['field_time_span_value2']['field'] = 'field_time_span_value2';
-  $handler->display->display_options['filters']['field_time_span_value2']['operator'] = '>=';
-  $handler->display->display_options['filters']['field_time_span_value2']['group'] = 1;
-  $handler->display->display_options['filters']['field_time_span_value2']['default_date'] = '-14 day';
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Kurs suchen';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'course_title';
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => 0,
+    30037204 => 0,
+    1 => 0,
+    197637936 => 0,
+    16675960 => 0,
+    106505419 => 0,
+    126456107 => 0,
+    66784200 => 0,
+    24708420 => 0,
+    140204299 => 0,
+  );
+  $handler->display->display_options['filters']['title']['group_info']['label'] = 'Titel';
+  $handler->display->display_options['filters']['title']['group_info']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['group_info']['remember'] = FALSE;
+  $handler->display->display_options['filters']['title']['group_info']['group_items'] = array(
+    1 => array(),
+    2 => array(),
+    3 => array(),
+  );
   $handler->display->display_options['allow']['use_pager'] = 'use_pager';
   $handler->display->display_options['allow']['items_per_page'] = 'items_per_page';
   $handler->display->display_options['allow']['offset'] = 0;
@@ -3455,10 +3486,16 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('View panes'),
     t('My Courses SMALL'),
     t('das gleiche wie My Courses, aber durch Template andere Anzeige'),
+    t('Suchen'),
+    t('Sortieren nach'),
+    t('Aufsteigend'),
+    t('Absteigend'),
     t('« first'),
     t('‹'),
     t('›'),
     t('last »'),
+    t('Kurs suchen'),
+    t('Titel'),
     t('Courses Offer'),
     t('Kursangebot'),
     t('Kursenddatum'),
