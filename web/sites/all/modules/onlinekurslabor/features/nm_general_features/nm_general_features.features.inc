@@ -53,6 +53,21 @@ function nm_general_features_image_default_styles() {
     ),
   );
 
+  // Exported image style: profile_medium.
+  $styles['profile_medium'] = array(
+    'label' => 'profile_medium',
+    'effects' => array(
+      1 => array(
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 220,
+          'height' => 220,
+        ),
+        'weight' => 1,
+      ),
+    ),
+  );
+
   // Exported image style: profile_mini_thumbnail.
   $styles['profile_mini_thumbnail'] = array(
     'label' => 'profile_mini_thumbnail',
