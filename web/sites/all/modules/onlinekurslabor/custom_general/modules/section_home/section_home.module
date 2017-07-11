@@ -129,12 +129,12 @@ function _section_home_get_search_toggle_tag($identifier)
 
 /**
  * packt die kleinen Symbole wie "+" in einen rechts-floatenden container
- * @param type $html_content
- * @return type
+ * @param String $html_content
+ * @return String html
  */
 function _section_home_iconcontainer_right($html_content)
 {
-    return '<div style="float:right; font-size:45%;">' . $html_content . '</div>';
+    return '<div style="float:right; font-size:50%;">' . $html_content . '</div>';
 }
 /**
  * Die Ungelesene-Nachrichten-Ansicht
