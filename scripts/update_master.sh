@@ -20,7 +20,7 @@ drush en changediscard_warning --yes
 
 drush en section_profile --yes
 
-drush dis bootstrap_check --yes
+drush en bootstrap_check --yes
 
 #dis
 drush dis browser_compatibility --yes
