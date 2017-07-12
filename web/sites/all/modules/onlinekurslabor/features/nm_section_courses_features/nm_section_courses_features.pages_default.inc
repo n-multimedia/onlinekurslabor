@@ -874,16 +874,14 @@ return drupal_render($form);
     ),
   );
   $display = new panels_display();
-  $display->layout = 'onecol';
+  $display->layout = 'flexible';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
         'type' => 'row',
         'contains' => 'column',
         'children' => array(
-          0 => 1,
-          1 => 'main',
-          2 => 2,
+          0 => 'main',
         ),
         'parent' => NULL,
         'class' => 'row',
@@ -898,10 +896,11 @@ return drupal_render($form);
       ),
       'main' => array(
         'type' => 'column',
-        'width' => '26.3311842451191',
+        'width' => 100,
         'width_type' => '%',
         'children' => array(
           0 => 'main-row',
+          1 => 1,
         ),
         'parent' => 'canvas',
         'class' => 'col-xs-12 col-sm-3 col-sm-push-6',
@@ -917,69 +916,30 @@ return drupal_render($form);
       ),
       'center' => array(
         'type' => 'region',
-        'title' => 'right',
+        'title' => 'header',
         'width' => 100,
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => '',
+        'class' => 'row',
         'hide_empty' => 0,
       ),
       1 => array(
-        'type' => 'column',
-        'width' => '25.13203096959442',
-        'width_type' => '%',
-        'parent' => 'canvas',
-        'children' => array(
-          0 => 3,
-        ),
-        'class' => 'col-xs-12 col-sm-3 ',
-        'hide_empty' => 0,
-      ),
-      2 => array(
-        'type' => 'column',
-        'width' => '48.53678478528647',
-        'width_type' => '%',
-        'parent' => 'canvas',
-        'children' => array(
-          0 => 4,
-        ),
-        'class' => 'col-xs-12 col-sm-6 col-sm-pull-3',
-        'hide_empty' => 0,
-      ),
-      3 => array(
         'type' => 'row',
         'contains' => 'region',
         'children' => array(
-          0 => 'left',
+          0 => 'users_s_courses',
         ),
+        'parent' => 'main',
+        'class' => '',
+        'hide_empty' => 0,
+      ),
+      'users_s_courses' => array(
+        'type' => 'region',
+        'title' => 'users\'s courses',
+        'width' => 100,
+        'width_type' => '%',
         'parent' => '1',
-        'class' => '',
-      ),
-      'left' => array(
-        'type' => 'region',
-        'title' => 'left',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '3',
-        'class' => '',
-        'hide_empty' => 0,
-      ),
-      4 => array(
-        'type' => 'row',
-        'contains' => 'region',
-        'children' => array(
-          0 => 'right',
-        ),
-        'parent' => '2',
-        'class' => '',
-      ),
-      'right' => array(
-        'type' => 'region',
-        'title' => 'middle',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '4',
-        'class' => '',
+        'class' => 'row',
         'hide_empty' => 0,
       ),
     ),
@@ -991,9 +951,22 @@ return drupal_render($form);
       'left' => NULL,
       'right' => NULL,
       'middle' => NULL,
+      'users_s_courses' => array(
+        'content' => array(
+          'element' => '',
+          'attributes' => array(
+            'id' => '',
+            'class' => 'row',
+          ),
+        ),
+        'theme' => 0,
+      ),
     ),
     'left' => array(
       'style' => 'default',
+    ),
+    'users_s_courses' => array(
+      'style' => 'wrapper_element',
     ),
   );
   $display->cache = array();
@@ -1005,7 +978,7 @@ return drupal_render($form);
   $display->panels = array();
   $pane = new stdClass();
   $pane->pid = 'new-8f19c589-7ffd-427f-b24c-3800c70bbc44';
-  $pane->panel = 'middle';
+  $pane->panel = 'center';
   $pane->type = 'custom';
   $pane->subtype = 'custom';
   $pane->shown = TRUE;
@@ -1030,10 +1003,10 @@ echo theme(\'profile_header\', array(\'uid\'=>%user:uid ));
   $pane->locks = array();
   $pane->uuid = '8f19c589-7ffd-427f-b24c-3800c70bbc44';
   $display->content['new-8f19c589-7ffd-427f-b24c-3800c70bbc44'] = $pane;
-  $display->panels['middle'][0] = 'new-8f19c589-7ffd-427f-b24c-3800c70bbc44';
+  $display->panels['center'][0] = 'new-8f19c589-7ffd-427f-b24c-3800c70bbc44';
   $pane = new stdClass();
   $pane->pid = 'new-a94223ac-0967-49e8-ae7b-33921f981c89';
-  $pane->panel = 'middle';
+  $pane->panel = 'center';
   $pane->type = 'custom';
   $pane->subtype = 'custom';
   $pane->shown = TRUE;
@@ -1058,19 +1031,27 @@ echo theme(\'profile_details\', array(\'uid\'=>%user:uid ));
   $pane->locks = array();
   $pane->uuid = 'a94223ac-0967-49e8-ae7b-33921f981c89';
   $display->content['new-a94223ac-0967-49e8-ae7b-33921f981c89'] = $pane;
-  $display->panels['middle'][1] = 'new-a94223ac-0967-49e8-ae7b-33921f981c89';
+  $display->panels['center'][1] = 'new-a94223ac-0967-49e8-ae7b-33921f981c89';
   $pane = new stdClass();
-  $pane->pid = 'new-a3647465-039e-49c3-b547-7b34c4fb0bec';
-  $pane->panel = 'middle';
+  $pane->pid = 'new-830b1a45-d949-4fdb-af1d-0a328cc1967e';
+  $pane->panel = 'users_s_courses';
   $pane->type = 'custom';
   $pane->subtype = 'custom';
-  $pane->shown = FALSE;
+  $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'admin_title' => 'users courses',
+    'admin_title' => 'my-courses-css',
     'title' => '',
     'title_heading' => 'h2',
-    'body' => 'hier jetzt platz für kurse+lehrtexte. muss man erst ma noch refactorn etc ',
+    'body' => '<?php
+drupal_add_css(drupal_get_path(\'module\', \'nm_stream\') . \'/css/nm_stream.css\');
+?>
+ <STYLE type="text/css">
+#views-exposed-form-courses-kurse-bersicht-my-courses-small
+{
+display:none;
+}
+ </STYLE>',
     'format' => 'php_code',
     'substitute' => 1,
   );
@@ -1080,11 +1061,146 @@ echo theme(\'profile_details\', array(\'uid\'=>%user:uid ));
   );
   $pane->css = array();
   $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '830b1a45-d949-4fdb-af1d-0a328cc1967e';
+  $display->content['new-830b1a45-d949-4fdb-af1d-0a328cc1967e'] = $pane;
+  $display->panels['users_s_courses'][0] = 'new-830b1a45-d949-4fdb-af1d-0a328cc1967e';
+  $pane = new stdClass();
+  $pane->pid = 'new-e75f663a-bd63-46d7-8fd9-88a9758353d5';
+  $pane->panel = 'users_s_courses';
+  $pane->type = 'views';
+  $pane->subtype = 'courses_user_domains';
+  $pane->shown = TRUE;
+  $pane->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 30037204,
+            1 => 197637936,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+    ),
+  );
+  $pane->configuration = array(
+    'override_pager_settings' => 0,
+    'use_pager' => 0,
+    'nodes_per_page' => '0',
+    'pager_id' => '0',
+    'offset' => '0',
+    'more_link' => 0,
+    'feed_icons' => 0,
+    'panel_args' => 0,
+    'link_to_view' => 0,
+    'args' => '',
+    'url' => '',
+    'display' => 'nid_only',
+    'context' => array(
+      0 => 'argument_entity_id:user_1.uid',
+    ),
+    'override_title' => 1,
+    'override_title_text' => 'Lehrtexte',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => array(
+      'title' => array(
+        'element' => '',
+        'attributes' => array(
+          'id' => '',
+          'class' => '',
+        ),
+      ),
+      'content' => array(
+        'element' => '',
+        'attributes' => array(
+          'id' => '',
+          'class' => '',
+        ),
+      ),
+      'theme' => 1,
+    ),
+    'style' => 'wrapper_element',
+  );
+  $pane->css = array(
+    'css_id' => 'profile-lehrtexte-wrapper',
+    'css_class' => 'col-md-4 col-md-push-8 col-xs-12',
+  );
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = 'e75f663a-bd63-46d7-8fd9-88a9758353d5';
+  $display->content['new-e75f663a-bd63-46d7-8fd9-88a9758353d5'] = $pane;
+  $display->panels['users_s_courses'][1] = 'new-e75f663a-bd63-46d7-8fd9-88a9758353d5';
+  $pane = new stdClass();
+  $pane->pid = 'new-962a9704-44ef-4eaa-b257-e13876dc0ce9';
+  $pane->panel = 'users_s_courses';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'courses_kurse_bersicht-my_courses_small';
+  $pane->shown = TRUE;
+  $pane->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 30037204,
+            1 => 197637936,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+    ),
+  );
+  $pane->configuration = array(
+    'use_pager' => 1,
+    'pager_id' => '1',
+    'items_per_page' => '10',
+    'context' => array(
+      0 => 'argument_entity_id:user_1',
+    ),
+    'override_title' => 1,
+    'override_title_text' => 'Kurse',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => array(
+      'title' => array(
+        'element' => '',
+        'attributes' => array(
+          'id' => '',
+          'class' => '',
+        ),
+      ),
+      'content' => array(
+        'element' => 'div',
+        'attributes' => array(
+          'id' => '',
+          'class' => '',
+        ),
+      ),
+      'theme' => 1,
+    ),
+    'style' => 'wrapper_element',
+  );
+  $pane->css = array(
+    'css_id' => 'profile-courses-wrapper',
+    'css_class' => 'col-md-8 col-md-pull-4 col-xs-12',
+  );
+  $pane->extras = array();
   $pane->position = 2;
   $pane->locks = array();
-  $pane->uuid = 'a3647465-039e-49c3-b547-7b34c4fb0bec';
-  $display->content['new-a3647465-039e-49c3-b547-7b34c4fb0bec'] = $pane;
-  $display->panels['middle'][2] = 'new-a3647465-039e-49c3-b547-7b34c4fb0bec';
+  $pane->uuid = '962a9704-44ef-4eaa-b257-e13876dc0ce9';
+  $display->content['new-962a9704-44ef-4eaa-b257-e13876dc0ce9'] = $pane;
+  $display->panels['users_s_courses'][2] = 'new-962a9704-44ef-4eaa-b257-e13876dc0ce9';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
