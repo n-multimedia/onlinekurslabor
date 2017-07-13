@@ -54,6 +54,9 @@ function _section_profile_get_profile_edit_btn($user_id) {
 
 /**
  * get Infos about a user stored in profile.
+ * ###ACHTUNG###
+ * Funktion funktioniert. ABER: Trotz hinterlegten Daten uU nicht sichtbar. Iwo in den Untiefen gibts noch Visibilities dafür :'-)
+ * Bspw: Hochschule für Dozent nicht sichtbar.
  * @param StdClass $user the affected user
  * @return return array in form title => info-value
  */
@@ -63,40 +66,39 @@ function _section_profile_get_profile_data($user) {
     $roles = $user->roles;
     $to_remove = array('authenticated user');
     $roles = array_diff($roles, $to_remove);
-    $roles_name = count($roles) > 1? 'Rollen':'Rolle';
-    $data[$roles_name] = implode($roles, ', ');
-    
+    $roles_name = count($roles) > 1 ? 'Rollen' : 'Rolle';
+    $data['public'][$roles_name] = implode($roles, ', ');
+
     $profile = profile2_load_by_user($user, 'master');
     //profildaten
+
     $birthday_view = field_view_field('profile2', $profile, 'field_birthday', 'short');
+    $data['private']['Geburtstag'] = $birthday_view [0]['#markup'];
+
+    $profile_student = profile2_load_by_user($user, 'student');
+
+    //hochschule
+    $hs_items = field_get_items('profile2', $profile_student, 'field_hochschule');
+    $persons_hss = array();
+    foreach ($hs_items as $hs_itm) {
+        $persons_hss[] = $hs_itm['taxonomy_term']->name;
+    }
+    $data['public']['Hochschule'] = implode(", ", $persons_hss);
+
+    $data['private']['Matrikelnummer'] = field_get_items('profile2', $profile_student, 'field_matrikelnummer_varchar')[0]['safe_value'];
+    $data['private']['Studienfach'] = field_get_items('profile2', $profile_student, 'field_studienfach')[0]['safe_value'];
+
     //description
-    $data['Über mich'] = field_get_items('profile2',$profile,'field_about_me','short')[0]['safe_value'];
-    
-    //in der diskussion. Welche Values sollen (für wen?) ausgegeben werden. Bis dahin raus
-    if (false) {
+    $data['public']['Über mich'] = field_get_items('profile2', $profile, 'field_about_me', 'short')[0]['safe_value'];
 
-        $data['Geburtstag'] = $birthday_view [0]['#markup'];
-
-        $profile_student = profile2_load_by_user($user, 'student');
-
-        //hochschule
-        $hs_items = field_get_items('profile2', $profile_student, 'field_hochschule');
-        $persons_hss = array();
-        foreach ($hs_items as $hs_itm) {
-            $persons_hss[] = $hs_itm['taxonomy_term']->name;
-        }
-        $data['Hochschule'] = implode(", ", $persons_hss);
-
-        $data['Matrikelnummer'] = field_get_items('profile2', $profile_student, 'field_matrikelnummer_varchar')[0]['safe_value'];
-        $data['Studienfach'] = field_get_items('profile2', $profile_student, 'field_studienfach')[0]['safe_value'];
-    }
-
+    #return $data;
     //entferne leere values
-    foreach($data as $title => $value)
-    {
-        if(!trim($value))
-            unset($data[$title]);
+    foreach ($data as $range => &$content_data) {
+        foreach ($content_data as $title => $value) {
+            if (!trim($value))
+                unset($content_data[$title]);
+        }
     }
-  
+
     return $data;
 }

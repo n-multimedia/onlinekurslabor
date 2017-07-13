@@ -61,8 +61,11 @@ msgstr "Nachricht schreiben"
 msgid "Edit profile"
 msgstr "Profil bearbeiten"
 
-msgid ""
-msgstr ""
+msgid "Public information"
+msgstr "Öffentliche Informationen"
+
+msgid "Private information"
+msgstr "Private Informationen"
 
 msgid ""
 msgstr ""

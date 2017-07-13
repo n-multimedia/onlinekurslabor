@@ -1012,26 +1012,120 @@ echo theme(\'profile_header\', array(\'uid\'=>%user:uid ));
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'admin_title' => 'profile-details',
+    'admin_title' => 'profile details public',
     'title' => '',
     'title_heading' => 'h2',
     'body' => '<?php
-echo theme(\'profile_details\', array(\'uid\'=>%user:uid ));
+echo theme(\'profile_details\', array(\'uid\'=>%user:uid , \'range\'=>\'public\'));
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
-    'settings' => NULL,
+    'settings' => array(
+      'title' => array(
+        'element' => '',
+        'attributes' => array(
+          'id' => '',
+          'class' => '',
+        ),
+      ),
+      'content' => array(
+        'element' => 'div',
+        'attributes' => array(
+          'id' => '',
+          'class' => 'col-md-12 section_profile-detailinfos public',
+        ),
+      ),
+      'theme' => 1,
+    ),
+    'style' => 'wrapper_element',
   );
-  $pane->css = array();
+  $pane->css = array(
+    'css_id' => '',
+    'css_class' => 'row',
+  );
   $pane->extras = array();
   $pane->position = 1;
   $pane->locks = array();
   $pane->uuid = 'a94223ac-0967-49e8-ae7b-33921f981c89';
   $display->content['new-a94223ac-0967-49e8-ae7b-33921f981c89'] = $pane;
   $display->panels['center'][1] = 'new-a94223ac-0967-49e8-ae7b-33921f981c89';
+  $pane = new stdClass();
+  $pane->pid = 'new-05d70a85-aeeb-4756-a347-61887ad699ab';
+  $pane->panel = 'center';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 30037204,
+            1 => 197637936,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'compare_users',
+        'settings' => array(
+          'equality' => '1',
+        ),
+        'context' => array(
+          0 => 'argument_entity_id:user_1',
+          1 => 'logged-in-user',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'or',
+  );
+  $pane->configuration = array(
+    'admin_title' => 'profile details private',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<?php
+echo theme(\'profile_details\', array(\'uid\'=>%user:uid , \'range\'=>\'private\'));
+?>',
+    'format' => 'php_code',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => array(
+      'title' => array(
+        'element' => '',
+        'attributes' => array(
+          'id' => '',
+          'class' => '',
+        ),
+      ),
+      'content' => array(
+        'element' => 'div',
+        'attributes' => array(
+          'id' => '',
+          'class' => 'col-md-12 section_profile-detailinfos private',
+        ),
+      ),
+      'theme' => 1,
+    ),
+    'style' => 'wrapper_element',
+  );
+  $pane->css = array(
+    'css_id' => '',
+    'css_class' => 'row',
+  );
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '05d70a85-aeeb-4756-a347-61887ad699ab';
+  $display->content['new-05d70a85-aeeb-4756-a347-61887ad699ab'] = $pane;
+  $display->panels['center'][2] = 'new-05d70a85-aeeb-4756-a347-61887ad699ab';
   $pane = new stdClass();
   $pane->pid = 'new-830b1a45-d949-4fdb-af1d-0a328cc1967e';
   $pane->panel = 'users_s_courses';
@@ -1085,7 +1179,19 @@ display:none;
         'context' => 'logged-in-user',
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'compare_users',
+        'settings' => array(
+          'equality' => '1',
+        ),
+        'context' => array(
+          0 => 'argument_entity_id:user_1',
+          1 => 'logged-in-user',
+        ),
+        'not' => FALSE,
+      ),
     ),
+    'logic' => 'or',
   );
   $pane->configuration = array(
     'override_pager_settings' => 0,
@@ -1157,7 +1263,19 @@ display:none;
         'context' => 'logged-in-user',
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'compare_users',
+        'settings' => array(
+          'equality' => '1',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:user_1',
+        ),
+        'not' => FALSE,
+      ),
     ),
+    'logic' => 'or',
   );
   $pane->configuration = array(
     'use_pager' => 1,

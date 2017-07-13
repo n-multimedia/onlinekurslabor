@@ -60,19 +60,21 @@ div#section_profile-header-bg
 }
 
 /*infos: rollen, hochschule etc*/
-#section_profile-detailinfos
+.section_profile-detailinfos
 {
     background:#F6F6F6;
     padding:10px;
-}
-#section_profile-detailinfos table
+} 
+.section_profile-detailinfos.public
 {
-    margin-bottom: 20px;
-}
-
-#section_profile-detailinfos table td
+   
+} 
+.section_profile-detailinfos.private
 {
-    padding:10px;
-  //  border-top: 1px dotted #A6A6A6;
-    border-bottom: 1px dotted #A6A6A6;
+ background: #FBFBFB;   
+} 
+/*kein vertical-scrolling auf mobil im profil*/
+.profile_details_table_content_wrap th, .profile_details_table_content_wrap td
+{
+    white-space: normal !important;
 }
