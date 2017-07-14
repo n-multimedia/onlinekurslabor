@@ -81,8 +81,12 @@ h2.pane-title
     display:none;
 }
 
-.home_icon_container_right
+/*titel wie meine Kurse und icon+ auf startsetie*/
+.home_title_container h3.home_title{
+   display: inline;
+}
+.home_title_container .home_icon_container_right
 {
     float:right; 
-    font-size:50%;
+    font-size: 80%;
 }

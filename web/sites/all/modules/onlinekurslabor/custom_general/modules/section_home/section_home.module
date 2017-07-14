@@ -57,12 +57,12 @@ function _section_home_getRenderedDomains() {
     global $user;
     $view = _section_home_getView('courses_user_domains','nid_only');
     $view->set_title('Meine Lehrtexte');
-    $view->set_title($view->get_title()._section_home_iconcontainer_right(_section_home_getMoreTag('domains','add')));
  
     //gibts nur fuer autoren+
     if(drupal_valid_path('domains'))
     {
-        return _section_home_renderView($view, 'nid_only', true)._section_home_getMoreTag('domains','all');
+        $html = _section_home_get_rendered_tiitle($view->get_title(), array(_section_home_getMoreTag('domains','add')));
+        return $html._section_home_renderView($view, 'nid_only', true)._section_home_getMoreTag('domains','all');
     }
     else
     {
@@ -79,8 +79,9 @@ function _section_home_getRenderedCourses() {
     //css: nicht ganz sauber, aber tut fuers erste...
     drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream.css');
     $view = _section_home_getView('courses_kurse_bersicht', 'my_courses_small');
-    $view->set_title($view->get_title(). _section_home_iconcontainer_right( _section_home_get_search_toggle_tag('views-exposed-form-courses-kurse-bersicht-my-courses-small').'&nbsp;' ._section_home_getMoreTag('courses', 'add')));
-    return _section_home_renderView($view, 'my_courses_small') . _section_home_getMoreTag('courses', 'all');
+    $html = _section_home_get_rendered_tiitle($view->get_title(), array(_section_home_get_search_toggle_tag('views-exposed-form-courses-kurse-bersicht-my-courses-small'),_section_home_getMoreTag('courses', 'add')));
+    $html .=  _section_home_renderView($view, 'my_courses_small') . _section_home_getMoreTag('courses', 'all');
+    return $html;
 }
 
 
@@ -124,7 +125,7 @@ function _section_home_getMoreTag($variant, $type) {
  */
 function _section_home_get_search_toggle_tag($identifier)
 {
-    return '<a href=# onclick="jQuery(\'#'.$identifier.'\').toggle(200); return false;"><span class="glyphicon glyphicon-search"></span></a>';
+    return '<a href=# onclick="jQuery(\'#'.$identifier.'\').toggle(200); return false;" title="'.t('Search course').'"><span class="glyphicon glyphicon-search"></span></a>';
 }
 
 /**
@@ -170,9 +171,11 @@ function section_home_panels_pane_content_alter($content, $pane, $args, $context
         }
 
         if ($content->delta === 'messages_list-messages_unread') {
-            $content->title .=_section_home_iconcontainer_right( _section_home_getMoreTag('messages', 'add'));
-            $content->content['#markup'] .=   _section_home_getMoreTag('messages','all'); 
-          # dpm($content);
+
+            $content->content['#markup'] = _section_home_get_rendered_tiitle($content->title, array(_section_home_getMoreTag('messages', 'add'))) . $content->content['#markup'];
+            $content->title = null;
+            $content->content['#markup'] .= _section_home_getMoreTag('messages', 'all');
+            # dpm($content);
         }
     }
 }
@@ -211,10 +214,29 @@ function _section_home_getView($view_name, $display_id = null)
  */
 function _section_home_renderView(View $view, $display_id = null, $override_count = false) {
 
-    $html = "<h3>" . $view->get_title() . "</h3>";
+    $html = "";# "<h3>" . $view->get_title() . "</h3>";
     if (!$override_count)
         $html .= $view->total_rows ? $view->render($display_id) : "<i>&nbsp;&nbsp;- keine - </i><br>";
     else
         $html .= $view->render($display_id);
     return $html;
 }
+
+/**
+ * Rendered einen Titel und Icons in einen Container mit den Icons
+ * @param String $title
+ * @param array $icons
+ * @return String html
+ */
+function _section_home_get_rendered_tiitle($title, array $icons)
+{     $icon_str = _section_home_iconcontainer_right(implode('&nbsp;', $icons));
+      $html =   
+      <<<EOF
+    <div class="home_title_container">
+    <h3 class="home_title">$title</h3>
+     $icon_str
+    </div>
+EOF;
+      return $html;
+}
+
