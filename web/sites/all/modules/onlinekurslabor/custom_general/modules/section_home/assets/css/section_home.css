@@ -80,3 +80,9 @@ h2.pane-title
 {
     display:none;
 }
+
+.home_icon_container_right
+{
+    float:right; 
+    font-size:50%;
+}

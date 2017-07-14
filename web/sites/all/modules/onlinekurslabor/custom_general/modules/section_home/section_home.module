@@ -134,7 +134,7 @@ function _section_home_get_search_toggle_tag($identifier)
  */
 function _section_home_iconcontainer_right($html_content)
 {
-    return '<div style="float:right; font-size:50%;">' . $html_content . '</div>';
+    return '<div class="home_icon_container_right">' . $html_content . '</div>';
 }
 /**
  * Die Ungelesene-Nachrichten-Ansicht
