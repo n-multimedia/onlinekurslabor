@@ -55,7 +55,22 @@
             //bricht nach 15 sec ab
             if(Drupal.behaviors.h5p_connector_api.h5pEditorreadyCount++ >15)
                 return false;
-             (typeof H5PEditor === 'undefined' || typeof H5PEditor.widgets === 'undefined' || typeof H5PEditor.widgets.video === 'undefined') ? setTimeout(Drupal.behaviors.h5p_connector_api.onH5PEditorready, 1000, callback) : callback();
+             (typeof window[0] === 'undefined' || typeof window[0].H5PEditor === 'undefined' || typeof window[0].H5PEditor.widgets === 'undefined' || typeof window[0].H5PEditor.widgets.video === 'undefined') ? setTimeout(Drupal.behaviors.h5p_connector_api.onH5PEditorready, 1000, callback) : Drupal.behaviors.h5p_connector_api.compareVersionAndCallback("H5PEditor", callback);
+        },
+        /*wegen h5p-api-changes wird nun vor ausführung immer die version geprüft und auch bei minor-changes ein fehler geworfen*/
+        compareVersionAndCallback: function(what, callback)
+        {
+            var notgood_error = "Severe error: Current version of H5P or H5PEditor does not match h5p_connector_api. Contact developers!!!!";
+            if(what === 'H5PEditor')
+            {
+                var edit_api = window[0].H5PEditor.apiVersion.majorVersion +"." + window[0].H5PEditor.apiVersion.minorVersion;
+ 
+                if(edit_api !== "1.13")
+                    alert(notgood_error);
+                else
+                    callback();
+            }
+          //todo in future vrsion  elseif(what === 'H5P')
         }
     };
     
