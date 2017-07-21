@@ -24,8 +24,8 @@ function NMStreamNode(nm_stream, context) {
 NMStreamNode.prototype.init_bind_events = function () {
 
     //bin click events
-    this.init_bind_post_button_event();
     this.init_bind_post_edit_event();
+    this.init_bind_post_submit_event();
     this.init_bind_post_delete_event();
     this.init_bind_post_cancel_event();
     this.init_bind_toggle_comments_event();
@@ -35,14 +35,108 @@ NMStreamNode.prototype.init_bind_events = function () {
 
 };
 
+
 /**
- * bind post button events
+ * bind bind submit event
  */
-NMStreamNode.prototype.init_bind_post_button_event = function () {
+NMStreamNode.prototype.init_bind_post_submit_event = function () {
     var self = this;
 
-};
+    self.container.find('.nm-stream-node-submit').once('nm_stream').click(function () {
+        //edit form
+        var form_container = $(this).closest('form');
+        var body = form_container.find('textarea').val();
+        var privacy = form_container.find('.dd-selected-value').val();
+        var token = form_container.find('.nm-stream-form-token').val();
 
+        var regresult = $(this).closest('form').attr('id').split('-');
+        var nid = regresult.pop();
+
+        var url = self.nm_stream.node_edit_url.replace("%nid", nid);
+        var data = {body: body, privacy: privacy, token: token};
+
+        //check if attachments need to be uploaded -> user iframe form submit else post
+        if (form_container.find('.MultiFile-wrap').children().length > 1) {
+
+            //26.03.2014 - 16:13 - SN
+            //privacy field not transmitted
+            //fix before submit .. remove after submitting
+            var privacy_input_fix = $('<input type="hidden" name="privacy" value="' + privacy + '" />');
+            var token_input_fix = $('<input type="hidden" name="token" value="' + token + '" />');
+            form_container.append(privacy_input_fix);
+            form_container.append(token_input_fix);
+
+            form_container.attr("action", url);
+            form_container.submit();
+
+            privacy_input_fix.remove();
+            token_input_fix.remove();
+
+            //unbind all other iframe load bindings first
+            $('#nm_stream_hidden_upload').bind('load', function () {
+
+                //reset textarea
+                form_container.find('textarea').val('');
+                //reset file upload
+                form_container.find('.fileupload').MultiFile('reset');
+
+
+                data = $.parseJSON($(this).contents().find('body').first().text());
+
+                if (data !== null) {
+                    if (data.status === 1) {
+                        //display new Post
+                        var updated_node = $(form_container).closest('.views-row').html($(data.updated_node).fadeIn());
+                        //fix, new nodes could not be edited without views-row div around
+                        //attach behavior
+                        Drupal.attachBehaviors(updated_node);
+                    }
+                }
+
+                //enable button
+                self.nm_stream.nm_stream_unset_loading(form_container);
+                self.nm_stream.nm_stream_pause_update_timer = false;
+
+                //todo maybe safe.. could kill other simultaneously running bindings
+                $(this).unbind();
+
+            });
+
+        }
+
+        //disable button
+        self.nm_stream.nm_stream_form_set_loading(form_container);
+        self.nm_stream.nm_stream_pause_update_timer = true;
+
+        //iframe submission, exit!
+
+        if (form_container.find('.MultiFile-wrap').children().length > 1) {
+            return false;
+        }
+
+        $.post(url, data, function (data) {
+            if (data.status === 1) {
+                //save succeed
+
+                //display updated post
+                var updated_node = $(form_container).closest('.views-row').html($(data.updated_node).fadeIn());
+                //attach behavior
+                Drupal.attachBehaviors(updated_node);
+
+
+            } else {
+                //error handling todo here
+
+            }
+            //enable button
+            self.nm_stream.nm_stream_unset_loading(form_container);
+
+            self.nm_stream.nm_stream_pause_update_timer = false;
+        });
+
+        return false;
+    });
+}
 
 
 /**
@@ -314,7 +408,7 @@ NMStreamNode.prototype.init_bind_attachment_delete_event = function () {
                                 //remove file
                                 delete_button.parent().fadeOut().remove();
                                 //remove attachment title, if no attachments are attached to the node
-                                //console.log(attachments_container);
+
                                 if (attachments_container.find('.nm-stream-attachments-main').children().length === 0) {
                                     attachments_container.fadeOut().remove();
                                 }

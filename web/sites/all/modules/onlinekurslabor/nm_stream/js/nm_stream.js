@@ -51,6 +51,9 @@
      */
     NMStream.prototype.init = function() {
 
+        //multifile widget an iframe for ajax uploads
+        this.init_multifile_upload();
+
         //initialize
         this.init_privacy_widget();
         this.init_bind_events();
@@ -59,8 +62,6 @@
         //init polling
         this.nm_stream_get_update();
 
-        //multifile widget an iframe for ajax uploads
-        this.init_multifile_upload();
 
         //initilizing nodes
         this.init_bind_nm_stream_nodes();
@@ -154,11 +155,12 @@
         //bind click to dummy text field
         self.init_bind_dummy_textfield_event();
 
+        //post button click
+        self.init_bind_post_button_event();
+
         //cancel button click
         self.init_bind_cancel_button_event();
 
-        //post button click
-        self.init_bind_post_button_event();
     };
 
     /**
@@ -190,7 +192,6 @@
 
         var self = this;
 
-        console.log("init button");
 
         //bind click to post button
         $('#nm-stream-add-node .nm-stream-node-submit').once('nm_stream').click(function () {
@@ -205,17 +206,11 @@
             var url = self.node_add_url; // '/nm_stream/node/add';
             var data = {body: body, privacy: privacy, token: token};
 
-
-            console.log(data);
-
             //check if attachments need to be uploaded -> user iframe form submit else post
             if (form_container.find('.MultiFile-wrap').children().length > 1) {
 
-                console.log("binding event");
-                console.log($('#nm_stream_hidden_upload'));
                 $('#nm_stream_hidden_upload').bind('load', function () {
 
-                    console.log("iframe load event");
 
                     //reset textarea
                     form_container.find('textarea').val('');
@@ -256,6 +251,7 @@
                 form_container.find('form').append(privacy_input_fix);
                 //privacy_input_fix.remove();
 
+                $('#nm-stream-add-node').attr("action", url);
                 $('#nm-stream-add-node').submit();
 
                 privacy_input_fix.remove();
@@ -269,7 +265,6 @@
 
             //iframe submission, exit!
             if (form_container.find('.MultiFile-wrap').children().length > 1) {
-                console.log("iframe exit")
                 return false;
             }
 
@@ -539,12 +534,11 @@
         $.ajax({
             url: url,
             success: function(data) {
-                //console.log(data);
+
                 if (data.update_status == 0) {
                     //error
                 } else if (data.update_status == 2) {
                     //new data available
-
                     self.refresh(data);
                 }
 

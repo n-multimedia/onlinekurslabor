@@ -667,9 +667,8 @@ function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
   $response['node'] = '<div class="views-row">' . $response['node'] . '</div>';
 
   if ($iframe) {
-    drupal_add_http_header('Content-Type:', 'text/plain');
-    echo drupal_json_encode($response);
-    exit(0);
+    //drupal_add_http_header('Content-Type:', 'text/plain');
+    return drupal_json_output($response);
   }
   else {
     return drupal_json_output($response);
@@ -694,12 +693,13 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
   $response = array();
 
   $num_files = 0;
-  if (isset($_FILES['files']))
+  if (isset($_FILES['files'])) {
     $num_files = count($_FILES['files']);
+  }
 
   $files = array();
   for ($i = 0; $i < $num_files; $i++) {
-    $file = file_save_upload($i, null, _nm_stream_getFileSystemtype(). $type);
+    $file = file_save_upload($i, null, _nm_stream_getAttachmentFileSystemtype(). $type);
 
     if ($file) {
       $files[$i] = $file;
