@@ -208,7 +208,12 @@ BOOTSTRAP 3
    padding-top: 7px;
    margin: 0;
 }
- 
+/*logo klickbar machen in allen kontexten*/
+#page_top_navigation.navbar  .navbar-header {
+    position: relative;
+    z-index: 3;
+}
+
 /*aenderungen fuer icon-navigation top*/
 #page_top_navigation a.top_nav_link span
 {
@@ -648,7 +653,7 @@ Outline left sidebar
     padding-left: 15px;
 }
 
-.nav-list>.active>a, .nav-list>.active>a:hover{
+.nav-list>li>a.active, .nav-list>li>a.active:hover{
     background-color: #dee9ef;
     text-shadow:none;
     color: #005580;
@@ -936,6 +941,27 @@ siehe auch custom.css
 .user-courses-item-title:hover{
     background-color: #f7f7f7;
 }
+
+
+/*meine Lehrtexte auf startseite */
+/*die einzelnen links auf lehrtexte*/
+div.view-id-courses_user_domains.view-display-id-nid_only a {
+    padding: 7px 5px 7px;
+    border-top: 1px solid #cecece;
+    display: block;
+    background: rgba(255,255,255,0.75);
+}
+/*hovereffekt*/
+div.view-id-courses_user_domains.view-display-id-nid_only a:hover 
+{
+    background: #F7F7F7;
+}
+/*allerletzter link*/
+div.view-id-courses_user_domains.view-display-id-nid_only a:last-child {
+       border-bottom: 1px solid #cecece;
+       margin-bottom:15px;
+}
+
 
 /*
 PROJECTS

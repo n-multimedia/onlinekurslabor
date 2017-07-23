@@ -112,12 +112,16 @@ function media_wysiwyg_format_form($form, &$form_state, $file) {
   // Get the external url from the fid array.
   $external_url = empty($query_fields['external_url']) ? NULL : $query_fields['external_url'];
   // Field to attach external url's to files for linking.
-  $form['options']['external_url'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Link Image'),
-    '#description' => t('Enter a URL to turn the image into a link.'),
-    '#default_value' => $external_url,
-  );
+  if(variable_get('media_wysiwyg_external_link', FALSE)) {
+    if($file->type == 'image') {
+      $form['options']['external_url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Link Image'),
+        '#description' => t('Enter a URL to turn the image into a link.'),
+        '#default_value' => $external_url,
+      );
+    }
+  }
   field_attach_form('file', $file, $form['options']['fields'], $form_state);
   $instance = field_info_instances('file', $file->type);
   foreach ($instance as $field_name => $field_value) {

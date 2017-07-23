@@ -18,9 +18,6 @@ input[disabled].knob {
 /*
 user profile smaller 
 */
-.btn.edit-profile{
-  margin-top:10px;
-}
 .user-courses-item .nm_circle_progress_bar {
   width:auto;
   position:inherit;
@@ -1263,6 +1260,7 @@ div.field-name-field-proposal-timespan {
 
 
 /*meine kurse-ansicht auf start*/
+/*progress-badge*/
 div.view-courses-kurse-bersicht .nm-stream-node-container div.progress_circle_container
 {
     display: none;
@@ -1270,12 +1268,23 @@ div.view-courses-kurse-bersicht .nm-stream-node-container div.progress_circle_co
     padding-top:5px;
       //  background-color: rgba(247, 247, 247, 0.5);
 }
-div.view-courses-kurse-bersicht .nm-stream-node-container:hover div.progress_circle_container
+/*progress-badge zeigen erst ab mindest-resolution*/
+@media (min-width: 400px)
 {
-    display: block;
+    div.view-courses-kurse-bersicht .nm-stream-node-container:hover div.progress_circle_container
+    {
+        display: block;
 
+    }
+    
 }
+/*bilder mit klasse halbtransparent setzen*/
 div.view-courses-kurse-bersicht .nm-stream-node-container:hover .courseitem_image_hover_transp
 {
     opacity: 0.5;
+}
+/*verhinderte überlauf des kurs-bilds auf mobil*/
+div.view-courses-kurse-bersicht .nm-stream-node-container  img.courseitem_courselogo
+{
+    max-width: 100%;
 }

@@ -55,8 +55,20 @@ msgstr "Kurs erstellen"
 msgid "Create educational text"
 msgstr "Lehrtext erstellen"
 
-msgid ""
-msgstr ""
+msgid "Write message"
+msgstr "Nachricht schreiben"
+
+msgid "Edit profile"
+msgstr "Profil bearbeiten"
+
+msgid "Public information"
+msgstr "Öffentliche Informationen"
+
+msgid "Private information"
+msgstr "Private Informationen"
+
+msgid "Search course"
+msgstr "Kurs suchen"
 
 msgid ""
 msgstr ""

@@ -698,8 +698,8 @@ return theme(\'nm_fancy_box\', $vars);
     'admin_title' => 'Events',
     'title' => 'Meine Veranstaltungen',
     'title_heading' => 'h2',
-    'body' => '<div class="col-md-4 col-md-push-8 col-xs-12"> <?=_section_home_getRenderedDomains()?></div>
-<div class="col-md-8 col-md-pull-4 col-xs-12" ><?=_section_home_getRenderedDrafts()?><?=_section_home_getRenderedCourses()?> </div>',
+    'body' => '<div class="col-md-4 col-md-push-8 col-xs-12"> <?php echo _section_home_getRenderedDomains() ?></div>
+<div class="col-md-8 col-md-pull-4 col-xs-12" ><?php echo _section_home_getRenderedCourses() ?> </div>',
     'format' => 'php_code',
     'substitute' => 1,
   );

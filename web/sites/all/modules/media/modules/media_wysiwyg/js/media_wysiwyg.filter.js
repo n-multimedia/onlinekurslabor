@@ -300,7 +300,7 @@
       // Attempt to override the link_title if the user has chosen to do this.
       info.link_text = this.overrideLinkTitle(info);
       // Apply link_text if present.
-      if ((info.link_text) && (info.fields.external_url.length === 0)) {
+      if ((info.link_text) && (!info.fields || !info.fields.external_url || info.fields.external_url.length === 0)) {
         $('a', element).html(info.link_text);
       }
 

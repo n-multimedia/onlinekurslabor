@@ -1,0 +1,6 @@
+name = section_profile
+description = provides functions for profile
+package = custom
+
+version = "7.x-1.x"
+core = "7.x"

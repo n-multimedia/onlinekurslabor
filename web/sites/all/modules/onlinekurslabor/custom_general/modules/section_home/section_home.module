@@ -13,12 +13,13 @@ function section_home_page_build(&$page) {
 
 /**
  * Nach dem Login wird man auf die Startseite redirected
- * es sei dem, man hat einen destination-parameter...
+ * es sei dem, man hat einen destination-parameter oder per mail resetted pw
  * @param type $edit
  * @param type $account
  */
 function section_home_user_login(&$edit, $account) {
-    if (!$_GET['destination'])
+    
+    if (!$_GET['destination'] && ! strstr ($_SERVER['REQUEST_URI'], '/user/reset'))
         $_GET['destination'] = '/';
 }
 
@@ -56,12 +57,12 @@ function _section_home_getRenderedDomains() {
     global $user;
     $view = _section_home_getView('courses_user_domains','nid_only');
     $view->set_title('Meine Lehrtexte');
-    $view->set_title($view->get_title()._section_home_getMoreTag('domains','add'));
  
     //gibts nur fuer autoren+
     if(drupal_valid_path('domains'))
     {
-        return _section_home_renderView($view, 'nid_only', true)._section_home_getMoreTag('domains','all');
+        $html = _section_home_get_rendered_tiitle($view->get_title(), array(_section_home_getMoreTag('domains','add')));
+        return $html._section_home_renderView($view, 'nid_only', true)._section_home_getMoreTag('domains','all');
     }
     else
     {
@@ -78,23 +79,11 @@ function _section_home_getRenderedCourses() {
     //css: nicht ganz sauber, aber tut fuers erste...
     drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream.css');
     $view = _section_home_getView('courses_kurse_bersicht', 'my_courses_small');
-    $view->set_title($view->get_title() . _section_home_getMoreTag('courses', 'add'));
-    return _section_home_renderView($view, 'my_courses_small') . _section_home_getMoreTag('courses', 'all');
+    $html = _section_home_get_rendered_tiitle($view->get_title(), array(_section_home_get_search_toggle_tag('views-exposed-form-courses-kurse-bersicht-my-courses-small'),_section_home_getMoreTag('courses', 'add')));
+    $html .=  _section_home_renderView($view, 'my_courses_small') . _section_home_getMoreTag('courses', 'all');
+    return $html;
 }
 
-/**
- * Die Meine_entwürfe-Ansicht
- * @return String $html
- */    
-function _section_home_getRenderedDrafts() {
-    global $user;
-    //permcheck
-    if(! node_access('create', NM_COURSE)) return "";
-    $view = _section_home_getView('courses_kurse_bersicht', 'my_drafts_small'); #, array('items_per_page' => 2 ));
-    $view->set_title($view->get_title() . _section_home_getMoreTag('courses', 'add'));
-    //achtung: siehe function section_home_views_pre_build
-    return _section_home_renderView($view, 'my_drafts_small');
-}
 
 /**
  * Für vordefinierte Bereiche kann man einfach einen more-Tag  erhalten. Dieser verlinkt bspw. auf "alle Kurse"
@@ -125,10 +114,29 @@ function _section_home_getMoreTag($variant, $type) {
     if ($type == 'add' && $curr_variant['path_create']) {
         $html_add_item = '<span class="glyphicon glyphicon-plus"></span>';
         $str_add_content = l($html_add_item, $curr_variant['path_create'], array('html' => true, 'attributes' => array('title' => $curr_variant['title_create'])));
-        return '<div style="float:right; font-size:45%;">' . $str_add_content . '</div>';
+        return  $str_add_content ;
     }
 }
 
+/**
+ * die xyz-Suchen-Form wird normal ausgeblendet. Hier wird ein Button generiert,
+ * um sie wieder anzuzeigen
+ * $identifier : html-identifier der Form ohne #-Symbol
+ */
+function _section_home_get_search_toggle_tag($identifier)
+{
+    return '<a href=# onclick="jQuery(\'#'.$identifier.'\').toggle(200); return false;" title="'.t('Search course').'"><span class="glyphicon glyphicon-search"></span></a>';
+}
+
+/**
+ * packt die kleinen Symbole wie "+" in einen rechts-floatenden container
+ * @param String $html_content
+ * @return String html
+ */
+function _section_home_iconcontainer_right($html_content)
+{
+    return '<div class="home_icon_container_right">' . $html_content . '</div>';
+}
 /**
  * Die Ungelesene-Nachrichten-Ansicht
  * @return String $html
@@ -163,9 +171,11 @@ function section_home_panels_pane_content_alter($content, $pane, $args, $context
         }
 
         if ($content->delta === 'messages_list-messages_unread') {
-            $content->title .= _section_home_getMoreTag('messages', 'add');
-            $content->content['#markup'] .=   _section_home_getMoreTag('messages','all'); 
-          # dpm($content);
+
+            $content->content['#markup'] = _section_home_get_rendered_tiitle($content->title, array(_section_home_getMoreTag('messages', 'add'))) . $content->content['#markup'];
+            $content->title = null;
+            $content->content['#markup'] .= _section_home_getMoreTag('messages', 'all');
+            # dpm($content);
         }
     }
 }
@@ -173,24 +183,7 @@ function section_home_panels_pane_content_alter($content, $pane, $args, $context
 
 
 
-/**
- * implements  hook_views_pre_build(ViewExecutable $view)
- * das ja wieder n schmarrn. pager kann nur per hook gesetzt werden!
- * @param type $view
- */
-function section_home_views_pre_build(&$view)
-{
-    if(!drupal_is_front_page())
-    {
-        return;
-    }
-    
-    if($view->name === 'courses_kurse_bersicht' && $view->current_display === 'my_drafts_small')
-    {
-      $view->set_items_per_page(2);
-    }
-}
-        
+       
 
 /**
  * liefert ein View-Object mit übergebenem Namen und führt notwendige Operatioen fuer Funktionsweise aus
@@ -221,10 +214,29 @@ function _section_home_getView($view_name, $display_id = null)
  */
 function _section_home_renderView(View $view, $display_id = null, $override_count = false) {
 
-    $html = "<h3>" . $view->get_title() . "</h3>";
+    $html = "";# "<h3>" . $view->get_title() . "</h3>";
     if (!$override_count)
         $html .= $view->total_rows ? $view->render($display_id) : "<i>&nbsp;&nbsp;- keine - </i><br>";
     else
         $html .= $view->render($display_id);
     return $html;
 }
+
+/**
+ * Rendered einen Titel und Icons in einen Container mit den Icons
+ * @param String $title
+ * @param array $icons
+ * @return String html
+ */
+function _section_home_get_rendered_tiitle($title, array $icons)
+{     $icon_str = _section_home_iconcontainer_right(implode('&nbsp;', $icons));
+      $html =   
+      <<<EOF
+    <div class="home_title_container">
+    <h3 class="home_title">$title</h3>
+     $icon_str
+    </div>
+EOF;
+      return $html;
+}
+

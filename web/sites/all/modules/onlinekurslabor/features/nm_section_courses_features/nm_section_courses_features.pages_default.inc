@@ -874,16 +874,14 @@ return drupal_render($form);
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:profile_layout';
+  $display->layout = 'flexible';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
         'type' => 'row',
         'contains' => 'column',
         'children' => array(
-          0 => 1,
-          1 => 'main',
-          2 => 2,
+          0 => 'main',
         ),
         'parent' => NULL,
         'class' => 'row',
@@ -898,10 +896,11 @@ return drupal_render($form);
       ),
       'main' => array(
         'type' => 'column',
-        'width' => '26.3311842451191',
+        'width' => 100,
         'width_type' => '%',
         'children' => array(
           0 => 'main-row',
+          1 => 1,
         ),
         'parent' => 'canvas',
         'class' => 'col-xs-12 col-sm-3 col-sm-push-6',
@@ -917,69 +916,30 @@ return drupal_render($form);
       ),
       'center' => array(
         'type' => 'region',
-        'title' => 'right',
+        'title' => 'header',
         'width' => 100,
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => '',
+        'class' => 'row',
         'hide_empty' => 0,
       ),
       1 => array(
-        'type' => 'column',
-        'width' => '25.13203096959442',
-        'width_type' => '%',
-        'parent' => 'canvas',
-        'children' => array(
-          0 => 3,
-        ),
-        'class' => 'col-xs-12 col-sm-3 ',
-        'hide_empty' => 0,
-      ),
-      2 => array(
-        'type' => 'column',
-        'width' => '48.53678478528647',
-        'width_type' => '%',
-        'parent' => 'canvas',
-        'children' => array(
-          0 => 4,
-        ),
-        'class' => 'col-xs-12 col-sm-6 col-sm-pull-3',
-        'hide_empty' => 0,
-      ),
-      3 => array(
         'type' => 'row',
         'contains' => 'region',
         'children' => array(
-          0 => 'left',
+          0 => 'users_s_courses',
         ),
+        'parent' => 'main',
+        'class' => '',
+        'hide_empty' => 0,
+      ),
+      'users_s_courses' => array(
+        'type' => 'region',
+        'title' => 'users\'s courses',
+        'width' => 100,
+        'width_type' => '%',
         'parent' => '1',
-        'class' => '',
-      ),
-      'left' => array(
-        'type' => 'region',
-        'title' => 'left',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '3',
-        'class' => '',
-        'hide_empty' => 0,
-      ),
-      4 => array(
-        'type' => 'row',
-        'contains' => 'region',
-        'children' => array(
-          0 => 'right',
-        ),
-        'parent' => '2',
-        'class' => '',
-      ),
-      'right' => array(
-        'type' => 'region',
-        'title' => 'middle',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '4',
-        'class' => '',
+        'class' => 'row',
         'hide_empty' => 0,
       ),
     ),
@@ -990,9 +950,23 @@ return drupal_render($form);
       'center' => NULL,
       'left' => NULL,
       'right' => NULL,
+      'middle' => NULL,
+      'users_s_courses' => array(
+        'content' => array(
+          'element' => '',
+          'attributes' => array(
+            'id' => '',
+            'class' => 'row',
+          ),
+        ),
+        'theme' => 0,
+      ),
     ),
     'left' => array(
       'style' => 'default',
+    ),
+    'users_s_courses' => array(
+      'style' => 'wrapper_element',
     ),
   );
   $display->cache = array();
@@ -1003,319 +977,18 @@ return drupal_render($form);
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
-  $pane->pid = 'new-23bd63a6-75a3-4260-91e4-650f12dda391';
+  $pane->pid = 'new-8f19c589-7ffd-427f-b24c-3800c70bbc44';
   $pane->panel = 'center';
-  $pane->type = 'entity_field';
-  $pane->subtype = 'profile2:field_birthday';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'date_default',
-    'delta_limit' => 0,
-    'delta_offset' => '0',
-    'delta_reversed' => FALSE,
-    'formatter_settings' => array(
-      'format_type' => 'short',
-      'multiple_number' => '',
-      'multiple_from' => '',
-      'multiple_to' => '',
-      'fromto' => 'both',
-    ),
-    'context' => 'relationship_entity_from_schema:uid-user-profile2_1',
-    'override_title' => 1,
-    'override_title_text' => 'Persönliche Informationen',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => array(
-      'title' => array(
-        'element' => 'h3',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
-      'content' => array(
-        'element' => '',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
-      'theme' => 0,
-    ),
-    'style' => 'wrapper_element',
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = '23bd63a6-75a3-4260-91e4-650f12dda391';
-  $display->content['new-23bd63a6-75a3-4260-91e4-650f12dda391'] = $pane;
-  $display->panels['center'][0] = 'new-23bd63a6-75a3-4260-91e4-650f12dda391';
-  $pane = new stdClass();
-  $pane->pid = 'new-db1f5baa-0c9c-434d-9ac2-bfa41eb62ee9';
-  $pane->panel = 'center';
-  $pane->type = 'entity_field';
-  $pane->subtype = 'profile2:field_about_me';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'text_default',
-    'delta_limit' => 0,
-    'delta_offset' => '0',
-    'delta_reversed' => FALSE,
-    'formatter_settings' => array(),
-    'context' => 'relationship_entity_from_schema:uid-user-profile2_1',
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 1;
-  $pane->locks = array();
-  $pane->uuid = 'db1f5baa-0c9c-434d-9ac2-bfa41eb62ee9';
-  $display->content['new-db1f5baa-0c9c-434d-9ac2-bfa41eb62ee9'] = $pane;
-  $display->panels['center'][1] = 'new-db1f5baa-0c9c-434d-9ac2-bfa41eb62ee9';
-  $pane = new stdClass();
-  $pane->pid = 'new-3f11ef8c-763b-4cd3-9299-e8f7721ce31c';
-  $pane->panel = 'center';
-  $pane->type = 'views';
-  $pane->subtype = 'nm_activity_stream';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 0,
-    'nodes_per_page' => '15',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
-    'args' => '',
-    'url' => '',
-    'display' => 'default',
-    'override_title' => 1,
-    'override_title_text' => 'Aktivität',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 2;
-  $pane->locks = array();
-  $pane->uuid = '3f11ef8c-763b-4cd3-9299-e8f7721ce31c';
-  $display->content['new-3f11ef8c-763b-4cd3-9299-e8f7721ce31c'] = $pane;
-  $display->panels['center'][2] = 'new-3f11ef8c-763b-4cd3-9299-e8f7721ce31c';
-  $pane = new stdClass();
-  $pane->pid = 'new-3125f2f0-5c95-4957-96cf-ece6cc14d914';
-  $pane->panel = 'left';
-  $pane->type = 'token';
-  $pane->subtype = 'user:name';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'sanitize' => 1,
-    'context' => 'argument_entity_id:user_1',
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => array(
-      'title' => array(
-        'element' => '',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
-      'content' => array(
-        'element' => 'h2',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
-      'theme' => 0,
-    ),
-    'style' => 'wrapper_element',
-  );
-  $pane->css = array(
-    'css_id' => '',
-    'css_class' => '',
-  );
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = '3125f2f0-5c95-4957-96cf-ece6cc14d914';
-  $display->content['new-3125f2f0-5c95-4957-96cf-ece6cc14d914'] = $pane;
-  $display->panels['left'][0] = 'new-3125f2f0-5c95-4957-96cf-ece6cc14d914';
-  $pane = new stdClass();
-  $pane->pid = 'new-193f4165-7698-44bc-a7cb-cc20140926a8';
-  $pane->panel = 'left';
   $pane->type = 'custom';
   $pane->subtype = 'custom';
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'admin_title' => 'User\'s roles',
+    'admin_title' => 'user-profile-header',
     'title' => '',
-    'body' => '(<?
-$usrobj = user_load("%user:uid"); 
-$roles = $usrobj->roles ;
-$to_remove = array(\'authenticated user\');
-$roles = array_diff($roles , $to_remove);
-echo implode($roles , \', \');
-?>)',
-    'format' => 'php_code',
-    'substitute' => 1,
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 1;
-  $pane->locks = array();
-  $pane->uuid = '193f4165-7698-44bc-a7cb-cc20140926a8';
-  $display->content['new-193f4165-7698-44bc-a7cb-cc20140926a8'] = $pane;
-  $display->panels['left'][1] = 'new-193f4165-7698-44bc-a7cb-cc20140926a8';
-  $pane = new stdClass();
-  $pane->pid = 'new-c0ca5bbc-d035-46f3-89d8-51a878d5c6b4';
-  $pane->panel = 'left';
-  $pane->type = 'entity_field';
-  $pane->subtype = 'profile2:field_photo';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'label' => 'hidden',
-    'formatter' => 'image',
-    'delta_limit' => 0,
-    'delta_offset' => '0',
-    'delta_reversed' => FALSE,
-    'formatter_settings' => array(
-      'image_style' => 'profile_main_thumbnail',
-      'image_link' => '',
-    ),
-    'context' => 'relationship_profile2_1',
-    'override_title' => 0,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 2;
-  $pane->locks = array();
-  $pane->uuid = 'c0ca5bbc-d035-46f3-89d8-51a878d5c6b4';
-  $display->content['new-c0ca5bbc-d035-46f3-89d8-51a878d5c6b4'] = $pane;
-  $display->panels['left'][2] = 'new-c0ca5bbc-d035-46f3-89d8-51a878d5c6b4';
-  $pane = new stdClass();
-  $pane->pid = 'new-ac85c33c-cb1c-44f4-8797-e7e1fc404021';
-  $pane->panel = 'left';
-  $pane->type = 'entity_field';
-  $pane->subtype = 'profile2:field_hochschule';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'label' => 'inline',
-    'formatter' => 'taxonomy_term_reference_plain',
-    'delta_limit' => 0,
-    'delta_offset' => '0',
-    'delta_reversed' => FALSE,
-    'formatter_settings' => array(),
-    'context' => 'relationship_profile2_1',
-    'override_title' => 0,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 3;
-  $pane->locks = array();
-  $pane->uuid = 'ac85c33c-cb1c-44f4-8797-e7e1fc404021';
-  $display->content['new-ac85c33c-cb1c-44f4-8797-e7e1fc404021'] = $pane;
-  $display->panels['left'][3] = 'new-ac85c33c-cb1c-44f4-8797-e7e1fc404021';
-  $pane = new stdClass();
-  $pane->pid = 'new-a6cc2dea-c2c3-49a6-9105-3a6106d13c78';
-  $pane->panel = 'left';
-  $pane->type = 'entity_field';
-  $pane->subtype = 'profile2:field_studienfach';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'label' => 'inline',
-    'formatter' => 'text_default',
-    'delta_limit' => 0,
-    'delta_offset' => '0',
-    'delta_reversed' => FALSE,
-    'formatter_settings' => array(),
-    'context' => 'relationship_profile2_1',
-    'override_title' => 0,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 4;
-  $pane->locks = array();
-  $pane->uuid = 'a6cc2dea-c2c3-49a6-9105-3a6106d13c78';
-  $display->content['new-a6cc2dea-c2c3-49a6-9105-3a6106d13c78'] = $pane;
-  $display->panels['left'][4] = 'new-a6cc2dea-c2c3-49a6-9105-3a6106d13c78';
-  $pane = new stdClass();
-  $pane->pid = 'new-a82c3cb9-d48d-407e-968e-cfd780de3415';
-  $pane->panel = 'left';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_node_tabs';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 0,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 5;
-  $pane->locks = array();
-  $pane->uuid = 'a82c3cb9-d48d-407e-968e-cfd780de3415';
-  $display->content['new-a82c3cb9-d48d-407e-968e-cfd780de3415'] = $pane;
-  $display->panels['left'][5] = 'new-a82c3cb9-d48d-407e-968e-cfd780de3415';
-  $pane = new stdClass();
-  $pane->pid = 'new-d9928861-fa03-4d13-adc6-863fb73d81b7';
-  $pane->panel = 'left';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'admin_title' => 'private_msg_button',
-    'title' => '',
+    'title_heading' => 'h2',
     'body' => '<?php
-echo private_msg_get_profile_btn();
+echo theme(\'profile_header\', array(\'uid\'=>%user:uid ));
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
@@ -1326,22 +999,204 @@ echo private_msg_get_profile_btn();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 6;
+  $pane->position = 0;
   $pane->locks = array();
-  $pane->uuid = 'd9928861-fa03-4d13-adc6-863fb73d81b7';
-  $display->content['new-d9928861-fa03-4d13-adc6-863fb73d81b7'] = $pane;
-  $display->panels['left'][6] = 'new-d9928861-fa03-4d13-adc6-863fb73d81b7';
+  $pane->uuid = '8f19c589-7ffd-427f-b24c-3800c70bbc44';
+  $display->content['new-8f19c589-7ffd-427f-b24c-3800c70bbc44'] = $pane;
+  $display->panels['center'][0] = 'new-8f19c589-7ffd-427f-b24c-3800c70bbc44';
   $pane = new stdClass();
-  $pane->pid = 'new-5776b9d0-5e3b-4d95-8345-be9310efa02e';
-  $pane->panel = 'left';
-  $pane->type = 'views';
-  $pane->subtype = 'courses_user_courses';
+  $pane->pid = 'new-a94223ac-0967-49e8-ae7b-33921f981c89';
+  $pane->panel = 'center';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
+    'admin_title' => 'profile details public',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<?php
+echo theme(\'profile_details\', array(\'uid\'=>%user:uid , \'range\'=>\'public\'));
+?>',
+    'format' => 'php_code',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => array(
+      'title' => array(
+        'element' => '',
+        'attributes' => array(
+          'id' => '',
+          'class' => '',
+        ),
+      ),
+      'content' => array(
+        'element' => 'div',
+        'attributes' => array(
+          'id' => '',
+          'class' => 'col-md-12 section_profile-detailinfos public',
+        ),
+      ),
+      'theme' => 1,
+    ),
+    'style' => 'wrapper_element',
+  );
+  $pane->css = array(
+    'css_id' => '',
+    'css_class' => 'row',
+  );
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = 'a94223ac-0967-49e8-ae7b-33921f981c89';
+  $display->content['new-a94223ac-0967-49e8-ae7b-33921f981c89'] = $pane;
+  $display->panels['center'][1] = 'new-a94223ac-0967-49e8-ae7b-33921f981c89';
+  $pane = new stdClass();
+  $pane->pid = 'new-05d70a85-aeeb-4756-a347-61887ad699ab';
+  $pane->panel = 'center';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 30037204,
+            1 => 197637936,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'compare_users',
+        'settings' => array(
+          'equality' => '1',
+        ),
+        'context' => array(
+          0 => 'argument_entity_id:user_1',
+          1 => 'logged-in-user',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'or',
+  );
+  $pane->configuration = array(
+    'admin_title' => 'profile details private',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<?php
+echo theme(\'profile_details\', array(\'uid\'=>%user:uid , \'range\'=>\'private\'));
+?>',
+    'format' => 'php_code',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => array(
+      'title' => array(
+        'element' => '',
+        'attributes' => array(
+          'id' => '',
+          'class' => '',
+        ),
+      ),
+      'content' => array(
+        'element' => 'div',
+        'attributes' => array(
+          'id' => '',
+          'class' => 'col-md-12 section_profile-detailinfos private',
+        ),
+      ),
+      'theme' => 1,
+    ),
+    'style' => 'wrapper_element',
+  );
+  $pane->css = array(
+    'css_id' => '',
+    'css_class' => 'row',
+  );
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '05d70a85-aeeb-4756-a347-61887ad699ab';
+  $display->content['new-05d70a85-aeeb-4756-a347-61887ad699ab'] = $pane;
+  $display->panels['center'][2] = 'new-05d70a85-aeeb-4756-a347-61887ad699ab';
+  $pane = new stdClass();
+  $pane->pid = 'new-830b1a45-d949-4fdb-af1d-0a328cc1967e';
+  $pane->panel = 'users_s_courses';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'my-courses-css',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<?php
+drupal_add_css(drupal_get_path(\'module\', \'nm_stream\') . \'/css/nm_stream.css\');
+?>
+ <STYLE type="text/css">
+#views-exposed-form-courses-kurse-bersicht-my-courses-small
+{
+display:none;
+}
+ </STYLE>',
+    'format' => 'php_code',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '830b1a45-d949-4fdb-af1d-0a328cc1967e';
+  $display->content['new-830b1a45-d949-4fdb-af1d-0a328cc1967e'] = $pane;
+  $display->panels['users_s_courses'][0] = 'new-830b1a45-d949-4fdb-af1d-0a328cc1967e';
+  $pane = new stdClass();
+  $pane->pid = 'new-e75f663a-bd63-46d7-8fd9-88a9758353d5';
+  $pane->panel = 'users_s_courses';
+  $pane->type = 'views';
+  $pane->subtype = 'courses_user_domains';
+  $pane->shown = TRUE;
+  $pane->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 30037204,
+            1 => 197637936,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'compare_users',
+        'settings' => array(
+          'equality' => '1',
+        ),
+        'context' => array(
+          0 => 'argument_entity_id:user_1',
+          1 => 'logged-in-user',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'or',
+  );
+  $pane->configuration = array(
     'override_pager_settings' => 0,
     'use_pager' => 0,
-    'nodes_per_page' => '7',
+    'nodes_per_page' => '0',
     'pager_id' => '0',
     'offset' => '0',
     'more_link' => 0,
@@ -1350,18 +1205,19 @@ echo private_msg_get_profile_btn();
     'link_to_view' => 0,
     'args' => '',
     'url' => '',
-    'display' => 'default',
-    'override_title' => 1,
-    'override_title_text' => 'Meine Kurse',
+    'display' => 'nid_only',
     'context' => array(
       0 => 'argument_entity_id:user_1.uid',
     ),
+    'override_title' => 1,
+    'override_title_text' => 'Lehrtexte',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => array(
       'title' => array(
-        'element' => 'h3',
+        'element' => '',
         'attributes' => array(
           'id' => '',
           'class' => '',
@@ -1374,88 +1230,95 @@ echo private_msg_get_profile_btn();
           'class' => '',
         ),
       ),
-      'theme' => 0,
+      'theme' => 1,
     ),
     'style' => 'wrapper_element',
   );
-  $pane->css = array();
+  $pane->css = array(
+    'css_id' => 'profile-lehrtexte-wrapper',
+    'css_class' => 'col-md-4 col-md-push-8 col-xs-12',
+  );
   $pane->extras = array();
-  $pane->position = 7;
+  $pane->position = 1;
   $pane->locks = array();
-  $pane->uuid = '5776b9d0-5e3b-4d95-8345-be9310efa02e';
-  $display->content['new-5776b9d0-5e3b-4d95-8345-be9310efa02e'] = $pane;
-  $display->panels['left'][7] = 'new-5776b9d0-5e3b-4d95-8345-be9310efa02e';
+  $pane->uuid = 'e75f663a-bd63-46d7-8fd9-88a9758353d5';
+  $display->content['new-e75f663a-bd63-46d7-8fd9-88a9758353d5'] = $pane;
+  $display->panels['users_s_courses'][1] = 'new-e75f663a-bd63-46d7-8fd9-88a9758353d5';
   $pane = new stdClass();
-  $pane->pid = 'new-a5665709-cfee-4eba-90f6-38e8bda3b148';
-  $pane->panel = 'left';
-  $pane->type = 'views';
-  $pane->subtype = 'courses_user_domains';
+  $pane->pid = 'new-962a9704-44ef-4eaa-b257-e13876dc0ce9';
+  $pane->panel = 'users_s_courses';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'courses_kurse_bersicht-my_courses_small';
   $pane->shown = TRUE;
-  $pane->access = array();
+  $pane->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 30037204,
+            1 => 197637936,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'compare_users',
+        'settings' => array(
+          'equality' => '1',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:user_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'or',
+  );
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 0,
-    'nodes_per_page' => '7',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
-    'args' => '',
-    'url' => '',
-    'display' => 'default',
+    'use_pager' => 1,
+    'pager_id' => '1',
+    'items_per_page' => '10',
     'context' => array(
-      0 => 'argument_entity_id:user_1.uid',
+      0 => 'argument_entity_id:user_1',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Meine Themen',
+    'override_title_text' => 'Kurse',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
-    'settings' => NULL,
+    'settings' => array(
+      'title' => array(
+        'element' => '',
+        'attributes' => array(
+          'id' => '',
+          'class' => '',
+        ),
+      ),
+      'content' => array(
+        'element' => 'div',
+        'attributes' => array(
+          'id' => '',
+          'class' => '',
+        ),
+      ),
+      'theme' => 1,
+    ),
+    'style' => 'wrapper_element',
   );
-  $pane->css = array();
+  $pane->css = array(
+    'css_id' => 'profile-courses-wrapper',
+    'css_class' => 'col-md-8 col-md-pull-4 col-xs-12',
+  );
   $pane->extras = array();
-  $pane->position = 8;
+  $pane->position = 2;
   $pane->locks = array();
-  $pane->uuid = 'a5665709-cfee-4eba-90f6-38e8bda3b148';
-  $display->content['new-a5665709-cfee-4eba-90f6-38e8bda3b148'] = $pane;
-  $display->panels['left'][8] = 'new-a5665709-cfee-4eba-90f6-38e8bda3b148';
-  $pane = new stdClass();
-  $pane->pid = 'new-a4e17017-5635-4f91-9f66-6d66f0c6e1bd';
-  $pane->panel = 'right';
-  $pane->type = 'views';
-  $pane->subtype = 'nm_stream';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '10',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
-    'args' => '',
-    'url' => '',
-    'display' => 'default',
-    'override_title' => 1,
-    'override_title_text' => 'Stream',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'a4e17017-5635-4f91-9f66-6d66f0c6e1bd';
-  $display->content['new-a4e17017-5635-4f91-9f66-6d66f0c6e1bd'] = $pane;
-  $display->panels['right'][0] = 'new-a4e17017-5635-4f91-9f66-6d66f0c6e1bd';
+  $pane->uuid = '962a9704-44ef-4eaa-b257-e13876dc0ce9';
+  $display->content['new-962a9704-44ef-4eaa-b257-e13876dc0ce9'] = $pane;
+  $display->panels['users_s_courses'][2] = 'new-962a9704-44ef-4eaa-b257-e13876dc0ce9';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

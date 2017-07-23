@@ -20,12 +20,20 @@ function privatemsg_okl_privatemsg_thread_operations() {
   return $operations;
 }
 
-function private_msg_get_profile_btn(){
+/**
+ * Get a button linking to "write new message" to recipient arg(1)
+ * @global type $user current user
+ * @global type $base_url
+ * @global arg(1) $uid of visited user
+ * @return type
+ */
+function privatemsg_okl_get_profile_btn(){
   $user_id = arg(1);
   global $user;
   if ($user_id != $user->uid){
     global $base_url;
-    return '<br><a href="' . $base_url . '/messages/new/'. $user_id . '" id="privateMsgBtn"><button type="button" class="btn btn-default"> Nachricht schreiben </button></a>';
+    $btn = '<button type="button" class="btn btn-default write-message"><i class="glyphicon glyphicon-envelope"></i> '.t('Write message').'</button>';
+    return l($btn, $base_url . '/messages/new/'. $user_id, array('attributes' => array(), 'html' => TRUE,));
   }
 }
 
