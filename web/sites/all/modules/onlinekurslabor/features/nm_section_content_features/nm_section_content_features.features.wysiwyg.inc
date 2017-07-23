@@ -10,16 +10,11 @@
 function nm_section_content_features_wysiwyg_default_profiles() {
   $profiles = array();
 
-  // Exported profile: filtered_html
+  // Exported profile: filtered_html.
   $profiles['filtered_html'] = array(
     'format' => 'filtered_html',
     'editor' => 'ckeditor',
     'settings' => array(
-      'default' => 1,
-      'user_choose' => 0,
-      'show_toggle' => 1,
-      'theme' => 'advanced',
-      'language' => 'de',
       'buttons' => array(
         'default' => array(
           'Bold' => 1,
@@ -60,21 +55,31 @@ function nm_section_content_features_wysiwyg_default_profiles() {
           'media' => 1,
         ),
       ),
-      'toolbar_loc' => 'top',
-      'toolbar_align' => 'left',
-      'path_loc' => 'bottom',
-      'resizing' => 1,
-      'verify_html' => 1,
-      'preformatted' => 0,
-      'convert_fonts_to_spans' => 1,
-      'remove_linebreaks' => 1,
-      'apply_source_formatting' => 0,
-      'paste_auto_cleanup_on_paste' => 0,
-      'block_formats' => 'p,h2,h3,h4,h5,h6,div,address,pre',
+      'theme' => 'advanced',
+      'language' => 'de',
+      'toolbarLocation' => 'top',
+      'resize_enabled' => 1,
+      'default_toolbar_grouping' => 0,
+      'simple_source_formatting' => 0,
+      'acf_mode' => 0,
+      'acf_allowed_content' => '',
       'css_setting' => 'theme',
+      'css_theme' => '',
       'css_path' => '',
-      'css_classes' => '',
+      'stylesSet' => '',
+      'block_formats' => 'p,h2,h3,h4,h5,h6,div,address,pre',
+      'forcePasteAsPlainText' => 0,
+      'pasteFromWordPromptCleanup' => 0,
+      'pasteFromWordRemoveFontStyles' => 1,
     ),
+    'preferences' => array(
+      'add_to_summaries' => FALSE,
+      'default' => 1,
+      'show_toggle' => 1,
+      'user_choose' => 0,
+      'version' => '4.6.2.20af917',
+    ),
+    'name' => 'formatfiltered_html',
     'rdf_mapping' => array(),
   );
 

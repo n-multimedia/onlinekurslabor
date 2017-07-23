@@ -160,13 +160,6 @@ function nm_h5p_features_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'h5p_allow_communication_with_h5p_org';
-  $strongarm->value = 0;
-  $export['h5p_allow_communication_with_h5p_org'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'h5p_content_dev_mode';
   $strongarm->value = 0;
   $export['h5p_content_dev_mode'] = $strongarm;
@@ -189,8 +182,15 @@ function nm_h5p_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'h5p_export';
-  $strongarm->value = 0;
+  $strongarm->value = '0';
   $export['h5p_export'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'h5p_hub_is_enabled';
+  $strongarm->value = 0;
+  $export['h5p_hub_is_enabled'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -210,7 +210,7 @@ function nm_h5p_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'h5p_whitelist';
-  $strongarm->value = 'json png jpg jpeg gif bmp tif tiff svg eot ttf woff woff2 otf webm mp4 ogg mp3 txt pdf rtf doc docx xls xlsx ppt pptx odt ods odp xml csv diff patch swf textile';
+  $strongarm->value = 'json png jpg jpeg gif bmp tif tiff svg eot ttf woff woff2 otf webm mp4 ogg mp3 txt pdf rtf doc docx xls xlsx ppt pptx odt ods odp xml csv diff patch swf textile wav';
   $export['h5p_whitelist'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -247,7 +247,7 @@ function nm_h5p_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_preview_h5p_content';
-  $strongarm->value = '1';
+  $strongarm->value = '0';
   $export['node_preview_h5p_content'] = $strongarm;
 
   $strongarm = new stdClass();

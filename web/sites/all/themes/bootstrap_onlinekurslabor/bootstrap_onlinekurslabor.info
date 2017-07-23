@@ -2,6 +2,7 @@ name = Onlinekurslabor
 description = Onlinekurslabor Theme (Baut auf Bootstrap auf)
 core = 7.x
 base theme = bootstrap
+plugins[panels][styles] = panels/styles
 
 ; Regions
 regions[navigation]     = 'Navigation'
@@ -20,7 +21,7 @@ stylesheets[all][] = css/style.css
 stylesheets[all][] = css/media.css
 stylesheets[all][] = css/user.css
 stylesheets[all][] = css/nm_fancy_box.css
-stylesheets[all][] = css/flat-ui.css
+stylesheets[all][] = css/bootstrap_tabs.css
 
 ;**********************************
 ; METHOD 1: Bootstrap Source Files

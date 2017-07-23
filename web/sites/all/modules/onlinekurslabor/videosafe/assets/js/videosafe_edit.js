@@ -40,7 +40,8 @@
            if (type === 'audio')
                return h5p_html;
            //statt ersatz-html auszuliefern, haengen wir einfach JS an, das das originale manipuliert
-           h5p_html += '<script type="text/javascript">H5P.jQuery(".h5p-add-dialog .h5p-file-upload").removeClass("h5p-file-upload").html("Video auswählen").click(function(){' +
+           h5p_html += '<script type="text/javascript">H5P.jQuery(".h5p-dialog-box h3").first().html("Video");'+
+                   'H5P.jQuery(".h5p-add-dialog .h5p-file-drop-upload").removeClass("h5p-file-drop-upload").addClass("h5peditor-button-textual").html("auswählen").click(function(){' +
                    'top.Drupal.behaviors.videosafe_ajax_browser.openAjaxBrowser( ' + h5p_callback_function_when_video_selected + '  );' +
                    'return false;' +
                    '});</script>';

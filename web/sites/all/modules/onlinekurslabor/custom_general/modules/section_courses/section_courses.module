@@ -631,7 +631,9 @@ function _section_courses_get_forum_href($course, $forum_term_id = NULL) {
   }
   } */
 
-//solved with context module
+//solved with context module, see admin/structure/context
+////hide tabs
+//hide primary tabs
 /**
  * Remove Outline Tabs from various sites.
  *
@@ -855,35 +857,9 @@ function _section_courses_add_form_container($node) {
         $term_exists = current(taxonomy_get_term_by_name(_section_courses_get_forum_name($node)));
 
         if (!$term_exists) {
-
-
-          $new_term = (object) array(
-            'name' => _section_courses_get_forum_name($node),
-            'vid' => $term->vid,
-            'parent' => array($term->tid),
-          );
-
-          taxonomy_term_save($new_term);
-
-          //$new_term = _section_courses_get_forum_term($node);
-
-          //mark the forum as container
-          $containers = variable_get('forum_containers', array());
-          $containers[] = $new_term->tid;
-          variable_set('forum_containers', $containers);
-
-          ///$new_term = taxonomy_term_load(258);
-          //add taxonomy to og
-          //Set the values
-          $values = array(
-            'entity_type' => 'taxonomy_term',
-            'entity' => $new_term,
-            'state' => OG_STATE_ACTIVE,
-          );
-
-          $user->term_access_bypass = TRUE;
-          og_group("node", $node->nid, $values);
-          unset($user->term_access_bypass);
+             $term_title =   _section_courses_get_forum_name($node);
+             $main_forum_tid =  _section_courses_save_forum_term($node, $term_title,$term->tid, true);
+             _section_courses_save_forum_term($node, t('Common'), $main_forum_tid, false);
         }
       }
     }
@@ -2373,7 +2349,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
                 $title_prefix = t("Groupmessage") . ": ";
 
             $courselink = l($course_title, 'node/' . $active_course->nid, array('absolute' => TRUE));
-            $course_text = "\n\n\n\n\n" . '[' . t("This message originates from !courselink", array("!courselink" => $courselink)) . ']';
+            $course_text = "<br><br><br>" . '[' . t("This message originates from !courselink", array("!courselink" => $courselink)) . ']';
 
             $form['subject']['#default_value'] = $title_prefix . $course_title . ": ";
             $form['message']['#default_value'] = $course_text;
@@ -2937,3 +2913,247 @@ function _section_courses_clone_content($content_id, $new_course_id) {
     # dpm('node',$clone_cn);
   }
 }
+
+
+/**
+ * Implements hook_theme().
+ */
+function section_courses_theme() {
+    return array(
+        'section_courses_taxonomy_dragdrop' => array(
+            'render element' => 'form',
+        ),
+    );
+}
+
+/**
+ * Erstellt ein drag-dropable Liste von Elements. Die Elements können zudem umbenannt werden.
+ * Für generische Verwendung müsste refactored werden (siehe _section_courses_forum_add_category_form )
+ *
+ * @param $variables
+ *   An associative array containing:
+ *   - form: A render element representing the form.
+ *
+ * @see book_admin_table()
+ * @ingroup themeable
+ */
+function theme_section_courses_taxonomy_dragdrop($variables) {
+    $form = $variables['form'];
+    //dragdrop auf weight
+    drupal_add_tabledrag('taxonomy-outline', 'order', 'sibling', 'term-weight');
+
+
+    //table header
+    $header = array(t('Title'), t('Weight'), t('Operations'));
+
+    $rows = array();
+    //probably the final... refactor & fix
+    $destination = drupal_get_destination();
+    $access = user_access('administer taxonomy');
+    foreach (element_children($form) as $key) {
+        $tid = $form[$key]['tid']['#value'];
+        $href = $form[$key]['href']['#value'];
+
+        // Add special classes to be used with tabledrag.js.
+
+        $form[$key]['weight']['#attributes']['class'] = array('term-weight');
+
+        $data = array(
+            drupal_render($form[$key]['title']),
+            drupal_render($form[$key]['weight']),
+            $access ? l(t('edit'), 'taxonomy/term/' . $tid . '/edit', array('query' => $destination)) : '-'
+        );
+        $row = array('data' => $data);
+        if (isset($form[$key]['#attributes'])) {
+            $row = array_merge($row, $form[$key]['#attributes']);
+        }
+        $row['class'][] = 'draggable';
+        $rows[] = $row;
+    }
+
+    return theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('id' => 'taxonomy-outline'), 'empty' => t('No category available')));
+}
+
+/**
+ * Form: Erstelle neue Unterkategorie im Kursforum auf course/admin/NID/forums
+ * @param type $form
+ * @param type $form_state
+ * @param type $node der Kurs
+ * @return type
+ */
+function _section_courses_forum_add_category_form($form, $form_state, $node) {
+
+    $form['create_category'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Create new category'),
+        '#collapsible' => TRUE, // Added
+        '#collapsed' => TRUE, // Added
+    );
+
+    $form['create_category']["course_nid"] = array(
+        '#type' => 'value',
+        '#value' => $node->nid);
+    $form['create_category']["newcategoryname"] = array(
+        '#type' => 'textfield',
+        '#title' => t("Category's name"),
+        '#required' => TRUE, // Added
+    );
+    $form['create_category']["submit"] = array(
+        '#type' => 'submit',
+        '#value' => t('Create'),
+    );
+
+    return $form;
+}
+
+/**
+ * Submit-Handler für _section_courses_forum_add_category_form : erstellt neue Unterkategorie im kursforum
+ * @param type $form
+ * @param type $form_state
+ */
+function _section_courses_forum_add_category_form_submit($form, &$form_state) {
+    $values = $form_state['values'];
+    $course_nid = $values["course_nid"];
+    $node = node_load($course_nid);
+    $category_title = $values["newcategoryname"];
+    $kursforum_main_term = current(taxonomy_get_term_by_name(_section_courses_get_forum_name($node)));
+
+    //erstelle neue unterkategorie
+    _section_courses_save_forum_term($node, $category_title,$kursforum_main_term->tid, false);
+}
+
+/**
+ * Form: Re-arrangiere die Unterkategorien im Kursforum auf course/admin/NID/forums
+ * @param type $form
+ * @param type $form_state
+ * @param type $node der Kurs
+ * @return type
+ */
+function _section_courses_forum_manage_categories_form($form, $form_state, $node) {
+    $form['manage_categories'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Manage categories'),
+        '#collapsible' => TRUE, // Added
+        '#collapsed' => false, // Added
+    );
+    $form['manage_categories'] ['table'] = array(
+        '#theme' => 'section_courses_taxonomy_dragdrop',
+        '#tree' => TRUE,
+    );
+    #$node = node_load(5238);
+    $items = array();
+    $main = current(taxonomy_get_term_by_name(_section_courses_get_forum_name($node)));
+    $sub_entries = taxonomy_get_children($main->tid);
+
+    //drag-drop-eintraege der gui
+    foreach ($sub_entries as $tid => $data) {
+        $form['manage_categories'] ['table']['subforum-' . $data->tid] = array(
+            '#item' => $data->tid,
+            'tid' => array('#type' => 'value', '#value' => $data->tid),
+            'weight' => array('#type' => 'value', '#value' => $data->weight),
+            'title' => array(
+                '#type' => 'textfield',
+                '#default_value' => $data->name,
+                '#maxlength' => 255,
+                '#size' => 40,
+            ),
+            'weight' => array(
+                '#type' => 'weight',
+                '#default_value' => $data->weight,
+                '#title_display' => 'invisible',
+            )
+        );
+    }
+    $form['manage_categories'] ['save'] = array(
+        '#type' => 'submit',
+        '#value' => t('Save forumstructure'),
+    );
+
+
+    return $form;
+}
+
+/**
+ * Submit-Handler fuer _section_courses_forum_manage_categories_form
+ * Re-arranged und benennt Forenkategorien um
+ * @param type $form
+ * @param type $form_state
+ */
+function _section_courses_forum_manage_categories_form_submit($form, &$form_state) {
+    $values = $form_state['values']['table'];
+
+
+    foreach ($values as $taxonomy_term_array) {
+        $taxonomy_term = taxonomy_term_load($taxonomy_term_array['tid']);
+        $taxonomy_term->name = $taxonomy_term_array['title'];
+        $taxonomy_term->weight = $taxonomy_term_array['weight'];
+
+        taxonomy_term_save($taxonomy_term);
+    }
+}
+
+/**
+ * @API erstelle Taxonomy-Term für Kursforum.
+ * Version a) Erstelle Container (Kursforum-nid)
+ * Version b) Erstelle Unterkategorie im Kursforum. 
+ * für Version a): Kein Logik-Check, erstellt dumm einen zweiten Container. Doppeltes Erstellen muss abgefangen werden.
+ *                  Titel des Containers musss auch übergeben werden!
+ * $parent_term_tid muss uebergeben werden!
+ * 
+ * @global StdClass $user eingeloggter User
+ * @param StdClass $course_node Kurs-node-object
+ * @param String $title Titel des Eintrags
+ * @param int $parent_term_tid Übergeordnete Foren-TID. Entweder tid von "Kursforen" oder die des entspr. Eintrags.
+ * @param boolean $is_container  nur bei Version a)
+ * @return int TID des eingefügten terms
+ */
+function _section_courses_save_forum_term($course_node, $title, $parent_term_tid, $is_container = false) {
+    global $user;
+    $term = current(taxonomy_get_term_by_name('Kursforen'));
+
+    $new_term = (object) array(
+                'name' => $title,
+                'vid' => $term->vid,
+                'parent' => array($parent_term_tid),
+    );
+    if (!$is_container) {
+     /*   $main_forum = current(taxonomy_get_term_by_name(_section_courses_get_forum_name($course_node)));
+        if(!$main_forum)
+        {
+            drupal_set_message("Mainforum not found. Forum not created. Please contact support. Failure-Code: 90243P122", 'error');
+            return false;
+        }*/
+        $children_of_main_forum = taxonomy_get_children($parent_term_tid);
+        //hole maximale weight der unterforen ; -11+1 = kleinster wertc
+        $current_max_weight = -11;
+        foreach ($children_of_main_forum as $sub_forum)
+            $current_max_weight = max($current_max_weight, $sub_forum->weight);
+        $new_term->parent = $parent_term_tid;
+        $new_term->weight = ++$current_max_weight;
+    }
+
+
+    taxonomy_term_save($new_term);
+
+
+    if ($is_container) {
+        //mark the forum as container
+        $containers = variable_get('forum_containers', array());
+        $containers[] = $new_term->tid;
+        variable_set('forum_containers', $containers);
+    }
+
+    //add taxonomy to og
+    //Set the values
+    $values = array(
+        'entity_type' => 'taxonomy_term',
+        'entity' => $new_term,
+        'state' => OG_STATE_ACTIVE,
+    );
+
+    $user->term_access_bypass = TRUE;
+    og_group("node", $course_node->nid, $values);
+    unset($user->term_access_bypass);
+    return $new_term->tid;
+}
+

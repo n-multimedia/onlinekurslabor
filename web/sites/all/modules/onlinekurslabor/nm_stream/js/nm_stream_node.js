@@ -11,6 +11,7 @@ var $ = jQuery;
  * @constructor
  */
 function NMStreamNode(nm_stream, context) {
+
     this.nm_stream = nm_stream;
     this.state = 0;
     this.container = $(context);
@@ -32,6 +33,9 @@ NMStreamNode.prototype.init_bind_events = function () {
 
     this.init_bind_attachment_delete_event();
 
+
+    //initilizing comments
+    this.init_bind_nm_stream_comments();
 
 };
 
@@ -86,10 +90,15 @@ NMStreamNode.prototype.init_bind_post_submit_event = function () {
                 if (data !== null) {
                     if (data.status === 1) {
                         //display new Post
-                        var updated_node = $(form_container).closest('.views-row').html($(data.updated_node).fadeIn());
                         //fix, new nodes could not be edited without views-row div around
                         //attach behavior
-                        Drupal.attachBehaviors(updated_node);
+                        var updated_node = $(form_container).closest('.views-row').html($(data.updated_node).fadeIn()).find(".nm-stream-node-container");
+                        //attach behavior
+                        self.container = updated_node;
+                        self.init_bind_events();
+                        self.nm_stream.init_multifile_upload();
+                        self.nm_stream.init_privacy_widget();
+
                     }
                 }
 
@@ -119,9 +128,13 @@ NMStreamNode.prototype.init_bind_post_submit_event = function () {
                 //save succeed
 
                 //display updated post
-                var updated_node = $(form_container).closest('.views-row').html($(data.updated_node).fadeIn());
+                var updated_node = $(form_container).closest('.views-row').html($(data.updated_node).fadeIn()).find(".nm-stream-node-container");
                 //attach behavior
-                Drupal.attachBehaviors(updated_node);
+                console.log(updated_node);
+                self.container = updated_node;
+                self.init_bind_events();
+                self.nm_stream.init_multifile_upload();
+                self.nm_stream.init_privacy_widget();
 
 
             } else {
@@ -205,7 +218,7 @@ NMStreamNode.prototype.init_bind_toggle_comments_event = function () {
                 $(comments_container).html($(data.comments_container).fadeIn());
 
                 //attach behavior
-                Drupal.attachBehaviors(comments_container);
+                self.init_bind_nm_stream_comments();
 
                 self.nm_stream.post_spinner_black.stop();
 
@@ -231,7 +244,7 @@ NMStreamNode.prototype.init_bind_post_edit_event = function () {
 
 
     //bind click to edit button
-    $('.nm-stream-node-edit').once('nm_stream').click(function() {
+    self.container.find('.nm-stream-node-edit').once('nm_stream').click(function() {
         var edit_button = $(this)
 
         var regresult = self.container.attr('id').split('-');
@@ -254,13 +267,13 @@ NMStreamNode.prototype.init_bind_post_edit_event = function () {
                     //display the edit form
                     var edit_form = self.container.find('.nm-stream-main-body').first().hide();
                     self.container.find('.nm-stream-main').first().prepend($(data.node_edit_form));
-                    //todo add form here
-                    //node_container.find('.nm-stream-main').first().prepend(data.node_edit_form);
-                    //html(data.node_edit_form)
+
                     //attach behavior
                     self.container.find('textarea').autosize();
 
-                    Drupal.attachBehaviors(edit_form);
+                    self.init_bind_events();
+                    self.nm_stream.init_multifile_upload();
+                    self.nm_stream.init_privacy_widget();
                 }
 
                 //append new node
@@ -363,6 +376,25 @@ NMStreamNode.prototype.init_bind_post_cancel_event = function () {
         return false;
     });
 
+
+};
+
+/**
+ * initialize comments
+ */
+NMStreamNode.prototype.init_bind_nm_stream_comments = function () {
+
+    var self = this;
+
+    this.container.find(".nm-stream-comment").once("nm_stream").each(function(index) {
+        new NMStreamComment(self.nm_stream, self, this);
+
+    });
+
+    //initialize dummy comment text field if no comments are available yet
+    //that's not very neat, but works ;)
+    var dummy_comment = new NMStreamComment(self.nm_stream, self, null);
+    dummy_comment.init_bind_dummy_textfield_event();
 
 };
 

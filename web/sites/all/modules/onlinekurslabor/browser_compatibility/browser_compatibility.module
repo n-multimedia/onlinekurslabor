@@ -1,5 +1,11 @@
 <?php
+/*
 
+##############################
+ * PLUGIN DEAKTIVIERT
+ * auch IE11 funzt derzeit. Muss angeschaltet werden, wenn man was braucht.. 
+ * 
+ *  */
 /**
  * hook auf die login-form um browser-warnung auszugeben
  * wird auch nach login nochmal angezeigt.

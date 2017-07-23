@@ -171,13 +171,12 @@ function nm_login_vhb_features_views_default_views() {
   $handler->display->display_options['relationships']['profile']['table'] = 'users';
   $handler->display->display_options['relationships']['profile']['field'] = 'profile';
   $handler->display->display_options['relationships']['profile']['relationship'] = 'uid';
-  $handler->display->display_options['relationships']['profile']['label'] = 'Profil';
   $handler->display->display_options['relationships']['profile']['bundle_types'] = array(
     'student' => 'student',
   );
   /* Field: Bulk operations: NM Login VHB */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'nm_login_vhb';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_nm_login_vhb_entry';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
@@ -286,7 +285,7 @@ function nm_login_vhb_features_views_default_views() {
     t('nächste Seite ›'),
     t('letzte Seite »'),
     t('user'),
-    t('Profil'),
+    t('Profile'),
     t('NM Login VHB'),
     t('- Choose an operation -'),
     t('uid field'),

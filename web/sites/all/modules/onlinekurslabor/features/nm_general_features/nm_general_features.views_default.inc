@@ -22,7 +22,8 @@ function nm_general_features_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['title'] = 'Unread messages';
+  $handler->display->display_options['use_more_always'] = TRUE;
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -84,12 +85,11 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['relationships']['author']['field'] = 'author';
   $handler->display->display_options['relationships']['author']['relationship'] = 'mid';
   $handler->display->display_options['relationships']['author']['required'] = TRUE;
-  /* Relationship: User: Profile */
+  /* Relationship: User: Profil */
   $handler->display->display_options['relationships']['profile']['id'] = 'profile';
   $handler->display->display_options['relationships']['profile']['table'] = 'users';
   $handler->display->display_options['relationships']['profile']['field'] = 'profile';
   $handler->display->display_options['relationships']['profile']['relationship'] = 'author';
-  $handler->display->display_options['relationships']['profile']['label'] = 'Profil';
   $handler->display->display_options['relationships']['profile']['required'] = TRUE;
   $handler->display->display_options['relationships']['profile']['bundle_types'] = array(
     'master' => 'master',
@@ -100,6 +100,14 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['mid']['field'] = 'mid';
   $handler->display->display_options['fields']['mid']['label'] = '(hidden) mid';
   $handler->display->display_options['fields']['mid']['exclude'] = TRUE;
+  /* Field: Private messages: thread_id */
+  $handler->display->display_options['fields']['thread_id']['id'] = 'thread_id';
+  $handler->display->display_options['fields']['thread_id']['table'] = 'pm_index';
+  $handler->display->display_options['fields']['thread_id']['field'] = 'thread_id';
+  $handler->display->display_options['fields']['thread_id']['label'] = '';
+  $handler->display->display_options['fields']['thread_id']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['thread_id']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['thread_id']['separator'] = '';
   /* Field: Realname: Real name */
   $handler->display->display_options['fields']['realname']['id'] = 'realname';
   $handler->display->display_options['fields']['realname']['table'] = 'realname';
@@ -108,7 +116,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['realname']['label'] = '(hidden) Real name';
   $handler->display->display_options['fields']['realname']['exclude'] = TRUE;
   $handler->display->display_options['fields']['realname']['link_to_user'] = FALSE;
-  /* Field: Profile: Foto */
+  /* Field: Profil: Foto */
   $handler->display->display_options['fields']['field_photo']['id'] = 'field_photo';
   $handler->display->display_options['fields']['field_photo']['table'] = 'field_data_field_photo';
   $handler->display->display_options['fields']['field_photo']['field'] = 'field_photo';
@@ -131,7 +139,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['subject']['relationship'] = 'mid';
   $handler->display->display_options['fields']['subject']['label'] = '';
   $handler->display->display_options['fields']['subject']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['subject']['alter']['path'] = '/messages/view/[mid]';
+  $handler->display->display_options['fields']['subject']['alter']['path'] = '/messages/view/[thread_id]';
   $handler->display->display_options['fields']['subject']['alter']['absolute'] = TRUE;
   $handler->display->display_options['fields']['subject']['element_label_colon'] = FALSE;
   /* Field: Private messages: timestamp */
@@ -218,8 +226,19 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['filters']['is_new']['value']['min'] = '0';
   $handler->display->display_options['filters']['is_new']['value']['max'] = '1';
   $handler->display->display_options['filters']['is_new']['value']['value'] = '1';
+  $handler->display->display_options['allow']['use_pager'] = 0;
+  $handler->display->display_options['allow']['items_per_page'] = 0;
+  $handler->display->display_options['allow']['offset'] = 0;
+  $handler->display->display_options['allow']['link_to_view'] = 0;
+  $handler->display->display_options['allow']['more_link'] = 0;
+  $handler->display->display_options['allow']['path_override'] = 0;
+  $handler->display->display_options['allow']['title_override'] = 'title_override';
+  $handler->display->display_options['allow']['exposed_form'] = 0;
+  $handler->display->display_options['allow']['fields_override'] = 0;
+  $handler->display->display_options['link_to_view'] = '0';
   $translatables['messages_list'] = array(
     t('Master'),
+    t('Unread messages'),
     t('more'),
     t('Apply'),
     t('Reset'),
@@ -237,6 +256,7 @@ function nm_general_features_views_default_views() {
     t('relationship from pm_message (author) to user'),
     t('Profil'),
     t('(hidden) mid'),
+    t('.'),
     t('(hidden) Real name'),
     t('[realname]'),
     t('Alle'),
@@ -305,7 +325,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['created']['label'] = '';
   $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['created']['date_format'] = 'medium';
-  /* Field: Content: Body */
+  /* Field: Beitrag: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -567,7 +587,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['filename']['label'] = '';
   $handler->display->display_options['fields']['filename']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['filename']['alter']['ellipsis'] = FALSE;
-  /* Field: File: Rendered File */
+  /* Field: File: Rendered Datei */
   $handler->display->display_options['fields']['rendered_entity']['id'] = 'rendered_entity';
   $handler->display->display_options['fields']['rendered_entity']['table'] = 'views_entity_file';
   $handler->display->display_options['fields']['rendered_entity']['field'] = 'rendered_entity';

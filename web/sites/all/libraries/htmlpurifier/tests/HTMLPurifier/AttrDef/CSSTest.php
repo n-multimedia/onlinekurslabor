@@ -3,13 +3,14 @@
 class HTMLPurifier_AttrDef_CSSTest extends HTMLPurifier_AttrDefHarness
 {
 
-    function setup() {
+    public function setup()
+    {
         parent::setup();
         $this->def = new HTMLPurifier_AttrDef_CSS();
     }
 
-    function test() {
-
+    public function test()
+    {
         // regular cases, singular
         $this->assertDef('text-align:right;');
         $this->assertDef('border-left-style:solid;');
@@ -26,6 +27,7 @@ class HTMLPurifier_AttrDef_CSSTest extends HTMLPurifier_AttrDefHarness
         $this->assertDef('background-color:rgb(0,0,255);');
         $this->assertDef('background-color:transparent;');
         $this->assertDef('background:#333 url("chess.png") repeat fixed 50% top;');
+        $this->assertDef('background:#333 url("che;ss.png") repeat fixed 50% top;');
         $this->assertDef('color:#F00;');
         $this->assertDef('border-top-color:#F00;');
         $this->assertDef('border-color:#F00 #FF0;');
@@ -60,6 +62,10 @@ class HTMLPurifier_AttrDef_CSSTest extends HTMLPurifier_AttrDefHarness
         $this->assertDef('width:50px;');
         $this->assertDef('width:auto;');
         $this->assertDef('width:-50px;', false);
+        $this->assertDef('min-width:50%;');
+        $this->assertDef('min-width:50px;');
+        $this->assertDef('min-width:auto;');
+        $this->assertDef('min-width:-50px;', false);
         $this->assertDef('text-decoration:underline;');
         $this->assertDef('font-family:sans-serif;');
         $this->assertDef("font-family:Gill, 'Times New Roman', sans-serif;");
@@ -82,6 +88,8 @@ class HTMLPurifier_AttrDef_CSSTest extends HTMLPurifier_AttrDefHarness
         $this->assertDef('background-position:left 90%;');
         $this->assertDef('border-spacing:1em;');
         $this->assertDef('border-spacing:1em 2em;');
+        $this->assertDef('border-color: rgb(0, 0, 0) rgb(10,0,10)', 'border-color:rgb(0,0,0) rgb(10,0,10);');
+        $this->assertDef('border: rgb(0, 0, 0)', 'border:rgb(0,0,0);');
 
         // duplicates
         $this->assertDef('text-align:right;text-align:left;',
@@ -115,7 +123,8 @@ class HTMLPurifier_AttrDef_CSSTest extends HTMLPurifier_AttrDefHarness
 
     }
 
-    function testProprietary() {
+    public function testProprietary()
+    {
         $this->config->set('CSS.Proprietary', true);
 
         $this->assertDef('scrollbar-arrow-color:#ff0;');
@@ -125,38 +134,51 @@ class HTMLPurifier_AttrDef_CSSTest extends HTMLPurifier_AttrDefHarness
         $this->assertDef('scrollbar-highlight-color:#ff69b4;');
         $this->assertDef('scrollbar-shadow-color:#f0f;');
 
-        $this->assertDef('opacity:.2;');
         $this->assertDef('-moz-opacity:.2;');
         $this->assertDef('-khtml-opacity:.2;');
         $this->assertDef('filter:alpha(opacity=20);');
 
+        $this->assertDef('border-top-left-radius:55pt 25pt;');
+
     }
 
-    function testImportant() {
+    public function testImportant()
+    {
         $this->config->set('CSS.AllowImportant', true);
         $this->assertDef('float:left !important;');
     }
 
-    function testTricky() {
+    public function testTricky()
+    {
         $this->config->set('CSS.AllowTricky', true);
         $this->assertDef('display:none;');
         $this->assertDef('visibility:visible;');
         $this->assertDef('overflow:scroll;');
+        $this->assertDef('opacity:.2;');
     }
 
-    function testForbidden() {
+    public function testForbidden()
+    {
         $this->config->set('CSS.ForbiddenProperties', 'float');
         $this->assertDef('float:left;', false);
         $this->assertDef('text-align:right;');
     }
 
-    function testTrusted() {
+    public function testTrusted()
+    {
         $this->config->set('CSS.Trusted', true);
         $this->assertDef('position:relative;');
         $this->assertDef('left:2px;');
         $this->assertDef('right:100%;');
         $this->assertDef('top:auto;');
         $this->assertDef('z-index:-2;');
+    }
+
+    public function testAllowDuplicates()
+    {
+        $this->config->set('CSS.AllowDuplicates', true);
+        $this->assertDef('text-align:right;text-align:left;');
+        $this->assertDef('text-align:right;text-align:left;text-align:right;');
     }
 
 }

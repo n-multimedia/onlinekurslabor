@@ -1,0 +1,35 @@
+<?
+
+# der kasten auf home braucht noch css-id start-okl-description
+/**
+ * SPASSPLUGIN
+ * 25% aller User erhalten ein anderes Design
+ * nicht jedoch, wenn sie im Medienlabor sitzen
+ * update: jetzt fuer alle. aber limitiert auf 1. april
+ */
+function okula_init() {
+    global $user;
+   
+  /* Alte, IP-/User-abhängige Logik
+   *  $override_ip_settings = false;
+    
+
+    if (!$override_ip_settings) {
+        //ip verschleiert
+        if (!isset($_SERVER["REMOTE_ADDR"]))
+            return;
+        #innerhalb medienlabor
+        if (strstr($_SERVER["REMOTE_ADDR"], "137.250.195"))
+            return false;
+    }
+
+    //nur 25% aller eingeloggten user (sowie alle ausgeloggten)
+    if (max(0,(int) ($user->uid ) - 1) % 4 === 0) {*/
+    if( date('d.m') ==="01.04"){ //1.april ;-)
+        //add plugin-js for controlss
+        drupal_add_css(drupal_get_path('module', 'okula') . '/assets/okula.css');
+        //add plugin-js for controls
+        drupal_add_js(array('okula' => array("base_path" => base_path() . drupal_get_path('module', 'okula'))), 'setting');
+        drupal_add_js(drupal_get_path('module', 'okula') . '/assets/okula.js');
+    }
+}

@@ -1176,7 +1176,7 @@ function drupal_validate_form($form_id, &$form, &$form_state) {
   // If the session token was set by drupal_prepare_form(), ensure that it
   // matches the current user's session. This is duplicate to code in
   // form_builder() but left to protect any custom form handling code.
-  if (isset($form['#token'])) {
+  if (!empty($form['#token'])) {
     if (!drupal_valid_token($form_state['values']['form_token'], $form['#token']) || !empty($form_state['invalid_token'])) {
       _drupal_invalid_token_set_form_error();
       // Stop here and don't run any further validation handlers, because they
@@ -1797,14 +1797,13 @@ function form_error(&$element, $message = '') {
  *   was clicked when the form was submitted, as well as the sanitized
  *   $_POST data.
  */
- function                   _drupal_form_hack_applied() {return true;}
+function _drupal_form_hack_applied() {return true;}
 function form_builder($form_id, &$element, &$form_state) {
-    /* before processing the callback, we have to be sure, the theme
-was loaded   */
-    global $theme;
-    if (!$theme) {
-        drupal_theme_initialize();
-    }
+/* before processing the callback, we have to be sure, the theme was loaded */
+global $theme;
+if (!$theme) {
+drupal_theme_initialize();
+}
   // Initialize as unprocessed.
   $element['#processed'] = FALSE;
 
@@ -1844,7 +1843,7 @@ was loaded   */
       // If the session token was set by drupal_prepare_form(), ensure that it
       // matches the current user's session.
       $form_state['invalid_token'] = FALSE;
-      if (isset($element['#token'])) {
+      if (!empty($element['#token'])) {
         if (empty($form_state['input']['form_token']) || !drupal_valid_token($form_state['input']['form_token'], $element['#token'])) {
           // Set an early form error to block certain input processing since that
           // opens the door for CSRF vulnerabilities.

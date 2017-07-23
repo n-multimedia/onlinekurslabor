@@ -6,19 +6,25 @@ class HTMLPurifier_AttrDefHarness extends HTMLPurifier_Harness
     protected $def;
     protected $context, $config;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->config = HTMLPurifier_Config::createDefault();
         $this->context = new HTMLPurifier_Context();
     }
 
     // cannot be used for accumulator
-    function assertDef($string, $expect = true) {
+    public function assertDef($string, $expect = true, $or_false = false)
+    {
         // $expect can be a string or bool
         $result = $this->def->validate($string, $this->config, $this->context);
         if ($expect === true) {
-            $this->assertIdentical($string, $result);
+            if (!($or_false && $result === false)) {
+                $this->assertIdentical($string, $result);
+            }
         } else {
-            $this->assertIdentical($expect, $result);
+            if (!($or_false && $result === false)) {
+                $this->assertIdentical($expect, $result);
+            }
         }
     }
 

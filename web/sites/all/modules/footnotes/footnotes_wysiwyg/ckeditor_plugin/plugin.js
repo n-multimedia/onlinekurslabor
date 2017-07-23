@@ -23,7 +23,7 @@ CKEDITOR.plugins.add( 'footnotes',
     requires : [ 'fakeobjects', 'htmlwriter' ],
     init: function( editor )
     {
-      editor.addCss(
+      CKEDITOR.addCss(
       'img.cke_footnote' +
       '{' +
         'background-image: url(' + CKEDITOR.getUrl( this.path + 'images/fn_icon2.png' ) + ');' +

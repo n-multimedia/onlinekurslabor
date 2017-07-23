@@ -140,8 +140,7 @@ function remove_old_log_events() {
 function h5p_fetch_libraries_metadata($fetchingDisabled = FALSE) {
   // If fetching of libraries from h5p.org is enabled and
   // It has not been run the last 24 hours, let's do it
-  // Intentionally not doing === TRUE on h5p_allow_communication_with_h5p_org test
-  if ($fetchingDisabled || (variable_get('h5p_allow_communication_with_h5p_org', TRUE) &&
+  if ($fetchingDisabled || ((variable_get('h5p_hub_is_enabled', TRUE) || variable_get('h5p_send_usage_statistics', TRUE)) &&
      (intval(variable_get('h5p_fetched_library_metadata_on', 0)) < (time() - 86400)))) {
     // Fetch the library-metadata:
     $core = _h5p_get_instance('core');
@@ -203,7 +202,7 @@ function h5p_node_info() {
     'h5p_content' => array(
       'name' => t('Interactive content'),
       'base' => 'h5p',
-      'description' => 'Upload HTML5 packages(.h5p) to create interactive content.',
+      'description' => t('Create interactive H5P content'),
     ),
   );
 }
@@ -815,6 +814,7 @@ function h5p_add_core_assets() {
 function h5p_get_core_settings() {
   global $user, $base_url;
 
+  $core = _h5p_get_instance('core');
   $settings = array(
     'baseUrl' => $base_url,
     'url' => base_path() . _h5p_get_h5p_path(),
@@ -825,41 +825,9 @@ function h5p_get_core_settings() {
     ),
     'saveFreq' => variable_get('h5p_save_content_state', 0) ? variable_get('h5p_save_content_frequency', 30) : FALSE,
     'l10n' => array(
-      'H5P' => array( // Could core provide this?
-        'fullscreen' => t('Fullscreen'),
-        'disableFullscreen' => t('Disable fullscreen'),
-        'download' => t('Download'),
-        'copyrights' => t('Rights of use'),
-        'embed' => t('Embed'),
-        'size' => t('Size'),
-        'showAdvanced' => t('Show advanced'),
-        'hideAdvanced' => t('Hide advanced'),
-        'advancedHelp' => t('Include this script on your website if you want dynamic sizing of the embedded content:'),
-        'copyrightInformation' => t('Rights of use'),
-        'close' => t('Close'),
-        'title' => t('Title'),
-        'author' => t('Author'),
-        'year' => t('Year'),
-        'source' => t('Source'),
-        'license' => t('License'),
-        'thumbnail' => t('Thumbnail'),
-        'noCopyrights' => t('No copyright information available for this content.'),
-        'downloadDescription' => t('Download this content as a H5P file.'),
-        'copyrightsDescription' => t('View copyright information for this content.'),
-        'embedDescription' => t('View the embed code for this content.'),
-        'h5pDescription' => t('Visit H5P.org to check out more cool content.'),
-        'contentChanged' => t('This content has changed since you last used it.'),
-        'startingOver' => t("You'll be starting over."),
-        'by' => t('by'),
-        'showMore' => t('Show more'),
-        'showLess' => t('Show less'),
-        'subLevel' => t('Sublevel'),
-        'confirmDialogHeader' => t('Confirm action'),
-        'confirmDialogBody' => t('Please confirm that you wish to proceed. This action is not reversible.'),
-        'cancelLabel' => t('Cancel'),
-        'confirmLabel' => t('Confirm')
-      )
-    )
+      'H5P' => $core->getLocalization()
+    ),
+    'hubIsEnabled' => variable_get('h5p_hub_is_enabled', TRUE) ? TRUE : FALSE
   );
 
   if ($user->uid) {
@@ -1149,7 +1117,7 @@ function _h5p_maintain_session_variables() {
  *  Core functions and storage in the h5p library
  * @param string $type
  *  Specifies the instance to be returned; validator, storage, interface or core
- * @return object
+ * @return H5PDrupal|H5PValidator|H5PStorage|H5PContentValidator|H5PExport|H5PCore
  *  The instance og h5p specified by type
  */
 function _h5p_get_instance($type) {

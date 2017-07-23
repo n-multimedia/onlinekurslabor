@@ -604,7 +604,8 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
         $parent = @$parameters['parent'];
 
         //sollte zwar gesetzt sein, aber zur sicherheit..
-        if ($og_group_ref) {
+        //hat die weight bestehender kapitel ueberschrieben. Darf nur auf neuen Kapiteln greifen (sprich: nid = null)!
+        if ($og_group_ref && $parent && isset($form['#node']->nid )) {
             //Suche buch zur übergebenen Group
             $books_menu_name = 'book-toc-' . $og_group_ref;
             $books_menu_tree = menu_tree_all_data($books_menu_name);
@@ -798,6 +799,13 @@ function section_content_filter_info() {
     'tips callback' => '_section_content_filter_tasks_tips',
     'cache' => FALSE,
   );
+    $filters['fix_content_links'] = array(
+    'title' => t('Content - Link Filter (change to /node/...)'),
+    'description' => t('changes internal URLs to /node/%nid to avoid 403s.'),
+    'process callback' => '_section_content_filter_links_process',
+    //'tips callback' => '_section_content_filter_links_tips',
+    'cache' => FALSE,
+  );
   return $filters;
 }
 
@@ -815,6 +823,30 @@ function _section_content_filter_tasks_process($text, $filter, $format) {
 
   return preg_replace_callback($regex, '_section_content_task_replacements', $text);
 }
+
+
+
+/**
+ * Content - Filter links
+ *
+ * The actual filtering is performed here. The supplied text should be returned,
+ * once any necessary substitutions have taken place. The example just replaces
+ * foo with our custom defined string in the settings page.
+ */
+function _section_content_filter_links_process($text, $filter, $format){
+
+    // 1) entfernt Verweis auf eigenen Server
+    global $base_url;
+    $url_without_http = str_replace("http://", "", $base_url);
+    $url_without_http = str_replace("https://", "", $url_without_http);
+    $regex_domain = '#((http:\/\/|https:\/\/)' . $url_without_http . ')#s';
+    $text_without_domain = preg_replace($regex_domain, "", $text);
+
+    //2) ersetzt angaben wie course/text/1234/567 sowie domain/text/567 durch /node/567
+    $regex_text = '#(\/domain\/text|\/course\/text\/\d+)\/(\d+)#s';
+    return $text_new = preg_replace($regex_text, "/node/$2", $text_without_domain);
+}
+
 
 function _section_content_task_replacements($matches) {
   //preg_match($regex, $text, $matches);

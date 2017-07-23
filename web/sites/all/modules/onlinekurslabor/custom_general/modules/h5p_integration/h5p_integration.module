@@ -1,5 +1,7 @@
 <?php
 
+
+
 /**
  * Implements hook_wysiwyg_plugin
  * @param type $editor

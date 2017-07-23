@@ -27,14 +27,16 @@ function nm_section_courses_features_field_group_info() {
       1 => 'field_course_picture',
       2 => 'field_field_courses_sponsors',
     ),
-    'format_type' => 'htab',
+    'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Design',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => ' group-course-design field-group-htab',
         'required_fields' => 1,
+        'id' => 'design',
+        'classes' => 'group-course-design field-group-htab',
+        'description' => '',
       ),
+      'formatter' => 'collapsible',
     ),
   );
   $field_groups['group_course_design|node|courses_course|form'] = $field_group;
@@ -56,14 +58,16 @@ function nm_section_courses_features_field_group_info() {
       1 => 'field_access_features',
       2 => 'field_other_features',
     ),
-    'format_type' => 'htab',
+    'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Features',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => ' group-course-features field-group-htab',
         'required_fields' => 1,
+        'id' => 'features',
+        'classes' => 'group-course-features field-group-htab',
+        'description' => '',
       ),
+      'formatter' => 'collapsible',
     ),
   );
   $field_groups['group_course_features|node|courses_course|form'] = $field_group;
@@ -89,15 +93,16 @@ function nm_section_courses_features_field_group_info() {
       5 => 'field_semester',
       6 => 'title',
     ),
-    'format_type' => 'htab',
+    'format_type' => 'fieldset',
     'format_settings' => array(
       'label' => 'Allgemein / Kursinfo',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => ' group-course-general-data field-group-htab',
+        'id' => 'common',
+        'classes' => 'group-course-general-data field-group-htab',
         'description' => '',
       ),
-      'formatter' => 'closed',
+      'formatter' => 'collapsible',
     ),
   );
   $field_groups['group_course_general_data|node|courses_course|form'] = $field_group;
@@ -147,15 +152,16 @@ function nm_section_courses_features_field_group_info() {
     'children' => array(
       0 => 'field_course_proposals',
     ),
-    'format_type' => 'htab',
+    'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Projekte',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => 'group-course-projects field-group-htab',
         'required_fields' => 1,
-        'id' => '',
+        'id' => 'projects',
+        'classes' => 'group-course-projects field-group-htab',
+        'description' => '',
       ),
+      'formatter' => 'collapsible',
     ),
   );
   $field_groups['group_course_projects|node|courses_course|form'] = $field_group;
@@ -176,15 +182,16 @@ function nm_section_courses_features_field_group_info() {
       0 => 'field_domain_ref',
       1 => 'field_domain_demo_ref',
     ),
-    'format_type' => 'htab',
+    'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Lehrtext',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => 'group-courses-text field-group-htab',
         'required_fields' => 1,
-        'id' => '',
+        'id' => 'domain',
+        'classes' => 'group-courses-text field-group-htab',
+        'description' => '',
       ),
+      'formatter' => 'collapsible',
     ),
   );
   $field_groups['group_courses_text|node|courses_course|form'] = $field_group;
@@ -206,12 +213,14 @@ function nm_section_courses_features_field_group_info() {
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'VHB Einstellungen',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => ' group-courses-vhb field-group-fieldset',
         'required_fields' => 1,
+        'id' => 'vhb',
+        'classes' => 'group-courses-vhb field-group-fieldset',
+        'description' => '',
       ),
+      'formatter' => 'collapsible',
     ),
   );
   $field_groups['group_courses_vhb|node|courses_course|form'] = $field_group;

@@ -11,8 +11,10 @@ var $ = jQuery;
  * @param context
  * @constructor
  */
-function NMStreamComment(nm_stream, context) {
+function NMStreamComment(nm_stream, node, context) {
+
     this.nm_stream = nm_stream;
+    this.node = node;
     this.state = 0;
     this.container = $(context);
 
@@ -32,7 +34,6 @@ NMStreamComment.prototype.init_bind_events = function () {
     this.init_bind_comment_edit_event();
     this.init_bind_comment_delete_event();
     this.init_bind_comment_cancel_event();
-    this.init_bind_comment_toggle_event();
 
 };
 
@@ -41,9 +42,8 @@ NMStreamComment.prototype.init_bind_events = function () {
  */
 NMStreamComment.prototype.init_bind_dummy_textfield_event = function () {
     var self = this;
-
     //bind click to dummy text field
-    this.container.find(".nm-stream-comments-form").once('nm_stream').click(function() {
+    $(".nm-stream-comments-form").once('nm_stream').click(function() {
         var form_container = this;
         $(this).find('.nm-stream-comment-form').hide();
         var form = $(this).find('form');
@@ -69,7 +69,7 @@ NMStreamComment.prototype.init_bind_commment_submit_button_event = function () {
 
 
     //bind click to post button
-    this.container.find('.nm-stream-comment-submit').once('nm_stream').click(function() {
+    $('.nm-stream-comment-submit').once('nm_stream').click(function() {
         //submit new comment
         var post_button = $(this)
 
@@ -129,21 +129,30 @@ NMStreamComment.prototype.init_bind_commment_submit_button_event = function () {
 
                             //special case in for node comments only - for kooperationsvereinbarung-comments
                             //console.log(post_button);
-                            new_comment = post_button.closest('.nm-stream-node-container').parent().find('.nm-stream-comments-section .nm-stream-comments-container').append($(data.comment).fadeIn());
+                            new_comment = ($(data.comment)).insertAfter(post_button.closest('.nm-stream-node-container').parent().find('.nm-stream-comments-section .nm-stream-comments-container .nm-stream-comment').last()).fadeIn();
+
+                            //attach behavior
+                            new NMStreamComment(self.nm_stream, self.node, new_comment);
+
 
                         } else {
                             //fix
                             //do not load information info, because we did start with <5 (limit) comments
                             //every new comment is already visible
-                            new_comment = post_button.closest('.nm-stream-comments').find('.nm-stream-comments-container').prepend($(data.comment).fadeIn());
+                            //new_comment = post_button.closest('.nm-stream-comments').find('.nm-stream-comments-container').prepend(.fadeIn());
 
                             var node_container = post_button.closest('.nm-stream-node-container');
 
-                            self.nm_stream.nm_stream_update_node_information(node_container, data.information);
-                        }
 
-                        //attach behavior
-                        Drupal.attachBehaviors(new_comment);
+                            new_comment = ($(data.comment)).insertBefore(post_button.closest('.nm-stream-comments').find('.nm-stream-comments-container .nm-stream-comment').first()).fadeIn();
+                            //fix, new nodes could not be edited without views-row div around
+
+                            //attach behavior
+                            new NMStreamComment(self.nm_stream, self.node, new_comment);
+
+                            self.nm_stream.nm_stream_update_node_information(node_container, data.information);
+
+                        }
 
 
                     } else {
@@ -153,11 +162,10 @@ NMStreamComment.prototype.init_bind_commment_submit_button_event = function () {
                         post_button.closest('.nm-stream-node-container').remove();
 
                         //append new node
-                        var new_node = view_row.html($(data.node).fadeIn());
-
+                        var new_node = view_row.html($(data.node).fadeIn()).find(".nm-stream-node-container");
 
                         //attach behavior
-                        Drupal.attachBehaviors(new_node);
+                        new NMStreamNode(self.nm_stream, new_node);
                     }
 
                 } else {
@@ -190,9 +198,13 @@ NMStreamComment.prototype.init_bind_commment_submit_button_event = function () {
             $.post(url, data, function(data) {
                 if (data.status === 1) {
                     //save succeed
-                    var updated_comment = $(form_container).closest('.nm-stream-comment').html($(data.updated_comment).fadeIn());
+                    var updated_comment = $(form_container).closest('.nm-stream-comment').html($(data.updated_comment).fadeIn().html());
+
+
                     //attach behavior
-                    Drupal.attachBehaviors(updated_comment);
+                    self.container = updated_comment;
+                    self.init_bind_events();
+
 
                 } else {
                     //error handling todo here
@@ -216,7 +228,7 @@ NMStreamComment.prototype.init_bind_comment_edit_event = function () {
     var self = this;
 
     //bind click to edit button
-    this.container.find('.nm-stream-comment-edit').once('nm_stream').click(function() {
+    this.container.closest(".nm-stream-comments").find('.nm-stream-comment-edit').once('nm_stream').click(function() {
         var edit_button = $(this);
 
         var comment_container = edit_button.closest('.nm-stream-comment');
@@ -241,12 +253,12 @@ NMStreamComment.prototype.init_bind_comment_edit_event = function () {
                 //prevent creating more than 1 forms
                 if (comment_container.find('.nm-stream-main').find('form').length === 0) {
                     var edit_form = comment_container.find('.nm-stream-main').prepend($(data.comment_edit_form));
-                    //todo add form here
-                    //node_container.find('.nm-stream-main').first().prepend(data.node_edit_form);
-                    //html(data.node_edit_form)
-                    //attach behavior
+
                     edit_form.find('textarea').autosize();
-                    Drupal.attachBehaviors(edit_form);
+
+                    self.init_bind_events();
+
+
                 } else {
                     comment_container.find('.nm-stream-main').find('form').show();
                 }
@@ -270,7 +282,7 @@ NMStreamComment.prototype.init_bind_comment_edit_event = function () {
 NMStreamComment.prototype.init_bind_comment_delete_event = function () {
     var self = this;
 
-    $('.nm-stream-comment-delete').once('nm_stream').click(function() {
+    this.container.find('.nm-stream-comment-delete').once('nm_stream').click(function() {
         var delete_button = $(this)
         var comment_container = delete_button.closest('.nm-stream-comment');
         var regresult = comment_container.attr('id').split('-');
@@ -305,7 +317,7 @@ NMStreamComment.prototype.init_bind_comment_delete_event = function () {
                             //check if node updates were made in meantime
                             if (data.update_status === 2) {
                                 //console.log(data);
-                                self.nm_stream.nm_stream_handle_node_updates(data);
+                                self.nm_stream.refresh(data);
                             }
 
                         });
@@ -335,7 +347,7 @@ NMStreamComment.prototype.init_bind_comment_cancel_event = function () {
     var self = this;
 
     //bind click to cancel button
-    self.container.find('.nm-stream-comment-cancel').once('nm_stream').click(function() {
+    self.container.closest(".nm-stream-comments").find('.nm-stream-comment-cancel').once('nm_stream').click(function() {
         if ($(this).closest('.nm-stream-edit-comment-actions').length === 0) {
             //add form
             $(this).closest('.nm-stream-node-container').find('.nm-stream-comment-form').show();
@@ -353,18 +365,6 @@ NMStreamComment.prototype.init_bind_comment_cancel_event = function () {
 }
 
 
-/**
- * bind comment toggle toggle
- */
-NMStreamComment.prototype.init_bind_comment_toggle_event = function () {
-    var self = this;
-
-    this.container.find('.nm_stream_comment_toggle').once('nm_stream').click(function () {
-
-        return false;
-    });
-
-}
 
 
 /**

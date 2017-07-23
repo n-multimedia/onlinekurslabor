@@ -4,12 +4,14 @@ class HTMLPurifier_HTMLT extends HTMLPurifier_Harness
 {
     protected $path;
 
-    public function __construct($path) {
+    public function __construct($path)
+    {
         $this->path = $path;
         parent::__construct($path);
     }
 
-    public function testHtmlt() {
+    public function testHtmlt()
+    {
         $parser = new HTMLPurifier_StringHashParser();
         $hash = $parser->parseFile($this->path); // assume parser normalizes to "\n"
         if (isset($hash['SKIPIF'])) {
@@ -25,6 +27,9 @@ class HTMLPurifier_HTMLT extends HTMLPurifier_Harness
             $this->config->loadIni($ini_file);
         }
         $expect = isset($hash['EXPECT']) ? $hash['EXPECT'] : $hash['HTML'];
+        if (isset($hash['ERROR'])) {
+            $this->expectError($hash['ERROR']);
+        }
         $this->assertPurification(rtrim($hash['HTML']), rtrim($expect));
         if (isset($hash['INI'])) unlink($ini_file);
     }

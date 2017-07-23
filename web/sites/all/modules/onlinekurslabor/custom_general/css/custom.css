@@ -551,7 +551,7 @@ Authors's Tools
 }
 #authors_tools-container .btn#author_annvid_add a:hover:before, #authors_tools-container .btn#author_annvid_add a.active:before
 {
-    background-position: -412px -100px;
+    background-position: -412px -150px;
 }
 
 #authors_tools-container .btn#author_chapter_add a:before
@@ -1236,4 +1236,46 @@ div.field-name-field-proposal-timespan {
 #instructors_tools-container:hover .toolbar_hidden, #authors_tools-container:hover  .toolbar_hidden
 {
     display: inline-block;
+}
+
+
+/* draft-label fuer kurse */
+.view_courses_label
+{
+    color:white; 
+    font-weight:bold;
+    text-align:center;
+    transform: rotate(-30deg);
+    width: 90px;
+    position:absolute; 
+    left: 15px;
+    top:32px;
+    z-index:2 
+}
+.view_courses_label.draft
+{
+      background: #D9534F;
+}
+.view_courses_label.unconfirmed
+{
+      background: orange;
+}
+
+
+/*meine kurse-ansicht auf start*/
+div.view-courses-kurse-bersicht .nm-stream-node-container div.progress_circle_container
+{
+    display: none;
+    position: absolute;
+    padding-top:5px;
+      //  background-color: rgba(247, 247, 247, 0.5);
+}
+div.view-courses-kurse-bersicht .nm-stream-node-container:hover div.progress_circle_container
+{
+    display: block;
+
+}
+div.view-courses-kurse-bersicht .nm-stream-node-container:hover .courseitem_image_hover_transp
+{
+    opacity: 0.5;
 }

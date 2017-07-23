@@ -1,0 +1,5 @@
+name = ckeditor_custom
+description = custom settings for ckeditor
+core = 7.x
+version = 7.x-1.0-alpha8
+package = custom

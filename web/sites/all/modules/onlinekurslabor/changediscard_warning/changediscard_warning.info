@@ -1,0 +1,5 @@
+name = changediscard_warning
+description = warns a user before leaving a form (uninentionally)
+core = 7.x
+version = 7.x-1.0-alpha8
+package = custom

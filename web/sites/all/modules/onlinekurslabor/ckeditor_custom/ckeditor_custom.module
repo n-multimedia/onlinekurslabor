@@ -1,0 +1,47 @@
+<?php
+
+/**
+ * Editor settings
+ * change block formats
+ */
+function ckeditor_custom_wysiwyg_editor_settings_alter(&$settings, $context) {
+
+    // The $context variable contains information about the wysiwyg profile we're using
+    // In this case we just need to check that the editor being used is ckeditor
+
+    if ($context['profile']->editor == 'ckeditor') {
+
+        //setting in js wasn't successful
+        $settings['height'] = 350;
+        // The $settings variable contains all the config options ckeditor uses. 
+        // The array keys correspond directly with any setting that can be applied 
+        // to CKEditor - as outlined in the CKEditor docs: 
+        // http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html 
+        // Another way to override configuration is to use your own configuration javascript
+        // file. In this case, we're going to add our own configuration file that will
+        // Hold our stylesSet customizations... 
+        $settings['customConfig'] = base_path() . drupal_get_path('module', 'ckeditor_custom') . '/js/ckeditor_config.js';
+        $settings['contentsCss'] = base_path() . drupal_get_path('module', 'ckeditor_custom') . '/css/ckeditor_textfield.css';
+        // We are also going to specify a custom body id and class
+        $settings['bodyId'] = 'ckeditor_custom_id';
+        $settings['bodyClass'] = 'ckeditor_custom_class';
+    }
+}
+
+/**
+ * Implements hook_wysiwyg_plugin
+ * @param type $editor
+ * @param type $version
+ * @return type
+ */
+function ckeditor_custom_wysiwyg_plugin($editor, $version) {
+
+    //add custom css to ckeditor
+    //css rules
+    drupal_add_css(drupal_get_path('module', 'ckeditor_custom') . '/css/ckeditor_menu.css');
+    //copy-paste-handler
+    $path = drupal_get_path('module', 'ckeditor_custom');
+    $url_default_image = file_create_url($path . '/images/picture-replace.png');
+    drupal_add_js(array('ckeditor_custom' => array('default_image' => $url_default_image)), 'setting');
+    drupal_add_js(drupal_get_path('module', 'ckeditor_custom') . '/js/ckeditor_custom_paste_handler.js');
+}

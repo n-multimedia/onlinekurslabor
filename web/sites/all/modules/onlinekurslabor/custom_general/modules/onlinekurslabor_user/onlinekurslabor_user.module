@@ -52,33 +52,6 @@ function onlinekurslabor_user_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
- * Editor settings
- * change block formats
- */
-function onlinekurslabor_user_wysiwyg_editor_settings_alter(&$settings, $context) {
-
-  // The $context variable contains information about the wysiwyg profile we're using
-  // In this case we just need to check that the editor being used is ckeditor
-
-  if ($context['profile']->editor == 'ckeditor') {
-
-    // The $settings variable contains all the config options ckeditor uses. 
-    // The array keys correspond directly with any setting that can be applied 
-    // to CKEditor - as outlined in the CKEditor docs: 
-    // http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html 
-    // Another way to override configuration is to use your own configuration javascript
-    // file. In this case, we're going to add our own configuration file that will
-    // Hold our stylesSet customizations... 
-    $settings['customConfig'] = base_path() . drupal_get_path('module', 'onlinekurslabor_user') .
-        '/js/ckeditor_config.js';
-
-    // We are also going to specify a custom body id and class
-    $settings['bodyId'] = 'onlinekurslabor_user_id';
-    $settings['bodyClass'] = 'onlinekurslabor_user_class';
-  }
-}
-
-/**
  * Process variables for author-pane-user-picture.tpl.php.
  *
  * The $variables array contains the following arguments:
@@ -323,9 +296,10 @@ function user_send_message_form($context) {
     '#description' => t('The subject of the message.'),
   );
   $form['message'] = array(
-    '#type' => 'textarea',
+    '#type' => 'text_format',
     '#title' => t('Message'),
     '#default_value' => $context['message'],
+    '#wysiwyg' => true,
     '#cols' => '80',
     '#rows' => '20',
     '#description' => t('The message that should be sent. You may include placeholders like [node:title], [user:name], and [comment:body] to represent data that will be different each time message is sent. Not all placeholders will be available in all contexts.'),
@@ -362,9 +336,10 @@ function og_group_send_email_form($context) {
     '#description' => t('The subject of the message.'),
   );
   $form['message'] = array(
-    '#type' => 'textarea',
+    '#type' => 'text_format',
     '#title' => t('Message'),
     '#default_value' => $context['message'],
+    '#wysiwyg' => true,
     '#cols' => '80',
     '#rows' => '20',
     '#description' => t('The message that should be sent. You may include placeholders like [node:title], [user:name], and [comment:body] to represent data that will be different each time message is sent. Not all placeholders will be available in all contexts.'),
@@ -412,9 +387,10 @@ function user_send_message_submit($form, $form_state) {
   $form_values = $form_state['values'];
   // Process the HTML form to store configuration. The keyed array that
   // we return will be serialized to the database.
+  
   $params = array(
     'subject' => $form_values['subject'],
-    'message' => $form_values['message'],
+    'message' => $form_values['message']['value'],
   );
   return $params;
 }
@@ -425,7 +401,7 @@ function og_group_send_email_submit($form, $form_state) {
   // we return will be serialized to the database.
   $params = array(
     'subject' => $form_values['subject'],
-    'message' => $form_values['message'],
+    'message' => $form_values['message']['value'],
   );
   return $params;
 }

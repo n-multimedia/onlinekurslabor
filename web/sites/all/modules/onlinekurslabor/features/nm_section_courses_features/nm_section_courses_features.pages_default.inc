@@ -138,7 +138,7 @@ return drupal_render($form);
   $export['user_edit_panel_context'] = $handler;
 
   $handler = new stdClass();
-  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->disabled = TRUE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
   $handler->name = 'user_view_panel_context';
   $handler->task = 'user_view';
@@ -529,7 +529,7 @@ return drupal_render($form);
   $export['user_view_panel_context'] = $handler;
 
   $handler = new stdClass();
-  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->disabled = TRUE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
   $handler->name = 'user_view_panel_context_2';
   $handler->task = 'user_view';
@@ -1902,6 +1902,7 @@ return section_courses_text_outline();
         'settings' => array(
           'og_rids' => array(
             0 => 'kurs-dozent',
+            1 => 'kurs-tutor',
           ),
         ),
         'context' => array(
@@ -3275,7 +3276,7 @@ return section_courses_text_outline();
     ),
   );
   $display->cache = array();
-  $display->title = '%node:title';
+  $display->title = '%1:title';
   $display->uuid = 'dc0d0009-e4d9-4e03-b9aa-05ff00c3bb9e';
   $display->storage_type = 'page_manager';
   $display->storage_id = 'page_courseinformation_in_course__panel_context_2';
@@ -3315,7 +3316,7 @@ return section_courses_text_outline();
   $pane->panel = 'links';
   $pane->type = 'node_title';
   $pane->subtype = 'node_title';
-  $pane->shown = TRUE;
+  $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
     'link' => 0,
@@ -3611,7 +3612,7 @@ echo section_courses_render_course_link($course);
   $pane->uuid = '3fbf1e35-6b7d-4fee-9ddf-e4d3ec9db14b';
   $display->content['new-3fbf1e35-6b7d-4fee-9ddf-e4d3ec9db14b'] = $pane;
   $display->panels['rechts_'][0] = 'new-3fbf1e35-6b7d-4fee-9ddf-e4d3ec9db14b';
-  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
@@ -4435,9 +4436,23 @@ echo section_courses_render_course_link($course);
   $pane->configuration = array(
     'admin_title' => '',
     'title' => '',
-    'body' => '<p>Die Funktionalität &quot;Forumstruktur bearbeiten&quot; ist noch nicht verfügbar.</p><p><span style="line-height: 1.538em;">Bitte wenden Sie sich an den Administrator der Seite, damit dieser die gewünschten Änderungen für Sie einpflegen kann.</span></p>',
-    'format' => 'filtered_html',
+    'body' => '<?php
+if(!count(taxonomy_get_term_by_name(_section_courses_get_forum_name(node_load(%1:nid)))))
+{
+$link = \'<a href="/course/admin/%1:nid/settings#features--2">\'.t(\'Please enable it first\').\'</a>\';
+drupal_set_message(t("The forum is disabled in this course and thus cannot be configured.")." ".$link, \'warning\');
+}
+else
+{
+/*zeigt unterforen-anlegen-GUI*/
+echo (drupal_render(drupal_get_form(\'_section_courses_forum_add_category_form\', node_load(%1:nid))));
+/*zeigt forum-verwalten-GUI*/
+echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_form\', node_load(%1:nid))));
+}
+?>',
+    'format' => 'php_code',
     'substitute' => 1,
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -5367,10 +5382,10 @@ echo section_courses_theme_progressbar();
   $display->content['new-ccee1c33-9999-43ce-8788-04d026746e96'] = $pane;
   $display->panels['center'][0] = 'new-ccee1c33-9999-43ce-8788-04d026746e96';
   $pane = new stdClass();
-  $pane->pid = 'new-6abe3379-f868-49d8-aaff-095a06ec9af6';
+  $pane->pid = 'new-3fdb4e4a-b797-4a04-8fcb-9eabe784e559';
   $pane->panel = 'center';
   $pane->type = 'views_panes';
-  $pane->subtype = 'courses_kurse_bersicht-panel_pane_2';
+  $pane->subtype = 'courses_kurse_bersicht-my_courses';
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
@@ -5386,9 +5401,9 @@ echo section_courses_theme_progressbar();
   $pane->extras = array();
   $pane->position = 1;
   $pane->locks = array();
-  $pane->uuid = '6abe3379-f868-49d8-aaff-095a06ec9af6';
-  $display->content['new-6abe3379-f868-49d8-aaff-095a06ec9af6'] = $pane;
-  $display->panels['center'][1] = 'new-6abe3379-f868-49d8-aaff-095a06ec9af6';
+  $pane->uuid = '3fdb4e4a-b797-4a04-8fcb-9eabe784e559';
+  $display->content['new-3fdb4e4a-b797-4a04-8fcb-9eabe784e559'] = $pane;
+  $display->panels['center'][1] = 'new-3fdb4e4a-b797-4a04-8fcb-9eabe784e559';
   $pane = new stdClass();
   $pane->pid = 'new-54b42ae9-c113-4615-af7e-70a6ead03f8d';
   $pane->panel = 'center';
@@ -5556,7 +5571,7 @@ echo \'<p><a class="btn btn-default" href="/node/add/courses-course">Neuen Kurs 
   $display->title = 'Kursarchiv';
   $display->uuid = '532d2f69-94b7-4a1d-be7a-340653e8ed4c';
   $display->storage_type = 'page_manager';
-  $display->storage_id = 'page_courses_course_overview_panel_context';
+  $display->storage_id = 'page_courses_course_overview__archive';
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();

@@ -669,8 +669,6 @@ function custom_general_wysiwyg_plugin($editor, $version) {
 
   #_linkit_add_settings($editor);
 
-  //css rules
-  drupal_add_css(drupal_get_path('module', 'custom_general') . '/css/wysiwyg.css');
 
   switch ($editor) {
     case 'ckeditor':

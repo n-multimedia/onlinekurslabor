@@ -1,0 +1,68 @@
+#Translation File - onlinekurslabor
+
+
+msgid "Add a footnote"
+msgstr "Fußnote hinzufügen"
+
+msgid "No category available"
+msgstr "Keine Kategorie vorhanden"
+
+msgid "Create new category"
+msgstr "Kategorie erstellen"
+
+msgid "Category's name"
+msgstr "Kategoriename"
+
+msgid "Manage categories"
+msgstr "Kategorien verwalten"
+
+msgid "Save forumstructure"
+msgstr "Forumsstruktur speichern"
+
+msgid "The forum is disabled in this course and thus cannot be configured."
+msgstr "Das Forum ist in diesem Kurs deaktiviert."
+
+msgid "Please enable it first"
+msgstr "Bitte aktivieren Sie es zunächst"
+
+msgid "Common"
+msgstr "Allgemein"
+
+msgid "My events"
+msgstr "Meine Veranstaltungen"
+
+msgid "Activity"
+msgstr "Aktivität"
+
+msgid "New messages"
+msgstr "Neue Nachrichten"
+
+msgid "Other courses"
+msgstr "Weitere Kurse"
+
+msgid "All educational texts"
+msgstr "Alle Lehrtexte"
+
+msgid "Draft"
+msgstr "Entwurf"
+
+msgid "unconfirmed"
+msgstr "unbestätigt"
+
+msgid "Create course"
+msgstr "Kurs erstellen"
+
+msgid "Create educational text"
+msgstr "Lehrtext erstellen"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
