@@ -435,7 +435,16 @@
                     }
 
 
-                    self.init_bind_nm_stream_comments();
+                    //self.init_bind_nm_stream_comments();
+                    /**
+                     * 23.07.2017 - 20:23 - SN
+                     * needs to be refactored
+                     * someone else creates an comment - need to bind events
+                     */
+                    $('#nm-stream-node-' + nid).find(".nm-stream-comment").once("nm_stream").each(function(index) {
+                        new NMStreamComment(self.nm_stream, self, this);
+
+                    });
                 }
             }
         }

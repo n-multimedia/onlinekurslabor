@@ -1783,7 +1783,7 @@ function _nm_stream_get_action_links($content) {
         }
 
         //delete op is not implemented yet
-        if (node_access('delete', node_load($content->nid))) {
+        if (comment_access('edit', $content)) {
             $output .=' ' . sprintf($tpl, $type, 'delete', 'trash', t('delete'), $tpl);
         }
     } else {
