@@ -901,6 +901,7 @@ return drupal_render($form);
         'children' => array(
           0 => 'main-row',
           1 => 1,
+          2 => 2,
         ),
         'parent' => 'canvas',
         'class' => 'col-xs-12 col-sm-3 col-sm-push-6',
@@ -916,7 +917,7 @@ return drupal_render($form);
       ),
       'center' => array(
         'type' => 'region',
-        'title' => 'header',
+        'title' => 'profile-header',
         'width' => 100,
         'width_type' => '%',
         'parent' => 'main-row',
@@ -935,12 +936,31 @@ return drupal_render($form);
       ),
       'users_s_courses' => array(
         'type' => 'region',
-        'title' => 'users\'s courses',
+        'title' => 'profile - users\'s courses',
         'width' => 100,
         'width_type' => '%',
         'parent' => '1',
         'class' => 'row',
         'hide_empty' => 0,
+      ),
+      2 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'dozent_s_courses',
+        ),
+        'parent' => 'main',
+        'class' => 'dozent\'s courses',
+        'hide_empty' => 1,
+      ),
+      'dozent_s_courses' => array(
+        'type' => 'region',
+        'title' => 'profile - dozent\'s courses',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '2',
+        'class' => '',
+        'hide_empty' => 1,
       ),
     ),
   );
@@ -961,6 +981,7 @@ return drupal_render($form);
         ),
         'theme' => 0,
       ),
+      'dozent_s_courses' => NULL,
     ),
     'left' => array(
       'style' => 'default',
@@ -1127,6 +1148,111 @@ echo theme(\'profile_details\', array(\'uid\'=>%user:uid , \'range\'=>\'private\
   $display->content['new-05d70a85-aeeb-4756-a347-61887ad699ab'] = $pane;
   $display->panels['center'][2] = 'new-05d70a85-aeeb-4756-a347-61887ad699ab';
   $pane = new stdClass();
+  $pane->pid = 'new-1c53dff4-b98d-4a01-bc94-5a453292eb9d';
+  $pane->panel = 'dozent_s_courses';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = FALSE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'Admin-Erklärung',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<p>Admin-Erklärung:</p><p>Hier werden angebotene Kurse von Dozenten angezeigt. Gelöst mit Visibility-Einstellungen:</p><p>- nur bei Dozentenaccounts sichtbar</p><p>- nicht, wenn eingeloggte Person Admin/Moderator ist (sonst doppelte Anzeige "Kurse")</p><p><strong>wichtig</strong></p><p>der hook section_profile_views_pre_view schießt hier rein, um auf rolle kurs-dozent zu filtern und Entwürfe auszufiltern!</p>',
+    'format' => 'filtered_html',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '1c53dff4-b98d-4a01-bc94-5a453292eb9d';
+  $display->content['new-1c53dff4-b98d-4a01-bc94-5a453292eb9d'] = $pane;
+  $display->panels['dozent_s_courses'][0] = 'new-1c53dff4-b98d-4a01-bc94-5a453292eb9d';
+  $pane = new stdClass();
+  $pane->pid = 'new-c4b53324-abde-4948-b718-fd38aab5a57e';
+  $pane->panel = 'dozent_s_courses';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'courses_kurse_bersicht-my_courses_small';
+  $pane->shown = TRUE;
+  $pane->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 106505419,
+          ),
+        ),
+        'context' => 'argument_entity_id:user_1',
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 30037204,
+            1 => 197637936,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => TRUE,
+      ),
+    ),
+  );
+  $pane->configuration = array(
+    'use_pager' => 1,
+    'pager_id' => '2',
+    'items_per_page' => '10',
+    'context' => array(
+      0 => 'argument_entity_id:user_1',
+    ),
+    'override_title' => 1,
+    'override_title_text' => 'Angebotene Kurse',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = 'c4b53324-abde-4948-b718-fd38aab5a57e';
+  $display->content['new-c4b53324-abde-4948-b718-fd38aab5a57e'] = $pane;
+  $display->panels['dozent_s_courses'][1] = 'new-c4b53324-abde-4948-b718-fd38aab5a57e';
+  $pane = new stdClass();
+  $pane->pid = 'new-7dd00cab-e94a-4786-b963-6e51f835e111';
+  $pane->panel = 'users_s_courses';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = FALSE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'Admin-Erklärung',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<p>Admin-Erklärung:</p><p>Hier werden&nbsp;Admins und Moderatoren</p><p><strong>Kurse + Lehrtexte anderer Personen</strong></p><p>angezeigt. Dies wird durch Visibility-Einstellungen erreicht</p>',
+    'format' => 'filtered_html',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '7dd00cab-e94a-4786-b963-6e51f835e111';
+  $display->content['new-7dd00cab-e94a-4786-b963-6e51f835e111'] = $pane;
+  $display->panels['users_s_courses'][0] = 'new-7dd00cab-e94a-4786-b963-6e51f835e111';
+  $pane = new stdClass();
   $pane->pid = 'new-830b1a45-d949-4fdb-af1d-0a328cc1967e';
   $pane->panel = 'users_s_courses';
   $pane->type = 'custom';
@@ -1155,11 +1281,11 @@ display:none;
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 0;
+  $pane->position = 1;
   $pane->locks = array();
   $pane->uuid = '830b1a45-d949-4fdb-af1d-0a328cc1967e';
   $display->content['new-830b1a45-d949-4fdb-af1d-0a328cc1967e'] = $pane;
-  $display->panels['users_s_courses'][0] = 'new-830b1a45-d949-4fdb-af1d-0a328cc1967e';
+  $display->panels['users_s_courses'][1] = 'new-830b1a45-d949-4fdb-af1d-0a328cc1967e';
   $pane = new stdClass();
   $pane->pid = 'new-e75f663a-bd63-46d7-8fd9-88a9758353d5';
   $pane->panel = 'users_s_courses';
@@ -1182,7 +1308,7 @@ display:none;
       1 => array(
         'name' => 'compare_users',
         'settings' => array(
-          'equality' => '1',
+          'equality' => '0',
         ),
         'context' => array(
           0 => 'argument_entity_id:user_1',
@@ -1191,7 +1317,7 @@ display:none;
         'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
+    'logic' => 'and',
   );
   $pane->configuration = array(
     'override_pager_settings' => 0,
@@ -1239,11 +1365,11 @@ display:none;
     'css_class' => 'col-md-4 col-md-push-8 col-xs-12',
   );
   $pane->extras = array();
-  $pane->position = 1;
+  $pane->position = 2;
   $pane->locks = array();
   $pane->uuid = 'e75f663a-bd63-46d7-8fd9-88a9758353d5';
   $display->content['new-e75f663a-bd63-46d7-8fd9-88a9758353d5'] = $pane;
-  $display->panels['users_s_courses'][1] = 'new-e75f663a-bd63-46d7-8fd9-88a9758353d5';
+  $display->panels['users_s_courses'][2] = 'new-e75f663a-bd63-46d7-8fd9-88a9758353d5';
   $pane = new stdClass();
   $pane->pid = 'new-962a9704-44ef-4eaa-b257-e13876dc0ce9';
   $pane->panel = 'users_s_courses';
@@ -1266,16 +1392,16 @@ display:none;
       1 => array(
         'name' => 'compare_users',
         'settings' => array(
-          'equality' => '1',
+          'equality' => '0',
         ),
         'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:user_1',
+          0 => 'argument_entity_id:user_1',
+          1 => 'logged-in-user',
         ),
         'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
+    'logic' => 'and',
   );
   $pane->configuration = array(
     'use_pager' => 1,
@@ -1314,11 +1440,11 @@ display:none;
     'css_class' => 'col-md-8 col-md-pull-4 col-xs-12',
   );
   $pane->extras = array();
-  $pane->position = 2;
+  $pane->position = 3;
   $pane->locks = array();
   $pane->uuid = '962a9704-44ef-4eaa-b257-e13876dc0ce9';
   $display->content['new-962a9704-44ef-4eaa-b257-e13876dc0ce9'] = $pane;
-  $display->panels['users_s_courses'][2] = 'new-962a9704-44ef-4eaa-b257-e13876dc0ce9';
+  $display->panels['users_s_courses'][3] = 'new-962a9704-44ef-4eaa-b257-e13876dc0ce9';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
