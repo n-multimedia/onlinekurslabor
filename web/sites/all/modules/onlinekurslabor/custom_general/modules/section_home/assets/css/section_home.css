@@ -45,6 +45,13 @@
     position: absolute;   
     top: 0;;
 }
+
+/*erstelle padding unter "Meine Kurse"-Überschrift*/
+.home_title_container
+{
+    margin-bottom: 10px;
+}
+
 /*meine Kurse-Widget*/
 a.home_course_item
 {
