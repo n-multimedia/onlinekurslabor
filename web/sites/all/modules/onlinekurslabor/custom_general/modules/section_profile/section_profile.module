@@ -54,9 +54,7 @@ function _section_profile_get_profile_edit_btn($user_id) {
 
 /**
  * get Infos about a user stored in profile.
- * ###ACHTUNG###
- * Funktion funktioniert. ABER: Trotz hinterlegten Daten uU nicht sichtbar. Iwo in den Untiefen gibts noch Visibilities dafür :'-)
- * Bspw: Hochschule für Dozent nicht sichtbar.
+ * 
  * @param StdClass $user the affected user
  * @return return array in form title => info-value
  */
@@ -81,7 +79,7 @@ function _section_profile_get_profile_data($user) {
     $hs_items = field_get_items('profile2', $profile_student, 'field_hochschule');
     $persons_hss = array();
     foreach ($hs_items as $hs_itm) {
-        $persons_hss[] = $hs_itm['taxonomy_term']->name;
+        $persons_hss[] = taxonomy_term_load($hs_itm['tid'])->name;
     }
     $data['public']['Hochschule'] = implode(", ", $persons_hss);
 
