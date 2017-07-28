@@ -3,8 +3,7 @@
 (function($) {
     Drupal.behaviors.annvid.stream = {
         attach: function(context, settings) {
-            jQuery(".nm_stream .nm-stream-main-body", context).convertTextToLinks();
-            jQuery(".nm-stream-comment .nm-stream-main-body", context).convertTextToLinks();
+            jQuery(".nm-stream-main-body", context).convertTextToLinks();
             jQuery(".nm-stream-node-form").html("Beispiel: Ab 14:30 wird Seite 8 im Skript erklärt");
 
             //prefille textareas bei focus darauf

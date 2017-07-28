@@ -36,6 +36,8 @@ NMStreamComment.prototype.init_bind_events = function () {
     this.init_bind_comment_delete_event();
     this.init_bind_comment_cancel_event();
 
+    this.nm_stream.init_bindings_callback(this.container);
+
 };
 
 /**
@@ -94,7 +96,7 @@ NMStreamComment.prototype.init_bind_commment_submit_button_event = function () {
 
             $.post(url, data, function(data) {
                 if (data.update_status === 2) {
-                    self.nm_stream.nm_stream_handle_node_updates(data);
+                    self.nm_stream.refresh(data);
                 }
 
                 if (data.status === 1) {

@@ -12,8 +12,8 @@
      * Registre JQuery Plugin
      * @constructor
      */
-    $.fn.NMStream = function() {
-        nm_stream = new NMStream(this);
+    $.fn.NMStream = function(settings) {
+        nm_stream = new NMStream(this, settings);
     };
 
 
@@ -21,10 +21,13 @@
 
     Drupal.behaviors.nm_stream = {
 
-        attach: function(context, settings) {
+        attach: function(context, options) {
 
             $('.pane-nm-stream').once('nm_stream', function() {
-                $(this).NMStream();
+                var settings = {
+                    init_bindings_callback: Drupal.attachBehaviors
+                };
+                $(this).NMStream(settings);
             });
 
 
@@ -37,7 +40,7 @@
      * @param context
      * @constructor
      */
-    function NMStream(context) {
+    function NMStream(context, options) {
 
         this.container = context;
         this.node_load_url = '/nm_stream/node/%nid/load';
@@ -59,6 +62,8 @@
         this.post_spinner_white = null;
         this.post_spinner_black = null;
         this.post_spinner_load = null;
+
+        this.init_bindings_callback = options.init_bindings_callback;
 
         this.init();
     }
@@ -452,6 +457,7 @@
                     });
                 }
             }
+
         }
 
         //apply changes
@@ -485,6 +491,7 @@
                 }
             }
         }
+
     };
 
 

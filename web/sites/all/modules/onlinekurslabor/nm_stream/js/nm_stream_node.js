@@ -33,9 +33,11 @@ NMStreamNode.prototype.init_bind_events = function () {
 
     this.init_bind_attachment_delete_event();
 
-
     //initilizing comments
     this.init_bind_nm_stream_comments();
+
+    //bind e.g. Drupal.attach behavior
+    this.nm_stream.init_bindings_callback(this.container);
 
 };
 
@@ -99,6 +101,7 @@ NMStreamNode.prototype.init_bind_post_submit_event = function () {
                         self.nm_stream.init_multifile_upload();
                         self.nm_stream.init_privacy_widget();
 
+
                     }
                 }
 
@@ -135,9 +138,10 @@ NMStreamNode.prototype.init_bind_post_submit_event = function () {
                 self.nm_stream.init_multifile_upload();
                 self.nm_stream.init_privacy_widget();
 
-
             } else {
                 //error handling todo here
+                console.log("error");
+                console.log(data);
 
             }
             //enable button
@@ -275,7 +279,6 @@ NMStreamNode.prototype.init_bind_post_edit_event = function () {
                     self.nm_stream.init_privacy_widget();
                 }
 
-                //append new node
 
             } else {
                 //error handling todo here
@@ -454,7 +457,7 @@ NMStreamNode.prototype.init_bind_attachment_delete_event = function () {
 
                             //check if node updates were made in meantime
                             if (data.update_status === 2) {
-                                self.nm_stream.nm_stream_handle_node_updates(data);
+                                self.nm_stream.refresh(data);
                             }
 
                         });
