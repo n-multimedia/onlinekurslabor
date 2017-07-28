@@ -242,6 +242,9 @@
                             //attach behavior
                             new NMStreamNode(self, new_node);
 
+                        }else {
+                            console.log("error:");
+                            console.log(data);
                         }
 
                     }
@@ -416,6 +419,8 @@
 
                         } else {
                             //error handling todo here
+                            console.log("error:");
+                            console.log(data);
                         }
                     });
 
@@ -448,7 +453,7 @@
                 }
             }
         }
-        
+
         //apply changes
         if (typeof data.changed_comments !== 'undefined') {
             //some comments were changed
@@ -546,6 +551,8 @@
 
                 if (data.update_status == 0) {
                     //error
+                    console.log("error:");
+                    console.log(data);
                 } else if (data.update_status == 2) {
                     //new data available
                     self.refresh(data);
