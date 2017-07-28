@@ -130,7 +130,6 @@ NMStreamNode.prototype.init_bind_post_submit_event = function () {
                 //display updated post
                 var updated_node = $(form_container).closest('.views-row').html($(data.updated_node).fadeIn()).find(".nm-stream-node-container");
                 //attach behavior
-                console.log(updated_node);
                 self.container = updated_node;
                 self.init_bind_events();
                 self.nm_stream.init_multifile_upload();
