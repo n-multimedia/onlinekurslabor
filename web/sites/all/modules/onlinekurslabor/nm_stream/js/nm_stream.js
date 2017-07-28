@@ -241,7 +241,7 @@
                         //add new node
                         if (data.status === 1) {
                             //display new Post
-                            new_node = ($(data.node)).insertBefore($('.pane-nm-stream .view-content .views-row').first()).fadeIn().find(".nm-stream-node-container");
+                            var new_node = ($(data.node)).insertBefore($('.pane-nm-stream .view-content .views-row').first()).fadeIn().find(".nm-stream-node-container");
                             //fix, new nodes could not be edited without views-row div around
 
                             //attach behavior
@@ -301,7 +301,7 @@
                     form_container.find('textarea').val('');
 
                     //prepend node
-                    new_node = ($(data.node)).insertBefore($('.pane-nm-stream .view-content .views-row').first()).fadeIn().find(".nm-stream-node-container");
+                    var new_node = ($(data.node)).insertBefore($('.pane-nm-stream .view-content .views-row').first()).fadeIn().find(".nm-stream-node-container");
 
 
                     //attach behavior
