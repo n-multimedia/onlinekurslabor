@@ -393,8 +393,9 @@ NMStreamNode.prototype.init_bind_nm_stream_comments = function () {
 
     //initialize dummy comment text field if no comments are available yet
     //that's not very neat, but works ;)
-    var dummy_comment = new NMStreamComment(self.nm_stream, self, null);
-    dummy_comment.init_bind_dummy_textfield_event();
+    var dummy_comment = new NMStreamComment(self.nm_stream, self, self.container);
+
+
 
 };
 

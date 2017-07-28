@@ -18,6 +18,7 @@ function NMStreamComment(nm_stream, node, context) {
     this.state = 0;
     this.container = $(context);
 
+
     //bind events
     this.init_bind_events();
 }
@@ -43,7 +44,7 @@ NMStreamComment.prototype.init_bind_events = function () {
 NMStreamComment.prototype.init_bind_dummy_textfield_event = function () {
     var self = this;
     //bind click to dummy text field
-    $(".nm-stream-comments-form").once('nm_stream').click(function() {
+    self.container.find(".nm-stream-comments-form").once('nm_stream').click(function() {
         var form_container = this;
         $(this).find('.nm-stream-comment-form').hide();
         var form = $(this).find('form');
@@ -69,7 +70,7 @@ NMStreamComment.prototype.init_bind_commment_submit_button_event = function () {
 
 
     //bind click to post button
-    $('.nm-stream-comment-submit').once('nm_stream').click(function() {
+    self.container.find('.nm-stream-comment-submit').once('nm_stream').click(function() {
         //submit new comment
         var post_button = $(this)
 
@@ -228,7 +229,7 @@ NMStreamComment.prototype.init_bind_comment_edit_event = function () {
     var self = this;
 
     //bind click to edit button
-    this.container.closest(".nm-stream-comments").find('.nm-stream-comment-edit').once('nm_stream').click(function() {
+    self.container.closest(".nm-stream-comments").find('.nm-stream-comment-edit').once('nm_stream').click(function() {
         var edit_button = $(this);
 
         var comment_container = edit_button.closest('.nm-stream-comment');
@@ -282,7 +283,7 @@ NMStreamComment.prototype.init_bind_comment_edit_event = function () {
 NMStreamComment.prototype.init_bind_comment_delete_event = function () {
     var self = this;
 
-    this.container.find('.nm-stream-comment-delete').once('nm_stream').click(function() {
+    self.container.find('.nm-stream-comment-delete').once('nm_stream').click(function() {
         var delete_button = $(this)
         var comment_container = delete_button.closest('.nm-stream-comment');
         var regresult = comment_container.attr('id').split('-');
@@ -347,7 +348,7 @@ NMStreamComment.prototype.init_bind_comment_cancel_event = function () {
     var self = this;
 
     //bind click to cancel button
-    self.container.closest(".nm-stream-comments").find('.nm-stream-comment-cancel').once('nm_stream').click(function() {
+    self.container.find('.nm-stream-comment-cancel').once('nm_stream').click(function() {
         if ($(this).closest('.nm-stream-edit-comment-actions').length === 0) {
             //add form
             $(this).closest('.nm-stream-node-container').find('.nm-stream-comment-form').show();
