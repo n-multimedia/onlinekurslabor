@@ -1136,7 +1136,8 @@ function nm_stream_preprocess_node(&$vars) {
 
     $body = field_get_items('node', $node, 'body');
     $vars['nm_modified'] = ($node->created != $node->changed) ? 'geändert am ' . format_date($node->changed) : '';
-    $vars['nm_body'] = drupal_render(field_view_value('node', $node, 'body', $body[0]));
+    $field_body_value = field_view_value('node', $node, 'body', $body[0]);
+    $vars['nm_body'] = drupal_render($field_body_value);
     $vars['nm_actions'] = _nm_stream_get_action_links($node);
     $vars['nm_num_comments'] = (isset($node->comment_count)) ? $node->comment_count : 0;
     $vars['nm_attachments'] = _nm_stream_render_node_attachments($node);
