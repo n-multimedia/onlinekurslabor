@@ -1478,14 +1478,16 @@ function nm_stream_get_environment() {
  */
 function _nm_stream_get_node_environment($stream_node) {
     $environment = array();
+    dpm("here");
 
     // _nm_stream_get_node_environment(node_load(5342));
     $container = $stream_node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
     $context = $stream_node->field_nm_stream_context[LANGUAGE_NONE][0]['target_id'];
     $environment['context'] = node_load($context);
-    $environment['context']->parent = node_load($environment['context']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+
+    $environment['context']->parent = _custom_general_get_group(node_load($environment['context']), true);
     $environment['container'] = node_load($container);
-    $environment['container']->parent = node_load($environment['container']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+    $environment['container']->parent = _custom_general_get_group(node_load($environment['container']), true);
     return $environment;
 }
 
