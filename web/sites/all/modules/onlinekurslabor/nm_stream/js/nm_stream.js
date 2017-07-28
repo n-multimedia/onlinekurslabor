@@ -448,6 +448,7 @@
                 }
             }
         }
+        
 
         //apply changes
         if (typeof data.changed_comments !== 'undefined') {
