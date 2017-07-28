@@ -1478,7 +1478,6 @@ function nm_stream_get_environment() {
  */
 function _nm_stream_get_node_environment($stream_node) {
     $environment = array();
-    dpm("here");
 
     // _nm_stream_get_node_environment(node_load(5342));
     $container = $stream_node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
