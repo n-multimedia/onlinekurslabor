@@ -3039,6 +3039,12 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['relationships']['field_semester_tid']['table'] = 'field_data_field_semester';
   $handler->display->display_options['relationships']['field_semester_tid']['field'] = 'field_semester_tid';
   $handler->display->display_options['relationships']['field_semester_tid']['required'] = TRUE;
+  /* Relationship: OG membership: OG Roles from membership */
+  $handler->display->display_options['relationships']['og_users_roles']['id'] = 'og_users_roles';
+  $handler->display->display_options['relationships']['og_users_roles']['table'] = 'og_membership';
+  $handler->display->display_options['relationships']['og_users_roles']['field'] = 'og_users_roles';
+  $handler->display->display_options['relationships']['og_users_roles']['relationship'] = 'og_membership_rel_group';
+  $handler->display->display_options['relationships']['og_users_roles']['required'] = TRUE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: User: Uid */
   $handler->display->display_options['arguments']['uid']['id'] = 'uid';
@@ -3070,6 +3076,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['filters']['title']['table'] = 'node';
   $handler->display->display_options['filters']['title']['field'] = 'title';
   $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['group'] = 1;
   $handler->display->display_options['filters']['title']['exposed'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['label'] = 'Kurs suchen';
@@ -3095,6 +3102,23 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     2 => array(),
     3 => array(),
   );
+  /* Filter criterion: OG user roles: Role Name */
+  $handler->display->display_options['filters']['name']['id'] = 'name';
+  $handler->display->display_options['filters']['name']['table'] = 'og_role';
+  $handler->display->display_options['filters']['name']['field'] = 'name';
+  $handler->display->display_options['filters']['name']['relationship'] = 'og_users_roles';
+  $handler->display->display_options['filters']['name']['value'] = array(
+    'kurs-dozent' => 'kurs-dozent',
+    'kurs-student' => 'kurs-student',
+    'kurs-tutor' => 'kurs-tutor',
+  );
+  $handler->display->display_options['filters']['name']['group'] = 1;
+  $handler->display->display_options['filters']['name']['expose']['operator_id'] = 'name_op';
+  $handler->display->display_options['filters']['name']['expose']['label'] = 'Role Name';
+  $handler->display->display_options['filters']['name']['expose']['operator'] = 'name_op';
+  $handler->display->display_options['filters']['name']['expose']['identifier'] = 'name';
+  $handler->display->display_options['filters']['name']['reduce_duplicates'] = TRUE;
+  $handler->display->display_options['pane_description'] = 'view which shows user\'s coursememberships';
   $handler->display->display_options['allow']['use_pager'] = 'use_pager';
   $handler->display->display_options['allow']['items_per_page'] = 'items_per_page';
   $handler->display->display_options['allow']['offset'] = 0;
@@ -3486,8 +3510,11 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('‹'),
     t('›'),
     t('last »'),
+    t('OG Roles from OG membership'),
     t('Kurs suchen'),
     t('Titel'),
+    t('Role Name'),
+    t('view which shows user\'s coursememberships'),
     t('Courses Offer'),
     t('Kursangebot'),
     t('Kursenddatum'),

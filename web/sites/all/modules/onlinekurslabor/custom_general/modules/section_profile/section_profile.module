@@ -54,9 +54,7 @@ function _section_profile_get_profile_edit_btn($user_id) {
 
 /**
  * get Infos about a user stored in profile.
- * ###ACHTUNG###
- * Funktion funktioniert. ABER: Trotz hinterlegten Daten uU nicht sichtbar. Iwo in den Untiefen gibts noch Visibilities dafür :'-)
- * Bspw: Hochschule für Dozent nicht sichtbar.
+ * 
  * @param StdClass $user the affected user
  * @return return array in form title => info-value
  */
@@ -81,7 +79,7 @@ function _section_profile_get_profile_data($user) {
     $hs_items = field_get_items('profile2', $profile_student, 'field_hochschule');
     $persons_hss = array();
     foreach ($hs_items as $hs_itm) {
-        $persons_hss[] = $hs_itm['taxonomy_term']->name;
+        $persons_hss[] = taxonomy_term_load($hs_itm['tid'])->name;
     }
     $data['public']['Hochschule'] = implode(", ", $persons_hss);
 
@@ -102,3 +100,42 @@ function _section_profile_get_profile_data($user) {
 
     return $data;
 }
+
+/**
+ * Implements section_profile_views_pre_view().
+ */
+function section_profile_views_pre_view(&$view, $display_id, $args) {
+    //nur dieser hook geht, um filters anzupassen
+    global $user;
+
+
+    //geht um den Block "angebotene Kurse" auf "Profil"
+    if ($view->name === 'courses_kurse_bersicht' && $view->current_display === 'my_courses_small') {
+        $user_watched_id = $view->args[0];
+        $current_user_id = $user->uid;
+        $user_watched = user_load($user_watched_id);
+
+        //prüft auf den Block "angebotene Kurse"
+        if (in_array(NM_ROLE_DOZENT, $user_watched->roles) && !array_intersect(array(NM_ROLE_ADMIN, NM_ROLE_MODERATOR), $user->roles)) {
+ 
+            //lade die filters des views
+            $filters = $view->display_handler->get_option('filters');
+
+
+            //setze neuen status-filter (nur veröffentlicht, keine Entwürfe!)
+            $filters['status'] = array('id' => 'status', 'table' => 'node', 'field' => 'status', 'relationship' => 'none', 'group_type' => 'group', 'ui_name' => 'nicht gewähltes "veröffentlicht" sollt eigentlich beides akzeptieren', 'operator' => '=', 'value' => '1', 'group' => 1, 'exposed' => false, 'expose' => array('operator_id' => false, 'label' => '', 'description' => '', 'use_operator' => false, 'operator_label' => '', 'operator' => '', 'identifier' => '', 'required' => false, 'remember' => false, 'multiple' => false, 'remember_roles' => array(2 => 2,),), 'is_grouped' => false, 'group_info' => array('label' => '', 'description' => '', 'identifier' => '', 'optional' => true, 'widget' => 'select', 'multiple' => false, 'remember' => 0, 'default_group' => 'All', 'default_group_multiple' => array(), 'group_items' => array(),),);
+
+            //coursemembership-filter
+            $courserole_filter = &$filters['name'];
+
+            //nur kurse, in denen betrachtete person dozent ist
+            unset($courserole_filter['value']['kurs-student']);
+            unset($courserole_filter['value']['kurs-tutor']);
+            
+            $filters['name'] = $courserole_filter;
+            //override filter
+            $view->display_handler->override_option('filters', $filters);
+        }
+    }
+}
+ 
