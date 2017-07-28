@@ -170,7 +170,7 @@ function section_home_panels_pane_content_alter($content, $pane, $args, $context
             $content->title = null;
         }
 
-        if ($content->delta === 'messages_list-messages_unread') {
+        if (@$content->delta === 'messages_list-messages_unread') {
 
             $content->content['#markup'] = _section_home_get_rendered_tiitle($content->title, array(_section_home_getMoreTag('messages', 'add'))) . $content->content['#markup'];
             $content->title = null;
