@@ -72,15 +72,19 @@ function _section_profile_get_profile_data($user) {
     //profildaten
     $data['private']['E-Mail'] = l($user->mail, 'mailto:'.$user->mail) ;
     $birthday_view = field_view_field('profile2', $profile, 'field_birthday', 'short');
-    $data['private']['Geburtstag'] = $birthday_view [0]['#markup'];
+    if(count($birthday_view))
+    {
+        $data['private']['Geburtstag'] = $birthday_view [0]['#markup'];
+    }
 
     $profile_student = profile2_load_by_user($user, 'student');
 
     //hochschule
     $hs_items = field_get_items('profile2', $profile_student, 'field_hochschule');
     $persons_hss = array();
-    foreach ($hs_items as $hs_itm) {
-        $persons_hss[] = taxonomy_term_load($hs_itm['tid'])->name;
+    foreach ((array)$hs_items as $hs_itm) {
+        if(isset($hs_itm['tid']))
+            $persons_hss[] = taxonomy_term_load($hs_itm['tid'])->name;
     }
     $data['public']['Hochschule'] = implode(", ", $persons_hss);
 
