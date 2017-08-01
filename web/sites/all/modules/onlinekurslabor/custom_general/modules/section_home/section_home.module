@@ -8,6 +8,7 @@ function section_home_page_build(&$page) {
  if( drupal_is_front_page() )
     {
     drupal_add_css(drupal_get_path('module', 'section_home') . '/assets/css/section_home.css');
+    drupal_add_js(drupal_get_path('module', 'section_home') . '/assets/js/section_home.js');
     }
 }
 
@@ -125,7 +126,7 @@ function _section_home_getMoreTag($variant, $type) {
  */
 function _section_home_get_search_toggle_tag($identifier)
 {
-    return '<a href=# onclick="jQuery(\'#'.$identifier.'\').toggle(200); return false;" title="'.t('Search course').'"><span class="glyphicon glyphicon-search"></span></a>';
+    return '<a href=#   data-toggle="collapse" data-target="#'.$identifier.'" title="'.t('Search course').'"><span class="glyphicon glyphicon-search"></span></a>';
 }
 
 /**

@@ -82,11 +82,6 @@ h2.pane-title
     margin-top:0;
 }
 
-/*nach-kurs-suchen-form etc wird zunächst ausgeblendet und per klick wieder angezeigt*/
-#views-exposed-form-courses-kurse-bersicht-my-courses-small
-{
-    display:none;
-}
 
 /*titel wie meine Kurse und icon+ auf startsetie*/
 .home_title_container h3.home_title{
