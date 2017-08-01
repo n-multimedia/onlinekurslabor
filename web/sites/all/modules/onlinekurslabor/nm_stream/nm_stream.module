@@ -1383,7 +1383,7 @@ function nm_stream_get_environment() {
   if (empty($active_annvid)) {
     $active_annvid = node_load(arg(2));
   }
-  if ($active_annvid->type == ANNVID_CONTENTTYPE) {
+  if (!empty($active_annvid) && $active_annvid->type == ANNVID_CONTENTTYPE) {
     $context['container'] = $active_annvid;
     if(!empty($context['context']->og_group_ref))
         $context['context']->parent = node_load($context['context']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
