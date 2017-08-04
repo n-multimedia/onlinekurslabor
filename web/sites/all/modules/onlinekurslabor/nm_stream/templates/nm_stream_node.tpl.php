@@ -57,7 +57,7 @@
     <div class="nm-stream-comments-section">
       <div class="row">
         <div class="nm-stream-comments col-xs-offset-1 col-xs-11">
-          <div class="nm-stream-node-information col-xs-12"><?php echo $comments_information; ?></div>
+          <div class="nm-stream-node-information"><?php echo $comments_information; ?></div>
           <div class="nm-stream-comments-form"><?php echo $comments_form; ?></div>
           <div class="nm-stream-comments-container"><?php echo $comments_container; ?></div>   
         </div>
