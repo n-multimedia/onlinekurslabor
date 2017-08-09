@@ -30,7 +30,6 @@ function section_home_user_login(&$edit, $account) {
  * @return String $html
  */
 function _section_home_getRenderedStream() {
- 
 
     $view = _section_home_getView('nm_stream','panel_pane_1');
      
@@ -77,8 +76,7 @@ function _section_home_getRenderedDomains() {
  * @return String $html
  */    
 function _section_home_getRenderedCourses() {
-    //css: nicht ganz sauber, aber tut fuers erste...
-    drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream.css');
+  
     $view = _section_home_getView('courses_kurse_bersicht', 'my_courses_small');
     $html = _section_home_get_rendered_tiitle($view->get_title(), array(_section_home_get_search_toggle_tag('views-exposed-form-courses-kurse-bersicht-my-courses-small'),_section_home_getMoreTag('courses', 'add')));
     $html .=  _section_home_renderView($view, 'my_courses_small') . _section_home_getMoreTag('courses', 'all');

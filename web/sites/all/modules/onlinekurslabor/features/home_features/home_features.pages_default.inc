@@ -672,7 +672,7 @@ return theme(\'nm_fancy_box\', $vars);
     'title' => 'Aktivität',
     'title_heading' => 'h2',
     'body' => '<div class="col-md-4 col-md-push-8 col-xs-12"><?php echo _section_home_getRenderedActivity(); ?></div>
-<div class="col-md-8  col-md-pull-4 col-xs-12"><?php echo _section_home_getRenderedStream(); ?></div>',
+<div class="col-md-8  col-md-pull-4 col-xs-12 pane-nm-stream"><?php echo _section_home_getRenderedStream(); ?></div>',
     'format' => 'php_code',
     'substitute' => 1,
   );
