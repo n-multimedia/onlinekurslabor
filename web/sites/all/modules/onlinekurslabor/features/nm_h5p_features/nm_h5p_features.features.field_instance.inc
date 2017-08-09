@@ -72,7 +72,7 @@ function nm_h5p_features_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'og_domain_ref',
-    'label' => 'Außerdem verfügbar in',
+    'label' => 'Zusätzlich verfügbar in',
     'required' => 0,
     'settings' => array(
       'behaviors' => array(
@@ -197,10 +197,10 @@ function nm_h5p_features_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Außerdem verfügbar in');
   t('Comment');
   t('Dieser Inhalt wird zusätzlich zu diesem Lehrtext auch in den ausgewählten Texten verfügbar');
   t('Groups audience');
+  t('Zusätzlich verfügbar in');
 
   return $field_instances;
 }
