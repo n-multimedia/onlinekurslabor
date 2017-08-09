@@ -162,7 +162,7 @@ function _section_home_getRenderedMessages() {
  */
 function section_home_panels_pane_content_alter($content, $pane, $args, $contexts) {
 
-    if( drupal_is_front_page() )
+    if( drupal_is_front_page() && is_object($content))
     {
         // Don't display titles on some panes.
         if (in_array($content->title, array(t('Activity'), t('My events')))) {
