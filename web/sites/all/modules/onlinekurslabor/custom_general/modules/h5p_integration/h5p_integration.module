@@ -141,6 +141,24 @@ function h5p_integration_node_view($node, $view_mode, $langcode) {
   }
 }
 
+
+/**
+ * hook fuer das h5p-content-formular
+ * entfernt aktuellen lehrtext aus "zusätzlicher-lehrtext-feld" wegen field-bug
+ */
+function h5p_integration_form_h5p_content_node_form_alter(&$form, &$form_state, $form_id) {
+    //hole aktuelle lt-nid, falls per prefill gesetzt
+    if(!empty($form['og_group_ref'][LANGUAGE_NONE][0]['default']['#default_value']))
+    {
+        $default_group = $form['og_group_ref'][LANGUAGE_NONE][0]['default']['#default_value'][0];
+        //entferne aus zusätzlich-liste
+        unset($form['og_domain_ref'][LANGUAGE_NONE][0]['default']['#options'][$default_group]);
+        /*im grunde kann man nun auch noch das autocomplete-feld filtern. Hoff aber, admins sin nicht so doof.*/
+    }
+    
+}
+  
+
 /**
  * Filter tips callback for foo filter.
  *
