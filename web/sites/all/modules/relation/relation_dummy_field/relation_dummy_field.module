@@ -103,6 +103,9 @@ function relation_dummy_field_field_formatter_info() {
  */
 function relation_dummy_field_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
+  if (!user_access('access relations')) {
+    return $element;
+  }
   list($entity_id) = entity_extract_ids($entity_type, $entity);
   switch ($display['type']) {
     case 'relation_default':

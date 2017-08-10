@@ -827,7 +827,10 @@ function file_entity_edit_submit($form, &$form_state) {
     $replacement = $form_state['values']['replace_upload'];
     // Move file from temp to permanent home.
     if (pathinfo($replacement->uri, PATHINFO_EXTENSION) == pathinfo($file->uri, PATHINFO_EXTENSION)) {
-        file_unmanaged_copy($replacement->uri, $file->uri, FILE_EXISTS_REPLACE);
+      if ($new_file_uri = file_unmanaged_copy($replacement->uri, $file->uri, FILE_EXISTS_REPLACE)) {
+        // Remove temporary file.
+        file_delete($replacement);
+      }
     } else {
       $destination_uri = rtrim($file->uri, drupal_basename($file->uri)) . drupal_basename($replacement->uri);
       $replace_mode = $destination_uri == $file->uri ? FILE_EXISTS_REPLACE : FILE_EXISTS_RENAME;
@@ -839,8 +842,8 @@ function file_entity_edit_submit($form, &$form_state) {
 
         // Update if the uri target has changed.
         if ($new_file_uri != $file->uri) {
-         // Store the original file uri to delete if save is successful.
-         $orphaned_uri = $file->uri;
+          // Store the original file uri to delete if save is successful.
+          $orphaned_uri = $file->uri;
 
           // Update file entity uri.
           $file->uri = $new_file_uri;

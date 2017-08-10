@@ -62,9 +62,17 @@ class RelationDummyFieldTestCase extends RelationTestCase {
     $this->drupalGet('node/' . $this->node1->nid);
     $this->assertNoRaw($this->node4->title, 'Node 4 title is not found');
     $this->createDummyField();
+    // Assert that user without access relations permission does not see the 
+    // endpoint label.
+    $test_user = $this->drupalCreateUser(array());
+    $this->drupalLogin($test_user);
     $this->drupalGet('node/' . $this->node1->nid);
+    $this->assertNoRaw($this->node4->title, 'Node 4 title is not found');
     // As we have asserted Node 4 title not being on the page the only way this
     // click can succeed if the field formatter put it there.
+    $test_user = $this->drupalCreateUser(array('access relations'));
+    $this->drupalLogin($test_user);
+    $this->drupalGet('node/' . $this->node1->nid);
     $this->clickLink($this->node4->title);
   }
 
