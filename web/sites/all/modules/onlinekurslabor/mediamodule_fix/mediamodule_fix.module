@@ -6,7 +6,7 @@
  */
 function mediamodule_fix_page_build(&$page) {
     $module =  system_get_info('module', 'media') ;
-    if($module['version'] != "7.x-2.9")
+    if($module['version'] != "7.x-2.10")
         drupal_set_message ("Beware!! Do we still need mediamodule_fix?", 'warning'); //description: see .js
  drupal_add_js(drupal_get_path('module', 'mediamodule_fix') .'/js/mediamodule_fix.js');
     
