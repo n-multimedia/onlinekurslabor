@@ -455,7 +455,7 @@ function _media_wysiwyg_generate_tagMap($text) {
   // between function calls. Since media_process_form is multiple times
   // with same form, this function is also called multiple times.
   static $tagmap = array();
-  preg_match_all("/\[\[.*?\]\]/s", $text, $matches, PREG_SET_ORDER);
+  preg_match_all("/\[\[(?!nid:).*?\]\]/s", $text, $matches, PREG_SET_ORDER);
   foreach ($matches as $match) {
     // We see if tagContent is already in $tagMap, if not we add it
     // to $tagmap.  If we return an empty array, we break embeddings of the same
