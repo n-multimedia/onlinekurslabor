@@ -427,10 +427,14 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
 
         $testvar = $users_last_loaded_comment['changed']-10;
         //delete double entries
-        $double_key = array_intersect_key($results_new_comments, $_SESSION['nm_stream']['comments']);
-        foreach($double_key as $key => $item) {
-          unset($results_new_comments[$key]);
+        if(!empty($_SESSION['nm_stream']['comments']))
+        {
+            $double_key = array_intersect_key($results_new_comments, $_SESSION['nm_stream']['comments']);
+            foreach($double_key as $key => $item) {
+              unset($results_new_comments[$key]);
+            }
         }
+        
 
 
         if (empty($results_new_comments)) {
@@ -464,11 +468,14 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
 
       //check if changes were made to comments the user is listening to
       $cids = array();
-      foreach ($_SESSION['nm_stream']['comments'] as $item) {
-        $cids[$item['cid']] = $item['cid'];
-      }
+      if (!empty($_SESSION['nm_stream']['comments'])) {
+                foreach ($_SESSION['nm_stream']['comments'] as $item) {
+                    $cids[$item['cid']] = $item['cid'];
+                }
+            }
 
-      if (!empty($cids)) {
+
+            if (!empty($cids)) {
         $query3 = db_select('comment', 'c');
         $query3->addField('c', 'cid');
         $query3->addField('c', 'nid');
