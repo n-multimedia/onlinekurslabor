@@ -2550,77 +2550,6 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_news-field_attachments'.
-  $field_instances['node-courses_news-field_attachments'] = array(
-    'bundle' => 'courses_news',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'file',
-        'settings' => array(),
-        'type' => 'file_default',
-        'weight' => 1,
-      ),
-      'nm_stream' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_attachments',
-    'label' => 'Anhang',
-    'required' => 0,
-    'settings' => array(
-      'description_field' => 0,
-      'file_directory' => 'course_news',
-      'file_extensions' => 'png gif jpg jpeg txt pdf ppt doc docx',
-      'max_filesize' => '',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'media',
-      'settings' => array(
-        'allowed_schemes' => array(
-          'feed' => 0,
-          'http' => 0,
-          'https' => 0,
-          'oembed' => 0,
-          'private' => 'private',
-          'public' => 0,
-        ),
-        'allowed_types' => array(
-          'application' => 0,
-          'audio' => 'audio',
-          'document' => 'document',
-          'image' => 'image',
-          'video' => 'video',
-        ),
-        'browser_plugins' => array(
-          'domain_media--media_browser_1' => 0,
-          'media_default--media_browser_1' => 0,
-          'media_default--media_browser_my_files' => 'media_default--media_browser_my_files',
-          'media_internet' => 'media_internet',
-          'remote_file' => 0,
-          'upload' => 'upload',
-        ),
-        'progress_indicator' => 'throbber',
-      ),
-      'type' => 'media_generic',
-      'weight' => 3,
-    ),
-  );
-
   // Exported field_instance: 'node-courses_news-og_group_ref'.
   $field_instances['node-courses_news-og_group_ref'] = array(
     'bundle' => 'courses_news',
@@ -3162,7 +3091,6 @@ function nm_section_courses_features_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Anhang');
   t('Arbeitsaufwand');
   t('Aufgabe');
   t('Bearbeitungszeitraum');
