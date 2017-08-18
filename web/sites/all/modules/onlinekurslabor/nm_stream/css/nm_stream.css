@@ -57,7 +57,7 @@ Project Blog adaptions
     padding: 0 !important;
 }
 .nm-stream-left{
-
+    padding: 0 !important;
 }
 
 .nm-stream-right {
@@ -388,11 +388,11 @@ infinite scroll
     text-align:right;
 }
 /*specialfixes bootstrap3*/
-.nm-stream-middle.col-md-5, .nm-stream-left.col-md-1, .nm-stream-top .col-md-12
+.nm-stream-middle.col-xs-5, .nm-stream-left.col-xs-1, .nm-stream-top .col-xs-12
 {
     padding:0px;
 }
-.nm-stream-main.col-md-offset-1.col-md-11
+.nm-stream-main.col-xs-offset-1.col-xs-11
 {
     padding-left: 15px !important;
 }

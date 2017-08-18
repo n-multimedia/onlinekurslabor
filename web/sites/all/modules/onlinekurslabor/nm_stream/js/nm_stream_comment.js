@@ -259,7 +259,7 @@ NMStreamComment.prototype.init_bind_comment_edit_event = function () {
                     var edit_form = comment_container.find('.nm-stream-main').prepend($(data.comment_edit_form));
 
                     edit_form.find('textarea').autosize();
-                    
+
                     self.init_bind_events();
 
 

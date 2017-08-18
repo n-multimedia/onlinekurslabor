@@ -15,7 +15,7 @@
 
 <div class="nm-stream-comment" id="nm-stream-comment-<?php echo $nm_cid; ?>">
   <div class="row">
-    <div class="nm-stream-top col-xs-12">
+    <div class="nm-stream-top">
       <div class="row">
         <div class="nm-stream-left col-xs-1"><?php echo $nm_author_pic; ?></div>
         <div class="col-xs-11">
@@ -38,8 +38,8 @@
       <?php echo $nm_author_pic; ?>
     </div>
     <div class="col-xs-11">
-      <div class="nm-stream-main col-xs-12">
-        <div class="nm-stream-main-body col-xs-12"><?php echo $nm_body; ?></div>
+      <div class="nm-stream-main">
+        <div class="nm-stream-main-body"><?php echo $nm_body; ?></div>
       </div>
     </div>
   </div>
