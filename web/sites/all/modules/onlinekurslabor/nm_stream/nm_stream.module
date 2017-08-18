@@ -1392,10 +1392,12 @@ function nm_stream_get_environment() {
   }
   if (!empty($active_annvid) && $active_annvid->type == ANNVID_CONTENTTYPE) {
     $context['container'] = $active_annvid;
-    if(!empty($context['context']->og_group_ref))
-        $context['context']->parent = node_load($context['context']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
-    if(!empty($context['container']->og_group_ref))
-        $context['container']->parent = node_load($context['container']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+    if (!empty($context['context']->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
+      $context['context']->parent = node_load($context['context']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+    }
+    if (!empty($context['container']->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
+      $context['container']->parent = node_load($context['container']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+    }
     return $context;
   }
 
@@ -1464,10 +1466,13 @@ function nm_stream_get_environment() {
   //call alter hooks
   //drupal_alter('nm_stream_context', $context);
   //lade parent-objekte
-  if(!empty($context['context']->og_group_ref))
+  if (!empty($context['context']->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
     $context['context']->parent = node_load($context['context']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
-  if(!empty($context['container']->og_group_ref))
-    $context['container']->parent =  node_load($context['container']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+  }
+  if (!empty($context['container']->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
+    $context['container']->parent = node_load($context['container']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+  }
+
     
   return $context;
 }
