@@ -1787,7 +1787,7 @@ function _nm_stream_get_user_pic($account) {
 function _nm_stream_get_action_links($content) {
     //global $user;
 
-    $tpl = '<a href="#" class="nm-stream-%s-%s btn btn-xs"><i class="glyphicon glyphicon-%s"></i>&nbsp;%s</a>';
+    $tpl = '<a href="#" class="nm-stream-%s-%s"><i class="glyphicon glyphicon-%s"></i>&nbsp;%s</a>';
 
     if (isset($content->node_type)) {
         $type = 'comment';

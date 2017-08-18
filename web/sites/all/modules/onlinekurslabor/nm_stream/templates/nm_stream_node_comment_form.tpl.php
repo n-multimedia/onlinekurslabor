@@ -26,19 +26,23 @@
           <div class="nm-stream-left col-sm-1 col-xs-12"><?php echo $nm_author_pic; ?></div>
           <div class="col-sm-11 col-sm-offset-0 col-xs-12">
             <div class="row">
-              <div class="nm-stream-comment-form">
-                <?php echo $nm_comment_form_dummy; ?>
-              </div>
-              <form id="nm-stream-add-comment-<?php echo $nm_node_id ?>" >
-                <textarea class="nm-stream-comment-body  form-control form-textarea"></textarea>
-                <div class="row">
-                  <div class="nm-stream-add-comment-actions">
-                    <input class="nm-stream-form-token" type="hidden" name="form_token" value="<?php echo drupal_get_token(); ?>" />
-                    <button class="nm-stream-comment-cancel btn btn-danger"><?php echo t('Cancel'); ?></button>
-                    <button class="nm-stream-comment-submit btn btn-primary"><?php echo t('Post'); ?></button>
+                <div class="col-xs-12 nm-stream-comment-form-padding">
+                    <div class="nm-stream-comment-form">
+                      <?php echo $nm_comment_form_dummy; ?>
                   </div>
-                </div>
-              </form>
+              </div>
+              <div class="col-xs-12 nm-stream-comment-form-padding">
+                <form id="nm-stream-add-comment-<?php echo $nm_node_id ?>" >
+                  <textarea class="nm-stream-comment-body  form-control form-textarea"></textarea>
+                  <div class="row">
+                    <div class="nm-stream-add-comment-actions">
+                      <input class="nm-stream-form-token" type="hidden" name="form_token" value="<?php echo drupal_get_token(); ?>" />
+                      <button class="nm-stream-comment-cancel btn btn-danger"><?php echo t('Cancel'); ?></button>
+                      <button class="nm-stream-comment-submit btn btn-primary"><?php echo t('Post'); ?></button>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>

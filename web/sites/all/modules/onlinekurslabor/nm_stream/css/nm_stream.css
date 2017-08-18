@@ -166,6 +166,10 @@ Project Blog adaptions
     font-size:12px;
 }
 
+.nm-stream-comment-form-padding {
+    padding-right: 0 !important;
+}
+
 /*
 ADD NODE FORM
 */

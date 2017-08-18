@@ -17,8 +17,8 @@
   <div class="row">
     <div class="nm-stream-top col-xs-12">
       <div class="row">
-        <div class="nm-stream-left col-xs-1 col-sm-1"><?php echo $nm_author_pic; ?></div>
-        <div class="col-xs-10 col-sm-11">
+        <div class="nm-stream-left col-xs-1"><?php echo $nm_author_pic; ?></div>
+        <div class="col-xs-11">
           <div class="row">
             <div class="nm-stream-middle col-xs-5">
               <div class="nm-stream-name"><?php echo $nm_author_link; ?></div>
@@ -34,8 +34,13 @@
     </div>
   </div>
   <div class="row">
-    <div class="nm-stream-main col-xs-offset-2 col-xs-10">
-      <div class="nm-stream-main-body"><?php echo $nm_body; ?></div>
+    <div class="nm-stream-left col-xs-1 col-sm-1" style="visibility: hidden;">
+      <?php echo $nm_author_pic; ?>
+    </div>
+    <div class="col-xs-11">
+      <div class="nm-stream-main col-xs-12">
+        <div class="nm-stream-main-body col-xs-12"><?php echo $nm_body; ?></div>
+      </div>
     </div>
   </div>
 

@@ -21,6 +21,7 @@ function NMStreamComment(nm_stream, node, context) {
 
     //bind events
     this.init_bind_events();
+
 }
 
 /**
@@ -231,7 +232,7 @@ NMStreamComment.prototype.init_bind_comment_edit_event = function () {
     var self = this;
 
     //bind click to edit button
-    self.container.closest(".nm-stream-comments").find('.nm-stream-comment-edit').once('nm_stream').click(function() {
+    self.container.closest(".nm-stream-comment").find('.nm-stream-comment-edit').once('nm_stream').click(function() {
         var edit_button = $(this);
 
         var comment_container = edit_button.closest('.nm-stream-comment');
@@ -258,7 +259,7 @@ NMStreamComment.prototype.init_bind_comment_edit_event = function () {
                     var edit_form = comment_container.find('.nm-stream-main').prepend($(data.comment_edit_form));
 
                     edit_form.find('textarea').autosize();
-
+                    
                     self.init_bind_events();
 
 
