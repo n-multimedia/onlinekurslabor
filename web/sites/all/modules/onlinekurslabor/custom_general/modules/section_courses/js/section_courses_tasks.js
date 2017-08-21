@@ -8,12 +8,11 @@
 
           $('#field-generic-task-entry-values .double-field-elements button').once('section_courses_tasks', function(index, context){
 
-            if(task_empty_fields.indexOf(index) >= 0){
+            if(Array.isArray(task_empty_fields) && task_empty_fields.indexOf(index) >= 0){
               //$(this).trigger('click');
               var that = this;
-              //minimale verzoegerung, sonst probleme mit ckedit
-              setTimeout(function(){  $(that).trigger('mousedown');},100);
-              $(this).closest('tr').hide();
+              //gewisse verzoegerung, sonst probleme mit ckeditor
+              setTimeout(function(){  $(that).trigger('mousedown').closest('tr').hide();},1300);
             }
 
           });
