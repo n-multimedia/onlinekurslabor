@@ -156,19 +156,19 @@ function h5p_integration_form_h5p_content_node_form_alter(&$form, &$form_state, 
         /*im grunde kann man nun auch noch das autocomplete-feld filtern. Hoff aber, admins sin nicht so doof.*/
     }
     
-    $form['og_domain_ref'][LANGUAGE_NONE]['#after_build'][] = _h5p_integration_collapse_og_domain_ref;
-    
+    $form['og_domain_ref'][LANGUAGE_NONE]['#after_build'][] = '_h5p_integration_collapse_og_domain_ref';
+
 }
 /**
  * Collapsed aus Usability-Gründen das Field og_domain_ref bei h5p
- * @param array $field das field og_domain_ref
+ * @param array $field_domain_ref das field og_domain_ref
  * @return array $field das selbe field, aber collapsed
  */
-function _h5p_integration_collapse_og_domain_ref($field) {
-    $field['#collapsible'] = TRUE;
-    $field['#collapsed'] = TRUE;
+function _h5p_integration_collapse_og_domain_ref($field_domain_ref) {
+    $field_domain_ref['#collapsible'] = TRUE;
+    $field_domain_ref['#collapsed'] = TRUE;
 
-    return $field;
+    return $field_domain_ref;
 }
 
 /**
