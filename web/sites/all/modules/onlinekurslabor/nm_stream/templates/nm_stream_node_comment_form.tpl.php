@@ -26,12 +26,12 @@
           <div class="nm-stream-left col-xs-1"><?php echo $nm_author_pic; ?></div>
           <div class="col-xs-11">
             <div class="row">
-                <div class="col-xs-12 nm-stream-comment-form-padding">
+                <div class="col-xs-12 nm-stream-comment-form-clearpadding">
                     <div class="nm-stream-comment-form">
                       <?php echo $nm_comment_form_dummy; ?>
                   </div>
               </div>
-              <div class="col-xs-12 nm-stream-comment-form-padding">
+              <div class="col-xs-12 nm-stream-comment-form-clearpadding">
                 <form id="nm-stream-add-comment-<?php echo $nm_node_id ?>" >
                   <textarea class="nm-stream-comment-body  form-control form-textarea"></textarea>
                   <div class="row">

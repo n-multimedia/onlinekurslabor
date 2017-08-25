@@ -108,6 +108,12 @@ Project Blog adaptions
     text-align: right;
     font-size: 12px;
 }
+
+.nm-stream-actions a {
+    min-width: 80px;
+    display: inline-block;
+}
+
 .nm-stream-top-right{
     position:relative;
     padding-right: 0 !important;
@@ -166,7 +172,7 @@ Project Blog adaptions
     font-size:12px;
 }
 
-.nm-stream-comment-form-padding {
+.nm-stream-comment-form-clearpadding {
     padding-right: 0 !important;
 }
 
