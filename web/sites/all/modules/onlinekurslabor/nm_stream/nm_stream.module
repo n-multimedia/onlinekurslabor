@@ -139,7 +139,7 @@ function nm_stream_menu() {
     'title' => 'Edit NM Stream Comment',
     'page callback' => 'nm_stream_nm_stream_comment_edit_callback',
     'page arguments' => array(2),
-    'access callback' => 'comment_access',
+    'access callback' => 'nm_stream_comment_access',
     'access arguments' => array('edit', 2),
     'type' => MENU_CALLBACK,
   );
@@ -148,8 +148,8 @@ function nm_stream_menu() {
     'title' => 'Delete NM Stream Comment',
     'page callback' => 'nm_stream_nm_stream_comment_delete_callback',
     'page arguments' => array(2, 4),
-    'access callback' => 'comment_access',
-    'access arguments' => array('edit', 2),
+    'access callback' => 'nm_stream_comment_access',
+    'access arguments' => array('delete', 2),
     'type' => MENU_CALLBACK,
   );
 
@@ -1793,12 +1793,12 @@ function _nm_stream_get_action_links($content) {
         $type = 'comment';
         //comment
         $output = '';
-        if (comment_access('edit', $content)) {
+        if (nm_stream_comment_access('edit', $content)) {
             $output .= sprintf($tpl, $type, 'edit', 'edit', t('edit'), $tpl);
         }
 
         //delete op is not implemented yet
-        if (comment_access('edit', $content)) {
+        if (nm_stream_comment_access('delete', $content)) {
             $output .=' ' . sprintf($tpl, $type, 'delete', 'trash', t('delete'), $tpl);
         }
     } else {
@@ -2166,4 +2166,16 @@ function nm_stream_consistency_check_callback() {
  */
 function nm_stream_get_stream_content_types() {
   return array('nm_stream', 'projects_blog');
+}
+
+/**
+ * @param $op
+ * @param $comment
+ */
+function nm_stream_comment_access($op, $comment){
+  if ($op == 'edit') {
+    return comment_access($op, $comment);
+  }else if($op == 'delete') {
+    return node_access('delete', node_load($comment->nid));
+  }
 }
