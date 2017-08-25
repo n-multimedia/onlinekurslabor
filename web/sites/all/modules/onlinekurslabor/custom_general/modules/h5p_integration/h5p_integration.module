@@ -155,7 +155,7 @@ function h5p_integration_form_h5p_content_node_form_alter(&$form, &$form_state, 
         unset($form['og_domain_ref'][LANGUAGE_NONE][0]['default']['#options'][$default_group]);
         /*im grunde kann man nun auch noch das autocomplete-feld filtern. Hoff aber, admins sin nicht so doof.*/
     }
-    
+
     $form['og_domain_ref'][LANGUAGE_NONE]['#after_build'][] = '_h5p_integration_collapse_og_domain_ref';
 
 }
@@ -167,6 +167,7 @@ function h5p_integration_form_h5p_content_node_form_alter(&$form, &$form_state, 
 function _h5p_integration_collapse_og_domain_ref($field_domain_ref) {
     $field_domain_ref['#collapsible'] = TRUE;
     $field_domain_ref['#collapsed'] = TRUE;
+    $field_domain_ref['#type'] = "fieldset";
 
     return $field_domain_ref;
 }
