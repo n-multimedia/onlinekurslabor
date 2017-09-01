@@ -81,8 +81,17 @@ function annvid_og_user_access_alter(&$perm, $context) {
      */
     if ($context['group']->type == ANNVID_CONTENTTYPE) {
 
-        $perm['update own ' . "nm_stream" . ' content'] = TRUE;
+      //these permissions are driven by node_access
+      //01.09.2017 - 15:43 - SN
+      //fix otherwise these og permissions are blocking the logic, where no context is awailable e.g. on the front page
+      $perm['update own ' . "nm_stream" . ' content'] = TRUE;
+      $perm['update any ' . "nm_stream" . ' content'] = TRUE;
+      $perm['create ' . "nm_stream" . ' content'] = TRUE;
+      $perm['delete own ' . "nm_stream" . ' content'] = TRUE;
+      $perm['delete any ' . "nm_stream" . ' content'] = TRUE;
+      $perm['view field_nm_attachments field'] = TRUE;
 
+        /*
         $stream_env = nm_stream_get_environment();
 
         $obj_context = node_load($stream_env['context']->nid);
@@ -111,5 +120,6 @@ function annvid_og_user_access_alter(&$perm, $context) {
                 $perm['delete any ' . "nm_stream" . ' content'] = TRUE;
             }
         }
+        */
     }
 }

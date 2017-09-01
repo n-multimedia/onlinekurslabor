@@ -232,6 +232,16 @@ function nm_stream_og_user_access_alter(&$perm, $context) {
    *  zugriff auf field_nm_attachments
    */
   if ($context['group']->type == NM_COURSE_GROUP) {
+    $perm['update own ' . "nm_stream" . ' content'] = TRUE;
+    $perm['update any ' . "nm_stream" . ' content'] = TRUE;
+    $perm['create ' . "nm_stream" . ' content'] = TRUE;
+    $perm['delete own ' . "nm_stream" . ' content'] = TRUE;
+    $perm['delete any ' . "nm_stream" . ' content'] = TRUE;
+    $perm['view field_nm_attachments field'] = TRUE;
+  }
+
+
+    /* {
     $course_group = $context['group'];
     $course = node_load($course_group->og_group_ref[LANGUAGE_NONE][0]['target_id']);
     if($course_group) {
@@ -259,5 +269,5 @@ function nm_stream_og_user_access_alter(&$perm, $context) {
         }
       }
     }
-  }
+  }*/
 }
