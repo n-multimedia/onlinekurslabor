@@ -2176,6 +2176,6 @@ function nm_stream_comment_access($op, $comment){
   if ($op == 'edit') {
     return comment_access($op, $comment);
   }else if($op == 'delete') {
-    return node_access('delete', node_load($comment->nid));
+    return comment_access("edit", $comment) || node_access('delete', node_load($comment->nid));
   }
 }
