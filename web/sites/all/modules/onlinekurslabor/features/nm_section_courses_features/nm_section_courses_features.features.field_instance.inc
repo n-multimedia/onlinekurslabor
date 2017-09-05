@@ -1600,7 +1600,7 @@ function nm_section_courses_features_field_default_field_instances() {
               0 => 'Beschreibung',
               1 => 'Aufgabenstellung',
               2 => 'Leitfragen',
-              3 => 'Bewertungskriterien',
+              3 => '-- versteckt --',
               4 => 'Studenten-Formular',
             ),
           ),
