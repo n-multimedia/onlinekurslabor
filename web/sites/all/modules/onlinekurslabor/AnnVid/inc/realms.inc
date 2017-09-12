@@ -84,12 +84,15 @@ function annvid_og_user_access_alter(&$perm, $context) {
       //these permissions are driven by node_access
       //01.09.2017 - 15:43 - SN
       //fix otherwise these og permissions are blocking the logic, where no context is awailable e.g. on the front page
-      $perm['update own ' . "nm_stream" . ' content'] = TRUE;
-      $perm['update any ' . "nm_stream" . ' content'] = TRUE;
+      /*$perm['update own ' . "nm_stream" . ' content'] = FALSE;
+      $perm['update any ' . "nm_stream" . ' content'] = FALSE;
+      $perm['create ' . "nm_stream" . ' content'] = FALSE;
+      $perm['delete own ' . "nm_stream" . ' content'] = FALSE;
+      $perm['delete any ' . "nm_stream" . ' content'] = FALSE;
+      $perm['view field_nm_attachments field'] = FALSE;
+
+      //create wird in nm_stream_node_access gesetzt
       $perm['create ' . "nm_stream" . ' content'] = TRUE;
-      $perm['delete own ' . "nm_stream" . ' content'] = TRUE;
-      $perm['delete any ' . "nm_stream" . ' content'] = TRUE;
-      $perm['view field_nm_attachments field'] = TRUE;
 
         /*
         $stream_env = nm_stream_get_environment();

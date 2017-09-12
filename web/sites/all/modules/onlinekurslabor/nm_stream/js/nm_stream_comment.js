@@ -176,6 +176,11 @@ NMStreamComment.prototype.init_bind_commment_submit_button_event = function () {
                     //error handling todo here
                 }
 
+                //hide add form
+                post_button.closest('.nm-stream-node-container').find('.nm-stream-comment-form').show();
+                post_button.closest('.nm-stream-comment-form-container').find('textarea').val('');
+                post_button.closest('form').hide();
+
                 //enable button
                 self.nm_stream.nm_stream_unset_loading(form_container);
                 self.nm_stream.nm_stream_pause_update_timer = false;
