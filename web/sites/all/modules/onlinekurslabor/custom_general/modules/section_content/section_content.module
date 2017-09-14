@@ -547,7 +547,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
   /**
    *  BOOK
    */
-  //automatically create a Book when creating a domain (Gebiet)
+  //automatically create a Book when creating a domain (Lehrtext)
   if (!empty($form['#node_edit_form'])) {
     $node = $form['#node'];
     $type = $form['type']['#value'];
@@ -602,10 +602,10 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
         $parameters = drupal_get_query_parameters();
         $og_group_ref = @$parameters['og_group_ref'];
         $parent = @$parameters['parent'];
-
+  
         //sollte zwar gesetzt sein, aber zur sicherheit..
         //hat die weight bestehender kapitel ueberschrieben. Darf nur auf neuen Kapiteln greifen (sprich: nid = null)!
-        if ($og_group_ref && $parent && isset($form['#node']->nid )) {
+        if ($og_group_ref && $parent && !isset($form['#node']->nid )) {
             //Suche buch zur übergebenen Group
             $books_menu_name = 'book-toc-' . $og_group_ref;
             $books_menu_tree = menu_tree_all_data($books_menu_name);
