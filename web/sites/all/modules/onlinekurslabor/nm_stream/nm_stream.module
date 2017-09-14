@@ -290,9 +290,10 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
 
     $output = '';
     foreach ($results as $result) {
+      $node_output = node_view($node, 'nm_stream');
       $node = node_load($result->nid);
       $output .= '<div class="views-row">';
-      $output .= drupal_render(node_view($node, 'nm_stream'));
+      $output .= drupal_render($node_output);
       $output .= '</div>';
     }
 
