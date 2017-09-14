@@ -30,6 +30,11 @@
                 $(this).NMStream(settings);
             });
 
+            if(nm_stream) {
+                nm_stream.init_bind_nm_stream_nodes();
+            }
+
+
 
         }
     };

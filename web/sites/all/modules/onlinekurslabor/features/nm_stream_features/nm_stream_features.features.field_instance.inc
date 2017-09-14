@@ -240,6 +240,7 @@ function nm_stream_features_field_default_field_instances() {
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
@@ -292,6 +293,63 @@ function nm_stream_features_field_default_field_instances() {
       'type' => 'entityreference_autocomplete',
       'weight' => 6,
     ),
+  );
+
+  // Exported field_instance: 'node-nm_stream-group_content_access'.
+  $field_instances['node-nm_stream-group_content_access'] = array(
+    'bundle' => 'nm_stream',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 4,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'group_content_access',
+    'label' => 'Group content visibility',
+    'required' => TRUE,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'view modes' => array(
+      'full' => array(
+        'label' => 'above',
+        'type' => 'list_default',
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'type' => 'list_default',
+      ),
+    ),
+    'widget' => array(
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 6,
+    ),
+    'widget_type' => 'options_select',
   );
 
   // Exported field_instance: 'node-nm_stream-og_group_ref'.
@@ -364,6 +422,7 @@ function nm_stream_features_field_default_field_instances() {
   t('Anhänge');
   t('Body');
   t('Comment');
+  t('Group content visibility');
   t('Groups audience');
   t('Kontext');
   t('Privacy');

@@ -7,7 +7,7 @@ drush updatedb --yes
 #bug in drush - cc before FR!!
 drush cc all
 #revert single features
-drush fr  nm_general_features nm_login_vhb_features home_features  nm_section_content_features nm_section_courses_features  section_courses_clone_features nm_h5p_features --yes
+drush fr  nm_general_features nm_login_vhb_features home_features  nm_section_content_features nm_section_courses_features  section_courses_clone_features nm_h5p_features annvid_features nm_section_content_features  nm_stream_features  section_projects_features/  --yes
 #drush features-revert-all --yes
 
  
@@ -17,6 +17,8 @@ drush en ckeditor_custom --yes
 drush en home_features --yes
 drush en section_home --yes
 drush en changediscard_warning --yes
+
+drush dis og_field_access --yes
 
 drush en section_profile --yes
 
