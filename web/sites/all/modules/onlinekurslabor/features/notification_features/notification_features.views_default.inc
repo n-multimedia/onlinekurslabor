@@ -49,6 +49,10 @@ function notification_features_views_default_views() {
   $handler->display->display_options['sorts']['timestamp']['table'] = 'message';
   $handler->display->display_options['sorts']['timestamp']['field'] = 'timestamp';
   $handler->display->display_options['sorts']['timestamp']['order'] = 'DESC';
+
+  /* Display: Activity pane */
+  $handler = $view->new_display('panel_pane', 'Activity pane', 'activity_display');
+  $handler->display->display_options['display_description'] = 'shows activity ';
   $translatables['nm_activity_stream'] = array(
     t('Master'),
     t('more'),
@@ -57,6 +61,9 @@ function notification_features_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
+    t('Activity pane'),
+    t('shows activity '),
+    t('View panes'),
   );
   $export['nm_activity_stream'] = $view;
 

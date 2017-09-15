@@ -20,7 +20,7 @@ function section_home_page_build(&$page) {
  */
 function section_home_user_login(&$edit, $account) {
     
-    if (!$_GET['destination'] && ! strstr ($_SERVER['REQUEST_URI'], '/user/reset'))
+    if (! isset($_GET['destination']) && ! strstr ($_SERVER['REQUEST_URI'], '/user/reset'))
         $_GET['destination'] = '/';
 }
 
@@ -43,10 +43,10 @@ function _section_home_getRenderedStream() {
  */    
 function _section_home_getRenderedActivity() {
 
-    $view = _section_home_getView('nm_activity_stream');
+    $view = _section_home_getView('nm_activity_stream','activity_display');
  
    # $view->set_title(t('Activity'));
-    return _section_home_renderView($view, null, true);
+    return _section_home_renderView($view, 'activity_display', true);
 }
 
 /**
