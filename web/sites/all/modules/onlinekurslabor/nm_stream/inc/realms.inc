@@ -50,7 +50,7 @@ function nm_stream_node_access_records($node) {
       'gid' => $node->uid,
       'grant_view' => 1,
       'grant_update' => 1,
-      'grant_delete' => 0,
+      'grant_delete' => 1,
       'priority' => 1,
     ];
     $node_environment = _nm_stream_get_node_environment($node);
