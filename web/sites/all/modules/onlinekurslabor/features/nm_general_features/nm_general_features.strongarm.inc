@@ -355,7 +355,7 @@ dasddasdasd',
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => '09MaIXO8M3zrV_-V6DswPuhm0ALMgHjAphaLx1wO6oM',
+    'javascript' => '7fLBF-NnY6EGaZuX7d5VCUUjtWW5X6032ty08gBolmw',
   );
   $export['language_default'] = $strongarm;
 
@@ -530,7 +530,7 @@ dasddasdasd',
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'og_node_access_strict';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['og_node_access_strict'] = $strongarm;
 
   $strongarm = new stdClass();
