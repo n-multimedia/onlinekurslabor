@@ -24,6 +24,8 @@ drush en section_profile --yes
 
 drush en bootstrap_check --yes
 
+drush dis statuses
+
 #dis
 drush dis browser_compatibility --yes
 

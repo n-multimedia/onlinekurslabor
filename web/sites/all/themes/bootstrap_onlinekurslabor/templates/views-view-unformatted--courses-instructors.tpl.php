@@ -10,7 +10,11 @@
   <h3><?php print $title; ?></h3>
 <?php endif; ?>
 
-<?php $last_key = end(array_keys($rows)); ?>
+<?php
+  $keys = array_keys($rows);
+  $last_key = end($keys);
+?>
+
 <div class="view-instructor-subtitle">
   <?php foreach ($rows as $id => $row): ?>
 

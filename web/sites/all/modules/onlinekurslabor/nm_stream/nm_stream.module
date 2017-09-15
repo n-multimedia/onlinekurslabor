@@ -364,7 +364,9 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
         $response['changed_nodes'] = array();
         foreach ($results2 as $result) {
           if (isset($_SESSION['nm_stream']['nodes'][$result->nid]) && $result->changed > $_SESSION['nm_stream']['nodes'][$result->nid]['changed']) {
-            $response['changed_nodes'][$result->nid] = drupal_render(node_view(node_load($result->nid), 'nm_stream'));
+            $node = node_load($result->nid);
+            $node_view = node_view($node, 'nm_stream');
+            $response['changed_nodes'][$result->nid] = drupal_render($node_view);
           }
         }
         if (!empty($response['changed_nodes'])) {
@@ -595,7 +597,9 @@ function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
   }
 
   //update end
+
   $body = _nm_stream_filter_xss($_REQUEST['body']) ;
+
 
   $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
   $iframe = isset($_REQUEST['iframe']) ? TRUE : FALSE;
@@ -670,7 +674,8 @@ function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
 
   //add rendered node to response
   $response['status'] = 1;
-  $response['node'] = drupal_render(node_view($node, 'nm_stream'));
+  $node_view = node_view($node, 'nm_stream');
+  $response['node'] = drupal_render($node_view);
 
   $response['node'] = '<div class="views-row">' . $response['node'] . '</div>';
 
@@ -687,7 +692,8 @@ function nm_stream_nm_stream_node_load_callback($node) {
   $response = array();
 
   $response['status'] = 1;
-  $response['node'] = drupal_render(node_view($node, 'nm_stream'));
+  $node_view = node_view($node, 'nm_stream');
+  $response['node'] = drupal_render($node_view);
 
   $response['node'] = '<div class="views-row">' . $response['node'] . '</div>';
 
@@ -717,12 +723,14 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
     }
   }
 
-  //consider adapting for in add callback too!
-  $body = _nm_stream_filter_xss($_REQUEST['body']) ;
-  $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
+
   $iframe = isset($_REQUEST['iframe']) ? TRUE : FALSE;
   /*wird ausgelöst beim abspeichern eines editierten eintrags*/
   if (isset($_REQUEST['body'])) {
+
+    //consider adapting for in add callback too!
+    $body = _nm_stream_filter_xss($_REQUEST['body']) ;
+    $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
 
     //prevent csrf attacks
     //@todo CSRF-Checks in einzelne Funktion auslagern & nicht 10x im Code
@@ -763,7 +771,8 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
       node_save($node);
 
       $response['status'] = 1;
-      $response['updated_node'] = drupal_render(node_view($node, 'nm_stream'));
+      $node_view = node_view($node, 'nm_stream');
+      $response['updated_node'] = drupal_render($node_view);
     }
   }
   else {
@@ -952,7 +961,8 @@ function nm_stream_nm_stream_comment_add_callback($node) {
   $response['information'][$node->nid] = _nm_stream_get_node_information($node);
   //if first comment, we need to rerender the whole node, because the structore of the node is changing
   if ($first_comment) {
-    $response['node'] = drupal_render(node_view($node, 'nm_stream'));
+    $node_view = node_view($node, 'nm_stream');
+    $response['node'] = drupal_render($node_view);
   }
 
   return drupal_json_output($response);
@@ -979,10 +989,10 @@ function nm_stream_nm_stream_comment_edit_callback($comment) {
 
   $response = array();
 
-  $body = _nm_stream_filter_xss($_REQUEST['body']) ;
-
 
   if (isset($_REQUEST['body'])) {
+
+    $body = _nm_stream_filter_xss($_REQUEST['body']) ;
 
     if (empty($body)) {
       $response['status'] = 0;
@@ -1324,13 +1334,15 @@ function nm_stream_preprocess_nm_stream_stream_node_form(&$vars, $hook) {
     $context = nm_stream_get_environment();
     $container = $context['container'];
   }
+
+
   /**
    * @TODO fix comments and visibility for projects
    */
-  if($container->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG)
+  if(!empty($container->type) && $container->type == NM_PROJECTS_KOOPERATIONSVEREINBARUNG)
   {
     $vars['nm_error'] = 'Sorry. At the moment comments are not possible in a project.';
-  #  drupal_set_message($vars['nm_error'], 'error');
+    #  drupal_set_message($vars['nm_error'], 'error');
     return false;
   }
 
