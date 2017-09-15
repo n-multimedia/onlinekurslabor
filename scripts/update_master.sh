@@ -18,16 +18,17 @@ drush en home_features --yes
 drush en section_home --yes
 drush en changediscard_warning --yes
 
-drush dis og_field_access --yes
+
 
 drush en section_profile --yes
 
 drush en bootstrap_check --yes
 
-drush dis statuses
 
 #dis
 drush dis browser_compatibility --yes
+drush dis og_field_access --yes
+drush dis statuses --yes
 
 drush language-import-translations de ../language/alpha8.po --replace --groups=default
 
