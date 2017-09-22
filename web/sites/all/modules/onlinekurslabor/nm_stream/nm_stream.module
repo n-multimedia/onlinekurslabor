@@ -670,8 +670,14 @@ function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
     );
   }
 
+
   node_save($node);
 
+  $_SESSION['nm_stream']['nodes'][$node->nid] = array(
+    'nid' => $node->nid, //node id
+    'changed' => $node->changed, //last changed date of node
+    'request_time' => REQUEST_TIME //request time of node
+  );
 
   //add rendered node to response
   $response['status'] = 1;
