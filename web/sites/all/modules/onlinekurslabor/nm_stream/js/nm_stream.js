@@ -372,7 +372,7 @@
         var self = this;
 
         //NODES
-        var view_container = $('.pane-nm-stream .view-content .views-row').first();
+        var view_container = $('.pane-nm-stream .view-content').first();
 
         if (typeof data.new_nodes !== 'undefined') {
             var new_nodes = view_container.prepend($(data.new_nodes).fadeIn());
@@ -425,7 +425,7 @@
                             var new_comments = $('#nm-stream-node-' + nid).append($(data.node).find('.nm-stream-comments-section').fadeIn());
                             $('#nm-stream-node-' + nid).find('.nm-stream-comments-section').find('.nm-stream-comments-form').hide();
 
-                            Drupal.attachBehaviors(new_comments);
+                            self.init_bind_nm_stream_nodes();
 
                         } else {
                             //error handling todo here
@@ -441,12 +441,13 @@
                     var only_comment_function = $('#nm-stream-node-' + nid).closest('.nm-stream-comments-section').length > 0;
                     //var new_comments = $('.nm-stream-comments-section').first().append(data.new_comments[nid]);
 
+                    var new_comments = null;
                     if (only_comment_function) {
                         //append
-                        var new_comments = $('#nm-stream-node-' + nid).find('.nm-stream-comments-container').first().append(data.new_comments[nid]);
+                        new_comments = $('#nm-stream-node-' + nid).find('.nm-stream-comments-container').first().append(data.new_comments[nid]);
                     } else {
                         //prepend
-                        var new_comments = $('#nm-stream-node-' + nid).find('.nm-stream-comments-container').first().prepend(data.new_comments[nid]);
+                        new_comments = $('#nm-stream-node-' + nid).find('.nm-stream-comments-container').first().prepend(data.new_comments[nid]);
                     }
 
 
@@ -457,7 +458,7 @@
                      * someone else creates an comment - need to bind events
                      */
                     $('#nm-stream-node-' + nid).find(".nm-stream-comment").once("nm_stream").each(function(index) {
-                        new NMStreamComment(self.nm_stream, self, this);
+                        new NMStreamComment(self, self, this);
 
                     });
                 }
