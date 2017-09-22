@@ -413,7 +413,6 @@
 
                 if ($('#nm-stream-node-' + nid).find('.nm-stream-comments-container').length === 0) {
 
-
                     var url = '/nm_stream/node/' + nid + '/load';
 
                     $.post(url, data, function (data) {
@@ -426,9 +425,10 @@
 
                             //bind comment events
                             $('#nm-stream-node-' + nid).find(".nm-stream-comment").once("nm_stream").each(function(index) {
-                                new NMStreamComment(self, self, this);
+                                new NMStreamNode(self, $('#nm-stream-node-' + nid));
 
                             });
+
 
                         } else {
                             //error handling todo here
