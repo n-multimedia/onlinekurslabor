@@ -1,0 +1,15 @@
+.page-administration table {
+    table-layout: fixed;
+}
+
+.page-administration table th.views-field-views-bulk-operations {
+    width: 5%;
+}
+.page-administration table td {
+    word-wrap: break-word;
+}
+
+.administration-exposed-filter {
+    padding: 10px;
+    background-color: #eee;
+}

@@ -1,0 +1,18 @@
+#Translation File - onlinekurslabor
+
+
+msgid "Administration"
+msgstr "Verwaltung"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
