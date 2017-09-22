@@ -114,7 +114,7 @@ function section_profile_views_pre_view(&$view, $display_id, $args) {
     global $user;
 
     /*nur wenn wir auf der Profilansicht sind, sonst hook beenden */
-    if (strpos($_SERVER[REQUEST_URI], 'user') === false) 
+    if (strpos($_SERVER["REQUEST_URI"], 'user') === false) 
     {
         return;
     }
