@@ -407,7 +407,6 @@
 
         //add new
         if (typeof data.new_comments !== 'undefined') {
-
             //find node, attach to top
             for (var nid in data.new_comments) {
                 //check if its the first comment -> complete node has to be loaded
@@ -425,7 +424,11 @@
                             var new_comments = $('#nm-stream-node-' + nid).append($(data.node).find('.nm-stream-comments-section').fadeIn());
                             $('#nm-stream-node-' + nid).find('.nm-stream-comments-section').find('.nm-stream-comments-form').hide();
 
-                            self.init_bind_nm_stream_nodes();
+                            //bind comment events
+                            $('#nm-stream-node-' + nid).find(".nm-stream-comment").once("nm_stream").each(function(index) {
+                                new NMStreamComment(self, self, this);
+
+                            });
 
                         } else {
                             //error handling todo here
