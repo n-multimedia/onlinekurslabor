@@ -750,50 +750,41 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = 'Es konnten keine Bibliografieeinträge gefunden werden.';
+  $handler->display->display_options['empty']['area']['content'] = 'Keine Bibliografieverweise im Lehrtext';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
-  /* Relationship: OG membership: OG membership from Node */
-  $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
-  $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
-  $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
   /* Field: Biblio: Biblio Citation */
   $handler->display->display_options['fields']['citation']['id'] = 'citation';
   $handler->display->display_options['fields']['citation']['table'] = 'biblio';
   $handler->display->display_options['fields']['citation']['field'] = 'citation';
   $handler->display->display_options['fields']['citation']['label'] = '';
   $handler->display->display_options['fields']['citation']['element_label_colon'] = FALSE;
-  /* Sort criterion: Content: Post date */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'node';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: OG membership: Group ID */
-  $handler->display->display_options['arguments']['gid']['id'] = 'gid';
-  $handler->display->display_options['arguments']['gid']['table'] = 'og_membership';
-  $handler->display->display_options['arguments']['gid']['field'] = 'gid';
-  $handler->display->display_options['arguments']['gid']['relationship'] = 'og_membership_rel';
-  $handler->display->display_options['arguments']['gid']['default_action'] = 'not found';
-  $handler->display->display_options['arguments']['gid']['exception']['title'] = 'Alle';
-  $handler->display->display_options['arguments']['gid']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['gid']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['gid']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['gid']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['gid']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['gid']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['gid']['validate']['type'] = 'og';
+  /* Sort criterion: Biblio: Year of Publication */
+  $handler->display->display_options['sorts']['biblio_year']['id'] = 'biblio_year';
+  $handler->display->display_options['sorts']['biblio_year']['table'] = 'biblio';
+  $handler->display->display_options['sorts']['biblio_year']['field'] = 'biblio_year';
+  /* Sort criterion: Biblio: Author last name */
+  $handler->display->display_options['sorts']['lastname']['id'] = 'lastname';
+  $handler->display->display_options['sorts']['lastname']['table'] = 'biblio_contributor_data';
+  $handler->display->display_options['sorts']['lastname']['field'] = 'lastname';
+  $handler->display->display_options['sorts']['lastname']['rank'] = '0';
+  /* Contextual filter: erhalte NID des betroffenen Lehrtexts */
+  $handler->display->display_options['arguments']['null']['id'] = 'null';
+  $handler->display->display_options['arguments']['null']['table'] = 'views';
+  $handler->display->display_options['arguments']['null']['field'] = 'null';
+  $handler->display->display_options['arguments']['null']['ui_name'] = 'erhalte NID des betroffenen Lehrtexts';
+  $handler->display->display_options['arguments']['null']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['null']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['null']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['null']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['null']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['null']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['null']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['null']['validate']['type'] = 'numeric';
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = '1';
-  /* Filter criterion: OG membership: Group_type */
-  $handler->display->display_options['filters']['group_type']['id'] = 'group_type';
-  $handler->display->display_options['filters']['group_type']['table'] = 'og_membership';
-  $handler->display->display_options['filters']['group_type']['field'] = 'group_type';
-  $handler->display->display_options['filters']['group_type']['relationship'] = 'og_membership_rel';
-  $handler->display->display_options['filters']['group_type']['value'] = array(
-    'node' => 'node',
-  );
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
@@ -801,17 +792,77 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['filters']['type']['value'] = array(
     'biblio' => 'biblio',
   );
+  /* Filter criterion: filtere buchvorkommen auf tatsächliche vorkommen im LT */
+  $handler->display->display_options['filters']['php']['id'] = 'php';
+  $handler->display->display_options['filters']['php']['table'] = 'views';
+  $handler->display->display_options['filters']['php']['field'] = 'php';
+  $handler->display->display_options['filters']['php']['ui_name'] = 'filtere buchvorkommen auf tatsächliche vorkommen im LT';
+  $handler->display->display_options['filters']['php']['use_php_setup'] = 1;
+  $handler->display->display_options['filters']['php']['php_setup'] = 'function _view_biblio_getChapterCandidates($lt_id)
+{
+$group_nid = $lt_id;
+
+
+$query = new EntityFieldQuery();
+$query->entityCondition(\'entity_type\', \'node\')
+//laedt alle content chapter fuer die übergeben lehrtext-nid
+  ->entityCondition(\'bundle\', \'content_chapter\')
+  ->propertyCondition(\'status\', NODE_PUBLISHED)
+  ->fieldCondition(\'og_group_ref\', \'target_id\', $group_nid , \'=\')
+//aber nur, wenn das aktuell getestete buch in dem Kapitel verwendet wird.
+//  ->fieldCondition(\'field_chapter_text\', \'value\', \'%[bib]\'.$curr_bib_nid.\'[/bib]%\', \'like\')
+;
+ 
+
+
+$result = $query->execute();
+if( count($result))
+return  array_keys($result[\'node\']);
+
+
+return array();
+}
+ 
+ 
+$static[\'chapter_candidates\'] =   _view_biblio_getChapterCandidates( $view->args[0] );
+';
+  $handler->display->display_options['filters']['php']['php_filter'] = '$group_nid = $view->args[0];
+$curr_bib_nid = $data->nid;
+#dpm("in filter!");
+#dpm($static[\'chapter_candidates\'] );
+
+
+
+
+$chapter_candidates = $static[\'chapter_candidates\'] ;
+#return true;
+if( count($chapter_candidates ))
+{
+
+
+$query = new EntityFieldQuery();
+$count  = $query->entityCondition(\'entity_type\', \'node\')
+  ->propertyCondition(\'nid\', $chapter_candidates  , \'IN\')
+  ->fieldCondition(\'field_chapter_text\', \'value\', \'%[bib]\'.$curr_bib_nid.\'[/bib]%\', \'like\')
+ ->count()
+ ->execute();
+
+
+ return !$count;  //kein result: true -> aussortieren
+}
+ return true;
+';
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
   $handler->display->display_options['argument_input'] = array(
-    'gid' => array(
+    'null' => array(
       'type' => 'panel',
-      'context' => 'entity:node.nid',
+      'context' => 'entity:node.members--1',
       'context_optional' => 0,
       'panel' => '0',
       'fixed' => '',
-      'label' => 'OG membership: Group ID',
+      'label' => 'erhalte NID des betroffenen Lehrtexts',
     ),
   );
   $translatables['domain_biblio'] = array(
@@ -829,8 +880,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
-    t('Es konnten keine Bibliografieeinträge gefunden werden.'),
-    t('OG membership from node'),
+    t('Keine Bibliografieverweise im Lehrtext'),
     t('Alle'),
     t('Content pane'),
     t('View panes'),
