@@ -67,6 +67,10 @@ div#annvid_pdfbutton
 {
     display:none;
 }
+#annvid_pdfdiv.pdf_visible
+{
+    display:block;
+}
 
 /*der pdf-button rechts neberm video: element wird durch rotation und position von oben nach rechts verschoben*/
 #annvid_video_fahne
@@ -99,3 +103,36 @@ div#annvid_pdfbutton
 .annvid_dark_button:focus, .annvid_dark_button:hover{
       background: #4C4C4C !important;;
 }
+
+
+/*STYLES für Scroll-runter-Verhalten mit fixed Elementen*/
+#annvid_video_placeholder
+{
+    display: none;
+}  
+/*video*/
+#annvid_video_container.annvid_active_scroll_mode{
+    position: fixed;
+    width: 400px;
+    z-index: 5;
+    top:22px;
+    background: #ffffff;
+    -webkit-box-shadow: 10px 10px 7px -8px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 7px -8px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 7px -8px rgba(0,0,0,0.75);
+}
+/*der annvid-pdf-container*/
+#annvid_pdfdiv.pdf_visible.annvid_active_scroll_mode
+{
+    position: fixed;
+    z-index: 5;
+    top: 0px;
+    margin-left: 50%;;
+}
+/*der eigentliche pdf-container
+die height wird per JS gesetzt */
+#annvid_pdfdiv.pdf_visible.annvid_active_scroll_mode .html5pdf_pdfscrollcontainer
+{
+    background:#ffffff;
+}
+ 
