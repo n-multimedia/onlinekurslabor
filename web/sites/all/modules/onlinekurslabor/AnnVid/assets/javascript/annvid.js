@@ -118,7 +118,7 @@
                 Drupal.behaviors.annvid.stream.fillStreamTimeline()   ;
                 Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.interactivevideo.getH5P().video.getCurrentTime());  
                 //pdf: position fixed und Höhe reduzieren, um Scrollen innerhalb pdf zu ermöglichen
-                jQuery("#annvid_pdfdiv").addClass('annvid_active_scroll_mode').find(".html5pdf_pdfscrollcontainer").css("height",viewport_height_reduced+"px");
+                jQuery("#annvid_pdfdiv").addClass('annvid_active_scroll_mode').find(".html5pdf_pdfscrollcontainer").css("max-height",viewport_height_reduced+"px");
             }
 
         },
@@ -130,7 +130,7 @@
         {
             jQuery("#annvid_video_placeholder").hide();
             jQuery("#annvid_video_container").removeClass('annvid_active_scroll_mode').attr('style', '');
-            //jQuery("#stream_timeline").removeClass('annvid_active_scroll_mode').attr('style', '');
+           
             
             //timeline wiederherstellen
             Drupal.behaviors.annvid.stream.fillStreamTimeline();
