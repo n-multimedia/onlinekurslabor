@@ -830,27 +830,32 @@ $static[\'chapter_candidates\'] =   _view_biblio_getChapterCandidates( $view->ar
 $curr_bib_nid = $data->nid;
 #dpm("in filter!");
 #dpm($static[\'chapter_candidates\'] );
-
-
-
-
+ 
 $chapter_candidates = $static[\'chapter_candidates\'] ;
 #return true;
+$vorkommens_counter = 0;
 if( count($chapter_candidates ))
 {
 
-
+//prüfe alle kapitel des lehrtexts
 $query = new EntityFieldQuery();
-$count  = $query->entityCondition(\'entity_type\', \'node\')
+$vorkommens_counter  = $query->entityCondition(\'entity_type\', \'node\')
   ->propertyCondition(\'nid\', $chapter_candidates  , \'IN\')
   ->fieldCondition(\'field_chapter_text\', \'value\', \'%[bib]\'.$curr_bib_nid.\'[/bib]%\', \'like\')
  ->count()
  ->execute();
-
-
- return !$count;  //kein result: true -> aussortieren
 }
- return true;
+
+//und nun noch den lehrtext selbst
+$query2 = new EntityFieldQuery();
+$vorkommens_counter +=  $query2->entityCondition(\'entity_type\', \'node\')
+  ->propertyCondition(\'nid\', $group_nid)
+  ->fieldCondition(\'field_domain_description\', \'value\', \'%[bib]\'.$curr_bib_nid.\'[/bib]%\', \'like\')
+ ->count()
+ ->execute();
+ 
+ return !$vorkommens_counter;  //vorkommen weder in unterkapiteln, noch im lehrtext  =>  kein result: true -> aussortieren
+
 ';
 
   /* Display: Content pane */
