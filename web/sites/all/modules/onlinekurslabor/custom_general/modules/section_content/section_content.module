@@ -682,6 +682,29 @@ function section_content_node_form_submit($form, &$form_state) {
   }
 }
 
+/**
+ * implements  hook_node_insert($node) 
+ * Nach Erstellen eines Bib-Eintrags wird man zum korrespondierenden Lehrtext zurückgeleitet
+ * Sonst ist man aus dem Kontext geworfen, wenn man nur auf dem Bibeintrag steht. 
+ * @param StdClass $node
+ */
+function section_content_node_insert($node) {
+    if($node->type==='biblio')
+    {
+        //woher komme ich? darin ist ein og-group-ref-parameter
+        $drupal_ref_params = drupal_get_query_parameters();
+    
+        if(!empty($drupal_ref_params['og_group_ref']))
+        {
+            //"node-created"-Message geht durch goto verloren. Ersetze sie deshalb.
+            drupal_set_message(t('Biblio %name created. You can use it as a reference now.', array('%name' => $node->title)));
+            //gehe zu lehrtext
+            drupal_goto ('/node/'.$drupal_ref_params['og_group_ref']);
+        }
+    }
+    
+}
+
 /*
   M E D I A    -   S T A R T
  */

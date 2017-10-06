@@ -348,7 +348,7 @@ function custom_general_form_alter(&$form, &$form_state, $form_id) {
  * 
  * form functions are called twice in panels, so im trying to cache the form_state for 
  * the second execution
- * [todo] move to section_courses
+ * [todo] move to section_content
  */
 function custom_general_form_biblio_node_form_alter(&$form, &$form_state, $form_id) {
   static $called = 0;
@@ -393,6 +393,7 @@ function custom_general_form_biblio_node_form_alter(&$form, &$form_state, $form_
     //unset($_SESSION['onlinekurslabor']['biblio']['form_state_biblio_type']);
   }
 }
+
 
 /**
  * Get the group id the node belongs to
