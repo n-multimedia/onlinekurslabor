@@ -29,13 +29,6 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:content_domain:create biblio content'
-  $permissions['node:content_domain:create biblio content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
   // Exported og permission: 'node:content_domain:create content_chapter content'
   $permissions['node:content_domain:create content_chapter content'] = array(
     'roles' => array(
@@ -62,13 +55,6 @@ function nm_section_content_features_og_features_default_permissions() {
     'roles' => array(),
   );
 
-  // Exported og permission: 'node:content_domain:delete any biblio content'
-  $permissions['node:content_domain:delete any biblio content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
   // Exported og permission: 'node:content_domain:delete any content_chapter content'
   $permissions['node:content_domain:delete any content_chapter content'] = array(
     'roles' => array(
@@ -93,13 +79,6 @@ function nm_section_content_features_og_features_default_permissions() {
   // Exported og permission: 'node:content_domain:delete any forum content'
   $permissions['node:content_domain:delete any forum content'] = array(
     'roles' => array(),
-  );
-
-  // Exported og permission: 'node:content_domain:delete own biblio content'
-  $permissions['node:content_domain:delete own biblio content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
   );
 
   // Exported og permission: 'node:content_domain:delete own content_chapter content'
@@ -173,13 +152,6 @@ function nm_section_content_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:content_domain:update any biblio content'
-  $permissions['node:content_domain:update any biblio content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
   // Exported og permission: 'node:content_domain:update any content_chapter content'
   $permissions['node:content_domain:update any content_chapter content'] = array(
     'roles' => array(
@@ -208,13 +180,6 @@ function nm_section_content_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:content_domain:update group'
   $permissions['node:content_domain:update group'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
-  // Exported og permission: 'node:content_domain:update own biblio content'
-  $permissions['node:content_domain:update own biblio content'] = array(
     'roles' => array(
       'member' => 'member',
     ),

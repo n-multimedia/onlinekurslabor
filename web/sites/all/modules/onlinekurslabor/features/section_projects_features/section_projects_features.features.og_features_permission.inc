@@ -229,13 +229,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_cooperation_agreement:create biblio content'
-  $permissions['node:projects_cooperation_agreement:create biblio content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_cooperation_agreement:create content_chapter content'
   $permissions['node:projects_cooperation_agreement:create content_chapter content'] = array(
     'roles' => array(
@@ -338,13 +331,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_cooperation_agreement:delete any biblio content'
-  $permissions['node:projects_cooperation_agreement:delete any biblio content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_cooperation_agreement:delete any content_chapter content'
   $permissions['node:projects_cooperation_agreement:delete any content_chapter content'] = array(
     'roles' => array(
@@ -437,13 +423,6 @@ function section_projects_features_og_features_default_permissions() {
 
   // Exported og permission: 'node:projects_cooperation_agreement:delete any projects_proposal content'
   $permissions['node:projects_cooperation_agreement:delete any projects_proposal content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_cooperation_agreement:delete own biblio content'
-  $permissions['node:projects_cooperation_agreement:delete own biblio content'] = array(
     'roles' => array(
       'member' => 'member',
     ),
@@ -606,13 +585,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_cooperation_agreement:update any biblio content'
-  $permissions['node:projects_cooperation_agreement:update any biblio content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_cooperation_agreement:update any content_chapter content'
   $permissions['node:projects_cooperation_agreement:update any content_chapter content'] = array(
     'roles' => array(
@@ -714,13 +686,6 @@ function section_projects_features_og_features_default_permissions() {
   $permissions['node:projects_cooperation_agreement:update group'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_cooperation_agreement:update own biblio content'
-  $permissions['node:projects_cooperation_agreement:update own biblio content'] = array(
-    'roles' => array(
-      'member' => 'member',
     ),
   );
 
@@ -853,13 +818,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_organization:create biblio content'
-  $permissions['node:projects_organization:create biblio content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_organization:create content_chapter content'
   $permissions['node:projects_organization:create content_chapter content'] = array(
     'roles' => array(
@@ -959,13 +917,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_organization:delete any biblio content'
-  $permissions['node:projects_organization:delete any biblio content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_organization:delete any content_chapter content'
   $permissions['node:projects_organization:delete any content_chapter content'] = array(
     'roles' => array(
@@ -1059,13 +1010,6 @@ function section_projects_features_og_features_default_permissions() {
   // Exported og permission: 'node:projects_organization:delete any projects_proposal content'
   $permissions['node:projects_organization:delete any projects_proposal content'] = array(
     'roles' => array(),
-  );
-
-  // Exported og permission: 'node:projects_organization:delete own biblio content'
-  $permissions['node:projects_organization:delete own biblio content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
   );
 
   // Exported og permission: 'node:projects_organization:delete own content_chapter content'
@@ -1223,13 +1167,6 @@ function section_projects_features_og_features_default_permissions() {
     ),
   );
 
-  // Exported og permission: 'node:projects_organization:update any biblio content'
-  $permissions['node:projects_organization:update any biblio content'] = array(
-    'roles' => array(
-      'member' => 'member',
-    ),
-  );
-
   // Exported og permission: 'node:projects_organization:update any content_chapter content'
   $permissions['node:projects_organization:update any content_chapter content'] = array(
     'roles' => array(
@@ -1331,13 +1268,6 @@ function section_projects_features_og_features_default_permissions() {
   $permissions['node:projects_organization:update group'] = array(
     'roles' => array(
       'administrator member' => 'administrator member',
-    ),
-  );
-
-  // Exported og permission: 'node:projects_organization:update own biblio content'
-  $permissions['node:projects_organization:update own biblio content'] = array(
-    'roles' => array(
-      'member' => 'member',
     ),
   );
 
