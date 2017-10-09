@@ -20,6 +20,7 @@ function privatemsg_okl_privatemsg_thread_operations() {
   return $operations;
 }
 
+
 /**
  * Get a button linking to "write new message" to recipient arg(1)
  * @global type $user current user
@@ -110,7 +111,6 @@ function _privatemsg_okl_get_navigation_links() {
     return $links;
 }
 
-
 /**
  * hook_views_api()
  * Views können per default eintrgäe vom typ node anzeigen. man kann aber auch
@@ -124,3 +124,41 @@ function privatemsg_okl_views_api() {
         'path' => drupal_get_path('module','privatemsg_okl'). '/views',
     );
 }
+
+
+
+/**
+ * Implements hook_query_privatemsg_autocomplete_alter().
+ * changes privatemsg_realname_query_privatemsg_autocomplete_alter
+ * Grund: Ich möchte im User-Eingabefeld auch Nutzer anhand ihres Nachnamens finden können
+ */
+function privatemsg_okl_query_privatemsg_autocomplete_alter(SelectQueryInterface $query) {
+    $search = $query->getMetaData('arg_1');
+    $names = $query->getMetaData('arg_2');
+
+
+    // ersetze die privatemsg-realname-condition
+
+    $conditions = &$query->conditions();
+    foreach ($conditions as $key => $condition) {
+        //das hier ist  die privatemsg_realname-condition
+        if (isset($condition['field']) && is_object($condition['field']) && get_class($condition['field']) === 'DatabaseCondition' && $condition['field']->conditions()[0]['field'] == 'r.realname' && $condition['field']->conditions()[1]['field'] == 'u.name') {
+            //überschreibe bestehende queries mit %SEARCH% statt SEARCH%
+            $condition['field']
+                    ->condition('r.realname', '%' . $search . '%', 'LIKE')
+                    ->condition('u.name', '%' . $search . '%', 'LIKE');
+        }
+    }
+}
+
+/*
+ * Implements hook_form_FORM_ID_alter().
+ * adds Info-Tab in privatemsg-Tabs admin/config/messaging/privatemsg
+ */
+
+function privatemsg_okl_form_privatemsg_admin_settings_alter(&$form, &$form_state) {
+    $form['realname']['info'] = array(
+        '#markup' => '<b>Beware:</b> privatemsg_realname_query_privatemsg_autocomplete_alter is overriden in privatemsg_okl. No settings available!!'
+    );
+}
+
