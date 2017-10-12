@@ -8,8 +8,10 @@
  * hook_node_access($node, $op, $account) {
  */
 function annvid_node_access($node, $op, $account) {
+
 //ergänzt nm_stream module um annvid-spezifische perms
-    if ($node->type == 'nm_stream') {
+    //fix: non-object error ($node kann auch string sein, hier aber uninteressant
+    if (is_object($node) && $node->type == 'nm_stream') {
 
 
         switch ($op) {
