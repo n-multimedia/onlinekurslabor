@@ -7,7 +7,7 @@ drush updatedb --yes
 #bug in drush - cc before FR!!
 drush cc all
 #revert single features
-drush fr nm_section_content_features section_projects_features --yes
+drush fr nm_section_content_features nm_general_features section_projects_features --yes
 #drush features-revert-all --yes
 
  
