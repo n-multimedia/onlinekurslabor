@@ -5481,6 +5481,36 @@ echo \'<p><a class="btn btn-default" href="/node/add/courses-course">Neuen Kurs 
   $display->content['new-605e0f6d-45cc-409c-82a6-ee4bcb5732fe'] = $pane;
   $display->panels['tools'][1] = 'new-605e0f6d-45cc-409c-82a6-ee4bcb5732fe';
   $pane = new stdClass();
+  $pane->pid = 'new-323e8e8e-391d-4b77-82f6-532714138333';
+  $pane->panel = 'tools';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'copy-course-link',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<?php
+if(section_courses_instructors_tools_access())
+echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) kopieren</a></p>\';
+
+?>',
+    'format' => 'php_code',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '323e8e8e-391d-4b77-82f6-532714138333';
+  $display->content['new-323e8e8e-391d-4b77-82f6-532714138333'] = $pane;
+  $display->panels['tools'][2] = 'new-323e8e8e-391d-4b77-82f6-532714138333';
+  $pane = new stdClass();
   $pane->pid = 'new-88bd3aab-a455-4967-84a5-b41da40aabb9';
   $pane->panel = 'tools';
   $pane->type = 'custom';
@@ -5503,11 +5533,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/courses-course">Neuen Kurs 
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 2;
+  $pane->position = 3;
   $pane->locks = array();
   $pane->uuid = '88bd3aab-a455-4967-84a5-b41da40aabb9';
   $display->content['new-88bd3aab-a455-4967-84a5-b41da40aabb9'] = $pane;
-  $display->panels['tools'][2] = 'new-88bd3aab-a455-4967-84a5-b41da40aabb9';
+  $display->panels['tools'][3] = 'new-88bd3aab-a455-4967-84a5-b41da40aabb9';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
