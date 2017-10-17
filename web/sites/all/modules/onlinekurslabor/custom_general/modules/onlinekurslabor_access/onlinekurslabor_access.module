@@ -494,14 +494,15 @@ function onlinekurslabor_access_file_download($uri) {
         //berücksichtigte other-usage ist alles außer node (s.o.) 
         //und somit derzeit: comment default_image profile2 taxonomy_term
         $additional_usage_query = clone $abstract_usage_query;
-        $additional_usage_query->condition('fu.type', array('node'), 'NOT IN');
+        //$additional_usage_query->condition('fu.type', array('node'), 'NOT IN');
+        $additional_usage_query->condition('fu.type', array('profile2','taxonomy'), 'NOT IN');
         $other_usage = $additional_usage_query->execute();
         $other_usage_found = 0;
         //count gibt falsches ergebnis, deswegen foreach
         foreach($other_usage as $other_usage_record) 
            $other_usage_found++;
         //wenn andere usage gefunden, access erlauben
-        $access_allowed = $other_usage_found;
+        $access_allowed = (boolean) $other_usage_found;
     }
 
     if ($access_allowed) {
