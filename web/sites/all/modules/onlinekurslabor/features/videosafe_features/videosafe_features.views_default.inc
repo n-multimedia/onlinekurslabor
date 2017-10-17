@@ -95,10 +95,11 @@ function videosafe_features_views_default_views() {
     'field_parent_folder_1' => 'field_parent_folder_1',
     'title' => 'title',
   );
+  $handler->display->display_options['row_options']['layout'] = 'onecol';
   $handler->display->display_options['row_options']['regions'] = array(
-    'field_parent_folder' => 'left',
-    'field_parent_folder_1' => 'left',
-    'title' => 'left',
+    'field_parent_folder' => 'middle',
+    'field_parent_folder_1' => 'middle',
+    'title' => 'middle',
   );
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
@@ -327,7 +328,7 @@ function videosafe_features_views_default_views() {
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = 'Videos';
-  /* Field: Content: Einsehbar für */
+  /* Field: Content: Optional: Zugriff nur für */
   $handler->display->display_options['fields']['field_exclusive_access']['id'] = 'field_exclusive_access';
   $handler->display->display_options['fields']['field_exclusive_access']['table'] = 'field_data_field_exclusive_access';
   $handler->display->display_options['fields']['field_exclusive_access']['field'] = 'field_exclusive_access';
