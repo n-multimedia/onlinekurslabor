@@ -458,3 +458,39 @@ function bootstrap_onlinekurslabor_status_messages($variables) {
   }
   return $output;
 }
+
+
+/**
+ * Pre-processes variables for the "menu_link" theme hook.
+ *
+ * See theme function for list of available variables.
+ *
+ * @see bootstrap_menu_link()
+ * @see theme_menu_link()
+ *
+ * @ingroup theme_preprocess
+ */
+function bootstrap_onlinekurslabor_preprocess_menu_link(array &$variables) {
+  $element = &$variables['element'];
+
+  // Determine if the link should be shown as "active" based on the current
+  // active trail (set by core/contrib modules).
+  // @see https://www.drupal.org/node/2618828
+  // @see https://www.drupal.org/node/1896674
+  $classes = _bootstrap_get_classes($element);
+
+  if($element['#href'] ==  "administration") {
+    $arg0 = arg(0);
+    $arg1 = arg(1);
+    if($arg0 == "administration" && !empty($arg1)) {
+      if(in_array("active", $classes)) {
+        foreach($element['#attributes']['class'] as $key => $val) {
+          if($val == "active") {
+            unset($element['#attributes']['class'][$key]);
+          }
+        }
+      }
+    }
+  }
+
+}

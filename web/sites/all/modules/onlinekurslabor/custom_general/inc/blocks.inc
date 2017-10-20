@@ -75,8 +75,16 @@ function _custom_general_theme_top_nav($variables = NULL) {
     }
 
     //forum link for all logged-in users
-    if($user->uid && array_intersect(array('authenticated user'), $user->roles))
-        $output .= _custom_general_get_top_nav_element('forum');
+    if($user->uid && array_intersect(array('authenticated user'), $user->roles)) {
+      $output .= _custom_general_get_top_nav_element('forum');
+    }
+
+    //administration link for moderators
+    if($user->uid && user_access("administer content")) {
+      $output .= _custom_general_get_top_nav_element('administration');
+    }
+
+
 
     //help
     $output .= _custom_general_get_top_nav_element('help');
@@ -119,6 +127,10 @@ function _custom_general_get_top_nav_element($identifier, $unread_count = 0) {
             'glyphicon_classes' => 'glyphicon glyphicon-console',
             'title' => t('Forum'),
             'path' => $forum_path),
+        'administration' => array(
+          'glyphicon_classes' => 'glyphicon glyphicon-cog',
+          'title' => t('Administration'),
+          'path' => "administration"),
         'help' => array(
             'glyphicon_classes' => 'glyphicon glyphicon-question-sign',
             'title' => t('Help'),

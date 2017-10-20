@@ -1,5 +1,7 @@
 #Translation File - onlinekurslabor
 
+msgid "Administration"
+msgstr "Verwaltung"
 
 msgid "Biblio %name created. You can use it as a reference now."
 msgstr "Biblio-Eintrag %name erstellt. Sie können diesen nun im Lehrtext referenzieren."
@@ -66,3 +68,4 @@ msgstr ""
 
 msgid ""
 msgstr ""
+
