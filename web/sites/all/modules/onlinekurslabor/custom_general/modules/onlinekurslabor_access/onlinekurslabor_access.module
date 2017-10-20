@@ -384,13 +384,22 @@ function onlinekurslabor_access_media_browser_plugins_alter(&$plugins) {
 
  /**
  * Implements hook_file_download_access($file_item, $entity_type, $entity)
- */
+ * hook_file_download_access wird zunächst aufgerufen. 
+ * Hier wird Zugriff auf private files in a field freigegeben (insbesondere Taxonomy wie Kurs-Sponsoren)
+ * 
+ * Eine Freigabe allein aufgrund hook_file_download ist nicht immer möglich!
+ * 
+ * Anschließend wird onlinekurslabor_access_file_download aufgerufen. 
+ * Darin kann ein erlaubter Zugriff noch abgebrochen werden.  
+ *  
+ */ 
 function onlinekurslabor_access_file_download_access($file_item, $entity_type, $entity) {
     
-    /*bilder in taxonomien oder profilbilder? Access!s*/
+    //bilder in taxonomien oder profilbilder? Access!
     if(in_array($entity_type, array('taxonomy_term','profile2')))
         return true; 
 }
+ 
 
 /**
  * Implements hook_file_download().
@@ -410,25 +419,29 @@ function onlinekurslabor_access_file_download($uri) {
     $account = clone $user;
     $access_allowed = false;
     //laedt file-usage, also wo eine datei genutzt wird
-    $query = db_select('file_usage', 'fu');
-    $query->addField('fu', 'id');
-    $query->addField('fu', 'type');
-    $query->join('file_managed', 'fm', 'fm.fid = fu.fid');
-    $query->condition('fm.uri', $uri, '=');
-    $query->condition('fu.type', array( 'node',), 'IN');
-    $fileusage_result = $query->execute();
+    //zunächst nur abstract, da doppelverwendung
+    $abstract_usage_query = db_select('file_usage', 'fu');
+    $abstract_usage_query->addField('fu', 'id');
+    $abstract_usage_query->addField('fu', 'type');
+    $abstract_usage_query->join('file_managed', 'fm', 'fm.fid = fu.fid');
+    $abstract_usage_query->condition('fm.uri', $uri, '=');
+    //tatsächliche ausführung des queries
+    $usage_query = clone $abstract_usage_query;
+    $usage_query->condition('fu.type', array('node',), 'IN');
+
+    $fileusage_result = $usage_query->execute();
 
     $info = image_get_info($uri);
     $mime = $info['mime_type'];
     if (!$mime)
         $mime = file_get_mimetype($uri);
-
+        
     #drupal_set_message("db_result" . var_export($fileusage_result, true));  dpm(count($fileusage_result)); return -1;
-    $entryfound = false;
+    $node_usage_found = false;
     foreach ($fileusage_result as $record) {
-        $entryfound = true;
+        $node_usage_found = true;
         #    dpm($record); return -1;
-         
+
         if ($record->type == 'node') {
             $node = node_load($record->id);
             #dpm($node); return -1;
@@ -445,7 +458,7 @@ function onlinekurslabor_access_file_download($uri) {
                 header('Cache-Control: no-store, no-cache, must-revalidate');
                 header('Cache-Control: post-check=0, pre-check=0', FALSE);
                 header('Pragma: no-cache');
-                header('Content-Type: '. $mime);
+                header('Content-Type: ' . $mime);
                 //wir schauen nach, in welchem h5p-content das gelistet wird  
                 $h5p_nodes = _videosafe_get_h5p_usage($uri);
 
@@ -468,8 +481,29 @@ function onlinekurslabor_access_file_download($uri) {
             }
         }
     }
-    if (!$entryfound)
+
+
+    //file in keinem node verwendet => zugriff
+    if (!$node_usage_found) {
         $access_allowed = true;
+    } 
+    //verwendet in einer node und kein access darauf
+    elseif(!$access_allowed) {
+        //Jetzt kann irgendn Scherzkeks bspw ein Profilbild aber in einer Kursnews verwendet haben.
+        //dann geben wir das Bild aufgrund der other_usage frei.
+        //berücksichtigte other-usage ist alles außer node (s.o.) 
+        //und somit derzeit: comment default_image profile2 taxonomy_term
+        $additional_usage_query = clone $abstract_usage_query;
+        //$additional_usage_query->condition('fu.type', array('node'), 'NOT IN');
+        $additional_usage_query->condition('fu.type', array('profile2','taxonomy'), 'NOT IN');
+        $other_usage = $additional_usage_query->execute();
+        $other_usage_found = 0;
+        //count gibt falsches ergebnis, deswegen foreach
+        foreach($other_usage as $other_usage_record) 
+           $other_usage_found++;
+        //wenn andere usage gefunden, access erlauben
+        $access_allowed = (boolean) $other_usage_found;
+    }
 
     if ($access_allowed) {
 
@@ -477,7 +511,6 @@ function onlinekurslabor_access_file_download($uri) {
     }
     return -1;
 }
-
 
 /**
  * Prüft, ob der übergebene Content im Objekt $o_object verfügbar ist.

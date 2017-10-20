@@ -1,0 +1,36 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Migrate function: delete og-group-membership for all biblio-entries
+ */
+function section_content_update_1000() {
+    //lade biblio-nids
+    $nodes = node_load_multiple(array(), array('type' => NM_BIBLIO));
+    $bib_nids = array();
+    foreach ($nodes as $bib_entry) {
+        $bib_nids[] = $bib_entry->nid;
+    }
+
+    foreach ($bib_nids as $bib_nid) {
+        //lade membership-id aus db
+        $query = new EntityFieldQuery();
+        $query->entityCondition('entity_type', 'og_membership')
+                ->propertyCondition('etid', $bib_nid, '=');
+
+        $result = $query->execute();
+
+        if (sizeof($result) > 0) {
+            foreach ($result['og_membership'] as $membership_entry) {
+                $member = og_membership_load($membership_entry->id);
+                //lösche membership
+                og_ungroup('node', $member->gid, 'node', $bib_nid);
+            }
+        }
+    }
+}

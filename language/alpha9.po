@@ -1,8 +1,64 @@
 #Translation File - onlinekurslabor
 
-
 msgid "Administration"
 msgstr "Verwaltung"
+
+msgid "Biblio %name created. You can use it as a reference now."
+msgstr "Biblio-Eintrag %name erstellt. Sie können diesen nun im Lehrtext referenzieren."
+
+msgid "Copy course"
+msgstr "Kurs kopieren"
+
+msgid "Copy an existing course"
+msgstr "Bestehenden Kurs kopieren"
+
+msgid "Course copy !courselink created"
+msgstr "Kurskopie !courselink erstellt"
+
+msgid "Select which content you would like to copy."
+msgstr "Wählen Sie, welchen Inhalt Sie mitkopieren wollen."
+
+msgid "Select the staff you would like to copy."
+msgstr "Wählen Sie die Beschäftigten, die mitkopiert werden sollen."
+
+msgid "Select which structures you would like to copy."
+msgstr "Wählen Sie, welche Strukturen Sie mitkopieren wollen"
+
+msgid "Set up the properties, you would like to have for the new course."
+msgstr "Wählen Sie die Eigenschaften für die Kurskopie."
+
+msgid "Persons"
+msgstr "Personen"
+
+msgid "Properties"
+msgstr "Eigenschaften"
+
+msgid "News"
+msgstr "Neuigkeiten"
+
+msgid "Professors"
+msgstr "Lehrende"
+
+msgid "Tutors"
+msgstr "Tutoriumsbegleitende"
+
+msgid "Status (published)"
+msgstr "Status (veröffentlicht)"
+
+msgid "Course groups"
+msgstr "Kursgruppen"
+
+msgid "Course docs"
+msgstr "Kursdokumente"
+
+msgid "You selected the following <strong>!count</strong>:"
+msgstr "<strong>!count</strong> ausgewählt:"
+
+msgid "You selected the following %count:"
+msgstr "%count ausgewählt:"
+
+msgid "item"
+msgstr "Element"
 
 msgid ""
 msgstr ""

@@ -29,10 +29,10 @@ function nm_general_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'book_allowed_types';
   $strongarm->value = array(
-    0 => 'book',
-    3 => 'course_medial_content',
-    'content_chapter' => 'content_chapter',
-    'content_domain' => 'content_domain',
+    0 => 'annvid',
+    1 => 'book',
+    2 => 'content_chapter',
+    3 => 'content_domain',
   );
   $export['book_allowed_types'] = $strongarm;
 
@@ -355,7 +355,7 @@ dasddasdasd',
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => '7fLBF-NnY6EGaZuX7d5VCUUjtWW5X6032ty08gBolmw',
+    'javascript' => 'tgGMB6_tnHqmdTS2njH5zjR3VzfrXSLOQzgoHlmBvkY',
   );
   $export['language_default'] = $strongarm;
 

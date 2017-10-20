@@ -290,21 +290,3 @@ function AnnVid_node_view($node, $view_mode, $langcode) {
     $node->title = NULL;
   }
 }
-/**
- * Implements hook_form_alter().
- * setzt das Buch auf die gegebene group_id
- * book prepopulate
- */
-function AnnVid_form_alter(&$form, &$form_state, $form_id) {
-
-    if ($form_id == 'annvid_node_form') {
-        $parameters = drupal_get_query_parameters();
-        $og_group_ref = @$parameters['og_group_ref'];
-     
-        if ($og_group_ref) {
-            $form['#node']->book['bid'] = (int) $og_group_ref;
-            $form['#node']->book['plid'] = (int) $og_group_ref;
-        }
-    }
-}
-

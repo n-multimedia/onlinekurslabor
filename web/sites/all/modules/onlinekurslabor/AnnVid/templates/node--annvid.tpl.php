@@ -1,27 +1,34 @@
 <div class="col-md-12">
-    <? print render($content['body']); ?>
+    <?php print render($content['body']); ?>
+</div>
+<div class="hidden-sm visible-xs" id="is_small_screen_device">
+    <!-- platzhalter als JS-Screen-Detector -->
 </div>
 
-<? /* klassen werden ueber js dynamisch geandert */ ?>
+<?php /* klassen werden ueber js dynamisch geandert */ ?>
 <div class="col-md-12" id="annvid_videodiv">
     
-    <? if (!empty($content['field_pdffile'])): ?>
+    <?php if (!empty($content['field_pdffile'])): ?>
         <div id="annvid_button_show_pdf_container">
             <ul class="nav nav-tabs" id="annvid_video_fahne">
                 <li   class="active" id="annvid_button_show_pdf"><a href="#" class="annvid_dark_button" >PDf&nbsp;anzeigen</a></li>
 
             </ul>
         </div>
-    <? endif ?>
-    <? print render($content['field_h5preference']); ?>
-
-    <?
+    <?php endif ?>
+    <div id="annvid_video_container">
+        <?php print render($content['field_h5preference']); ?>
+    </div>
+    <div id="annvid_video_placeholder" >
+        
+    </div>
+    <?php
     print _AnnVid_getPlayerCode($node->nid);
     print _AnnVid_getStreamTimeLine();
     module_load_include('inc', 'nm_stream', 'inc/blocks');
     ?>
 
-    <?
+    <?php
     $environment = nm_stream_get_environment();
     print _nm_stream_get_renderedGUI($environment);
     ?>
@@ -36,6 +43,6 @@
         </button>
     </div>
     <div>
-        <? print render($content['field_pdffile']); ?>
+        <?php print render($content['field_pdffile']); ?>
     </div>
 </div>

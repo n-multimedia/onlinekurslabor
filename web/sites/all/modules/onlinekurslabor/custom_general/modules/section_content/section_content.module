@@ -492,7 +492,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
   
   //Assign files to active groups when uploaded
   //dependency: file entity, og, media
-  if ($form_id == 'file_entity_add_upload' || $form_id == 'media_internet_add' || $form_id == 'media_format_form') {
+  if ($form_id == 'file_entity_add_upload' || $form_id == 'media_internet_add_upload' || $form_id == 'media_wysiwyg_format_form') {
 
     //Media Brower - Get Arguments from referer data, to assign file to a group 
     $referer_args['nid'] = _media_browser_get_referer_nid();
@@ -680,6 +680,29 @@ function section_content_node_form_submit($form, &$form_state) {
   if (arg(0) == 'domain' && (arg(1) == 'edit' || arg(1) == 'add') && is_numeric(arg(2))) {
     $form_state['redirect'] = NM_CONTENT_TEXT_PATH . '/' . $form_state['node']->nid;
   }
+}
+
+/**
+ * implements  hook_node_insert($node) 
+ * Nach Erstellen eines Bib-Eintrags wird man zum korrespondierenden Lehrtext zurückgeleitet
+ * Sonst ist man aus dem Kontext geworfen, wenn man nur auf dem Bibeintrag steht. 
+ * @param StdClass $node
+ */
+function section_content_node_insert($node) {
+    if($node->type==='biblio')
+    {
+        //woher komme ich? darin ist ein og-group-ref-parameter
+        $drupal_ref_params = drupal_get_query_parameters();
+    
+        if(!empty($drupal_ref_params['og_group_ref']))
+        {
+            //"node-created"-Message geht durch goto verloren. Ersetze sie deshalb.
+            drupal_set_message(t('Biblio %name created. You can use it as a reference now.', array('%name' => $node->title)));
+            //gehe zu lehrtext
+            drupal_goto ('/node/'.$drupal_ref_params['og_group_ref']);
+        }
+    }
+    
 }
 
 /*

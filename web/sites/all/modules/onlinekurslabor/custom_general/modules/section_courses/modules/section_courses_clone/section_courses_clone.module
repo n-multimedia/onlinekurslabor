@@ -43,31 +43,31 @@ function section_courses_clone_course_form($context) {
   //dpm($context);
 
   $clone_items = array(
-    'news' => 'News',
-    'course_groups' => 'Course Groups',
-      'aufgaben' => 'Aufgaben',
-      'kursdokumente' => 'Kursdokumente'
+    'news' => t('News'),
+    'course_groups' => t('Course groups'),
+      'aufgaben' => t('Tasks'),
+      'kursdokumente' => t('Course docs'),
   );
 
     $clone_persons = array(
-    'professor' => 'Professors',
-    'tutor' => 'Tutors'
+    'professor' => t('Professors'),
+    'tutor' => t('Tutors')
   );
 
   // Personen-klonen
   $clone_structure = array(
-    'forum' => 'Forum',
+    'forum' => t('Forum'),
   );
 
   $clone_properties = array(
-    'status' => 'Status (published)',
+    'status' => t('Status (published)'),
   );
 
   $form['clone_items'] = array(
     '#title' => t('Items'),
     '#type' => 'checkboxes',
     '#options' => $clone_items,
-    '#description' => t('Select which content you would like to clone.'),
+    '#description' => t('Select which content you would like to copy.'),
   );
   
   //Personen-klonen
@@ -75,21 +75,21 @@ function section_courses_clone_course_form($context) {
     '#title' => t('Persons'),
     '#type' => 'checkboxes',
     '#options' => $clone_persons,
-    '#description' => t('Select which groups you would like to clone.'),
+    '#description' => t('Select the staff you would like to copy.'),
   );
     
   $form['clone_structure'] = array(
     '#title' => t('Structure'),
     '#type' => 'checkboxes',
     '#options' => $clone_structure,
-    '#description' => t('Select which structures you would like to migrate.'),
+    '#description' => t('Select which structures you would like to copy.'),
   );
 
   $form['clone_properties'] = array(
     '#title' => t('Properties'),
     '#type' => 'checkboxes',
     '#options' => $clone_properties,
-    '#description' => t('Set up the properties, you would like to have for the new node.'),
+    '#description' => t('Set up the properties, you would like to have for the new course.'),
   );
 
   return $form;
@@ -229,6 +229,10 @@ function section_courses_clone_course(&$entity, $context = array()) {
         );
         og_group('node', $clone_node->nid, $values);
     }
+    
+    //feedback an endnutzer
+    $coursecopy_link = l($clone_node->title, 'node/' . $clone_node->nid, array('absolute' => TRUE));
+    drupal_set_message(t("Course copy !courselink created", array("!courselink" => $coursecopy_link)));
 }
 
 /**
@@ -289,4 +293,75 @@ function _section_courses_clone_node_prepare($original_node, $prefix_title = FAL
   }
 
   return $node;
+}
+
+
+
+
+
+
+
+/**
+ * hook_form_alter
+ *
+ * @param string $form
+ * @param type $form_state
+ * @param type $form_id
+ */
+function section_courses_clone_form_alter(&$form, &$form_state, $form_id) {
+    /* form: neuen kurs erstellen */
+    if ($form_id === 'courses_course_node_form' && is_null($form['nid']['#value'])) {
+        //section: kurs kopieren oberhalb von kurs-anlegen
+        $form["clone_course_link"] = array(
+            '#type' => 'markup',
+            '#weight' => -100,
+            '#markup' => '<h4>' . t('Copy course') . ':</h4><em>' . l(t('Copy an existing course'), '/node/copy/courses-course') . '</em><hr><h4>' . t('Create new Course') . ':</h4>'
+        );
+    }
+
+    /* die clone-course-form wird hier bereinigt */
+    if ($form_id == 'views_form_nm_courses_clone_with_permission_check') {
+        $form['#after_build'][] = '_section_courses_clone_remove__vbo_select_all';
+    }
+}
+
+/**
+ *  yourmodulename_after_build($form, &$form_state) 
+ * Entfernt "Select all items on this page" checkboxes von VBO
+ * @param type $form
+ * @param type $form_state
+ * @return type
+ */
+function _section_courses_clone_remove__vbo_select_all($form, &$form_state) {
+
+    drupal_add_css(drupal_get_path('module', 'section_courses_clone') . "/assets/css/remove_vbo-select-all.css");
+    return $form;
+}
+
+
+/**
+ * Implements hook_views_pre_view.
+ * Entfernt kursrollenfilter des views für >dozent
+ * see admin/structure/views/view/nm_courses_clone/edit/default
+ */
+function section_courses_views_pre_view(&$view) {
+    //entferne eigene-kurse-only fuer admin / moderator
+    switch ($view->name) {
+        case 'nm_courses_clone': {
+                if ($view->current_display == 'with_permission_check') {
+                    // Do not use eigene-kurse-only-filter for admin / moderator
+                    global $user;
+                    if (array_intersect($user->roles, array(NM_ROLE_ADMIN, NM_ROLE_MODERATOR))) {
+                        $view_filters = $view->display_handler->get_option('filters');
+
+                        //filter-id uid_current vergleicht kurs-member mit current uid (bin ich mitglied?)
+                        unset($view_filters['uid_current']);
+                        //filter-id name vergleicht kurs-member-role mit meiner (filtert dozent/tutor)
+                        unset($view_filters['name']);
+                        $view->display_handler->override_option('filters', $view_filters);
+                    }
+                    break;
+                }
+            }
+    }
 }
