@@ -13,3 +13,7 @@
     padding: 10px;
     background-color: #eee;
 }
+
+.page-administration .nav-list > li:not(.active) > a.active {
+    background-color:transparent;
+}
