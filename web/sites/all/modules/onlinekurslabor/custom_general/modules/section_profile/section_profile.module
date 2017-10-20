@@ -113,6 +113,11 @@ function section_profile_views_pre_view(&$view, $display_id, $args) {
     //nur dieser hook geht, um filters anzupassen
     global $user;
 
+    /*nur wenn wir auf der Profilansicht sind, sonst hook beenden */
+    if (strpos($_SERVER["REQUEST_URI"], 'user') === false) 
+    {
+        return;
+    }
 
     //geht um den Block "angebotene Kurse" auf "Profil"
     if ($view->name === 'courses_kurse_bersicht' && $view->current_display === 'my_courses_small') {

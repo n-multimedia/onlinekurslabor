@@ -13,6 +13,3 @@ msgstr ""
 msgid ""
 msgstr ""
 
-msgid ""
-msgstr ""
-
