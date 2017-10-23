@@ -540,6 +540,115 @@ function nm_administration_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
+  $pane->pid = 'new-a5c5dd35-a73b-4ec4-8fd2-990c453d2a21';
+  $pane->panel = 'center';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'Set current semester',
+    'title' => 'Aktuelles Semester festlegen',
+    'title_heading' => 'h2',
+    'body' => '<?php
+/*rendert form, um  aktuelles semester festzulegen */
+$form_set_default_sem = drupal_get_form(\'section_courses_get_config_form_default_semester\');
+print drupal_render($form_set_default_sem);
+?>',
+    'format' => 'php_code',
+    'substitute' => 0,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'a5c5dd35-a73b-4ec4-8fd2-990c453d2a21';
+  $display->content['new-a5c5dd35-a73b-4ec4-8fd2-990c453d2a21'] = $pane;
+  $display->panels['center'][0] = 'new-a5c5dd35-a73b-4ec4-8fd2-990c453d2a21';
+  $pane = new stdClass();
+  $pane->pid = 'new-b90c7c26-3cb3-4a7a-9bdd-5824c456638e';
+  $pane->panel = 'center';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'add-new-semester',
+    'title' => 'Neues Semester',
+    'title_heading' => 'h2',
+    'body' => '<?php
+
+/* lädt form, um neues semester anzulegen */
+if ($semester_vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
+    module_load_include(\'inc\', \'taxonomy\', \'taxonomy.admin\');
+    $form_edit_var = array();
+    $taxonomy_create_form = drupal_get_form(\'taxonomy_form_term\', $form_edit_var, $semester_vocabulary);
+ 
+
+    $create_fieldset = array();
+    $create_fieldset[\'create_new\'] = array(
+        \'#type\' => \'fieldset\',
+        \'#title\' => t(\'Create semester\'),
+        \'#collapsible\' => true,
+        \'#collapsed\' => true,
+        \'content\' => array(\'#type\' => \'markup\', \'#markup\' => drupal_render($taxonomy_create_form))
+    );
+    echo drupal_render($create_fieldset);
+}
+?>',
+    'format' => 'php_code',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = 'b90c7c26-3cb3-4a7a-9bdd-5824c456638e';
+  $display->content['new-b90c7c26-3cb3-4a7a-9bdd-5824c456638e'] = $pane;
+  $display->panels['center'][1] = 'new-b90c7c26-3cb3-4a7a-9bdd-5824c456638e';
+  $pane = new stdClass();
+  $pane->pid = 'new-578bec4e-99cc-4ebe-be2d-47208ee2b4d3';
+  $pane->panel = 'center';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'form-semester-sort',
+    'title' => 'Semester-Reihenfolge ändern',
+    'title_heading' => 'h2',
+    'body' => '<?php
+/*lädt die form von admin/structure/taxonomy/semester*/
+if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
+  module_load_include(\'inc\', \'taxonomy\', \'taxonomy.admin\');
+  $edit = array();
+  $taxonomy_form = drupal_get_form(\'taxonomy_overview_terms\',$vocabulary);
+  echo drupal_render($taxonomy_form);
+}
+?>',
+    'format' => 'php_code',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '578bec4e-99cc-4ebe-be2d-47208ee2b4d3';
+  $display->content['new-578bec4e-99cc-4ebe-be2d-47208ee2b4d3'] = $pane;
+  $display->panels['center'][2] = 'new-578bec4e-99cc-4ebe-be2d-47208ee2b4d3';
+  $pane = new stdClass();
   $pane->pid = 'new-a3b10c57-cd41-4203-b01b-1b53336c8dd5';
   $pane->panel = 'navigation';
   $pane->type = 'menu_tree';

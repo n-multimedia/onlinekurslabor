@@ -60,6 +60,12 @@ msgstr "%count ausgewählt:"
 msgid "item"
 msgstr "Element"
 
+msgid "Create semester"
+msgstr "Semester anlegen"
+
+msgid "Current semester"
+msgstr "Aktuelles Semester"
+
 msgid ""
 msgstr ""
 

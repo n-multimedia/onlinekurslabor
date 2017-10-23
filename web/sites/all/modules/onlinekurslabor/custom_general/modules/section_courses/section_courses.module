@@ -55,6 +55,59 @@ function section_courses_menu() {
   return $items;
 }
 
+
+/**
+ * Form: lege default-semester fest
+ * @param type $form
+ * @param type $form_state
+ * @return type
+ */
+function section_courses_get_config_form_default_semester($form, &$form_state) {
+    $form = _section_courses_get_semester_default_form_configuration();
+
+    return(system_settings_form($form));
+}
+
+/**
+ * liefert die Form-Komponente "aktuelles Semeser setzen" als form-renderable-array
+ * 
+ * @see section_courses_onlinekurslabor_admin_settings_page() and section_courses_get_config_form_default_semester()
+ * @return array form-definition
+ */
+function _section_courses_get_semester_default_form_configuration()
+{
+     $form = array();
+  $vocabulary_semester = taxonomy_vocabulary_machine_name_load('semester');
+
+  $semesters = taxonomy_get_tree($vocabulary_semester->vid);
+  $semester_terms_options = array();
+  foreach ($semesters as $semester) {
+    // str_repeat('-', $semester->depth) .
+    $semester_terms_options[$semester->tid] = $semester->name;
+  }
+
+  //todo error handling
+  //we need the taxonomy terms to be available!
+  //lädt das ws13/14. tut das not?
+  $default_semester_key = current(taxonomy_get_term_by_name(_section_courses_semesterID_ToString(NM_VHB_SEMESTERID_OKL_START)));
+  $current_semester = taxonomy_term_load(variable_get('okl_current_semester', $default_semester_key->tid));
+
+  $current_semester_tid = $current_semester->tid;
+  $default_val = 0;
+  if (isset($semester_terms_options[$current_semester_tid])) {
+    $default_val = $current_semester_tid;
+  }
+
+  $form['okl_current_semester'] = array(
+    '#type' => 'select',
+    '#title' => t('Current semester'),
+    '#default_value' => $default_val,
+    '#options' => $semester_terms_options,
+    '#description' => t("(e.g. SS 13, WS 13/14, ...)"),
+    '#required' => TRUE,
+  );
+  return $form;
+}
 /**
  * admin settings page
  * settings for
@@ -66,34 +119,8 @@ function section_courses_menu() {
 function section_courses_onlinekurslabor_admin_settings_page() {
   $form = array();
 
-  $vocabulary = taxonomy_vocabulary_machine_name_load('semester');
-
-  $semesters = taxonomy_get_tree($vocabulary->vid);
-  $terms_select = array();
-  foreach ($semesters as $semester) {
-    // str_repeat('-', $semester->depth) .
-    $terms_select[$semester->tid] = $semester->name;
-  }
-
-  //todo error handling
-  //we need the taxonomy terms to be available!
-  $default_key = current(taxonomy_get_term_by_name(_section_courses_semesterID_ToString(NM_VHB_SEMESTERID_OKL_START)));
-  $current_semester = taxonomy_term_load(variable_get('okl_current_semester', $default_key->tid));
-
-  $key = $current_semester->tid;
-  $default_val = 0;
-  if (isset($terms_select[$key])) {
-    $default_val = $key;
-  }
-
-  $form['okl_current_semester'] = array(
-    '#type' => 'select',
-    '#title' => t('Current Semester'),
-    '#default_value' => $default_val,
-    '#options' => $terms_select,
-    '#description' => t("(e.g. SS 13, WS 13/14, ...)"),
-    '#required' => TRUE,
-  );
+  //double-usage: default-semester ausgegliedert in funktion
+  $form += _section_courses_get_semester_default_form_configuration();
 
   $form['okl_global_forum_tid'] = array(
     '#type' => 'textfield',
