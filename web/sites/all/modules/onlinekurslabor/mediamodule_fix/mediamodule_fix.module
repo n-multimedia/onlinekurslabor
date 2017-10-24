@@ -12,28 +12,3 @@ function mediamodule_fix_page_build(&$page) {
     
 } 
 
-/**
- * bug in file_entity 2.3,2.4 bzw media: bei upload wird als filesystem public gewählt
- * 
- * implements hook_form_alter(&$form, &$form_state, $form_id) {
- * @param type $form
- * @param type $form_state
- * @param type $form_id
- */
-function mediamodule_fix_form_alter(&$form, &$form_state, $form_id) {
-    $fe_module =  system_get_info('module', 'file_entity') ;
- 
-    //check fuer neuere file_entity
-    if(version_compare($fe_module['version'], '7.x-2.4') > 0)
-        drupal_set_message ("Beware!! Do we still need mediamodule_fix_form_alter?", 'warning'); 
- 
-    //form: file-upload und web-upload
-    if ($form_id == 'file_entity_add_upload' || $form_id == 'media_internet_add_upload') {
-        //beim body-field und anderen rein-text-fields ist kein scheme gesetzt und default wäre public. Überschreibe dann die Werte.
-        if (empty($form['#options']['schemes'])) {
-            $form['#options']['schemes'] = array(file_default_scheme() => file_default_scheme());
-            $form['#options']['uri_scheme'] = file_default_scheme();
-        }
-    }
-}
-
