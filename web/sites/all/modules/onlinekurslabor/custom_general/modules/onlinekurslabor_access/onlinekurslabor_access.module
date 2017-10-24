@@ -495,7 +495,7 @@ function onlinekurslabor_access_file_download($uri) {
         //und somit derzeit: comment default_image profile2 taxonomy_term
         $additional_usage_query = clone $abstract_usage_query;
         //$additional_usage_query->condition('fu.type', array('node'), 'NOT IN');
-        $additional_usage_query->condition('fu.type', array('profile2','taxonomy'), 'NOT IN');
+        $additional_usage_query->condition('fu.type', array('profile2','taxonomy','default_image'), 'IN');
         $other_usage = $additional_usage_query->execute();
         $other_usage_found = 0;
         //count gibt falsches ergebnis, deswegen foreach
