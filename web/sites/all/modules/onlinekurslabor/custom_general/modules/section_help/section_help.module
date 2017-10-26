@@ -1,14 +1,53 @@
 <?php
 
+/**
+ * Hinweis: die View book_button_navigation-Sachen sind eigentlich ziemlich generisch und
+ * nicht Hilfe-spezifisch. Da derzeit aber ausschließlich unter /help verwendet, in diesen
+ * Modulen implementiert.
+ */
+
 /*
- * book-navigation auf hilfe-start raus
+ * - book-navigation auf hilfe-start raus
+ * - Hilfebereiche (icons) hilfe-start rendern
  */
 function section_help_node_view($node, $view_mode, $langcode) {
     $help_bid = variable_get('okl_help_bid', NM_HELP_BID);
     if (@$node->book['bid'] == $help_bid) {
+        
+        $rendered_help_buttons =   theme('help_buttons');
+        // wir sind unter /help
         if ($node->nid == $help_bid) {
+            drupal_add_css(drupal_get_path('module', 'section_help') . "/assets/css/section_help.css");
             unset($node->content['book_navigation']);
+            
+            $booknavigation_view = views_get_view('book_button_navigation',true);
+            $booknavigation_view->set_display('help_navigation');
+            $booknavigation_view->set_arguments(array($node->nid));
+            //prepended dem body unter /help die selection list mit Hilfe-Einträgen
+            array_unshift($node->content['body']['#items'], array(
+                'value' => 'ANGABE filtered_html WICHTIG FUER FUNKTION',
+                'format' => 'filtered_html'));
+           
+            array_unshift($node->content['body'], array(
+                '#markup' => $booknavigation_view->render('help_navigation')
+                ));
+            
         }
+    }
+}
+
+
+
+/**
+ * Implements hook_views_post_render
+ * Boah, ich will doch nur, dass section-content noch ne css-class kriegt. Nicht ohne Hack lösbar
+ * @param type $view
+ * @param type $output
+ * @param type $cache
+ */
+function section_help_views_post_render(&$view, &$output, &$cache) {
+    if ($view->name = 'book_button_navigation') {
+        $output = '<br>'.str_replace('<div class="view-content">', '<div class="view-content row section_help_icon_container">', $output);
     }
 }
 

@@ -1,0 +1,25 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 19.10.2017, 11:20:31
+    Author     : Bernhard
+*/
+
+
+div.section_help_icon_container .section-help-element{
+    text-align:center;
+    padding-bottom: 20px;
+}
+/*einzelne button-grafiken*/
+div.section_help_icon_container .section-help-element img
+{
+    border: 1px solid #868686;
+    border-radius: 50%;
+}
+div.section_help_icon_container .section-help-element a:hover img{
+    border-color: #23527C;
+    opacity: 0.8;
+}
