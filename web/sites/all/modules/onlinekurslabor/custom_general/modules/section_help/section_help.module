@@ -45,7 +45,7 @@ function section_help_node_view($node, $view_mode, $langcode) {
  * @param type $cache
  */
 function section_help_views_post_render(&$view, &$output, &$cache) {
-    if ($view->name = 'book_button_navigation') {
+    if ($view->name == 'book_button_navigation') {
         $output = '<br>'.str_replace('<div class="view-content">', '<div class="view-content row section_help_icon_container">', $output);
     }
 }
