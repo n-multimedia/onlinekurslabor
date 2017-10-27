@@ -491,8 +491,7 @@ function onlinekurslabor_access_file_download($uri) {
     elseif(!$access_allowed) {
         //Jetzt kann irgendn Scherzkeks bspw ein Profilbild aber in einer Kursnews verwendet haben.
         //dann geben wir das Bild aufgrund der other_usage frei.
-        //berücksichtigte other-usage ist alles außer node (s.o.) 
-        //und somit derzeit: comment default_image profile2 taxonomy_term
+        //berücksichtigte other-usage ist derzeit profile2','taxonomy','default_image
         $additional_usage_query = clone $abstract_usage_query;
         //$additional_usage_query->condition('fu.type', array('node'), 'NOT IN');
         $additional_usage_query->condition('fu.type', array('profile2','taxonomy','default_image'), 'IN');
