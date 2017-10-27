@@ -1,7 +1,7 @@
 <div class="col-md-12">
     <?php print render($content['body']); ?>
 </div>
-<div class="hidden-sm visible-xs" id="is_small_screen_device">
+<div class="hidden-md visible-xs visible-sm" id="is_small_screen_device">
     <!-- platzhalter als JS-Screen-Detector -->
 </div>
 
