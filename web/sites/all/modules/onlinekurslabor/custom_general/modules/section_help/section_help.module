@@ -14,7 +14,6 @@ function section_help_node_view($node, $view_mode, $langcode) {
     $help_bid = variable_get('okl_help_bid', NM_HELP_BID);
     if (@$node->book['bid'] == $help_bid) {
         
-        $rendered_help_buttons =   theme('help_buttons');
         // wir sind unter /help
         if ($node->nid == $help_bid) {
             drupal_add_css(drupal_get_path('module', 'section_help') . "/assets/css/section_help.css");
