@@ -13,14 +13,16 @@ div.section_help_icon_container .section-help-element{
     text-align:center;
     padding-bottom: 20px;
 }
-/*einzelne button-grafiken*/
-div.section_help_icon_container .section-help-element img
+
+div.section_help_icon_container .section-help-element a
 {
-    border: 1px solid #868686;
-    border-radius: 50%;
+    font-weight:bold;
+}
+/*einzelne button-grafiken*/
+div.section_help_icon_container .section-help-element a img
+{
 }
 div.section_help_icon_container .section-help-element a:hover img{
-    border-color: #23527C;
     opacity: 0.6;
     /*gray-out icons*/
     -webkit-filter: grayscale(60%); /* Ch 23+, Saf 6.0+, BB 10.0+ */
