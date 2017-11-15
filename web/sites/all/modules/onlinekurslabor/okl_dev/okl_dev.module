@@ -1,0 +1,70 @@
+<?php
+
+require_once(dirname(__FILE__) . '/okl_dev.truncate.inc');
+
+function okl_dev_page_build(&$page) {
+    //dev
+    if (_dev_live_warner_is_no_live_system()) {
+
+        if (!defined('NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT'))
+            drupal_set_message('const NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT is not defined. This is not acceptable!', 'error');
+    }
+    //live
+    else {
+
+        drupal_set_message(t('You appear to be on a live-system, but okl_dev is enabled. R u sure?'), 'warning');
+    }
+}
+
+/**
+ * Implements hook_menu().
+ * pfad, für GUI, um DB zu leeren
+ */
+function okl_dev_menu() {
+    $items = array();
+    $items['truncate_content'] = array(
+        'title' => 'Truncate',
+        'description' => 'Delete all content from database',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('okl_dev_truncate_form'),
+        'access arguments' => array('administer filters'),
+        'file' => 'okl_dev.forms.inc',
+        'type' => MENU_LOCAL_TASK,
+        'weight' => 3,
+    );
+    return $items;
+}
+
+/**
+ * implements hook_form_FORM_ID_alter(&$form, &$form_state, $form_id) {
+ * @param array $form
+ * @param type $form_state
+ * @param type $form_id
+ */
+function okl_dev_form_section_courses_onlinekurslabor_admin_settings_page_alter(&$form, &$form_state, $form_id) {
+
+    // Onlinekurslabor-setting: link zum Löschen von Inhalt
+    $form['okl_dev_truncate_link'] = array(
+        '#markup' => l(t("Truncate the website's content.."), '/truncate_content'),
+    );
+}
+
+//03.11.2017 - 18:26 - SN - prevent emails from being sent
+//http://www.jaypan.com/tutorial/preventing-emails-being-sent-drupal-7-development-environment
+function okl_dev_mail_alter(&$message) {
+    // We don't want to send emails if the variable has not been set, or if it has been set and is TRUE.
+    // We can use variable_get() to get the $conf variable set in our settings.php file
+    // Note that by setting the default to TRUE, the default setting for the system is to be
+    // a development environment. Set this to FALSE to have the default be a live environment.
+    if (variable_get('truncate_environment', TRUE)) {
+        // First: Prevent the mail from being sent
+        $message['send'] = FALSE;
+
+        // Next: Log the mail so it can be debugged if necessary
+        watchdog('Truncate-Skript', 'The following email was not sent: !message', array('!message' => '<pre>' . print_r($message, TRUE) . '</pre>'));
+    }
+}
+
+function _okl_dev_watchdoginfo($info, $mode = WATCHDOG_DEBUG) {
+    watchdog("TRUNCATE DATA", $info, array(), $mode);
+}
