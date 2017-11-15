@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * implements   hook_form_alter(&$form, &$form_state, $form_id) {
+ * Deaktiviere Student-Profil-Settings
+ * @param boolean $form
+ * @param type $form_state
+ * @param type $form_id
+ */
+function schullabor_form_alter(&$form, &$form_state, $form_id) {
+    if ($form_id == 'user_profile_form') {
+        $form['profile_student']['#access'] = false;
+    }
+}
