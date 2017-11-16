@@ -21,8 +21,6 @@ function okl_dev_truncate_form($form, &$form_state) {
     //$form_state['executed']: Löschen ausgeführt, nur noch Infos ausgeben
     if ($form_state['executed']) {
         
-        dpm("Was ist denn biblio_field_type? ");
-
 
         $form['truncate_info']['executed'] = array(
             '#type' => 'markup',

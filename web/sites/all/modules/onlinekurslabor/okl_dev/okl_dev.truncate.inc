@@ -123,6 +123,12 @@ function _okl_dev_wipe_all_data() {
         'pm_tags_index',
         //alle suchanfragen
         'search_total',
+        'fbss_comments',
+        'statuses',
+        'workflow_node_history',
+        'biblio_keyword_data',
+        //failed login attemps
+        'flood'
             //
     );
     foreach ($truncate_tablenames as $truncate_tablename) {
@@ -154,7 +160,7 @@ function _okl_dev_wipe_all_data() {
      */
 
     node_access_rebuild();
-
+    devel_rebuild_node_comment_statistics();
     _okl_dev_watchdoginfo('CLEANUP done');
 
     _okl_dev_watchdoginfo('finished');
