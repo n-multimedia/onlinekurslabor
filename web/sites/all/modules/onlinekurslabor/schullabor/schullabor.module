@@ -12,3 +12,23 @@ function schullabor_form_alter(&$form, &$form_state, $form_id) {
         $form['profile_student']['#access'] = false;
     }
 }
+ 
+
+/**
+ * implements template_preprocess_page(&$variables) {
+ * @param type $variables
+ * @param type $hook
+ */
+function schullabor_preprocess_page(&$variables, $hook) {
+    global $user;
+
+    //homescreen ohne paddings für loggedout
+    if (!$user->uid && drupal_is_front_page()) {
+        drupal_add_css(drupal_get_path('module', 'schullabor') . '/assets/schullabor_home.css');
+    }
+
+    //andere page.tpl aus theme onlinekurslabor (anderer navigation-style)
+    $variables['theme_hook_suggestions'][] = 'page__osl';
+    //setze logo oben
+    $variables['logo'] = url(drupal_get_path('module', 'schullabor') . '/assets/images/schullabor-logo.png', array('absolute' => TRUE));
+}
