@@ -68,3 +68,4 @@ function okl_dev_mail_alter(&$message) {
 function _okl_dev_watchdoginfo($info, $mode = WATCHDOG_DEBUG) {
     watchdog("TRUNCATE DATA", $info, array(), $mode);
 }
+

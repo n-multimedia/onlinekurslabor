@@ -10,6 +10,8 @@ function okl_dev_truncate_form($form, &$form_state) {
 
     $executed_infos = array();
     $executed_infos[] = 'delete empty folders:  rm -rf ../files_private/h5p/content/* sites/default/files/h5p/content/* sites/default/files/oembed/* sites/default/files/resize/* sites/default/files/styles/* ../files_private/resize/* ../files_private/styles/* ';
+    $executed_infos[] = 'change admin-account:  ' . l('Admin', 'user/1');
+    $executed_infos[] = 'delete watchdog-infos:  ' . l('watchdog', 'admin/reports/dblog');
     $executed_infos[] = 'change siteinfo:  ' . l('Site-Information', 'admin/config/system/site-information');
 
     #$form = array();
@@ -28,7 +30,7 @@ function okl_dev_truncate_form($form, &$form_state) {
         );
         $form['truncate_info']['no_worries'] = array(
             '#type' => 'markup',
-            '#markup' => '<br>Errors <i>"Datei konnte nicht gelöscht werden, da es keine..."</i> are no problem.'
+            '#markup' => '<br>Errors <i>"Datei konnte nicht gelöscht werden, da es keine..."</i> are not a problem.'
         );
         $form['truncate_info']['after'] = array(
             '#type' => 'markup',

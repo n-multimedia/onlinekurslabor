@@ -158,9 +158,24 @@ function _okl_dev_wipe_all_data() {
       where nid not IN
       (SELECT nid from node) ; ");
      */
+    
+    
+    
+    //file-leichen-einträge aus url-alias-tabelle entfernen
 
+    $url_alias_OR = db_or();
+    $url_alias_OR->condition('alias', 'file/file-%', 'LIKE');
+    $url_alias_OR->condition('alias', 'file/image-%', 'LIKE');
+    $url_alias_OR->condition('alias', 'file/backgroundimage-%', 'LIKE');
+    $url_alias_OR->condition('alias', 'file/background-%', 'LIKE');
+    db_delete('url_alias')
+            ->condition($url_alias_OR)
+            ->execute();
+
+    //api-funktionen
     node_access_rebuild();
     devel_rebuild_node_comment_statistics();
+    //cleanup done
     _okl_dev_watchdoginfo('CLEANUP done');
 
     _okl_dev_watchdoginfo('finished');
