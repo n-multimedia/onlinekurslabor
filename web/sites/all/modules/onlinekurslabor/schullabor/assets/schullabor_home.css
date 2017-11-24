@@ -1,0 +1,41 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 23.11.2017, 14:53:12
+    Author     : Bernhard
+*/
+
+
+body.front #page-header{
+    display: none;
+}
+
+body.front .front-wrapper-osl {
+    height: 530px;
+    background:url('/sites/all/modules/onlinekurslabor/schullabor/assets/images/osl_start_gradient.jpg');
+    background-size: cover;
+    font-size: 18px;
+    color: white;
+    background-attachment: fixed;
+    width: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+
+}
+
+#startpage-okl-description-foerderer {
+    margin-top: 550px;
+}
+
+body.front #home_loggedout {
+    margin: 0;
+}
+
+.panels-flexible-region-home-layout-container-platzhalter
+{
+    width:100% !important;
+}

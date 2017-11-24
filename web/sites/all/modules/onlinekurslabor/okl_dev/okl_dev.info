@@ -1,5 +1,5 @@
-name = schullabor
-description = customization for schools
+name = okl_dev
+description = Dev-Plugin ONLY FOR OKL-DEV-SYSTEMS
 core = 7.x
 version = 7.x-1.0-alpha8
 package = custom

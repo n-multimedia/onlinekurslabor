@@ -251,6 +251,11 @@ BOOTSTRAP 3
 {
      color: #ffffff;
 }
+
+#page_top_navigation.navbar-default li a.top_nav_link:hover
+{
+     color: #222222;
+}
  
  
 /*tooltips fuer die topnavigation*/
