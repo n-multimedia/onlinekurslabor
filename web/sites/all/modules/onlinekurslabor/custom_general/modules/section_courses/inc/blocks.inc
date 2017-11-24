@@ -263,6 +263,12 @@ function section_courses_instructors_tools_access($reset = FALSE) {
   global $user;
   static $result = NULL;
 
+
+  if(user_access("administer content")) {
+    //super admin
+    return TRUE;
+  }
+
   if ($result === NULL || $reset) {
     $user_uid = $user->uid;
 
