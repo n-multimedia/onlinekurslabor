@@ -8,12 +8,34 @@ and open the template in the editor.
     Author     : Bernhard
 */
 
-.container{
-    width:100% !important;
-    padding: 0px !important;
+
+body.front #page-header{
+    display: none;
 }
- 
+
+body.front .front-wrapper-osl {
+    height: 530px;
+    background:url('/sites/all/modules/onlinekurslabor/schullabor/assets/images/osl_start_gradient.jpg');
+    background-size: cover;
+    font-size: 18px;
+    color: white;
+    background-attachment: fixed;
+    width: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+
+}
+
+#startpage-okl-description-foerderer {
+    margin-top: 550px;
+}
+
+body.front #home_loggedout {
+    margin: 0;
+}
+
 .panels-flexible-region-home-layout-container-platzhalter
 {
-   width:100% !important;
+    width:100% !important;
 }
