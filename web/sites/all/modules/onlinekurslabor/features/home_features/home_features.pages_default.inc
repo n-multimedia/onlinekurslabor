@@ -254,6 +254,63 @@ return theme(\'nm_fancy_box\', $vars);
   $display->content['new-875794f9-d9c8-416f-a60a-06600be3b6f9'] = $pane;
   $display->panels['lehrender'][0] = 'new-875794f9-d9c8-416f-a60a-06600be3b6f9';
   $pane = new stdClass();
+  $pane->pid = 'new-70609a2f-52b9-4e16-b881-1c2c87d28eb8';
+  $pane->panel = 'okl-description';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => '',
+    'title' => '',
+    'body' => '<h2 style="color: #EB690B;">Onlinekurslabor</h2><p style="text-align: justify;">Das Onlinekurslabor ist eine digitale Lernplattform des Medienlabors für Studierende, Hochschullehrende und Partnerorganisationen.</p><p style="text-align: justify;">Im Fokus liegen insbesondere erfahrungsorientiertes und forschendes Lernen in realen Projekten. Hier werden Ihnen virtuelle Werkzeuge zur Begleitung der Präsenzlehre, zur Erstellung von E-Learning-Kursen und zur Organisation von Projektseminaren bereitgestellt.</p><p>&nbsp;</p>',
+    'format' => 'filtered_html',
+    'substitute' => TRUE,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array(
+    'css_id' => 'startpage-okl-description',
+    'css_class' => 'col-md-12',
+  );
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '70609a2f-52b9-4e16-b881-1c2c87d28eb8';
+  $display->content['new-70609a2f-52b9-4e16-b881-1c2c87d28eb8'] = $pane;
+  $display->panels['okl-description'][0] = 'new-70609a2f-52b9-4e16-b881-1c2c87d28eb8';
+  $pane = new stdClass();
+  $pane->pid = 'new-fa88a807-8049-45e2-8aab-a4e36639ae7b';
+  $pane->panel = 'okl-video';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'Video',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<?php echo _custom_general_get_rendered_html5_video_tag("https://onlinekurslabor.phil.uni-augsburg.de/sites/default/files/imagefilm_onlinekurslabor.mp4", "/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo2.png"); ?>',
+    'format' => 'php_code',
+    'substitute' => TRUE,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array(
+    'css_id' => 'startpage-okl-video',
+    'css_class' => '',
+  );
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'fa88a807-8049-45e2-8aab-a4e36639ae7b';
+  $display->content['new-fa88a807-8049-45e2-8aab-a4e36639ae7b'] = $pane;
+  $display->panels['okl-video'][0] = 'new-fa88a807-8049-45e2-8aab-a4e36639ae7b';
+  $pane = new stdClass();
   $pane->pid = 'new-e5330c0c-4c13-4df3-a353-92107fee92b7';
   $pane->panel = 'partner';
   $pane->type = 'custom';
@@ -322,35 +379,6 @@ return theme(\'nm_fancy_box\', $vars);
   $display->content['new-c38e1c99-7f8e-406c-8368-1804779f25bf'] = $pane;
   $display->panels['partner_'][0] = 'new-c38e1c99-7f8e-406c-8368-1804779f25bf';
   $pane = new stdClass();
-  $pane->pid = 'new-fa88a807-8049-45e2-8aab-a4e36639ae7b';
-  $pane->panel = 'okl-video';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'admin_title' => 'Video',
-    'title' => '',
-    'title_heading' => 'h2',
-    'body' => '<?php echo _custom_general_get_rendered_html5_video_tag("https://onlinekurslabor.phil.uni-augsburg.de/sites/default/files/imagefilm_onlinekurslabor.mp4", "/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo2.png"); ?>',
-    'format' => 'php_code',
-    'substitute' => TRUE,
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array(
-    'css_id' => 'startpage-okl-video',
-    'css_class' => '',
-  );
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'fa88a807-8049-45e2-8aab-a4e36639ae7b';
-  $display->content['new-fa88a807-8049-45e2-8aab-a4e36639ae7b'] = $pane;
-  $display->panels['okl-video'][0] = 'new-fa88a807-8049-45e2-8aab-a4e36639ae7b';
-  $pane = new stdClass();
   $pane->pid = 'new-b656ed25-75c4-4397-97e4-243d47158514';
   $pane->panel = 'student';
   $pane->type = 'custom';
@@ -386,34 +414,6 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->uuid = 'b656ed25-75c4-4397-97e4-243d47158514';
   $display->content['new-b656ed25-75c4-4397-97e4-243d47158514'] = $pane;
   $display->panels['student'][0] = 'new-b656ed25-75c4-4397-97e4-243d47158514';
-  $pane = new stdClass();
-  $pane->pid = 'new-70609a2f-52b9-4e16-b881-1c2c87d28eb8';
-  $pane->panel = 'okl-description';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'admin_title' => '',
-    'title' => '',
-    'body' => '<h2 style="color: #EB690B;">Onlinekurslabor</h2><p style="text-align: justify;">Das Onlinekurslabor ist eine digitale Lernplattform des Medienlabors für Studierende, Hochschullehrende und Partnerorganisationen.</p><p style="text-align: justify;">Im Fokus liegen insbesondere erfahrungsorientiertes und forschendes Lernen in realen Projekten. Hier werden Ihnen virtuelle Werkzeuge zur Begleitung der Präsenzlehre, zur Erstellung von E-Learning-Kursen und zur Organisation von Projektseminaren bereitgestellt.</p><p>&nbsp;</p>',
-    'format' => 'filtered_html',
-    'substitute' => TRUE,
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array(
-    'css_id' => 'startpage-okl-description',
-    'css_class' => 'col-md-12',
-  );
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = '70609a2f-52b9-4e16-b881-1c2c87d28eb8';
-  $display->content['new-70609a2f-52b9-4e16-b881-1c2c87d28eb8'] = $pane;
-  $display->panels['okl-description'][0] = 'new-70609a2f-52b9-4e16-b881-1c2c87d28eb8';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
