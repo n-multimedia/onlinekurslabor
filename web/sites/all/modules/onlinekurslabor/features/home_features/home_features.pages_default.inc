@@ -107,8 +107,8 @@ function home_features_default_page_manager_pages() {
         'type' => 'row',
         'contains' => 'region',
         'children' => array(
-          0 => 'test',
-          1 => 'platzhalter',
+          0 => 'okl-description',
+          1 => 'okl-video',
         ),
         'parent' => 'main',
         'class' => 'row',
@@ -122,7 +122,7 @@ function home_features_default_page_manager_pages() {
         'parent' => 'main',
         'class' => 'row',
       ),
-      'test' => array(
+      'okl-description' => array(
         'type' => 'region',
         'title' => 'Titel_OKL',
         'width' => '64.94139740527254',
@@ -162,7 +162,7 @@ function home_features_default_page_manager_pages() {
         'parent' => 'main-row',
         'class' => 'col-xs-12 col-md-4',
       ),
-      'platzhalter' => array(
+      'okl-video' => array(
         'type' => 'region',
         'title' => 'Image-Video',
         'width' => 35.058602594728001,
@@ -181,19 +181,19 @@ function home_features_default_page_manager_pages() {
       'col2' => NULL,
       'col3' => NULL,
       'center' => NULL,
-      'test' => NULL,
+      'okl-description' => NULL,
       'bilder' => NULL,
       'partner' => NULL,
       'bild_studierende' => NULL,
       'bild_lehrende' => NULL,
-      'platzhalter' => NULL,
-      'platzhalter_' => NULL,
-      'platzhalter__' => NULL,
-      'platzhalter___' => NULL,
+      'okl-video' => NULL,
+      'okl-video_' => NULL,
+      'okl-video__' => NULL,
+      'okl-video___' => NULL,
       'partner_' => NULL,
       'bild_partner' => NULL,
       'studierende' => NULL,
-      'test_' => NULL,
+      'okl-description_' => NULL,
       'right' => NULL,
       'middle' => NULL,
       'lehrender' => NULL,
@@ -323,7 +323,7 @@ return theme(\'nm_fancy_box\', $vars);
   $display->panels['partner_'][0] = 'new-c38e1c99-7f8e-406c-8368-1804779f25bf';
   $pane = new stdClass();
   $pane->pid = 'new-fa88a807-8049-45e2-8aab-a4e36639ae7b';
-  $pane->panel = 'platzhalter';
+  $pane->panel = 'okl-video';
   $pane->type = 'custom';
   $pane->subtype = 'custom';
   $pane->shown = TRUE;
@@ -349,7 +349,7 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->locks = array();
   $pane->uuid = 'fa88a807-8049-45e2-8aab-a4e36639ae7b';
   $display->content['new-fa88a807-8049-45e2-8aab-a4e36639ae7b'] = $pane;
-  $display->panels['platzhalter'][0] = 'new-fa88a807-8049-45e2-8aab-a4e36639ae7b';
+  $display->panels['okl-video'][0] = 'new-fa88a807-8049-45e2-8aab-a4e36639ae7b';
   $pane = new stdClass();
   $pane->pid = 'new-b656ed25-75c4-4397-97e4-243d47158514';
   $pane->panel = 'student';
@@ -388,7 +388,7 @@ return theme(\'nm_fancy_box\', $vars);
   $display->panels['student'][0] = 'new-b656ed25-75c4-4397-97e4-243d47158514';
   $pane = new stdClass();
   $pane->pid = 'new-70609a2f-52b9-4e16-b881-1c2c87d28eb8';
-  $pane->panel = 'test';
+  $pane->panel = 'okl-description';
   $pane->type = 'custom';
   $pane->subtype = 'custom';
   $pane->shown = TRUE;
@@ -413,7 +413,7 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->locks = array();
   $pane->uuid = '70609a2f-52b9-4e16-b881-1c2c87d28eb8';
   $display->content['new-70609a2f-52b9-4e16-b881-1c2c87d28eb8'] = $pane;
-  $display->panels['test'][0] = 'new-70609a2f-52b9-4e16-b881-1c2c87d28eb8';
+  $display->panels['okl-description'][0] = 'new-70609a2f-52b9-4e16-b881-1c2c87d28eb8';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -614,19 +614,19 @@ return theme(\'nm_fancy_box\', $vars);
       'col2' => NULL,
       'col3' => NULL,
       'center' => NULL,
-      'test' => NULL,
+      'okl-description' => NULL,
       'bilder' => NULL,
       'partner' => NULL,
       'bild_studierende' => NULL,
       'bild_lehrende' => NULL,
-      'platzhalter' => NULL,
-      'platzhalter_' => NULL,
-      'platzhalter__' => NULL,
-      'platzhalter___' => NULL,
+      'okl-video' => NULL,
+      'okl-video_' => NULL,
+      'okl-video__' => NULL,
+      'okl-video___' => NULL,
       'partner_' => NULL,
       'bild_partner' => NULL,
       'studierende' => NULL,
-      'test_' => NULL,
+      'okl-description_' => NULL,
       'right' => NULL,
       'middle' => NULL,
       'lehrender' => NULL,
