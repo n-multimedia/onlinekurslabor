@@ -61,7 +61,7 @@ function home_features_default_page_manager_pages() {
     ),
   );
   $display = new panels_display();
-  $display->layout = 'onecol';
+  $display->layout = 'flexible';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -218,54 +218,202 @@ function home_features_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
-  $pane->pid = 'new-74653578-95b4-4d0e-99ce-277ae39c529f';
-  $pane->panel = 'middle';
+  $pane->pid = 'new-875794f9-d9c8-416f-a60a-06600be3b6f9';
+  $pane->panel = 'lehrender';
   $pane->type = 'custom';
   $pane->subtype = 'custom';
-  $pane->shown = FALSE;
+  $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'admin_title' => 'Admin-Hinweis',
+    'admin_title' => '',
     'title' => '',
-    'title_heading' => 'h2',
-    'body' => 'Das mini-panel home_loggedout-minipanel ist nicht Teil des Releases sondern muss bei Bedarf händisch erstellt / per export-import in die Umgebung gebracht werden',
-    'format' => 'plain_text',
+    'body' => '<?php
+$vars = array();
+$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_lehrender.png" style="width:100%;"    />\';
+$vars[\'description\'] = "Informationen für Hochschullehrende";
+$vars[\'link\'] = "informationen?mode=lehrende";
+
+return theme(\'nm_fancy_box\', $vars);
+
+?>',
+    'format' => 'php_code',
     'substitute' => TRUE,
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
   );
-  $pane->css = array();
+  $pane->css = array(
+    'css_id' => 'startpage-okl-description-dozent',
+    'css_class' => '',
+  );
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
-  $pane->uuid = '74653578-95b4-4d0e-99ce-277ae39c529f';
-  $display->content['new-74653578-95b4-4d0e-99ce-277ae39c529f'] = $pane;
-  $display->panels['middle'][0] = 'new-74653578-95b4-4d0e-99ce-277ae39c529f';
+  $pane->uuid = '875794f9-d9c8-416f-a60a-06600be3b6f9';
+  $display->content['new-875794f9-d9c8-416f-a60a-06600be3b6f9'] = $pane;
+  $display->panels['lehrender'][0] = 'new-875794f9-d9c8-416f-a60a-06600be3b6f9';
   $pane = new stdClass();
-  $pane->pid = 'new-f17bcabf-5aad-4eb3-b142-be64ccb108c0';
-  $pane->panel = 'middle';
-  $pane->type = 'panels_mini';
-  $pane->subtype = 'home_loggedout_minipanel';
+  $pane->pid = 'new-e5330c0c-4c13-4df3-a353-92107fee92b7';
+  $pane->panel = 'partner';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_title' => 0,
-    'override_title_text' => '',
-    'override_title_heading' => 'h2',
+    'admin_title' => '',
+    'title' => '',
+    'body' => '<a href="http://www.bmas.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_BMAS.png" style="float:right" /></a>
+<a href="https://www.bmbf.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_BMBF.png" style="float:right" /></a>
+<a href="https://www.stiftung-mercator.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_mercator.png" style="float:right" /></a>
+<a href="http://www.uni-augsburg.de/de/projekte/lehet/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_lehet.png" style="float:right" /></a>
+<a href="http://www.uni-augsburg.de/projekte/bildung-durch-verantwortung" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_bdv.png" style="float:right" /></a>',
+    'format' => 'php_code',
+    'substitute' => TRUE,
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
   );
-  $pane->css = array();
+  $pane->css = array(
+    'css_id' => 'startpage-okl-description-foerderer',
+    'css_class' => 'col-md-12',
+  );
   $pane->extras = array();
-  $pane->position = 1;
+  $pane->position = 0;
   $pane->locks = array();
-  $pane->uuid = 'f17bcabf-5aad-4eb3-b142-be64ccb108c0';
-  $display->content['new-f17bcabf-5aad-4eb3-b142-be64ccb108c0'] = $pane;
-  $display->panels['middle'][1] = 'new-f17bcabf-5aad-4eb3-b142-be64ccb108c0';
+  $pane->uuid = 'e5330c0c-4c13-4df3-a353-92107fee92b7';
+  $display->content['new-e5330c0c-4c13-4df3-a353-92107fee92b7'] = $pane;
+  $display->panels['partner'][0] = 'new-e5330c0c-4c13-4df3-a353-92107fee92b7';
+  $pane = new stdClass();
+  $pane->pid = 'new-c38e1c99-7f8e-406c-8368-1804779f25bf';
+  $pane->panel = 'partner_';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => '',
+    'title' => '',
+    'body' => '<?php
+$vars = array();
+$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_partner.png" style="width:100%;"   />\';
+$vars[\'description\'] = "Informationen für Kooperationspartner";
+$vars[\'link\'] = "informationen?mode=partner";
+
+return theme(\'nm_fancy_box\', $vars);
+
+?>',
+    'format' => 'php_code',
+    'substitute' => TRUE,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array(
+    'css_id' => 'startpage-okl-description-partner',
+    'css_class' => '',
+  );
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'c38e1c99-7f8e-406c-8368-1804779f25bf';
+  $display->content['new-c38e1c99-7f8e-406c-8368-1804779f25bf'] = $pane;
+  $display->panels['partner_'][0] = 'new-c38e1c99-7f8e-406c-8368-1804779f25bf';
+  $pane = new stdClass();
+  $pane->pid = 'new-fa88a807-8049-45e2-8aab-a4e36639ae7b';
+  $pane->panel = 'platzhalter';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'Video',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<?php echo _custom_general_get_rendered_html5_video_tag("https://onlinekurslabor.phil.uni-augsburg.de/sites/default/files/imagefilm_onlinekurslabor.mp4", "/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo2.png"); ?>',
+    'format' => 'php_code',
+    'substitute' => TRUE,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array(
+    'css_id' => 'startpage-okl-video',
+    'css_class' => '',
+  );
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'fa88a807-8049-45e2-8aab-a4e36639ae7b';
+  $display->content['new-fa88a807-8049-45e2-8aab-a4e36639ae7b'] = $pane;
+  $display->panels['platzhalter'][0] = 'new-fa88a807-8049-45e2-8aab-a4e36639ae7b';
+  $pane = new stdClass();
+  $pane->pid = 'new-b656ed25-75c4-4397-97e4-243d47158514';
+  $pane->panel = 'student';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => '',
+    'title' => '',
+    'body' => '<?php
+$vars = array();
+$vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_student.png" style="width:100%;"    />\';
+$vars[\'description\'] = "Informationen für Studierende";
+$vars[\'link\'] = "/informationen?mode=studierende";
+
+return theme(\'nm_fancy_box\', $vars);
+
+?>',
+    'format' => 'php_code',
+    'substitute' => TRUE,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array(
+    'css_id' => 'startpage-okl-description-student',
+    'css_class' => '',
+  );
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'b656ed25-75c4-4397-97e4-243d47158514';
+  $display->content['new-b656ed25-75c4-4397-97e4-243d47158514'] = $pane;
+  $display->panels['student'][0] = 'new-b656ed25-75c4-4397-97e4-243d47158514';
+  $pane = new stdClass();
+  $pane->pid = 'new-70609a2f-52b9-4e16-b881-1c2c87d28eb8';
+  $pane->panel = 'test';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => '',
+    'title' => '',
+    'body' => '<h2 style="color: #EB690B;">Onlinekurslabor</h2><p style="text-align: justify;">Das Onlinekurslabor ist eine digitale Lernplattform des Medienlabors für Studierende, Hochschullehrende und Partnerorganisationen.</p><p style="text-align: justify;">Im Fokus liegen insbesondere erfahrungsorientiertes und forschendes Lernen in realen Projekten. Hier werden Ihnen virtuelle Werkzeuge zur Begleitung der Präsenzlehre, zur Erstellung von E-Learning-Kursen und zur Organisation von Projektseminaren bereitgestellt.</p><p>&nbsp;</p>',
+    'format' => 'filtered_html',
+    'substitute' => TRUE,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array(
+    'css_id' => 'startpage-okl-description',
+    'css_class' => 'col-md-12',
+  );
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '70609a2f-52b9-4e16-b881-1c2c87d28eb8';
+  $display->content['new-70609a2f-52b9-4e16-b881-1c2c87d28eb8'] = $pane;
+  $display->panels['test'][0] = 'new-70609a2f-52b9-4e16-b881-1c2c87d28eb8';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
