@@ -1551,6 +1551,7 @@ echo section_content_text_outline();
           'name' => 'node_type',
           'settings' => array(
             'type' => array(
+              'annvid' => 'annvid',
               'content_chapter' => 'content_chapter',
               'content_domain' => 'content_domain',
               'content_multiple_choice' => 'content_multiple_choice',
