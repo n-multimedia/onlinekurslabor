@@ -35,7 +35,7 @@ function home_features_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'loggedout',
+    'title' => 'loggedout_okl',
     'no_blocks' => 0,
     'pipeline' => 'standard',
     'body_classes_to_remove' => '',
@@ -54,6 +54,14 @@ function home_features_default_page_manager_pages() {
             ),
           ),
           'context' => 'logged-in-user',
+          'not' => TRUE,
+        ),
+        1 => array(
+          'name' => 'php',
+          'settings' => array(
+            'description' => 'url contains schullabor',
+            'php' => 'return strstr($_SERVER[\'SERVER_NAME\'],\'schullabor\');',
+          ),
           'not' => TRUE,
         ),
       ),
