@@ -13,9 +13,9 @@ function home_features_default_page_manager_pages() {
   $page->api_version = 1;
   $page->name = 'home_layout';
   $page->task = 'page';
-  $page->admin_title = 'Home Layout';
+  $page->admin_title = 'Home';
   $page->admin_description = '';
-  $page->path = 'onlinekurslabor';
+  $page->path = 'start';
   $page->access = array(
     'type' => 'none',
     'settings' => NULL,
