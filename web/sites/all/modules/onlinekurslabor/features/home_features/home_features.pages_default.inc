@@ -59,8 +59,8 @@ function home_features_default_page_manager_pages() {
         1 => array(
           'name' => 'php',
           'settings' => array(
-            'description' => 'url contains schullabor',
-            'php' => 'return strstr($_SERVER[\'SERVER_NAME\'],\'schullabor\');',
+            'description' => 'module schullabor active',
+            'php' => 'return module_exists(\'schullabor\');',
           ),
           'not' => TRUE,
         ),
@@ -459,8 +459,8 @@ return theme(\'nm_fancy_box\', $vars);
         1 => array(
           'name' => 'php',
           'settings' => array(
-            'description' => 'url contains schullabor',
-            'php' => 'return strstr($_SERVER[\'SERVER_NAME\'],\'schullabor\');',
+            'description' => 'module schullabor active',
+            'php' => 'return module_exists(\'schullabor\');',
           ),
           'not' => FALSE,
         ),
@@ -594,7 +594,7 @@ return theme(\'nm_fancy_box\', $vars);
     'admin_title' => 'admin-info',
     'title' => 'admin-info',
     'title_heading' => 'h2',
-    'body' => 'Das Modul SCHULLABOR muss aktiv sein, damit die Seitendarstellung korrekt ist.',
+    'body' => 'Das Modul SCHULLABOR muss aktiv sein, damit diese Seite angezeigt wird.',
     'format' => 'plain_text',
     'substitute' => TRUE,
   );
