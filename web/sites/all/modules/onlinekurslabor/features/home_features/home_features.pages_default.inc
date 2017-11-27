@@ -33,7 +33,7 @@ function home_features_default_page_manager_pages() {
   $handler->task = 'page';
   $handler->subtask = 'home_layout';
   $handler->handler = 'panel_context';
-  $handler->weight = 0;
+  $handler->weight = -2;
   $handler->conf = array(
     'title' => 'loggedout_okl',
     'no_blocks' => 0,
@@ -429,11 +429,263 @@ return theme(\'nm_fancy_box\', $vars);
   $handler = new stdClass();
   $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
+  $handler->name = 'page_home_layout__loggedout_osl';
+  $handler->task = 'page';
+  $handler->subtask = 'home_layout';
+  $handler->handler = 'panel_context';
+  $handler->weight = -1;
+  $handler->conf = array(
+    'title' => 'loggedout_osl',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => 'home_loggedout',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'access' => array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'role',
+          'settings' => array(
+            'rids' => array(
+              0 => 2,
+            ),
+          ),
+          'context' => 'logged-in-user',
+          'not' => TRUE,
+        ),
+        1 => array(
+          'name' => 'php',
+          'settings' => array(
+            'description' => 'url contains schullabor',
+            'php' => 'return strstr($_SERVER[\'SERVER_NAME\'],\'schullabor\');',
+          ),
+          'not' => FALSE,
+        ),
+      ),
+      'logic' => 'and',
+    ),
+    'name' => 'loggedout_osl',
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible';
+  $display->layout_settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+        ),
+        'parent' => NULL,
+        'class' => 'home-layout-container',
+        'column_class' => '',
+        'row_class' => '',
+        'region_class' => '',
+        'no_scale' => FALSE,
+        'fixed_width' => '',
+        'column_separation' => '0.5em',
+        'region_separation' => '0.5em',
+        'row_separation' => '0.5em',
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
+        'children' => array(
+          0 => 1,
+          1 => 2,
+        ),
+        'parent' => 'canvas',
+      ),
+      1 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'info',
+        ),
+        'parent' => 'main',
+        'class' => 'row',
+      ),
+      2 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'partner',
+        ),
+        'parent' => 'main',
+        'class' => 'row',
+      ),
+      'partner' => array(
+        'type' => 'region',
+        'title' => 'Förderer',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '2',
+        'class' => 'home-container-partner',
+      ),
+      'info' => array(
+        'type' => 'region',
+        'title' => 'info',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '1',
+        'class' => '',
+        'hide_empty' => 0,
+      ),
+    ),
+  );
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'media' => NULL,
+      'left' => NULL,
+      'col1' => NULL,
+      'col2' => NULL,
+      'col3' => NULL,
+      'center' => NULL,
+      'okl-description' => NULL,
+      'bilder' => NULL,
+      'partner' => NULL,
+      'bild_studierende' => NULL,
+      'bild_lehrende' => NULL,
+      'okl-video' => NULL,
+      'okl-video_' => NULL,
+      'okl-video__' => NULL,
+      'okl-video___' => NULL,
+      'partner_' => NULL,
+      'bild_partner' => NULL,
+      'studierende' => NULL,
+      'okl-description_' => NULL,
+      'right' => NULL,
+      'middle' => NULL,
+      'lehrender' => NULL,
+      'student' => NULL,
+      'image_video' => NULL,
+      'info' => NULL,
+    ),
+    'media' => array(
+      'style' => '-1',
+    ),
+    'bild_partner' => array(
+      'style' => '-1',
+    ),
+    'studierende' => array(
+      'style' => '-1',
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '5b7b8396-726b-4f00-8c15-16d56daff70d';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_home_layout__loggedout_osl';
+  $display->content = array();
+  $display->panels = array();
+  $pane = new stdClass();
+  $pane->pid = 'new-ba76461d-1024-4693-8d57-a1064b9b259f';
+  $pane->panel = 'info';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = FALSE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'admin-info',
+    'title' => 'admin-info',
+    'title_heading' => 'h2',
+    'body' => 'Das Modul SCHULLABOR muss aktiv sein, damit die Seitendarstellung korrekt ist.',
+    'format' => 'plain_text',
+    'substitute' => TRUE,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'ba76461d-1024-4693-8d57-a1064b9b259f';
+  $display->content['new-ba76461d-1024-4693-8d57-a1064b9b259f'] = $pane;
+  $display->panels['info'][0] = 'new-ba76461d-1024-4693-8d57-a1064b9b259f';
+  $pane = new stdClass();
+  $pane->pid = 'new-4482c5a9-ebce-4010-886a-6c27f03f568a';
+  $pane->panel = 'info';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'osl-box-description',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<div class="front-wrapper-osl" >
+<div class="container" >
+<div class="text-container">
+Das Onlineschullabor ist die digitale Lernplattform des Medienlabors der Universität Augsburg. Sie richtet sich an Lehrende und Lernende der Schule. 
+<br><br> Im Fokus liegen erfahrungsorientiertes und spielerisches Lernen. Virtuelle Elemente begleiten den Unterricht und unterstützen den schulischen Lernprozess. 
+</div>
+</div>
+</div>',
+    'format' => 'full_html',
+    'substitute' => TRUE,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = '4482c5a9-ebce-4010-886a-6c27f03f568a';
+  $display->content['new-4482c5a9-ebce-4010-886a-6c27f03f568a'] = $pane;
+  $display->panels['info'][1] = 'new-4482c5a9-ebce-4010-886a-6c27f03f568a';
+  $pane = new stdClass();
+  $pane->pid = 'new-e5330c0c-4c13-4df3-a353-92107fee92b7';
+  $pane->panel = 'partner';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => '',
+    'title' => '',
+    'body' => '<a href="http://www.bmas.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_BMAS.png" style="float:right" /></a>
+<a href="https://www.bmbf.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_BMBF.png" style="float:right" /></a>
+<a href="https://www.stiftung-mercator.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_mercator.png" style="float:right" /></a>
+<a href="http://www.uni-augsburg.de/de/projekte/lehet/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_lehet.png" style="float:right" /></a>
+<a href="http://www.uni-augsburg.de/projekte/bildung-durch-verantwortung" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_bdv.png" style="float:right" /></a>',
+    'format' => 'php_code',
+    'substitute' => TRUE,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array(
+    'css_id' => 'startpage-okl-description-foerderer',
+    'css_class' => 'col-md-12',
+  );
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'e5330c0c-4c13-4df3-a353-92107fee92b7';
+  $display->content['new-e5330c0c-4c13-4df3-a353-92107fee92b7'] = $pane;
+  $display->panels['partner'][0] = 'new-e5330c0c-4c13-4df3-a353-92107fee92b7';
+  $display->hide_title = PANELS_TITLE_NONE;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
   $handler->name = 'page_home_layout__loggedin';
   $handler->task = 'page';
   $handler->subtask = 'home_layout';
   $handler->handler = 'panel_context';
-  $handler->weight = 1;
+  $handler->weight = 0;
   $handler->conf = array(
     'title' => 'loggedin',
     'no_blocks' => 0,

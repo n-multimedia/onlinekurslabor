@@ -22,7 +22,7 @@ function schullabor_form_alter(&$form, &$form_state, $form_id) {
 function schullabor_preprocess_page(&$variables, $hook) {
     global $user;
 
-    //homescreen ohne paddings für loggedout
+    //homescreen für loggedout
     if (!$user->uid && drupal_is_front_page()) {
         drupal_add_css(drupal_get_path('module', 'schullabor') . '/assets/schullabor_home.css');
     }
