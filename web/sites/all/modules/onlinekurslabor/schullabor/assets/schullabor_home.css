@@ -30,7 +30,7 @@ and open the template in the editor.
 /*text in großer box*/
 .front-wrapper-osl .text-container
 {
-    padding: 38vh 15px 5vh;
+    padding: 25% 15px 5vh;
     max-width: 440px;
 }
 
