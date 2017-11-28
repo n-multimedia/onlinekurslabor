@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse" id="page_top_navigation">
+<nav class="<?php print $navbar_classes; ?>" id="page_top_navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -10,7 +10,7 @@
                 <a class="navbar-brand" href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>">
                     <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>"/>
                 </a>
-      <?endif?>
+      <?php endif; ?>
     </div>
        <?php if (!empty($primary_nav) || !empty($secondary_nav) || !empty($page['navigation'])): ?>
     <div class="collapse navbar-collapse" id="myNavbar">
@@ -26,7 +26,7 @@
             <?php endif; ?>
  
     </div>
-      <?endif?>
+      <?php endif; ?>
   </div>
 </nav>
 
