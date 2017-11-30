@@ -323,8 +323,14 @@ function custom_general_context_page_reaction() {
 
 function custom_general_form_alter(&$form, &$form_state, $form_id) {
     global $user;
+    
+    //og-group-ref not to be edited!
+    if (!empty($form['og_group_ref'][LANGUAGE_NONE])) {
+        $bugmenot_info = '<div class="messages warning alert alert-block alert-warning">' . t('This is only needed for debugging and not to be changed normally') . '</div>';
+        $form['og_group_ref'][LANGUAGE_NONE][] = array('#markup' => $bugmenot_info, '#weight' => -10);
+    }
 
-  // Check to see if $user has does not have the administrator role.
+    // inaccessbible for non-admins
   if (!in_array('administrator', array_values($user->roles))) {
     $form['#group_children']['biblio_fieldset']['#access'] = FALSE; 
   }
