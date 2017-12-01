@@ -1289,10 +1289,15 @@ function _custom_general_taxonomy_get_children($tid, $vid = 0) {
  */
 function custom_general_theme() {
     return array(
-        // Name to be called with theme(). theme('my_custom_gallery', $images)
+        // Name to be called with theme(). theme('custom_html5_video', ...)
         'custom_html5_video' => array(
             // Which .tpl.php file to use custom-html5-video.tpl.php
             'template' => 'custom-html5-video',
+            'path' => drupal_get_path('module', 'custom_general') . '/templates'),
+        // Name to be called with theme(). theme('bootstrap_custom_panel', ...)
+        'bootstrap_custom_panel' => array(
+            // Which .tpl.php file to use 
+            'template' => 'bootstrap-custom-panel',
             'path' => drupal_get_path('module', 'custom_general') . '/templates')
             )
     ;
@@ -1427,4 +1432,96 @@ function custom_general_field_extra_fields() {
         ),
     );
     return $extras;
+}
+
+
+
+
+/**
+ * Implements hook_filter_info().
+ *
+ */
+function custom_general_filter_info() {
+    $filters['filter_collapse'] = array(
+        'title' => t('Content - Collapsible areas'),
+        'description' => t('write [collapsible] to collapse text.'),
+        'process callback' => '_custom_general_collapse_filter_process',
+        'tips callback' => '_custom_general_collapse_filter_tips',
+        'cache' => FALSE,
+    );
+    return $filters;
+}
+
+/**
+ *   Filter  process callback.
+ *   Content - look for [collapsible]...[/collapsible]
+ * The actual filtering is performed here. The supplied text should be returned,
+ * once any necessary substitutions have taken place.
+ */
+function _custom_general_collapse_filter_process($text, $filter, $format) {
+
+    //[collapsible (options...)]ANYTHING[/collapsible]
+    //ist zweiphasig. hier wird der komplette match rausgesucht und in der funktion dann der content zerbröselt.
+    $regex = "/\[collapsible[a-zA-Z ]*\][^\[]*\[\/collapsible\]/";
+
+    return preg_replace_callback($regex, '_custom_general_collapse_replacements', $text);
+}
+
+/**
+ * entfernt matches auf [collapsible]elements
+ * @see _custom_general_collapse_filter_process
+ * @param type $matches
+ * @return string
+ */
+function _custom_general_collapse_replacements($matches) {
+
+    if (!empty($matches) && count($matches) == 1) {
+        $collapse_text = $matches[0];
+
+        $regex_heading = '/<h2>(.*)<\/h2>/';
+        $heading_matches = array();
+        preg_match($regex_heading, $collapse_text, $heading_matches);
+
+        if (!empty($heading_matches)) {
+            $heading_h2 = $heading_matches[0];
+            $heading_text = $heading_matches[1];
+            dpm($heading_h2);
+        } else {
+            drupal_set_message(t('The collapsible element @mismatch does not contain a heading and won\'t collapse.', array("@mismatch" => $matches[0])), 'warning');
+            return $collapse_text;
+        }
+
+
+        $body = $collapse_text;
+        //body: entferne überschrift.
+        $body = str_replace($heading_h2, '', $body);
+        //body: entferne überschrift und [collapsible], [/collapsible] anweisungen
+        $body = preg_replace('/\[[\/]?collapsible[a-zA-Z ]*\]/', '', $body);
+
+        $href_id = 'collapse_' . crc32($heading_text);
+
+        $collapsible_element = array();
+        $collapsible_element['#collapsible'] = true;
+        //ist die option "collapsed" gesetzt?
+        $collapsible_element['#collapsed'] = preg_match('/\[collapsible[a-zA-Z ]*collapsed[a-zA-Z ]*\]/', $collapse_text);
+        $collapsible_element['#id'] = $href_id;
+        $collapsible_element['#value'] = $body;
+        $collapsible_element['#title'] = $heading_text;
+
+
+        return ( theme('bootstrap_custom_panel', array('element' => $collapsible_element)));
+    }
+}
+
+/**
+ * Filter tips callback for collapse filter.
+ *
+ * The tips callback allows filters to provide help text to users during the
+ * content editing process. Short tips are provided on the content editing
+ * screen, while long tips are provided on a separate linked page. Short tips
+ * are optional, but long tips are highly recommended.
+ */
+function _custom_general_collapse_filter_tips($filter, $format, $long = FALSE) {
+
+    return t('Pattern [collapsible]heading ... text... [/collapsible] is collapsible');
 }

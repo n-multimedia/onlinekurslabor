@@ -921,7 +921,7 @@ Wenn Sie in Zukunft nicht mehr über neue Nachrichten informiert werden wollen, 
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'site_frontpage';
-  $strongarm->value = 'onlinekurslabor';
+  $strongarm->value = 'start';
   $export['site_frontpage'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -1138,7 +1138,7 @@ Wenn Sie in Zukunft nicht mehr über neue Nachrichten informiert werden wollen, 
     'bootstrap_breadcrumb_home' => 1,
     'bootstrap_breadcrumb_title' => 0,
     'bootstrap_navbar_position' => '',
-    'bootstrap_navbar_inverse' => 0,
+    'bootstrap_navbar_inverse' => 1,
     'bootstrap_pager_first_and_last' => 1,
     'bootstrap_region_well-navigation' => '',
     'bootstrap_region_well-header' => '',

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * implements   hook_form_alter(&$form, &$form_state, $form_id) {
  * Deaktiviere Student-Profil-Settings
@@ -22,13 +21,21 @@ function schullabor_form_alter(&$form, &$form_state, $form_id) {
 function schullabor_preprocess_page(&$variables, $hook) {
     global $user;
 
-    //homescreen ohne paddings für loggedout
+    //homescreen für loggedout
     if (!$user->uid && drupal_is_front_page()) {
         drupal_add_css(drupal_get_path('module', 'schullabor') . '/assets/schullabor_home.css');
     }
-
-    //andere page.tpl aus theme onlinekurslabor (anderer navigation-style)
-    $variables['theme_hook_suggestions'][] = 'page__osl';
+    
     //setze logo oben
     $variables['logo'] = url(drupal_get_path('module', 'schullabor') . '/assets/images/schullabor-logo.png', array('absolute' => TRUE));
+}
+ 
+/**
+ * implements hook_init() 
+ * wird genutzt, um im Plugin den nav-bar-style zu ändern. 
+ * ändert den Config-Wert, ohne die DB zu beeinflussen.
+ */
+function schullabor_init() {
+    global $conf;
+    $conf['theme_bootstrap_onlinekurslabor_settings']['bootstrap_navbar_inverse'] = 0;
 }

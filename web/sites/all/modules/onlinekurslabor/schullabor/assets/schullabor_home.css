@@ -9,15 +9,16 @@ and open the template in the editor.
 */
 
 
-body.front #page-header{
+#page-header{
     display: none;
 }
 
-body.front .front-wrapper-osl {
+/*große box auf home*/
+.front-wrapper-osl {
     height: 530px;
     background:url('/sites/all/modules/onlinekurslabor/schullabor/assets/images/osl_start_gradient.jpg');
     background-size: cover;
-    font-size: 18px;
+    font-size: 16px;
     color: white;
     background-attachment: fixed;
     width: auto;
@@ -26,6 +27,12 @@ body.front .front-wrapper-osl {
     right: 0;
 
 }
+/*text in großer box*/
+.front-wrapper-osl .text-container
+{
+    padding: 25% 15px 5vh;
+    max-width: 440px;
+}
 
 #startpage-okl-description-foerderer {
     margin-top: 550px;
@@ -33,9 +40,4 @@ body.front .front-wrapper-osl {
 
 body.front #home_loggedout {
     margin: 0;
-}
-
-.panels-flexible-region-home-layout-container-platzhalter
-{
-    width:100% !important;
 }
