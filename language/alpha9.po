@@ -66,6 +66,12 @@ msgstr "Semester anlegen"
 msgid "Current semester"
 msgstr "Aktuelles Semester"
 
+msgid "Pattern [collapsible]heading ... text... [/collapsible] is collapsible"
+msgstr "Durch die Schreibweise [collapsible]Überschrift ... Text... [/collapsible] wird Text einklappbar'"
+
+msgid "The collapsible element @mismatch does not contain a heading and won\'t collapse."
+msgstr "Das einklappbare Element @mismatch muss eine Überschrift beinhalten."
+
 msgid ""
 msgstr ""
 
