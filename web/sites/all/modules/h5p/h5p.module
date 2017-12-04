@@ -855,7 +855,7 @@ function h5p_get_content($node) {
     'library' => $node->main_library,
     'embedType' => 'div',
     'filtered' => $node->filtered,
-    'url' => url('node/' . $node->nid, array('absolute' => TRUE)),
+    'url' => url('node/' . $node->nid, array('absolute' => TRUE, 'alias' => TRUE)),
     'displayOptions' => $core->getDisplayOptionsForView($node->disable, $node->nid),
     'slug' => $node->h5p_slug
   );
@@ -1407,14 +1407,6 @@ function h5p_content_user_data($content_id, $data_id, $sub_content_id) {
  */
 function h5p_embed($node) {
   global $language;
-
-  $callback = filter_input(INPUT_GET, 'callback');
-  if ($callback !== NULL) {
-
-    // Old embed code only returns resizer url
-    print $callback . '(\'' . h5p_get_resize_url() . '\');';
-    return;
-  }
 
   $module_path = base_path() . drupal_get_path('module', 'h5p');
   $node = node_load($node);
