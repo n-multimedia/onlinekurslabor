@@ -320,7 +320,15 @@ function custom_general_context_page_reaction() {
   
 }
 
-
+/**
+ * implements hook_form_alter
+ * 
+ * @global type $user
+ * @param type $form
+ * @param type $form_state
+ * @param type $form_id
+ * @return type
+ */
 function custom_general_form_alter(&$form, &$form_state, $form_id) {
     global $user;
     
@@ -328,6 +336,12 @@ function custom_general_form_alter(&$form, &$form_state, $form_id) {
     if (!empty($form['og_group_ref'][LANGUAGE_NONE])) {
         $bugmenot_info = '<div class="messages warning alert alert-block alert-warning">' . t('This is only needed for debugging and not to be changed normally') . '</div>';
         $form['og_group_ref'][LANGUAGE_NONE][] = array('#markup' => $bugmenot_info, '#weight' => -10);
+        //collapst group-ref-field
+        $form['og_group_ref'][LANGUAGE_NONE]['#after_build'][] = '_custom_general_collapse_og_ref_field';
+    }
+    //collapst domain-ref-field
+    if (!empty($form['og_domain_ref'][LANGUAGE_NONE])) {
+        $form['og_domain_ref'][LANGUAGE_NONE]['#after_build'][] = '_custom_general_collapse_og_ref_field';
     }
 
     // inaccessbible for non-admins
@@ -1473,6 +1487,20 @@ function _custom_general_collapse_filter_process($text, $filter, $format) {
     return preg_replace_callback($regex, '_custom_general_collapse_replacements', $text);
 }
 
+
+/**
+ * Collapst aus Usability-Gründen ´das  og_domain_ref-/og-group-ref-field 
+ * (vmtl aber universal und kann anders auch genutzt werden)
+ * @param array $ref_field das field og_domain_ref oder og_group_ref
+ * @return array $field das selbe field, aber collapsed
+ */
+function _custom_general_collapse_og_ref_field($ref_field) {
+    $ref_field['#collapsible'] = TRUE;
+    $ref_field['#collapsed'] = TRUE;
+    $ref_field['#type'] = "fieldset";
+
+    return $ref_field;
+}
 /**
  * entfernt matches auf [collapsible]elements
  * @see _custom_general_collapse_filter_process
