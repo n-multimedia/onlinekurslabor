@@ -379,7 +379,7 @@
 
             self.init_bind_nm_stream_nodes();
         }
-
+        //für diese .html()-operationen sollts eigtl helper-funktionen geben... object.change(), object.delete etc
         if (typeof data.changed_nodes !== 'undefined') {
             //some nodes were changed
             //insert new data
@@ -391,7 +391,8 @@
                 var node_top_changed = $('#nm-stream-node-' + nid).find('.nm-stream-top').first().html(new_top);
                 var node_body_changed = $('#nm-stream-node-' + nid).find('.nm-stream-main-body').first().html(new_body);
                 var node_attachments_changed = $('#nm-stream-node-' + nid).find('.nm-stream-attachments').first().html(new_attachments);
-
+                Drupal.detachBehaviors($('#nm-stream-node-' + nid));
+                Drupal.attachBehaviors($('#nm-stream-node-' + nid));
             }
         }
 
@@ -400,6 +401,7 @@
 
             for (var nid in data.deleted_nodes) {
                 $('#nm-stream-node-' + nid).fadeOut().remove();
+                Drupal.detachBehaviors($('#nm-stream-node-' + nid));
             }
         }
 
@@ -479,7 +481,8 @@
                 var new_body = $(data.changed_comments[cid]).find('.nm-stream-main-body').html();
                 var comment_top_changed = $('#nm-stream-comment-' + cid).find('.nm-stream-top').first().html(new_top);
                 var comment_body_changed = $('#nm-stream-comment-' + cid).find('.nm-stream-main-body').first().html(new_body);
-
+                Drupal.detachBehaviors($('#nm-stream-comment-' + cid));
+                Drupal.attachBehaviors($('#nm-stream-comment-' + cid));
             }
         }
 
@@ -488,7 +491,7 @@
             //some nodes were deleted
             for (var cid in data.deleted_comments) {
                 $('#nm-stream-comment-' + cid).fadeOut().remove();
-
+                Drupal.detachBehaviors($('#nm-stream-comment-' + cid));
             }
         }
         //refresh information data
