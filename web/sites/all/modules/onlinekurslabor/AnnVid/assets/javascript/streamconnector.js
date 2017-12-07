@@ -29,6 +29,12 @@
             });
 
         },
+        detach: function(context) {
+             //fuelle timeline neu
+             Drupal.behaviors.annvid.stream.fillStreamTimeline();
+              //setze fortschrittbalken auf letzten bekannten wert
+             Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.interactivevideo.getCurrentVideoTime(false));
+         },
          active_annotations: new Array(),
          timeline_div_id : "#stream_timeline",
          timeline_timemark_id : "#timemark",
