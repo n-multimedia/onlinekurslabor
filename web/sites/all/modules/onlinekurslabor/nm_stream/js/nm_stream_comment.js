@@ -315,9 +315,11 @@ NMStreamComment.prototype.init_bind_comment_delete_event = function () {
                     callback: function() {
                         //ajax request
                         $.post(url, '', function(data) {
+                            //das ist buggy, siehe netzwerk. Antwort ist im Erfolgsfall IMMER 2
                             if (data.status === 1) {
                                 //request succeed
                                 comment_container.fadeOut().remove();
+                                Drupal.detachBehaviors(comment_container);
                             }
 
                             //enable button
@@ -327,6 +329,7 @@ NMStreamComment.prototype.init_bind_comment_delete_event = function () {
                             if (data.update_status === 2) {
                                 //console.log(data);
                                 self.nm_stream.refresh(data);
+                                Drupal.detachBehaviors(comment_container);
                             }
 
                         });

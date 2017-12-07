@@ -329,6 +329,7 @@ NMStreamNode.prototype.init_bind_post_delete_event = function () {
                             if (data.status === 1) {
                                 //request succeed
                                 self.container.fadeOut().remove();
+                                Drupal.detachBehaviors(self.container);
                             } else {
                                 //error handling todo here
 
