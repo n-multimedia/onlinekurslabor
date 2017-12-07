@@ -10,7 +10,6 @@
         },
         detach: function(context)
         {
-         console.debug("Detache etwas... ");
          Drupal.behaviors.annvid.stream.detach(context) ;
         },
         initialized_state: new Array(),
