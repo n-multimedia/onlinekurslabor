@@ -3118,6 +3118,16 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['filters']['name']['expose']['operator'] = 'name_op';
   $handler->display->display_options['filters']['name']['expose']['identifier'] = 'name';
   $handler->display->display_options['filters']['name']['reduce_duplicates'] = TRUE;
+  /* Filter criterion: filter_membership_state */
+  $handler->display->display_options['filters']['state']['id'] = 'state';
+  $handler->display->display_options['filters']['state']['table'] = 'og_membership';
+  $handler->display->display_options['filters']['state']['field'] = 'state';
+  $handler->display->display_options['filters']['state']['relationship'] = 'og_membership_rel_group';
+  $handler->display->display_options['filters']['state']['ui_name'] = 'filter_membership_state';
+  $handler->display->display_options['filters']['state']['value'] = array(
+    1 => '1',
+    2 => '2',
+  );
   $handler->display->display_options['pane_description'] = 'view which shows user\'s coursememberships';
   $handler->display->display_options['allow']['use_pager'] = 'use_pager';
   $handler->display->display_options['allow']['items_per_page'] = 'items_per_page';

@@ -135,6 +135,13 @@ function section_profile_views_pre_view(&$view, $display_id, $args) {
             //setze neuen status-filter (nur veröffentlicht, keine Entwürfe!)
             $filters['status'] = array('id' => 'status', 'table' => 'node', 'field' => 'status', 'relationship' => 'none', 'group_type' => 'group', 'ui_name' => 'nicht gewähltes "veröffentlicht" sollt eigentlich beides akzeptieren', 'operator' => '=', 'value' => '1', 'group' => 1, 'exposed' => false, 'expose' => array('operator_id' => false, 'label' => '', 'description' => '', 'use_operator' => false, 'operator_label' => '', 'operator' => '', 'identifier' => '', 'required' => false, 'remember' => false, 'multiple' => false, 'remember_roles' => array(2 => 2,),), 'is_grouped' => false, 'group_info' => array('label' => '', 'description' => '', 'identifier' => '', 'optional' => true, 'widget' => 'select', 'multiple' => false, 'remember' => 0, 'default_group' => 'All', 'default_group_multiple' => array(), 'group_items' => array(),),);
 
+            
+            //membership-status in nem kurs
+            $memstate_filter =  &$filters['state'];
+            //nur aktive kurse belassen, pending membership rausfiltern
+            unset($memstate_filter['value'][OG_STATE_PENDING]);
+            $filters['state'] = $memstate_filter;
+              
             //coursemembership-filter
             $courserole_filter = &$filters['name'];
 
