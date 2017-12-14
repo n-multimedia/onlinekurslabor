@@ -2036,6 +2036,20 @@ function _nm_stream_filter_xss($text)
 
 function nm_stream_import_status_stream() {
   dpm('FUNCTION DEACTIVATED');
+  //Teil dieser Migration war die Funktion 
+  /**
+ * Implements hook_node_presave().
+ * 
+ * 
+ */ 
+  /*
+function nm_stream_node_presave($node) {
+  if (isset($node->modified)) {
+    $node->created = $node->modified;
+    $node->changed = $node->modified;
+  }
+}*/
+  //  ist nun rausgeflogen. 
   return;
   //get all course groups
   $nids = custom_general_node_ids_by_type(NM_COURSE_GROUP);
@@ -2107,15 +2121,7 @@ function nm_stream_import_status_stream() {
   }
 }
 
-/**
- * Implements hook_node_presave().
- */
-function nm_stream_node_presave($node) {
-  if (isset($node->modified)) {
-    $node->created = $node->modified;
-    $node->changed = $node->modified;
-  }
-}
+
 
 /**
  * how to write to filesystem
