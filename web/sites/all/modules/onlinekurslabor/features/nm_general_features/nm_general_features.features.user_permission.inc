@@ -299,6 +299,7 @@ function nm_general_features_user_default_permissions() {
     'name' => 'administer taxonomy',
     'roles' => array(
       'administrator' => 'administrator',
+      'Moderator' => 'Moderator',
     ),
     'module' => 'taxonomy',
   );
@@ -391,6 +392,7 @@ function nm_general_features_user_default_permissions() {
     'name' => 'bypass node access',
     'roles' => array(
       'administrator' => 'administrator',
+      'Moderator' => 'Moderator',
     ),
     'module' => 'node',
   );
