@@ -213,6 +213,29 @@ function section_projects_og_user_access_alter(&$perm, $context) {
   global $user;
   $account = clone $user;
 
+  //admin bypass
+  if(user_access("administer nodes")) {
+    $perm['update any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+    $perm['create ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+    $perm['delete any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+
+    $perm['update any ' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG . ' content'] = TRUE;
+    $perm['create ' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG . ' content'] = TRUE;
+    $perm['delete any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
+
+    $perm['update any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
+    $perm['create ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
+    $perm['delete any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
+
+    $perm['update any ' . NM_PROJECTS_TAGEBUCH . ' content'] = TRUE;
+    $perm['create ' . NM_PROJECTS_TAGEBUCH . ' content'] = TRUE;
+    $perm['delete any ' . NM_PROJECTS_TAGEBUCH . ' content'] = TRUE;
+
+    $perm['update any ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
+    $perm['create ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
+    $perm['delete any ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
+
+  }
   /**
    *  STUDENT
    */
@@ -253,8 +276,6 @@ function section_projects_og_user_access_alter(&$perm, $context) {
     /*
      * DOZENT
      */
-
-
     if (in_array(NM_ROLE_DOZENT, $account->roles)) {
       if (_section_projects_seal_user_is_responsible_dozent($account, $context['group'])) {
         //must NOT edit any objectives

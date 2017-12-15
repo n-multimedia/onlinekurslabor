@@ -1277,6 +1277,11 @@ function _section_projects_tools_access($account = NULL) {
     $account = clone $user;
   }
 
+  if(user_access("administer nodes")) {
+    //super admin
+    return TRUE;
+  }
+
   if (array_intersect($account->roles, array(NM_ROLE_ADMIN,NM_ROLE_DOZENT, NM_ROLE_KOOPERATIONSPARTNER, NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT))) {
     return TRUE;
   }

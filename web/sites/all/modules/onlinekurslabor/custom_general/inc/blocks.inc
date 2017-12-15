@@ -80,7 +80,7 @@ function _custom_general_theme_top_nav($variables = NULL) {
     }
 
     //administration link for moderators
-    if($user->uid && user_access("administer content")) {
+    if($user->uid && user_access("administer nodes")) {
       $output .= _custom_general_get_top_nav_element('administration');
     }
 

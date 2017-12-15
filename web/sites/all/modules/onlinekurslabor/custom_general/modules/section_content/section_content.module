@@ -562,7 +562,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     }
   }
   //Only hide book options for users who dont have admin permission
-  $hide_book_options = !user_access('administer content');
+  $hide_book_options = !user_access('administer nodes');
 
   //remove book settings from biblio content type for authors (Role Autor)
   if (!empty($form['#node_edit_form']) && $hide_book_options) {
@@ -589,7 +589,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
         'book'
       ))
       ) {
-        if (!empty($form['book']) && !user_access('administer content')) {
+        if (!empty($form['book']) && !user_access('administer nodes')) {
           hide($form['book']);
         }
       }
@@ -1437,10 +1437,16 @@ function section_content_authors_tools_access() {
     return FALSE;
   }
 
+  //Bypass node access (admin/moderator)
+  if(user_access("administer nodes")) {
+    return TRUE;
+  }
+
   //check if user is member of active domain
   if (!og_is_member('node', $active_domain->nid)) {
     return FALSE;
   }
+
 
   $role_access = _section_content_authors_tools_role_access();
 
