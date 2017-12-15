@@ -1519,7 +1519,6 @@ function _custom_general_collapse_replacements($matches) {
         if (!empty($heading_matches)) {
             $heading_h2 = $heading_matches[0];
             $heading_text = $heading_matches[1];
-            dpm($heading_h2);
         } else {
             drupal_set_message(t('The collapsible element @mismatch does not contain a heading and won\'t collapse.', array("@mismatch" => $matches[0])), 'warning');
             return $collapse_text;

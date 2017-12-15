@@ -225,18 +225,13 @@ news',
         'status' => 1,
         'settings' => array(),
       ),
-      'filter_collapse' => array(
+      'media_filter' => array(
         'weight' => -41,
         'status' => 1,
         'settings' => array(),
       ),
-      'media_filter' => array(
-        'weight' => -40,
-        'status' => 1,
-        'settings' => array(),
-      ),
       'image_resize_filter' => array(
-        'weight' => -39,
+        'weight' => -40,
         'status' => 1,
         'settings' => array(
           'link' => 0,
@@ -247,6 +242,11 @@ news',
             'remote' => 0,
           ),
         ),
+      ),
+      'filter_collapse' => array(
+        'weight' => -39,
+        'status' => 1,
+        'settings' => array(),
       ),
     ),
   );
