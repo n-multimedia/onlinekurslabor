@@ -1468,6 +1468,20 @@ function nm_section_courses_features_default_page_manager_pages() {
   $page->access = array(
     'type' => 'none',
     'settings' => NULL,
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_access',
+        'settings' => array(
+          'type' => 'view',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_2',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -1688,8 +1702,16 @@ return section_courses_text_outline();
         ),
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
@@ -1900,8 +1922,16 @@ return section_courses_text_outline();
         ),
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
@@ -2031,29 +2061,13 @@ return section_courses_text_outline();
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'node_access',
         'settings' => array(
-          'state' => array(
-            1 => '1',
-          ),
+          'type' => 'view',
         ),
         'context' => array(
           0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
-      ),
-      1 => array(
-        'name' => 'og_role',
-        'settings' => array(
-          'og_rids' => array(
-            0 => 'kurs-dozent',
-            1 => 'kurs-tutor',
-          ),
-        ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
+          1 => 'argument_entity_id:node_2',
         ),
         'not' => FALSE,
       ),
@@ -2632,15 +2646,13 @@ return section_courses_text_outline();
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'node_access',
         'settings' => array(
-          'state' => array(
-            1 => '1',
-          ),
+          'type' => 'view',
         ),
         'context' => array(
           0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
+          1 => 'argument_entity_id:node_2',
         ),
         'not' => FALSE,
       ),
@@ -2815,15 +2827,13 @@ return section_courses_text_outline();
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'node_access',
         'settings' => array(
-          'state' => array(
-            1 => '1',
-          ),
+          'type' => 'update',
         ),
         'context' => array(
           0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
+          1 => 'argument_entity_id:node_2',
         ),
         'not' => FALSE,
       ),
@@ -3632,8 +3642,16 @@ echo section_courses_render_course_link($course);
         ),
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
@@ -3846,8 +3864,16 @@ echo section_courses_render_course_link($course);
         ),
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
@@ -4145,16 +4171,13 @@ echo section_courses_render_course_link($course);
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_role',
+        'name' => 'node_access',
         'settings' => array(
-          'og_rids' => array(
-            0 => 'kurs-dozent',
-            1 => 'kurs-tutor',
-          ),
+          'type' => 'update',
         ),
         'context' => array(
           0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
+          1 => 'argument_node_edit_1',
         ),
         'not' => FALSE,
       ),
@@ -4346,8 +4369,16 @@ echo section_courses_render_course_link($course);
         ),
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
@@ -4506,8 +4537,16 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
         ),
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
@@ -4728,8 +4767,16 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
         ),
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
@@ -5058,8 +5105,16 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
         ),
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
@@ -5652,8 +5707,16 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
         ),
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
@@ -5918,12 +5981,10 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
   $page->path = 'course/forumcontent/%1/%2/add';
   $page->access = array(
     'plugins' => array(
-      0 => array(
-        'name' => 'og_member',
+      1 => array(
+        'name' => 'og_perm',
         'settings' => array(
-          'state' => array(
-            1 => '1',
-          ),
+          'perm' => 'create forum content',
         ),
         'context' => array(
           0 => 'logged-in-user',
@@ -5931,8 +5992,16 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
         ),
         'not' => FALSE,
       ),
+      2 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
@@ -6065,28 +6134,14 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'node_access',
         'settings' => array(
-          'state' => array(
-            1 => '1',
-          ),
+          'type' => 'update',
         ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
-        'not' => FALSE,
-      ),
-      1 => array(
-        'name' => 'role',
-        'settings' => array(
-          'rids' => array(
-            0 => 106505419,
-            1 => 197637936,
-            2 => 30037204,
-          ),
-        ),
-        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),
@@ -6217,15 +6272,13 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'node_access',
         'settings' => array(
-          'state' => array(
-            1 => '1',
-          ),
+          'type' => 'update',
         ),
         'context' => array(
           0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
+          1 => 'argument_node_edit_1',
         ),
         'not' => FALSE,
       ),
@@ -6365,8 +6418,19 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
         ),
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'node_access',
+        'settings' => array(
+          'type' => 'view',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
@@ -6493,15 +6557,13 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'node_access',
         'settings' => array(
-          'state' => array(
-            1 => '1',
-          ),
+          'type' => 'view',
         ),
         'context' => array(
           0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
+          1 => 'argument_entity_id:node_2',
         ),
         'not' => FALSE,
       ),
@@ -6724,15 +6786,13 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'node_access',
         'settings' => array(
-          'state' => array(
-            1 => '1',
-          ),
+          'type' => 'view',
         ),
         'context' => array(
           0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
+          1 => 'argument_entity_id:node_2',
         ),
         'not' => FALSE,
       ),
@@ -6870,20 +6930,18 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_member',
+        'name' => 'node_access',
         'settings' => array(
-          'state' => array(
-            1 => '1',
-          ),
+          'type' => 'view',
         ),
         'context' => array(
           0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
+          1 => 'argument_entity_id:node_2',
         ),
         'not' => FALSE,
       ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
@@ -7051,19 +7109,6 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->path = 'course/projects/%1';
   $page->access = array(
     'plugins' => array(
-      0 => array(
-        'name' => 'og_member',
-        'settings' => array(
-          'state' => array(
-            1 => '1',
-          ),
-        ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
-      ),
       1 => array(
         'name' => 'og_role',
         'settings' => array(
@@ -7079,8 +7124,16 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
         ),
         'not' => FALSE,
       ),
+      2 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
@@ -7211,8 +7264,16 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
         ),
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
@@ -7663,8 +7724,16 @@ return section_courses_text_outline();
         ),
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
@@ -7899,8 +7968,16 @@ return section_courses_text_outline();
         ),
         'not' => FALSE,
       ),
+      1 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
