@@ -1,7 +1,4 @@
 <?php
-function private_msg_menu_alter(&$items) {
-  $items['messages/delete/%privatemsg_thread/%privatemsg_message']['access callback']  = 'privatemsg_user_access';
-}
 
 function privatemsg_okl_privatemsg_thread_operations() {
   global $user;
@@ -162,3 +159,19 @@ function privatemsg_okl_form_privatemsg_admin_settings_alter(&$form, &$form_stat
     );
 }
 
+
+/**
+ * undocumented hook
+ *  implements hook_query_privatemsg_message_load_multiple_alter($query   )
+ * 
+ *  deleted messages werden ausgefiltert. 
+ * 
+ * @param type $query
+ */
+function privatemsg_okl_query_privatemsg_message_load_multiple_alter($query) {
+    $load_all = $query->getMetaData('arg_3');
+
+    if (!$load_all) {
+        $query->condition('deleted', 0);
+    }
+}
