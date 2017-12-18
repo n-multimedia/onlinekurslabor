@@ -1979,11 +1979,6 @@ function privatemsg_message_load($pmid, $account = NULL) {
  * @ingroup api
  */
 function privatemsg_message_load_multiple(array $pmids, array $conditions = array(), $reset = FALSE) {
-    global $user;
-    //hack: verhindere unglaublich lange liste an nachrichten für normale user
-    if (!count($pmids) && !user_access('read all messages')) {
-        return array();
-    }
   $result = entity_load('privatemsg_message', $pmids, $conditions, $reset);
   return $result;
 }
