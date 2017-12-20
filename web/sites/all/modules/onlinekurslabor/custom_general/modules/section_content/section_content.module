@@ -757,6 +757,12 @@ function section_content_og_user_access_alter(&$perm, $context) {
   $group_type = $context['group_type'];
   $group = $context['group'];
 
+  if(user_access('bypass node access')) {
+
+    $perm['administer group'] = TRUE;
+  }
+
+
   if ($group_type == 'node' && $group->type == NM_CONTENT_DOMAIN) {
 
     $access_perm = in_array(NM_ROLE_AUTOR, $user->roles) || in_array(NM_ROLE_ADMIN, $user->roles);

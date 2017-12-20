@@ -214,28 +214,10 @@ function section_projects_og_user_access_alter(&$perm, $context) {
   $account = clone $user;
 
   //admin bypass
-  if(user_access("administer nodes")) {
-    $perm['update any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
-    $perm['create ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
-    $perm['delete any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
-
-    $perm['update any ' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG . ' content'] = TRUE;
-    $perm['create ' . NM_PROJECTS_KOOPERATIONSVEREINBARUNG . ' content'] = TRUE;
-    $perm['delete any ' . NM_PROJECTS_ZIELVEREINBARUNG . ' content'] = TRUE;
-
-    $perm['update any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
-    $perm['create ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
-    $perm['delete any ' . NM_PROJECTS_DOKUMENTATION . ' content'] = TRUE;
-
-    $perm['update any ' . NM_PROJECTS_TAGEBUCH . ' content'] = TRUE;
-    $perm['create ' . NM_PROJECTS_TAGEBUCH . ' content'] = TRUE;
-    $perm['delete any ' . NM_PROJECTS_TAGEBUCH . ' content'] = TRUE;
-
-    $perm['update any ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
-    $perm['create ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
-    $perm['delete any ' . NM_PROJECTS_PROJEKTVORSCHLAG . ' content'] = TRUE;
-
+  if(user_access('bypass node access')) {
+    $perm['administer group'] = TRUE;
   }
+  
   /**
    *  STUDENT
    */

@@ -2541,6 +2541,10 @@ function section_courses_og_user_access_alter(&$perm, $context) {
 
   $course = _section_courses_get_active_course();
 
+  if(user_access('bypass node access')) {
+    $perm['administer group'] = TRUE;
+  }
+
   //we are in course section
   if ($course) {
     //Course Group - Content Type
