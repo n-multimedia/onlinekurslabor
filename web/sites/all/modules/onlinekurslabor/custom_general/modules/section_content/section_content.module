@@ -562,7 +562,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     }
   }
   //Only hide book options for users who dont have admin permission
-  $hide_book_options = !user_access('administer nodes');
+  $hide_book_options = !user_access('bypass node access');
 
   //remove book settings from biblio content type for authors (Role Autor)
   if (!empty($form['#node_edit_form']) && $hide_book_options) {
@@ -1444,7 +1444,7 @@ function section_content_authors_tools_access() {
   }
 
   //Bypass node access (admin/moderator)
-  if(user_access("administer nodes")) {
+  if(user_access("bypass node access")) {
     return TRUE;
   }
 

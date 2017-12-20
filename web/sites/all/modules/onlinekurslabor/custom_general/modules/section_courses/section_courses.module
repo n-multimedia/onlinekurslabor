@@ -2358,7 +2358,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
     if ($form_id == 'courses_generic_task_solution_node_form') {
 
         //hat eintrag - verstecken
-          $form['field_submitted_on']['#access'] = user_access('administer nodes');
+          $form['field_submitted_on']['#access'] = user_access('bypass node access');
         
     }
      

@@ -21,7 +21,7 @@ function nm_administration_default_page_manager_pages() {
       0 => array(
         'name' => 'perm',
         'settings' => array(
-          'perm' => 'administer nodes',
+          'perm' => 'bypass node access',
         ),
         'context' => 'logged-in-user',
         'not' => FALSE,

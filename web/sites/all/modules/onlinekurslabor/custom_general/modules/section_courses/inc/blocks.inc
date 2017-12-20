@@ -264,7 +264,7 @@ function section_courses_instructors_tools_access($reset = FALSE) {
   static $result = NULL;
 
 
-  if(user_access("administer nodes")) {
+  if(user_access("bypass node access")) {
     //super admin
     return TRUE;
   }
