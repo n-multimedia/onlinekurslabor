@@ -36,6 +36,7 @@ function nm_section_content_features_user_default_permissions() {
     'name' => 'access printer-friendly version',
     'roles' => array(
       'Autor' => 'Autor',
+      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
     ),
     'module' => 'book',
@@ -46,6 +47,7 @@ function nm_section_content_features_user_default_permissions() {
     'name' => 'add content to books',
     'roles' => array(
       'Autor' => 'Autor',
+      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
     ),
     'module' => 'book',
@@ -96,6 +98,7 @@ function nm_section_content_features_user_default_permissions() {
   $permissions['administer files'] = array(
     'name' => 'administer files',
     'roles' => array(
+      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
     ),
     'module' => 'file_entity',
@@ -130,6 +133,7 @@ function nm_section_content_features_user_default_permissions() {
   $permissions['bypass file access'] = array(
     'name' => 'bypass file access',
     'roles' => array(
+      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
     ),
     'module' => 'file_entity',
@@ -190,6 +194,7 @@ function nm_section_content_features_user_default_permissions() {
     'name' => 'create new books',
     'roles' => array(
       'Autor' => 'Autor',
+      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
     ),
     'module' => 'book',

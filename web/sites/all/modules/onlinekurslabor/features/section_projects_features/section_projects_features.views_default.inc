@@ -44,7 +44,7 @@ function section_projects_features_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Kursgruppe */
+  /* Field: Beitrag: Kursgruppe */
   $handler->display->display_options['fields']['field_ca_course_group_ref']['id'] = 'field_ca_course_group_ref';
   $handler->display->display_options['fields']['field_ca_course_group_ref']['table'] = 'field_data_field_ca_course_group_ref';
   $handler->display->display_options['fields']['field_ca_course_group_ref']['field'] = 'field_ca_course_group_ref';
@@ -52,7 +52,7 @@ function section_projects_features_views_default_views() {
   $handler->display->display_options['fields']['field_ca_course_group_ref']['settings'] = array(
     'link' => 1,
   );
-  /* Field: Content: Studenten */
+  /* Field: Beitrag: Studenten */
   $handler->display->display_options['fields']['field_ca_student_refs']['id'] = 'field_ca_student_refs';
   $handler->display->display_options['fields']['field_ca_student_refs']['table'] = 'field_data_field_ca_student_refs';
   $handler->display->display_options['fields']['field_ca_student_refs']['field'] = 'field_ca_student_refs';
@@ -66,7 +66,7 @@ function section_projects_features_views_default_views() {
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: Content: Projektvorschlag (field_ca_proposal_ref) */
+  /* Contextual filter: Beitrag: Projektvorschlag (field_ca_proposal_ref) */
   $handler->display->display_options['arguments']['field_ca_proposal_ref_target_id']['id'] = 'field_ca_proposal_ref_target_id';
   $handler->display->display_options['arguments']['field_ca_proposal_ref_target_id']['table'] = 'field_data_field_ca_proposal_ref';
   $handler->display->display_options['arguments']['field_ca_proposal_ref_target_id']['field'] = 'field_ca_proposal_ref_target_id';
@@ -156,7 +156,7 @@ function section_projects_features_views_default_views() {
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = '<span style="color:#aaa;">Keine Einträge</span>';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
-  /* Relationship: OG membership: OG membership from Node */
+  /* Relationship: OG membership: OG membership from Beitrag */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
@@ -266,7 +266,7 @@ function section_projects_features_views_default_views() {
   $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Relationship: OG membership: OG membership from Node group */
+  /* Relationship: OG membership: OG membership from Beitrag group */
   $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
@@ -288,7 +288,7 @@ function section_projects_features_views_default_views() {
   $handler->display->display_options['fields']['title']['element_type'] = 'h2';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Logo */
+  /* Field: Beitrag: Logo */
   $handler->display->display_options['fields']['field_po_logo']['id'] = 'field_po_logo';
   $handler->display->display_options['fields']['field_po_logo']['table'] = 'field_data_field_po_logo';
   $handler->display->display_options['fields']['field_po_logo']['field'] = 'field_po_logo';
@@ -301,7 +301,7 @@ function section_projects_features_views_default_views() {
     'image_style' => 'course_overview_image',
     'image_link' => '',
   );
-  /* Field: Content: Kurzbeschreibung */
+  /* Field: Beitrag: Kurzbeschreibung */
   $handler->display->display_options['fields']['field_po_short_description']['id'] = 'field_po_short_description';
   $handler->display->display_options['fields']['field_po_short_description']['table'] = 'field_data_field_po_short_description';
   $handler->display->display_options['fields']['field_po_short_description']['field'] = 'field_po_short_description';
@@ -393,7 +393,7 @@ function section_projects_features_views_default_views() {
 <div class="views-row"></div>
 </div>';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
-  /* Relationship: OG membership: OG membership from Node */
+  /* Relationship: OG membership: OG membership from Beitrag */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';

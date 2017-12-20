@@ -217,7 +217,7 @@ function section_projects_og_user_access_alter(&$perm, $context) {
   if(user_access('bypass node access')) {
     $perm['administer group'] = TRUE;
   }
-  
+
   /**
    *  STUDENT
    */

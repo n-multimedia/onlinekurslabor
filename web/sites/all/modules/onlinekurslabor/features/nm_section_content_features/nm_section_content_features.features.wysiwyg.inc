@@ -73,10 +73,10 @@ function nm_section_content_features_wysiwyg_default_profiles() {
       'pasteFromWordRemoveFontStyles' => 1,
     ),
     'preferences' => array(
+      'add_to_summaries' => FALSE,
       'default' => 1,
-      'user_choose' => 0,
       'show_toggle' => 1,
-      'add_to_summaries' => 0,
+      'user_choose' => 0,
       'version' => '4.6.2.20af917',
     ),
     'name' => 'formatfiltered_html',
