@@ -296,6 +296,10 @@ function _h5peditor_create_content($node) {
     $storage = _h5p_get_instance('storage');
     $source_node = h5peditor_get_source_node($node);
     $storage->copyPackage(h5p_get_content_id($node), h5p_get_content_id($source_node), $node->nid);
+
+    // Trigger removal of files that has been removed during translation or clone
+    $node->h5p_params_old = $source_node->json_content;
+    $node->h5p_library_old = $source_node->main_library;
   }
 
   // Move files.

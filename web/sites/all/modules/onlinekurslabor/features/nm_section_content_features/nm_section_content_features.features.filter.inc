@@ -69,6 +69,7 @@ function nm_section_content_features_filter_default_formats() {
             'Attr.DefaultTextDir' => 'ltr',
             'Attr.EnableID' => 1,
             'Attr.ForbiddenClasses' => '',
+            'Null_Attr.ID.HTML5' => 1,
             'Attr.IDBlacklist' => '',
             'Null_Attr.IDBlacklistRegexp' => 1,
             'Attr.IDPrefix' => '',
@@ -79,11 +80,17 @@ function nm_section_content_features_filter_default_formats() {
             'AutoFormat.Linkify' => 1,
             'AutoFormat.PurifierLinkify.DocURL' => '#%s',
             'AutoFormat.PurifierLinkify' => 0,
+            'AutoFormat.RemoveEmpty.Predicate' => 'colgroup:
+th:
+td:
+iframe:src
+',
             'AutoFormat.RemoveEmpty.RemoveNbsp.Exceptions' => 'td
 th',
             'AutoFormat.RemoveEmpty.RemoveNbsp' => 0,
             'AutoFormat.RemoveEmpty' => 0,
             'AutoFormat.RemoveSpansWithoutAttributes' => 0,
+            'CSS.AllowDuplicates' => 0,
             'CSS.AllowImportant' => 0,
             'CSS.AllowTricky' => 0,
             'Null_CSS.AllowedFonts' => 1,
@@ -96,6 +103,8 @@ th',
             'Null_Cache.SerializerPath' => 1,
             'Cache.SerializerPermissions' => 493,
             'Core.AggressivelyFixLt' => 1,
+            'Core.AggressivelyRemoveScript' => 1,
+            'Core.AllowHostnameUnderscore' => 0,
             'Core.CollectErrors' => 0,
             'Core.ColorKeywords' => 'maroon:#800000
 red:#FF0000
@@ -126,6 +135,7 @@ gray:#808080
             'Core.HiddenElements' => 'script
 style',
             'Core.Language' => 'en',
+            'Core.LegacyEntityDecoder' => 0,
             'Null_Core.LexerImpl' => 1,
             'Null_Core.MaintainLineNumbers' => 1,
             'Core.NormalizeNewlines' => 1,
@@ -168,6 +178,8 @@ CommonAttributes',
             'HTML.SafeScripting' => '',
             'HTML.Strict' => 0,
             'HTML.TargetBlank' => 0,
+            'HTML.TargetNoopener' => 1,
+            'HTML.TargetNoreferrer' => 1,
             'HTML.TidyAdd' => '',
             'HTML.TidyLevel' => 'medium',
             'HTML.TidyRemove' => '',
@@ -230,6 +242,11 @@ news',
             'remote' => 0,
           ),
         ),
+      ),
+      'filter_collapse' => array(
+        'weight' => -39,
+        'status' => 1,
+        'settings' => array(),
       ),
     ),
   );

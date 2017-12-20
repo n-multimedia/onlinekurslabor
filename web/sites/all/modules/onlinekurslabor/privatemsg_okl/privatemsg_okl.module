@@ -1,7 +1,4 @@
 <?php
-function private_msg_menu_alter(&$items) {
-  $items['messages/delete/%privatemsg_thread/%privatemsg_message']['access callback']  = 'privatemsg_user_access';
-}
 
 function privatemsg_okl_privatemsg_thread_operations() {
   global $user;
@@ -162,3 +159,48 @@ function privatemsg_okl_form_privatemsg_admin_settings_alter(&$form, &$form_stat
     );
 }
 
+
+/**
+ * undocumented hook
+ *  implements hook_query_privatemsg_message_load_multiple_alter($query   )
+ * 
+ *  deleted messages werden ausgefiltert. 
+ * 
+ * @param type $query
+ */
+function privatemsg_okl_query_privatemsg_message_load_multiple_alter($query) {
+    $load_all = $query->getMetaData('arg_3');
+
+    if (!$load_all) {
+        $query->condition('deleted', 0);
+    }
+}
+
+/**
+ * implements hook_menu_alter(&$items) 
+ * erweitert privatemsg-access-funktion
+ * @param array $items
+ */
+function privatemsg_okl_menu_alter(&$items) {
+    $items['messages/view/%privatemsg_thread'] ['access callback'] = 'privatemsg_okl_view_access';
+}
+
+/**
+ * Erweiterte privatemsg-access-funktion
+ * @see privatemsg_okl_menu_alter
+ * @param type $thread
+ * @return boolean
+ */
+function privatemsg_okl_view_access($thread) {
+    $default_perm = privatemsg_view_access($thread);
+    $this_thread_id = $thread['thread_id'];
+
+    //prüfe message-baum, ob eine der geladenen nachrichten zum aktuellen thread passt (verhindere trees in /messages/view/{random} ) 
+    foreach ($thread['messages'] as $message) {
+        if ($message->thread_id == $this_thread_id) {
+            return $default_perm;
+        }
+    }
+
+    return false;
+}

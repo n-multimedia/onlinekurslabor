@@ -8,6 +8,10 @@
        Drupal.behaviors.annvid.stream.attach(context, settings) ;
       //gibnts nich  Drupal.behaviors.annvid.video.attach(context, settings);
         },
+        detach: function(context)
+        {
+         Drupal.behaviors.annvid.stream.detach(context) ;
+        },
         initialized_state: new Array(),
         pdfrenderobject: null, 
         
