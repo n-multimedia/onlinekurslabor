@@ -28,6 +28,15 @@ function nm_general_features_user_default_permissions() {
     'module' => 'system',
   );
 
+  // Exported permission: 'access advuser'.
+  $permissions['access advuser'] = array(
+    'name' => 'access advuser',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'advuser',
+  );
+
   // Exported permission: 'access all views'.
   $permissions['access all views'] = array(
     'name' => 'access all views',
@@ -140,6 +149,15 @@ function nm_general_features_user_default_permissions() {
     'module' => 'system',
   );
 
+  // Exported permission: 'administer advuser'.
+  $permissions['administer advuser'] = array(
+    'name' => 'administer advuser',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'advuser',
+  );
+
   // Exported permission: 'administer blocks'.
   $permissions['administer blocks'] = array(
     'name' => 'administer blocks',
@@ -217,6 +235,7 @@ function nm_general_features_user_default_permissions() {
   $permissions['administer permissions'] = array(
     'name' => 'administer permissions',
     'roles' => array(
+      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
     ),
     'module' => 'user',
@@ -229,6 +248,15 @@ function nm_general_features_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'privatemsg',
+  );
+
+  // Exported permission: 'administer profiles'.
+  $permissions['administer profiles'] = array(
+    'name' => 'administer profiles',
+    'roles' => array(
+      'Moderator' => 'Moderator',
+    ),
+    'module' => 'profile2',
   );
 
   // Exported permission: 'administer realname'.
@@ -298,8 +326,8 @@ function nm_general_features_user_default_permissions() {
   $permissions['administer taxonomy'] = array(
     'name' => 'administer taxonomy',
     'roles' => array(
-      'administrator' => 'administrator',
       'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
     ),
     'module' => 'taxonomy',
   );
@@ -391,8 +419,8 @@ function nm_general_features_user_default_permissions() {
   $permissions['bypass node access'] = array(
     'name' => 'bypass node access',
     'roles' => array(
-      'administrator' => 'administrator',
       'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
     ),
     'module' => 'node',
   );
@@ -692,6 +720,15 @@ function nm_general_features_user_default_permissions() {
     'module' => 'privatemsg',
   );
 
+  // Exported permission: 'receive email advuser'.
+  $permissions['receive email advuser'] = array(
+    'name' => 'receive email advuser',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'advuser',
+  );
+
   // Exported permission: 'reply only privatemsg'.
   $permissions['reply only privatemsg'] = array(
     'name' => 'reply only privatemsg',
@@ -738,6 +775,15 @@ function nm_general_features_user_default_permissions() {
     'module' => 'privatemsg',
   );
 
+  // Exported permission: 'send email advuser'.
+  $permissions['send email advuser'] = array(
+    'name' => 'send email advuser',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'advuser',
+  );
+
   // Exported permission: 'show workflow state form'.
   $permissions['show workflow state form'] = array(
     'name' => 'show workflow state form',
@@ -753,6 +799,16 @@ function nm_general_features_user_default_permissions() {
       'authenticated user' => 'authenticated user',
     ),
     'module' => 'comment',
+  );
+
+  // Exported permission: 'switch users'.
+  $permissions['switch users'] = array(
+    'name' => 'switch users',
+    'roles' => array(
+      'Moderator' => 'Moderator',
+      'administrator' => 'administrator',
+    ),
+    'module' => 'devel',
   );
 
   // Exported permission: 'tag private messages'.
