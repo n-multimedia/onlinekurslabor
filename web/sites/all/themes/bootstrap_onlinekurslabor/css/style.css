@@ -243,15 +243,16 @@ BOOTSTRAP 3
     position: static;
 }
 
-#page_top_navigation li a.top_nav_link:link
+/*nur OKL - navbar-inverse */
+#page_top_navigation.navbar-inverse li a.top_nav_link:link, #page_top_navigation.navbar-inverse li a.top_nav_link:visited
 {
     color: #CCCCCC;
 }
-#page_top_navigation li a.top_nav_link:hover
+#page_top_navigation.navbar-inverse li a.top_nav_link:hover
 {
      color: #ffffff;
 }
-
+/*nur OSL - navbar-default */
 #page_top_navigation.navbar-default li a.top_nav_link:hover
 {
      color: #222222;
