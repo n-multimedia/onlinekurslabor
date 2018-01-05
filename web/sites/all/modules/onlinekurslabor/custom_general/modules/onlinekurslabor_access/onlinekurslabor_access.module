@@ -420,7 +420,7 @@ function onlinekurslabor_access_file_download($uri) {
     //Important - DENY Access to DB Backup Files!
     if (stristr($uri, "/backup_migrate/")) {
       if (!user_access("access backup files")) {
-        return;
+        return -1;
       }
     }
 
@@ -518,6 +518,7 @@ function onlinekurslabor_access_file_download($uri) {
 
         return array('Content-Type' => $mime);
     }
+
     return -1;
 }
 
