@@ -207,6 +207,7 @@ function nm_general_features_user_default_permissions() {
   $permissions['administer group'] = array(
     'name' => 'administer group',
     'roles' => array(
+      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
     ),
     'module' => 'og',

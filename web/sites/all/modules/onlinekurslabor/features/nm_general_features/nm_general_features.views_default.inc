@@ -81,18 +81,18 @@ function nm_general_features_views_default_views() {
       'empty_column' => 0,
     ),
   );
-  /* Relationship: Private Nachrichten: mid */
+  /* Relationship: Private messages: mid */
   $handler->display->display_options['relationships']['mid']['id'] = 'mid';
   $handler->display->display_options['relationships']['mid']['table'] = 'pm_index';
   $handler->display->display_options['relationships']['mid']['field'] = 'mid';
   $handler->display->display_options['relationships']['mid']['required'] = TRUE;
-  /* Relationship: Private Nachrichten: Author */
+  /* Relationship: Private messages: Author */
   $handler->display->display_options['relationships']['author']['id'] = 'author';
   $handler->display->display_options['relationships']['author']['table'] = 'pm_message';
   $handler->display->display_options['relationships']['author']['field'] = 'author';
   $handler->display->display_options['relationships']['author']['relationship'] = 'mid';
   $handler->display->display_options['relationships']['author']['required'] = TRUE;
-  /* Relationship: Benutzer: Profil */
+  /* Relationship: User: Profil */
   $handler->display->display_options['relationships']['profile']['id'] = 'profile';
   $handler->display->display_options['relationships']['profile']['table'] = 'users';
   $handler->display->display_options['relationships']['profile']['field'] = 'profile';
@@ -101,13 +101,13 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['relationships']['profile']['bundle_types'] = array(
     'master' => 'master',
   );
-  /* Feld: Private Nachrichten: mid */
+  /* Field: Private messages: mid */
   $handler->display->display_options['fields']['mid']['id'] = 'mid';
   $handler->display->display_options['fields']['mid']['table'] = 'pm_index';
   $handler->display->display_options['fields']['mid']['field'] = 'mid';
   $handler->display->display_options['fields']['mid']['label'] = '(hidden) mid';
   $handler->display->display_options['fields']['mid']['exclude'] = TRUE;
-  /* Feld: Private Nachrichten: thread_id */
+  /* Field: Private messages: thread_id */
   $handler->display->display_options['fields']['thread_id']['id'] = 'thread_id';
   $handler->display->display_options['fields']['thread_id']['table'] = 'pm_index';
   $handler->display->display_options['fields']['thread_id']['field'] = 'thread_id';
@@ -115,7 +115,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['thread_id']['exclude'] = TRUE;
   $handler->display->display_options['fields']['thread_id']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['thread_id']['separator'] = '';
-  /* Feld: Realname: Real name */
+  /* Field: Realname: Real name */
   $handler->display->display_options['fields']['realname']['id'] = 'realname';
   $handler->display->display_options['fields']['realname']['table'] = 'realname';
   $handler->display->display_options['fields']['realname']['field'] = 'realname';
@@ -123,7 +123,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['realname']['label'] = '(hidden) Real name';
   $handler->display->display_options['fields']['realname']['exclude'] = TRUE;
   $handler->display->display_options['fields']['realname']['link_to_user'] = FALSE;
-  /* Feld: Profil: Foto */
+  /* Field: Profil: Foto */
   $handler->display->display_options['fields']['field_photo']['id'] = 'field_photo';
   $handler->display->display_options['fields']['field_photo']['table'] = 'field_data_field_photo';
   $handler->display->display_options['fields']['field_photo']['field'] = 'field_photo';
@@ -139,7 +139,7 @@ function nm_general_features_views_default_views() {
     'image_style' => 'profile_mini_thumbnail',
     'image_link' => '',
   );
-  /* Feld: Private Nachrichten: Subject */
+  /* Field: Private messages: Subject */
   $handler->display->display_options['fields']['subject']['id'] = 'subject';
   $handler->display->display_options['fields']['subject']['table'] = 'pm_message';
   $handler->display->display_options['fields']['subject']['field'] = 'subject';
@@ -149,7 +149,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['subject']['alter']['path'] = '/messages/view/[thread_id]';
   $handler->display->display_options['fields']['subject']['alter']['absolute'] = TRUE;
   $handler->display->display_options['fields']['subject']['element_label_colon'] = FALSE;
-  /* Feld: Private Nachrichten: timestamp */
+  /* Field: Private messages: timestamp */
   $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
   $handler->display->display_options['fields']['timestamp']['table'] = 'pm_message';
   $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
@@ -158,13 +158,13 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['timestamp']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['timestamp']['date_format'] = 'today time ago';
   $handler->display->display_options['fields']['timestamp']['second_date_format'] = 'short';
-  /* Sort criterion: Private Nachrichten: timestamp */
+  /* Sort criterion: Private messages: timestamp */
   $handler->display->display_options['sorts']['timestamp']['id'] = 'timestamp';
   $handler->display->display_options['sorts']['timestamp']['table'] = 'pm_message';
   $handler->display->display_options['sorts']['timestamp']['field'] = 'timestamp';
   $handler->display->display_options['sorts']['timestamp']['relationship'] = 'mid';
   $handler->display->display_options['sorts']['timestamp']['order'] = 'DESC';
-  /* Contextual filter: Private Nachrichten: recipient */
+  /* Contextual filter: Private messages: recipient */
   $handler->display->display_options['arguments']['recipient']['id'] = 'recipient';
   $handler->display->display_options['arguments']['recipient']['table'] = 'pm_index';
   $handler->display->display_options['arguments']['recipient']['field'] = 'recipient';
@@ -177,7 +177,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['arguments']['recipient']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['recipient']['validate']['type'] = 'user';
   $handler->display->display_options['arguments']['recipient']['validate']['fail'] = 'empty';
-  /* Contextual filter: Private Nachrichten: Author */
+  /* Contextual filter: Private messages: Author */
   $handler->display->display_options['arguments']['author']['id'] = 'author';
   $handler->display->display_options['arguments']['author']['table'] = 'pm_message';
   $handler->display->display_options['arguments']['author']['field'] = 'author';
@@ -202,7 +202,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['filters']['deleted']['expose']['label'] = 'deleted';
   $handler->display->display_options['filters']['deleted']['expose']['operator'] = 'deleted_op';
   $handler->display->display_options['filters']['deleted']['expose']['identifier'] = 'deleted';
-  /* Filter criterion: Private Nachrichten: is_new */
+  /* Filter criterion: Private messages: is_new */
   $handler->display->display_options['filters']['is_new']['id'] = 'is_new';
   $handler->display->display_options['filters']['is_new']['table'] = 'pm_index';
   $handler->display->display_options['filters']['is_new']['field'] = 'is_new';
@@ -226,7 +226,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['filters']['deleted']['expose']['label'] = 'deleted';
   $handler->display->display_options['filters']['deleted']['expose']['operator'] = 'deleted_op';
   $handler->display->display_options['filters']['deleted']['expose']['identifier'] = 'deleted';
-  /* Filter criterion: Private Nachrichten: is_new */
+  /* Filter criterion: Private messages: is_new */
   $handler->display->display_options['filters']['is_new']['id'] = 'is_new';
   $handler->display->display_options['filters']['is_new']['table'] = 'pm_index';
   $handler->display->display_options['filters']['is_new']['field'] = 'is_new';
@@ -306,12 +306,12 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['style_options']['row_class'] = 'row';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Relationship: Inhalt: Autor */
+  /* Relationship: Content: Author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   $handler->display->display_options['relationships']['uid']['required'] = TRUE;
-  /* Feld: Inhalt: Titel */
+  /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
@@ -321,21 +321,21 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['title']['element_type'] = 'h3';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Feld: Benutzer: Name */
+  /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = '';
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
-  /* Feld: Inhalt: Post date */
+  /* Field: Content: Post date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = '';
   $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['created']['date_format'] = 'medium';
-  /* Feld: Inhalt: Body */
+  /* Field: Beitrag: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -344,19 +344,19 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['body']['settings'] = array(
     'trim_length' => '300',
   );
-  /* Sort criterion: Inhalt: Post date */
+  /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Filter criterion: Inhalt: Veröffentlicht */
+  /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Inhalt: Typ */
+  /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
@@ -421,25 +421,25 @@ function nm_general_features_views_default_views() {
     'name' => 'name',
   );
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Feld: Benutzer: Name */
+  /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['label'] = '';
   $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
-  /* Sort criterion: Benutzer: Name */
+  /* Sort criterion: User: Name */
   $handler->display->display_options['sorts']['name']['id'] = 'name';
   $handler->display->display_options['sorts']['name']['table'] = 'users';
   $handler->display->display_options['sorts']['name']['field'] = 'name';
-  /* Filter criterion: Benutzer: Aktiv */
+  /* Filter criterion: User: Active */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'users';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = '1';
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Benutzer: Rollen */
+  /* Filter criterion: User: Roles */
   $handler->display->display_options['filters']['rid']['id'] = 'rid';
   $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
   $handler->display->display_options['filters']['rid']['field'] = 'rid';
@@ -471,7 +471,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'entityreference_fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Feld: Benutzer: Name */
+  /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
@@ -482,14 +482,14 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['name']['element_default_classes'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Benutzer: Aktiv */
+  /* Filter criterion: User: Active */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'users';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = '1';
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Benutzer: Rollen */
+  /* Filter criterion: User: Roles */
   $handler->display->display_options['filters']['rid']['id'] = 'rid';
   $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
   $handler->display->display_options['filters']['rid']['field'] = 'rid';
@@ -515,7 +515,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'entityreference_fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Feld: Benutzer: Name */
+  /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
@@ -526,14 +526,14 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['name']['element_default_classes'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Benutzer: Aktiv */
+  /* Filter criterion: User: Active */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'users';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = '1';
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Benutzer: Rollen */
+  /* Filter criterion: User: Roles */
   $handler->display->display_options['filters']['rid']['id'] = 'rid';
   $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
   $handler->display->display_options['filters']['rid']['field'] = 'rid';
@@ -602,14 +602,14 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = 'No files available.';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
-  /* Feld: Datei: Name */
+  /* Field: File: Name */
   $handler->display->display_options['fields']['filename']['id'] = 'filename';
   $handler->display->display_options['fields']['filename']['table'] = 'file_managed';
   $handler->display->display_options['fields']['filename']['field'] = 'filename';
   $handler->display->display_options['fields']['filename']['label'] = '';
   $handler->display->display_options['fields']['filename']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['filename']['alter']['ellipsis'] = FALSE;
-  /* Feld: Datei: Rendered Datei */
+  /* Field: File: Rendered Datei */
   $handler->display->display_options['fields']['rendered_entity']['id'] = 'rendered_entity';
   $handler->display->display_options['fields']['rendered_entity']['table'] = 'views_entity_file';
   $handler->display->display_options['fields']['rendered_entity']['field'] = 'rendered_entity';
@@ -618,14 +618,14 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['rendered_entity']['link_to_entity'] = 1;
   $handler->display->display_options['fields']['rendered_entity']['display'] = 'view';
   $handler->display->display_options['fields']['rendered_entity']['view_mode'] = 'preview';
-  /* Feld: Datei: Typ */
+  /* Field: File: Type */
   $handler->display->display_options['fields']['type']['id'] = 'type';
   $handler->display->display_options['fields']['type']['table'] = 'file_managed';
   $handler->display->display_options['fields']['type']['field'] = 'type';
   $handler->display->display_options['fields']['type']['label'] = '';
   $handler->display->display_options['fields']['type']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['type']['machine_name'] = 0;
-  /* Filter criterion: Datei: Name */
+  /* Filter criterion: File: Name */
   $handler->display->display_options['filters']['filename']['id'] = 'filename';
   $handler->display->display_options['filters']['filename']['table'] = 'file_managed';
   $handler->display->display_options['filters']['filename']['field'] = 'filename';
@@ -644,14 +644,14 @@ function nm_general_features_views_default_views() {
     3 => 0,
     7 => 0,
   );
-  /* Filter criterion: Datei: Status */
+  /* Filter criterion: File: Status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'file_managed';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = array(
     1 => '1',
   );
-  /* Filter criterion: Datei: Typ */
+  /* Filter criterion: File: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'file_managed';
   $handler->display->display_options['filters']['type']['field'] = 'type';
@@ -681,20 +681,20 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'view own files';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Relationship: Datei: User who uploaded */
+  /* Relationship: File: User who uploaded */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'file_managed';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   $handler->display->display_options['relationships']['uid']['required'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Benutzer: Current */
+  /* Filter criterion: User: Current */
   $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['table'] = 'users';
   $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
   $handler->display->display_options['filters']['uid_current']['value'] = '1';
-  /* Filter criterion: Datei: Name */
+  /* Filter criterion: File: Name */
   $handler->display->display_options['filters']['filename']['id'] = 'filename';
   $handler->display->display_options['filters']['filename']['table'] = 'file_managed';
   $handler->display->display_options['filters']['filename']['field'] = 'filename';
@@ -713,14 +713,14 @@ function nm_general_features_views_default_views() {
     3 => 0,
     7 => 0,
   );
-  /* Filter criterion: Datei: Status */
+  /* Filter criterion: File: Status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'file_managed';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = array(
     1 => '1',
   );
-  /* Filter criterion: Datei: Typ */
+  /* Filter criterion: File: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'file_managed';
   $handler->display->display_options['filters']['type']['field'] = 'type';
