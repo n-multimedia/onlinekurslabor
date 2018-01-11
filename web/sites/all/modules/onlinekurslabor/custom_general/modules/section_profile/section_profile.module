@@ -107,18 +107,13 @@ function _section_profile_get_profile_data($user) {
 }
 
 /**
- * Implements section_profile_views_pre_view().
+ * Implements hook_views_pre_view().
  */
 function section_profile_views_pre_view(&$view, $display_id, $args) {
     //nur dieser hook geht, um filters anzupassen
     global $user;
 
-    /*nur wenn wir auf der Profilansicht sind, sonst hook beenden */
-    if (strpos($_SERVER["REQUEST_URI"], 'user') === false) 
-    {
-        return;
-    }
-
+   
     //geht um den Block "angebotene Kurse" auf "Profil"
     if ($view->name === 'courses_kurse_bersicht' && $view->current_display === 'my_courses_small') {
         $user_watched_id = $view->args[0];
@@ -126,7 +121,8 @@ function section_profile_views_pre_view(&$view, $display_id, $args) {
         $user_watched = user_load($user_watched_id);
 
         //prüft auf den Block "angebotene Kurse"
-        if (in_array(NM_ROLE_DOZENT, $user_watched->roles) && !array_intersect(array(NM_ROLE_ADMIN, NM_ROLE_MODERATOR), $user->roles)) {
+        //ich schaue jmd anderen an, der dozent ist und bin selbst weder moderator noch admin (diese haben ne andere ansicht ohne einschränkung)
+        if ($user_watched_id != $current_user_id && in_array(NM_ROLE_DOZENT, $user_watched->roles) && !array_intersect(array(NM_ROLE_ADMIN, NM_ROLE_MODERATOR), $user->roles)) {
  
             //lade die filters des views
             $filters = $view->display_handler->get_option('filters');
