@@ -40,6 +40,7 @@ function _course_tasks_generic_tips_view() {
   //get workflow form
   //$output .= "<h2>Status</h2>";
   $task_nid = _course_tasks_generic_get_task_nid();
+  $task_node = node_load($task_nid);
   $solutions = custom_general_get_task_solutions($task_nid, $user->uid);
   $solution_node = NULL;
   if (count($solutions) > 0) {
@@ -62,7 +63,7 @@ function _course_tasks_generic_tips_view() {
 
 
   if ($current == 3) {
-    if (user_access("bypass node access") || array_intersect(array(NM_ROLE_DOZENT, NM_ROLE_TUTOR), $user->roles)) {
+    if (node_access("update", $task_node)) {
       //add bewertung feld
       $form = drupal_get_form('_section_courses_task_solution_assesment_form', $solution_node->nid);
       $form['assessment']['format']['#attributes']['style'] = 'display:none';
