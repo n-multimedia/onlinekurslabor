@@ -1,7 +1,7 @@
 (function ($) {
 
     Drupal.behaviors.nm_administration_vbo_events = {
-        /*toggle solution for qaa questions*/
+
         attach: function (context, settings) {
 
             //27.10.2017 - 14:29 - SN
