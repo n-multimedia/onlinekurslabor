@@ -37,7 +37,7 @@ jQuery(document).ready(function() {
             jQuery('form#' + form_id).change(function() {
                 form_was_modified = true;
             })      //submit button clicked: modified = false
-                    .find("button").click(function() {
+                    .find("button, input[type=submit]").click(function() {
                 form_was_modified = false;
             });
         }

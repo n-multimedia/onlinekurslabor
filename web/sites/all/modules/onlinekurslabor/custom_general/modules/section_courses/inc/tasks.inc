@@ -295,6 +295,7 @@ function _course_tasks_generic_solution_form_view() {
 
   $solutions = custom_general_get_task_solutions($task_nid, $user->uid);
   //check workflow state
+  //anzeige einer nicht-editable lösung
   if (count($solutions) > 0 && !_courses_tasks_generic_solution_is_editable(current($solutions))) {
 
     //Es wurden mehrere Lösungen parallel eingegeben
@@ -309,18 +310,18 @@ function _course_tasks_generic_solution_form_view() {
     $node_wrapper = entity_metadata_wrapper('node', $task_nid);
 
     $field_val = $node_wrapper->field_generic_task_entry->value();
-    $description_items = _course_tasks_generic_get_section($field_val, NM_COURSES_TASK_FORM);
+    $field_solution_items = _course_tasks_generic_get_section($field_val, NM_COURSES_TASK_FORM);
 
     //$solution_wrapper = entity_metadata_wrapper('node', $solution_node->nid);
     //$solutions_field_vals = $solution_wrapper->field_generic_solution_entry->value();
     $solutions_field_vals = field_get_items('node', $solution_node, 'field_generic_solution_entry');
     $fview = field_view_field('node', $solution_node, 'field_generic_solution_entry', $solutions_field_vals);
 
-    foreach ($description_items as $key => $item) {
+    foreach ($field_solution_items as $key => $solution_field_description) {
       //apply filters
-      $item['second'] = check_markup($item['second'], 'filtered_html');
-
-      $output .= "<h3>" . $item['second'] . "</h3>";
+      $solution_field_description['second'] = check_markup($solution_field_description['second'], 'filtered_html');
+      //gleiches design wie bei aufgaben-stellung via label
+      $output .= "<label>" . $solution_field_description['second'] . "</label>";
       //$output .= $solutions_field_vals[$key]['value'];
 
       $output .= render($fview[$key]);
