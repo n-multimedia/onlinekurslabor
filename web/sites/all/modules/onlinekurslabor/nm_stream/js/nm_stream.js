@@ -481,8 +481,23 @@
                 var new_body = $(data.changed_comments[cid]).find('.nm-stream-main-body').html();
                 var comment_top_changed = $('#nm-stream-comment-' + cid).find('.nm-stream-top').first().html(new_top);
                 var comment_body_changed = $('#nm-stream-comment-' + cid).find('.nm-stream-main-body').first().html(new_body);
+
+
+                /**
+                 * 12.01.2018 - 15:03 - SN
+                 * needs to be refactored
+                 * someone else changes an comment - need to bind events
+                 */
+                $('#nm-stream-comment-' + cid).each(function(index) {
+                    new NMStreamComment(self, self, this);
+
+                });
+
+
                 Drupal.detachBehaviors($('#nm-stream-comment-' + cid));
                 Drupal.attachBehaviors($('#nm-stream-comment-' + cid));
+
+
             }
         }
 
