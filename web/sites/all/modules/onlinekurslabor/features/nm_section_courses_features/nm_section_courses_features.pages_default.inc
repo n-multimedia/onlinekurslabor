@@ -1214,6 +1214,9 @@ echo theme(\'profile_details\', array(\'uid\'=>%user:uid , \'range\'=>\'private\
     'override_title' => 1,
     'override_title_text' => 'Angebotene Kurse',
     'override_title_heading' => 'h2',
+    'arguments' => array(
+      'null' => '1',
+    ),
   );
   $pane->cache = array();
   $pane->style = array(
