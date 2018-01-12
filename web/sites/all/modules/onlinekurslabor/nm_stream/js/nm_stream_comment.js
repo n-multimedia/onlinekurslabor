@@ -235,9 +235,9 @@ NMStreamComment.prototype.init_bind_commment_submit_button_event = function () {
  */
 NMStreamComment.prototype.init_bind_comment_edit_event = function () {
     var self = this;
-
+    
     //bind click to edit button
-    self.container.closest(".nm-stream-comment").find('.nm-stream-comment-edit').once('nm_stream').click(function() {
+    self.container.find('.nm-stream-comment-edit').once('nm_stream').click(function() {
         var edit_button = $(this);
 
         var comment_container = edit_button.closest('.nm-stream-comment');
