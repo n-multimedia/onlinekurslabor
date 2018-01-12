@@ -2829,7 +2829,7 @@ return section_courses_text_outline();
       0 => array(
         'name' => 'node_access',
         'settings' => array(
-          'type' => 'update',
+          'type' => 'view',
         ),
         'context' => array(
           0 => 'logged-in-user',
