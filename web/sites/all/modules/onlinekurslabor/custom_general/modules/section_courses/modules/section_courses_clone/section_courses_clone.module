@@ -358,6 +358,8 @@ function section_courses_views_pre_view(&$view) {
                         unset($view_filters['uid_current']);
                         //filter-id name vergleicht kurs-member-role mit meiner (filtert dozent/tutor)
                         unset($view_filters['name']);
+                        //filter-id state filtert nach kurs-member-status "aktiv" statt nur "angefragt"
+                        unset($view_filters['state']);
                         $view->display_handler->override_option('filters', $view_filters);
                     }
                     break;

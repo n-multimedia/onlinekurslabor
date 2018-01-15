@@ -244,6 +244,14 @@ $doz_array [] = realname_load($doz_object );
     24708420 => 0,
     140204299 => 0,
   );
+  /* Filter criterion: OG membership: State */
+  $handler->display->display_options['filters']['state']['id'] = 'state';
+  $handler->display->display_options['filters']['state']['table'] = 'og_membership';
+  $handler->display->display_options['filters']['state']['field'] = 'state';
+  $handler->display->display_options['filters']['state']['relationship'] = 'og_membership_rel_group';
+  $handler->display->display_options['filters']['state']['value'] = array(
+    1 => '1',
+  );
   $handler->display->display_options['pane_title'] = 'View zum Klonen von Kursen';
   $handler->display->display_options['pane_description'] = 'Zeige Kurse, in denen ich Tut/Doz bin oder global Supperrolle. See section_courses_views_pre_view';
   $handler->display->display_options['argument_input'] = array(

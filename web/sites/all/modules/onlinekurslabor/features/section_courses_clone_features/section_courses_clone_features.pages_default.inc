@@ -19,15 +19,10 @@ Currently for courses only';
   $page->path = 'node/copy/%what';
   $page->access = array(
     'plugins' => array(
-      0 => array(
-        'name' => 'role',
+      1 => array(
+        'name' => 'perm',
         'settings' => array(
-          'rids' => array(
-            0 => 30037204,
-            1 => 197637936,
-            2 => 106505419,
-            3 => 126456107,
-          ),
+          'perm' => 'create courses_course content',
         ),
         'context' => 'logged-in-user',
         'not' => FALSE,
