@@ -16,8 +16,8 @@
             /*add toggle-behaviour to searchform*/
             //aktiviere searchform bei ajax
             $(searchbox_form).not(".collapse").addClass("collapse in");
-            //initiales seitenladen: verstecken ( 1. attach)
-            if(this.attach_counter <= 1)
+            //initiales seitenladen: verstecken ( 1. attach) oder falls keine eingabe
+            if(this.attach_counter <= 1 ||  $("input#edit-course-title", searchbox_form).val() == "" )
             {
                 $(searchbox_form).removeClass("in");
             }
