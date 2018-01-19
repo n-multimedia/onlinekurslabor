@@ -2358,7 +2358,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
     if ($form_id == 'courses_generic_task_solution_node_form') {
 
         //hat eintrag - verstecken
-          $form['field_submitted_on']['#access'] = user_access('administer content');
+          $form['field_submitted_on']['#access'] = user_access('bypass node access');
         
     }
      
@@ -2540,6 +2540,10 @@ function section_courses_og_user_access_alter(&$perm, $context) {
   $group = $context['group'];
 
   $course = _section_courses_get_active_course();
+
+  if(user_access('bypass node access')) {
+    $perm['administer group'] = TRUE;
+  }
 
   //we are in course section
   if ($course) {

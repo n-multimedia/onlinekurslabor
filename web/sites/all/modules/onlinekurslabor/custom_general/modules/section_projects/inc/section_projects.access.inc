@@ -213,6 +213,11 @@ function section_projects_og_user_access_alter(&$perm, $context) {
   global $user;
   $account = clone $user;
 
+  //admin bypass
+  if(user_access('bypass node access')) {
+    $perm['administer group'] = TRUE;
+  }
+
   /**
    *  STUDENT
    */
@@ -253,8 +258,6 @@ function section_projects_og_user_access_alter(&$perm, $context) {
     /*
      * DOZENT
      */
-
-
     if (in_array(NM_ROLE_DOZENT, $account->roles)) {
       if (_section_projects_seal_user_is_responsible_dozent($account, $context['group'])) {
         //must NOT edit any objectives

@@ -11,8 +11,9 @@ include_once 'nm_administration.features.inc';
  * @param $variables
  */
 function nm_administration_preprocess_panels_pane(&$variables) {
-  if(arg(0) == "administration") {
+  if (arg(0) == "administration") {
     drupal_add_css(drupal_get_path('module', 'nm_administration') . "/css/nm_administration.css");
+    drupal_add_js(drupal_get_path('module', 'nm_administration') . "/js/nm_administration.js");
   }
 
 }

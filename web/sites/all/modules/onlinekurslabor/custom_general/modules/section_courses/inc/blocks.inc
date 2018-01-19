@@ -263,6 +263,12 @@ function section_courses_instructors_tools_access($reset = FALSE) {
   global $user;
   static $result = NULL;
 
+
+  if(user_access("bypass node access")) {
+    //super admin
+    return TRUE;
+  }
+
   if ($result === NULL || $reset) {
     $user_uid = $user->uid;
 
@@ -429,67 +435,66 @@ function _section_courses_get_instructor_tools() {
     $links['instr_view_members'] = "Teilnehmer";
     $links['instr_view_groups'] = "Kursgruppen";' */
 
-  if (og_is_member('node', $group_id)) {
 
-    //settings
-    $path = 'course/admin/' . $group_id . '/settings';
-    $id = 'instr_course_settings';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  //settings
+  $path = 'course/admin/' . $group_id . '/settings';
+  $id = 'instr_course_settings';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
 
-    $path = 'course/projects/' . $group_id; //todo
-    $id = 'instr_overview_projects';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $path = 'course/projects/' . $group_id; //todo
+  $id = 'instr_overview_projects';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
-    $path = 'course/admin/' . $group_id . '/forums';
-    $id = 'instr_overview_forums';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $path = 'course/admin/' . $group_id . '/forums';
+  $id = 'instr_overview_forums';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
-    //overviews
-    $path = 'course/admin/' . $group_id . '/members';
-    $id = 'instr_overview_members';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  //overviews
+  $path = 'course/admin/' . $group_id . '/members';
+  $id = 'instr_overview_members';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
-    $path = 'course/admin/' . $group_id . '/groups';
-    $id = 'instr_overview_groups';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $path = 'course/admin/' . $group_id . '/groups';
+  $id = 'instr_overview_groups';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
-    $path = 'course/admin/' . $group_id . '/content';
-    $id = 'instr_overview_content';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $path = 'course/admin/' . $group_id . '/content';
+  $id = 'instr_overview_content';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
-    //adds
-    $path = 'course/admin/' . $group_id . '/add/courses-news';
-    $id = 'instr_add_news';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  //adds
+  $path = 'course/admin/' . $group_id . '/add/courses-news';
+  $id = 'instr_add_news';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
-    $path = 'course/admin/' . $group_id . '/add/courses-docs';
-    $id = 'instr_add_docs';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $path = 'course/admin/' . $group_id . '/add/courses-docs';
+  $id = 'instr_add_docs';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
-    $path = 'course/admin/' . $group_id . '/add/courses-generic-task';
-    $id = 'instr_add_task';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $path = 'course/admin/' . $group_id . '/add/courses-generic-task';
+  $id = 'instr_add_task';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
-    $path = 'course/admin/' . $group_id . '/members/add';
-    $id = 'instr_add_members';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $path = 'course/admin/' . $group_id . '/members/add';
+  $id = 'instr_add_members';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
-    $path = 'course/admin/' . $group_id . '/add/courses-group';
-    $id = 'instr_add_groups';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-  }
+  $path = 'course/admin/' . $group_id . '/add/courses-group';
+  $id = 'instr_add_groups';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+
 
   $result = array();
   foreach ($links as $name => $link) {

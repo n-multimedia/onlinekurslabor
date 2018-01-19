@@ -28,12 +28,19 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortieren nach';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Aufsteigend';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Absteigend';
   $handler->display->display_options['pager']['type'] = 'mini';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '12';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
   $handler->display->display_options['pager']['options']['tags']['previous'] = '‹';
   $handler->display->display_options['pager']['options']['tags']['next'] = '›';
+  $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'mid' => 'mid',
@@ -240,18 +247,18 @@ function nm_general_features_views_default_views() {
     t('Master'),
     t('Unread messages'),
     t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
+    t('Anwenden'),
+    t('Zurücksetzen'),
+    t('Sortieren nach'),
+    t('Aufsteigend'),
+    t('Absteigend'),
     t('Items per page'),
     t('- All -'),
     t('Offset'),
-    t('« first'),
+    t('« erste Seite'),
     t('‹'),
     t('›'),
-    t('last »'),
+    t('letzte Seite »'),
     t('relationship to pm_message'),
     t('relationship from pm_message (author) to user'),
     t('Profil'),
@@ -287,6 +294,9 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortieren nach';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Aufsteigend';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Absteigend';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '15';
   $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
@@ -363,9 +373,9 @@ function nm_general_features_views_default_views() {
     t('more'),
     t('Anwenden'),
     t('Zurücksetzen'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
+    t('Sortieren nach'),
+    t('Aufsteigend'),
+    t('Absteigend'),
     t('Items per page'),
     t('- All -'),
     t('Offset'),
@@ -396,7 +406,16 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortieren nach';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Aufsteigend';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Absteigend';
   $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
+  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ vorherige Seite';
+  $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
+  $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['style_plugin'] = 'entityreference_style';
   $handler->display->display_options['style_options']['search_fields'] = array(
     'name' => 'name',
@@ -524,18 +543,18 @@ function nm_general_features_views_default_views() {
   $translatables['user_role_view'] = array(
     t('Master'),
     t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
+    t('Anwenden'),
+    t('Zurücksetzen'),
+    t('Sortieren nach'),
+    t('Aufsteigend'),
+    t('Absteigend'),
     t('Items per page'),
     t('- All -'),
     t('Offset'),
-    t('« first'),
-    t('‹ previous'),
-    t('next ›'),
-    t('last »'),
+    t('« erste Seite'),
+    t('‹ vorherige Seite'),
+    t('nächste Seite ›'),
+    t('letzte Seite »'),
     t('Autor+'),
     t('Autor,Moderator,Admin'),
     t('Autor'),
@@ -566,6 +585,9 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortieren nach';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Aufsteigend';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Absteigend';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
   $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ vorherige Seite';
@@ -722,9 +744,9 @@ function nm_general_features_views_default_views() {
     t('more'),
     t('Anwenden'),
     t('Zurücksetzen'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
+    t('Sortieren nach'),
+    t('Aufsteigend'),
+    t('Absteigend'),
     t('Items per page'),
     t('- All -'),
     t('Offset'),

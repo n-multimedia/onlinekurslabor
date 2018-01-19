@@ -265,93 +265,91 @@ function _section_courses_get_authors_tools() {
     $links['instr_view_members'] = "Teilnehmer";
     $links['instr_view_groups'] = "Kursgruppen";' */
 
-  if (og_is_member('node', $group_id)) {
 
+  $id = 'author_chapter_add';
+  $label = $links[$id]['label'];
+  if (!empty($add_chapter_options)) {
+    $path = 'domain/add/' . $group_id . '/' . NM_CONTENT_CHAPTER;
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $add_chapter_options);
+  }
+  else {
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, "/", ['attributes' => ['class' => ['disabled']]]);
+  }
 
-    $id = 'author_chapter_add';
+  $id = 'author_subchapter_add';
+  if (!$subchapter_disabled) {
     $label = $links[$id]['label'];
-    if (!empty($add_chapter_options)) {
-      $path = 'domain/add/' . $group_id . '/' . NM_CONTENT_CHAPTER;
+    $path = 'domain/add/' . $group_id . '/' . NM_CONTENT_CHAPTER;
+    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $add_subchapter_options);
+  }
+  else {
+    unset($links[$id]);
+  }
+
+
+  $path = 'domain/text/' . $group_id . '/rearrange';
+  $id = 'author_chapter_order';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+
+  $path = 'domain/biblio/' . $group_id;
+  $id = 'author_biblio_overview';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+
+  $path = 'domain/add/' . $group_id . '/' . NM_BIBLIO;
+  $id = 'author_biblio_add';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+
+
+  $path = 'domain/media/' . $group_id;
+  $id = 'author_media_overview';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+
+
+  $path = 'domain/h5p/' . $group_id;
+  $id = 'author_interactive_overview';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+
+  $path = 'domain/add/' . $group_id . '/' . NM_INTERACTIVE_CONTENT;
+  $id = 'author_h5p_add';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+
+  if (module_exists('annvid')) {
+    $path = 'domain/add/' . $group_id . '/' . ANNVID_CONTENTTYPE;
+    $id = 'author_annvid_add';
+    $label = $links[$id]['label'];
+    if (!$subchapter_disabled) {
+      $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $add_subchapter_options);
+    }
+    elseif (!empty($add_chapter_options)) {
       $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $add_chapter_options);
     }
     else {
-      $links[$id] += _custom_general_get_structered_tool_link($id, $label, "/", array('attributes' => array('class' => array('disabled'))));
+      $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
     }
-
-    $id = 'author_subchapter_add';
-    if (!$subchapter_disabled) {
-        $label = $links[$id]['label'];
-        $path = 'domain/add/' . $group_id . '/' . NM_CONTENT_CHAPTER;
-        $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $add_subchapter_options);
-    }
-    else {
-        unset($links[$id]);
-    }
-        
-
-
-    $path = 'domain/text/' . $group_id . '/rearrange';
-    $id = 'author_chapter_order';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-
-    $path = 'domain/biblio/' . $group_id;
-    $id = 'author_biblio_overview';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-
-    $path = 'domain/add/' . $group_id . '/' . NM_BIBLIO;
-    $id = 'author_biblio_add';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-
-
-    $path = 'domain/media/' . $group_id;
-    $id = 'author_media_overview';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-
-    
-    $path = 'domain/h5p/' . $group_id;
-    $id = 'author_interactive_overview';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-    
-    $path = 'domain/add/' . $group_id. '/' . NM_INTERACTIVE_CONTENT;
-    $id = 'author_h5p_add';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-    
-    if (module_exists('annvid')) 
-    {
-            $path = 'domain/add/' . $group_id . '/' . ANNVID_CONTENTTYPE;
-            $id = 'author_annvid_add';
-            $label = $links[$id]['label'];
-            if (!$subchapter_disabled) {
-                $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $add_subchapter_options);
-            } elseif (!empty($add_chapter_options)) {
-                $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $add_chapter_options);
-            } else {
-                $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-            }
-    }
-
-
-    $path = 'domain/tasks/' . $group_id;
-    $id = 'author_tasks_overview';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-
-    $path = 'domain/add/' . $group_id . '/' . NM_CONTENT_MULTIPLE_CHOICE;
-    $id = 'author_tasks_mc_add';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-
-    $path = 'domain/add/' . $group_id . '/' . NM_CONTENT_QUESTION_AND_ANSWER;
-    $id = 'author_tasks_qaa_add';
-    $label = $links[$id]['label'];
-    $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
   }
+
+
+  $path = 'domain/tasks/' . $group_id;
+  $id = 'author_tasks_overview';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+
+  $path = 'domain/add/' . $group_id . '/' . NM_CONTENT_MULTIPLE_CHOICE;
+  $id = 'author_tasks_mc_add';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+
+  $path = 'domain/add/' . $group_id . '/' . NM_CONTENT_QUESTION_AND_ANSWER;
+  $id = 'author_tasks_qaa_add';
+  $label = $links[$id]['label'];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+
 
   $result = array();
   foreach ($links as $name => $link) {
