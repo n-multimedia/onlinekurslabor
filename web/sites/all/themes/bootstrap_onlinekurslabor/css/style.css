@@ -538,13 +538,20 @@ plattform logs
 Docs
 */
 
+
 .view-courses-course-docs .file img
 {
     /*width: 30px*/
+    display: inline-block;
+    float: left !important;
 }
 
-.view-courses-course-docs a {
+
+.view-courses-course-docs .file a {
     word-break: break-all;
+    display: inline-block;
+    width: 90%;
+    margin-left: 5px;
 }
 
 
