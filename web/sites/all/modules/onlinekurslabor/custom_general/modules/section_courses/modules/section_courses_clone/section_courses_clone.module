@@ -212,14 +212,16 @@ function section_courses_clone_course(&$entity, $context = array()) {
     if($clone_persons['tutor']){
         $tutoren = custom_general_get_users_in_group_by_role_real($entity->nid, 'kurs-tutor');
     }
-    
+
+
     foreach ($dozenten as $dozent){
         $acc = user_load($dozent->uid);
         $values = array(
           'entity type' => 'user',
           'entity' => $acc,
         );
-        og_group('node', $clone_node->nid, $values);
+
+        $og_membership = og_group('node', $clone_node->nid, $values);
     }
     foreach ($tutoren as $tutor){
         $acc = user_load($tutor->uid);
@@ -227,7 +229,36 @@ function section_courses_clone_course(&$entity, $context = array()) {
           'entity type' => 'user',
           'entity' => $acc,
         );
-        og_group('node', $clone_node->nid, $values);
+        $og_membership = og_group('node', $clone_node->nid, $values);
+    }
+
+    $all_users = array_merge($tutoren, $dozenten);
+    $rid_dozent = NULL;
+    $rid_tutor = NULL;
+    foreach ($all_users as $new_member){
+      //26.01.2018 - 12:42 - SN
+      //revoke all og roles granted by hooks
+      $roles = og_roles('node', NM_COURSE, $og_membership->gid);
+      foreach ($roles as $key => $value) {
+        if ($value == NM_COURSES_ROLE_ADMINISTRATOR) {
+          $rid_dozent = $key;
+        }
+        if ($value == NM_COURSES_ROLE_TUTOR) {
+          $rid_tutor = $key;
+        }
+        og_role_revoke('node', $og_membership->gid, $new_member->uid, $key);
+      }
+    }
+
+    //assign one special roles
+    foreach ($dozenten as $dozent){
+
+      og_role_grant("node", $clone_node->nid, $dozent->uid, $rid_dozent);
+    }
+
+    //assign one special roles
+    foreach ($tutoren as $tutor) {
+      og_role_grant("node", $clone_node->nid, $tutor->uid, $rid_tutor);
     }
     
     //feedback an endnutzer
@@ -239,7 +270,6 @@ function section_courses_clone_course(&$entity, $context = array()) {
  * Implements hook_views_bulk_operations_form_alter().
  */
 function section_courses_clone_views_bulk_operations_form_alter(&$form, &$form_state, $vbo) {
-
 
 
   if ($form['#form_id'] == 'views_form_nm_courses_clone_default') {
