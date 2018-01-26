@@ -543,6 +543,9 @@ Docs
     /*width: 30px*/
 }
 
+.view-courses-course-docs a {
+    word-break: break-all;
+}
 
 
 
