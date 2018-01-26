@@ -20,5 +20,6 @@ features[menu_links][] = menu-administration_semester:administration/semester
 features[page_manager_pages][] = administration
 features[views_view][] = administration_active_users
 features[views_view][] = administration_content
+features[views_view][] = administration_courses
 features[views_view][] = administration_newest_content
 features_exclude[dependencies][ctools] = ctools
