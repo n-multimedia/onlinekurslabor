@@ -553,11 +553,13 @@ Docs
     margin-left: 5px;
 }
 
-.single_activity a,
-.view-courses-course-docs a {
+.view-courses-course-docs .file a {
     word-break: break-all;
 }
 
+* {
+    word-wrap: break-word;
+}
 
 
 
