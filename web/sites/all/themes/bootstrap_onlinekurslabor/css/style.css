@@ -554,6 +554,9 @@ Docs
     margin-left: 5px;
 }
 
+.single_activity {
+    word-break: break-all;
+}
 
 
 
@@ -561,9 +564,10 @@ Docs
 
 
 
-/*
-FORUM
-*/
+
+    /*
+    FORUM
+    */
 /*
 .row .forum-table-wrap .forum-table-superheader, .row .forum-table-topics thead tr  {
   background:none;
