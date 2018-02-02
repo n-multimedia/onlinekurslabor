@@ -547,14 +547,14 @@ Docs
 }
 
 
-.view-courses-course-docs .file a {
-    word-break: break-all;
+.view-courses-course-docs {
     display: inline-block;
     width: 90%;
     margin-left: 5px;
 }
 
-.single_activity {
+
+* {
     word-break: break-all;
 }
 
