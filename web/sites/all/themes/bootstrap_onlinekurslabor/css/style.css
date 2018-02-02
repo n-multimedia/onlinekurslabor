@@ -547,7 +547,7 @@ Docs
 }
 
 
-.view-courses-course-docs {
+.view-courses-course-docs .file a {
     display: inline-block;
     width: 90%;
     margin-left: 5px;
