@@ -59,7 +59,10 @@ function nm_section_content_features_filter_default_formats() {
           'htmlpurifier_help' => 1,
           'htmlpurifier_advanced_config' => array(
             'Null_Attr.AllowedClasses' => 1,
-            'Attr.AllowedFrameTargets' => '',
+            'Attr.AllowedFrameTargets' => '_blank
+_self
+_parent
+_top',
             'Attr.AllowedRel' => '',
             'Attr.AllowedRev' => '',
             'Null_Attr.ClassUseCDATA' => 1,
@@ -67,7 +70,7 @@ function nm_section_content_features_filter_default_formats() {
             'Attr.DefaultInvalidImage' => '',
             'Attr.DefaultInvalidImageAlt' => 'Invalid image',
             'Attr.DefaultTextDir' => 'ltr',
-            'Attr.EnableID' => 1,
+            'Attr.EnableID' => 0,
             'Attr.ForbiddenClasses' => '',
             'Null_Attr.ID.HTML5' => 1,
             'Attr.IDBlacklist' => '',
@@ -197,14 +200,15 @@ https
 mailto
 ftp
 nntp
-news',
+news
+tel',
             'Null_URI.Base' => 1,
             'URI.DefaultScheme' => 'http',
             'URI.Disable' => 0,
             'URI.DisableExternal' => 0,
             'URI.DisableExternalResources' => 0,
             'URI.DisableResources' => 0,
-            'URI.Host' => 'okldev.naumenko-multimedia.de',
+            'URI.Host' => 'dev1.div.onlinekurslabor.de',
             'URI.HostBlacklist' => '',
             'URI.MakeAbsolute' => 0,
             'Null_URI.Munge' => 1,
