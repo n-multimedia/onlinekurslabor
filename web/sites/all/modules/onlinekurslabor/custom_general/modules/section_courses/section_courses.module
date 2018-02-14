@@ -1424,7 +1424,8 @@ function _section_courses_get_group_task_solutions_for_user($user_account)
                 $task_to_solution = node_load($o_solution->field_generic_task['und'][0]['target_id']);
     
                 // 1 == Gruppenaufgabe
-                if ($task_to_solution->field_task_type[LANGUAGE_NONE][0]["value"] === "1" &&
+                //bugfix: aufgabe zur lösung wurde gelöscht
+                if (is_object($task_to_solution) && $task_to_solution->field_task_type[LANGUAGE_NONE][0]["value"] === "1" &&
                         //pruee ob diese aufgabe (bzw) lösung zum kurs dieser gruppe gehört
                         $o_solution->og_group_ref[LANGUAGE_NONE][0]['target_id'] == $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id']) 
                     {
