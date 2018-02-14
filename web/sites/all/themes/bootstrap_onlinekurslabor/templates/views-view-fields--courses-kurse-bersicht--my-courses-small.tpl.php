@@ -10,7 +10,6 @@ $node = node_load($nid);
 
 unset($fields['nid']);
 
-$my_membership = og_get_membership('node', $nid, 'user', $user->uid);
   
 $items = field_get_items('node', $node, 'field_description'); 
 /*dozenten-output*/
@@ -53,7 +52,7 @@ $percent = _section_courses_get_timespan_percentage($node, $start_text, $end_tex
                     <?=t('Draft')?>
                 </div>
             <?php endif ?>
-            <?php if ((int)($my_membership->state) ===   OG_STATE_PENDING): ?>
+            <?php if ((int)($fields['state']->raw) ===   OG_STATE_PENDING): ?>
                 <div class="view_courses_label unconfirmed badge">
                      <?=t('unconfirmed')?>
                 </div>
