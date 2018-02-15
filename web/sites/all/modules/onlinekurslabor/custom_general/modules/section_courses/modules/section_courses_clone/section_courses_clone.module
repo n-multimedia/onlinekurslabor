@@ -19,7 +19,7 @@ function section_courses_clone_menu() {
 function section_courses_clone_action_info() {
   $actions = array();
   $actions['section_courses_clone_course'] = array(
-    'label' => t('Clone Course'),
+    'label' => t('Clone course(s)'),
     'type' => 'node',
     'configurable' => TRUE,
     'triggers' => array('any'),
@@ -60,7 +60,7 @@ function section_courses_clone_course_form($context) {
   );
 
   $clone_properties = array(
-    'status' => t('Status (published)'),
+    'status' => t('Set course(s) to published (default: in draft-mode)'),
   );
 
   $form['clone_items'] = array(

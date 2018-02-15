@@ -72,6 +72,15 @@ msgstr "Durch die Schreibweise [collapsible]Überschrift ... Text... [/collapsib
 msgid "The collapsible element @mismatch does not contain a heading and won\'t collapse."
 msgstr "Das einklappbare Element @mismatch muss eine Überschrift beinhalten."
 
+msgid "Set course(s) to published (default: in draft-mode)"
+msgstr "Kurs(e) veröffentlichen (Standard: Entwurfs-Modus)"
+
+msgid "Delete item"
+msgstr "Element löschen"
+
+msgid "Clone course(s)"
+msgstr "Kurs(e) kopieren"
+
 msgid ""
 msgstr ""
 
