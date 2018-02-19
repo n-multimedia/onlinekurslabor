@@ -292,6 +292,14 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
     $output = '';
     foreach ($results as $result) {
       $node = node_load($result->nid);
+      //check if node is visible in context
+      if($node->field_nm_privacy[LANGUAGE_NONE][0]['value'] == NM_STREAM_COURSE) {
+        //we are in course context and only want to see whats happaning here
+        if($node->field_nm_stream_context [LANGUAGE_NONE][0]['target_id'] != $context->nid){
+          continue;
+        }
+
+      }
       $node_output = node_view($node, 'nm_stream');
       $output .= '<div class="views-row">';
       $output .= drupal_render($node_output);
