@@ -355,7 +355,7 @@ dasddasdasd',
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => '7fLBF-NnY6EGaZuX7d5VCUUjtWW5X6032ty08gBolmw',
+    'javascript' => 'tgGMB6_tnHqmdTS2njH5zjR3VzfrXSLOQzgoHlmBvkY',
   );
   $export['language_default'] = $strongarm;
 
