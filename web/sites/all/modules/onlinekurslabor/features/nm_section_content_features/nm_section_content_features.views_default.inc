@@ -842,6 +842,8 @@ $query = new EntityFieldQuery();
 $vorkommens_counter  = $query->entityCondition(\'entity_type\', \'node\')
   ->propertyCondition(\'nid\', $chapter_candidates  , \'IN\')
   ->fieldCondition(\'field_chapter_text\', \'value\', \'%[bib]\'.$curr_bib_nid.\'[/bib]%\', \'like\')
+  //sonst speed-probleme wg og
+  ->addTag(\'DANGEROUS_ACCESS_CHECK_OPT_OUT\')
  ->count()
  ->execute();
 }
@@ -851,6 +853,8 @@ $query2 = new EntityFieldQuery();
 $vorkommens_counter +=  $query2->entityCondition(\'entity_type\', \'node\')
   ->propertyCondition(\'nid\', $group_nid)
   ->fieldCondition(\'field_domain_description\', \'value\', \'%[bib]\'.$curr_bib_nid.\'[/bib]%\', \'like\')
+  //sonst speed-probleme wg og
+  ->addTag(\'DANGEROUS_ACCESS_CHECK_OPT_OUT\')
  ->count()
  ->execute();
  
