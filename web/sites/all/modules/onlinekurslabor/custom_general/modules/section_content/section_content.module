@@ -486,7 +486,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
 
   if (stristr($form_id, '_node_form') && in_array($form['#node']->type, array(NM_CONTENT_DOMAIN, NM_BIBLIO, NM_CONTENT_CHAPTER, NM_CONTENT_QUESTION_AND_ANSWER, NM_CONTENT_MULTIPLE_CHOICE, ANNVID_CONTENTTYPE))) {
     $form['actions']['delete']['#submit'] = array('section_content_node_form_delete_submit');
-    array_push($form['actions']['submit']['#submit'], 'section_content_node_form_submit');
+    array_push($form['actions']['submit']['#submit'], '_section_content_node_form_submit');
   }
 
   
@@ -675,10 +675,22 @@ function section_content_subscribe_submit($form, &$form_state) {
   //$form_state['redirect'] = 'domains';
 }
 
-function section_content_node_form_submit($form, &$form_state) {
+/**
+ * custom submit-handling for redirecting
+ * @param type $form
+ * @param type $form_state
+ */
+function _section_content_node_form_submit($form, &$form_state) {
 
   if (arg(0) == 'domain' && (arg(1) == 'edit' || arg(1) == 'add') && is_numeric(arg(2))) {
-    $form_state['redirect'] = NM_CONTENT_TEXT_PATH . '/' . $form_state['node']->nid;
+      //biblio angelegt: gehe auf return_to parameter ...
+      if(arg(3) === 'biblio' )
+      {
+        $return_to = drupal_get_query_parameters()['return_to'] ?: arg(2);
+        $form_state['redirect'] = NM_CONTENT_TEXT_PATH .'/'.$return_to;
+      }
+      else
+        $form_state['redirect'] = NM_CONTENT_TEXT_PATH . '/' . $form_state['node']->nid;
   }
 }
 

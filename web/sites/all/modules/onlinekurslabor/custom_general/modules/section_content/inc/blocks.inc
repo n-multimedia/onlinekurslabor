@@ -297,10 +297,13 @@ function _section_courses_get_authors_tools() {
   $label = $links[$id]['label'];
   $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
+  $biblio_options = $default_options;
+  //überschreibe default og-group-ref-query auf aktuelle node
+  $biblio_options['query'] = array('return_to' => $active_node->nid);
   $path = 'domain/add/' . $group_id . '/' . NM_BIBLIO;
   $id = 'author_biblio_add';
   $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $biblio_options);
 
 
   $path = 'domain/media/' . $group_id;
