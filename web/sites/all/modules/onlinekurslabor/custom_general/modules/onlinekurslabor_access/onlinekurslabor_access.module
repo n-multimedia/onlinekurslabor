@@ -204,7 +204,9 @@ function onlinekurslabor_access_node_access_records($node) {
     );
   }
 
-  if($node->type == NM_COURSE) {
+  //public access,
+  //biblio special case: should be visible to everyone!
+  if(in_array($node->type ,array( NM_COURSE , NM_BIBLIO))) {
     $grants[] = array(
       'realm' => 'onlinekurslabor_course_public',
       'gid' => 1,
@@ -335,17 +337,7 @@ function onlinekurslabor_access_node_access_records($node) {
     }
   }
 
-  //biblio special case: should be visible to everyone!
-  if ($node->type == NM_BIBLIO) {
-    $grants[] = array(
-      'realm' => 'onlinekurslabor_course_public',
-      'gid' => 1,
-      'grant_view' => 1,
-      'grant_update' => 0,
-      'grant_delete' => 0,
-      'priority' => 1,
-    );
-  }
+        
 
   //additional visibility
   //h5p is being used in different domains
