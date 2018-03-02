@@ -81,11 +81,14 @@ msgstr "Element löschen"
 msgid "Clone course(s)"
 msgstr "Kurs(e) kopieren"
 
-msgid ""
-msgstr ""
+msgid "Terms and Conditions of Use"
+msgstr "Geltende Nutzungsbedingungen"
 
-msgid ""
-msgstr ""
+msgid "To continue to use this site please read the Terms & Conditions below, and complete the form to confirm your acceptance."
+msgstr "Bitte lesen und bestätigen Sie die unten stehenden Nutzungsbedingungen."
+
+msgid "Terms and Conditions"
+msgstr "Nutzungsbedingungen"
 
 msgid ""
 msgstr ""
