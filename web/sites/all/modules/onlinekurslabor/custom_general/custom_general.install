@@ -185,7 +185,7 @@ function custom_general_update_9001() {
       'language'   => $version['language'],
       'conditions' => $version['conditions'],
       'date'       => time(),
-      'extras'     => serialize($values['extras']),
+      'extras'     => serialize($version['extras']),
       'changes'    => $version['changes'],
       'format'     => "filtered_html",
     ))
