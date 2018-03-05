@@ -324,11 +324,24 @@ function section_courses_render_course_link($course, $account = NULL) {
 }
 
 /**
- * renders link to course/home or course/info (dependent on membership)
+ * get rendered link to course/home or course/info (dependent on membership)
  * @param node $course node-object
  * @param Stdclass $account user-account
  */
 function _section_courses_render_course_main_link($course, $account = NULL) {
+    
+    
+    $target = _section_courses_get_course_main_url($course, $account );
+
+    return l($course->title, $target );
+}
+
+/**
+ * gets url to course/home or course/info (dependent of membership)
+ * @param node $course node-object
+ * @param Stdclass $account user-account
+ */
+function _section_courses_get_course_main_url($course, $account = NULL) {
 
     global $user;
 
@@ -343,7 +356,7 @@ function _section_courses_render_course_main_link($course, $account = NULL) {
     } else
         $target = 'course/info/';
 
-    return l($course->title, $target . $course->nid);
+    return  $target.$course->nid;
 }
 
 function section_courses_preprocess_views_view_fields(&$variables) {

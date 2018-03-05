@@ -2833,8 +2833,6 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['field_course_picture']['table'] = 'field_data_field_course_picture';
   $handler->display->display_options['fields']['field_course_picture']['field'] = 'field_course_picture';
   $handler->display->display_options['fields']['field_course_picture']['label'] = '';
-  $handler->display->display_options['fields']['field_course_picture']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_course_picture']['alter']['path'] = 'course/info/[nid]';
   $handler->display->display_options['fields']['field_course_picture']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_course_picture']['click_sort_column'] = 'fid';
   $handler->display->display_options['fields']['field_course_picture']['settings'] = array(
