@@ -3,8 +3,8 @@
 msgid "Administration"
 msgstr "Verwaltung"
 
-msgid "Biblio %name created. You can use it as a reference now."
-msgstr "Biblio-Eintrag %name erstellt. Sie können diesen nun im Lehrtext referenzieren."
+msgid "You can reference this biblio-entry now."
+msgstr "Sie können diesen Biblio-Eintrag nun referenzieren."
 
 msgid "Copy course"
 msgstr "Kurs kopieren"

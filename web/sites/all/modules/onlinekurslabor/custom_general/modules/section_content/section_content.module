@@ -682,39 +682,17 @@ function section_content_subscribe_submit($form, &$form_state) {
  */
 function _section_content_node_form_submit($form, &$form_state) {
 
-  if (arg(0) == 'domain' && (arg(1) == 'edit' || arg(1) == 'add') && is_numeric(arg(2))) {
-      //biblio angelegt: gehe auf return_to parameter ...
-      if(arg(3) === 'biblio' )
-      {
-        $return_to = drupal_get_query_parameters()['return_to'] ?: arg(2);
-        $form_state['redirect'] = NM_CONTENT_TEXT_PATH .'/'.$return_to;
-      }
-      else
-        $form_state['redirect'] = NM_CONTENT_TEXT_PATH . '/' . $form_state['node']->nid;
-  }
-}
+    if (arg(0) == 'domain' && (arg(1) == 'edit' || arg(1) == 'add') && is_numeric(arg(2))) {
+        //biblio angelegt: gehe auf return_to parameter ...
+        if (arg(3) === 'biblio') {
+            //Ergänzung zur "node-created"-Message
+            drupal_set_message(t('You can reference this biblio-entry now.'));
 
-/**
- * implements  hook_node_insert($node) 
- * Nach Erstellen eines Bib-Eintrags wird man zum korrespondierenden Lehrtext zurückgeleitet
- * Sonst ist man aus dem Kontext geworfen, wenn man nur auf dem Bibeintrag steht. 
- * @param StdClass $node
- */
-function section_content_node_insert($node) {
-    if($node->type==='biblio')
-    {
-        //woher komme ich? darin ist ein og-group-ref-parameter
-        $drupal_ref_params = drupal_get_query_parameters();
-    
-        if(!empty($drupal_ref_params['og_group_ref']))
-        {
-            //"node-created"-Message geht durch goto verloren. Ersetze sie deshalb.
-            drupal_set_message(t('Biblio %name created. You can use it as a reference now.', array('%name' => $node->title)));
-            //gehe zu lehrtext
-            drupal_goto ('/node/'.$drupal_ref_params['og_group_ref']);
-        }
+            $return_to = drupal_get_query_parameters()['return_to'] ? : arg(2);
+            $form_state['redirect'] = NM_CONTENT_TEXT_PATH . '/' . $return_to;
+        } else
+            $form_state['redirect'] = NM_CONTENT_TEXT_PATH . '/' . $form_state['node']->nid;
     }
-    
 }
 
 /*
