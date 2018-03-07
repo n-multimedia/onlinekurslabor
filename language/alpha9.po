@@ -81,6 +81,9 @@ msgstr "Element löschen"
 msgid "Clone course(s)"
 msgstr "Kurs(e) kopieren"
 
+msgid "This is only needed for debugging and not to be changed normally"
+msgstr "Diesen Eintrag bitte nicht verändern"
+
 msgid ""
 msgstr ""
 
