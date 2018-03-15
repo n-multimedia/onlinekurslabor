@@ -386,10 +386,26 @@ function onlinekurslabor_access_media_browser_plugins_alter(&$plugins) {
  *  
  */ 
 function onlinekurslabor_access_file_download_access($file_item, $entity_type, $entity) {
-    
+   
     //bilder in taxonomien oder profilbilder? Access!
     if(in_array($entity_type, array('taxonomy_term','profile2')))
-        return true; 
+        return true;
+    /*
+    {
+        dpm('In onlinekurslabor_access_file_download_access, file, type, entity');
+        dpm($file_item);
+        dpm($entity_type);
+        dpm($entity);
+    }*/
+    //neues proplem mit file_entity: erlaube generell zugriff auf dateien im kontext... ,
+    // Feinsteuerung geschieht in onlinekurslabor_access_file_download
+    if(in_array($entity_type,array('node')))
+    {
+        if(in_array($entity->type, array(NM_VIDEOSAFE_VIDEO, 'nm_stream')))
+        {
+            return true;
+        }
+    }
 }
  
 
