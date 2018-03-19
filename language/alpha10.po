@@ -1,0 +1,11 @@
+#Translation File - onlinekurslabor
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
