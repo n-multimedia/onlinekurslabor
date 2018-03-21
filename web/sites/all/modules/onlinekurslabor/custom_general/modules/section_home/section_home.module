@@ -32,7 +32,8 @@ function section_home_user_login(&$edit, $account) {
 function _section_home_getRenderedStream() {
 
     $view = _section_home_getView('nm_stream','panel_pane_1');
-     
+    
+    drupal_add_css(drupal_get_path('module','nm_stream').'/css/nm_stream.css');
    # $view->set_title( t('Streamrecords'));
     return _section_home_renderView($view, 'panel_pane_1');
     }
