@@ -1,0 +1,12 @@
+name = Footnotes field/block
+description = Exposes a Display Suite field or block with all footnotes used in a node.
+core = 7.x
+dependencies[] = footnotes
+configure = admin/config/content/footnotes
+
+; Information added by Drupal.org packaging script on 2018-02-21
+version = "7.x-2.6"
+core = "7.x"
+project = "footnotes"
+datestamp = "1519214295"
+

@@ -1,10 +1,10 @@
 name = Footnotes
 description = "Add automatically numbered footnotes to your posts."
 core = 7.x
-
-; Information added by drupal.org packaging script on 2011-03-13
-version = "7.x-2.5"
+stylesheets[all][] = footnotes.css
+; Information added by Drupal.org packaging script on 2018-02-21
+version = "7.x-2.6"
 core = "7.x"
 project = "footnotes"
-datestamp = "1300041367"
+datestamp = "1519214295"
 

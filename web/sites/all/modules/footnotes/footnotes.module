@@ -8,17 +8,12 @@
 
 /**
  * Implementation of hook_help().
- *
- * Throughout Drupal, hook_help() is used to display help text at the top of
- * pages. Some other parts of drupal pages get explanatory text from these hooks
- * as well. We use it here to provide a description of the module on the
- * module administration page.
  */
-function footnotes_help($section) {
-  switch ($section) {
-    case 'admin/modules#description':
+function footnotes_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#footnotes':
       // This description is shown in the listing at admin/modules.
-      return t('Insert automatically numbered footnotes using &lt;fn&gt; or [fn] tags.');
+      return t('Insert automatically numbered footnotes using &lt;fn&gt; or [fn] tags. Enable the footnotes text filter <a href="@url">here</a>.', array('@url' => url('admin/config/content/formats')));
   }
 }
 
@@ -379,18 +374,6 @@ function theme_footnote_list($footnotes) {
   }
   $str .= "</ul>\n";
   return $str;
-}
-
-/**
-* Implementation of hook_init()
-*
-* Add special css for Footnotes module.
-*
-* Thanks to binford2k@lug.wsu.edu for this tip and drinkypoo
-* for the question leading up to it. http://drupal.org/node/80538
-*/
-function footnotes_init() {
-  drupal_add_css(drupal_get_path('module', 'footnotes') . '/footnotes.css', array('group' => CSS_DEFAULT, 'every_page' => TRUE));
 }
 
 /**
