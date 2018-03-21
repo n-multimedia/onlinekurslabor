@@ -6,13 +6,15 @@
        
       initialize: function()
       {
-         Drupal.behaviors.h5p_connector_api.interactivevideo.onVideoReady(function(){ jQuery.event.trigger({
+          
+         Drupal.behaviors.h5p_connector_api.av_player.onAVReady(function(){ jQuery.event.trigger({
                        type: "annvid_entity_loaded",
                        message: "video",
                        time: new Date()
                });
            
        });
+         
       },
       
         
