@@ -211,13 +211,12 @@ function section_projects_node_grants($account, $op) {
 function section_projects_og_user_access_alter(&$perm, $context) {
 
   global $user;
-  $account = clone $user;
-
-  //admin bypass
-  if(user_access('bypass node access')) {
-    $perm['administer group'] = TRUE;
-  }
-
+  if(!empty($context['account']))
+      $account = $context['account'];
+  else 
+      $account = clone $user; 
+  
+  
   /**
    *  STUDENT
    */

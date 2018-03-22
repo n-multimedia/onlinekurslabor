@@ -565,3 +565,26 @@ function _onlinekurslabor_access_domain_content_is_available_in($o_domain_conten
     }
     trigger_error("Given content of type " . $o_domain_content->type . " or object of type " . $o_domain_content->type . " not applicable for this", E_USER_ERROR);
 }
+
+
+
+/**
+ * Implements hook_og_user_access_alter().
+ *
+ * 
+ * general admin-bypass for all og-groups
+ * 
+ */
+function onlinekurslabor_acces_og_user_access_alter(&$perm, $context) {
+    global $user;
+  if(!empty($context['account']))
+      $account = $context['account'];
+  else 
+      $account = clone $user; 
+  
+  
+  //admin bypass
+  if(user_access('bypass node access', $account)) {
+    $perm['administer group'] = TRUE;
+  }
+}
