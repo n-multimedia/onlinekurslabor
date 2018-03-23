@@ -746,6 +746,34 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
+  $pane->pid = 'new-2876cd84-24cb-4024-b13a-e2a01b6bf271';
+  $pane->panel = 'center';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'Add New User',
+    'title' => 'Neue Benutzer',
+    'title_heading' => 'h2',
+    'body' => '<?php
+print nm_administration_render_add_user_form();
+?>',
+    'format' => 'php_code',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '2876cd84-24cb-4024-b13a-e2a01b6bf271';
+  $display->content['new-2876cd84-24cb-4024-b13a-e2a01b6bf271'] = $pane;
+  $display->panels['center'][0] = 'new-2876cd84-24cb-4024-b13a-e2a01b6bf271';
+  $pane = new stdClass();
   $pane->pid = 'new-840743b4-d905-482f-b49d-4c349ccf8ea6';
   $pane->panel = 'center';
   $pane->type = 'views_panes';
@@ -759,11 +787,11 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 0;
+  $pane->position = 1;
   $pane->locks = array();
   $pane->uuid = '840743b4-d905-482f-b49d-4c349ccf8ea6';
   $display->content['new-840743b4-d905-482f-b49d-4c349ccf8ea6'] = $pane;
-  $display->panels['center'][0] = 'new-840743b4-d905-482f-b49d-4c349ccf8ea6';
+  $display->panels['center'][1] = 'new-840743b4-d905-482f-b49d-4c349ccf8ea6';
   $pane = new stdClass();
   $pane->pid = 'new-a3b10c57-cd41-4203-b01b-1b53336c8dd5';
   $pane->panel = 'navigation';
