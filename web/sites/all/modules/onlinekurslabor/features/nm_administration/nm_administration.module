@@ -17,3 +17,35 @@ function nm_administration_preprocess_panels_pane(&$variables) {
   }
 
 }
+
+
+/**
+ *
+ */
+function nm_administration_add_user_form() {
+  $form = drupal_get_form('user_register_form');
+
+  return $form;
+}
+
+
+/**
+ * @return string
+ */
+function nm_administration_render_add_user_form() {
+  $user_add_form = drupal_get_form("nm_administration_add_user_form");
+  $create_fieldset = [];
+  $create_fieldset['create_new'] = [
+    '#type' => 'fieldset',
+    '#title' => t('Add user'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    'content' => [
+      '#type' => 'markup',
+      '#markup' => drupal_render($user_add_form),
+    ],
+  ];
+
+  return drupal_render($create_fieldset);
+}
+
