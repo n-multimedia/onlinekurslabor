@@ -70,26 +70,6 @@ function nm_administration_menu_default_menu_links() {
     'weight' => -48,
     'customized' => 1,
   );
-  // Exported menu link: menu-administration_personen:administration/users.
-  $menu_links['menu-administration_personen:administration/users'] = array(
-    'menu_name' => 'menu-administration',
-    'link_path' => 'administration/users',
-    'router_path' => 'administration',
-    'link_title' => 'Personen',
-    'options' => array(
-      'attributes' => array(
-        'title' => '',
-      ),
-      'identifier' => 'menu-administration_personen:administration/users',
-    ),
-    'module' => 'menu',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => -46,
-    'customized' => 1,
-  );
   // Exported menu link: menu-administration_semester:administration/semester.
   $menu_links['menu-administration_semester:administration/semester'] = array(
     'menu_name' => 'menu-administration',
@@ -116,7 +96,6 @@ function nm_administration_menu_default_menu_links() {
   t('Dashboard');
   t('Inhalt');
   t('Kurse');
-  t('Personen');
   t('Semester');
 
   return $menu_links;
