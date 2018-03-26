@@ -90,7 +90,7 @@ CKEDITOR.plugins.add( 'footnotes',
          var element = selection.getSelectedElement();
          var seltype = selection.getType();
          
-         if ( seltype == CKEDITOR.SELECTION_ELEMENT && element.getAttribute( '_cke_real_element_type' ) && element.getAttribute( '_cke_real_element_type' ) == 'fn' )
+         if ( seltype == CKEDITOR.SELECTION_ELEMENT && element.getAttribute( 'data-cke-real-element-type' ) && element.getAttribute( 'data-cke-real-element-type' ) == 'fn' )
          {
           this.fakeObj = element;
           element = editor.restoreRealElement( this.fakeObj );
@@ -151,7 +151,7 @@ CKEDITOR.plugins.add( 'footnotes',
       {
         editor.contextMenu.addListener(function(element, selection)
           {
-            if(element.is( 'img' ) && element.getAttribute( '_cke_real_element_type' ) == 'fn')
+            if(element.is( 'img' ) &&element.getAttribute( 'data-cke-real-element-type' ) == 'fn')
               return { footnotes : CKEDITOR.TRISTATE_OFF };
             else
               return null;
