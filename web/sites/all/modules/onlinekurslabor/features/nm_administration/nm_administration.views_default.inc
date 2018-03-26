@@ -979,7 +979,7 @@ function nm_administration_views_default_views() {
     24708420 => 0,
     140204299 => 0,
   );
-  /* Filter criterion: Beitrag: Semester (field_semester) */
+  /* Filter criterion: Content: Semester (field_semester) */
   $handler->display->display_options['filters']['field_semester_tid']['id'] = 'field_semester_tid';
   $handler->display->display_options['filters']['field_semester_tid']['table'] = 'field_data_field_semester';
   $handler->display->display_options['filters']['field_semester_tid']['field'] = 'field_semester_tid';

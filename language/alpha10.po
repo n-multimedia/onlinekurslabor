@@ -21,6 +21,15 @@ msgstr "Neues Benutzerkonto"
 msgid "Create new useraccount"
 msgstr "Neues Benutzerkonto anlegen"
 
+msgid "New semester"
+msgstr "Neues Semester"
+
+msgid "Create new Semester"
+msgstr "Neues Semester anlegen"
+
+msgid "Change the semester-sequence afterwards."
+msgstr "Im Anschluss die Semester-Reihenfolge anpassen."
+
 msgid ""
 msgstr ""
 

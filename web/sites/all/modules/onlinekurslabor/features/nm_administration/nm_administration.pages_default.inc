@@ -595,6 +595,32 @@ function nm_administration_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
+  $pane->pid = 'new-0c411d76-2425-43af-84e9-2160a7ecfcb3';
+  $pane->panel = 'center';
+  $pane->type = 'custom';
+  $pane->subtype = 'administration_fieldset_addnew';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => '',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '',
+    'format' => 'filtered_html',
+    'substitute' => TRUE,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '0c411d76-2425-43af-84e9-2160a7ecfcb3';
+  $display->content['new-0c411d76-2425-43af-84e9-2160a7ecfcb3'] = $pane;
+  $display->panels['center'][0] = 'new-0c411d76-2425-43af-84e9-2160a7ecfcb3';
+  $pane = new stdClass();
   $pane->pid = 'new-a5c5dd35-a73b-4ec4-8fd2-990c453d2a21';
   $pane->panel = 'center';
   $pane->type = 'custom';
@@ -619,56 +645,11 @@ print drupal_render($form_set_default_sem);
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 0;
+  $pane->position = 1;
   $pane->locks = array();
   $pane->uuid = 'a5c5dd35-a73b-4ec4-8fd2-990c453d2a21';
   $display->content['new-a5c5dd35-a73b-4ec4-8fd2-990c453d2a21'] = $pane;
-  $display->panels['center'][0] = 'new-a5c5dd35-a73b-4ec4-8fd2-990c453d2a21';
-  $pane = new stdClass();
-  $pane->pid = 'new-b90c7c26-3cb3-4a7a-9bdd-5824c456638e';
-  $pane->panel = 'center';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'admin_title' => 'add-new-semester',
-    'title' => 'Neues Semester',
-    'title_heading' => 'h2',
-    'body' => '<?php
-
-/* lädt form, um neues semester anzulegen */
-if ($semester_vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
-    module_load_include(\'inc\', \'taxonomy\', \'taxonomy.admin\');
-    $form_edit_var = array();
-    $taxonomy_create_form = drupal_get_form(\'taxonomy_form_term\', $form_edit_var, $semester_vocabulary);
- 
-
-    $create_fieldset = array();
-    $create_fieldset[\'create_new\'] = array(
-        \'#type\' => \'fieldset\',
-        \'#title\' => t(\'Create semester\'),
-        \'#collapsible\' => true,
-        \'#collapsed\' => true,
-        \'content\' => array(\'#type\' => \'markup\', \'#markup\' => drupal_render($taxonomy_create_form))
-    );
-    echo drupal_render($create_fieldset);
-}
-?>',
-    'format' => 'php_code',
-    'substitute' => 1,
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 1;
-  $pane->locks = array();
-  $pane->uuid = 'b90c7c26-3cb3-4a7a-9bdd-5824c456638e';
-  $display->content['new-b90c7c26-3cb3-4a7a-9bdd-5824c456638e'] = $pane;
-  $display->panels['center'][1] = 'new-b90c7c26-3cb3-4a7a-9bdd-5824c456638e';
+  $display->panels['center'][1] = 'new-a5c5dd35-a73b-4ec4-8fd2-990c453d2a21';
   $pane = new stdClass();
   $pane->pid = 'new-578bec4e-99cc-4ebe-be2d-47208ee2b4d3';
   $pane->panel = 'center';
