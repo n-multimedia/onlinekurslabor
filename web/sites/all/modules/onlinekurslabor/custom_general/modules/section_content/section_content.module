@@ -758,33 +758,29 @@ function section_content_views_pre_build(&$view) {
  * 
  */
 function section_content_og_user_access_alter(&$perm, $context) {
-  global $user;
-  if(!empty($context['account']))
-      $account = $context['account'];
-  else 
-      $account = clone $user; 
+    global $user;
+    $account = !empty($context['account'])? $context['account']: clone $user;
 
-  $group_type = $context['group_type'];
-  $group = $context['group'];
+    $group_type = $context['group_type'];
+    $group = $context['group'];
 
 
 
-  if ($group_type == 'node' && $group->type == NM_CONTENT_DOMAIN) {
+    if ($group_type == 'node' && $group->type == NM_CONTENT_DOMAIN) {
 
-    $access_perm = in_array(NM_ROLE_AUTOR, $account->roles) || in_array(NM_ROLE_ADMIN, $account->roles);
-//var_dump($access_perm);
-//if(isset($perm["subscribe without approval"]) && !$access_perm)
+        $access_perm = in_array(NM_ROLE_AUTOR, $account->roles) || in_array(NM_ROLE_ADMIN, $account->roles);
+        //var_dump($access_perm);
+        //if(isset($perm["subscribe without approval"]) && !$access_perm)
 
-    if (isset($perm["subscribe"]) && !$access_perm) {
-      //$perm["subscribe without approval"] = FALSE;
-      $perm["subscribe"] = FALSE;
+        if (isset($perm["subscribe"]) && !$access_perm) {
+            //$perm["subscribe without approval"] = FALSE;
+            $perm["subscribe"] = FALSE;
+        } else {
+            $perm["subscribe without approval"] = TRUE;
+        }
     }
-    else {
-      $perm["subscribe without approval"] = TRUE;
-    }
-  }
 
-  return;
+    return;
 }
 
 /**

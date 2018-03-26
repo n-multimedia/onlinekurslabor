@@ -211,12 +211,9 @@ function section_projects_node_grants($account, $op) {
 function section_projects_og_user_access_alter(&$perm, $context) {
 
   global $user;
-  if(!empty($context['account']))
-      $account = $context['account'];
-  else 
-      $account = clone $user; 
-  
-  
+  $account = !empty($context['account'])? $context['account']: clone $user;
+
+
   /**
    *  STUDENT
    */
