@@ -10,26 +10,6 @@
 function nm_administration_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: menu-administration_benutzer:administration/users.
-  $menu_links['menu-administration_benutzer:administration/users'] = array(
-    'menu_name' => 'menu-administration',
-    'link_path' => 'administration/users',
-    'router_path' => 'administration',
-    'link_title' => 'Benutzer',
-    'options' => array(
-      'attributes' => array(
-        'title' => '',
-      ),
-      'identifier' => 'menu-administration_benutzer:administration/users',
-    ),
-    'module' => 'menu',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => -46,
-    'customized' => 1,
-  );
   // Exported menu link: menu-administration_dashboard:administration.
   $menu_links['menu-administration_dashboard:administration'] = array(
     'menu_name' => 'menu-administration',
@@ -90,6 +70,26 @@ function nm_administration_menu_default_menu_links() {
     'weight' => -48,
     'customized' => 1,
   );
+  // Exported menu link: menu-administration_personen:administration/users.
+  $menu_links['menu-administration_personen:administration/users'] = array(
+    'menu_name' => 'menu-administration',
+    'link_path' => 'administration/users',
+    'router_path' => 'administration',
+    'link_title' => 'Personen',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'identifier' => 'menu-administration_personen:administration/users',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -46,
+    'customized' => 1,
+  );
   // Exported menu link: menu-administration_semester:administration/semester.
   $menu_links['menu-administration_semester:administration/semester'] = array(
     'menu_name' => 'menu-administration',
@@ -113,10 +113,10 @@ function nm_administration_menu_default_menu_links() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Benutzer');
   t('Dashboard');
   t('Inhalt');
   t('Kurse');
+  t('Personen');
   t('Semester');
 
   return $menu_links;
