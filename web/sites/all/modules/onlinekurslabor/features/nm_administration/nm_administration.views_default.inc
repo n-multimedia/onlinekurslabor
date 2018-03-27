@@ -1039,6 +1039,28 @@ function nm_administration_views_default_views() {
   );
   $handler->display->display_options['filters']['field_semester_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_semester_tid']['vocabulary'] = 'semester';
+  /* Filter criterion: Beitrag: VHB-LVNR (field_vhb_lvnr) */
+  $handler->display->display_options['filters']['field_vhb_lvnr_value']['id'] = 'field_vhb_lvnr_value';
+  $handler->display->display_options['filters']['field_vhb_lvnr_value']['table'] = 'field_data_field_vhb_lvnr';
+  $handler->display->display_options['filters']['field_vhb_lvnr_value']['field'] = 'field_vhb_lvnr_value';
+  $handler->display->display_options['filters']['field_vhb_lvnr_value']['operator'] = 'contains';
+  $handler->display->display_options['filters']['field_vhb_lvnr_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_vhb_lvnr_value']['expose']['operator_id'] = 'field_vhb_lvnr_value_op';
+  $handler->display->display_options['filters']['field_vhb_lvnr_value']['expose']['label'] = 'VHB-LVNR';
+  $handler->display->display_options['filters']['field_vhb_lvnr_value']['expose']['operator'] = 'field_vhb_lvnr_value_op';
+  $handler->display->display_options['filters']['field_vhb_lvnr_value']['expose']['identifier'] = 'field_vhb_lvnr_value';
+  $handler->display->display_options['filters']['field_vhb_lvnr_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    30037204 => 0,
+    1 => 0,
+    197637936 => 0,
+    16675960 => 0,
+    106505419 => 0,
+    126456107 => 0,
+    66784200 => 0,
+    24708420 => 0,
+    140204299 => 0,
+  );
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_administration_courses');
@@ -1078,6 +1100,7 @@ function nm_administration_views_default_views() {
     t('Änderungsdatum von'),
     t('Änderungsdatum bis'),
     t('Semester'),
+    t('VHB-LVNR'),
     t('Content pane'),
     t('Administration - Courses'),
     t('Administration (Moderator)'),
