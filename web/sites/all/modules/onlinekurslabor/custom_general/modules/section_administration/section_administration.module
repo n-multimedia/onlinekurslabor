@@ -12,12 +12,14 @@ function _section_administration_get_RenderedAddNewFieldset(String $section_id) 
     $configuration = array(
         'content' => array('title' => $default_title,
             'body' => l($default_add_text, 'node/add')),
+        'files' => array('title' => t('New file'),
+            'body' => l(t('Create new file'), 'file/add')),
         'users' => array('title' => t('New useraccount'),
             'body' => l(t('Create new useraccount'), 'admin/people/create')),
         'courses' => array('title' => t('New course'),
             'body' => l(t('Create new course'), 'node/add/courses-course') . '<br>' . l(t('Copy course(s)'), 'node/copy/courses-course')),
         'semester' => array('title' => $default_title,
-            'body' => l($default_add_text, 'admin/structure/taxonomy/semester/add').'<br><i>'.t('Change the semester-sequence afterwards.').'</i>')
+            'body' => l($default_add_text, 'admin/structure/taxonomy/semester/add') . '<br><i>' . t('Change the semester-sequence afterwards.') . '</i>')
     );
 
     $collapsible_element = array();

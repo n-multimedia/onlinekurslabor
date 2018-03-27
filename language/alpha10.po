@@ -30,6 +30,12 @@ msgstr "Neues Semester anlegen"
 msgid "Change the semester-sequence afterwards."
 msgstr "Im Anschluss die Semester-Reihenfolge anpassen."
 
+msgid "New file"
+msgstr "Neue Datei"
+
+msgid "Create new file"
+msgstr "Neue Datei erstellen"
+
 msgid ""
 msgstr ""
 
