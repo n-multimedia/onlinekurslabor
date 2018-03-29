@@ -414,6 +414,13 @@ function nm_section_courses_features_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'diff_enable_revisions_page_node_courses_generic_task';
+  $strongarm->value = 1;
+  $export['diff_enable_revisions_page_node_courses_generic_task'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'diff_enable_revisions_page_node_courses_group';
   $strongarm->value = 1;
   $export['diff_enable_revisions_page_node_courses_group'] = $strongarm;
@@ -421,9 +428,23 @@ function nm_section_courses_features_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'diff_show_preview_changes_node_courses_generic_task';
+  $strongarm->value = 0;
+  $export['diff_show_preview_changes_node_courses_generic_task'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'diff_show_preview_changes_node_courses_group';
   $strongarm->value = 1;
   $export['diff_show_preview_changes_node_courses_group'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'diff_view_mode_preview_node_courses_generic_task';
+  $strongarm->value = 'full';
+  $export['diff_view_mode_preview_node_courses_generic_task'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -1114,7 +1135,7 @@ function nm_section_courses_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_preview_courses_generic_task';
-  $strongarm->value = '1';
+  $strongarm->value = '0';
   $export['node_preview_courses_generic_task'] = $strongarm;
 
   $strongarm = new stdClass();
