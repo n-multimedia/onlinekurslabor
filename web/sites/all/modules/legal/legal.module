@@ -1,0 +1,1079 @@
+<?php
+
+/**
+ * @file
+ * Module file for Legal.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function legal_help($path, $arg) {
+  $output = '';
+  switch ($path) {
+    case 'admin/help#legal':
+      $output .= t('Display a Terms & Conditions statement on the registration page, require visitor to accept T&C to register. When a user creates an account they are required to accept your Terms & Conditions to complete their registration.');
+      break;
+    case 'admin/settings/legal':
+      $output .= t('Display a Terms & Conditions statement on the registration page, require visitor to accept the T&C to register. A <a href="@page">page</a> displaying your T&C will be automatically created, access to this page can be set via the <a href="@access">permissions</a> administration page.',
+        array(
+          '@page'   => url('legal'),
+          '@access' => url('admin/user/permissions')
+        ));
+  }
+
+  return $output;
+}
+
+/**
+ * Implements hook_perm().
+ */
+function legal_permission() {
+  return array(
+    'administer Terms and Conditions' => array(
+      'title' => t('Administer Terms and Conditions'),
+    ),
+    'view Terms and Conditions'       => array(
+      'title' => t('View Terms and Conditions'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_access().
+ */
+function legal_access($op, $node, $account) {
+  return ($op == 'view' && (user_access('view Terms and Conditions') || user_access('administer Terms and Conditions')));
+}
+
+/**
+ * Implements hook_menu().
+ */
+function legal_menu() {
+  $items = array();
+
+  $items['admin/config/people/legal'] = array(
+    'title'            => 'Legal',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('legal_administration'),
+    'access arguments' => array('administer Terms and Conditions'),
+    'description'      => 'Display Terms and Conditions statement on the registration page.',
+    'file'             => 'legal.admin.inc',
+  );
+
+  $items['admin/config/people/legal/terms'] = array(
+    'title'            => 'Add T&C',
+    'access arguments' => array('administer Terms and Conditions'),
+    'description'      => 'Display Terms and Conditions statement on the registration page.',
+    'type'             => MENU_DEFAULT_LOCAL_TASK,
+  );
+
+  $items['admin/config/people/legal/languages'] = array(
+    'title'            => 'Languages',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('legal_languages'),
+    'access callback'  => 'legal_languages_access',
+    'access arguments' => array('administer Terms and Conditions'),
+    'description'      => 'Display Terms and Conditions statement on the registration page.',
+    'weight'           => 10,
+    'type'             => MENU_LOCAL_TASK,
+    'file'             => 'legal.admin.inc',
+  );
+
+  $items['admin/config/people/legal/configuration'] = array(
+    'title'            => 'Legal Configuration',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('legal_configuration'),
+    'access arguments' => array('administer Terms and Conditions'),
+    'description'      => 'Legal configuration options.',
+    'weight'           => 0,
+    'type'             => MENU_LOCAL_TASK,
+    'file'             => 'legal.admin.inc',
+  );
+
+  $items['legal'] = array(
+    'title'            => 'Terms and Conditions',
+    'page callback'    => 'legal_page',
+    'access arguments' => array('view Terms and Conditions'),
+    'type'             => MENU_CALLBACK,
+    'file'             => 'legal.pages.inc',
+  );
+
+  $items['legal_accept'] = array(
+    'title'           => 'Terms and Conditions',
+    'page callback'   => 'drupal_get_form',
+    'page arguments'  => array('legal_login'),
+    'access callback' => TRUE,
+    'type'            => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function legal_theme() {
+  return array(
+    'legal_administration' => array('render element' => 'form'),
+    'legal_display'        => array('variables' => array('form' => NULL)),
+    'legal_page'           => array('render element' => 'form'),
+    'legal_login'          => array('render element' => 'form'),
+    'legal_accept_label'   => array('variables' => array('link' => FALSE)),
+    'legal_target_link'    => array('variables' => array('form' => FALSE)),
+  );
+}
+
+function legal_display_fields($conditions) {
+  $form         = array();
+  $accept_label = theme('legal_accept_label');
+
+  $form['current_id']                    = array(
+    '#type'  => 'value',
+    '#value' => $conditions['version'],
+  );
+  $form['language_value']                = array(
+    '#type'  => 'value',
+    '#value' => $conditions['language'],
+  );
+  $form['revision_id']                   = array(
+    '#type'  => 'value',
+    '#value' => $conditions['revision'],
+  );
+  $form['current_date']                  = array(
+    '#type'  => 'value',
+    '#value' => $conditions['date'],
+  );
+  $form['display_header']                = array(
+    '#type' => 'value',
+  );
+  $form['display_header']['display']     = array(
+    '#type'  => 'value',
+    '#value' => variable_get('legal_display', '0'),
+  );
+  $form['display_header']['link_target'] = array(
+    '#type'  => 'value',
+    '#value' => variable_get('legal_link_target', 'new_window'),
+  );
+  $form['legal']                         = array(
+    '#type'   => 'fieldset',
+    '#title'  => t('Terms and Conditions of Use'),
+    '#weight' => 29,
+  );
+
+  switch (variable_get('legal_display', '0')) {
+    case 1: // Scroll box (CSS).
+    case 2: // HTML.
+      $form['legal']['conditions'] = array(
+        '#markup' => check_markup($conditions['conditions'], $conditions['format']),
+      );
+      break;
+
+    case 3: // Page Link.
+      $form['legal']['conditions'] = array(
+        '#markup' => '',
+      );
+
+      $target_link  = variable_get('legal_link_target', 'new_window');
+      $accept_label = theme('legal_accept_label', array(
+        'link'        => TRUE,
+        'target_link' => $target_link
+      ));
+      break;
+
+    default: // Scroll box (HTML).
+      $form['legal']['conditions'] = array(
+        '#type'          => 'textarea',
+        '#title'         => t('Terms & Conditions'),
+        '#default_value' => $conditions['conditions'],
+        '#value'         => $conditions['conditions'],
+        '#rows'          => 10,
+        '#weight'        => 0,
+        '#attributes'    => array('readonly' => 'readonly'),
+      );
+  }
+
+  if (!empty($conditions['extras'])) {
+    foreach ($conditions['extras'] as $key => $label) {
+      if (!empty($label)) {
+        $form['legal'][$key] = array(
+          '#type'          => 'checkbox',
+          '#title'         => filter_xss_admin($label),
+          '#default_value' => 0,
+          '#weight'        => 2,
+          '#required'      => TRUE,
+        );
+      }
+    }
+  }
+
+  $form['legal']['legal_accept'] = array(
+    '#type'          => 'checkbox',
+    '#title'         => $accept_label,
+    '#default_value' => 0,
+    '#weight'        => 50,
+    '#required'      => TRUE,
+  );
+
+  return $form;
+}
+
+function theme_legal_display($variables) {
+  $form = $variables['form'];
+
+  if (!empty($form['legal']['conditions']['#markup'])) {
+    // Scroll box (CSS).
+    if ($form['display_header']['display']['#value'] == 1) {
+      $form['legal']['#attached']['css'][]    = drupal_get_path('module', 'legal') . '/legal.css';
+      $form['legal']['conditions']['#prefix'] = '<div class="legal-terms">';
+      $form['legal']['conditions']['#suffix'] = '</div>';
+    }
+  }
+
+  return $form;
+}
+
+function theme_legal_page($variables) {
+  $form = $variables['form'];
+
+  if (!empty($form['current_id']['#value'])) {
+    $form = theme('legal_display', array('form' => $form));
+
+    return drupal_render($form);
+  }
+}
+
+/**
+ * Theme the accept terms and conditions label.
+ *
+ * @param $variables
+ *   An associative array of variables for themeing, containing:
+ *    - link: Whether or not the label contains a link to the legal page.
+ *
+ * @ingroup themeable
+ */
+
+function theme_legal_accept_label($variables) {
+
+  if ($variables['link']) {
+
+    // Display a link to the T&Cs.
+    switch ($variables['target_link']) {
+      case 'new_window':
+        return t('<strong>Accept</strong> <a href="@terms" target="_blank">Terms & Conditions</a> of Use', array('@terms' => url('legal')));
+        break;
+      case 'lightbox2':
+        return t('<strong>Accept</strong> <a href="@terms #content" rel="lightmodal">Terms & Conditions</a> of Use', array('@terms' => url('legal')));
+        break;
+      default:
+        return t('<strong>Accept</strong> <a href="@terms">Terms & Conditions</a> of Use', array('@terms' => url('legal')));
+        break;
+    }
+  }
+  else {
+    return t('<strong>Accept</strong> Terms & Conditions of Use');
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function legal_form_user_register_form_alter(&$form, &$form_state) {
+  global $user;
+  global $language;
+
+  $conditions = legal_get_conditions($language->language);
+
+  // Do nothing if there's no Terms and Conditions text set.
+  if (empty($conditions['conditions'])) {
+    return;
+  }
+
+  $form = array_merge($form, legal_display_fields($conditions));
+
+  // Disable checkbox if:
+  //  - user is already registered (administer users);
+  //  - users with 'administer users' can access registration on admin/user/user/create.
+  if (!empty($user->uid)) {
+    $form['legal']['legal_accept']['#attributes'] = array('disabled' => 'disabled');
+    $form['legal']['legal_accept']['#required']   = FALSE;
+
+    if (is_array($conditions['extras'])) {
+      foreach ($conditions['extras'] as $key => $label) {
+        if (!empty($label)) {
+          $form['legal'][$key]['#attributes'] = array('disabled' => 'disabled');
+          $form['legal'][$key]['#required']   = FALSE;
+        }
+      }
+    }
+  }
+
+  $form = theme('legal_display', array('form' => $form));
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function legal_form_user_profile_form_alter(&$form, $form_state) {
+  global $user;
+  global $language;
+  $accepted = FALSE;
+  $account  = $form['#user'];
+
+  if (variable_get('legal_user_profile_display', 1) == 0) {
+    return;
+  }
+
+  // If this profile belongs to user 1 or if it has an exempt user role we don't
+  // display Terms & Conditions. Pass the user of the profile being viewed, not
+  // the current user.
+  if (legal_user_is_exempt($account)) {
+    return;
+  }
+
+  if ($form['#user_category'] != 'account') {
+    return;
+  }
+
+  // Set reminder to change password if coming from one time login link and
+  // user hasn't changed his/her password yet.
+  if (isset($_REQUEST['pass-reset-token']) && isset($_COOKIE['Drupal_visitor_legal_pass_reset'])) {
+    user_cookie_delete('legal_pass_reset');
+
+    $messages        = drupal_get_messages('status', FALSE);
+    $status_messages = isset($messages['status']) ? $messages['status'] : array();
+    $reminder        = t('You have just used your one-time login link. It is no longer necessary to use this link to log in. Please change your password.');
+
+    if (!in_array($reminder, $status_messages)) {
+      drupal_set_message($reminder);
+    }
+  }
+
+  // Get last accepted version for this account.
+  $legal_account = legal_get_accept($account->uid);
+
+  // If no version has been accepted yet, get version with current language revision.
+  if (empty($legal_account['version'])) {
+    $conditions = legal_get_conditions($language->language);
+    // No conditions set yet.
+    if (empty($conditions['conditions'])) {
+      return;
+    }
+  }
+  // Get version / revision of last accepted language.
+  else {
+
+    $conditions = legal_get_conditions($legal_account['language']);
+    // No conditions set yet.
+    if (empty($conditions['conditions'])) {
+      return;
+    }
+
+    // Check latest version of T&C has been accepted.
+    $accepted = legal_version_check($account->uid, $conditions['version'], $conditions['revision'], $legal_account);
+
+    // Enable language switching if version accepted and revision up to date.
+    if ($accepted && $legal_account['language'] != $language->language) {
+      $conditions = legal_get_conditions($language->language);
+    }
+  }
+
+  $form = array_merge($form, legal_display_fields($conditions));
+
+  if ($accepted === TRUE) {
+    $form['legal']['legal_accept']['#value'] = 1;
+    if (!empty($conditions['extras'])) {
+      foreach ($conditions['extras'] as $key => $label) {
+        if (!empty($label)) {
+          $form['legal'][$key]['#value'] = 1;
+        }
+      }
+    }
+  }
+
+  // Disable checkbox if:
+  //  - user is not account owner;
+  //  - latest T&C has already been accepted.
+  if ($account->uid != $user->uid || $accepted == TRUE) {
+    $form['legal']['legal_accept']['#attributes'] = array('disabled' => 'disabled');
+    if (!empty($conditions['extras'])) {
+      reset($conditions['extras']);
+      foreach ($conditions['extras'] as $key => $label) {
+        if (!empty($label)) {
+          $form['legal'][$key]['#attributes'] = array('disabled' => 'disabled');
+        }
+      }
+    }
+  }
+
+  // Not required if user is not account owner.
+  if ($account->uid != $user->uid) {
+    $form['legal']['legal_accept']['#required'] = FALSE;
+    if (!empty($conditions['extras'])) {
+      reset($conditions['extras']);
+      foreach ($conditions['extras'] as $key => $label) {
+        if (!empty($label)) {
+          $form['legal'][$key]['#required'] = FALSE;
+        }
+      }
+    }
+  }
+
+  // Enable account owner to accept.
+  if ($account->uid == $user->uid && $accepted != TRUE) {
+    $form['legal']['legal_accept']['#default_value'] = isset($edit['legal_accept']) ? $edit['legal_accept'] : '';
+    $form['legal']['legal_accept']['#required']      = TRUE;
+
+    if (!empty($conditions['extras'])) {
+      reset($conditions['extras']);
+
+      foreach ($conditions['extras'] as $key => $label) {
+        if (!empty($label)) {
+          $form['legal'][$key]['#default_value'] = isset($edit[$key]) ? $edit[$key] : '';
+          $form['legal'][$key]['#required']      = TRUE;
+        }
+      }
+    }
+  }
+
+  $form = theme('legal_display', array('form' => $form));
+}
+
+/**
+ * Implements hook_user_login().
+ */
+function legal_user_login(&$edit, $account) {
+  global $user;
+  global $language;
+
+  // If this profile belongs to user 1 or if it has an exempt user role we don't
+  // display Terms & Conditions.
+  if (legal_user_is_exempt($user)) {
+    return;
+  }
+
+  $legal_accept_every_login = variable_get('legal_accept_every_login', '0');
+
+  // Get last accepted version for this account
+  $legal_account = legal_get_accept($user->uid);
+
+  // If no version has been accepted yet, get version with current language revision.
+  if (!isset($legal_account['version'])) {
+    $conditions = legal_get_conditions($language->language);
+    // No conditions set yet.
+    if (empty($conditions['conditions'])) {
+      return;
+    }
+  }
+  // Get version / revision of last accepted language.
+  else {
+    $conditions = legal_get_conditions($legal_account['language']);
+    // No conditions set yet.
+    if (empty($conditions['conditions'])) {
+      return;
+    }
+
+    // Check latest version of T&C has been accepted.
+    $accepted = legal_version_check($user->uid, $conditions['version'], $conditions['revision'], $legal_account);
+
+    if ($accepted) {
+
+      if ($legal_accept_every_login == 0) {
+        return;
+      }
+
+      if ($legal_accept_every_login == 1 && isset($_SESSION['legal']['legal_login']) && $_SESSION['legal']['legal_login'] == 1) {
+        return;
+      }
+    }
+  }
+
+  $uid = $user->uid;
+
+  // Log the user out and regenerate the Drupal session.
+  module_invoke_all('user_logout', $user);
+  drupal_session_regenerate();
+
+  // We have to use $GLOBALS to unset a global variable.
+  $user = drupal_anonymous_user();
+
+  $query = NULL;
+
+  // Deal with destination from password reset one time login link,
+  // by creating a new one time login link and setting it as the destination
+  // after the T&Cs have been accepted.
+  if (arg(0) == 'user' && arg(1) == 'reset') {
+    $token = drupal_random_key();
+    // This is a new, anonymous-user session.
+    $_SESSION['pass_reset_' . $uid] = $token;
+    $query                          = array('destination' => "user/$uid/edit?pass-reset-token=$token");
+    user_cookie_save(array('legal_pass_reset' => TRUE));
+  }
+
+  if (!empty($_REQUEST['destination'])) {
+    $query = array('destination' => $_REQUEST['destination']);
+  }
+
+  unset($_GET['destination']);
+
+  $result = db_select('users', 'u')
+    ->fields('u')
+    ->condition('uid', $uid)
+    ->range(0, 1)
+    ->execute()
+    ->fetchAllAssoc('uid');
+
+  $signatory = array_pop($result);
+  $token     = drupal_random_key();
+  $hash      = user_pass_rehash($signatory->pass, $token, $signatory->login, $uid);
+
+  user_cookie_save(array('legal_hash' => $hash, 'legal_id' => $uid));
+
+  $query['token'] = $token;
+
+  drupal_goto('legal_accept',
+    array(
+      'query' => $query,
+    )
+  );
+}
+
+/**
+ * Implementation of hook_user_insert().
+ */
+function legal_user_insert(&$edit, $account, $category) {
+  global $user;
+  global $language;
+
+  $conditions = legal_get_conditions($language->language);
+
+  if (empty($conditions['conditions'])) {
+    return;
+  }
+
+  // Record the accepted state before removing legal_accept from $edit.
+  $accepted             = isset($edit['legal_accept']) ? $edit['legal_accept'] : FALSE;
+  $edit['legal_accept'] = NULL;
+  $edit['conditions']   = NULL;
+
+  foreach ($conditions['extras'] as $key => $label) {
+    $edit[$key] = NULL;
+  }
+
+  // Don't insert if user is already registered (administrator).
+  if (!empty($user->uid)) {
+    return;
+  }
+
+  if ($accepted) {
+    legal_save_accept($conditions['version'], $conditions['revision'], $conditions['language'], $conditions['tc_id'], $account->uid);
+  }
+}
+
+/**
+ * Implements hook_user_update().
+ */
+function legal_user_update(&$edit, $account, $category) {
+  global $user;
+  global $language;
+
+  // We only care about the account category.
+  if ($category != 'account') {
+    return;
+  }
+
+  $conditions = legal_get_conditions($language->language);
+
+  if (empty($conditions['conditions'])) {
+    return;
+  }
+
+  // Record the accepted state before removing legal_accept from $edit.
+  $accepted             = isset($edit['legal_accept']) ? $edit['legal_accept'] : FALSE;
+  $edit['legal_accept'] = NULL;
+  $edit['conditions']   = NULL;
+
+  foreach ($conditions['extras'] as $key => $label) {
+    $edit[$key] = NULL;
+  }
+
+  if ($account->uid == 1 || $account->uid != $user->uid) {
+    return;
+  }
+
+  // If already accepted skip data entry.
+  $previously_accepted = legal_version_check($account->uid, $conditions['version'], $conditions['revision']);
+
+  if ($previously_accepted === TRUE) {
+    return;
+  }
+
+  if ($accepted) {
+    legal_save_accept($conditions['version'], $conditions['revision'], $conditions['language'], $conditions['tc_id'], $account->uid);
+  }
+}
+
+/**
+ * Require registered users to accept new T&C.
+ */
+function legal_login($form, $constructor) {
+  global $language;
+
+  // Check we have all the data and there are no shenanigans.
+  if (!isset($_GET['token']) || !isset($_COOKIE['Drupal_visitor_legal_id']) || !is_numeric($_COOKIE['Drupal_visitor_legal_id']) || !isset($_COOKIE['Drupal_visitor_legal_hash'])) {
+    user_cookie_delete('legal_hash');
+    user_cookie_delete('legal_id');
+    drupal_set_message(t('Operation timed out. Please try to log in again.'));
+    drupal_goto();
+  }
+
+  $id_hash = $_COOKIE['Drupal_visitor_legal_hash'];
+  $uid     = $_COOKIE['Drupal_visitor_legal_id'];
+  $token   = $_GET['token'];
+
+  $result = db_select('users', 'u')
+    ->fields('u')
+    ->condition('uid', $uid)
+    ->range(0, 1)
+    ->execute()
+    ->fetchAllAssoc('uid');
+
+  $account = array_pop($result);
+
+  // Make sure the account is real and has a last login value.
+  if (!isset($account->login)) {
+    drupal_goto();
+  }
+
+  // Limit how long $id_hash can be used to 1 hour.
+  // Timestamp and $id_hash are used to generate the authentication token.
+  if ((REQUEST_TIME - $account->login) > 3600) {
+    user_cookie_delete('legal_hash');
+    user_cookie_delete('legal_id');
+    drupal_goto();
+  }
+
+  $legal_accept_every_login = variable_get('legal_accept_every_login', '0');
+
+  // get last accepted version for this account
+  $legal_account = legal_get_accept($uid);
+
+  // if no version has been accepted yet, get version with current language revision
+  if (empty($legal_account['version'])) {
+    $conditions = legal_get_conditions($language->language);
+    // no conditions set yet
+    if (empty($conditions['conditions'])) {
+      return;
+    }
+  }
+  else { // get version / revision of last accepted language
+
+    $conditions = legal_get_conditions($legal_account['language']);
+    // no conditions set yet
+    if (empty($conditions['conditions'])) {
+      return;
+    }
+
+    // Check latest version of T&C has been accepted.
+    $accepted = legal_version_check($uid, $conditions['version'], $conditions['revision'], $legal_account);
+
+    if ($accepted) {
+
+      if ($legal_accept_every_login == 0) {
+        return;
+      }
+
+      if ($legal_accept_every_login == 1 && isset($_SESSION['legal']['legal_login']) && $_SESSION['legal']['legal_login'] == 1) {
+        return;
+      }
+    }
+  }
+
+  $form = legal_display_fields($conditions);
+
+  $form['uid'] = array(
+    '#type'  => 'value',
+    '#value' => $uid,
+  );
+
+  $form['token'] = array(
+    '#type'  => 'value',
+    '#value' => $token,
+  );
+
+  $form['hash'] = array(
+    '#type'  => 'value',
+    '#value' => $id_hash,
+  );
+
+  $form['tc_id'] = array(
+    '#type'  => 'value',
+    '#value' => $conditions['tc_id'],
+  );
+
+  $form['version'] = array(
+    '#type'  => 'value',
+    '#value' => $conditions['version'],
+  );
+
+  $form['revision'] = array(
+    '#type'  => 'value',
+    '#value' => $conditions['revision'],
+  );
+
+  $form['language'] = array(
+    '#type'  => 'value',
+    '#value' => $conditions['language'],
+  );
+
+  $form = legal_display_changes($form, $uid);
+
+  $form['save'] = array(
+    '#type'  => 'submit',
+    '#value' => t('Confirm'),
+  );
+
+  return $form;
+}
+
+function legal_login_validate($form, &$form_state) {
+  $values = $form_state['values'];
+
+  $result = db_select('users', 'u')
+    ->fields('u')
+    ->condition('uid', $values['uid'])
+    ->range(0, 1)
+    ->execute()
+    ->fetchAllAssoc('uid');
+
+  $account = array_pop($result);
+
+  $hash = user_pass_rehash(
+    $account->pass,
+    $form_state['values']['token'],
+    $account->login,
+    $form_state['values']['uid']
+  );
+
+  if ($hash !== $form_state['values']['hash']) {
+    form_set_error('legal_accept', t('User ID cannot be identified.'));
+    user_cookie_delete('legal_hash');
+    user_cookie_delete('legal_id');
+    drupal_goto();
+  }
+}
+
+function legal_login_submit($form, &$form_state) {
+  global $user;
+
+  user_cookie_delete('legal_hash');
+  user_cookie_delete('legal_id');
+
+  $values = $form_state['values'];
+  $user   = user_load($values['uid']);
+
+  $redirect = 'user/' . $user->uid;
+
+  if (!empty($_GET['destination'])) {
+    $redirect = $_GET['destination'];
+  }
+
+  $form_state['redirect'] = $redirect;
+
+  legal_save_accept($values['version'], $values['revision'], $values['language'], $values['tc_id'], $user->uid);
+  watchdog('legal', '%name accepted T&C version %tc_id.', array(
+    '%name'  => $user->name,
+    '%tc_id' => $values['tc_id']
+  ));
+
+  // Update the user table timestamp noting user has logged in.
+  db_update('users')
+    ->fields(array('login' => time()))
+    ->condition('uid', $user->uid)
+    ->execute();
+
+  if (variable_get('legal_accept_every_login', '0') == '1') {
+    $_SESSION['legal']['legal_login'] = 1;
+  }
+
+  // User has new permissions, so we clear their menu cache.
+  cache_clear_all($user->uid, 'cache_menu', TRUE);
+  // Fixes login problems in Pressflow.
+  drupal_session_regenerate();
+  user_module_invoke('login', $edit, $user);
+}
+
+function theme_legal_login($variables) {
+  $form = $variables['form'];
+  $form = theme('legal_display', array('form' => $form));
+
+  $output = '<p>' . t('To continue to use this site please read the Terms & Conditions below, and complete the form to confirm your acceptance.') . '</p>';
+
+  if (isset($form['changes']['#value'])) {
+    foreach (element_children($form['changes']) as $key) {
+      $form['changes'][$key]['#prefix'] .= '<li>';
+      $form['changes'][$key]['#suffix'] .= '</li>';
+    }
+
+    $form['changes']['start_list'] = array('#value' => '<ul>', '#weight' => 0);
+    $form['changes']['end_list']   = array('#value' => '</ul>', '#weight' => 3);
+    $output .= drupal_render($form['changes']);
+  }
+
+  $save = drupal_render($form['save']);
+  $output .= drupal_render_children($form);
+  $output .= $save;
+
+  return $output;
+}
+
+function legal_get_accept($uid) {
+  $keys   = array(
+    'legal_id',
+    'version',
+    'revision',
+    'language',
+    'uid',
+    'accepted'
+  );
+  $result = db_select('legal_accepted', 'la')
+    ->fields('la')
+    ->condition('uid', $uid)
+    ->orderBy('version', 'DESC')
+    ->orderBy('revision', 'DESC')
+    ->addTag('legal_get_accepted')
+    ->execute()
+    ->fetchAllAssoc('legal_id');
+  $result = count($result) ? array_shift($result) : array();
+
+  $accept = array();
+
+  foreach ($keys as $key) {
+    if (isset($result->$key)) {
+      $accept[$key] = $result->$key;
+    }
+  }
+
+  return $accept;
+}
+
+function legal_save_accept($version, $revision, $language, $tc_id, $uid) {
+  $accepted = time();
+  $data     = array(
+    'version'  => $version,
+    'revision' => $revision,
+    'language' => $language,
+    'tc_id'    => $tc_id,
+    'uid'      => $uid,
+    'accepted' => $accepted,
+  );
+  db_insert('legal_accepted')
+    ->fields($data)
+    ->execute();
+  module_invoke_all('legal_accepted', $data);
+}
+
+/**
+ * Implements hook_legal_accepted().
+ */
+function legal_legal_accepted($data) {
+  if (module_exists('rules')) {
+    $user       = user_load($data['uid']);
+    $conditions = legal_get_conditions($data['language']);
+    rules_invoke_event('legal_accepted', $user, $conditions['conditions'], $data['accepted']);
+  }
+}
+
+function legal_get_conditions($language = NULL, $raw = FALSE) {
+  $keys = array(
+    'tc_id',
+    'version',
+    'revision',
+    'language',
+    'conditions',
+    'date',
+    'extras',
+    'changes',
+    'format'
+  );
+
+  if (!empty($language)) {
+    $result = db_select('legal_conditions', 'lc')
+      ->fields('lc')
+      ->condition('language', $language)
+      ->orderBy('version', 'DESC')
+      ->orderBy('revision', 'DESC')
+      ->range(0, 1)
+      ->addTag('legal_conditions_by_language')
+      ->execute()
+      ->fetchAllAssoc('tc_id');
+    $result = (array) array_shift($result);
+  }
+  else {
+    $result = db_select('legal_conditions', 'lc')
+      ->fields('lc')
+      ->orderBy('tc_id', 'DESC')
+      ->addTag('legal_all_conditions')
+      ->execute()
+      ->fetchAllAssoc('tc_id');
+    $result = (array) array_shift($result);
+  }
+
+  foreach ($keys as $key) {
+    $conditions[$key] = isset($result[$key]) ? $result[$key] : '';
+  }
+
+  $conditions['extras'] = empty($conditions['extras']) ? array() : unserialize($conditions['extras']);
+  $conditions['format'] = empty($conditions['format']) ? filter_default_format() : $conditions['format'];
+
+  if (module_exists('token') && $raw === FALSE) {
+    $conditions['conditions'] = token_replace($conditions['conditions']);
+  }
+
+  return $conditions;
+}
+
+/**
+ * Get all changes since user last accepted.
+ */
+function legal_display_changes($form, $uid) {
+  $is_list       = FALSE;
+  $bullet_points = array();
+  $last_accepted = legal_get_accept($uid);
+
+  if (empty($last_accepted)) {
+    return $form;
+  }
+
+  $result = db_select('legal_conditions', 'lc')
+    ->fields('lc')
+    ->condition(db_or()
+      ->condition('version', $last_accepted['version'], '>')
+      ->condition(db_and()
+        ->condition('version', $last_accepted['version'])
+        ->condition('revision', $last_accepted['revision'], '>')
+      )
+    )
+    ->condition('language', $last_accepted['language'])
+    ->orderBy('revision', 'ASC')
+    ->orderBy('version', 'ASC')
+    ->execute()
+    ->fetchAllAssoc('tc_id');
+
+  if (empty($result)) {
+    return $form;
+  }
+
+  foreach ($result as $term) {
+
+    $changes = filter_xss_admin($term->changes);
+
+    if (!empty($changes)) {
+      $bullet_points = array_merge($bullet_points, explode("\r\n", $changes));
+    }
+  }
+
+  if (empty($bullet_points)) {
+    return $form;
+  }
+
+  $form['changes'] = array(
+    '#type'        => 'fieldset',
+    '#title'       => t('Changes List'),
+    '#description' => t('Changes to the Terms & Conditions since last accepted:'),
+    '#collapsible' => TRUE,
+    '#collapsed'   => TRUE,
+    '#tree'        => TRUE,
+  );
+
+  $form['changes']['bullet_points'] = array(
+    '#markup' => theme('item_list', array('items' => $bullet_points)),
+  );
+
+  return $form;
+}
+
+/**
+ * Check if user has accepted latest version of T&C.
+ */
+function legal_version_check($uid, $version, $revision, $legal_account = array()) {
+  $accepted = FALSE;
+
+  if (empty($legal_account)) {
+    $legal_account = legal_get_accept($uid);
+  }
+
+  if (array_key_exists('version', $legal_account) && array_key_exists('revision', $legal_account)) {
+    if ($legal_account['version'] == $version && $legal_account['revision'] == $revision) {
+      $accepted = TRUE;
+    }
+  }
+
+  return $accepted;
+}
+
+/**
+ * Access control callback.
+ * Check that Locale module is enabled and user has access permission.
+ */
+function legal_languages_access($perm) {
+
+  if (!module_exists('locale')) {
+    return FALSE;
+  }
+
+  if (!user_access($perm)) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function legal_views_api() {
+  return array(
+    'api'  => 2,
+    'path' => drupal_get_path('module', 'legal') . '/views',
+  );
+}
+
+/**
+ * Check if user is exempt from Terms & Conditions.
+ *
+ * @param $account
+ *   A user object
+ *
+ * @return bool
+ *   True if the passed user is exempt
+ */
+function legal_user_is_exempt($account) {
+  // User 1 is exempt from accepting T&Cs, no need to display T&Cs.
+  if ($account->uid === 1) {
+    return TRUE;
+  }
+
+  $exempt_roles      = variable_get('legal_except_roles', array());
+  $account_roles     = $account->roles;
+  $exempt_user_roles = array_intersect_key($account_roles, $exempt_roles);
+  if (count($exempt_user_roles)) {
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+/**
+ * Implements hook_anonymous_login_paths_alter().
+ *
+ * Used to make a no-config integration with the 'anonymous_login' module.
+ *
+ * @param array $paths
+ *   List of exclude/include directives for the anonymous_login module.
+ */
+function legal_anonymous_login_paths_alter(&$paths) {
+  $paths['exclude'][] = 'legal';
+  $paths['exclude'][] = 'legal_accept/*';
+}
+
