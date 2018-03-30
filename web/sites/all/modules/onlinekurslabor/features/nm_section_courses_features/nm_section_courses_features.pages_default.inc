@@ -2128,6 +2128,17 @@ return section_courses_text_outline();
           'context' => 'argument_entity_id:node_2',
           'not' => FALSE,
         ),
+        1 => array(
+          'name' => 'og_perm',
+          'settings' => array(
+            'perm' => 'create nm_stream content',
+          ),
+          'context' => array(
+            0 => 'logged-in-user',
+            1 => 'argument_entity_id:node_2',
+          ),
+          'not' => FALSE,
+        ),
       ),
       'logic' => 'and',
     ),

@@ -324,11 +324,24 @@ function section_courses_render_course_link($course, $account = NULL) {
 }
 
 /**
- * renders link to course/home or course/info (dependent on membership)
+ * get rendered link to course/home or course/info (dependent on membership)
  * @param node $course node-object
  * @param Stdclass $account user-account
  */
 function _section_courses_render_course_main_link($course, $account = NULL) {
+    
+    
+    $target = _section_courses_get_course_main_url($course, $account );
+
+    return l($course->title, $target );
+}
+
+/**
+ * gets url to course/home or course/info (dependent of membership)
+ * @param node $course node-object
+ * @param Stdclass $account user-account
+ */
+function _section_courses_get_course_main_url($course, $account = NULL) {
 
     global $user;
 
@@ -343,7 +356,7 @@ function _section_courses_render_course_main_link($course, $account = NULL) {
     } else
         $target = 'course/info/';
 
-    return l($course->title, $target . $course->nid);
+    return  $target.$course->nid;
 }
 
 function section_courses_preprocess_views_view_fields(&$variables) {
@@ -2535,16 +2548,15 @@ function section_courses_courses_generic_task_node_form_after_build($form) {
  */
 function section_courses_og_user_access_alter(&$perm, $context) {
   global $user;
-  $account = clone $user;
+  $account = !empty($context['account'])? $context['account']: clone $user;
+
+
+
 
   $group_type = $context['group_type'];
   $group = $context['group'];
 
   $course = _section_courses_get_active_course();
-
-  if(user_access('bypass node access')) {
-    $perm['administer group'] = TRUE;
-  }
 
   //we are in course section
   if ($course) {

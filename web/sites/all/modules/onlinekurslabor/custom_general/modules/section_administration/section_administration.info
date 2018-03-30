@@ -1,0 +1,9 @@
+name = Section Administration
+description = (Hilfs)Funktionen für den Verwaltungsbereich
+package = custom
+
+
+version = "7.x-1.x"
+core = "7.x"
+
+dependencies[] = custom_general

@@ -3,8 +3,8 @@
 msgid "Administration"
 msgstr "Verwaltung"
 
-msgid "Biblio %name created. You can use it as a reference now."
-msgstr "Biblio-Eintrag %name erstellt. Sie können diesen nun im Lehrtext referenzieren."
+msgid "You can reference this biblio-entry now."
+msgstr "Sie können diesen Biblio-Eintrag nun referenzieren."
 
 msgid "Copy course"
 msgstr "Kurs kopieren"
@@ -81,14 +81,14 @@ msgstr "Element löschen"
 msgid "Clone course(s)"
 msgstr "Kurs(e) kopieren"
 
-msgid "Terms and Conditions of Use"
-msgstr "Geltende Nutzungsbedingungen"
+msgid "This is only needed for debugging and not to be changed normally"
+msgstr "Diesen Eintrag bitte nicht verändern"
 
-msgid "To continue to use this site please read the Terms & Conditions below, and complete the form to confirm your acceptance."
-msgstr "Bitte lesen und bestätigen Sie die unten stehenden Nutzungsbedingungen."
+msgid ""
+msgstr ""
 
-msgid "Terms and Conditions"
-msgstr "Nutzungsbedingungen"
+msgid ""
+msgstr ""
 
 msgid ""
 msgstr ""

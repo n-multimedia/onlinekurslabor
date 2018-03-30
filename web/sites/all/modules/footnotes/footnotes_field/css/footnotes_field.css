@@ -1,0 +1,7 @@
+ul.footnotes {
+  display: none;
+}
+
+#footnotes-all ul.footnotes {
+  display: block;
+}

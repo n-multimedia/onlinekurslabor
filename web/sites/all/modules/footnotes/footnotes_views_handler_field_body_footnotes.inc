@@ -18,6 +18,10 @@ class footnotes_views_handler_field_body_footnotes extends footnotes_views_handl
       // $data = substr($data, $start, $end);
       $data = substr($data, $start);
     }
+    else {
+      // There are no footnotes.
+      $data = '';
+    }
     return $data;
   }
 

@@ -1,0 +1,130 @@
+<?php
+
+/**
+ * @file
+ * Hooks and general logic for the Footnotes field module.
+ */
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function footnotes_field_ctools_plugin_api($module, $api) {
+  if (($module == 'ds' && $api == 'ds') || ($module == 'ds_extras' && $api == 'ds_extras')) {
+    return array('version' => 1);
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function footnotes_field_menu() {
+  $items['admin/config/content/footnotes'] = array(
+    'title' => 'Footnotes',
+    'description' => 'Config page for footnotes fields/blocks',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_footnotes_field_admin_form'),
+    'access arguments' => array('administer footnotes fields'),
+    'file' => 'includes/footnotes_field.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function footnotes_field_permission() {
+  return array(
+    'administer footnotes fields' => array(
+      'title' => t('Administer footnotes fields'),
+      'description' => t('Perform administration tasks for footnotes fields.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_ds_fields_info().
+ */
+function footnotes_field_ds_fields_info($entity_type) {
+  $fields = array();
+  $settings = _footnotes_field_get_settings();
+
+  if (!empty($settings['content_types'])) {
+    $content_types = array_keys(array_filter($settings['content_types']));
+    // Only expose this field if there is at least one content type selected.
+    if (!empty($content_types)) {
+      $ui_limit = array();
+      foreach ($content_types as $content_type) {
+        $ui_limit[] = $content_type . '|*';
+      }
+
+      $fields['footnotes_field'] = array(
+        'title' => t('Footnotes (ds field)'),
+        'field_type' => DS_FIELD_TYPE_FUNCTION,
+        'ui_limit' => $ui_limit,
+        'file' => drupal_get_path('module', 'footnotes_field') . '/ds/ds_footnotes_ui_field.inc',
+        'function' => '_footnotes_field_render',
+        'properties' => array(),
+      );
+
+      return array('node' => $fields);
+    }
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function footnotes_field_block_info() {
+  $blocks['footnotes'] = array(
+    'info' => t('Footnotes: node detail'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function footnotes_field_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'footnotes':
+      $node = menu_get_object('node');
+      $settings = _footnotes_field_get_settings();
+
+      if ($node && !empty($settings['expose_block'])) {
+        $block['subject'] = t('Footnotes');
+        $block['content'] = array(
+          '#prefix' => '<div id="footnotes-all">',
+          '#markup' => NULL,
+          '#suffix' => '</div>',
+          '#attached' => array(
+            'js' => array(
+              array(
+                'data' => drupal_get_path('module', 'footnotes_field') . '/js/footnotes_field.js',
+                'type' => 'file',
+              ),
+            ),
+            'css' => array(
+              array(
+                'data' => drupal_get_path('module', 'footnotes_field') . '/css/footnotes_field.css',
+                'type' => 'file',
+              ),
+            ),
+          ),
+        );
+        break;
+      }
+  }
+  return $block;
+}
+
+/**
+ * Fetches settings form admin page.
+ *
+ * @return array
+ *   The footnotes field settings.
+ */
+function _footnotes_field_get_settings() {
+  return variable_get('footnotes_field_settings', array());
+}

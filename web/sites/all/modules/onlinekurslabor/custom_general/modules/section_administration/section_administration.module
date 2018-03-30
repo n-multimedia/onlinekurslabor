@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * Im neuen Verwaltungsbereich gibts desöfteren ein "neues.... hinzufügen"-Fieldset
+ * Das ist die Helperfunktion dafür
+ * @param String $section der aktuelle Bereich, z.B. "content"
+ */
+function _section_administration_get_RenderedAddNewFieldset(String $section_id) {
+    $default_title = t('New ' . $section_id);
+    $default_add_text = t('Create new ' . $section_id);
+
+    $configuration = array(
+        'content' => array('title' => $default_title,
+            'body' => l($default_add_text, 'node/add')),
+        'files' => array('title' => t('New file'),
+            'body' => l(t('Create new file'), 'file/add')),
+        'users' => array('title' => t('New useraccount'),
+            'body' => l(t('Create new useraccount'), 'admin/people/create')),
+        'courses' => array('title' => t('New course'),
+            'body' => l(t('Create new course'), 'node/add/courses-course') . '<br>' . l(t('Copy course(s)'), 'node/copy/courses-course')),
+        'semester' => array('title' => $default_title,
+            'body' => l($default_add_text, 'admin/structure/taxonomy/semester/add') . '<br><i>' . t('Change the semester-sequence afterwards.') . '</i>')
+    );
+
+    $collapsible_element = array();
+    $collapsible_element['#collapsible'] = true;
+    //initial collapsed setzen
+    $collapsible_element['#collapsed'] = true;
+    $collapsible_element['#id'] = $section_id;
+    $collapsible_element['#value'] = $configuration[$section_id]['body'];
+    $collapsible_element['#title'] = $configuration[$section_id]['title'];
+
+
+    return ( theme('bootstrap_panel', array('element' => $collapsible_element)));
+}
+

@@ -15,8 +15,12 @@
            
         /*fuegt neben ein videoobjekt auf der webseite einen html-schnipsel ein, in dem spaeter eine liste der annotationen auftaucht*/
         attachSideBarToInteractiveVideo: function()
-        {
-            var video = Drupal.behaviors.h5p_connector_api.interactivevideo.getH5P();
+        { 
+            //interferenz mit audio... deswegen check
+            if(Drupal.behaviors.h5p_connector_api.av_player.av_object.type !== 'video')
+                return ; 
+            
+            var video = Drupal.behaviors.h5p_connector_api.av_player.av_object.h5p;
 
             the_great_list =
                     '<div id="h5p_annotationlist_' + video.contentId + '" class="h5p_annotationlist" style="display:none;">' +
@@ -66,7 +70,7 @@
         /*fuegt dem container '#h5p_annotationlist_'+json_video_id  eine liste der annotationen hinzu*/
         addAnnotationsToSidebar: function( sortby)
         {
-            var video =  Drupal.behaviors.h5p_connector_api.interactivevideo.getH5P();
+            var video =  Drupal.behaviors.h5p_connector_api.av_player.av_object.h5p;
                     
             if (!sortby || !this.annotations_sortby.indexOf(sortby))
                 sortby = "start";
@@ -79,7 +83,7 @@
                 Drupal.behaviors.h5p_annotationlist.addAnnotationsToSidebar( jQuery(this).attr("value"));
             });
             
-            var all_interactions = Drupal.behaviors.h5p_connector_api.interactivevideo.getAllAnnotations();
+            var all_interactions = Drupal.behaviors.h5p_connector_api.av_player.getAllAnnotations();
             if (all_interactions == null || all_interactions.length == 0)
             	return false;
             all_interactions.sort(this.SortfunctionForAnnotations(sortby));
@@ -129,8 +133,9 @@
                         annotation_type_minimized,
                         item.duration.from,
                         item_label,
-                        H5P.InteractiveVideo.humanizeTime(item.duration.from),
-                        H5P.InteractiveVideo.humanizeTime(item.duration.to)
+                        
+                        Drupal.behaviors.h5p_connector_api.av_player.humanizeTime(item.duration.from),
+                        Drupal.behaviors.h5p_connector_api.av_player.humanizeTime(item.duration.to)
                         );
 
 
@@ -204,7 +209,7 @@
             jQuery(HTML_Selector).find("a[data]").click(function()
             {
                 value_to_jump_to = jQuery(this).attr("data");
-                Drupal.behaviors.h5p_connector_api.interactivevideo.goTo(value_to_jump_to);
+                Drupal.behaviors.h5p_connector_api.av_player.goTo(value_to_jump_to);
                  
                 return false;
             });
@@ -214,7 +219,7 @@
 
 jQuery(document).ready(function() {
 //jQuery.proxy(Drupal.behaviors.h5p_annotationlist.save_video_objects, Drupal.behaviors.h5p_annotationlist  
-Drupal.behaviors.h5p_connector_api.onH5Pready(function(){Drupal.behaviors.h5p_annotationlist.attachSideBarToInteractiveVideo();});
+Drupal.behaviors.h5p_connector_api.av_player.onAVReady(function(){Drupal.behaviors.h5p_annotationlist.attachSideBarToInteractiveVideo();});
 //Drupal.behaviors.h5p_annotationlist.addSideBar( Drupal.behaviors.h5p_annotationlist.getAllVideoObjects());
 });
 

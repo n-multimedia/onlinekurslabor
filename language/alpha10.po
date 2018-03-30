@@ -1,0 +1,50 @@
+#Translation File - onlinekurslabor
+
+msgid "New content"
+msgstr "Neuer Inhalt"
+
+msgid "Create new content"
+msgstr "Neuen Inhalt erstellen"
+
+msgid "New course"
+msgstr "Neuer Kurs"
+
+msgid "Create new course"
+msgstr "Neuen Kurs erstellen"
+
+msgid "Copy course(s)"
+msgstr "Kurs(e) kopieren"
+
+msgid "New useraccount"
+msgstr "Neues Benutzerkonto"
+
+msgid "Create new useraccount"
+msgstr "Neues Benutzerkonto anlegen"
+
+msgid "New semester"
+msgstr "Neues Semester"
+
+msgid "Create new Semester"
+msgstr "Neues Semester anlegen"
+
+msgid "Change the semester-sequence afterwards."
+msgstr "Im Anschluss die Semester-Reihenfolge anpassen."
+
+msgid "New file"
+msgstr "Neue Datei"
+
+msgid "Create new file"
+msgstr "Neue Datei erstellen"
+
+msgid "Terms and Conditions of Use"
+msgstr "Geltende Nutzungsbedingungen"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+

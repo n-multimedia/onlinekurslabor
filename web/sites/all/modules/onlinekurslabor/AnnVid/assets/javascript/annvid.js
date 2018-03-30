@@ -77,7 +77,7 @@
                 jQuery(".annvid_container").addClass("annvid_container_loaded");
                 jQuery(".annvid_loading_div").fadeOut("slow");
                 Drupal.behaviors.annvid.stream.fillStreamTimeline()   ;
-                Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.interactivevideo.getH5P().video.getCurrentTime());  
+                Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.av_player.getCurrentTime());  
                 
                 //wenn man die Seite runterscrollt, solls Video mitlaufen
                 //nicht für Handies; wird einmalig beim Laden der Seite gecheckt
@@ -120,7 +120,7 @@
                 jQuery("#annvid_video_container").addClass('annvid_active_scroll_mode').css("margin-left", (video_margin_left) + "px");
                 //timeline wiederherstellen
                 Drupal.behaviors.annvid.stream.fillStreamTimeline()   ;
-                Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.interactivevideo.getH5P().video.getCurrentTime());  
+                Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.av_player.getCurrentTime());  
                 //pdf: position fixed und Höhe reduzieren, um Scrollen innerhalb pdf zu ermöglichen
                 jQuery("#annvid_pdfdiv").addClass('annvid_active_scroll_mode').find(".html5pdf_pdfscrollcontainer").css("max-height",viewport_height_reduced+"px");
             }
@@ -138,7 +138,7 @@
             
             //timeline wiederherstellen
             Drupal.behaviors.annvid.stream.fillStreamTimeline();
-            Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.interactivevideo.getH5P().video.getCurrentTime());
+            Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.av_player.getCurrentTime());
 
             jQuery("#annvid_pdfdiv").removeClass('annvid_active_scroll_mode');
             //entferne height-attribute vom pdf

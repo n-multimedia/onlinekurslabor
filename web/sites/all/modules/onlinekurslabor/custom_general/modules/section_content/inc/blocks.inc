@@ -64,9 +64,18 @@ function _section_content_navtext_to_link($domain, $text) {
       'og_group_ref' => $domain_nid,
   ));
 
-  if ((arg(0) == 'domain') && (is_numeric(arg(2)))) {
+  //optionale group domain/text/3/1152/
+  if ((arg(0) == 'domain') && (is_numeric(arg(3)))) {
+    $node = node_load(arg(3));
+    $optional_group =  node_load(arg(2));
+  }
+  //normalmodus domain/text/3
+ elseif ((arg(0) == 'domain') && (is_numeric(arg(2)))) {
     $node = node_load(arg(2));
   }
+      
+  
+    
 
   //break if no node object found to operate on
   if (empty($node)) {
@@ -77,7 +86,7 @@ function _section_content_navtext_to_link($domain, $text) {
 
   switch ($text) {
     case "Ansicht":
-      $result = l($text, "domain/text/" . $node_nid, $options);
+      $result = l($text, "domain/text/".($optional_group?$optional_group->nid.'/':'') . $node_nid, $options);
       break;
     case "Bearbeiten":
       $result = l($text, "domain/edit/" . $node_nid, $options);

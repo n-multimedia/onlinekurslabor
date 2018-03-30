@@ -1,13 +1,12 @@
 name = "Footnotes Wysiwyg"
-description = "Add a footnote button to Wysiwyg editors (TinyMCE, CKEditor)"
+description = "Add a footnote button to Wysiwyg editors (TinyMCE, CKEditor). Currently supports the WYSIWYG and CKEditor modules."
 package = User interface
-dependencies[] = wysiwyg
 dependencies[] = footnotes
 core = 7.x
 
-; Information added by drupal.org packaging script on 2011-03-13
-version = "7.x-2.5"
+; Information added by Drupal.org packaging script on 2018-02-21
+version = "7.x-2.6"
 core = "7.x"
 project = "footnotes"
-datestamp = "1300041367"
+datestamp = "1519214295"
 

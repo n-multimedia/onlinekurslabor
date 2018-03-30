@@ -1,5 +1,12 @@
 /**
- * derzeit nicht in benutzung*/
+ * derzeit 
+ * 
+ * nicht
+ * 
+ * in benutzung
+ * 
+ * 
+ * */
 (function ($) {
   Drupal.behaviors.videosafe = {
 
@@ -13,7 +20,7 @@
     },
     /*prüft beim abspielen eines videos auf playability (404, 403 etc) und gibt Fehlermeldung*/
     checkVideoStatus: function () {
-      if (isNaN(Drupal.behaviors.h5p_connector_api.interactivevideo.getH5P().video.getDuration()))
+      if (isNaN(Drupal.behaviors.h5p_connector_api.av_player.getDuration()))
         alert("Das Video kann nicht abgespielt werden. Bitte kontaktieren Sie uns.");
 
     }

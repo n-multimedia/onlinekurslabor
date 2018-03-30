@@ -11,7 +11,7 @@
             {   //nur leere textarea
                 if (jQuery(this).val() === "")
                 {
-                    jQuery(this).val("Um "+Drupal.behaviors.h5p_connector_api.interactivevideo.getCurrentVideoTime(true)+" ");
+                    jQuery(this).val("Um "+Drupal.behaviors.h5p_connector_api.av_player.getCurrentTime(true)+" ");
                 }
 
             });
@@ -21,11 +21,11 @@
 
             
             //Fehler beim ersten Aufruf, deswegen Video abwarten.. 
-            Drupal.behaviors.h5p_connector_api.interactivevideo.onVideoReady(function() {
-                //fuelle nimeline neu
+            Drupal.behaviors.h5p_connector_api.av_player.onAVReady(function() {
+                //fuelle timeline neu
                 Drupal.behaviors.annvid.stream.fillStreamTimeline();
                 //setze fortschrittbalken auf letzten bekannten wert
-                Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.interactivevideo.getCurrentVideoTime(false));
+                Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.av_player.getCurrentTime(false));
             });
 
         },
@@ -33,7 +33,7 @@
              //fuelle timeline neu
              Drupal.behaviors.annvid.stream.fillStreamTimeline();
               //setze fortschrittbalken auf letzten bekannten wert
-             Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.interactivevideo.getCurrentVideoTime(false));
+             Drupal.behaviors.annvid.stream.repositionTimemark(Drupal.behaviors.h5p_connector_api.av_player.getCurrentTime(false));
          },
          active_annotations: new Array(),
          timeline_div_id : "#stream_timeline",
@@ -46,7 +46,7 @@
         highlightAnnotations: function(at_time_in_secs)
         {
             //suche annotations, die den timestamp zu at_time_in_secs  beinhalten
-            var regex_time = new RegExp("( |^|>|&nbsp;|0)(" + Drupal.behaviors.h5p_connector_api.interactivevideo.humanizeTime(at_time_in_secs) + ")(?!<\/a)([\,\. \?]|&nbsp;|$|<)", "gm");
+            var regex_time = new RegExp("( |^|>|&nbsp;|0)(" + Drupal.behaviors.h5p_connector_api.av_player.humanizeTime(at_time_in_secs) + ")(?!<\/a)([\,\. \?]|&nbsp;|$|<)", "gm");
             var annolist = jQuery(".nm_stream .nm-stream-main-body").filter(function() {
                 return regex_time.test($(this).text());
             });
@@ -78,7 +78,7 @@
                 {
                     entries[counter] = new Array();
                     entries[counter]["img"] = jQuery(".field-name-field-photo  img", this).attr("src");
-                    entries[counter]["time"] = Drupal.behaviors.h5p_connector_api.interactivevideo.computerizeTime(jQuery("a[data^='video.']", this).html());
+                    entries[counter]["time"] = Drupal.behaviors.h5p_connector_api.av_player.computerizeTime(jQuery("a[data^='video.']", this).html());
                     var anno_text = jQuery(".nm-stream-main-body",this).text().replace(/(\r\n|\n|\r)/gm,"").replace(Drupal.behaviors.h5p_connector_api.text.regex_timestampfeature," ");;
                     if(anno_text.length >30)
                         anno_text = anno_text.substr(0,27)+"...";
@@ -138,7 +138,7 @@
         {
            
             var width = this.getTimelineWidth();
-            var videolength = Math.floor( Drupal.behaviors.h5p_connector_api.interactivevideo.getH5P().video.getDuration());
+            var videolength = Math.floor( Drupal.behaviors.h5p_connector_api.av_player.getDuration());
 
             var pixelspersec = Math.floor(width) / videolength;
             return pixelspersec;

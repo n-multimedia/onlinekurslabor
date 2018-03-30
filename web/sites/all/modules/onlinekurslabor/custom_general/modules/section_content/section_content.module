@@ -329,8 +329,19 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
         //solution for biblio and course text needed
         $type = _custom_general_get_node_type($nid);
 
-        if (in_array($type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN, NM_BIBLIO, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER, NM_INTERACTIVE_CONTENT))) {
+        if (in_array($type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN,  NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER, NM_INTERACTIVE_CONTENT))) {
           $path = 'domain/text/' . $nid;
+        }
+        elseif(in_array($type, array( NM_BIBLIO)))
+        {    
+            $current_nid = arg(2);
+            $current_node = node_load($current_nid);
+
+            if(is_object($current_node) && !empty($current_node->book))
+            {
+                $curr_bookid  = $current_node->book['bid'];
+                $path = 'domain/text/' .$curr_bookid.'/'. $nid;
+            } 
         }
         $original_path = $path;
       }
@@ -682,39 +693,22 @@ function section_content_subscribe_submit($form, &$form_state) {
  */
 function _section_content_node_form_submit($form, &$form_state) {
 
-  if (arg(0) == 'domain' && (arg(1) == 'edit' || arg(1) == 'add') && is_numeric(arg(2))) {
-      //biblio angelegt: gehe auf return_to parameter ...
-      if(arg(3) === 'biblio' )
-      {
-        $return_to = drupal_get_query_parameters()['return_to'] ?: arg(2);
-        $form_state['redirect'] = NM_CONTENT_TEXT_PATH .'/'.$return_to;
-      }
-      else
-        $form_state['redirect'] = NM_CONTENT_TEXT_PATH . '/' . $form_state['node']->nid;
-  }
-}
-
-/**
- * implements  hook_node_insert($node) 
- * Nach Erstellen eines Bib-Eintrags wird man zum korrespondierenden Lehrtext zurückgeleitet
- * Sonst ist man aus dem Kontext geworfen, wenn man nur auf dem Bibeintrag steht. 
- * @param StdClass $node
- */
-function section_content_node_insert($node) {
-    if($node->type==='biblio')
-    {
-        //woher komme ich? darin ist ein og-group-ref-parameter
-        $drupal_ref_params = drupal_get_query_parameters();
-    
-        if(!empty($drupal_ref_params['og_group_ref']))
-        {
-            //"node-created"-Message geht durch goto verloren. Ersetze sie deshalb.
-            drupal_set_message(t('Biblio %name created. You can use it as a reference now.', array('%name' => $node->title)));
-            //gehe zu lehrtext
-            drupal_goto ('/node/'.$drupal_ref_params['og_group_ref']);
-        }
+    if (arg(0) == 'domain' && (arg(1) == 'edit' || arg(1) == 'add') && is_numeric(arg(2))) {
+        //if (1)+(2) Sonderbehandlung Biblio
+        //biblio angelegt: gehe auf return_to parameter ...
+        if (arg(1) == 'add' && arg(3) === 'biblio') {
+            //Ergänzung zur "node-created"-Message
+            drupal_set_message(t('You can reference this biblio-entry now.'));
+            //erst: return-to, dann arg(2) = Lehrtext
+            $return_to = drupal_get_query_parameters()['return_to']? : arg(2);
+            $form_state['redirect'] = NM_CONTENT_TEXT_PATH . '/' . $return_to;
+        }//edit eines biblio-entries 
+        elseif (arg(1) == 'edit' && is_numeric(arg(2)) && $form_state['node']->type === NM_BIBLIO) {
+            $lehrtext_param = drupal_get_query_parameters()['og_group_ref'] ? drupal_get_query_parameters()['og_group_ref'] . '/' : '';
+            $form_state['redirect'] = NM_CONTENT_TEXT_PATH . '/' . $lehrtext_param . $form_state['node']->nid;
+        } else
+            $form_state['redirect'] = NM_CONTENT_TEXT_PATH . '/' . $form_state['node']->nid;
     }
-    
 }
 
 /*
@@ -764,33 +758,29 @@ function section_content_views_pre_build(&$view) {
  * 
  */
 function section_content_og_user_access_alter(&$perm, $context) {
-  global $user;
+    global $user;
+    $account = !empty($context['account'])? $context['account']: clone $user;
 
-  $group_type = $context['group_type'];
-  $group = $context['group'];
-
-  if(user_access('bypass node access')) {
-
-    $perm['administer group'] = TRUE;
-  }
+    $group_type = $context['group_type'];
+    $group = $context['group'];
 
 
-  if ($group_type == 'node' && $group->type == NM_CONTENT_DOMAIN) {
 
-    $access_perm = in_array(NM_ROLE_AUTOR, $user->roles) || in_array(NM_ROLE_ADMIN, $user->roles);
-//var_dump($access_perm);
-//if(isset($perm["subscribe without approval"]) && !$access_perm)
+    if ($group_type == 'node' && $group->type == NM_CONTENT_DOMAIN) {
 
-    if (isset($perm["subscribe"]) && !$access_perm) {
-      //$perm["subscribe without approval"] = FALSE;
-      $perm["subscribe"] = FALSE;
+        $access_perm = in_array(NM_ROLE_AUTOR, $account->roles) || in_array(NM_ROLE_ADMIN, $account->roles);
+        //var_dump($access_perm);
+        //if(isset($perm["subscribe without approval"]) && !$access_perm)
+
+        if (isset($perm["subscribe"]) && !$access_perm) {
+            //$perm["subscribe without approval"] = FALSE;
+            $perm["subscribe"] = FALSE;
+        } else {
+            $perm["subscribe without approval"] = TRUE;
+        }
     }
-    else {
-      $perm["subscribe without approval"] = TRUE;
-    }
-  }
 
-  return;
+    return;
 }
 
 /**

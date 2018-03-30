@@ -10,26 +10,6 @@
 function nm_administration_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: menu-administration_benutzer:administration/users.
-  $menu_links['menu-administration_benutzer:administration/users'] = array(
-    'menu_name' => 'menu-administration',
-    'link_path' => 'administration/users',
-    'router_path' => 'administration',
-    'link_title' => 'Benutzer',
-    'options' => array(
-      'attributes' => array(
-        'title' => '',
-      ),
-      'identifier' => 'menu-administration_benutzer:administration/users',
-    ),
-    'module' => 'menu',
-    'hidden' => 0,
-    'external' => 0,
-    'has_children' => 0,
-    'expanded' => 0,
-    'weight' => -46,
-    'customized' => 1,
-  );
   // Exported menu link: menu-administration_dashboard:administration.
   $menu_links['menu-administration_dashboard:administration'] = array(
     'menu_name' => 'menu-administration',
@@ -48,6 +28,26 @@ function nm_administration_menu_default_menu_links() {
     'has_children' => 0,
     'expanded' => 0,
     'weight' => -50,
+    'customized' => 1,
+  );
+  // Exported menu link: menu-administration_dateien:administration/files.
+  $menu_links['menu-administration_dateien:administration/files'] = array(
+    'menu_name' => 'menu-administration',
+    'link_path' => 'administration/files',
+    'router_path' => 'administration',
+    'link_title' => 'Dateien',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'identifier' => 'menu-administration_dateien:administration/files',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -48,
     'customized' => 1,
   );
   // Exported menu link: menu-administration_inhalt:administration/content.
@@ -87,7 +87,7 @@ function nm_administration_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -48,
+    'weight' => -47,
     'customized' => 1,
   );
   // Exported menu link: menu-administration_semester:administration/semester.
@@ -107,14 +107,14 @@ function nm_administration_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -47,
+    'weight' => -46,
     'customized' => 1,
   );
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Benutzer');
   t('Dashboard');
+  t('Dateien');
   t('Inhalt');
   t('Kurse');
   t('Semester');

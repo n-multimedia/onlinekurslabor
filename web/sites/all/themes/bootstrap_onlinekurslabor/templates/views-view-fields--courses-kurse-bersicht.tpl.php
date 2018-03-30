@@ -28,6 +28,7 @@ $node = node_load($nid);
 $course_actions = section_courses_render_course_link($node);
 $label = !$node->status ? '<span class="label label-danger">Entwurf</span> ' : '';
 $course_main_link = _section_courses_render_course_main_link($node);
+$course_main_url = _section_courses_get_course_main_url($node);
 
 $start_text = '';
 $end_text = '';
@@ -50,13 +51,13 @@ foreach ($kurs_dozent_objects as $dozent_acc) {
 
 <div class="row">
   <div class="course-item col-md-12">
-    <div class="col-md-3"><?php echo $fields['field_course_picture']->content; ?></div>
+    <div class="col-md-3"><?php echo l($fields['field_course_picture']->content, $course_main_url, array('html' => TRUE)); ?></div>
     <div class="col-md-4">
       <div class="course-title"><h2><?php echo $label ?><?php echo $course_main_link ?></h2></div>
       <div class="course-subtitle"><?php echo $fields['field_subtitle']->content; ?></div>
       <div class="course-dozenten"><small>
               <strong>Lehrende: </strong>
-                <?echo implode($kurs_dozenten, ', ')?>
+                <?php echo implode($kurs_dozenten, ', ')?>
               </small>
       </div>
       <div class="course-time row">
