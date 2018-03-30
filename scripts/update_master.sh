@@ -7,8 +7,6 @@ drush vset maintenance_mode 1
 drush cc all
 
 drush en nm_administration --yes
-drush en help_features --yes
-drush en legal --yes
 
 #revert single features
 
