@@ -37,7 +37,7 @@ msgid "Create new file"
 msgstr "Neue Datei erstellen"
 
 msgid "Terms and Conditions of Use"
-msgstr "Geltende Nutzungsbedingungen"
+msgstr "Onlinekurslabor – Nutzervereinbarung"
 
 msgid ""
 msgstr ""
