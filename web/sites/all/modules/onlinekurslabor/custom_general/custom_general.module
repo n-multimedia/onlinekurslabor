@@ -1313,13 +1313,8 @@ function custom_general_theme() {
         'custom_html5_video' => array(
             // Which .tpl.php file to use custom-html5-video.tpl.php
             'template' => 'custom-html5-video',
-            'path' => drupal_get_path('module', 'custom_general') . '/templates'),
-        // Name to be called with theme(). theme('bootstrap_custom_panel', ...)
-        'bootstrap_custom_panel' => array(
-            // Which .tpl.php file to use 
-            'template' => 'bootstrap-custom-panel',
             'path' => drupal_get_path('module', 'custom_general') . '/templates')
-            )
+        )
     ;
 }
 
@@ -1542,7 +1537,7 @@ function _custom_general_collapse_replacements($matches) {
         $collapsible_element['#title'] = $heading_text;
 
 
-        return ( theme('bootstrap_custom_panel', array('element' => $collapsible_element)));
+        return ( theme('bootstrap_panel', array('element' => $collapsible_element)));
     }
 }
 
@@ -1558,3 +1553,5 @@ function _custom_general_collapse_filter_tips($filter, $format, $long = FALSE) {
 
     return t('Pattern [collapsible]heading ... text... [/collapsible] is collapsible');
 }
+
+
