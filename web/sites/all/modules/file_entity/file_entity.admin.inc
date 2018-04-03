@@ -612,6 +612,7 @@ function file_entity_list_types_page() {
     switch ($type->ctools_type) {
       // Configuration is in code.
       case 'Default':
+      case t('Default'):
         if (!empty($type->disabled)) {
           $row[] = l(t('enable'), $admin_path . '/enable');
         }
@@ -622,6 +623,7 @@ function file_entity_list_types_page() {
 
       // Configuration is in DB.
       case 'Normal':
+      case t('Normal'):
         if (!empty($type->disabled)) {
           $status = l(t('enable'), $admin_path . '/enable');
         }
@@ -633,6 +635,7 @@ function file_entity_list_types_page() {
 
       // Configuration is in code, but overridden in DB.
       case 'Overridden':
+      case t('Overridden'):
         if (!empty($type->disabled)) {
           $row[] = l(t('enable'), $admin_path . '/enable');
         }
