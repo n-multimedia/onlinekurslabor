@@ -8,7 +8,10 @@
 function nm_login_vhb_views_data() {
   $data = array();
   $data['nm_login_vhb']['table']['group'] = t('NM Login VHB');
-
+  
+  //line mandatory for VBO 7.x-3.4
+  //with help from https://drupal.stackexchange.com/questions/114364/adding-vbo-to-an-entity
+  $data['nm_login_vhb']['table']['entity type'] = 'nm_login_vhb_entry';
   // Define this as a base table – a table that can be described in itself by
   // views (and not just being brought in as a relationship). In reality this
   // is not very useful for this table, as it isn't really a distinct object of
@@ -16,7 +19,7 @@ function nm_login_vhb_views_data() {
   $data['nm_login_vhb']['table']['base'] = array(
     'field' => 'uid', // This is the identifier field for the view.
     'title' => t('NM Login (vhb)'),
-    'help' => t('nm_login_vhb table containts information about archivated users.'),
+    'help' => t('nm_login_vhb table contains information about archivated users.'),
     'weight' => -10,
   );
 
@@ -36,7 +39,7 @@ function nm_login_vhb_views_data() {
   // User ID table field.
   $data['nm_login_vhb']['uid'] = array(
     'title' => t('uid field'),
-    'help' => t('Arhive information that references to a user.'),
+    'help' => t('Archive information that references to a user.'),
     // Define a relationship to the {node} table, so example_table views can
     // add a relationship to nodes. If you want to define a relationship the
     // other direction, use hook_views_data_alter(), or use the 'implicit' join
@@ -48,7 +51,7 @@ function nm_login_vhb_views_data() {
       'handler' => 'views_handler_relationship',
       'label' => t('user'),
       'title' => t('user relationship'),
-      'help' => t('...'),
+      'help' => t('a relationship to the corresponding user-object'),
     ),
     'field' => array(
       'handler' => 'views_handler_field_numeric',
