@@ -11,7 +11,7 @@ drush en nm_administration --yes
 #revert single features
 
 #drush fr nm_section_content_features nm_section_courses_features nm_general_features section_projects_features nm_h5p_features section_courses_clone_features --yes
-drush fr nm_section_courses_features --yes
+drush fr nm_section_courses_features nm_administration --yes
 
 drush en section_administration --yes
 

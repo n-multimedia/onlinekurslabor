@@ -16,10 +16,10 @@ msgid "Copy course(s)"
 msgstr "Kurs(e) kopieren"
 
 msgid "New useraccount"
-msgstr "Neues Benutzerkonto"
+msgstr "Neue Person"
 
 msgid "Create new useraccount"
-msgstr "Neues Benutzerkonto anlegen"
+msgstr "Neues Konto anlegen"
 
 msgid "New semester"
 msgstr "Neues Semester"
