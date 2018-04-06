@@ -137,6 +137,7 @@ function nm_login_vhb() {
 
     $hash = md5($attribute);
 
+
     if ($hash != $_POST['HASH']) {
         drupal_set_message("Hashes stimmen <strong>nicht</strong> überein."/*.$hash*/, 'error');
         return "";
@@ -191,6 +192,22 @@ function nm_login_vhb() {
         $user = $vhb_user;
         drupal_session_regenerate();
         $vhb_user = clone $user;
+
+        //needed for legal, but also important for general usage
+        $user->login = REQUEST_TIME;
+        db_update('users')
+          ->fields(array('login' => $user->login))
+          ->condition('uid', $user->uid)
+          ->execute();
+
+        //trigger legal for VHB users
+        if (module_exists('legal')) {
+          $edit = [];
+          //set redirect to course
+          $_REQUEST['destination'] =  urlencode("NM_COURSE_HOME_PATH . '/' . $course->nid");
+          //trigger legal acceppt
+          legal_user_login($edit, $user);
+        }
         nm_login_vhb_update_empty_profile_fields($vhb_user, $params);
 
         //kursexistenz geprüft, falls nicht eingetragen nun zum mitglied machen
