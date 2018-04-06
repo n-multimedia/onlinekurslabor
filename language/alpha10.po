@@ -40,10 +40,16 @@ msgid "Terms and Conditions of Use"
 msgstr "Onlinekurslabor – Nutzervereinbarung"
 
 msgid "<strong>Accept</strong> Terms & Conditions of Use"
-msgstr "Onlinekurslabor – Nutzervereinbarung <strong>akzeptieren</strong>"
+msgstr "Onlinekurslabor – Nutzungsvereinbarung <strong>akzeptieren</strong>"
 
 msgid "To continue to use this site please read the Terms & Conditions below, and complete the form to confirm your acceptance."
-msgstr "Bitte lesen und akzeptieren Sie die Nutzervereinbarung, um das Onlinekurslabor zu nutzen."
+msgstr "Bitte lesen und akzeptieren Sie die Nutzungsvereinbarung, um im Onlinekurslabor fortzufahren."
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
 
 msgid ""
 msgstr ""
