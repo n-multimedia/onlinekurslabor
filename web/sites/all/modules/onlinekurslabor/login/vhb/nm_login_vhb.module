@@ -204,7 +204,7 @@ function nm_login_vhb() {
         if (module_exists('legal')) {
           $edit = [];
           //set redirect to course
-          $_REQUEST['destination'] =  urlencode("NM_COURSE_HOME_PATH . '/' . $course->nid");
+          $_REQUEST['destination'] =  urlencode(NM_COURSE_HOME_PATH . '/' . $course->nid);
           //trigger legal acceppt
           legal_user_login($edit, $user);
         }
