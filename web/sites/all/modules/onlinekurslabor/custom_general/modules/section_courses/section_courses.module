@@ -2562,24 +2562,29 @@ function section_courses_og_user_access_alter(&$perm, $context) {
   if ($course) {
     //Course Group - Content Type
     if ($group_type == 'node' && $group->type == NM_COURSE_GROUP) {
-      //Student
-      if (array_intersect(array(
-        NM_ROLE_STUDENT,
-        NM_ROLE_TEST_STUDENT
-      ), $account->roles)) {
-        //lock group feature active
-        $group_locked = _section_courses_feature_active($course, NM_COURSE_FEATURE_COURSE_GROUP_LOCK);
-        //deny access
+            
+            //Kurs-Personal darf in KGs alles
+            if (node_access('update', $course)) {
+                //erstelle als kurs-personal nm_stream content im kursgruppe
+                $perm['create nm_stream content'] = true;
+                //dozent muss sich auch nicht in kurs eintragen. deswegen schalt ma das ab
+                $perm["subscribe"] = FALSE;
+                $perm["subscribe without approval"] = FALSE;
+            }//Student
+            else {
+                //lock group feature active
+                $group_locked = _section_courses_feature_active($course, NM_COURSE_FEATURE_COURSE_GROUP_LOCK);
+                //deny access
 
-        if (isset($perm["subscribe"]) && $group_locked) {
-          $perm["subscribe"] = FALSE;
-          $perm["subscribe without approval"] = FALSE;
+                if (isset($perm["subscribe"]) && $group_locked) {
+                    $perm["subscribe"] = FALSE;
+                    $perm["subscribe without approval"] = FALSE;
+                }
+                if (isset($perm["unsubscribe"]) && $group_locked) {
+                    $perm["unsubscribe"] = FALSE;
+                }
+            }
         }
-        if (isset($perm["unsubscribe"]) && $group_locked) {
-          $perm["unsubscribe"] = FALSE;
-        }
-      }
-    }
   }
 
   return;
