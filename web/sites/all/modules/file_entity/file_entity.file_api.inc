@@ -250,7 +250,27 @@ function file_view_file($file, $displays = 'full', $langcode = NULL) {
   if ($langcode != $GLOBALS['language_content']->language) {
     $languages = language_list();
     if (isset($languages[$langcode])) {
+      if (!function_exists('file_entity_set_title_alt_properties')) {
+        module_load_include('file.inc', 'file_entity');
+      }
       file_entity_set_title_alt_properties(array($file), $languages[$langcode]);
+    }
+  }
+
+  // Since $file->alt and $file->title were set in file_entity_file_load()
+  // (which is a language-agnostic hook) they will not be in the correct
+  // language if the file is being displayed in a language other than the
+  // default one. Set them again here, using the correct language. This must
+  // run after hook_file_displays_alter() since the Media module sets
+  // $file->alt and $file->title again during that hook.
+  if ($langcode != $GLOBALS['language_content']->language) {
+    $languages = language_list();
+    if (isset($languages[$langcode])) {
+      $replace_options = array(
+        'language' => $languages[$langcode],
+      );
+      $file->title = file_entity_replace_title($file, $replace_options);
+      $file->alt = file_entity_replace_alt($file, $replace_options);
     }
   }
 

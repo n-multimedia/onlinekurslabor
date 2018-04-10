@@ -1250,6 +1250,79 @@ function file_entity_file_formatter_file_field_settings($form, &$form_state, $se
 }
 
 /**
+ * Replace file entity title text.
+ *
+ * @param $file
+ *   The file entity.
+ * @param $replace_options
+ *   (Optional) Options to pass to token_replace().
+ * @param $title
+ *   (Optional) The title text to use.
+ *
+ * @return string
+ *   Returns the replaced title text.
+ */
+function file_entity_replace_title($file, $replace_options = array(), $title = NULL) {
+  $replace_options += array(
+    'clear' => TRUE,
+    'sanitize' => FALSE,
+  );
+
+  $title_default = '[file:field_file_image_title_text]';
+  if (!isset($title)) {
+    $title = variable_get('file_entity_title', $title_default);
+  }
+  // If the defaults are not changed then inlining replacement is much faster
+  // than dealing with the token system.
+  if ($title === $title_default) {
+    $title_items = field_get_items('file', $file, 'field_file_image_title_text');
+    return $title_items ? $title_items[0]['value'] : '';
+  }
+  elseif (!empty($title)) {
+    return token_replace($title, array('file' => $file), $replace_options);
+  }
+
+  return '';
+}
+
+/**
+ * Replace file entity alt.
+ *
+ * @param $file
+ *   The file entity.
+ * @param $replace_options
+ *   (Optional) Options to pass to token_replace().
+ * @param $alt
+ *   (Optional) The alt text to use.
+ *
+ * @return string
+ *   Returns the replaced alt text.
+ */
+function file_entity_replace_alt($file, $replace_options = array(), $alt = NULL) {
+  $replace_options += array(
+    'clear' => TRUE,
+    'sanitize' => FALSE,
+  );
+
+  $alt_default = '[file:field_file_image_alt_text]';
+
+  if (!isset($alt)) {
+    $alt = variable_get('file_entity_alt', $alt_default);
+  }
+
+  // If the defaults are not changed then inlining replacement is much faster
+  // than dealing with the token system.
+  if ($alt === $alt_default) {
+    $alt_items = field_get_items('file', $file, 'field_file_image_alt_text');
+    return $alt_items ? $alt_items[0]['value'] : '';
+  }
+  elseif (!empty($alt)) {
+    return token_replace($alt, array('file' => $file), $replace_options);
+  }
+}
+
+
+/**
  * Implements hook_file_formatter_FORMATTER_view().
  *
  * Returns a drupal_render() array to display an image of the chosen style.
@@ -1289,8 +1362,8 @@ function file_entity_file_formatter_file_image_view($file, $display, $langcode) 
         '#path' => $file->uri,
         '#width' => isset($file->override['attributes']['width']) ? $file->override['attributes']['width'] : $file->metadata['width'],
         '#height' => isset($file->override['attributes']['height']) ? $file->override['attributes']['height'] : $file->metadata['height'],
-        '#alt' => token_replace($display['settings']['alt'], array('file' => $file), $replace_options),
-        '#title' => token_replace($display['settings']['title'], array('file' => $file), $replace_options),
+        '#alt' => file_entity_replace_alt($file, $replace_options, $display['settings']['alt']),
+        '#title' => file_entity_replace_title($file, $replace_options, $display['settings']['title']),
       );
     }
     else {
@@ -1299,8 +1372,8 @@ function file_entity_file_formatter_file_image_view($file, $display, $langcode) 
         '#path' => $file->uri,
         '#width' => isset($file->override['attributes']['width']) ? $file->override['attributes']['width'] : $file->metadata['width'],
         '#height' => isset($file->override['attributes']['height']) ? $file->override['attributes']['height'] : $file->metadata['height'],
-        '#alt' => token_replace($display['settings']['alt'], array('file' => $file), $replace_options),
-        '#title' => token_replace($display['settings']['title'], array('file' => $file), $replace_options),
+        '#alt' => file_entity_replace_alt($file, $replace_options, $display['settings']['alt']),
+        '#title' => file_entity_replace_title($file, $replace_options, $display['settings']['title']),
       );
     }
     return $element;

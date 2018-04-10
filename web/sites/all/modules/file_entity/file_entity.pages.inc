@@ -35,12 +35,10 @@ function file_entity_download_page($file) {
   if (!is_file($file->uri)) {
     return MENU_NOT_FOUND;
   }
-  // @todo Remove this once drupal_basename is fixed for PHP versions greater
-  //  than '5.3.29'.
-  $basename_function = version_compare(PHP_VERSION,'5.3.29','>') ? 'basename' : 'drupal_basename';
+  // @todo Why basename? Why not drupal_basename which was working up until recently.
   $headers = array(
     'Content-Type' => mime_header_encode($file->filemime),
-    'Content-Disposition' => 'attachment; filename="' . mime_header_encode($basename_function($file->uri)) . '"',
+    'Content-Disposition' => 'attachment; filename="' . mime_header_encode(basename($file->uri)) . '"',
     'Content-Length' => $file->filesize,
     'Content-Transfer-Encoding' => 'binary',
     'Pragma' => 'no-cache',
