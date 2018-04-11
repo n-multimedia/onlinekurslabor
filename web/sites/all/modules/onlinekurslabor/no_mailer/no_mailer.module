@@ -79,12 +79,18 @@ function no_mailer_user_presave(&$edit, $account, $category) {
         $edit['data']['nomailer_enable_emails'] = 1;
         return;
     }
-    //Bereits bestehender ACcount wird editiert
+    //Bereits bestehender Account wird editiert
     //permissioncheck
     if (user_access('choose turn_off_email') || user_access('administer users')) {
         //wert empty: bitte kein mailempfang
-        $edit['data']['nomailer_enable_emails'] = empty($edit['nomailer_enable_emails']) ? 0 : 1;
-        unset($edit['nomailer_enable_emails']);
+        
+        //bei VBO-Actions wird dieses Feld nicht übergeben, dann ignore
+        if(isset($edit['nomailer_enable_emails']))
+        {   
+            $edit['data']['nomailer_enable_emails'] = (int)($edit['nomailer_enable_emails']);
+            unset($edit['nomailer_enable_emails']);
+        }
+       
     }
 }
 
