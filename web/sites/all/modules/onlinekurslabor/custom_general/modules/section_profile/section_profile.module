@@ -68,7 +68,13 @@ function _section_profile_get_profile_data($user) {
     $data['public'][$roles_name] = implode($roles, ', ');
 
     $profile = profile2_load_by_user($user, 'master');
-    
+
+    $data['private']['Status'] =  $user->status? 'aktiv' : 'gesperrt';
+    $data['private']['Authentifizierung'] = 'OKL';
+    if(module_exists('nm_login_vhb') && nm_login_vhb_is_vhb_user($user->uid))
+    {
+         $data['private']['Authentifizierung'] = 'VHB';
+    }
     //profildaten
     $data['private']['E-Mail'] = l($user->mail, 'mailto:'.$user->mail) ;
     $birthday_view = field_view_field('profile2', $profile, 'field_birthday', 'short');
