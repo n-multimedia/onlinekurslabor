@@ -257,7 +257,7 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'users';
   $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = '0';
+  $handler->display->display_options['filters']['status']['value'] = 'All';
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['exposed'] = TRUE;
   $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
