@@ -129,10 +129,12 @@ function nm_login_vhb_reactivate_user($uid, $params) {
 
     //Populate profile fields
     $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
-    $wrapper->field_first_name->set($params['VORNAME']);
-    $wrapper->field_last_name->set($params['NACHNAME']);
+    /*das lassen wir raus. Sollte es Inkonsistenzen geben, werden diese nämlich nicht geprüft....
+     $wrapper->field_first_name->set($params['VORNAME']);
+     $wrapper->field_last_name->set($params['NACHNAME']);
+    */
     $wrapper->field_birthday->set(strtotime($params['GEBDAT']));
-    //not knowing which SEX options posiible
+    //don't know which SEX options possibble
     //weiblich = female so everything !female will be male
     if ($params['SEX'] == 'weiblich') {
         $wrapper->field_gender->set('female');
