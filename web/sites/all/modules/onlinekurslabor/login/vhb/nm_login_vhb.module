@@ -242,7 +242,7 @@ function nm_login_vhb_load_user_by_parameters($params) {
 
     $user = nm_login_vhb_load_user_by_entity('vhb_login_id', $param_user_id);
     if (!$user) {
-        $user = nm_login_vhb_load_user_by_entity('matrikelnummer_hochschule', $param_matrikel, $param_hochschule);
+        $user = nm_login_vhb_load_user_by_entity('hochschule_matrikelnummer',$param_hochschule, $param_matrikel );
     }
 
     return $user;
@@ -250,9 +250,9 @@ function nm_login_vhb_load_user_by_parameters($params) {
 
 /**
  * loads a user by different entities
- *  @param $entity_type string :  "vhb_login_id" OR 'matrikelnummer_hochschule'
+ *  @param $entity_type string :  "vhb_login_id" OR 'hochschule_matrikelnummer'
  * @param string $entity1 vhb-login-id OR matrikelnummer
- * @param string $entity2 hochschule, only if $entity_type = matrikelnummer_hochschule
+ * @param string $entity2 hochschule, only if $entity_type = hochschule_matrikelnummer
 
  * @return Stdclass $user
  */
@@ -264,11 +264,11 @@ function nm_login_vhb_load_user_by_entity($entity_type, $entity1, $entity2 = nul
             $bundle = 'data';
             $field_condition = array('field_nm_login_vhb_login', 'value', $entity1, '=');
             break;
-        case 'matrikelnummer_hochschule':
-            $archived_arguments = array(null, $entity2 . $entity1);
-            $hochschule = $entity2;
+        case 'hochschule_matrikelnummer':
+            $archived_arguments = array(null, $entity1.$entity2);
+            $hochschule = $entity1;
             $bundle = 'student';
-            $field_condition = array('field_matrikelnummer_varchar', 'value', $entity1, '=');
+            $field_condition = array('field_matrikelnummer_varchar', 'value', $entity2, '=');
             break;
         default:
             throw new Exception($entity_type . ' is not a valid entity-type!');
@@ -298,7 +298,7 @@ function nm_login_vhb_load_user_by_entity($entity_type, $entity1, $entity2 = nul
     //falls result
     if ($frst_user_profile_id) {
         //beim sonderfall matrikel+hochschule den korrekten account finden
-        if ($entity_type == 'matrikelnummer_hochschule') {
+        if ($entity_type == 'hochschule_matrikelnummer') {
 
             foreach ($user_profile_ids as $profile_id) {
                 $temp_user = user_load(profile2_load($profile_id)->uid);
