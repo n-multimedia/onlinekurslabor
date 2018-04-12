@@ -135,6 +135,13 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+  /* Field: User: Active */
+  $handler->display->display_options['fields']['status']['id'] = 'status';
+  $handler->display->display_options['fields']['status']['table'] = 'users';
+  $handler->display->display_options['fields']['status']['field'] = 'status';
+  $handler->display->display_options['fields']['status']['label'] = 'Status';
+  $handler->display->display_options['fields']['status']['type'] = 'active-blocked';
+  $handler->display->display_options['fields']['status']['not'] = 0;
   /* Field: User: Roles */
   $handler->display->display_options['fields']['rid']['id'] = 'rid';
   $handler->display->display_options['fields']['rid']['table'] = 'users_roles';
@@ -187,13 +194,6 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: User: Active */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'users';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = '1';
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Realname: Name */
   $handler->display->display_options['filters']['realname']['id'] = 'realname';
   $handler->display->display_options['filters']['realname']['table'] = 'realname';
@@ -207,6 +207,29 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['filters']['realname']['expose']['identifier'] = 'realname';
   $handler->display->display_options['filters']['realname']['expose']['remember_roles'] = array(
     2 => '2',
+    30037204 => 0,
+    1 => 0,
+    197637936 => 0,
+    16675960 => 0,
+    106505419 => 0,
+    126456107 => 0,
+    66784200 => 0,
+    24708420 => 0,
+    140204299 => 0,
+  );
+  /* Filter criterion: User: Active */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'users';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '0';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['status']['expose']['label'] = 'Aktiv';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
+  $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['status']['expose']['remember_roles'] = array(
+    2 => 0,
     30037204 => 0,
     1 => 0,
     197637936 => 0,
@@ -244,6 +267,7 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['filters']['date_filter']['table'] = 'users';
   $handler->display->display_options['filters']['date_filter']['field'] = 'date_filter';
   $handler->display->display_options['filters']['date_filter']['operator'] = '>=';
+  $handler->display->display_options['filters']['date_filter']['group'] = 1;
   $handler->display->display_options['filters']['date_filter']['exposed'] = TRUE;
   $handler->display->display_options['filters']['date_filter']['expose']['operator_id'] = 'date_filter_op';
   $handler->display->display_options['filters']['date_filter']['expose']['label'] = 'Letzter Zugriff von';
@@ -271,6 +295,7 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['filters']['date_filter_1']['table'] = 'users';
   $handler->display->display_options['filters']['date_filter_1']['field'] = 'date_filter';
   $handler->display->display_options['filters']['date_filter_1']['operator'] = '>=';
+  $handler->display->display_options['filters']['date_filter_1']['group'] = 1;
   $handler->display->display_options['filters']['date_filter_1']['exposed'] = TRUE;
   $handler->display->display_options['filters']['date_filter_1']['expose']['operator_id'] = 'date_filter_1_op';
   $handler->display->display_options['filters']['date_filter_1']['expose']['label'] = 'Letzter Zugriff bis';
@@ -325,6 +350,7 @@ function nm_administration_views_default_views() {
     t('Benutzer'),
     t('- Choose an operation -'),
     t('Name'),
+    t('Status'),
     t('Rollen'),
     t('Letzter Zugriff'),
     t('Operationen'),
@@ -335,6 +361,7 @@ function nm_administration_views_default_views() {
     t('Separat, da sonst Exposed Filter in das andere Panel reingrätscht'),
     t('« erste Seite'),
     t('letzte Seite »'),
+    t('Aktiv'),
     t('Rolle'),
     t('Letzter Zugriff von'),
     t('Letzter Zugriff bis'),
@@ -1015,7 +1042,7 @@ function nm_administration_views_default_views() {
     24708420 => 0,
     140204299 => 0,
   );
-  /* Filter criterion: Beitrag: Semester (field_semester) */
+  /* Filter criterion: Content: Semester (field_semester) */
   $handler->display->display_options['filters']['field_semester_tid']['id'] = 'field_semester_tid';
   $handler->display->display_options['filters']['field_semester_tid']['table'] = 'field_data_field_semester';
   $handler->display->display_options['filters']['field_semester_tid']['field'] = 'field_semester_tid';
@@ -1039,7 +1066,7 @@ function nm_administration_views_default_views() {
   );
   $handler->display->display_options['filters']['field_semester_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_semester_tid']['vocabulary'] = 'semester';
-  /* Filter criterion: Beitrag: VHB-LVNR (field_vhb_lvnr) */
+  /* Filter criterion: Content: VHB-LVNR (field_vhb_lvnr) */
   $handler->display->display_options['filters']['field_vhb_lvnr_value']['id'] = 'field_vhb_lvnr_value';
   $handler->display->display_options['filters']['field_vhb_lvnr_value']['table'] = 'field_data_field_vhb_lvnr';
   $handler->display->display_options['filters']['field_vhb_lvnr_value']['field'] = 'field_vhb_lvnr_value';
