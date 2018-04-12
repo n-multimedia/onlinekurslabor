@@ -97,8 +97,8 @@ function nm_administration_views_default_views() {
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'skip_permission_check' => 0,
-      'override_label' => 0,
-      'label' => '',
+      'override_label' => 1,
+      'label' => 'Person sperren',
     ),
     'action::views_bulk_operations_delete_item' => array(
       'selected' => 1,
@@ -126,6 +126,14 @@ function nm_administration_views_default_views() {
       'skip_permission_check' => 0,
       'override_label' => 0,
       'label' => '',
+    ),
+    'action::realname_action_realname_update' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 1,
+      'skip_permission_check' => 0,
+      'override_label' => 1,
+      'label' => 'Realname-Update ausführen',
     ),
   );
   /* Field: User: Name */
@@ -349,6 +357,8 @@ function nm_administration_views_default_views() {
     t('last »'),
     t('Benutzer'),
     t('- Choose an operation -'),
+    t('Person sperren'),
+    t('Realname-Update ausführen'),
     t('Name'),
     t('Status'),
     t('Rollen'),
