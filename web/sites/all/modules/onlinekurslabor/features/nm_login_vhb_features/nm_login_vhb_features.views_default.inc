@@ -180,6 +180,7 @@ function nm_login_vhb_features_views_default_views() {
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['row_clickable'] = 1;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
@@ -187,6 +188,7 @@ function nm_login_vhb_features_views_default_views() {
       'selected' => 1,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
+      'skip_permission_check' => 0,
       'override_label' => 0,
       'label' => '',
     ),
@@ -194,8 +196,12 @@ function nm_login_vhb_features_views_default_views() {
       'selected' => 1,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
+      'skip_permission_check' => 0,
+      'override_label' => 1,
+      'label' => 'In Nicht-VHB-User konvertieren',
+      'settings' => array(
+        'log' => 1,
+      ),
     ),
   );
   /* Field: NM Login VHB: uid field */
@@ -288,6 +294,7 @@ function nm_login_vhb_features_views_default_views() {
     t('Profile'),
     t('NM Login VHB'),
     t('- Choose an operation -'),
+    t('In Nicht-VHB-User konvertieren'),
     t('uid field'),
     t('.'),
     t('Name'),
