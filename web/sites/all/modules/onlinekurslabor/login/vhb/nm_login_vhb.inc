@@ -397,7 +397,7 @@ function nm_login_vhb_archivate_user($user) {
         //because uid should be referenced not the name
         'name' => 'obfuscated',
         'pass' => user_password(),
-        'mail' => 'obfuscated@mail' . user_password() . '.de',
+        'mail' => '',
         'init' => 'obfuscated@mail' . user_password() . '.de',
         'status' => 0,
     );
