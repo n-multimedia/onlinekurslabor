@@ -380,6 +380,27 @@ function user_assign_to_course_group_submit($form_id, $form_state) {
   return $result;
 }
 
+
+/**
+ * validiert die Werte, die von   user_send_message_form übergeben wurden.
+ * Gesperrte Accounts werden aussortiert
+ * @param type $form
+ * @param type $form_state
+ */
+function user_send_message_validate($form,&$form_state) {
+    //prüft alle accounts
+    foreach($form_state['selection'] as $identifier => $uid)
+    {
+        $acc  = user_load($uid);
+        //status 0 == blocked
+        if($acc->status == 0)
+        {
+            drupal_set_message(t('@realname is blocked and thus cannot receive messages.', array('@realname' => $acc->realname)), 'warning');
+            unset($form_state['selection'][$identifier]);
+        }
+    }
+}
+
 /**
  * Process user_send_message form submissions.
  */
