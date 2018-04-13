@@ -48,6 +48,9 @@ msgstr "Bitte lesen und akzeptieren Sie die Nutzungsvereinbarung, um im Onlineku
 msgid "@realname is blocked and thus cannot receive messages."
 msgstr "@realname ist gesperrt und wird die Nachricht nicht empfangen."
 
+msgid "@realname is blocked and thus will not receive an e-mail."
+msgstr "@realname ist gesperrt und wird deshalb nicht per E-Mail benachrichtigt."
+
 msgid ""
 msgstr ""
 
