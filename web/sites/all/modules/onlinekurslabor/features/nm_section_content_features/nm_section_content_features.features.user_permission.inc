@@ -78,8 +78,6 @@ function nm_section_content_features_user_default_permissions() {
   $permissions['administer book outlines'] = array(
     'name' => 'administer book outlines',
     'roles' => array(
-      'Autor' => 'Autor',
-      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
     ),
     'module' => 'book',
