@@ -1467,7 +1467,7 @@ function section_content_authors_tools_access() {
 
 function _section_content_authors_tools_role_access() {
   global $user;
-  $one_of_needed_roles = array_intersect($user->roles, array(NM_ROLE_ADMIN, NM_ROLE_AUTOR));
+  $one_of_needed_roles = array_intersect($user->roles, array(NM_ROLE_ADMIN, NM_ROLE_AUTOR, NM_ROLE_MODERATOR));
 
   return !empty($one_of_needed_roles);
 }
