@@ -35,30 +35,14 @@
 }
 
 /*
-Profile
+Profile view - remove tabs (devel, edit,...)
 */
-#edit-profile-master-field-birthday-und-0-value{
-  padding:0;
-  margin:0;
-}
-#edit-profile-master-field-birthday-und-0-value .form-item {
-  margin:0;
-  padding:0;
-}
 
-/*
-hide Master data label
-*/
-#edit-profile-master > legend {
-  display:none;
-}
-
-body.page-user .tabs--primary {
+body.logged-in.page-user .tabs--primary {
   display: none;
 }
 
-body.page-user .tabs--secondary {
+body.logged-in.page-user .tabs--secondary {
   display: none;
 }
-
 
