@@ -605,16 +605,19 @@ echo section_content_text_outline();
   $page->path = 'domain/text/%1/rearrange';
   $page->access = array(
     'plugins' => array(
-      0 => array(
-        'name' => 'perm',
+      1 => array(
+        'name' => 'og_perm',
         'settings' => array(
-          'perm' => 'administer book outlines',
+          'perm' => 'update group',
         ),
-        'context' => 'logged-in-user',
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'not' => FALSE,
       ),
     ),
-    'logic' => 'and',
+    'logic' => 'or',
     'type' => 'none',
     'settings' => NULL,
   );
