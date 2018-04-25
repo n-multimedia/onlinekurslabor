@@ -64,6 +64,8 @@ function videosafe_node_insert($node)
  */
 function videosafe_form_h5p_content_node_form_alter(&$form, &$form_state, $form_id) {
   
+    //needed for ajax within form-scope and prepopulate
+     $currently_set_og_group = drupal_get_query_parameters()['og_group_ref'];
     //enable hook on failed validation!!
      $form_state['no_cache'] = TRUE;
     /* with big thx to http://stackoverflow.com/questions/4932523/embed-a-view-using-ajax for pointing in the right direction */
@@ -71,7 +73,7 @@ function videosafe_form_h5p_content_node_form_alter(&$form, &$form_state, $form_
     $view = views_get_view('videosafe_folderview');
     $view->set_display('ajax_browser');
     $view->set_use_ajax(TRUE);
-    $view->set_arguments(array($tid));
+    //$view->set_arguments(array($tid));
     $drupal_view_setting = array(
         'views' => array(
             'ajax_path' => url('views/ajax'),
@@ -83,9 +85,11 @@ function videosafe_form_h5p_content_node_form_alter(&$form, &$form_state, $form_
                     'view_path' => check_plain($_GET['q']),
                     'view_base_path' => $view->get_path(),
                     'view_dom_id' => 1,
-                    'pager_element' => $view->pager['element'],
+                    'pager_element' => !empty($view->pager) ? $view->pager['element'] : 0,
                     #'field_parent_folder_target_id' => _videosafe_get_root_directory()->nid,
                     'page' => 0,
+                    //eigtl nicht fuer den view, aber gibt sonst nen form_error durch prepopulate
+                    'og_group_ref' => $currently_set_og_group
                 ),
             ),
         ),
