@@ -541,7 +541,7 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['name']['label'] = 'Autor';
+  $handler->display->display_options['fields']['name']['label'] = 'Erstellt durch';
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
@@ -755,7 +755,7 @@ function nm_administration_views_default_views() {
     t('- Choose an operation -'),
     t('Titel'),
     t('Typ'),
-    t('Autor'),
+    t('Erstellt durch'),
     t('Änderungsdatum'),
     t('Verlinkung bearbeiten'),
     t('[edit_node] '),
@@ -913,7 +913,7 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['name']['label'] = 'Kursersteller';
+  $handler->display->display_options['fields']['name']['label'] = 'Kurs erstellt durch';
   /* Field: Content: Published */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'node';
@@ -979,7 +979,7 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['filters']['realname']['group'] = 1;
   $handler->display->display_options['filters']['realname']['exposed'] = TRUE;
   $handler->display->display_options['filters']['realname']['expose']['operator_id'] = 'realname_op';
-  $handler->display->display_options['filters']['realname']['expose']['label'] = 'Dozent (Kursersteller)';
+  $handler->display->display_options['filters']['realname']['expose']['label'] = 'Dozierender (erstellte den Kurs)';
   $handler->display->display_options['filters']['realname']['expose']['operator'] = 'realname_op';
   $handler->display->display_options['filters']['realname']['expose']['identifier'] = 'realname';
   $handler->display->display_options['filters']['realname']['expose']['remember_roles'] = array(
@@ -1154,7 +1154,7 @@ function nm_administration_views_default_views() {
     t('Inhalt'),
     t('- Choose an operation -'),
     t('Titel'),
-    t('Kursersteller'),
+    t('Kurs erstellt durch'),
     t('Status'),
     t('Veröffentlicht'),
     t('Entwurf'),
@@ -1162,7 +1162,7 @@ function nm_administration_views_default_views() {
     t('Verlinkung bearbeiten'),
     t('[edit_node] '),
     t('Operationen'),
-    t('Dozent (Kursersteller)'),
+    t('Dozierender (erstellte den Kurs)'),
     t('Änderungsdatum von'),
     t('Änderungsdatum bis'),
     t('Semester'),
@@ -1582,7 +1582,7 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['name']['label'] = 'Autor';
+  $handler->display->display_options['fields']['name']['label'] = 'Erstellt durch';
   $handler->display->display_options['fields']['name']['element_wrapper_class'] = 'col-md-2';
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
@@ -1651,7 +1651,7 @@ function nm_administration_views_default_views() {
     t('- Choose an operation -'),
     t('Titel'),
     t('Typ'),
-    t('Autor'),
+    t('Erstellt durch'),
     t('Aktualisiert'),
     t('Verlinkung bearbeiten'),
     t('[edit_node] '),
