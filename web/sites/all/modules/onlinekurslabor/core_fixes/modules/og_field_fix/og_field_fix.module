@@ -1,0 +1,43 @@
+<?php
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * NAME og_field_fix
+ */
+
+/**
+ * implements hook_form_node_form_alter
+ * Creates dummy-form-element to fix og-behaviour (????)
+ * @param type $form
+ * @param type $form_state
+ * @param type $form_id
+ */
+function og_field_fix_form_node_form_alter(&$form, &$form_state, $form_id) {
+    $node = $form['#node'];
+    #dpm(custom_general_node_form_alter);
+    $form['fix-broken-og-field']['fix-broken-og-field-DUMMY'] = array(
+        '#title' => 'Not 2b shown. Fixes broken code. Hide it via css!',
+        '#type' => 'select',
+        '#ajax' => array(
+            'callback' => '_og_field_fix_fix_og_field_callback',
+            'wrapper' => 'fix-broken-og-field-wrapper',
+            'effect' => 'fade',
+            'speed' => 'fast',
+        ),
+    );
+}
+
+/**
+ * 
+ * @param type $form
+ * @param type $form_state
+ * @return int
+ */
+function _og_field_fix_fix_og_field_callback($form, $form_state) {
+    return 42;
+}

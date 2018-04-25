@@ -14,7 +14,7 @@ drush en nm_administration --yes
 drush fr nm_section_courses_features nm_administration --yes
 
 drush en section_administration --yes
-drush en legal --yes
+drush en  og_field_fix --yes
 
 #revert single features
  

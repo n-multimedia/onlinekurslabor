@@ -1,0 +1,13 @@
+name = og_field_fix
+description = fixes disappearing og-group-field
+package = core_fixes
+dependencies[] = og
+
+
+core = 7.x
+
+; Information added by drupal.org packaging script on 2013-02-25
+version = "7.x-1.x"
+core = "7.x"
+
+stylesheets[all][] = css/og_field_fix.css
