@@ -1206,7 +1206,7 @@ echo theme(\'profile_details\', array(\'uid\'=>%user:uid , \'range\'=>\'private\
   );
   $pane->configuration = array(
     'use_pager' => 1,
-    'pager_id' => '2',
+    'pager_id' => '1',
     'items_per_page' => '10',
     'context' => array(
       0 => 'argument_entity_id:user_1',
