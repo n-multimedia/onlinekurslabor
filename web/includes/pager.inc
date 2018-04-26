@@ -602,6 +602,13 @@ function theme_pager_link($variables) {
   if ($new_page = implode(',', pager_load_array($page_new[$element], $element, explode(',', $page)))) {
     $parameters['page'] = $new_page;
   }
+  
+    //13.04.2018 - 13:52 - SN
+  //enforce page=0 => fixing ajax first page behavior
+  if (arg(0) == "course" && arg(4) == "solution" && $new_page == 0) {
+    $parameters['page'] = $new_page;;
+  }
+
 
   $query = array();
   if (count($parameters)) {
