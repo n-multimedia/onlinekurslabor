@@ -16,3 +16,4 @@ web/stats
 web/sites/*/settings*.php
 files_private/
 tmp/
+scripts/emergency_mail_contact.sh
