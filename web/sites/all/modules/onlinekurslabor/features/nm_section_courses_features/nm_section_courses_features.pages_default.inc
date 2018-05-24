@@ -3054,7 +3054,21 @@ return section_courses_text_outline();
   $pane->type = 'views_panes';
   $pane->subtype = 'courses_task_solutions-panel_pane_1';
   $pane->shown = TRUE;
-  $pane->access = array();
+  $pane->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'og_perm',
+        'settings' => array(
+          'perm' => 'update group',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+  );
   $pane->configuration = array();
   $pane->cache = array();
   $pane->style = array(
