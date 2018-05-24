@@ -396,16 +396,22 @@ function _section_courses_task_solution_assesment_form($form, &$form_state, $sol
         '#attributes' => array('class' => array('btn','btn-primary')),
         '#value' => 'Speichern',
       );
-      $form['store_assets'] = array(
+      if(in_array('Bewertet',workflow_field_choices($solution)))
+      {
+       $form['store_assets'] = array(
         '#type' => 'submit',
         '#attributes' => array('class' => array('btn','btn-success')),
         '#value' => 'Speichern und Bewerten',
-      );
-      $form['store_cancel_submission'] = array(
+       );
+      }
+    if(in_array('Entwurf',workflow_field_choices($solution)))
+      {
+       $form['store_cancel_submission'] = array(
         '#type' => 'submit',
         '#attributes' => array('class' => array('btn','btn-default')),
         '#value' => 'Speichern und Einreichung aufheben',
-      );
+       );
+      }
       break;
   }
 
