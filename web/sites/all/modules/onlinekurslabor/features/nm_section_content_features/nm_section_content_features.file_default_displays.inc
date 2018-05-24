@@ -49,7 +49,9 @@ function nm_section_content_features_file_default_displays() {
   $file_display->name = 'audio__file_icon__file_field_media_large_icon';
   $file_display->weight = 0;
   $file_display->status = TRUE;
-  $file_display->settings = '';
+  $file_display->settings = array(
+    'image_style' => '',
+  );
   $export['audio__file_icon__file_field_media_large_icon'] = $file_display;
 
   $file_display = new stdClass();
@@ -389,7 +391,9 @@ function nm_section_content_features_file_default_displays() {
   $file_display->name = 'document__file_icon__file_field_media_large_icon';
   $file_display->weight = 0;
   $file_display->status = TRUE;
-  $file_display->settings = '';
+  $file_display->settings = array(
+    'image_style' => '',
+  );
   $export['document__file_icon__file_field_media_large_icon'] = $file_display;
 
   $file_display = new stdClass();
@@ -653,7 +657,9 @@ function nm_section_content_features_file_default_displays() {
   $file_display->name = 'image__file_icon__file_field_media_large_icon';
   $file_display->weight = 0;
   $file_display->status = TRUE;
-  $file_display->settings = '';
+  $file_display->settings = array(
+    'image_style' => '',
+  );
   $export['image__file_icon__file_field_media_large_icon'] = $file_display;
 
   $file_display = new stdClass();
@@ -1912,7 +1918,9 @@ function nm_section_content_features_file_default_displays() {
   $file_display->name = 'video__file_icon__file_field_media_large_icon';
   $file_display->weight = 0;
   $file_display->status = TRUE;
-  $file_display->settings = '';
+  $file_display->settings = array(
+    'image_style' => '',
+  );
   $export['video__file_icon__file_field_media_large_icon'] = $file_display;
 
   $file_display = new stdClass();
