@@ -3027,6 +3027,46 @@ return section_courses_text_outline();
   $display->content['new-990de6ea-3ee2-49e5-920c-9c040316dd6d'] = $pane;
   $display->panels['news'][1] = 'new-990de6ea-3ee2-49e5-920c-9c040316dd6d';
   $pane = new stdClass();
+  $pane->pid = 'new-29024344-5258-466a-8c7c-9c1da085a8ee';
+  $pane->panel = 'news';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'og_perm',
+        'settings' => array(
+          'perm' => 'update group',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+  );
+  $pane->configuration = array(
+    'admin_title' => 'Studentenformularansicht',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<p>Hier sehen Sie den Antwort-Bereich</p>',
+    'format' => 'filtered_html',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '29024344-5258-466a-8c7c-9c1da085a8ee';
+  $display->content['new-29024344-5258-466a-8c7c-9c1da085a8ee'] = $pane;
+  $display->panels['news'][2] = 'new-29024344-5258-466a-8c7c-9c1da085a8ee';
+  $pane = new stdClass();
   $pane->pid = 'new-5b8f0c32-6c04-4e43-8eeb-3152f04a9e84';
   $pane->panel = 'news';
   $pane->type = 'block';
@@ -3043,11 +3083,11 @@ return section_courses_text_outline();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 2;
+  $pane->position = 3;
   $pane->locks = array();
   $pane->uuid = '5b8f0c32-6c04-4e43-8eeb-3152f04a9e84';
   $display->content['new-5b8f0c32-6c04-4e43-8eeb-3152f04a9e84'] = $pane;
-  $display->panels['news'][2] = 'new-5b8f0c32-6c04-4e43-8eeb-3152f04a9e84';
+  $display->panels['news'][3] = 'new-5b8f0c32-6c04-4e43-8eeb-3152f04a9e84';
   $pane = new stdClass();
   $pane->pid = 'new-38a71211-e95d-4e6b-8ed3-871fd11e0d39';
   $pane->panel = 'tools';
