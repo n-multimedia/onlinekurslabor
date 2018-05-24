@@ -121,11 +121,8 @@ function _course_tasks_generic_solution_workflow_form($node) {
       return $output;
     }
   }
-  // Show state change form at the bottom of the node display.
-  $form_state = array('cache' => TRUE);
-  form_load_include($form_state, 'inc', 'workflow', 'workflow.pages');
-  $form = drupal_get_form('workflow_tab_form', $node, $workflow->wid, $states, $current);
-  $form['#weight'] = 99;
+ 
+    
 
   //rename and style in workflow form
   /*
