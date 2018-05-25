@@ -1345,11 +1345,7 @@ function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
   $account = user_load($uid);
 
   //we want to redirect students directly to their course group
-  //check fo role
-  if (array_intersect(array(
-    NM_ROLE_STUDENT,
-    NM_ROLE_TEST_STUDENT
-  ), $account->roles)) {
+    
     //get all gids the user belongs to
     $groups = og_get_groups_by_user($account);
     $groups = $groups['node'] ? $groups['node'] : array();
@@ -1365,12 +1361,15 @@ function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
           $active_course = $course;
         }
         //check if course group is part of the active course
-        if (og_is_member('node', $active_course->nid, 'node', node_load($gid))) {
+        if (og_is_member('node', $active_course->nid, 'node', node_load($gid))
+                //kann kurs editieren? dann return null..
+              &&  !node_access('update',$active_course, $account)
+                ) {
           return $gid;
         }
       }
     }
-  }
+    
   return NULL;
 }
 
