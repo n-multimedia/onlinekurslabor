@@ -2395,6 +2395,11 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
             $form['message']['#default_value'] = $course_text;
         }
     }
+    
+    if($form_id === 'workflow_admin_ui_transitions_form')
+    {
+        drupal_set_message('Be aware of hook_workflow which can limit the access.', 'warning');
+    }
 }
 
 /**
@@ -2764,6 +2769,35 @@ function section_courses_views_query_alter(&$view, &$query) {
   if ($view->name == "courses_kurse_bersicht" && $view->current_display == 'panel_pane_3') {
     $query->add_where_expression(1, "node.nid NOT IN (SELECT gid FROM og_membership WHERE entity_type= 'user' AND etid = ***CURRENT_USER*** )");
   }
+}
+
+
+/**
+ * implements hook_workflow
+ * Can only VETO the transition, not ALLOW it. 
+   @param type $op. for example transition permitted
+ * @param type $old_state
+ * @param type $new_state
+ * @param type $node
+ * 
+ * @see hook_workflow
+ */
+function section_courses_workflow($op, $old_state, $new_state, $node, $force = FALSE) { #(transition permitted', $current_sid, $transition->state_id, $node);
+    switch ($op) {
+        case 'transition permitted':
+            //es geht um die transition einer lösung
+            if ($node->type == NM_COURSE_GENERIC_TASK_SOLUTION) {
+
+                //Schützenswert ist die transition eingereicht/bewertet=>irgendwas.
+                //falls ich den zuzgehörigen kurs nicht bearbeiten kann, dann VETO
+                if (in_array($old_state, array(NM_COURSES_TASK_WORKFLOW_SUBMITTED, NM_COURSES_TASK_WORKFLOW_ASSESSED)) && !node_access('update', node_load($node->og_group_ref[LANGUAGE_NONE][0]['target_id']))) { {
+                        return FALSE;
+                    }
+                }
+            }
+
+            break;
+    }
 }
 
 /**
