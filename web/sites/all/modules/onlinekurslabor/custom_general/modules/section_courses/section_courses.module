@@ -2787,6 +2787,12 @@ function section_courses_workflow($op, $old_state, $new_state, $node, $force = F
             //es geht um die transition einer lösung
             if ($node->type == NM_COURSE_GENERIC_TASK_SOLUTION) {
 
+                //sonderfall buggy API.. beim einreichen macht er Käse und man muss ihm das erlauben..
+                if($old_state == NM_COURSES_TASK_WORKFLOW_SUBMITTED && $new_state == NM_COURSES_TASK_WORKFLOW_DRAFT)
+                {
+                    continue; 
+                }
+                
                 //Schützenswert ist die transition eingereicht/bewertet=>irgendwas.
                 //falls ich den zuzgehörigen kurs nicht bearbeiten kann, dann VETO
                 if (in_array($old_state, array(NM_COURSES_TASK_WORKFLOW_SUBMITTED, NM_COURSES_TASK_WORKFLOW_ASSESSED)) && !node_access('update', node_load($node->og_group_ref[LANGUAGE_NONE][0]['target_id']))) { {
