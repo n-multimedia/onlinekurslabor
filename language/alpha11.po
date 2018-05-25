@@ -1,5 +1,8 @@
 #Translation File - onlinekurslabor
 
+msgid 'Move to "@state_name"'
+msgstr 'Setze auf "@state_name"'
+
 msgid ""
 msgstr ""
 
