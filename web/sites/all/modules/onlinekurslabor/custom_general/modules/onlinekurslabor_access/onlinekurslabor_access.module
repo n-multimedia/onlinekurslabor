@@ -564,20 +564,3 @@ function _onlinekurslabor_access_domain_content_is_available_in($o_domain_conten
 
 
 
-/**
- * Implements hook_og_user_access_alter().
- *
- * 
- * general admin-bypass for all og-groups
- * 
- */
-function onlinekurslabor_acces_og_user_access_alter(&$perm, $context) {
-    global $user;
-    $account = !empty($context['account'])? $context['account']: clone $user;
-
-
-    //admin bypass
-  if(user_access('bypass node access', $account)) {
-    $perm['administer group'] = TRUE;
-  }
-}
