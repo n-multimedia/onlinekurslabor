@@ -225,6 +225,11 @@ function nm_stream_node_grants($account, $op) {
   if ($op != 'view') {
     return;
   }*/
+  //speedup by 40% using static cache  
+  $grants = &drupal_static(__FUNCTION__);
+  if (isset($grants)) {
+      return $grants;
+  }  
   $grants = [];
   $my_lehrtexte = [];
 

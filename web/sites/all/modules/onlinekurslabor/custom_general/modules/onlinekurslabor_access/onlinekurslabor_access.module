@@ -51,6 +51,12 @@ function onlinekurslabor_access_node_grants($account, $op) {
     return;
   }
 
+  //speedup by 40% using static cache
+  $grants = &drupal_static(__FUNCTION__);
+  if (isset($grants)) {
+      return $grants;
+  }
+  
   $grants = array();
 
   //COURSES
