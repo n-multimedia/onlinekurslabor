@@ -46,7 +46,7 @@ function nm_stream_node_access_records($node) {
    'grant_view' => 1,
    'grant_update' => 0,
    'grant_delete' => 1,
-   'priority' => 2
+   'priority' => 1
   ];
   
   
