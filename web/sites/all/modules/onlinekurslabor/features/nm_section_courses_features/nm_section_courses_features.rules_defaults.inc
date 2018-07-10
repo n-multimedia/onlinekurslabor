@@ -260,7 +260,7 @@ function nm_section_courses_features_default_rules_configuration() {
             "group" : [ "entity-course" ],
             "og_roles" : { "value" : { "kurs-dozent" : "kurs-dozent", "kurs-tutor" : "kurs-tutor" } },
             "subject" : "[entity-course:title] - Anmeldung - [account:name]",
-            "message" : "\\r\\n[account:name] m\\u00f6chte am Kurs \\u0022[entity-course:title]\\u0022 mit der Anfrage \\u0022[og-membership:og-membership-request]\\u0022 teilnehmen.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
+            "message" : "\\r\\n[account:name] m\\u00f6chte am Kurs \\u0022[entity-course:title]\\u0022 mit der Anfrage \\u0022[og-membership:og-membership-request]\\u0022 teilnehmen.\\r\\n\\r\\n\\u003Ca href=[site:url]\\/course\\/admin\\/[entity-course:nid]\\/members\\u003EBest\\u00e4tigen oder Ablehnen\\u003C\\/a\\u003E\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
           }
         }
       ]
