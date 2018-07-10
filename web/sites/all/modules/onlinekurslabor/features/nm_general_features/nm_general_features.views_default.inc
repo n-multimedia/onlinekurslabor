@@ -92,7 +92,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['relationships']['author']['field'] = 'author';
   $handler->display->display_options['relationships']['author']['relationship'] = 'mid';
   $handler->display->display_options['relationships']['author']['required'] = TRUE;
-  /* Relationship: User: Profil */
+  /* Relationship: User: Profile */
   $handler->display->display_options['relationships']['profile']['id'] = 'profile';
   $handler->display->display_options['relationships']['profile']['table'] = 'users';
   $handler->display->display_options['relationships']['profile']['field'] = 'profile';
@@ -123,7 +123,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['realname']['label'] = '(hidden) Real name';
   $handler->display->display_options['fields']['realname']['exclude'] = TRUE;
   $handler->display->display_options['fields']['realname']['link_to_user'] = FALSE;
-  /* Field: Profil: Foto */
+  /* Field: Profile: Foto */
   $handler->display->display_options['fields']['field_photo']['id'] = 'field_photo';
   $handler->display->display_options['fields']['field_photo']['table'] = 'field_data_field_photo';
   $handler->display->display_options['fields']['field_photo']['field'] = 'field_photo';
@@ -261,7 +261,7 @@ function nm_general_features_views_default_views() {
     t('letzte Seite »'),
     t('relationship to pm_message'),
     t('relationship from pm_message (author) to user'),
-    t('Profil'),
+    t('Profile'),
     t('(hidden) mid'),
     t('.'),
     t('(hidden) Real name'),
@@ -335,7 +335,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['created']['label'] = '';
   $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['created']['date_format'] = 'medium';
-  /* Field: Beitrag: Body */
+  /* Field: Content: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -609,7 +609,7 @@ function nm_general_features_views_default_views() {
   $handler->display->display_options['fields']['filename']['label'] = '';
   $handler->display->display_options['fields']['filename']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['filename']['alter']['ellipsis'] = FALSE;
-  /* Field: File: Rendered Datei */
+  /* Field: File: Rendered File */
   $handler->display->display_options['fields']['rendered_entity']['id'] = 'rendered_entity';
   $handler->display->display_options['fields']['rendered_entity']['table'] = 'views_entity_file';
   $handler->display->display_options['fields']['rendered_entity']['field'] = 'rendered_entity';

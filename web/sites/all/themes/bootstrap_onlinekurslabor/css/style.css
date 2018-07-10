@@ -823,6 +823,16 @@ powered by
 }
 
 
+/*footer: mobil*/
+@media (max-width: 767px) {
+    .footer_region_left li {
+        float:none;
+        display: block;
+        text-align: center;
+    }
+}
+
+
 .footer_region_right {
     text-align:right;
 }
