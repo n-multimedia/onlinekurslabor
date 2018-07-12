@@ -22,7 +22,7 @@
             
             var video = Drupal.behaviors.h5p_connector_api.av_player.av_object.h5p;
 
-            the_great_list =
+            var the_great_list =
                     '<div id="h5p_annotationlist_' + video.contentId + '" class="h5p_annotationlist" style="display:none;">' +
                     '<div class="sort_region">' +
                     '<a href=# title="Sortieren" class="sort_label fa fa-sort fa-1"><span class=""></span></a><div class="sort_container">Sortieren nach<br>';
