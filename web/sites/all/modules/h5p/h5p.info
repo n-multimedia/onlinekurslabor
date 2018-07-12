@@ -15,9 +15,8 @@ files[] = h5p.event.inc
 files[] = h5p.classes.inc
 files[] = h5p.admin.inc
 
-; Information added by Drupal.org packaging script on 2018-01-22
-version = "7.x-1.34"
+; Information added by Drupal.org packaging script on 2018-05-22
+version = "7.x-1.35"
 core = "7.x"
 project = "h5p"
-datestamp = "1516628295"
-
+datestamp = "1526973800"
