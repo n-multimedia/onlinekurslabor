@@ -149,7 +149,7 @@ function h5p_integration_node_view($node, $view_mode, $langcode) {
  */
 function h5p_integration_form_h5p_content_node_form_alter(&$form, &$form_state, $form_id) {
     //siehe auch custom_general_form_alter
-    
+
     //hole aktuelle lt-nid, falls per prefill gesetzt
     if(!empty($form['og_group_ref'][LANGUAGE_NONE][0]['default']['#default_value']))
     {
@@ -157,6 +157,11 @@ function h5p_integration_form_h5p_content_node_form_alter(&$form, &$form_state, 
         //entferne aus zusätzlich-liste
         unset($form['og_domain_ref'][LANGUAGE_NONE][0]['default']['#options'][$default_group]);
         /*im grunde kann man nun auch noch das autocomplete-feld filtern. Hoff aber, admins sin nicht so doof.*/
+        
+        //verstecke download-embet-buttons-auswahl für < moderator
+        if(!user_access('administer users')){
+            $form['h5p_options']['#access'] = false;
+        }
     } 
        
 }
