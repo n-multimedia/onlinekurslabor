@@ -1840,7 +1840,7 @@ return section_courses_text_outline();
     ),
   );
   $display->cache = array();
-  $display->title = 'Teilnehmer anlegen';
+  $display->title = 'Teilnehmende hinzufügen';
   $display->uuid = 'c3753c99-df30-45d9-a4b0-e095c5807d0c';
   $display->storage_type = 'page_manager';
   $display->storage_id = 'page_course_admin_add_member_panel_context';
@@ -4961,7 +4961,8 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Studenten',
+    'override_title_text' => 'Andere Beteiligte',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -4998,7 +4999,8 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Tutoren',
+    'override_title_text' => 'Unterstützung',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -5035,7 +5037,8 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Dozenten',
+    'override_title_text' => 'Leitung',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -8242,7 +8245,7 @@ return section_courses_text_outline();
     ),
   );
   $display->cache = array();
-  $display->title = 'Teilnehmer';
+  $display->title = 'Teilnehmende';
   $display->uuid = 'd988ae1d-0774-48c6-b979-61a8e1862276';
   $display->storage_type = 'page_manager';
   $display->storage_id = 'page_members_in_course_panel_context';
@@ -8272,7 +8275,8 @@ return section_courses_text_outline();
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Dozenten',
+    'override_title_text' => 'Leitung',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -8309,7 +8313,8 @@ return section_courses_text_outline();
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Studenten',
+    'override_title_text' => 'Andere Beteiligte',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -8346,7 +8351,8 @@ return section_courses_text_outline();
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Tutoren',
+    'override_title_text' => 'Unterstützung',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(

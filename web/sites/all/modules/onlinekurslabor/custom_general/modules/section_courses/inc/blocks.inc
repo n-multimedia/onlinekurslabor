@@ -366,9 +366,9 @@ function _section_courses_get_instructor_tools() {
 
   $links = array();
 
-
-  $links['instr_overview_members']['label'] = "Teilnehmer";
-  $links['instr_add_members']['label'] = "Teilnehmer";
+  //wg css-rtl
+  $links['instr_overview_members']['label'] = ".Teilnehm";
+  $links['instr_add_members']['label'] = ".Teilnehm";
 
   $links['instr_overview_content']['label'] = "Inhalte";
   $links['instr_add_news']['label'] = "Neuigkeit";
@@ -541,7 +541,7 @@ function _course_top_navigation_view() {
   $nav_items_collab['tasks'] = "Aufgaben";
   $nav_items_collab['cours_groups'] = "Kursgruppe";
   $nav_items_collab['forum'] = "Forum";
-  $nav_items_collab['members'] = "Teilnehmer";
+  $nav_items_collab['members'] = "Teilnehmende";
   $nav_items_collab['wiki'] = "Wiki";
 
 
@@ -748,7 +748,7 @@ function _section_courses_navtext_to_link($course, $text) {
         $result['link'] = l($text, $path, $options);
       }
       break;
-    case "Teilnehmer":
+    case "Teilnehmende":
       $path = "course/members/" . $course_nid;
       $result['path'] = $path;
       $result['link'] = l($text, $path, $options);

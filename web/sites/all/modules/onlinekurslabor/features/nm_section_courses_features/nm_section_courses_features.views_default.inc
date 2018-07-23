@@ -824,7 +824,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['footer']['result']['table'] = 'views';
   $handler->display->display_options['footer']['result']['field'] = 'result';
   $handler->display->display_options['footer']['result']['empty'] = TRUE;
-  $handler->display->display_options['footer']['result']['content'] = 'Teilnehmer @start - @end aus insgesamt @total';
+  $handler->display->display_options['footer']['result']['content'] = 'Personen @start - @end aus insgesamt @total';
   /* Relationship: User: Profile */
   $handler->display->display_options['relationships']['profile']['id'] = 'profile';
   $handler->display->display_options['relationships']['profile']['table'] = 'users';
@@ -1379,7 +1379,7 @@ function nm_section_courses_features_views_default_views() {
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
-    t('Teilnehmer @start - @end aus insgesamt @total'),
+    t('Personen @start - @end aus insgesamt @total'),
     t('Profile'),
     t('OG membership from user'),
     t('OG Roles from OG membership'),

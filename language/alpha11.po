@@ -3,6 +3,57 @@
 msgid 'Move to "@state_name"'
 msgstr 'Setze auf "@state_name"'
 
+msgid "Import List"
+msgstr "Liste der Teilnehmenden"
+
+msgid "E-mail or username"
+msgstr "E-Mail oder Kontoname"
+
+msgid "Enter your e-mail address or username."
+msgstr "Geben Sie Ihre E-Mail-Adresse oder Ihren OKL-Kontonamen ein."
+
+msgid "User account"
+msgstr "OKL-Konto"
+
+msgid "Switch user"
+msgstr "OKL-Konto wechseln"
+
+msgid "Blocked users"
+msgstr "Blockierte Personen"
+
+msgid "Blockierte Benutzer"
+msgstr "Blockierte Personen"
+
+msgid "Participants"
+msgstr "Gesprächsbeteiligte"
+
+msgid "Enter the recipient, separate recipients with commas"
+msgstr "Personen angeben (getrennt durch Kommata)"
+
+msgid "Enter the recipient, separate recipients with commas."
+msgstr "Personen angeben (getrennt durch Kommata)"
+
+msgid "Block a user"
+msgstr "Eine Person blockieren"
+
+msgid "Block the selected users"
+msgstr "Gewählte Personen blockieren"
+
+msgid "Block user"
+msgstr "Personen blockieren"
+
+msgid "Change own username"
+msgstr "Eigenen Kontonamen ändern"
+
+msgid "The username %name does not exist."
+msgstr "Der Kontoname %name ist nicht vorhanden."
+
+msgid "Partners"
+msgstr "Partnerorganisationen"
+
+msgid "Authoring information"
+msgstr "Erstellt durch"
+
 msgid ""
 msgstr ""
 
