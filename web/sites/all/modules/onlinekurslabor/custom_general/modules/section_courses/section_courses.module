@@ -2054,16 +2054,16 @@ function section_courses_student_registration_form_submit($form, &$form_state) {
           //profile2_save();
         }
         else {
-          drupal_set_message('Im System gibt es bereits einen Benutzer mit dem Namen ' . $edit['name'], 'error');
+          drupal_set_message('Im System gibt es bereits eine Person mit dem Namen ' . $edit['name'], 'error');
         }
       }
       else {
-        drupal_set_message('Benutzer ' . ($key + 1) . ' konnte nicht hinzugefügt werden, da eines der Formularfelder leer war.', 'error');
+        drupal_set_message('Person ' . ($key + 1) . ' konnte nicht hinzugefügt werden, da eines der Formularfelder leer war.', 'error');
       }
     }
   }
   else {
-    drupal_set_message("Es wurde kein neuer Benutzer erstellt", 'error');
+    drupal_set_message("Es wurde keine neue Person erstellt", 'error');
   }
 }
 

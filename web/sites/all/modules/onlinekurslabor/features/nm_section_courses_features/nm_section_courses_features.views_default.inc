@@ -857,36 +857,26 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_user';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
+  $handler->display->display_options['fields']['views_bulk_operations']['label'] = 'Person';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
+  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['row_clickable'] = 1;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
-    'action::user_block_user_action' => array(
+    'action::user_assign_to_course_group' => array(
       'selected' => 1,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
+      'skip_permission_check' => 0,
       'override_label' => 1,
-      'label' => 'Benutzerkonto sperren',
+      'label' => 'Einer Kursgruppe zuweisen',
     ),
     'action::user_assign_course_role' => array(
       'selected' => 1,
       'postpone_processing' => 0,
       'skip_confirmation' => 1,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::user_assign_to_course_group' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 1,
-      'label' => 'Einer Kursgruppe zuweisen',
-    ),
-    'action::user_modify_course_membership_state' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 1,
+      'skip_permission_check' => 0,
       'override_label' => 0,
       'label' => '',
     ),
@@ -894,6 +884,15 @@ function nm_section_courses_features_views_default_views() {
       'selected' => 1,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
+      'skip_permission_check' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::user_modify_course_membership_state' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 1,
+      'skip_permission_check' => 0,
       'override_label' => 0,
       'label' => '',
     ),
@@ -1384,7 +1383,7 @@ function nm_section_courses_features_views_default_views() {
     t('OG membership from user'),
     t('OG Roles from OG membership'),
     t('Profil_master'),
-    t('User'),
+    t('Person'),
     t('- Choose an operation -'),
     t('Benutzerkonto sperren'),
     t('Einer Kursgruppe zuweisen'),
@@ -1410,6 +1409,7 @@ function nm_section_courses_features_views_default_views() {
     t('Block-Tutoren'),
     t('Block-Alle'),
     t('Block-Pending'),
+    t('User'),
     t('State'),
     t('Zeitpunkt der Anfrage'),
     t('Request message'),

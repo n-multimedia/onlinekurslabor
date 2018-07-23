@@ -179,7 +179,7 @@ function nm_login_vhb() {
     //kein user gefunden, anlegen..
     else {
         //hier fehlt eigentlich eine Fehlerbehandlung bei unbekannter Hochschule. Dafür refactor notwendig
-        drupal_set_message('Benutzer wird angelegt...');
+        drupal_set_message('Konto wird angelegt...');
         $vhb_user = nm_login_vhb_add_user($params);
         watchdog("LOGIN VHB", 'New user entry added', array(), WATCHDOG_INFO);
     }
@@ -613,7 +613,7 @@ function nm_login_vhb_archivate_user_action(&$object, $context = array()) {
     if ($object->archivated == 0) {
         nm_login_vhb_archivate_user($user);
     } else {
-        drupal_set_message("Der Benutzer " . $user->name . ' konnte nicht archiviert werden, da dieser bereits archiviert ist.', 'error');
+        drupal_set_message("Das Konto " . $user->name . ' konnte nicht archiviert werden, da dieses bereits archiviert ist.', 'error');
     }
 }
 

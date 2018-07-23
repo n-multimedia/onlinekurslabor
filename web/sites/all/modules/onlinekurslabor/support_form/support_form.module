@@ -30,7 +30,7 @@ function _support_form_get_options() {
     'Kursinhalte',
     'Stream',
     'Nachrichten',
-    'Benutzerkonto',
+    'Profil',
     'Sonstiges'
   );
 
@@ -162,7 +162,7 @@ function support_form() {
 
   $form['kontakt']['personal_data']['data'] = array(
     '#type' => 'textarea',
-    '#value' => 'Benutzername: '.$user->name . "\n".'E-Mail: ' . $user->mail . "\n".'Aktueller Pfad: '.  $current_site . "\n".'Browser: ' . $user_agent . $disclaimer,
+    '#value' => 'Kontoname: '.$user->name . "\n".'E-Mail: ' . $user->mail . "\n".'Aktueller Pfad: '.  $current_site . "\n".'Browser: ' . $user_agent . $disclaimer,
     '#attributes' => array(
       'class' => array('form-control disabled'),
       'disabled' => TRUE,
@@ -237,7 +237,7 @@ function support_form_mail($key, &$message, $params) {
   $from = $params['@from'];
   $message['subject'] = t($params['@subject']);
   $message['body'] = t(drupal_html_to_text($params['@body']));
-  $message['slogan'] = "Benutzer-Anfrage";
+  $message['slogan'] = "Support-Anfrage";
   $message['from'] = $from;
   $message['headers']['From'] = $from;
 
