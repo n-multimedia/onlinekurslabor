@@ -54,8 +54,8 @@ msgstr "Partnerorganisationen"
 msgid "Authoring information"
 msgstr "Erstellt durch"
 
-msgid ""
-msgstr ""
+msgid "Send message"
+msgstr "Nachricht schicken"
 
 msgid ""
 msgstr ""
