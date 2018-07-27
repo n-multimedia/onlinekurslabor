@@ -868,10 +868,12 @@ function section_courses_node_insert($node) {
 
   //07.05.2014 - 16:00 - SN fix insert for generic node add form embedded in panel page
   //page_courses_admin_add_node_panel_context
-  if (arg(0) == 'course' && arg(3) == 'add') {
+  //27.07.2018 - 11:56 - SN
+  //problem has been fixed
+  /*if (arg(0) == 'course' && arg(3) == 'add') {
     //dpm('invoking manually');
     rules_invoke_event("node_insert", $node);
-  }
+  }*/
 }
 
 function section_content_node_update($node) {
