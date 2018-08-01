@@ -1,8 +1,9 @@
 <?php
 
+
 /*
  * user Student edit form
- * 
+ * + user login form
  * 
  */
 
@@ -49,6 +50,13 @@ function onlinekurslabor_user_form_alter(&$form, &$form_state, $form_id) {
     if (isset($form['profile_student']))
       $form['profile_student']['#type'] = 'tab';
   }
+  
+  /* Auf Login-Form war username-Feld zu klein für lange E-Mail-Adressen */
+  elseif($form_id === 'user_login')
+  {
+       $form['name']['#size'] =  $form['name']['#maxlength']  = max(USERNAME_MAX_LENGTH,EMAIL_MAX_LENGTH);
+  }
+ 
 }
 
 /**
