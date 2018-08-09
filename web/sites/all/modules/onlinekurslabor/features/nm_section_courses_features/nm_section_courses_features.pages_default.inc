@@ -4961,7 +4961,7 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Andere Beteiligte',
+    'override_title_text' => 'Mitwirkung',
     'override_title_heading' => 'h2',
   );
   $pane->cache = array();
@@ -5112,7 +5112,8 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Alle Mitglieder',
+    'override_title_text' => 'Alle',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
