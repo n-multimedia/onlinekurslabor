@@ -1385,7 +1385,6 @@ function nm_section_courses_features_views_default_views() {
     t('Profil_master'),
     t('Person'),
     t('- Choose an operation -'),
-    t('Benutzerkonto sperren'),
     t('Einer Kursgruppe zuweisen'),
     t('Vorname'),
     t('Nachname'),
@@ -1410,6 +1409,7 @@ function nm_section_courses_features_views_default_views() {
     t('Block-Alle'),
     t('Block-Pending'),
     t('User'),
+    t('Benutzerkonto sperren'),
     t('State'),
     t('Zeitpunkt der Anfrage'),
     t('Request message'),
@@ -2126,7 +2126,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $view->description = 'Newest group members.';
   $view->tag = 'og';
   $view->base_table = 'users';
-  $view->human_name = 'Courses - Kursmitglieder';
+  $view->human_name = 'Courses - Kursteilnehmende';
   $view->core = 0;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */

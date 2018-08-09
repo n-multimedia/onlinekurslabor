@@ -57,8 +57,8 @@ msgstr "Erstellt durch"
 msgid "Send message"
 msgstr "Nachricht schicken"
 
-msgid ""
-msgstr ""
+msgid "Enter a user name to write a message to a user."
+msgstr "Geben Sie einen oder mehrere Namen an."
 
 msgid ""
 msgstr ""

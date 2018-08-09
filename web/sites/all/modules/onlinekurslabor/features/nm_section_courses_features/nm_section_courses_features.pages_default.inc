@@ -8021,7 +8021,7 @@ return section_courses_text_outline();
   $page->api_version = 1;
   $page->name = 'members_in_course';
   $page->task = 'page';
-  $page->admin_title = 'Mitglieder in: (Kurs)';
+  $page->admin_title = 'Teilnehmende in: (Kurs)';
   $page->admin_description = '';
   $page->path = 'course/members/%1';
   $page->access = array(
@@ -8313,7 +8313,7 @@ return section_courses_text_outline();
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Andere Beteiligte',
+    'override_title_text' => 'Mitwirkung',
     'override_title_heading' => 'h2',
   );
   $pane->cache = array();
