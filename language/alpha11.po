@@ -3,6 +3,10 @@
 msgid 'Move to "@state_name"'
 msgstr 'Setze auf "@state_name"'
 
+
+msgid "Access denied. You must log in to view this page."
+msgstr "Zugriff verweigert. Sie müssen sich einloggen, um diese Seite zu sehen."
+
 msgid "Import List"
 msgstr "Liste der Teilnehmenden"
 
