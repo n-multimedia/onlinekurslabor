@@ -37,6 +37,19 @@ function nm_stream_node_access_records($node) {
     'grant_delete' => 1,
     'priority' => 1,
   ];
+  //neuer realm zusätzlich zu den normalen.
+  // Gewährt Lehrpersonen Zugriff auf Streams ohne alle einzelnen Kursgruppen durchzugehen
+  //spart bis zu 30%
+  $record_template_teacher_stream =  [
+   'realm' => 'nm_stream_teacher_permission',
+   'gid' => null,
+   'grant_view' => 1,
+   'grant_update' => 0,
+   'grant_delete' => 1,
+   'priority' => 1
+  ];
+  
+  
 
   $records = [];
   // handle the Section node itself
@@ -113,6 +126,8 @@ function nm_stream_node_access_records($node) {
                     'realm' => 'nm_stream_course_delete',
                     'gid' => $node_environment['container']->parent->nid,
                   ] + $record_template_delete;
+                
+     
                 break;
 
               case NM_STREAM_COURSE:
@@ -130,7 +145,11 @@ function nm_stream_node_access_records($node) {
                   ] + $record_template_delete;
                 break;
             }
-          }
+            //in any case: add a new realm for dozent / tutor
+            $records[] = [
+                    'gid' => $node_environment['container']->parent->nid
+                    ] + $record_template_teacher_stream ;
+            }
             break;
           /* ============= container koop agreement ================== */
           case NM_PROJECTS_KOOPERATIONSVEREINBARUNG: {
@@ -225,6 +244,11 @@ function nm_stream_node_grants($account, $op) {
   if ($op != 'view') {
     return;
   }*/
+  //speedup by 40% using static cache  
+  $grants = &drupal_static(__FUNCTION__);
+  if (isset($grants)) {
+      return $grants;
+  }  
   $grants = [];
   $my_lehrtexte = [];
 
@@ -256,7 +280,8 @@ function nm_stream_node_grants($account, $op) {
 
           //give access to all coursegroups for administratos and tutors
           //course groups for instructors
-          $course_groups = _section_course_get_coursegroups($course);
+          //nicht mehr nötig wegen extra-realm
+          //$course_groups = _section_course_get_coursegroups($course);
 
           foreach ($roles as $key => $value) {
             //grant permission for dozenz and tutor only
@@ -265,33 +290,17 @@ function nm_stream_node_grants($account, $op) {
               NM_COURSES_ROLE_TUTOR,
             ])) {
               $grants['nm_stream_course_delete'][] = $ugn;
+              $grants['nm_stream_teacher_permission'][] = $ugn;
             }
           }
 
-          if (!empty($course_groups)) {
-            foreach ($roles as $key => $value) {
-              //grant permission for dozenz and tutor only
-              if (in_array($value, [
-                NM_COURSES_ROLE_ADMINISTRATOR,
-                NM_COURSES_ROLE_TUTOR,
-              ])) {
-
-                foreach ($course_groups as $course_group) {
-                  $grants["nm_stream_team"][] = $course_group->nid;
-                  $grants["nm_stream_team_delete"][] = $course_group->nid;
-                  $grants["nm_stream_course"][] = $course_group->nid;
-                  $grants["nm_stream_course_delete"][] = $course_group->nid;
-                }
-                break;
-              }
-            }
-          }
         }
       }
       if (_custom_general_get_node_type($ugn) == NM_COURSE_GROUP) {
         $user_groups[] = $ugn;
         $grants['nm_stream_team'][] = $ugn;
       }
+ 
 
       //bin als TN in einem Lehrtext eingetragen
       if (_custom_general_get_node_type($ugn) == NM_CONTENT_DOMAIN) {

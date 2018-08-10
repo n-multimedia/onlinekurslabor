@@ -355,7 +355,7 @@ dasddasdasd',
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => 'tgGMB6_tnHqmdTS2njH5zjR3VzfrXSLOQzgoHlmBvkY',
+    'javascript' => 'ygBvr9SgONRpQyjV3K3Rnh5iHQJRLhteRXVpqFO7LLk',
   );
   $export['language_default'] = $strongarm;
 
@@ -1458,7 +1458,7 @@ Dieser Link kann nur einmal verwendet werden und leitet Sie zu einer Seite, auf 
 
 Nachdem Sie Ihr Passwort festgelegt haben, können Sie sich zukünftig auf [site:login-url] mit den folgenden Zugangsdaten anmelden:
 
-Benutzername: [user:mail]
+Kontoname: [user:mail]
 Passwort: Ihr Passwort
 
 Viele Grüße
@@ -1469,7 +1469,7 @@ Das Team vom [site:name]';
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'user_mail_register_admin_created_subject';
-  $strongarm->value = 'Ein Administrator hat für Sie auf [site:name] ein Benutzerkonto angelegt';
+  $strongarm->value = 'Für Sie wurde [site:name] ein Konto angelegt';
   $export['user_mail_register_admin_created_subject'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -1486,7 +1486,7 @@ Dieser Link kann nur einmal verwendet werden und leitet Sie auf eine Seite, auf 
 
 Nachdem Sie Ihr Passwort festgelegt haben, können Sie sich zukünftig mit folgenden Zugangsdaten bei [site:login-url] anmelden:
 
-Benutzername: [user:mail]
+Kontoname: [user:mail]
 Passwort: Ihr Passwort
 
 Viele Grüße
@@ -1497,7 +1497,7 @@ Das Team vom [site:name]';
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'user_mail_register_no_approval_required_subject';
-  $strongarm->value = 'Benutzerkontendetails für [user:name] auf [site:name]';
+  $strongarm->value = 'Kontendetails für [user:name] auf [site:name]';
   $export['user_mail_register_no_approval_required_subject'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -1506,7 +1506,7 @@ Das Team vom [site:name]';
   $strongarm->name = 'user_mail_register_pending_approval_body';
   $strongarm->value = '[user:name],
 
-vielen Dank für die Registrierung auf [site:name]. Ihr Antrag für ein Benutzerkonto wird aktuell geprüft. Sobald eine Freigabe erfolgt ist, erhalten Sie eine weitere E-Mail mit Informationen zum Login, Setzen Ihres Passwortes sowie weitere Details.
+vielen Dank für die Registrierung auf [site:name]. Ihr Antrag auf ein Konto wird aktuell geprüft. Sobald eine Freigabe erfolgt ist, erhalten Sie eine weitere E-Mail mit Informationen zum Login, Setzen Ihres Passwortes sowie weitere Details.
 
 Viele Grüße
 Das Team vom [site:name]';
@@ -1516,7 +1516,7 @@ Das Team vom [site:name]';
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'user_mail_register_pending_approval_subject';
-  $strongarm->value = 'Benutzerkontendetails für [user:name] auf [site:name] (Genehmigung durch einen Administrator steht aus)';
+  $strongarm->value = 'Kontendetails für [user:name] auf [site:name] (Genehmigung durch einen Administrator steht aus)';
   $export['user_mail_register_pending_approval_subject'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -1525,7 +1525,7 @@ Das Team vom [site:name]';
   $strongarm->name = 'user_mail_status_activated_body';
   $strongarm->value = '[user:name],
 
-Ihr Benutzerkonto auf [site:name] wurde aktiviert.
+Ihr Konto auf [site:name] wurde aktiviert.
 
 Sie können sich jetzt mit einem Klick auf folgenden Link anmelden oder diesen alternativ in Ihren Browser kopieren:
 
@@ -1535,7 +1535,7 @@ Dieser Link kann nur einmal verwendet werden und leitet Sie zu einer Seite, auf 
 
 Nachdem Sie Ihr Passwort festgelegt haben, können Sie sich zukünftig auf [site:login-url] mit den folgenden Zugangsdaten anmelden:
 
-Benutzername: [user:mail]
+Kontoname: [user:mail]
 Passwort: Ihr Passwort
 
 Viele Grüße
@@ -1553,7 +1553,7 @@ Das Team vom [site:name]';
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'user_mail_status_activated_subject';
-  $strongarm->value = 'Benutzerkontendetails für [user:name] auf [site:name] (genehmigt)';
+  $strongarm->value = 'Kontendetails für [user:name] auf [site:name] (genehmigt)';
   $export['user_mail_status_activated_subject'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -1562,7 +1562,7 @@ Das Team vom [site:name]';
   $strongarm->name = 'user_mail_status_blocked_body';
   $strongarm->value = '[user:name],
 
-Ihr Benutzerkonto auf [site:name] wurde gesperrt.
+Ihr Konto auf [site:name] wurde gesperrt.
 
 --  [site:name]-Team';
   $export['user_mail_status_blocked_body'] = $strongarm;
@@ -1578,7 +1578,7 @@ Ihr Benutzerkonto auf [site:name] wurde gesperrt.
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'user_mail_status_blocked_subject';
-  $strongarm->value = 'Details für Benutzerkonto [user:name] auf [site:name] (gesperrt)';
+  $strongarm->value = 'Details für Konto [user:name] auf [site:name] (gesperrt)';
   $export['user_mail_status_blocked_subject'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -1587,7 +1587,7 @@ Ihr Benutzerkonto auf [site:name] wurde gesperrt.
   $strongarm->name = 'user_mail_status_canceled_body';
   $strongarm->value = '[user:name],
 
-Ihr Benutzerkonto auf [site:name] wurde gelöscht.
+Ihr Konto auf [site:name] wurde gelöscht.
 
 --  [site:name]-Team';
   $export['user_mail_status_canceled_body'] = $strongarm;
@@ -1603,7 +1603,7 @@ Ihr Benutzerkonto auf [site:name] wurde gelöscht.
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'user_mail_status_canceled_subject';
-  $strongarm->value = 'Details für Benutzerkonto [user:name] auf [site:name] (gelöscht)';
+  $strongarm->value = 'Details für Konto [user:name] auf [site:name] (gelöscht)';
   $export['user_mail_status_canceled_subject'] = $strongarm;
 
   $strongarm = new stdClass();

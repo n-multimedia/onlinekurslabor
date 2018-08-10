@@ -868,10 +868,12 @@ function section_courses_node_insert($node) {
 
   //07.05.2014 - 16:00 - SN fix insert for generic node add form embedded in panel page
   //page_courses_admin_add_node_panel_context
-  if (arg(0) == 'course' && arg(3) == 'add') {
+  //27.07.2018 - 11:56 - SN
+  //problem has been fixed
+  /*if (arg(0) == 'course' && arg(3) == 'add') {
     //dpm('invoking manually');
     rules_invoke_event("node_insert", $node);
-  }
+  }*/
 }
 
 function section_content_node_update($node) {
@@ -1345,11 +1347,7 @@ function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
   $account = user_load($uid);
 
   //we want to redirect students directly to their course group
-  //check fo role
-  if (array_intersect(array(
-    NM_ROLE_STUDENT,
-    NM_ROLE_TEST_STUDENT
-  ), $account->roles)) {
+    
     //get all gids the user belongs to
     $groups = og_get_groups_by_user($account);
     $groups = $groups['node'] ? $groups['node'] : array();
@@ -1365,12 +1363,15 @@ function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
           $active_course = $course;
         }
         //check if course group is part of the active course
-        if (og_is_member('node', $active_course->nid, 'node', node_load($gid))) {
+        if (og_is_member('node', $active_course->nid, 'node', node_load($gid))
+                //kann kurs editieren? dann return null..
+              &&  !node_access('update',$active_course, $account)
+                ) {
           return $gid;
         }
       }
     }
-  }
+    
   return NULL;
 }
 
@@ -2055,16 +2056,16 @@ function section_courses_student_registration_form_submit($form, &$form_state) {
           //profile2_save();
         }
         else {
-          drupal_set_message('Im System gibt es bereits einen Benutzer mit dem Namen ' . $edit['name'], 'error');
+          drupal_set_message('Im System gibt es bereits eine Person mit dem Namen ' . $edit['name'], 'error');
         }
       }
       else {
-        drupal_set_message('Benutzer ' . ($key + 1) . ' konnte nicht hinzugefügt werden, da eines der Formularfelder leer war.', 'error');
+        drupal_set_message('Person ' . ($key + 1) . ' konnte nicht hinzugefügt werden, da eines der Formularfelder leer war.', 'error');
       }
     }
   }
   else {
-    drupal_set_message("Es wurde kein neuer Benutzer erstellt", 'error');
+    drupal_set_message("Es wurde keine neue Person erstellt", 'error');
   }
 }
 
@@ -2394,6 +2395,11 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
             $form['subject']['#default_value'] = $title_prefix . $course_title . ": ";
             $form['message']['#default_value'] = $course_text;
         }
+    }
+    
+    if($form_id === 'workflow_admin_ui_transitions_form')
+    {
+        drupal_set_message('Be aware of hook_workflow which can limit the access.', 'warning');
     }
 }
 
@@ -2764,6 +2770,41 @@ function section_courses_views_query_alter(&$view, &$query) {
   if ($view->name == "courses_kurse_bersicht" && $view->current_display == 'panel_pane_3') {
     $query->add_where_expression(1, "node.nid NOT IN (SELECT gid FROM og_membership WHERE entity_type= 'user' AND etid = ***CURRENT_USER*** )");
   }
+}
+
+
+/**
+ * implements hook_workflow
+ * Can only VETO the transition, not ALLOW it. 
+   @param type $op. for example transition permitted
+ * @param type $old_state
+ * @param type $new_state
+ * @param type $node
+ * 
+ * @see hook_workflow
+ */
+function section_courses_workflow($op, $old_state, $new_state, $node, $force = FALSE) { #(transition permitted', $current_sid, $transition->state_id, $node);
+    switch ($op) {
+        case 'transition permitted':
+            //es geht um die transition einer lösung
+            if ($node->type == NM_COURSE_GENERIC_TASK_SOLUTION) {
+
+                //sonderfall buggy API.. beim einreichen macht er Käse und man muss ihm das erlauben..
+                if($old_state == NM_COURSES_TASK_WORKFLOW_SUBMITTED && $new_state == NM_COURSES_TASK_WORKFLOW_DRAFT)
+                {
+                    continue; 
+                }
+                
+                //Schützenswert ist die transition eingereicht/bewertet=>irgendwas.
+                //falls ich den zuzgehörigen kurs nicht bearbeiten kann, dann VETO
+                if (in_array($old_state, array(NM_COURSES_TASK_WORKFLOW_SUBMITTED, NM_COURSES_TASK_WORKFLOW_ASSESSED)) && !node_access('update', node_load($node->og_group_ref[LANGUAGE_NONE][0]['target_id']))) { {
+                        return FALSE;
+                    }
+                }
+            }
+
+            break;
+    }
 }
 
 /**

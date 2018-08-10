@@ -36,9 +36,7 @@ function _course_tasks_generic_tips_view() {
   $output = "";
 
 
-  //prepend workflow form
-  //get workflow form
-  //$output .= "<h2>Status</h2>";
+  //lade objekte      
   $task_nid = _course_tasks_generic_get_task_nid();
   $task_node = node_load($task_nid);
   $solutions = custom_general_get_task_solutions($task_nid, $user->uid);
@@ -46,13 +44,9 @@ function _course_tasks_generic_tips_view() {
   if (count($solutions) > 0) {
 
     $solution = current($solutions);
-    $solution_node = node_load($solution->nid);
-
-    if (array_intersect(array(NM_ROLE_ADMIN, NM_ROLE_DOZENT, NM_ROLE_TUTOR), $user->roles)) {
-      $output .= _course_tasks_generic_solution_workflow_form($solution_node);
-    }
+    $solution_node = node_load($solution->nid);   
   }
-  //prepend workflow form - end
+
 
 
   $output .= _course_tasks_generic_section_view($field_val, NM_COURSES_TASK_TIPS);
@@ -61,8 +55,8 @@ function _course_tasks_generic_tips_view() {
   //allow assessment if node is in state 3
   $current = workflow_node_current_state($solution_node);
 
-
-  if ($current == 3) {
+        
+  if ($current == NM_COURSES_TASK_WORKFLOW_SUBMITTED) {
     if (node_access("update", $task_node)) {
       //add bewertung feld
       $form = drupal_get_form('_section_courses_task_solution_assesment_form', $solution_node->nid);
@@ -77,7 +71,7 @@ function _course_tasks_generic_tips_view() {
     }
   }
   //Bewertet
-  else if (($current == 4)) {
+  else if (($current == NM_COURSES_TASK_WORKFLOW_ASSESSED)) {
     $output .= '<div class="alert alert-success">';
     $output .= "<h3>Bewertung</h3>";
     //$assessment_field = ($solution_wrapper->field_generic_task_assessment->value());
@@ -87,6 +81,10 @@ function _course_tasks_generic_tips_view() {
     $output .= render($fview);
     //$output .= $assessment_field['value'];
     $output .= '</div>';
+    //prepend workflow form for allowed roles
+    $output .= _course_tasks_generic_solution_workflow_form($solution_node);
+        
+        
   }
 
   return $output;
@@ -94,51 +92,56 @@ function _course_tasks_generic_tips_view() {
 
 function _course_tasks_generic_solution_workflow_form($node) {
 
-  $output = "";
+    $output = "";
 
-  $workflow = workflow_get_workflow_type_map_by_type($node->type);
-  if (!$workflow) {
-    return;
-  }
-
-  $states = array();
-  foreach (workflow_get_workflow_states() as $data) {
-    $states[$data->sid] = check_plain(t($data->state));
-  }
-
-  $current = workflow_node_current_state($node);
-
-  // Show current state at the top of the node display.
-  //$markup = theme('workflow_current_state', array('state' => $states[$current]));
-
-  $markup = _courses_tasks_solution_workflow_label($node->nid);
-
-  //$output .= $markup;
-  // If we are at the terminal state, then don't show the change form.
-  $choices = workflow_field_choices($node);
-  if (count($choices) == 1) {
-    if ($current == key($choices)) {
-      return $output;
+    $workflow = workflow_get_workflow_type_map_by_type($node->type);
+    if (!$workflow) {
+        return;
     }
-  }
-  // Show state change form at the bottom of the node display.
-  $form_state = array('cache' => TRUE);
-  form_load_include($form_state, 'inc', 'workflow', 'workflow.pages');
-  $form = drupal_get_form('workflow_tab_form', $node, $workflow->wid, $states, $current);
-  $form['#weight'] = 99;
 
-  //rename and style in workflow form
-  /*
-    if (isset($form['workflow']['buttons']['submit_to_Eingereicht'])) {
-    $form['workflow']['buttons']['submit_to_Eingereicht']['#value'] = "Einreichen";
-    $form['workflow']['buttons']['submit_to_Eingereicht']['#attributes'] = array('class' => array('btn btn-info'));
-    } */
+    $states = array();
+    foreach (workflow_get_workflow_states() as $data) {
+        $states[$data->sid] = check_plain(t($data->state));
+    }
 
-  $form['workflow']['#title'] = "";
+    $current = workflow_node_current_state($node);
 
-  $output .= drupal_render($form);
+    // Show current state at the top of the node display.
+    //$markup = theme('workflow_current_state', array('state' => $states[$current]));
 
-  return $output;
+    $markup = _courses_tasks_solution_workflow_label($node->nid);
+
+    //$output .= $markup;
+    // If we are at the terminal state, then don't show the change form.
+    $choices = workflow_field_choices($node);
+    if (count($choices) == 1) {
+        if ($current == key($choices)) {
+            return $output;
+        }
+    }
+    // Show state change form at the bottom of the node display.
+    $form_state = array('cache' => TRUE);
+    form_load_include($form_state, 'inc', 'workflow', 'workflow.pages');
+    $form = drupal_get_form('workflow_tab_form', $node, $workflow->wid, $states, $current);
+
+
+    //add a title       
+    if (!empty($form['workflow']['buttons'])) {
+        $form_title = array('title' => array(
+                '#markup' => '<h4>' . t('Actions') . '</h4>'
+        ));
+        $form['workflow'] = $form_title + $form['workflow'];
+    }
+    //rename and style in workflow form
+    /*
+      if (isset($form['workflow']['buttons']['submit_to_Eingereicht'])) {
+      $form['workflow']['buttons']['submit_to_Eingereicht']['#value'] = "Einreichen";
+      $form['workflow']['buttons']['submit_to_Eingereicht']['#attributes'] = array('class' => array('btn btn-info'));
+      } */
+
+    $output .= drupal_render($form);
+
+    return $output;
 }
 
 /**
@@ -367,53 +370,61 @@ function _course_tasks_generic_solution_form_view() {
 }
 
 function _section_courses_task_solution_assesment_form($form, &$form_state, $solution_nid) {
-  $node_wrapper = entity_metadata_wrapper('node', $solution_nid);
+    $node_wrapper = entity_metadata_wrapper('node', $solution_nid);
 
-  $field_val = $node_wrapper->field_generic_task_assessment->value();
+    $field_val = $node_wrapper->field_generic_task_assessment->value();
 
-  $form = array();
-
-  $form['assessment'] = array(
-    '#type' => 'text_format',
-    '#title' => 'Bewertung',
-    '#base_type' => 'textarea',
-    '#default_value' => $field_val['value'],
-    '#format' => NM_FILTER_FORMAT_FILTERED_HTML,
-  );
-
-  $form['solution_nid'] = array(
-    '#type' => 'hidden',
-    '#value' => $solution_nid,
-  );
-
-  //[todo] generate possible transitionbuttons automatically ?
-  //temporarly - manually checking possible transitions
-
-  $solution = node_load($solution_nid);
-  $current_state = workflow_node_current_state($solution);
-
-  switch ($current_state) {
-    case NM_COURSES_TASK_WORKFLOW_SUBMITTED:
-      $form['save'] = array(
-        '#type' => 'submit',
-        '#attributes' => array('class' => array('btn','btn-primary')),
-        '#value' => 'Speichern',
-      );
-      $form['store_assets'] = array(
-        '#type' => 'submit',
-        '#attributes' => array('class' => array('btn','btn-success')),
-        '#value' => 'Speichern und Bewerten',
-      );
-      $form['store_cancel_submission'] = array(
-        '#type' => 'submit',
-        '#attributes' => array('class' => array('btn','btn-default')),
-        '#value' => 'Speichern und Einreichung aufheben',
-      );
-      break;
-  }
+    $form = array();
 
 
-  return $form;
+    //[todo] generate possible transitionbuttons automatically ?
+    //temporarly - manually checking possible transitions
+
+    $solution = node_load($solution_nid);
+    $current_state = workflow_node_current_state($solution);
+    
+    switch ($current_state) {
+        case NM_COURSES_TASK_WORKFLOW_SUBMITTED:
+
+            $form['assessment'] = array(
+                '#type' => 'text_format',
+                '#title' => 'Bewertung',
+                '#base_type' => 'textarea',
+                '#default_value' => $field_val['value'],
+                '#format' => NM_FILTER_FORMAT_FILTERED_HTML,
+            );
+
+            $form['solution_nid'] = array(
+                '#type' => 'hidden',
+                '#value' => $solution_nid,
+            );
+            $form['save'] = array(
+                '#type' => 'submit',
+                '#attributes' => array('class' => array('btn', 'btn-primary')),
+                '#value' => 'Speichern',
+            );
+            //limit button to permission
+            if (in_array('Bewertet', workflow_field_choices($solution))) {
+                $form['store_assets'] = array(
+                    '#type' => 'submit',
+                    '#attributes' => array('class' => array('btn', 'btn-success')),
+                    '#value' => 'Speichern und Bewerten',
+                );
+            }
+            //limit button to permission
+            if (in_array('Entwurf', workflow_field_choices($solution))) {
+                $form['store_cancel_submission'] = array(
+                    '#type' => 'submit',
+                    '#attributes' => array('class' => array('btn', 'btn-default')),
+                    '#value' => 'Speichern und Einreichung aufheben',
+                );
+            }
+            break;
+        
+    }
+
+
+    return $form;
 }
 
 function _section_courses_task_solution_assesment_form_submit($form, &$form_state) {

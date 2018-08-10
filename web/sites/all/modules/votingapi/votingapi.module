@@ -191,7 +191,11 @@ function votingapi_set_votes(&$votes, $criteria = NULL) {
     // If the calling function didn't explicitly set criteria for vote deletion,
     // build up the delete queries here.
     foreach ($votes as $vote) {
-      $tmp = $vote + votingapi_current_user_identifier();
+      $identifier_info = votingapi_current_user_identifier();
+      // Make sure we're dealing with an array to avoid errors.
+      if (is_array($vote) && is_array($identifier_info)) {
+        $tmp = $vote + $identifier_info;
+      }
       if (isset($tmp['value'])) {
         unset($tmp['value']);
       }
@@ -657,7 +661,7 @@ function votingapi_select_single_result_value($criteria = array()) {
  */
 function _votingapi_prep_vote(&$vote) {
   global $user;
-  if (empty($vote['prepped'])) {
+  if (is_array($vote) && empty($vote['prepped'])) {
     $vote += array(
       'entity_type' => 'node',
       'value_type' => 'percent',

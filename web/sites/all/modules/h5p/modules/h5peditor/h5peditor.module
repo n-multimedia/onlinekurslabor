@@ -176,8 +176,6 @@ function h5peditor_h5p_content_node_form_after_build($form) {
       $assets['js'][] = base_path() . $h5peditor_module_path . '/h5peditor/' . $script . $cache_buster;
     }
   }
-  drupal_add_js($h5peditor_module_path . '/h5peditor/scripts/h5p-hub-client.js');
-  drupal_add_js($h5peditor_module_path . '/h5peditor/scripts/h5peditor-selector-hub.js');
   drupal_add_js($h5peditor_module_path . '/h5peditor/scripts/h5peditor-editor.js');
   drupal_add_js($h5peditor_module_path . '/scripts/application.js');
 

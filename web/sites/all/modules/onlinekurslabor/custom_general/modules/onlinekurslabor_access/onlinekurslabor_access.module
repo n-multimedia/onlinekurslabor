@@ -51,6 +51,12 @@ function onlinekurslabor_access_node_grants($account, $op) {
     return;
   }
 
+  //speedup by 40% using static cache
+  $grants = &drupal_static(__FUNCTION__);
+  if (isset($grants)) {
+      return $grants;
+  }
+  
   $grants = array();
 
   //COURSES
@@ -86,40 +92,20 @@ function onlinekurslabor_access_node_grants($account, $op) {
 
   $realm_content = 'onlinekurslabor_course_content';
   $realm_solution = 'onlinekurslabor_course_solution';
+  $realm_solution_teacher = 'onlinekurslabor_course_solution_teacher';
   foreach ($courses as $course) {
-    //give view access for all course groups in course
-
+       
     if(og_is_member('node', $course->nid, 'user', $account)) {
+      //give view access for contents  in course
       $grants[$realm_content][] = $course->nid;
 
-
-      //solutions for instructors
-      $course_solutions = _section_course_get_solutions($course);
-      if(!empty($course_solutions)) {
-          /**
-           * todo:  refactor!
-           * umbau auf funktion _section_courses_user_can_edit_course,
-           * vermeidle codedopplung
-           */
-        $og_membership = og_get_membership('node', $course->nid, 'user', $account->uid);
-        //do not process if user is not member of this course
-        if (!empty($og_membership)) {
-          $roles = og_get_user_roles('node', $og_membership->gid, $account->uid, TRUE, ($og_membership->state < OG_STATE_BLOCKED));
-
-          foreach ($roles as $key => $value) {
-            //grant permission for dozenz and tutor only
-            if (in_array($value, array(
-              NM_COURSES_ROLE_ADMINISTRATOR,
-              NM_COURSES_ROLE_TUTOR
-            ))) {
-              foreach ($course_solutions as $solution) {
-                $grants[$realm_solution][] = $solution->nid;
-              }
-              break;
-            }
-          }
-        }
+    //separater realm fuer Zugriff auf Lösungen durch  dozenten/tutoren. 
+    //Durch Nutzung der Course-Nid nur wenige Einträge nötig.  
+    if(_section_courses_user_can_edit_course($account, $course))
+      {
+           $grants[$realm_solution_teacher][] = $course->nid ; 
       }
+        
     }
   }
 
@@ -303,6 +289,16 @@ function onlinekurslabor_access_node_access_records($node) {
       'grant_delete' => 0,
       'priority' => 1,
     );
+   //teacher override
+   //separater realm spart weitere 60% Zeit 
+   $grants[] = array(
+    'realm' => 'onlinekurslabor_course_solution_teacher',
+    'gid' => $node->og_group_ref[LANGUAGE_NONE][0]['target_id'],
+    'grant_view' => 1,
+    'grant_update' => 0,
+    'grant_delete' => 0,
+    'priority' => 1,
+  );
   }
 
   /*
@@ -568,20 +564,3 @@ function _onlinekurslabor_access_domain_content_is_available_in($o_domain_conten
 
 
 
-/**
- * Implements hook_og_user_access_alter().
- *
- * 
- * general admin-bypass for all og-groups
- * 
- */
-function onlinekurslabor_acces_og_user_access_alter(&$perm, $context) {
-    global $user;
-    $account = !empty($context['account'])? $context['account']: clone $user;
-
-
-    //admin bypass
-  if(user_access('bypass node access', $account)) {
-    $perm['administer group'] = TRUE;
-  }
-}

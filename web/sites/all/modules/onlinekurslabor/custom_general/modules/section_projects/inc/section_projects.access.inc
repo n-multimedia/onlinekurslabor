@@ -127,6 +127,11 @@ function section_projects_node_access_records($node) {
 */
 function section_projects_node_grants($account, $op) {
 
+  //speedup by 40% using static cache
+  $grants = &drupal_static(__FUNCTION__);
+  if (isset($grants)) {
+      return $grants;
+  }
   $grants = array();
 
   //private for every option

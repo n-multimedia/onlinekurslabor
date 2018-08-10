@@ -64,8 +64,8 @@
             if(what === 'H5PEditor')
             {
                 var edit_api = window[0].H5PEditor.apiVersion.majorVersion +"." + window[0].H5PEditor.apiVersion.minorVersion;
- 
-                if(edit_api !== "1.14")
+
+                if(edit_api !== "1.15")
                     alert(notgood_error);
                 else
                     callback();
@@ -197,9 +197,9 @@
          */
         initializeHelper: function()
         {
-            for (i = 0; i < H5P.instances.length; i++) {
+            for (var i = 0; i < H5P.instances.length; i++) {
                 
-                version = H5P.instances[i].libraryInfo.majorVersion + "." + H5P.instances[i].libraryInfo.minorVersion;
+                var version = H5P.instances[i].libraryInfo.majorVersion + "." + H5P.instances[i].libraryInfo.minorVersion;
                 var temp_av_object = []; 
                 if (H5P.instances[i].libraryInfo.machineName === "H5P.Audio")
                 {

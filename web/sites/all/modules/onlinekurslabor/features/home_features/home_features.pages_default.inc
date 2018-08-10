@@ -363,7 +363,7 @@ return theme(\'nm_fancy_box\', $vars);
     'body' => '<?php
 $vars = array();
 $vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_partner.png" style="width:100%;"   />\';
-$vars[\'description\'] = "Informationen für Kooperationspartner";
+$vars[\'description\'] = "Informationen für Partnerorganisationen";
 $vars[\'link\'] = "informationen?mode=partner";
 
 return theme(\'nm_fancy_box\', $vars);
@@ -371,6 +371,7 @@ return theme(\'nm_fancy_box\', $vars);
 ?>',
     'format' => 'php_code',
     'substitute' => TRUE,
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(

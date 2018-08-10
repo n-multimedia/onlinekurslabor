@@ -1840,7 +1840,7 @@ return section_courses_text_outline();
     ),
   );
   $display->cache = array();
-  $display->title = 'Teilnehmer anlegen';
+  $display->title = 'Teilnehmende hinzufügen';
   $display->uuid = 'c3753c99-df30-45d9-a4b0-e095c5807d0c';
   $display->storage_type = 'page_manager';
   $display->storage_id = 'page_course_admin_add_member_panel_context';
@@ -3027,6 +3027,46 @@ return section_courses_text_outline();
   $display->content['new-990de6ea-3ee2-49e5-920c-9c040316dd6d'] = $pane;
   $display->panels['news'][1] = 'new-990de6ea-3ee2-49e5-920c-9c040316dd6d';
   $pane = new stdClass();
+  $pane->pid = 'new-29024344-5258-466a-8c7c-9c1da085a8ee';
+  $pane->panel = 'news';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'og_perm',
+        'settings' => array(
+          'perm' => 'update group',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+  );
+  $pane->configuration = array(
+    'admin_title' => 'Studentenformularansicht',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<p>Hier sehen Sie den Antwort-Bereich</p>',
+    'format' => 'filtered_html',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '29024344-5258-466a-8c7c-9c1da085a8ee';
+  $display->content['new-29024344-5258-466a-8c7c-9c1da085a8ee'] = $pane;
+  $display->panels['news'][2] = 'new-29024344-5258-466a-8c7c-9c1da085a8ee';
+  $pane = new stdClass();
   $pane->pid = 'new-5b8f0c32-6c04-4e43-8eeb-3152f04a9e84';
   $pane->panel = 'news';
   $pane->type = 'block';
@@ -3043,18 +3083,32 @@ return section_courses_text_outline();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 2;
+  $pane->position = 3;
   $pane->locks = array();
   $pane->uuid = '5b8f0c32-6c04-4e43-8eeb-3152f04a9e84';
   $display->content['new-5b8f0c32-6c04-4e43-8eeb-3152f04a9e84'] = $pane;
-  $display->panels['news'][2] = 'new-5b8f0c32-6c04-4e43-8eeb-3152f04a9e84';
+  $display->panels['news'][3] = 'new-5b8f0c32-6c04-4e43-8eeb-3152f04a9e84';
   $pane = new stdClass();
   $pane->pid = 'new-38a71211-e95d-4e6b-8ed3-871fd11e0d39';
   $pane->panel = 'tools';
   $pane->type = 'views_panes';
   $pane->subtype = 'courses_task_solutions-panel_pane_1';
   $pane->shown = TRUE;
-  $pane->access = array();
+  $pane->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'og_perm',
+        'settings' => array(
+          'perm' => 'update group',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+  );
   $pane->configuration = array();
   $pane->cache = array();
   $pane->style = array(
@@ -4907,7 +4961,8 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Studenten',
+    'override_title_text' => 'Mitwirkung',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -4944,7 +4999,8 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Tutoren',
+    'override_title_text' => 'Unterstützung',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -4981,7 +5037,8 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Dozenten',
+    'override_title_text' => 'Leitung',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -5055,7 +5112,8 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Alle Mitglieder',
+    'override_title_text' => 'Alle',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -7964,7 +8022,7 @@ return section_courses_text_outline();
   $page->api_version = 1;
   $page->name = 'members_in_course';
   $page->task = 'page';
-  $page->admin_title = 'Mitglieder in: (Kurs)';
+  $page->admin_title = 'Teilnehmende in: (Kurs)';
   $page->admin_description = '';
   $page->path = 'course/members/%1';
   $page->access = array(
@@ -8188,7 +8246,7 @@ return section_courses_text_outline();
     ),
   );
   $display->cache = array();
-  $display->title = 'Teilnehmer';
+  $display->title = 'Teilnehmende';
   $display->uuid = 'd988ae1d-0774-48c6-b979-61a8e1862276';
   $display->storage_type = 'page_manager';
   $display->storage_id = 'page_members_in_course_panel_context';
@@ -8218,7 +8276,8 @@ return section_courses_text_outline();
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Dozenten',
+    'override_title_text' => 'Leitung',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -8255,7 +8314,8 @@ return section_courses_text_outline();
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Studenten',
+    'override_title_text' => 'Mitwirkung',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -8292,7 +8352,8 @@ return section_courses_text_outline();
       0 => 'argument_entity_id:node_1.nid',
     ),
     'override_title' => 1,
-    'override_title_text' => 'Tutoren',
+    'override_title_text' => 'Unterstützung',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(

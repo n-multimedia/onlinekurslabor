@@ -441,7 +441,7 @@ function custom_general_get_all_task_solutions_by_uid($uid) {
  * get user's solution of a tasks
  * dynamicly selection of user, depending on query arguments
  *
- * @param type $tid
+ * @param type $tid task-ID (aufgabenid)
  * @param type $uid
  */
 function custom_general_get_task_solutions($tid, $uid) {
@@ -468,13 +468,13 @@ function custom_general_get_task_solutions($tid, $uid) {
      */
     $node_wrapper = entity_metadata_wrapper('node', $tid);
     $task_type = $node_wrapper->field_task_type->value();
-
+  
     //0 single | 1 group
-    //if group task and student
-    if ($task_type == 1 && array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $account->roles)) {
+    //if group task and not kurs-editor
+    if ($task_type == 1 &&  !node_access('update',node_load($tid), $account)) {
       //get course group
       $cg_gid = _section_courses_get_coursegroup_gid($uid);
-
+ 
       //get all group members
       $cg_members = custom_general_get_users_in_group($cg_gid);
 
@@ -489,8 +489,8 @@ function custom_general_get_task_solutions($tid, $uid) {
       foreach ($cg_members AS $member) {
         // Load the user object if necessary
         $account = user_load($member->uid);
-
-        if (!array_intersect(array(NM_ROLE_STUDENT, NM_ROLE_TEST_STUDENT), $account->roles))
+        //kann aufgabe bearbeiten => kein echtes mitglied.. 
+        if (node_access('update',node_load($tid), $account))
           continue;
 
         // Do whatever else you need to
