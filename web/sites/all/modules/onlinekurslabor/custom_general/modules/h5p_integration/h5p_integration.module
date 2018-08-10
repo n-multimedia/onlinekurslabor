@@ -117,7 +117,7 @@ function _h5p_integration_show_warning_if_h5p_not_accessible($h5p_node_object, $
             }
             //zeige warning nur fuer bearbeiter des contents. Normalen Nutzern bringt das nichts. 
             elseif (node_access('update', $content_node)) {
-                drupal_set_message("Es wurde ein H5P Inhalt eingebettet, der nicht für dieses Thema freigeschaltet ist! Dieser ist für Kursteilnehmer nicht sichtbar. ", 'error');
+                drupal_set_message("Es wurde ein H5P Inhalt eingebettet, der nicht für dieses Thema freigeschaltet ist! Dieser ist für Kursteilnehmende nicht sichtbar. ", 'error');
             }
         }
     }

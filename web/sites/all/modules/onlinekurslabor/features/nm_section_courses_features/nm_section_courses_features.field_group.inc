@@ -375,7 +375,7 @@ function nm_section_courses_features_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = 'group_user_tabs';
   $field_group->data = array(
-    'label' => 'Studentendaten',
+    'label' => 'Studierendendaten',
     'weight' => '20',
     'children' => array(
       0 => 'profile_student',
@@ -459,7 +459,7 @@ function nm_section_courses_features_field_group_info() {
   t('Projekte');
   t('Stammdaten');
   t('Stream');
-  t('Studentendaten');
+  t('Studierendendaten');
   t('Tab Container');
   t('VHB Einstellungen');
   t('Zugangsdaten');
