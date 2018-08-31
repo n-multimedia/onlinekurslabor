@@ -31,7 +31,15 @@ function okl_api_course_delete($course_node) {
 /**
  * @param $account
  */
-function okl_api_course_create_conten($course_node, $domain_noce) {
+function okl_api_course_create_content($course_node, $domain_node) {
+
+}
+
+
+/**
+ * @param $account
+ */
+function okl_api_course_set_domain($course_node, $domain_node) {
 
 }
 

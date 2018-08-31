@@ -16,4 +16,10 @@ web/stats
 web/sites/*/settings*.php
 files_private/
 tmp/
-scripts/emergency_mail_contact.sh
+
+
+/okl-testing/codeception/vendor
+/okl-testing/codeception/tests/_output
+/okl-testing/codeception/tests/acceptance.suite.yml
+/okl-testing/codeception/tests/functional.suite.yml
+/okl-testing/codeception/tests/unit.suite.yml
