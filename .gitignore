@@ -18,8 +18,8 @@ files_private/
 tmp/
 
 
-/okl-testing/codeception/vendor
-/okl-testing/codeception/tests/_output
-/okl-testing/codeception/tests/acceptance.suite.yml
-/okl-testing/codeception/tests/functional.suite.yml
-/okl-testing/codeception/tests/unit.suite.yml
+okl-testing/vendor
+okl-testing/tests/_output
+okl-testing/tests/acceptance.suite.yml
+okl-testing/tests/functional.suite.yml
+okl-testing/tests/unit.suite.yml
