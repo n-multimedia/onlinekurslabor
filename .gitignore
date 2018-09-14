@@ -19,6 +19,7 @@ tmp/
 
 
 okl-testing/composer.lock
+okl-testing/bin/
 okl-testing/tests/_support/_generated/AcceptanceTesterActions.php
 okl-testing/vendor
 okl-testing/tests/_output
