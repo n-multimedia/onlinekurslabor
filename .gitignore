@@ -18,6 +18,8 @@ files_private/
 tmp/
 
 
+okl-testing/composer.lock
+okl-testing/tests/_support/_generated/AcceptanceTesterActions.php
 okl-testing/vendor
 okl-testing/tests/_output
 okl-testing/tests/acceptance.suite.yml
