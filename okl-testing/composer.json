@@ -2,7 +2,7 @@
     "require-dev": {
         "codeception/codeception": "^2.4",
         "ixis/codeception-module-drupal-user-registry": "~0.2.1",
-         "jakoch/phantomjs-installer": "2.1.1-p09"
+         "jakoch/phantomjs-installer": "1.9.8"
     },
     
     "config": {
