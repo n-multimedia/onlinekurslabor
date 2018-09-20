@@ -6,6 +6,13 @@ class GeneralCest {
   public function _before(AcceptanceTester $I) {
         _okl_testing_start_test();
         $I->amOnPage('/');
+        /*
+
+        @BS TODO remove local domain dependency
+         * geht wohl nur mit ner helperklasse :( 
+         * https://github.com/Codeception/Codeception/issues/3558
+         * https://stackoverflow.com/questions/36627080/how-to-get-current-url-from-codeception-phantomjs-test
+         *          */
         $I->setCookie('okl_testing_is_autotest_browser', 'yes', array(
             'domain' => 'dev2.div.onlinekurslabor.de',
             'path' => '/', // required property  
