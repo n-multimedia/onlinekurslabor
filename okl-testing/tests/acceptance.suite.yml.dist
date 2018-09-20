@@ -52,10 +52,11 @@ modules:
 extensions:
     enabled:
         - Codeception\Extension\Recorder
+        #0: über killall -9 phantomjs prozess killen. Das klappt wohl nicht zuverlässig <:-] 
         #vor Start des Tests wird phantomjs gestartet, danach wird der prozess automatisch gekillt.
         # ssl-fehler werden ignoriert
         - Codeception\Extension\RunProcess:
-            0: bin/phantomjs --webdriver=4444  --web-security=false --ignore-ssl-errors=true  --ssl-protocol=any
-            sleep: 5 # wait 5 seconds for processes to boot
-##ACHTUNG
-#passieren komische  dinge, über killall -9 phantomjs prozess killen. Das klappt wohl nicht zuverlässig <:-] 
+            0: killall -9 phantomjs
+            1: bin/phantomjs --webdriver=4444  --web-security=false --ignore-ssl-errors=true  --ssl-protocol=any
+            sleep: 1 # wait 5 seconds for processes to boot
+
