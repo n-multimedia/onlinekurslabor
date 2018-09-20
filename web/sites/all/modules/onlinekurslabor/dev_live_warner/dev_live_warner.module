@@ -47,8 +47,33 @@ function dev_live_warner_menu() {
  * @return boolean true false
  */
 function _dev_live_warner_is_no_live_system() {
+
+    $result = array();
+
+    foreach (module_implements('dev_live_force_live_mode') as $module) {
+        // Calling all modules implementing hook_hook_name and 
+        // Returning results than pushing them into the $result array:
+        $result[] = module_invoke($module, 'dev_live_force_live_mode');
+    }
+
+    //hook force live mode schlägt an - disable dev-layout
+    if (in_array(true, $result, true)) {
+        return false;
+    }
+
     return strstr($_SERVER['HTTP_HOST'], 'okldev') || strstr($_SERVER['HTTP_HOST'], 'okltest') || strstr($_SERVER['HTTP_HOST'], 'div.onlinekurslabor');
 }
+
+/**
+ * Auf dev-Systemen wird automatisch ein Dev-Skin aktiviert.
+ * Mithilfe dieses hooks kann dieser abgeschaltet werden.
+ * @return true: deaktiviere dev-skin
+ */
+function hook_dev_live_force_live_mode()
+{ 
+   return false; 
+}
+
 
 /**
  * liefert die seite mit dem letzten log aus 

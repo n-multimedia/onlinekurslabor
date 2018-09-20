@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * helper-functions
+ */
+function _okl_testing_start_test() {
+    variable_set('okl_testing_running', true);
+    
+    
+}
+function _okl_testing_stop_test() {
+    variable_del('okl_testing_running', true);
+    
+}
+ 
+/**
+ * hook_dev_live_force_live_mode
+ * @return true for automatic testing
+ */
+function okl_testing_dev_live_force_live_mode() {
+    return (bool) variable_get('okl_testing_running');
+}
+
+/**
+ * hook_page_build
+ * @param type $page
+ */
+function okl_testing_page_build(&$page) {
+    $test_runing = (bool) variable_get('okl_testing_running');
+
+    $is_autotest_browser = isset($_COOKIE["okl_testing_is_autotest_browser"]);
+    if (!$test_runing || $is_autotest_browser)
+        return;
+    foreach ($page as $key => $elem) {
+        if (!strstr($key, '#'))
+            unset($page[$key]);
+    }
+
+    $page['content'] = array('#markup' => '<div style="font-size:40px; padding-top:120px;">System disabled because automatic test is running.</div>');
+}

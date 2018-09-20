@@ -1,0 +1,17 @@
+<?php
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function okl_testing_uninstall() {
+  // Delete variables.
+  variable_del('okl_testing_running');
+}

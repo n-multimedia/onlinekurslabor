@@ -13,6 +13,7 @@ drush fr  nm_section_courses_features  --yes
 
 drush cc all
   
+drush en okl_testing  --yes
 
 #import language
 drush language-import-translations de ../language/alpha12.po --replace --groups=default
