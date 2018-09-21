@@ -6,9 +6,10 @@ class GeneralCest {
   public function _before(AcceptanceTester $I) {
         //dadurch wird Drupal gesperrt 
         _okl_testing_start_test();
+        //setze cookie. Dadurch wird wieder Zugriff auf Drupal gewährt
         $I->amOnPage('/');
      
-        //setze cookie. Dadurch wird wieder Zugriff auf Drupal gewährt
+       
         $I->setCookie('okl_testing_is_autotest_browser', 'yes', array(
             'domain' => parse_url($I->getCurrentFullUrl(), PHP_URL_HOST),
             'path' => '/', // required property  
@@ -58,7 +59,27 @@ class GeneralCest {
    *
    * @param \AcceptanceTester $I
    */
-  public function G001_03_login_page_exists(AcceptanceTester $I) {
+  public function G001_03_basic_information_available(AcceptanceTester $I) {
+    $I->amOnPage('/');
+    $I->see('Informationen für Studierende');
+    $I->see('Informationen für Hochschullehrende');
+    $I->see('Informationen für Partnerorganisationen');
+    $I->click("Informationen für Studierende");
+    $I->makeScreenshot(__FUNCTION__);
+    //Teil der H5P-Info
+    # switch to h5p-iframe
+    $I->switchToIFrame("h5p-iframe-6947");
+    $I->see('Kursangebot');
+  }
+
+  
+   /**
+   * @UserStory null
+   * @UserStoryURL null
+   *
+   * @param \AcceptanceTester $I
+   */
+  public function G001_04_login_page_exists(AcceptanceTester $I) {
     $I->amOnPage('/user');
     //login
     $I->see('E-Mail oder Kontoname');
