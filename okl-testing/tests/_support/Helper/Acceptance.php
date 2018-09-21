@@ -9,13 +9,23 @@ class Acceptance extends \Codeception\Module {
 
 
   /**
-   * Get current url from WebDriver
+   * Get current uri from WebDriver [without domain]
+   * 
    * @return mixed
    * @throws \Codeception\Exception\ModuleException
    */
-  public function getCurrentUrl()
+  public function getCurrentUri()
   {
     return $this->getModule('WebDriver')->_getCurrentUri();
+  }
+  
+  /**
+   * get the full URL (like in webbrowser's address bar) 
+   * @return type String full URL including domain and parameters
+   */
+  public function getCurrentFullUrl()
+  {
+    return  $this->getModule('WebDriver')->webDriver->getCurrentURL();
   }
 
 
