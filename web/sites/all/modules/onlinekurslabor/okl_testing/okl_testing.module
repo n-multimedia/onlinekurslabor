@@ -38,3 +38,20 @@ function okl_testing_page_build(&$page) {
 
     $page['content'] = array('#markup' => '<div style="font-size:40px; padding-top:120px;">System disabled because automatic test is running.</div>');
 }
+
+/**
+ * @param $message
+ */
+function okl_testing_mail_alter(&$message) {
+  // We don't want to send emails if the variable has not been set, or if it has been set and is TRUE.
+  // We can use variable_get() to get the $conf variable set in our settings.php file
+  // Note that by setting the default to TRUE, the default setting for the system is to be
+  // a development environment. Set this to FALSE to have the default be a live environment.
+  if (variable_get('okl_testing_running', FALSE)) {
+    // First: Prevent the mail from being sent
+    $message['send'] = FALSE;
+
+    // Next: Log the mail so it can be debugged if necessary
+    watchdog('Development Env', 'The following email was not sent: !message', ['!message' => '<pre>' . print_r($message, TRUE) . '</pre>']);
+  }
+}
