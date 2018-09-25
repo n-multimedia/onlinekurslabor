@@ -10,12 +10,6 @@ echo -e "\n\n\n##################################\nEinrichtung Autotests\n######
 sleep 2
 
 
-## die .yml existieren nicht - zuerst anzulegen!
-if [ ! -f ./tests/acceptance.suite.yml ]; then
-    echo -e "Kopiere zunaechst im Ordner okl-testing/tests die .yml.dist zu .yml und passe die URLs zu deinem Projekt an!\n\n"
-    echo -e "Fuehre danach dieses Skript wieder aus.\n\n"
-    exit
-fi
 
 ## .ymls existieren, verzeichnis /vendor nicht - installiere dependencies neu
 if [ ! -d ./vendor/ ]; then

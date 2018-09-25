@@ -24,6 +24,3 @@ okl-testing/bin/
 okl-testing/tests/_support/_generated/
 okl-testing/vendor
 okl-testing/tests/_output
-okl-testing/tests/acceptance.suite.yml
-okl-testing/tests/functional.suite.yml
-okl-testing/tests/unit.suite.yml
