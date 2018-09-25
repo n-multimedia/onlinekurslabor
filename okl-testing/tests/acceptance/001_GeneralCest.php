@@ -3,23 +3,6 @@
 
 class GeneralCest {
 
-  public function _before(AcceptanceTester $I) {
-        //dadurch wird Drupal gesperrt 
-        _okl_testing_start_test();
-        //setze cookie. Dadurch wird wieder Zugriff auf Drupal gewährt
-        $I->amOnPage('/');
-     
-       
-        $I->setCookie('okl_testing_is_autotest_browser', 'yes', array(
-            'domain' => parse_url($I->getCurrentFullUrl(), PHP_URL_HOST),
-            'path' => '/', // required property  
-        ));
-    }
-
-  public function _after(AcceptanceTester $I) {
-      _okl_testing_stop_test();
-  }
-
   /**
    * @UserStory null
    * @UserStoryURL null
