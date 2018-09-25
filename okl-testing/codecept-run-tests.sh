@@ -7,7 +7,7 @@
 #
 #        ./codecept-run-tests.sh 001_GeneralCest --steps
 #
-#   Die Funktionsweise und parameter sind  die gleiche wie bei "codecept run acceptance ..."
+#   Die Funktionsweise und parameter sind  die gleichen wie bei "codecept run acceptance ..."
 #
 #########################################
 
