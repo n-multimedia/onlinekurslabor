@@ -64,7 +64,7 @@ class CourseCest {
         $I->see('Courses - Kurs ' . $new_course_title . ' wurde erstellt.');
         
         //get current url
-        $course_home_url = $I->getCurrentUrl();
+        $course_home_url = $I->getCurrentUri();
         Fixtures::add('course_home_url', $course_home_url);
     }
 
