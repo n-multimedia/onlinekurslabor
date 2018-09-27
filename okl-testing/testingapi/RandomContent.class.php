@@ -1,5 +1,5 @@
 <?php
-
+namespace testingapi; 
 /**
  * Bedienung:  RandomContent::get('somedude')->firstName ; 
  * oder fuer nicht-wiederholbare Zufallswerte: RandomContent::get()->firstName ; 
