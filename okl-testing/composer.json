@@ -4,7 +4,8 @@
         "ixis/codeception-module-drupal-user-registry": "~0.2.1",
         "jakoch/phantomjs-installer": "1.9.8",
         "fzaninotto/faker": "1.8.0",
-        "frequenc1/newage-ipsum":"dev-master"
+        "frequenc1/newage-ipsum":"dev-master",
+        "null/realisticfaker":"dev-master"
     },
     
     "config": {
@@ -17,5 +18,9 @@
         "post-update-cmd": [
             "PhantomInstaller\\Installer::installPhantomJS"
         ]
-    }
+    },
+    "repositories": [{
+    "type": "path",
+    "url": "vendor_custom/null/realisticfaker"
+    }]
 }

@@ -1,12 +1,10 @@
 <?php
-namespace testingapi; 
-/**
- * Bedienung:  RandomContent::get('somedude')->firstName ; 
- * oder fuer nicht-wiederholbare Zufallswerte: RandomContent::get()->firstName ; 
- *
- * @author Bernhard
- */
-class RandomContent {
+
+namespace RealisticFaker; 
+use Faker;
+use NewAgeIpsum;
+
+class DataCreator {
 
     private $faker;
     private static $emailformat = '%s.%s+autotest@div.onlinekurslabor.de';
@@ -18,7 +16,7 @@ class RandomContent {
      */
     public static function get($identifier = null) {
 
-        return new RandomContent($identifier);
+        return new DataCreator($identifier);
     }
 
     /**
