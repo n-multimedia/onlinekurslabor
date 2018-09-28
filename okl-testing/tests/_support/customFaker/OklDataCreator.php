@@ -7,7 +7,13 @@ require_once(__DIR__ . '/Internet-de_DE.php');
 //ein eigener Provider fürs OKl
 require_once(__DIR__ . '/OklProvider.php');
 
-
+/**
+ * @property string $oklUserName
+ * 
+ * aus OklProvider:
+ * @property string $currentSemesterName 
+ * 
+ */
 class OklDataCreator extends \RealisticFaker\DataCreator {
 
     public static function get($identifier) {
