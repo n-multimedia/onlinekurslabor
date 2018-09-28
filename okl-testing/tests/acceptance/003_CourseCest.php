@@ -38,6 +38,7 @@ class CourseCest {
    * @UserStoryURL null
    *
    * @param \AcceptanceTester $I
+   * 
    */
   public function C001_02_CreateCourse(AcceptanceTester $I) {
         $new_course_title = 'Neuer Kurs @' . date('d.m.Y H:i:s');
@@ -72,8 +73,9 @@ class CourseCest {
   /**
    * @UserStoryies KD.01 | Kurs - Dozent - Kursteilnehmer einladen | https://trello.com/c/lr17dgl0/9-kd01-kurs-dozent-kursteilnehmer-einladen
    * @param \AcceptanceTester $I
+   * @dataProvider C001_03_AddMemberProvider
    */
-  public function C001_03_AddMember(AcceptanceTester $I) {
+  public function C001_03_AddMember(AcceptanceTester $I,  \Codeception\Example $example) {
 
     try {
       $course_home_url = Fixtures::get('course_home_url');
@@ -81,11 +83,6 @@ class CourseCest {
       //fallback url
       $course_home_url = $this->fallback_course_url;
     }
-
-
-    $member_student = [];
-    $member_student["name"] = "Student Test-" . substr(str_shuffle(str_repeat("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVEXYZ", 5)), 0, 5);;
-    $member_student["mail"] = "student.test+CC001_03+" . time() . "@onlinekurslabor.de";
 
     $I->amOnPage($course_home_url);
 
@@ -99,14 +96,14 @@ class CourseCest {
 
 
     $I->expect('AK-2.2: Existiert kein Account, wird einer angelegt.');
-    $I->fillField('import_container[import_users]', $member_student["name"] . " " . $member_student["mail"]);
+    $I->fillField('import_container[import_users]', $example["name"] . " " . $example["mail"]);
     $I->click( 'Importieren' );
     $I->wait(5);
-    $I->see("Student ". $member_student["name"] ."  wurde angelegt.");
+    $I->see("Student ". $example["name"] ."  wurde angelegt.");
 
     //neuer student taucht in der Liste auf
     $I->click("Teilnehmende");
-    $I->see($member_student["name"]);
+    $I->see($example["name"]);
 
 
     //TODO
@@ -118,8 +115,25 @@ class CourseCest {
     //$I->expect('AK-3.2: Sonst Fehlermeldung');
 
   }
-
+  
+  
+  
   /**
+   * Funktion ist der dataprovider für C001_03_AddMember
+   * @return array
+   */
+  protected function C001_03_AddMemberProvider() {
+        $return = array();
+
+        $new_randomuser = Helper\Acceptance::getDataCreator();
+        $return[] = ['name' => $new_randomuser->name, 'mail' => $new_randomuser->email, 'exists' => false];
+
+        $new_randomuser2 = Helper\Acceptance::getDataCreator();
+        $return[] = ['name' => $new_randomuser2->name, 'mail' => $new_randomuser2->email, 'exists' => false];
+        return $return;
+    }
+
+    /**
    * @UserStoryies KD.04 |  Kurs - Dozent - News einstellen | https://trello.com/c/dMBLuhWz/12-kd04-kurs-dozent-news-einstellen
    * @param \AcceptanceTester $I
    */
