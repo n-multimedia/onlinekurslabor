@@ -38,10 +38,11 @@ class CourseCest {
    * @UserStoryURL null
    *
    * @param \AcceptanceTester $I
-   * 
+   * @param \Codeception\Example $example array holds dataprovider's data
+   * @dataProvider C001_02_CreateCourseProvider
    */
-  public function C001_02_CreateCourse(AcceptanceTester $I) {
-        $new_course_title = 'Neuer Kurs @' . date('d.m.Y H:i:s');
+  public function C001_02_CreateCourse(AcceptanceTester $I, \Codeception\Example $example) {
+        $new_course_title = $example['title'];  //'Neuer Kurs @' . date('d.m.Y H:i:s');
         
         $I->amOnPage('/');
         
@@ -57,7 +58,7 @@ class CourseCest {
         $I->see('Courses - Kurs erstellen'); 
         $I->fillField('title', $new_course_title);
         //@todo: Semester aktuell
-         $I->selectOption('field_semester[und]', 'SS 18');
+         $I->selectOption('field_semester[und]', $example['currentSemesterName']);
          $I->fillField('field_time_span[und][0][value2][date]', date('m/d/Y',  time()+31*24*60*60)); 
          
         
@@ -68,11 +69,23 @@ class CourseCest {
         $course_home_url = $I->getCurrentUri();
         Fixtures::add('course_home_url', $course_home_url);
     }
-
-
+    
+    
   /**
+   * Funktion ist der dataprovider für C001_02_CreateCourse
+   * @return array
+   */
+  protected function C001_02_CreateCourseProvider() {
+        $return = array();
+        $rand_data = \RealisticFaker\OklDataCreator::get();
+        $return[] = ['title' => $rand_data->text(20), 'currentSemesterName' => $rand_data->currentSemesterName];
+        return $return;
+    }
+
+    /**
    * @UserStoryies KD.01 | Kurs - Dozent - Kursteilnehmer einladen | https://trello.com/c/lr17dgl0/9-kd01-kurs-dozent-kursteilnehmer-einladen
    * @param \AcceptanceTester $I
+   * @param \Codeception\Example $example array holds dataprovider's data
    * @dataProvider C001_03_AddMemberProvider
    */
   public function C001_03_AddMember(AcceptanceTester $I,  \Codeception\Example $example) {
@@ -128,7 +141,7 @@ class CourseCest {
         $new_randomuser = \RealisticFaker\OklDataCreator::get();
         $return[] = ['name' => $new_randomuser->name, 'mail' => $new_randomuser->email, 'exists' => false];
 
-        $new_randomuser = \RealisticFaker\OklDataCreator::get();
+        $new_randomuser2 =  \RealisticFaker\OklDataCreator::get();
         $return[] = ['name' => $new_randomuser2->name, 'mail' => $new_randomuser2->email, 'exists' => false];
         return $return;
     }
