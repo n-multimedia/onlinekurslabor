@@ -3,9 +3,10 @@ namespace RealisticFaker;
 
 use Faker;
 
+
 class DataCreator {
 
-    private $faker;
+    protected $faker;
 
     /**
      * Liefert neues Objekt
@@ -41,45 +42,19 @@ class DataCreator {
         $internetthiefClassName = 'RealisticFaker\\' . $langcode . '\InternetThief';
         $this->addProvider(new $internetthiefClassName($faker));
         
-        $this->initialize();
-    }
-
-    
-    /**
-     * wrapper to Faker. Normal usage: 
-     * $datacreator->addProvider(new \My\Provider($datacreator->getProvider()));
-     * @param StdClass $provider
-     * @throws \InvalidArgumentException
-     */
-    public function addProvider($provider) 
-    {
-        $this->faker->addProvider($provider);
-    }
-    
-     /**
-     * wrapper
-     * @param type $classname
-     * @throws \InvalidArgumentException
-     */
-    public function getProvider()
-    {
-       return $this->faker;
-    }
-    
-    /**
-     * Das Problem: Faker liefert bei Ausführung IMMER einen random-Wert.
-     * Also: 
-     * firstName = Erwin
-     * email = Katharina.Hust@... 
-     * Das passt nicht.
-     * Deswegen wird innerhalb dieses Objekts ein Profil vorgeneriert, welches man via RandomContent::get('somedude')->firstName auslesen kann und sogar
-     * durch Übergabe des $identifiers via RandomContent::get('somedude').. wieder neu erzeugen kann 
-     * Wird z.B. über $obj->creditCardExpirationDate ein Wert abgefragt, der nicht vorinitialisiert wird,
-     * wird Faker direkt bemüht.
-     * @return \StdClass
-     */
-    private function initialize() {
-
+        //Hier wird noch initialisiert
+       /**
+        * Das Problem: Faker liefert bei Ausführung IMMER einen random-Wert.
+        * Also: 
+        * firstName = Erwin
+        * email = Katharina.Hust@... 
+        * Das passt nicht.
+        * Deswegen wird innerhalb dieses Objekts ein Profil vorgeneriert, welches man via RandomContent::get('somedude')->firstName auslesen kann und sogar
+        * durch Übergabe des $identifiers via RandomContent::get('somedude').. wieder neu erzeugen kann 
+        * Wird z.B. über $obj->creditCardExpirationDate ein Wert abgefragt, der nicht vorinitialisiert wird,
+        * wird Faker direkt bemüht.
+        * 
+        */
         //[male, female]
         $sexes = array(Faker\Provider\Person::GENDER_MALE, Faker\Provider\Person::GENDER_FEMALE);
         //diese Klassenvariablen werden gesetzt und somit nicht bei jeder Anfrage erneut erzeugt. 
@@ -105,8 +80,22 @@ class DataCreator {
         $this->timezone = $this->faker->timezone();
         $this->password = $this->faker->password();
         $this->imageUrl = $this->faker->imageUrl(200, 200);
- 
     }
+
+    
+    /**
+     * wrapper to Faker. Normal usage: 
+     * $datacreator->addProvider(new \My\Provider($datacreator->getProvider()));
+     * @param StdClass $provider
+     * @throws \InvalidArgumentException
+     */
+    public function addProvider($provider) 
+    {
+        $this->faker->addProvider($provider);
+    }
+    
+     
+    
 
     /**
      * extend object with your own values.
