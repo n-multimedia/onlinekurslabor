@@ -21,7 +21,8 @@ class OklDataCreator extends \RealisticFaker\DataCreator {
         //Zugriff auf erzeugte Namen.. 
         $this->oklUserName = sprintf('%s %s', $this->firstName, $this->lastName);
 
-         
+        //OKLProvider für voneinenader unabhängige Random Data-Sets
+        $this->addProvider(new OklProvider($this->faker));
         //schöneres Loremipsum
         $this->addProvider(new \NewAgeIpsum\NewAgeProvider($this->faker));
     }
