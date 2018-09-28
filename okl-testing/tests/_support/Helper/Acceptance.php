@@ -1,7 +1,7 @@
 <?php
 
 namespace Helper;
-
+require_once(__DIR__ . '/../customFaker/OklDataCreator.php'); 
 
 
 // here you can define custom actions
@@ -47,18 +47,4 @@ class Acceptance extends \Codeception\Module {
     }
     
 
-    /**
-     * Erhalte ein DataCreatorObject zum Generieren von Fake-Daten und -Profilen
-     * @param String $identifier: Wird ein $identifier gesetzt, sind die erhaltenen Werte beim nächsten Testdurchlauf unverändert. Sonst bei jedem Durchlauf Zufallswerte
-     * @return StdClass $datacreator
-     */
-    public static function getDataCreator($identifier)
-    {   //fuer emailadressen brauchen wir eigene values. Durch includen dieser file wird de_DE-default überschrieben
-        require_once(__DIR__ . '/../customFaker/Internet-de_DE.php');
-        $datacreator = \RealisticFaker\DataCreator::get($identifier, 'de_DE');
-        $datacreator->addProvider(new \NewAgeIpsum\NewAgeProvider($datacreator->getProvider()));
-        $datacreator->setClassVar('oklUserName', sprintf('%s %s', $datacreator->firstName, $datacreator->lastName));
-
-        return $datacreator;
-    }
 }

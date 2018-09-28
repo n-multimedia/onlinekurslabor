@@ -97,16 +97,7 @@ class DataCreator {
      
     
 
-    /**
-     * extend object with your own values.
-     * e.g. $o->setClassVar('stoffTier', 'Steffis Hase') => $o->stoffTier
-     * @param type $varname
-     * @param type $value
-     */
-    public function setClassVar($varname, $value)
-    {
-        $this->$varname = $value; 
-    }
+    
     
     /**
      * faker->parse() nimmt statt der gesetzten Werte einen neuen Wert (zB für firstName), so dass die Ausgabe nicht realistisch ist.

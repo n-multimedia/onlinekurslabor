@@ -125,10 +125,10 @@ class CourseCest {
   protected function C001_03_AddMemberProvider() {
         $return = array();
 
-        $new_randomuser = Helper\Acceptance::getDataCreator();
+        $new_randomuser = \RealisticFaker\OklDataCreator::get();
         $return[] = ['name' => $new_randomuser->name, 'mail' => $new_randomuser->email, 'exists' => false];
 
-        $new_randomuser2 = Helper\Acceptance::getDataCreator();
+        $new_randomuser = \RealisticFaker\OklDataCreator::get();
         $return[] = ['name' => $new_randomuser2->name, 'mail' => $new_randomuser2->email, 'exists' => false];
         return $return;
     }
