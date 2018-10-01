@@ -10,8 +10,6 @@ class CourseCest {
 
 
   public function _before(\Step\Acceptance\Dozent $I) {
-    # $I->setCookie('dev_overlay_skip', 'ja', array('path'=>'/',"expiry"=> time() + 24 * 3600)); //gmdate('D, d M Y H:i:s T', time() + 24 * 3600))
-    //geht das nicht schöner?? Zugriff auf drupal-Core??
 
     $I->loginAsDozent(TRUE);
 
