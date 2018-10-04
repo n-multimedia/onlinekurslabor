@@ -229,8 +229,8 @@ class DataCreator {
         * firstName = Erwin
         * email = Katharina.Hust@... 
         * Das passt nicht.
-        * Deswegen wird innerhalb dieses Objekts ein Profil vorgeneriert, welches man via RandomContent::get('somedude')->firstName auslesen kann und sogar
-        * durch Übergabe des $identifiers via RandomContent::get('somedude').. wieder neu erzeugen kann 
+        * Deswegen wird innerhalb dieses Objekts ein Profil vorgeneriert, welches man via DataCreator::get('somedude')->firstName auslesen kann und sogar
+        * durch Übergabe des $identifiers via DataCreator::get('somedude').. wieder neu erzeugen kann 
         * Wird z.B. über $obj->creditCardExpirationDate ein Wert abgefragt, der nicht vorinitialisiert wird,
         * wird Faker direkt bemüht.
         * 
