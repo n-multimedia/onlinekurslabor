@@ -7,6 +7,7 @@ use Faker;
 /**
  * @property string $name 
  * @property string $firstName  
+ * @property string $middleName
  * @property string $lastName
  * @property string $title  
  *
