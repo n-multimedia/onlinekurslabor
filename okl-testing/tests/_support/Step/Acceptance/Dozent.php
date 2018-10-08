@@ -12,7 +12,7 @@ class Dozent extends UserSteps {
     $I = $this;
 
     $username = "fahrneul";
-    $password = NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT;
+    $password = new PasswordArgument(NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT);
 
     $I->login($username, $password, TRUE);
 

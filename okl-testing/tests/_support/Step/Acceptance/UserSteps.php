@@ -2,7 +2,6 @@
 
 
 namespace Step\Acceptance;
-use \Codeception\Step\Argument\PasswordArgument;
 
 use Page\Acceptance\LoginPage;
 
@@ -10,9 +9,9 @@ class UserSteps extends \AcceptanceTester {
 
   /**
    * @param $userName
-   * @param $userPassword
+   * @param $securedPassword (Obj of class  \Codeception\Step\Argument\PasswordArgument)
    */
-  public function login($userName, $userPassword, $saveSession = TRUE) {
+  public function login($userName,  \Codeception\Step\Argument\PasswordArgument $securedPassword, $saveSession = TRUE) {
     $I = $this;
 
     //$I->amOnPage("/user/logout");
@@ -25,7 +24,7 @@ class UserSteps extends \AcceptanceTester {
     $I->amOnPage(LoginPage::$URL);
 
     $I->fillField('name', $userName);
-    $I->fillField('pass', new PasswordArgument($userPassword));
+    $I->fillField('pass', $securedPassword);
 
     $I->click('Anmelden', '.form-actions');
 
