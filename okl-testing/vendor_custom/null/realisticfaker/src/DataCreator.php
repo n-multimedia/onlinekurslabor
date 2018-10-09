@@ -222,6 +222,7 @@ class DataCreator {
         
         $internetthiefClassName = 'RealisticFaker\\' . $langcode . '\InternetThief';
         $this->addProvider(new $internetthiefClassName($faker));
+
         
         //Hier wird noch initialisiert
        /**
@@ -261,6 +262,8 @@ class DataCreator {
         $this->timezone = $this->faker->timezone();
         $this->password = $this->faker->password();
         $this->imageUrl = $this->faker->imageUrl(200, 200);
+        
+        
     }
 
     
@@ -322,18 +325,43 @@ class DataCreator {
     }
 
     /**
-     * steals a private propery from class Faker\Provider\Internet and its derivates
+     * steals a private propery from class Faker\Provider\Internet and its derivates and returns randomly one of its values
      * @param type $static_variable_name
      * @return type
      */
     private function getRandomStaticVariableFromInternetProvider($static_variable_name) {
-        foreach ($this->faker->getProviders() as $provider) {
-            if (strstr(get_class($provider), 'InternetThief')) {
-                return $this->faker->randomElement($provider->steal($static_variable_name));
-            }
-        }
+        $thiefprovider = $this->getInternetThiefProvider();
+        return $this->faker->randomElement($thiefprovider->steal($static_variable_name));
     }
-    
+
+    /**
+     * call a protected function in class Faker\Provider\Internet and its derivates 
+     * @param type $static_function_name the function to call
+     * @param array $arguments the function's arguments
+     * @return mixed $result Function's result
+     */
+    private function callProtectedFunctionFromInternetProvider($static_function_name, array $arguments = null)
+    {
+        $thiefprovider = $this->getInternetThiefProvider();
+        $result = $thiefprovider->callProtected('transliterate', $arguments);
+
+        return $result;
+    }
+
+    /**
+     * get InternetThiefProvider in Faker's providerlist. Only used internally
+     * @return StdClass $provider
+     */
+    private function getInternetThiefProvider()
+    {
+           foreach ($this->faker->getProviders() as $provider) {
+            if (strstr(get_class($provider), 'InternetThief')) {
+                return $provider;
+            }
+    }
+    }
+
+
     /**
      * overwrite original functions
      */
@@ -347,6 +375,9 @@ class DataCreator {
         $usernameformat = $this->getRandomStaticVariableFromInternetProvider('userNameFormats');
 
         $new_uname = $this->parse($usernameformat, true); 
+        //führe protected "transliterate" aus
+        $new_uname = $this->callProtectedFunctionFromInternetProvider('transliterate', array($new_uname));
+
         $this->userName = $new_uname; 
         return $new_uname;
     }
