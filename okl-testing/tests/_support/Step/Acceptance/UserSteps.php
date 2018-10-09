@@ -11,7 +11,7 @@ class UserSteps extends \AcceptanceTester {
    * @param $userName
    * @param $securedPassword (Obj of class  \Codeception\Step\Argument\PasswordArgument)
    */
-  public function login($userName,  \Codeception\Step\Argument\PasswordArgument $securedPassword, $saveSession = TRUE) {
+  public function login($userName,  \Codeception\Step\Argument\PasswordArgument $securedPassword = null, $saveSession = TRUE) {
     $I = $this;
 
     //$I->amOnPage("/user/logout");
@@ -19,6 +19,12 @@ class UserSteps extends \AcceptanceTester {
     //do not log in, if session is already active
     if ($I->loadSessionSnapshot('login') && $saveSession) {
       return;
+    }
+    
+    //fallback: use default password
+    if(is_null($securedPassword))
+    {
+        $securedPassword = new PasswordArgument(NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT);
     }
 
     $I->amOnPage(LoginPage::$URL);

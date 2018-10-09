@@ -4,16 +4,15 @@ namespace Step\Acceptance;
 use \Codeception\Step\Argument\PasswordArgument;
 
 
-class Dozent extends UserSteps {
+class SuperAdmin extends UserSteps {
 
-  public function loginAsDozent($saveSession = TRUE) {
+  public function loginAsSuperAdmin($saveSession = TRUE) {
     require_once(dirname(__FILE__) . "/../../../../..//web/sites/default/settings.php");
 
     $I = $this;
+    $superadmin_uname = user_load(1)->name;
 
-    $username = "fahrneul";
-
-    $I->login($username, null, TRUE);
+    $I->login($superadmin_uname, null, $saveSession);
 
   }
 

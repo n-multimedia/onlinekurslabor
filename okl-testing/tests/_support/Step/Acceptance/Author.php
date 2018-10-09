@@ -12,9 +12,8 @@ class Author extends UserSteps {
     $I = $this;
 
     $username = "fahrneul";
-    $password =  new PasswordArgument(NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT);
-
-    $I->login($username, $password, $saveSession);
+    
+    $I->login($username, null, $saveSession);
 
   }
 
