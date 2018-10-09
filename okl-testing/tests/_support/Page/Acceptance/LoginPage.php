@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @TODO whatsthat?
+ */
 namespace Page\Acceptance;
 
 class LoginPage {
