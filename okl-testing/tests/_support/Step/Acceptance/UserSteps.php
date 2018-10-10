@@ -1,9 +1,9 @@
 <?php
 
-
 namespace Step\Acceptance;
 
 use Page\Acceptance\LoginPage;
+use \Codeception\Step\Argument\PasswordArgument;
 
 class UserSteps extends \AcceptanceTester {
 
