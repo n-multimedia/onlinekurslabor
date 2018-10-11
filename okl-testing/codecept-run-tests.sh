@@ -41,5 +41,18 @@ done
 
 current_testsystem=$(getlocalTestSystemName)
 
+## prepare test
+
+# truncate output dir
+rm -rf tests/_output/*
+# create or overwrite htacess in output-dir
+echo -e "AuthType Basic \nAuthName \"okl-testing records\" \nAuthUserFile /var/www/vhosts/div.onlinekurslabor.de/okl-testing-htpasswd/.htpasswd \nRequire valid-user" >  tests/_output/.htaccess
+# create or overwrite symlink to output-dir
+ln -sf ../okl-testing/tests/_output  ../web/okl-testing
+
+
 #hier haben wir den fertigen Befehl. Lauf, kleiner Padawan!
 vendor/bin/codecept run acceptance $commandline_arguments --env $current_testsystem
+
+#more infos in blue..
+echo -e " \e[104mInformationen ueber den Testlauf koennen auch ueber ~URL/okl-testing/ abgerufen werden. \e[0m"
