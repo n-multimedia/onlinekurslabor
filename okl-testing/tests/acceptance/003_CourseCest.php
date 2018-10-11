@@ -1,11 +1,11 @@
 <?php
 
 use \Codeception\Util\Fixtures;
-
+use Page\CreateCourse as CreateCoursePage;
 
 class CourseCest {
 
-
+  //@todo muss dann ausgegliedert werden.. nid in quelltext
   private $fallback_course_url = "/course/home/11294";
 
 
@@ -40,8 +40,7 @@ class CourseCest {
    * @dataProvider C001_02_CreateCourseProvider
    */
   public function C001_02_CreateCourse(AcceptanceTester $I, \Codeception\Example $example) {
-        $new_course_title = $example['title'];  //'Neuer Kurs @' . date('d.m.Y H:i:s');
-        
+          
         $I->amOnPage('/');
         
         $I->click('Meine Veranstaltungen');
@@ -52,16 +51,10 @@ class CourseCest {
         //$I->click('Neuen Kurs anlegen','.btn-default');
         
         
-        $I->amOnPage('/node/add/courses-course');
-        $I->see('Courses - Kurs erstellen'); 
-        $I->fillField('title', $new_course_title);
-        //@todo: Semester aktuell
-         $I->selectOption('field_semester[und]', $example['currentSemesterName']);
-         $I->fillField('field_time_span[und][0][value2][date]', date('m/d/Y',  time()+31*24*60*60)); 
+        //refactored
+        $createcoursepage = new CreateCoursePage($I);
+        $createcoursepage->createCourse($example);
          
-        
-        $I->click('Veröffentlichen', '.form-actions');
-        $I->see('Courses - Kurs ' . $new_course_title . ' wurde erstellt.');
         
         //get current url
         $course_home_url = $I->getCurrentUri();
@@ -76,6 +69,7 @@ class CourseCest {
   protected function C001_02_CreateCourseProvider() {
         $return = array();
         $rand_data = \RealisticFaker\OklDataCreator::get();
+        //@todo: Semester aktuell
         $return[] = ['title' => $rand_data->text(20), 'currentSemesterName' => $rand_data->currentSemesterName];
         return $return;
     }
