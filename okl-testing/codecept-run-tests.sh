@@ -45,10 +45,6 @@ current_testsystem=$(getlocalTestSystemName)
 
 # truncate output dir
 rm -rf tests/_output/*
-# create or overwrite htacess in output-dir
-echo -e "AuthType Basic \nAuthName \"okl-testing records\" \nAuthUserFile /var/www/vhosts/div.onlinekurslabor.de/okl-testing-htpasswd/.htpasswd \nRequire valid-user" >  tests/_output/.htaccess
-# create or overwrite symlink to output-dir
-ln -sf ../okl-testing/tests/_output  ../web/okl-testing
 
 
 #hier haben wir den fertigen Befehl. Lauf, kleiner Padawan!
