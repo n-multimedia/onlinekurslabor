@@ -16,7 +16,7 @@ require_once(__DIR__ . '/OklProvider.php');
  */
 class OklDataCreator extends \RealisticFaker\DataCreator {
 
-    public static function get($identifier) {
+    public static function get($identifier = null) {
         return new OklDataCreator($identifier, 'de_DE');
     }
 
