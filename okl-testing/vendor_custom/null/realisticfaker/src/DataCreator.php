@@ -313,7 +313,7 @@ class DataCreator {
      * @param boolean $to_lower make string lowercase
      * @return string string veränderter String
      */
-    private static function simplifyString($string, $to_lower) {
+    private static function simplifyString($string, $to_lower = false) {
         $result = preg_replace('/\s+/', ' ', $string);
         if ($to_lower) {
             $result = strtolower($result);
