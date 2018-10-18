@@ -34,6 +34,14 @@ class UserSteps extends \AcceptanceTester {
 
     $I->click('Anmelden', '.form-actions');
 
+    
+    $drupalUser = user_load_by_mail($userName)?: user_load_by_name($userName); 
+    //noch nie eingeloggt
+    if(!$drupalUser->access)
+    {
+        $I->click(LoginPage::$acceptLegalTermsCheckbox);
+        $I->click(LoginPage::$acceptLegalButton);
+    }
 
     if($saveSession) {
       $I->saveSessionSnapshot('login');

@@ -1,6 +1,6 @@
 <?php
 /**
- * @TODO whatsthat?
+ * Description for loginpage
  */
 namespace Page\Acceptance;
 
@@ -9,19 +9,16 @@ class LoginPage {
   // include url of current page
   public static $URL = '/user/login';
 
+  public static $acceptLegalTermsCheckbox = '#edit-legal-accept';
+  public static $acceptLegalButton = 'button#edit-save';
+  
+  
+  //blödsinn, field-identifier sind @todo
   public static $usernameField = '#edit-name';
   public static $passwordField = '#edit-pass';
   public static $formID = '#user-login';
 
-  /**
-   * Basic route example for your current URL
-   * You can append any additional parameter to URL
-   * and use it in tests like: Page\Edit::route('/123-post');
-   */
-  public static function route($param) {
-    return static::$URL . $param;
-  }
-
+ 
   /**
    * @var \AcceptanceTester;
    */
