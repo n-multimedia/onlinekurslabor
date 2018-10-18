@@ -292,8 +292,13 @@ class DataCreator {
      * @return string $result veränderter String
      */
     private function parse($format, $to_lower = false) {
-        $result = '';
-        $result = str_replace('{{userName}}', $this->username, $format);
+        //$result stores what's returned
+        $result = $format;
+
+        if(strpos($result, '{{userName}}') !== FALSE)
+        {
+            $result = str_replace('{{userName}}', $this->userName, $format);
+        }
         $result = str_replace('{{firstName}}', $this->firstName, $result);
         $result = str_replace('{{lastName}}', $this->lastName, $result);
         
