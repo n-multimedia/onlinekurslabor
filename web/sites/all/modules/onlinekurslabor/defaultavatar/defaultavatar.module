@@ -14,12 +14,7 @@ define('AVATARSERVICE_URL','https://robohash.org/%s?size=400x400&bgset=bg1');
 
 
 define('AVATARSERVICE_SALT','EMeMH6348v8kYbQH'); 
-/**
- * Implements hook_init().
- */
-function defaultavatar_init() { 
-  
-}
+
 
 /**
  * Liefert einen unique-identifier (md5-string) anhand eines User-Accounts 
@@ -77,8 +72,10 @@ function _DefaultAvatar_alterProfileWithDefaultAvatar($profile) {
    
     $file = null;
     $account = user_load($profile->uid);
-    //kein bild existiert
-    if ( empty($profile->field_photo[LANGUAGE_NONE])) {
+   
+ 
+    //kein bild existiert ODER die picture-url entspricht dem user-default-image
+    if ( empty($profile->field_photo[LANGUAGE_NONE]) || strpos($profile->field_photo[LANGUAGE_NONE][0]['uri'],'://default_images/noprofile_default.jpg') ) {
         $localfilename = 'avatar_' . _DefaultAvatar_getUserIdentifier($account) . '.png';
         //Nutzer möchte Bild löschen (index "original": inhalt vor letzter aktion)
         //ist das bild der default-avatar, dann zwangsweise löschen verhindern
@@ -118,7 +115,10 @@ function _DefaultAvatar_alterProfileWithDefaultAvatar($profile) {
         }
         //fehler beim erstellen, nicht weitermachen
         if (!$file)
+        {
+            watchdog('defaultavatar', 'DefaultAvatar with URL %url could not be created for User %uid.', array('%url' =>_DefaultAvatar_getPictureURL($account), '%uid' => $account->uid));
             return false;
+        }
 
         $img_info = image_get_info(drupal_realpath($file->uri));
         $profile->field_photo[

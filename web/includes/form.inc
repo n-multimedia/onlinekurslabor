@@ -1803,8 +1803,7 @@ function form_builder($form_id, &$element, &$form_state) {
     global $theme;
     if (!$theme) {
         drupal_theme_initialize();
-    }
-    
+    } 
   // Initialize as unprocessed.
   $element['#processed'] = FALSE;
 
