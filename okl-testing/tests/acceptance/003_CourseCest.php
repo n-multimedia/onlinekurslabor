@@ -2,6 +2,7 @@
 
 use \Codeception\Util\Fixtures;
 use Page\CreateCourse as CreateCoursePage;
+use Page\courseadmin\AddMembers as AddMembersPage;
 
 class CourseCest {
 
@@ -83,6 +84,7 @@ class CourseCest {
   public function C001_03_AddMember(AcceptanceTester $I,  \Codeception\Example $example) {
 
     try {
+        //man sollte nicht catchen sondern via Fixtures::exists('...') prüfen
       $course_home_url = Fixtures::get('course_home_url');
     } catch (Exception  $ex) {
       //fallback url
@@ -91,24 +93,16 @@ class CourseCest {
 
     $I->amOnPage($course_home_url);
 
+    $course_nid = $I->grabFromCurrentUrl('~/course/home/(\d+)~');
     //annahme: ich bin im neu erstellten Kurs
     $I->moveMouseOver( '#instr_overview_members' );
     $I->wait(1);
     $I->click( '#instr_add_members a' );
     $I->see("Teilnehmende hinzufügen");
-
-    $I->expect('AK-2: Vor-Nachname und E-Mail angegeben:');
-
-
-    $I->expect('AK-2.2: Existiert kein Account, wird einer angelegt.');
-    $I->fillField('import_container[import_users]', $example["name"] . " " . $example["mail"]);
-    $I->click( 'Importieren' );
-    $I->wait(5);
-    $I->see("Student ". $example["name"] ."  wurde angelegt.");
-
-    //neuer student taucht in der Liste auf
-    $I->click("Teilnehmende");
-    $I->see($example["name"]);
+    
+    $addmempage = new AddMembersPage($I, $course_nid);
+    $addmempage->addByNameAndMail($example["name"] , $example["mail"]);
+     
 
 
     //TODO
