@@ -4,7 +4,7 @@ use \Codeception\Step\Argument\PasswordArgument;
 use Codeception\Util\Fixtures;
 use Page\UserCreate as UserCreatePage;
 use Page\CreateCourse as CreateCoursePage;
-
+use Page\courseadmin\AddMembers as AddMembersPage;
 
 class PrepareCest {
 
@@ -23,7 +23,7 @@ class PrepareCest {
 
     public function __construct() {
         //identifier für diesen Durchlauf des Cests. Kann künftig über Variable oÄ gesetzt werden
-        $this->run_identifier = "drölf";
+        $this->run_identifier = "drölfundzwanzig";
     }
 
     /* API for test*/
@@ -49,7 +49,9 @@ class PrepareCest {
      * @dataProvider P001_createTeachersProvider
      */
     public function P001_01_createTeachers(\Step\Acceptance\SuperAdmin $I, \Codeception\Example $example) {
-
+        
+        $I->comment('Caution: This cest will only run succesfully the FIRST time on a database until $run_identifier is changed');
+      
       //variable_del('okl_testing_fallback_data');
         if (!user_load_by_mail($example['mail'])) {
 
@@ -124,14 +126,21 @@ class PrepareCest {
      * @dataProvider P001_addMembersProvider
      */
     public function P001_03_addMembersToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $students_example) {
-        $I->comment('now i want to add memmbers to ' . $this->current_course_nid);
-        $I->comment('Students email is ' . $students_example['mail']);
-        $I->comment('task is open... todo');
+        $I->comment(sprintf('now I add memmber %s to the course %s' ,$students_example['mail'], $this->current_course_nid));
+
+        //use AddMembersPage
+        $addmempage = new AddMembersPage($I, $this->current_course_nid);
+        $addmempage->addByNameAndMail($students_example["name"], $students_example["mail"]);
         
-     
+         //und danach editiere useraccounts mit drupal-api
+          /* das geht nicht. Gibt ein Problem mit htmlpurifier :-((
+        $curr_students_drupal_account = user_load_by_mail('wieland.zimmer+autotest@div.onlinekurslabor.de');
+        $student_password_edit['pass'] = NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT;
+        user_save($curr_students_drupal_account, $student_password_edit);*/
+        
+         
     }
-    
-    
+
     /**
      * Funktion ist der dataprovider für P001_03_addMembersToCourse 
      * @return \Codeception\Example $example

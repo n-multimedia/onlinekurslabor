@@ -41,9 +41,10 @@ class AddMembers {
         $I->expect('AK-2.2: Existiert kein Account, wird einer angelegt.');
         $I->fillField(self::$userAddField, $name . " " . $mail);
         $I->click(self::$confirmButton);
-        $I->wait(5);
+        //angepasst an defaultavatar-timeout
+        $I->wait(12);
 
-        $I->see("Student " . $name . "  wurde angelegt.");
+        $I->see("Student " . $name . " wurde angelegt.");
         //schau auf TN-Seite
         $this->confirmExistence($I, $name);
 

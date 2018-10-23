@@ -99,7 +99,7 @@ function _DefaultAvatar_alterProfileWithDefaultAvatar($profile) {
             // alte version:    $file = system_retrieve_file(_DefaultAvatar_getPictureURL($account), _DefaultAvatar_getPhotoFileSystemtype(). $localfilename, true, FILE_EXISTS_REPLACE);           
             //setze http-options. Falls robohash down / ueberlastet, nicht ewig warten sondern abbrechen.
             $http_options = array('method' => 'GET',
-                'timeout' => 10,
+                'timeout' => 5,
                 'max_redirects' => 1,
                 'context' => stream_context_create(array(
                     'ssl' => array(
