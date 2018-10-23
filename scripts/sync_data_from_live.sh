@@ -93,6 +93,7 @@ drush rsync -v @okl.live:%private  @self:%private
 fi
 
 drush cc all
+drush en okl_testing  --yes
 printf "\n\nINVOKING UPDATESCRIPT\n\n"
 sleep 3s
 sh ../scripts/update_master.sh
