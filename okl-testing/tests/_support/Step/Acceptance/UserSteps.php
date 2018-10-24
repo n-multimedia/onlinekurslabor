@@ -62,7 +62,7 @@ class UserSteps extends \AcceptanceTester {
   {
      $I = $this;
      $I->amOnPage(LogoutPage::$URL);
-     $I->see(LoginPage::$loginButtonMenu);
+     $I->see(LoginPage::$loginMenuButton);
   }
 
   public function fillCkEditorById($element_id, $content) {
