@@ -23,7 +23,7 @@ class PrepareCest {
 
     public function __construct() {
         //identifier für diesen Durchlauf des Cests. Kann künftig über Variable oÄ gesetzt werden
-        $this->run_identifier = "drölfunddreißig"; //.rand(0,1000);
+        $this->run_identifier = "drölfunddreißig";//.rand(0,1000);
     }
 
     /* API for test*/
@@ -88,27 +88,39 @@ class PrepareCest {
 
         return $return;
     }
-      /**
+    
+    /**
      * @UserStory null
      * @UserStoryURL null
+     * 
+     * Als eigener Eintrag. Bei @before-Syntax würde würde er bei jedem Beispiel versuchen, neu einzuloggen
      *
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
-     * 
+     * @param \Codeception\Example $random_teacher A single teacher
+     * @dataprovider P001_dummySingleTeacherProvider
      */
-    public function P001_03_switchUser(\Step\Acceptance\Dozent $I){
+    public function P001_03_switchUser(\Step\Acceptance\Dozent $I, \Codeception\Example $random_teacher) {
+        //logout
         $I->logout();
-        
-        //geseeded: zahl zwischen 1 und $this->count_dozents für nachvollziehbarkeit
-        $randomteacher_number = \RealisticFaker\OklDataCreator::get($this->run_identifier)->randomElement(array(1, $this->count_dozents));
-       
-        $random_teacher = $this->_getDummyPersonExample(array(NM_ROLE_DOZENT, NM_ROLE_AUTOR), $randomteacher_number);
 
         $I->amGoingTo('Login as ' . $random_teacher['mail']);
         //login ist in diesem cest gültig, bis logout geschieht
         $I->login($random_teacher['mail'], null, false);
     }
-            
-    
+
+    /**
+     * Funktion ist der dataprovider für P001_03_switchUser und  usage in P001_06_addDozentenToCourse
+     * @return \Codeception\Example $example returns a teacher
+     */
+    protected function P001_dummySingleTeacherProvider() {
+
+        $all_teachers = $this->P001_dummyTeachersProvider();
+        //geseedeter RealisticFaker für nachvollziehbarkeit
+        $single_teacher = \RealisticFaker\OklDataCreator::get($this->run_identifier)->randomElement($all_teachers);
+        //providers müssen immer array(data1, data..n) sein
+        return array($single_teacher);
+    }
+
     /**
      * @UserStory null
      * @UserStoryURL null
@@ -183,6 +195,34 @@ class PrepareCest {
     
     
     
+    
+     
+     /**
+     * Add other created teachers to the newly created course
+     * @UserStory null
+     * @UserStoryURL null
+     *
+     * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
+     * @param \Codeception\Example $dozenten_example Example-array with name / mail
+     * @uses P001_dummySingleTeacherProvider Infos about currently loggedin dozent
+     * @dataProvider P001_dummyTeachersProvider
+     */
+     public function P001_06_addDozentenToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $dozenten_example) {
+        $current_teacher = $this->P001_dummySingleTeacherProvider()[0];
+
+        //füge nicht sich selbst hinzu
+        if ($current_teacher["mail"] === $dozenten_example["mail"]) {
+            return;
+        }
+
+        $I->comment(sprintf('now I add teacher %s to the course %s', $dozenten_example['mail'], $this->current_course_nid));
+
+        //use AddMembersPage
+        $addmempage = new AddMembersPage($I, $this->current_course_nid);
+        $addmempage->addByMail($dozenten_example["mail"]);
+    }
+   
+
     /**
      * @UserStory null
      * @UserStoryURL null

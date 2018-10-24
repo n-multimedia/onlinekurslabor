@@ -46,17 +46,47 @@ class AddMembers {
 
         $I->see("Student " . $name . " wurde angelegt.");
         //schau auf TN-Seite
-        $this->confirmExistence($I, $name);
+        $this->confirmSuccessfulAdding($I, $name);
 
         return $this;
     }
+    
+    /**
+     *
+     * Add existing user to a course
+     * @param type $mail
+     * @return \Page\courseadmin\AddMembers
+     */
+    public function addByMail($mail) {
+
+        $I = $this->tester;
+
+        $I->amOnPage($this->course_memberadd_url);
+
+        $I->fillField(self::$userAddField, $mail);
+        $I->click(self::$confirmButton);
+        //Müsst langen
+        $I->wait(5);
+
+        $I->see("Erfolgreich hinzugefügt");
+        $I->see($mail);
+        $I->cantSee("Kein Account vorhanden");
+
+        //lade existing user und name
+        $name =  user_load_by_mail($mail)->realname;
+        //schau auf TN-Seite
+        $this->confirmSuccessfulAdding($I, $name);
+
+        return $this;
+    }
+
 
     /**
      * Confirm, that the new user is visible on the Teilnhemende-List
      * @param \AcceptanceTester $I
      * @param type $name
      */
-    private function confirmExistence(\AcceptanceTester $I, $name)
+    private function confirmSuccessfulAdding(\AcceptanceTester $I, $name)
     {
         //neuer student taucht in der Liste auf
         $I->click(self::$teilnehmendeMenuButton);
