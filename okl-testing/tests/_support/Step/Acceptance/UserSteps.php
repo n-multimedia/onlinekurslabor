@@ -3,6 +3,7 @@
 namespace Step\Acceptance;
 
 use Page\Acceptance\LoginPage;
+use Page\Acceptance\LogoutPage;
 use \Codeception\Step\Argument\PasswordArgument;
 
 class UserSteps extends \AcceptanceTester {
@@ -17,8 +18,12 @@ class UserSteps extends \AcceptanceTester {
     //$I->amOnPage("/user/logout");
 
     //do not log in, if session is already active
-    if ($I->loadSessionSnapshot('login') && $saveSession) {
-      return;
+    if ($saveSession) {
+        if($I->loadSessionSnapshot('login'))
+        {
+            return;
+        }
+      
     }
     
     //fallback: use default password
@@ -48,6 +53,16 @@ class UserSteps extends \AcceptanceTester {
     }
 
 
+  }
+  
+  /**
+   * Logout any user
+   */
+  public function logout()
+  {
+     $I = $this;
+     $I->amOnPage(LogoutPage::$URL);
+     $I->see(LoginPage::$loginButtonMenu);
   }
 
   public function fillCkEditorById($element_id, $content) {

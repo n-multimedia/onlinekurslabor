@@ -23,7 +23,7 @@ class PrepareCest {
 
     public function __construct() {
         //identifier für diesen Durchlauf des Cests. Kann künftig über Variable oÄ gesetzt werden
-        $this->run_identifier = "drölfundzwanzig";
+        $this->run_identifier = "drölfunddreißig"; //.rand(0,1000);
     }
 
     /* API for test*/
@@ -40,22 +40,34 @@ class PrepareCest {
         $basicvalues = \RealisticFaker\OklDataCreator::get($unique);
         return ['name' => $basicvalues->name, 'firstName' => trim($basicvalues->firstName . ' ' . $basicvalues->middleName), 'lastName' => $basicvalues->lastName, 'mail' => $basicvalues->email, 'roles' => $roles, 'password' => new PasswordArgument(NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT)];
     }
-
+    
+      
+     /**
+     * @UserStory null
+     * @UserStoryURL null
+     * 
+     * @param \Step\Acceptance\SuperAdmin $I (instead of type \AcceptanceTester) 
+     */
+     public function P001_01_logSuperAdminIn(\Step\Acceptance\SuperAdmin $I) {
+         //login ist in diesem cest gültig, bis logout geschieht
+           $I->loginAsSuperAdmin(false);
+         
+     }
     /**
      * @UserStory null
      * @UserStoryURL null
      *
      * @param \Step\Acceptance\SuperAdmin $I (instead of type \AcceptanceTester)
-     * @dataProvider P001_createTeachersProvider
+     * @param \Codeception\Example $example Example-array
+     * @dataProvider P001_dummyTeachersProvider
      */
-    public function P001_01_createTeachers(\Step\Acceptance\SuperAdmin $I, \Codeception\Example $example) {
+    public function P001_02_createTeachers(\Step\Acceptance\SuperAdmin $I, \Codeception\Example $example) {
         
         $I->comment('Caution: This cest will only run succesfully the FIRST time on a database until $run_identifier is changed');
       
       //variable_del('okl_testing_fallback_data');
         if (!user_load_by_mail($example['mail'])) {
 
-            $I->loginAsSuperAdmin(true);
             $createPage = new UserCreatePage($I);
             $createPage->create($example);
             //_okl_testing_stop_test(); 
@@ -65,10 +77,10 @@ class PrepareCest {
     }
 
     /**
-     * Funktion ist der dataprovider für P001_01_createTeachers und 
+     * Funktion ist der dataprovider für P001_01_createTeachers und  P001_06_addDozentenToCourse
      * @return \Codeception\Example $example
      */
-    protected function P001_createTeachersProvider() {
+    protected function P001_dummyTeachersProvider() {
         $return = array();
         for ($count = 1; $count <= $this->count_dozents; $count ++) {
             $return[] = $this->_getDummyPersonExample(array(NM_ROLE_DOZENT, NM_ROLE_AUTOR), $count);
@@ -76,23 +88,37 @@ class PrepareCest {
 
         return $return;
     }
+      /**
+     * @UserStory null
+     * @UserStoryURL null
+     *
+     * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
+     * 
+     */
+    public function P001_03_switchUser(\Step\Acceptance\Dozent $I){
+        $I->logout();
+        
+        //geseeded: zahl zwischen 1 und $this->count_dozents für nachvollziehbarkeit
+        $randomteacher_number = \RealisticFaker\OklDataCreator::get($this->run_identifier)->randomElement(array(1, $this->count_dozents));
+       
+        $random_teacher = $this->_getDummyPersonExample(array(NM_ROLE_DOZENT, NM_ROLE_AUTOR), $randomteacher_number);
 
+        $I->amGoingTo('Login as ' . $random_teacher['mail']);
+        //login ist in diesem cest gültig, bis logout geschieht
+        $I->login($random_teacher['mail'], null, false);
+    }
+            
+    
     /**
      * @UserStory null
      * @UserStoryURL null
      *
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
+     * @param \Codeception\Example $example Example-object
      * @dataProvider P001_createCourseProvider
      */
-    public function P001_02_createCourse(\Step\Acceptance\Dozent $I, Codeception\Example $course_example) {
+    public function P001_04_createCourse(\Step\Acceptance\Dozent $I, Codeception\Example $course_example) {
 
-        //vielleicht auch nicht random sondern faker mit seed für nachvollziehbarkeit
-        $randomteacher_number = rand(1, $this->count_dozents);
-
-        $random_teacher = $this->_getDummyPersonExample(array(NM_ROLE_DOZENT, NM_ROLE_AUTOR), $randomteacher_number);
-
-        $I->amGoingTo('Login as ' . $random_teacher['mail']);
-        $I->login($random_teacher['mail'], null, true);
 
 
         //refactored
@@ -123,9 +149,10 @@ class PrepareCest {
      * @UserStoryURL null
      *
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
-     * @dataProvider P001_addMembersProvider
+     * @param \Codeception\Example $students_example Example-array mit name und mail
+     * @dataProvider P001_addStudentsProvider
      */
-    public function P001_03_addMembersToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $students_example) {
+    public function P001_05_addStudentsToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $students_example) {
         $I->comment(sprintf('now I add memmber %s to the course %s' ,$students_example['mail'], $this->current_course_nid));
 
         //use AddMembersPage
@@ -133,7 +160,7 @@ class PrepareCest {
         $addmempage->addByNameAndMail($students_example["name"], $students_example["mail"]);
         
          //und danach editiere useraccounts mit drupal-api
-          /* das geht nicht. Gibt ein Problem mit htmlpurifier :-((
+          /* das geht nicht. Gibt ein Problem mit htmlpurifier :-(( (auch als admin)
         $curr_students_drupal_account = user_load_by_mail('wieland.zimmer+autotest@div.onlinekurslabor.de');
         $student_password_edit['pass'] = NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT;
         user_save($curr_students_drupal_account, $student_password_edit);*/
@@ -145,13 +172,26 @@ class PrepareCest {
      * Funktion ist der dataprovider für P001_03_addMembersToCourse 
      * @return \Codeception\Example $example
      */
-    protected function P001_addMembersProvider() {
+    protected function P001_addStudentsProvider() {
         $return = array();
         for ($count = 1; $count <= $this->count_students; $count ++) {
             $return[] = $this->_getDummyPersonExample(array(NM_ROLE_STUDENT), $count);
         }
 
         return $return;
+    }
+    
+    
+    
+    /**
+     * @UserStory null
+     * @UserStoryURL null
+     *
+     * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
+     * 
+     */
+    public function P001_10_logOut(\Step\Acceptance\Dozent $I){
+        $I->logout();
     }
 
 }

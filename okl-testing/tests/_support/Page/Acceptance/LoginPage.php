@@ -12,6 +12,7 @@ class LoginPage {
   public static $acceptLegalTermsCheckbox = '#edit-legal-accept';
   public static $acceptLegalButton = 'button#edit-save';
   
+  public static $loginButtonMenu = 'Anmelden';
   
   //blödsinn, field-identifier sind @todo
   public static $usernameField = '#edit-name';
