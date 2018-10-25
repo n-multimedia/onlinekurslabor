@@ -1,7 +1,13 @@
 <?php
 
 namespace Page;
-
+/**
+ * 
+ * 
+ * 
+ * 
+ * Needs to be refactored using NodeCreateInterface
+ */
 class CreateCourse {
 
     // include url of current page
