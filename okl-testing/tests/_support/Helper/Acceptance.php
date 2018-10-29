@@ -9,11 +9,17 @@ require_once(__DIR__ . '/../customFaker/OklDataCreator.php');
 
 class Acceptance extends \Codeception\Module {
 
-    //wird vor jedem Test ausgeführt.
-    //beforeSuite nicht funktional, da kein Zugriff auf Browser (und cookies)
-    public function _before(\Codeception\TestCase $test) {
+     // HOOK: before each suite
+    public function _beforeSuite($settings = array()) {
         //dadurch wird Drupal gesperrt 
         _okl_testing_start_test();
+    }
+
+    
+    //wird vor jedem Test ausgeführt.
+    //beforeSuite sperrt Seite, hier wird Zugriff via Cookie erlaubt
+    public function _before(\Codeception\TestCase $test) {
+        
         $I = $this->getModule('WebDriver');
 
         //setze cookie. Dadurch wird wieder Zugriff auf Drupal gewährt

@@ -23,8 +23,8 @@ class PrepareCest {
     private $current_course_nid = null;
 
     public function __construct() {
-        //identifier für diesen Durchlauf des Cests. Kann künftig über Variable oÄ gesetzt werden
-        $this->run_identifier = "drölfunddreißig";//.rand(0,1000);
+        //identifier für diesen Durchlauf des Cests.  
+        $this->run_identifier = _okl_testing_get_test_identifier();
     }
 
     /* API for test*/
@@ -41,6 +41,7 @@ class PrepareCest {
         $basicvalues = \RealisticFaker\OklDataCreator::get($unique);
         return ['name' => $basicvalues->name, 'firstName' => trim($basicvalues->firstName . ' ' . $basicvalues->middleName), 'lastName' => $basicvalues->lastName, 'mail' => $basicvalues->email, 'roles' => $roles, 'password' => new PasswordArgument(NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT)];
     }
+    /*ENDE  API for test*/
     
       
      /**
@@ -63,15 +64,11 @@ class PrepareCest {
      * @dataProvider P001_dummyTeachersProvider
      */
     public function P001_02_createTeachers(\Step\Acceptance\SuperAdmin $I, \Codeception\Example $example) {
-        
-        $I->comment('Caution: This cest will only run succesfully the FIRST time on a database until $run_identifier is changed');
       
-      //variable_del('okl_testing_fallback_data');
         if (!user_load_by_mail($example['mail'])) {
 
             $createPage = new UserCreatePage($I);
             $createPage->create($example);
-            //_okl_testing_stop_test(); 
         }
 
         // Fixtures::add('created_persons', $example);
