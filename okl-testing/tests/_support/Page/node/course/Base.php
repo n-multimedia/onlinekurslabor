@@ -26,9 +26,9 @@ class Base extends \Page\node\Node {
     
  
     public function setDomain(\AcceptanceTester $I, $domain_title, $is_demo = false) {
-        $fieldName = $is_demo ? self::$domainEditField : self::$domainField;
+        $fieldName = $is_demo ? self::$domainDemoField : self::$domainField;
 
-        $I->click("Lehrtext");
+        $I->click("Lehrtext",self::$formEditContext);
         //cutte ggf. falsche zeichen am ende des titels
         $I->fillField($fieldName, substr($domain_title, 0, -3));
         $I->wait(5);

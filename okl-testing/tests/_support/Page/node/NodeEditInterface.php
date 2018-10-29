@@ -5,12 +5,14 @@ namespace Page\node;
 interface NodeEditInterface {
   
     
-    public function   __construct(\AcceptanceTester $I, $content_type);
+    public function   __construct(\AcceptanceTester $I, $nid);
+  
+     
     /**
      * Edit a Node
+     * @param \AcceptanceTester $I
      * @param \Codeception\Example $params  an array containing values 
-     * @return StdClass $this 
      */
-    public function edit($nid, \Codeception\Example $params); 
+    public function editFields(\AcceptanceTester $I, \Codeception\Example $params);
 
 }
