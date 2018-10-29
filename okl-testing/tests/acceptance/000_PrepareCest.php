@@ -5,6 +5,7 @@ use \Codeception\Util\Fixtures;
 use Page\UserCreate as UserCreatePage;
 use Page\courseadmin\AddMembers as AddMembersPage;
 use Page\node\course\Create as CreateCoursePage;
+use Page\node\course\Edit as EditCoursePage;
 use Page\node\domain\Create  as CreateDomainPage;
 
 class PrepareCest {
@@ -126,24 +127,38 @@ class PrepareCest {
      *
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $domain_example Example-object
-     * @dataProvider P001_createDomainProvider
+     * @dataProvider P001_createDomainsProvider
      */
-    public function P001_04_createDomain(\Step\Acceptance\Dozent $I, Codeception\Example $domain_example) {
+    public function P001_04_createDomains(\Step\Acceptance\Dozent $I, Codeception\Example $domain_example) {
 
         $ccpage = New CreateDomainPage($I);
         $ccpage->create($domain_example);
-        Fixtures::add('domain_title', $domain_example['title'] );
+        if(!strstr($domain_example['title'], '(DEMO)'))
+        {
+            Fixtures::add('domain_title', $domain_example['title'] );
+        }
     }
 
     /**
      * der Dataprovider für P001_04_createDomain liefert nötige Variablen
      * @return Codeception\Example $course_example 
      */
-    protected function P001_createDomainProvider() {
+    protected function P001_createDomainsProvider() {
         $return = array();
         $rand_data = \RealisticFaker\OklDataCreator::get('domain_' . $this->run_identifier);
-        $return[] = ['title' => $rand_data->text(40), 'body' => $rand_data->paragraph(30)];
+        $domain_title = implode(' ',$rand_data->words(4));
+        $return[] = ['title' => $domain_title, 'body' => $rand_data->realText(120)];
+        $return[] = ['title' =>$this->getDemoTitleForDomainTitle($domain_title), 'body' => $rand_data->realText(50)];
         return $return;
+    }
+    /**
+     * liefert zu einem Titel einen ähnlichen mit Ende " (DEMO)"
+     * @param String $title
+     * @return String $title_demo
+     */
+    protected function getDemoTitleForDomainTitle($title)
+    {
+        return  substr($title, 0, -7).' (DEMO)';
     }
 
     /**
@@ -180,6 +195,24 @@ class PrepareCest {
         $return[] = ['title' => $rand_data->text(20), 'currentSemesterName' => $rand_data->currentSemesterName];
         return $return;
     }
+    
+     /**
+     * @UserStory null
+     * @UserStoryURL null
+     *  Weil man "bearbeiten" ja auch braucht... 
+     *
+     * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
+     * @param \Codeception\Example $example Example-object
+     */
+    public function P001_06_editCourse(\Step\Acceptance\Dozent $I) {
+        $new_course_nid = $this->current_course_nid;
+        $demo_domain_title = $this->getDemoTitleForDomainTitle(Fixtures::get('domain_title'));
+
+        $course_edit = ['domain_demo_title' => $demo_domain_title];
+        $course_edit_example = new Codeception\Example($course_edit);
+        $editcoursepage = new EditCoursePage($I, $new_course_nid);
+        $editcoursepage->edit($course_edit_example); 
+    }
 
     /**
      * Add students to the newly created course
@@ -190,7 +223,7 @@ class PrepareCest {
      * @param \Codeception\Example $students_example Example-array mit name und mail
      * @dataProvider P001_addStudentsProvider
      */
-    public function P001_06_addStudentsToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $students_example) {
+    public function P001_07_addStudentsToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $students_example) {
         $I->comment(sprintf('now I add memmber %s to the course %s' ,$students_example['mail'], $this->current_course_nid));
 
         //use AddMembersPage
@@ -233,7 +266,7 @@ class PrepareCest {
      * @uses P001_dummySingleTeacherProvider Infos about currently loggedin dozent
      * @dataProvider P001_dummyTeachersProvider
      */
-     public function P001_07_addDozentenToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $dozenten_example) {
+     public function P001_08_addDozentenToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $dozenten_example) {
         $current_teacher = $this->P001_dummySingleTeacherProvider()[0];
 
         //füge nicht sich selbst hinzu
