@@ -34,7 +34,7 @@ abstract class Node {
     }
 
     /**
-     * Create is always same. Goto url, FiellTitle and some fields (custom), click "publish" and confirm
+     * Create is always same. Goto url, Fill Title and some fields (custom), click "publish" and confirm
      * @param \Codeception\Example $params
      */
     public function create(\Codeception\Example $params) {
@@ -49,11 +49,19 @@ abstract class Node {
         //check: wurde angelegt
         $I->see($params['title'] . ' wurde erstellt.');
     }
-
-    /**
-     * Non-abstract class must fill fields.
-     * @param \AcceptanceTester $I for convenience
-     * @param \Codeception\Example $params 
+    
+      /**
+     * edit is always same. Goto url, fill fields (custom), click "publish" and confirm
+     * @param \Codeception\Example $params
      */
-    abstract function fillFields(\AcceptanceTester $I, \Codeception\Example $params);
+    public function edit(\Codeception\Example $params) {
+        $I = $this->tester;
+        //where?
+        //$I->amOnPage(self::$createURL);
+        $this->editFields($I, $params);
+        $I->click(self::$publishButton);
+        //check: wurde bearbeitet
+        $I->see($params['title'] . ' wurde erstellt.');
+    }
+
 }
