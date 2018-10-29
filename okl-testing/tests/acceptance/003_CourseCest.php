@@ -1,7 +1,7 @@
 <?php
 
 use \Codeception\Util\Fixtures;
-use Page\CreateCourse as CreateCoursePage;
+use Page\node\course\Create as CreateCoursePage;
 use Page\courseadmin\AddMembers as AddMembersPage;
 
 class CourseCest {
@@ -54,7 +54,7 @@ class CourseCest {
         
         //refactored
         $createcoursepage = new CreateCoursePage($I);
-        $createcoursepage->createCourse($example);
+        $createcoursepage->create($example);
          
         
         //get current url
