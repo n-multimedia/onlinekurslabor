@@ -9,17 +9,21 @@ abstract class Node {
     public static $titleField = 'title';
     public static $publishButton = '#edit-submit';
     //calculated
-    public static $createURL;
+    public static $createURL; //calculated in child
+    public static $editURL;  //calculated in child
     //type \AcceptanceTester
     public $tester;
 
     /**
      * must be called from non-abstract classes via parent::__ ...
      * @param \AcceptanceTester $I
-     * @param String $content_type like NM_CONTENT_DOMAIN
+     * @param String $content_type only necessary for CREATE, not EDIT
      */
-    public function __construct(\AcceptanceTester $I, $content_type) {
-        self::$createURL = self::route(str_replace('_', '-', $content_type));
+    public function __construct(\AcceptanceTester $I, $content_type = false) {
+        if($content_type)
+        {
+            self::$createURL = self::route(str_replace('_', '-', $content_type));
+        }
 
         $this->tester = $I;
     }
