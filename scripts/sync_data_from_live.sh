@@ -97,9 +97,20 @@ drush en okl_testing  --yes
 printf "\n\nINVOKING UPDATESCRIPT\n\n"
 sleep 3s
 sh ../scripts/update_master.sh
- 
 printf '\007'
 sleep 1s
 printf '\007'
+
+
+if [  "$PULL_DB" = true  ]; 
+then
+
+sleep 1s
+printf "\n\nWill now create a dummy course. Confirm by hitting enter or CMD+C to cancel.\n"
+read null
+
+cd ../okl-testing 
+bash codecept-run-tests.sh 000_PrepareCest
+fi
 
 exit;
