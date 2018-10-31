@@ -61,7 +61,7 @@ class Create_Interactive extends Base implements \Page\node\ContentCreateInterfa
      */
     public function getNewNid() {
         $I = $this->tester;
-        return $I->grabFromCurrentUrl('~/course/home/(\d+)~');
+        return $I->grabFromCurrentUrl('~/domain/text/(\d+)~');
     }
 
 }

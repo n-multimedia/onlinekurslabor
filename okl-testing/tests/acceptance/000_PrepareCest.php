@@ -7,6 +7,7 @@ use Page\courseadmin\AddMembers as AddMembersPage;
 use Page\node\course\Create as CreateCoursePage;
 use Page\node\course\Edit as EditCoursePage;
 use Page\node\domain\Create  as CreateDomainPage;
+use Page\node\domain\Edit  as EditDomainPage;
 use Page\node\domain_content\Create_Interactive  as CreateInteractiveVideoPage;
 
 class PrepareCest {
@@ -154,8 +155,8 @@ class PrepareCest {
         $return = array();
         $rand_data = \RealisticFaker\OklDataCreator::get('domain_' . $this->run_identifier);
         $domain_title = implode(' ',$rand_data->words(4));
-        $return[] = ['title' => $domain_title, 'body' => $rand_data->realText(120)];
-        $return[] = ['title' =>$this->getDemoTitleForDomainTitle($domain_title), 'body' => $rand_data->realText(50)];
+        $return[] = ['title' => $domain_title, 'body' => $rand_data->realText(360)];
+        $return[] = ['title' =>$this->getDemoTitleForDomainTitle($domain_title), 'body' => $rand_data->realText(120)];
         return $return;
     }
     /**
@@ -178,10 +179,20 @@ class PrepareCest {
      * @dataProvider P001_createDomainContentProvider
      */
     public function P001_05_createDomainContent(\Step\Acceptance\Dozent $I, Codeception\Example $domain_content_example) {
-        $nids = [Fixtures::get('domain_nid'), Fixtures::get('domain_demo_nid')];
-        foreach ($nids as $nid) {
+        $domain_nids = [Fixtures::get('domain_nid'), Fixtures::get('domain_demo_nid')];
+        foreach ($domain_nids as $nid) {
+            //create H5Ps
             $civPage = new CreateInteractiveVideoPage($I, $nid);
             $civPage->create($domain_content_example);
+            $iv_nid = $civPage->getNewNid();
+            //edit domain  and include h5p in page
+            $domain_node  = node_load($nid); 
+            $domain_text = $domain_node->field_domain_description[LANGUAGE_NONE][0]['value'];
+ 
+            $edit_sample = ['body' => $domain_text.'[h5p]'.$iv_nid.':'.$domain_content_example['title'].'[/h5p]' ];
+            $edDomainPage = new EditDomainPage($I, $nid);
+            $edDomainPage->edit(new Codeception\Example($edit_sample));
+            $I->see("Interaktives Video");
         }
     }
 

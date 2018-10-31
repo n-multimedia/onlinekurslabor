@@ -82,6 +82,26 @@ class UserSteps extends \AcceptanceTester {
       $content
     );
   }
+  /**
+   * wrapper für die Extra-Buttons in CK, bspw für footnotes oder h5p
+   * @param type $button_name e.g. "footnotes", "h5p_button"..
+   * @param type $title of 
+   */
+  public function fillCkExtraFeature($button_name, $title)
+  {      $this->comment("don't use. Autocomplete is not triggered :( ");
+      $this->executeJS("jQuery('.cke_button__".$button_name."_icon').click();");
+      $this->wait(2);
+      //das geht och nich $this->fillField('.cke_dialog_ui_input_text', $title);
+      //löse via js-konstrukt..
+      $this->executeJS('jQuery("input.cke_dialog_ui_input_text").focus().val("'.$title.'").focus(); ');
+      $this->wait(2);
+      //trigger enter on autocomplete
+     # $this->executeJS(' var e = jQuery.Event("keyup");e.keyCode= 13; jQuery("input.cke_dialog_ui_input_text").trigger(e);');
+     
+      #$this->wait(5);
+      $this->click($title);
+      $this->click("OK");
+  }
 
   public function fillTinyMceEditorById($id, $content) {
     $this->fillTinyMceEditor('id', $id, $content);
@@ -99,6 +119,7 @@ class UserSteps extends \AcceptanceTester {
       $content
     );
   }
+  
 
   private function fillRteEditor($selector, $content) {
     $this->executeInSelenium(
