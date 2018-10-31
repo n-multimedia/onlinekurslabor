@@ -39,13 +39,12 @@ class Create extends Base implements \Page\node\NodeCreateInterface {
     }
 
     /**
-     * TODO....
-     * @return int
+     * get node-id of lately created course
+     * @return int $nid
      */
     public function getNewNid() {
         $I = $this->tester;
-        $I->comment(__FUNCTION__ ." NOT IMPLEMENTED");
-        return 23479232039;
+        return $I->grabFromCurrentUrl('~/course/home/(\d+)~');
     }
 
 }

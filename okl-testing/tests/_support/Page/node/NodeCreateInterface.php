@@ -7,7 +7,8 @@ interface NodeCreateInterface {
     public function __construct(\AcceptanceTester $I);
 
     /**
-     * get NID of newly created node
+     * get node-id of lately created Node
+     * @return int $nid
      */
     public function getNewNid();
 

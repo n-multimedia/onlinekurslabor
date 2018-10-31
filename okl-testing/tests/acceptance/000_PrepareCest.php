@@ -178,7 +178,7 @@ class PrepareCest {
         $createcoursepage = new CreateCoursePage($I);
         $createcoursepage->create($course_example);
 
-        $home_nid = $I->grabFromCurrentUrl('~/course/home/(\d+)~');
+        $home_nid = $createcoursepage->getNewNid();
         $I->comment('The nid of my new course is ' . $home_nid);
 
         $this->current_course_nid = $home_nid;
