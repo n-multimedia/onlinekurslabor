@@ -7,6 +7,7 @@ use Page\courseadmin\AddMembers as AddMembersPage;
 use Page\node\course\Create as CreateCoursePage;
 use Page\node\course\Edit as EditCoursePage;
 use Page\node\domain\Create  as CreateDomainPage;
+use Page\node\domain_content\Create_Interactive  as CreateInteractiveVideoPage;
 
 class PrepareCest {
 
@@ -133,9 +134,15 @@ class PrepareCest {
 
         $ccpage = New CreateDomainPage($I);
         $ccpage->create($domain_example);
+        
         if(!strstr($domain_example['title'], '(DEMO)'))
         {
             Fixtures::add('domain_title', $domain_example['title'] );
+            Fixtures::add('domain_nid', $ccpage->getNewNid());
+        }
+        else
+        {
+            Fixtures::add('domain_demo_nid', $ccpage->getNewNid());
         }
     }
 
@@ -161,6 +168,36 @@ class PrepareCest {
         return  substr($title, 0, -7).' (DEMO)';
     }
 
+    
+    /**
+     * @UserStory null
+     * @UserStoryURL null
+     *
+     * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
+     * @param \Codeception\Example $domain_content_example Example-object
+     * @dataProvider P001_createDomainContentProvider
+     */
+    public function P001_05_createDomainContent(\Step\Acceptance\Dozent $I, Codeception\Example $domain_content_example) {
+        $nids = [Fixtures::get('domain_nid'), Fixtures::get('domain_demo_nid')];
+        foreach ($nids as $nid) {
+            $civPage = new CreateInteractiveVideoPage($I, $nid);
+            $civPage->create($domain_content_example);
+        }
+    }
+
+    /**
+     * der Dataprovider für P001_05_createDomainContent liefert nötige Variablen
+     * @return Codeception\Example $course_example 
+     */
+    protected function P001_createDomainContentProvider() {
+
+        $return = array();
+        $rand_data = \RealisticFaker\OklDataCreator::get('domaincontent_' . $this->run_identifier);
+        //@todo: move fixed Videoname "berries sample" to a config
+        $return[] = ['title' => implode(' ', $rand_data->words(4)), 'h5p_type' => 'Interactive Video', 'videoname' => 'berries sample'];
+        return $return;
+    }
+
     /**
      * @UserStory null
      * @UserStoryURL null
@@ -169,7 +206,7 @@ class PrepareCest {
      * @param \Codeception\Example $example Example-object
      * @dataProvider P001_createCourseProvider
      */
-    public function P001_05_createCourse(\Step\Acceptance\Dozent $I, Codeception\Example $course_example) {
+    public function P001_06_createCourse(\Step\Acceptance\Dozent $I, Codeception\Example $course_example) {
 
         
         $course_example['domain_title'] = Fixtures::get('domain_title');
@@ -185,7 +222,7 @@ class PrepareCest {
     }
 
     /**
-     * der Dataprovider für P001_05_createCourse liefert nötige Variablen
+     * der Dataprovider für P001_06_createCourse liefert nötige Variablen
      * @return Codeception\Example $course_example 
      */
     protected function P001_createCourseProvider() {
@@ -204,7 +241,7 @@ class PrepareCest {
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $example Example-object
      */
-    public function P001_06_editCourse(\Step\Acceptance\Dozent $I) {
+    public function P001_07_editCourse(\Step\Acceptance\Dozent $I) {
         $new_course_nid = $this->current_course_nid;
         $demo_domain_title = $this->getDemoTitleForDomainTitle(Fixtures::get('domain_title'));
 
@@ -223,7 +260,7 @@ class PrepareCest {
      * @param \Codeception\Example $students_example Example-array mit name und mail
      * @dataProvider P001_addStudentsProvider
      */
-    public function P001_07_addStudentsToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $students_example) {
+    public function P001_08_addStudentsToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $students_example) {
         $I->comment(sprintf('now I add memmber %s to the course %s' ,$students_example['mail'], $this->current_course_nid));
 
         //use AddMembersPage
@@ -266,7 +303,7 @@ class PrepareCest {
      * @uses P001_dummySingleTeacherProvider Infos about currently loggedin dozent
      * @dataProvider P001_dummyTeachersProvider
      */
-     public function P001_08_addDozentenToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $dozenten_example) {
+     public function P001_09_addDozentenToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $dozenten_example) {
         $current_teacher = $this->P001_dummySingleTeacherProvider()[0];
 
         //füge nicht sich selbst hinzu
@@ -289,7 +326,7 @@ class PrepareCest {
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * 
      */
-    public function P001_11_logOut(\Step\Acceptance\Dozent $I){
+    public function P001_20_logOut(\Step\Acceptance\Dozent $I){
         $I->logout();
     }
 
