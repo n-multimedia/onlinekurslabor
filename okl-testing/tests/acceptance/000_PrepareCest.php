@@ -9,6 +9,7 @@ use Page\node\course\CourseEdit as EditCoursePage;
 use Page\node\domain\DomainCreate  as CreateDomainPage;
 use Page\node\domain\DomainEdit  as EditDomainPage;
 use Page\node\domain_content\InteractiveCreate  as CreateInteractiveVideoPage;
+use Page\node\course_content\CoursegroupCreate as CreateCoursegroupPage; 
 
 class PrepareCest {
 
@@ -328,7 +329,40 @@ class PrepareCest {
         $addmempage = new AddMembersPage($I, $this->current_course_nid);
         $addmempage->addByMail($dozenten_example["mail"]);
     }
-   
+    
+    
+    
+    /**
+     * Add coursegroups to course
+     * @UserStory null
+     * @UserStoryURL null
+     *
+     * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
+     * @param \Codeception\Example $cg_example Example-array with name / body
+     * doesnt @uses P001_dummySingleTeacherProvider Infos about currently loggedin dozent
+     * @dataProvider P001_createCoursegroupsProvider
+     */
+    public function P001_10_addCoursegroups(\Step\Acceptance\Dozent $I, Codeception\Example $cg_example) {
+        //$current_teacher = $this->P001_dummySingleTeacherProvider()[0];
+        //course-nid
+        $course_nid = $this->current_course_nid;
+
+        $cg_page = new CreateCoursegroupPage($I, $course_nid);
+        $cg_page->create($cg_example);
+    }
+
+    /**
+     * der Dataprovider für P001_09_addCoursegroups liefert nötige Variablen
+     * @return Codeception\Example $course_example 
+     */
+    protected function P001_createCoursegroupsProvider() {
+        $return = array();
+        for ($count = 1; $count <= floor($this->count_students / 3); $count ++) {
+            $rand_data = \RealisticFaker\OklDataCreator::get('coursegroup_' . $count . '_' . $this->run_identifier);
+            $return[] = ['title' => $rand_data->text(20), 'body' => $rand_data->realText(60)];
+        }
+        return $return;
+    }
 
     /**
      * @UserStory null
