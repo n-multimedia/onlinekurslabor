@@ -13,7 +13,7 @@ namespace Page\node\course;
  *
  * @author Bernhard
  */
-class Create extends Base implements \Page\node\NodeCreateInterface {
+class Create extends CourseBase implements \Page\node\NodeCreateInterface {
     
      /**
      * Declare UI map for this page here. CSS or XPath allowed.

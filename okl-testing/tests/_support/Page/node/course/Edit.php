@@ -13,7 +13,7 @@ namespace Page\node\course;
  *
  * @author Bernhard
  */
-class Edit extends Base implements \Page\node\NodeEditInterface {
+class Edit extends CourseBase implements \Page\node\NodeEditInterface {
 
     public function __construct(\AcceptanceTester $I, $course_nid) {
         //$course = node_load($course_nid);
