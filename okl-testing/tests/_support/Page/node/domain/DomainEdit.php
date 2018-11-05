@@ -9,11 +9,11 @@ namespace Page\node\domain;
  */
 
 /**
- * Description of Edit
+ * Description of DomainEdit
  *
  * @author Bernhard
  */
-class Edit extends \Page\node\Node implements \Page\node\NodeEditInterface {
+class DomainEdit extends \Page\node\Node implements \Page\node\NodeEditInterface {
 
     public function __construct(\AcceptanceTester $I, $domain_nid) {
         //$course = node_load($course_nid);

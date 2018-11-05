@@ -2,7 +2,7 @@
 
 use \Codeception\Util\Fixtures; 
  
-use Page\node\domain\Create  as CreateDomainPage;
+use Page\node\domain\DomainCreate  as CreateDomainPage;
 
 class DomainCest {
  

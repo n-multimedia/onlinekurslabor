@@ -6,8 +6,8 @@ use Page\UserCreate as UserCreatePage;
 use Page\courseadmin\AddMembers as AddMembersPage;
 use Page\node\course\CourseCreate as CreateCoursePage;
 use Page\node\course\CourseEdit as EditCoursePage;
-use Page\node\domain\Create  as CreateDomainPage;
-use Page\node\domain\Edit  as EditDomainPage;
+use Page\node\domain\DomainCreate  as CreateDomainPage;
+use Page\node\domain\DomainEdit  as EditDomainPage;
 use Page\node\domain_content\Create_Interactive  as CreateInteractiveVideoPage;
 
 class PrepareCest {
