@@ -9,11 +9,11 @@ namespace Page\node\domain_content;
  */
 
 /**
- * Description of Create_InteractivePage
+ * Description of InteractiveCreate
  *
  * @author Bernhard
  */
-class Create_Interactive extends Base implements \Page\node\ContentCreateInterface {
+class InteractiveCreate extends DomainContentBase implements \Page\node\ContentCreateInterface {
     
      /**
      * Declare UI map for this page here. CSS or XPath allowed.

@@ -8,7 +8,7 @@ use Page\node\course\CourseCreate as CreateCoursePage;
 use Page\node\course\CourseEdit as EditCoursePage;
 use Page\node\domain\DomainCreate  as CreateDomainPage;
 use Page\node\domain\DomainEdit  as EditDomainPage;
-use Page\node\domain_content\Create_Interactive  as CreateInteractiveVideoPage;
+use Page\node\domain_content\InteractiveCreate  as CreateInteractiveVideoPage;
 
 class PrepareCest {
 
