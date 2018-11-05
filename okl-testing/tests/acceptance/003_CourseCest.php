@@ -1,7 +1,7 @@
 <?php
 
 use \Codeception\Util\Fixtures;
-use Page\node\course\Create as CreateCoursePage;
+use Page\node\course\CourseCreate as CreateCoursePage;
 use Page\courseadmin\AddMembers as AddMembersPage;
 
 class CourseCest {
