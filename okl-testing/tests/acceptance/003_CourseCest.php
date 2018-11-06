@@ -172,9 +172,34 @@ class CourseCest {
   }
   
   
-  
-  
-  /**
+   /**
+     * @UserStoryi KD.09 - Kurs - Dozent - Kursgruppe anlegen | https://trello.com/c/0w86zeYF/17-kd09-kurs-dozent-kursgruppe-anlegen
+     * @param \AcceptanceTester $I
+     * @dataProvider C001_BasicDataProvider
+     */
+    public function C001_04_AddCourseGroup(\Step\Acceptance\Dozent $I, \Codeception\Example $course_group) {
+        
+        $this->goToCourseHome($I);
+
+        //annahme: ich bin im neu erstellten Kurs
+        $I->moveMouseOver('#instr_overview_content');
+        $I->wait(1);
+        $I->click('#instr_add_groups a');
+        $I->expect('AK-1: Es kann ein Titel und ein Beschreibugnstext eingegeben werden');
+        $I->see("Neue Kursgruppe erstellen");
+
+        $I->seeElement("#cke_edit-body-und-0-value");
+
+        $I->fillField('title', $course_group['title']);
+        $I->fillCkEditorById('edit-body-und-0-value', $course_group['body']);
+        $I->click("Speichern");
+        $I->see("Courses - Kursgruppe " . $course_group['title'] . " wurde erstellt.");
+
+        $I->click('Kursgruppe');
+        $I->see($course_group['title']);
+    }
+
+    /**
    * Basic Data Provider with title and body
    * @return type
    */
