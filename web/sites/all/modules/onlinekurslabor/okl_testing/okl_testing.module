@@ -1,6 +1,90 @@
 <?php
 
 
+
+
+/**
+ * liefert Fallbackdata basierend auf einem vorhergegangenen 000_PrepareCest
+ * @return StdClass $fallback_data a course.
+ */
+function _okl_testing_getFallbackData() {
+    $course_nid = variable_get('okl_testing_fallback_course_nid');
+    return _okl_testing_getDataObjectForCourse($course_nid);
+}
+
+/**
+ * Lädt für eine übergeben Kurs-NID alle nötigen Entitäten 
+ * Über Objekteigenschaften kann man auf diese zugreifen, exemplarisch
+ * ->home_url
+ * ->students 
+ * ->course_groups
+ * ->...
+ * Auch Kandidat für _custom_general
+ * 
+ * @param type $course_nid die NID des untersuchten Kurses
+ */
+function _okl_testing_getDataObjectForCourse($course_nid)
+{
+    //kurs
+    $course = node_load($course_nid);
+    //TN [@todo: tutor]
+    $students = custom_general_get_users_in_group_by_role_real($course_nid, NM_COURSES_ROLE_STUDENT);
+    $teachers = custom_general_get_users_in_group_by_role_real($course_nid, NM_COURSES_ROLE_ADMINISTRATOR);
+    //coursegroups in course
+    $coursegroups_basic = _section_course_get_coursegroups($course);
+    $course_group_students = array();
+
+    $course_groups = array();
+    //gehe durch coursegroups, lade node   
+    foreach ($coursegroups_basic as $cg) {
+        $c_group = node_load($cg->nid);
+        $c_group->url = NM_COURSE_GROUPS_PATH . '/' . $course_nid . '/' . $cg->nid;
+        $course_groups[$cg->nid] = &$c_group;
+    }
+
+    //lade für studis, in welcher CG in diesem kurs
+    foreach ($students as $uid => &$student) {
+        $cg_nid = _section_courses_get_coursegroup_gid($uid, $course);
+        if ($course_groups[$cg_nid]) {
+            //setze coursegroup bei student
+            $student->coursegroup = &$course_groups[$cg->nid];
+            //füge student zu coursegroup-members hinzu
+            $course_groups[$cg_nid]->students[$uid] = $student;
+        }
+    }
+
+    //lehrtexte
+    //@todo children like chapters, h5p, ... 
+    $course_domain = node_load($course->field_domain_ref [LANGUAGE_NONE][0]['target_id']);
+    $course_domain->course_url = NM_COURSE_TEXT_PATH . '/' . $course_nid . '/' . $course_domain->nid;
+    $course_domain->domain_url = NM_CONTENT_TEXT_PATH . '/' . $course_domain->nid;
+
+    $course_domain_demo = node_load($course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id']);
+    $course_domain_demo->course_url = NM_COURSE_TEXT_PATH . '/' . $course_nid . '/' . $course_domain_demo->nid;
+    $course_domain_demo->domain_url = NM_CONTENT_TEXT_PATH . '/' . $course_domain_demo->nid;
+
+    //set object-properties
+    $course->home_url = NM_COURSE_HOME_PATH . '/' . $course->nid;
+    $course->info_url = 'course/info' . '/' . $course->nid;
+    $course->students = $students;
+    $course->teachers = $teachers;
+    $course->course_groups = $course_groups;
+    $course->domain = $course_domain;
+    $course->domain_demo = $course_domain_demo;
+    return $course;
+}
+
+/**
+ * Speichert für einen Fallback-Test-Kurs die Kurs-Nid.
+ * Anhand deren kann man alle anderen Testdaten extrahieren
+ * @param type $course_nid
+ */
+function _okl_testing_storeTestCourseNID($course_nid)
+{
+     variable_set('okl_testing_fallback_course_nid', $course_nid);
+}
+
+
 /**
  * setzt die Variable okl_testing_running
  */
@@ -11,13 +95,19 @@ function _okl_testing_start_test() {
 }
 
 /**
- * wir bei Testende aufgerufen.
+ * wird bei Testende aufgerufen.
  * Die Variable okl_testing_running wird gelöscht
- * UND
- * die Variable okl_testing_testrun_identifier wird um "1" erhöht
  */
 function _okl_testing_stop_test() {
     variable_del('okl_testing_running');
+}
+
+
+/**
+ * wird nach preparecest aufgerufen.
+ * die Variable okl_testing_testrun_identifier wird um "1" erhöht
+ */
+function _okl_testing_set_new_test_identifier() {
     $ident_old = _okl_testing_get_test_identifier();
     $ident_old_exploded = explode('_', $ident_old);
 

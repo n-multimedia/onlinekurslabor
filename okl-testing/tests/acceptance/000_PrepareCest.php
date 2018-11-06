@@ -363,7 +363,24 @@ class PrepareCest {
         }
         return $return;
     }
+    
+     
+    
+    
+    /**
+     * Cleanup  
+     * @UserStory null
+     * @UserStoryURL null
+     *
+     * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
+     */
+    public function P001_19_cleanUp(\Step\Acceptance\Dozent $I) {
+        _okl_testing_storeTestCourseNID($this->current_course_nid);
+        _okl_testing_set_new_test_identifier();
+        $I->comment("stored fallback-course.");
+    }
 
+    
     /**
      * @UserStory null
      * @UserStoryURL null
