@@ -13,14 +13,14 @@ function _okl_testing_getFallbackData() {
 }
 
 /**
- * Lädt für eine übergeben Kurs-NID alle nötigen Entitäten 
+ * Lädt für eine übergeben Kurs-NID alle nötigen Entitäten
  * Über Objekteigenschaften kann man auf diese zugreifen, exemplarisch
  * ->home_url
- * ->students 
+ * ->students
  * ->course_groups
  * ->...
  * Auch Kandidat für _custom_general
- * 
+ *
  * @param type $course_nid die NID des untersuchten Kurses
  */
 function _okl_testing_getDataObjectForCourse($course_nid)
@@ -35,7 +35,7 @@ function _okl_testing_getDataObjectForCourse($course_nid)
     $course_group_students = array();
 
     $course_groups = array();
-    //gehe durch coursegroups, lade node   
+    //gehe durch coursegroups, lade node
     foreach ($coursegroups_basic as $cg) {
         $c_group = node_load($cg->nid);
         $c_group->url = NM_COURSE_GROUPS_PATH . '/' . $course_nid . '/' . $cg->nid;
@@ -45,7 +45,7 @@ function _okl_testing_getDataObjectForCourse($course_nid)
     //lade für studis, in welcher CG in diesem kurs
     foreach ($students as $uid => &$student) {
         $cg_nid = _section_courses_get_coursegroup_gid($uid, $course);
-        if ($course_groups[$cg_nid]) {
+        if (!empty($course_groups[$cg_nid])) {
             //setze coursegroup bei student
             $student->coursegroup = &$course_groups[$cg->nid];
             //füge student zu coursegroup-members hinzu
@@ -54,7 +54,7 @@ function _okl_testing_getDataObjectForCourse($course_nid)
     }
 
     //lehrtexte
-    //@todo children like chapters, h5p, ... 
+    //@todo children like chapters, h5p, ...
     $course_domain = node_load($course->field_domain_ref [LANGUAGE_NONE][0]['target_id']);
     $course_domain->course_url = NM_COURSE_TEXT_PATH . '/' . $course_nid . '/' . $course_domain->nid;
     $course_domain->domain_url = NM_CONTENT_TEXT_PATH . '/' . $course_domain->nid;
@@ -71,8 +71,15 @@ function _okl_testing_getDataObjectForCourse($course_nid)
     $course->course_groups = $course_groups;
     $course->domain = $course_domain;
     $course->domain_demo = $course_domain_demo;
-    return $course;
+
+    //convert to object
+    $course_class_object = new    TestingObject ($course)  ;
+
+
+    return $course_class_object;
+  #  return $course;
 }
+
 
 /**
  * Speichert für einen Fallback-Test-Kurs die Kurs-Nid.
@@ -91,7 +98,7 @@ function _okl_testing_storeTestCourseNID($course_nid)
 function _okl_testing_start_test() {
     //setze "Test läuft"
     variable_set('okl_testing_running', true);
-    
+
 }
 
 /**
@@ -133,7 +140,7 @@ function _okl_testing_get_test_identifier() {
  */
 
 
- 
+
 /**
  * implements hook_menu
  * @return string
@@ -150,12 +157,12 @@ function okl_testing_menu() {
         'type' => MENU_NORMAL_ITEM,
     );
 
-    
+
     $items = array();
 
     $items['okl-testing/%/%'] = $items['okl-testing/%'] =  $menu_template;
-    
-    
+
+
     $items['okl-testing'] = array(
         'type' => MENU_CALLBACK,
         'access callback' => 'custom_general_user_is_okl_admin',
@@ -169,22 +176,22 @@ function okl_testing_menu() {
 /**
  * function for okl_testing_menu .
  * Loads the specified file $url_arg_1.$url_arg_2
- * 
+ *
  * @param type $url_arg_1
  * @param type $url_arg_2
  * @return type
  */
 function okl_testing_getfilefromurlarg($url_arg_1, $url_arg_2) {
-    $full_url_arg =  _okl_testing_get_file_uri($url_arg_1, $url_arg_2); 
+    $full_url_arg =  _okl_testing_get_file_uri($url_arg_1, $url_arg_2);
     //pfad zu den test-output-files
     return file_get_contents($_SERVER['DOCUMENT_ROOT'].'/../okl-testing/tests/_output/'.$full_url_arg ) ;
 }
- 
+
 
 /**
  * function for okl_testing_menu .
  * falls auf / dann gehe auf records.html
- * 
+ *
  */
 function okl_testing_goto_root() {
   drupal_goto('/okl-testing/records.html');
@@ -204,7 +211,7 @@ function okl_testing_preprocess_page(&$vars) {
     }
 
     //vorgegebener templatename: page__okl_testing
-    //für image sonderfall.. 
+    //für image sonderfall..
     //siehe okl_testing_theme
     if (arg(0) === 'okl-testing' && $is_image) {
         $vars['theme_hook_suggestion'] = 'page__okl_testing_image';
@@ -212,8 +219,8 @@ function okl_testing_preprocess_page(&$vars) {
 }
 
 /**
- * merged die gesplitteten url-arguments testlauf ,  index.html 
- * wieder zusammen zu testlauf/index.html 
+ * merged die gesplitteten url-arguments testlauf ,  index.html
+ * wieder zusammen zu testlauf/index.html
  * @param type $input1 testlauf
  * @param type $input2 index.html
  * @return type
@@ -225,7 +232,7 @@ function _okl_testing_get_file_uri($input1, $input2) {
     }
     return $input1;
 }
- 
+
 
 /**
  * Implements hook_theme().
@@ -298,4 +305,92 @@ function okl_testing_mail_alter(&$message) {
     // Next: Log the mail so it can be debugged if necessary
     watchdog('Development Env', 'The following email was not sent: !message', ['!message' => '<pre>' . print_r($message, TRUE) . '</pre>']);
   }
+}
+
+
+/**
+ * @property type  vid
+ * @property type  uid
+ * @property type  title
+ * @property type  log
+ * @property type  status
+ * @property type  comment
+ * @property type  promote
+ * @property type  sticky
+ * @property type  vuuid
+ * @property type  ds_switch
+ * @property type  nid
+ * @property type  type
+ * @property type  language
+ * @property type  created
+ * @property type  changed
+ * @property type  tnid
+ * @property type  translate
+ * @property type  uuid
+ * @property type  revision_timestamp
+ * @property type  revision_uid
+ * @property type  field_collaborative_features
+ * @property type  field_course_header
+ * @property type  field_course_picture
+ * @property type  field_domain_ref
+ * @property type  field_long_description
+ * @property type  field_short_description
+ * @property type  field_subtitle
+ * @property type  field_time_span
+ * @property type  field_vhb_lvnr
+ * @property type  field_workload
+ * @property type  group_group
+ * @property type  field_field_courses_sponsors
+ * @property type  field_domain_demo_ref
+ * @property type  field_access_features
+ * @property type  field_semester
+ * @property type  field_course_proposals
+ * @property type  field_other_features
+ * @property type  rdf_mapping
+ * @property type  cid
+ * @property type  last_comment_timestamp
+ * @property type  last_comment_name
+ * @property type  last_comment_uid
+ * @property type  comment_count
+ * @property type  name
+ * @property type  picture
+ * @property type  data
+ * @property type  home_url
+ * @property type  info_url
+ * @property type  students
+ * @property type  teachers
+ * @property type  randomTeacher
+ * @property type  course_groups
+ * @property type  domain
+ * @property type  domain_demo
+ */
+class TestingObject {
+
+    function __construct($object) {
+        $o_arr = (array) $object;
+        foreach ($o_arr as $key => $value) { 
+            # echo "@attribute " .$key."\n";
+            if (is_array($value)) {#&& count($value)>1)
+                $this->$key = new TestingObject($value);
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
+
+    /**
+     * get a random value from a list.
+     * e.g. $obj->random("teacher") gets a random person from the teachers' list
+     * @param type $what
+     * @return type
+     */
+    function random($what) {
+        $propertyname = $what . 's';
+        $property_value = $this->$propertyname;
+        $propertyval_array = (array) $property_value;
+        $random_key = array_rand($propertyval_array);
+
+        return $property_value->$random_key;
+    }
+
 }
