@@ -6,10 +6,15 @@ use Page\courseadmin\AddMembers as AddMembersPage;
 
 class CourseCest {
 
-  //@todo muss dann ausgegliedert werden.. nid in quelltext
-  private $fallback_course_url = "/course/home/11294";
+  //in konstruktor
+  private $fallback_course_url = null; 
 
 
+  
+  public function __construct() {
+      $fallback_data = _okl_testing_getFallbackData();
+      $this->fallback_course_url = $fallback_data->home_url;
+  }
   public function _before(\Step\Acceptance\Dozent $I) {
 
     $I->loginAsDozent(TRUE);
@@ -68,11 +73,12 @@ class CourseCest {
    * @return array
    */
   protected function C001_02_CreateCourseProvider() {
-        $return = array();
+        $basicdata = $this->C001_BasicDataProvider();
+      
         $rand_data = \RealisticFaker\OklDataCreator::get();
         //@todo: Semester aktuell
-        $return[] = ['title' => $rand_data->text(20), 'currentSemesterName' => $rand_data->currentSemesterName];
-        return $return;
+        $basicdata[0]['currentSemesterName'] = $rand_data->currentSemesterName;
+        return $basicdata;
     }
 
     /**
@@ -83,13 +89,13 @@ class CourseCest {
    */
   public function C001_03_AddMember(AcceptanceTester $I,  \Codeception\Example $example) {
 
-    try {
-        //man sollte nicht catchen sondern via Fixtures::exists('...') prüfen
-      $course_home_url = Fixtures::get('course_home_url');
-    } catch (Exception  $ex) {
-      //fallback url
-      $course_home_url = $this->fallback_course_url;
-    }
+  
+      if (Fixtures::exists('course_home_url')) {
+            $course_home_url = Fixtures::get('course_home_url');
+        } else {
+            //fallback url
+            $course_home_url = $this->fallback_course_url;
+        }
 
     $I->amOnPage($course_home_url);
 
@@ -135,20 +141,22 @@ class CourseCest {
     /**
    * @UserStoryies KD.04 |  Kurs - Dozent - News einstellen | https://trello.com/c/dMBLuhWz/12-kd04-kurs-dozent-news-einstellen
    * @param \AcceptanceTester $I
+   * @param \Codeception\Example $news
+   * @dataProvider C001_BasicDataProvider
    */
-  public function C001_04_AddNews(\Step\Acceptance\Dozent $I) {
+  public function C001_04_AddNews(\Step\Acceptance\Dozent $I, \Codeception\Example $news) {
 
-    try {
-      $course_home_url = Fixtures::get('course_home_url');
-    } catch (Exception  $ex) {
-      //fallback url
-      $course_home_url = $this->fallback_course_url;
-    }
+    if (Fixtures::exists('course_home_url')) {
+            $course_home_url = Fixtures::get('course_home_url');
+        } else {
+            //fallback url
+            $course_home_url = $this->fallback_course_url;
+        }
 
     $I->amOnPage($course_home_url);
-    $news = [];
-    $news['title'] =  '[CC001_04_AddNews] Neue Ankündigung @' . date('d.m.Y H:i:s');
-    $news['body'] =  'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.';
+   // $news = [];
+   // $news['title'] =  '[CC001_04_AddNews] Neue Ankündigung @' . date('d.m.Y H:i:s');
+   //  $news['body'] =  'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.';
 
 
     //annahme: ich bin im neu erstellten Kurs
@@ -177,7 +185,19 @@ class CourseCest {
     //$I->expect('AK-3: Ist für ander Kurs-TN danach als "neu" gekennzeichnet');
 
   }
-
-    
   
+  
+  
+  
+  /**
+   * Basic Data Provider with title and body
+   * @return type
+   */
+  protected function C001_BasicDataProvider() {
+        $return = array();
+        $rand_data = \RealisticFaker\OklDataCreator::get();
+        $return[] = ['title' => $rand_data->realText(20), 'body' => $rand_data->realText(240)];
+        return $return;
+    }
+
 }
