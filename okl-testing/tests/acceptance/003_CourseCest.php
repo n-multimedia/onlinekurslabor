@@ -7,13 +7,13 @@ use Page\courseadmin\AddMembers as AddMembersPage;
 class CourseCest {
 
   //in konstruktor
-  private $fallback_course_url = null; 
+  private $fallback_course_nid = null; 
 
 
   
   public function __construct() {
       $fallback_data = _okl_testing_getFallbackData();
-      $this->fallback_course_url = $fallback_data->home_url;
+      $this->fallback_course_nid = $fallback_data->nid;
   }
   public function _before(\Step\Acceptance\Dozent $I) {
 
@@ -63,8 +63,8 @@ class CourseCest {
          
         
         //get current url
-        $course_home_url = $I->getCurrentUri();
-        Fixtures::add('course_home_url', $course_home_url);
+        
+        Fixtures::add('course_nid', $createcoursepage->getNewNid());
     }
     
     
@@ -89,15 +89,7 @@ class CourseCest {
    */
   public function C001_03_AddMember(AcceptanceTester $I,  \Codeception\Example $example) {
 
-  
-      if (Fixtures::exists('course_home_url')) {
-            $course_home_url = Fixtures::get('course_home_url');
-        } else {
-            //fallback url
-            $course_home_url = $this->fallback_course_url;
-        }
-
-    $I->amOnPage($course_home_url);
+    $this->goToCourseHome($I);
 
     $course_nid = $I->grabFromCurrentUrl('~/course/home/(\d+)~');
     //annahme: ich bin im neu erstellten Kurs
@@ -138,22 +130,15 @@ class CourseCest {
         return $return;
     }
 
-    /**
+   /**
    * @UserStoryies KD.04 |  Kurs - Dozent - News einstellen | https://trello.com/c/dMBLuhWz/12-kd04-kurs-dozent-news-einstellen
    * @param \AcceptanceTester $I
    * @param \Codeception\Example $news
    * @dataProvider C001_BasicDataProvider
    */
   public function C001_04_AddNews(\Step\Acceptance\Dozent $I, \Codeception\Example $news) {
-
-    if (Fixtures::exists('course_home_url')) {
-            $course_home_url = Fixtures::get('course_home_url');
-        } else {
-            //fallback url
-            $course_home_url = $this->fallback_course_url;
-        }
-
-    $I->amOnPage($course_home_url);
+    
+      $this->goToCourseHome($I);
    // $news = [];
    // $news['title'] =  '[CC001_04_AddNews] Neue Ankündigung @' . date('d.m.Y H:i:s');
    //  $news['body'] =  'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.';
@@ -196,8 +181,24 @@ class CourseCest {
   protected function C001_BasicDataProvider() {
         $return = array();
         $rand_data = \RealisticFaker\OklDataCreator::get();
-        $return[] = ['title' => $rand_data->realText(20), 'body' => $rand_data->realText(240)];
+        $return[] = ['title' => $rand_data->realText(40), 'body' => $rand_data->realText(240)];
         return $return;
+    }
+    
+    
+    /**
+     * goto Course-Home. Either by created course or fallback-course.
+     * @param AcceptanceTester $I
+     */
+    protected function goToCourseHome(AcceptanceTester $I) {
+        if (Fixtures::exists('course_nid')) {
+            $course_home_url = NM_COURSE_HOME_PATH . '/' . Fixtures::get('course_nid');
+        } else {
+            //fallback url
+            $course_home_url = NM_COURSE_HOME_PATH . '/' . $this->fallback_course_nid;
+        }
+
+        $I->amOnPage($course_home_url);
     }
 
 }
