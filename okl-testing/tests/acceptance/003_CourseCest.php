@@ -198,6 +198,7 @@ class CourseCest {
         $I->click('Kursgruppe');
         $I->see($course_group['title']);
     }
+    
 
     /**
    * Basic Data Provider with title and body
@@ -216,14 +217,28 @@ class CourseCest {
      * @param AcceptanceTester $I
      */
     protected function goToCourseHome(AcceptanceTester $I) {
-        if (Fixtures::exists('course_nid')) {
-            $course_home_url = NM_COURSE_HOME_PATH . '/' . Fixtures::get('course_nid');
-        } else {
-            //fallback url
-            $course_home_url = NM_COURSE_HOME_PATH . '/' . $this->fallback_course_nid;
-        }
+        $nid = $this->getCurrentCourseNid();
+
+        $course_home_url = NM_COURSE_HOME_PATH . '/' . $nid;
 
         $I->amOnPage($course_home_url);
     }
+
+    /**
+     * goto Course-Home. Either by created course or fallback-course.
+     * @param AcceptanceTester $I
+     */
+    protected function getCurrentCourseNid() {
+        if (Fixtures::exists('course_nid')) {
+            $nid = Fixtures::get('course_nid');
+        } else {
+            //fallback url
+           $nid =  $this->fallback_course_nid;
+        }
+
+       return  $nid ; 
+    }
+    
+    
 
 }
