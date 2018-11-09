@@ -14,6 +14,7 @@ drush fr  nm_section_courses_features  --yes
 drush cc all
   
 
+
 #import language
 drush language-import-translations de ../language/alpha12.po --replace --groups=default
 

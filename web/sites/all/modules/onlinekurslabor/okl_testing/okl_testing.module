@@ -1,0 +1,211 @@
+<?php
+
+
+/**
+ * setzt die Variable okl_testing_running
+ */
+function _okl_testing_start_test() {
+    //setze "Test läuft"
+    variable_set('okl_testing_running', true);
+    
+}
+
+/**
+ * wir bei Testende aufgerufen.
+ * Die Variable okl_testing_running wird gelöscht
+ * UND
+ * die Variable okl_testing_testrun_identifier wird um "1" erhöht
+ */
+function _okl_testing_stop_test() {
+    variable_del('okl_testing_running');
+    $ident_old = _okl_testing_get_test_identifier();
+    $ident_old_exploded = explode('_', $ident_old);
+
+    $ident_old_exploded[1] += 1;
+    $new_identifier = implode('_', $ident_old_exploded);
+
+    variable_set('okl_testing_testrun_identifier', $new_identifier);
+}
+
+
+/**
+ * Lädt die Variable okl_testing_testrun_identifier oder einen default
+ * @return string $identifier
+ */
+function _okl_testing_get_test_identifier() {
+    return variable_get('okl_testing_testrun_identifier','test_1');
+}
+
+/**
+ * ################
+ * funktionen zur Ausgabe der Testergebnisse auf /okl-testing
+ * ################
+ */
+
+
+ 
+/**
+ * implements hook_menu
+ * @return string
+ */
+function okl_testing_menu() {
+
+    $menu_template = array(
+        'title' => 'Ausgabe der Autotest-Ergebnisse',
+        'access callback' => 'custom_general_user_is_okl_admin',
+        //zugriff nur für rolle "administrator"
+        'access arguments' => array(array('administrator')),
+        'page callback' => 'okl_testing_getfilefromurlarg',
+        'page arguments' => array(1 , 2),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
+    
+    $items = array();
+
+    $items['okl-testing/%/%'] = $items['okl-testing/%'] =  $menu_template;
+    
+    
+    $items['okl-testing'] = array(
+        'type' => MENU_CALLBACK,
+        'access callback' => 'custom_general_user_is_okl_admin',
+        'access arguments' => array(array('administrator')),
+        'page callback' => 'okl_testing_goto_root',
+    );
+
+    return $items;
+}
+
+/**
+ * function for okl_testing_menu .
+ * Loads the specified file $url_arg_1.$url_arg_2
+ * 
+ * @param type $url_arg_1
+ * @param type $url_arg_2
+ * @return type
+ */
+function okl_testing_getfilefromurlarg($url_arg_1, $url_arg_2) {
+    $full_url_arg =  _okl_testing_get_file_uri($url_arg_1, $url_arg_2); 
+    //pfad zu den test-output-files
+    return file_get_contents($_SERVER['DOCUMENT_ROOT'].'/../okl-testing/tests/_output/'.$full_url_arg ) ;
+}
+ 
+
+/**
+ * function for okl_testing_menu .
+ * falls auf / dann gehe auf records.html
+ * 
+ */
+function okl_testing_goto_root() {
+  drupal_goto('/okl-testing/records.html');
+}
+
+/**
+ * implements hook_preprocess_page(&$vars)
+ * @param string $vars
+ */
+function okl_testing_preprocess_page(&$vars) {
+
+    //hole über bestehende hook_suggestions die zu ladende file-url
+    $file_uri = $vars['theme_hook_suggestions'][2];
+    $ext = pathinfo($file_uri, PATHINFO_EXTENSION);
+    if (in_array($ext, array('png', 'jpg', 'jpeg'))) {
+        $is_image = true;
+    }
+
+    //vorgegebener templatename: page__okl_testing
+    //für image sonderfall.. 
+    //siehe okl_testing_theme
+    if (arg(0) === 'okl-testing' && $is_image) {
+        $vars['theme_hook_suggestion'] = 'page__okl_testing_image';
+    }
+}
+
+/**
+ * merged die gesplitteten url-arguments testlauf ,  index.html 
+ * wieder zusammen zu testlauf/index.html 
+ * @param type $input1 testlauf
+ * @param type $input2 index.html
+ * @return type
+ */
+function _okl_testing_get_file_uri($input1, $input2) {
+
+    if ($input2) {
+        return $input1 . '/' . $input2;
+    }
+    return $input1;
+}
+ 
+
+/**
+ * Implements hook_theme().
+ * verweise basierend auf hook-suggestions auf echte template-files
+ */
+function okl_testing_theme($existing, $type, $theme, $path) {
+    return array(
+        'page__okl_testing' => array(
+            'template' => 'templates/page--okl-testing',
+        ),
+        'page__okl_testing_image' => array(
+            'template' => 'templates/page--okl-testing-image',
+        ),
+    );
+}
+
+/**
+ * ################
+ * ENDE funktionen zur Ausgabe der Testergebnisse auf /okl-testing
+ * ################
+ */
+
+/**
+ * hook_dev_live_force_live_mode
+ * @return true for automatic testing
+ */
+function okl_testing_dev_live_force_live_mode() {
+    return (bool) variable_get('okl_testing_running');
+}
+
+/**
+ * hook_page_build
+ * @param type $page
+ */
+function okl_testing_page_build(&$page) {
+    $test_runing = (bool) variable_get('okl_testing_running');
+
+    $is_autotest_browser = isset($_COOKIE["okl_testing_is_autotest_browser"]);
+    //normale systemansicht
+    if (!$test_runing || $is_autotest_browser) {
+        //füge link auf testresult ein
+         $link = '<a href=/okl-testing>Ergebnis des letzten automatisierten Tests</a>';
+         $page['page_bottom']['okl_testing'] = array(
+            '#weight' => 90,
+            '#markup' => '<center>' . $link . '</center><br><br>',
+         );
+        return;
+    }
+    //sperre system fuer user. Entferne dazu alle Seitenelemente
+    foreach ($page as $key => $elem) {
+        if (!strstr($key, '#'))
+            unset($page[$key]);
+    }
+
+    $page['content'] = array('#markup' => '<div style="font-size:40px; padding-top:120px;">System disabled because automatic test is running.</div>');
+}
+
+/**
+ * @param $message
+ */
+function okl_testing_mail_alter(&$message) {
+  // We don't want to send emails if the variable has not been set, or if it has been set and is TRUE.
+  // We can use variable_get() to get the $conf variable set in our settings.php file
+  // Note that by setting the default to TRUE, the default setting for the system is to be
+  // a development environment. Set this to FALSE to have the default be a live environment.
+  if (variable_get('okl_testing_running', FALSE)) {
+    // First: Prevent the mail from being sent
+    $message['send'] = FALSE;
+
+    // Next: Log the mail so it can be debugged if necessary
+    watchdog('Development Env', 'The following email was not sent: !message', ['!message' => '<pre>' . print_r($message, TRUE) . '</pre>']);
+  }
+}
