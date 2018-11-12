@@ -12,7 +12,9 @@ require_once(__DIR__ . '/OklProvider.php');
  * 
  * aus OklProvider:
  * @property string $currentSemesterName 
- * 
+ * @property string $node_title
+ * @property string $node_body
+ * @property string $node_body_summary
  */
 class OklDataCreator extends \RealisticFaker\DataCreator {
 
@@ -26,9 +28,16 @@ class OklDataCreator extends \RealisticFaker\DataCreator {
 
         //Zugriff auf erzeugte Namen.. 
         $this->oklUserName = sprintf('%s %s', $this->firstName, $this->lastName);
-
+      
+        
         //OKLProvider für voneinenader unabhängige Random Data-Sets
         $this->addProvider(new OklProvider($this->faker));
+        
+        //kann in oklprovider nicht auf andere providers zugreifen, gnah ^^ 
+        $this->node_title = $this->realText(40);
+        $this->node_body = $this->realText(240);
+        $this->node_body_summary = $this->realText(120);
+          
         //schöneres Loremipsum
         $this->addProvider(new \NewAgeIpsum\NewAgeProvider($this->faker));
     }
