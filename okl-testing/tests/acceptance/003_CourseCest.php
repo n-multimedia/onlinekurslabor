@@ -3,6 +3,7 @@
 use \Codeception\Util\Fixtures;
 use Page\node\course\CourseCreate as CreateCoursePage;
 use Page\courseadmin\AddMembers as AddMembersPage;
+use Page\courseadmin\MemberAdminCoursegroup as AddMemberToCoursegroupPage; 
 
 class CourseCest {
 
@@ -184,6 +185,7 @@ class CourseCest {
         //annahme: ich bin im neu erstellten Kurs
         $I->moveMouseOver('#instr_overview_content');
         $I->wait(1);
+        $I->comment("@todo: refactor zu CoursegroupCreate");
         $I->click('#instr_add_groups a');
         $I->expect('AK-1: Es kann ein Titel und ein Beschreibugnstext eingegeben werden');
         $I->see("Neue Kursgruppe erstellen");
@@ -199,6 +201,41 @@ class CourseCest {
         $I->see($course_group['title']);
     }
     
+    /**
+     * @UserStoryi KD.09 - Kurs - Dozent - Kursgruppe anlegen | https://trello.com/c/0w86zeYF/17-kd09-kurs-dozent-kursgruppe-anlegen
+     * @param \AcceptanceTester $I
+     * @dataProvider C001_05_AddUsersToGroupProvider
+     */
+    public function C001_05_AddUsersToGroup(\Step\Acceptance\Dozent $I, \Codeception\Example $user_to_couresgroup) {
+
+        $this->goToCourseHome($I);
+
+        //annahme: ich bin im neu erstellten Kurs
+        //doublecheck: menü geht
+        $I->moveMouseOver('#instr_overview_content');
+        $I->wait(1);
+        $I->click('#instr_overview_members a');
+$I->comment("In progress... needs multiple fixes");
+
+        $cgaddpage = new AddMemberToCoursegroupPage($I, $this->getCurrentCourseNid());
+        $cgaddpage->addStudentToCoursegroup($user_to_couresgroup['user'], $user_to_couresgroup['coursegroup']);
+    }
+
+    /**
+     * Data Provider for C001_05_AddUsersToGroup : 
+     * returns array with keys ['user' => ['name','uid'], 'coursegroup' => ['name','nid']];
+     *  @todo mit nid kann man nicht arbeiten!returns array with keys ['user' => ['name','uid'], 'coursegroup' => ['name','nid']];
+     * @return array $UsersToGroup
+     */
+    protected function C001_05_AddUsersToGroupProvider() {
+        $return = array();
+        $course_nid = $this->getCurrentCourseNid();
+        $course_data_object = _okl_testing_getDataObjectForCourse($course_nid);
+        $course_group = $course_data_object->random('course_group');
+        $student = $course_data_object->random('student');
+        $return[] = ['user' => ['name' => $student->realname, 'uid' => $student->uid], 'coursegroup' => ['name' => $course_group->title, 'nid' => $course_group->nid]];
+        return $return;
+    }
 
     /**
    * Basic Data Provider with title and body
