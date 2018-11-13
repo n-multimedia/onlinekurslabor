@@ -104,7 +104,7 @@ abstract class CestHelper {
      */
     protected function DP_getSampleStudents($count, $ident_num_start = 0, $with_fallback = true) {
         $sample = array();
-        $fallback_data = _okl_testing_getFallbackData();
+        //$fallback_data = _okl_testing_getFallbackData();
         $runner = 0;
         for ($i = $ident_num_start; $i < $count; $i++) {
             $sample[$runner++] = $this->getPersonSample(array(NM_ROLE_STUDENT), $i) + ['type' => 'default'];
@@ -121,7 +121,7 @@ abstract class CestHelper {
     /**
      * Use in  Dataprovider
      * get a sample course
-     * Uniqueness is dependend of $counter
+     * Uniqueness is dependend of $ident_number
      * @param type $ident_number same number = same sample [within one run]
      * @uses _okl_testing_get_dataprovider_identifier()
      */
@@ -130,6 +130,27 @@ abstract class CestHelper {
 
         return array($fallback_data->toDataProviderSample() + ['type' => 'fallback'], $this->getCourseSample($ident_number) + ['type' => 'default']);
     }
+    
+    
+    
+    /**
+     * Use in  Dataprovider
+     * get a sample news
+     * Uniqueness is dependend of $ident_number
+     * Does NOT provide fallback-data
+     * @paramt int $count how many
+     * @param type $ident_num_start same number = same sample [within one run]
+     * @uses _okl_testing_get_dataprovider_identifier()
+     */
+    protected function DP_getSampleNews($count, $ident_num_start = 0) {
+        $sample = array();
+         $runner = 0;
+          for ($i = $ident_num_start; $i < $count; $i++) {
+                $sample[$runner++] = $this->getNodeSample(NM_COURSE_NEWS, $i);
+          }
+        return $sample; 
+    }
+    
 
     /**
      * NOT needed ATM

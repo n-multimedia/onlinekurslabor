@@ -6,10 +6,7 @@ use Page\courseadmin\AddMembers as AddMembersPage;
 use Page\courseadmin\MemberAdminCoursegroup as AddMemberToCoursegroupPage; 
 
 class CourseCest  extends CestHelper{
-
-  //in konstruktor
-  private $fallback_course_nid = null; 
-
+ 
 
   
   public function __construct() {
@@ -123,7 +120,7 @@ class CourseCest  extends CestHelper{
    * @UserStoryies KD.04 |  Kurs - Dozent - News einstellen | https://trello.com/c/dMBLuhWz/12-kd04-kurs-dozent-news-einstellen
    * @param \AcceptanceTester $I
    * @param \Codeception\Example $news
-   * @dataProvider C001_BasicDataProvider
+   * @dataProvider C001_NewsProvider
    */
   public function C001_04_AddNews(\Step\Acceptance\Dozent $I, \Codeception\Example $news) {
     
@@ -160,8 +157,15 @@ class CourseCest  extends CestHelper{
 
   }
   
-  
    /**
+     * News Provider for C001_04_AddNews
+     * @return type
+     */
+    protected function C001_NewsProvider() {
+        return $this->DP_getSampleNews(1);
+    }
+
+    /**
      * @UserStoryi KD.09 - Kurs - Dozent - Kursgruppe anlegen | https://trello.com/c/0w86zeYF/17-kd09-kurs-dozent-kursgruppe-anlegen
      * @param \AcceptanceTester $I
      * @dataProvider C001_BasicDataProvider
