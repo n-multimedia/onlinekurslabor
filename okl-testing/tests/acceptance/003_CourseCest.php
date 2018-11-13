@@ -5,7 +5,7 @@ use Page\node\course\CourseCreate as CreateCoursePage;
 use Page\courseadmin\AddMembers as AddMembersPage;
 use Page\courseadmin\MemberAdminCoursegroup as AddMemberToCoursegroupPage; 
 
-class CourseCest {
+class CourseCest  extends CestHelper{
 
   //in konstruktor
   private $fallback_course_nid = null; 
@@ -13,8 +13,7 @@ class CourseCest {
 
   
   public function __construct() {
-      $fallback_data = _okl_testing_getFallbackData();
-      $this->fallback_course_nid = $fallback_data->nid;
+   
   }
   public function _before(\Step\Acceptance\Dozent $I) {
 
@@ -74,12 +73,7 @@ class CourseCest {
    * @return array
    */
   protected function C001_02_CreateCourseProvider() {
-        $basicdata = $this->C001_BasicDataProvider();
-      
-        $rand_data = \RealisticFaker\OklDataCreator::get();
-        //@todo: Semester aktuell
-        $basicdata[0]['currentSemesterName'] = $rand_data->currentSemesterName;
-        return $basicdata;
+        return array($this->getCourseSample(0)); 
     }
 
     /**
@@ -229,6 +223,7 @@ $I->comment("In progress... needs multiple fixes");
      */
     protected function C001_05_AddUsersToGroupProvider() {
         $return = array();
+        //das geht nciht, da course_nid im provider auf fallback festgezogen ist.
         $course_nid = $this->getCurrentCourseNid();
         $course_data_object = _okl_testing_getDataObjectForCourse($course_nid);
         $course_group = $course_data_object->random('course_group');
@@ -249,32 +244,7 @@ $I->comment("In progress... needs multiple fixes");
     }
     
     
-    /**
-     * goto Course-Home. Either by created course or fallback-course.
-     * @param AcceptanceTester $I
-     */
-    protected function goToCourseHome(AcceptanceTester $I) {
-        $nid = $this->getCurrentCourseNid();
-
-        $course_home_url = NM_COURSE_HOME_PATH . '/' . $nid;
-
-        $I->amOnPage($course_home_url);
-    }
-
-    /**
-     * goto Course-Home. Either by created course or fallback-course.
-     * @param AcceptanceTester $I
-     */
-    protected function getCurrentCourseNid() {
-        if (Fixtures::exists('course_nid')) {
-            $nid = Fixtures::get('course_nid');
-        } else {
-            //fallback url
-           $nid =  $this->fallback_course_nid;
-        }
-
-       return  $nid ; 
-    }
+   
     
     
 

@@ -14,6 +14,34 @@ use \Codeception\Util\Fixtures;
  */
 abstract class CestHelper {
 
+     /**
+     * goto Course-Home. Either by created course or fallback-course.
+     * @param AcceptanceTester $I
+     */
+    protected function goToCourseHome(AcceptanceTester $I) {
+        $nid = $this->getCurrentCourseNid();
+
+        $course_home_url = NM_COURSE_HOME_PATH . '/' . $nid;
+
+        $I->amOnPage($course_home_url);
+    }
+
+    /**
+     * getCurrentCourseNid. Either by created course or fallback-course.
+     * @param AcceptanceTester $I
+     */
+    protected function getCurrentCourseNid() {
+        if (Fixtures::exists('course_nid')) {
+            $nid = Fixtures::get('course_nid');
+        } else {
+            //fallback url
+            $fallback_data = _okl_testing_getFallbackData();
+            $nid = $fallback_data->nid;
+        }
+
+        return  $nid ; 
+    }
+    
     /**
      * 
 
@@ -126,7 +154,7 @@ abstract class CestHelper {
      * @param type $ident_number same number = same sample [within one run]
      * @uses _okl_testing_get_dataprovider_identifier()
      */
-    private function getCourseSample($ident_number = 0) {
+    protected function getCourseSample($ident_number = 0) {
 
         $faker = $this->getNodeFaker(NM_COURSE, $ident_number);
         $sample = $this->getNodeSample(NM_COURSE, $ident_number);
