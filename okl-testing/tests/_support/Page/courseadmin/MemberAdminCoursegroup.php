@@ -17,13 +17,13 @@ class MemberAdminCoursegroup extends MemberAdmin {
 
     /**
      * Add a student to a coursegroup. Course-Nid defined in constructor.
-     * @param array $student - needs name + uid
-     * @param array $coursegroup - needs name + nid
+     * @param array $student - needs name + email
+     * @param String $coursegroup_title  
      * @return \Page\courseadmin\AddMembers
      */
-    public function addStudentToCoursegroup($student, $coursegroup) {
+    public function addStudentToCoursegroup($student, $coursegroup_title) {
 
-        return $this->addMultipleStudentsToCoursegroup(array($student), $coursegroup);
+        return $this->addMultipleStudentsToCoursegroup(array($student), $coursegroup_title);
     }
     
     
@@ -31,25 +31,23 @@ class MemberAdminCoursegroup extends MemberAdmin {
     
     /**
      * Add a student to a coursegroup. Course-Nid already defined in constructor.
-     * @param array $students - an array with entries with keys name , uid
-     * @param array $coursegroup with keys name , uid
+     * @param array $students - an array with entries with keys   name , email
+     * @param String $coursegroup_title 
      * @return \Page\courseadmin\AddMembers
      */
-    public function addMultipleStudentsToCoursegroup($students, $coursegroup) {
+    public function addMultipleStudentsToCoursegroup($students, $coursegroup_title) {
 
         $I = $this->tester;
-        $I->comment("todo: rewrite: NO nid, NO uid!");
         $I->amOnPage($this->memberadmin_url);
 
         $this->selectBulkOperation('Einer Kursgruppe zuweisen');
 
-        //@todo: remove UIDs!
-        foreach ($students as $student) {
-            $I->checkOptionByValue($student['uid']);
+        foreach ($students as $student) { 
+            $I->clickTagContaining('tr', $student['email']);
         }
         $I->click(parent::$executeButton);
-        //@todo: remove NIDs!!
-        $I->checkOptionByValue($coursegroup['nid']);
+       
+        $I->clickTagContaining('label', $coursegroup_title);
         $I->click(parent::$forwardButton);
 
         $I->click(parent::$confirmButton);
@@ -60,7 +58,7 @@ class MemberAdminCoursegroup extends MemberAdmin {
 
         //do the confirmation stuff
         $I->click(self::$kursgruppenMenuButton);
-        $I->click($coursegroup['name']);
+        $I->click($coursegroup_title);
         
         
         foreach ($students as $student) {

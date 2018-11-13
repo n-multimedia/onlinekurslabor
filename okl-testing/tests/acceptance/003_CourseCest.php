@@ -219,10 +219,9 @@ class CourseCest  extends CestHelper{
         $I->moveMouseOver('#instr_overview_content');
         $I->wait(1);
         $I->click('#instr_overview_members a');
-$I->comment("In progress... needs multiple fixes");
 
         $cgaddpage = new AddMemberToCoursegroupPage($I, $this->getCurrentCourseNid());
-        $cgaddpage->addStudentToCoursegroup($user_to_couresgroup['user'], $user_to_couresgroup['coursegroup']);
+        $cgaddpage->addStudentToCoursegroup($user_to_couresgroup['user'], $user_to_couresgroup['coursegroup_title']);
     }
 
     /**
@@ -232,13 +231,17 @@ $I->comment("In progress... needs multiple fixes");
      * @return array $UsersToGroup
      */
     protected function C001_05_AddUsersToGroupProvider() {
+        
+        //refactor hat funktioniert, jetzt muss noch default und fallback berücksichtigt werden
+        
+        
         $return = array();
         //das geht nciht, da course_nid im provider auf fallback festgezogen ist.
         $course_nid = $this->getCurrentCourseNid();
         $course_data_object = _okl_testing_getDataObjectForCourse($course_nid);
         $course_group = $course_data_object->random('course_group');
         $student = $course_data_object->random('student');
-        $return[] = ['user' => ['name' => $student->realname, 'uid' => $student->uid], 'coursegroup' => ['name' => $course_group->title, 'nid' => $course_group->nid]];
+        $return[] = ['user' => ['name' => $student->realname, 'email' => $student->mail], 'coursegroup_title' =>   $course_group->title];
         return $return;
     }
 

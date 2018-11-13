@@ -77,6 +77,18 @@ class UserSteps extends \AcceptanceTester {
       $obj = Locator::find('input', ['value' => $value]);
       $I->click($obj);
   }
+  
+  /**
+   * click on a <$html_tag> in which a text is included
+   * @param String $html_tag
+   * @param type $text
+   */
+  public function clickTagContaining($html_tag, $text)
+  {
+      $I = $this;
+      $obj = Locator::contains($html_tag, $text);
+      $I->click($obj);
+  }
 
   public function fillCkEditorById($element_id, $content) {
     $this->fillRteEditor(
