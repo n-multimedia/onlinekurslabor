@@ -86,7 +86,7 @@ function _okl_testing_getDataObjectForCourse($course_nid)
  * Anhand deren kann man alle anderen Testdaten extrahieren
  * @param type $course_nid
  */
-function _okl_testing_storeTestCourseNID($course_nid)
+function _okl_testing_storeFallbackNID($course_nid)
 {
      variable_set('okl_testing_fallback_course_nid', $course_nid);
 }
@@ -114,14 +114,14 @@ function _okl_testing_stop_test() {
  * wird nach preparecest aufgerufen.
  * die Variable okl_testing_testrun_identifier wird um "1" erhöht
  */
-function _okl_testing_set_new_test_identifier() {
+function _okl_testing_set_fallback_identifier() {
     $ident_old = _okl_testing_get_test_identifier();
     $ident_old_exploded = explode('_', $ident_old);
 
     $ident_old_exploded[1] += 1;
     $new_identifier = implode('_', $ident_old_exploded);
 
-    variable_set('okl_testing_testrun_identifier', $new_identifier);
+    variable_set('okl_testing_fallback_identifier', $new_identifier);
 }
 
 
@@ -129,8 +129,26 @@ function _okl_testing_set_new_test_identifier() {
  * Lädt die Variable okl_testing_testrun_identifier oder einen default
  * @return string $identifier
  */
-function _okl_testing_get_test_identifier() {
-    return variable_get('okl_testing_testrun_identifier','test_1');
+function _okl_testing_get_fallback_identifier() {
+    return variable_get('okl_testing_fallback_identifier','test_1');
+}
+
+
+/**
+ * wird nach jedem Testlauf per _beforesuite aufgerufen.
+ * die Variable okl_testing_testrun_identifier wird neu gesetzt
+ */
+function _okl_testing_set_dataprovider_identifier() {
+    variable_set('okl_testing_dataprovider_identifier', rand());
+}
+
+
+/**
+ * Lädt die Variable okl_testing_testrun_identifier oder einen default
+ * @return string $identifier
+ */
+function _okl_testing_get_dataprovider_identifier() {
+    return variable_get('okl_testing_dataprovider_identifier',rand());
 }
 
 /**
@@ -376,6 +394,23 @@ class TestingObject {
                 $this->$key = $value;
             }
         }
+    }
+    
+    /**
+     * converts current object (course, user, ...) to a sample  array
+     * @return type
+     */
+    function toDataProviderSample() {
+        $attributes = array();
+
+        if (in_array($this->type, array('courses_course'/* ,.. todo.. */))) {
+            $attributes[] = 'title';
+        }//@todo für user mit email
+        $sample = array();
+        foreach ($attributes as $attr) {
+            $sample[$attr] = $this->$attr;
+        }
+        return $sample;
     }
 
     /**
