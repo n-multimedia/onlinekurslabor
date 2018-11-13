@@ -168,7 +168,9 @@ class CourseCest  extends CestHelper{
     /**
      * @UserStoryi KD.09 - Kurs - Dozent - Kursgruppe anlegen | https://trello.com/c/0w86zeYF/17-kd09-kurs-dozent-kursgruppe-anlegen
      * @param \AcceptanceTester $I
-     * @dataProvider C001_BasicDataProvider
+     * @dataProvider C001_Coursegroup_Provider
+     * @before skipNonApplicableExample
+     * 
      */
     public function C001_04_AddCourseGroup(\Step\Acceptance\Dozent $I, \Codeception\Example $course_group) {
         
@@ -177,7 +179,7 @@ class CourseCest  extends CestHelper{
         //annahme: ich bin im neu erstellten Kurs
         $I->moveMouseOver('#instr_overview_content');
         $I->wait(1);
-        $I->comment("@todo: refactor zu CoursegroupCreate");
+        $I->comment("@todo: refactor zu Page CoursegroupCreate");
         $I->click('#instr_add_groups a');
         $I->expect('AK-1: Es kann ein Titel und ein Beschreibugnstext eingegeben werden');
         $I->see("Neue Kursgruppe erstellen");
@@ -193,6 +195,16 @@ class CourseCest  extends CestHelper{
         $I->see($course_group['title']);
     }
     
+    /**
+     * der dataprovider für C001_04_AddCourseGroup
+     */
+    protected function C001_Coursegroup_Provider()
+    {
+       //wenn im fallback-kurs, brauchen wir keine KG erstellen
+       return array($this->getNodeSample(NM_COURSE_GROUP, 0)+['type'=>'default'] );
+    }
+
+
     /**
      * @UserStoryi KD.09 - Kurs - Dozent - Kursgruppe anlegen | https://trello.com/c/0w86zeYF/17-kd09-kurs-dozent-kursgruppe-anlegen
      * @param \AcceptanceTester $I

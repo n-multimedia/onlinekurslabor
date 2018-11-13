@@ -196,7 +196,7 @@ abstract class CestHelper {
      * Basic node-sample with title and body
      * @return array $sample [title, body]
      */
-    private function getNodeSample($node_type, $ident_number = 0) {
+    protected function getNodeSample($node_type, $ident_number = 0) {
         #$return = array();
         $rand_data = $this->getNodeFaker($node_type, $ident_number);
         return ['title' => $rand_data->node_title, 'body' => $rand_data->node_body, 'body_summary' => $rand_data->node_body_summary];
