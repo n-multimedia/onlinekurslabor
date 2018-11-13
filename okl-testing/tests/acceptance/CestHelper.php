@@ -79,13 +79,16 @@ abstract class CestHelper {
      * @param type $ident_num_start
      * @return type
      */
-    protected function DP_getSampleTeachers($count, $ident_num_start = 0) {
+    protected function DP_getSampleTeachers($count, $ident_num_start = 0, $with_fallback = true) {
         $sample = array();
         $fallback_data = _okl_testing_getFallbackData();
         $runner = 0;
-        for ($i = $ident_num_start; $i <= $count; $i++) {
+        for ($i = $ident_num_start; $i < $count; $i++) {
             $sample[$runner++] = $this->getPersonSample(array(NM_ROLE_DOZENT), $i) + ['type' => 'default'];
-            $sample[$runner++] = "null"; //ok das geht noch nicht, fehlt das to Array()$fallback_data->random('teacher') + ['type'=>'fallback'];
+             if($with_fallback)
+            {
+                $sample[$runner++] = "null"; //ok das geht noch nicht, fehlt das to Array()$fallback_data->random('teacher') + ['type'=>'fallback'];
+            }
         }
 
         return $sample;
@@ -99,13 +102,17 @@ abstract class CestHelper {
      * @param type $ident_num_start
      * @return type
      */
-    protected function DP_getSampleStudents($count, $ident_num_start = 0) {
+    protected function DP_getSampleStudents($count, $ident_num_start = 0, $with_fallback = true) {
         $sample = array();
         $fallback_data = _okl_testing_getFallbackData();
         $runner = 0;
-        for ($i = $ident_num_start; $i <= $count; $i++) {
+        for ($i = $ident_num_start; $i < $count; $i++) {
             $sample[$runner++] = $this->getPersonSample(array(NM_ROLE_STUDENT), $i) + ['type' => 'default'];
-            $sample[$runner++] = "null"; //ok das geht noch nicht, fehlt das to Array()$fallback_data->random('student') + ['type'=>'fallback'];
+            if($with_fallback)
+            {
+                $sample[$runner++] = "null"; //ok das geht noch nicht, fehlt das to Array()$fallback_data->random('student') + ['type'=>'fallback'];
+            }
+            
         }
 
         return $sample;

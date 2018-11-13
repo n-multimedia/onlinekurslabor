@@ -81,6 +81,7 @@ class CourseCest  extends CestHelper{
    * @param \AcceptanceTester $I
    * @param \Codeception\Example $example array holds dataprovider's data
    * @dataProvider C001_03_AddMemberProvider
+   * @before skipNonApplicableExample
    */
   public function C001_03_AddMember(AcceptanceTester $I,  \Codeception\Example $example) {
 
@@ -115,14 +116,7 @@ class CourseCest  extends CestHelper{
    * @return array
    */
   protected function C001_03_AddMemberProvider() {
-        $return = array();
-
-        $new_randomuser = \RealisticFaker\OklDataCreator::get();
-        $return[] = ['name' => $new_randomuser->name, 'mail' => $new_randomuser->email, 'exists' => false];
-
-        $new_randomuser2 =  \RealisticFaker\OklDataCreator::get();
-        $return[] = ['name' => $new_randomuser2->name, 'mail' => $new_randomuser2->email, 'exists' => false];
-        return $return;
+        return $this->DP_getSampleStudents(2, 0, false);
     }
 
    /**
