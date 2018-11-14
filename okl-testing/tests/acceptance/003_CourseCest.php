@@ -113,7 +113,7 @@ class CourseCest  extends CestHelper{
    * @return array
    */
   protected function C001_03_AddMemberProvider() {
-        return $this->DP_getSampleStudents(2, 0, false);
+        return $this->DP_getSampleStudents(1, 0, false);
     }
 
    /**
@@ -209,6 +209,7 @@ class CourseCest  extends CestHelper{
      * @UserStoryi KD.09 - Kurs - Dozent - Kursgruppe anlegen | https://trello.com/c/0w86zeYF/17-kd09-kurs-dozent-kursgruppe-anlegen
      * @param \AcceptanceTester $I
      * @dataProvider C001_05_AddUsersToGroupProvider
+     * @before skipNonApplicableExample
      */
     public function C001_05_AddUsersToGroup(\Step\Acceptance\Dozent $I, \Codeception\Example $user_to_couresgroup) {
 
@@ -226,22 +227,29 @@ class CourseCest  extends CestHelper{
 
     /**
      * Data Provider for C001_05_AddUsersToGroup : 
-     * returns array with keys ['user' => ['name','uid'], 'coursegroup' => ['name','nid']];
-     *  @todo mit nid kann man nicht arbeiten!returns array with keys ['user' => ['name','uid'], 'coursegroup' => ['name','nid']];
+     * returns array with keys ['user' => ['name','email'], 'coursegroup_title' => ... ];
      * @return array $UsersToGroup
      */
     protected function C001_05_AddUsersToGroupProvider() {
-        
-        //refactor hat funktioniert, jetzt muss noch default und fallback berücksichtigt werden
-        
-        
         $return = array();
-        //das geht nciht, da course_nid im provider auf fallback festgezogen ist.
-        $course_nid = $this->getCurrentCourseNid();
-        $course_data_object = _okl_testing_getDataObjectForCourse($course_nid);
-        $course_group = $course_data_object->random('course_group');
-        $student = $course_data_object->random('student');
-        $return[] = ['user' => ['name' => $student->realname, 'email' => $student->mail], 'coursegroup_title' =>   $course_group->title];
+
+        $default_course_group = $this->C001_Coursegroup_Provider()[0];
+        $fallback_course_group = _okl_testing_getFallbackData()->random('course_group')->toDataProviderSample();
+
+        //holt gefakten student und fallback als array
+        $student_arr = $this->DP_getSampleStudents(1, 0, true);
+
+        foreach ($student_arr as $counter => $student) {
+
+            if ($student['type'] === 'fallback') {
+                $cg_title = $fallback_course_group['title'];
+            } else {
+                $cg_title = $default_course_group['title'];
+            }
+            //build providerdata
+            $return[$counter] = ['user' => ['name' => $student['name'], 'email' => $student['mail']], 'type' => $student['type'], 'coursegroup_title' => $cg_title];
+        }
+
         return $return;
     }
 
