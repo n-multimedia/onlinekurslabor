@@ -87,7 +87,7 @@ abstract class CestHelper {
             $sample[$runner++] = $this->getPersonSample(array(NM_ROLE_DOZENT), $i) + ['type' => 'default'];
              if($with_fallback)
             {
-                $sample[$runner++] = "null"; //ok das geht noch nicht, fehlt das to Array()$fallback_data->random('teacher') + ['type'=>'fallback'];
+                 $sample[$runner++] =  $fallback_data->random('teacher')->toDataProviderSample() + ['type'=>'fallback'];
             }
         }
 
@@ -104,13 +104,13 @@ abstract class CestHelper {
      */
     protected function DP_getSampleStudents($count, $ident_num_start = 0, $with_fallback = true) {
         $sample = array();
-        //$fallback_data = _okl_testing_getFallbackData();
+        $fallback_data = _okl_testing_getFallbackData();
         $runner = 0;
         for ($i = $ident_num_start; $i < $count; $i++) {
             $sample[$runner++] = $this->getPersonSample(array(NM_ROLE_STUDENT), $i) + ['type' => 'default'];
             if($with_fallback)
             {
-                $sample[$runner++] = "null"; //ok das geht noch nicht, fehlt das to Array()$fallback_data->random('student') + ['type'=>'fallback'];
+                $sample[$runner++] =  $fallback_data->random('student')->toDataProviderSample() + ['type'=>'fallback'];
             }
             
         }
