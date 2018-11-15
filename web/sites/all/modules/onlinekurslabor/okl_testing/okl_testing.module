@@ -61,15 +61,7 @@ function _okl_testing_getDataObjectForCourse($course_nid)
     }
     
 
-    //lehrtexte
-    //@todo children like chapters, h5p, ...
-    $course_domain = new TestingObject(node_load($course->field_domain_ref [LANGUAGE_NONE][0]['target_id']));
-    $course_domain->course_url = NM_COURSE_TEXT_PATH . '/' . $course_nid . '/' . $course_domain->nid;
-    $course_domain->domain_url = NM_CONTENT_TEXT_PATH . '/' . $course_domain->nid;
-
-    $course_domain_demo = new TestingObject(node_load($course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id']));
-    $course_domain_demo->course_url = NM_COURSE_TEXT_PATH . '/' . $course_nid . '/' . $course_domain_demo->nid;
-    $course_domain_demo->domain_url = NM_CONTENT_TEXT_PATH . '/' . $course_domain_demo->nid;
+    
 
     //set object-properties
     $course->home_url = NM_COURSE_HOME_PATH . '/' . $course->nid;
@@ -77,8 +69,24 @@ function _okl_testing_getDataObjectForCourse($course_nid)
     $course->students = $students;
     $course->teachers = $teachers;
     $course->course_groups = $course_groups;
-    $course->domain = $course_domain;
-    $course->domain_demo = $course_domain_demo;
+    //lehrtexte
+    //@todo children like chapters, h5p, ...
+    if (!empty($course->field_domain_ref)) {
+        $course_domain = new TestingObject(node_load($course->field_domain_ref [LANGUAGE_NONE][0]['target_id']));
+        $course_domain->course_url = NM_COURSE_TEXT_PATH . '/' . $course_nid . '/' . $course_domain->nid;
+        $course_domain->domain_url = NM_CONTENT_TEXT_PATH . '/' . $course_domain->nid;
+
+        $course->domain = $course_domain;
+    }
+
+    if (!empty($course->field_domain_demo_ref)) {
+        $course_domain_demo = new TestingObject(node_load($course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id']));
+        $course_domain_demo->course_url = NM_COURSE_TEXT_PATH . '/' . $course_nid . '/' . $course_domain_demo->nid;
+        $course_domain_demo->domain_url = NM_CONTENT_TEXT_PATH . '/' . $course_domain_demo->nid;
+
+        $course->domain_demo = $course_domain_demo;
+    }
+
 
     //convert to object
     $course_class_object = new    TestingObject ($course)  ;
@@ -123,7 +131,7 @@ function _okl_testing_stop_test() {
  * die Variable okl_testing_testrun_identifier wird um "1" erhöht
  */
 function _okl_testing_set_fallback_identifier() {
-    $ident_old = _okl_testing_get_test_identifier();
+    $ident_old = _okl_testing_get_fallback_identifier();
     $ident_old_exploded = explode('_', $ident_old);
 
     $ident_old_exploded[1] += 1;
