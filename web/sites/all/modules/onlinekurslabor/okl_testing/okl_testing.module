@@ -335,60 +335,60 @@ function okl_testing_mail_alter(&$message) {
 
 
 /**
- * @property type  vid
- * @property type  uid
- * @property type  title
- * @property type  log
- * @property type  status
- * @property type  comment
- * @property type  promote
- * @property type  sticky
- * @property type  vuuid
- * @property type  ds_switch
- * @property type  nid
- * @property type  type
- * @property type  language
- * @property type  created
- * @property type  changed
- * @property type  tnid
- * @property type  translate
- * @property type  uuid
- * @property type  revision_timestamp
- * @property type  revision_uid
- * @property type  field_collaborative_features
- * @property type  field_course_header
- * @property type  field_course_picture
- * @property type  field_domain_ref
- * @property type  field_long_description
- * @property type  field_short_description
- * @property type  field_subtitle
- * @property type  field_time_span
- * @property type  field_vhb_lvnr
- * @property type  field_workload
- * @property type  group_group
- * @property type  field_field_courses_sponsors
- * @property type  field_domain_demo_ref
- * @property type  field_access_features
- * @property type  field_semester
- * @property type  field_course_proposals
- * @property type  field_other_features
- * @property type  rdf_mapping
- * @property type  cid
- * @property type  last_comment_timestamp
- * @property type  last_comment_name
- * @property type  last_comment_uid
- * @property type  comment_count
- * @property type  name
- * @property type  picture
- * @property type  data
- * @property type  home_url
- * @property type  info_url
- * @property type  students
- * @property type  teachers
- * @property type  randomTeacher
- * @property type  course_groups
- * @property type  domain
- * @property type  domain_demo
+ * @property type $vid
+ * @property int $uid
+ * @property type $title
+ * @property type $log
+ * @property type $status
+ * @property type $comment
+ * @property type $promote
+ * @property type $sticky
+ * @property type $vuuid
+ * @property type $ds_switch
+ * @property int $nid
+ * @property type $type
+ * @property type $language
+ * @property type $created
+ * @property type $changed
+ * @property type $tnid
+ * @property type $translate
+ * @property type $uuid
+ * @property type $revision_timestamp
+ * @property type $revision_uid
+ * @property type $field_collaborative_features
+ * @property type $field_course_header
+ * @property type $field_course_picture
+ * @property type $field_domain_ref
+ * @property type $field_long_description
+ * @property type $field_short_description
+ * @property type $field_subtitle
+ * @property type $field_time_span
+ * @property type $field_vhb_lvnr
+ * @property type $field_workload
+ * @property type $group_group
+ * @property type $field_field_courses_sponsors
+ * @property type $field_domain_demo_ref
+ * @property type $field_access_features
+ * @property type $field_semester
+ * @property type $field_course_proposals
+ * @property type $field_other_features
+ * @property type $rdf_mapping
+ * @property type $cid
+ * @property type $last_comment_timestamp
+ * @property type $last_comment_name
+ * @property type $last_comment_uid
+ * @property type $comment_count
+ * @property type $name
+ * @property type $picture
+ * @property type $data
+ * @property String $home_url
+ * @property String $info_url
+ * @property array<TestingObject> $students
+ * @property array<TestingObject> $teachers
+ * @property TestingObject $randomTeacher
+ * @property array<TestingObject> $course_groups
+ * @property TestingObject $domain
+ * @property TestingObject $domain_demo
  */
 class TestingObject {
 
@@ -406,7 +406,7 @@ class TestingObject {
     
     /**
      * converts current object (course, user, ...) to a sample  array
-     * @return type
+     * @return array
      */
     function toDataProviderSample() {
         $exportable_attributes = array();
