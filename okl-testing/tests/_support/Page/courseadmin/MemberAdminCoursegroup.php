@@ -52,7 +52,8 @@ class MemberAdminCoursegroup extends MemberAdmin {
 
         $I->click(parent::$confirmButton);
         $I->wait(8);
-        $strEntries = count($students) > 1 ? count($students).' Einträgen': '1 Eintrag';
+        //typo ist korrekt...
+        $strEntries = count($students) > 1 ? count($students).' Einträge': '1 Eintrag';
         $I->see("Die Operation Einer Kursgruppe zuweisen an ".$strEntries." wurde ausgeführt.");
 
 

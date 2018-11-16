@@ -175,6 +175,54 @@ abstract class CestHelper {
         }
         return $sample;
     }
+    
+    
+    /**
+     *  Use in  Dataprovider
+     * get an assignment of users to coursegroups
+     * Every user will be assigned to  one coursegroup (randomly)
+     * 
+     * @param type $count_users how many users
+     * @param type $count_coursegroups how many different coursegroups
+     * @param type $ident_num_start
+     * @param boolean $with_fallback
+     * @return array   'users' => [['name' => ..., 'mail' => ...], ['name' => ..., 'mail' => ...]],  'coursegroup_title' => ... 'type' => ...,];
+     */
+    protected function DP_getSampleUsersToCoursegroups($count_users, $count_coursegroups, $ident_num_start, $with_fallback = true) {
+
+        $users_and_coursegroups = array('default' => array('users' => null, 'coursegroups' => null), 'fallback' => array('users' => null, 'coursegroups' => null));
+
+        //get values from other providers
+        $users = $this->DP_getSampleStudents($count_users, $ident_num_start, $with_fallback);
+        $coursegroups = $this->DP_getSampleCoursegroups($count_coursegroups, $ident_num_start, $with_fallback);
+
+        //assign to our array
+        foreach ($users as $u) {
+            $users_and_coursegroups[$u['type']]['users'][] = $u;
+        }
+        foreach ($coursegroups as $cg) {
+            $users_and_coursegroups[$u['type']]['coursegroups'][] = $cg;
+        }
+
+        $unique = _okl_testing_get_dataprovider_identifier() . '_userstogroups_' . $ident_num_start;
+        $randomizer = \RealisticFaker\OklDataCreator::get($unique);
+
+
+        $sample = array();
+        $users_per_group = max(1, floor($count_users / $count_coursegroups));
+        foreach ($users_and_coursegroups as $type => $values) {
+            foreach ($values['coursegroups'] as $cg) {
+                $sample[] = array('coursegroup_title' => $cg['title'], 'users' => array(), 'type' => $type);
+            }
+            foreach ($values['users'] as $u) {
+                $random_key = $randomizer->randomKey($sample);
+                $sample[$random_key]['users'][] = array('name' => $u['name'], 'mail' => $u['mail']);
+            }
+        }
+
+
+        return $sample;
+    }
 
     /**
      * Use in  Dataprovider

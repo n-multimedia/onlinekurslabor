@@ -50,7 +50,7 @@ class OklDataCreator extends \RealisticFaker\DataCreator {
      */
     public static function getSafeText($text)
     {
-        return trim(str_replace(array(',','"', "'", ".","!","?"), '', $text));
+        return trim(str_replace(array(',','"', "'", ".","!","?",":"), '', $text));
     }
 
 }
