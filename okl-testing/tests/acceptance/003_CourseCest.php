@@ -247,7 +247,7 @@ class CourseCest  extends CestHelper{
                 $cg_title = $default_course_group['title'];
             }
             //build providerdata
-            $return[$counter] = ['user' => ['name' => $student['name'], 'email' => $student['mail']], 'type' => $student['type'], 'coursegroup_title' => $cg_title];
+            $return[$counter] = ['user' => ['name' => $student['name'], 'mail' => $student['mail']], 'type' => $student['type'], 'coursegroup_title' => $cg_title];
         }
 
         return $return;

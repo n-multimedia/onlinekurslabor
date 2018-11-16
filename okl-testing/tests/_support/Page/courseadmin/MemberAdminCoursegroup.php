@@ -17,7 +17,7 @@ class MemberAdminCoursegroup extends MemberAdmin {
 
     /**
      * Add a student to a coursegroup. Course-Nid defined in constructor.
-     * @param array $student - needs name + email
+     * @param array $student - needs name + mail
      * @param String $coursegroup_title  
      * @return \Page\courseadmin\AddMembers
      */
@@ -31,7 +31,7 @@ class MemberAdminCoursegroup extends MemberAdmin {
     
     /**
      * Add a student to a coursegroup. Course-Nid already defined in constructor.
-     * @param array $students - an array with entries with keys   name , email
+     * @param array $students - an array with entries with keys   name , mail
      * @param String $coursegroup_title 
      * @return \Page\courseadmin\AddMembers
      */
@@ -43,7 +43,7 @@ class MemberAdminCoursegroup extends MemberAdmin {
         $this->selectBulkOperation('Einer Kursgruppe zuweisen');
 
         foreach ($students as $student) { 
-            $I->clickTagContaining('tr', $student['email']);
+            $I->clickTagContaining('tr', $student['mail']);
         }
         $I->click(parent::$executeButton);
        
