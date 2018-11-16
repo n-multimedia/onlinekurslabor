@@ -1,6 +1,5 @@
 <?php
 
-use \Codeception\Step\Argument\PasswordArgument;
 use \Codeception\Util\Fixtures;
 use Page\UserCreate as UserCreatePage;
 use Page\courseadmin\AddMembers as AddMembersPage;
@@ -13,11 +12,10 @@ use Page\node\course_content\CoursegroupCreate as CreateCoursegroupPage;
 
 class PrepareCest extends CestHelper{
 
-    public $run_identifier;
     //create: 3 dozenten
-    public $count_dozents = 3;
+    public static $count_dozents = 3;
     //create: 10 studis
-    public $count_students = 10;
+    public static $count_students = 10;
     //+
     //1 course
     //$count_students/3 coursegroups
@@ -61,7 +59,7 @@ class PrepareCest extends CestHelper{
      * @return \Codeception\Example $example
      */
     protected function P001_dummyTeachersProvider() {
-        return $this->DP_getSampleTeachers($this->count_dozents, 0, false);
+        return $this->DP_getSampleTeachers(self::$count_dozents, 0, false);
     }
     
     /**
@@ -288,7 +286,7 @@ class PrepareCest extends CestHelper{
      * @return \Codeception\Example $example
      */
     protected function P001_addStudentsProvider() {
-        return $this->DP_getSampleStudents($this->count_students, 0, false);
+        return $this->DP_getSampleStudents(self::$count_students, 0, false);
     }
 
     /**
@@ -337,7 +335,7 @@ class PrepareCest extends CestHelper{
      * @return Codeception\Example $course_example 
      */
     protected function P001_createCoursegroupsProvider() {
-        $num_groups = floor($this->count_students / 3); 
+        $num_groups = floor(self::$count_students / 3); 
         return $this->DP_getSampleCoursegroups($num_groups, 0, false);
     }
     
