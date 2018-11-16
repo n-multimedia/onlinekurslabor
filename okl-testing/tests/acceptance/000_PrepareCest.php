@@ -9,6 +9,8 @@ use Page\node\domain\DomainCreate  as CreateDomainPage;
 use Page\node\domain\DomainEdit  as EditDomainPage;
 use Page\node\domain_content\InteractiveCreate  as CreateInteractiveVideoPage;
 use Page\node\course_content\CoursegroupCreate as CreateCoursegroupPage; 
+use Page\courseadmin\MemberAdminCoursegroup as AddMemberToCoursegroupPage; 
+
 
 class PrepareCest extends CestHelper{
 
@@ -339,7 +341,30 @@ class PrepareCest extends CestHelper{
         return $this->DP_getSampleCoursegroups($num_groups, 0, false);
     }
     
-  
+    
+   /**
+     * Add students to coursegroups  
+     * @UserStory null
+     * @UserStoryURL null
+     *
+     * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
+     * @param \Codeception\Example $users_to_coursegroup Example-array ['users' =>array(), 'coursegroup_title'=> ...]
+     * @dataProvider P001_addUsersToCoursegroupsProvider
+     */
+    public function P001_11_addUsersToCoursegroups(\Step\Acceptance\Dozent $I, Codeception\Example $users_to_coursegroup) {
+
+        $cgaddpage = new AddMemberToCoursegroupPage($I, $this->getCurrentCourseNid());
+        $cgaddpage->addMultipleStudentsToCoursegroup($users_to_coursegroup['users'], $users_to_coursegroup['coursegroup_title']);
+    }
+
+    /**
+     * list uf users to assign to couresgrups. 
+     * used in P001_11_addStudentsToCoursegroups
+     * @return type
+     */
+    protected function P001_addUsersToCoursegroupsProvider() {
+        return $this->DP_getSampleUsersToCoursegroups(self::$count_students, max(1, floor(self::$count_students / 3)), 0, false);
+    }
 
     /**
      * Cleanup  
