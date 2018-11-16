@@ -46,8 +46,22 @@ abstract class CestHelper {
      * 
 
 
+    /**
+     * accessed via  @before-syntax
+     * based on @dataProvider-syntax this will skip the testcase with an empty example
+     * @param type $I
+     * @param Codeception\Scenario $scenario
+     */
+    protected function skipEmptyExample(AcceptanceTester $I, Codeception\Scenario $scenario) {
 
-      /**
+        //get current @dataprovider-sample
+        $example = ($scenario->current('example'));
+        if ($this->isEmptyExample($example)) {
+            $scenario->skip("an empty example.");
+        }
+    }
+
+    /**
      * accessed via  @before-syntax
      * based on @dataProvider-syntax this will skip the non-applicable testcase
      * @param type $I
@@ -61,13 +75,11 @@ abstract class CestHelper {
         //evtl muss man künftig das unique in ne function auslagern.. 
         //hier: kurs wurde erstellt und möchte fallback ausführen: skip
         if (Fixtures::exists('course_nid') && $example['type'] == 'fallback') {
-            $I->comment("skipping " . $example['type']);
-            $scenario->skip();
+            $scenario->skip($example['type'] . "-example since Fixtures::exists('course_nid')");
         }
         //hier: kein kurs erstellt, aber default ausführen: skip
         elseif (!Fixtures::exists('course_nid') && $example['type'] == 'default') {
-            $I->comment("skipping " . $example['type']);
-            $scenario->skip();
+            $scenario->skip($example['type'] . "-example since NO Fixtures::exists('course_nid')");
         }
     }
 
@@ -84,7 +96,7 @@ abstract class CestHelper {
         $fallback_data = _okl_testing_getFallbackData();
         $runner = 0;
         for ($i = $ident_num_start; $i < $count; $i++) {
-            $sample[$runner++] = $this->getPersonSample(array(NM_ROLE_DOZENT), $i) + ['type' => 'default'];
+            $sample[$runner++] = $this->getPersonSample(array(NM_ROLE_DOZENT, NM_ROLE_AUTOR), $i) + ['type' => 'default'];
              if($with_fallback)
             {
                  $sample[$runner++] =  $fallback_data->random('teacher')->toDataProviderSample() + ['type'=>'fallback'];
@@ -123,16 +135,80 @@ abstract class CestHelper {
      * get a sample course
      * Uniqueness is dependend of $ident_number
      * @param type $ident_number same number = same sample [within one run]
+     * @param boolean $with_fallback
      * @uses _okl_testing_get_dataprovider_identifier()
      */
-    protected function DP_getSampleCourse($ident_number = 0) {
-        $fallback_data = _okl_testing_getFallbackData(); //@todo
+    protected function DP_getSampleCourse($ident_number = 0, $with_fallback = true) {
+        $sample = array();
+        if ($with_fallback) {
+            $sample[] = _okl_testing_getFallbackData()->toDataProviderSample() + ['type' => 'fallback'];
+        }
 
-        return array($fallback_data->toDataProviderSample() + ['type' => 'fallback'], $this->getCourseSample($ident_number) + ['type' => 'default']);
+        $sample[] = $this->getCourseSample($ident_number) + ['type' => 'default'];
+
+        return $sample;
     }
-    
-    
-    
+
+    /**
+     * Use in  Dataprovider
+     * get sample coursegroups
+     * Uniqueness is dependend of $ident_number
+     * @param int $count how many coursegroups
+     * @param type $ident_num_start same number = same sample [within one run]
+     * @param boolean $with_fallback
+     * @uses _okl_testing_get_dataprovider_identifier()
+     */
+    protected function DP_getSampleCoursegroups($count, $ident_num_start = 0, $with_fallback = true) {
+        $fallback_data = _okl_testing_getFallbackData();
+        if ($with_fallback && count($fallback_data->course_groups) < $count) {
+            trigger_error("You requested $count coursegroups, but fallback only has ".count($fallback_data->course_groups)." coursegroups.");
+        }
+        $sample = array();
+       
+        $runner = 0;
+        for ($i = $ident_num_start; $i < $count; $i++) {
+            $sample[$runner++] = $this->getNodeSample(NM_COURSE_GROUP, $i) + ['type' => 'default'];
+
+            if ($with_fallback) {
+                $sample[$runner++] = array_values($fallback_data->course_groups)[$runner - 1]->toDataProviderSample() + ['type' => 'fallback'];
+            }
+        }
+        return $sample;
+    }
+
+    /**
+     * Use in  Dataprovider
+     * get a sample domain OR get sample domain + demo domain
+     * Uniqueness is dependend of $ident_number
+     * @param type $ident_number same number = same sample [within one run]
+     * @param $with_demo_domain create a second domain called ... (DEMO)
+     * @param $with_fallback (from existing fallbackcourse)
+     * @uses _okl_testing_get_dataprovider_identifier()
+     */
+     protected function DP_getSampleDomain($ident_number = 0, $with_demo_domain = true, $with_fallback = true) {
+        $sample = array();
+
+        $domain = $this->getNodeSample(NM_CONTENT_DOMAIN, $ident_number);
+        $domain['title'] = RealisticFaker\OklDataCreator::getSafeText($domain['title']);
+        $sample[] = $domain + ['type' => 'default'];
+
+
+        if ($with_demo_domain) {
+            $demo_domain = $domain;
+            $demo_domain['title'] = substr($demo_domain['title'], 0, -7) . ' (DEMO)';
+            $sample[] = $demo_domain + ['type' => 'default'];
+        }
+
+        if ($with_fallback) {
+            $sample[] = _okl_testing_getFallbackData()->domain->toDataProviderSample() + ['type' => 'fallback'];
+            if ($with_demo_domain) {
+                $sample[] = _okl_testing_getFallbackData()->domain_demo->toDataProviderSample() + ['type' => 'fallback'];
+            }
+        }
+
+        return $sample;
+    }
+
     /**
      * Use in  Dataprovider
      * get a sample news
@@ -151,17 +227,32 @@ abstract class CestHelper {
         return $sample; 
     }
     
-
     /**
-     * NOT needed ATM
-     * gets a dummy student
-     * @param type $counter
-     * @return array $student
-     * @uses _okl_testing_get_dataprovider_identifier()
+     * get an empty example for dataproviders
+     */
+    protected function getEmptyExample()
+    {
+        return array('none'=>'none');
+    }
+    
+    /**
+     * Tests, if given example (array or Codeception-Example) equals an empty example
+     * @param type $mixed
+     * @return type
+     */
+    protected function isEmptyExample($mixed) {
 
-      private function getStudentSample($counter = 0) {
-      return  $this->getPersonSample(array(NM_ROLE_STUDENT), $counter);
-      } */
+        $emptysample = $this->getEmptyExample();
+        //type is Codeception\Example
+        if (is_object($mixed)) {
+            $object_emptysample = new Codeception\Example($emptysample);
+            return $mixed == $object_emptysample;
+        }
+        //else: array
+
+        return $mixed == $emptysample;
+    }
+
 
     /**
      * gets a dummy person. Uniqueness is dependend of $roles and $counter

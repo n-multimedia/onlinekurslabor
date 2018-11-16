@@ -41,5 +41,16 @@ class OklDataCreator extends \RealisticFaker\DataCreator {
         //schöneres Loremipsum
         $this->addProvider(new \NewAgeIpsum\NewAgeProvider($this->faker));
     }
+    
+    /**
+     * Bei Node-Verweisen in Drupal dürfen diverse Zeichen nicht im Eingabefeld vorkommen.
+     * Diese Funktion entfernt diese
+     * @param String $text
+     * @return String $text
+     */
+    public static function getSafeText($text)
+    {
+        return str_replace(array(',','"', "'", ".","!","?"), '', $text);
+    }
 
 }
