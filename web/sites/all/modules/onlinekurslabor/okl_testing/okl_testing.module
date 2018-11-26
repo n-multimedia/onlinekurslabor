@@ -217,8 +217,9 @@ function okl_testing_menu() {
  */
 function okl_testing_getfilefromurlarg($url_arg_1, $url_arg_2) {
     $full_url_arg =  _okl_testing_get_file_uri($url_arg_1, $url_arg_2);
+    $filename = $_SERVER['DOCUMENT_ROOT'].'/../okl-testing/tests/_output/'.$full_url_arg; 
     //pfad zu den test-output-files
-    return file_get_contents($_SERVER['DOCUMENT_ROOT'].'/../okl-testing/tests/_output/'.$full_url_arg ) ;
+    return is_file($filename)? file_get_contents($filename): '<b>'.t('No result available').'</b>' ;
 }
 
 
@@ -236,7 +237,11 @@ function okl_testing_goto_root() {
  * @param string $vars
  */
 function okl_testing_preprocess_page(&$vars) {
-
+    //fix warnings
+    if(count( $vars['theme_hook_suggestions']) < 3)
+    {
+        return; 
+    }
     //hole über bestehende hook_suggestions die zu ladende file-url
     $file_uri = $vars['theme_hook_suggestions'][2];
     $ext = pathinfo($file_uri, PATHINFO_EXTENSION);
