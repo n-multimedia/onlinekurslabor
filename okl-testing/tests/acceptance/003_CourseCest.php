@@ -3,7 +3,9 @@
 use \Codeception\Util\Fixtures;
 use Page\node\course\CourseCreate as CreateCoursePage;
 use Page\courseadmin\AddMembers as AddMembersPage;
+use Page\node\course_content\CoursegroupCreate as CreateCoursegroupPage;
 use Page\courseadmin\MemberAdminCoursegroup as AddMemberToCoursegroupPage; 
+
 
 class CourseCest  extends CestHelper{
  
@@ -168,6 +170,7 @@ class CourseCest  extends CestHelper{
     /**
      * @UserStoryi KD.09 - Kurs - Dozent - Kursgruppe anlegen | https://trello.com/c/0w86zeYF/17-kd09-kurs-dozent-kursgruppe-anlegen
      * @param \AcceptanceTester $I
+     * @param \Codeception\Example $cg_example Example-array with name / body
      * @dataProvider C001_Coursegroup_Provider
      * @before skipNonApplicableExample
      * 
@@ -179,20 +182,12 @@ class CourseCest  extends CestHelper{
         //annahme: ich bin im neu erstellten Kurs
         $I->moveMouseOver('#instr_overview_content');
         $I->wait(1);
-        $I->comment("@todo: refactor zu Page CoursegroupCreate");
         $I->click('#instr_add_groups a');
         $I->expect('AK-1: Es kann ein Titel und ein Beschreibugnstext eingegeben werden');
         $I->see("Neue Kursgruppe erstellen");
 
-        $I->seeElement("#cke_edit-body-und-0-value");
-
-        $I->fillField('title', $course_group['title']);
-        $I->fillCkEditorById('edit-body-und-0-value', $course_group['body']);
-        $I->click("Speichern");
-        $I->see("Courses - Kursgruppe " . $course_group['title'] . " wurde erstellt.");
-
-        $I->click('Kursgruppe');
-        $I->see($course_group['title']);
+        $cg_page = new CreateCoursegroupPage($I, $this->getCurrentCourseNid());
+        $cg_page->create($course_group);
     }
     
     /**
@@ -232,7 +227,6 @@ class CourseCest  extends CestHelper{
      */
     protected function C001_05_AddUsersToGroupProvider() {
         $return = array();
-
         $default_course_group = $this->C001_Coursegroup_Provider()[0];
         $fallback_course_group = _okl_testing_getFallbackData()->random('course_group')->toDataProviderSample();
 
