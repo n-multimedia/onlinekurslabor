@@ -151,7 +151,7 @@ class PrepareCest extends CestHelper{
 
     /**
      * der Dataprovider für P001_04_createDomain liefert nötige Variablen
-     * @return Codeception\Example $course_example 
+     * @return Codeception\Example $domain_example 
      */
     protected function P001_createDomainsProvider() {
         

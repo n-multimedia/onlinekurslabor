@@ -1,12 +1,10 @@
 <?php
 
-use \Codeception\Util\Fixtures;
+use Page\node\domain\DomainCreate  as CreateDomainPage;
 
+class TextCest extends CestHelper{
 
-class TextCest {
-
-
-  private $fallback_text_url = "";
+ 
 
 
   public function _before(\Step\Acceptance\Author $I) {
@@ -34,13 +32,12 @@ class TextCest {
    * @UserStoryies XX.xx |  xx | https://trello.com/xxx
    *
    * @param \AcceptanceTester $I
+   * @param \Codeception\Example $domain_example Example-object
+   * @dataProvider T002_createDomainsProvider
    */
-  public function T002_02_CreateText(\Step\Acceptance\Author $I) {
+  public function T002_02_CreateText(\Step\Acceptance\Author $I, Codeception\Example $domain_example) {
 
-    $text = [];
-    $text['title'] =  '[T002_02_CreateText] Lehrtext @' . date('d.m.Y H:i:s');
-    $text['body'] =  'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.';
-
+    
 
     $I->amOnPage('/');
     $I->click('Meine Veranstaltungen');
@@ -49,19 +46,21 @@ class TextCest {
 
     $I->click('a[title="Lehrtext erstellen"]');
 
-    $I->fillField('title', $text['title']);
-    $I->fillCkEditorByName("field_domain_description[und][0][value]", $text['body']);
-
-    $I->click( 'Speichern' );
-    $I->see( "Thema " . $text['title'] . " wurde erstellt." );
+    $ccpage = New CreateDomainPage($I);
+    $ccpage->create($domain_example);
 
     $I->amOnPage('/');
     $I->click('Meine Veranstaltungen');
-    $I->see($text['title']);
+    $I->see($domain_example['title']);
 
   }
 
+    /**
+     * der Dataprovider liefert nötige Variablen
+     * @return Codeception\Example $domain_example 
+     */
+    protected function T002_createDomainsProvider() {
+        return $this->DP_getSampleDomain(0, false, false);
+    }
 
-    
-  
 }
