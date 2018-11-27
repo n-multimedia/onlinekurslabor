@@ -206,7 +206,7 @@ class CourseCest  extends CestHelper{
      * @dataProvider C001_05_AddUsersToGroupProvider
      * @before skipNonApplicableExample
      */
-    public function C001_05_AddUsersToGroup(\Step\Acceptance\Dozent $I, \Codeception\Example $user_to_couresgroup) {
+    public function C001_05_AddUsersToGroup(\Step\Acceptance\Dozent $I, \Codeception\Example $user_to_coursegroup) {
 
         $this->goToCourseHome($I);
 
@@ -217,7 +217,7 @@ class CourseCest  extends CestHelper{
         $I->click('#instr_overview_members a');
 
         $cgaddpage = new AddMemberToCoursegroupPage($I, $this->getCurrentCourseNid());
-        $cgaddpage->addStudentToCoursegroup($user_to_couresgroup['user'], $user_to_couresgroup['coursegroup_title']);
+        $cgaddpage->addStudentToCoursegroup($user_to_coursegroup['user'], $user_to_coursegroup['coursegroup_title']);
     }
 
     /**

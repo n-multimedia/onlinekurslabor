@@ -213,7 +213,7 @@ abstract class CestHelper {
      */
     protected function DP_getSampleUsersToCoursegroups($count_users, $count_coursegroups, $ident_num_start, $with_fallback = true) {
 
-        $users_and_coursegroups = array('default' => array('users' => null, 'coursegroups' => null), 'fallback' => array('users' => null, 'coursegroups' => null));
+        $users_and_coursegroups = array(); //endresultat: array('default' => array('users' => null, 'coursegroups' => null), 'fallback' => array('users' => null, 'coursegroups' => null));
 
         //get values from other providers
         $users = $this->DP_getSampleStudents($count_users, $ident_num_start, $with_fallback);
@@ -229,7 +229,6 @@ abstract class CestHelper {
 
         $unique = _okl_testing_get_dataprovider_identifier() . '_userstogroups_' . $ident_num_start;
         $randomizer = \RealisticFaker\OklDataCreator::get($unique);
-
 
         $sample = array();
         $users_per_group = max(1, floor($count_users / $count_coursegroups));
