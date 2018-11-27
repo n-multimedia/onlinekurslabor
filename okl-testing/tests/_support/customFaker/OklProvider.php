@@ -21,8 +21,9 @@ class OklProvider extends Base
     
     
     public function currentSemesterName()
-    {  //@todo das muss natürlich über OKL-Api ausgelesen werden
-        return 'SS 18';
+    {
+        $current_semester = taxonomy_term_load(variable_get('okl_current_semester'));
+        return $current_semester->name; 
     }
     
 }

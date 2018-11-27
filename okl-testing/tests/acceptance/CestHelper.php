@@ -348,7 +348,6 @@ abstract class CestHelper {
         $faker = $this->getNodeFaker(NM_COURSE, $ident_number);
         $sample = $this->getNodeSample(NM_COURSE, $ident_number);
 
-        //@todo: Semester aktuell
         $sample['currentSemesterName'] = $faker->currentSemesterName;
         return $sample;
     }
