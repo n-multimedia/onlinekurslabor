@@ -222,7 +222,7 @@ function okl_testing_menu() {
         'access callback' => 'custom_general_user_is_okl_admin',
         //zugriff nur für rolle "administrator"
         'access arguments' => array(array('administrator')),
-        'page callback' => 'okl_testing_getfilefromurlarg',
+        'page callback' => 'okl_testing_getcontentfromurlarg',
         'page arguments' => array(1 , 2),
         'type' => MENU_NORMAL_ITEM,
     );
@@ -245,17 +245,34 @@ function okl_testing_menu() {
 
 /**
  * function for okl_testing_menu .
- * Loads the specified file $url_arg_1.$url_arg_2
+ * Loads the specified file $url_arg_1.$url_arg_2 OR creates a directory index
  *
  * @param type $url_arg_1
  * @param type $url_arg_2
- * @return type
+ * @return String $html
  */
-function okl_testing_getfilefromurlarg($url_arg_1, $url_arg_2) {
+function okl_testing_getcontentfromurlarg($url_arg_1, $url_arg_2) {
     $full_url_arg =  _okl_testing_get_file_uri($url_arg_1, $url_arg_2);
-    $filename = $_SERVER['DOCUMENT_ROOT'].'/../okl-testing/tests/_output/'.$full_url_arg; 
+    $basepath_to_output = $_SERVER['DOCUMENT_ROOT'].'/../okl-testing/tests/_output/';
+    $full_path = $basepath_to_output.$full_url_arg; 
+
+
+    //sollte es ein VZ sein, baue directory-index
+    if (is_dir($full_path)) {
+        $thelist = '<html><body><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"><center><br><br>';
+        if ($directory_handle = opendir($full_path)) {
+            while (false !== ($element_in_dir = readdir($directory_handle))) {
+                if (!in_array($element_in_dir, array('.', '..'))) {
+                    $thelist .= '<LI><a href="' . $full_url_arg . '/' . $element_in_dir . '">' . $element_in_dir . '</a></li>';
+                }
+            }
+            closedir($directory_handle);
+            $thelist .='</center></body></html>';
+            return $thelist;
+        }
+    }
     //pfad zu den test-output-files
-    return is_file($filename)? file_get_contents($filename): '<b>'.t('No result available').'</b>' ;
+    return is_file($full_path)? file_get_contents($full_path): '<b>'.t('No result available').'</b>' ;
 }
 
 
@@ -278,6 +295,7 @@ function okl_testing_preprocess_page(&$vars) {
     {
         return; 
     }
+    
     //hole über bestehende hook_suggestions die zu ladende file-url
     $file_uri = $vars['theme_hook_suggestions'][2];
     $ext = pathinfo($file_uri, PATHINFO_EXTENSION);
