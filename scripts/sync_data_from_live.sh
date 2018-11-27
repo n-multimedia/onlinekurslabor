@@ -110,7 +110,7 @@ printf "\n\nWill now create a dummy course. Confirm by hitting enter or CMD+C to
 read null
 
 cd ../okl-testing 
-bash codecept-run-tests.sh 000_PrepareCest
+bash codecept-run-prepare_test.sh
 fi
 
 exit;

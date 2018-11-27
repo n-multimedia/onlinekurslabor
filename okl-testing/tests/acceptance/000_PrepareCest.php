@@ -24,13 +24,13 @@ class PrepareCest extends CestHelper{
     //assign studis to groups
 
     
-    
-      
+
      /**
      * @UserStory null
      * @UserStoryURL null
      * 
      * @param \Step\Acceptance\SuperAdmin $I (instead of type \AcceptanceTester) 
+     * @before skipIfNotInPrepareMode
      */
      public function P001_01_logSuperAdminIn(\Step\Acceptance\SuperAdmin $I) {
          //login ist in diesem cest gültig, bis logout geschieht
@@ -44,6 +44,7 @@ class PrepareCest extends CestHelper{
      * @param \Step\Acceptance\SuperAdmin $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $example Example-array
      * @dataProvider P001_dummyTeachersProvider
+     * @depends P001_01_logSuperAdminIn
      */
     public function P001_02_createTeachers(\Step\Acceptance\SuperAdmin $I, \Codeception\Example $example) {
       
@@ -68,11 +69,12 @@ class PrepareCest extends CestHelper{
      * @UserStory null
      * @UserStoryURL null
      * 
-     * Als eigener Eintrag. Bei @before-Syntax würde würde er bei jedem Beispiel versuchen, neu einzuloggen
+     * Als eigener Eintrag. Bei @before-Syntax würde würde er bei jedem Beispiel versuchen, sich neu einzuloggen
      *
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $random_teacher A single teacher
      * @dataprovider P001_dummySingleTeacherProvider
+     * @depends P001_02_createTeachers
      */
     public function P001_03_switchUser(\Step\Acceptance\Dozent $I, \Codeception\Example $random_teacher) {
         //logout
@@ -129,6 +131,7 @@ class PrepareCest extends CestHelper{
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $domain_example Example-object
      * @dataProvider P001_createDomainsProvider
+     * @depends P001_03_switchUser
      */
     public function P001_04_createDomains(\Step\Acceptance\Dozent $I, Codeception\Example $domain_example) {
 
@@ -172,6 +175,7 @@ class PrepareCest extends CestHelper{
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $domain_content_example Example-object
      * @dataProvider P001_createDomainContentProvider
+     * @depends P001_04_createDomains
      */
     public function P001_05_createDomainContent(\Step\Acceptance\Dozent $I, Codeception\Example $domain_content_example) {
         $domain_nids = [Fixtures::get('domain_nid'), Fixtures::get('domain_demo_nid')];
@@ -210,6 +214,7 @@ class PrepareCest extends CestHelper{
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $example Example-object
      * @dataProvider P001_createCourseProvider
+     * @depends P001_04_createDomains
      */
     public function P001_06_createCourse(\Step\Acceptance\Dozent $I, Codeception\Example $course_example) {
 
@@ -241,6 +246,7 @@ class PrepareCest extends CestHelper{
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $example Example-object
      * @dataprovider P001_createDomainsProvider
+     * @depends P001_06_createCourse
      */
     public function P001_07_editCourse(\Step\Acceptance\Dozent $I, Codeception\Example $domain_example) {
         $new_course_nid = $this->getCurrentCourseNid();
@@ -266,6 +272,7 @@ class PrepareCest extends CestHelper{
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $students_example Example-array mit name und mail
      * @dataProvider P001_addStudentsProvider
+     * @depends P001_06_createCourse
      */
     public function P001_08_addStudentsToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $students_example) {
         $I->comment(sprintf('now I add memmber %s to the course %s' ,$students_example['mail'], $this->getCurrentCourseNid()));
@@ -301,6 +308,7 @@ class PrepareCest extends CestHelper{
      * @uses P001_dummySingleTeacherProvider Infos about currently loggedin dozent
      * @dataProvider P001_otherTeacherProvider
      * @before skipEmptyExample
+     * @depends P001_06_createCourse
      */
      public function P001_09_addDozentenToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $dozenten_example) {
 
@@ -322,6 +330,7 @@ class PrepareCest extends CestHelper{
      * @param \Codeception\Example $cg_example Example-array with name / body
      * doesnt @uses P001_dummySingleTeacherProvider Infos about currently loggedin dozent
      * @dataProvider P001_createCoursegroupsProvider
+     * @depends P001_06_createCourse
      */
     public function P001_10_addCoursegroups(\Step\Acceptance\Dozent $I, Codeception\Example $cg_example) {
         //$current_teacher = $this->P001_dummySingleTeacherProvider()[0];
@@ -350,6 +359,7 @@ class PrepareCest extends CestHelper{
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $users_to_coursegroup Example-array ['users' =>array(), 'coursegroup_title'=> ...]
      * @dataProvider P001_addUsersToCoursegroupsProvider
+     * @depends P001_10_addCoursegroups
      */
     public function P001_11_addUsersToCoursegroups(\Step\Acceptance\Dozent $I, Codeception\Example $users_to_coursegroup) {
 
@@ -360,12 +370,26 @@ class PrepareCest extends CestHelper{
     /**
      * list uf users to assign to couresgrups. 
      * used in P001_11_addStudentsToCoursegroups
-     * @return type
+     * @return array [$users, $title]
      */
     protected function P001_addUsersToCoursegroupsProvider() {
         return $this->DP_getSampleUsersToCoursegroups(self::$count_students, max(1, floor(self::$count_students / 3)), 0, false);
     }
 
+    /**
+     * store what has been created  
+     * @UserStory null
+     * @UserStoryURL null
+     *
+     * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
+     * @depends P001_11_addUsersToCoursegroups
+     */
+    public function P001_19_storeFallback(\Step\Acceptance\Dozent $I) {
+        _okl_testing_storeFallbackNID($this->getCurrentCourseNid());
+        _okl_testing_set_fallback_identifier();
+        $I->comment("stored fallback-course.");
+    }
+    
     /**
      * Cleanup  
      * @UserStory null
@@ -373,10 +397,8 @@ class PrepareCest extends CestHelper{
      *
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      */
-    public function P001_19_cleanUp(\Step\Acceptance\Dozent $I) {
-        _okl_testing_storeFallbackNID($this->getCurrentCourseNid());
-        _okl_testing_set_fallback_identifier();
-        $I->comment("stored fallback-course.");
+    public function P001_20_cleanUp(\Step\Acceptance\Dozent $I) {
+        _okl_testing_stop_prepare_cest();
     }
 
     
@@ -385,7 +407,7 @@ class PrepareCest extends CestHelper{
      * @UserStoryURL null
      *
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
-     * 
+     * @depends P001_01_logSuperAdminIn
      */
     public function P001_20_logOut(\Step\Acceptance\Dozent $I){
         $I->logout();

@@ -9,6 +9,9 @@
  */
 function _okl_testing_getFallbackData() {
     $course_nid = variable_get('okl_testing_fallback_course_nid');
+    if (!$course_nid && !_okl_testing_is_prepare_cest_running()) {
+        throw new Exception('No fallback data available for autotests! Run "codecept-run-prepare_test.sh"  first.');
+    }
     return _okl_testing_getDataObjectForCourse($course_nid);
 }
 
@@ -126,6 +129,32 @@ function _okl_testing_stop_test() {
 }
 
 
+
+/**
+ * setzt die Variable okl_testing_preparecest_running
+ */
+function _okl_testing_start_prepare_cest() {
+    //setze "Test läuft"
+    variable_set('okl_testing_preparecest_running', true);
+}
+
+/**
+ * löscht die Variable okl_testing_preparecest_running
+ */
+function _okl_testing_stop_prepare_cest() {
+    //entferne "Test läuft"
+    variable_del('okl_testing_preparecest_running');
+}
+
+/**
+ * läuft der preparecest gerade? Wird bei fallbackprüfung genutzt
+ */
+function _okl_testing_is_prepare_cest_running() {
+    return (bool) variable_get('okl_testing_preparecest_running');
+}
+
+
+
 /**
  * wird nach preparecest aufgerufen.
  * die Variable okl_testing_testrun_identifier wird um "1" erhöht
@@ -164,7 +193,14 @@ function _okl_testing_set_dataprovider_identifier() {
  * @return string $identifier
  */
 function _okl_testing_get_dataprovider_identifier() {
-    return variable_get('okl_testing_dataprovider_identifier',rand());
+    //falls wert noch nicht gesetzt, setze ihn und versuchs erneut.
+    if(!variable_get('okl_testing_dataprovider_identifier'))
+    {
+       _okl_testing_set_dataprovider_identifier();
+       return _okl_testing_get_dataprovider_identifier();
+    }
+    
+    return variable_get('okl_testing_dataprovider_identifier');
 }
 
 /**

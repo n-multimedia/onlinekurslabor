@@ -60,6 +60,8 @@ abstract class CestHelper {
             $scenario->skip("an empty example.");
         }
     }
+    
+
 
     /**
      * accessed via  @before-syntax
@@ -82,6 +84,18 @@ abstract class CestHelper {
             $scenario->skip($example['type'] . "-example since NO Fixtures::exists('course_nid')");
         }
     }
+    
+    /**
+     * accessed via  @before-syntax
+     * this will skip the testcase if _okl_testing_start_prepare_cest was not called before the test
+     * @param type $I
+     * @param Codeception\Scenario $scenario
+     */
+    protected function skipIfNotInPrepareMode(AcceptanceTester $I, Codeception\Scenario $scenario) {
+        if (!_okl_testing_is_prepare_cest_running()) {
+            $scenario->skip("PrepareMode was not activated. To run PrepareCest, run 'codecept-run-prepare_test.sh'");
+        }
+    }
 
     /**
      * Use in Dataprovider.
@@ -93,7 +107,10 @@ abstract class CestHelper {
      */
     protected function DP_getSampleTeachers($count, $ident_num_start = 0, $with_fallback = true) {
         $sample = array();
-        $fallback_data = _okl_testing_getFallbackData();
+        if ($with_fallback) {
+            $fallback_data = _okl_testing_getFallbackData();
+        }
+
         $runner = 0;
         for ($i = $ident_num_start; $i < $count; $i++) {
             $sample[$runner++] = $this->getPersonSample(array(NM_ROLE_DOZENT, NM_ROLE_AUTOR), $i) + ['type' => 'default'];
@@ -116,7 +133,9 @@ abstract class CestHelper {
      */
     protected function DP_getSampleStudents($count, $ident_num_start = 0, $with_fallback = true) {
         $sample = array();
-        $fallback_data = _okl_testing_getFallbackData();
+        if ($with_fallback) {
+            $fallback_data = _okl_testing_getFallbackData();
+        }
         $runner = 0;
         for ($i = $ident_num_start; $i < $count; $i++) {
             $sample[$runner++] = $this->getPersonSample(array(NM_ROLE_STUDENT), $i) + ['type' => 'default'];
@@ -159,9 +178,13 @@ abstract class CestHelper {
      * @uses _okl_testing_get_dataprovider_identifier()
      */
     protected function DP_getSampleCoursegroups($count, $ident_num_start = 0, $with_fallback = true) {
-        $fallback_data = _okl_testing_getFallbackData();
-        if ($with_fallback && count($fallback_data->course_groups) < $count) {
-            trigger_error("You requested $count coursegroups, but fallback only has ".count($fallback_data->course_groups)." coursegroups.");
+       
+        if ($with_fallback) {
+            $fallback_data = _okl_testing_getFallbackData();
+
+            if (count($fallback_data->course_groups) < $count) {
+                trigger_error("You requested $count coursegroups, but fallback only has " . count($fallback_data->course_groups) . " coursegroups.");
+            }
         }
         $sample = array();
        
@@ -235,7 +258,6 @@ abstract class CestHelper {
      */
      protected function DP_getSampleDomain($ident_number = 0, $with_demo_domain = true, $with_fallback = true) {
         $sample = array();
-
         $domain = $this->getNodeSample(NM_CONTENT_DOMAIN, $ident_number);
         $domain['title'] = RealisticFaker\OklDataCreator::getSafeText($domain['title']);
         $sample[] = $domain + ['type' => 'default'];
