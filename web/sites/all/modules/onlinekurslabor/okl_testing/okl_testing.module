@@ -459,8 +459,7 @@ class TestingObject {
      */
     function toDataProviderSample() {
         $exportable_attributes = array();
-        $attribute_mapping = array('realname' => 'name');  
-        var_dump($this->type);
+        $attribute_mapping = array('realname' => 'name');
         if (in_array($this->type, array('courses_course', 'courses_group'/* ,.. todo.. */))) {
             $exportable_attributes[] = 'title';
         }
