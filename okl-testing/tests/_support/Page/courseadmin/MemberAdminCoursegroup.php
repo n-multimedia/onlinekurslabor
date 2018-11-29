@@ -30,7 +30,7 @@ class MemberAdminCoursegroup extends MemberAdmin {
     
     
     /**
-     * Add a student to a coursegroup. Course-Nid already defined in constructor.
+     * Add multiple students to a coursegroup. Course-Nid already defined in constructor.
      * @param array $students - an array with entries with keys   name , mail
      * @param String $coursegroup_title 
      * @return \Page\courseadmin\AddMembers
