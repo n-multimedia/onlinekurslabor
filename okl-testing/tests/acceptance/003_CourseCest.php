@@ -5,6 +5,7 @@ use Page\node\course\CourseCreate as CreateCoursePage;
 use Page\courseadmin\AddMembers as AddMembersPage;
 use Page\node\course_content\CoursegroupCreate as CreateCoursegroupPage;
 use Page\courseadmin\MemberAdminCoursegroup as AddMemberToCoursegroupPage; 
+use Page\node\course_content\TaskCreate as TaskCreatePage;
 
 
 class CourseCest  extends CestHelper{
@@ -246,6 +247,54 @@ class CourseCest  extends CestHelper{
 
         return $return;
     }
+    
+    
+    
+    
+    /**
+     * Erstelle neue Aufgabe
+     * @UserStory null
+     * @param \AcceptanceTester $I
+     * @dataProvider C001_AddSingleTaskProvider
+     * todolater.. before skipNonApplicableExample
+     */
+    public function C001_05_AddSingleTask(\Step\Acceptance\Dozent $I, \Codeception\Example $example) {
+
+        $this->goToCourseHome($I);
+
+        //annahme: ich bin im  Kurs
+        //doublecheck: menü geht
+        $I->moveMouseOver('#instr_overview_content');
+        $I->wait(1);
+        $I->click('#instr_add_task a');
+
+        $taskpage = new TaskCreatePage($I, $this->getCurrentCourseNid());
+        $taskpage->create($example);
+
+        //dblcheck: aufgabe funktioniert ganz
+        $I->click("Aufgaben");
+        $I->click($example['title']);
+        $I->expect("Bearbeitungszeitraum aktiv gesetzt");
+        $I->see("Bearbeitungszeitraum aktiv");
+        $I->expect("Alle Felder sichtbar");
+        foreach ($example['elements'] as $elem) {
+            $I->see($elem['content']);
+        }
+    }
+
+    /**
+     *  SingleTaskProvider
+     * @return array
+     */
+    protected function C001_AddSingleTaskProvider() {
+        $return = array();
+
+        $rand_data = \RealisticFaker\OklDataCreator::get();
+        $return[] = ['title' => $rand_data->realText(40), 'field_task_type' => 0, 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]]];
+        return $return;
+    }
+
+    //##########################################################################
 
     /**
    * Basic Data Provider with title and body
