@@ -24,9 +24,9 @@
 
 #use printf instead of echo -e for escape-sequences
 printf  "\033[0;31m THIS WILL delete DATA like db and files on local system and replace with data from live"
-printf "\n\033[0mYou have 10 seconds to abort."
+printf "\n\033[0mYou have 5 seconds to abort."
 printf "\n"
-sleep 10s
+sleep 5s
 
 # hole master-password aus drupal-config
 LOGIN_MASTERPASSWORD=`drush php-eval "echo NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT;"`
@@ -76,6 +76,11 @@ eval `ssh-agent -s`
 ssh-add ~/.ssh/id_rsa || ( echo "SSH with RSA not configured. Read README! Exit." && exit; )
 
 
+printf "\n\nClearing Cache \n\n"
+drush @okl.live cache-clear all
+printf "\n\n"
+
+
 if [  "$PULL_DB" = true  ]; 
 then
 printf "\n\nSYNCING DATABASE\n\n"
@@ -110,7 +115,7 @@ printf "\n\nWill now create a dummy course. Confirm by hitting enter or CMD+C to
 read null
 
 cd ../okl-testing 
-bash codecept-run-tests.sh 000_PrepareCest
+bash codecept-run-prepare_test.sh
 fi
 
 exit;

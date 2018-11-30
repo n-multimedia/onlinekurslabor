@@ -82,15 +82,10 @@ function _section_courses_get_semester_default_form_configuration()
   $semesters = taxonomy_get_tree($vocabulary_semester->vid);
   $semester_terms_options = array();
   foreach ($semesters as $semester) {
-    // str_repeat('-', $semester->depth) .
     $semester_terms_options[$semester->tid] = $semester->name;
   }
-
-  //todo error handling
-  //we need the taxonomy terms to be available!
-  //lädt das ws13/14. tut das not?
-  $default_semester_key = current(taxonomy_get_term_by_name(_section_courses_semesterID_ToString(NM_VHB_SEMESTERID_OKL_START)));
-  $current_semester = taxonomy_term_load(variable_get('okl_current_semester', $default_semester_key->tid));
+  //letzter eintrag im array ist default für var_get
+  $current_semester = taxonomy_term_load(variable_get('okl_current_semester', $semester->tid));
 
   $current_semester_tid = $current_semester->tid;
   $default_val = 0;

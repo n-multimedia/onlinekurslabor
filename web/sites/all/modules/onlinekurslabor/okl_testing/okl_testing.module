@@ -1,30 +1,172 @@
 <?php
 
 
+
+
+/**
+ * liefert Fallbackdata basierend auf einem vorhergegangenen 000_PrepareCest
+ * @return StdClass $fallback_data a course.
+ */
+function _okl_testing_getFallbackData() {
+    $course_nid = variable_get('okl_testing_fallback_course_nid');
+    if (!$course_nid && !_okl_testing_is_prepare_cest_running()) {
+        throw new Exception('No fallback data available for autotests! Run "codecept-run-prepare_test.sh"  first.');
+    }
+    return _okl_testing_getDataObjectForCourse($course_nid);
+}
+
+/**
+ * Lädt für eine übergeben Kurs-NID alle nötigen Entitäten
+ * Über Objekteigenschaften kann man auf diese zugreifen, exemplarisch
+ * ->home_url
+ * ->students
+ * ->course_groups
+ * ->...
+ * Auch Kandidat für _custom_general
+ *
+ * @param type $course_nid die NID des untersuchten Kurses
+ */
+function _okl_testing_getDataObjectForCourse($course_nid)
+{
+    //kurs
+    $course = node_load($course_nid);
+    //TN [@todo: tutor]
+    $students = custom_general_get_users_in_group_by_role_real($course_nid, NM_COURSES_ROLE_STUDENT);
+    $teachers = custom_general_get_users_in_group_by_role_real($course_nid, NM_COURSES_ROLE_ADMINISTRATOR);
+    //coursegroups in course
+    $coursegroups_basic = _section_course_get_coursegroups($course);
+    $course_group_students = array();
+
+    $course_groups = array();
+    //gehe durch coursegroups, lade node
+    foreach ($coursegroups_basic as $cg) {
+        $c_group = new TestingObject(node_load($cg->nid));
+        $c_group->url = NM_COURSE_GROUPS_PATH . '/' . $course_nid . '/' . $cg->nid;
+        $course_groups[$cg->nid] = &$c_group;
+    }
+
+     foreach ($teachers as $uid => &$teacher) {
+        $teacher = new TestingObject($teacher);
+        $teacher->type = 'user';
+     }
+    //lade für studis, in welcher CG in diesem kurs
+    foreach ($students as $uid => &$student) {
+        $student = new TestingObject($student);
+        $student->type = 'user';
+        
+        $cg_nid = _section_courses_get_coursegroup_gid($uid, $course);
+        if (!empty($course_groups[$cg_nid])) {
+            //setze coursegroup bei student
+            $student->coursegroup = &$course_groups[$cg->nid];
+            //füge student zu coursegroup-members hinzu
+            $course_groups[$cg_nid]->students[$uid] = $student;
+        }
+    }
+    
+
+    
+
+    //set object-properties
+    $course->home_url = NM_COURSE_HOME_PATH . '/' . $course->nid;
+    $course->info_url = 'course/info' . '/' . $course->nid;
+    $course->students = $students;
+    $course->teachers = $teachers;
+    $course->course_groups = $course_groups;
+    //lehrtexte
+    //@todo children like chapters, h5p, ...
+    if (!empty($course->field_domain_ref)) {
+        $course_domain = new TestingObject(node_load($course->field_domain_ref [LANGUAGE_NONE][0]['target_id']));
+        $course_domain->course_url = NM_COURSE_TEXT_PATH . '/' . $course_nid . '/' . $course_domain->nid;
+        $course_domain->domain_url = NM_CONTENT_TEXT_PATH . '/' . $course_domain->nid;
+
+        $course->domain = $course_domain;
+    }
+
+    if (!empty($course->field_domain_demo_ref)) {
+        $course_domain_demo = new TestingObject(node_load($course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id']));
+        $course_domain_demo->course_url = NM_COURSE_TEXT_PATH . '/' . $course_nid . '/' . $course_domain_demo->nid;
+        $course_domain_demo->domain_url = NM_CONTENT_TEXT_PATH . '/' . $course_domain_demo->nid;
+
+        $course->domain_demo = $course_domain_demo;
+    }
+
+
+    //convert to object
+    $course_class_object = new    TestingObject ($course)  ;
+
+
+    return $course_class_object;
+  #  return $course;
+}
+
+
+/**
+ * Speichert für einen Fallback-Test-Kurs die Kurs-Nid.
+ * Anhand deren kann man alle anderen Testdaten extrahieren
+ * @param type $course_nid
+ */
+function _okl_testing_storeFallbackNID($course_nid)
+{
+     variable_set('okl_testing_fallback_course_nid', $course_nid);
+}
+
+
 /**
  * setzt die Variable okl_testing_running
  */
 function _okl_testing_start_test() {
     //setze "Test läuft"
     variable_set('okl_testing_running', true);
-    
+
 }
 
 /**
- * wir bei Testende aufgerufen.
+ * wird bei Testende aufgerufen.
  * Die Variable okl_testing_running wird gelöscht
- * UND
- * die Variable okl_testing_testrun_identifier wird um "1" erhöht
  */
 function _okl_testing_stop_test() {
     variable_del('okl_testing_running');
-    $ident_old = _okl_testing_get_test_identifier();
+}
+
+
+
+/**
+ * setzt die Variable okl_testing_preparecest_running
+ */
+function _okl_testing_start_prepare_cest() {
+    //setze "Test läuft"
+    variable_set('okl_testing_preparecest_running', true);
+}
+
+/**
+ * löscht die Variable okl_testing_preparecest_running
+ */
+function _okl_testing_stop_prepare_cest() {
+    //entferne "Test läuft"
+    variable_del('okl_testing_preparecest_running');
+}
+
+/**
+ * läuft der preparecest gerade? Wird bei fallbackprüfung genutzt
+ */
+function _okl_testing_is_prepare_cest_running() {
+    return (bool) variable_get('okl_testing_preparecest_running');
+}
+
+
+
+/**
+ * wird nach preparecest aufgerufen.
+ * die Variable okl_testing_testrun_identifier wird um "1" erhöht
+ */
+function _okl_testing_set_fallback_identifier() {
+    $ident_old = _okl_testing_get_fallback_identifier();
     $ident_old_exploded = explode('_', $ident_old);
 
     $ident_old_exploded[1] += 1;
     $new_identifier = implode('_', $ident_old_exploded);
 
-    variable_set('okl_testing_testrun_identifier', $new_identifier);
+    variable_set('okl_testing_fallback_identifier', $new_identifier);
 }
 
 
@@ -32,8 +174,33 @@ function _okl_testing_stop_test() {
  * Lädt die Variable okl_testing_testrun_identifier oder einen default
  * @return string $identifier
  */
-function _okl_testing_get_test_identifier() {
-    return variable_get('okl_testing_testrun_identifier','test_1');
+function _okl_testing_get_fallback_identifier() {
+    return variable_get('okl_testing_fallback_identifier','test_1');
+}
+
+
+/**
+ * wird nach jedem Testlauf per _beforesuite aufgerufen.
+ * die Variable okl_testing_testrun_identifier wird neu gesetzt
+ */
+function _okl_testing_set_dataprovider_identifier() {
+    variable_set('okl_testing_dataprovider_identifier', rand());
+}
+
+
+/**
+ * Lädt die Variable okl_testing_testrun_identifier oder einen default
+ * @return string $identifier
+ */
+function _okl_testing_get_dataprovider_identifier() {
+    //falls wert noch nicht gesetzt, setze ihn und versuchs erneut.
+    if(!variable_get('okl_testing_dataprovider_identifier'))
+    {
+       _okl_testing_set_dataprovider_identifier();
+       return _okl_testing_get_dataprovider_identifier();
+    }
+    
+    return variable_get('okl_testing_dataprovider_identifier');
 }
 
 /**
@@ -43,7 +210,7 @@ function _okl_testing_get_test_identifier() {
  */
 
 
- 
+
 /**
  * implements hook_menu
  * @return string
@@ -55,17 +222,17 @@ function okl_testing_menu() {
         'access callback' => 'custom_general_user_is_okl_admin',
         //zugriff nur für rolle "administrator"
         'access arguments' => array(array('administrator')),
-        'page callback' => 'okl_testing_getfilefromurlarg',
+        'page callback' => 'okl_testing_getcontentfromurlarg',
         'page arguments' => array(1 , 2),
         'type' => MENU_NORMAL_ITEM,
     );
 
-    
+
     $items = array();
 
     $items['okl-testing/%/%'] = $items['okl-testing/%'] =  $menu_template;
-    
-    
+
+
     $items['okl-testing'] = array(
         'type' => MENU_CALLBACK,
         'access callback' => 'custom_general_user_is_okl_admin',
@@ -78,23 +245,41 @@ function okl_testing_menu() {
 
 /**
  * function for okl_testing_menu .
- * Loads the specified file $url_arg_1.$url_arg_2
- * 
+ * Loads the specified file $url_arg_1.$url_arg_2 OR creates a directory index
+ *
  * @param type $url_arg_1
  * @param type $url_arg_2
- * @return type
+ * @return String $html
  */
-function okl_testing_getfilefromurlarg($url_arg_1, $url_arg_2) {
-    $full_url_arg =  _okl_testing_get_file_uri($url_arg_1, $url_arg_2); 
+function okl_testing_getcontentfromurlarg($url_arg_1, $url_arg_2) {
+    $full_url_arg =  _okl_testing_get_file_uri($url_arg_1, $url_arg_2);
+    $basepath_to_output = $_SERVER['DOCUMENT_ROOT'].'/../okl-testing/tests/_output/';
+    $full_path = $basepath_to_output.$full_url_arg; 
+
+
+    //sollte es ein VZ sein, baue directory-index
+    if (is_dir($full_path)) {
+        $thelist = '<html><body><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"><center><br><br>';
+        if ($directory_handle = opendir($full_path)) {
+            while (false !== ($element_in_dir = readdir($directory_handle))) {
+                if (!in_array($element_in_dir, array('.', '..'))) {
+                    $thelist .= '<LI><a href="' . $full_url_arg . '/' . $element_in_dir . '">' . $element_in_dir . '</a></li>';
+                }
+            }
+            closedir($directory_handle);
+            $thelist .='</center></body></html>';
+            return $thelist;
+        }
+    }
     //pfad zu den test-output-files
-    return file_get_contents($_SERVER['DOCUMENT_ROOT'].'/../okl-testing/tests/_output/'.$full_url_arg ) ;
+    return is_file($full_path)? file_get_contents($full_path): '<b>'.t('No result available').'</b>' ;
 }
- 
+
 
 /**
  * function for okl_testing_menu .
  * falls auf / dann gehe auf records.html
- * 
+ *
  */
 function okl_testing_goto_root() {
   drupal_goto('/okl-testing/records.html');
@@ -105,7 +290,12 @@ function okl_testing_goto_root() {
  * @param string $vars
  */
 function okl_testing_preprocess_page(&$vars) {
-
+    //fix warnings
+    if(count( $vars['theme_hook_suggestions']) < 3)
+    {
+        return; 
+    }
+    
     //hole über bestehende hook_suggestions die zu ladende file-url
     $file_uri = $vars['theme_hook_suggestions'][2];
     $ext = pathinfo($file_uri, PATHINFO_EXTENSION);
@@ -114,7 +304,7 @@ function okl_testing_preprocess_page(&$vars) {
     }
 
     //vorgegebener templatename: page__okl_testing
-    //für image sonderfall.. 
+    //für image sonderfall..
     //siehe okl_testing_theme
     if (arg(0) === 'okl-testing' && $is_image) {
         $vars['theme_hook_suggestion'] = 'page__okl_testing_image';
@@ -122,8 +312,8 @@ function okl_testing_preprocess_page(&$vars) {
 }
 
 /**
- * merged die gesplitteten url-arguments testlauf ,  index.html 
- * wieder zusammen zu testlauf/index.html 
+ * merged die gesplitteten url-arguments testlauf ,  index.html
+ * wieder zusammen zu testlauf/index.html
  * @param type $input1 testlauf
  * @param type $input2 index.html
  * @return type
@@ -135,7 +325,7 @@ function _okl_testing_get_file_uri($input1, $input2) {
     }
     return $input1;
 }
- 
+
 
 /**
  * Implements hook_theme().
@@ -171,11 +361,13 @@ function okl_testing_dev_live_force_live_mode() {
  * @param type $page
  */
 function okl_testing_page_build(&$page) {
+    $curr_url =   request_uri();
+    
     $test_runing = (bool) variable_get('okl_testing_running');
-
+    $is_open_page = strstr($curr_url, 'devel') ||  strstr($curr_url, 'okl-testing') || strstr($curr_url, 'reports/dblog');
     $is_autotest_browser = isset($_COOKIE["okl_testing_is_autotest_browser"]);
     //normale systemansicht
-    if (!$test_runing || $is_autotest_browser) {
+    if (!$test_runing || $is_autotest_browser || $is_open_page) {
         //füge link auf testresult ein
          $link = '<a href=/okl-testing>Ergebnis des letzten automatisierten Tests</a>';
          $page['page_bottom']['okl_testing'] = array(
@@ -208,4 +400,123 @@ function okl_testing_mail_alter(&$message) {
     // Next: Log the mail so it can be debugged if necessary
     watchdog('Development Env', 'The following email was not sent: !message', ['!message' => '<pre>' . print_r($message, TRUE) . '</pre>']);
   }
+}
+
+
+/**
+ * @property type $vid
+ * @property int $uid
+ * @property type $title
+ * @property type $log
+ * @property type $status
+ * @property type $comment
+ * @property type $promote
+ * @property type $sticky
+ * @property type $vuuid
+ * @property type $ds_switch
+ * @property int $nid
+ * @property type $type
+ * @property type $language
+ * @property type $created
+ * @property type $changed
+ * @property type $tnid
+ * @property type $translate
+ * @property type $uuid
+ * @property type $revision_timestamp
+ * @property type $revision_uid
+ * @property type $field_collaborative_features
+ * @property type $field_course_header
+ * @property type $field_course_picture
+ * @property type $field_domain_ref
+ * @property type $field_long_description
+ * @property type $field_short_description
+ * @property type $field_subtitle
+ * @property type $field_time_span
+ * @property type $field_vhb_lvnr
+ * @property type $field_workload
+ * @property type $group_group
+ * @property type $field_field_courses_sponsors
+ * @property type $field_domain_demo_ref
+ * @property type $field_access_features
+ * @property type $field_semester
+ * @property type $field_course_proposals
+ * @property type $field_other_features
+ * @property type $rdf_mapping
+ * @property type $cid
+ * @property type $last_comment_timestamp
+ * @property type $last_comment_name
+ * @property type $last_comment_uid
+ * @property type $comment_count
+ * @property type $name
+ * @property type $picture
+ * @property type $data
+ * @property String $home_url
+ * @property String $info_url
+ * @property array<TestingObject> $students
+ * @property array<TestingObject> $teachers
+ * @property TestingObject $randomTeacher
+ * @property array<TestingObject> $course_groups
+ * @property TestingObject $domain
+ * @property TestingObject $domain_demo
+ */
+class TestingObject {
+
+    function __construct($object) {
+        $o_arr = (array) $object;
+        foreach ($o_arr as $key => $value) { 
+            # echo "@attribute " .$key."\n";
+            if (is_array($value)) {#&& count($value)>1)
+                $this->$key = new TestingObject($value);
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
+    
+    /**
+     * converts current object (course, user, ...) to a sample  array
+     * @return array
+     */
+    function toDataProviderSample() {
+        $exportable_attributes = array();
+        $attribute_mapping = array('realname' => 'name');
+        if (in_array($this->type, array('courses_course', 'courses_group'/* ,.. todo.. */))) {
+            $exportable_attributes[] = 'title';
+        }
+        elseif($this->type == 'user')
+        {
+            $exportable_attributes[] = 'mail';
+            $exportable_attributes[] = 'realname';
+        }
+        
+        $sample = array();
+        
+        foreach ($exportable_attributes as $attribute_name) {
+            
+            $attribute_key = $attribute_name; 
+            //mappe z.B. realname auf array-key name
+            if(array_key_exists($attribute_name, $attribute_mapping))
+            {
+                $attribute_key  = $attribute_mapping[$attribute_name];
+            }
+            $sample[$attribute_key] = $this->$attribute_name;
+        }
+        return $sample;
+    }
+
+    /**
+     * get a random value from a list.
+     * e.g. $obj->random("teacher") gets a random person from the teachers' list
+     * @param type $what
+     * @return TestingObject $object
+     */
+    function random($what) {
+        $propertyname = $what . 's';
+        $property_value = $this->$propertyname;
+        $propertyval_array = (array) $property_value;
+        $random_key = array_rand($propertyval_array);
+
+        return $property_value->$random_key;
+    }
+
 }

@@ -13,7 +13,7 @@ namespace Page\node\domain;
  *
  * @author Bernhard
  */
-class Create extends \Page\node\Node implements \Page\node\NodeCreateInterface {
+class DomainCreate extends \Page\node\Node implements \Page\node\NodeCreateInterface {
 
     public function __construct(\AcceptanceTester $I) {
         parent::__construct($I, NM_CONTENT_DOMAIN);

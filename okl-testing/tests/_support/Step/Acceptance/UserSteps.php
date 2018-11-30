@@ -5,6 +5,7 @@ namespace Step\Acceptance;
 use Page\Acceptance\LoginPage;
 use Page\Acceptance\LogoutPage;
 use \Codeception\Step\Argument\PasswordArgument;
+use Codeception\Util\Locator;
 
 class UserSteps extends \AcceptanceTester {
 
@@ -63,6 +64,30 @@ class UserSteps extends \AcceptanceTester {
      $I = $this;
      $I->amOnPage(LogoutPage::$URL);
      $I->see(LoginPage::$loginMenuButton);
+  }
+  
+  /**
+   * checkOption only accepts IDs which is not enough. Provide  desired value
+   * @param type $option_identifier
+   * @param type $value
+   */
+  public function checkOptionByValue($value)
+  {
+      $I = $this;
+      $obj = Locator::find('input', ['value' => $value]);
+      $I->click($obj);
+  }
+  
+  /**
+   * click on a <$html_tag> in which a text is included
+   * @param String $html_tag
+   * @param type $text
+   */
+  public function clickTagContaining($html_tag, $text)
+  {
+      $I = $this;
+      $obj = Locator::contains($html_tag, $text);
+      $I->click($obj);
   }
 
   public function fillCkEditorById($element_id, $content) {

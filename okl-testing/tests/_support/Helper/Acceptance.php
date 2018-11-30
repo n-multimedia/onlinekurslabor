@@ -2,7 +2,7 @@
 
 namespace Helper;
 require_once(__DIR__ . '/../customFaker/OklDataCreator.php'); 
-
+require_once (__DIR__ . '/../../acceptance/CestHelper.php');
 
 // here you can define custom actions
 // all public methods declared in helper class will be available in $I
@@ -13,6 +13,8 @@ class Acceptance extends \Codeception\Module {
     public function _beforeSuite($settings = array()) {
         //dadurch wird Drupal gesperrt 
         _okl_testing_start_test();
+        //dataproviders sind bereits alle erstellt. Dies gilt erst für den näcshten Aufruf:
+        _okl_testing_set_dataprovider_identifier();
     }
 
     

@@ -9,11 +9,11 @@ namespace Page\node\course;
  */
 
 /**
- * Description of CreateDomainPage
+ * generel information about courses. 
  *
  * @author Bernhard
  */
-class Base extends \Page\node\Node {
+class CourseBase extends \Page\node\Node {
 
     /**
      * Declare UI map for this page here. CSS or XPath allowed.

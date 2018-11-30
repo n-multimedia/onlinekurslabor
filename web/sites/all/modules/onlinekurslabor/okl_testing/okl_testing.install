@@ -14,6 +14,11 @@
 function okl_testing_uninstall() {
   // Delete variables.
   variable_del('okl_testing_running');
-  variable_del('okl_testing_testrun_identifier');
+  variable_del('okl_testing_dataprovider_identifier');
+  //für den fallback
+  variable_del('okl_testing_fallback_identifier');
+  variable_del('okl_testing_fallback_course_nid'); 
+  variable_del('okl_testing_fallback_course_nid');
+  variable_del('okl_testing_preparecest_running');
   
 }

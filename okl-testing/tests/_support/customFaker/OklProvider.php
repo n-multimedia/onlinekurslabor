@@ -5,8 +5,25 @@ use Faker\Provider\Base;
 
 class OklProvider extends Base
 {
-    public function currentSemesterName()
-    {  //@todo das muss natürlich über OKL-Api ausgelesen werden
-        return 'SS 18';
+    public function node_title()
+    {
+        return "is set in OklDataCreator!"; 
     }
+    
+    public function node_body()
+    {
+        return "is set in OklDataCreator!"; 
+    }
+     public function node_body_summary()
+    {
+        return "is set in OklDataCreator!"; 
+    }
+    
+    
+    public function currentSemesterName()
+    {
+        $current_semester = taxonomy_term_load(variable_get('okl_current_semester'));
+        return $current_semester->name; 
+    }
+    
 }

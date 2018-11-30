@@ -9,11 +9,11 @@ namespace Page\node\domain_content;
  */
 
 /**
- * Description of CreateDomainContentPage
+ * Description of DomainContentBase
  *
  * @author Bernhard
  */
-class Base extends \Page\node\Node {
+class DomainContentBase extends \Page\node\Node {
     
     private static $baseAddURL = '/domain/add/%s/%s?og_group_ref=%s';
     //private static $baseEditURL = '...';

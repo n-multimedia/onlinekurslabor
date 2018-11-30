@@ -1,57 +1,36 @@
 <?php
 
-use \Codeception\Step\Argument\PasswordArgument;
 use \Codeception\Util\Fixtures;
 use Page\UserCreate as UserCreatePage;
 use Page\courseadmin\AddMembers as AddMembersPage;
-use Page\node\course\Create as CreateCoursePage;
-use Page\node\course\Edit as EditCoursePage;
-use Page\node\domain\Create  as CreateDomainPage;
-use Page\node\domain\Edit  as EditDomainPage;
-use Page\node\domain_content\Create_Interactive  as CreateInteractiveVideoPage;
+use Page\node\course\CourseCreate as CreateCoursePage;
+use Page\node\course\CourseEdit as EditCoursePage;
+use Page\node\domain\DomainCreate  as CreateDomainPage;
+use Page\node\domain\DomainEdit  as EditDomainPage;
+use Page\node\domain_content\InteractiveCreate  as CreateInteractiveVideoPage;
+use Page\node\course_content\CoursegroupCreate as CreateCoursegroupPage; 
+use Page\courseadmin\MemberAdminCoursegroup as AddMemberToCoursegroupPage; 
 
-class PrepareCest {
 
-    public $run_identifier;
+class PrepareCest extends CestHelper{
+
     //create: 3 dozenten
-    public $count_dozents = 3;
+    public static $count_dozents = 3;
     //create: 10 studis
-    public $count_students = 10;
+    public static $count_students = 10;
     //+
     //1 course
-    //3 coursegroups
+    //$count_students/3 coursegroups
     //assign studis to groups
 
-    /* ONLY for current run */
-    private $current_course_nid = null;
-
-    public function __construct() {
-        //identifier für diesen Durchlauf des Cests.  
-        $this->run_identifier = _okl_testing_get_test_identifier();
-    }
-
-    /* API for test*/
-    /**
-     * get a "new" dummy person. 
-     * The person will always be the same for the same combination of $roles, $this->run_identifier and $ident
-     * @param array $roles User's roles (e.g. array('Student'))
-     * @param $ident Identifier, e.g. 2 or "hansi"
-     * @return array
-     */
-    private function _getDummyPersonExample(array $roles, $ident) {
-
-        $unique = 'person_' . implode('-', $roles) . $this->run_identifier . $ident;
-        $basicvalues = \RealisticFaker\OklDataCreator::get($unique);
-        return ['name' => $basicvalues->name, 'firstName' => trim($basicvalues->firstName . ' ' . $basicvalues->middleName), 'lastName' => $basicvalues->lastName, 'mail' => $basicvalues->email, 'roles' => $roles, 'password' => new PasswordArgument(NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT)];
-    }
-    /*ENDE  API for test*/
     
-      
+
      /**
      * @UserStory null
      * @UserStoryURL null
      * 
      * @param \Step\Acceptance\SuperAdmin $I (instead of type \AcceptanceTester) 
+     * @before skipIfNotInPrepareMode
      */
      public function P001_01_logSuperAdminIn(\Step\Acceptance\SuperAdmin $I) {
          //login ist in diesem cest gültig, bis logout geschieht
@@ -65,6 +44,7 @@ class PrepareCest {
      * @param \Step\Acceptance\SuperAdmin $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $example Example-array
      * @dataProvider P001_dummyTeachersProvider
+     * @depends P001_01_logSuperAdminIn
      */
     public function P001_02_createTeachers(\Step\Acceptance\SuperAdmin $I, \Codeception\Example $example) {
       
@@ -82,23 +62,19 @@ class PrepareCest {
      * @return \Codeception\Example $example
      */
     protected function P001_dummyTeachersProvider() {
-        $return = array();
-        for ($count = 1; $count <= $this->count_dozents; $count ++) {
-            $return[] = $this->_getDummyPersonExample(array(NM_ROLE_DOZENT, NM_ROLE_AUTOR), $count);
-        }
-
-        return $return;
+        return $this->DP_getSampleTeachers(self::$count_dozents, 0, false);
     }
     
     /**
      * @UserStory null
      * @UserStoryURL null
      * 
-     * Als eigener Eintrag. Bei @before-Syntax würde würde er bei jedem Beispiel versuchen, neu einzuloggen
+     * Als eigener Eintrag. Bei @before-Syntax würde würde er bei jedem Beispiel versuchen, sich neu einzuloggen
      *
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $random_teacher A single teacher
      * @dataprovider P001_dummySingleTeacherProvider
+     * @depends P001_02_createTeachers
      */
     public function P001_03_switchUser(\Step\Acceptance\Dozent $I, \Codeception\Example $random_teacher) {
         //logout
@@ -117,9 +93,34 @@ class PrepareCest {
 
         $all_teachers = $this->P001_dummyTeachersProvider();
         //geseedeter RealisticFaker für nachvollziehbarkeit
-        $single_teacher = \RealisticFaker\OklDataCreator::get($this->run_identifier)->randomElement($all_teachers);
+        $single_teacher = \RealisticFaker\OklDataCreator::get(_okl_testing_get_dataprovider_identifier())->randomElement($all_teachers);
         //providers müssen immer array(data1, data..n) sein
         return array($single_teacher);
+    }
+    
+    /**
+     * Die Differenz zwischen P001_dummyTeachersProvider und P001_dummySingleTeacherProvider
+     * Funktion ist der dataprovider für P001_03_switchUser und  usage in P001_07_addDozentenToCourse
+     * @return \Codeception\Example $example returns a teacher
+     */
+    protected function P001_otherTeacherProvider() {
+        $all_teachers = $this->P001_dummyTeachersProvider();
+        $other_teachers = $all_teachers;
+         
+        $single_teacher = $this->P001_dummySingleTeacherProvider()[0];
+        //array_diff wär evtl auch eine option gewesen
+        foreach($other_teachers as $ct =>  $teacher)
+        {
+            if($teacher['mail'] === $single_teacher['mail'] )
+            {
+                unset($other_teachers[$ct]);
+            }
+        }
+        //in der codeception-logik gibt es kein leeres example
+        if (empty($other_teachers)) {
+            $other_teachers = array($this->getEmptyExample());
+        }
+        return $other_teachers; 
     }
 
     
@@ -130,6 +131,7 @@ class PrepareCest {
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $domain_example Example-object
      * @dataProvider P001_createDomainsProvider
+     * @depends P001_03_switchUser
      */
     public function P001_04_createDomains(\Step\Acceptance\Dozent $I, Codeception\Example $domain_example) {
 
@@ -149,15 +151,11 @@ class PrepareCest {
 
     /**
      * der Dataprovider für P001_04_createDomain liefert nötige Variablen
-     * @return Codeception\Example $course_example 
+     * @return Codeception\Example $domain_example 
      */
     protected function P001_createDomainsProvider() {
-        $return = array();
-        $rand_data = \RealisticFaker\OklDataCreator::get('domain_' . $this->run_identifier);
-        $domain_title = implode(' ',$rand_data->words(4));
-        $return[] = ['title' => $domain_title, 'body' => $rand_data->realText(360)];
-        $return[] = ['title' =>$this->getDemoTitleForDomainTitle($domain_title), 'body' => $rand_data->realText(120)];
-        return $return;
+        
+       return $this->DP_getSampleDomain(0, true, false);
     }
     /**
      * liefert zu einem Titel einen ähnlichen mit Ende " (DEMO)"
@@ -177,6 +175,7 @@ class PrepareCest {
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $domain_content_example Example-object
      * @dataProvider P001_createDomainContentProvider
+     * @depends P001_04_createDomains
      */
     public function P001_05_createDomainContent(\Step\Acceptance\Dozent $I, Codeception\Example $domain_content_example) {
         $domain_nids = [Fixtures::get('domain_nid'), Fixtures::get('domain_demo_nid')];
@@ -201,9 +200,8 @@ class PrepareCest {
      * @return Codeception\Example $course_example 
      */
     protected function P001_createDomainContentProvider() {
-
         $return = array();
-        $rand_data = \RealisticFaker\OklDataCreator::get('domaincontent_' . $this->run_identifier);
+        $rand_data = \RealisticFaker\OklDataCreator::get('domaincontent_' . _okl_testing_get_dataprovider_identifier());
         //@todo: move fixed Videoname "berries sample" to a config
         $return[] = ['title' => implode(' ', $rand_data->words(4)), 'h5p_type' => 'Interactive Video', 'videoname' => 'berries sample'];
         return $return;
@@ -216,6 +214,7 @@ class PrepareCest {
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $example Example-object
      * @dataProvider P001_createCourseProvider
+     * @depends P001_04_createDomains
      */
     public function P001_06_createCourse(\Step\Acceptance\Dozent $I, Codeception\Example $course_example) {
 
@@ -228,8 +227,7 @@ class PrepareCest {
 
         $home_nid = $createcoursepage->getNewNid();
         $I->comment('The nid of my new course is ' . $home_nid);
-
-        $this->current_course_nid = $home_nid;
+        Fixtures::add('course_nid', $home_nid);
     }
 
     /**
@@ -237,11 +235,7 @@ class PrepareCest {
      * @return Codeception\Example $course_example 
      */
     protected function P001_createCourseProvider() {
-        $return = array();
-        $rand_data = \RealisticFaker\OklDataCreator::get('course_' . $this->run_identifier);
-        //@todo: Semester aktuell
-        $return[] = ['title' => $rand_data->text(20), 'currentSemesterName' => $rand_data->currentSemesterName];
-        return $return;
+        return $this->DP_getSampleCourse(0, false);
     }
     
      /**
@@ -251,15 +245,23 @@ class PrepareCest {
      *
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $example Example-object
+     * @dataprovider P001_createDomainsProvider
+     * @depends P001_06_createCourse
      */
-    public function P001_07_editCourse(\Step\Acceptance\Dozent $I) {
-        $new_course_nid = $this->current_course_nid;
-        $demo_domain_title = $this->getDemoTitleForDomainTitle(Fixtures::get('domain_title'));
+    public function P001_07_editCourse(\Step\Acceptance\Dozent $I, Codeception\Example $domain_example) {
+        $new_course_nid = $this->getCurrentCourseNid();
 
-        $course_edit = ['domain_demo_title' => $demo_domain_title];
-        $course_edit_example = new Codeception\Example($course_edit);
-        $editcoursepage = new EditCoursePage($I, $new_course_nid);
-        $editcoursepage->edit($course_edit_example); 
+        if (strstr($domain_example['title'], '(DEMO)')) {
+            $demo_domain_title = $domain_example['title'];
+            $course_edit = ['domain_demo_title' => $demo_domain_title];
+            $course_edit_example = new Codeception\Example($course_edit);
+            $editcoursepage = new EditCoursePage($I, $new_course_nid);
+            $editcoursepage->edit($course_edit_example);
+        }
+        else
+        {
+            $I->comment("skipping non-demo domain");
+        }
     }
 
     /**
@@ -270,12 +272,13 @@ class PrepareCest {
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $students_example Example-array mit name und mail
      * @dataProvider P001_addStudentsProvider
+     * @depends P001_06_createCourse
      */
     public function P001_08_addStudentsToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $students_example) {
-        $I->comment(sprintf('now I add memmber %s to the course %s' ,$students_example['mail'], $this->current_course_nid));
+        $I->comment(sprintf('now I add memmber %s to the course %s' ,$students_example['mail'], $this->getCurrentCourseNid()));
 
         //use AddMembersPage
-        $addmempage = new AddMembersPage($I, $this->current_course_nid);
+        $addmempage = new AddMembersPage($I, $this->getCurrentCourseNid());
         $addmempage->addByNameAndMail($students_example["name"], $students_example["mail"]);
         
          //und danach editiere useraccounts mit drupal-api
@@ -292,19 +295,10 @@ class PrepareCest {
      * @return \Codeception\Example $example
      */
     protected function P001_addStudentsProvider() {
-        $return = array();
-        for ($count = 1; $count <= $this->count_students; $count ++) {
-            $return[] = $this->_getDummyPersonExample(array(NM_ROLE_STUDENT), $count);
-        }
-
-        return $return;
+        return $this->DP_getSampleStudents(self::$count_students, 0, false);
     }
-    
-    
-    
-    
-     
-     /**
+
+    /**
      * Add other created teachers to the newly created course
      * @UserStory null
      * @UserStoryURL null
@@ -312,33 +306,113 @@ class PrepareCest {
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $dozenten_example Example-array with name / mail
      * @uses P001_dummySingleTeacherProvider Infos about currently loggedin dozent
-     * @dataProvider P001_dummyTeachersProvider
+     * @dataProvider P001_otherTeacherProvider
+     * @before skipEmptyExample
+     * @depends P001_06_createCourse
      */
      public function P001_09_addDozentenToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $dozenten_example) {
-        $current_teacher = $this->P001_dummySingleTeacherProvider()[0];
 
-        //füge nicht sich selbst hinzu
-        if ($current_teacher["mail"] === $dozenten_example["mail"]) {
-            return;
-        }
-
-        $I->comment(sprintf('now I add teacher %s to the course %s', $dozenten_example['mail'], $this->current_course_nid));
+        //das geht nicht mehr, da sich nach Vorbereitung der Dataprovider der Identifier geänert hat:
+        //$current_teacher = $this->P001_dummySingleTeacherProvider()[0];
+        $I->comment(sprintf('now I add teacher %s to the course %s', $dozenten_example['mail'], $this->getCurrentCourseNid()));
 
         //use AddMembersPage
-        $addmempage = new AddMembersPage($I, $this->current_course_nid);
+        $addmempage = new AddMembersPage($I, $this->getCurrentCourseNid());
         $addmempage->addByMail($dozenten_example["mail"]);
     }
-   
 
+    /**
+     * Add coursegroups to course
+     * @UserStory null
+     * @UserStoryURL null
+     *
+     * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
+     * @param \Codeception\Example $cg_example Example-array with name / body
+     * doesnt @uses P001_dummySingleTeacherProvider Infos about currently loggedin dozent
+     * @dataProvider P001_createCoursegroupsProvider
+     * @depends P001_06_createCourse
+     */
+    public function P001_10_addCoursegroups(\Step\Acceptance\Dozent $I, Codeception\Example $cg_example) {
+        //$current_teacher = $this->P001_dummySingleTeacherProvider()[0];
+        //course-nid
+        $course_nid = $this->getCurrentCourseNid();
+
+        $cg_page = new CreateCoursegroupPage($I, $course_nid);
+        $cg_page->create($cg_example);
+    }
+
+    /**
+     * der Dataprovider für P001_09_addCoursegroups liefert nötige Variablen
+     * @return Codeception\Example $course_example 
+     */
+    protected function P001_createCoursegroupsProvider() {
+        $num_groups = floor(self::$count_students / 3); 
+        return $this->DP_getSampleCoursegroups($num_groups, 0, false);
+    }
+    
+    
+   /**
+     * Add students to coursegroups  
+     * @UserStory null
+     * @UserStoryURL null
+     *
+     * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
+     * @param \Codeception\Example $users_to_coursegroup Example-array ['users' =>array(), 'coursegroup_title'=> ...]
+     * @dataProvider P001_addUsersToCoursegroupsProvider
+     * @depends P001_10_addCoursegroups
+     */
+    public function P001_11_addUsersToCoursegroups(\Step\Acceptance\Dozent $I, Codeception\Example $users_to_coursegroup) {
+
+        $cgaddpage = new AddMemberToCoursegroupPage($I, $this->getCurrentCourseNid());
+        $cgaddpage->addMultipleStudentsToCoursegroup($users_to_coursegroup['users'], $users_to_coursegroup['coursegroup_title']);
+    }
+
+    /**
+     * list uf users to assign to couresgrups. 
+     * used in P001_11_addStudentsToCoursegroups
+     * @return array [$users, $title]
+     */
+    protected function P001_addUsersToCoursegroupsProvider() {
+        return $this->DP_getSampleUsersToCoursegroups(self::$count_students, max(1, floor(self::$count_students / 3)), 0, false);
+    }
+
+    /**
+     * store what has been created  
+     * @UserStory null
+     * @UserStoryURL null
+     *
+     * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
+     * @depends P001_11_addUsersToCoursegroups
+     */
+    public function P001_19_storeFallback(\Step\Acceptance\Dozent $I) {
+        _okl_testing_storeFallbackNID($this->getCurrentCourseNid());
+        _okl_testing_set_fallback_identifier();
+        $I->comment("stored fallback-course.");
+    }
+    
+    /**
+     * Cleanup  
+     * @UserStory null
+     * @UserStoryURL null
+     *
+     * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
+     */
+    public function P001_20_cleanUp(\Step\Acceptance\Dozent $I) {
+        _okl_testing_stop_prepare_cest();
+    }
+
+    
     /**
      * @UserStory null
      * @UserStoryURL null
      *
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
-     * 
+     * @depends P001_01_logSuperAdminIn
      */
     public function P001_20_logOut(\Step\Acceptance\Dozent $I){
         $I->logout();
     }
 
 }
+
+
