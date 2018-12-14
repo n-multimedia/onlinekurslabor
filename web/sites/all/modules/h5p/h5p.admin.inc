@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Menu callback - Form builder function for settings.
  */
@@ -709,16 +710,21 @@ function h5p_content_upgrade_progress($library_id) {
 
   // Get updated params
   $params = filter_input(INPUT_POST, 'params');
+
   if ($params !== NULL) {
     // Update params.
     $params = json_decode($params);
     foreach ($params as $id => $param) {
+      $upgraded = json_decode($param);
+
+      $fields = array_merge(H5PMetadata::toDBArray($upgraded->metadata, false, false), array(
+        'main_library_id' => $to_library->id,
+        'json_content' => json_encode($upgraded->params),
+        'filtered' => '',
+      ));
+
       db_update('h5p_nodes')
-        ->fields(array(
-          'main_library_id' => $to_library->id,
-          'json_content' => $param,
-          'filtered' => ''
-        ))
+        ->fields($fields)
         ->condition('content_id', $id)
         ->execute();
 
@@ -742,9 +748,22 @@ function h5p_content_upgrade_progress($library_id) {
 
   if ($out->left) {
     // Find the 10 first contents using library and add to params
-    $contents = db_query('SELECT content_id AS id, json_content AS params FROM {h5p_nodes} WHERE main_library_id = :id LIMIT 40', array(':id' => $library_id));
+    $contents = db_query(
+        "SELECT h.content_id AS id,
+                h.json_content AS params,
+                n.title,
+                h.authors, h.source, h.license, h.license_version, h.license_extras,
+                h.year_from, h.year_to, h.changes, h.author_comments
+           FROM {h5p_nodes} h
+           JOIN {node} n ON n.nid = h.nid
+          WHERE h.main_library_id = :id
+          LIMIT 40",
+        array(':id' => $library_id));
+
     foreach ($contents as $content) {
-      $out->params[$content->id] = $content->params;
+      $out->params[$content->id] =
+        '{"params":' . $content->params .
+        ',"metadata":' . H5PMetadata::toJSON($content) . '}';
     }
   }
 

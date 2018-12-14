@@ -71,7 +71,7 @@ class H5peditorDrupalStorage implements H5peditorStorage {
       $librariesWithDetails = array();
       foreach ($libraries as $library) {
         $details = db_query(
-          "SELECT title, runnable, restricted, tutorial_url
+          "SELECT title, runnable, restricted, tutorial_url, metadata_settings
            FROM {h5p_libraries}
            WHERE machine_name = :name
            AND major_version = :major
@@ -88,6 +88,7 @@ class H5peditorDrupalStorage implements H5peditorStorage {
           $library->title = $details->title;
           $library->runnable = $details->runnable;
           $library->restricted = $super_user ? FALSE : ($details->restricted === '1' ? TRUE : FALSE);
+          $library->metadataSettings = json_decode($details->metadata_settings);
           $librariesWithDetails[] = $library;
         }
       }
@@ -103,7 +104,8 @@ class H5peditorDrupalStorage implements H5peditorStorage {
               major_version,
               minor_version,
               restricted,
-              tutorial_url
+              tutorial_url,
+              metadata_settings
        FROM {h5p_libraries}
        WHERE runnable = 1
        AND semantics IS NOT NULL
@@ -112,10 +114,11 @@ class H5peditorDrupalStorage implements H5peditorStorage {
       // Convert result object properties to camelCase.
       $library = H5PCore::snakeToCamel($library, true);
 
+      $library->metadataSettings = json_decode($library->metadataSettings);
+
       // Make sure we only display the newest version of a library.
       foreach ($libraries as $existingLibrary) {
         if ($library->name === $existingLibrary->name) {
-
           // Mark old ones
           // This is the newest
           if (($library->majorVersion === $existingLibrary->majorVersion && $library->minorVersion > $existingLibrary->minorVersion) ||
