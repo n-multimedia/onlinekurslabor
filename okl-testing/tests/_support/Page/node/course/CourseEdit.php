@@ -27,6 +27,7 @@ class CourseEdit extends CourseBase implements \Page\node\NodeEditInterface {
      * @param \Codeception\Example $params  an array containing values 
      */
     public function editFields(\AcceptanceTester $I, \Codeception\Example $params) {
+        $I->comment("Temporär kann das Setzen des Lehrtexts fehlschlagen. Dann den Test erneut ausführen.");
         if (!empty($params['domain_title'])) {
             $this->setDomain($I, $params['domain_title']);
         }

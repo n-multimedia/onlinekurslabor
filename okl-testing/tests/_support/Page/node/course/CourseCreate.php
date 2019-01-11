@@ -27,6 +27,7 @@ class CourseCreate extends CourseBase implements \Page\node\NodeCreateInterface 
     public function fillFields(\AcceptanceTester $I, \Codeception\Example $params) {
         $I->selectOption(self::$semesterSelect, $params['currentSemesterName']);
         $I->fillField(self::$timespan2field, date('m/d/Y', time() + 31 * 24 * 60 * 60));
+        $I->comment("Temporär kann das Setzen des Lehrtexts fehlschlagen. Dann den Test erneut ausführen.");
         //Lehrtext
         if(!empty($params['domain_title']))
         {
