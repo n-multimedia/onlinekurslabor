@@ -176,6 +176,7 @@ class PrepareCest extends CestHelper{
      * @param \Codeception\Example $domain_content_example Example-object
      * @dataProvider P001_createDomainContentProvider
      * @depends P001_04_createDomains
+     * @before skipIfOnShittyBrowser
      */
     public function P001_05_createDomainContent(\Step\Acceptance\Dozent $I, Codeception\Example $domain_content_example) {
         $domain_nids = [Fixtures::get('domain_nid'), Fixtures::get('domain_demo_nid')];
