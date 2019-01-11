@@ -54,5 +54,16 @@ class Acceptance extends \Codeception\Module {
         return $this->getModule('WebDriver')->webDriver->getCurrentURL();
     }
     
+     /**
+     * get the UserAgent's name and version ("Browser")
+     * @return type array with keys browserName, version
+     */
+    public function getBrowserIdent() {
+        $browser_capabilites = (array) $this->getModule('WebDriver')->webDriver->getCapabilities();
+        $browser_capabilites_array = array_pop($browser_capabilites);
+      
+        return array('browserName' => $browser_capabilites_array['browserName'],
+            'version' => $browser_capabilites_array['version']);
+    }
 
 }

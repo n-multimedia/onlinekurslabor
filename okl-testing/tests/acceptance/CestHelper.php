@@ -61,7 +61,19 @@ abstract class CestHelper {
         }
     }
     
-
+    /**
+     * accessed via  @before-syntax
+     * skip the testcase if a shity browser (aka phantomjs < 2.5) is used
+     * @param type $I
+     * @param Codeception\Scenario $scenario
+     */
+    protected function skipIfOnShittyBrowser(AcceptanceTester $I, Codeception\Scenario $scenario) {
+        $browser = $I->getBrowserIdent();
+        if ($browser["browserName"] == "phantomjs" && version_compare($browser["version"], "2.5", '<')) {
+            $message = sprintf("Skipped because a shitty browser is used (%s: %s).", $browser["browserName"], $browser["version"]);
+            $scenario->skip($message);
+        }
+    }
 
     /**
      * accessed via  @before-syntax
