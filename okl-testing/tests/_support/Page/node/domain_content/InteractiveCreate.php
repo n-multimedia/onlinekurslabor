@@ -27,13 +27,46 @@ class InteractiveCreate extends DomainContentBase implements \Page\node\ContentC
     public function __construct(\AcceptanceTester $I, $domain_nid) {
         parent::__construct($I, $domain_nid, NM_INTERACTIVE_CONTENT);
     }
+    
+    /**
+     * Create is different for h5p. no title-field available!
+     * @param \Codeception\Example $params
+     */
+    public function create(\Codeception\Example $params) {
+        $I = $this->tester;
+        $I->amOnPage(self::$createURL);
+ $I->wait(15);
+        $this->fillFields($I, $params);
+
+        //click: Veröffentlichen
+        $I->click(self::$publishButton);
+        //check: wurde angelegt
+        $I->see($params['title'] . ' wurde erstellt.');
+    }
 
     public function fillFields(\AcceptanceTester $I, \Codeception\Example $params) {
         //fix missing ID of iframe
+        $I->makeScreenshot('H5P in: ' . 'execjs');
+        $I->wait(5);
+        $I->makeScreenshot('H5P in: ' . 'after wait 5 sec');
         $I->executeJS("jQuery('." . self::$h5pEditorIframe . "').attr('id', '" . self::$h5pEditorIframe . "')");
+       // var_dump("jQuery('." . self::$h5pEditorIframe . "').attr('id', '" . self::$h5pEditorIframe . "');");
         $I->switchToIFrame(self::$h5pEditorIframe);
+        $I->makeScreenshot('H5P in: ' . 'iframe');
+        $I->selectOption(self::$h5peditorlibrarySelect, $params['h5p_type']);
+        $I->makeScreenshot('H5P in: ' . 'selected library');
+        $I->wait(5);
+        $I->makeScreenshot('H5P in: ' . 'after wait');
+        $I->see("Please fix this function in ".__FILE__.". Couldnt be tested using phantomJS");
+        return;
+        $I->makeScreenshot('H5P in: ' . 'swtichto:iframe');
+        $I->switchToIFrame(self::$h5pEditorIframe);
+        $I->makeScreenshot('H5P in: ' . 'iframe');
+        $I->wait(5);
+        $I->makeScreenshot('H5P in: ' . 'after wait');
         $I->selectOption(self::$h5peditorlibrarySelect, $params['h5p_type']);
         $I->wait(5);
+        $I->fillField('h5peditor-text', $params['title']);
         if ($params['h5p_type'] === 'Interactive Video') {
 
             $I->click(".h5p-add-file");
