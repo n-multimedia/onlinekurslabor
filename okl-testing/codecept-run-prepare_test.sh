@@ -19,4 +19,4 @@ cd ../web
 drush php-eval "_okl_testing_start_prepare_cest();"
 cd "$current_directory"
 
-./codecept-run-tests.sh 000_PrepareCest --steps
+./codecept-run-tests.sh 000_PrepareCest --steps -v
