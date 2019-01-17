@@ -156,6 +156,7 @@
         {
             var matches = this.splitHash(controlstring);
             var counter;
+            var entry;
             for (counter = 0; counter < matches.length; ++counter)
             {
                 entry = matches[counter];
