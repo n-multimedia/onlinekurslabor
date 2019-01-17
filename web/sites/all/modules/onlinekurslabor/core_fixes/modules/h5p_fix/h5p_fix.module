@@ -1,0 +1,17 @@
+<?php
+      
+
+/**
+ * Implements hook_page_build().
+ */
+function h5p_fix_page_build(&$page) {
+    $module =  system_get_info('module', 'h5p') ;
+    if($module['version'] != "7.x-1.39")
+    {
+        drupal_set_message ("Beware!! Do we still need ".__FILE__."? Is it still working?", 'warning'); //description: see .js
+    }
+    //drupal_add_css(drupal_get_path('module', 'h5p_fix') .'/css/remove_metadata.css');
+    drupal_add_js(drupal_get_path('module', 'h5p_fix') .'/js/h5p_fix.js');
+    
+} 
+

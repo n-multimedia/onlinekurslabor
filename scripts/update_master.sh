@@ -5,7 +5,7 @@ drush vset maintenance_mode 1
 
 #bug in drush - cc before FR!!
 drush cc all
- 
+drush en h5p_fix --yes
 
 #revert single features
 drush fr  nm_section_courses_features nm_administration  --yes

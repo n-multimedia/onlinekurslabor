@@ -1,0 +1,7 @@
+name = h5p_fix
+description = removes the metadata_field in h5p
+core = 7.x
+version = 7.x-1.0-alpha12
+package = custom
+
+dependencies[] = media
