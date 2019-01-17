@@ -23,7 +23,7 @@ export PATH=$PATH:/usr/local/bin
 #path von drush in userfolder benoetigt
 export PATH=$PATH:~/drush/
 cd ../web/
-drush rf    # pm-refresh
+drush rf  2> /dev/null    # pm-refresh
 
 #StdErr wird nach null umgeleitet. Darin enthalten sind die warnings über "missing plugins"
 CHANGED_DRUP=`drush up drupal --no  2> /dev/null  | grep "SECURITY UPDATE available"`
