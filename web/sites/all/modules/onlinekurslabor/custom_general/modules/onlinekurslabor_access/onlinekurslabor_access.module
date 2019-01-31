@@ -475,8 +475,11 @@ function onlinekurslabor_access_file_download($uri) {
                 header('Content-Type: ' . $mime);
                 //wir schauen nach, in welchem h5p-content das gelistet wird  
                 $h5p_nodes = _videosafe_get_h5p_usage($uri);
-
-                foreach ($h5p_nodes as $h5p_node) {   //zugriff auf einen h5p, dann auf das video, egal wo
+                //watchdog('videosafe-file-stream', "URI $uri used in ".count($h5p_nodes)." h5p-objects" , array(), WATCHDOG_DEBUG);
+                
+                foreach ($h5p_nodes as $h5p_node) {
+                    //watchdog('videosafe-file-stream', "found h5p_object is: nid: ".$h5p_node->nid.' title:  '.$h5p_node->title , array(), WATCHDOG_DEBUG);
+                    //zugriff auf einen h5p, dann auf das video, egal wo
                     if (node_access('view', $h5p_node, $account)) {
                         $access_allowed = true;
                         break;
