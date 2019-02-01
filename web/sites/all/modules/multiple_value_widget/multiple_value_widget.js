@@ -114,9 +114,11 @@ var attachPlugin = function(context, id, widget_type) {
 Drupal.behaviors.multiple_value_widget = {
   attach: function (context, settings) {
 
-    $.each(settings.mvw,function(id, type) {
-      attachPlugin(context, id, type);
-    })
+    if (settings.mvw) {
+      $.each(settings.mvw, function (id, type) {
+        attachPlugin(context, id, type);
+      });
+    }
 
   }
 };

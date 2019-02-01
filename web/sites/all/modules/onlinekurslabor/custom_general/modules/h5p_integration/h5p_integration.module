@@ -178,3 +178,70 @@ function _h5p_integration_filter_h5p_tips($filter, $format, $long = FALSE) {
 
   return t('Every [h5p](node_id)[/h5p] pattern is being replaced by its content.');
 }
+
+
+/**
+ * implements hook_h5p_filtered_params_alter
+ * Problem: Innerhalb h5p können auch Links gesetzt werden (z.B. auf Kapitel), hier springen aber die
+ * Drupal-Mechanismen nicht an. Deswegen werden vor Rendern des H5Ps Links mit den bestehenden Replacement-Methoden
+ * umgeschrieben, so dass man keine festen Kurs-LT-Kombinationen hat.
+ * @param type $filtered
+ */
+function h5p_integration_h5p_filtered_params_alter(&$filtered) {
+
+    //api-doc: so kann man die timeline sperren.
+    #$filtered->override->preventSkipping = true; 
+    //kein interactive video - abbruch
+    if (empty($filtered->interactiveVideo)) {
+        return;
+    }
+    $url_object = null; 
+    $all_interactions = $filtered->interactiveVideo->assets->interactions;
+    foreach ($all_interactions as &$interaction) {
+        //lösche variable
+        unset($url_object);
+
+        //navigation hotspot
+        if (!empty($interaction->action->params->destination->url)) {
+            $url_object = &$interaction->action->params->destination->url;
+        }
+        //image with link
+        elseif (!empty($interaction->goto->url)) {
+            $url_object = &$interaction->goto->url;
+        }
+        //link
+        elseif (!empty($interaction->action->params->linkWidget)) {
+            $url_object = &$interaction->action->params->linkWidget;
+        }
+        
+
+
+        $real_url = $url_object->protocol . $url_object->url;
+        //konvertiere alt-urls in /node/nid
+        //dpm("realurl vor filter : " . $real_url);
+        $real_url = _section_content_filter_links_process($real_url, null, null);
+        //dpm("realurl nach filter : " . $real_url);
+        //entferne ersten /
+        $real_url = trim($real_url, '/');
+        //konvertiere node/nid in eigentliches ziel
+        section_courses_url_outbound_alter($real_url, $options, $real_url);
+        //dpm('das ist die neue realurl: ' . $real_url);
+        
+        //setze protocol und url im url_object
+        //dafür aus neuer URL zunächst das scheme extrahieren
+        $urls_http_scheme = parse_url($real_url, PHP_URL_SCHEME);
+        if ($urls_http_scheme) {
+            $real_scheme = $urls_http_scheme . '://';
+            $url_object->url = str_replace($real_scheme, '', $real_url);
+            $url_object->protocol = $real_scheme;
+            
+        } else {
+            $url_object->url = $real_url;
+            $url_object->protocol = '/';
+        }
+
+
+        //dpm("interaction neu:");
+        //dpm($interaction);
+    }
+}

@@ -1,0 +1,80 @@
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+
+actor: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver
+        - \Helper\Acceptance
+#zugunsten von browser-driver auskommentiert
+#        - PhpBrowser:
+#            url:  https://dev2.div.onlinekurslabor.de
+    config:
+        WebDriver:
+             url: https://default.div.onlinekurslabor.de
+#             port: 9515
+             browser: phantomjs
+             restart: true
+             clear_cookies: true
+             window_size: 1400x1200
+             capabilities: []
+#             capabilities:
+#                 unexpectedAlertBehaviour: 'accept'
+#                 acceptInsecureCerts: true
+#             capabilities:
+#                 chromeOptions: # additional chrome options
+#        - PhpBrowser:
+#            url: https://dev1.div.onlinekurslabor.de
+#        - DrupalUserRegistry:
+#            defaultPass: "zpi1UvEOXdNarNUqaDXA"
+#            users:
+#                administrator:
+#                    name: administrator.account
+#                    email: administrator.account@onlinekurslabor.de
+#                    roles: [ administrator, editor ]
+#                    root: true
+#                dozent:
+#                    name: editor
+#                    email: editor.account@onlinekurslabor.de
+#                    roles: [ editor, sub-editor ]
+#                authenticated:
+#                    name: authenticated.account
+#                    email: authenticated.account@onlinekurslabor.de
+#                    roles: [ "authenticated user" ]
+#            create: true                 # Whether to create all defined test users at the start of the suite.
+#            delete: true                 # Whether to delete all defined test users at the end of the suite.
+#            drush-alias: '@dev1' # The Drush alias to use when managing users via DrushTestUserManager.
+
+env:
+    dev1:
+         modules:
+            config:
+                WebDriver: 
+                    url: https://dev1.div.onlinekurslabor.de
+    dev2:
+         modules:
+            config:
+                WebDriver: 
+                    url: https://dev2.div.onlinekurslabor.de
+    instatest:
+         modules:
+            config:
+                WebDriver: 
+                    url: https://instatest.div.onlinekurslabor.de
+
+
+## der recorder zeichnet alle durchläufe in web/okl-testing/tests/_output/records.html 
+## als images auf. Muss regelmaessig geleert werden / 
+extensions:
+    enabled:
+        - Codeception\Extension\Recorder
+        #0: über killall -9 phantomjs prozess killen. Das klappt wohl nicht zuverlässig <:-] 
+        #vor Start des Tests wird phantomjs gestartet, danach wird der prozess automatisch gekillt.
+        # ssl-fehler werden ignoriert
+        - Codeception\Extension\RunProcess:
+            0: killall -9 phantomjs
+            1: bin/phantomjs --webdriver=4444  --web-security=false --ignore-ssl-errors=true  --ssl-protocol=any
+            sleep: 2 # wait 2 seconds for processes to boot

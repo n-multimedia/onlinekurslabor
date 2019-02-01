@@ -1,0 +1,7 @@
+#Translation File - onlinekurslabor
+
+msgid "You are the group manager"
+msgstr "Sie administrieren diese Gruppe"
+
+msgid ""
+msgstr ""

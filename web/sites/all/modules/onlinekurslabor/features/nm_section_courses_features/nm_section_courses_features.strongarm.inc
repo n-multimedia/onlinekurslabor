@@ -56,7 +56,7 @@ function nm_section_courses_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'advanced_forum_get_new_comments';
-  $strongarm->value = 0;
+  $strongarm->value = 1;
   $export['advanced_forum_get_new_comments'] = $strongarm;
 
   $strongarm = new stdClass();

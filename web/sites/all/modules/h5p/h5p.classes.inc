@@ -351,6 +351,8 @@ class H5PDrupal implements H5PFrameworkInterface {
         'drop_library_css' => $dropLibraryCss,
         'semantics' => $libraryData['semantics'],
         'has_icon' => $libraryData['hasIcon'] ? 1 : 0,
+        'metadata_settings' => $libraryData['metadataSettings'],
+        'add_to' => isset($libraryData['addTo']) ? json_encode($libraryData['addTo']) : NULL,
       ))
       ->execute();
       $libraryData['libraryId'] = $libraryId;
@@ -373,6 +375,8 @@ class H5PDrupal implements H5PFrameworkInterface {
         'drop_library_css' => $dropLibraryCss,
         'semantics' => $libraryData['semantics'],
         'has_icon' => $libraryData['hasIcon'] ? 1 : 0,
+        'metadata_settings' => $libraryData['metadataSettings'],
+        'add_to' => isset($libraryData['addTo']) ? json_encode($libraryData['addTo']) : NULL,
       ))
       ->condition('library_id', $libraryData['libraryId'])
       ->execute();
@@ -504,15 +508,17 @@ class H5PDrupal implements H5PFrameworkInterface {
       return;
     }
 
+    $fields = array_merge(H5PMetadata::toDBArray($content['metadata'], false), array(
+      'json_content' => $content['params'],
+      'embed_type' => 'div', // TODO: Determine from library?
+      'main_library_id' => $content['library']['libraryId'],
+      'filtered' => '',
+      'disable' => $content['disable']
+    ));
+
     // Update content
     db_update('h5p_nodes')
-      ->fields(array(
-        'json_content' => $content['params'],
-        'embed_type' => 'div', // TODO: Determine from library?
-        'main_library_id' => $content['library']['libraryId'],
-        'filtered' => '',
-        'disable' => $content['disable']
-      ))
+      ->fields($fields)
       ->condition('content_id', $content_id)
       ->execute();
 
@@ -545,18 +551,20 @@ class H5PDrupal implements H5PFrameworkInterface {
    * Implements insertContent
    */
   public function insertContent($content, $contentMainId = NULL) {
+    $fields = array_merge(H5PMetadata::toDBArray($content['metadata'], false), array(
+      'content_id' => $content['id'],
+      'nid' => $contentMainId,
+      'json_content' => $content['params'],
+      'embed_type' => 'div', // TODO: Determine from library?
+      'main_library_id' => $content['library']['libraryId'],
+      'disable' => $content['disable'],
+      'filtered' => '',
+      'slug' => ''
+    ));
+
     // Insert
     db_insert('h5p_nodes')
-      ->fields(array(
-        'content_id' => $content['id'],
-        'nid' => $contentMainId,
-        'json_content' => $content['params'],
-        'embed_type' => 'div', // TODO: Determine from library?
-        'main_library_id' => $content['library']['libraryId'],
-        'disable' => $content['disable'],
-        'filtered' => '',
-        'slug' => ''
-      ))
+      ->fields($fields)
       ->execute();
 
     // Log update event
@@ -653,6 +661,43 @@ class H5PDrupal implements H5PFrameworkInterface {
         ))
         ->execute();
     }
+  }
+
+  /**
+   * Load addon libraries
+   *
+   * @return array
+   */
+  public function loadAddons() {
+    // Load addons
+    $db_stmt = db_query(
+      "SELECT l1.machine_name, l1.major_version, l1.minor_version,
+              l1.library_id, l1.add_to, l1.preloaded_js, l1.preloaded_css
+       FROM {h5p_libraries} AS l1
+       LEFT JOIN {h5p_libraries} AS l2
+       ON l1.machine_name = l2.machine_name AND
+        (l1.major_version < l2.major_version OR
+          (l1.major_version = l2.major_version AND
+           l1.minor_version < l2.minor_version))
+       WHERE l1.add_to IS NOT NULL AND l2.machine_name IS NULL");
+
+    $addons = array();
+
+    foreach ($db_stmt as $library) {
+      $addons[] = H5PCore::snakeToCamel($library);
+    }
+
+    return $addons;
+  }
+
+  /**
+   * Implements getLibraryConfig
+   *
+   * @param array $libraries
+   * @return array
+   */
+  public function getLibraryConfig($libraries = NULL) {
+     return variable_get('h5p_library_config', NULL);
   }
 
   /**
@@ -777,7 +822,16 @@ class H5PDrupal implements H5PFrameworkInterface {
                 hl.fullscreen AS library_fullscreen,
                 hn.filtered,
                 hn.disable,
-                hn.slug
+                hn.slug,
+                hn.authors AS meta_authors,
+                hn.source AS meta_source,
+                hn.license AS meta_license,
+                hn.license_version AS meta_license_version,
+                hn.license_extras AS meta_license_extras,
+                hn.year_from AS meta_year_from,
+                hn.year_to AS meta_year_to,
+                hn.changes AS meta_changes,
+                hn.author_comments AS meta_author_comments
           FROM {h5p_nodes} hn
           JOIN {node} n ON n.nid = hn.nid
           JOIN {h5p_libraries} hl ON hl.library_id = hn.main_library_id
@@ -786,6 +840,23 @@ class H5PDrupal implements H5PFrameworkInterface {
           ':id' => $id
         ))
         ->fetchObject();
+
+      // Build metadata object
+      $content->metadata = array();
+      foreach(array('authors', 'source', 'license', 'license_version', 'license_extras' ,'year_from', 'year_to', 'changes', 'author_comments') as $value) {
+        $lookup = 'meta_' . $value;
+        if (isset($content->$lookup)) {
+          $content->metadata[$value] = $content->$lookup;
+          // These fields are used to store complex data and need to be "extended"
+          if ($value === 'authors' || $value === 'changes' ) {
+            $content->metadata[$value] = json_decode($content->metadata[$value]);
+          }
+          unset($content->$lookup);
+        }
+      }
+      $content->metadata['title'] = $content->title;
+      $content->metadata = H5PCore::snakeToCamel($content->metadata);
+
     return ($content === FALSE ? NULL : H5PCore::snakeToCamel($content));
   }
 

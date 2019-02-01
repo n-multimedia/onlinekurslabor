@@ -65,7 +65,7 @@
             {
                 var edit_api = window[0].H5PEditor.apiVersion.majorVersion +"." + window[0].H5PEditor.apiVersion.minorVersion;
 
-                if(edit_api !== "1.15")
+                if(edit_api !== "1.19")
                     alert(notgood_error);
                 else
                     callback();
@@ -156,6 +156,7 @@
         {
             var matches = this.splitHash(controlstring);
             var counter;
+            var entry;
             for (counter = 0; counter < matches.length; ++counter)
             {
                 entry = matches[counter];

@@ -144,6 +144,9 @@ function htmlmail_mail($key, &$message, $params) {
     MAIL_LINE_ENDINGS . MAIL_LINE_ENDINGS,
     $params['body']
   );
+  if (isset($params['headers'])) {
+    $message['headers'] = array_merge($message['headers'], $params['headers']);
+  }
   return $message;
 }
 

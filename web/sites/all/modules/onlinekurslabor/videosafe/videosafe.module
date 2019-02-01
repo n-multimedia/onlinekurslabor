@@ -462,19 +462,24 @@ function _videosafe_get_videos_for_exclusive_user_id($uid) {
  * @return array<StdClass> nodes of type h5p
  */
 function _videosafe_get_h5p_usage($file_uri) {
-  $video_base_uri = _videosafe_get_relative_url($file_uri);
-  $query = db_select('h5p_nodes', 'n')->fields('n', array('nid'));;
+    $video_base_uri = _videosafe_get_relative_url($file_uri);
+    $videosafe_base_uri = preg_replace('/h5p\/content\/[0-9]+\//', '', $video_base_uri);
 
-  $db_or = db_or();
-  //alt-eintraege von h5p werden auch gesucht.
-  $db_or->condition('json_content', '%' . $video_base_uri . '%', 'like');
-  $db_or->condition('json_content', '%' . preg_replace('/h5p\/content\/[0-9]+\//', '', $video_base_uri) . '%', 'like');
-  $query->condition($db_or);
 
-  $hp_nids = $query->execute()->fetchAll(PDO::FETCH_COLUMN);
-  return node_load_multiple($hp_nids);
+    $video_escaped_uri = addcslashes($video_base_uri, '/');
+    $videosafe_escaped_uri = addcslashes($videosafe_base_uri, '/');
+
+    $query = db_select('h5p_nodes', 'n')->fields('n', array('nid'));
+
+    $db_or = db_or();
+    //alt-eintraege von h5p werden auch gesucht.
+    $db_or->condition('json_content', '%' . db_like($video_escaped_uri) . '%', 'like');
+    $db_or->condition('json_content', '%' . db_like($videosafe_escaped_uri) . '%', 'like');
+    $query->condition($db_or);
+
+    $hp_nids = $query->execute()->fetchAll(PDO::FETCH_COLUMN);
+    return node_load_multiple($hp_nids);
 }
-
 
 /**
  * gets array with information where $videosafe_node is used

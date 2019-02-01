@@ -16,4 +16,11 @@ web/stats
 web/sites/*/settings*.php
 files_private/
 tmp/
-scripts/emergency_mail_contact.sh
+
+
+okl-testing/composer.lock
+okl-testing/phantom-cookies.txt
+okl-testing/bin/
+okl-testing/tests/_support/_generated/
+okl-testing/vendor
+okl-testing/tests/_output

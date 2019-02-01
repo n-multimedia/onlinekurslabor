@@ -45,9 +45,12 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'views_bulk_operations' => 'views_bulk_operations',
     'name' => 'name',
+    'status' => 'status',
     'rid' => 'rid',
     'access' => 'access',
-    'edit_node' => 'edit_node',
+    'mail' => 'mail',
+    'edit_node' => 'cancel_node',
+    'cancel_node' => 'cancel_node',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -58,6 +61,13 @@ function nm_administration_views_default_views() {
     ),
     'name' => array(
       'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'status' => array(
+      'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
@@ -75,9 +85,21 @@ function nm_administration_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'mail' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'edit_node' => array(
       'align' => '',
       'separator' => '',
+      'empty_column' => 0,
+    ),
+    'cancel_node' => array(
+      'align' => '',
+      'separator' => ' ',
       'empty_column' => 0,
     ),
   );
@@ -99,17 +121,6 @@ function nm_administration_views_default_views() {
       'skip_permission_check' => 0,
       'override_label' => 1,
       'label' => 'Person sperren',
-    ),
-    'action::views_bulk_operations_delete_item' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'skip_permission_check' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'settings' => array(
-        'log' => 1,
-      ),
     ),
     'action::views_bulk_operations_user_roles_action' => array(
       'selected' => 1,
@@ -162,16 +173,22 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['fields']['access']['label'] = 'Letzter Zugriff';
   $handler->display->display_options['fields']['access']['date_format'] = 'short';
   $handler->display->display_options['fields']['access']['second_date_format'] = 'privatemsg_current_day';
-  /* Field: User: Edit link */
-  $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
-  $handler->display->display_options['fields']['edit_node']['table'] = 'users';
-  $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
-  $handler->display->display_options['fields']['edit_node']['label'] = 'Operationen';
   /* Field: User: E-mail */
   $handler->display->display_options['fields']['mail']['id'] = 'mail';
   $handler->display->display_options['fields']['mail']['table'] = 'users';
   $handler->display->display_options['fields']['mail']['field'] = 'mail';
   $handler->display->display_options['fields']['mail']['label'] = 'E-Mail';
+  /* Field: User: Edit link */
+  $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
+  $handler->display->display_options['fields']['edit_node']['table'] = 'users';
+  $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
+  $handler->display->display_options['fields']['edit_node']['label'] = 'Operationen';
+  /* Field: User: Cancel link */
+  $handler->display->display_options['fields']['cancel_node']['id'] = 'cancel_node';
+  $handler->display->display_options['fields']['cancel_node']['table'] = 'users';
+  $handler->display->display_options['fields']['cancel_node']['field'] = 'cancel_node';
+  $handler->display->display_options['fields']['cancel_node']['label'] = 'Operationen';
+  $handler->display->display_options['fields']['cancel_node']['text'] = 'Löschen';
   /* Sort criterion: User: Last access */
   $handler->display->display_options['sorts']['access']['id'] = 'access';
   $handler->display->display_options['sorts']['access']['table'] = 'users';
@@ -386,13 +403,15 @@ function nm_administration_views_default_views() {
     t('Benutzer'),
     t('- Choose an operation -'),
     t('Person sperren'),
+    t('Person löschen'),
     t('Realname-Update ausführen'),
     t('Name'),
     t('Status'),
     t('Rollen'),
     t('Letzter Zugriff'),
-    t('Operationen'),
     t('E-Mail'),
+    t('Operationen'),
+    t('Löschen'),
     t('Zuletzt aktive Personen (Dashboard)'),
     t('Administration - Zuletzt aktive Benutzer'),
     t('Administration (Moderator)'),
@@ -519,7 +538,7 @@ function nm_administration_views_default_views() {
       'override_label' => 0,
       'label' => '',
       'settings' => array(
-        'log' => 0,
+        'log' => 1,
       ),
     ),
   );
@@ -872,26 +891,26 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
   $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
-    'action::section_courses_clone_course' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'skip_permission_check' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
     'action::views_bulk_operations_delete_item' => array(
       'selected' => 1,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
       'skip_permission_check' => 0,
-      'override_label' => 0,
-      'label' => '',
+      'override_label' => 1,
+      'label' => 'Kurs löschen',
       'settings' => array(
-        'log' => 0,
+        'log' => 1,
       ),
     ),
     'action::node_publish_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'skip_permission_check' => 0,
+      'override_label' => 1,
+      'label' => 'Kurs veröffentlichen',
+    ),
+    'action::section_courses_clone_course' => array(
       'selected' => 1,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
@@ -1153,6 +1172,8 @@ function nm_administration_views_default_views() {
     t('author'),
     t('Inhalt'),
     t('- Choose an operation -'),
+    t('Kurs löschen'),
+    t('Kurs veröffentlichen'),
     t('Titel'),
     t('Kurs erstellt durch'),
     t('Status'),

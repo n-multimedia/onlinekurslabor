@@ -203,6 +203,7 @@ function h5peditor_h5p_content_node_form_after_build($form) {
       'modulePath' => $h5peditor_module_path,
       'libraryPath' => _h5p_get_h5p_path() . '/libraries/',
       'copyrightSemantics' => $content_validator->getCopyrightSemantics(),
+      'metadataSemantics' => $content_validator->getMetadataSemantics(),
       'assets' => $assets,
       'contentRelUrl' => '../h5p/content/',
       'editorRelUrl' => '../../../h5peditor/',
