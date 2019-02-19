@@ -162,8 +162,17 @@ function h5p_integration_form_h5p_content_node_form_alter(&$form, &$form_state, 
         if(!user_access('administer users')){
             $form['h5p_options']['#access'] = false;
         }
-    } 
-       
+    }
+
+
+    //verbiete Hochladen von .h5p-datei für non-admin
+    global $user;
+    if (!in_array(NM_ROLE_ADMIN, $user->roles)) {
+        //der upload-form-bereich
+        $form['h5p']['#access'] = false;
+        //die option "upload" in buttonlist
+        unset($form['h5p_type']['#options']['upload']);
+    }
 }
 
 /**
