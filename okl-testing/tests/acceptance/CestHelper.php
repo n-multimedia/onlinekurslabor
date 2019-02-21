@@ -23,7 +23,7 @@ abstract class CestHelper {
      * 
      * @return string type
      */
-    abstract function getMaincontextType();
+    abstract protected function getMaincontextType();
     
     
 
@@ -43,7 +43,7 @@ abstract class CestHelper {
             case NM_CONTENT_DOMAIN:
                 $url = NM_CONTENT_TEXT_PATH . '/' . $nid;
                 break;
-            default: throw new Exception(")=JSDFJ");
+            default: throw new Exception("The set context is not valid. ");
         }
 
         $I->amOnPage($url);
@@ -77,7 +77,7 @@ abstract class CestHelper {
      * Setze Hauptkontext, z.B. neu angelegter Kurs
      * @param type $nid
      */
-    public  function setCurrentContextNid($nid) {
+    protected  function setCurrentContextNid($nid) {
         Fixtures::add('current_context_nid', $nid);
     }
     

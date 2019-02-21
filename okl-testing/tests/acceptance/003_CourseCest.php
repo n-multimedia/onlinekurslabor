@@ -1,6 +1,6 @@
 <?php
 
-use \Codeception\Util\Fixtures;
+
 use Page\node\course\CourseCreate as CreateCoursePage;
 use Page\courseadmin\AddMembers as AddMembersPage;
 use Page\node\course_content\CoursegroupCreate as CreateCoursegroupPage;
@@ -17,7 +17,7 @@ class CourseCest  extends CestHelper{
      * 
      * @return string type
      */
-    public function getMaincontextType() {
+    protected function getMaincontextType() {
         return NM_COURSE;
     }
 

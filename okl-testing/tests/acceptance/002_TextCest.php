@@ -4,10 +4,18 @@ use Page\node\domain\DomainCreate  as CreateDomainPage;
 
 class TextCest extends CestHelper{
 
- 
+     /**
+     * setze Typ des aktuellen HauptContexts.
+     * Also das, was prinzipiell im aktuellen Cest getestet wird.
+     * Entweder NM_COURSE oder NM_CONTENT_DOMAIN
+     * 
+     * @return string type
+     */
+    protected function getMaincontextType() {
+        return NM_CONTENT_DOMAIN;
+    }
 
-
-  public function _before(\Step\Acceptance\Author $I) {
+    public function _before(\Step\Acceptance\Author $I) {
 
     $I->loginAsAuthor(TRUE);
 
@@ -48,11 +56,12 @@ class TextCest extends CestHelper{
 
     $ccpage = New CreateDomainPage($I);
     $ccpage->create($domain_example);
-
+    $nid = $ccpage->getNewNid(); 
+    
     $I->amOnPage('/');
     $I->click('Meine Veranstaltungen');
     $I->see($domain_example['title']);
-
+    $this->setCurrentContextNid($nid);
   }
 
     /**
@@ -62,5 +71,7 @@ class TextCest extends CestHelper{
     protected function T002_createDomainsProvider() {
         return $this->DP_getSampleDomain(0, false, false);
     }
+
+    
 
 }
