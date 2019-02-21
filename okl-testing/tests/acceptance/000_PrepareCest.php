@@ -27,7 +27,7 @@ class PrepareCest extends CestHelper{
     //$count_students/3 coursegroups
     //assign studis to groups
 
-     public function getMaincontextType() {
+     protected function getMaincontextType() {
         return NM_COURSE; 
     }
 
@@ -234,7 +234,7 @@ class PrepareCest extends CestHelper{
 
         $home_nid = $createcoursepage->getNewNid();
         $I->comment('The nid of my new course is ' . $home_nid);
-        Fixtures::add('course_nid', $home_nid);
+        $this->setCurrentContextNid($home_nid);
     }
 
     /**
@@ -256,7 +256,7 @@ class PrepareCest extends CestHelper{
      * @depends P001_06_createCourse
      */
     public function P001_07_editCourse(\Step\Acceptance\Dozent $I, Codeception\Example $domain_example) {
-        $new_course_nid = $this->getCurrentCourseNid();
+        $new_course_nid = $this->getCurrentContextNid();
 
         if (strstr($domain_example['title'], '(DEMO)')) {
             $demo_domain_title = $domain_example['title'];
@@ -282,10 +282,10 @@ class PrepareCest extends CestHelper{
      * @depends P001_06_createCourse
      */
     public function P001_08_addStudentsToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $students_example) {
-        $I->comment(sprintf('now I add memmber %s to the course %s' ,$students_example['mail'], $this->getCurrentCourseNid()));
+        $I->comment(sprintf('now I add memmber %s to the course %s' ,$students_example['mail'], $this->getCurrentContextNid()));
 
         //use AddMembersPage
-        $addmempage = new AddMembersPage($I, $this->getCurrentCourseNid());
+        $addmempage = new AddMembersPage($I, $this->getCurrentContextNid());
         $addmempage->addByNameAndMail($students_example["name"], $students_example["mail"]);
         
          //und danach editiere useraccounts mit drupal-api
@@ -321,10 +321,10 @@ class PrepareCest extends CestHelper{
 
         //das geht nicht mehr, da sich nach Vorbereitung der Dataprovider der Identifier geänert hat:
         //$current_teacher = $this->P001_dummySingleTeacherProvider()[0];
-        $I->comment(sprintf('now I add teacher %s to the course %s', $dozenten_example['mail'], $this->getCurrentCourseNid()));
+        $I->comment(sprintf('now I add teacher %s to the course %s', $dozenten_example['mail'], $this->getCurrentContextNid()));
 
         //use AddMembersPage
-        $addmempage = new AddMembersPage($I, $this->getCurrentCourseNid());
+        $addmempage = new AddMembersPage($I, $this->getCurrentContextNid());
         $addmempage->addByMail($dozenten_example["mail"]);
     }
 
@@ -342,7 +342,7 @@ class PrepareCest extends CestHelper{
     public function P001_10_addCoursegroups(\Step\Acceptance\Dozent $I, Codeception\Example $cg_example) {
         //$current_teacher = $this->P001_dummySingleTeacherProvider()[0];
         //course-nid
-        $course_nid = $this->getCurrentCourseNid();
+        $course_nid = $this->getCurrentContextNid();
 
         $cg_page = new CreateCoursegroupPage($I, $course_nid);
         $cg_page->create($cg_example);
@@ -370,7 +370,7 @@ class PrepareCest extends CestHelper{
      */
     public function P001_11_addUsersToCoursegroups(\Step\Acceptance\Dozent $I, Codeception\Example $users_to_coursegroup) {
 
-        $cgaddpage = new AddMemberToCoursegroupPage($I, $this->getCurrentCourseNid());
+        $cgaddpage = new AddMemberToCoursegroupPage($I, $this->getCurrentContextNid());
         $cgaddpage->addMultipleStudentsToCoursegroup($users_to_coursegroup['users'], $users_to_coursegroup['coursegroup_title']);
     }
 
@@ -392,7 +392,7 @@ class PrepareCest extends CestHelper{
      * @depends P001_11_addUsersToCoursegroups
      */
     public function P001_19_storeFallback(\Step\Acceptance\Dozent $I) {
-        _okl_testing_storeFallbackNID($this->getCurrentCourseNid());
+        _okl_testing_storeFallbackNID($this->getCurrentContextNid());
         _okl_testing_set_fallback_identifier();
         $I->comment("stored fallback-course.");
     }
