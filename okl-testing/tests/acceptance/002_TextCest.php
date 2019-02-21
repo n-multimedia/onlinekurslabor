@@ -1,6 +1,7 @@
 <?php
 
 use Page\node\domain\DomainCreate  as CreateDomainPage;
+use Page\node\domain_content\InteractiveCreate  as CreateInteractiveVideoPage;
 
 class TextCest extends CestHelper{
 
@@ -72,6 +73,20 @@ class TextCest extends CestHelper{
         return $this->DP_getSampleDomain(0, false, false);
     }
 
-    
+     /**
+     * Test H5P: "Hochladen" für non-admin nicht möglich
+     *  @UserStory null
+     * @UserStoryURL null
+     *
+     * @param \Step\Acceptance\Author $I instead of \AcceptanceTester $I
+     * 
+     */
+    public function T002_03_testH5PMainInterface(\Step\Acceptance\Author $I) {
+        $this->goToContextHome($I);
+        $nid = $this->getCurrentContextNid();
+        $civPage = new CreateInteractiveVideoPage($I, $nid);
+        $civPage->dontSeeUploadField();
+        $I->makeScreenshot('dontSeeUploadField');
+    }
 
 }
