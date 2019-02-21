@@ -10,12 +10,18 @@ use Page\node\course_content\TaskCreate as TaskCreatePage;
 
 class CourseCest  extends CestHelper{
  
+     /**
+     * setze Typ des aktuellen HauptContexts.
+     * Also das, was prinzipiell im aktuellen Cest getestet wird.
+     * Entweder NM_COURSE oder NM_CONTENT_DOMAIN
+     * 
+     * @return string type
+     */
+    public function getMaincontextType() {
+        return NM_COURSE;
+    }
 
-  
-  public function __construct() {
-   
-  }
-  public function _before(\Step\Acceptance\Dozent $I) {
+    public function _before(\Step\Acceptance\Dozent $I) {
 
     $I->loginAsDozent(TRUE);
 
@@ -62,9 +68,8 @@ class CourseCest  extends CestHelper{
         $createcoursepage->create($example);
          
         
-        //get current url
-        
-        Fixtures::add('course_nid', $createcoursepage->getNewNid());
+        //set current nid
+        $this->setCurrentContextNid($createcoursepage->getNewNid());
     }
     
     
@@ -85,7 +90,7 @@ class CourseCest  extends CestHelper{
    */
   public function C001_03_AddMember(AcceptanceTester $I,  \Codeception\Example $example) {
 
-    $this->goToCourseHome($I);
+    $this->goToContextHome($I);
 
     $course_nid = $I->grabFromCurrentUrl('~/course/home/(\d+)~');
     //annahme: ich bin im neu erstellten Kurs
@@ -127,7 +132,7 @@ class CourseCest  extends CestHelper{
    */
   public function C001_04_AddNews(\Step\Acceptance\Dozent $I, \Codeception\Example $news) {
     
-      $this->goToCourseHome($I);
+      $this->goToContextHome($I);
    // $news = [];
    // $news['title'] =  '[CC001_04_AddNews] Neue Ankündigung @' . date('d.m.Y H:i:s');
    //  $news['body'] =  'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.';
@@ -178,7 +183,7 @@ class CourseCest  extends CestHelper{
      */
     public function C001_04_AddCourseGroup(\Step\Acceptance\Dozent $I, \Codeception\Example $course_group) {
         
-        $this->goToCourseHome($I);
+        $this->goToContextHome($I);
 
         //annahme: ich bin im neu erstellten Kurs
         $I->moveMouseOver('#instr_overview_content');
@@ -187,7 +192,7 @@ class CourseCest  extends CestHelper{
         $I->expect('AK-1: Es kann ein Titel und ein Beschreibugnstext eingegeben werden');
         $I->see("Neue Kursgruppe erstellen");
 
-        $cg_page = new CreateCoursegroupPage($I, $this->getCurrentCourseNid());
+        $cg_page = new CreateCoursegroupPage($I, $this->getCurrentContextNid());
         $cg_page->create($course_group);
     }
     
@@ -209,7 +214,7 @@ class CourseCest  extends CestHelper{
      */
     public function C001_05_AddUsersToGroup(\Step\Acceptance\Dozent $I, \Codeception\Example $user_to_coursegroup) {
 
-        $this->goToCourseHome($I);
+        $this->goToContextHome($I);
 
         //annahme: ich bin im neu erstellten Kurs
         //doublecheck: menü geht
@@ -217,7 +222,7 @@ class CourseCest  extends CestHelper{
         $I->wait(1);
         $I->click('#instr_overview_members a');
 
-        $cgaddpage = new AddMemberToCoursegroupPage($I, $this->getCurrentCourseNid());
+        $cgaddpage = new AddMemberToCoursegroupPage($I, $this->getCurrentContextNid());
         $cgaddpage->addStudentToCoursegroup($user_to_coursegroup['user'], $user_to_coursegroup['coursegroup_title']);
     }
 
@@ -258,9 +263,9 @@ class CourseCest  extends CestHelper{
      * @dataProvider C001_AddSingleTaskProvider
      * todolater.. before skipNonApplicableExample
      */
-    public function C001_05_AddSingleTask(\Step\Acceptance\Dozent $I, \Codeception\Example $example) {
+    public function C001_06_AddSingleTask(\Step\Acceptance\Dozent $I, \Codeception\Example $example) {
 
-        $this->goToCourseHome($I);
+        $this->goToContextHome($I);
 
         //annahme: ich bin im  Kurs
         //doublecheck: menü geht
@@ -268,7 +273,7 @@ class CourseCest  extends CestHelper{
         $I->wait(1);
         $I->click('#instr_add_task a');
 
-        $taskpage = new TaskCreatePage($I, $this->getCurrentCourseNid());
+        $taskpage = new TaskCreatePage($I, $this->getCurrentContextNid());
         $taskpage->create($example);
 
         //dblcheck: aufgabe funktioniert ganz
@@ -288,9 +293,10 @@ class CourseCest  extends CestHelper{
      */
     protected function C001_AddSingleTaskProvider() {
         $return = array();
-
+        $node_data = $this->getNodeSample(NM_COURSE_GENERIC_TASK);
+        
         $rand_data = \RealisticFaker\OklDataCreator::get();
-        $return[] = ['title' => $rand_data->realText(40), 'field_task_type' => 0, 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]]];
+        $return[] = ['title' => $node_data['title'], 'field_task_type' => 0, 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]]];
         return $return;
     }
 
@@ -306,10 +312,9 @@ class CourseCest  extends CestHelper{
         $return[] = ['title' => $rand_data->realText(40), 'body' => $rand_data->realText(240)];
         return $return;
     }
-    
-    
-   
-    
-    
+
+
+
+
 
 }

@@ -12,6 +12,10 @@ use Page\node\course_content\CoursegroupCreate as CreateCoursegroupPage;
 use Page\courseadmin\MemberAdminCoursegroup as AddMemberToCoursegroupPage; 
 
 
+/**
+ * PrepareCest hat einen Sonderstatus und kann nur komplett durchgelaufen werden.
+ * Das Ausführen einzelner Funktionen ist nicht möglich.
+ */
 class PrepareCest extends CestHelper{
 
     //create: 3 dozenten
@@ -23,7 +27,9 @@ class PrepareCest extends CestHelper{
     //$count_students/3 coursegroups
     //assign studis to groups
 
-    
+     public function getMaincontextType() {
+        return NM_COURSE; 
+    }
 
      /**
      * @UserStory null

@@ -12,35 +12,76 @@ use \Codeception\Util\Fixtures;
  *
  * @author Bernhard
  */
+   
 abstract class CestHelper {
 
-     /**
-     * goto Course-Home. Either by created course or fallback-course.
+
+    /**
+     * setze Typ des aktuellen HauptContexts.
+     * Also das, was prinzipiell im aktuellen Cest getestet wird.
+     * Entweder NM_COURSE oder NM_CONTENT_DOMAIN
+     * 
+     * @return string type
+     */
+    abstract function getMaincontextType();
+    
+    
+
+    /**
+     * goto Context-Home. can be course or domain.
+     * either by created % or fallback-%
      * @param AcceptanceTester $I
      */
-    protected function goToCourseHome(AcceptanceTester $I) {
-        $nid = $this->getCurrentCourseNid();
+    protected function goToContextHome(AcceptanceTester $I) {
+        $nid = $this->getCurrentContextNid();
+        $node = node_load($nid);
+        $url = '';
+        switch ($node->type) {
+            case NM_COURSE:
+                $url = NM_COURSE_HOME_PATH . '/' . $nid;
+                break;
+            case NM_CONTENT_DOMAIN:
+                $url = NM_CONTENT_TEXT_PATH . '/' . $nid;
+                break;
+            default: throw new Exception(")=JSDFJ");
+        }
 
-        $course_home_url = NM_COURSE_HOME_PATH . '/' . $nid;
-
-        $I->amOnPage($course_home_url);
+        $I->amOnPage($url);
     }
 
     /**
-     * getCurrentCourseNid. Either by created course or fallback-course.
+     * getCurrentContextNid.can be course or domain.  either by created % or fallback-%.
      * @param AcceptanceTester $I
      */
-    protected function getCurrentCourseNid() {
-        if (Fixtures::exists('course_nid')) {
-            $nid = Fixtures::get('course_nid');
+    protected function getCurrentContextNid() {
+        if (Fixtures::exists('current_context_nid')) {
+            $nid = Fixtures::get('current_context_nid');
         } else {
+            
             //fallback url
             $fallback_data = _okl_testing_getFallbackData();
-            $nid = $fallback_data->nid;
+            if($this->getMaincontextType() == NM_COURSE)
+            {
+                 $nid = $fallback_data->nid;
+            }
+           elseif($this->getMaincontextType() == NM_CONTENT_DOMAIN)
+            {
+                 $nid = $fallback_data->domain->nid;
+            }
         }
 
         return  $nid ; 
     }
+    
+    /**
+     * Setze Hauptkontext, z.B. neu angelegter Kurs
+     * @param type $nid
+     */
+    public  function setCurrentContextNid($nid) {
+        Fixtures::add('current_context_nid', $nid);
+    }
+    
+    
     
     /**
      * 
@@ -85,15 +126,14 @@ abstract class CestHelper {
         $I->comment("checking if in fallback-mode...");
         //get current @dataprovider-sample
         $example = ($scenario->current('example'));
-
-        //evtl muss man künftig das unique in ne function auslagern.. 
-        //hier: kurs wurde erstellt und möchte fallback ausführen: skip
-        if (Fixtures::exists('course_nid') && $example['type'] == 'fallback') {
-            $scenario->skip($example['type'] . "-example since Fixtures::exists('course_nid')");
+            
+        //hier: kontext wurde im Cest erstellt und möchte fallback ausführen: skip
+        if (Fixtures::exists('current_context_nid') && $example['type'] == 'fallback') {
+            $scenario->skip($example['type'] . "-example since Fixtures::exists('current_context_nid')");
         }
-        //hier: kein kurs erstellt, aber default ausführen: skip
-        elseif (!Fixtures::exists('course_nid') && $example['type'] == 'default') {
-            $scenario->skip($example['type'] . "-example since NO Fixtures::exists('course_nid')");
+        //hier: kein kontext erstellt, aber default ausführen: skip
+        elseif (!Fixtures::exists('current_context_nid') && $example['type'] == 'default') {
+            $scenario->skip($example['type'] . "-example since NO Fixtures::exists('current_context_nid')");
         }
     }
     
