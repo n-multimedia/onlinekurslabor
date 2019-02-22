@@ -82,6 +82,7 @@
                     var anno_text = jQuery(".nm-stream-main-body",this).text().replace(/(\r\n|\n|\r)/gm,"").replace(Drupal.behaviors.h5p_connector_api.text.regex_timestampfeature," ");;
                     if(anno_text.length >30)
                         anno_text = anno_text.substr(0,27)+"...";
+                    anno_text = Drupal.checkPlain(anno_text);
                     entries[counter]["text"] = anno_text; 
                     counter++;
 
