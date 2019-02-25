@@ -161,6 +161,33 @@ function nm_stream_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['api/v2.0/nm_stream/node/%node/initialize'] = array(
+    'title' => 'Get nm_stream initialization data',
+    'page callback' => 'nm_stream_api_v2_initialize_callback',
+    'page arguments' => array(4),
+    'access callback' => 'node_access',
+    'access arguments' => array('view', 4),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/node/%node/update'] = array(
+    'title' => 'NM Stream Node update',
+    'page callback' => 'nm_stream_api_v2_update_callback',
+    'page arguments' => array(4),
+    'access callback' => 'node_access',
+    'access arguments' => array('update', 4),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/node/%node/file/%file/delete/%'] = array(
+    'title' => 'Delete NM Stream File',
+    'page callback' => 'nm_stream_api_v2_node_file_delete_callback',
+    'page arguments' => array(4, 6, 8),
+    'access callback' => 'node_access',
+    'access arguments' => array('update', 4),
+    'type' => MENU_CALLBACK,
+  );
+
   /*
     //file upload
     $items['nm_stream/file_upload'] = array(
@@ -210,7 +237,7 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
   //0 is beeing transmitted if no node exists yet
   //-1 if just the update status is interesting
   if ($top_node || $nid == 0) {
-    
+
     //get nm_stream nodes where created > $top_node->created
     $query = db_select('node', 'n');
     $query->addField('n', 'nid');
@@ -446,7 +473,7 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
               unset($results_new_comments[$key]);
             }
         }
-        
+
 
 
         if (empty($results_new_comments)) {
@@ -1217,7 +1244,7 @@ function nm_stream_preprocess_node(&$vars) {
     if (!empty($node->field_nm_privacy) && $node->field_nm_privacy[LANGUAGE_NONE][0]['value']) {
       $privacy_options = _nm_stream_privacy_options($streamnode_owner, $node);
       $privacy_field_value = $node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
-    
+
       foreach ($privacy_options as $key => $option) {
         if ($key == $privacy_field_value) {
           $vars['nm_privacy'] = $option;
@@ -1453,7 +1480,8 @@ function nm_stream_get_environment() {
     //check url for valid url path first
     //nm_stream for ajax callbacks
     //_section_course_course_group_visible() for infinite stream. in views callback all args seem to be set properly
-    if (arg(0) == 'nm_stream' || _section_course_course_group_visible() || _section_course_text_visible()) {
+    // arg(2) == 'nm_stream' => api/v2.0/nm_stream/node/15347/initialize
+    if (arg(0) == 'nm_stream' || arg(2) == 'nm_stream' || _section_course_course_group_visible() || _section_course_text_visible()) {
 
       $referer_url = drupal_parse_url($_SERVER['HTTP_REFERER']);
       $referer_url['path'] = substr(parse_url($referer_url['path'], PHP_URL_PATH), 1);
@@ -1501,11 +1529,11 @@ function nm_stream_get_environment() {
     $context['container']->parent = node_load($context['container']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
   }
 
-    
+
   return $context;
 }
 /**
- * 
+ *
  * Liefert Objekte in einem Array zu den Feldern
  *  og_group_ref
  * und
@@ -1533,13 +1561,13 @@ function _nm_stream_get_node_environment($stream_node) {
 }
 
 /**
- * erstellt das html-select-option-element fuer privacy-wahl. 
- * @param Stdclass $node a stream-entry. 
+ * erstellt das html-select-option-element fuer privacy-wahl.
+ * @param Stdclass $node a stream-entry.
  * @return string
  */
 function _nm_stream_render_privacy_widget($node) {
 global $user;
- 
+
 
   $result = '';
   //node uebergeben & ist ein streameintrag, dann privacy-value beibehalten
@@ -1575,8 +1603,8 @@ global $user;
     }
   }
   $result .= '</select>';
-  
-  
+
+
 #dpm($result);
   return $result;
 }
@@ -1603,9 +1631,9 @@ function nm_stream_init() {
   }
 }
 
-    
 
-    
+
+
 /**
  * _nm_stream_privacy_options liefert die mögliclhen privacy-Optionen fuer den übergebenen
  * Stream-node ODER die aktuelle Environment zurück.
@@ -1616,15 +1644,13 @@ function nm_stream_init() {
  * @param array $current_environment die aktuelle Environment. Nicht berücksichtigt bei übergebenem $stream_node
  * @return array options
  */
-function  _nm_stream_privacy_options($user, $stream_node, $current_environment= null) {
-
-    
+function _nm_stream_privacy_options($user, $stream_node, $current_environment = NULL) {
 
     $module_path = drupal_get_path('module', 'nm_stream');
-    
+
     $options_items = array();
-    
-    
+
+
     $stream_nodes_privacy_setting = -1;
     if ($stream_node) {
         //ueberschreibe variable current_environment mit der des nodes
@@ -1717,7 +1743,7 @@ function  _nm_stream_privacy_options($user, $stream_node, $current_environment= 
             case NM_COURSE:
                 switch ($current_environment['container']->type) {
                     case ANNVID_CONTENTTYPE:
-                    
+
                         //user ist aktives mitglied im betroffenen kurs ODER privacy besteht bereits auf kurs
                         if(_section_courses_user_is_active_member_in_course($user, $current_environment['context']) || $stream_nodes_privacy_setting == NM_STREAM_COURSE){
                         $options_items[NM_STREAM_COURSE] = array(
@@ -1782,7 +1808,7 @@ function  _nm_stream_privacy_options($user, $stream_node, $current_environment= 
 
     return $options_items;
 }
-                    
+
 
 /**
  * get user picture
@@ -1855,7 +1881,7 @@ function _nm_stream_get_renderedGUI($environment)
 {
    //die node-add-form. wird formatiert durch hook nm_stream_stream_node_form
   $ret = _nm_stream_form_add_edit_view();
-  
+
   //view fuer anzeige der eintraege
   $my_view_name = 'nm_stream';
   $my_display_name = 'panel_pane_1';
@@ -2044,12 +2070,12 @@ function _nm_stream_filter_xss($text)
 
 function nm_stream_import_status_stream() {
   dpm('FUNCTION DEACTIVATED');
-  //Teil dieser Migration war die Funktion 
+  //Teil dieser Migration war die Funktion
   /**
  * Implements hook_node_presave().
- * 
- * 
- */ 
+ *
+ *
+ */
   /*
 function nm_stream_node_presave($node) {
   if (isset($node->modified)) {
@@ -2057,7 +2083,7 @@ function nm_stream_node_presave($node) {
     $node->changed = $node->modified;
   }
 }*/
-  //  ist nun rausgeflogen. 
+  //  ist nun rausgeflogen.
   return;
   //get all course groups
   $nids = custom_general_node_ids_by_type(NM_COURSE_GROUP);
@@ -2212,4 +2238,417 @@ function nm_stream_comment_access($op, $comment){
   }else if($op == 'delete') {
     return comment_access("edit", $comment) || node_access('delete', node_load($comment->nid));
   }
+}
+
+
+//  nm_stream
+//  A P I (v2.0)
+
+/**
+ * get init data strukture for nm_stream
+ * @param $nid
+ */
+function nm_stream_api_v2_initialize_callback($stream_container_node) {
+  global $user;
+  global $base_url;
+  $account = clone $user;
+
+  // todo faking group url
+  $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347#node-16824";
+
+  $environment = nm_stream_get_environment();
+  $context = $environment["context"];
+  $container = $environment["container"];
+  $privacy_options_raw = _nm_stream_privacy_options($account, NULL, nm_stream_get_environment());
+
+  $privacy_key_default = 0;
+  foreach ($privacy_options_raw as $key => $option) {
+    $selected = '';
+    if ($option['default']) {
+      $privacy_key_default = $key;
+    }
+    $privacy_options[] = [
+      "value" => $key,
+      "title" => $option['label'],
+      "img" => $base_url . "/" . $option['icon_path'],
+      "description" => $option['description'],
+    ];
+  }
+
+  $data = [];
+  $data['stream'] = [];
+  $data['stream']['containerNID'] = $container->nid;
+  $data['stream']['contextNID'] = $context->nid;
+  $data['stream']['privacyDefault'] = $privacy_key_default;
+  $data['stream']['permissions'] = [];
+  $data['stream']['permissions'][] = ["canCreatePost" => TRUE];
+  $data['stream']['loggedInUser'] = $account->uid;
+  $data['stream']['privacyOptions'] = $privacy_options;
+  $data['stream']['token'] = drupal_get_token();
+
+  $posts_comments_users = nm_stream_api_v2_get_posts($stream_container_node);
+  $data['stream']['posts'] = $posts_comments_users['posts'];
+  $data['stream']['comments'] = $posts_comments_users['comments'];
+  $data['stream']['users'] = $posts_comments_users['users'];
+
+
+  drupal_add_http_header('Access-Control-Allow-Credentials', 'true');
+  drupal_add_http_header('Access-Control-Allow-Origin', 'http://localhost:8080');
+
+  return drupal_json_output($data);
+}
+
+
+/**
+ * @param $stream_container_node
+ */
+function nm_stream_api_v2_get_posts($stream_container_node) {
+  global $user;
+  global $base_url;
+  $account = clone $user;
+
+  $types = nm_stream_get_stream_content_types();
+
+  $result_posts = [];
+  $result_users = [];
+  $result_comments = [];
+
+  if ($stream_container_node) {
+
+    //get nm_stream nodes where created > $top_node->created
+    $query = db_select('node', 'n');
+    $query->addField('n', 'nid');
+
+    $query
+      //->condition('n.nid', $top_node->nid, '>')
+      ->condition('n.type', $types, 'IN')
+      ->condition('n.status', NODE_PUBLISHED)
+      ->orderBy("n.created", "DESC") //order important!
+      ->addTag('node_access');
+
+
+    //01.04.2014 - 22:53 - SN context needed
+    //if we are in a special context e.g. course group, we just want to see
+    //filtered entries which are assign to this group
+    //for now we only have course groups as special context
+    //27.01.2017 - 11:14 - SN
+    //now we also have annvid as special context
+
+    $environment = nm_stream_get_environment();
+    $context = $environment["context"];
+    $container = $environment["container"];
+
+    //24.02.2017 - 11:48 - SN
+    //prevent fetching updates of nodes without any context!
+    $query->join('field_data_field_nm_stream_context', 'field_data_field_nm_stream_context', "n.nid = field_data_field_nm_stream_context.entity_id  AND field_data_field_nm_stream_context.entity_type = 'node'"); //JOIN
+    $query->isNotNull('field_data_field_nm_stream_context.field_nm_stream_context_target_id');
+
+
+    if (!empty($context)) {
+      if($context->type == NM_CONTENT_DOMAIN) {
+        //in case of Domains, we just want to see content wich has the privacy setting DOMAIN or PRIVATE
+        //e.g. NM_STREAM created in course context and privacy setting DOMAIN or PRIVATE
+        //NOT: NM_STREAM created in course context having privacy setting CROUSE GROUP or COURSE
+        $query->join('field_data_field_nm_privacy', 'field_data_field_nm_privacy', "n.nid = field_data_field_nm_privacy.entity_id  AND field_data_field_nm_privacy.entity_type = 'node'"); //JOIN
+        $query->condition('field_data_field_nm_privacy.field_nm_privacy_value', array(NM_STREAM_PRIVATE, NM_STREAM_DOMAIN), "IN");
+      }
+      elseif ($context->type == NM_COURSE) {
+        //In Course, we need to get stream entries from domain and course contexts!
+        switch ($container->type) {
+          case NM_COURSE_GROUP:
+            $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
+            $query->condition('og_membership_node.gid', array($container->nid), "IN");
+            break;
+          case ANNVID_CONTENTTYPE:
+            $domain_id = _section_courses_course_get_domain_id($context);
+            $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
+            $query->condition('og_membership_node.gid', array(
+              $domain_id,
+              $context->nid,
+              $container->nid
+            ), "IN");
+            break;
+        }
+      }
+      else {
+        $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
+        $query->condition('og_membership_node.gid', array(
+          $context->nid,
+          $container->nid
+        ), "IN");
+      }
+    }
+
+    if (!empty($container)) {
+      $query->join('og_membership', 'og_membership', "n.nid = og_membership.etid AND og_membership.entity_type = 'node'"); //JOIN
+      $query->condition('og_membership.gid', $container->nid);
+    }
+
+    $results = $query->execute()->fetchAll();
+
+    $output = '';
+    foreach ($results as $result) {
+      $node = node_load($result->nid);
+      //check if node is visible in context
+      if($node->field_nm_privacy[LANGUAGE_NONE][0]['value'] == NM_STREAM_COURSE) {
+        //we are in course context and only want to see whats happaning here
+        if($node->field_nm_stream_context [LANGUAGE_NONE][0]['target_id'] != $context->nid){
+          continue;
+        }
+      }
+
+      $privacy_options_raw = _nm_stream_privacy_options($account, $node, nm_stream_get_environment());
+      $privacy_key_default = 0;
+      $privacy_options = [];
+      foreach ($privacy_options_raw as $key => $option) {
+        $selected = '';
+        if ($option['default']) {
+          $privacy_key_default = $key;
+        }
+        $privacy_options[] = $key;
+      }
+
+      $node_environment = _nm_stream_get_node_environment($node);
+      $node_context = $node_environment['context'];
+      $node_container = $node_environment['container'];
+
+      $node_data = [];
+      $node_data['uid'] = $node->uid;
+      $node_data['nid'] = $node->nid;
+      $node_data['title'] = $node->title;
+      $node_data['body'] = $node->body['und'][0]['value'];
+      $node_data['created'] = date(DATE_FORMAT_ISO, $node->created);
+      $node_data['updated'] = date(DATE_FORMAT_ISO, $node->updated);
+      $node_data['privacy'] = [];
+      $node_data['privacy']['privacyDefault'] = $privacy_key_default;
+      $node_data['privacy']['privacyOptions'] = $privacy_options;
+
+      $node_data['permissions'] = [];
+      $node_data['permissions']['canCreateComment'] = node_access('view', $node);
+      $node_data['permissions']['canEdit'] = node_access('update', $node);;
+      $node_data['permissions']['canDelete'] = node_access('delete', $node);;
+
+      $node_data['context'] = [];
+      $node_data['context']['nid'] = $node_context->nid;
+      $node_data['context']['title'] = $node_context->title;
+      $node_data['context']['link'] = url('node/' . $node_context->nid, ['absolute' => TRUE]);
+
+      $node_data['container'] = [];
+      $node_data['container']['nid'] = $node_container->nid;
+      $node_data['container']['title'] = $node_container->title;
+      $node_data['container']['link'] = url('node/' . $node_container->nid, ['absolute' => TRUE]);
+
+      // attachments
+      $node_data['attachments'] = [];
+      foreach ($node->field_nm_attachments[LANGUAGE_NONE] as $item) {
+        $file = file_load($item['fid']);
+        $attachment = [];
+        $attachment['fid'] = $file->fid;
+        $attachment['filesize'] = $file->filesize;
+        $attachment['uid'] = $file->uid;
+        $attachment['filename'] = $file->filename;
+        $attachment['type'] = $file->type;
+        $attachment['filemime'] = $file->filemime;
+
+
+        $mime = check_plain($file->filemime);
+        $icon_url = $base_url . "/" . file_icon_url($file, NULL);
+        $icon = '<img class="file-icon" alt="' . check_plain($mime) . '" title="' . $mime . '" src="' . $icon_url . '" />';
+
+        $uri = file_entity_download_uri($file);
+        $uri['options']['attributes']['type'] = $file->filemime . '; length=' . $file->filesize;
+        $uri['options']['absolute'] = TRUE;
+        $attachment['download_link'] = $icon . " " . l($attachment['filename'], $uri['path'], $uri['options']);
+        $attachment['permissions'] = [];
+        $attachment['permissions']['canDelete'] = node_access('update', $node);
+
+        $node_data['attachments'][] = $attachment;
+      }
+
+      // add post result
+      $result_posts[$node->nid] = $node_data;
+
+      // fill corresponding users array
+      if(empty($result_users[$node->uid])) {
+        $post_user = user_load($node->uid);
+        $result_users[$node->uid]['uid'] = $node->uid;
+        $result_users[$node->uid]['name'] = format_username($post_user);
+        $result_users[$node->uid]['username'] = $post_user->name;
+        $profile = profile2_load_by_user($post_user, 'master');
+        $result_users[$node->uid]['avatarUrl'] = image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
+        $result_users[$node->uid]['profileUrl'] = url('user/' . $post_user->uid, ['absolute' => TRUE]);
+      }
+    }
+
+    //fill corresponding comments array
+    //get nm_stream nodes where created > $node->created
+    $query_new_comments = db_select('comment', 'c');
+    $query_new_comments->addField('c', 'cid');
+    $query_new_comments->addField('c', 'nid');
+    $query_new_comments->addField('c', 'created');
+    $query_new_comments
+      ->condition('c.status', COMMENT_PUBLISHED)
+      ->condition('c.nid', array_keys($result_posts), "IN")
+      ->orderBy("c.cid", "DESC") //order important!
+      ->addTag('node_access');
+
+    $results_comments_db = $query_new_comments->execute()->fetchAllAssoc("cid");
+    $result_comments_full = comment_load_multiple(array_keys($results_comments_db));
+
+    $result_comments = [];
+    foreach ($result_comments_full as $key => $c_item) {
+      $result_comments[$key] = [];
+      $result_comments[$key]['nid'] = $c_item->nid;
+      $result_comments[$key]['cid'] = $c_item->cid;
+      $result_comments[$key]['uid'] = $c_item->uid;
+      $result_comments[$key]['created'] = date(DATE_FORMAT_ISO, $c_item->created);
+      $result_comments[$key]['changed'] = date(DATE_FORMAT_ISO, $c_item->changed);
+      $result_comments[$key]['body'] = $c_item->comment_body['und'][0]['value'];
+
+      $result_comments[$key]['permissions'] = [];
+      $result_comments[$key]['permissions']['canEdit'] = nm_stream_comment_access('edit', $c_item);;
+      $result_comments[$key]['permissions']['canDelete'] = nm_stream_comment_access('delete', $c_item);;
+
+      // fill corresponding users array for comment users
+      if(empty($result_users[$c_item->uid])) {
+        $comment_user = user_load($c_item->uid);
+        $result_users[$comment_user->uid]['uid'] = $comment_user->uid;
+        $result_users[$comment_user->uid]['name'] = format_username($comment_user);
+        $result_users[$comment_user->uid]['username'] = $comment_user->name;
+        $profile = profile2_load_by_user($comment_user, 'master');
+        $result_users[$comment_user->uid]['avatarUrl'] =  image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
+        $result_users[$comment_user->uid]['profileUrl'] = url('user/' . $comment_user->uid, ['absolute' => TRUE]);
+      }
+
+    }
+
+  }
+
+  // add logged in user to user set
+  if(empty($result_users[$account->uid])) {
+    $comment_user = user_load($account->uid);
+    $result_users[$account->uid]['uid'] = $account->uid;
+    $result_users[$account->uid]['name'] = format_username($account);
+    $result_users[$account->uid]['username'] = $account->name;
+    $profile = profile2_load_by_user($account, 'master');
+    $result_users[$account->uid]['avatarUrl'] =  image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
+    $result_users[$account->uid]['profileUrl'] = url('user/' . $account->uid, ['absolute' => TRUE]);
+  }
+
+  return [
+    'posts' => $result_posts,
+    'comments' => $result_comments,
+    'users' => $result_users,
+  ];
+
+}
+
+
+/**
+ * attachments delete callback
+ *
+ * @param type $node
+ * @param type $file
+ */
+function nm_stream_api_v2_node_file_delete_callback($node, $file, $token) {
+
+  // prevent csrf attacks
+  if (!drupal_valid_token($token)) {
+    $response['status'] = 0;
+    $response['error'] = 'CSRF!';
+
+    return drupal_access_denied();
+    //return drupal_json_output($response);
+  }
+
+  $response = [];
+
+  // update end
+  if (!$node) {
+    // $response['status'] = 0;
+    // $response['error'] = 'Invalid data has been transmitted.';
+    return drupal_access_denied();
+  }
+  else {
+    if (!empty($node->field_nm_attachments[LANGUAGE_NONE])) {
+      foreach ($node->field_nm_attachments[LANGUAGE_NONE] as $key => $item) {
+        if (($item['fid'] == $file->fid)) {
+          $file = file_load($item['fid']);
+          unset($node->field_nm_attachments[LANGUAGE_NONE][$key]);
+          $node = node_save($node);
+          file_delete($file);
+        }
+      }
+    }
+
+    // set success msg
+    $response['status'] = 1;
+    $response['message'] = 'Datei wurde gelöscht';
+  }
+
+  // if no msg was set, an error occured
+  if (empty($response)) {
+    // $response['status'] = 0;
+    // $response['error'] = 'Invalid data has been transmitted.';
+    drupal_access_denied();
+  }
+
+
+  drupal_add_http_header('Access-Control-Allow-Credentials', 'true');
+  drupal_add_http_header('Access-Control-Allow-Origin', 'http://localhost:8080');
+
+  return drupal_json_output($response);
+}
+
+/**
+ * @param $node
+ * @param string $type
+ *
+ * @throws \Exception
+ */
+function nm_stream_api_v2_update_callback($node, $type = 'nm_stream') {
+  global $user;
+
+  $response = [];
+
+  if (isset($_REQUEST['body'])) {
+
+    //consider adapting for in add callback too!
+    $body = _nm_stream_filter_xss($_REQUEST['body']);
+    $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
+
+    //prevent csrf attacks
+    //@todo CSRF-Checks in einzelne Funktion auslagern & nicht 10x im Code
+    $token = isset($_REQUEST['token']) ? $_REQUEST['token'] : '';
+    if (!drupal_valid_token($token)) {
+      //$response['status'] = 0;
+      //$response['error'] = 'CSRF on edit!';
+
+      return drupal_access_denied();
+    }
+
+    if (!is_numeric($privacy) || empty($body)) {
+      // $response['status'] = 0;
+      // $response['error'] = 'Invalid data has been transmitted.';
+      return drupal_access_denied();
+    }
+    else {
+      //set new values
+      $node->body[LANGUAGE_NONE][0]['value'] = $body;
+      $node->field_nm_privacy [LANGUAGE_NONE][0]['value'] = $privacy;
+
+      //file attachments
+      if (!isset($node->field_nm_attachments[LANGUAGE_NONE])) {
+        $node->field_nm_attachments[LANGUAGE_NONE] = [];
+      }
+
+      node_save($node);
+
+      $response['status'] = 1;
+      $response['nid'] = $node->nid;
+    }
+  }
+
+
+  return drupal_json_output($response);
 }
