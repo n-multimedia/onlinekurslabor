@@ -107,7 +107,7 @@ function nm_activity_stream_preprocess_message(&$variables)
         /* create vars for the template */
         $vars = array();
      
-        $vars['user_realname'] = $ref_user->realname;
+        $vars['user_realname'] =  format_username($ref_user);
         $vars['user_path'] = 'user/'.$ref_user->uid;
         $vars['user_image'] = strip_tags(_nm_activity_stream_get_user_pic($ref_user), '<img>');
         $vars['activity_title'] = $ref_node->title;
