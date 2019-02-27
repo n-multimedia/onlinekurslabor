@@ -73,7 +73,7 @@ class AddMembers {
         $I->cantSee("Kein Account vorhanden");
 
         //lade existing user und name
-        $name =  user_load_by_mail($mail)->realname;
+        $name = format_username(user_load_by_mail($mail));
         //schau auf TN-Seite
         $this->confirmSuccessfulAdding($I, $name);
 
