@@ -65,13 +65,6 @@ function h5p_admin_settings($form, &$form_state) {
   _h5p_add_display_option($form['h5p_display_options'], 'h5p_icon', t('About H5P button'), variable_get('h5p_icon', TRUE));
   // TODO: Should we remove existing H5P files when export gets disabled?
 
-  $form['h5p_default_path'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Default h5p package path'),
-    '#default_value' => variable_get('h5p_default_path', 'h5p'),
-    '#description' => t('Subdirectory in the directory %dir where files will be stored. Do not include trailing slash.', array('%dir' => file_stream_wrapper_get_instance_by_uri('public://')->realpath())),
-  );
-
   $h5p_nodes_exists = db_query("SELECT 1 FROM {node} WHERE type = :type", array(':type' => 'h5p_content'))->fetchField();
 
   $form['h5p_revisioning'] = array(
@@ -191,18 +184,7 @@ function h5p_admin_settings($form, &$form_state) {
  * Form validation handler for admin settings form.
  */
 function h5p_admin_settings_validate($form, &$form_state) {
-  // Try to create directories and warn the user of errors.
-  $h5p_default_path = $form_state['values']['h5p_default_path'];
-  $path = file_stream_wrapper_get_instance_by_uri('public://')->realpath() . '/' . $h5p_default_path;
-  $temp_path = $path . '/' . 'temp';
-
-  if (!file_prepare_directory($path, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
-    form_set_error('h5p_default_path', t('You have specified an invalid directory.'));
-  }
-  if (!file_prepare_directory($temp_path, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
-    form_set_error('h5p_default_path', t('You have specified an invalid directory.'));
-  }
-
+  // Check if save content frequency is a positive number
   if (!is_numeric($form_state['values']['h5p_save_content_frequency']) || $form_state['values']['h5p_save_content_frequency'] < 0) {
     form_set_error('h5p_save_content_frequency', t('You must specify a positive number.'));
   }
@@ -212,8 +194,6 @@ function h5p_admin_settings_validate($form, &$form_state) {
  * Form submit handler for h5p admin settings form.
  */
 function h5p_admin_settings_submit($form, &$form_state) {
-  // Ensure that 'h5p_default_path' variable contains no trailing slash.
-  $form_state['values']['h5p_default_path'] = rtrim($form_state['values']['h5p_default_path'], '/\\');
   // Ensure that the h5p white list is always stored in lower case.
   $form_state['values']['h5p_whitelist'] = mb_strtolower($form_state['values']['h5p_whitelist']);
 
@@ -716,8 +696,9 @@ function h5p_content_upgrade_progress($library_id) {
     $params = json_decode($params);
     foreach ($params as $id => $param) {
       $upgraded = json_decode($param);
+      $metadata = isset($upgraded->metadata) ? $upgraded->metadata : array();
 
-      $fields = array_merge(H5PMetadata::toDBArray($upgraded->metadata, false, false), array(
+      $fields = array_merge(H5PMetadata::toDBArray($metadata, false, false), array(
         'main_library_id' => $to_library->id,
         'json_content' => json_encode($upgraded->params),
         'filtered' => '',

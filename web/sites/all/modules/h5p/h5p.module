@@ -347,9 +347,9 @@ function h5p_form(&$node, $form_state) {
     foreach ($display_options as $name => $value) {
       _h5p_add_display_option($form['h5p_options'], $name, $labels[$name], $value, ($name === H5PCore::DISPLAY_OPTION_FRAME ? '.h5p-action-bar-settings .form-item:not(.form-item-frame)' : NULL));
     }
-
-    $form['#submit'][] = '_h5p_form_submit';
   }
+
+  $form['#submit'][] = '_h5p_form_submit';
 
   return $form;
 }
@@ -866,7 +866,6 @@ function h5p_get_core_settings() {
     'hubIsEnabled' => variable_get('h5p_hub_is_enabled', TRUE) ? TRUE : FALSE,
     'reportingIsEnabled' => $enableReportingFeatures,
     'crossorigin' => variable_get('h5p_crossorigin', NULL),
-    'crossoriginRegex' => variable_get('h5p_crossoriginRegex', NULL),
     'libraryConfig' => $core->h5pF->getLibraryConfig(),
   );
 
@@ -1451,11 +1450,16 @@ function h5p_content_user_data($content_id, $data_id, $sub_content_id) {
 /**
  * Generate embed page to be included in iframe.
  */
-function h5p_embed($node) {
+function h5p_embed($nid = NULL) {
   global $language;
 
+  if (empty($nid)) {
+    drupal_not_found();
+    exit;
+  }
+
   $module_path = base_path() . drupal_get_path('module', 'h5p');
-  $node = node_load($node);
+  $node = node_load($nid);
   if (!$node || !node_access('view', $node) || !isset($node->json_content)) {
     print '<body style="margin:0"><div style="background: #fafafa url(' . $module_path . '/library/images/h5p.svg) no-repeat center;background-size: 50% 50%;width: 100%;height: 100%;"></div><div style="width:100%;position:absolute;top:75%;text-align:center;color:#434343;font-family: Consolas,monaco,monospace">' . t('Content unavailable.') . '</div></body>';
     return;

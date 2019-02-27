@@ -75,8 +75,9 @@ H5P.init = function (target) {
      * @type {boolean}
      */
     H5P.fullscreenSupported = !(H5P.isFramed && H5P.externalEmbed !== false) || !!(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled);
-    // We should consider document.msFullscreenEnabled when they get their
-    // element sizing corrected. Ref. https://connect.microsoft.com/IE/feedback/details/838286/ie-11-incorrectly-reports-dom-element-sizes-in-fullscreen-mode-when-fullscreened-element-is-within-an-iframe
+    // -We should consider document.msFullscreenEnabled when they get their
+    // -element sizing corrected. Ref. https://connect.microsoft.com/IE/feedback/details/838286/ie-11-incorrectly-reports-dom-element-sizes-in-fullscreen-mode-when-fullscreened-element-is-within-an-iframe
+    // Update: Seems to be no need as they've moved on to Webkit
   }
 
   // Deprecated variable, kept to maintain backwards compatability
@@ -139,6 +140,7 @@ H5P.init = function (target) {
           '<div role="button" ' +
                 'tabindex="0" ' +
                 'class="h5p-enable-fullscreen" ' +
+                'aria-label="' + H5P.t('fullscreen') +
                 'title="' + H5P.t('fullscreen') + '">' +
           '</div>' +
         '</div>')
@@ -569,7 +571,7 @@ H5P.fullScreen = function ($element, instance, exitCallback, body, forceSemiFull
     }
 
     before('h5p-semi-fullscreen');
-    var $disable = H5P.jQuery('<div role="button" tabindex="0" class="h5p-disable-fullscreen" title="' + H5P.t('disableFullscreen') + '"></div>').appendTo($container.find('.h5p-content-controls'));
+    var $disable = H5P.jQuery('<div role="button" tabindex="0" class="h5p-disable-fullscreen" title="' + H5P.t('disableFullscreen') + '" aria-label="' + H5P.t('disableFullscreen') + '"></div>').appendTo($container.find('.h5p-content-controls'));
     var keyup, disableSemiFullscreen = H5P.exitFullScreen = function () {
       if (prevViewportContent) {
         // Use content from the previous viewport tag
@@ -924,7 +926,7 @@ H5P.Dialog = function (name, title, content, $element) {
                               <div class="h5p-inner">\
                                 <h2>' + title + '</h2>\
                                 <div class="h5p-scroll-content">' + content + '</div>\
-                                <div class="h5p-close" role="button" tabindex="0" title="' + H5P.t('close') + '">\
+                                <div class="h5p-close" role="button" tabindex="0" aria-label="' + H5P.t('close') + '" title="' + H5P.t('close') + '"></div>\
                               </div>\
                             </div>')
     .insertAfter($element)
@@ -2213,22 +2215,12 @@ H5P.createTitle = function (rawTitle, maxLength) {
   };
 
   /**
-   * This is a cache for pasted data to prevent parsing multiple times.
-   * @type {Object}
-   */
-  var parsedClipboard = null;
-
-  /**
    * Retrieve parsed clipboard data.
    *
    * @return {Object}
    */
   H5P.getClipboard = function () {
-    if (!parsedClipboard) {
-      parsedClipboard = parseClipboard();
-    }
-
-    return parsedClipboard;
+    return parseClipboard();
   };
 
   /**
@@ -2238,9 +2230,6 @@ H5P.createTitle = function (rawTitle, maxLength) {
    */
   H5P.setClipboard = function (clipboardItem) {
     localStorage.setItem('h5pClipboard', JSON.stringify(clipboardItem));
-
-    // Clear cache
-    parsedClipboard = null;
 
     // Trigger an event so all 'Paste' buttons may be enabled.
     H5P.externalDispatcher.trigger('datainclipboard', {reset: false});
@@ -2261,7 +2250,6 @@ H5P.createTitle = function (rawTitle, maxLength) {
    * Get item from the H5P Clipboard.
    *
    * @private
-   * @param {boolean} [skipUpdateFileUrls]
    * @return {Object}
    */
   var parseClipboard = function () {
@@ -2279,8 +2267,8 @@ H5P.createTitle = function (rawTitle, maxLength) {
       return;
     }
 
-    // Update file URLs
-    updateFileUrls(clipboardData.specific, function (path) {
+    // Update file URLs and reset content Ids
+    recursiveUpdate(clipboardData.specific, function (path) {
       var isTmpFile = (path.substr(-4, 4) === '#tmp');
       if (!isTmpFile && clipboardData.contentId) {
         // Comes from existing content
@@ -2301,22 +2289,20 @@ H5P.createTitle = function (rawTitle, maxLength) {
     if (clipboardData.generic) {
       // Use reference instead of key
       clipboardData.generic = clipboardData.specific[clipboardData.generic];
-
-      // Avoid multiple content with same ID
-      delete clipboardData.generic.subContentId;
     }
 
     return clipboardData;
   };
 
   /**
-   * Update file URLs. Useful when copying content.
+   * Update file URLs and reset content IDs.
+   * Useful when copying content.
    *
    * @private
    * @param {object} params Reference
    * @param {function} handler Modifies the path to work when pasted
    */
-  var updateFileUrls = function (params, handler) {
+  var recursiveUpdate = function (params, handler) {
     for (var prop in params) {
       if (params.hasOwnProperty(prop) && params[prop] instanceof Object) {
         var obj = params[prop];
@@ -2324,7 +2310,11 @@ H5P.createTitle = function (rawTitle, maxLength) {
           obj.path = handler(obj.path);
         }
         else {
-          updateFileUrls(obj, handler);
+          if (obj.library !== undefined && obj.subContentId !== undefined) {
+            // Avoid multiple content with same ID
+            delete obj.subContentId;
+          }
+          recursiveUpdate(obj, handler);
         }
       }
     }
@@ -2336,9 +2326,6 @@ H5P.createTitle = function (rawTitle, maxLength) {
     window.addEventListener('storage', function (event) {
       // Pick up clipboard changes from other tabs
       if (event.key === 'h5pClipboard') {
-        // Clear cache
-        parsedClipboard = null;
-
         // Trigger an event so all 'Paste' buttons may be enabled.
         H5P.externalDispatcher.trigger('datainclipboard', {reset: event.newValue === null});
       }

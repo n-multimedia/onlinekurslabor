@@ -671,7 +671,7 @@ class H5PDrupal implements H5PFrameworkInterface {
   public function loadAddons() {
     // Load addons
     $db_stmt = db_query(
-      "SELECT l1.machine_name, l1.major_version, l1.minor_version,
+      "SELECT l1.machine_name, l1.major_version, l1.minor_version, l1.patch_version,
               l1.library_id, l1.add_to, l1.preloaded_js, l1.preloaded_css
        FROM {h5p_libraries} AS l1
        LEFT JOIN {h5p_libraries} AS l2
@@ -809,55 +809,59 @@ class H5PDrupal implements H5PFrameworkInterface {
    */
   public function loadContent($id) {
     $content = db_query(
-        "SELECT hn.content_id AS id,
-                hn.json_content AS params,
-                hn.embed_type,
-                n.title,
-                n.language,
-                hl.library_id,
-                hl.machine_name AS library_name,
-                hl.major_version AS library_major_version,
-                hl.minor_version AS library_minor_version,
-                hl.embed_types AS library_embed_types,
-                hl.fullscreen AS library_fullscreen,
-                hn.filtered,
-                hn.disable,
-                hn.slug,
-                hn.authors AS meta_authors,
-                hn.source AS meta_source,
-                hn.license AS meta_license,
-                hn.license_version AS meta_license_version,
-                hn.license_extras AS meta_license_extras,
-                hn.year_from AS meta_year_from,
-                hn.year_to AS meta_year_to,
-                hn.changes AS meta_changes,
-                hn.author_comments AS meta_author_comments
-          FROM {h5p_nodes} hn
-          JOIN {node} n ON n.nid = hn.nid
-          JOIN {h5p_libraries} hl ON hl.library_id = hn.main_library_id
-          WHERE content_id = :id",
-        array(
-          ':id' => $id
-        ))
-        ->fetchObject();
+      "SELECT hn.content_id AS id,
+              hn.json_content AS params,
+              hn.embed_type,
+              n.title,
+              n.language,
+              hl.library_id,
+              hl.machine_name AS library_name,
+              hl.major_version AS library_major_version,
+              hl.minor_version AS library_minor_version,
+              hl.embed_types AS library_embed_types,
+              hl.fullscreen AS library_fullscreen,
+              hn.filtered,
+              hn.disable,
+              hn.slug,
+              hn.authors AS meta_authors,
+              hn.source AS meta_source,
+              hn.license AS meta_license,
+              hn.license_version AS meta_license_version,
+              hn.license_extras AS meta_license_extras,
+              hn.year_from AS meta_year_from,
+              hn.year_to AS meta_year_to,
+              hn.changes AS meta_changes,
+              hn.author_comments AS meta_author_comments
+      FROM {h5p_nodes} hn
+      JOIN {node} n ON n.nid = hn.nid
+      JOIN {h5p_libraries} hl ON hl.library_id = hn.main_library_id
+      WHERE content_id = :id",
+      array(
+        ':id' => $id
+      )
+    )->fetchObject();
 
-      // Build metadata object
-      $content->metadata = array();
-      foreach(array('authors', 'source', 'license', 'license_version', 'license_extras' ,'year_from', 'year_to', 'changes', 'author_comments') as $value) {
-        $lookup = 'meta_' . $value;
-        if (isset($content->$lookup)) {
-          $content->metadata[$value] = $content->$lookup;
-          // These fields are used to store complex data and need to be "extended"
-          if ($value === 'authors' || $value === 'changes' ) {
-            $content->metadata[$value] = json_decode($content->metadata[$value]);
-          }
-          unset($content->$lookup);
+    if ($content === FALSE) {
+      return NULL;
+    }
+
+    // Build metadata object
+    $content->metadata = array();
+    foreach(array('authors', 'source', 'license', 'license_version', 'license_extras' ,'year_from', 'year_to', 'changes', 'author_comments') as $value) {
+      $lookup = 'meta_' . $value;
+      if (isset($content->$lookup)) {
+        $content->metadata[$value] = $content->$lookup;
+        // These fields are used to store complex data and need to be "extended"
+        if ($value === 'authors' || $value === 'changes' ) {
+          $content->metadata[$value] = json_decode($content->metadata[$value]);
         }
+        unset($content->$lookup);
       }
-      $content->metadata['title'] = $content->title;
-      $content->metadata = H5PCore::snakeToCamel($content->metadata);
+    }
+    $content->metadata['title'] = $content->title;
+    $content->metadata = H5PCore::snakeToCamel($content->metadata);
 
-    return ($content === FALSE ? NULL : H5PCore::snakeToCamel($content));
+    return H5PCore::snakeToCamel($content);
   }
 
   /**
