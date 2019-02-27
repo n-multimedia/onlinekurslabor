@@ -6,7 +6,7 @@
  */
 function h5p_fix_page_build(&$page) {
     $module =  system_get_info('module', 'h5p') ;
-    if($module['version'] != "7.x-1.39")
+    if($module['version'] != "7.x-1.40")
     {
         drupal_set_message ("Beware!! Do we still need ".__FILE__."? Is it still working?", 'warning'); //description: see .js
     }

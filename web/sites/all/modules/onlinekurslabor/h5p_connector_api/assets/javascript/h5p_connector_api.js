@@ -65,7 +65,7 @@
             {
                 var edit_api = window[0].H5PEditor.apiVersion.majorVersion +"." + window[0].H5PEditor.apiVersion.minorVersion;
 
-                if(edit_api !== "1.19")
+                if(edit_api !== "1.20")
                     alert(notgood_error);
                 else
                     callback();
