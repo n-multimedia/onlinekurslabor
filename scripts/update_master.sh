@@ -5,6 +5,7 @@ drush vset maintenance_mode 1
 
 #bug in drush - cc before FR!!
 drush cc all
+drush en realname_fix --yes
 
 
 #revert single features
