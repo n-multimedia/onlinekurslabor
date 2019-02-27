@@ -30,9 +30,11 @@ function _okl_testing_getDataObjectForCourse($course_nid)
 {
     //kurs
     $course = node_load($course_nid);
+    //@: keine ahnung was das fürn bug wieder ist. so gehts
+    @$students = custom_general_get_users_in_group_by_role_real($course_nid, NM_COURSES_ROLE_STUDENT);
     //TN [@todo: tutor]
-    $students = custom_general_get_users_in_group_by_role_real($course_nid, NM_COURSES_ROLE_STUDENT);
-    $teachers = custom_general_get_users_in_group_by_role_real($course_nid, NM_COURSES_ROLE_ADMINISTRATOR);
+    //@: keine ahnung was das fürn bug wieder ist. so gehts
+    $teachers = @custom_general_get_users_in_group_by_role_real($course_nid, NM_COURSES_ROLE_ADMINISTRATOR);
     //coursegroups in course
     $coursegroups_basic = _section_course_get_coursegroups($course);
     $course_group_students = array();
@@ -478,9 +480,10 @@ class TestingObject {
      * @return array
      */
     function toDataProviderSample() {
+      
         $exportable_attributes = array();
         $attribute_mapping = array('realname' => 'name');
-        if (in_array($this->type, array('courses_course', 'courses_group'/* ,.. todo.. */))) {
+        if (in_array($this->type, array(NM_COURSE, NM_COURSE_GROUP, NM_CONTENT_DOMAIN /* ,.. todo.. */))) {
             $exportable_attributes[] = 'title';
         }
         elseif($this->type == 'user')
