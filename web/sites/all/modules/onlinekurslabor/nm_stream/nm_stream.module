@@ -13,6 +13,9 @@ define('NM_STREAM_PROJECT', 5);
 //Domain (annvid)
 define('NM_STREAM_DOMAIN', 6);
 
+// API
+define('NM_STREAM_API_INIT_POSTS_LIMIT', 1000);
+
 define('NM_STREAM_ALLOWED_HTML_TAGS', serialize(array('a', 'em', 'b','u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
     'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot')));
 
@@ -2302,7 +2305,7 @@ function nm_stream_api_v2_initialize_callback($stream_container_node) {
 /**
  * @param $stream_container_node
  */
-function nm_stream_api_v2_get_posts($stream_container_node) {
+function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit = NM_STREAM_API_INIT_POSTS_LIMIT) {
   global $user;
   global $base_url;
   $account = clone $user;
@@ -2323,7 +2326,8 @@ function nm_stream_api_v2_get_posts($stream_container_node) {
       //->condition('n.nid', $top_node->nid, '>')
       ->condition('n.type', $types, 'IN')
       ->condition('n.status', NODE_PUBLISHED)
-      ->orderBy("n.created", "DESC") //order important!
+      ->orderBy("n.created", "DESC")//order important!
+      ->range($offset, $limit)
       ->addTag('node_access');
 
 
