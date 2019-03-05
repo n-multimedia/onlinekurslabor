@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_section_courses_features.views_default.inc
@@ -3798,7 +3799,7 @@ return   $task_obj->field_task_type[LANGUAGE_NONE][0][\'value\'];';
   $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_1']['php_value'] = '/*frage nicht. ueber dpm($data) hab ich nur schrott erhalten.*/
 /*gib nur aus, falls gruppenaufgabe*/
-$task_type  = $data->views_php_7;
+$task_type  = (int) ($row->php);
 
 return   ($task_type == NM_COURSES_TASK_TYPE_GROUP )? _section_courses_get_coursegroup_gid($row->uid, node_load($row->gid)): false;
 ';

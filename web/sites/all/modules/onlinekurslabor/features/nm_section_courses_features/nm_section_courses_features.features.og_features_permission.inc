@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_section_courses_features.features.og_features_permission.inc
