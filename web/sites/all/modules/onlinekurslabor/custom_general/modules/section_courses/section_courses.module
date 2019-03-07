@@ -1378,7 +1378,7 @@ function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
 function _section_courses_get_coursegroups_for_user($user_account) {
     //get all gids the user belongs to
     $all_groups = og_get_groups_by_user($user_account);
-    $all_groups = $all_groups['node'] ? $all_groups['node'] : array();
+    $all_groups = !empty($all_groups['node']) ? $all_groups['node'] : array();
     
     $course_groups = array();
     foreach ($all_groups as $gid) {
