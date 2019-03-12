@@ -50,36 +50,39 @@ var ns = H5PEditor;
       }
     }).change();
 
-    $('#h5p-content-node-form').submit(function (event) {
-      if (h5peditor !== undefined) {
+    let formIsUpdated = false;
+    const $form = $('#h5p-content-node-form').submit(function (event) {
+      if ($type.length && $type.filter(':checked').val() === 'upload') {
+        return; // Old file upload
+      }
 
-        var params = h5peditor.getParams();
+      if (h5peditor !== undefined && !formIsUpdated) {
 
-        if (params !== undefined && params.params !== undefined) {
-          // Validate mandatory main title. Prevent submitting if that's not set.
-          // Deliberatly doing it after getParams(), so that any other validation
-          // problems are also revealed
-          if (!h5peditor.isMainTitleSet()) {
-            return event.preventDefault();
-          }
+        // Get content from editor
+        h5peditor.getContent(function (content) {
+
+          // Set Drupal 7's title field
+          titleFormElement.value = content.title
 
           // Set main library
-          $library.val(h5peditor.getLibrary());
+          $library.val(content.library);
 
           // Set params
-          $params.val(JSON.stringify(params));
+          $params.val(content.params);
 
           // Calculate & set max score
-          $maxscore.val(h5peditor.getMaxScore(params.params));
+          //$maxscore.val(h5peditor.getMaxScore(params.params)); TODO: Return as part of content
 
-          // Set Drupal 7's title field to the metadata title if the field
-          // is not displayed
-          var tmp = document.createElement('div');
-          tmp.innerHTML = params.metadata.title;
-          titleFormElement.value = tmp.textContent;
-        }
+          // Submit form data
+          formIsUpdated = true;
+          $form.submit();
+        });
+
+        // Stop default submit
+        event.preventDefault();
       }
     });
+
   };
 
   ns.getAjaxUrl = function (action, parameters) {

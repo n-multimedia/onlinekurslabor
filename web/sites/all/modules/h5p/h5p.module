@@ -417,7 +417,7 @@ function _h5p_form_submit($form, &$form_state) {
 function _h5p_get_disable_labels() {
   return array(
     H5PCore::DISPLAY_OPTION_FRAME => t('Display buttons (download, embed and copyright)'),
-    H5PCore::DISPLAY_OPTION_DOWNLOAD => t('Download button'),
+    H5PCore::DISPLAY_OPTION_DOWNLOAD => t('Allow download'),
     H5PCore::DISPLAY_OPTION_EMBED => t('Embed button'),
     H5PCore::DISPLAY_OPTION_COPYRIGHT => t('Copyright button'),
     H5PCore::DISPLAY_OPTION_ABOUT => t('About H5P button')
@@ -459,6 +459,17 @@ function h5p_validate($node, &$form) {
   if (isset($_SESSION['h5p_upload'])) {
     $h5p_validator = _h5p_get_instance('validator');
     $valid = $h5p_validator->isValidPackage();
+
+    foreach ($h5p_validator->h5pC->mainJsonData['preloadedDependencies'] as $dep) {
+      if ($dep['machineName'] === $h5p_validator->h5pC->mainJsonData['mainLibrary']) {
+        if ($h5p_validator->h5pF->libraryHasUpgrade($dep)) {
+          // We do not allow storing old content due to security concerns
+          form_set_error('h5p', t("You're trying to upload content of an older version of H5P. Please upgrade the content on the server it originated from and try to upload again or turn on the H5P Hub to have this server upgrade it for your automaticall."));
+          break;
+        }
+      }
+    }
+
     if (!$valid) {
       form_set_error('h5p', t('The uploaded file was not a valid H5P package'));
       // Nothing is valid, nothing is kept.
@@ -866,8 +877,9 @@ function h5p_get_core_settings() {
     'hubIsEnabled' => variable_get('h5p_hub_is_enabled', TRUE) ? TRUE : FALSE,
     'reportingIsEnabled' => $enableReportingFeatures,
     'crossorigin' => variable_get('h5p_crossorigin', NULL),
-    'crossoriginRegex' => variable_get('h5p_crossoriginRegex', NULL),
     'libraryConfig' => $core->h5pF->getLibraryConfig(),
+    'pluginCacheBuster' => '?' . variable_get('css_js_query_string', ''),
+    'libraryUrl' => url(drupal_get_path('module', 'h5p') . '/library/js')
   );
 
   if ($user->uid) {

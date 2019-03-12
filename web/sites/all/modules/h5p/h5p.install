@@ -609,6 +609,11 @@ function h5p_schema() {
         'type' => 'varchar',
         'length' => 127,
         'not null' => TRUE
+      ),
+      'default_language' => array(
+        'description' => 'Default language for common fields',
+        'type' => 'varchar',
+        'length' => 32
       )
     ),
     'primary key' => array('content_id'),
@@ -1780,4 +1785,17 @@ function h5p_update_7121() {
     ->condition('uri', 'public://h5p/content/%', 'LIKE')
     ->condition('status', 0)
     ->execute();
+}
+
+/**
+ * Add default language to nodes
+ */
+function h5p_update_7122() {
+  if (!db_field_exists('h5p_nodes', 'default_language')) {
+    db_add_field('h5p_nodes', 'default_language', array(
+      'description' => 'Default language for common fields',
+      'type' => 'varchar',
+      'length' => 32
+    ));
+  }
 }

@@ -40,7 +40,15 @@ function h5p_admin_settings($form, &$form_state) {
     )
   );
 
-  $button_behaviours = array(
+  $button_behaviours_download = array(
+    H5PDisplayOptionBehaviour::NEVER_SHOW => t('Never'),
+    H5PDisplayOptionBehaviour::ALWAYS_SHOW => t('Always '),
+    H5PDisplayOptionBehaviour::CONTROLLED_BY_PERMISSIONS => t('Only if permitted through permissions'),
+    H5PDisplayOptionBehaviour::CONTROLLED_BY_AUTHOR_DEFAULT_ON => t('Controlled by author, default is on'),
+    H5PDisplayOptionBehaviour::CONTROLLED_BY_AUTHOR_DEFAULT_OFF => t('Controlled by author, default is off'),
+  );
+
+  $button_behaviours_embed = array(
     H5PDisplayOptionBehaviour::NEVER_SHOW => t('Never show'),
     H5PDisplayOptionBehaviour::ALWAYS_SHOW => t('Always show'),
     H5PDisplayOptionBehaviour::CONTROLLED_BY_PERMISSIONS => t('Show only if permitted through permissions'),
@@ -50,14 +58,14 @@ function h5p_admin_settings($form, &$form_state) {
 
   _h5p_add_display_option($form['h5p_display_options'], 'h5p_frame', t('Display buttons (download, embed and copyright)'), variable_get('h5p_frame', TRUE), '.form-item-h5p-export, .form-item-h5p-embed, .form-item-h5p-copyright, .form-item-h5p-icon');
   $form['h5p_display_options']['h5p_export'] = array(
-    '#title' => t('Download button'),
-    '#options' => $button_behaviours,
+    '#title' => t('Allow download'),
+    '#options' => $button_behaviours_download,
     '#default_value' => variable_get('h5p_export', H5PDisplayOptionBehaviour::ALWAYS_SHOW),
     '#type' => 'select',
   );
   $form['h5p_display_options']['h5p_embed'] = array(
     '#title' => t('Embed button'),
-    '#options' => $button_behaviours,
+    '#options' => $button_behaviours_embed,
     '#default_value' => variable_get('h5p_embed', H5PDisplayOptionBehaviour::ALWAYS_SHOW),
     '#type' => 'select',
   );
@@ -634,6 +642,9 @@ function h5p_content_upgrade($library_id) {
       'errorScript' => t('Could not load upgrades script for %lib.'),
       'errorContent' => t('Could not upgrade content %id:'),
       'errorParamsBroken' => t('Parameters are broken.'),
+      'errorLibrary' => t('Missing required library %lib.'),
+      'errorTooHighVersion' => t('Parameters contain %used while only %supported or earlier are supported.'),
+      'errorNotSupported' => t('Parameters contain %used which is not supported.'),
       'done' => t('You have successfully upgraded %num.', array('%num' => $contents_plural)) . ($return ? ' ' . l(t('Return'), $return) : ''),
       'library' => array(
         'name' => $library->name,
@@ -724,20 +735,37 @@ function h5p_content_upgrade_progress($library_id) {
     }
   }
 
+  // Determine if any content has been skipped during the process
+  $skipped = filter_input(INPUT_POST, 'skipped');
+  if ($skipped !== NULL) {
+    $out->skipped = json_decode($skipped);
+    // Clean up input, only numbers
+    foreach ($out->skipped as $i => $id) {
+      $out->skipped[$i] = intval($id);
+    }
+    $skipped = implode(',', $out->skipped);
+  }
+  else {
+    $out->skipped = array();
+  }
+
   // Get number of contents for this library
-  $out->left = $interface->getNumContent($library_id);
+  $out->left = $interface->getNumContent($library_id, $skipped);
 
   if ($out->left) {
+    $skip_query = empty($skipped) ? '' : " AND h.content_id NOT IN ($skipped)";
+
     // Find the 10 first contents using library and add to params
     $contents = db_query(
         "SELECT h.content_id AS id,
                 h.json_content AS params,
                 n.title,
                 h.authors, h.source, h.license, h.license_version, h.license_extras,
-                h.year_from, h.year_to, h.changes, h.author_comments
+                h.year_from, h.year_to, h.changes, h.author_comments, h.default_language
            FROM {h5p_nodes} h
            JOIN {node} n ON n.nid = h.nid
           WHERE h.main_library_id = :id
+                {$skip_query}
           LIMIT 40",
         array(':id' => $library_id));
 
@@ -771,10 +799,6 @@ function h5p_content_upgrade_library($name, $major, $minor) {
 
   $core = _h5p_get_instance('core');
   $library->semantics = $core->loadLibrarySemantics($library->name, $library->version->major, $library->version->minor);
-  if ($library->semantics === NULL) {
-    drupal_not_found();
-    exit;
-  }
 
   if ($core->development_mode & H5PDevelopment::MODE_LIBRARY) {
     $dev_lib = $core->h5pD->getLibrary($library->name, $library->version->major, $library->version->minor);

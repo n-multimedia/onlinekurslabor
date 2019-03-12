@@ -831,7 +831,8 @@ class H5PDrupal implements H5PFrameworkInterface {
               hn.year_from AS meta_year_from,
               hn.year_to AS meta_year_to,
               hn.changes AS meta_changes,
-              hn.author_comments AS meta_author_comments
+              hn.author_comments AS meta_author_comments,
+              hn.default_language AS meta_default_language
       FROM {h5p_nodes} hn
       JOIN {node} n ON n.nid = hn.nid
       JOIN {h5p_libraries} hl ON hl.library_id = hn.main_library_id
@@ -847,7 +848,7 @@ class H5PDrupal implements H5PFrameworkInterface {
 
     // Build metadata object
     $content->metadata = array();
-    foreach(array('authors', 'source', 'license', 'license_version', 'license_extras' ,'year_from', 'year_to', 'changes', 'author_comments') as $value) {
+    foreach(array('authors', 'source', 'license', 'license_version', 'license_extras' ,'year_from', 'year_to', 'changes', 'author_comments', 'default_language') as $value) {
       $lookup = 'meta_' . $value;
       if (isset($content->$lookup)) {
         $content->metadata[$value] = $content->$lookup;
@@ -981,8 +982,9 @@ class H5PDrupal implements H5PFrameworkInterface {
   /**
    * Implements getNumContent.
    */
-  public function getNumContent($library_id) {
-    return intval(db_query('SELECT COUNT(content_id) FROM {h5p_nodes} WHERE main_library_id = :id', array(':id' => $library_id))->fetchField());
+  public function getNumContent($library_id, $skip = NULL) {
+    $skip_query = empty($skip) ? '' : " AND content_id NOT IN ($skip)";
+    return intval(db_query('SELECT COUNT(content_id) FROM {h5p_nodes} WHERE main_library_id = :id' . $skip_query, array(':id' => $library_id))->fetchField());
   }
 
   /**
@@ -1030,6 +1032,7 @@ class H5PDrupal implements H5PFrameworkInterface {
   public function hasPermission($permission, $content_id = NULL) {
     switch ($permission) {
       case H5PPermission::DOWNLOAD_H5P:
+      case H5PPermission::COPY_H5P:
         return $content_id !== NULL && (
           user_access('download all h5ps') ||
           (self::mayCurrentUserUpdateNode($content_id) && user_access('download own h5ps'))
@@ -1092,5 +1095,24 @@ class H5PDrupal implements H5PFrameworkInterface {
         ))
         ->execute();
     }
+  }
+
+  /**
+   * Implements libraryHasUpgrade
+   */
+  public function libraryHasUpgrade($library) {
+    return !!db_query(
+      "SELECT library_id
+         FROM {h5p_libraries}
+        WHERE machine_name = :name
+          AND (major_version > :major
+           OR (major_version = :major AND minor_version > :minor))
+        LIMIT 1",
+      array(
+        ':name' => $library['machineName'],
+        ':major' => $library['majorVersion'],
+        ':minor' => $library['minorVersion']
+      )
+    )->fetchField();
   }
 }
