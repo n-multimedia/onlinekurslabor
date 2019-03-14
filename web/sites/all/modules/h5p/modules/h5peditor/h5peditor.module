@@ -218,7 +218,8 @@ function h5peditor_h5p_content_node_form_after_build($form) {
       'assets' => $assets,
       'contentRelUrl' => '../h5p/content/',
       'editorRelUrl' => '../../../h5peditor/',
-      'apiVersion' => H5PCore::$coreApi
+      'apiVersion' => H5PCore::$coreApi,
+      'language' => $language->language
     ),
   );
 
