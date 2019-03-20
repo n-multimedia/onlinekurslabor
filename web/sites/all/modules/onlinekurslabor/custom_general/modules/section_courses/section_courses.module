@@ -3241,3 +3241,24 @@ function _section_courses_save_forum_term($course_node, $title, $parent_term_tid
     return $new_term->tid;
 }
 
+
+/**
+ * implements hook_views_pre_render(&$view)
+ * Im Forum wird "View n new" zu "n new" umgesetzt ohne den view selbst zu verändern
+ * @param type $view
+ */
+function section_courses_views_pre_render(&$view) { 
+    if ($view->name === 'advanced_forum_topic_list') {
+
+        //Nutze funktionalität  "Rewrite the output of this field"
+        
+        $view->field['new_comments']->options['alter']['alter_text'] = 1;
+        $view->field['new_comments']->options['alter']['text'] = t("@new_count new", array("@new_count"=>"[new_comments]"));
+        $view->field['new_comments']->options['prefix'] = '';
+        $view->field['new_comments']->options['suffix'] = '';
+
+        //beende rewrite für "0 neue"
+        $view->field['new_comments']->options['hide_alter_empty'] = 1;
+    }
+}
+
