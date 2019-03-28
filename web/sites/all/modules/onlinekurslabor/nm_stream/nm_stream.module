@@ -14,7 +14,7 @@ define('NM_STREAM_PROJECT', 5);
 define('NM_STREAM_DOMAIN', 6);
 
 // API
-define('NM_STREAM_API_INIT_POSTS_LIMIT', 1000);
+define('NM_STREAM_API_INIT_POSTS_LIMIT', 10);
 
 define('NM_STREAM_ALLOWED_HTML_TAGS', serialize(array('a', 'em', 'b','u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
     'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot')));
@@ -164,8 +164,12 @@ function nm_stream_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  //
+  // API
+  //
+
   $items['api/v2.0/nm_stream/node/%node/initialize'] = array(
-    'title' => 'Get nm_stream initialization data',
+    'title' => 'NM Stream initialize posts',
     'page callback' => 'nm_stream_api_v2_initialize_callback',
     'page arguments' => array(4),
     'access callback' => 'node_access',
@@ -173,23 +177,87 @@ function nm_stream_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['api/v2.0/nm_stream/node/%node/update'] = array(
+  $items['api/v2.0/nm_stream/node/%node/poll_update/%/%/%'] = array(
+    'title' => 'NM Stream poll update',
+    'page callback' => 'nm_stream_api_v2_poll_update_callback',
+    'page arguments' => array(4, 6, 7, 8),
+    'access callback' => 'node_access',
+    'access arguments' => array('view', 4),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/node/add/%'] = array(
+    'title' => 'NM Stream Node Add',
+    'page callback' => 'nm_stream_api_v2_node_add_callback',
+    'page arguments' => array(5),
+    'access callback' => 'nm_stream_user_has_role',
+    'access arguments' => array(array('authenticated user')),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/node/%node/delete/%'] = array(
+    'title' => 'NM Stream Node delete',
+    'page callback' => 'nm_stream_api_v2_node_delete_callback',
+    'page arguments' => array(4, 6),
+    'access callback' => 'node_access',
+    'access arguments' => array('delete', 4),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/node/%node/update/%'] = array(
     'title' => 'NM Stream Node update',
-    'page callback' => 'nm_stream_api_v2_update_callback',
-    'page arguments' => array(4),
+    'page callback' => 'nm_stream_api_v2_node_update_callback',
+    'page arguments' => array(4, 6),
     'access callback' => 'node_access',
     'access arguments' => array('update', 4),
     'type' => MENU_CALLBACK,
   );
 
+  $items['api/v2.0/nm_stream/node/%node/file/upload/%'] = array(
+    'title' => 'NM Stream Upload File',
+    'page callback' => 'nm_stream_api_v2_node_file_upload_callback',
+    'page arguments' => array(4,7),
+    'access callback' => 'nm_stream_user_has_role', // further access check in nm_stream_api_v2_node_file_upload_callback
+    'access arguments' => array(array('authenticated user')),
+    'type' => MENU_CALLBACK,
+  );
+
   $items['api/v2.0/nm_stream/node/%node/file/%file/delete/%'] = array(
-    'title' => 'Delete NM Stream File',
+    'title' => 'NM Stream Delete File',
     'page callback' => 'nm_stream_api_v2_node_file_delete_callback',
     'page arguments' => array(4, 6, 8),
     'access callback' => 'node_access',
     'access arguments' => array('update', 4),
     'type' => MENU_CALLBACK,
   );
+
+  $items['api/v2.0/nm_stream/node/%node/comment/add/%'] = array(
+    'title' => 'NM Stream Node Comment Add',
+    'page callback' => 'nm_stream_api_v2_comment_add_callback',
+    'page arguments' => array(4, 7),
+    'access callback' => 'node_access',
+    'access arguments' => array('view', 4),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/comment/%comment/update/%'] = array(
+    'title' => 'NM Stream Node Comment update',
+    'page callback' => 'nm_stream_api_v2_comment_update_callback',
+    'page arguments' => array(4, 6),
+    'access callback' => 'nm_stream_comment_access',
+    'access arguments' => array('edit', 4),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/comment/%comment/delete/%'] = array(
+    'title' => 'NM Stream Node Comment Delete',
+    'page callback' => 'nm_stream_api_v2_comment_delete_callback',
+    'page arguments' => array(4, 6),
+    'access callback' => 'nm_stream_comment_access',
+    'access arguments' => array('delete', 4),
+    'type' => MENU_CALLBACK,
+  );
+
 
   /*
     //file upload
@@ -222,6 +290,7 @@ function nm_stream_user_has_role($roles) {
     return FALSE;
   }
 }
+
 
 /**
  * get node updates
@@ -585,6 +654,12 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
     return $response;
 }
 
+
+/**
+ * @param string $type
+ *
+ * @throws \Exception
+ */
 function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
   global $user;
 
@@ -2256,6 +2331,9 @@ function nm_stream_api_v2_initialize_callback($stream_container_node) {
   global $base_url;
   $account = clone $user;
 
+  // CORS Setting to allow localhost accessing the API
+  nm_stream_api_v2_set_localhost_headers();
+
   // todo faking group url
   $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347#node-16824";
 
@@ -2294,9 +2372,69 @@ function nm_stream_api_v2_initialize_callback($stream_container_node) {
   $data['stream']['comments'] = $posts_comments_users['comments'];
   $data['stream']['users'] = $posts_comments_users['users'];
 
+  $data['stream']['timestamp'] = REQUEST_TIME;
 
-  drupal_add_http_header('Access-Control-Allow-Credentials', 'true');
-  drupal_add_http_header('Access-Control-Allow-Origin', 'http://localhost:8080');
+  return drupal_json_output($data);
+}
+
+/**
+ *
+ */
+function nm_stream_api_v2_render_stream($container) {
+
+
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/manifest.2ae2e69a05c33dfc65f8.js", [
+    'scope' => 'footer',
+    'weight' => 5,
+  ]);
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/vendor.ff56f71e1e43a8c48af3.js", [
+    'scope' => 'footer',
+    'weight' => 5,
+  ]);
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.d6d70c973211560480d6.js", [
+    'scope' => 'footer',
+    'weight' => 5,
+  ]);
+
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.ed54f3684ac5762ad3d22a39d80ae96a.css', [
+    'scope' => 'footer',
+    'weight' => 5,
+  ]);
+
+
+  // direct css adaptions (drupal layout)
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream_v2.css');
+
+  return '<div id="stream" data-container-nid="' . $container->nid . '">...</div>';
+
+}
+
+
+/**
+ * get init data strukture for nm_stream
+ * @param $nid
+ */
+function nm_stream_api_v2_poll_update_callback($stream_container_node, $offset = 0, $limit = NM_STREAM_API_INIT_POSTS_LIMIT, $token) {
+  $data = [];
+
+  // prevent csrf attacks
+  if (!drupal_valid_token($token)) {
+    $response['status'] = 0;
+    $response['error'] = 'CSRF!';
+
+    return drupal_access_denied();
+    //return drupal_json_output($response);
+  }
+
+  $data['stream'] = [];
+
+  // get nodes created or changed after last update timestamp
+  $posts_comments_users = nm_stream_api_v2_get_posts($stream_container_node, $offset, $limit);
+  $data['stream']['posts'] = $posts_comments_users['posts'];
+  $data['stream']['comments'] = $posts_comments_users['comments'];
+  $data['stream']['users'] = $posts_comments_users['users'];
+
+  $data['stream']['timestamp'] = REQUEST_TIME;
 
   return drupal_json_output($data);
 }
@@ -2309,6 +2447,10 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
   global $user;
   global $base_url;
   $account = clone $user;
+
+  // todo faking group url
+  $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347#node-16824";
+
 
   $types = nm_stream_get_stream_content_types();
 
@@ -2330,6 +2472,13 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
       ->range($offset, $limit)
       ->addTag('node_access');
 
+    // only get nodes created or updated after last update $timestamp
+    /*if ($timestamp) {
+      $or = db_or();
+      $or->condition('n.created', $timestamp, ">");
+      $or->condition('n.changed', $timestamp, ">");
+      $query->condition($or);
+    }*/
 
     //01.04.2014 - 22:53 - SN context needed
     //if we are in a special context e.g. course group, we just want to see
@@ -2346,7 +2495,6 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
     //prevent fetching updates of nodes without any context!
     $query->join('field_data_field_nm_stream_context', 'field_data_field_nm_stream_context', "n.nid = field_data_field_nm_stream_context.entity_id  AND field_data_field_nm_stream_context.entity_type = 'node'"); //JOIN
     $query->isNotNull('field_data_field_nm_stream_context.field_nm_stream_context_target_id');
-
 
     if (!empty($context)) {
       if($context->type == NM_CONTENT_DOMAIN) {
@@ -2401,76 +2549,10 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
         }
       }
 
-      $privacy_options_raw = _nm_stream_privacy_options($account, $node, nm_stream_get_environment());
-      $privacy_key_default = 0;
-      $privacy_options = [];
-      foreach ($privacy_options_raw as $key => $option) {
-        $selected = '';
-        if ($option['default']) {
-          $privacy_key_default = $key;
-        }
-        $privacy_options[] = $key;
-      }
-
-      $node_environment = _nm_stream_get_node_environment($node);
-      $node_context = $node_environment['context'];
-      $node_container = $node_environment['container'];
-
-      $node_data = [];
-      $node_data['uid'] = $node->uid;
-      $node_data['nid'] = $node->nid;
-      $node_data['title'] = $node->title;
-      $node_data['body'] = $node->body['und'][0]['value'];
-      $node_data['created'] = date(DATE_FORMAT_ISO, $node->created);
-      $node_data['updated'] = date(DATE_FORMAT_ISO, $node->updated);
-      $node_data['privacy'] = [];
-      $node_data['privacy']['privacyDefault'] = $privacy_key_default;
-      $node_data['privacy']['privacyOptions'] = $privacy_options;
-
-      $node_data['permissions'] = [];
-      $node_data['permissions']['canCreateComment'] = node_access('view', $node);
-      $node_data['permissions']['canEdit'] = node_access('update', $node);;
-      $node_data['permissions']['canDelete'] = node_access('delete', $node);;
-
-      $node_data['context'] = [];
-      $node_data['context']['nid'] = $node_context->nid;
-      $node_data['context']['title'] = $node_context->title;
-      $node_data['context']['link'] = url('node/' . $node_context->nid, ['absolute' => TRUE]);
-
-      $node_data['container'] = [];
-      $node_data['container']['nid'] = $node_container->nid;
-      $node_data['container']['title'] = $node_container->title;
-      $node_data['container']['link'] = url('node/' . $node_container->nid, ['absolute' => TRUE]);
-
-      // attachments
-      $node_data['attachments'] = [];
-      foreach ($node->field_nm_attachments[LANGUAGE_NONE] as $item) {
-        $file = file_load($item['fid']);
-        $attachment = [];
-        $attachment['fid'] = $file->fid;
-        $attachment['filesize'] = $file->filesize;
-        $attachment['uid'] = $file->uid;
-        $attachment['filename'] = $file->filename;
-        $attachment['type'] = $file->type;
-        $attachment['filemime'] = $file->filemime;
-
-
-        $mime = check_plain($file->filemime);
-        $icon_url = $base_url . "/" . file_icon_url($file, NULL);
-        $icon = '<img class="file-icon" alt="' . check_plain($mime) . '" title="' . $mime . '" src="' . $icon_url . '" />';
-
-        $uri = file_entity_download_uri($file);
-        $uri['options']['attributes']['type'] = $file->filemime . '; length=' . $file->filesize;
-        $uri['options']['absolute'] = TRUE;
-        $attachment['download_link'] = $icon . " " . l($attachment['filename'], $uri['path'], $uri['options']);
-        $attachment['permissions'] = [];
-        $attachment['permissions']['canDelete'] = node_access('update', $node);
-
-        $node_data['attachments'][] = $attachment;
-      }
+      $node_data = nm_stream_api_v2_get_posts_json_data($account, $node);
 
       // add post result
-      $result_posts[$node->nid] = $node_data;
+      $result_posts[] = $node_data;
 
       // fill corresponding users array
       if(empty($result_users[$node->uid])) {
@@ -2484,52 +2566,40 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
       }
     }
 
-    //fill corresponding comments array
-    //get nm_stream nodes where created > $node->created
-    $query_new_comments = db_select('comment', 'c');
-    $query_new_comments->addField('c', 'cid');
-    $query_new_comments->addField('c', 'nid');
-    $query_new_comments->addField('c', 'created');
-    $query_new_comments
-      ->condition('c.status', COMMENT_PUBLISHED)
-      ->condition('c.nid', array_keys($result_posts), "IN")
-      ->orderBy("c.cid", "DESC") //order important!
-      ->addTag('node_access');
 
-    $results_comments_db = $query_new_comments->execute()->fetchAllAssoc("cid");
-    $result_comments_full = comment_load_multiple(array_keys($results_comments_db));
+    if (count($result_posts) > 0) {
+      //fill corresponding comments array
+      //get nm_stream nodes where created > $node->created
+      $query_new_comments = db_select('comment', 'c');
+      $query_new_comments->addField('c', 'cid');
+      $query_new_comments->addField('c', 'nid');
+      $query_new_comments->addField('c', 'created');
+      $query_new_comments
+        ->condition('c.status', COMMENT_PUBLISHED)
+        ->condition('c.nid', array_column($result_posts, 'nid'), "IN")
+        ->orderBy("c.cid", "DESC")//order important!
+        ->addTag('node_access');
 
-    $result_comments = [];
-    foreach ($result_comments_full as $key => $c_item) {
-      $result_comments[$key] = [];
-      $result_comments[$key]['nid'] = $c_item->nid;
-      $result_comments[$key]['cid'] = $c_item->cid;
-      $result_comments[$key]['uid'] = $c_item->uid;
-      $result_comments[$key]['created'] = date(DATE_FORMAT_ISO, $c_item->created);
-      $result_comments[$key]['changed'] = date(DATE_FORMAT_ISO, $c_item->changed);
-      $result_comments[$key]['body'] = $c_item->comment_body['und'][0]['value'];
+      $results_comments_db = $query_new_comments->execute()
+        ->fetchAllAssoc("cid");
+      $result_comments_full = comment_load_multiple(array_keys($results_comments_db));
 
-      $result_comments[$key]['permissions'] = [];
-      $result_comments[$key]['permissions']['canEdit'] = nm_stream_comment_access('edit', $c_item);;
-      $result_comments[$key]['permissions']['canDelete'] = nm_stream_comment_access('delete', $c_item);;
+      $result_comments = [];
+      foreach ($result_comments_full as $key => $c_item) {
+        list($comment_data, $comment_user) = nm_stream_api_v2_get_comments_json_data($account, $c_item);
+        $result_comments[] = $comment_data;
 
-      // fill corresponding users array for comment users
-      if(empty($result_users[$c_item->uid])) {
-        $comment_user = user_load($c_item->uid);
-        $result_users[$comment_user->uid]['uid'] = $comment_user->uid;
-        $result_users[$comment_user->uid]['name'] = format_username($comment_user);
-        $result_users[$comment_user->uid]['username'] = $comment_user->name;
-        $profile = profile2_load_by_user($comment_user, 'master');
-        $result_users[$comment_user->uid]['avatarUrl'] =  image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
-        $result_users[$comment_user->uid]['profileUrl'] = url('user/' . $comment_user->uid, ['absolute' => TRUE]);
+        // fill corresponding users array for comment users
+        if (empty($result_users[$comment_user['uid']])) {
+          $result_users[$comment_user->uid] = $comment_user;
+        }
       }
-
     }
 
   }
 
   // add logged in user to user set
-  if(empty($result_users[$account->uid])) {
+  if(empty($timestamp) && empty($result_users[$account->uid])) {
     $comment_user = user_load($account->uid);
     $result_users[$account->uid]['uid'] = $account->uid;
     $result_users[$account->uid]['name'] = format_username($account);
@@ -2547,6 +2617,195 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
 
 }
 
+/**
+ * @param $account
+ * @param $node
+ * @param $base_url
+ *
+ * @return array
+ */
+function nm_stream_api_v2_get_posts_json_data($account, $node) {
+  global $base_url;
+
+  $privacy_options_raw = _nm_stream_privacy_options($account, $node, nm_stream_get_environment());
+  $privacy_key_default = 0;
+  $privacy_options = [];
+  foreach ($privacy_options_raw as $key => $option) {
+    $selected = '';
+    if ($option['default']) {
+      $privacy_key_default = $key;
+    }
+    $privacy_options[] = $key;
+  }
+
+  $node_environment = _nm_stream_get_node_environment($node);
+  $node_context = $node_environment['context'];
+  $node_container = $node_environment['container'];
+
+  $node_data = [];
+  $node_data['uid'] = $node->uid;
+  $node_data['nid'] = $node->nid;
+  $node_data['title'] = $node->title;
+  $node_data['body'] = $node->body['und'][0]['value'];
+  $node_data['created'] = date(DATE_FORMAT_ISO, $node->created);
+  $node_data['updated'] = date(DATE_FORMAT_ISO, $node->updated);
+  $node_data['privacy'] = [];
+  $node_data['privacy']['privacyDefault'] = $node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
+  $node_data['privacy']['privacyOptions'] = $privacy_options;
+
+  $node_data['permissions'] = [];
+  $node_data['permissions']['canCreateComment'] = node_access('view', $node);
+  $node_data['permissions']['canEdit'] = node_access('update', $node);;
+  $node_data['permissions']['canDelete'] = node_access('delete', $node);;
+
+  $node_data['context'] = [];
+  $node_data['context']['nid'] = $node_context->nid;
+  $node_data['context']['title'] = $node_context->title;
+  $node_data['context']['link'] = url('node/' . $node_context->nid, ['absolute' => TRUE]);
+
+  $node_data['container'] = [];
+  $node_data['container']['nid'] = $node_container->nid;
+  $node_data['container']['title'] = $node_container->title;
+  $node_data['container']['link'] = url('node/' . $node_container->nid, ['absolute' => TRUE]);
+
+  // attachments
+  $node_data['attachments'] = [];
+  foreach ($node->field_nm_attachments[LANGUAGE_NONE] as $item) {
+    $file = file_load($item['fid']);
+    $attachment = [];
+    $attachment['fid'] = $file->fid;
+    $attachment['filesize'] = $file->filesize;
+    $attachment['uid'] = $file->uid;
+    $attachment['filename'] = $file->filename;
+    $attachment['type'] = $file->type;
+    $attachment['filemime'] = $file->filemime;
+
+
+    $mime = check_plain($file->filemime);
+    $icon_url = $base_url . "/" . file_icon_url($file, NULL);
+    $icon = '<img class="file-icon" alt="' . check_plain($mime) . '" title="' . $mime . '" src="' . $icon_url . '" />';
+
+    $uri = file_entity_download_uri($file);
+    $uri['options']['attributes']['type'] = $file->filemime . '; length=' . $file->filesize;
+    $uri['options']['absolute'] = TRUE;
+    $attachment['download_link'] = $icon . " " . l($attachment['filename'], $uri['path'], $uri['options']);
+    $attachment['permissions'] = [];
+    $attachment['permissions']['canDelete'] = node_access('update', $node);
+
+    $node_data['attachments'][] = $attachment;
+  }
+  return $node_data;
+}
+
+
+
+/**
+ * @param $account
+ * @param $comment
+ * @param $base_url
+ *
+ * @return array
+ */
+function nm_stream_api_v2_get_comments_json_data($account, $comment) {
+  $result_comment = [];
+
+  $result_comment['nid'] = $comment->nid;
+  $result_comment['cid'] = $comment->cid;
+  $result_comment['uid'] = $comment->uid;
+  $result_comment['created'] = date(DATE_FORMAT_ISO, $comment->created);
+  $result_comment['changed'] = date(DATE_FORMAT_ISO, $comment->changed);
+  $result_comment['body'] = $comment->comment_body['und'][0]['value'];
+
+  $result_comment['permissions'] = [];
+  $result_comment['permissions']['canEdit'] = nm_stream_comment_access('edit', $comment);;
+  $result_comment['permissions']['canDelete'] = nm_stream_comment_access('delete', $comment);;
+
+  // fill corresponding user
+  $comment_user = user_load($comment->uid);
+  $result_user['uid'] = $comment_user->uid;
+  $result_user['name'] = format_username($comment_user);
+  $result_user['username'] = $comment_user->name;
+  $profile = profile2_load_by_user($comment_user, 'master');
+  $result_user['avatarUrl'] = image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
+  $result_user['profileUrl'] = url('user/' . $comment_user->uid, ['absolute' => TRUE]);
+
+  return [$result_comment, $result_user];
+}
+
+/**
+ * attachments delete callback
+ *
+ * @param type $node
+ * @param type $file
+ */
+function nm_stream_api_v2_node_file_upload_callback($node, $token) {
+  // CORS Setting to allow localhost accessing the API
+  nm_stream_api_v2_set_localhost_headers();
+
+  // prevent csrf attacks
+  if (!drupal_valid_token($token)) {
+    $response['status'] = 0;
+    $response['error'] = 'CSRF!';
+
+    return drupal_access_denied();
+    //return drupal_json_output($response);
+  }
+
+  $num_files = 0;
+  if (isset($_FILES['file'])) {
+    $num_files = count($_FILES);
+    // prepare structure for file_save_upload
+    foreach ($_FILES['file'] as $key => $value) {
+      $_FILES['files'][$key][] = $value;
+    }
+
+  }
+
+  //get configurated file extensions
+  $file_instance = field_info_instance('node', 'field_nm_attachments', 'nm_stream');
+  $validators = [
+    'file_validate_extensions' => [$file_instance['settings']['file_extensions']],
+  ];
+
+  $files = [];
+  for ($i = 0; $i < $num_files; $i++) {
+    $file = file_save_upload($i, $validators, _nm_stream_getAttachmentFileSystemtype() . 'nm_stream');
+
+    if ($file) {
+      $files[$i] = $file;
+    }
+    else {
+      //no file uploaded
+    }
+  }
+
+  // CASE: node add
+  // we have no nid yet
+
+
+
+  if(node_access('update', $node)) {
+    //dpm($files);
+    foreach ($files as $file) {
+      $node->field_nm_attachments[LANGUAGE_NONE][] = array(
+        'fid' => $file->fid,
+        'uid' => $file->uid,
+        'uri' => $file->uri,
+        'filename' => $file->filename,
+        'filemime' => $file->filemime,
+        'status' => 1,
+        'display' => 1,
+      );
+    }
+
+    node_save($node);
+  }else {
+    // return access denied
+    return drupal_access_denied();
+  }
+
+}
+
 
 /**
  * attachments delete callback
@@ -2555,6 +2814,9 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
  * @param type $file
  */
 function nm_stream_api_v2_node_file_delete_callback($node, $file, $token) {
+
+  // CORS Setting to allow localhost accessing the API
+  nm_stream_api_v2_set_localhost_headers();
 
   // prevent csrf attacks
   if (!drupal_valid_token($token)) {
@@ -2597,9 +2859,100 @@ function nm_stream_api_v2_node_file_delete_callback($node, $file, $token) {
     drupal_access_denied();
   }
 
+  return drupal_json_output($response);
+}
 
-  drupal_add_http_header('Access-Control-Allow-Credentials', 'true');
-  drupal_add_http_header('Access-Control-Allow-Origin', 'http://localhost:8080');
+/**
+ * @param $node
+ * @param string $type
+ *
+ * @throws \Exception
+ */
+function nm_stream_api_v2_node_add_callback($token = NULL) {
+  global $user;
+  $account = clone $user;
+
+  //prevent csrf attacks
+  if (!drupal_valid_token($token)) {
+    //$response['status'] = 0;
+    //$response['error'] = 'CSRF on edit!';
+
+    return drupal_access_denied();
+  }
+
+  $response = [];
+  // CORS Setting to allow localhost accessing the API
+  nm_stream_api_v2_set_localhost_headers();
+
+  $node_data = json_decode(file_get_contents('php://input'), true);
+
+  if (is_array($node_data)) {
+
+    //consider adapting for in add callback too!
+    $body = _nm_stream_filter_xss($node_data['body']);
+    $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
+    $containerNID = _nm_stream_filter_xss($node_data['containerNID']);
+    $contextNID = _nm_stream_filter_xss($node_data['contextNID']);
+
+
+    if (!is_numeric($privacy) || empty($body)) {
+      // $response['status'] = 0;
+      // $response['error'] = 'Invalid data has been transmitted.';
+      return drupal_access_denied();
+    }
+    else {
+
+      $node = new stdClass();
+      $node->title = time();
+      $node->type = 'nm_stream';
+      //$node->body[LANGUAGE_NONE][0]['value'] = $body;
+      $node->body = array(
+        LANGUAGE_NONE => array(
+          0 => array(
+            'value' => $body,
+            'format' => 'filtered_html'
+          )
+        )
+      );
+      $node->field_nm_privacy [LANGUAGE_NONE][0]['value'] = $privacy;
+      node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
+      $node->language = 'de';
+      $node->uid = $account->uid;
+      $node->status = 1; //(1 or 0): published or not
+      $node->promote = 0; //(1 or 0): promoted to front page
+      $node->comment = 2; // 0 = comments disabled, 1 = read only, 2 = read/write
+
+      $node = node_submit($node); // Prepare node for saving
+      //attach to context and group
+      if(!empty($contextNID)){
+        $node->field_nm_stream_context[LANGUAGE_NONE][0]['target_id'] = $contextNID;
+      }
+
+      $node->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $containerNID;
+      //group content visibility
+      $node->group_content_access[LANGUAGE_NONE][0]['value'] = OG_CONTENT_ACCESS_PRIVATE;
+
+      $node->field_nm_attachments[LANGUAGE_NONE] = array();
+      //dpm($files);
+      /*foreach ($files as $file) {
+        $node->field_nm_attachments[LANGUAGE_NONE][] = array(
+          'fid' => $file->fid,
+          'uid' => $file->uid,
+          'uri' => $file->uri,
+          'filename' => $file->filename,
+          'filemime' => $file->filemime,
+          'status' => 1,
+          'display' => 1,
+        );
+      }*/
+
+      node_save($node);
+
+      $response['status'] = 1;
+      $response['nid'] = $node->nid;
+      $response['nodeData'] = nm_stream_api_v2_get_posts_json_data($account, $node);
+    }
+  }
 
   return drupal_json_output($response);
 }
@@ -2610,20 +2963,53 @@ function nm_stream_api_v2_node_file_delete_callback($node, $file, $token) {
  *
  * @throws \Exception
  */
-function nm_stream_api_v2_update_callback($node, $type = 'nm_stream') {
+function nm_stream_api_v2_node_delete_callback($node, $token = NULL) {
   global $user;
+  $account = clone $user;
+
+  //prevent csrf attacks
+  if (!drupal_valid_token($token)) {
+    //$response['status'] = 0;
+    //$response['error'] = 'CSRF on edit!';
+
+    return drupal_access_denied();
+  }
 
   $response = [];
 
-  if (isset($_REQUEST['body'])) {
+  if (!empty($node)) {
+
+    node_delete($node->nid);
+
+    $response['status'] = 1;
+    $response['nid'] = $node->nid;
+  }
+
+  return drupal_json_output($response);
+}
+
+/**
+ * @param $node
+ * @param string $type
+ *
+ * @throws \Exception
+ */
+function nm_stream_api_v2_node_update_callback($node, $token = NULL) {
+  global $user;
+
+  $response = [];
+  // CORS Setting to allow localhost accessing the API
+  nm_stream_api_v2_set_localhost_headers();
+
+  $node_data = json_decode(file_get_contents('php://input'), true);
+
+  if (is_array($node_data)) {
 
     //consider adapting for in add callback too!
-    $body = _nm_stream_filter_xss($_REQUEST['body']);
-    $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
+    $body = _nm_stream_filter_xss($node_data['body']);
+    $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
 
     //prevent csrf attacks
-    //@todo CSRF-Checks in einzelne Funktion auslagern & nicht 10x im Code
-    $token = isset($_REQUEST['token']) ? $_REQUEST['token'] : '';
     if (!drupal_valid_token($token)) {
       //$response['status'] = 0;
       //$response['error'] = 'CSRF on edit!';
@@ -2639,12 +3025,14 @@ function nm_stream_api_v2_update_callback($node, $type = 'nm_stream') {
     else {
       //set new values
       $node->body[LANGUAGE_NONE][0]['value'] = $body;
-      $node->field_nm_privacy [LANGUAGE_NONE][0]['value'] = $privacy;
+      $node->field_nm_privacy[LANGUAGE_NONE][0]['value'] = $privacy;
+
+      $node->changed = REQUEST_TIME;
 
       //file attachments
-      if (!isset($node->field_nm_attachments[LANGUAGE_NONE])) {
+      /*if (!isset($node->field_nm_attachments[LANGUAGE_NONE])) {
         $node->field_nm_attachments[LANGUAGE_NONE] = [];
-      }
+      }*/
 
       node_save($node);
 
@@ -2653,6 +3041,172 @@ function nm_stream_api_v2_update_callback($node, $type = 'nm_stream') {
     }
   }
 
+  return drupal_json_output($response);
+}
+
+
+
+/**
+ * @param $comment
+ * @param string $token
+ *
+ * @throws \Exception
+ */
+function nm_stream_api_v2_comment_update_callback($comment, $token = NULL) {
+  global $user;
+  $account = clone $user;
+
+  $response = [];
+  // CORS Setting to allow localhost accessing the API
+  nm_stream_api_v2_set_localhost_headers();
+
+  $comment_data = json_decode(file_get_contents('php://input'), true);
+
+  if (is_array($comment_data)) {
+
+    //consider adapting for in add callback too!
+    $body = _nm_stream_filter_xss($comment_data['body']);
+    $privacy = isset($comment_data['privacy']) ? check_plain($comment_data['privacy']) : '';
+
+    //prevent csrf attacks
+    if (!drupal_valid_token($token)) {
+      //$response['status'] = 0;
+      //$response['error'] = 'CSRF on edit!';
+
+      return drupal_access_denied();
+    }
+
+    if (empty($body)) {
+      // $response['status'] = 0;
+      // $response['error'] = 'Invalid data has been transmitted.';
+      return drupal_access_denied();
+    }
+    else {
+      //set new values
+      $comment->comment_body[LANGUAGE_NONE][0] = array(
+        'value' => $body,
+        'format' => 'filtered_html'
+      );
+      $comment->changed = REQUEST_TIME;
+      comment_save($comment);
+
+      $response['status'] = 1;
+      $response['cid'] = $comment->cid;
+    }
+  }
 
   return drupal_json_output($response);
+
+}
+
+/**
+ * @param $comment
+ * @param string $token
+ *
+ * @throws \Exception
+ */
+function nm_stream_api_v2_comment_add_callback($node, $token = NULL) {
+  global $user;
+  $account = clone $user;
+
+  $response = [];
+  // CORS Setting to allow localhost accessing the API
+  nm_stream_api_v2_set_localhost_headers();
+
+  $comment_data = json_decode(file_get_contents('php://input'), true);
+
+  if (is_array($comment_data)) {
+
+    //consider adapting for in add callback too!
+    $body = _nm_stream_filter_xss($comment_data['body']);
+
+    //prevent csrf attacks
+    if (!drupal_valid_token($token)) {
+      //$response['status'] = 0;
+      //$response['error'] = 'CSRF on edit!';
+
+      return drupal_access_denied();
+    }
+
+    if (empty($body)) {
+      // $response['status'] = 0;
+      // $response['error'] = 'Invalid data has been transmitted.';
+      return drupal_access_denied();
+    }
+    else {
+      // Add a comment.
+      $comment = (object) array(
+        'nid' => $node->nid,
+        'cid' => 0,
+        'pid' => 0,
+        'is_anonymous' => 0,
+        'uid' => $account->uid,
+        'status' => COMMENT_PUBLISHED,
+        'subject' => truncate_utf8(trim(decode_entities(strip_tags($body))), 29, TRUE),
+        'language' => LANGUAGE_NONE,
+        'comment_body' => array(
+          LANGUAGE_NONE => array(
+            0 => array(
+              'value' => $body,
+              'format' => 'filtered_html'
+            )
+          )
+        ),
+      );
+      comment_submit($comment);
+      comment_save($comment);
+
+      list($comment_data, $comment_user) = nm_stream_api_v2_get_comments_json_data($account, $comment);
+
+      $response['status'] = 1;
+      $response['cid'] = $comment->cid;
+      $response['commentData'] = $comment_data;
+      $response['userData'] = $comment_user;
+    }
+  }
+
+  return drupal_json_output($response);
+
+}
+
+/**
+ * @param $comment
+ * @param string $token
+ *
+ * @throws \Exception
+ */
+function nm_stream_api_v2_comment_delete_callback($comment, $token = NULL) {
+  global $user;
+  $account = clone $user;
+
+  //prevent csrf attacks
+  if (!drupal_valid_token($token)) {
+    //$response['status'] = 0;
+    //$response['error'] = 'CSRF on edit!';
+
+    return drupal_access_denied();
+  }
+
+  $response = [];
+
+  if (!empty($comment)) {
+
+    comment_delete($comment->cid);
+
+    $response['status'] = 1;
+    $response['cid'] = $comment->cid;
+  }
+
+  return drupal_json_output($response);
+
+}
+
+/**
+ *
+ */
+function nm_stream_api_v2_set_localhost_headers() {
+  drupal_add_http_header('Access-Control-Allow-Credentials', 'true');
+  drupal_add_http_header('Access-Control-Allow-Origin', 'http://localhost:8080');
+  drupal_add_http_header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
+  drupal_add_http_header('Access-Control-Allow-Headers', 'x-requested-with, Content-Type, origin, authorization, accept, client-security-token');
 }
