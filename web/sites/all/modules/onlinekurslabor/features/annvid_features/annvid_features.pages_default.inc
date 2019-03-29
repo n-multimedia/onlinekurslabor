@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * annvid_features.pages_default.inc
@@ -105,6 +106,7 @@ function annvid_features_default_page_manager_pages() {
       'tools' => NULL,
       'left' => NULL,
       'right' => NULL,
+      'middle' => NULL,
     ),
   );
   $display->cache = array();
@@ -214,7 +216,7 @@ echo section_content_text_outline();
   $pane->panel = 'middle';
   $pane->type = 'block';
   $pane->subtype = 'nm_stream-nm_stream_form_add_edit';
-  $pane->shown = TRUE;
+  $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 0,
@@ -237,7 +239,7 @@ echo section_content_text_outline();
   $pane->panel = 'middle';
   $pane->type = 'views';
   $pane->subtype = 'nm_stream';
-  $pane->shown = TRUE;
+  $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
     'override_pager_settings' => 0,
@@ -270,6 +272,35 @@ echo section_content_text_outline();
   $pane->uuid = '6bf7a136-75aa-4ea6-86cc-8e1bb33cc0bc';
   $display->content['new-6bf7a136-75aa-4ea6-86cc-8e1bb33cc0bc'] = $pane;
   $display->panels['middle'][5] = 'new-6bf7a136-75aa-4ea6-86cc-8e1bb33cc0bc';
+  $pane = new stdClass();
+  $pane->pid = 'new-234711af-45e6-411c-bdf1-cd61b3835246';
+  $pane->panel = 'middle';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'Render Stream V2',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<?php
+$container = node_load(%1:nid);
+return nm_stream_api_v2_render_stream($container );
+?>',
+    'format' => 'php_code',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 6;
+  $pane->locks = array();
+  $pane->uuid = '234711af-45e6-411c-bdf1-cd61b3835246';
+  $display->content['new-234711af-45e6-411c-bdf1-cd61b3835246'] = $pane;
+  $display->panels['middle'][6] = 'new-234711af-45e6-411c-bdf1-cd61b3835246';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-9631f371-ad25-408f-81bf-f6c21c2b28c0';
   $handler->conf['display'] = $display;
