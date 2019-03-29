@@ -19,7 +19,7 @@ function section_home_page_build(&$page) {
  * @param type $account
  */
 function section_home_user_login(&$edit, $account) {
-    
+
     if (! isset($_GET['destination']) && ! strstr ($_SERVER['REQUEST_URI'], '/user/reset'))
         $_GET['destination'] = '/';
 }
@@ -31,21 +31,23 @@ function section_home_user_login(&$edit, $account) {
  */
 function _section_home_getRenderedStream() {
 
-    $view = _section_home_getView('nm_stream','panel_pane_1');
-    
-    drupal_add_css(drupal_get_path('module','nm_stream').'/css/nm_stream.css');
-   # $view->set_title( t('Streamrecords'));
-    return _section_home_renderView($view, 'panel_pane_1');
-    }
-    
+  /*$view = _section_home_getView('nm_stream', 'panel_pane_1');
+
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream.css');
+  # $view->set_title( t('Streamrecords'));
+  return _section_home_renderView($view, 'panel_pane_1');*/
+
+  return nm_stream_api_v2_render_stream(NULL);
+}
+
 /**
  * Die Activity-Ansicht
  * @return String $html
- */    
+ */
 function _section_home_getRenderedActivity() {
 
     $view = _section_home_getView('nm_activity_stream','activity_display');
- 
+
    # $view->set_title(t('Activity'));
     return _section_home_renderView($view, 'activity_display', true);
 }
@@ -53,12 +55,12 @@ function _section_home_getRenderedActivity() {
 /**
  * Meine Lehrtexte
  * @return String $html
- */    
+ */
 function _section_home_getRenderedDomains() {
     global $user;
     $view = _section_home_getView('courses_user_domains','nid_only');
     $view->set_title('Meine Lehrtexte');
- 
+
     //gibts nur fuer autoren+
     if(drupal_valid_path('domains'))
     {
@@ -75,9 +77,9 @@ function _section_home_getRenderedDomains() {
 /**
  * Die Meine_kurse-Ansicht
  * @return String $html
- */    
+ */
 function _section_home_getRenderedCourses() {
-  
+
     $view = _section_home_getView('courses_kurse_bersicht', 'my_courses_small');
     $html = _section_home_get_rendered_tiitle($view->get_title(), array(_section_home_get_search_toggle_tag('views-exposed-form-courses-kurse-bersicht-my-courses-small'),_section_home_getMoreTag('courses', 'add')));
     $html .=  _section_home_renderView($view, 'my_courses_small') . _section_home_getMoreTag('courses', 'all');
@@ -92,7 +94,7 @@ function _section_home_getRenderedCourses() {
  * @return String html-Link | "" if not available
  */
 function _section_home_getMoreTag($variant, $type) {
-    
+
     $str_add_content = '';
     $options = array(
         'messages' => array('path' => 'messages', 'title' => t('All messages'), 'title_create' => t('Write message'), 'path_create' => '/messages/new'),
@@ -140,23 +142,23 @@ function _section_home_iconcontainer_right($html_content)
 /**
  * Die Ungelesene-Nachrichten-Ansicht
  * @return String $html
- * 
+ *
  * ueberfluessig, view wird direkt in der region geladen
 function _section_home_getRenderedMessages() {
- 
-    $view = _section_home_getView('messages_list','messages_unread'); 
+
+    $view = _section_home_getView('messages_list','messages_unread');
   #  $view->set_title(t('Unread messages'));
      $view->set_title($view->get_title()._section_home_getMoreTag('courses','add'));
-  
+
     return _section_home_renderView($view, 'messages_unread');
-   
-} 
+
+}
  */
 /**
  * Implements hook_panels_pane_content_alter
- * 
- * Das ist so //der letzte// einer der letzten Hooks, der aufgerufen wird, 
- * bevor ein panel geschrieben wird. 
+ *
+ * Das ist so //der letzte// einer der letzten Hooks, der aufgerufen wird,
+ * bevor ein panel geschrieben wird.
  * Wird benutzt, um dem View "Neue Nachrichten" ein +-Symbol und "alle-Nachrichten"-Symbol hinzuzufügen ohne
  * dabei mit der Tab-Logik zu interferen.
  * Außerdem wird bei zwei Panes der Title entfernt, da überflüssig
@@ -183,7 +185,7 @@ function section_home_panels_pane_content_alter($content, $pane, $args, $context
 
 
 
-       
+
 
 /**
  * liefert ein View-Object mit übergebenem Namen und führt notwendige Operatioen fuer Funktionsweise aus
@@ -200,11 +202,11 @@ function _section_home_getView($view_name, $display_id = null)
         $view->execute($display_id);
         //preview enables ajax-next-pager!!
         $view->preview($display_id);
-    } 
+    }
     return $view;
 }
- 
- 
+
+
 /**
  * Rendert einen View zu HTML
  * @param View $view der View
@@ -230,7 +232,7 @@ function _section_home_renderView(View $view, $display_id = null, $override_coun
  */
 function _section_home_get_rendered_tiitle($title, array $icons)
 {     $icon_str = _section_home_iconcontainer_right(implode('&nbsp;', $icons));
-      $html =   
+      $html =
       <<<EOF
     <div class="home_title_container">
     <h3 class="home_title">$title</h3>

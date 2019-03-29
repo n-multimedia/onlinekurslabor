@@ -168,21 +168,21 @@ function nm_stream_menu() {
   // API
   //
 
-  $items['api/v2.0/nm_stream/node/%node/initialize'] = array(
+  $items['api/v2.0/nm_stream/node/%/initialize'] = array(
     'title' => 'NM Stream initialize posts',
     'page callback' => 'nm_stream_api_v2_initialize_callback',
     'page arguments' => array(4),
-    'access callback' => 'node_access',
-    'access arguments' => array('view', 4),
+    'access callback' => 'nm_stream_poll_update_access',
+    'access arguments' => array(4),
     'type' => MENU_CALLBACK,
   );
 
-  $items['api/v2.0/nm_stream/node/%node/poll_update/%/%/%'] = array(
+  $items['api/v2.0/nm_stream/node/%/poll_update/%/%/%'] = array(
     'title' => 'NM Stream poll update',
     'page callback' => 'nm_stream_api_v2_poll_update_callback',
     'page arguments' => array(4, 6, 7, 8),
-    'access callback' => 'node_access',
-    'access arguments' => array('view', 4),
+    'access callback' => 'nm_stream_poll_update_access',
+    'access arguments' => array(4),
     'type' => MENU_CALLBACK,
   );
 
@@ -289,6 +289,23 @@ function nm_stream_user_has_role($roles) {
   else {
     return FALSE;
   }
+}
+
+
+/**
+ * @param $node
+ *
+ * @return bool
+ */
+function nm_stream_poll_update_access($nid) {
+  $node = node_load($nid);
+  if ($node) {
+    return node_access('view', $node);
+  }
+  else {
+    return TRUE;
+  }
+
 }
 
 
@@ -1738,12 +1755,34 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
     }
     else
     {
-        if(!is_array($current_environment))
-            drupal_set_message ("No environment given in 98uohe2fuw! Contact support!", "error");
+        /*if(!is_array($current_environment))
+            drupal_set_message ("No environment given in 98uohe2fuw! Contact support!", "error");*/
+        // global area (home page) => all options
+        if (empty($current_environment['container'])) {
+          $options_items[NM_STREAM_TEAM] = [
+            'label' => t('Team'), //todo: wer ist team?
+            'description' => t('@TODO describe this'),
+            'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+            'default' => FALSE,
+          ];
+          $options_items[NM_STREAM_COURSE] = [
+            'label' => t('Course'),
+            'description' => t('Visible for everyone in this course'),
+            'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+            'default' => FALSE,
+          ];
+          $options_items[NM_STREAM_DOMAIN] = [
+            'label' => t('Educational text'),
+            'description' => t('Visible for everyone who can see this educational text'),
+            'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
+            'default' => FALSE,
+          ];
+        }
+
     }
 
 
-    //private - always possible
+  //private - always possible
     $options_items[NM_STREAM_PRIVATE] = array(
         'label' => t('Private'),
         'description' => t('Visible only for you (and of course site-administrators)'),
@@ -2326,11 +2365,13 @@ function nm_stream_comment_access($op, $comment){
  * get init data strukture for nm_stream
  * @param $nid
  */
-function nm_stream_api_v2_initialize_callback($stream_container_node) {
+function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   global $user;
   global $base_url;
   $account = clone $user;
 
+
+  $stream_container_node = node_load($stream_container_nid);
   // CORS Setting to allow localhost accessing the API
   nm_stream_api_v2_set_localhost_headers();
 
@@ -2391,21 +2432,29 @@ function nm_stream_api_v2_render_stream($container) {
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.d6d70c973211560480d6.js", [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.f525890d6ecf5e5cc811.js", [
     'scope' => 'footer',
     'weight' => 5,
   ]);
 
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.ed54f3684ac5762ad3d22a39d80ae96a.css', [
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.7e15736dfb0379297d666032a6d3e754.css', [
     'scope' => 'footer',
     'weight' => 5,
   ]);
-
 
   // direct css adaptions (drupal layout)
   drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream_v2.css');
 
-  return '<div id="stream" data-container-nid="' . $container->nid . '">...</div>';
+  $result = "";
+
+  if( !empty($container->nid) ) {
+    // render with form
+    $result = '<div id="stream" data-container-nid="' . $container->nid . '">...</div>';
+  } else {
+    $result = '<div id="stream">...</div>';
+  }
+
+  return $result;
 
 }
 
@@ -2414,7 +2463,7 @@ function nm_stream_api_v2_render_stream($container) {
  * get init data strukture for nm_stream
  * @param $nid
  */
-function nm_stream_api_v2_poll_update_callback($stream_container_node, $offset = 0, $limit = NM_STREAM_API_INIT_POSTS_LIMIT, $token) {
+function nm_stream_api_v2_poll_update_callback($stream_container_nid, $offset = 0, $limit = NM_STREAM_API_INIT_POSTS_LIMIT, $token) {
   $data = [];
 
   // prevent csrf attacks
@@ -2425,6 +2474,8 @@ function nm_stream_api_v2_poll_update_callback($stream_container_node, $offset =
     return drupal_access_denied();
     //return drupal_json_output($response);
   }
+
+  $stream_container_node = node_load($stream_container_nid);
 
   $data['stream'] = [];
 
@@ -2451,156 +2502,155 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
   // todo faking group url
   $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347#node-16824";
 
-
   $types = nm_stream_get_stream_content_types();
 
   $result_posts = [];
   $result_users = [];
   $result_comments = [];
 
-  if ($stream_container_node) {
+  //get nm_stream nodes where created > $top_node->created
+  $query = db_select('node', 'n');
+  $query->addField('n', 'nid');
 
-    //get nm_stream nodes where created > $top_node->created
-    $query = db_select('node', 'n');
-    $query->addField('n', 'nid');
+  $query
+    //->condition('n.nid', $top_node->nid, '>')
+    ->condition('n.type', $types, 'IN')
+    ->condition('n.status', NODE_PUBLISHED)
+    ->orderBy("n.created", "DESC")//order important!
+    ->range($offset, $limit)
+    ->addTag('node_access');
 
-    $query
-      //->condition('n.nid', $top_node->nid, '>')
-      ->condition('n.type', $types, 'IN')
-      ->condition('n.status', NODE_PUBLISHED)
-      ->orderBy("n.created", "DESC")//order important!
-      ->range($offset, $limit)
-      ->addTag('node_access');
+  // only get nodes created or updated after last update $timestamp
+  /*if ($timestamp) {
+    $or = db_or();
+    $or->condition('n.created', $timestamp, ">");
+    $or->condition('n.changed', $timestamp, ">");
+    $query->condition($or);
+  }*/
 
-    // only get nodes created or updated after last update $timestamp
-    /*if ($timestamp) {
-      $or = db_or();
-      $or->condition('n.created', $timestamp, ">");
-      $or->condition('n.changed', $timestamp, ">");
-      $query->condition($or);
+  //01.04.2014 - 22:53 - SN context needed
+  //if we are in a special context e.g. course group, we just want to see
+  //filtered entries which are assign to this group
+  //for now we only have course groups as special context
+  //27.01.2017 - 11:14 - SN
+  //now we also have annvid as special context
+
+  $environment = nm_stream_get_environment();
+  $context = $environment["context"];
+  $container = $environment["container"];
+
+  //24.02.2017 - 11:48 - SN
+  //prevent fetching updates of nodes without any context!
+  $query->join('field_data_field_nm_stream_context', 'field_data_field_nm_stream_context', "n.nid = field_data_field_nm_stream_context.entity_id  AND field_data_field_nm_stream_context.entity_type = 'node'"); //JOIN
+  $query->isNotNull('field_data_field_nm_stream_context.field_nm_stream_context_target_id');
+
+  if (!empty($context)) {
+    if ($context->type == NM_CONTENT_DOMAIN) {
+      //in case of Domains, we just want to see content wich has the privacy setting DOMAIN or PRIVATE
+      //e.g. NM_STREAM created in course context and privacy setting DOMAIN or PRIVATE
+      //NOT: NM_STREAM created in course context having privacy setting CROUSE GROUP or COURSE
+      $query->join('field_data_field_nm_privacy', 'field_data_field_nm_privacy', "n.nid = field_data_field_nm_privacy.entity_id  AND field_data_field_nm_privacy.entity_type = 'node'"); //JOIN
+      $query->condition('field_data_field_nm_privacy.field_nm_privacy_value', [
+        NM_STREAM_PRIVATE,
+        NM_STREAM_DOMAIN,
+      ], "IN");
+    }
+    elseif ($context->type == NM_COURSE) {
+      //In Course, we need to get stream entries from domain and course contexts!
+      switch ($container->type) {
+        case NM_COURSE_GROUP:
+          $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
+          $query->condition('og_membership_node.gid', [$container->nid], "IN");
+          break;
+        case ANNVID_CONTENTTYPE:
+          $domain_id = _section_courses_course_get_domain_id($context);
+          $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
+          $query->condition('og_membership_node.gid', [
+            $domain_id,
+            $context->nid,
+            $container->nid,
+          ], "IN");
+          break;
+      }
+    }
+    else {
+      $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
+      $query->condition('og_membership_node.gid', [
+        $context->nid,
+        $container->nid,
+      ], "IN");
+    }
+  }
+
+  if (!empty($container)) {
+    $query->join('og_membership', 'og_membership', "n.nid = og_membership.etid AND og_membership.entity_type = 'node'"); //JOIN
+    $query->condition('og_membership.gid', $container->nid);
+  }
+
+  $results = $query->execute()->fetchAll();
+
+  $output = '';
+  foreach ($results as $result) {
+    $node = node_load($result->nid);
+    //check if node is visible in context
+    //29.03.2019 - 12:16 - SN do we still need this?
+    /*if ($node->field_nm_privacy[LANGUAGE_NONE][0]['value'] == NM_STREAM_COURSE) {
+      //we are in course context and only want to see whats happaning here
+      if ($node->field_nm_stream_context [LANGUAGE_NONE][0]['target_id'] != $context->nid) {
+        continue;
+      }
     }*/
 
-    //01.04.2014 - 22:53 - SN context needed
-    //if we are in a special context e.g. course group, we just want to see
-    //filtered entries which are assign to this group
-    //for now we only have course groups as special context
-    //27.01.2017 - 11:14 - SN
-    //now we also have annvid as special context
+    $node_data = nm_stream_api_v2_get_posts_json_data($account, $node);
 
-    $environment = nm_stream_get_environment();
-    $context = $environment["context"];
-    $container = $environment["container"];
+    // add post result
+    $result_posts[] = $node_data;
 
-    //24.02.2017 - 11:48 - SN
-    //prevent fetching updates of nodes without any context!
-    $query->join('field_data_field_nm_stream_context', 'field_data_field_nm_stream_context', "n.nid = field_data_field_nm_stream_context.entity_id  AND field_data_field_nm_stream_context.entity_type = 'node'"); //JOIN
-    $query->isNotNull('field_data_field_nm_stream_context.field_nm_stream_context_target_id');
-
-    if (!empty($context)) {
-      if($context->type == NM_CONTENT_DOMAIN) {
-        //in case of Domains, we just want to see content wich has the privacy setting DOMAIN or PRIVATE
-        //e.g. NM_STREAM created in course context and privacy setting DOMAIN or PRIVATE
-        //NOT: NM_STREAM created in course context having privacy setting CROUSE GROUP or COURSE
-        $query->join('field_data_field_nm_privacy', 'field_data_field_nm_privacy', "n.nid = field_data_field_nm_privacy.entity_id  AND field_data_field_nm_privacy.entity_type = 'node'"); //JOIN
-        $query->condition('field_data_field_nm_privacy.field_nm_privacy_value', array(NM_STREAM_PRIVATE, NM_STREAM_DOMAIN), "IN");
-      }
-      elseif ($context->type == NM_COURSE) {
-        //In Course, we need to get stream entries from domain and course contexts!
-        switch ($container->type) {
-          case NM_COURSE_GROUP:
-            $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
-            $query->condition('og_membership_node.gid', array($container->nid), "IN");
-            break;
-          case ANNVID_CONTENTTYPE:
-            $domain_id = _section_courses_course_get_domain_id($context);
-            $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
-            $query->condition('og_membership_node.gid', array(
-              $domain_id,
-              $context->nid,
-              $container->nid
-            ), "IN");
-            break;
-        }
-      }
-      else {
-        $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
-        $query->condition('og_membership_node.gid', array(
-          $context->nid,
-          $container->nid
-        ), "IN");
-      }
+    // fill corresponding users array
+    if (empty($result_users[$node->uid])) {
+      $post_user = user_load($node->uid);
+      $result_users[$node->uid]['uid'] = $node->uid;
+      $result_users[$node->uid]['name'] = format_username($post_user);
+      $result_users[$node->uid]['username'] = $post_user->name;
+      $profile = profile2_load_by_user($post_user, 'master');
+      $result_users[$node->uid]['avatarUrl'] = image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
+      $result_users[$node->uid]['profileUrl'] = url('user/' . $post_user->uid, ['absolute' => TRUE]);
     }
-
-    if (!empty($container)) {
-      $query->join('og_membership', 'og_membership', "n.nid = og_membership.etid AND og_membership.entity_type = 'node'"); //JOIN
-      $query->condition('og_membership.gid', $container->nid);
-    }
-
-    $results = $query->execute()->fetchAll();
-
-    $output = '';
-    foreach ($results as $result) {
-      $node = node_load($result->nid);
-      //check if node is visible in context
-      if($node->field_nm_privacy[LANGUAGE_NONE][0]['value'] == NM_STREAM_COURSE) {
-        //we are in course context and only want to see whats happaning here
-        if($node->field_nm_stream_context [LANGUAGE_NONE][0]['target_id'] != $context->nid){
-          continue;
-        }
-      }
-
-      $node_data = nm_stream_api_v2_get_posts_json_data($account, $node);
-
-      // add post result
-      $result_posts[] = $node_data;
-
-      // fill corresponding users array
-      if(empty($result_users[$node->uid])) {
-        $post_user = user_load($node->uid);
-        $result_users[$node->uid]['uid'] = $node->uid;
-        $result_users[$node->uid]['name'] = format_username($post_user);
-        $result_users[$node->uid]['username'] = $post_user->name;
-        $profile = profile2_load_by_user($post_user, 'master');
-        $result_users[$node->uid]['avatarUrl'] = image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
-        $result_users[$node->uid]['profileUrl'] = url('user/' . $post_user->uid, ['absolute' => TRUE]);
-      }
-    }
-
-
-    if (count($result_posts) > 0) {
-      //fill corresponding comments array
-      //get nm_stream nodes where created > $node->created
-      $query_new_comments = db_select('comment', 'c');
-      $query_new_comments->addField('c', 'cid');
-      $query_new_comments->addField('c', 'nid');
-      $query_new_comments->addField('c', 'created');
-      $query_new_comments
-        ->condition('c.status', COMMENT_PUBLISHED)
-        ->condition('c.nid', array_column($result_posts, 'nid'), "IN")
-        ->orderBy("c.cid", "DESC")//order important!
-        ->addTag('node_access');
-
-      $results_comments_db = $query_new_comments->execute()
-        ->fetchAllAssoc("cid");
-      $result_comments_full = comment_load_multiple(array_keys($results_comments_db));
-
-      $result_comments = [];
-      foreach ($result_comments_full as $key => $c_item) {
-        list($comment_data, $comment_user) = nm_stream_api_v2_get_comments_json_data($account, $c_item);
-        $result_comments[] = $comment_data;
-
-        // fill corresponding users array for comment users
-        if (empty($result_users[$comment_user['uid']])) {
-          $result_users[$comment_user->uid] = $comment_user;
-        }
-      }
-    }
-
   }
+
+
+  if (count($result_posts) > 0) {
+    //fill corresponding comments array
+    //get nm_stream nodes where created > $node->created
+    $query_new_comments = db_select('comment', 'c');
+    $query_new_comments->addField('c', 'cid');
+    $query_new_comments->addField('c', 'nid');
+    $query_new_comments->addField('c', 'created');
+    $query_new_comments
+      ->condition('c.status', COMMENT_PUBLISHED)
+      ->condition('c.nid', array_column($result_posts, 'nid'), "IN")
+      ->orderBy("c.cid", "DESC")//order important!
+      ->addTag('node_access');
+
+    $results_comments_db = $query_new_comments->execute()
+      ->fetchAllAssoc("cid");
+    $result_comments_full = comment_load_multiple(array_keys($results_comments_db));
+
+    $result_comments = [];
+    foreach ($result_comments_full as $key => $c_item) {
+      list($comment_data, $comment_user) = nm_stream_api_v2_get_comments_json_data($account, $c_item);
+      $result_comments[] = $comment_data;
+
+      // fill corresponding users array for comment users
+      if (empty($result_users[$comment_user['uid']])) {
+        $result_users[$comment_user->uid] = $comment_user;
+      }
+    }
+  }
+
 
   // add logged in user to user set
   if(empty($timestamp) && empty($result_users[$account->uid])) {
-    $comment_user = user_load($account->uid);
     $result_users[$account->uid]['uid'] = $account->uid;
     $result_users[$account->uid]['name'] = format_username($account);
     $result_users[$account->uid]['username'] = $account->name;
@@ -2647,6 +2697,9 @@ function nm_stream_api_v2_get_posts_json_data($account, $node) {
   $node_data['nid'] = $node->nid;
   $node_data['title'] = $node->title;
   $node_data['body'] = $node->body['und'][0]['value'];
+  $display = array('label' => 'hidden');
+  $node_data['body_formatted'] = render(field_view_field('node', $node, 'body', $display));
+
   $node_data['created'] = date(DATE_FORMAT_ISO, $node->created);
   $node_data['updated'] = date(DATE_FORMAT_ISO, $node->updated);
   $node_data['privacy'] = [];
@@ -2715,6 +2768,8 @@ function nm_stream_api_v2_get_comments_json_data($account, $comment) {
   $result_comment['created'] = date(DATE_FORMAT_ISO, $comment->created);
   $result_comment['changed'] = date(DATE_FORMAT_ISO, $comment->changed);
   $result_comment['body'] = $comment->comment_body['und'][0]['value'];
+  $display = array('label' => 'hidden');
+  $result_comment['body_formatted'] = render(field_view_field('comment', $comment, 'comment_body', $display));
 
   $result_comment['permissions'] = [];
   $result_comment['permissions']['canEdit'] = nm_stream_comment_access('edit', $comment);;
@@ -2890,6 +2945,7 @@ function nm_stream_api_v2_node_add_callback($token = NULL) {
 
     //consider adapting for in add callback too!
     $body = _nm_stream_filter_xss($node_data['body']);
+    $body = $node_data['body'];
     $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
     $containerNID = _nm_stream_filter_xss($node_data['containerNID']);
     $contextNID = _nm_stream_filter_xss($node_data['contextNID']);
@@ -3006,7 +3062,8 @@ function nm_stream_api_v2_node_update_callback($node, $token = NULL) {
   if (is_array($node_data)) {
 
     //consider adapting for in add callback too!
-    $body = _nm_stream_filter_xss($node_data['body']);
+    //$body = _nm_stream_filter_xss($node_data['body']);
+    $body = $node_data['body'];
     $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
 
     //prevent csrf attacks
@@ -3065,8 +3122,8 @@ function nm_stream_api_v2_comment_update_callback($comment, $token = NULL) {
   if (is_array($comment_data)) {
 
     //consider adapting for in add callback too!
-    $body = _nm_stream_filter_xss($comment_data['body']);
-    $privacy = isset($comment_data['privacy']) ? check_plain($comment_data['privacy']) : '';
+    //$body = _nm_stream_filter_xss($comment_data['body']);
+    $body = $comment_data['body'];
 
     //prevent csrf attacks
     if (!drupal_valid_token($token)) {
@@ -3092,6 +3149,9 @@ function nm_stream_api_v2_comment_update_callback($comment, $token = NULL) {
 
       $response['status'] = 1;
       $response['cid'] = $comment->cid;
+      list($comment_data, $comment_user) = nm_stream_api_v2_get_comments_json_data(NULL, $comment);
+      $response['commentData'] = $comment_data;
+      $response['userData'] = $comment_user;
     }
   }
 
@@ -3118,7 +3178,8 @@ function nm_stream_api_v2_comment_add_callback($node, $token = NULL) {
   if (is_array($comment_data)) {
 
     //consider adapting for in add callback too!
-    $body = _nm_stream_filter_xss($comment_data['body']);
+    //$body = _nm_stream_filter_xss($comment_data['body']);
+    $body = $comment_data['body'];
 
     //prevent csrf attacks
     if (!drupal_valid_token($token)) {
