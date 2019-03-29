@@ -2376,7 +2376,7 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   nm_stream_api_v2_set_localhost_headers();
 
   // todo faking group url
-  $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347#node-16824";
+  //$_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347#node-16824";
 
   $environment = nm_stream_get_environment();
   $context = $environment["context"];
@@ -2432,12 +2432,12 @@ function nm_stream_api_v2_render_stream($container) {
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.f525890d6ecf5e5cc811.js", [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.1099ef1ea99108a8723b.js", [
     'scope' => 'footer',
     'weight' => 5,
   ]);
 
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.7e15736dfb0379297d666032a6d3e754.css', [
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.c2ed71cfac83103eea0c9bc445c2cfe8.css', [
     'scope' => 'footer',
     'weight' => 5,
   ]);
@@ -2500,7 +2500,7 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
   $account = clone $user;
 
   // todo faking group url
-  $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347#node-16824";
+  //$_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347#node-16824";
 
   $types = nm_stream_get_stream_content_types();
 
