@@ -16,7 +16,17 @@
   max-width: 100%;
 }
 
-#stream .comments-wrapper{
+#stream .comments-wrapper {
+
+}
+
+#stream .post-context {
+  font-size: 12px;
+  margin-bottom: 10px !important;;
+  opacity: 0.8 !important;;
+}
+
+#stream .post-context span {
 
 }
 
