@@ -23,11 +23,13 @@ class TaskCreate extends CourseContentBase implements \Page\node\ContentCreateIn
     }
 
     public function fillFields(\AcceptanceTester $I, \Codeception\Example $params) {
-
+        //setze Aufgabenbeginn, sonst Rundungsfehler.. 
+        $I->fillField('field_task_handling_period['.LANGUAGE_NONE.'][0][value][time]', date('G:00'));
         $I->checkOption('field_task_type[und]', $params['field_task_type']);
         foreach ($params['elements'] as $key => $elem) {
             if ($key > 0) {
                 $I->click("Weiteres Element hinzufügen");
+                $I->wait(1);
             }
 
             $I->selectOption("field_generic_task_entry[" . LANGUAGE_NONE . "][$key][first]", $elem['title']);

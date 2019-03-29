@@ -35,6 +35,36 @@ class H5peditorDrupalStorage implements H5peditorStorage {
     return ($lang === FALSE ? NULL : $lang);
   }
 
+  /**
+   * Load a list of available language codes from the database.
+   *
+   * @param string $machineName The machine readable name of the library(content type)
+   * @param int $majorVersion Major part of version number
+   * @param int $minorVersion Minor part of version number
+   * @return array List of possible language codes
+   */
+  public function getAvailableLanguages($machineName, $majorVersion, $minorVersion) {
+    $results = db_query(
+        "SELECT language_code
+           FROM {h5p_libraries_languages} hlt
+           JOIN {h5p_libraries} hl
+             ON hl.library_id = hlt.library_id
+          WHERE hl.machine_name = :name
+            AND hl.major_version = :major
+            AND hl.minor_version = :minor",
+        array(
+          ':name' => $machineName,
+          ':major' => $majorVersion,
+          ':minor' => $minorVersion
+        ));
+
+    $codes = array('en'); // Semantics is 'en' by default. 
+    foreach ($results as $result) {
+      $codes[] = $result->language_code;
+    }
+
+    return $codes;
+  }
 
   /**
    * "Callback" for mark the given file as a permanent file.

@@ -1,6 +1,5 @@
 <?php
 
-
 use Page\node\course\CourseCreate as CreateCoursePage;
 use Page\courseadmin\AddMembers as AddMembersPage;
 use Page\node\course_content\CoursegroupCreate as CreateCoursegroupPage;
@@ -296,7 +295,8 @@ class CourseCest  extends CestHelper{
         $node_data = $this->getNodeSample(NM_COURSE_GENERIC_TASK);
         
         $rand_data = \RealisticFaker\OklDataCreator::get();
-        $return[] = ['title' => $node_data['title'], 'field_task_type' => 0, 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]]];
+        //title : sonderheit bei aufgaben.. siehe _section_courses_courses_generic_task_node_form_submit. Test schlägt sonst bei manchen Chars fehl
+        $return[] = ['title' => RealisticFaker\OklDataCreator::getSafeText($node_data['title']), 'field_task_type' => 0, 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]]];
         return $return;
     }
 
