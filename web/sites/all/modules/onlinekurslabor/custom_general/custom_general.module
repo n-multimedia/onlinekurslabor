@@ -1004,7 +1004,7 @@ function custom_general_query_alter(QueryAlterableInterface $query) {
 
 function custom_general_form_node_delete_confirm_alter(&$form, &$form_state){
   $attachment_fields = array(
-    'field_course_docs',
+    'field_course_documents',
     'field_attachments',
     'field_nm_attachments',
   );
@@ -1013,58 +1013,34 @@ function custom_general_form_node_delete_confirm_alter(&$form, &$form_state){
   $node = $form['#node'];
   $nid = $node->nid;
 
-  $file_attachments = array();
+  $usage_titles = array(); 
   foreach ($attachment_fields as $field) {
     if (!empty($node->$field)) {
       $has_attachments = TRUE;
       $items = $node->{$field}[LANGUAGE_NONE];
       foreach ($items as $file) {
         $file = file_load($file['fid']);
-        $file_attachments[$file->fid] = $file;
-        //$usage = file_usage_list($file);
-        $usage_list = custom_general_file_entity_usage_page($file);
-        $usage_output = drupal_render($usage_list);
-        $form['usage_list_' . $file->fid] = array(
-          '#markup' => "<br/><br/><div><h4>" . t("File") . ": " . $file->filename . "</h4></div><hr>" . $usage_output,
-        );
+       
+        $usage_titles[] = $file->filename;
+       
       }
     }
   }
 
 
   if($has_attachments){
-    $form['#prefix'] = "<div>" . t("Please check, if the file attachments are not used elsewhere."). "</div><br/>";
-    $form['actions']['#prefix'] = "<br/><br/>";
+    $form['#prefix'] = t('%node_title has file attachments which might get deleted from the platform totally.', array('%node_title'=> $node->title) ) ;
+    $form['#prefix'] .= ' <br><br><ul><li>'.implode('</li><li>', $usage_titles);
+    $form['#prefix'] .= "</li></ul><br/>";
 
-    $form['actions']['keep_files'] = array(
-      '#type' => 'submit',
-      '#value' => 'Delete node and files',
-      '#weight' => -10,
-      '#attributes' => array('class' => array('btn','btn-danger')),
-      '#submit' => array('custom_general_form_node_delete_node_and_files_submit'),
-    );
-
-    $form['actions']['submit']['#value'] = 'Delete (node only)';
+    $form['actions']['submit']['#value'] =  t('Delete node and files');
     $form['actions']['submit']['#attributes'] = array('class' => array('btn','btn-danger'));
     $form['actions']['submit']['#weight'] = -11;
 
-    $form_state['file_attachments'] = $file_attachments;
   }
 
 }
 
-
-function custom_general_form_node_delete_node_and_files_submit($form, &$form_state) {
-
-  //delete node
-  node_delete_confirm_submit($form, $form_state);
-
-  //delete attachments
-  if(!empty($form_state['file_attachments'])) {
-    file_delete_multiple(array_keys($form_state['file_attachments']));
-  }
-
-}
 
 
 /**
