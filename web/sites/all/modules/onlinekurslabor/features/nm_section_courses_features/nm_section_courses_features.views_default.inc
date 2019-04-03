@@ -1708,8 +1708,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'nid_1' => 'nid_1',
-    'field_course_docs_1' => 'field_course_docs_1',
-    'field_course_docs' => 'field_course_docs',
+    'field_course_documents' => 'field_course_documents',
     'title' => 'title',
     'body' => 'body',
     'created' => 'created',
@@ -1724,12 +1723,7 @@ function nm_section_courses_features_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_course_docs_1' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_course_docs' => array(
+    'field_course_documents' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -1788,33 +1782,17 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['fields']['nid_1']['label'] = '';
   $handler->display->display_options['fields']['nid_1']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid_1']['element_label_colon'] = FALSE;
-  /* Field: Beitrag: Kursdokument(e) */
-  $handler->display->display_options['fields']['field_course_docs_1']['id'] = 'field_course_docs_1';
-  $handler->display->display_options['fields']['field_course_docs_1']['table'] = 'field_data_field_course_docs';
-  $handler->display->display_options['fields']['field_course_docs_1']['field'] = 'field_course_docs';
-  $handler->display->display_options['fields']['field_course_docs_1']['label'] = 'Herunterladen';
-  $handler->display->display_options['fields']['field_course_docs_1']['alter']['max_length'] = '50';
-  $handler->display->display_options['fields']['field_course_docs_1']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['field_course_docs_1']['alter']['ellipsis'] = FALSE;
-  $handler->display->display_options['fields']['field_course_docs_1']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['field_course_docs_1']['settings'] = array(
-    'file_view_mode' => 'filename',
+  /* Field: Content: Kursdokument(e) */
+  $handler->display->display_options['fields']['field_course_documents']['id'] = 'field_course_documents';
+  $handler->display->display_options['fields']['field_course_documents']['table'] = 'field_data_field_course_documents';
+  $handler->display->display_options['fields']['field_course_documents']['field'] = 'field_course_documents';
+  $handler->display->display_options['fields']['field_course_documents']['label'] = 'Herunterladen';
+  $handler->display->display_options['fields']['field_course_documents']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_course_documents']['settings'] = array(
+    'image_style' => '',
   );
-  $handler->display->display_options['fields']['field_course_docs_1']['delta_offset'] = '0';
-  $handler->display->display_options['fields']['field_course_docs_1']['separator'] = '';
-  /* Field: Beitrag: Kursdokument(e) */
-  $handler->display->display_options['fields']['field_course_docs']['id'] = 'field_course_docs';
-  $handler->display->display_options['fields']['field_course_docs']['table'] = 'field_data_field_course_docs';
-  $handler->display->display_options['fields']['field_course_docs']['field'] = 'field_course_docs';
-  $handler->display->display_options['fields']['field_course_docs']['label'] = 'Typ';
-  $handler->display->display_options['fields']['field_course_docs']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_course_docs']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_course_docs']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['field_course_docs']['settings'] = array(
-    'file_view_mode' => 'file_icon',
-  );
-  $handler->display->display_options['fields']['field_course_docs']['delta_limit'] = '1';
-  $handler->display->display_options['fields']['field_course_docs']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_course_documents']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_course_documents']['separator'] = '<br>';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -1922,7 +1900,6 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
 </div>'),
     t('OG membership from node'),
     t('Herunterladen'),
-    t('Typ'),
     t('Name'),
     t('Beschreibung'),
     t('Erstellt'),

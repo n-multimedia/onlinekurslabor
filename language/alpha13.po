@@ -1,5 +1,11 @@
 #Translation File - onlinekurslabor
 
+msgid "%node_title has file attachments."
+msgstr "%node_title hat Anhänge."
+
+msgid "%node_title has file attachments which might get deleted from the platform totally."
+msgstr "%node_title hat Anhänge, die beim Löschen möglicherweise mitgelöscht werden."
+
 msgid "Create new Course"
 msgstr "Neuen Kurs erstellen"
 
