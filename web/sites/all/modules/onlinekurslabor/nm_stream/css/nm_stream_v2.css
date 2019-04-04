@@ -1,0 +1,129 @@
+/*
+    Document   : nm-stream
+    Created on : 19.03.2017, 23:18:00
+    Author     : Nm
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+
+#stream {
+  margin-top: 0 !important;
+  padding: 0;
+}
+
+#stream {
+  max-width: 100%;
+}
+
+#stream .comments-wrapper {
+
+}
+
+#stream .post-context {
+  font-size: 12px;
+  margin-bottom: 10px !important;;
+  opacity: 0.8 !important;;
+}
+
+#stream .post-context span {
+
+}
+
+#stream .stream-post {
+  padding: 15px 0;
+}
+
+#stream .stream-post > div {
+  padding: 0;
+}
+
+#stream .stream-post-from,
+#stream .stream-post-from .stream-attachments,
+#stream .stream-post-from .action-buttons,
+#stream .stream-post-from > div,
+#stream .stream-comment-from > div,
+#stream .stream-comment-from .action-buttons {
+  padding: 0;
+}
+
+#stream .stream-comment-from {
+  padding: 15px 0;
+}
+
+#stream .post-actions-dropdown .dropdown-toggle {
+  margin-top: -5px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#stream .stream-comment {
+  padding: 15px 0px;
+}
+
+#stream .stream-comment > .row > .col-10,
+#stream .stream-post > .row > .col-10 {
+  padding: 0 !important;
+}
+
+#stream .stream-post > .row > .col-10.offset-2 {
+  padding-right: 15px !important;
+}
+
+#stream .stream-post-attachments,
+#stream .action-buttons {
+  margin-top: 20px;
+}
+
+#stream .action-buttons button {
+  height: 35px;
+}
+
+#stream button.btn,
+#stream .action-buttons button.btn,
+#stream .dropdown-item {
+  font-size: 12px;
+}
+
+
+#stream .stream-action-2 > .col-12 {
+  padding: 0;
+}
+
+#stream .multiselect__single {
+  margin: 0;
+}
+
+#stream .multiselect__tags {
+  min-height: 35px;
+  display: block;
+  padding: 4px 30px 0 8px;
+}
+
+#stream .multiselect__single span.option__desc,
+#stream .multiselect__content-wrapper span.multiselect__option,
+#stream .multiselect__single span.option__title {
+  font-size: 14px !important;
+  min-height: auto;
+}
+
+#stream .multiselect__select {
+  height: 35px;
+}
+
+#stream .multiselect__content-wrapper span.multiselect__option {
+  padding: 7px 15px;
+}
+
+#stream .back-delete .stream-post {
+  padding: 15px !important;
+}
+
+#stream .modal.fade.show {
+  opacity: 1 !important;
+}
+
+#stream .modal.fade .modal-dialog {
+  transform: translate(0, 50%) !important;
+}
+
