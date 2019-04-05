@@ -1862,7 +1862,8 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
                     case ANNVID_CONTENTTYPE:
 
                         //user ist aktives mitglied im betroffenen kurs ODER privacy besteht bereits auf kurs
-                        if(_section_courses_user_is_active_member_in_course($user, $current_environment['context']) || $stream_nodes_privacy_setting == NM_STREAM_COURSE){
+                        //if(_section_courses_user_is_active_member_in_course($user, $current_environment['context']) || $stream_nodes_privacy_setting == NM_STREAM_COURSE){
+                        if(node_access('view', $current_environment['context'], $user) || $stream_nodes_privacy_setting == NM_STREAM_COURSE){
                         $options_items[NM_STREAM_COURSE] = array(
                             'label' => t('Course'),
                             'description' => t('Visible for everyone in this course'),
