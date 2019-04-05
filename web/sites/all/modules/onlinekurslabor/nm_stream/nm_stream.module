@@ -2431,12 +2431,12 @@ function nm_stream_api_v2_render_stream($container) {
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.4827ee699a25f33bf42b.js", [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.0922b443da7e64367b10.js", [
     'scope' => 'footer',
     'weight' => 5,
   ]);
 
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.3c8bd01c76726311f65e5a5b84ef2ae6.css', [
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.ed2f6c4f1e6c8d8480908f0876a64ea1.css', [
     'scope' => 'footer',
     'weight' => 5,
   ]);
@@ -3056,6 +3056,7 @@ function nm_stream_api_v2_node_delete_callback($node, $token = NULL) {
  */
 function nm_stream_api_v2_node_update_callback($node, $token = NULL) {
   global $user;
+  $account = clone $user;
 
   $response = [];
   // CORS Setting to allow localhost accessing the API
@@ -3099,6 +3100,7 @@ function nm_stream_api_v2_node_update_callback($node, $token = NULL) {
 
       $response['status'] = 1;
       $response['nid'] = $node->nid;
+      $response['nodeData'] = nm_stream_api_v2_get_posts_json_data($account, $node);
     }
   }
 
