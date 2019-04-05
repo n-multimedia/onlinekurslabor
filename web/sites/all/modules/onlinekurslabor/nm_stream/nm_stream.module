@@ -2423,7 +2423,6 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
  */
 function nm_stream_api_v2_render_stream($container) {
 
-
   drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/manifest.2ae2e69a05c33dfc65f8.js", [
     'scope' => 'footer',
     'weight' => 5,
@@ -2608,13 +2607,15 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
 
     // fill corresponding users array
     if (empty($result_users[$node->uid])) {
+      $user_data = [];
       $post_user = user_load($node->uid);
-      $result_users[$node->uid]['uid'] = $node->uid;
-      $result_users[$node->uid]['name'] = format_username($post_user);
-      $result_users[$node->uid]['username'] = $post_user->name;
+      $user_data['uid'] = $node->uid;
+      $user_data['name'] = format_username($post_user);
+      $user_data['username'] = $post_user->name;
       $profile = profile2_load_by_user($post_user, 'master');
-      $result_users[$node->uid]['avatarUrl'] = image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
-      $result_users[$node->uid]['profileUrl'] = url('user/' . $post_user->uid, ['absolute' => TRUE]);
+      $user_data['avatarUrl'] = image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
+      $user_data['profileUrl'] = url('user/' . $post_user->uid, ['absolute' => TRUE]);
+      $result_users[]= $user_data;
     }
   }
 
@@ -2643,7 +2644,7 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
 
       // fill corresponding users array for comment users
       if (empty($result_users[$comment_user['uid']])) {
-        $result_users[$comment_user->uid] = $comment_user;
+        $result_users[] = $comment_user;
       }
     }
   }
@@ -2651,12 +2652,15 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
 
   // add logged in user to user set
   if(empty($timestamp) && empty($result_users[$account->uid])) {
-    $result_users[$account->uid]['uid'] = $account->uid;
-    $result_users[$account->uid]['name'] = format_username($account);
-    $result_users[$account->uid]['username'] = $account->name;
+    $user_data = [];
+    $user_data['uid'] = $account->uid;
+    $user_data['name'] = format_username($account);
+    $user_data['username'] = $account->name;
     $profile = profile2_load_by_user($account, 'master');
-    $result_users[$account->uid]['avatarUrl'] =  image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
-    $result_users[$account->uid]['profileUrl'] = url('user/' . $account->uid, ['absolute' => TRUE]);
+    $user_data['avatarUrl'] =  image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
+    $user_data['profileUrl'] = url('user/' . $account->uid, ['absolute' => TRUE]);
+
+    $result_users[] = $user_data;
   }
 
   return [
@@ -2707,9 +2711,9 @@ function nm_stream_api_v2_get_posts_json_data($account, $node) {
   $node_data['privacy']['privacyOptions'] = $privacy_options;
 
   $node_data['permissions'] = [];
-  $node_data['permissions']['canCreateComment'] = node_access('view', $node);
-  $node_data['permissions']['canEdit'] = node_access('update', $node);;
-  $node_data['permissions']['canDelete'] = node_access('delete', $node);;
+  $node_data['permissions']['canCreateComment'] = node_access('view', $node, $account);
+  $node_data['permissions']['canEdit'] = node_access('update', $node, $account);;
+  $node_data['permissions']['canDelete'] = node_access('delete', $node, $account);;
 
   $node_data['context'] = [];
   $node_data['context']['nid'] = $node_context->nid;
@@ -2743,7 +2747,7 @@ function nm_stream_api_v2_get_posts_json_data($account, $node) {
     $uri['options']['absolute'] = TRUE;
     $attachment['download_link'] = $icon . " " . l($attachment['filename'], $uri['path'], $uri['options']);
     $attachment['permissions'] = [];
-    $attachment['permissions']['canDelete'] = node_access('update', $node);
+    $attachment['permissions']['canDelete'] = node_access('update', $node, $account);
 
     $node_data['attachments'][] = $attachment;
   }
@@ -2831,18 +2835,17 @@ function nm_stream_api_v2_node_file_upload_callback($node, $token) {
     }
     else {
       //no file uploaded
+      //toto implement error handling
     }
   }
 
   // CASE: node add
   // we have no nid yet
 
-
-
-  if(node_access('update', $node)) {
+  if (node_access('update', $node)) {
     //dpm($files);
     foreach ($files as $file) {
-      $node->field_nm_attachments[LANGUAGE_NONE][] = array(
+      $node->field_nm_attachments[LANGUAGE_NONE][] = [
         'fid' => $file->fid,
         'uid' => $file->uid,
         'uri' => $file->uri,
@@ -2850,11 +2853,12 @@ function nm_stream_api_v2_node_file_upload_callback($node, $token) {
         'filemime' => $file->filemime,
         'status' => 1,
         'display' => 1,
-      );
+      ];
     }
 
     node_save($node);
-  }else {
+  }
+  else {
     // return access denied
     return drupal_access_denied();
   }
