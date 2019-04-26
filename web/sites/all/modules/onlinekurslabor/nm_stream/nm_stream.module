@@ -2419,7 +2419,8 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   nm_stream_api_v2_set_localhost_headers();
 
   // todo faking group url
-  //$_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347#node-16824";
+  // $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347";
+  // $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/";
 
   $environment = nm_stream_get_environment();
   $context = $environment["context"];
@@ -2554,7 +2555,8 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
   $account = clone $user;
 
   // todo faking group url
-  //$_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347#node-16824";
+  // $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347";
+  //$_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/";
 
   $types = nm_stream_get_stream_content_types();
 
@@ -2670,7 +2672,7 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
       $profile = profile2_load_by_user($post_user, 'master');
       $user_data['avatarUrl'] = image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
       $user_data['profileUrl'] = url('user/' . $post_user->uid, ['absolute' => TRUE]);
-      $result_users[]= $user_data;
+      $result_users[$user_data['uid']]= $user_data;
     }
   }
 
@@ -2699,7 +2701,7 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
 
       // fill corresponding users array for comment users
       if (empty($result_users[$comment_user['uid']])) {
-        $result_users[] = $comment_user;
+        $result_users[$comment_user['uid']] = $comment_user;
       }
     }
   }
@@ -2715,13 +2717,14 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
     $user_data['avatarUrl'] =  image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
     $user_data['profileUrl'] = url('user/' . $account->uid, ['absolute' => TRUE]);
 
-    $result_users[] = $user_data;
+    $result_users[$user_data['uid']] = $user_data;
   }
+
 
   return [
     'posts' => $result_posts,
     'comments' => $result_comments,
-    'users' => $result_users,
+    'users' => array_values($result_users), // reset keys
   ];
 
 }

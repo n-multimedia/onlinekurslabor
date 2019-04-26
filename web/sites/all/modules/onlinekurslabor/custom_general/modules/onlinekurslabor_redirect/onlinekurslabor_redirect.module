@@ -18,92 +18,90 @@ function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
 
   //redirection rules for domains and projects
   switch ($node->type) {
-        case NM_CONTENT_DOMAIN:
-        case NM_CONTENT_CHAPTER:
-        case NM_INTERACTIVE_CONTENT:
-        case ANNVID_CONTENTTYPE:
-            if($view_mode ==  'full')
-            {
-                /*das ist alt... bei h5p wird in den themenbereich umgeleitet. aber nur wenns vollansicht ist. */
-                drupal_goto(NM_CONTENT_TEXT_PATH . '/' . $node->nid);
-            }
-            break;
-        //projects
-        case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
-            $ca = $node;
-            $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
-            $partner_nid = _custom_general_get_group($proposal);
-            $path = "projects/partners/" . $partner_nid . "/" . $proposal->nid . "/cockpit/" . $ca->nid;
+    case NM_CONTENT_DOMAIN:
+    case NM_CONTENT_CHAPTER:
+    case NM_INTERACTIVE_CONTENT:
+    case ANNVID_CONTENTTYPE:
+      if ($view_mode == 'full') {
+        /*das ist alt... bei h5p wird in den themenbereich umgeleitet. aber nur wenns vollansicht ist. */
+        drupal_goto(NM_CONTENT_TEXT_PATH . '/' . $node->nid);
+      }
+      break;
+    //projects
+    case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
+      $ca = $node;
+      $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
+      $partner_nid = _custom_general_get_group($proposal);
+      $path = "projects/partners/" . $partner_nid . "/" . $proposal->nid . "/cockpit/" . $ca->nid;
 
-            drupal_goto($path);
-            break;
+      drupal_goto($path);
+      break;
 
-        case NM_PROJECTS_RROJEKTORGANISATION:
-            $partner = $node;
-            $path = "projects/partners/" . $partner->nid;
+    case NM_PROJECTS_RROJEKTORGANISATION:
+      $partner = $node;
+      $path = "projects/partners/" . $partner->nid;
 
-            drupal_goto($path);
-            break;
+      drupal_goto($path);
+      break;
 
-        case NM_PROJECTS_PROJEKTVORSCHLAG:
-            $proposal = $node;
-            $partner_nid = _custom_general_get_group($proposal);
-            $path = "projects/partners/" . $partner_nid . "/" . $proposal->nid;
+    case NM_PROJECTS_PROJEKTVORSCHLAG:
+      $proposal = $node;
+      $partner_nid = _custom_general_get_group($proposal);
+      $path = "projects/partners/" . $partner_nid . "/" . $proposal->nid;
 
-            drupal_goto($path);
-            break;
+      drupal_goto($path);
+      break;
 
-        case NM_PROJECTS_TAGEBUCH:
-            $blog = $node;
-            $ca = node_load(_custom_general_get_group($blog));
+    case NM_PROJECTS_TAGEBUCH:
+      $blog = $node;
+      $ca = node_load(_custom_general_get_group($blog));
 
-            $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
-            $partner_nid = _custom_general_get_group($proposal);
-            $path = "projects/partners/" . $partner_nid . "/" . $proposal->nid . "/cockpit/" . $ca->nid;
+      $proposal = node_load($ca->field_ca_proposal_ref[LANGUAGE_NONE][0]['target_id']);
+      $partner_nid = _custom_general_get_group($proposal);
+      $path = "projects/partners/" . $partner_nid . "/" . $proposal->nid . "/cockpit/" . $ca->nid;
 
-            //redirect to the right position
-            $options = array();
-            $options['fragment'] = 'node-' . $blog->nid;
+      //redirect to the right position
+      $options = [];
+      $options['fragment'] = 'node-' . $blog->nid;
 
-            drupal_goto($path, $options);
-            break;
-        case NM_VIDEOSAFE_VIDEO:
-        case NM_VIDEOSAFE_FOLDER:
-            drupal_goto(NM_VIDEOSAFE_PATH . '/' . $node->nid);
-            break;
-        
-    }
+      drupal_goto($path, $options);
+      break;
+    case NM_VIDEOSAFE_VIDEO:
+    case NM_VIDEOSAFE_FOLDER:
+      drupal_goto(NM_VIDEOSAFE_PATH . '/' . $node->nid);
+      break;
 
-    $active_course = _section_courses_get_active_course();
+  }
+
+  $active_course = _section_courses_get_active_course();
 
 
   //21.10.2015 - 12:35 - SN
   //try to build context
-  if(empty($active_course)) {
+  if (empty($active_course)) {
     switch ($node->type) {
       case NM_COURSE:
         $active_course = clone $node;
         break;
       default:
-        if(!empty($node->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
+        if (!empty($node->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
           $tmp_node = node_load($node->og_group_ref[LANGUAGE_NONE][0]['target_id']);
-          if($node->type == NM_COURSE){
+          if ($node->type == NM_COURSE) {
             $active_course = clone $tmp_node;
           }
         }
-        if(!empty($node->field_generic_task[LANGUAGE_NONE][0]['target_id'])) {
+        if (!empty($node->field_generic_task[LANGUAGE_NONE][0]['target_id'])) {
           $tmp_node_task = node_load($node->field_generic_task[LANGUAGE_NONE][0]['target_id']);
-          if(!empty($tmp_node_task->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
+          if (!empty($tmp_node_task->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
             $tmp_node = node_load($tmp_node_task->og_group_ref[LANGUAGE_NONE][0]['target_id']);
-            if($tmp_node->type == NM_COURSE){
+            if ($tmp_node->type == NM_COURSE) {
               $active_course = clone $tmp_node;
             }
           }
         }
         break;
-      }
+    }
   }
-
 
 
   if ($active_course) {
@@ -158,11 +156,28 @@ function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
       case NM_CONTENT_DOMAIN:
       case NM_CONTENT_CHAPTER:
       case NM_INTERACTIVE_CONTENT:
+        // annvid stream entries might be created in domain oder course context
+        $streamNid = $_GET['streamNode'];
+        if (!empty($streamNid)) {
+          //redirect to the right position
+          $streamNode = node_load($streamNid);
+          $environment = _nm_stream_get_node_environment($streamNode);
+
+          $options = [];
+          $options['fragment'] = 'node-' . $streamNode->nid;
+          if ($environment['context']->type == NM_COURSE) {
+            drupal_goto(NM_COURSE_TEXT_PATH . '/' . $environment['context']->nid . '/' . $environment['container']->nid, $options);
+          }
+          elseif ($environment['context']->type == NM_CONTENT_DOMAIN) {
+            drupal_goto(NM_CONTENT_TEXT_PATH . '/' . $environment['container']->nid, $options);
+          }
+
+        }
+
         //nur bei vollansicht - embed hat dann kein redirect
-        if($view_mode ==  'full')
-            {
-              drupal_goto(NM_CONTENT_TEXT_PATH . '/' . $node->nid);
-            }
+        if ($view_mode == 'full') {
+          drupal_goto(NM_CONTENT_TEXT_PATH . '/' . $node->nid);
+        }
         break;
     }
   }
@@ -222,7 +237,6 @@ function onlinekurslabor_redirect_preprocess_page($variables) {
         drupal_goto(NM_COURSE_DOCS_PATH . '/' . $active_course->nid);
       }
     }
-
 
 
     //user is in course group section
