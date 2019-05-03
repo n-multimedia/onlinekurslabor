@@ -2463,6 +2463,8 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   $data['stream']['privacyOptions'] = $privacy_options;
   $data['stream']['privacyOptionsAll'] = $privacy_options_all;
   $data['stream']['token'] = drupal_get_token();
+  // todo get from field configuration
+  $data['stream']['acceptedFiles'] = '.jpg, .jpeg, .gif, .png, .txt, .xls, .pdf, .mp3, .doc, .docx, .pps, .ppt, .pptx, .odt, .ods, .odp, .mp4, .keynote, .pages';
 
   $posts_comments_users = nm_stream_api_v2_get_posts($stream_container_node);
   $data['stream']['posts'] = $posts_comments_users['posts'];
@@ -2487,12 +2489,12 @@ function nm_stream_api_v2_render_stream($container) {
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.0a835849e8a51fa48ce8.js", [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.dbf2228db010299dd36a.js", [
     'scope' => 'footer',
     'weight' => 5,
   ]);
 
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.80c8a9a15bb6f44be0e9e1d2a0ecced9.css', [
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.245fdd9263477761de8731638d01033b.css', [
     'scope' => 'footer',
     'weight' => 5,
   ]);
@@ -2555,7 +2557,7 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
   $account = clone $user;
 
   // todo faking group url
-  // $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347";
+  //$_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347";
   //$_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/";
 
   $types = nm_stream_get_stream_content_types();
