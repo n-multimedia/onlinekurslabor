@@ -114,8 +114,8 @@ div#annvid_pdfbutton
 #annvid_video_container.annvid_active_scroll_mode{
     position: fixed;
     width: 400px;
-    z-index: 5;
-    top:22px;
+    z-index: 1001; /*boah, so hoch?!*/
+    top: 22px;
     background: #ffffff;
     -webkit-box-shadow: 10px 10px 7px -8px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 10px 7px -8px rgba(0,0,0,0.75);
