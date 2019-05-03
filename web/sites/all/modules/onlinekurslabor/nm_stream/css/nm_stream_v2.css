@@ -6,6 +6,17 @@
         Purpose of the stylesheet follows.
 */
 
+.nm-stream-node-container, .nm-stream-node-form-container{
+  background-color: #eee;
+  padding: 10px 15px;
+  margin:0;
+}
+
+.nm-stream-node{
+  background-color: #fff;
+  padding:15px;
+  border:1px solid #dedede;
+}
 
 #stream {
   margin-top: 0 !important;
@@ -30,8 +41,9 @@
 
 }
 
+#stream .card,
 #stream .stream-post {
-  padding: 15px 0;
+  padding: 15px 0 !important;
 }
 
 #stream .stream-post > div {
@@ -85,7 +97,6 @@
   font-size: 12px;
 }
 
-
 #stream .stream-action-2 > .col-12 {
   padding: 0;
 }
@@ -127,3 +138,6 @@
   transform: translate(0, 50%) !important;
 }
 
+#stream .stream-post-footer {
+  margin-top: 15px;
+}

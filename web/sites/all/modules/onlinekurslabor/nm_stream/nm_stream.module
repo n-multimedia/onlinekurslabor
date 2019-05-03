@@ -2499,15 +2499,16 @@ function nm_stream_api_v2_render_stream($container) {
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.dbf2228db010299dd36a.js", [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.8c34ebfebded4547bba3.js", [
     'scope' => 'footer',
     'weight' => 5,
   ]);
 
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.245fdd9263477761de8731638d01033b.css', [
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.07ea3141e0bdd59b599ac120f1ea105a.css', [
     'scope' => 'footer',
     'weight' => 5,
   ]);
+
 
   // direct css adaptions (drupal layout)
   drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream_v2.css');
