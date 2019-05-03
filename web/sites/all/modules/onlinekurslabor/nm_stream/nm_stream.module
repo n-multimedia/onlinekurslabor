@@ -19,7 +19,17 @@ define('NM_STREAM_API_INIT_POSTS_LIMIT', 10);
 define('NM_STREAM_ALLOWED_HTML_TAGS', serialize(array('a', 'em', 'b','u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
     'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot')));
 
+#
 
+
+
+/**
++ * implements hook_page_build(&$page) {
++ * @param type $page
++ */
+function nm_stream_page_build(&$page) {
+     drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/attach_fixer.js");
+}
 /**
  * Implements hook_block_info().
  */
