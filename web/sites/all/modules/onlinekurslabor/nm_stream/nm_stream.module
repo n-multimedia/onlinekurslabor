@@ -2499,7 +2499,7 @@ function nm_stream_api_v2_render_stream($container) {
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.8c34ebfebded4547bba3.js", [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.a1631138efb31f7d6e1b.js", [
     'scope' => 'footer',
     'weight' => 5,
   ]);
