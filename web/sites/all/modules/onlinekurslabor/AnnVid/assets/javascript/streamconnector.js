@@ -105,7 +105,8 @@
                     entries[counter] = new Array();
                     entries[counter]["img"] = jQuery("img.card-img-top", this).attr("src");
                     entries[counter]["time"] = Drupal.behaviors.h5p_connector_api.av_player.computerizeTime(jQuery("a[data^='video.']", jQuery(this).find(class_object.stream_annotations_containers_textholders)).html());
-                    var anno_text = jQuery(this).text().replace(/(\r\n|\n|\r)/gm,"").replace(Drupal.behaviors.h5p_connector_api.text.regex_timestampfeature," ");;
+                    //Entferne emptychars, entferne einzelnes "Um " am Textanfang, entferne Timestamp 
+                    var anno_text = jQuery(class_object.stream_annotations_containers_textholders, this).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(^Um )/gm,"").replace(Drupal.behaviors.h5p_connector_api.text.regex_timestampfeature,"");;
                     if(anno_text.length >30)
                     {
                         anno_text = anno_text.substr(0,27)+"...";
