@@ -19,17 +19,7 @@ define('NM_STREAM_API_INIT_POSTS_LIMIT', 10);
 define('NM_STREAM_ALLOWED_HTML_TAGS', serialize(array('a', 'em', 'b','u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
     'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot')));
 
-#
 
-
-
-/**
-+ * implements hook_page_build(&$page) {
-+ * @param type $page
-+ */
-function nm_stream_page_build(&$page) {
-     drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/attach_fixer.js");
-}
 /**
  * Implements hook_block_info().
  */
@@ -2511,6 +2501,12 @@ function nm_stream_api_v2_render_stream($container) {
   drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.07ea3141e0bdd59b599ac120f1ea105a.css', [
     'scope' => 'footer',
     'weight' => 5,
+  ]);
+
+  //fixes drupal.attach for vue.js
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/attach_fixer.js", [
+    'scope' => 'footer',
+    'weight' => 6,
   ]);
 
 
