@@ -51,8 +51,22 @@ var ns = H5PEditor;
       }
     }).change();
 
+    const $form = $('#h5p-content-node-form');
+
+    // Keep track of button used to submit the form
+    // We need to do this since the submit handler is run using an async callback,
+    // which makes the button element not being set on the post (i.e: op=Save,
+    // op=Delete and so on)
+    var $submitter = $('<input type="hidden" name="op"/>').appendTo($form);
+    const submitters = document.getElementsByName('op');
+    for (let i = 0; i < submitters.length; i++) {
+      submitters[i].addEventListener('click', function () {
+        $submitter.val(this.value);
+      });
+    }
+
     let formIsUpdated = false;
-    const $form = $('#h5p-content-node-form').submit(function (event) {
+    $form.submit(function (event) {
       if ($type.length && $type.filter(':checked').val() === 'upload') {
         return; // Old file upload
       }
