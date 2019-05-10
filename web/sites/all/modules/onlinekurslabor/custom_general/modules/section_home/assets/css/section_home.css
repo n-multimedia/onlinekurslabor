@@ -12,12 +12,14 @@
     padding-top:3px;
     padding-bottom:3px
 }
+
+/*
 .home_picture_hover_username
 {
     width:278px;
 }
 
-/*profil-bearbeiten-pencil auf start*/
+profil-bearbeiten-pencil auf start --gibbet nicht!
 .home_profile_hover_edit
 {
     left:250px;
@@ -32,19 +34,14 @@
 .home_profile_hover_edit a:hover
 {
     color:white;
-}
-
-.home_background_black_transp
-{
-    background: rgb(0, 0, 0); 
-    background: rgba(0, 0, 0, 0.7);
-}
-/*profilbild zentriert auf profil-bg*/
+}*/
+/*profilbild zentriert auf profil-bg
 #home_profile_picture img{
     margin-left: 49px;
     position: absolute;   
     top: 0;;
-}
+}*/
+ 
 
 /*erstelle padding unter "Meine Kurse"-Überschrift*/
 .home_title_container
@@ -64,17 +61,51 @@ a.home_course_item:hover .home_course_preview-hover_box
     color: #E9E9E9;
 }
 
-.home_course_preview{
-    background-size: cover ;      
-    background-repeat: no-repeat;;  
-    height: 70px ;   
+
+/*meine kurse-ansicht auf start*/
+div.view-courses-kurse-bersicht .home_courses_container, .home_course_item_div
+{
+  background-color: #eee;
+  padding: 10px 15px;
+  margin:0;
 }
-.home_course_preview-hover_box
-{    color:white;
-     margin-top: -20px;
-     height: 20px;
-     overflow: hidden;
+
+div.view-courses-kurse-bersicht .home_course_item_div
+{
+  background-color: #fff;
+  padding:15px;
+  border:1px solid #dedede;
 }
+
+
+
+/*progress-badge*/
+div.view-courses-kurse-bersicht .home_courses_container div.progress_circle_container
+{
+    display: none;
+    position: absolute;
+    padding-top:5px;
+}
+/*progress-badge zeigen erst ab mindest-resolution*/
+@media (min-width: 400px)
+{
+    div.view-courses-kurse-bersicht .home_courses_container:hover div.progress_circle_container
+    {
+        display: block;
+    }
+    
+}
+/*bilder mit klasse halbtransparent setzen*/
+div.view-courses-kurse-bersicht .home_courses_container:hover .courseitem_image_hover_transp
+{
+    opacity: 0.5;
+}
+/*verhinderte überlauf des kurs-bilds auf mobil*/
+div.view-courses-kurse-bersicht .home_courses_container  img.courseitem_courselogo
+{
+    max-width: 100%;
+}
+
 
 
 h2.pane-title

@@ -39,7 +39,7 @@
 
     <?php
     $environment = nm_stream_get_environment();
-    print nm_stream_api_v2_render_stream($environment['context']);
+    print nm_stream_api_v2_render_stream($environment['container']);
     ?>
 
 

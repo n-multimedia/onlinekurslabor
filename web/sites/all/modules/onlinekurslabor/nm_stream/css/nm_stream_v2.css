@@ -30,8 +30,9 @@
 
 }
 
+#stream .card,
 #stream .stream-post {
-  padding: 15px 0;
+  padding: 15px 0 !important;
 }
 
 #stream .stream-post > div {
@@ -85,7 +86,6 @@
   font-size: 12px;
 }
 
-
 #stream .stream-action-2 > .col-12 {
   padding: 0;
 }
@@ -127,3 +127,6 @@
   transform: translate(0, 50%) !important;
 }
 
+#stream .stream-post-footer {
+  margin-top: 15px;
+}
