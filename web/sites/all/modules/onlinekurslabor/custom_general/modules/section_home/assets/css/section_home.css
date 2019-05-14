@@ -49,62 +49,8 @@ profil-bearbeiten-pencil auf start --gibbet nicht!
     margin-bottom: 10px;
 }
 
-/*meine Kurse-Widget*/
-a.home_course_item
-{
-    display: block;
-    margin-bottom: 10px;
-    min-height: 70px;
-}
-a.home_course_item:hover .home_course_preview-hover_box
-{
-    color: #E9E9E9;
-}
 
 
-/*meine kurse-ansicht auf start*/
-div.view-courses-kurse-bersicht .home_courses_container, .home_course_item_div
-{
-  background-color: #eee;
-  padding: 10px 15px;
-  margin:0;
-}
-
-div.view-courses-kurse-bersicht .home_course_item_div
-{
-  background-color: #fff;
-  padding:15px;
-  border:1px solid #dedede;
-}
-
-
-
-/*progress-badge*/
-div.view-courses-kurse-bersicht .home_courses_container div.progress_circle_container
-{
-    display: none;
-    position: absolute;
-    padding-top:5px;
-}
-/*progress-badge zeigen erst ab mindest-resolution*/
-@media (min-width: 400px)
-{
-    div.view-courses-kurse-bersicht .home_courses_container:hover div.progress_circle_container
-    {
-        display: block;
-    }
-    
-}
-/*bilder mit klasse halbtransparent setzen*/
-div.view-courses-kurse-bersicht .home_courses_container:hover .courseitem_image_hover_transp
-{
-    opacity: 0.5;
-}
-/*verhinderte überlauf des kurs-bilds auf mobil*/
-div.view-courses-kurse-bersicht .home_courses_container  img.courseitem_courselogo
-{
-    max-width: 100%;
-}
 
 
 
