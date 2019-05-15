@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_administration.views_default.inc
@@ -154,7 +155,7 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
-  /* Field: User: Active */
+  /* Field: User: Active status */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'users';
   $handler->display->display_options['fields']['status']['field'] = 'status';
@@ -178,12 +179,12 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['fields']['mail']['table'] = 'users';
   $handler->display->display_options['fields']['mail']['field'] = 'mail';
   $handler->display->display_options['fields']['mail']['label'] = 'E-Mail';
-  /* Field: User: Edit link */
+  /* Field: User: Link to edit user */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'users';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['label'] = 'Operationen';
-  /* Field: User: Cancel link */
+  /* Field: User: Link to cancel user */
   $handler->display->display_options['fields']['cancel_node']['id'] = 'cancel_node';
   $handler->display->display_options['fields']['cancel_node']['table'] = 'users';
   $handler->display->display_options['fields']['cancel_node']['field'] = 'cancel_node';
@@ -194,7 +195,7 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['sorts']['access']['table'] = 'users';
   $handler->display->display_options['sorts']['access']['field'] = 'access';
   $handler->display->display_options['sorts']['access']['order'] = 'DESC';
-  /* Filter criterion: User: Active */
+  /* Filter criterion: User: Active status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'users';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -270,7 +271,7 @@ function nm_administration_views_default_views() {
     24708420 => 0,
     140204299 => 0,
   );
-  /* Filter criterion: User: Active */
+  /* Filter criterion: User: Active status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'users';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -403,7 +404,6 @@ function nm_administration_views_default_views() {
     t('Benutzer'),
     t('- Choose an operation -'),
     t('Person sperren'),
-    t('Person löschen'),
     t('Realname-Update ausführen'),
     t('Name'),
     t('Status'),
@@ -515,7 +515,7 @@ function nm_administration_views_default_views() {
       'empty_column' => 0,
     ),
   );
-  /* Relationship: Content: Author */
+  /* Relationship: Content: Content author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
@@ -568,14 +568,14 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['fields']['changed']['label'] = 'Änderungsdatum';
   $handler->display->display_options['fields']['changed']['date_format'] = 'short';
   $handler->display->display_options['fields']['changed']['second_date_format'] = 'privatemsg_current_day';
-  /* Field: Content: Edit link */
+  /* Field: Content: Link to edit content */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['label'] = 'Verlinkung bearbeiten';
   $handler->display->display_options['fields']['edit_node']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['edit_node']['alter']['text'] = '[edit_node] ';
-  /* Field: Content: Delete link */
+  /* Field: Content: Link to delete content */
   $handler->display->display_options['fields']['delete_node']['id'] = 'delete_node';
   $handler->display->display_options['fields']['delete_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['delete_node']['field'] = 'delete_node';
@@ -585,7 +585,7 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['sorts']['changed']['table'] = 'node';
   $handler->display->display_options['sorts']['changed']['field'] = 'changed';
   $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -675,20 +675,11 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['filters']['realname']['group'] = 1;
   $handler->display->display_options['filters']['realname']['exposed'] = TRUE;
   $handler->display->display_options['filters']['realname']['expose']['operator_id'] = 'realname_op';
-  $handler->display->display_options['filters']['realname']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['realname']['expose']['label'] = 'Erstellt durch';
   $handler->display->display_options['filters']['realname']['expose']['operator'] = 'realname_op';
   $handler->display->display_options['filters']['realname']['expose']['identifier'] = 'realname';
   $handler->display->display_options['filters']['realname']['expose']['remember_roles'] = array(
     2 => '2',
-    30037204 => 0,
-    1 => 0,
-    197637936 => 0,
-    16675960 => 0,
-    106505419 => 0,
-    126456107 => 0,
-    66784200 => 0,
-    24708420 => 0,
-    140204299 => 0,
   );
   /* Filter criterion: Date: Date (node) */
   $handler->display->display_options['filters']['date_filter_1']['id'] = 'date_filter_1';
@@ -779,7 +770,6 @@ function nm_administration_views_default_views() {
     t('Verlinkung bearbeiten'),
     t('[edit_node] '),
     t('Operationen'),
-    t('Name'),
     t('Änderungsdatum von'),
     t('Änderungsdatum bis'),
     t('Content pane'),
@@ -876,7 +866,7 @@ function nm_administration_views_default_views() {
       'empty_column' => 0,
     ),
   );
-  /* Relationship: Content: Author */
+  /* Relationship: Content: Content author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
@@ -932,8 +922,8 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['name']['label'] = 'Kurs erstellt durch';
-  /* Field: Content: Published */
+  $handler->display->display_options['fields']['name']['label'] = 'Erstellt durch';
+  /* Field: Content: Published status */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'node';
   $handler->display->display_options['fields']['status']['field'] = 'status';
@@ -949,14 +939,14 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['fields']['changed']['label'] = 'Änderungsdatum';
   $handler->display->display_options['fields']['changed']['date_format'] = 'short';
   $handler->display->display_options['fields']['changed']['second_date_format'] = 'privatemsg_current_day';
-  /* Field: Content: Edit link */
+  /* Field: Content: Link to edit content */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['label'] = 'Verlinkung bearbeiten';
   $handler->display->display_options['fields']['edit_node']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['edit_node']['alter']['text'] = '[edit_node] ';
-  /* Field: Content: Delete link */
+  /* Field: Content: Link to delete content */
   $handler->display->display_options['fields']['delete_node']['id'] = 'delete_node';
   $handler->display->display_options['fields']['delete_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['delete_node']['field'] = 'delete_node';
@@ -998,20 +988,11 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['filters']['realname']['group'] = 1;
   $handler->display->display_options['filters']['realname']['exposed'] = TRUE;
   $handler->display->display_options['filters']['realname']['expose']['operator_id'] = 'realname_op';
-  $handler->display->display_options['filters']['realname']['expose']['label'] = 'Dozierender (erstellte den Kurs)';
+  $handler->display->display_options['filters']['realname']['expose']['label'] = 'Kurs erstellt durch';
   $handler->display->display_options['filters']['realname']['expose']['operator'] = 'realname_op';
   $handler->display->display_options['filters']['realname']['expose']['identifier'] = 'realname';
   $handler->display->display_options['filters']['realname']['expose']['remember_roles'] = array(
     2 => '2',
-    30037204 => 0,
-    1 => 0,
-    197637936 => 0,
-    16675960 => 0,
-    106505419 => 0,
-    126456107 => 0,
-    66784200 => 0,
-    24708420 => 0,
-    140204299 => 0,
   );
   /* Filter criterion: Date: Date (node) */
   $handler->display->display_options['filters']['date_filter_1']['id'] = 'date_filter_1';
@@ -1077,7 +1058,7 @@ function nm_administration_views_default_views() {
     'courses_course' => 'courses_course',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
   $handler->display->display_options['filters']['status_1']['table'] = 'node';
   $handler->display->display_options['filters']['status_1']['field'] = 'status';
@@ -1175,7 +1156,7 @@ function nm_administration_views_default_views() {
     t('Kurs löschen'),
     t('Kurs veröffentlichen'),
     t('Titel'),
-    t('Kurs erstellt durch'),
+    t('Erstellt durch'),
     t('Status'),
     t('Veröffentlicht'),
     t('Entwurf'),
@@ -1183,7 +1164,7 @@ function nm_administration_views_default_views() {
     t('Verlinkung bearbeiten'),
     t('[edit_node] '),
     t('Operationen'),
-    t('Dozierender (erstellte den Kurs)'),
+    t('Kurs erstellt durch'),
     t('Änderungsdatum von'),
     t('Änderungsdatum bis'),
     t('Semester'),
@@ -1236,9 +1217,11 @@ function nm_administration_views_default_views() {
     'uri' => 'uri',
     'filesize' => 'filesize',
     'timestamp' => 'timestamp',
+    'name' => 'name',
     'usage' => 'usage',
     'edit' => 'edit',
   );
+  $handler->display->display_options['style_options']['class'] = '';
   $handler->display->display_options['style_options']['default'] = 'timestamp';
   $handler->display->display_options['style_options']['info'] = array(
     'fid' => array(
@@ -1283,6 +1266,13 @@ function nm_administration_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'name' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'usage' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
@@ -1297,6 +1287,10 @@ function nm_administration_views_default_views() {
     ),
   );
   $handler->display->display_options['style_options']['sticky'] = TRUE;
+  /* Relationship: File: User who uploaded */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'file_managed';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   /* Field: File: File ID */
   $handler->display->display_options['fields']['fid']['id'] = 'fid';
   $handler->display->display_options['fields']['fid']['table'] = 'file_managed';
@@ -1308,12 +1302,6 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['fields']['filename']['field'] = 'filename';
   $handler->display->display_options['fields']['filename']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['filename']['alter']['ellipsis'] = FALSE;
-  /* Field: File: Type */
-  $handler->display->display_options['fields']['type']['id'] = 'type';
-  $handler->display->display_options['fields']['type']['table'] = 'file_managed';
-  $handler->display->display_options['fields']['type']['field'] = 'type';
-  $handler->display->display_options['fields']['type']['label'] = 'Typ';
-  $handler->display->display_options['fields']['type']['machine_name'] = 0;
   /* Field: File: Path */
   $handler->display->display_options['fields']['uri']['id'] = 'uri';
   $handler->display->display_options['fields']['uri']['table'] = 'file_managed';
@@ -1324,11 +1312,17 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['fields']['filesize']['table'] = 'file_managed';
   $handler->display->display_options['fields']['filesize']['field'] = 'filesize';
   $handler->display->display_options['fields']['filesize']['label'] = 'Größe';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'Hochgeladen durch';
   /* Field: File: Upload date */
   $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
   $handler->display->display_options['fields']['timestamp']['table'] = 'file_managed';
   $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['label'] = 'Hochgeladen';
+  $handler->display->display_options['fields']['timestamp']['label'] = 'Hochlade-Datum';
   $handler->display->display_options['fields']['timestamp']['date_format'] = 'short';
   $handler->display->display_options['fields']['timestamp']['second_date_format'] = 'privatemsg_current_day';
   /* Field: File: Usage link */
@@ -1337,6 +1331,12 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['fields']['usage']['field'] = 'usage';
   $handler->display->display_options['fields']['usage']['label'] = 'Verwendung';
   $handler->display->display_options['fields']['usage']['count_entities_once'] = 1;
+  /* Field: File: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['label'] = 'Typ';
+  $handler->display->display_options['fields']['type']['machine_name'] = 0;
   /* Field: File: Edit link */
   $handler->display->display_options['fields']['edit']['id'] = 'edit';
   $handler->display->display_options['fields']['edit']['table'] = 'file_managed';
@@ -1387,27 +1387,34 @@ function nm_administration_views_default_views() {
     24708420 => 0,
     140204299 => 0,
   );
+  /* Filter criterion: Realname: Name */
+  $handler->display->display_options['filters']['realname']['id'] = 'realname';
+  $handler->display->display_options['filters']['realname']['table'] = 'realname';
+  $handler->display->display_options['filters']['realname']['field'] = 'realname';
+  $handler->display->display_options['filters']['realname']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['realname']['operator'] = 'contains';
+  $handler->display->display_options['filters']['realname']['group'] = 1;
+  $handler->display->display_options['filters']['realname']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['realname']['expose']['operator_id'] = 'realname_op';
+  $handler->display->display_options['filters']['realname']['expose']['label'] = 'Hochgeladen durch';
+  $handler->display->display_options['filters']['realname']['expose']['operator'] = 'realname_op';
+  $handler->display->display_options['filters']['realname']['expose']['identifier'] = 'realname';
+  $handler->display->display_options['filters']['realname']['expose']['remember_roles'] = array(
+    2 => '2',
+  );
   /* Filter criterion: Date: Date (file_managed) */
   $handler->display->display_options['filters']['date_filter']['id'] = 'date_filter';
   $handler->display->display_options['filters']['date_filter']['table'] = 'file_managed';
   $handler->display->display_options['filters']['date_filter']['field'] = 'date_filter';
   $handler->display->display_options['filters']['date_filter']['operator'] = '>=';
+  $handler->display->display_options['filters']['date_filter']['group'] = 1;
   $handler->display->display_options['filters']['date_filter']['exposed'] = TRUE;
   $handler->display->display_options['filters']['date_filter']['expose']['operator_id'] = 'date_filter_op';
-  $handler->display->display_options['filters']['date_filter']['expose']['label'] = 'Hochgeladen von';
+  $handler->display->display_options['filters']['date_filter']['expose']['label'] = 'Im Zeitraum von';
   $handler->display->display_options['filters']['date_filter']['expose']['operator'] = 'date_filter_op';
-  $handler->display->display_options['filters']['date_filter']['expose']['identifier'] = 'date_filter';
+  $handler->display->display_options['filters']['date_filter']['expose']['identifier'] = 'date_filter_from';
   $handler->display->display_options['filters']['date_filter']['expose']['remember_roles'] = array(
     2 => '2',
-    30037204 => 0,
-    1 => 0,
-    197637936 => 0,
-    16675960 => 0,
-    106505419 => 0,
-    126456107 => 0,
-    66784200 => 0,
-    24708420 => 0,
-    140204299 => 0,
   );
   $handler->display->display_options['filters']['date_filter']['form_type'] = 'date_popup';
   $handler->display->display_options['filters']['date_filter']['year_range'] = '-6:+0';
@@ -1419,22 +1426,14 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['filters']['date_filter_1']['table'] = 'file_managed';
   $handler->display->display_options['filters']['date_filter_1']['field'] = 'date_filter';
   $handler->display->display_options['filters']['date_filter_1']['operator'] = '<=';
+  $handler->display->display_options['filters']['date_filter_1']['group'] = 1;
   $handler->display->display_options['filters']['date_filter_1']['exposed'] = TRUE;
   $handler->display->display_options['filters']['date_filter_1']['expose']['operator_id'] = 'date_filter_1_op';
-  $handler->display->display_options['filters']['date_filter_1']['expose']['label'] = 'Hochgeladen bis';
+  $handler->display->display_options['filters']['date_filter_1']['expose']['label'] = 'bis';
   $handler->display->display_options['filters']['date_filter_1']['expose']['operator'] = 'date_filter_1_op';
-  $handler->display->display_options['filters']['date_filter_1']['expose']['identifier'] = 'date_filter_1';
+  $handler->display->display_options['filters']['date_filter_1']['expose']['identifier'] = 'date_filter_to';
   $handler->display->display_options['filters']['date_filter_1']['expose']['remember_roles'] = array(
     2 => '2',
-    30037204 => 0,
-    1 => 0,
-    197637936 => 0,
-    16675960 => 0,
-    106505419 => 0,
-    126456107 => 0,
-    66784200 => 0,
-    24708420 => 0,
-    140204299 => 0,
   );
   $handler->display->display_options['filters']['date_filter_1']['form_type'] = 'date_popup';
   $handler->display->display_options['filters']['date_filter_1']['year_range'] = '-6:+0';
@@ -1474,18 +1473,20 @@ function nm_administration_views_default_views() {
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
+    t('User who uploaded'),
     t('Datei-ID'),
     t('Name'),
-    t('Typ'),
     t('Pfad'),
     t('Größe'),
-    t('Hochgeladen'),
+    t('Hochgeladen durch'),
+    t('Hochlade-Datum'),
     t('Verwendung'),
+    t('Typ'),
     t('Operationen'),
     t('Datei-ID='),
     t('Name/Pfad'),
-    t('Hochgeladen von'),
-    t('Hochgeladen bis'),
+    t('Im Zeitraum von'),
+    t('bis'),
     t('Administration (Moderator)'),
   );
   $export['administration_files'] = $view;
@@ -1557,7 +1558,7 @@ function nm_administration_views_default_views() {
       'empty_column' => 0,
     ),
   );
-  /* Relationship: Content: Author */
+  /* Relationship: Content: Content author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
@@ -1612,14 +1613,14 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['fields']['changed']['label'] = 'Aktualisiert';
   $handler->display->display_options['fields']['changed']['date_format'] = 'short';
   $handler->display->display_options['fields']['changed']['second_date_format'] = 'privatemsg_current_day';
-  /* Field: Content: Edit link */
+  /* Field: Content: Link to edit content */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['label'] = 'Verlinkung bearbeiten';
   $handler->display->display_options['fields']['edit_node']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['edit_node']['alter']['text'] = '[edit_node] ';
-  /* Field: Content: Delete link */
+  /* Field: Content: Link to delete content */
   $handler->display->display_options['fields']['delete_node']['id'] = 'delete_node';
   $handler->display->display_options['fields']['delete_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['delete_node']['field'] = 'delete_node';
@@ -1629,7 +1630,7 @@ function nm_administration_views_default_views() {
   $handler->display->display_options['sorts']['changed']['table'] = 'node';
   $handler->display->display_options['sorts']['changed']['field'] = 'changed';
   $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
