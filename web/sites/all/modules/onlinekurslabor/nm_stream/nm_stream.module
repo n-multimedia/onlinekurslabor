@@ -2504,7 +2504,7 @@ function nm_stream_api_v2_render_stream($container) {
     'weight' => 5,
   ]);
 
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.b26aa7195ba06f7a9c835fdd78108306', [
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.b26aa7195ba06f7a9c835fdd78108306.css', [
     'scope' => 'footer',
     'weight' => 5,
   ]);
