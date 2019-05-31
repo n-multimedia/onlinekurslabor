@@ -6,17 +6,6 @@
         Purpose of the stylesheet follows.
 */
 
-.nm-stream-node-container, .nm-stream-node-form-container{
-  background-color: #eee;
-  padding: 10px 15px;
-  margin:0;
-}
-
-.nm-stream-node{
-  background-color: #fff;
-  padding:15px;
-  border:1px solid #dedede;
-}
 
 #stream {
   margin-top: 0 !important;

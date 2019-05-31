@@ -12,12 +12,14 @@
     padding-top:3px;
     padding-bottom:3px
 }
+
+/*
 .home_picture_hover_username
 {
     width:278px;
 }
 
-/*profil-bearbeiten-pencil auf start*/
+profil-bearbeiten-pencil auf start --gibbet nicht!
 .home_profile_hover_edit
 {
     left:250px;
@@ -32,19 +34,14 @@
 .home_profile_hover_edit a:hover
 {
     color:white;
-}
-
-.home_background_black_transp
-{
-    background: rgb(0, 0, 0); 
-    background: rgba(0, 0, 0, 0.7);
-}
-/*profilbild zentriert auf profil-bg*/
+}*/
+/*profilbild zentriert auf profil-bg
 #home_profile_picture img{
     margin-left: 49px;
     position: absolute;   
     top: 0;;
-}
+}*/
+ 
 
 /*erstelle padding unter "Meine Kurse"-Überschrift*/
 .home_title_container
@@ -52,29 +49,9 @@
     margin-bottom: 10px;
 }
 
-/*meine Kurse-Widget*/
-a.home_course_item
-{
-    display: block;
-    margin-bottom: 10px;
-    min-height: 70px;
-}
-a.home_course_item:hover .home_course_preview-hover_box
-{
-    color: #E9E9E9;
-}
 
-.home_course_preview{
-    background-size: cover ;      
-    background-repeat: no-repeat;;  
-    height: 70px ;   
-}
-.home_course_preview-hover_box
-{    color:white;
-     margin-top: -20px;
-     height: 20px;
-     overflow: hidden;
-}
+
+
 
 
 h2.pane-title

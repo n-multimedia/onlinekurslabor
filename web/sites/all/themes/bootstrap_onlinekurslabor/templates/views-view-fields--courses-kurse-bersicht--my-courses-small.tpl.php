@@ -44,9 +44,9 @@ $percent = _section_courses_get_timespan_percentage($node, $start_text, $end_tex
  
 ?>
 
-<div class="nm-stream-node-container  nm_stream">
-    <a href="<?php echo $node_path; ?>" class="home_course_item">
-        <div class="nm-stream-node row">
+<div class="courses_small_container">
+    <a href="<?php echo $node_path; ?>" class="course_item_link">
+        <div class="course_item_div row">
             <?php if ($node->status === '0'): ?>
                 <div class="view_courses_label draft badge">
                     <?=t('Draft')?>
