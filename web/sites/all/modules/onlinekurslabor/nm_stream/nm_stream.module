@@ -2499,12 +2499,12 @@ function nm_stream_api_v2_render_stream($container) {
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.d8da4948829fde4a2867.js", [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.df040d91d31d76b080e0.js", [
     'scope' => 'footer',
     'weight' => 5,
   ]);
 
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.fcd5696f9b42d455fd4e4e444dbef780.css', [
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.a590d44e544ac5e6a3270222fba6fdb6.css', [
     'scope' => 'footer',
     'weight' => 5,
   ]);
@@ -2822,7 +2822,7 @@ function nm_stream_api_v2_get_posts_json_data($account, $node) {
       $icon = '<img class="file-icon" alt="' . check_plain($mime) . '" title="' . $mime . '" src="' . $icon_url . '" />';
 
       //$uri = file_entity_download_uri($file);
-      $uri['path'] = file_create_url($file);
+      $uri['path'] = file_create_url($file->uri);
       $uri['options']['attributes']['type'] = $file->filemime . '; length=' . $file->filesize;
       $uri['options']['absolute'] = TRUE;
       $attachment['download_link'] = $icon . " " . l($attachment['filename'], $uri['path'], $uri['options']);
