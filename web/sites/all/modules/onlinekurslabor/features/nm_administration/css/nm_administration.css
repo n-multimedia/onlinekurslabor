@@ -17,3 +17,9 @@
 .page-administration .nav-list > li:not(.active) > a.active {
     background-color:transparent;
 }
+
+/*Hochgeladen von bei Files*/
+div#edit-date-filter-from-wrapper input.form-text, div#edit-date-filter-to-wrapper  input.form-text
+{
+    width: 100px;
+}
