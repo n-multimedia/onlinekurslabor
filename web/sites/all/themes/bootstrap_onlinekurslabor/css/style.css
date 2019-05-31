@@ -64,6 +64,12 @@ Panels reset - homepage
     height: auto;
 }
 
+#course-header-background,
+#block-section-courses-course-header-section {
+  height: 200px;
+}
+
+
 /*
 PANELS
 */
@@ -184,18 +190,18 @@ BOOTSTRAP 3
 
 
 /*collapsed section-menu*/
-@media (max-width: 999px) { 
-    
+@media (max-width: 999px) {
+
     #section_navigation.navbar ul.navbar-nav  {
         text-align: center;
-        
+
     }
      #section_navigation.navbar ul.navbar-nav a.disabled
      {
        text-decoration: line-through;
      }
- 
-    .section_navigation_course.navbar-default .navbar-nav > li > a 
+
+    .section_navigation_course.navbar-default .navbar-nav > li > a
     {
         border:none;
     }
@@ -220,8 +226,8 @@ BOOTSTRAP 3
     padding:0px;
     margin:0px;
     font-size: 21px;
-   
-} 
+
+}
 #page_top_navigation a.top_nav_link span.nav_description_xs
 {
     font-size: 16px;
@@ -233,13 +239,13 @@ BOOTSTRAP 3
     margin: -20px 0 0 -15px;
     padding: 2px 6px 2px 6px;
     font-size: 10px;
-  
-   
+
+
 }
 #page_top_navigation a.top_nav_link span.glyphicon
 {
     padding-right:5px;
-    vertical-align: middle; 
+    vertical-align: middle;
     position: static;
 }
 
@@ -257,8 +263,8 @@ BOOTSTRAP 3
 {
      color: #222222;
 }
- 
- 
+
+
 /*tooltips fuer die topnavigation*/
 .tooltip-top-navi + .tooltip.bottom .tooltip-inner {
     background-color:#414040;
@@ -267,7 +273,7 @@ BOOTSTRAP 3
 }
 .tooltip-top-navi + .tooltip.bottom .tooltip-arrow {
     border-bottom-color: #414040;
-}   
+}
 #page_top_navigation .navbar-brand {
     padding: 0px;
     padding-top: 5px;
@@ -277,18 +283,18 @@ BOOTSTRAP 3
 #page_top_navigation .navbar-inverse{
     background: #333333;
 }
- 
+
 /*
 ENDE BOOTSTRAP 3
 */
- 
+
 
 /*user-picture in navigation*/
 .navigation_user_picture
 {
     margin-right: 10px;
 }
- 
+
 body.cke_show_borders{
     padding-top:0px;
 }
@@ -377,7 +383,7 @@ Course Header
 Margin between content and navigation
 */
 
- 
+
 
 /*fuer alle disabled-buttons not-allowed-cursor setzen*/
 .btn.disabled a{
@@ -663,7 +669,7 @@ SECTION CONTENT
 
 /*
 Outline left sidebar
-*/ 
+*/
 
 /*
 Outline left sidebar
@@ -684,11 +690,11 @@ Outline left sidebar
 /*buchsortierung
 bootstrap3 macht eingaben immer breit, im bedarfsfall verkleinern
 */
-form#book-admin-edit .form-control 
+form#book-admin-edit .form-control
 {
     display:inline;
     width: auto;
-    
+
 }
 
 
@@ -734,7 +740,7 @@ BIBLIO
 /*
 Large form. smaller widht for input fields
 */
- 
+
 /*
 Book Navigation
 */
@@ -886,7 +892,7 @@ jQuery UI adaption
     padding: 1em 0.5em ;
 }
 .ui-widget-header {
-    background: none; 
+    background: none;
     border:0;
 }
 .ui-tabs {
@@ -984,7 +990,7 @@ div.view-id-courses_user_domains.view-display-id-nid_only a {
     background: rgba(255,255,255,0.75);
 }
 /*hovereffekt*/
-div.view-id-courses_user_domains.view-display-id-nid_only a:hover 
+div.view-id-courses_user_domains.view-display-id-nid_only a:hover
 {
     background: #F7F7F7;
 }

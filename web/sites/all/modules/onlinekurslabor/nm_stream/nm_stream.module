@@ -2473,12 +2473,8 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   $data['stream']['privacyOptions'] = $privacy_options;
   $data['stream']['privacyOptionsAll'] = $privacy_options_all;
   $data['stream']['token'] = drupal_get_token();
-  // $allowed_attachm_filetypes from field configuration
-  $stream_CT_field_data = field_info_instances("node", "nm_stream");
-  $stream_attachments_filetypes = $stream_CT_field_data['field_nm_attachments']['settings']['file_extensions'];
-  $allowed_attachm_filetypes = '.'. implode(',  .', explode(' ', $stream_attachments_filetypes));
-
-  $data['stream']['acceptedFiles'] = $allowed_attachm_filetypes; 
+  // todo get from field configuration
+  $data['stream']['acceptedFiles'] = '.jpg, .jpeg, .gif, .png, .txt, .xls, .pdf, .mp3, .doc, .docx, .pps, .ppt, .pptx, .odt, .ods, .odp, .mp4, .keynote, .pages';
 
   $posts_comments_users = nm_stream_api_v2_get_posts($stream_container_node);
   $data['stream']['posts'] = $posts_comments_users['posts'];
@@ -2817,7 +2813,8 @@ function nm_stream_api_v2_get_posts_json_data($account, $node) {
     $icon_url = $base_url . "/" . file_icon_url($file, NULL);
     $icon = '<img class="file-icon" alt="' . check_plain($mime) . '" title="' . $mime . '" src="' . $icon_url . '" />';
 
-    $uri = file_entity_download_uri($file);
+    //$uri = file_entity_download_uri($file);
+    $uri['path'] = file_create_url($file->uri);
     $uri['options']['attributes']['type'] = $file->filemime . '; length=' . $file->filesize;
     $uri['options']['absolute'] = TRUE;
     $attachment['download_link'] = $icon . " " . l($attachment['filename'], $uri['path'], $uri['options']);

@@ -183,13 +183,12 @@ function _course_header_section_view() {
       //$url_array = file_create_url($uri);
       //$url = parse_url($url_array);
       //$path = $url['path'];
-      $header_pic = '<div style="
+      $header_pic = '<div id="course-header-background" style="
         background-image:url(' . $path . ');
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover; 
-        height:200px;
         ">
         </div>';
     }
@@ -213,7 +212,7 @@ function _course_header_section_view() {
 
 /*
  * check if we are in course demo mode
- * 
+ *
  * return boolean
  */
 
@@ -238,8 +237,8 @@ function section_courses_demo_mode($nid = 0) {
 }
 
 /**
- * Theme Instrucotr's Tools Block 
- * 
+ * Theme Instrucotr's Tools Block
+ *
  * @param type $variables
  * @return type
  */
@@ -321,7 +320,7 @@ function section_courses_tutor_tools_access() {
 
 /**
  * get link Items for Insructor's Tools Block
- * 
+ *
  * @global type $user
  * @return string
  */
@@ -520,146 +519,119 @@ function _section_courses_get_instructor_tools() {
  *   returns a renderable array of block content.
  */
 function _course_top_navigation_view() {
-     $options = array('class'=>'section_navigation_course');
-     
-   
-  $block = array();
   $course = _section_courses_get_active_course();
+  if (!isset($course) || empty($course)) {
+    return [];
+  }
 
-  if (!isset($course) || empty($course))
-    return array();
-
-  $nav_items_single = array();
+  $nav_items_single = [];
   $nav_items_single['overview'] = "Aktuelles";
   $nav_items_single['course'] = "Lehrtext";
   $nav_items_single['documents'] = "Kursdokumente";
-//$nav_items['notes'] = "Notizen";
   $nav_items_single['information'] = "Kursinfo";
 
-
-  $nav_items_collab = array();
+  $nav_items_collab = [];
   $nav_items_collab['tasks'] = "Aufgaben";
   $nav_items_collab['cours_groups'] = "Kursgruppe";
   $nav_items_collab['forum'] = "Forum";
   $nav_items_collab['members'] = "Teilnehmende";
-  $nav_items_collab['wiki'] = "Wiki";
+
+  $nav_items_single_links = _section_courses_top_navigation_label_to_link($nav_items_single, $course);
+  $nav_items_collab_links = _section_courses_top_navigation_label_to_link($nav_items_collab, $course);
+
+  $single_links = $nav_items_single_links;
+  $collab_links = $nav_items_collab_links;
 
 
-//single links
-  $single_links = array();
-//$output_single = '';
-//$output_single .= '<ul class="links inline clearfix">';
+  // administration
+  $admin_tools = "";
+  if(section_courses_instructors_tools_access()) {
+    $instructor_tools = _section_courses_get_instructor_tools();
+    $admin_tools = _custom_general_theme_tools_block($instructor_tools, "mobile_instructors_tools", "btn-group btn-group-vertical", 1);
+  }
+
+
+  $variables['single_links'] = $nav_items_single_links;
+  $variables['collab_links'] = $nav_items_collab_links;
+  $variables['admin_tools'] = $admin_tools;
+
+  /*
+  $navigation_options = array('class' => 'section_navigation_course');
+  $navigation_items = array(
+    'single' => array(
+      'header' => '<div id="course_top_nav_single-icon"></div>',
+      'prefix' => '<div class="col-md-6">',
+      'suffix' => '</div>',
+      'urls' => $single_links
+    ),
+    'collab' => array(
+      'header' => '<div id="course_top_nav_collab-icon"></div>',
+      'prefix' => '<div class="col-md-6">',
+      'suffix' => '</div>',
+      'urls' => $collab_links
+    )
+  );*/
+
+  return theme('section_courses_top_navigation', $variables);
+  //return _onlinekurslabor_misc_get_renderable_section_navigation($navigation_items , $navigation_options);
+}
+
+/**
+ * @param $nav_items_single
+ * @param $course
+ *
+ * @return array
+ */
+function _section_courses_top_navigation_label_to_link($nav_items_single, $course) {
+  $links = [];
   foreach ($nav_items_single as $si) {
     $text_link = _section_courses_navtext_to_link($course, $si);
 
-    //only render this item, if feature is turned on.
+    // only render this item, if feature is turned on.
     // render as disabled button if no text is assigned
-    if($si == "Lehrtext" && !_section_courses_feature_active($course, NM_COURSE_FEATURE_TEXT)){
+    if ($si == "Lehrtext" && !_section_courses_feature_active($course, NM_COURSE_FEATURE_TEXT)) {
       continue;
     }
-
-    $options = array(
-      'link' => $text_link['link'],
-      'text' => $text_link['text'],
-      'path' => $text_link['path'],
-      'data' => @$text_link['data'],
-      'attributes' => array('class' => array('btn'))
-    );
-    //disable path buttons user doesn't have access to
-    if (!drupal_valid_path($options['path'])) {
-      $options['path'] = '#';
-      $options['link'] = '<a href="#">' . $si . '</a>';
-      $options['attributes']['class'][] = 'disabled';
-    }
-    $options['attributes']['class'][] = drupal_html_class($si);
-
-
-    $single_links[] = $options;
-
-//$si_link = _section_courses_navtext_to_link($course, $si);
-//$output_single .= "<li>" . $si_link . "</li>";
-  }
-
-//$output_single .= "</ul>";
-//collaborative links
-  $collab_links = array();
-//$output_collab = '';
-//$output_collab .= '<ul class="links inline clearfix">';
-  /* Waruuum? Selber Code doppelt, nur fuer andere Variable!*/
-  foreach ($nav_items_collab as $si) {
-    $text_link = _section_courses_navtext_to_link($course, $si);
     if (strtolower($si) != strtolower($text_link['link'])) {
-      $options = array('link' => $text_link['link'], 'path' => $text_link['path'], 'data' => @$text_link['data'],'text' => $text_link['text'],'attributes' => array('class' => array('btn')));
+      $options = [
+        'link' => $text_link['link'],
+        'text' => $text_link['text'],
+        'path' => $text_link['path'],
+        'data' => @$text_link['data'],
+        'attributes' => ['class' => ['btn']],
+      ];
 
-      //disable path buttons where user doen't have access to
+      //disable path buttons user doesn't have access to
       if (!drupal_valid_path($options['path'])) {
         $options['path'] = '#';
         $options['link'] = '<a href="#">' . $si . '</a>';
         $options['attributes']['class'][] = 'disabled';
       }
+
+      $unread_count = $options['data']['unread'];
+      if ($unread_count) {
+        $unread_badge = '<div class="unread_tiny_box"><div style="" class="arrow-down"></div>' . $unread_count . '</div>';
+      }
+
+      $options['rendered_link'] = '<li class="' . _onlinekurslabor_misc_umlaut_to_text(strtolower($options['text'])) . '">'
+        . l($options['text'] . ' ' . $unread_badge, $options['path'], [
+          'fragment' => @$options['fragment'],
+          'html' => TRUE,
+          'attributes' => ['class' => $options['attributes']['class']],
+        ])
+        . '</li>';
+
       $options['attributes']['class'][] = drupal_html_class($si);
-
-      $collab_links[] = $options;
+      $links[] = $options;
     }
-//$si_link = _section_courses_navtext_to_link($course, $si);
-//$output_collab .= '<li>' . $si_link . '</li>';
+
   }
-    
-    
-//$output_collab .= '</ul>';
-    $navigation_options = array('class' => 'section_navigation_course');
-    $navigation_items = array(
-        'single' => array(
-            'header' => '<div id="course_top_nav_single-icon"></div>',
-            'prefix' => '<div class="col-md-6">',
-            'suffix' => '</div>',
-            'urls' => $single_links
-        ),
-        'collab' => array(
-            'header' => '<div id="course_top_nav_collab-icon"></div>',
-            'prefix' => '<div class="col-md-6">',
-            'suffix' => '</div>',
-            'urls' => $collab_links
-        )
-    );
-      
- return _onlinekurslabor_misc_get_renderable_section_navigation($navigation_items , $navigation_options);
-    /*
-  $output_single = _custom_general_theme_tools_block($single_links, "course_top_nav_single");
-  $output_collab = _custom_general_theme_tools_block($collab_links, "course_top_nav_collab");
-
-// Block output in HTML with div wrapper
-  $block = array(
-    'prefix' => array(
-      '#prefix' => '<div id="course_top_navigation" class="btn-toolbar row">',
-      '#type' => 'markup',
-      '#markup' => "",
-    ),
-    'single' => array(
-      '#prefix' => '<div id="course_tools_single" class="btn-group col-md-5">',
-      '#type' => 'markup',
-      '#markup' => $output_single,
-      '#suffix' => '</div>',
-    ),
-    'collab' => array(
-      '#prefix' => '<div id="course_tools_collab" class="btn-group col-md-6">',
-      '#type' => 'markup',
-      '#markup' => $output_collab,
-      '#suffix' => '</div>',
-    ),
-    'suffix' => array(
-      '#type' => 'markup',
-      '#markup' => "",
-      '#suffix' => '</div>',
-    ),
-  );
-
-  return $block;*/
+  return $links;
 }
 
 /**
  * returns a themed link item for the courses top navigation
- * 
+ *
  * @param type $course
  * @param type $text
  * @return string
@@ -695,8 +667,8 @@ function _section_courses_navtext_to_link($course, $text) {
 
   $text_temp = $text;
   $text = ($text);
- 
-  
+
+
   switch ($text_temp) {
     case "Aktuelles":
       $num_unread = _section_courses_course_get_num_unread_by_type($user->uid, NM_COURSE_NEWS);
@@ -770,7 +742,7 @@ function _section_courses_navtext_to_link($course, $text) {
 
         $path = $forum_link;
 
-        //get number of active forum containers and link to first container 
+        //get number of active forum containers and link to first container
         //directly if only one cotainer is available
         $forum_container = taxonomy_get_children($term->tid);
         if (count($forum_container) == 1) {

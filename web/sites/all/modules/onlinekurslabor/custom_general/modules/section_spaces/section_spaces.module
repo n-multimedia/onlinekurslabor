@@ -88,13 +88,12 @@ function _section_spaces_header_view() {
       $url_array = file_create_url($uri);
       $url = parse_url($url_array);
       $path = $url['path'];
-      $header_pic = '<div style="
+      $header_pic = '<div id="course-header-background" style="
         background-image:url(' . $path . ');
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover; 
-        height:200px;
         ">
         </div>';
       $header_pic .= '<div style="
@@ -167,7 +166,7 @@ function _section_spaces_navigation_view() {
 }
 
 /**
- * Main Space View containing content for all needed content 
+ * Main Space View containing content for all needed content
  * which is controlled from navigation bar items
  * @return array
  */
@@ -253,7 +252,7 @@ function _section_space_get_active_section($reset = FALSE) {
  * Implements hook_system_info_alter().
  */
 
-//add course header 
+//add course header
 //16.07.2013 - 11:58 - SN - now done by context module
 function section_spaces_preprocess_page(&$vars) {
   $active_section = _section_space_get_active_section();
@@ -326,7 +325,7 @@ function section_spaces_main_kurse_view() {
 
       $vars['title'] = $course_node->title;
       $vars['subtitle'] = render(field_view_field('node', $course_node, 'field_subtitle', array('label'=>'hidden')));
-     
+
       $vars['link'] = url('course/home/' . $course_node->nid);
       $field_view = field_view_field('node', $course_node, 'field_short_description', array('label'=>'hidden'));
       $alter = array(

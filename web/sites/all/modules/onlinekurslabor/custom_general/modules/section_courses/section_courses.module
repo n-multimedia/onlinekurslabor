@@ -70,7 +70,7 @@ function section_courses_get_config_form_default_semester($form, &$form_state) {
 
 /**
  * liefert die Form-Komponente "aktuelles Semeser setzen" als form-renderable-array
- * 
+ *
  * @see section_courses_onlinekurslabor_admin_settings_page() and section_courses_get_config_form_default_semester()
  * @return array form-definition
  */
@@ -82,10 +82,15 @@ function _section_courses_get_semester_default_form_configuration()
   $semesters = taxonomy_get_tree($vocabulary_semester->vid);
   $semester_terms_options = array();
   foreach ($semesters as $semester) {
+    // str_repeat('-', $semester->depth) .
     $semester_terms_options[$semester->tid] = $semester->name;
   }
-  //letzter eintrag im array ist default für var_get
-  $current_semester = taxonomy_term_load(variable_get('okl_current_semester', $semester->tid));
+
+  //todo error handling
+  //we need the taxonomy terms to be available!
+  //lädt das ws13/14. tut das not?
+  $default_semester_key = current(taxonomy_get_term_by_name(_section_courses_semesterID_ToString(NM_VHB_SEMESTERID_OKL_START)));
+  $current_semester = taxonomy_term_load(variable_get('okl_current_semester', $default_semester_key->tid));
 
   $current_semester_tid = $current_semester->tid;
   $default_val = 0;
@@ -124,7 +129,7 @@ function section_courses_onlinekurslabor_admin_settings_page() {
     '#description' => t("Main Navigation Link Target"),
     '#required' => TRUE,
   );
-  
+
    $form['okl_help_bid'] = array(
     '#type' => 'textfield',
     '#title' => t('ID of the help-book'),
@@ -132,8 +137,8 @@ function section_courses_onlinekurslabor_admin_settings_page() {
     '#description' => t("The help is written in a book. Enter the ID."),
     '#required' => TRUE,
   );
-   
-   
+
+
    $form['okl_help_header_fid'] = array(
     '#type' => 'textfield',
     '#title' => t('fid of header for help'),
@@ -141,7 +146,7 @@ function section_courses_onlinekurslabor_admin_settings_page() {
     '#description' => t("The file-ID of the header-image in help-section."),
     '#required' => TRUE,
   );
-   
+
    $form['okl_support_email'] = array(
     '#type' => 'textfield',
     '#title' => t('support team'),
@@ -149,7 +154,7 @@ function section_courses_onlinekurslabor_admin_settings_page() {
     '#description' => t("Email adress of the support team."),
     '#required' => TRUE,
   );
-    
+
 
   return system_settings_form($form);
 }
@@ -279,7 +284,7 @@ function section_courses_render_course_link($course, $account = NULL) {
         $result .= '</div>';
       }
       else {
-          
+
         $subscribe_url = 'group/node/' . $course->nid . '/subscribe';
         //aktiviere subscribe-link fuer moderator+
         if (array_intersect(array(NM_ROLE_ADMIN, NM_ROLE_MODERATOR), array_values($user->roles))) {
@@ -287,7 +292,7 @@ function section_courses_render_course_link($course, $account = NULL) {
                     'html' => true,
                     'query' => array('destination' => 'course/home/' . $course->nid),
                     'attributes' => array('class' => array('btn', 'btn-primary'))));
-                } //deaktiviere subscribe-url da eh kaputt 
+                } //deaktiviere subscribe-url da eh kaputt
                 else {
                     $subscribe_url = 'group/node/' . $course->nid . '/subscribe';
                     $subscribe_link = l('<i class="glyphicon glyphicon-ok-circle"> </i> Anmelden', $subscribe_url, array(
@@ -296,8 +301,8 @@ function section_courses_render_course_link($course, $account = NULL) {
                         'attributes' => array('class' => array('btn', 'btn-primary'))));
                 }
 
-          $info_link = l('<i class="glyphicon glyphicon-info-sign"> </i> Kursinfo', 'course/info/' . $course->nid, 
-          array(  
+          $info_link = l('<i class="glyphicon glyphicon-info-sign"> </i> Kursinfo', 'course/info/' . $course->nid,
+          array(
           'html'=> true,
           'attributes' => array(
             'class' => array(
@@ -324,8 +329,8 @@ function section_courses_render_course_link($course, $account = NULL) {
  * @param Stdclass $account user-account
  */
 function _section_courses_render_course_main_link($course, $account = NULL) {
-    
-    
+
+
     $target = _section_courses_get_course_main_url($course, $account );
 
     return l($course->title, $target );
@@ -1280,7 +1285,7 @@ function section_courses_module_implements_alter(&$implementations, $hook) {
  */
 function _section_courses_user_remove_from_coursegroups( $user_uid,$course_nid)
 {
-    
+
     $courses_course_groups = _section_course_get_coursegroups(node_load($course_nid));
 
     /**
@@ -1296,7 +1301,7 @@ function _section_courses_user_remove_from_coursegroups( $user_uid,$course_nid)
 
 
 /**
- * add user to a coursegroup. all memberships to other coursegroups in this course will be revoked 
+ * add user to a coursegroup. all memberships to other coursegroups in this course will be revoked
  * @param type $user_uid uid of a user
  * @param type $coursegroup_nid nid of a coursegroup
  */
@@ -1305,7 +1310,7 @@ function _section_courses_user_add_to_coursegroup( $user_uid,$coursegroup_nid)
     $course_to_group_nid = $coursegroup->og_group_ref[LANGUAGE_NONE][0]['target_id'];
     //remove from all coursegroups first
     _section_courses_user_remove_from_coursegroups( $user_uid,$course_to_group_nid);
-    
+
     //assign to selected group
     $values = array(
       'entity type' => 'user',
@@ -1313,7 +1318,7 @@ function _section_courses_user_add_to_coursegroup( $user_uid,$coursegroup_nid)
       'state' => OG_STATE_ACTIVE,
     );
     og_group('node', $coursegroup_nid, $values);
-    
+
 }
 
 
@@ -1342,7 +1347,7 @@ function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
   $account = user_load($uid);
 
   //we want to redirect students directly to their course group
-    
+
     //get all gids the user belongs to
     $groups = og_get_groups_by_user($account);
     $groups = $groups['node'] ? $groups['node'] : array();
@@ -1366,20 +1371,20 @@ function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
         }
       }
     }
-    
+
   return NULL;
 }
 
 /**
  * get all course groups the given user-id is member in
  * ONLY if user's role in the belonging course is kurs-student
- * @param array StdClass groups 
+ * @param array StdClass groups
  */
 function _section_courses_get_coursegroups_for_user($user_account) {
     //get all gids the user belongs to
     $all_groups = og_get_groups_by_user($user_account);
-    $all_groups = !empty($all_groups['node']) ? $all_groups['node'] : array();
-    
+    $all_groups = $all_groups['node'] ? $all_groups['node'] : array();
+
     $course_groups = array();
     foreach ($all_groups as $gid) {
         $group = node_load($gid);
@@ -1409,12 +1414,12 @@ function _section_courses_get_group_task_solutions_for_user($user_account)
      *  ob zugehörige aufgabe eine gruppenaufgabe ist UND zu diesem Kurs gehört.
      *  wenn ja, ist es eine gruppenlösung fuer den benutzer.. */
     $users_course_groups = _section_courses_get_coursegroups_for_user($user_account);
-    
+
     $course_group_solutions = array();
     foreach ($users_course_groups as $course_group) {
         //hole gruppenmitglieder
         $course_group_member_uids = og_get_group_members_properties($course_group, array(), 'members__' . OG_STATE_ACTIVE, 'node');
-    
+
         $group_solution_candidates = array();
         foreach ($course_group_member_uids as $cgm_uid) {
             //course group member
@@ -1424,29 +1429,29 @@ function _section_courses_get_group_task_solutions_for_user($user_account)
                 //jede solution aller personen in meiner kursgruppe
                 $group_solution_candidates = (array)custom_general_get_all_task_solutions_by_uid($cgm_uid);
             }
-            
+
             foreach ($group_solution_candidates as $obj_group_solution_cand) {
                 $groupsolution_cand_nid = $obj_group_solution_cand->nid;
                 //the solution
                 $o_solution = node_load($groupsolution_cand_nid);
                 //die aufgabe
                 $task_to_solution = node_load($o_solution->field_generic_task['und'][0]['target_id']);
-    
+
                 // 1 == Gruppenaufgabe
                 //bugfix: aufgabe zur lösung wurde gelöscht
                 if (is_object($task_to_solution) && $task_to_solution->field_task_type[LANGUAGE_NONE][0]["value"] === "1" &&
                         //pruee ob diese aufgabe (bzw) lösung zum kurs dieser gruppe gehört
-                        $o_solution->og_group_ref[LANGUAGE_NONE][0]['target_id'] == $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id']) 
+                        $o_solution->og_group_ref[LANGUAGE_NONE][0]['target_id'] == $course_group->og_group_ref[LANGUAGE_NONE][0]['target_id'])
                     {
                     $course_group_solutions[] = array("group" => $course_group,
                                                       "owner" => $cgm_user,
                                                       "solution" => $o_solution);
                 }
-    
+
             }
         }
-    
-       
+
+
     }
      return ($course_group_solutions);
 }
@@ -1605,12 +1610,12 @@ function section_courses_student_registration_import_callback($form, $form_state
 }
 /**
  * Looks up active course and handels occasional AJAX callbacks
- * 
+ *
  * @return String active course
  */
 function _section_course_create_register_active_course(){
     $active_course = NULL;
-    
+
     if (arg(0) == 'system' && arg(1) == 'ajax') {
       $referer_url = drupal_parse_url($_SERVER['HTTP_REFERER']);
       $referer_url['path'] = substr(parse_url($referer_url['path'], PHP_URL_PATH), 1);
@@ -1622,15 +1627,15 @@ function _section_course_create_register_active_course(){
       //assign user to active group
       $active_course = _section_courses_get_active_course();
     }
-    
+
     return $active_course;
 }
 /**
  * Looks up user and reeturns the state of the account
- * 
+ *
  * @param array   $userdata        Array containing the user information
- * 
- * @return String State of the account                   
+ *
+ * @return String State of the account
  */
 function _section_course_get_user_info_assign_course($userdata){
     $acc            = user_load_by_mail($userdata['email']);
@@ -1652,7 +1657,7 @@ function _section_course_get_user_info_assign_course($userdata){
         }
         if (og_is_member('node', $active_course->nid, 'user', $acc, array(OG_STATE_ACTIVE))) {
           //already member
-          $user_state   = 'ALREADY_IN'; 
+          $user_state   = 'ALREADY_IN';
           $member       = True;
         }
         else {
@@ -1732,25 +1737,25 @@ function _section_course_get_user_info_assign_course($userdata){
         drupal_set_message('Student ' . $edit['name'] . ' wurde angelegt.');
         }
     }
-    
+
     return $user_state;
 }
 /**
  * Takes input from Form-Field and extracts user data from it.
  * Valid users will be added to the course:
- * 
+ *
  *      e.g. Billy@billmail.com
- * 
+ *
  * New Users will be created and added:
- * 
+ *
  *      e.g. Billy Bafög Billy@billmail.com
- * 
+ *
  * @return HTML-DIV containing the proper course entrance information(success, failure, etc)
  */
 function _section_courses_student_registration_import($input) {
 
   $input = check_plain($input);
-  
+
   if (!empty($input)) {
     watchdog('section_courses', 'Importing user list %input', array('%input' => $input), WATCHDOG_INFO);
 
@@ -1770,15 +1775,15 @@ function _section_courses_student_registration_import($input) {
     foreach ($rows as $row) {
         // Count Parameters given
         $row = html_entity_decode($row, ENT_QUOTES);
-        
-        
+
+
         //apply any string- and character-replacement here
         $row = preg_replace("/[\t\",:;]/", " ", $row);
         //ziehe replacements von sonderchars raus, macht tw. umlaute kaputt. jedesmal zu testen:
         //Jürgen D'Amélie Wäßnör +jue.wae@gmail.com
         $row  = preg_replace("/￼/", " ", $row);
         $user_parameters    = count(explode(" ", $row));
-        // Create New User  
+        // Create New User
         if($user_parameters > 1){
             // Decode HTML-safe data
             $row = ucfirst($row);
@@ -1814,9 +1819,9 @@ function _section_courses_student_registration_import($input) {
         //ignore empty lines
         continue;
       }
-      
+
       $user_state = _section_course_get_user_info_assign_course($userdata);
-      
+
       switch($user_state){
             case 'MISSING':
                 $missing_accounts[] = $email;
@@ -1832,7 +1837,7 @@ function _section_courses_student_registration_import($input) {
       }
     }
     $output = '';
-    
+
     //missing
     if ($missing_accounts) {
       $output .= '<div class="alert alert-error"><h3>Kein Account vorhanden</h3><h5>Für folgende Einträge</h5>' . '<ol style="padding:0 0 0 25px;margin:0;margin-bottom: 20px;"><li>' . implode('</li><li>', $missing_accounts) . "</li>" . '</ol></div>';
@@ -1848,7 +1853,7 @@ function _section_courses_student_registration_import($input) {
   }
   return $output;
 }
-    
+
 
 /**
  * Submit handler for the "add-one-more" button.
@@ -2066,7 +2071,7 @@ function section_courses_student_registration_form_submit($form, &$form_state) {
 
 /**
  * @private function checks if a user hast at least one of the given roles. usually used for admin-access in course.
- * 
+ *
  * private function. check the implementations below.
  * @param object $user_account  the user to check
  * @param object $course the course to check
@@ -2094,7 +2099,7 @@ function _section_courses_user_has_role_in_course($user_account, $course, $permi
  * return array (rolename=>rolename))
  */
 function _section_courses_get_default_course_roles()
-{ 
+{
     return array(NM_COURSES_ROLE_ADMINISTRATOR => NM_COURSES_ROLE_ADMINISTRATOR, NM_COURSES_ROLE_TUTOR => NM_COURSES_ROLE_TUTOR, NM_COURSES_ROLE_STUDENT => NM_COURSES_ROLE_STUDENT);
 }
 
@@ -2107,7 +2112,7 @@ function _section_courses_get_default_course_roles()
  */
 function _section_courses_user_can_edit_course($user_account, $course) {
     return _section_courses_user_has_role_in_course($user_account, $course,  array(NM_COURSES_ROLE_ADMINISTRATOR, NM_COURSES_ROLE_TUTOR));
-            
+
 }
 
 
@@ -2120,7 +2125,7 @@ function _section_courses_user_can_edit_course($user_account, $course) {
  */
 function _section_courses_user_is_student_in_course($user_account, $course) {
     return _section_courses_user_has_role_in_course($user_account, $course,  array(NM_COURSES_ROLE_STUDENT));
-            
+
 }
 
 /**
@@ -2254,7 +2259,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
         //remove empty forms
 
         $js_settings['task_remove_empty_fields'] = $empty_entries;
-        
+
         drupal_add_js(drupal_get_path('module', 'section_courses') . '/js/section_courses_tasks.js');
         drupal_add_js(array('section_courses' => $js_settings), 'setting');
 
@@ -2361,7 +2366,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
       $form['actions']['submit']['#value'] = t('Publish');
     }
   }
-  
+
   /**
      * Generische Lösung: Eingereicht-am-Feld
      */
@@ -2369,13 +2374,13 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
 
         //hat eintrag - verstecken
           $form['field_submitted_on']['#access'] = user_access('bypass node access');
-        
+
     }
-     
+
     //Nachricht an Nutzer des Kurs verschicken oder E-Mail an eine Kursgruppe
     if ($form_id == 'views_form_courses_admin_members_bl_2' && !empty($form['message']) || $form_id == 'views_form_courses_admin_groups_default' && !empty($form['message'])) {
         $drupal_post = drupal_get_query_parameters($_POST);
-        $title_prefix = "";  
+        $title_prefix = "";
         $active_course = _section_courses_get_active_course();
         if(is_object($active_course))
         {
@@ -2391,7 +2396,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
             $form['message']['#default_value'] = $course_text;
         }
     }
-    
+
     if($form_id === 'workflow_admin_ui_transitions_form')
     {
         drupal_set_message('Be aware of hook_workflow which can limit the access.', 'warning');
@@ -2563,7 +2568,7 @@ function section_courses_og_user_access_alter(&$perm, $context) {
   if ($course) {
     //Course Group - Content Type
     if ($group_type == 'node' && $group->type == NM_COURSE_GROUP) {
-            
+
             //Kurs-Personal darf in KGs alles
             if (node_access('update', $course)) {
                 //erstelle als kurs-personal nm_stream content im kursgruppe
@@ -2770,12 +2775,12 @@ function section_courses_views_query_alter(&$view, &$query) {
 
 /**
  * implements hook_workflow
- * Can only VETO the transition, not ALLOW it. 
+ * Can only VETO the transition, not ALLOW it.
    @param type $op. for example transition permitted
  * @param type $old_state
  * @param type $new_state
  * @param type $node
- * 
+ *
  * @see hook_workflow
  */
 function section_courses_workflow($op, $old_state, $new_state, $node, $force = FALSE) { #(transition permitted', $current_sid, $transition->state_id, $node);
@@ -2787,9 +2792,9 @@ function section_courses_workflow($op, $old_state, $new_state, $node, $force = F
                 //sonderfall buggy API.. beim einreichen macht er Käse und man muss ihm das erlauben..
                 if($old_state == NM_COURSES_TASK_WORKFLOW_SUBMITTED && $new_state == NM_COURSES_TASK_WORKFLOW_DRAFT)
                 {
-                    continue; 
+                    continue;
                 }
-                
+
                 //Schützenswert ist die transition eingereicht/bewertet=>irgendwas.
                 //falls ich den zuzgehörigen kurs nicht bearbeiten kann, dann VETO
                 if (in_array($old_state, array(NM_COURSES_TASK_WORKFLOW_SUBMITTED, NM_COURSES_TASK_WORKFLOW_ASSESSED)) && !node_access('update', node_load($node->og_group_ref[LANGUAGE_NONE][0]['target_id']))) { {
@@ -3003,11 +3008,16 @@ function _section_courses_clone_content($content_id, $new_course_id) {
  * Implements hook_theme().
  */
 function section_courses_theme() {
-    return array(
-        'section_courses_taxonomy_dragdrop' => array(
-            'render element' => 'form',
-        ),
-    );
+  return [
+    'section_courses_taxonomy_dragdrop' => [
+      'render element' => 'form',
+    ],
+    'section_courses_top_navigation' => [
+      'template' => 'templates/section-courses-top-navigation',
+      'variables' => [
+      ],
+    ],
+  ];
 }
 
 /**
@@ -3179,11 +3189,11 @@ function _section_courses_forum_manage_categories_form_submit($form, &$form_stat
 /**
  * @API erstelle Taxonomy-Term für Kursforum.
  * Version a) Erstelle Container (Kursforum-nid)
- * Version b) Erstelle Unterkategorie im Kursforum. 
+ * Version b) Erstelle Unterkategorie im Kursforum.
  * für Version a): Kein Logik-Check, erstellt dumm einen zweiten Container. Doppeltes Erstellen muss abgefangen werden.
  *                  Titel des Containers musss auch übergeben werden!
  * $parent_term_tid muss uebergeben werden!
- * 
+ *
  * @global StdClass $user eingeloggter User
  * @param StdClass $course_node Kurs-node-object
  * @param String $title Titel des Eintrags
@@ -3241,24 +3251,10 @@ function _section_courses_save_forum_term($course_node, $title, $parent_term_tid
     return $new_term->tid;
 }
 
-
 /**
- * implements hook_views_pre_render(&$view)
- * Im Forum wird "View n new" zu "n new" umgesetzt ohne den view selbst zu verändern
- * @param type $view
+ *
  */
-function section_courses_views_pre_render(&$view) { 
-    if ($view->name === 'advanced_forum_topic_list') {
+function section_courses_preprocess_section_courses_top_navigation(&$variables) {
 
-        //Nutze funktionalität  "Rewrite the output of this field"
-        
-        $view->field['new_comments']->options['alter']['alter_text'] = 1;
-        $view->field['new_comments']->options['alter']['text'] = t("@new_count new", array("@new_count"=>"[new_comments]"));
-        $view->field['new_comments']->options['prefix'] = '';
-        $view->field['new_comments']->options['suffix'] = '';
-
-        //beende rewrite für "0 neue"
-        $view->field['new_comments']->options['hide_alter_empty'] = 1;
-    }
 }
 
