@@ -3354,6 +3354,11 @@ function nm_stream_api_v2_comment_delete_callback($comment, $token = NULL) {
  *
  */
 function nm_stream_api_v2_set_localhost_headers() {
+  //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
+    
+    RETURN; #NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
+    
+  //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
   drupal_add_http_header('Access-Control-Allow-Credentials', 'true');
   drupal_add_http_header('Access-Control-Allow-Origin', 'http://localhost:8080');
   drupal_add_http_header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
