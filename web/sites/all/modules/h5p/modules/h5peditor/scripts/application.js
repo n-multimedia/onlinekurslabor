@@ -25,6 +25,7 @@ var ns = H5PEditor;
     ns.contentRelUrl = Drupal.settings.h5peditor.contentRelUrl;
     ns.editorRelUrl = Drupal.settings.h5peditor.editorRelUrl;
     ns.apiVersion = Drupal.settings.h5peditor.apiVersion;
+    ns.contentLanguage = Drupal.settings.h5peditor.language;
 
     // Semantics describing what copyright information can be stored for media.
     ns.copyrightSemantics = Drupal.settings.h5peditor.copyrightSemantics;
@@ -50,36 +51,53 @@ var ns = H5PEditor;
       }
     }).change();
 
-    $('#h5p-content-node-form').submit(function (event) {
-      if (h5peditor !== undefined) {
+    const $form = $('#h5p-content-node-form');
 
-        var params = h5peditor.getParams();
+    // Keep track of button used to submit the form
+    // We need to do this since the submit handler is run using an async callback,
+    // which makes the button element not being set on the post (i.e: op=Save,
+    // op=Delete and so on)
+    var $submitter = $('<input type="hidden" name="op"/>').appendTo($form);
+    const submitters = document.getElementsByName('op');
+    for (let i = 0; i < submitters.length; i++) {
+      submitters[i].addEventListener('click', function () {
+        $submitter.val(this.value);
+      });
+    }
 
-        if (params !== undefined && params.params !== undefined) {
-          // Validate mandatory main title. Prevent submitting if that's not set.
-          // Deliberatly doing it after getParams(), so that any other validation
-          // problems are also revealed
-          if (!h5peditor.isMainTitleSet()) {
-            return event.preventDefault();
-          }
+    let formIsUpdated = false;
+    $form.submit(function (event) {
+      if ($type.length && $type.filter(':checked').val() === 'upload') {
+        return; // Old file upload
+      }
+
+      if (h5peditor !== undefined && !formIsUpdated) {
+
+        // Get content from editor
+        h5peditor.getContent(function (content) {
+
+          // Set Drupal 7's title field
+          titleFormElement.value = content.title
 
           // Set main library
-          $library.val(h5peditor.getLibrary());
+          $library.val(content.library);
 
           // Set params
-          $params.val(JSON.stringify(params));
+          $params.val(content.params);
 
           // Calculate & set max score
-          $maxscore.val(h5peditor.getMaxScore(params.params));
+          //$maxscore.val(h5peditor.getMaxScore(params.params)); TODO: Return as part of content
 
-          // Set Drupal 7's title field to the metadata title if the field
-          // is not displayed
-          var tmp = document.createElement('div');
-          tmp.innerHTML = params.metadata.title;
-          titleFormElement.value = tmp.textContent;
-        }
+          // Submit form data
+          formIsUpdated = true;
+          $form.submit();
+        });
+
+        // Stop default submit
+        event.preventDefault();
       }
     });
+
   };
 
   ns.getAjaxUrl = function (action, parameters) {

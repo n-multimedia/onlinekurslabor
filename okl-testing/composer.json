@@ -9,7 +9,7 @@
     },
     
     "config": {
-        "bin-dir": "bin"
+        "bin-dir": "vendor/bin"
     },
     "scripts": {
         "post-install-cmd": [

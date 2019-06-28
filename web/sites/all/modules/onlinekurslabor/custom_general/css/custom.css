@@ -1236,6 +1236,69 @@ div.field-name-field-proposal-timespan {
 }
 
 
+
+/*
+ * die "meine Kurse-Ansicht auf home / Profil"
+*/
+
+/*meine Kurse-Widget*/
+a.course_item_link
+{
+    display: block;
+    margin-bottom: 10px;
+    min-height: 70px;
+}
+
+
+
+/*meine kurse-ansicht auf start*/
+div.view-courses-kurse-bersicht .courses_small_container, .course_item_div
+{
+  background-color: #eee;
+  padding: 10px 15px;
+  margin:0;
+  position: relative;
+}
+
+div.view-courses-kurse-bersicht .course_item_div
+{
+  background-color: #fff;
+  padding:15px;
+  border:1px solid #dedede;
+}
+
+div.view-courses-kurse-bersicht .courses_small_container:hover {
+    background-color: #e9e9e9;
+}
+
+
+/*progress-badge*/
+div.view-courses-kurse-bersicht .courses_small_container div.progress_circle_container
+{
+    display: none;
+    position: absolute;
+    padding-top:5px;
+}
+/*progress-badge zeigen erst ab mindest-resolution*/
+@media (min-width: 400px)
+{
+    div.view-courses-kurse-bersicht .courses_small_container:hover div.progress_circle_container
+    {
+        display: block;
+    }
+    
+}
+/*bilder mit klasse halbtransparent setzen*/
+div.view-courses-kurse-bersicht .courses_small_container:hover .courseitem_image_hover_transp
+{
+    opacity: 0.5;
+}
+/*verhinderte überlauf des kurs-bilds auf mobil*/
+div.view-courses-kurse-bersicht .courses_small_containerhome_course_item  img.courseitem_courselogo
+{
+    max-width: 100%;
+}
+
 /* draft-label fuer kurse */
 .view_courses_label
 {
@@ -1245,8 +1308,8 @@ div.field-name-field-proposal-timespan {
     transform: rotate(-30deg);
     width: 90px;
     position:absolute; 
-    left: 15px;
-    top:32px;
+    left: 0px;
+    top: 20px;
     z-index:2 
 }
 .view_courses_label.draft
@@ -1258,33 +1321,3 @@ div.field-name-field-proposal-timespan {
       background: orange;
 }
 
-
-/*meine kurse-ansicht auf start*/
-/*progress-badge*/
-div.view-courses-kurse-bersicht .nm-stream-node-container div.progress_circle_container
-{
-    display: none;
-    position: absolute;
-    padding-top:5px;
-      //  background-color: rgba(247, 247, 247, 0.5);
-}
-/*progress-badge zeigen erst ab mindest-resolution*/
-@media (min-width: 400px)
-{
-    div.view-courses-kurse-bersicht .nm-stream-node-container:hover div.progress_circle_container
-    {
-        display: block;
-
-    }
-    
-}
-/*bilder mit klasse halbtransparent setzen*/
-div.view-courses-kurse-bersicht .nm-stream-node-container:hover .courseitem_image_hover_transp
-{
-    opacity: 0.5;
-}
-/*verhinderte überlauf des kurs-bilds auf mobil*/
-div.view-courses-kurse-bersicht .nm-stream-node-container  img.courseitem_courselogo
-{
-    max-width: 100%;
-}

@@ -403,7 +403,7 @@ function user_send_message_validate($form,&$form_state) {
         //status 0 == blocked
         if($acc->status == 0)
         {
-            drupal_set_message(t('@realname is blocked and thus cannot receive messages.', array('@realname' => $acc->realname)), 'warning');
+            drupal_set_message(t('@realname is blocked and thus cannot receive messages.', array('@realname' =>  format_username($acc))), 'warning');
             unset($form_state['selection'][$identifier]);
         }
     }
@@ -535,7 +535,7 @@ function user_assign_to_course_group(&$entity, $context = array()) {
     if ($new_course_group_nid) {
         //dozenten / tutoren: macht kein sinn, sie in kursgruppen zu stecken.
         if (node_access('update', node_load($course_nid), $entity) ) {
-             drupal_set_message( t("@realname has full access to the coursegroups. Person wasn't added.", array('@realname' => $entity->realname)), 'error');
+             drupal_set_message( t("@realname has full access to the coursegroups. Person wasn't added.", array('@realname' =>  format_username($entity))), 'error');
         }
         else {
             _section_courses_user_add_to_coursegroup($entity->uid, $new_course_group_nid);   

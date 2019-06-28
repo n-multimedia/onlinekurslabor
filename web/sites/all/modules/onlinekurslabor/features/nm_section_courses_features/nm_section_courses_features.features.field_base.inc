@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_section_courses_features.features.field_base.inc
@@ -81,25 +82,28 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_course_docs'.
-  $field_bases['field_course_docs'] = array(
+  // Exported field_base: 'field_course_documents'.
+  $field_bases['field_course_documents'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_course_docs',
+    'field_name' => 'field_course_documents',
     'indexes' => array(
       'fid' => array(
         0 => 'fid',
       ),
     ),
     'locked' => 0,
-    'module' => 'mediafield',
+    'module' => 'file',
     'settings' => array(
+      'display_default' => 0,
+      'display_field' => 0,
       'profile2_private' => FALSE,
+      'uri_scheme' => 'private',
     ),
     'translatable' => 0,
-    'type' => 'media',
+    'type' => 'file',
   );
 
   // Exported field_base: 'field_course_group_proposal'.

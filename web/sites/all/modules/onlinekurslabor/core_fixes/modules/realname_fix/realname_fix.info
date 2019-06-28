@@ -1,0 +1,5 @@
+name = realname_fix
+description = fixt ein Fehlverhalten in realname beim Erstellen eines Nutzers
+core = 7.x
+version = 7.x-1.0-alpha13
+package = custom

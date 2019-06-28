@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_section_courses_features.features.field_instance.inc
@@ -1386,20 +1387,18 @@ function nm_section_courses_features_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-courses_docs-field_course_docs'.
-  $field_instances['node-courses_docs-field_course_docs'] = array(
+  // Exported field_instance: 'node-courses_docs-field_course_documents'.
+  $field_instances['node-courses_docs-field_course_documents'] = array(
     'bundle' => 'courses_docs',
     'deleted' => 0,
     'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'mediafield',
-        'settings' => array(
-          'file_view_mode' => 'full',
-        ),
-        'type' => 'media',
-        'weight' => 1,
+        'module' => 'file',
+        'settings' => array(),
+        'type' => 'file_default',
+        'weight' => 3,
       ),
       'nm_stream' => array(
         'label' => 'above',
@@ -1415,11 +1414,14 @@ function nm_section_courses_features_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_course_docs',
+    'field_name' => 'field_course_documents',
     'label' => 'Kursdokument(e)',
     'required' => 0,
     'settings' => array(
+      'description_field' => 0,
+      'file_directory' => 'courses_documents',
       'file_extensions' => 'jpg jpeg gif png txt doc docx xls xlsx pdf ppt pptx pps ppsx odt ods odp mp3 mov mp4 m4a m4v mpeg avi ogg oga ogv wmv ico',
+      'max_filesize' => '',
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -1449,7 +1451,6 @@ function nm_section_courses_features_field_default_field_instances() {
           'remote_file' => 0,
           'upload' => 'upload',
         ),
-        'progress_indicator' => 'throbber',
       ),
       'type' => 'media_generic',
       'weight' => 2,

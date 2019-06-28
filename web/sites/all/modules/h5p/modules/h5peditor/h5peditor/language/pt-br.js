@@ -194,4 +194,18 @@ H5PEditor.language.core = {
   pasteTooOld: 'O conteúdo que você está tentando colar é de uma versão inferior (:clip) à versão suportada neste contexto (:local), se possível, tente atualizar o conteúdo que deseja colar, copie-o novamente e tente colá-lo aqui.',
   pasteTooNew: 'O conteúdo que você está tentando colar é de uma versão superior (:clip) à versão suportada neste contexto (:local), se possível, tente atualizar este conteúdo, e então tente colar novamente.',
   ok: 'OK',
+  avTablistLabel: 'Insert using',
+  tabTitleBasicFileUpload: 'File Upload',
+  tabTitleInputLinkURL: 'Link/URL',
+  errorTooHighVersion: 'Parameters contain %used while only %supported or earlier are supported.',
+  errorNotSupported: 'Parameters contain %used which is not supported.',
+  errorParamsBroken: 'Parameters are broken.',
+  libraryMissing: 'Missing required library %lib.',
+  scriptMissing: 'Could not load upgrades script for %lib.',
+  language: 'Language',
+  noLanguagesSupported: 'No languages supported',
+  changeLanguage: 'Change language to :language?',
+  thisWillPotentially: "This will potentially reset all the text and translations. You can't undo this. The content itself will not be changed. Do you want to proceed?",
+  notAllTextsChanged: 'Not all texts were changed, there is only partial coverage for :language.',
+  contributeTranslations: 'If you want to complete the translation for :language you can learn about <a href=":url" target="_new">contributing translations to H5P</a>'
 };

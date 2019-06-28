@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_section_courses_features.pages_default.inc
@@ -2275,7 +2276,7 @@ return section_courses_text_outline();
   $pane->panel = 'news';
   $pane->type = 'block';
   $pane->subtype = 'nm_stream-nm_stream_form_add_edit';
-  $pane->shown = TRUE;
+  $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 0,
@@ -2297,7 +2298,7 @@ return section_courses_text_outline();
   $pane->panel = 'news';
   $pane->type = 'views';
   $pane->subtype = 'nm_stream';
-  $pane->shown = TRUE;
+  $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
     'override_pager_settings' => 0,
@@ -2331,6 +2332,35 @@ return section_courses_text_outline();
   $pane->uuid = '56d682cf-6bbf-4b6c-b569-0df094188e3b';
   $display->content['new-56d682cf-6bbf-4b6c-b569-0df094188e3b'] = $pane;
   $display->panels['news'][3] = 'new-56d682cf-6bbf-4b6c-b569-0df094188e3b';
+  $pane = new stdClass();
+  $pane->pid = 'new-f59c3957-3211-405d-ae93-5137f979a7b6';
+  $pane->panel = 'news';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'Render Stream V2',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<?php
+$container = node_load(%1:nid);
+return nm_stream_api_v2_render_stream($container );
+?>',
+    'format' => 'php_code',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 4;
+  $pane->locks = array();
+  $pane->uuid = 'f59c3957-3211-405d-ae93-5137f979a7b6';
+  $display->content['new-f59c3957-3211-405d-ae93-5137f979a7b6'] = $pane;
+  $display->panels['news'][4] = 'new-f59c3957-3211-405d-ae93-5137f979a7b6';
   $pane = new stdClass();
   $pane->pid = 'new-7df02c0e-55e2-4bde-b98a-87e4a4459587';
   $pane->panel = 'tools';

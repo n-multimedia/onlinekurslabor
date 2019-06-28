@@ -194,4 +194,18 @@ H5PEditor.language.core = {
   pasteTooOld: 'The content you’re trying to paste is of a lower version (:clip) than what is supported in this context (:local), if possible try to have the content you want to paste upgraded, copy it again and try pasting it here.',
   pasteTooNew: 'The content you’re trying to paste is of a higher version (:clip) than what is supported in this context (:local), if possible try to have this content upgraded first, and then try pasting the content here again.',
   ok: 'OK',
+  avTablistLabel: 'Sett inn via',
+  tabTitleBasicFileUpload: 'Filopplasting',
+  tabTitleInputLinkURL: 'Lenke/URL',
+  errorTooHighVersion: 'Parameterene innholder %used mens kunn %supported eller tidligere er støttet.',
+  errorNotSupported: 'Parameterene inneholder %used som ikke er støttet.',
+  errorParamsBroken: 'Parameterene er ødelagt.',
+  libraryMissing: 'Mangler påkrevd bibliotek %lib.',
+  scriptMissing: 'Kunne ikke laste oppgraderingsskript for %lib.',
+  language: 'Språk',
+  noLanguagesSupported: 'Ingen språk støttet',
+  changeLanguage: 'Bytt språk til :language?',
+  thisWillPotentially: "Dette kan potensielt tilbakestille all teksten og oversettelsene. Du kan ikke omgjøre dette. Innholdet vil ikke bli endret. Vil du fortsette?",
+  notAllTextsChanged: 'Ikke alle tekstene ble endret, det er kun delvis støtte for :language.',
+  contributeTranslations: 'Hvis du vil fullføre oversettelsen for :language kan du lære mer om <a href=":url" target="_new">bidra med oversettelser til H5P</a>'
 };

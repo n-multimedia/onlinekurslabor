@@ -28,6 +28,16 @@ class InteractiveCreate extends DomainContentBase implements \Page\node\ContentC
         parent::__construct($I, $domain_nid, NM_INTERACTIVE_CONTENT);
     }
     
+    
+    /**
+     * Confirmation: Non-Admins sehen das Hochladen-Field für h5p-Pakete nicht.
+     */
+    public function dontSeeUploadField() {
+        $I = $this->tester;
+        $I->amOnPage(self::$createURL);
+        $I->cantSee("Hochladen");
+    }
+
     /**
      * Create is different for h5p. no title-field available!
      * @param \Codeception\Example $params

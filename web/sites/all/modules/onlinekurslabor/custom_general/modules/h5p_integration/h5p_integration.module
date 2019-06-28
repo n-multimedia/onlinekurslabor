@@ -162,8 +162,17 @@ function h5p_integration_form_h5p_content_node_form_alter(&$form, &$form_state, 
         if(!user_access('administer users')){
             $form['h5p_options']['#access'] = false;
         }
-    } 
-       
+    }
+
+
+    //verbiete Hochladen von .h5p-datei für non-admin
+    global $user;
+    if (!in_array(NM_ROLE_ADMIN, $user->roles)) {
+        //der upload-form-bereich
+        $form['h5p']['#access'] = false;
+        //die option "upload" in buttonlist
+        unset($form['h5p_type']['#options']['upload']);
+    }
 }
 
 /**
@@ -215,33 +224,38 @@ function h5p_integration_h5p_filtered_params_alter(&$filtered) {
         }
         
 
+        if(is_object($url_object) && !empty($url_object->url))
+        {
+            $real_url = $url_object->protocol . $url_object->url;
+            //konvertiere alt-urls in /node/nid
+            //dpm("realurl vor filter : " . $real_url);
+            $real_url = _section_content_filter_links_process($real_url, null, null);
+            //dpm("realurl nach filter : " . $real_url);
+            //entferne ersten /
+            $real_url = trim($real_url, '/');
+            //konvertiere node/nid in eigentliches ziel
+            section_courses_url_outbound_alter($real_url, $options, $real_url);
+            //dpm('das ist die neue realurl: ' . $real_url);
 
-        $real_url = $url_object->protocol . $url_object->url;
-        //konvertiere alt-urls in /node/nid
-        //dpm("realurl vor filter : " . $real_url);
-        $real_url = _section_content_filter_links_process($real_url, null, null);
-        //dpm("realurl nach filter : " . $real_url);
-        //entferne ersten /
-        $real_url = trim($real_url, '/');
-        //konvertiere node/nid in eigentliches ziel
-        section_courses_url_outbound_alter($real_url, $options, $real_url);
-        //dpm('das ist die neue realurl: ' . $real_url);
-        
-        //setze protocol und url im url_object
-        //dafür aus neuer URL zunächst das scheme extrahieren
-        $urls_http_scheme = parse_url($real_url, PHP_URL_SCHEME);
-        if ($urls_http_scheme) {
-            $real_scheme = $urls_http_scheme . '://';
-            $url_object->url = str_replace($real_scheme, '', $real_url);
-            $url_object->protocol = $real_scheme;
+            //setze protocol und url im url_object
+            //dafür aus neuer URL zunächst das scheme extrahieren
+            $urls_http_scheme = parse_url($real_url, PHP_URL_SCHEME);
+            if ($urls_http_scheme) {
+                $real_scheme = $urls_http_scheme . '://';
+                $url_object->url = str_replace($real_scheme, '', $real_url);
+                $url_object->protocol = $real_scheme;
+
+            }
+            else {
+                $url_object->url = $real_url;
+                $url_object->protocol = '/';
+            }
             
-        } else {
-            $url_object->url = $real_url;
-            $url_object->protocol = '/';
-        }
-
-
         //dpm("interaction neu:");
         //dpm($interaction);
+            
+        }
+
+        
     }
 }

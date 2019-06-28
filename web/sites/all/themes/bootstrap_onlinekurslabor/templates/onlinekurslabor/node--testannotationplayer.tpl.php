@@ -93,7 +93,7 @@
               </tr>
                <tr>
                   <td  >
-                      <?php //Author: <?= user_load($node->uid)->realname;   ?>
+                      
                   </td>
               </tr>
           <?

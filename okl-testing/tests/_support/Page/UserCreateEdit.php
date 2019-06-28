@@ -76,9 +76,6 @@ abstract class UserCreateEdit {
         //im edit/create-modus ist die Ausgabe und Folgeoperationen unterschiedlich
         if (get_class($this) == "Page\UserCreate") {
             $I->see("Es wurde ein neues Benutzerkonto erstellt für ");
-            $new_user_acc = user_load_by_mail($params['mail']);
-            //realname-update. Mit "@", da sonst Test abbricht.
-            @realname_update($new_user_acc);
             //theoretisch müsste man den Acc nun einmal einloggen, damit die Nutzungsvb akzeptiert wird
         }
 

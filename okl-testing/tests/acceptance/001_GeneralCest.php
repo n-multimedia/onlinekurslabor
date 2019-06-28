@@ -1,7 +1,7 @@
 <?php
 
 
-class GeneralCest {
+class GeneralCest extends CestHelper{
 
   /**
    * @UserStory null
@@ -43,6 +43,18 @@ class GeneralCest {
     $I->see('Informationen für Studierende');
     $I->see('Informationen für Hochschullehrende');
     $I->see('Informationen für Partnerorganisationen');
+  }
+
+  
+  /**
+   * @UserStory null
+   * @UserStoryURL null
+   *
+   * @param \AcceptanceTester $I
+   * @before skipIfOnShittyBrowser
+   */
+  public function G001_04_coursepresentation_available(AcceptanceTester $I) {
+    $I->amOnPage('/');
     $I->click("Informationen für Studierende");
     $I->makeScreenshot(__FUNCTION__);
     //Teil der H5P-Info
@@ -50,7 +62,6 @@ class GeneralCest {
     $I->switchToIFrame("h5p-iframe-6947");
     $I->see('Kursangebot');
   }
-
   
    /**
    * @UserStory null
@@ -58,7 +69,7 @@ class GeneralCest {
    *
    * @param \AcceptanceTester $I
    */
-  public function G001_04_login_page_exists(AcceptanceTester $I) {
+  public function G001_05_login_page_exists(AcceptanceTester $I) {
     $I->amOnPage('/user');
     //login
     $I->see('E-Mail oder Kontoname');
@@ -67,5 +78,9 @@ class GeneralCest {
     $I->see('Neues Passwort anfordern');    
 
   }
-  
+
+    protected function getMaincontextType() {
+        return "undefined"; //not necessary in this context
+    }
+
 }

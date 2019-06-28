@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * Nach dem Anlegen eines neuen Users hat dieser keinen Realname.
+ * Durch Einhooken auf profile2_insert (nicht: user create) wird dieses Verhalten behoben. 
+ */
+
+/**
+ * implements hook_profile2_insert
+ * @param type $profile
+ */
+function realname_fix_profile2_insert($profile) {
+    $created_user = user_load($profile->uid);
+    realname_update($created_user);
+}

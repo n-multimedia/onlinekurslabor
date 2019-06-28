@@ -1,13 +1,22 @@
 <?php
 
 use Page\node\domain\DomainCreate  as CreateDomainPage;
+use Page\node\domain_content\InteractiveCreate  as CreateInteractiveVideoPage;
 
 class TextCest extends CestHelper{
 
- 
+     /**
+     * setze Typ des aktuellen HauptContexts.
+     * Also das, was prinzipiell im aktuellen Cest getestet wird.
+     * Entweder NM_COURSE oder NM_CONTENT_DOMAIN
+     * 
+     * @return string type
+     */
+    protected function getMaincontextType() {
+        return NM_CONTENT_DOMAIN;
+    }
 
-
-  public function _before(\Step\Acceptance\Author $I) {
+    public function _before(\Step\Acceptance\Author $I) {
 
     $I->loginAsAuthor(TRUE);
 
@@ -48,11 +57,12 @@ class TextCest extends CestHelper{
 
     $ccpage = New CreateDomainPage($I);
     $ccpage->create($domain_example);
-
+    $nid = $ccpage->getNewNid(); 
+    
     $I->amOnPage('/');
     $I->click('Meine Veranstaltungen');
     $I->see($domain_example['title']);
-
+    $this->setCurrentContextNid($nid);
   }
 
     /**
@@ -61,6 +71,22 @@ class TextCest extends CestHelper{
      */
     protected function T002_createDomainsProvider() {
         return $this->DP_getSampleDomain(0, false, false);
+    }
+
+     /**
+     * Test H5P: "Hochladen" für non-admin nicht möglich
+     *  @UserStory null
+     * @UserStoryURL null
+     *
+     * @param \Step\Acceptance\Author $I instead of \AcceptanceTester $I
+     * 
+     */
+    public function T002_03_testH5PMainInterface(\Step\Acceptance\Author $I) {
+        $this->goToContextHome($I);
+        $nid = $this->getCurrentContextNid();
+        $civPage = new CreateInteractiveVideoPage($I, $nid);
+        $civPage->dontSeeUploadField();
+        $I->makeScreenshot('dontSeeUploadField');
     }
 
 }

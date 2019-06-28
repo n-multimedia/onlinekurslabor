@@ -13,6 +13,9 @@ define('NM_STREAM_PROJECT', 5);
 //Domain (annvid)
 define('NM_STREAM_DOMAIN', 6);
 
+// API
+define('NM_STREAM_API_INIT_POSTS_LIMIT', 10);
+
 define('NM_STREAM_ALLOWED_HTML_TAGS', serialize(array('a', 'em', 'b','u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
     'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot')));
 
@@ -161,6 +164,101 @@ function nm_stream_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  //
+  // API
+  //
+
+  $items['api/v2.0/nm_stream/node/%/initialize'] = array(
+    'title' => 'NM Stream initialize posts',
+    'page callback' => 'nm_stream_api_v2_initialize_callback',
+    'page arguments' => array(4),
+    'access callback' => 'nm_stream_poll_update_access',
+    'access arguments' => array(4),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/node/%/poll_update/%/%/%'] = array(
+    'title' => 'NM Stream poll update',
+    'page callback' => 'nm_stream_api_v2_poll_update_callback',
+    'page arguments' => array(4, 6, 7, 8),
+    'access callback' => 'nm_stream_poll_update_access',
+    'access arguments' => array(4),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/node/add/%'] = array(
+    'title' => 'NM Stream Node Add',
+    'page callback' => 'nm_stream_api_v2_node_add_callback',
+    'page arguments' => array(5),
+    'access callback' => 'nm_stream_user_has_role',
+    'access arguments' => array(array('authenticated user')),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/node/%node/delete/%'] = array(
+    'title' => 'NM Stream Node delete',
+    'page callback' => 'nm_stream_api_v2_node_delete_callback',
+    'page arguments' => array(4, 6),
+    'access callback' => 'node_access',
+    'access arguments' => array('delete', 4),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/node/%node/update/%'] = array(
+    'title' => 'NM Stream Node update',
+    'page callback' => 'nm_stream_api_v2_node_update_callback',
+    'page arguments' => array(4, 6),
+    'access callback' => 'node_access',
+    'access arguments' => array('update', 4),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/node/%node/file/upload/%'] = array(
+    'title' => 'NM Stream Upload File',
+    'page callback' => 'nm_stream_api_v2_node_file_upload_callback',
+    'page arguments' => array(4,7),
+    'access callback' => 'nm_stream_user_has_role', // further access check in nm_stream_api_v2_node_file_upload_callback
+    'access arguments' => array(array('authenticated user')),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/node/%node/file/%file/delete/%'] = array(
+    'title' => 'NM Stream Delete File',
+    'page callback' => 'nm_stream_api_v2_node_file_delete_callback',
+    'page arguments' => array(4, 6, 8),
+    'access callback' => 'node_access',
+    'access arguments' => array('update', 4),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/node/%node/comment/add/%'] = array(
+    'title' => 'NM Stream Node Comment Add',
+    'page callback' => 'nm_stream_api_v2_comment_add_callback',
+    'page arguments' => array(4, 7),
+    'access callback' => 'node_access',
+    'access arguments' => array('view', 4),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/comment/%comment/update/%'] = array(
+    'title' => 'NM Stream Node Comment update',
+    'page callback' => 'nm_stream_api_v2_comment_update_callback',
+    'page arguments' => array(4, 6),
+    'access callback' => 'nm_stream_comment_access',
+    'access arguments' => array('edit', 4),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/comment/%comment/delete/%'] = array(
+    'title' => 'NM Stream Node Comment Delete',
+    'page callback' => 'nm_stream_api_v2_comment_delete_callback',
+    'page arguments' => array(4, 6),
+    'access callback' => 'nm_stream_comment_access',
+    'access arguments' => array('delete', 4),
+    'type' => MENU_CALLBACK,
+  );
+
+
   /*
     //file upload
     $items['nm_stream/file_upload'] = array(
@@ -193,6 +291,24 @@ function nm_stream_user_has_role($roles) {
   }
 }
 
+
+/**
+ * @param $node
+ *
+ * @return bool
+ */
+function nm_stream_poll_update_access($nid) {
+  $node = node_load($nid);
+  if ($node) {
+    return node_access('view', $node);
+  }
+  else {
+    return TRUE;
+  }
+
+}
+
+
 /**
  * get node updates
  * @param $nid
@@ -210,7 +326,7 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
   //0 is beeing transmitted if no node exists yet
   //-1 if just the update status is interesting
   if ($top_node || $nid == 0) {
-    
+
     //get nm_stream nodes where created > $top_node->created
     $query = db_select('node', 'n');
     $query->addField('n', 'nid');
@@ -446,7 +562,7 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
               unset($results_new_comments[$key]);
             }
         }
-        
+
 
 
         if (empty($results_new_comments)) {
@@ -555,6 +671,12 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
     return $response;
 }
 
+
+/**
+ * @param string $type
+ *
+ * @throws \Exception
+ */
 function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
   global $user;
 
@@ -1217,7 +1339,7 @@ function nm_stream_preprocess_node(&$vars) {
     if (!empty($node->field_nm_privacy) && $node->field_nm_privacy[LANGUAGE_NONE][0]['value']) {
       $privacy_options = _nm_stream_privacy_options($streamnode_owner, $node);
       $privacy_field_value = $node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
-    
+
       foreach ($privacy_options as $key => $option) {
         if ($key == $privacy_field_value) {
           $vars['nm_privacy'] = $option;
@@ -1453,7 +1575,8 @@ function nm_stream_get_environment() {
     //check url for valid url path first
     //nm_stream for ajax callbacks
     //_section_course_course_group_visible() for infinite stream. in views callback all args seem to be set properly
-    if (arg(0) == 'nm_stream' || _section_course_course_group_visible() || _section_course_text_visible()) {
+    // arg(2) == 'nm_stream' => api/v2.0/nm_stream/node/15347/initialize
+    if (arg(0) == 'nm_stream' || arg(2) == 'nm_stream' || _section_course_course_group_visible() || _section_course_text_visible()) {
 
       $referer_url = drupal_parse_url($_SERVER['HTTP_REFERER']);
       $referer_url['path'] = substr(parse_url($referer_url['path'], PHP_URL_PATH), 1);
@@ -1501,11 +1624,11 @@ function nm_stream_get_environment() {
     $context['container']->parent = node_load($context['container']->og_group_ref[LANGUAGE_NONE][0]['target_id']);
   }
 
-    
+
   return $context;
 }
 /**
- * 
+ *
  * Liefert Objekte in einem Array zu den Feldern
  *  og_group_ref
  * und
@@ -1533,13 +1656,13 @@ function _nm_stream_get_node_environment($stream_node) {
 }
 
 /**
- * erstellt das html-select-option-element fuer privacy-wahl. 
- * @param Stdclass $node a stream-entry. 
+ * erstellt das html-select-option-element fuer privacy-wahl.
+ * @param Stdclass $node a stream-entry.
  * @return string
  */
 function _nm_stream_render_privacy_widget($node) {
 global $user;
- 
+
 
   $result = '';
   //node uebergeben & ist ein streameintrag, dann privacy-value beibehalten
@@ -1575,8 +1698,8 @@ global $user;
     }
   }
   $result .= '</select>';
-  
-  
+
+
 #dpm($result);
   return $result;
 }
@@ -1603,9 +1726,9 @@ function nm_stream_init() {
   }
 }
 
-    
 
-    
+
+
 /**
  * _nm_stream_privacy_options liefert die mögliclhen privacy-Optionen fuer den übergebenen
  * Stream-node ODER die aktuelle Environment zurück.
@@ -1616,173 +1739,242 @@ function nm_stream_init() {
  * @param array $current_environment die aktuelle Environment. Nicht berücksichtigt bei übergebenem $stream_node
  * @return array options
  */
-function  _nm_stream_privacy_options($user, $stream_node, $current_environment= null) {
+function _nm_stream_privacy_options($user, $stream_node, $current_environment = NULL, $fetch_all = FALSE) {
+  $module_path = drupal_get_path('module', 'nm_stream');
 
-    
+  $options_items = [];
 
-    $module_path = drupal_get_path('module', 'nm_stream');
-    
-    $options_items = array();
-    
-    
+  if ($fetch_all) {
+    //private - always possible
+    $options_items[NM_STREAM_PRIVATE] = [
+      'label' => t('Private'),
+      'description' => t('Visible only for you (and of course site-administrators)'),
+      'icon_path' => $module_path . '/images/privacy-icons/privacy-private.png',
+      'default' => FALSE,
+    ];
+
+    $options_items[NM_STREAM_TEAM] = [
+      'label' => t('Course group'),
+      'description' => t('Visible for members of your course group'),
+      'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+      'default' => FALSE,
+    ];
+    $options_items[NM_STREAM_COURSE] = [
+      'label' => t('Course'),
+      'description' => t('Visible for everyone in this course'),
+      'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+      'default' => FALSE,
+    ];
+    $options_items[NM_STREAM_DOMAIN] = [
+      'label' => t('Educational text'),
+      'description' => t('Visible for everyone who can see this educational text'),
+      'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
+      'default' => FALSE,
+    ];
+    $options_items[NM_STREAM_COURSE] = [
+      'label' => t('Course'),
+      'description' => t('Visible for everyone in this course'),
+      'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+      'default' => FALSE,
+    ];
+    $options_items[NM_STREAM_PROJECT] = [
+      'label' => t('Project'),
+      'description' => t('@TODO describe this'),
+      'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+      'default' => FALSE,
+    ];
+  }
+  else {
+
     $stream_nodes_privacy_setting = -1;
     if ($stream_node) {
-        //ueberschreibe variable current_environment mit der des nodes
-        $current_environment = _nm_stream_get_node_environment($stream_node);
-        //wir heben uns die privacy des nodes auf. Die soll nämlich beim Editieren beibehalten werden
-        $stream_nodes_privacy_setting = $stream_node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
+      //ueberschreibe variable current_environment mit der des nodes
+      $current_environment = _nm_stream_get_node_environment($stream_node);
+      //wir heben uns die privacy des nodes auf. Die soll nämlich beim Editieren beibehalten werden
+      $stream_nodes_privacy_setting = $stream_node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
     }
-    else
-    {
-        if(!is_array($current_environment))
-            drupal_set_message ("No environment given in 98uohe2fuw! Contact support!", "error");
+    else {
+      /*if(!is_array($current_environment))
+          drupal_set_message ("No environment given in 98uohe2fuw! Contact support!", "error");*/
+      // global area (home page) => all options
+      if (empty($current_environment['container'])) {
+        $options_items[NM_STREAM_TEAM] = [
+          'label' => t('Team'), //todo: wer ist team?
+          'description' => t('@TODO describe this'),
+          'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+          'default' => FALSE,
+        ];
+        $options_items[NM_STREAM_COURSE] = [
+          'label' => t('Course'),
+          'description' => t('Visible for everyone in this course'),
+          'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+          'default' => FALSE,
+        ];
+        $options_items[NM_STREAM_DOMAIN] = [
+          'label' => t('Educational text'),
+          'description' => t('Visible for everyone who can see this educational text'),
+          'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
+          'default' => FALSE,
+        ];
+      }
+
     }
 
 
     //private - always possible
-    $options_items[NM_STREAM_PRIVATE] = array(
-        'label' => t('Private'),
-        'description' => t('Visible only for you (and of course site-administrators)'),
-        'icon_path' => $module_path . '/images/privacy-icons/privacy-private.png',
-        'default' => FALSE,
-    );
+    $options_items[NM_STREAM_PRIVATE] = [
+      'label' => t('Private'),
+      'description' => t('Visible only for you (and of course site-administrators)'),
+      'icon_path' => $module_path . '/images/privacy-icons/privacy-private.png',
+      'default' => FALSE,
+    ];
+
+    //fallback für home
+    if (empty($current_environment['context']) && empty($current_environment['container']))
+    {
+        return $options_items;
+    }
 
     //set privacy setting depending on context and container
     if (empty($current_environment['context'])) {
-        //context is empty
-        //ich frage mich gerade, ob der fall ueberhaupt auftritt.
-        switch ($current_environment['container']->type) {
-            case NM_COURSE:
-            case NM_COURSE_GROUP:
-                $options_items[NM_STREAM_TEAM] = array(
-                    'label' => t('Course group'),
-                    'description' => t('Visible for members of your course group'),
-                    'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
-                    'default' => TRUE,
-                );
-                if (node_access('update', $current_environment['container'], $user) || $stream_nodes_privacy_setting == NM_STREAM_COURSE) {
-                    $options_items[NM_STREAM_COURSE] = array(
-                        'label' => t('Course'),
-                        'description' => t('Visible for everyone in this course'),
-                        'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
-                        'default' => FALSE,
-                    );
-                }
+      //context is empty
+      //ich frage mich gerade, ob der fall ueberhaupt auftritt.
+      switch ($current_environment['container']->type) {
+        case NM_COURSE:
+        case NM_COURSE_GROUP:
+          $options_items[NM_STREAM_TEAM] = [
+            'label' => t('Course group'),
+            'description' => t('Visible for members of your course group'),
+            'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+            'default' => TRUE,
+          ];
+          if (node_access('update', $current_environment['container'], $user) || $stream_nodes_privacy_setting == NM_STREAM_COURSE) {
+            $options_items[NM_STREAM_COURSE] = [
+              'label' => t('Course'),
+              'description' => t('Visible for everyone in this course'),
+              'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+              'default' => FALSE,
+            ];
+          }
 
-                break;
-            case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
-                $options_items[NM_STREAM_TEAM] = array(
-                    'label' => t('Team'), //todo: wer ist team?
-                    'description' => t('@TODO describe this'),
-                    'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
-                    'default' => FALSE,
-                );
-                $options_items[NM_STREAM_PROJECT] = array(
-                    'label' => t('Project'),
-                    'description' => t('@TODO describe this'),
-                    'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
-                    'default' => TRUE,
-                );
-                break;
-            case NM_CONTENT_DOMAIN:
-                $options_items[NM_STREAM_DOMAIN] = array(
-                    'label' => t('Educational text'),
-                    'description' => t('Visible for everyone who can see this educational text'),
-                    'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
-                    'default' => TRUE,
-                );
-                break;
-            case ANNVID_CONTENTTYPE:
-                //only private is possible, without context..
-                break;
-        }
-    } else {
-        //context is not empty
-        switch ($current_environment['context']->type) {
-            case NM_CONTENT_DOMAIN:
-                switch ($current_environment['container']->type) {
-                    case ANNVID_CONTENTTYPE:
-                        //annvid: bin ich autor und darf lt bearbeiten? dann auch reinposten
-                        if (node_access('update', $current_environment['context'], $user) || $stream_nodes_privacy_setting == NM_STREAM_DOMAIN) {
-                            $options_items[NM_STREAM_DOMAIN] = array(
-                                'label' => t('Educational text'),
-                                'description' => t('Visible for everyone who can view this educational text'),
-                                'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
-                                'default' => TRUE,
-                            );
-                        }
-                        break;
-                }
-                break;
-            case NM_COURSE:
-                switch ($current_environment['container']->type) {
-                    case ANNVID_CONTENTTYPE:
-                    
-                        //user ist aktives mitglied im betroffenen kurs ODER privacy besteht bereits auf kurs
-                        if(_section_courses_user_is_active_member_in_course($user, $current_environment['context']) || $stream_nodes_privacy_setting == NM_STREAM_COURSE){
-                        $options_items[NM_STREAM_COURSE] = array(
-                            'label' => t('Course'),
-                            'description' => t('Visible for everyone in this course'),
-                            'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
-                            'default' => TRUE,
-                        );
-                        }
-                        //privacy lehrtext nur als editor des lehrtexts
-                        if (node_access('update', $current_environment['container']->parent, $user) || $stream_nodes_privacy_setting == NM_STREAM_DOMAIN) {
-                            $options_items[NM_STREAM_DOMAIN] = array(
-                                'label' => t('Educational text'),
-                                'description' => t('Visible for everyone who can view this educational text'),
-                                'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
-                                'default' => FALSE,
-                            );
-                        }
-
-                        break;
-                    case NM_COURSE_GROUP:
-                        //stream in kursgruppe:
-                        $options_items[NM_STREAM_TEAM] = array(
-                            'label' => t('Course group'),
-                            'description' => t('Visible for members of your course group'),
-                            'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
-                            'default' => TRUE,
-                        );
-                        // visibility kurs nur falls ich kurs bearbeiten darf
-                        if (node_access('update', $current_environment['context'], $user) || $stream_nodes_privacy_setting == NM_STREAM_COURSE) {
-                            $options_items[NM_STREAM_COURSE] = array(
-                                'label' => t('Course'),
-                                'description' => t('Visible for everyone in this course'),
-                                'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
-                                'default' => FALSE,
-                            );
-                        }
-
-                        break;
-                }
-                break;
-            case NM_PROJECTS_RROJEKTORGANISATION:
-                switch ($current_environment['container']->type) {
-                    case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
-                        $options_items[NM_STREAM_TEAM] = array(
-                            'label' => t('Team'), //todo: wer ist team?
-                            'description' => t('@TODO describe this'),
-                            'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
-                            'default' => FALSE,
-                        );
-                        $options_items[NM_STREAM_PROJECT] = array(
-                            'label' => t('Project'), //todo: wer ist project?
-                            'description' => t('@TODO describe this'),
-                            'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
-                            'default' => FALSE,
-                        );
-                        break;
-                }
-                break;
-        }
+          break;
+        case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
+          $options_items[NM_STREAM_TEAM] = [
+            'label' => t('Team'), //todo: wer ist team?
+            'description' => t('@TODO describe this'),
+            'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+            'default' => FALSE,
+          ];
+          $options_items[NM_STREAM_PROJECT] = [
+            'label' => t('Project'),
+            'description' => t('@TODO describe this'),
+            'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+            'default' => TRUE,
+          ];
+          break;
+        case NM_CONTENT_DOMAIN:
+          $options_items[NM_STREAM_DOMAIN] = [
+            'label' => t('Educational text'),
+            'description' => t('Visible for everyone who can see this educational text'),
+            'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
+            'default' => TRUE,
+          ];
+          break;
+        case ANNVID_CONTENTTYPE:
+          //only private is possible, without context..
+          break;
+      }
     }
+    else {
+      //context is not empty
+      switch ($current_environment['context']->type) {
+        case NM_CONTENT_DOMAIN:
+          switch ($current_environment['container']->type) {
+            case ANNVID_CONTENTTYPE:
+              //annvid: bin ich autor und darf lt bearbeiten? dann auch reinposten
+              if (node_access('update', $current_environment['context'], $user) || $stream_nodes_privacy_setting == NM_STREAM_DOMAIN) {
+                $options_items[NM_STREAM_DOMAIN] = [
+                  'label' => t('Educational text'),
+                  'description' => t('Visible for everyone who can view this educational text'),
+                  'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
+                  'default' => TRUE,
+                ];
+              }
+              break;
+          }
+          break;
+        case NM_COURSE:
+          switch ($current_environment['container']->type) {
+            case ANNVID_CONTENTTYPE:
 
-    return $options_items;
+              //user ist aktives mitglied im betroffenen kurs ODER privacy besteht bereits auf kurs
+              //if(_section_courses_user_is_active_member_in_course($user, $current_environment['context']) || $stream_nodes_privacy_setting == NM_STREAM_COURSE){
+              if (node_access('view', $current_environment['context'], $user) || $stream_nodes_privacy_setting == NM_STREAM_COURSE) {
+                $options_items[NM_STREAM_COURSE] = [
+                  'label' => t('Course'),
+                  'description' => t('Visible for everyone in this course'),
+                  'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+                  'default' => TRUE,
+                ];
+              }
+              //privacy lehrtext nur als editor des lehrtexts
+              if (node_access('update', $current_environment['container']->parent, $user) || $stream_nodes_privacy_setting == NM_STREAM_DOMAIN) {
+                $options_items[NM_STREAM_DOMAIN] = [
+                  'label' => t('Educational text'),
+                  'description' => t('Visible for everyone who can view this educational text'),
+                  'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
+                  'default' => FALSE,
+                ];
+              }
+
+              break;
+            case NM_COURSE_GROUP:
+              //stream in kursgruppe:
+              $options_items[NM_STREAM_TEAM] = [
+                'label' => t('Course group'),
+                'description' => t('Visible for members of your course group'),
+                'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+                'default' => TRUE,
+              ];
+              // visibility kurs nur falls ich kurs bearbeiten darf
+              if (node_access('update', $current_environment['context'], $user) || $stream_nodes_privacy_setting == NM_STREAM_COURSE) {
+                $options_items[NM_STREAM_COURSE] = [
+                  'label' => t('Course'),
+                  'description' => t('Visible for everyone in this course'),
+                  'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+                  'default' => FALSE,
+                ];
+              }
+
+              break;
+          }
+          break;
+        case NM_PROJECTS_RROJEKTORGANISATION:
+          switch ($current_environment['container']->type) {
+            case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
+              $options_items[NM_STREAM_TEAM] = [
+                'label' => t('Team'), //todo: wer ist team?
+                'description' => t('@TODO describe this'),
+                'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+                'default' => FALSE,
+              ];
+              $options_items[NM_STREAM_PROJECT] = [
+                'label' => t('Project'), //todo: wer ist project?
+                'description' => t('@TODO describe this'),
+                'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
+                'default' => FALSE,
+              ];
+              break;
+          }
+          break;
+      }
+    }
+  }
+
+
+  return $options_items;
 }
-                    
+
 
 /**
  * get user picture
@@ -1855,7 +2047,7 @@ function _nm_stream_get_renderedGUI($environment)
 {
    //die node-add-form. wird formatiert durch hook nm_stream_stream_node_form
   $ret = _nm_stream_form_add_edit_view();
-  
+
   //view fuer anzeige der eintraege
   $my_view_name = 'nm_stream';
   $my_display_name = 'panel_pane_1';
@@ -2044,12 +2236,12 @@ function _nm_stream_filter_xss($text)
 
 function nm_stream_import_status_stream() {
   dpm('FUNCTION DEACTIVATED');
-  //Teil dieser Migration war die Funktion 
+  //Teil dieser Migration war die Funktion
   /**
  * Implements hook_node_presave().
- * 
- * 
- */ 
+ *
+ *
+ */
   /*
 function nm_stream_node_presave($node) {
   if (isset($node->modified)) {
@@ -2057,7 +2249,7 @@ function nm_stream_node_presave($node) {
     $node->changed = $node->modified;
   }
 }*/
-  //  ist nun rausgeflogen. 
+  //  ist nun rausgeflogen.
   return;
   //get all course groups
   $nids = custom_general_node_ids_by_type(NM_COURSE_GROUP);
@@ -2212,4 +2404,963 @@ function nm_stream_comment_access($op, $comment){
   }else if($op == 'delete') {
     return comment_access("edit", $comment) || node_access('delete', node_load($comment->nid));
   }
+}
+
+
+//  nm_stream
+//  A P I (v2.0)
+
+/**
+ * get init data strukture for nm_stream
+ * @param $nid
+ */
+function nm_stream_api_v2_initialize_callback($stream_container_nid) {
+  global $user;
+  global $base_url;
+  $account = clone $user;
+
+
+  $stream_container_node = node_load($stream_container_nid);
+  // CORS Setting to allow localhost accessing the API
+  nm_stream_api_v2_set_localhost_headers();
+
+  // todo faking group url
+  // $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347";
+  // $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/";
+
+  $environment = nm_stream_get_environment();
+  $context = $environment["context"];
+  $container = $environment["container"];
+  $privacy_options_raw = _nm_stream_privacy_options($account, NULL, nm_stream_get_environment());
+  $privacy_options_raw_all = _nm_stream_privacy_options($account, NULL, nm_stream_get_environment(), TRUE);
+
+  $privacy_key_default = 0;
+  foreach ($privacy_options_raw as $key => $option) {
+    $selected = '';
+    if ($option['default']) {
+      $privacy_key_default = $key;
+    }
+    $privacy_options[] = [
+      "value" => $key,
+      "title" => $option['label'],
+      "img" => $base_url . "/" . $option['icon_path'],
+      "description" => $option['description'],
+    ];
+  }
+
+  foreach ($privacy_options_raw_all as $key => $option) {
+    $selected = '';
+    $privacy_options_all[] = [
+      "value" => $key,
+      "title" => $option['label'],
+      "img" => $base_url . "/" . $option['icon_path'],
+      "description" => $option['description'],
+    ];
+  }
+
+  $data = [];
+  $data['stream'] = [];
+  $data['stream']['containerNID'] = (!empty($container->nid)? $container->nid : false);
+  $data['stream']['contextNID'] = (!empty($context->nid)? $context->nid : false);
+  $data['stream']['privacyDefault'] = $privacy_key_default;
+  $data['stream']['permissions'] = [];
+  $data['stream']['permissions'][] = ["canCreatePost" => TRUE];
+  $data['stream']['loggedInUser'] = $account->uid;
+  $data['stream']['privacyOptions'] = $privacy_options;
+  $data['stream']['privacyOptionsAll'] = $privacy_options_all;
+  $data['stream']['token'] = drupal_get_token();
+  // $allowed_attachm_filetypes from field configuration
+  $stream_CT_field_data = field_info_instances("node", "nm_stream");
+  $stream_attachments_filetypes = $stream_CT_field_data['field_nm_attachments']['settings']['file_extensions'];
+  $allowed_attachm_filetypes = '.'. implode(',  .', explode(' ', $stream_attachments_filetypes));
+
+  $data['stream']['acceptedFiles'] = $allowed_attachm_filetypes;
+
+  $posts_comments_users = nm_stream_api_v2_get_posts($stream_container_node);
+  $data['stream']['posts'] = $posts_comments_users['posts'];
+  $data['stream']['comments'] = $posts_comments_users['comments'];
+  $data['stream']['users'] = $posts_comments_users['users'];
+
+  $data['stream']['timestamp'] = REQUEST_TIME;
+
+  return drupal_json_output($data);
+}
+
+/**
+ *
+ */
+function nm_stream_api_v2_render_stream($container) {
+
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/manifest.2ae2e69a05c33dfc65f8.js", [
+    'scope' => 'footer',
+    'weight' => 5,
+  ]);
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/vendor.89b75ce90b5b56f71af2.js", [
+    'scope' => 'footer',
+    'weight' => 5,
+  ]);
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.667a6230156013d6c7fe.js", [
+    'scope' => 'footer',
+    'weight' => 5,
+  ]);
+
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.b97c745baa0e7892da34fc1a65c824d5.css', [
+    'scope' => 'footer',
+    'weight' => 5,
+  ]);
+
+  //fixes drupal.attach for vue.js
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/attach_fixer.js", [
+    'scope' => 'footer',
+    'weight' => 6,
+  ]);
+
+
+  // direct css adaptions (drupal layout)
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/css/nm_stream_v2.css');
+
+  $result = "";
+
+  if( !empty($container->nid) ) {
+    // render with form
+    $result = '<div id="stream" data-container-nid="' . $container->nid . '">...</div>';
+  } else {
+    $result = '<div id="stream">...</div>';
+  }
+
+  return $result;
+
+}
+
+
+/**
+ * get init data strukture for nm_stream
+ * @param $nid
+ */
+function nm_stream_api_v2_poll_update_callback($stream_container_nid, $offset = 0, $limit = NM_STREAM_API_INIT_POSTS_LIMIT, $token) {
+  $data = [];
+
+  // prevent csrf attacks
+  if (!drupal_valid_token($token)) {
+    $response['status'] = 0;
+    $response['error'] = 'CSRF!';
+
+    return drupal_access_denied();
+    //return drupal_json_output($response);
+  }
+
+  $stream_container_node = node_load($stream_container_nid);
+
+  $data['stream'] = [];
+
+  // get nodes created or changed after last update timestamp
+  $posts_comments_users = nm_stream_api_v2_get_posts($stream_container_node, $offset, $limit);
+  $data['stream']['posts'] = $posts_comments_users['posts'];
+  $data['stream']['comments'] = $posts_comments_users['comments'];
+  $data['stream']['users'] = $posts_comments_users['users'];
+
+  $data['stream']['timestamp'] = REQUEST_TIME;
+
+  return drupal_json_output($data);
+}
+
+
+/**
+ * @param $stream_container_node
+ */
+function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit = NM_STREAM_API_INIT_POSTS_LIMIT) {
+  global $user;
+  global $base_url;
+  $account = clone $user;
+
+  // todo faking group url
+  //$_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347";
+  //$_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/";
+
+  $types = nm_stream_get_stream_content_types();
+
+  $result_posts = [];
+  $result_users = [];
+  $result_comments = [];
+
+  //get nm_stream nodes where created > $top_node->created
+  $query = db_select('node', 'n');
+  $query->addField('n', 'nid');
+
+  $query
+    //->condition('n.nid', $top_node->nid, '>')
+    ->condition('n.type', $types, 'IN')
+    ->condition('n.status', NODE_PUBLISHED)
+    ->orderBy("n.created", "DESC")//order important!
+    ->range($offset, $limit)
+    ->addTag('node_access');
+
+  // only get nodes created or updated after last update $timestamp
+  /*if ($timestamp) {
+    $or = db_or();
+    $or->condition('n.created', $timestamp, ">");
+    $or->condition('n.changed', $timestamp, ">");
+    $query->condition($or);
+  }*/
+
+  //01.04.2014 - 22:53 - SN context needed
+  //if we are in a special context e.g. course group, we just want to see
+  //filtered entries which are assign to this group
+  //for now we only have course groups as special context
+  //27.01.2017 - 11:14 - SN
+  //now we also have annvid as special context
+
+  $environment = nm_stream_get_environment();
+  $context = $environment["context"];
+  $container = $environment["container"];
+
+  //24.02.2017 - 11:48 - SN
+  //prevent fetching updates of nodes without any context!
+  $query->join('field_data_field_nm_stream_context', 'field_data_field_nm_stream_context', "n.nid = field_data_field_nm_stream_context.entity_id  AND field_data_field_nm_stream_context.entity_type = 'node'"); //JOIN
+  $query->isNotNull('field_data_field_nm_stream_context.field_nm_stream_context_target_id');
+
+  if (!empty($context)) {
+    if ($context->type == NM_CONTENT_DOMAIN) {
+      //in case of Domains, we just want to see content wich has the privacy setting DOMAIN or PRIVATE
+      //e.g. NM_STREAM created in course context and privacy setting DOMAIN or PRIVATE
+      //NOT: NM_STREAM created in course context having privacy setting CROUSE GROUP or COURSE
+      $query->join('field_data_field_nm_privacy', 'field_data_field_nm_privacy', "n.nid = field_data_field_nm_privacy.entity_id  AND field_data_field_nm_privacy.entity_type = 'node'"); //JOIN
+      $query->condition('field_data_field_nm_privacy.field_nm_privacy_value', [
+        NM_STREAM_PRIVATE,
+        NM_STREAM_DOMAIN,
+      ], "IN");
+    }
+    elseif ($context->type == NM_COURSE) {
+      //In Course, we need to get stream entries from domain and course contexts!
+      switch ($container->type) {
+        case NM_COURSE_GROUP:
+          $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
+          $query->condition('og_membership_node.gid', [$container->nid], "IN");
+          break;
+        case ANNVID_CONTENTTYPE:
+          $domain_id = _section_courses_course_get_domain_id($context);
+          $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
+          $query->condition('og_membership_node.gid', [
+            $domain_id,
+            $context->nid,
+            $container->nid,
+          ], "IN");
+          break;
+      }
+    }
+    else {
+      $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'"); //JOIN
+      $query->condition('og_membership_node.gid', [
+        $context->nid,
+        $container->nid,
+      ], "IN");
+    }
+  }
+
+  if (!empty($container)) {
+    $query->join('og_membership', 'og_membership', "n.nid = og_membership.etid AND og_membership.entity_type = 'node'"); //JOIN
+    $query->condition('og_membership.gid', $container->nid);
+  }
+
+  $results = $query->execute()->fetchAll();
+
+  $output = '';
+  foreach ($results as $result) {
+    $node = node_load($result->nid);
+    //check if node is visible in context
+    //29.03.2019 - 12:16 - SN do we still need this?
+    /*if ($node->field_nm_privacy[LANGUAGE_NONE][0]['value'] == NM_STREAM_COURSE) {
+      //we are in course context and only want to see whats happaning here
+      if ($node->field_nm_stream_context [LANGUAGE_NONE][0]['target_id'] != $context->nid) {
+        continue;
+      }
+    }*/
+
+    $node_data = nm_stream_api_v2_get_posts_json_data($account, $node);
+
+    // add post result
+    $result_posts[] = $node_data;
+
+    // fill corresponding users array
+    if (empty($result_users[$node->uid])) {
+      $user_data = [];
+      $post_user = user_load($node->uid);
+      $user_data['uid'] = $node->uid;
+      $user_data['name'] = format_username($post_user);
+      $user_data['username'] = $post_user->name;
+      $profile = profile2_load_by_user($post_user, 'master');
+      $user_data['avatarUrl'] = image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
+      $user_data['profileUrl'] = url('user/' . $post_user->uid, ['absolute' => TRUE]);
+      $result_users[$user_data['uid']]= $user_data;
+    }
+  }
+
+
+  if (count($result_posts) > 0) {
+    //fill corresponding comments array
+    //get nm_stream nodes where created > $node->created
+    $query_new_comments = db_select('comment', 'c');
+    $query_new_comments->addField('c', 'cid');
+    $query_new_comments->addField('c', 'nid');
+    $query_new_comments->addField('c', 'created');
+    $query_new_comments
+      ->condition('c.status', COMMENT_PUBLISHED)
+      ->condition('c.nid', array_column($result_posts, 'nid'), "IN")
+      ->orderBy("c.cid", "DESC")//order important!
+      ->addTag('node_access');
+
+    $results_comments_db = $query_new_comments->execute()
+      ->fetchAllAssoc("cid");
+    $result_comments_full = comment_load_multiple(array_keys($results_comments_db));
+
+    $result_comments = [];
+    foreach ($result_comments_full as $key => $c_item) {
+      list($comment_data, $comment_user) = nm_stream_api_v2_get_comments_json_data($account, $c_item);
+      $result_comments[] = $comment_data;
+
+      // fill corresponding users array for comment users
+      if (empty($result_users[$comment_user['uid']])) {
+        $result_users[$comment_user['uid']] = $comment_user;
+      }
+    }
+  }
+
+
+  // add logged in user to user set
+  if(empty($timestamp) && empty($result_users[$account->uid])) {
+    $user_data = [];
+    $user_data['uid'] = $account->uid;
+    $user_data['name'] = format_username($account);
+    $user_data['username'] = $account->name;
+    $profile = profile2_load_by_user($account, 'master');
+    $user_data['avatarUrl'] =  image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
+    $user_data['profileUrl'] = url('user/' . $account->uid, ['absolute' => TRUE]);
+
+    $result_users[$user_data['uid']] = $user_data;
+  }
+
+
+  return [
+    'posts' => $result_posts,
+    'comments' => $result_comments,
+    'users' => array_values($result_users), // reset keys
+  ];
+
+}
+
+/**
+ * @param $account
+ * @param $node
+ * @param $base_url
+ *
+ * @return array
+ */
+function nm_stream_api_v2_get_posts_json_data($account, $node) {
+  global $base_url;
+
+  $privacy_options_raw = _nm_stream_privacy_options($account, $node, nm_stream_get_environment());
+  $privacy_key_default = 0;
+  $privacy_options = [];
+  foreach ($privacy_options_raw as $key => $option) {
+    $selected = '';
+    if ($option['default']) {
+      $privacy_key_default = $key;
+    }
+    $privacy_options[] = $key;
+  }
+
+  $node_environment = _nm_stream_get_node_environment($node);
+  $node_context = $node_environment['context'];
+  $node_container = $node_environment['container'];
+
+  $node_data = [];
+  $node_data['uid'] = $node->uid;
+  $node_data['nid'] = $node->nid;
+  $node_data['title'] = $node->title;
+  $node_data['body'] = $node->body['und'][0]['value'];
+  $display = array('label' => 'hidden');
+  $field_view_field = field_view_field('node', $node, 'body', $display);
+  $node_data['body_formatted'] = render($field_view_field);
+
+  $node_data['created'] = date(DATE_FORMAT_ISO, $node->created);
+  $node_data['updated'] = date(DATE_FORMAT_ISO, (!empty($node->updated)? $node->updated : 0));
+  $node_data['privacy'] = [];
+  $node_data['privacy']['privacyDefault'] = $node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
+  $node_data['privacy']['privacyOptions'] = $privacy_options;
+
+  $node_data['permissions'] = [];
+  $node_data['permissions']['canCreateComment'] = node_access('view', $node, $account);
+  $node_data['permissions']['canEdit'] = node_access('update', $node, $account);;
+  $node_data['permissions']['canDelete'] = node_access('delete', $node, $account);;
+
+  $node_data['context'] = [];
+  $node_data['context']['nid'] = $node_context->nid;
+  $node_data['context']['title'] = $node_context->title;
+  $node_data['context']['link'] = url('node/' . $node_context->nid, ['absolute' => TRUE]);
+
+  $node_data['container'] = [];
+  $node_data['container']['nid'] = $node_container->nid;
+  $node_data['container']['title'] = $node_container->title;
+  $node_data['container']['link'] = url('node/' . $node_container->nid, ['absolute' => TRUE]);
+
+  // attachments
+  $node_data['attachments'] = [];
+  if(!empty($node->field_nm_attachments[LANGUAGE_NONE])) {
+    foreach ($node->field_nm_attachments[LANGUAGE_NONE] as $item) {
+      $file = file_load($item['fid']);
+      $attachment = [];
+      $attachment['fid'] = $file->fid;
+      $attachment['filesize'] = $file->filesize;
+      $attachment['uid'] = $file->uid;
+      $attachment['filename'] = $file->filename;
+      $attachment['type'] = $file->type;
+      $attachment['filemime'] = $file->filemime;
+
+
+      $mime = check_plain($file->filemime);
+      $icon_url = $base_url . "/" . file_icon_url($file, NULL);
+      $icon = '<img class="file-icon" alt="' . check_plain($mime) . '" title="' . $mime . '" src="' . $icon_url . '" />';
+
+      //$uri = file_entity_download_uri($file);
+      $uri['path'] = file_create_url($file->uri);
+      $uri['options']['attributes']['type'] = $file->filemime . '; length=' . $file->filesize;
+      $uri['options']['absolute'] = TRUE;
+      $attachment['download_link'] = $icon . " " . l($attachment['filename'], $uri['path'], $uri['options']);
+      $attachment['permissions'] = [];
+      $attachment['permissions']['canDelete'] = node_access('update', $node, $account);
+
+      $node_data['attachments'][] = $attachment;
+    }
+  }
+  return $node_data;
+}
+
+
+
+/**
+ * @param $account
+ * @param $comment
+ * @param $base_url
+ *
+ * @return array
+ */
+function nm_stream_api_v2_get_comments_json_data($account, $comment) {
+  $result_comment = [];
+
+  $result_comment['nid'] = $comment->nid;
+  $result_comment['cid'] = $comment->cid;
+  $result_comment['uid'] = $comment->uid;
+  $result_comment['created'] = date(DATE_FORMAT_ISO, $comment->created);
+  $result_comment['changed'] = date(DATE_FORMAT_ISO, $comment->changed);
+  $result_comment['body'] = $comment->comment_body['und'][0]['value'];
+  $display = array('label' => 'hidden');
+  $field_view_field = field_view_field('comment', $comment, 'comment_body', $display);
+  $result_comment['body_formatted'] = render($field_view_field);
+
+  $result_comment['permissions'] = [];
+  $result_comment['permissions']['canEdit'] = nm_stream_comment_access('edit', $comment);;
+  $result_comment['permissions']['canDelete'] = nm_stream_comment_access('delete', $comment);;
+
+  // fill corresponding user
+  $comment_user = user_load($comment->uid);
+  $result_user['uid'] = $comment_user->uid;
+  $result_user['name'] = format_username($comment_user);
+  $result_user['username'] = $comment_user->name;
+  $profile = profile2_load_by_user($comment_user, 'master');
+  $result_user['avatarUrl'] = image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
+  $result_user['profileUrl'] = url('user/' . $comment_user->uid, ['absolute' => TRUE]);
+
+  return [$result_comment, $result_user];
+}
+
+/**
+ * attachments delete callback
+ *
+ * @param type $node
+ * @param type $file
+ */
+function nm_stream_api_v2_node_file_upload_callback($node, $token) {
+  // CORS Setting to allow localhost accessing the API
+  nm_stream_api_v2_set_localhost_headers();
+
+  // prevent csrf attacks
+  if (!drupal_valid_token($token)) {
+    $response['status'] = 0;
+    $response['error'] = 'CSRF!';
+
+    return drupal_access_denied();
+    //return drupal_json_output($response);
+  }
+
+  $num_files = 0;
+  if (isset($_FILES['file'])) {
+    $num_files = count($_FILES);
+    // prepare structure for file_save_upload
+    foreach ($_FILES['file'] as $key => $value) {
+      $_FILES['files'][$key][] = $value;
+    }
+
+  }
+
+  //get configurated file extensions
+  $file_instance = field_info_instance('node', 'field_nm_attachments', 'nm_stream');
+  $validators = [
+    'file_validate_extensions' => [$file_instance['settings']['file_extensions']],
+  ];
+
+  $files = [];
+  for ($i = 0; $i < $num_files; $i++) {
+    $file = file_save_upload($i, $validators, _nm_stream_getAttachmentFileSystemtype() . 'nm_stream');
+
+    if ($file) {
+      $files[$i] = $file;
+    }
+    else {
+      //no file uploaded
+      //toto implement error handling
+    }
+  }
+
+  // CASE: node add
+  // we have no nid yet
+
+  if (node_access('update', $node)) {
+    //dpm($files);
+    foreach ($files as $file) {
+      $node->field_nm_attachments[LANGUAGE_NONE][] = [
+        'fid' => $file->fid,
+        'uid' => $file->uid,
+        'uri' => $file->uri,
+        'filename' => $file->filename,
+        'filemime' => $file->filemime,
+        'status' => 1,
+        'display' => 1,
+      ];
+    }
+
+    node_save($node);
+  }
+  else {
+    // return access denied
+    return drupal_access_denied();
+  }
+
+}
+
+
+/**
+ * attachments delete callback
+ *
+ * @param type $node
+ * @param type $file
+ */
+function nm_stream_api_v2_node_file_delete_callback($node, $file, $token) {
+
+  // CORS Setting to allow localhost accessing the API
+  nm_stream_api_v2_set_localhost_headers();
+
+  // prevent csrf attacks
+  if (!drupal_valid_token($token)) {
+    $response['status'] = 0;
+    $response['error'] = 'CSRF!';
+
+    return drupal_access_denied();
+    //return drupal_json_output($response);
+  }
+
+  $response = [];
+
+  // update end
+  if (!$node) {
+    // $response['status'] = 0;
+    // $response['error'] = 'Invalid data has been transmitted.';
+    return drupal_access_denied();
+  }
+  else {
+    if (!empty($node->field_nm_attachments[LANGUAGE_NONE])) {
+      foreach ($node->field_nm_attachments[LANGUAGE_NONE] as $key => $item) {
+        if (($item['fid'] == $file->fid)) {
+          $file = file_load($item['fid']);
+          unset($node->field_nm_attachments[LANGUAGE_NONE][$key]);
+          $node = node_save($node);
+          file_delete($file);
+        }
+      }
+    }
+
+    // set success msg
+    $response['status'] = 1;
+    $response['message'] = 'Datei wurde gelöscht';
+  }
+
+  // if no msg was set, an error occured
+  if (empty($response)) {
+    // $response['status'] = 0;
+    // $response['error'] = 'Invalid data has been transmitted.';
+    drupal_access_denied();
+  }
+
+  return drupal_json_output($response);
+}
+
+/**
+ * @param $node
+ * @param string $type
+ *
+ * @throws \Exception
+ */
+function nm_stream_api_v2_node_add_callback($token = NULL) {
+  global $user;
+  $account = clone $user;
+
+  //prevent csrf attacks
+  if (!drupal_valid_token($token)) {
+    //$response['status'] = 0;
+    //$response['error'] = 'CSRF on edit!';
+
+    return drupal_access_denied();
+  }
+
+  $response = [];
+  // CORS Setting to allow localhost accessing the API
+  nm_stream_api_v2_set_localhost_headers();
+
+  $node_data = json_decode(file_get_contents('php://input'), true);
+
+  if (is_array($node_data)) {
+
+    //consider adapting for in add callback too!
+    $body = _nm_stream_filter_xss($node_data['body']);
+    $body = $node_data['body'];
+    $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
+    $containerNID = _nm_stream_filter_xss($node_data['containerNID']);
+    $contextNID = _nm_stream_filter_xss($node_data['contextNID']);
+
+
+    if (!is_numeric($privacy) || empty($body)) {
+      // $response['status'] = 0;
+      // $response['error'] = 'Invalid data has been transmitted.';
+      return drupal_access_denied();
+    }
+    else {
+
+      $node = new stdClass();
+      $node->title = time();
+      $node->type = 'nm_stream';
+      //$node->body[LANGUAGE_NONE][0]['value'] = $body;
+      $node->body = array(
+        LANGUAGE_NONE => array(
+          0 => array(
+            'value' => $body,
+            'format' => 'filtered_html'
+          )
+        )
+      );
+      $node->field_nm_privacy [LANGUAGE_NONE][0]['value'] = $privacy;
+      node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
+      $node->language = 'de';
+      $node->uid = $account->uid;
+      $node->status = 1; //(1 or 0): published or not
+      $node->promote = 0; //(1 or 0): promoted to front page
+      $node->comment = 2; // 0 = comments disabled, 1 = read only, 2 = read/write
+
+      $node = node_submit($node); // Prepare node for saving
+      //attach to context and group
+      if(!empty($contextNID)){
+        $node->field_nm_stream_context[LANGUAGE_NONE][0]['target_id'] = $contextNID;
+      }
+
+      $node->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $containerNID;
+      //group content visibility
+      $node->group_content_access[LANGUAGE_NONE][0]['value'] = OG_CONTENT_ACCESS_PRIVATE;
+
+      $node->field_nm_attachments[LANGUAGE_NONE] = array();
+      //dpm($files);
+      /*foreach ($files as $file) {
+        $node->field_nm_attachments[LANGUAGE_NONE][] = array(
+          'fid' => $file->fid,
+          'uid' => $file->uid,
+          'uri' => $file->uri,
+          'filename' => $file->filename,
+          'filemime' => $file->filemime,
+          'status' => 1,
+          'display' => 1,
+        );
+      }*/
+
+      node_save($node);
+
+      $response['status'] = 1;
+      $response['nid'] = $node->nid;
+      $response['nodeData'] = nm_stream_api_v2_get_posts_json_data($account, $node);
+    }
+  }
+
+  return drupal_json_output($response);
+}
+
+/**
+ * @param $node
+ * @param string $type
+ *
+ * @throws \Exception
+ */
+function nm_stream_api_v2_node_delete_callback($node, $token = NULL) {
+  global $user;
+  $account = clone $user;
+
+  //prevent csrf attacks
+  if (!drupal_valid_token($token)) {
+    //$response['status'] = 0;
+    //$response['error'] = 'CSRF on edit!';
+
+    return drupal_access_denied();
+  }
+
+  $response = [];
+
+  if (!empty($node)) {
+
+    node_delete($node->nid);
+
+    $response['status'] = 1;
+    $response['nid'] = $node->nid;
+  }
+
+  return drupal_json_output($response);
+}
+
+/**
+ * @param $node
+ * @param string $type
+ *
+ * @throws \Exception
+ */
+function nm_stream_api_v2_node_update_callback($node, $token = NULL) {
+  global $user;
+  $account = clone $user;
+
+  $response = [];
+  // CORS Setting to allow localhost accessing the API
+  nm_stream_api_v2_set_localhost_headers();
+
+  $node_data = json_decode(file_get_contents('php://input'), true);
+
+  if (is_array($node_data)) {
+
+    //consider adapting for in add callback too!
+    //$body = _nm_stream_filter_xss($node_data['body']);
+    $body = $node_data['body'];
+    $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
+
+    //prevent csrf attacks
+    if (!drupal_valid_token($token)) {
+      //$response['status'] = 0;
+      //$response['error'] = 'CSRF on edit!';
+
+      return drupal_access_denied();
+    }
+
+    if (!is_numeric($privacy) || empty($body)) {
+      // $response['status'] = 0;
+      // $response['error'] = 'Invalid data has been transmitted.';
+      return drupal_access_denied();
+    }
+    else {
+      //set new values
+      $node->body[LANGUAGE_NONE][0]['value'] = $body;
+      $node->field_nm_privacy[LANGUAGE_NONE][0]['value'] = $privacy;
+
+      $node->changed = REQUEST_TIME;
+
+      //file attachments
+      /*if (!isset($node->field_nm_attachments[LANGUAGE_NONE])) {
+        $node->field_nm_attachments[LANGUAGE_NONE] = [];
+      }*/
+
+      node_save($node);
+
+      $response['status'] = 1;
+      $response['nid'] = $node->nid;
+      $response['nodeData'] = nm_stream_api_v2_get_posts_json_data($account, $node);
+    }
+  }
+
+  return drupal_json_output($response);
+}
+
+
+
+/**
+ * @param $comment
+ * @param string $token
+ *
+ * @throws \Exception
+ */
+function nm_stream_api_v2_comment_update_callback($comment, $token = NULL) {
+  global $user;
+  $account = clone $user;
+
+  $response = [];
+  // CORS Setting to allow localhost accessing the API
+  nm_stream_api_v2_set_localhost_headers();
+
+  $comment_data = json_decode(file_get_contents('php://input'), true);
+
+  if (is_array($comment_data)) {
+
+    //consider adapting for in add callback too!
+    //$body = _nm_stream_filter_xss($comment_data['body']);
+    $body = $comment_data['body'];
+
+    //prevent csrf attacks
+    if (!drupal_valid_token($token)) {
+      //$response['status'] = 0;
+      //$response['error'] = 'CSRF on edit!';
+
+      return drupal_access_denied();
+    }
+
+    if (empty($body)) {
+      // $response['status'] = 0;
+      // $response['error'] = 'Invalid data has been transmitted.';
+      return drupal_access_denied();
+    }
+    else {
+      //set new values
+      $comment->comment_body[LANGUAGE_NONE][0] = array(
+        'value' => $body,
+        'format' => 'filtered_html'
+      );
+      $comment->changed = REQUEST_TIME;
+      comment_save($comment);
+
+      $response['status'] = 1;
+      $response['cid'] = $comment->cid;
+      list($comment_data, $comment_user) = nm_stream_api_v2_get_comments_json_data(NULL, $comment);
+      $response['commentData'] = $comment_data;
+      $response['userData'] = $comment_user;
+    }
+  }
+
+  return drupal_json_output($response);
+
+}
+
+/**
+ * @param $comment
+ * @param string $token
+ *
+ * @throws \Exception
+ */
+function nm_stream_api_v2_comment_add_callback($node, $token = NULL) {
+  global $user;
+  $account = clone $user;
+
+  $response = [];
+  // CORS Setting to allow localhost accessing the API
+  nm_stream_api_v2_set_localhost_headers();
+
+  $comment_data = json_decode(file_get_contents('php://input'), true);
+
+  if (is_array($comment_data)) {
+
+    //consider adapting for in add callback too!
+    //$body = _nm_stream_filter_xss($comment_data['body']);
+    $body = $comment_data['body'];
+
+    //prevent csrf attacks
+    if (!drupal_valid_token($token)) {
+      //$response['status'] = 0;
+      //$response['error'] = 'CSRF on edit!';
+
+      return drupal_access_denied();
+    }
+
+    if (empty($body)) {
+      // $response['status'] = 0;
+      // $response['error'] = 'Invalid data has been transmitted.';
+      return drupal_access_denied();
+    }
+    else {
+      // Add a comment.
+      $comment = (object) array(
+        'nid' => $node->nid,
+        'cid' => 0,
+        'pid' => 0,
+        'is_anonymous' => 0,
+        'uid' => $account->uid,
+        'status' => COMMENT_PUBLISHED,
+        'subject' => truncate_utf8(trim(decode_entities(strip_tags($body))), 29, TRUE),
+        'language' => LANGUAGE_NONE,
+        'comment_body' => array(
+          LANGUAGE_NONE => array(
+            0 => array(
+              'value' => $body,
+              'format' => 'filtered_html'
+            )
+          )
+        ),
+      );
+      comment_submit($comment);
+      comment_save($comment);
+
+      list($comment_data, $comment_user) = nm_stream_api_v2_get_comments_json_data($account, $comment);
+
+      $response['status'] = 1;
+      $response['cid'] = $comment->cid;
+      $response['commentData'] = $comment_data;
+      $response['userData'] = $comment_user;
+    }
+  }
+
+  return drupal_json_output($response);
+
+}
+
+/**
+ * @param $comment
+ * @param string $token
+ *
+ * @throws \Exception
+ */
+function nm_stream_api_v2_comment_delete_callback($comment, $token = NULL) {
+  global $user;
+  $account = clone $user;
+
+  //prevent csrf attacks
+  if (!drupal_valid_token($token)) {
+    //$response['status'] = 0;
+    //$response['error'] = 'CSRF on edit!';
+
+    return drupal_access_denied();
+  }
+
+  $response = [];
+
+  if (!empty($comment)) {
+
+    comment_delete($comment->cid);
+
+    $response['status'] = 1;
+    $response['cid'] = $comment->cid;
+  }
+
+  return drupal_json_output($response);
+
+}
+
+/**
+ *
+ */
+function nm_stream_api_v2_set_localhost_headers() {
+  //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
+    
+    RETURN; #NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
+    
+  //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
+  drupal_add_http_header('Access-Control-Allow-Credentials', 'true');
+  drupal_add_http_header('Access-Control-Allow-Origin', 'http://localhost:8080');
+  drupal_add_http_header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
+  drupal_add_http_header('Access-Control-Allow-Headers', 'x-requested-with, Content-Type, origin, authorization, accept, client-security-token');
 }

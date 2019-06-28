@@ -145,10 +145,13 @@ function nm_stream_node_access_records($node) {
                   ] + $record_template_delete;
                 break;
             }
-            //in any case: add a new realm for dozent / tutor
-            $records[] = [
-                    'gid' => $node_environment['container']->parent->nid
-                    ] + $record_template_teacher_stream ;
+             //in any case: add a new realm for dozent / tutor
+            // except stream entry is private
+              if ($privacy != NM_STREAM_PRIVATE) {                      
+                                    $records[] = [
+                                        'gid' => $node_environment['container']->parent->nid,
+                                            ] + $record_template_teacher_stream;
+                                }
             }
             break;
           /* ============= container koop agreement ================== */

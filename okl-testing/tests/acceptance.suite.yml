@@ -6,21 +6,22 @@
 
 actor: AcceptanceTester
 modules:
-    enabled:
-        - WebDriver
-        - \Helper\Acceptance
-#zugunsten von browser-driver auskommentiert
-#        - PhpBrowser:
-#            url:  https://dev2.div.onlinekurslabor.de
-    config:
-        WebDriver:
-             url: https://default.div.onlinekurslabor.de
-#             port: 9515
-             browser: phantomjs
-             restart: true
-             clear_cookies: true
-             window_size: 1400x1200
-             capabilities: []
+  enabled:
+  - WebDriver
+  - \Helper\Acceptance
+  #zugunsten von browser-driver auskommentiert
+  #        - PhpBrowser:
+  #            url:  https://dev2.div.onlinekurslabor.de
+  config:
+    WebDriver:
+      url: https://default.div.onlinekurslabor.de
+      #             port: 9515
+      browser: phantomjs
+      restart: true
+      clear_cookies: true
+      window_size: 1400x1200
+      log_js_errors: true
+      capabilities: []
 #             capabilities:
 #                 unexpectedAlertBehaviour: 'accept'
 #                 acceptInsecureCerts: true
@@ -49,32 +50,33 @@ modules:
 #            drush-alias: '@dev1' # The Drush alias to use when managing users via DrushTestUserManager.
 
 env:
-    dev1:
-         modules:
-            config:
-                WebDriver: 
-                    url: https://dev1.div.onlinekurslabor.de
-    dev2:
-         modules:
-            config:
-                WebDriver: 
-                    url: https://dev2.div.onlinekurslabor.de
-    instatest:
-         modules:
-            config:
-                WebDriver: 
-                    url: https://instatest.div.onlinekurslabor.de
+  dev1:
+    modules:
+      config:
+        WebDriver:
+          url: https://dev1.div.onlinekurslabor.de
+  dev2:
+    modules:
+      config:
+        WebDriver:
+          url: https://dev2.div.onlinekurslabor.de
+  instatest:
+    modules:
+      config:
+        WebDriver:
+          url: https://instatest.div.onlinekurslabor.de
 
 
-## der recorder zeichnet alle durchläufe in web/okl-testing/tests/_output/records.html 
-## als images auf. Muss regelmaessig geleert werden / 
+## der recorder zeichnet alle durchläufe in web/okl-testing/tests/_output/records.html
+## als images auf. Muss regelmaessig geleert werden /
 extensions:
-    enabled:
-        - Codeception\Extension\Recorder
-        #0: über killall -9 phantomjs prozess killen. Das klappt wohl nicht zuverlässig <:-] 
-        #vor Start des Tests wird phantomjs gestartet, danach wird der prozess automatisch gekillt.
-        # ssl-fehler werden ignoriert
-        - Codeception\Extension\RunProcess:
-            0: killall -9 phantomjs
-            1: bin/phantomjs --webdriver=4444  --web-security=false --ignore-ssl-errors=true  --ssl-protocol=any
-            sleep: 2 # wait 2 seconds for processes to boot
+  enabled:
+  - Codeception\Extension\Recorder:
+      delete_successful: false # keep screenshots of successful tests
+  #0: über killall -9 phantomjs prozess killen. Das klappt wohl nicht zuverlässig <:-]
+  #vor Start des Tests wird phantomjs gestartet, danach wird der prozess automatisch gekillt.
+  # ssl-fehler werden ignoriert
+  - Codeception\Extension\RunProcess:
+      0: killall -9 phantomjs
+      1: bin/phantomjs --webdriver=4444  --web-security=false --ignore-ssl-errors=true  --ssl-protocol=any
+      sleep: 2 # wait 2 seconds for processes to boot
