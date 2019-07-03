@@ -16,6 +16,8 @@ class UserSteps extends \AcceptanceTester {
   public function login($userName,  \Codeception\Step\Argument\PasswordArgument $securedPassword = null, $saveSession = TRUE) {
     $I = $this;
 
+    $drupalUser = user_load_by_mail($userName)?: user_load_by_name($userName); 
+    
     //$I->amOnPage("/user/logout");
 
     //do not log in, if session is already active
@@ -41,9 +43,9 @@ class UserSteps extends \AcceptanceTester {
     $I->click('Anmelden', '.form-actions');
 
     
-    $drupalUser = user_load_by_mail($userName)?: user_load_by_name($userName); 
+    
     //noch nie eingeloggt
-    if(!$drupalUser->access)
+    if(!$drupalUser->login)
     {
         $I->click(LoginPage::$acceptLegalTermsCheckbox);
         $I->click(LoginPage::$acceptLegalButton);
