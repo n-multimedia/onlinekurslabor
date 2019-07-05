@@ -545,5 +545,21 @@ class TestingObject {
 
         return $property_value->$random_key;
     }
+    
+    /**
+     * get a  value from a list.
+     * e.g. $obj->random("teacher", 0) gets first person from the teachers' list
+     * @param type $what for example "teacher", "course_group",...
+     * @param type $position position in array beginning from 0... 
+     * @return TestingObject $object
+     */
+    function get($what, $position) {
+        $propertyname = $what . 's';
+        $property_value = $this->$propertyname;
+        $propertyval_array = (array) $property_value;
+        $key_at_position = array_keys($propertyval_array)[$position];
+
+        return $property_value->$key_at_position;
+    }
 
 }
