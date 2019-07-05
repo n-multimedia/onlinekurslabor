@@ -16,6 +16,8 @@ class UserSteps extends \AcceptanceTester {
   public function login($userName,  \Codeception\Step\Argument\PasswordArgument $securedPassword = null, $saveSession = TRUE) {
     $I = $this;
 
+    //boah hässlich, aber sonst scheitert die $drupalUser->login- Prüfung später.
+    entity_get_controller('user')->resetCache();
     $drupalUser = user_load_by_mail($userName)?: user_load_by_name($userName); 
     
     //$I->amOnPage("/user/logout");
@@ -42,7 +44,6 @@ class UserSteps extends \AcceptanceTester {
 
     $I->click('Anmelden', '.form-actions');
 
-    
     
     //noch nie eingeloggt
     if(!$drupalUser->login)
