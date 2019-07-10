@@ -724,6 +724,10 @@ $items['admin/onlinekurslabor/setting'] = array(
   return $items;
 }
 
+/**
+ * funktion für die custom_general_menu 
+ * @return type
+ */
 function custom_general_onlinekurslabor_admin_page() {
     
 
@@ -743,9 +747,28 @@ function custom_general_onlinekurslabor_admin_page() {
         '#description' => t("Email adress of the support team."),
         '#required' => TRUE,
     );
+    
+    
+    $global_note_setting = variable_get('okl_global_note', array('value' => '', 'format' => NULL));
+    $setting_items['okl_global_note'] = array(
+        '#type' => 'text_format',
+        //note the bug https://www.drupal.org/project/drupal/issues/820816
+        '#base_type' => 'textarea',
+        '#format' => $global_note_setting['format'],
+        '#title' => t('Global note'),
+        '#default_value' => $global_note_setting['value'],
+        '#description' => t("Provide a global note which will be shown to all users. Will not be shown if empty."),
+        '#required' => false,
+    );
     return system_settings_form($setting_items);
 }
 
+
+
+/**
+ * implements hook_menu_alter
+ * @param type $items
+ */
 function custom_general_menu_alter(&$items) {
 
   // Example - disable the page at node/add
