@@ -712,23 +712,39 @@ function custom_general_wysiwyg_plugin($editor, $version) {
  * @return array
  */
 function custom_general_menu() {
-$items['admin/onlinekurslabor/setting'] = array(
-    'title' => 'Onlinekurslabor - Settings',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('custom_general_onlinekurslabor_admin_page'),
-    'access callback' => 'custom_general_user_is_okl_admin',
-    'access arguments' => array(array('administrator')),
-    'type' => MENU_NORMAL_ITEM,
-  );
+    $items = array();
+    $items['admin/onlinekurslabor'] = array(
+        'title' => 'Onlinekurslabor',
+        'access callback' => 'custom_general_user_is_okl_admin',
+        'access arguments' => array(array('administrator')),
+        'page callback' => 'custom_general_onlinekurslabor_admin_page',
+        'type' => MENU_NORMAL_ITEM,
+    );
 
-  return $items;
+    $items['admin/onlinekurslabor/setting'] = array(
+        'title' => 'Onlinekurslabor - Settings',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('custom_general_onlinekurslabor_admin_settings'),
+        'access callback' => 'custom_general_user_is_okl_admin',
+        'access arguments' => array(array('administrator')),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
+    return $items;
+}
+/**
+ * funktion für die custom_general_menu 
+ * @return type
+ */
+function custom_general_onlinekurslabor_admin_page() {
+  return "<h2>Onlinekurslabor Settings Landingpage</h2>siehe Navigation oben für Unterpunkte";
 }
 
 /**
  * funktion für die custom_general_menu 
  * @return type
  */
-function custom_general_onlinekurslabor_admin_page() {
+function custom_general_onlinekurslabor_admin_settings() {
     
 
     $setting_items = array();
