@@ -712,15 +712,12 @@ function custom_general_wysiwyg_plugin($editor, $version) {
  * @return array
  */
 function custom_general_menu() {
-
-  $items = array();
-    
-
-  $items['admin/onlinekurslabor'] = array(
-    'title' => 'Onlinekurslabor',
+$items['admin/onlinekurslabor/setting'] = array(
+    'title' => 'Onlinekurslabor - Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('custom_general_onlinekurslabor_admin_page'),
     'access callback' => 'custom_general_user_is_okl_admin',
     'access arguments' => array(array('administrator')),
-    'page callback' => 'custom_general_onlinekurslabor_admin_page',
     'type' => MENU_NORMAL_ITEM,
   );
 
@@ -728,7 +725,25 @@ function custom_general_menu() {
 }
 
 function custom_general_onlinekurslabor_admin_page() {
-  return "Onlinekurslabor Setting Page";
+    
+
+    $setting_items = array();
+
+
+    /*invoke hooks*/
+    foreach (module_implements('onlinekurslabor_settingitems_alter') as $module) {
+        $function = $module . '_onlinekurslabor_settingitems_alter';
+        $function($setting_items);
+    }
+
+    $setting_items['okl_support_email'] = array(
+        '#type' => 'textfield',
+        '#title' => t('support team'),
+        '#default_value' => variable_get('okl_support_email', NM_SUPPORT_EMAIL),
+        '#description' => t("Email adress of the support team."),
+        '#required' => TRUE,
+    );
+    return system_settings_form($setting_items);
 }
 
 function custom_general_menu_alter(&$items) {

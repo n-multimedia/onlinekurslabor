@@ -35,25 +35,7 @@ function section_courses_preprocess_panels_pane(&$variables) {
   }
 
 }
-
-/**
- * Implements hook_menu
- *
- * @return array
- */
-function section_courses_menu() {
-
-  $items['admin/onlinekurslabor/setting'] = array(
-    'title' => 'Onlinekurslabor - Settings',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('section_courses_onlinekurslabor_admin_settings_page'),
-    'access callback' => 'custom_general_user_is_okl_admin',
-    'access arguments' => array(array('administrator')),
-    'type' => MENU_NORMAL_ITEM,
-  );
-
-  return $items;
-}
+    
 
 
 /**
@@ -66,6 +48,26 @@ function section_courses_get_config_form_default_semester($form, &$form_state) {
     $form = _section_courses_get_semester_default_form_configuration();
 
     return(system_settings_form($form));
+}
+
+    
+
+/**
+ * implements hook_onlinekurslabor_settingitems_alter
+ * @return array
+ */
+function section_courses_onlinekurslabor_settingitems_alter(&$settings) {
+    
+    $settings['okl_global_forum_tid'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Global Forum Term ID'),
+        '#default_value' => variable_get('okl_global_forum_tid', NM_GLOBAL_FORUM_TID),
+        '#description' => t("Main Navigation Link Target"),
+        '#required' => TRUE,
+    );
+
+    $settings += _section_courses_get_semester_default_form_configuration();
+    
 }
 
 /**
@@ -103,56 +105,10 @@ function _section_courses_get_semester_default_form_configuration()
   );
   return $form;
 }
-/**
- * admin settings page
- * settings for
- *  - current semester
- *  -...
- *
- * @return type
- */
-function section_courses_onlinekurslabor_admin_settings_page() {
-  $form = array();
 
-  //double-usage: default-semester ausgegliedert in funktion
-  $form += _section_courses_get_semester_default_form_configuration();
 
-  $form['okl_global_forum_tid'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Global Forum Term ID'),
-    '#default_value' => variable_get('okl_global_forum_tid', NM_GLOBAL_FORUM_TID),
-    '#description' => t("Main Navigation Link Target"),
-    '#required' => TRUE,
-  );
-  
-   $form['okl_help_bid'] = array(
-    '#type' => 'textfield',
-    '#title' => t('ID of the help-book'),
-    '#default_value' => variable_get('okl_help_bid', NM_HELP_BID),
-    '#description' => t("The help is written in a book. Enter the ID."),
-    '#required' => TRUE,
-  );
-   
-   
-   $form['okl_help_header_fid'] = array(
-    '#type' => 'textfield',
-    '#title' => t('fid of header for help'),
-    '#default_value' => variable_get('okl_help_header_fid', NM_HELP_HEADER_FID),
-    '#description' => t("The file-ID of the header-image in help-section."),
-    '#required' => TRUE,
-  );
-   
-   $form['okl_support_email'] = array(
-    '#type' => 'textfield',
-    '#title' => t('support team'),
-    '#default_value' => variable_get('okl_support_email', NM_SUPPORT_EMAIL),
-    '#description' => t("Email adress of the support team."),
-    '#required' => TRUE,
-  );
-    
 
-  return system_settings_form($form);
-}
+
 /**
  * This hook is invoked after the OG membership has been removed from the database.
  *
