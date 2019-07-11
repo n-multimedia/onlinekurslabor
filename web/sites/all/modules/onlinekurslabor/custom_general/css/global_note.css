@@ -1,0 +1,17 @@
+/**
+* Styles für die Global Note
+*/
+
+div.global-note {
+    width: 70%;
+    margin: auto;
+    padding: 2em;
+    border: 2px solid #F5F5F5;
+    background: #FFD382;
+    margin-bottom:3em;
+}
+div.global-note h1, div.global-note h2, div.global-note h3, div.global-note h4, div.global-note h5
+{
+    margin: 0px;
+}
+

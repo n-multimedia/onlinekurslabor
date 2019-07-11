@@ -779,6 +779,7 @@ function custom_general_onlinekurslabor_admin_settings() {
     return system_settings_form($setting_items);
 }
 
+    
 
 
 /**
@@ -811,9 +812,24 @@ function custom_general_preprocess_page(&$variables) {
   drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/custom_general.js");
   drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/jquery.knob.js");
   drupal_add_js(drupal_get_path('module', 'custom_general') . "/js/spin.js");
+  drupal_add_css(drupal_get_path('module', 'custom_general') . "/css/global_note.css");
 
   drupal_add_library('system', 'ui.progressbar');
 
+  
+  
+  
+  /*  global note rendern */
+    $global_note_setting = variable_get('okl_global_note', array('value' => '', 'format' => NULL));
+    if(trim($global_note_setting['value']))
+    {
+         $variables['page']['header']['global_note_section'] = array(
+        //erstellt den header
+        '#markup' => '<div class="global-note">'.$global_note_setting['value'].'</div>',
+        '#weight' => -10
+        );
+    }
+   
 }
 
 function custom_general_append_active_class($path, &$options) {
