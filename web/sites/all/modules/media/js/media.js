@@ -115,7 +115,7 @@ Drupal.media.openBrowser = function (event) {
 
     // Find the attach button and automatically trigger it.
     var attachButton = uploadField.siblings('.attach');
-    attachButton.trigger('mousedown');
+    attachButton.trigger('click');
   }, configuration);
 
   return false;

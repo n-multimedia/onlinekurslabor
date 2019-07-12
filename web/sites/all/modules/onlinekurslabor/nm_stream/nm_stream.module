@@ -1829,6 +1829,12 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
       'default' => FALSE,
     ];
 
+    //fallback für home
+    if (empty($current_environment['context']) && empty($current_environment['container']))
+    {
+        return $options_items;
+    }
+
     //set privacy setting depending on context and container
     if (empty($current_environment['context'])) {
       //context is empty
@@ -2454,8 +2460,8 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
 
   $data = [];
   $data['stream'] = [];
-  $data['stream']['containerNID'] = $container->nid;
-  $data['stream']['contextNID'] = $context->nid;
+  $data['stream']['containerNID'] = (!empty($container->nid)? $container->nid : false);
+  $data['stream']['contextNID'] = (!empty($context->nid)? $context->nid : false);
   $data['stream']['privacyDefault'] = $privacy_key_default;
   $data['stream']['permissions'] = [];
   $data['stream']['permissions'][] = ["canCreatePost" => TRUE];
@@ -2463,8 +2469,13 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   $data['stream']['privacyOptions'] = $privacy_options;
   $data['stream']['privacyOptionsAll'] = $privacy_options_all;
   $data['stream']['token'] = drupal_get_token();
-  // todo get from field configuration
-  $data['stream']['acceptedFiles'] = '.jpg, .jpeg, .gif, .png, .txt, .xls, .pdf, .mp3, .doc, .docx, .pps, .ppt, .pptx, .odt, .ods, .odp, .mp4, .keynote, .pages';
+
+  // $allowed_attachm_filetypes from field configuration
+  $stream_CT_field_data = field_info_instances("node", "nm_stream");
+  $stream_attachments_filetypes = $stream_CT_field_data['field_nm_attachments']['settings']['file_extensions'];
+  $allowed_attachm_filetypes = '.'. implode(',  .', explode(' ', $stream_attachments_filetypes));
+
+  $data['stream']['acceptedFiles'] = $allowed_attachm_filetypes;
 
   $posts_comments_users = nm_stream_api_v2_get_posts($stream_container_node);
   $data['stream']['posts'] = $posts_comments_users['posts'];
@@ -2489,12 +2500,12 @@ function nm_stream_api_v2_render_stream($container) {
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.a1631138efb31f7d6e1b.js", [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.667a6230156013d6c7fe.js", [
     'scope' => 'footer',
     'weight' => 5,
   ]);
 
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.07ea3141e0bdd59b599ac120f1ea105a.css', [
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.b97c745baa0e7892da34fc1a65c824d5.css', [
     'scope' => 'footer',
     'weight' => 5,
   ]);
@@ -2769,10 +2780,11 @@ function nm_stream_api_v2_get_posts_json_data($account, $node) {
   $node_data['title'] = $node->title;
   $node_data['body'] = $node->body['und'][0]['value'];
   $display = array('label' => 'hidden');
-  $node_data['body_formatted'] = render(field_view_field('node', $node, 'body', $display));
+  $field_view_field = field_view_field('node', $node, 'body', $display);
+  $node_data['body_formatted'] = render($field_view_field);
 
   $node_data['created'] = date(DATE_FORMAT_ISO, $node->created);
-  $node_data['updated'] = date(DATE_FORMAT_ISO, $node->updated);
+  $node_data['updated'] = date(DATE_FORMAT_ISO, (!empty($node->updated)? $node->updated : 0));
   $node_data['privacy'] = [];
   $node_data['privacy']['privacyDefault'] = $node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
   $node_data['privacy']['privacyOptions'] = $privacy_options;
@@ -2794,30 +2806,32 @@ function nm_stream_api_v2_get_posts_json_data($account, $node) {
 
   // attachments
   $node_data['attachments'] = [];
-  foreach ($node->field_nm_attachments[LANGUAGE_NONE] as $item) {
-    $file = file_load($item['fid']);
-    $attachment = [];
-    $attachment['fid'] = $file->fid;
-    $attachment['filesize'] = $file->filesize;
-    $attachment['uid'] = $file->uid;
-    $attachment['filename'] = $file->filename;
-    $attachment['type'] = $file->type;
-    $attachment['filemime'] = $file->filemime;
+  if(!empty($node->field_nm_attachments[LANGUAGE_NONE])) {
+    foreach ($node->field_nm_attachments[LANGUAGE_NONE] as $item) {
+      $file = file_load($item['fid']);
+      $attachment = [];
+      $attachment['fid'] = $file->fid;
+      $attachment['filesize'] = $file->filesize;
+      $attachment['uid'] = $file->uid;
+      $attachment['filename'] = $file->filename;
+      $attachment['type'] = $file->type;
+      $attachment['filemime'] = $file->filemime;
 
 
-    $mime = check_plain($file->filemime);
-    $icon_url = $base_url . "/" . file_icon_url($file, NULL);
-    $icon = '<img class="file-icon" alt="' . check_plain($mime) . '" title="' . $mime . '" src="' . $icon_url . '" />';
+      $mime = check_plain($file->filemime);
+      $icon_url = $base_url . "/" . file_icon_url($file, NULL);
+      $icon = '<img class="file-icon" alt="' . check_plain($mime) . '" title="' . $mime . '" src="' . $icon_url . '" />';
 
-    //$uri = file_entity_download_uri($file);
-    $uri['path'] = file_create_url($file->uri);
-    $uri['options']['attributes']['type'] = $file->filemime . '; length=' . $file->filesize;
-    $uri['options']['absolute'] = TRUE;
-    $attachment['download_link'] = $icon . " " . l($attachment['filename'], $uri['path'], $uri['options']);
-    $attachment['permissions'] = [];
-    $attachment['permissions']['canDelete'] = node_access('update', $node, $account);
+      //$uri = file_entity_download_uri($file);
+      $uri['path'] = file_create_url($file->uri);
+      $uri['options']['attributes']['type'] = $file->filemime . '; length=' . $file->filesize;
+      $uri['options']['absolute'] = TRUE;
+      $attachment['download_link'] = $icon . " " . l($attachment['filename'], $uri['path'], $uri['options']);
+      $attachment['permissions'] = [];
+      $attachment['permissions']['canDelete'] = node_access('update', $node, $account);
 
-    $node_data['attachments'][] = $attachment;
+      $node_data['attachments'][] = $attachment;
+    }
   }
   return $node_data;
 }
@@ -2841,7 +2855,8 @@ function nm_stream_api_v2_get_comments_json_data($account, $comment) {
   $result_comment['changed'] = date(DATE_FORMAT_ISO, $comment->changed);
   $result_comment['body'] = $comment->comment_body['und'][0]['value'];
   $display = array('label' => 'hidden');
-  $result_comment['body_formatted'] = render(field_view_field('comment', $comment, 'comment_body', $display));
+  $field_view_field = field_view_field('comment', $comment, 'comment_body', $display);
+  $result_comment['body_formatted'] = render($field_view_field);
 
   $result_comment['permissions'] = [];
   $result_comment['permissions']['canEdit'] = nm_stream_comment_access('edit', $comment);;
@@ -3340,6 +3355,11 @@ function nm_stream_api_v2_comment_delete_callback($comment, $token = NULL) {
  *
  */
 function nm_stream_api_v2_set_localhost_headers() {
+  //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
+
+    RETURN; #NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
+
+  //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
   drupal_add_http_header('Access-Control-Allow-Credentials', 'true');
   drupal_add_http_header('Access-Control-Allow-Origin', 'http://localhost:8080');
   drupal_add_http_header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');

@@ -404,6 +404,30 @@ function okl_testing_mail_alter(&$message) {
   }
 }
 
+/**
+ * implements hook_profile2_insert
+ * Für Neunutzer wird automatisch das Develop-Password gesetzt
+ *
+ * @param type $profile
+ */
+function okl_testing_profile2_insert($profile) {
+    $created_user = user_load($profile->uid);
+    $created_user->pass = NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT;
+    user_save((object) array('uid' => $created_user->uid), (array) $created_user);
+}
+/**
+ * implements function hook_form_alter
+ * A hint, that the default password will be used.
+ * @param type $form
+ * @param type $form_state
+ * @param type $form_id
+ */
+function okl_testing_form_alter(&$form, &$form_state, $form_id) {
+
+    if($form_id === 'user_register_form'){
+        drupal_set_message('Hinweis: neu angelegte Personen erhalten unabhängig vom eingegebenen automatisch das "Developer-Password" als Passwort.','warning');
+    }
+}
 
 /**
  * @property type $vid
@@ -520,6 +544,22 @@ class TestingObject {
         $random_key = array_rand($propertyval_array);
 
         return $property_value->$random_key;
+    }
+    
+    /**
+     * get a  value from a list.
+     * e.g. $obj->random("teacher", 0) gets first person from the teachers' list
+     * @param type $what for example "teacher", "course_group",...
+     * @param type $position position in array beginning from 0... 
+     * @return TestingObject $object
+     */
+    function get($what, $position) {
+        $propertyname = $what . 's';
+        $property_value = $this->$propertyname;
+        $propertyval_array = (array) $property_value;
+        $key_at_position = array_keys($propertyval_array)[$position];
+
+        return $property_value->$key_at_position;
     }
 
 }

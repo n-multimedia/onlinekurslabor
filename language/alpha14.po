@@ -1,0 +1,18 @@
+#Translation File - onlinekurslabor
+
+msgid "This is a coursetask but you are not member of a coursegroup in this course."
+msgstr "Dies ist eine Gruppenaufgabe aber Sie sind diesem Kurs in keine Kursgruppe eingetragen."
+
+msgid "Sign up for a coursegroup"
+msgstr "Schreiben Sie sich in eine Kursgruppe ein"
+
+msgid "or ask the staff to assign you to one."
+msgstr "oder bitten Sie die Kursleitung, Sie in eine einzutragen."
+
+msgid "Ask the staff to assign you to a coursegroup."
+msgstr "Bitten Sie die Kursleitung darum, Sie in eine einzutragen."
+
+
+msgid ""
+msgstr ""
+

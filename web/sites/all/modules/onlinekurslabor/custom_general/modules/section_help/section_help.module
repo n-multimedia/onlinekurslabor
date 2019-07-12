@@ -74,3 +74,30 @@ function section_help_preprocess_page(&$variables) {
         }
     }
 }
+
+
+/**
+ * implements hook_onlinekurslabor_settingitems_alter
+ * @return array
+ */
+function section_help_onlinekurslabor_settingitems_alter(&$settings) {
+
+
+    $settings['okl_help_header_fid'] = array(
+        '#type' => 'textfield',
+        '#title' => t('fid of header for help'),
+        '#default_value' => variable_get('okl_help_header_fid', NM_HELP_HEADER_FID),
+        '#description' => t("The file-ID of the header-image in help-section."),
+        '#required' => TRUE,
+    );
+
+
+    $settings['okl_help_bid'] = array(
+        '#type' => 'textfield',
+        '#title' => t('ID of the help-book'),
+        '#default_value' => variable_get('okl_help_bid', NM_HELP_BID),
+        '#description' => t("The help is written in a book. Enter the ID."),
+        '#required' => TRUE,
+    );
+ 
+}
