@@ -823,11 +823,7 @@ function custom_general_preprocess_page(&$variables) {
     $global_note_setting = variable_get('okl_global_note', array('value' => '', 'format' => NULL));
     if(trim($global_note_setting['value']))
     {
-         $variables['page']['header']['global_note_section'] = array(
-        //erstellt den header
-        '#markup' => '<div class="global-note">'.$global_note_setting['value'].'</div>',
-        '#weight' => -10
-        );
+        drupal_set_message('<div class="global-note">'.$global_note_setting['value'].'</div>','warning');
     }
    
 }
