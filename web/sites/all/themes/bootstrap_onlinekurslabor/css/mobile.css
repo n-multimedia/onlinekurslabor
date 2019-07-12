@@ -1,11 +1,18 @@
-#section-nav-instructor-tools {
-  display: none;
-}
-
 #block-section-courses-course-top-navigation{
   position: relative;
 }
 
+#content_node_tabs-container .col-md-12 {
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+
+  #page_top_navigation .navbar-header {
+    margin-left: -15px !important;
+    margin-right: -15px !important;;
+  }
+}
 
 @media (max-width: 992px) {
 
@@ -61,42 +68,7 @@
     padding-bottom: 30px;
   }
 
-  #section-nav-instructor-tools {
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 40px;
-    background: none;
-    border: 0;
-    width: 100%;
-    box-sizing: border-box;
-    height: 0;
-    min-height: 0;
-  }
-  #section-nav-instructor-tools button.navbar-toggle {
-    border: 0;
-    background-color: #467DBD;
-    margin: 0px;
-    position: absolute;
-    right: 0;
-    top: -40px;
-    border-radius: 0;
-    width: 48px;
-    height: 40px;
-    border-left: 1px solid #CCCCCC;
-  }
-  #mobile_instructors_tools-container{
-    width: 100%;
-    z-index: 1001;
-    background-color: #426DA0;
-    padding-top: 20px;
-    padding-bottom: 50px;
-  }
 
-  #section-nav-instructor-tools button.navbar-toggle .icon-bar {
-    width: 2px;
-    margin-left: 8px;
-  }
 
   div[class^="col-"]:nth-child(-n+3) {
     padding: 0;
@@ -131,10 +103,6 @@
   }*/
   .okl-nav-course-bar {
     margin: 0;
-  }
-
-  #block-section-courses-course-top-navigation .container-fluid {
-    padding: 0;
   }
 
   #stream .stream-post {
@@ -193,6 +161,9 @@
     margin-right: 0;
   }
 
+  #page_top_navigation .container {
+
+  }
 
   #page_top_navigation.navbar {
     padding: 0;
@@ -269,6 +240,7 @@ button.okl-nav-bar-btn .animated-icon2 {
   cursor: pointer;
 }
 
+button.okl-toolbar-btn .animated-icon2 span,
 button.okl-nav-bar-btn .animated-icon2 span {
   display: block;
   position: absolute;
@@ -287,9 +259,39 @@ button.okl-nav-bar-btn .animated-icon2 span {
   transition: .25s ease-in-out;
 }
 
+button.okl-toolbar-btn .animated-icon2 span,
 button.okl-nav-bar-btn .animated-icon2 span {
   background: #e3f2fd;
 }
+
+
+button.okl-toolbar-btn .animated-icon2 span:nth-child(1) {
+  top: 12px;
+}
+button.okl-toolbar-btn .animated-icon2 span:nth-child(2) {
+  top: 19px;
+}
+button.okl-toolbar-btn .animated-icon2 span:nth-child(3) {
+  top: 26px;
+}
+
+button.okl-toolbar-btn:not([aria-expanded=false]) .animated-icon2 span:nth-child(1) {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  top: 26px;
+}
+
+button.okl-toolbar-btn:not([aria-expanded=false]) .animated-icon2 span:nth-child(2) {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  top: 26px;
+}
+
+
 
 button.okl-nav-bar-btn .animated-icon2 span:nth-child(1) {
   top: 2px;

@@ -36,11 +36,14 @@
   <nav class="navbar navbar-inverse" id="section-nav-instructor-tools">
     <div class="container-fluid">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse"
-                data-target="#instructor-tools">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
+        <button type="button" class="navbar-toggle okl-toolbar-btn"
+                data-toggle="collapse"
+                data-target="#instructor-tools" aria-expanded="false">
+          <div class="animated-icon2">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </div>
         </button>
       </div>
       <div class="collapse navbar-collapse" id="instructor-tools">

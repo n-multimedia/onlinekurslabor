@@ -468,13 +468,13 @@ function custom_general_get_task_solutions($tid, $uid) {
      */
     $node_wrapper = entity_metadata_wrapper('node', $tid);
     $task_type = $node_wrapper->field_task_type->value();
-  
+
     //0 single | 1 group
     //if group task and not kurs-editor
     if ($task_type == 1 &&  !node_access('update',node_load($tid), $account)) {
       //get course group
       $cg_gid = _section_courses_get_coursegroup_gid($uid);
- 
+
       //get all group members
       $cg_members = custom_general_get_users_in_group($cg_gid);
 
@@ -489,7 +489,7 @@ function custom_general_get_task_solutions($tid, $uid) {
       foreach ($cg_members AS $member) {
         // Load the user object if necessary
         $account = user_load($member->uid);
-        //kann aufgabe bearbeiten => kein echtes mitglied.. 
+        //kann aufgabe bearbeiten => kein echtes mitglied..
         if (node_access('update',node_load($tid), $account))
           continue;
 
@@ -535,13 +535,15 @@ function _custom_general_get_structered_tool_link($id, $label, $path, $options =
 
   if (!empty($path)) {
     //convert label to upper case
-    $link = l($label, $path, $item_options);
+    $link = l($label['label'], $path, $item_options);
+    $link_long = l($label['label_long'], $path, $item_options);
   }
   else {
     $link = $label;
   }
   $result['path'] = $path;
   $result['link'] = $link;
+  $result['link_long'] = $link_long;
 
   return $result;
 }
@@ -588,7 +590,7 @@ function custom_general_get_users_in_group($gid) {
 
 /*
  *@deprecated
- * liefert auch einträge für personen, die die übergeben Rolle NICHT haben. 
+ * liefert auch einträge für personen, die die übergeben Rolle NICHT haben.
  */
 function custom_general_get_users_in_group_by_role($gid, $roles) {
   $query = db_select('users', 'u')->distinct();
@@ -625,7 +627,7 @@ function custom_general_get_users_in_group_by_role_real($gid, $role_name, $og_st
     }
     if (count($real_uids))
         return user_load_multiple($real_uids);
-    else 
+    else
         return false;
 }
 
@@ -802,7 +804,7 @@ foreach($courses as $course_id => $bla)
      if (node_access('update', $a_course))
               $real_courses[$course_id] = $a_course;
 }
-  
+
 
 if($sort_field)
     usort($real_courses, create_function('$a, $b', 'return _section_course_sort_courses_by_field($a, $b, "'.$sort_field.'");'));
@@ -810,27 +812,27 @@ if($sort_field)
 return $real_courses;
 }
 /**
- * needed for usort, dont touch this. 
+ * needed for usort, dont touch this.
  *
  * @param node_object course $a
  * @param node_object course $b
- * 
+ *
  * @return in -1 ,0 , 1
  */
 function _section_course_sort_courses_by_field($a, $b, $name_of_field)
 {
-    
+
     //flatten the array withouth the need for foreaches or array_keys
      $it1 = new RecursiveIteratorIterator(new RecursiveArrayIterator($a->$name_of_field));
      $it2 = new RecursiveIteratorIterator(new RecursiveArrayIterator($b->$name_of_field));
-   
+
      $var1 = iterator_to_array($it1, false);
      $var2 = iterator_to_array($it2, false);
      $var1 = $var1[0];
      $var2 = $var2[0];
      //sort the int
         return ($var1 - $var2);
-        
+
 }
 
 function _section_course_get_num_coursegroups($course) {

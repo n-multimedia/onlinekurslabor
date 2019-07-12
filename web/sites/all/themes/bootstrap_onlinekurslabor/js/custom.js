@@ -9,4 +9,11 @@ jQuery(document).ready(function () {
     jQuery('.tooltip-top-navi').tooltip({placement: "bottom"});
   }
 
+  // initially scroll to active menu
+  var target_item = jQuery(".okl-nav-course-bar a.btn.active");
+  if (target_item.length > 0 && jQuery('#section_navigation').length > 0) {
+    jQuery('#section_navigation').animate({scrollLeft: target_item.offset().left}, 444);
+  }
+
+
 });

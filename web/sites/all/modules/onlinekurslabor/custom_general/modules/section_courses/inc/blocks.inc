@@ -244,7 +244,11 @@ function section_courses_demo_mode($nid = 0) {
  */
 function _section_courses_theme_instructor_tools($variables = NULL) {
 
+  // 12.07.2019 - 16:31 - SN
+  // no more instructor toolbar > alpha14
+  // todo remove from all panels using instructors toolbar
   $output = "";
+  return $output;
 
   if (section_courses_instructors_tools_access()) {
 
@@ -367,22 +371,33 @@ function _section_courses_get_instructor_tools() {
 
   //wg css-rtl
   $links['instr_overview_members']['label'] = ".Teilnehm";
+  $links['instr_overview_members']['label_long'] = "Teilnehmer";
   $links['instr_add_members']['label'] = ".Teilnehm";
+  $links['instr_add_members']['label_long'] = "Teilnehmer hinzufügen";
 
   $links['instr_overview_content']['label'] = "Inhalte";
+  $links['instr_overview_content']['label_long'] = "Inhalte";
   $links['instr_add_news']['label'] = "Neuigkeit";
+  $links['instr_add_news']['label_long'] = "Neuigkeit hinzufügen";
   $links['instr_add_docs']['label'] = "Dokument";
+  $links['instr_add_docs']['label_long'] = "Dokument hinzufügen";
   $links['instr_add_task']['label'] = "Aufgabe";
+  $links['instr_add_task']['label_long'] = "Aufgabe hinzufügen";
 
   $links['instr_overview_groups']['label'] = "Gruppe";
+  $links['instr_overview_groups']['label_long'] = "Gruppen";
   $links['instr_add_groups']['label'] = "Gruppe";
+  $links['instr_add_groups']['label_long'] = "Gruppe hinzufügen";
 
 
   $links['instr_overview_projects']['label'] = "Projekte";
+  $links['instr_overview_projects']['label_long'] = "Projekte";
 
   $links['instr_overview_forums']['label'] = "Forum";
+  $links['instr_overview_forums']['label_long'] = "Forum";
 
   $links['instr_course_settings']['label'] = "Kurs";
+  $links['instr_course_settings']['label_long'] = "Kurseinstellungen";
 
 
   //Groups
@@ -438,75 +453,67 @@ function _section_courses_get_instructor_tools() {
   //settings
   $path = 'course/admin/' . $group_id . '/settings';
   $id = 'instr_course_settings';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'course/projects/' . $group_id; //todo
   $id = 'instr_overview_projects';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'course/admin/' . $group_id . '/forums';
   $id = 'instr_overview_forums';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   //overviews
   $path = 'course/admin/' . $group_id . '/members';
   $id = 'instr_overview_members';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'course/admin/' . $group_id . '/groups';
   $id = 'instr_overview_groups';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'course/admin/' . $group_id . '/content';
   $id = 'instr_overview_content';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   //adds
   $path = 'course/admin/' . $group_id . '/add/courses-news';
   $id = 'instr_add_news';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'course/admin/' . $group_id . '/add/courses-docs';
   $id = 'instr_add_docs';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'course/admin/' . $group_id . '/add/courses-generic-task';
   $id = 'instr_add_task';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'course/admin/' . $group_id . '/members/add';
   $id = 'instr_add_members';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'course/admin/' . $group_id . '/add/courses-group';
   $id = 'instr_add_groups';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $result = array();
-  foreach ($links as $name => $link) {
+  foreach ($links as $name => $item) {
     $attributes = array('attributes' => array('id' => $name, 'class' => array('btn','btn-default')));
-    if (isset($link['path'])) {
-      custom_general_append_active_class(($link['path']), $attributes);
+    if (isset($item['path'])) {
+      custom_general_append_active_class(($item['path']), $attributes);
     }
 
-    $group = isset($link['group']) ? $link['group'] : NULL;
-    $link = isset($link['link']) ? $link['link'] : NULL;
-    $result[] = array('link' => $link, 'group' => $group, 'attributes' => $attributes['attributes']);
+    $group = isset($item['group']) ? $item['group'] : NULL;
+    $link = isset($item['link']) ? $item['link'] : NULL;
+    $link_long = isset($item['link_long']) ? $item['link_long'] : NULL;
+    $result[$name] = [
+      'link' => $link,
+      'link_long' => $link_long,
+      'group' => $group,
+      'attributes' => $attributes['attributes'],
+    ];
   }
-
 
   return $result;
 }
@@ -547,7 +554,7 @@ function _course_top_navigation_view() {
   $admin_tools = "";
   if(section_courses_instructors_tools_access()) {
     $instructor_tools = _section_courses_get_instructor_tools();
-    $admin_tools = _custom_general_theme_tools_block($instructor_tools, "mobile_instructors_tools", "btn-group btn-group-vertical", 1);
+    $admin_tools = _custom_general_theme_tools_navbar_block($instructor_tools);
   }
 
 
