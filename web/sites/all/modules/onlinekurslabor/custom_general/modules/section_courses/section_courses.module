@@ -2280,9 +2280,9 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
         //remove empty forms
 
         $js_settings['task_remove_empty_fields'] = $empty_entries;
-
-        drupal_add_js(drupal_get_path('module', 'section_courses') . '/js/section_courses.js');
         drupal_add_js(array('section_courses' => $js_settings), 'setting');
+
+        drupal_add_js(drupal_get_path('module', 'section_courses') . '/js/section_courses_task.js');
 
       }
     }
@@ -2422,6 +2422,14 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
   {
     drupal_set_message('Be aware of hook_workflow which can limit the access.', 'warning');
   }
+}
+
+/**
+ * implements   hook_page_build(&$page) {
+ * @param type $page
+ */
+function section_courses_page_build(&$page) {
+    drupal_add_js(drupal_get_path('module', 'section_courses') . '/js/section_courses.js');
 }
 
 /**
