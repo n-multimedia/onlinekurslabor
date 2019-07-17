@@ -2281,7 +2281,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
 
         $js_settings['task_remove_empty_fields'] = $empty_entries;
 
-        drupal_add_js(drupal_get_path('module', 'section_courses') . '/js/section_courses_tasks.js');
+        drupal_add_js(drupal_get_path('module', 'section_courses') . '/js/section_courses.js');
         drupal_add_js(array('section_courses' => $js_settings), 'setting');
 
       }
