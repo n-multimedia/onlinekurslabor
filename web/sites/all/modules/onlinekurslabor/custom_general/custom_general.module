@@ -566,42 +566,85 @@ function _custom_general_theme_tools_navbar_block($tool_links) {
     $output .= '<ul>';
 
     if (isset($tool_links[$context_item_id]['attributes'])) {
-      $attributes = drupal_attributes($tool_links[$context_item_id]['attributes']);
+      $subitems_attributes = drupal_attributes($tool_links[$context_item_id]['attributes']);
     }
-    $output .= '<li ' . $attributes . '>' . $tool_links[$context_item_id]['link_long'] . '</button>';
+    $output .= '<li ' . $subitems_attributes . '>' . $tool_links[$context_item_id]['link_long'] . '</button>';
 
     $output .= '</ul>';
     $output .= '</div>';
   }
 
-
+    
 
   $output .= '<div id="tools-all-actions">';
   foreach ($groups as $g) {
+    
     $group_items = ($g['items']);
+    $group_has_items = count($group_items) > 1;
     $output .= '<ul>';
     $depth = 0;
 
     $rootitem = array_shift($group_items);
-    if (isset($rootitem['attributes'])) {
-      $attributes = drupal_attributes($rootitem['attributes']);
-    }
 
-    $output .= '<li ' . $attributes . '>' . $rootitem['link_long'] . '</button>';
+    
 
-    // group items below
-    $output .= '<ul>';
-    foreach ($group_items as $gi) {
-      $attributes = "";
+     //ist in diesem menü ein punkt "active" gesetzt?
+     $menu_has_active_component = false;
+     $submenu_entries = '';
+     foreach ($group_items as $gi) {
+      $subitems_attributes = "";
       if (isset($gi['attributes'])) {
-        $attributes = drupal_attributes($gi['attributes']);
+        $subitems_attributes = drupal_attributes($gi['attributes']);
+
+        
+        $menu_has_active_component |= array_search('active', $gi['attributes']['class']);
       }
 
       //$output .= '<li '.$attributes.'>' . $tl['link'] . '</li>';
-      $output .= '<li ' . $attributes . '>' . $gi['link_long'] . '</button>';
+      $submenu_entries .= '<li ' . $subitems_attributes . '>' . $gi['link_long'] . '</li>';
 
       $depth++;
     }
+    
+    
+     $menu_has_active_component |=  array_search('active', $rootitem['attributes']['class'] );
+     
+     
+    //attribute für das <li>
+    $rootitem_attributes = array();
+    //attribute für das <ul>
+    $uls_attributes = array();
+    
+     if (isset($rootitem['attributes'])) {
+        $rootitem_attributes = $rootitem['attributes'];
+    } 
+    
+    if($group_has_items)
+    {
+        $rootitem_attributes['class'][] = 'menu_entry_collapsable';
+        $rootitem_attributes['data-toggle'] = 'collapse';
+        $rootitem_attributes['data-target'] = '#navgroup_'.$rootitem['attributes']['id'];
+        
+        $uls_attributes['class'][] = 'collapse';
+        $uls_attributes['id'] = 'navgroup_'.$rootitem['attributes']['id'];
+        
+        if($menu_has_active_component)
+        {
+            $rootitem_attributes['class'][] ='collapsed';
+            $uls_attributes['class'][] = 'in';
+        }
+        
+       
+    }
+    
+  
+    $output .= '<li  '.drupal_attributes($rootitem_attributes) . '>' . $rootitem['link_long'] . '</li>';
+
+    // group items below
+    //do the collapse here
+   
+    $output .= '<ul '. drupal_attributes($uls_attributes)  .'>';
+    $output .= $submenu_entries; 
     $output .= '</ul>';
 
     $output .= '</ul>';

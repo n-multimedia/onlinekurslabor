@@ -524,22 +524,31 @@ function custom_general_get_task_solutions($tid, $uid) {
   }
 }
 
-function _custom_general_get_structered_tool_link($id, $label, $path, $options = array()) {
+/**
+ * baut links.
+ * @param String $id
+ * @param array $labels must containt ['label'] ['label_long'] TODO: ['title']
+ * @param String $path
+ * @param array $options
+ * @return array
+ */
+function _custom_general_get_structered_tool_link($id, $labels, $path, $options = array()) {
   $result = array();
 
   $item_options = $options;
-
+  //todo: umstellen auf $label[title]..
   if (empty($item_options['attributes']['title'])) {
-    $item_options['attributes']['title'] = ($label);
+    $item_options['attributes']['title'] = ($labels['label_long']);
   }
 
   if (!empty($path)) {
     //convert label to upper case
-    $link = l($label['label'], $path, $item_options);
-    $link_long = l($label['label_long'], $path, $item_options);
+    $link = l($labels['label'], $path, $item_options);
+    $link_long = l($labels['label_long'], $path, $item_options);
   }
   else {
-    $link = $label;
+    $link = $labels['label'];
+    $link_long = $labels['label_long'];
   }
   $result['path'] = $path;
   $result['link'] = $link;

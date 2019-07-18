@@ -512,6 +512,7 @@ show new (mobile) instructor tools
   color: white;
 }
 
+
 #mobile_instructors_tools-container ul li.btn a {
   padding: 15px 5px 15px 35px;
   display: block;
@@ -551,6 +552,25 @@ show new (mobile) instructor tools
   top: -5px;
   left: -15px;
 }
+
+#mobile_instructors_tools-container li.menu_entry_collapsable.btn a {
+    padding-left: 20px;
+}
+#mobile_instructors_tools-container li.menu_entry_collapsable.btn a:before {
+    content:"\e259";
+    font-family: 'Glyphicons Halflings';
+
+    font-size: 30px;
+    background:transparent;
+    text-decoration: none;
+    top:1px;
+}
+#mobile_instructors_tools-container li.menu_entry_collapsable.collapsed.btn a:before {
+    content:"\e258";
+} 
+
+
+
 
 #mobile_instructors_tools-container .btn#instr_add_news a:before {
   background-position: 0px 0px;
@@ -1473,7 +1493,7 @@ div.view-courses-kurse-bersicht .nm-stream-node-container div.progress_circle_co
   display: none;
   position: absolute;
   padding-top: 5px;
-/ / background-color: rgba(247, 247, 247, 0.5);
+  background-color: rgba(247, 247, 247, 0.5);
 }
 
 /*progress-badge zeigen erst ab mindest-resolution*/
@@ -1494,3 +1514,4 @@ div.view-courses-kurse-bersicht .nm-stream-node-container:hover .courseitem_imag
 div.view-courses-kurse-bersicht .nm-stream-node-container img.courseitem_courselogo {
   max-width: 100%;
 }
+
