@@ -311,7 +311,7 @@ a.disabled {
   height: 60px;
 }
 
-#instructors_tools-container .btn a:before {
+#instructors_tools-container .btn a::before {
   content: ' ';
   display: block;
   width: 60px;
@@ -322,47 +322,47 @@ a.disabled {
   background-repeat: no-repeat;
 }
 
-#instructors_tools-container .btn#instr_add_news a:before {
+#instructors_tools-container .btn#instr_add_news a::before {
   background-position: 0px 0px;
 }
 
-#instructors_tools-container .btn#instr_add_news a:before {
+#instructors_tools-container .btn#instr_add_news a::before {
   background-position: 0px 0px;
 }
 
-#instructors_tools-container .btn#instr_add_news a:hover:before, #instructors_tools-container .btn#instr_add_news a.active:before {
+#instructors_tools-container .btn#instr_add_news a:hover::before, #instructors_tools-container .btn#instr_add_news a.active::before {
   background-position: 0px -50px;
 }
 
-#instructors_tools-container .btn#instr_add_docs a:before {
+#instructors_tools-container .btn#instr_add_docs a::before {
   background-position: -60px 0px;
 }
 
-#instructors_tools-container .btn#instr_add_docs a:hover:before, #instructors_tools-container .btn#instr_add_docs a.active:before {
+#instructors_tools-container .btn#instr_add_docs a:hover::before, #instructors_tools-container .btn#instr_add_docs a.active::before {
   background-position: -60px -50px;
 }
 
-#instructors_tools-container .btn#instr_add_groups a:before {
+#instructors_tools-container .btn#instr_add_groups a::before {
   background-position: -120px 0px;
 }
 
-#instructors_tools-container .btn#instr_add_groups a:hover:before, #instructors_tools-container .btn#instr_add_groups a.active:before {
+#instructors_tools-container .btn#instr_add_groups a:hover::before, #instructors_tools-container .btn#instr_add_groups a.active::before {
   background-position: -120px -50px;
 }
 
-#instructors_tools-container .btn#instr_add_members a:before {
+#instructors_tools-container .btn#instr_add_members a::before {
   background-position: -180px 0px;
 }
 
-#instructors_tools-container .btn#instr_add_members a:hover:before, #instructors_tools-container .btn#instr_add_members a.active:before {
+#instructors_tools-container .btn#instr_add_members a:hover::before, #instructors_tools-container .btn#instr_add_members a.active::before {
   background-position: -180px -50px;
 }
 
-#instructors_tools-container .btn#instr_add_task a:before {
+#instructors_tools-container .btn#instr_add_task a::before {
   background-position: -180px -100px;
 }
 
-#instructors_tools-container .btn#instr_add_task a:hover:before, #instructors_tools-container .btn#instr_add_task a.active:before {
+#instructors_tools-container .btn#instr_add_task a:hover::before, #instructors_tools-container .btn#instr_add_task a.active::before {
   background-position: -180px -150px;
 }
 
@@ -370,43 +370,43 @@ a.disabled {
 Lists / Overviews
 */
 
-#instructors_tools-container .btn#instr_overview_members a:before {
+#instructors_tools-container .btn#instr_overview_members a::before {
   background-position: -240px 0px;
 }
 
-#instructors_tools-container .btn#instr_overview_members a:hover:before, #instructors_tools-container .btn#instr_overview_members a.active:before {
+#instructors_tools-container .btn#instr_overview_members a:hover::before, #instructors_tools-container .btn#instr_overview_members a.active::before {
   background-position: -240px -50px;
 }
 
-#instructors_tools-container .btn#instr_overview_groups a:before {
+#instructors_tools-container .btn#instr_overview_groups a::before {
   background-position: -300px 0px;
 }
 
-#instructors_tools-container .btn#instr_overview_groups a:hover:before, #instructors_tools-container .btn#instr_overview_groups a.active:before {
+#instructors_tools-container .btn#instr_overview_groups a:hover::before, #instructors_tools-container .btn#instr_overview_groups a.active::before {
   background-position: -300px -50px;
 }
 
-#instructors_tools-container .btn#instr_overview_projects a:before {
+#instructors_tools-container .btn#instr_overview_projects a::before {
   background-position: -300px -100px;
 }
 
-#instructors_tools-container .btn#instr_overview_projects a:hover:before, #instructors_tools-container .btn#instr_overview_projects a.active:before {
+#instructors_tools-container .btn#instr_overview_projects a:hover::before, #instructors_tools-container .btn#instr_overview_projects a.active::before {
   background-position: -300px -150px;
 }
 
-#instructors_tools-container .btn#instr_course_settings a:before {
+#instructors_tools-container .btn#instr_course_settings a::before {
   background-position: 0px -100px;
 }
 
-#instructors_tools-container .btn#instr_course_settings a:hover:before, #instructors_tools-container .btn#instr_course_settings a.active:before {
+#instructors_tools-container .btn#instr_course_settings a:hover::before, #instructors_tools-container .btn#instr_course_settings a.active::before {
   background-position: 0px -150px;
 }
 
-#instructors_tools-container .btn#instr_overview_content a:before {
+#instructors_tools-container .btn#instr_overview_content a::before {
   background-position: -60px -100px;
 }
 
-#instructors_tools-container .btn#instr_overview_content a:hover:before, #instructors_tools-container .btn#instr_overview_content a.active:before {
+#instructors_tools-container .btn#instr_overview_content a:hover::before, #instructors_tools-container .btn#instr_overview_content a.active::before {
   background-position: -60px -150px;
 }
 
@@ -414,11 +414,11 @@ Lists / Overviews
 Settings
 */
 
-#instructors_tools-container .btn#instr_overview_forums a:before {
+#instructors_tools-container .btn#instr_overview_forums a::before {
   background-position: -360px 0px;
 }
 
-#instructors_tools-container .btn#instr_overview_forums a:hover:before, #instructors_tools-container .btn#instr_overview_forums a.active:before {
+#instructors_tools-container .btn#instr_overview_forums a:hover::before, #instructors_tools-container .btn#instr_overview_forums a.active::before {
   background-position: -360px -50px;
 }
 
@@ -549,7 +549,7 @@ show new (mobile) instructor tools
 
 
 
-#mobile_instructors_tools-container .btn a:before {
+#mobile_instructors_tools-container .btn a::before {
   content: ' ';
   display: block;
   width: 60px;
@@ -566,7 +566,7 @@ show new (mobile) instructor tools
 #mobile_instructors_tools-container li.menu_entry_collapsable.btn a {
     padding-left: 40px;
 }
-#mobile_instructors_tools-container li.menu_entry_collapsable.btn a:after {
+#mobile_instructors_tools-container li.menu_entry_collapsable.btn a::after {
     content:"\e260";
     font-family: 'Glyphicons Halflings';
     font-size: 10px;
@@ -576,47 +576,47 @@ show new (mobile) instructor tools
     top: 18px;
     margin-left: 10px;
 }
-#mobile_instructors_tools-container li.menu_entry_collapsable.collapsed.btn a:after {
+#mobile_instructors_tools-container li.menu_entry_collapsable.collapsed.btn a::after {
     content:"\e259";
 }
 
 
-#mobile_instructors_tools-container .btn#instr_add_news a:before {
+#mobile_instructors_tools-container .btn#instr_add_news a::before {
   background-position: 0px 0px;
 }
-#mobile_instructors_tools-container .btn#instr_add_news a:hover:before, #mobile_instructors_tools-container .btn#instr_add_news a.active:before {
+#mobile_instructors_tools-container .btn#instr_add_news a:hover::before, #mobile_instructors_tools-container .btn#instr_add_news a.active:before {
   background-position: 0px -50px;
 }
 
-#mobile_instructors_tools-container .btn#instr_add_docs a:before {
+#mobile_instructors_tools-container .btn#instr_add_docs a::before {
   background-position: -60px 0px;
 }
 
-#mobile_instructors_tools-container .btn#instr_add_docs a:hover:before, #mobile_instructors_tools-container .btn#instr_add_docs a.active:before {
+#mobile_instructors_tools-container .btn#instr_add_docs a:hover::before, #mobile_instructors_tools-container .btn#instr_add_docs a.active:before {
   background-position: -60px -50px;
 }
 
-#mobile_instructors_tools-container .btn#instr_add_groups a:before {
+#mobile_instructors_tools-container .btn#instr_add_groups a::before {
   background-position: -120px 0px;
 }
 
-#mobile_instructors_tools-container .btn#instr_add_groups a:hover:before, #mobile_instructors_tools-container .btn#instr_add_groups a.active:before {
+#mobile_instructors_tools-container .btn#instr_add_groups a:hover::before, #mobile_instructors_tools-container .btn#instr_add_groups a.active:before {
   background-position: -120px -50px;
 }
 
-#mobile_instructors_tools-container .btn#instr_add_members a:before {
+#mobile_instructors_tools-container .btn#instr_add_members a::before {
   background-position: -180px 0px;
 }
 
-#mobile_instructors_tools-container .btn#instr_add_members a:hover:before, #mobile_instructors_tools-container .btn#instr_add_members a.active:before {
+#mobile_instructors_tools-container .btn#instr_add_members a:hover::before, #mobile_instructors_tools-container .btn#instr_add_members a.active:before {
   background-position: -180px -50px;
 }
 
-#mobile_instructors_tools-container .btn#instr_add_task a:before {
+#mobile_instructors_tools-container .btn#instr_add_task a::before {
   background-position: -180px -100px;
 }
 
-#mobile_instructors_tools-container .btn#instr_add_task a:hover:before, #mobile_instructors_tools-container .btn#instr_add_task a.active:before {
+#mobile_instructors_tools-container .btn#instr_add_task a:hover::before, #mobile_instructors_tools-container .btn#instr_add_task a.active:before {
   background-position: -180px -150px;
 }
 
@@ -624,51 +624,51 @@ show new (mobile) instructor tools
 Lists / Overviews
 */
 
-#mobile_instructors_tools-container .btn#instr_category_members > a:before,
-#mobile_instructors_tools-container .btn#instr_settings_members > a:before,
-#mobile_instructors_tools-container .btn#instr_overview_members > a:before {
+#mobile_instructors_tools-container .btn#instr_category_members > a::before,
+#mobile_instructors_tools-container .btn#instr_settings_members > a::before,
+#mobile_instructors_tools-container .btn#instr_overview_members > a::before {
   background-position: -240px 0px;
 }
 
-#mobile_instructors_tools-container .btn#instr_category_members > a:hover:before, #mobile_instructors_tools-container .btn#instr_category_members > a.active:before,
-#mobile_instructors_tools-container .btn#instr_settings_members > a:hover:before, #mobile_instructors_tools-container .btn#instr_settings_members > a.active:before,
-#mobile_instructors_tools-container .btn#instr_overview_members > a:hover:before, #mobile_instructors_tools-container .btn#instr_overview_members > a.active:before {
+#mobile_instructors_tools-container .btn#instr_category_members > a:hover::before, #mobile_instructors_tools-container .btn#instr_category_members > a.active:before,
+#mobile_instructors_tools-container .btn#instr_settings_members > a:hover::before, #mobile_instructors_tools-container .btn#instr_settings_members > a.active:before,
+#mobile_instructors_tools-container .btn#instr_overview_members > a:hover::before, #mobile_instructors_tools-container .btn#instr_overview_members > a.active:before {
   background-position: -240px -50px;
 }
 
-#mobile_instructors_tools-container .btn#instr_category_groups > a:before,
-#mobile_instructors_tools-container .btn#instr_overview_groups > a:before {
+#mobile_instructors_tools-container .btn#instr_category_groups > a::before,
+#mobile_instructors_tools-container .btn#instr_overview_groups > a::before {
   background-position: -300px 0px;
 }
 
-#mobile_instructors_tools-container .btn#instr_category_groups > a:hover:before, #mobile_instructors_tools-container .btn#instr_category_groups > a.active:before,
-#mobile_instructors_tools-container .btn#instr_overview_groups > a:hover:before, #mobile_instructors_tools-container .btn#instr_overview_groups > a.active:before {
+#mobile_instructors_tools-container .btn#instr_category_groups > a:hover::before, #mobile_instructors_tools-container .btn#instr_category_groups > a.active:before,
+#mobile_instructors_tools-container .btn#instr_overview_groups > a:hover::before, #mobile_instructors_tools-container .btn#instr_overview_groups > a.active:before {
   background-position: -300px -50px;
 }
 
-#mobile_instructors_tools-container .btn#instr_overview_projects > a:before {
+#mobile_instructors_tools-container .btn#instr_overview_projects > a::before {
   background-position: -300px -100px;
 }
 
-#mobile_instructors_tools-container .btn#instr_overview_projects > a:hover:before, #mobile_instructors_tools-container .btn#instr_overview_projects > a.active:before {
+#mobile_instructors_tools-container .btn#instr_overview_projects > a:hover::before, #mobile_instructors_tools-container .btn#instr_overview_projects > a.active:before {
   background-position: -300px -150px;
 }
 
-#mobile_instructors_tools-container .btn#instr_course_settings > a:before {
+#mobile_instructors_tools-container .btn#instr_course_settings > a::before {
   background-position: 0px -100px;
 }
 
-#mobile_instructors_tools-container .btn#instr_course_settings > a:hover:before, #mobile_instructors_tools-container .btn#instr_course_settings > a.active:before {
+#mobile_instructors_tools-container .btn#instr_course_settings > a:hover::before, #mobile_instructors_tools-container .btn#instr_course_settings > a.active:before {
   background-position: 0px -150px;
 }
 
-#mobile_instructors_tools-container .btn#instr_category_content > a:before,
-#mobile_instructors_tools-container .btn#instr_overview_content > a:before {
+#mobile_instructors_tools-container .btn#instr_category_content > a::before,
+#mobile_instructors_tools-container .btn#instr_overview_content > a::before {
   background-position: -60px -100px;
 }
 
-#mobile_instructors_tools-container .btn#instr_category_content > a:hover:before, #mobile_instructors_tools-container .btn#instr_category_content > a.active:before,
-#mobile_instructors_tools-container .btn#instr_overview_content > a:hover:before, #mobile_instructors_tools-container .btn#instr_overview_content > a.active:before {
+#mobile_instructors_tools-container .btn#instr_category_content > a:hover::before, #mobile_instructors_tools-container .btn#instr_category_content > a.active:before,
+#mobile_instructors_tools-container .btn#instr_overview_content > a:hover::before, #mobile_instructors_tools-container .btn#instr_overview_content > a.active:before {
   background-position: -60px -150px;
 }
 
@@ -676,11 +676,11 @@ Lists / Overviews
 Settings
 */
 
-#mobile_instructors_tools-container .btn#instr_overview_forums > a:before {
+#mobile_instructors_tools-container .btn#instr_overview_forums > a::before {
   background-position: -360px 0px;
 }
 
-#mobile_instructors_tools-container .btn#instr_overview_forums > a:hover:before, #mobile_instructors_tools-container .btn#instr_overview_forums > a.active:before {
+#mobile_instructors_tools-container .btn#instr_overview_forums > a:hover::before, #mobile_instructors_tools-container .btn#instr_overview_forums > a.active:before {
   background-position: -360px -50px;
 }
 
@@ -707,7 +707,7 @@ Authors's Tools
   display: block;
 }
 
-#authors_tools-container .btn a:before {
+#authors_tools-container .btn a::before {
   content: ' ';
   display: block;
   width: 60px;
@@ -719,100 +719,100 @@ Authors's Tools
   margin-bottom: 1px;
 }
 
-#authors_tools-container .btn#author_biblio_overview a:before {
+#authors_tools-container .btn#author_biblio_overview a::before {
   background-position: 0px 0px;
 }
 
-#authors_tools-container .btn#author_biblio_overview a:hover:before, #authors_tools-container .btn#author_biblio_overview a.active:before {
+#authors_tools-container .btn#author_biblio_overview a:hover::before, #authors_tools-container .btn#author_biblio_overview a.active:before {
   background-position: 0px -50px;
 }
 
-#authors_tools-container .btn#author_biblio_add a:before {
+#authors_tools-container .btn#author_biblio_add a::before {
   background-position: -60px 0px;
 }
 
-#authors_tools-container .btn#author_biblio_add a:hover:before, #authors_tools-container .btn#author_biblio_add a.active:before {
+#authors_tools-container .btn#author_biblio_add a:hover::before, #authors_tools-container .btn#author_biblio_add a.active:before {
   background-position: -60px -50px;
 }
 
-#authors_tools-container .btn#author_media_overview a:before {
+#authors_tools-container .btn#author_media_overview a::before {
   background-position: -120px 0px;
 }
 
-#authors_tools-container .btn#author_media_overview a:hover:before, #authors_tools-container .btn#author_media_overview a.active:before {
+#authors_tools-container .btn#author_media_overview a:hover::before, #authors_tools-container .btn#author_media_overview a.active:before {
   background-position: -120px -50px;
 }
 
 /*interactive video*/
-#authors_tools-container .btn#author_interactive_overview a:before {
+#authors_tools-container .btn#author_interactive_overview a::before {
   background-position: -180px 0px;
 }
 
-#authors_tools-container .btn#author_interactive_overview a:hover:before, #authors_tools-container .btn#author_interactive_overview a.active:before {
+#authors_tools-container .btn#author_interactive_overview a:hover::before, #authors_tools-container .btn#author_interactive_overview a.active:before {
   background-position: -180px -50px;
 }
 
-#authors_tools-container .btn#author_h5p_add a:before {
+#authors_tools-container .btn#author_h5p_add a::before {
   background-position: -180px -100px;
 }
 
-#authors_tools-container .btn#author_h5p_add a:hover:before, #authors_tools-container .btn#author_h5p_add a.active:before {
+#authors_tools-container .btn#author_h5p_add a:hover::before, #authors_tools-container .btn#author_h5p_add a.active:before {
   background-position: -180px -150px;
 }
 
-#authors_tools-container .btn#author_annvid_add a:before {
+#authors_tools-container .btn#author_annvid_add a::before {
   background-position: -412px -100px;
 }
 
-#authors_tools-container .btn#author_annvid_add a:hover:before, #authors_tools-container .btn#author_annvid_add a.active:before {
+#authors_tools-container .btn#author_annvid_add a:hover::before, #authors_tools-container .btn#author_annvid_add a.active:before {
   background-position: -412px -150px;
 }
 
-#authors_tools-container .btn#author_chapter_add a:before {
+#authors_tools-container .btn#author_chapter_add a::before {
   background-position: -240px 0px;
 }
 
-#authors_tools-container .btn#author_chapter_add a:hover:before, #authors_tools-container .btn#author_chapter_add a.active:before {
+#authors_tools-container .btn#author_chapter_add a:hover::before, #authors_tools-container .btn#author_chapter_add a.active:before {
   background-position: -240px -50px;
 }
 
-#authors_tools-container .btn#author_subchapter_add a:before {
+#authors_tools-container .btn#author_subchapter_add a::before {
   background-position: -300px 0px;
 }
 
-#authors_tools-container .btn#author_subchapter_add a:hover:before, #authors_tools-container .btn#author_subchapter_add a.active:before {
+#authors_tools-container .btn#author_subchapter_add a:hover::before, #authors_tools-container .btn#author_subchapter_add a.active:before {
   background-position: -300px -50px;
 }
 
-#authors_tools-container .btn#author_chapter_order a:before {
+#authors_tools-container .btn#author_chapter_order a::before {
   background-position: -360px 0px;
 }
 
-#authors_tools-container .btn#author_chapter_order a:hover:before, #authors_tools-container .btn#author_chapter_order a.active:before {
+#authors_tools-container .btn#author_chapter_order a:hover::before, #authors_tools-container .btn#author_chapter_order a.active:before {
   background-position: -360px -50px;
 }
 
-#authors_tools-container .btn#author_tasks_overview a:before {
+#authors_tools-container .btn#author_tasks_overview a::before {
   background-position: 0px -100px;
 }
 
-#authors_tools-container .btn#author_tasks_overview a:hover:before, #authors_tools-container .btn#author_tasks_overview a.active:before {
+#authors_tools-container .btn#author_tasks_overview a:hover::before, #authors_tools-container .btn#author_tasks_overview a.active:before {
   background-position: 0px -150px;
 }
 
-#authors_tools-container .btn#author_tasks_qaa_add a:before {
+#authors_tools-container .btn#author_tasks_qaa_add a::before {
   background-position: -60px -100px;
 }
 
-#authors_tools-container .btn#author_tasks_qaa_add a:hover:before, #authors_tools-container .btn#author_tasks_qaa_add a.active:before {
+#authors_tools-container .btn#author_tasks_qaa_add a:hover::before, #authors_tools-container .btn#author_tasks_qaa_add a.active:before {
   background-position: -60px -150px;
 }
 
-#authors_tools-container .btn#author_tasks_mc_add a:before {
+#authors_tools-container .btn#author_tasks_mc_add a::before {
   background-position: -120px -100px;
 }
 
-#authors_tools-container .btn#author_tasks_mc_add a:hover:before, #authors_tools-container .btn#author_tasks_mc_add a.active:before {
+#authors_tools-container .btn#author_tasks_mc_add a:hover::before, #authors_tools-container .btn#author_tasks_mc_add a.active:before {
   background-position: -120px -150px;
 }
 
@@ -852,7 +852,7 @@ Project's Tools
   display: block;
 }
 
-#projects_tools-container .btn a:before {
+#projects_tools-container .btn a::before {
   content: ' ';
   display: block;
   width: 60px;
@@ -864,126 +864,126 @@ Project's Tools
   margin-bottom: 1px;
 }
 
-#projects_tools-container .btn#tools_projektvorschlag a:before {
+#projects_tools-container .btn#tools_projektvorschlag a::before {
   background-position: -300px -150px;
 }
 
-#projects_tools-container .btn#tools_projektvorschlag a:hover:before, #projects_tools-container .btn#tools_projektvorschlag a.active:before {
+#projects_tools-container .btn#tools_projektvorschlag a:hover::before, #projects_tools-container .btn#tools_projektvorschlag a.active:before {
   background-position: -300px -100px;
 }
 
-#projects_tools-container .btn#tools_kooperationsvereinbarung a:before {
+#projects_tools-container .btn#tools_kooperationsvereinbarung a::before {
   background-position: -60px -100px;
 }
 
-#projects_tools-container .btn#tools_kooperationsvereinbarung a:hover:before, #projects_tools-container .btn#tools_kooperationsvereinbarung a.active:before {
+#projects_tools-container .btn#tools_kooperationsvereinbarung a:hover::before, #projects_tools-container .btn#tools_kooperationsvereinbarung a.active:before {
   background-position: -60px -150px;
 }
 
-#projects_tools-container .btn#tools_cockpit a:before {
+#projects_tools-container .btn#tools_cockpit a::before {
   background-position: -180px -100px;
 }
 
-#projects_tools-container .btn#tools_cockpit a:hover:before, #projects_tools-container .btn#tools_cockpit a.active:before {
+#projects_tools-container .btn#tools_cockpit a:hover::before, #projects_tools-container .btn#tools_cockpit a.active:before {
   background-position: -180px -150px;
 }
 
-#projects_tools-container .btn#tools_tagebuch a:before {
+#projects_tools-container .btn#tools_tagebuch a::before {
   background-position: -60px 0px;
 }
 
-#projects_tools-container .btn#tools_tagebuch a:hover:before, #projects_tools-container .btn#tools_tagebuch a.active:before {
+#projects_tools-container .btn#tools_tagebuch a:hover::before, #projects_tools-container .btn#tools_tagebuch a.active:before {
   background-position: -60px -50px;
 }
 
-#projects_tools-container .btn#tools_dokumentation a:before {
+#projects_tools-container .btn#tools_dokumentation a::before {
   background-position: -60px 0px;
 }
 
-#projects_tools-container .btn#tools_dokumentation a:hover:before, #projects_tools-container .btn#tools_dokumentation a.active:before {
+#projects_tools-container .btn#tools_dokumentation a:hover::before, #projects_tools-container .btn#tools_dokumentation a.active:before {
   background-position: -60px -50px;
 }
 
-#projects_tools-container .btn#tools_lernzielvereinbarung a:before {
+#projects_tools-container .btn#tools_lernzielvereinbarung a::before {
   background-position: -60px 0px;
 }
 
-#projects_tools-container .btn#tools_lernzielvereinbarung a:hover:before, #projects_tools-container .btn#tools_lernzielvereinbarung a.active:before {
+#projects_tools-container .btn#tools_lernzielvereinbarung a:hover::before, #projects_tools-container .btn#tools_lernzielvereinbarung a.active:before {
   background-position: -60px -50px;
 }
 
-#projects_tools-container .btn#tools_edit a:before {
+#projects_tools-container .btn#tools_edit a::before {
   background-image: url(../images/icons/transparent-icons---instructor.png);
   background-position: 0px -100px;
 }
 
-#projects_tools-container .btn#tools_edit a:hover:before, #projects_tools-container .btn#tools__edit a.active:before {
+#projects_tools-container .btn#tools_edit a:hover::before, #projects_tools-container .btn#tools__edit a.active:before {
   background-image: url(../images/icons/transparent-icons---instructor.png);
   background-position: 0px -150px;
 }
 
 /*interactive video*/
-#projects_tools-container .btn#author_interactive_overview a:before {
+#projects_tools-container .btn#author_interactive_overview a::before {
   background-position: -180px 0px;
 }
 
-#projects_tools-container .btn#author_interactive_overview a:hover:before, #projects_tools-container .btn#author_interactive_overview a.active:before {
+#projects_tools-container .btn#author_interactive_overview a:hover::before, #projects_tools-container .btn#author_interactive_overview a.active:before {
   background-position: -180px -50px;
 }
 
-#projects_tools-container .btn#author_h5p_add a:before {
+#projects_tools-container .btn#author_h5p_add a::before {
   background-position: -180px -100px;
 }
 
-#projects_tools-container .btn#author_h5p_add a:hover:before, #projects_tools-container .btn#author_h5p_add a.active:before {
+#projects_tools-container .btn#author_h5p_add a:hover::before, #projects_tools-container .btn#author_h5p_add a.active:before {
   background-position: -180px -150px;
 }
 
-#projects_tools-container .btn#author_chapter_add a:before {
+#projects_tools-container .btn#author_chapter_add a::before {
   background-position: -240px 0px;
 }
 
-#projects_tools-container .btn#author_chapter_add a:hover:before, #projects_tools-container .btn#author_chapter_add a.active:before {
+#projects_tools-container .btn#author_chapter_add a:hover::before, #projects_tools-container .btn#author_chapter_add a.active:before {
   background-position: -240px -50px;
 }
 
-#projects_tools-container .btn#author_subchapter_add a:before {
+#projects_tools-container .btn#author_subchapter_add a::before {
   background-position: -300px 0px;
 }
 
-#projects_tools-container .btn#author_subchapter_add a:hover:before, #projects_tools-container .btn#author_subchapter_add a.active:before {
+#projects_tools-container .btn#author_subchapter_add a:hover::before, #projects_tools-container .btn#author_subchapter_add a.active:before {
   background-position: -300px -50px;
 }
 
-#projects_tools-container .btn#author_chapter_order a:before {
+#projects_tools-container .btn#author_chapter_order a::before {
   background-position: -360px 0px;
 }
 
-#projects_tools-container .btn#author_chapter_order a:hover:before, #projects_tools-container .btn#author_chapter_order a.active:before {
+#projects_tools-container .btn#author_chapter_order a:hover::before, #projects_tools-container .btn#author_chapter_order a.active:before {
   background-position: -360px -50px;
 }
 
-#projects_tools-container .btn#author_tasks_overview a:before {
+#projects_tools-container .btn#author_tasks_overview a::before {
   background-position: 0px -100px;
 }
 
-#projects_tools-container .btn#author_tasks_overview a:hover:before, #projects_tools-container .btn#author_tasks_overview a.active:before {
+#projects_tools-container .btn#author_tasks_overview a:hover::before, #projects_tools-container .btn#author_tasks_overview a.active:before {
   background-position: 0px -150px;
 }
 
-#projects_tools-container .btn#author_tasks_qaa_add a:before {
+#projects_tools-container .btn#author_tasks_qaa_add a::before {
   background-position: -60px -100px;
 }
 
-#projects_tools-container .btn#author_tasks_qaa_add a:hover:before, #projects_tools-container .btn#author_tasks_qaa_add a.active:before {
+#projects_tools-container .btn#author_tasks_qaa_add a:hover::before, #projects_tools-container .btn#author_tasks_qaa_add a.active:before {
   background-position: -60px -150px;
 }
 
-#projects_tools-container .btn#author_tasks_mc_add a:before {
+#projects_tools-container .btn#author_tasks_mc_add a::before {
   background-position: -120px -100px;
 }
 
-#projects_tools-container .btn#author_tasks_mc_add a:hover:before, #projects_tools-container .btn#author_tasks_mc_add a.active:before {
+#projects_tools-container .btn#author_tasks_mc_add a:hover::before, #projects_tools-container .btn#author_tasks_mc_add a.active:before {
   background-position: -120px -150px;
 }
 
@@ -1181,7 +1181,7 @@ Embeded Tasks
 
 }
 
-.embeded_task:before {
+.embeded_task::before {
   content: ' ';
   position: absolute;
   display: block;
