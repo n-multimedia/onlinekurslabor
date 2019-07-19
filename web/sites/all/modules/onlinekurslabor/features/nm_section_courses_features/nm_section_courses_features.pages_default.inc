@@ -1551,7 +1551,7 @@ function nm_section_courses_features_default_page_manager_pages() {
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span3span8span1';
+  $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -1607,7 +1607,7 @@ function nm_section_courses_features_default_page_manager_pages() {
   $display->panels['center'][0] = 'new-3b0c085e-85c9-465b-be3e-fbd604c75c4b';
   $pane = new stdClass();
   $pane->pid = 'new-236b5613-32fb-4a5b-ab7c-4d0deeb37e68';
-  $pane->panel = 'outline';
+  $pane->panel = 'center';
   $pane->type = 'custom';
   $pane->subtype = 'custom';
   $pane->shown = TRUE;
@@ -1627,14 +1627,14 @@ return section_courses_text_outline();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 0;
+  $pane->position = 1;
   $pane->locks = array();
   $pane->uuid = '236b5613-32fb-4a5b-ab7c-4d0deeb37e68';
   $display->content['new-236b5613-32fb-4a5b-ab7c-4d0deeb37e68'] = $pane;
-  $display->panels['outline'][0] = 'new-236b5613-32fb-4a5b-ab7c-4d0deeb37e68';
+  $display->panels['center'][1] = 'new-236b5613-32fb-4a5b-ab7c-4d0deeb37e68';
   $pane = new stdClass();
   $pane->pid = 'new-ee641611-2ffa-4e44-a25b-de6c9ee5c709';
-  $pane->panel = 'outline';
+  $pane->panel = 'center';
   $pane->type = 'block';
   $pane->subtype = 'section_courses-course_text_biblio';
   $pane->shown = TRUE;
@@ -1649,14 +1649,14 @@ return section_courses_text_outline();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 1;
+  $pane->position = 2;
   $pane->locks = array();
   $pane->uuid = 'ee641611-2ffa-4e44-a25b-de6c9ee5c709';
   $display->content['new-ee641611-2ffa-4e44-a25b-de6c9ee5c709'] = $pane;
-  $display->panels['outline'][1] = 'new-ee641611-2ffa-4e44-a25b-de6c9ee5c709';
+  $display->panels['center'][2] = 'new-ee641611-2ffa-4e44-a25b-de6c9ee5c709';
   $pane = new stdClass();
   $pane->pid = 'new-c3fb50ad-abdb-420d-a6d3-74c224de324e';
-  $pane->panel = 'tools';
+  $pane->panel = 'center';
   $pane->type = 'block';
   $pane->subtype = 'section_courses-course_instructors_tools';
   $pane->shown = TRUE;
@@ -1671,11 +1671,11 @@ return section_courses_text_outline();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 0;
+  $pane->position = 3;
   $pane->locks = array();
   $pane->uuid = 'c3fb50ad-abdb-420d-a6d3-74c224de324e';
   $display->content['new-c3fb50ad-abdb-420d-a6d3-74c224de324e'] = $pane;
-  $display->panels['tools'][0] = 'new-c3fb50ad-abdb-420d-a6d3-74c224de324e';
+  $display->panels['center'][3] = 'new-c3fb50ad-abdb-420d-a6d3-74c224de324e';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -1767,7 +1767,7 @@ return section_courses_text_outline();
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1_adminonly';
+  $display->layout = 'flexible:span12';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -1874,28 +1874,6 @@ return section_courses_text_outline();
   $pane->uuid = 'a9432128-769f-44a9-a00c-01675f65cd26';
   $display->content['new-a9432128-769f-44a9-a00c-01675f65cd26'] = $pane;
   $display->panels['center'][0] = 'new-a9432128-769f-44a9-a00c-01675f65cd26';
-  $pane = new stdClass();
-  $pane->pid = 'new-d365041b-60c0-486f-857a-630317889bb4';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'd365041b-60c0-486f-857a-630317889bb4';
-  $display->content['new-d365041b-60c0-486f-857a-630317889bb4'] = $pane;
-  $display->panels['tools'][0] = 'new-d365041b-60c0-486f-857a-630317889bb4';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -1987,7 +1965,7 @@ return section_courses_text_outline();
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1_adminonly';
+  $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -2026,28 +2004,6 @@ return section_courses_text_outline();
   $pane->uuid = 'ce6f8ed2-841d-425a-8bc8-e5a9e2f6f971';
   $display->content['new-ce6f8ed2-841d-425a-8bc8-e5a9e2f6f971'] = $pane;
   $display->panels['center'][0] = 'new-ce6f8ed2-841d-425a-8bc8-e5a9e2f6f971';
-  $pane = new stdClass();
-  $pane->pid = 'new-ca019006-96ec-48b1-9433-e2e9cf55244a';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'ca019006-96ec-48b1-9433-e2e9cf55244a';
-  $display->content['new-ca019006-96ec-48b1-9433-e2e9cf55244a'] = $pane;
-  $display->panels['tools'][0] = 'new-ca019006-96ec-48b1-9433-e2e9cf55244a';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-ce6f8ed2-841d-425a-8bc8-e5a9e2f6f971';
   $handler->conf['display'] = $display;
@@ -3807,7 +3763,7 @@ echo section_courses_render_course_link($course);
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1_adminonly';
+  $display->layout = 'flexible:span12';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -3910,28 +3866,6 @@ echo section_courses_render_course_link($course);
   $pane->uuid = '94323719-a6fe-4925-b209-42f5273131a0';
   $display->content['new-94323719-a6fe-4925-b209-42f5273131a0'] = $pane;
   $display->panels['center'][0] = 'new-94323719-a6fe-4925-b209-42f5273131a0';
-  $pane = new stdClass();
-  $pane->pid = 'new-bf8b8a4f-b14c-448c-9271-8c3a5959ed16';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'bf8b8a4f-b14c-448c-9271-8c3a5959ed16';
-  $display->content['new-bf8b8a4f-b14c-448c-9271-8c3a5959ed16'] = $pane;
-  $display->panels['tools'][0] = 'new-bf8b8a4f-b14c-448c-9271-8c3a5959ed16';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-94323719-a6fe-4925-b209-42f5273131a0';
   $handler->conf['display'] = $display;
@@ -4230,28 +4164,6 @@ echo section_courses_render_course_link($course);
   $pane->uuid = '5e097dea-0404-492b-874c-8139cbbd038f';
   $display->content['new-5e097dea-0404-492b-874c-8139cbbd038f'] = $pane;
   $display->panels['main_right'][1] = 'new-5e097dea-0404-492b-874c-8139cbbd038f';
-  $pane = new stdClass();
-  $pane->pid = 'new-e47bcd0e-46a5-456a-be8c-f57980847f62';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'e47bcd0e-46a5-456a-be8c-f57980847f62';
-  $display->content['new-e47bcd0e-46a5-456a-be8c-f57980847f62'] = $pane;
-  $display->panels['tools'][0] = 'new-e47bcd0e-46a5-456a-be8c-f57980847f62';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -4528,7 +4440,7 @@ echo section_courses_render_course_link($course);
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1_adminonly';
+  $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -4583,28 +4495,6 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $pane->uuid = '90afa9d5-35b8-449c-8200-d9b080275427';
   $display->content['new-90afa9d5-35b8-449c-8200-d9b080275427'] = $pane;
   $display->panels['center'][0] = 'new-90afa9d5-35b8-449c-8200-d9b080275427';
-  $pane = new stdClass();
-  $pane->pid = 'new-abd1e078-f8d8-4725-80ba-0e489c81c8e2';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'abd1e078-f8d8-4725-80ba-0e489c81c8e2';
-  $display->content['new-abd1e078-f8d8-4725-80ba-0e489c81c8e2'] = $pane;
-  $display->panels['tools'][0] = 'new-abd1e078-f8d8-4725-80ba-0e489c81c8e2';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -4696,7 +4586,7 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1_adminonly';
+  $display->layout = 'flexible:span12';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -4813,28 +4703,6 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $pane->uuid = '77d7dfa5-522e-4432-b88b-3f829c558e15';
   $display->content['new-77d7dfa5-522e-4432-b88b-3f829c558e15'] = $pane;
   $display->panels['center'][0] = 'new-77d7dfa5-522e-4432-b88b-3f829c558e15';
-  $pane = new stdClass();
-  $pane->pid = 'new-c5c8edca-00cd-4492-b2b3-34513d6168ae';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'c5c8edca-00cd-4492-b2b3-34513d6168ae';
-  $display->content['new-c5c8edca-00cd-4492-b2b3-34513d6168ae'] = $pane;
-  $display->panels['tools'][0] = 'new-c5c8edca-00cd-4492-b2b3-34513d6168ae';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-77d7dfa5-522e-4432-b88b-3f829c558e15';
   $handler->conf['display'] = $display;
@@ -4911,7 +4779,7 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
     'relationships' => array(),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1_adminonly';
+  $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -5156,30 +5024,8 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $pane->uuid = 'e9a53f02-3c66-4d8b-b028-5b54af3204f3';
   $display->content['new-e9a53f02-3c66-4d8b-b028-5b54af3204f3'] = $pane;
   $display->panels['center'][5] = 'new-e9a53f02-3c66-4d8b-b028-5b54af3204f3';
-  $pane = new stdClass();
-  $pane->pid = 'new-3cd7fb23-b9c6-4ba8-9fd4-f06b774a8231';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = '3cd7fb23-b9c6-4ba8-9fd4-f06b774a8231';
-  $display->content['new-3cd7fb23-b9c6-4ba8-9fd4-f06b774a8231'] = $pane;
-  $display->panels['tools'][0] = 'new-3cd7fb23-b9c6-4ba8-9fd4-f06b774a8231';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-3cd7fb23-b9c6-4ba8-9fd4-f06b774a8231';
+  $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_admin_members'] = $page;
@@ -5305,28 +5151,6 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $display->content['new-1ed5406a-9021-49e7-bd7d-74b3a7c56d64'] = $pane;
   $display->panels['news'][0] = 'new-1ed5406a-9021-49e7-bd7d-74b3a7c56d64';
   $pane = new stdClass();
-  $pane->pid = 'new-5d61e5a4-4920-40bf-859b-bb5a17e0e753';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = '5d61e5a4-4920-40bf-859b-bb5a17e0e753';
-  $display->content['new-5d61e5a4-4920-40bf-859b-bb5a17e0e753'] = $pane;
-  $display->panels['tools'][0] = 'new-5d61e5a4-4920-40bf-859b-bb5a17e0e753';
-  $pane = new stdClass();
   $pane->pid = 'new-1d593bf2-5130-4953-9a57-d17bdefaf819';
   $pane->panel = 'tools';
   $pane->type = 'custom';
@@ -5348,11 +5172,11 @@ echo section_courses_theme_progressbar();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 1;
+  $pane->position = 0;
   $pane->locks = array();
   $pane->uuid = '1d593bf2-5130-4953-9a57-d17bdefaf819';
   $display->content['new-1d593bf2-5130-4953-9a57-d17bdefaf819'] = $pane;
-  $display->panels['tools'][1] = 'new-1d593bf2-5130-4953-9a57-d17bdefaf819';
+  $display->panels['tools'][0] = 'new-1d593bf2-5130-4953-9a57-d17bdefaf819';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-1ed5406a-9021-49e7-bd7d-74b3a7c56d64';
   $handler->conf['display'] = $display;
@@ -5878,7 +5702,7 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1_adminonly';
+  $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -6045,28 +5869,6 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
   $pane->uuid = '6017a486-e6ff-4907-a5aa-8eb270c7f574';
   $display->content['new-6017a486-e6ff-4907-a5aa-8eb270c7f574'] = $pane;
   $display->panels['center'][4] = 'new-6017a486-e6ff-4907-a5aa-8eb270c7f574';
-  $pane = new stdClass();
-  $pane->pid = 'new-c376d448-a2d5-46d3-a88d-52d662b7588e';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 0,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'c376d448-a2d5-46d3-a88d-52d662b7588e';
-  $display->content['new-c376d448-a2d5-46d3-a88d-52d662b7588e'] = $pane;
-  $display->panels['tools'][0] = 'new-c376d448-a2d5-46d3-a88d-52d662b7588e';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -6738,7 +6540,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1_adminonly';
+  $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -6849,28 +6651,6 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->uuid = '65da5f79-d601-442c-8dda-e542342c461c';
   $display->content['new-65da5f79-d601-442c-8dda-e542342c461c'] = $pane;
   $display->panels['center'][3] = 'new-65da5f79-d601-442c-8dda-e542342c461c';
-  $pane = new stdClass();
-  $pane->pid = 'new-4210d271-826a-498f-94dc-28f3ee7fb567';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = '4210d271-826a-498f-94dc-28f3ee7fb567';
-  $display->content['new-4210d271-826a-498f-94dc-28f3ee7fb567'] = $pane;
-  $display->panels['tools'][0] = 'new-4210d271-826a-498f-94dc-28f3ee7fb567';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -7111,7 +6891,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1_adminonly';
+  $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -7173,28 +6953,6 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->uuid = 'c75e6148-cead-4ea2-af5c-0d67ffbd03a7';
   $display->content['new-c75e6148-cead-4ea2-af5c-0d67ffbd03a7'] = $pane;
   $display->panels['center'][1] = 'new-c75e6148-cead-4ea2-af5c-0d67ffbd03a7';
-  $pane = new stdClass();
-  $pane->pid = 'new-868f6a73-0d07-4077-9047-c62985347bbe';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = '868f6a73-0d07-4077-9047-c62985347bbe';
-  $display->content['new-868f6a73-0d07-4077-9047-c62985347bbe'] = $pane;
-  $display->panels['tools'][0] = 'new-868f6a73-0d07-4077-9047-c62985347bbe';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-c75e6148-cead-4ea2-af5c-0d67ffbd03a7';
   $handler->conf['display'] = $display;
@@ -7272,7 +7030,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     'relationships' => array(),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1_adminonly';
+  $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -7315,30 +7073,8 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->uuid = '7505661b-7887-49dc-bdc6-7fb44b7aa973';
   $display->content['new-7505661b-7887-49dc-bdc6-7fb44b7aa973'] = $pane;
   $display->panels['center'][0] = 'new-7505661b-7887-49dc-bdc6-7fb44b7aa973';
-  $pane = new stdClass();
-  $pane->pid = 'new-a3a34a48-0e11-448f-9239-a7fac8404a13';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'a3a34a48-0e11-448f-9239-a7fac8404a13';
-  $display->content['new-a3a34a48-0e11-448f-9239-a7fac8404a13'] = $pane;
-  $display->panels['tools'][0] = 'new-a3a34a48-0e11-448f-9239-a7fac8404a13';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-a3a34a48-0e11-448f-9239-a7fac8404a13';
+  $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['courses_projects'] = $page;
@@ -7427,7 +7163,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible';
+  $display->layout = 'flexible:span8span4';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
@@ -7509,7 +7245,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $display->panels = array();
   $pane = new stdClass();
   $pane->pid = 'new-bed6ecf9-9160-4ad7-8b76-c030266c2b17';
-  $pane->panel = 'center';
+  $pane->panel = 'news';
   $pane->type = 'views_panes';
   $pane->subtype = 'courses_tasks-panel_pane_1';
   $pane->shown = TRUE;
@@ -7525,29 +7261,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->locks = array();
   $pane->uuid = 'bed6ecf9-9160-4ad7-8b76-c030266c2b17';
   $display->content['new-bed6ecf9-9160-4ad7-8b76-c030266c2b17'] = $pane;
-  $display->panels['center'][0] = 'new-bed6ecf9-9160-4ad7-8b76-c030266c2b17';
-  $pane = new stdClass();
-  $pane->pid = 'new-02feeaeb-57ba-443e-8f06-43132dd80ab1';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = '02feeaeb-57ba-443e-8f06-43132dd80ab1';
-  $display->content['new-02feeaeb-57ba-443e-8f06-43132dd80ab1'] = $pane;
-  $display->panels['tools'][0] = 'new-02feeaeb-57ba-443e-8f06-43132dd80ab1';
+  $display->panels['news'][0] = 'new-bed6ecf9-9160-4ad7-8b76-c030266c2b17';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-bed6ecf9-9160-4ad7-8b76-c030266c2b17';
   $handler->conf['display'] = $display;
@@ -7647,7 +7361,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span3span8span1';
+  $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -7728,7 +7442,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $display->panels['center'][1] = 'new-d9b72f36-2b7e-46e0-bacf-00cc5c23ac5c';
   $pane = new stdClass();
   $pane->pid = 'new-d445add9-630c-48d1-b4e6-375b2d616005';
-  $pane->panel = 'outline';
+  $pane->panel = 'center';
   $pane->type = 'custom';
   $pane->subtype = 'custom';
   $pane->shown = TRUE;
@@ -7748,14 +7462,14 @@ return section_courses_text_outline();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 0;
+  $pane->position = 2;
   $pane->locks = array();
   $pane->uuid = 'd445add9-630c-48d1-b4e6-375b2d616005';
   $display->content['new-d445add9-630c-48d1-b4e6-375b2d616005'] = $pane;
-  $display->panels['outline'][0] = 'new-d445add9-630c-48d1-b4e6-375b2d616005';
+  $display->panels['center'][2] = 'new-d445add9-630c-48d1-b4e6-375b2d616005';
   $pane = new stdClass();
   $pane->pid = 'new-34bfc27b-c755-4677-a814-91555cdd9e92';
-  $pane->panel = 'outline';
+  $pane->panel = 'center';
   $pane->type = 'block';
   $pane->subtype = 'section_courses-course_text_biblio';
   $pane->shown = TRUE;
@@ -7770,33 +7484,11 @@ return section_courses_text_outline();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 1;
+  $pane->position = 3;
   $pane->locks = array();
   $pane->uuid = '34bfc27b-c755-4677-a814-91555cdd9e92';
   $display->content['new-34bfc27b-c755-4677-a814-91555cdd9e92'] = $pane;
-  $display->panels['outline'][1] = 'new-34bfc27b-c755-4677-a814-91555cdd9e92';
-  $pane = new stdClass();
-  $pane->pid = 'new-c2665aae-6b87-4bb0-af15-295aa2e40f87';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'c2665aae-6b87-4bb0-af15-295aa2e40f87';
-  $display->content['new-c2665aae-6b87-4bb0-af15-295aa2e40f87'] = $pane;
-  $display->panels['tools'][0] = 'new-c2665aae-6b87-4bb0-af15-295aa2e40f87';
+  $display->panels['center'][3] = 'new-34bfc27b-c755-4677-a814-91555cdd9e92';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -8019,28 +7711,6 @@ return section_courses_text_outline();
   $pane->uuid = 'b372d922-dfb1-4cb5-aa5d-31969c655573';
   $display->content['new-b372d922-dfb1-4cb5-aa5d-31969c655573'] = $pane;
   $display->panels['news'][1] = 'new-b372d922-dfb1-4cb5-aa5d-31969c655573';
-  $pane = new stdClass();
-  $pane->pid = 'new-2c3766a5-4fa7-4741-815f-ebab25e174e9';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = '2c3766a5-4fa7-4741-815f-ebab25e174e9';
-  $display->content['new-2c3766a5-4fa7-4741-815f-ebab25e174e9'] = $pane;
-  $display->panels['tools'][0] = 'new-2c3766a5-4fa7-4741-815f-ebab25e174e9';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-6d5f5932-34cd-428b-9717-03b5c2b33e25';
   $handler->conf['display'] = $display;
@@ -8139,13 +7809,12 @@ return section_courses_text_outline();
         'contains' => 'column',
         'children' => array(
           0 => 'main',
-          1 => 1,
         ),
         'parent' => NULL,
       ),
       'main' => array(
         'type' => 'column',
-        'width' => 50,
+        'width' => 100,
         'width_type' => '%',
         'children' => array(
           0 => 3,
@@ -8153,33 +7822,6 @@ return section_courses_text_outline();
         ),
         'parent' => 'canvas',
         'class' => 'col-md-8',
-      ),
-      1 => array(
-        'type' => 'column',
-        'width' => 50,
-        'width_type' => '%',
-        'parent' => 'canvas',
-        'children' => array(
-          0 => 2,
-        ),
-        'class' => 'col-md-4',
-      ),
-      2 => array(
-        'type' => 'row',
-        'contains' => 'region',
-        'children' => array(
-          0 => 'tools',
-        ),
-        'parent' => '1',
-        'class' => '',
-      ),
-      'tools' => array(
-        'type' => 'region',
-        'title' => 'tools',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '2',
-        'class' => '',
       ),
       3 => array(
         'type' => 'row',
@@ -8396,28 +8038,6 @@ return section_courses_text_outline();
   $pane->uuid = 'dd6c312b-1a7f-4df1-8b5b-9281d2565e53';
   $display->content['new-dd6c312b-1a7f-4df1-8b5b-9281d2565e53'] = $pane;
   $display->panels['right'][0] = 'new-dd6c312b-1a7f-4df1-8b5b-9281d2565e53';
-  $pane = new stdClass();
-  $pane->pid = 'new-6f337849-945b-4ad2-a064-461283baf871';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = '6f337849-945b-4ad2-a064-461283baf871';
-  $display->content['new-6f337849-945b-4ad2-a064-461283baf871'] = $pane;
-  $display->panels['tools'][0] = 'new-6f337849-945b-4ad2-a064-461283baf871';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
