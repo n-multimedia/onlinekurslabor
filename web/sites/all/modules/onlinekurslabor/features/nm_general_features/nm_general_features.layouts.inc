@@ -722,7 +722,7 @@ See template.php';
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'col-md-6',
+        'class' => 'col-md-6 col-xs-12',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -748,7 +748,7 @@ See template.php';
         'children' => array(
           0 => 2,
         ),
-        'class' => 'col-md-6',
+        'class' => 'col-md-6 col-xs-12',
       ),
       2 => array(
         'type' => 'row',
