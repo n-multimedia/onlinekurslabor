@@ -582,7 +582,6 @@ function _custom_general_theme_tools_navbar_block($tool_links) {
     $group_items = ($g['items']);
     $group_has_items = count($group_items) > 1;
     $output .= '<ul>';
-    $depth = 0;
 
     $rootitem = array_shift($group_items);
 
@@ -592,18 +591,14 @@ function _custom_general_theme_tools_navbar_block($tool_links) {
      $menu_has_active_component = false;
      $submenu_entries = '';
      foreach ($group_items as $gi) {
+
       $subitems_attributes = "";
       if (isset($gi['attributes'])) {
         $subitems_attributes = drupal_attributes($gi['attributes']);
-
-        
         $menu_has_active_component |= array_search('active', $gi['attributes']['class']);
       }
-
       //$output .= '<li '.$attributes.'>' . $tl['link'] . '</li>';
       $submenu_entries .= '<li ' . $subitems_attributes . '>' . $gi['link_long'] . '</li>';
-
-      $depth++;
     }
     
     
@@ -630,8 +625,10 @@ function _custom_general_theme_tools_navbar_block($tool_links) {
         
         if($menu_has_active_component)
         {
-            $rootitem_attributes['class'][] ='collapsed';
             $uls_attributes['class'][] = 'in';
+        }
+        else{
+            $rootitem_attributes['class'][] ='collapsed';
         }
         
        

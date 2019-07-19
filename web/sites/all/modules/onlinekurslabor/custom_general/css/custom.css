@@ -554,16 +554,17 @@ show new (mobile) instructor tools
 }
 
 #mobile_instructors_tools-container li.menu_entry_collapsable.btn a {
-    padding-left: 20px;
+    padding-left: 35px;
 }
 #mobile_instructors_tools-container li.menu_entry_collapsable.btn a:before {
     content:"\e259";
     font-family: 'Glyphicons Halflings';
 
     font-size: 30px;
-    background:transparent;
+    background: transparent;
     text-decoration: none;
-    top:1px;
+    top: 1px;
+    left: -8px;
 }
 #mobile_instructors_tools-container li.menu_entry_collapsable.collapsed.btn a:before {
     content:"\e258";
