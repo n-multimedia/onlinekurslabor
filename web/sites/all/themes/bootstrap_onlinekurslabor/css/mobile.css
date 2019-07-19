@@ -6,6 +6,10 @@
   padding: 0;
 }
 
+.main-content {
+  overflow: auto;
+}
+
 @media (min-width: 768px) {
 
   #page_top_navigation .navbar-header {
