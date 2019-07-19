@@ -1475,10 +1475,6 @@ div.view-courses-kurse-bersicht .courses_small_containerhome_course_item  img.co
     top: 20px;
     z-index:2
 }
-.view_courses_label.draft
-{
-      background: #D9534F;
-}
 
 .view_courses_label.draft {
   background: #D9534F;
