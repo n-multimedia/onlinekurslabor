@@ -156,8 +156,15 @@ function _course_header_section_view() {
 
       $output .= '</div>';
     }
-
+    
+    
+    if(! $active_course->status)
+    {
+        $output .= '<div class="view_courses_label draft badge" title="'.t("This course is currently being tested not public yet.").'">'.t('Draft').'</div>';   
+    }
+    
     $output .= '<div id="course_header_title">';
+   
     $output .= '<h1>';
     $output .= $active_course->title;
     $output .= '</h1>';
