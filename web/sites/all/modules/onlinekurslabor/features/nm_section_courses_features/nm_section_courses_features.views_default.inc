@@ -276,7 +276,7 @@ function nm_section_courses_features_views_default_views() {
 
   $view = new view();
   $view->name = 'courses_admin_course_members';
-  $view->description = 'Newest group members in coursegroups';
+  $view->description = 'Group members in coursegroups';
   $view->tag = 'og';
   $view->base_table = 'users';
   $view->human_name = 'Courses - Admin - Kursgruppenmitglieder';
@@ -352,12 +352,11 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['og_roles']['field'] = 'og_roles';
   $handler->display->display_options['fields']['og_roles']['relationship'] = 'og_membership_rel_group';
   $handler->display->display_options['fields']['og_roles']['exclude'] = TRUE;
-  /* Sort criterion: OG membership: Created */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'og_membership';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['relationship'] = 'og_membership_rel';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Sort criterion: Profile: Nachname (field_last_name) */
+  $handler->display->display_options['sorts']['field_last_name_value']['id'] = 'field_last_name_value';
+  $handler->display->display_options['sorts']['field_last_name_value']['table'] = 'field_data_field_last_name';
+  $handler->display->display_options['sorts']['field_last_name_value']['field'] = 'field_last_name_value';
+  $handler->display->display_options['sorts']['field_last_name_value']['relationship'] = 'profile';
   /* Contextual filter: OG membership: Group ID */
   $handler->display->display_options['arguments']['gid']['id'] = 'gid';
   $handler->display->display_options['arguments']['gid']['table'] = 'og_membership';
@@ -419,7 +418,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['field_photo']['click_sort_column'] = 'fid';
   $handler->display->display_options['fields']['field_photo']['settings'] = array(
     'image_style' => 'profile_mini_thumbnail',
-    'image_link' => '',
+    'image_link' => 'content',
   );
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
