@@ -884,6 +884,7 @@ Vorsicht beim Befüllen: tools und main erscheinen vertauscht.';
         'column_separation' => '0.5em',
         'region_separation' => '0.5em',
         'row_separation' => '0.5em',
+        'hide_empty' => 0,
       ),
       'main' => array(
         'type' => 'column',
@@ -893,7 +894,7 @@ Vorsicht beim Befüllen: tools und main erscheinen vertauscht.';
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'col-md-4 col-xs-12  col-md-push-8',
+        'class' => 'col-md-4 col-md-push-8 col-xs-12 custom-general--column-right',
         'hide_empty' => 0,
       ),
       'main-row' => array(
@@ -921,7 +922,7 @@ Vorsicht beim Befüllen: tools und main erscheinen vertauscht.';
         'children' => array(
           0 => 2,
         ),
-        'class' => 'col-md-8 col-md-pull-4 col-xs-12 ',
+        'class' => 'col-md-8 col-md-pull-4 col-xs-12 custom-general--column-left',
         'hide_empty' => 0,
       ),
       2 => array(
@@ -1061,6 +1062,7 @@ Vorsicht beim Befüllen: tools und main erscheinen vertauscht.';
         'column_separation' => '0.5em',
         'region_separation' => '0.5em',
         'row_separation' => '0.5em',
+        'hide_empty' => 0,
       ),
       'main' => array(
         'type' => 'column',
@@ -1070,7 +1072,7 @@ Vorsicht beim Befüllen: tools und main erscheinen vertauscht.';
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'col-md-3 col-md-push-9 col-xs-12',
+        'class' => 'col-md-3 col-md-push-9 col-xs-12 custom-general--column-right',
         'hide_empty' => 0,
       ),
       'main-row' => array(
@@ -1098,7 +1100,7 @@ Vorsicht beim Befüllen: tools und main erscheinen vertauscht.';
         'children' => array(
           0 => 2,
         ),
-        'class' => 'col-md-9 col-md-pull-3 col-xs-12',
+        'class' => 'col-md-9 col-md-pull-3 col-xs-12 custom-general--column-left',
         'hide_empty' => 0,
       ),
       2 => array(

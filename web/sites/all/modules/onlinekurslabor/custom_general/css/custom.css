@@ -183,6 +183,30 @@ AUTHOR AND INSTRUCOT'S TOOLS
   position: relative;
 }
 
+
+/* bei den mobile_bottom_up-Layouts passt das padding nicht, weil automatisch "links" kein Padding auf der linken Seite ist
+und "rechts" keines auf der rechten Seite. 
+Wir haben aber links und rechts vertauscht. 
+
+bei mobile_bottom_up-Layouts muss also den Columns die Klasse 
+custom-general--column-left bzw custom-general--column-right
+zugewiesen werden
+*/
+
+.row .panels-flexible-column.custom-general--column-left {
+  padding-right: 0.5em;
+}
+
+.row .custom-general--column-left .panels-flexible-column-inside{
+    padding-left: 0px;
+}
+.row .custom-general--column-right .panels-flexible-column-inside-first
+{
+    padding-left: 0.5em;
+}
+
+
+
 /*
 Course Info
 */
