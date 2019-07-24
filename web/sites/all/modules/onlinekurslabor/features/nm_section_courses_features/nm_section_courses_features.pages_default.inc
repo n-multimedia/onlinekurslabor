@@ -7757,7 +7757,8 @@ return section_courses_text_outline();
           1 => 8,
         ),
         'parent' => 'canvas',
-        'class' => 'col-md-8',
+        'class' => '',
+        'hide_empty' => 0,
       ),
       3 => array(
         'type' => 'row',
@@ -7777,7 +7778,8 @@ return section_courses_text_outline();
         'children' => array(
           0 => 7,
         ),
-        'class' => 'col-md-6',
+        'class' => 'col-md-6 col-xs-12',
+        'hide_empty' => 0,
       ),
       5 => array(
         'type' => 'column',
@@ -7787,7 +7789,8 @@ return section_courses_text_outline();
         'children' => array(
           0 => 6,
         ),
-        'class' => 'col-md-6',
+        'class' => 'col-md-6 col-xs-12',
+        'hide_empty' => 0,
       ),
       6 => array(
         'type' => 'row',
@@ -7973,7 +7976,7 @@ return section_courses_text_outline();
   );
   $pane->css = array(
     'css_id' => '',
-    'css_class' => 'col-md-6 col-xs-12',
+    'css_class' => '',
   );
   $pane->extras = array();
   $pane->position = 0;
