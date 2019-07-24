@@ -37,6 +37,7 @@
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle okl-toolbar-btn"
+                id="instructor_tools_toggle_button"
                 data-toggle="collapse"
                 data-target="#instructor-tools" aria-expanded="false">
           <div class="animated-icon2">

@@ -87,15 +87,13 @@ class CourseCest  extends CestHelper{
    * @dataProvider C001_03_AddMemberProvider
    * @before skipNonApplicableExample
    */
-  public function C001_03_AddMember(AcceptanceTester $I,  \Codeception\Example $example) {
+  public function C001_03_AddMember(\Step\Acceptance\Dozent $I,  \Codeception\Example $example) {
 
     $this->goToContextHome($I);
 
     $course_nid = $I->grabFromCurrentUrl('~/course/home/(\d+)~');
     //annahme: ich bin im neu erstellten Kurs
-    $I->moveMouseOver( '#instr_overview_members' );
-    $I->wait(1);
-    $I->click( '#instr_add_members a' );
+    $I->useCourseMenu('Teilnehmende');
     $I->see("Teilnehmende hinzufügen");
     
     $addmempage = new AddMembersPage($I, $course_nid);
@@ -138,9 +136,7 @@ class CourseCest  extends CestHelper{
 
 
     //annahme: ich bin im neu erstellten Kurs
-    $I->moveMouseOver( '#instr_overview_content' );
-    $I->wait(1);
-    $I->click( '#instr_add_news a' );
+    $I->useCourseMenu('Kursinhalte', 'Neuigkeit hinzufügen');
     $I->expect('AK-1: Ankündigung lässt sich per wysiwyg erstellen');
     $I->see("Neue Ankündigung erstellen");
     $I->seeElement("#cke_edit-body-und-0-value");
@@ -185,9 +181,7 @@ class CourseCest  extends CestHelper{
         $this->goToContextHome($I);
 
         //annahme: ich bin im neu erstellten Kurs
-        $I->moveMouseOver('#instr_overview_content');
-        $I->wait(1);
-        $I->click('#instr_add_groups a');
+        $I->useCourseMenu('Kursgruppen', 'Gruppe hinzufügen');
         $I->expect('AK-1: Es kann ein Titel und ein Beschreibugnstext eingegeben werden');
         $I->see("Neue Kursgruppe erstellen");
 
@@ -217,9 +211,7 @@ class CourseCest  extends CestHelper{
 
         //annahme: ich bin im neu erstellten Kurs
         //doublecheck: menü geht
-        $I->moveMouseOver('#instr_overview_content');
-        $I->wait(1);
-        $I->click('#instr_overview_members a');
+        $I->useCourseMenu('Teilnehmende', "Teilnehmende verwalten");
 
         $cgaddpage = new AddMemberToCoursegroupPage($I, $this->getCurrentContextNid());
         $cgaddpage->addStudentToCoursegroup($user_to_coursegroup['user'], $user_to_coursegroup['coursegroup_title']);
@@ -268,9 +260,7 @@ class CourseCest  extends CestHelper{
 
         //annahme: ich bin im  Kurs
         //doublecheck: menü geht
-        $I->moveMouseOver('#instr_overview_content');
-        $I->wait(1);
-        $I->click('#instr_add_task a');
+        $I->useCourseMenu('Kursinhalte', 'Aufgabe hinzufügen');
 
         $taskpage = new TaskCreatePage($I, $this->getCurrentContextNid());
         $taskpage->create($example);
