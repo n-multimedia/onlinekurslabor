@@ -189,7 +189,7 @@ abstract class CestHelper {
             $fallback_data = _okl_testing_getFallbackData();
         }
         $runner = 0;
-        for ($i = $ident_num_start; $i < $count; $i++) {
+        for ($i = $ident_num_start; $i < $ident_num_start+$count; $i++) {
             $sample[$runner++] = $this->getPersonSample(array(NM_ROLE_STUDENT), $i) + ['type' => 'default'];
             if($with_fallback)
             {

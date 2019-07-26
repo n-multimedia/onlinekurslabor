@@ -64,7 +64,7 @@ class TaskCest extends CestHelper {
      * @return array
      */
     protected function TC001_02_AddNonKGMemberProvider() {
-        return $this->DP_getSampleStudents(1, 0, false);
+        return $this->DP_getSampleStudents(1, 3, false);
     }
 
     /**
@@ -94,7 +94,7 @@ class TaskCest extends CestHelper {
      * @return array
      */
     protected function TC001_02_AddKGMemberProvider() {
-        return $this->DP_getSampleStudents(3, 1, false); //fehler in api: für 2 studis beginnend mit Ident "1" braucht man count=3
+        return $this->DP_getSampleStudents(2, 1, false); 
     }
 
     /**
