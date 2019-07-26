@@ -47,6 +47,11 @@ function _okl_testing_getDataObjectForCourse($course_nid)
         $course_groups[$cg->nid] = &$c_group;
     }
 
+     if(empty($teachers))
+    {
+        throw new Exception('No teachers for course '.$course_nid);
+    }
+    
      foreach ($teachers as $uid => &$teacher) {
         $teacher = new TestingObject($teacher);
         $teacher->type = 'user';
