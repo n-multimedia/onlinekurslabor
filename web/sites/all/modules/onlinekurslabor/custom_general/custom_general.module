@@ -280,40 +280,45 @@ function custom_general_init() {
     }
   }
 
+  
+}
+
+/**
+ * Implements hook_page_build
+ * es gibt die css-klassen visible-dozent etc. Hier werden die passenden css-Dateien dazu geladen
+ */
+function custom_general_page_build(&$page) {
     global $user;
-    $role       = array();
+    $users_roles = array();
     // Check to see if $user has the administrator role.
-    $gid        = _section_courses_get_active_course();
-    if (in_array( NM_ROLE_ADMIN , array_values($user->roles)) or in_array( NM_ROLE_MODERATOR , array_values($user->roles)) ) {
-       $role[] = 'admin';
-       $role[] = 'dozent';
-       $role[] = 'autor';
-
+    $gid = _section_courses_get_active_course();
+    if (in_array(NM_ROLE_ADMIN, array_values($user->roles)) or in_array(NM_ROLE_MODERATOR, array_values($user->roles))) {
+        $users_roles[] = 'admin';
+        $users_roles[] = 'dozent';
+        $users_roles[] = 'autor';
     }
-    if (in_array( NM_ROLE_DOZENT , array_values($user->roles)) ) {
-        $role[] = 'dozent';
+    if (in_array(NM_ROLE_DOZENT, array_values($user->roles))) {
+        $users_roles[] = 'dozent';
     }
-    if (in_array( NM_ROLE_AUTOR , array_values($user->roles)) ) {
-        $role[] = 'autor';
+    if (in_array(NM_ROLE_AUTOR, array_values($user->roles))) {
+        $users_roles[] = 'autor';
     }
 
-    if ($gid != null){
-        $tutors     = custom_general_get_users_in_group_by_role_real($gid->nid, NM_ROLE_TUTOR);
-        $teachers   = custom_general_get_users_in_group_by_role_real($gid->nid, NM_ROLE_DOZENT);
+    if ($gid != null) {
+        $tutors = custom_general_get_users_in_group_by_role_real($gid->nid, NM_COURSES_ROLE_TUTOR);
+        $teachers = custom_general_get_users_in_group_by_role_real($gid->nid, NM_COURSES_ROLE_ADMINISTRATOR);
 
-        if( ($tutors && (array_values($tutors) != false) && in_array($user, array_values($tutors))) || ($teachers && (array_values($teachers) != false) && in_array($user, array_values($teachers)))){
-            $role[] = 'dozent';
+        if (($tutors && (array_values($tutors) != false) && in_array($user, array_values($tutors))) || ($teachers && (array_values($teachers) != false) && in_array($user, array_values($teachers)))) {
+            $users_roles[] = 'dozent';
         }
     }
-    if (count($role) < 1){
-        $role[] = 'student';
+    if (count($users_roles) < 1) {
+        $users_roles[] = 'student';
     }
-    $role = array_unique($role);
-    foreach ( $role as $position)
-        {
-            drupal_add_css(drupal_get_path('module', 'custom_general') .'/css/' . $position . '.css');
-        }
 
+    foreach (array_unique($users_roles) as $position) {
+        drupal_add_css(drupal_get_path('module', 'custom_general') . '/css/' . $position . '.css');
+    }
 }
 
 function custom_general_context_page_reaction() {
