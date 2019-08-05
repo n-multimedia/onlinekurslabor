@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * Implements hook_page_build().
+ */
+function newmenue_tooltip_page_build(&$page) {
+
+    $active = _section_courses_get_active_course();
+ 
+    //if can edit course
+    if (node_access('update', $active)){
+
+        drupal_add_css(drupal_get_path('module', 'newmenue_tooltip') . '/css/newmenue_tooltip.css');
+        drupal_add_js(drupal_get_path('module', 'newmenue_tooltip') . '/js/newmenue_tooltip.js');
+    }
+}
