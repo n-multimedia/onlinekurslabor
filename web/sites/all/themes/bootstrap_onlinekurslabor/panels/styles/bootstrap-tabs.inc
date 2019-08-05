@@ -41,7 +41,7 @@ function theme_bootstrap_onlinekurslabor_bootstraptabs_style_render_region($vars
     if($vars['settings']['region_bootstraptabs']['alignment'] === 'left')
     {
          //Rendere die Konfiguration nun als "tabs" -> Default-Output für "Bootstrap-Tabs"
-    return '<div class="col-sm-2 bootstrap_tabs-stacked-left">'.$tabs.'</div><div class="col-sm-10">'.$tabs_content.'</div>';
+    return '<div class="col-md-2 bootstrap_tabs-stacked-left">'.$tabs.'</div><div class="col-md-10">'.$tabs_content.'</div>';
     }
        if($vars['settings']['region_bootstraptabs']['alignment'] === 'top')
     {

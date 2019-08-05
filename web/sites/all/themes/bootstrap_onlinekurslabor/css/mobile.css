@@ -29,7 +29,7 @@
   }
 
   .okl-home-container .bootstrap_tabs-stacked-left,
-  .okl-home-container #home_loggedin .col-sm-10 {
+  .okl-home-container #home_loggedin .col-md-10 {
     padding: 0;
   }
 
@@ -41,9 +41,6 @@
     padding: 0;
   }
 
-  .view-nm-activity-stream {
-    display: none;
-  }
 
 
   #page_top_navigation {
