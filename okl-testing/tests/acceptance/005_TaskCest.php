@@ -218,5 +218,61 @@ class TaskCest extends CestHelper {
         }
         return $students;
     }
+    
+    
+    
+    /**
+     * @UserStory null
+     * @UserStoryURL null
+     * @before logAccountOut
+     * @depends TC001_04_TestTasks
+     * @param \AcceptanceTester $I
+     */
+    public function TC001_05_logDozentIn(\Step\Acceptance\Dozent $I) {
+        $I->loginAsDozent(FALSE);
+    }
+
+    
+     /**
+     * all students test the tasks
+     * 
+     * @UserStory null
+     * @param \Step\Acceptance\Student $I
+     * @dataProvider TC001_StudentAndTaskProvider
+     * @depends TC001_05_logDozentIn
+     */
+    public function TC001_04_TestSolutions(\Step\Acceptance\Dozent $I, \Codeception\Example $studentsandtasks) {
+        $this->goToContextHome($I);
+        $course_nid = $this->getCurrentContextNid();
+        $course_object = _okl_testing_getDataObjectForCourse($course_nid);
+        //hier nehmen wir einfach die erste, damit die getesteten in der selben sind.
+        $course_group_for_user = $course_object->get('course_group', 0);
+
+
+
+        $coursgroup_name = $course_group_for_user->title;
+        $student_is_in_kg = $studentsandtasks["kgmember"];
+        $students_name = $studentsandtasks['name'];
+        foreach ($studentsandtasks['tasks'] as $task) {
+            $I->click("Aufgaben");
+            $I->click($task['title']);
+
+            //gruppenaufgabe
+            if ($task["field_task_type"] == "1") {
+
+                //nicht-gruppenmitglieder können gruppenaufgabe nicht einreichen
+                if (!$student_is_in_kg) {
+                    $I->dontSee($students_name);
+                    continue;
+                }// gruppenaufgabe wurde durch anderes gruppenmitglied schon bearbeitet, 
+                elseif (isset($task["prefilled_by_colleague"])) {
+                    $I->see($coursgroup_name);
+                    continue;
+                }
+            }
+            //keine der obigen bedingungen hat gegriffen, dann war ausfüllen möglich.
+            $I->see($students_name);
+        }
+    }
 
 }
