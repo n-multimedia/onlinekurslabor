@@ -289,6 +289,18 @@ class CourseCest  extends CestHelper{
         $return[] = ['title' => RealisticFaker\OklDataCreator::getSafeText($node_data['title']), 'field_task_type' => 0, 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]]];
         return $return;
     }
+    
+    
+    
+    /**
+     * setze current Context wieder auf den Fallbackkurs statt den eben erstellten.
+     * @param \Step\Acceptance\Dozent $I
+     */
+    public function C001_06_resetContext(\Step\Acceptance\Dozent $I)
+    {
+        $this->resetCurrentContextNid();
+    }
+        
 
     //##########################################################################
 
