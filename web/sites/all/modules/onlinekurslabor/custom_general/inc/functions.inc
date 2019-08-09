@@ -623,17 +623,29 @@ function custom_general_get_users_in_group_by_role($gid, $roles) {
  */
 function custom_general_get_users_in_group_by_role_real($gid, $role_name, $og_state = OG_STATE_ACTIVE) {
 
+    $node_to_check = node_load($gid);
     $uids = og_get_group_members_properties(entity_load_single('node', $gid), array(), 'members__' . $og_state, 'node');
     $real_uids = array();
     foreach ($uids as $uid) {
         //alle rollen holen und einen check auf aktiv machen, wenn wir nicht-geblockten Status haben
-        if (in_array($role_name, og_get_user_roles('node', $gid, $uid, true, ($og_state < OG_STATE_BLOCKED))))
+        $roles_in_group = og_get_user_roles('node', $gid, $uid, true, ($og_state < OG_STATE_BLOCKED));
+        
+        //og hat da irgendwie n bug. manchmal liefert er fürn dozenten "non-member"
+        //deswegen checkmer den group-owner mit.
+        if ($node_to_check->uid === $uid || in_array($role_name, $roles_in_group))
+        {
             $real_uids[] = $uid;
+        }
     }
     if (count($real_uids))
+    {
         return user_load_multiple($real_uids);
+    }
     else
+    {
         return false;
+    }
+        
 }
 
 

@@ -1761,13 +1761,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = 'In diesem Kurs wurde noch keine Kursdokumente angelegt.
-
-
-<hr>
-<div class="visible-dozent visible-admin">
-Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <code>Dokument+</code>
-</div>';
+  $handler->display->display_options['empty']['area']['content'] = 'In diesem Kurs wurde noch keine Kursdokumente angelegt.';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
   /* Relationship: OG membership: OG membership from Node */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
@@ -1890,13 +1884,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
-    t('In diesem Kurs wurde noch keine Kursdokumente angelegt.
-
-
-<hr>
-<div class="visible-dozent visible-admin">
-Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <code>Dokument+</code>
-</div>'),
+    t('In diesem Kurs wurde noch keine Kursdokumente angelegt.'),
     t('OG membership from node'),
     t('Herunterladen'),
     t('Name'),
@@ -2466,13 +2454,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = 'Keine aktuellen Ankündigungen für diesen Kurs.
-
-<hr>
-<div class="visible-dozent visible-admin">
-Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <code>Neuigkeit+</code>
-</div>
-';
+  $handler->display->display_options['empty']['area']['content'] = 'Keine aktuellen Ankündigungen für diesen Kurs.';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
   /* Relationship: OG membership: OG membership from Node */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
@@ -2601,13 +2583,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
-    t('Keine aktuellen Ankündigungen für diesen Kurs.
-
-<hr>
-<div class="visible-dozent visible-admin">
-Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <code>Neuigkeit+</code>
-</div>
-'),
+    t('Keine aktuellen Ankündigungen für diesen Kurs.'),
     t('OG membership from node'),
     t('author'),
     t(' [weiter]'),
@@ -3950,13 +3926,7 @@ return   ($task_type == NM_COURSES_TASK_TYPE_GROUP )? _section_courses_get_cours
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = 'In diesem Kurs wurde noch keine Aufgaben angelegt.
-
-<hr>
-
-<div class="visible-dozent visible-admin">
-Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <code>Aufgabe+</code>
-</div>';
+  $handler->display->display_options['empty']['area']['content'] = 'In diesem Kurs wurde noch keine Aufgaben angelegt.';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
   /* Relationship: OG membership: OG membership from Node */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
@@ -4080,13 +4050,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <c
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('letzte Seite »'),
-    t('In diesem Kurs wurde noch keine Aufgaben angelegt.
-
-<hr>
-
-<div class="visible-dozent visible-admin">
-Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; <code>Aufgabe+</code>
-</div>'),
+    t('In diesem Kurs wurde noch keine Aufgaben angelegt.'),
     t('OG membership from node'),
     t('Status'),
     t('Typ'),

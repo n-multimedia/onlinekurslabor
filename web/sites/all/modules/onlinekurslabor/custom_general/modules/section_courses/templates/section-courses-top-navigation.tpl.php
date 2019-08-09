@@ -36,7 +36,9 @@
   <nav class="navbar navbar-inverse" id="section-nav-instructor-tools">
     <div class="container-fluid">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle okl-toolbar-btn"
+        <button type="button" class="navbar-toggle okl-toolbar-btn collapsed"
+                title="Kursmenü"
+                id="instructor_tools_toggle_button"
                 data-toggle="collapse"
                 data-target="#instructor-tools" aria-expanded="false">
           <div class="animated-icon2">

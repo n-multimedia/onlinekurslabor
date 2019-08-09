@@ -165,5 +165,29 @@ class UserSteps extends \AcceptanceTester {
         $webDriver->switchTo()->defaultContent();
       });
   }
+  
+  
+  /**
+   * Helperfunktion zur Nutzung des Coursemenus
+   * @param String $open_region z.B. "Teinehmende"
+   * @param type $click_option z.B. "Teilnehmde verwalten"
+   * @throws Exception
+   */
+  public function useCourseMenu($open_region = false , $click_option= false)
+  {
+    $this->click( '#instructor_tools_toggle_button' );
+    $this->wait(1);
+    //add context
+    if($open_region)
+    {
+        $this->click($open_region,'#mobile_instructors_tools-container' );
+        $this->wait(1);
+    }
+    if($click_option)
+    {
+         $this->click($click_option,'#mobile_instructors_tools-container' );
+    }
+    
+  }
 
 }

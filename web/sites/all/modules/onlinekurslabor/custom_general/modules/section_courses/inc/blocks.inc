@@ -646,6 +646,7 @@ function _section_courses_top_navigation_label_to_link($nav_items_single, $cours
       }
 
       $unread_count = $options['data']['unread'];
+      $unread_badge = '';
       if ($unread_count) {
         $unread_badge = '<div class="unread_tiny_box"><div style="" class="arrow-down"></div>' . $unread_count . '</div>';
       }
