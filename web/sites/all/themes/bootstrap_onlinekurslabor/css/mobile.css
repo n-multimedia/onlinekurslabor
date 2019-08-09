@@ -14,6 +14,19 @@
   height: 35px;
 }
 
+#okl-nav-bar {
+  float: right;
+}
+
+@media (max-width: 768px) {
+  #okl-nav-bar {
+    float: none;
+  }
+  #okl-nav-bar #custom-top-nav {
+    margin: 0;
+  }
+}
+
 @media (min-width: 768px) {
 
   #custom_general_space {
@@ -26,7 +39,7 @@
 
 
   #section-nav-authoring-tools button.navbar-toggle {
-    top: 0px;
+    top: 5px;
   }
 }
 
@@ -41,7 +54,7 @@
   }
 
   .okl-home-container .bootstrap_tabs-stacked-left,
-  .okl-home-container #home_loggedin .col-md-10 {
+  .okl-home-container #home_loggedin .col-sm-10 {
     padding: 0;
   }
 
@@ -53,6 +66,9 @@
     padding: 0;
   }
 
+  .view-nm-activity-stream {
+    display: none;
+  }
 
 
   #page_top_navigation {
@@ -63,18 +79,18 @@
   #page-header {
     margin-top: 53px;
   }
-  #page_top_navigation .collapse {
+  #page-header .collapse {
     opacity: 0;
     box-sizing: border-box;
   }
 
-  #page_top_navigation .collapse.in {
+  #page-header .collapse.in {
     opacity: 1;
     box-sizing: border-box;
   }
-  #page_top_navigation #custom-top-nav {
+  #page-header #custom-top-nav {
   }
-  #page_top_navigation #custom-top-nav {
+  #page-header #custom-top-nav {
     /*height: 100vh !important;*/
     transition: none !important;
     box-sizing: border-box;
@@ -141,36 +157,39 @@
 }
 
 @media (max-width: 992px) {
-  .navbar-header {
+  #page-header .navbar-header {
     float: none;
   }
 
-  .navbar-left, .navbar-right {
+  #okl-nav-bar li a {
+    padding: 15px 7px;
+  }
+
+  #page-header .navbar-left, .navbar-right {
     float: none !important;
   }
 
-  #section-nav-authoring-tools .navbar-toggle,
-  #page_top_navigation .navbar-toggle {
+  #section-nav-authoring-tools .navbar-toggle {
     display: block;
     margin-right: 5px !important;
     width: 42px !important;
   }
 
-  .navbar-collapse {
+  #page-header .navbar-collapse {
     border-top: 1px solid transparent;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
-  .navbar-fixed-top {
+  #page-header .navbar-fixed-top {
     top: 0;
     border-width: 0 0 1px;
   }
 
-  .navbar-collapse.collapse {
+  #page-header .navbar-collapse.collapse {
     display: none !important;
   }
 
-  .navbar-nav {
+  #page-header .navbar-nav {
     float: none !important;
     margin-left: 0;
     margin-right: 0;
@@ -223,7 +242,7 @@
     font-size: 14px;
   }
 
-  .collapse.in {
+  #page-header .collapse.in {
     display: block !important;
   }
 
