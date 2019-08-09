@@ -60,6 +60,11 @@ env:
       config:
         WebDriver:
           url: https://dev2.div.onlinekurslabor.de
+  dev3:
+    modules:
+      config:
+        WebDriver:
+          url: https://dev3.div.onlinekurslabor.de
   instatest:
     modules:
       config:
@@ -78,5 +83,5 @@ extensions:
   # ssl-fehler werden ignoriert
   - Codeception\Extension\RunProcess:
       0: killall -9 phantomjs
-      1: bin/phantomjs --webdriver=4444  --web-security=false --ignore-ssl-errors=true  --ssl-protocol=any
+      1: vendor/bin/phantomjs --webdriver=4444  --web-security=false --ignore-ssl-errors=true  --ssl-protocol=any
       sleep: 2 # wait 2 seconds for processes to boot

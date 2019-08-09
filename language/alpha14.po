@@ -12,6 +12,9 @@ msgstr "oder bitten Sie die Kursleitung, Sie in eine einzutragen."
 msgid "Ask the staff to assign you to a coursegroup."
 msgstr "Bitten Sie die Kursleitung darum, Sie in eine einzutragen."
 
+msgid "This course is currently being tested not public yet."
+msgstr "Dieser Kurs wird derzeit noch getestet und wurde noch nicht veröffentlicht."
+
 
 msgid ""
 msgstr ""
