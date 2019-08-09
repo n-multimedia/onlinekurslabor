@@ -387,15 +387,15 @@ function _section_courses_get_instructor_tools() {
   $links['instr_overview_content']['label'] = "Inhaltsübersicht";
   $links['instr_overview_content']['label_long'] = "Inhaltsübersicht";
 
-  
-  
+
+
   $links['instr_category_groups']['label'] = "Gruppen";
   $links['instr_category_groups']['label_long'] = "Kursgruppen";
   $links['instr_add_groups']['label'] = "Gruppe";
   $links['instr_add_groups']['label_long'] = "Gruppe hinzufügen";
   $links['instr_overview_groups']['label'] = "Gruppen";
   $links['instr_overview_groups']['label_long'] = "Gruppenübersicht";
-  
+
   //kann man auch langsam raushauen ;-)
   $links['instr_overview_projects']['label'] = "Projekte";
   $links['instr_overview_projects']['label_long'] = "Projekte";
@@ -412,7 +412,7 @@ function _section_courses_get_instructor_tools() {
   $links['instr_category_members']['group']['root'] = TRUE;
   $links['instr_add_members']['group']['gid'] = 1;
   $links['instr_settings_members']['group']['gid'] = 1;
-  
+
 
   $links['instr_category_content']['group']['gid'] = 2;
   $links['instr_category_content']['group']['root'] = TRUE;
@@ -420,13 +420,13 @@ function _section_courses_get_instructor_tools() {
   $links['instr_add_docs']['group']['gid'] = 2;
   $links['instr_add_task']['group']['gid'] = 2;
   $links['instr_overview_content']['group']['gid'] = 2;
-    
+
 
   $links['instr_category_groups']['group']['gid'] = 3;
   $links['instr_category_groups']['group']['root'] = TRUE;
   $links['instr_add_groups']['group']['gid'] = 3;
   $links['instr_overview_groups']['group']['gid'] = 3;
-  
+
   $links['instr_overview_projects']['group']['gid'] = 4;
   $links['instr_overview_projects']['group']['root'] = TRUE;
 
@@ -474,8 +474,8 @@ function _section_courses_get_instructor_tools() {
   $id = 'instr_category_groups';
   $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
-  
-  
+
+
   //settings
   $path = 'course/admin/' . $group_id . '/settings';
   $id = 'instr_course_settings';
@@ -498,7 +498,7 @@ function _section_courses_get_instructor_tools() {
   $id = 'instr_overview_groups';
   $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
-  
+
   $path = 'course/admin/' . $group_id . '/content';
   $id='instr_overview_content';
   $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options );
@@ -582,7 +582,9 @@ function _course_top_navigation_view() {
   $admin_tools = "";
   if(section_courses_instructors_tools_access()) {
     $instructor_tools = _section_courses_get_instructor_tools();
-    $admin_tools = _custom_general_theme_tools_navbar_block($instructor_tools);
+    $id = "mobile_instructors_tools";
+    $class = "btn-group btn-group-vertical";
+    $admin_tools = _custom_general_theme_tools_navbar_block($instructor_tools, $id, $class);
   }
 
 

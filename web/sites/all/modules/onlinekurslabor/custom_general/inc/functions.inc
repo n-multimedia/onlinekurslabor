@@ -3,11 +3,7 @@
 //22.04.2013 - 23:50 - SN
 //helper function - special cases when Section Content should be active
 
-function _section_domain_active($group) {
-
-  //$node = menu_get_object();
-  //_custom_general_get_group($group);
-  //
+function _section_domain_active() {
 
   $section_content = _section_domain_author_section_active();
 

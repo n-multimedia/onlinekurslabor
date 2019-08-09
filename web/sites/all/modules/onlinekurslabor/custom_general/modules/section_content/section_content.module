@@ -50,12 +50,12 @@ function section_content_block_view($delta = '') {
 
 /**
  * Revisions Block.
- * 
+ *
  * Task: Mapping all actions of page domain/text/%/revisions/...
  * to the callbacks of the diff module
- * 
+ *
  * aim: embeding revision actions/views into domain context
- * 
+ *
  * @return type
  */
 function _section_content_theme_node_revisions() {
@@ -63,7 +63,7 @@ function _section_content_theme_node_revisions() {
   if (arg(0) != 'admin' && arg(3) == 'revisions') {
     //case node/%/revisions
     module_load_include('inc', 'diff', 'diff.pages');
-    
+
     $node = node_load(arg(2));
     switch (arg(4)) {
       case 'view':
@@ -101,9 +101,9 @@ function section_content_node_view($node, $view_mode, $langcode) {
             //holt anzahl eintraege
             //gibts einträge? dann diese anzeigen; sonst: 404
                 $html_output__view_usage_in .= $view_usage_in->get_title() .( $view_usage_in->total_rows? $view_usage_in->render($display_id):"<br><i>&nbsp;&nbsp;- keine - </i><br>");
-      
+
         }
-      
+
 
         //Zeigt oberhalb des Inhaltsverzeichnis, in welchen Kursen dieser LT genutzt wird
         if ($html_output__view_usage_in) {
@@ -148,7 +148,7 @@ function section_content_node_view($node, $view_mode, $langcode) {
  * Alter the menu tree and its configuration before the tree is rendered.
  *
  * This uses a hook from module menu_block
- * 
+ *
  * @param $tree
  *   An array containing the unrendered menu tree.
  * @param $config
@@ -173,7 +173,7 @@ function section_content_menu_block_tree_alter(&$tree, &$config) {
     return;
 
   $node = node_load($node_id);
-  
+
 
 
 //Only apply when top_leaf is of type 'domain'
@@ -303,6 +303,25 @@ function section_content_preprocess_node(&$variables) {
   }
 }
 
+/**
+ * Implements hook_preprocess_page
+ *
+ * @global type $user
+ * @param type $vars
+ * @return type
+ */
+function section_content_preprocess_page(&$vars) {
+
+  global $user;
+
+  if(_section_domain_active() && section_content_authors_tools_access()) {
+    $rendered_mobile_tools = section_content_render_mobile_authoring_tools();
+    //dpm($vars['page']);
+    $vars['page']['header']['custom_general_custom_general_space']['#markup'] =  $vars['page']['header']['custom_general_custom_general_space']['#markup'].$rendered_mobile_tools ;
+  }
+
+}
+
 /*
  * alter links in forum section
  */
@@ -319,7 +338,7 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
     /* replace links for book navigation and titles
      * [todo] Solution to avoid this overkill!
      *  Probably a performance killing thing....
-     * 
+     *
      */
     if (strstr($path, "node/")) {
       $regex = '#^node/([0-9]+)$#s';
@@ -333,7 +352,7 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
           $path = 'domain/text/' . $nid;
         }
         elseif(in_array($type, array( NM_BIBLIO)))
-        {    
+        {
             $current_nid = arg(2);
             $current_node = node_load($current_nid);
 
@@ -341,7 +360,7 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
             {
                 $curr_bookid  = $current_node->book['bid'];
                 $path = 'domain/text/' .$curr_bookid.'/'. $nid;
-            } 
+            }
         }
         $original_path = $path;
       }
@@ -407,7 +426,7 @@ function section_content_context_load_alter(&$context) {
 //      _section_content_breadcrumb_append_from_entity_data($entity_type, $active_trail, $active_node);
 //    }
 //    else {
-//      //check if adaption any user role is necessary 
+//      //check if adaption any user role is necessary
 //      _section_content_alter_breadcrumb_for_role($active_trail);
 //    }
 //  }
@@ -500,22 +519,22 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     array_push($form['actions']['submit']['#submit'], '_section_content_node_form_submit');
   }
 
-  
+
   //Assign files to active groups when uploaded
   //dependency: file entity, og, media
   if ($form_id == 'file_entity_add_upload' || $form_id == 'media_internet_add_upload' || $form_id == 'media_wysiwyg_format_form') {
 
-    //Media Brower - Get Arguments from referer data, to assign file to a group 
+    //Media Brower - Get Arguments from referer data, to assign file to a group
     $referer_args['nid'] = _media_browser_get_referer_nid();
     $referer_args['node'] = isset($referer_args['nid']) ? node_load($referer_args['nid']) : NULL;
     $referer_args['gid'] = isset($referer_args['node']) ? _custom_general_get_group($referer_args['node']) : NULL;
 
     $options = drupal_parse_url($form['#action']);
-    
+
     if (isset($form['og_group_ref']) && isset($options['query']['og_group_ref'])) {
       $form['og_group_ref'][LANGUAGE_NONE][0]['default']['#default_value']['value'] = $options['query']['og_group_ref'];
     }
-    
+
     //25.02.2014 - 15:38 - SN
     //add additional group
     if(isset($form['#media'])) {
@@ -564,7 +583,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     $type = $form['type']['#value'];
     // Not a book || not a domain => Nothing to do
     if (($type != NM_CONTENT_DOMAIN) || !isset($node->book)) {
-      
+
     }
     else {
       $nid = empty($node->nid) ? 'new' : $node->nid;
@@ -605,15 +624,15 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
         }
       }
     }*/
-  } 
-  
-      
+  }
+
+
   /*neu angelegte Buchkapiteln/annvid-kapiteln fehlt eine weight. Das führt zu Falschsortierung/-nummerierung. Fixe.*/
     if (in_array($form_id ,array('annvid_node_form', 'content_chapter_node_form'))) {
         $parameters = drupal_get_query_parameters();
         $og_group_ref = @$parameters['og_group_ref'];
         $parent = @$parameters['parent'];
-  
+
         //sollte zwar gesetzt sein, aber zur sicherheit..
         //hat die weight bestehender kapitel ueberschrieben. Darf nur auf neuen Kapiteln greifen (sprich: nid = null)!
         if ($og_group_ref && $parent && !isset($form['#node']->nid )) {
@@ -648,7 +667,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     $form['field_domain_demo_ref']['#suffix'] = $description;
   }
 
-      
+
   return $form;
 }
 
@@ -702,7 +721,7 @@ function _section_content_node_form_submit($form, &$form_state) {
             //erst: return-to, dann arg(2) = Lehrtext
             $return_to = drupal_get_query_parameters()['return_to']? : arg(2);
             $form_state['redirect'] = NM_CONTENT_TEXT_PATH . '/' . $return_to;
-        }//edit eines biblio-entries 
+        }//edit eines biblio-entries
         elseif (arg(1) == 'edit' && is_numeric(arg(2)) && $form_state['node']->type === NM_BIBLIO) {
             $lehrtext_param = drupal_get_query_parameters()['og_group_ref'] ? drupal_get_query_parameters()['og_group_ref'] . '/' : '';
             $form_state['redirect'] = NM_CONTENT_TEXT_PATH . '/' . $lehrtext_param . $form_state['node']->nid;
@@ -753,9 +772,9 @@ function section_content_views_pre_build(&$view) {
 /**
  * Implements hook_og_user_access_alter().
  *
- * 
+ *
  * Permit group-subscription for content type domain (Gebiet) for all roles other than "Autor" and "administrator"
- * 
+ *
  */
 function section_content_og_user_access_alter(&$perm, $context) {
     global $user;
@@ -809,7 +828,7 @@ function section_content_wysiwyg_plugin($editor, $version) {
           'load' => TRUE,
         ),
       );
-      
+
   }
 }
 
@@ -1041,7 +1060,7 @@ function section_content_preprocess_field(&$vars) {
   }
   else
   if ($vars['element']['#field_name'] == 'field_qaa_answer' && $vars['element']['#bundle'] == 'content_question_and_answer') {
-    $vars['theme_hook_suggestions'][] = 'question_and_answer_field';        
+    $vars['theme_hook_suggestions'][] = 'question_and_answer_field';
   }
 }
 
@@ -1106,7 +1125,7 @@ function theme_multiple_choice_field_group($vars) {
 }
 
 /**
- * 
+ *
  */
 function theme_question_and_answer_field($vars) {
 
@@ -1219,8 +1238,10 @@ function section_content_text_outline() {
   $active_domain = _section_content_get_active_domain();
 
 
-  if (!$active_domain)
+  if (!$active_domain) {
     return;
+  }
+
   $domain_ref = $active_domain->nid;
 
   $menu_name = 'book-toc-' . $domain_ref;
@@ -1291,8 +1312,48 @@ function section_content_text_outline() {
 }
 
 /**
+ * render mobile friendly context menu for authors and admins
+ * @return string
+ */
+function section_content_render_mobile_authoring_tools() {
+
+  $output = "";
+
+  // administration tools
+  $admin_tools = "";
+  if (section_content_authors_tools_access()) {
+    $authoring_tools = _section_courses_get_authors_tools();
+    $id = "mobile_authors_tools";
+    $class = "btn-group btn-group-vertical";
+    $admin_tools = _custom_general_theme_tools_navbar_block($authoring_tools, $id, $class);
+  }
+
+  $output .= '
+    <nav class="navbar navbar-inverse" id="section-nav-authoring-tools">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle okl-toolbar-btn"
+                data-toggle="collapse"
+                data-target="#authoring-tools" aria-expanded="false">
+          <div class="animated-icon2">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </div>
+        </button>
+      </div>';
+  // render mobile friendly instructors menu
+  $output .= '<div class="collapse navbar-collapse" id="authoring-tools">';
+  $output .= $admin_tools;
+  $output .= '</div>';
+  $output .= '</div></nav>';
+
+  return $output;
+}
+
+/**
  * Determins which domain is being active/selected
- * 
+ *
  * @return active domain object or FALSE
  */
 function _section_content_get_active_domain($reset = FALSE) {

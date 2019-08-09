@@ -118,6 +118,7 @@ function _section_content_navtext_to_link($domain, $text) {
 function _section_content_theme_authors_tools($variables = NULL) {
 
   $output = "";
+  return $output;
 
   if (section_content_authors_tools_access()) {
 
@@ -217,30 +218,38 @@ function _section_courses_get_authors_tools() {
   $links['author_subchapter_add']['label_long'] = "Unterkapitel hinzufügen";
 
   $links['author_chapter_order']['label'] = "Reihenfolge";
-  $links['author_chapter_order']['label_long'] = "Reihenfolge";
-  $links['author_biblio_overview']['label'] = "Biblio";
-  $links['author_biblio_overview']['label_long'] = "Biblio";
+  $links['author_chapter_order']['label_long'] = "Reihenfolge ändern";
+
+  $links['author_category_biblio']['label'] = "Biblio";
+  $links['author_category_biblio']['label_long'] = "Biblio";
   $links['author_biblio_add']['label'] = "Biblio";
   $links['author_biblio_add']['label_long'] = "Biblio hinzufügen";
+  $links['author_biblio_overview']['label'] = "Biblio";
+  $links['author_biblio_overview']['label_long'] = "Biblio verwalten";
 
   $links['author_media_overview']['label'] = "Medien";
   $links['author_media_overview']['label_long'] = "Medien";
 
-  $links['author_interactive_overview']['label'] = "Interaktiv";
+  $links['author_category_interactive']['label'] = "Interaktiv";
+  $links['author_category_interactive']['label_long'] = "Interaktive Inhalte";
   $links['author_h5p_add']['label'] = "H5P";
-  $links['author_h5p_add']['label_long'] = "H5P";
+  $links['author_h5p_add']['label_long'] = "H5P hinzufügen";
   if (module_exists('annvid')) {
     $links['author_annvid_add']['label'] = "AnnVid";
     $links['author_annvid_add']['label_long'] = "AnnVid hinzufügen";
   }
+  $links['author_interactive_overview']['label'] = "Interaktiv";
+  $links['author_interactive_overview']['label_long'] = "Interaktive Inhalte verwalten";
 
-  $links['author_tasks_overview']['label'] = "Aufgaben";
-  $links['author_tasks_overview']['label_long'] = "Aufgaben";
-
+  $links['author_category_tasks']['label'] = "Aufgaben";
+  $links['author_category_tasks']['label_long'] = "Aufgaben";
   $links['author_tasks_mc_add']['label'] = "Multiple Choice";
   $links['author_tasks_mc_add']['label_long'] = "Multiple Choice hinzufügen";
   $links['author_tasks_qaa_add']['label'] = "Frage und Antwort";
-  $links['author_tasks_qaa_add']['label_long'] = "Frage und Antwort label_long";
+  $links['author_tasks_qaa_add']['label_long'] = "Frage und Antwort hinzufügen";
+
+  $links['author_tasks_overview']['label'] = "Aufgaben";
+  $links['author_tasks_overview']['label_long'] = "Aufgaben verwalten";
 
   //Groups
   $links['author_chapter_add']['group']['gid'] = 1;
@@ -250,20 +259,23 @@ function _section_courses_get_authors_tools() {
   $links['author_chapter_order']['group']['gid'] = 2;
   $links['author_chapter_order']['group']['root'] = TRUE;
 
-  $links['author_biblio_overview']['group']['gid'] = 3;
-  $links['author_biblio_overview']['group']['root'] = TRUE;
+  $links['author_category_biblio']['group']['gid'] = 3;
+  $links['author_category_biblio']['group']['root'] = TRUE;
   $links['author_biblio_add']['group']['gid'] = 3;
+  $links['author_biblio_overview']['group']['gid'] = 3;
 
   $links['author_media_overview']['group']['gid'] = 4;
   $links['author_media_overview']['group']['root'] = TRUE;
 
-  $links['author_tasks_overview']['group']['gid'] = 5;
-  $links['author_tasks_overview']['group']['root'] = TRUE;
+  $links['author_category_tasks']['group']['gid'] = 5;
+  $links['author_category_tasks']['group']['root'] = TRUE;
   $links['author_tasks_mc_add']['group']['gid'] = 5;
   $links['author_tasks_qaa_add']['group']['gid'] = 5;
+  $links['author_tasks_overview']['group']['gid'] = 5;
 
+  $links['author_category_interactive']['group']['gid'] = 6;
+  $links['author_category_interactive']['group']['root'] = TRUE;
   $links['author_interactive_overview']['group']['gid'] = 6;
-  $links['author_interactive_overview']['group']['root'] = TRUE;
   $links['author_h5p_add']['group']['gid'] = 6;
   if (module_exists('annvid')) {
     $links['author_annvid_add']['group']['gid'] = 6;
@@ -293,8 +305,9 @@ function _section_courses_get_authors_tools() {
   $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'domain/biblio/' . $group_id;
-  $id = 'author_biblio_overview';
+  $id = 'author_category_biblio';
   $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
+
 
   $biblio_options = $default_options;
   //überschreibe default og-group-ref-query auf aktuelle node
@@ -304,13 +317,18 @@ function _section_courses_get_authors_tools() {
   $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $biblio_options);
 
 
+  $path = 'domain/biblio/' . $group_id;
+  $id = 'author_biblio_overview';
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
+
+
   $path = 'domain/media/' . $group_id;
   $id = 'author_media_overview';
   $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
 
   $path = 'domain/h5p/' . $group_id;
-  $id = 'author_interactive_overview';
+  $id = 'author_category_interactive';
   $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'domain/add/' . $group_id . '/' . NM_INTERACTIVE_CONTENT;
@@ -330,21 +348,29 @@ function _section_courses_get_authors_tools() {
       $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
     }
   }
+  $path = 'domain/h5p/' . $group_id;
+  $id = 'author_interactive_overview';
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
 
   $path = 'domain/tasks/' . $group_id;
-  $id = 'author_tasks_overview';
-  $label = $links[$id]['label'];
+  $id = 'author_category_tasks';
+  $label = $links[$id];
   $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
   $path = 'domain/add/' . $group_id . '/' . NM_CONTENT_MULTIPLE_CHOICE;
   $id = 'author_tasks_mc_add';
-  $label = $links[$id]['label'];
+  $label = $links[$id];
   $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
   $path = 'domain/add/' . $group_id . '/' . NM_CONTENT_QUESTION_AND_ANSWER;
   $id = 'author_tasks_qaa_add';
-  $label = $links[$id]['label'];
+  $label = $links[$id];
+  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+
+  $path = 'domain/tasks/' . $group_id;
+  $id = 'author_tasks_overview';
+  $label = $links[$id];
   $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
 

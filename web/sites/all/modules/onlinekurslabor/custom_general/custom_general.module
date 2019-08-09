@@ -516,10 +516,8 @@ function _media_browser_get_referer_nid() {
 /**
  *
  */
-function _custom_general_theme_tools_navbar_block($tool_links) {
+function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
   //($instructor_tools, "mobile_instructors_tools", "btn-group btn-group-vertical", 1)
-  $id = "mobile_instructors_tools";
-  $class = "btn-group btn-group-vertical";
 
   //built up group arary
   $groups = _custom_general_tools_get_groups($tool_links);
@@ -574,18 +572,18 @@ function _custom_general_theme_tools_navbar_block($tool_links) {
     $output .= '</div>';
   }
 
-    
+
 
   $output .= '<div id="tools-all-actions">';
   foreach ($groups as $g) {
-    
+
     $group_items = ($g['items']);
     $group_has_items = count($group_items) > 1;
     $output .= '<ul>';
 
     $rootitem = array_shift($group_items);
 
-    
+
 
      //ist in diesem menü ein punkt "active" gesetzt?
      $menu_has_active_component = false;
@@ -600,29 +598,29 @@ function _custom_general_theme_tools_navbar_block($tool_links) {
       //$output .= '<li '.$attributes.'>' . $tl['link'] . '</li>';
       $submenu_entries .= '<li ' . $subitems_attributes . '>' . $gi['link_long'] . '</li>';
     }
-    
-    
+
+
      $menu_has_active_component |=  array_search('active', $rootitem['attributes']['class'] );
-     
-     
+
+
     //attribute für das <li>
     $rootitem_attributes = array();
     //attribute für das <ul>
     $uls_attributes = array();
-    
+
      if (isset($rootitem['attributes'])) {
         $rootitem_attributes = $rootitem['attributes'];
-    } 
-    
+    }
+
     if($group_has_items)
     {
         $rootitem_attributes['class'][] = 'menu_entry_collapsable';
         $rootitem_attributes['data-toggle'] = 'collapse';
         $rootitem_attributes['data-target'] = '#navgroup_'.$rootitem['attributes']['id'];
-        
+
         $uls_attributes['class'][] = 'collapse';
         $uls_attributes['id'] = 'navgroup_'.$rootitem['attributes']['id'];
-        
+
         if($menu_has_active_component)
         {
             $uls_attributes['class'][] = 'in';
@@ -630,18 +628,18 @@ function _custom_general_theme_tools_navbar_block($tool_links) {
         else{
             $rootitem_attributes['class'][] ='collapsed';
         }
-        
-       
+
+
     }
-    
-  
+
+
     $output .= '<li  '.drupal_attributes($rootitem_attributes) . '>' . $rootitem['link_long'] . '</li>';
 
     // group items below
     //do the collapse here
-   
+
     $output .= '<ul '. drupal_attributes($uls_attributes)  .'>';
-    $output .= $submenu_entries; 
+    $output .= $submenu_entries;
     $output .= '</ul>';
 
     $output .= '</ul>';
