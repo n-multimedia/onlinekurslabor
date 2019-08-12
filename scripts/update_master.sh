@@ -18,6 +18,9 @@ drush language-import-translations de ../language/alpha14.po --replace --groups=
 
 drush updatedb --yes
 
+drush en newmenue_tooltip --y
+
+
 drush cc all
 
 drush vset maintenance_mode 0
