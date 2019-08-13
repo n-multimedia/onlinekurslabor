@@ -385,8 +385,8 @@ function _section_courses_get_instructor_tools() {
 
   $links['instr_category_content']['label'] = "Kursinhalte";
   $links['instr_category_content']['label_long'] = "Kursinhalte";
-  $links['instr_add_news']['label'] = "Neuigkeit";
-  $links['instr_add_news']['label_long'] = "Neuigkeit hinzufügen";
+  $links['instr_add_news']['label'] = "Ankündigung";
+  $links['instr_add_news']['label_long'] = "Ankündigung hinzufügen";
   $links['instr_add_docs']['label'] = "Dokument";
   $links['instr_add_docs']['label_long'] = "Dokument hinzufügen";
   $links['instr_add_task']['label'] = "Aufgabe";
