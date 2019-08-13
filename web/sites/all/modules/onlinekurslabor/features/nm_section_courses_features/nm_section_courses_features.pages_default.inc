@@ -5049,7 +5049,7 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span8span4';
+  $display->layout = 'flexible:span9span3';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
