@@ -212,11 +212,12 @@ function _section_courses_get_authors_tools() {
 
   $links = [];
 
+  $links['author_category_chapter']['label'] = "Kapitel";
+  $links['author_category_chapter']['label_long'] = "Kapitel";
   $links['author_chapter_add']['label'] = "Kapitel";
   $links['author_chapter_add']['label_long'] = "Kapitel hinzufügen";
   $links['author_subchapter_add']['label'] = "Unter-kapitel";
   $links['author_subchapter_add']['label_long'] = "Unterkapitel hinzufügen";
-
   $links['author_chapter_order']['label'] = "Reihenfolge";
   $links['author_chapter_order']['label_long'] = "Reihenfolge ändern";
 
@@ -252,12 +253,11 @@ function _section_courses_get_authors_tools() {
   $links['author_tasks_overview']['label_long'] = "Aufgaben verwalten";
 
   //Groups
+  $links['author_category_chapter']['group']['gid'] = 1;
+  $links['author_category_chapter']['group']['root'] = TRUE;
   $links['author_chapter_add']['group']['gid'] = 1;
-  $links['author_chapter_add']['group']['root'] = TRUE;
   $links['author_subchapter_add']['group']['gid'] = 1;
-
-  $links['author_chapter_order']['group']['gid'] = 2;
-  $links['author_chapter_order']['group']['root'] = TRUE;
+  $links['author_chapter_order']['group']['gid'] = 1;
 
   $links['author_category_biblio']['group']['gid'] = 3;
   $links['author_category_biblio']['group']['root'] = TRUE;
@@ -281,6 +281,11 @@ function _section_courses_get_authors_tools() {
     $links['author_annvid_add']['group']['gid'] = 6;
   }
 
+  $path = 'domain/text/' . $group_id . '/rearrange';
+  $id = 'author_category_chapter';
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
+
+
   $id = 'author_chapter_add';
   if (!empty($add_chapter_options)) {
     $path = 'domain/add/' . $group_id . '/' . NM_CONTENT_CHAPTER;
@@ -289,6 +294,7 @@ function _section_courses_get_authors_tools() {
   else {
     $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], "/", ['attributes' => ['class' => ['disabled']]]);
   }
+
 
   $id = 'author_subchapter_add';
   if (!$subchapter_disabled) {
