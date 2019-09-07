@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_h5p_features.pages_default.inc
@@ -82,7 +83,7 @@ function nm_h5p_features_default_page_manager_pages() {
     ),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span3span8span1';
+  $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -90,6 +91,7 @@ function nm_h5p_features_default_page_manager_pages() {
       'center' => NULL,
       'outline' => NULL,
       'tools' => NULL,
+      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -202,7 +204,7 @@ function nm_h5p_features_default_page_manager_pages() {
   $display->panels['center'][2] = 'new-30d9dee4-6bfa-428e-ad1f-23e2f2812a28';
   $pane = new stdClass();
   $pane->pid = 'new-a1c743fc-3dd6-4e8d-8350-f02358f08561';
-  $pane->panel = 'outline';
+  $pane->panel = 'navigation';
   $pane->type = 'custom';
   $pane->subtype = 'custom';
   $pane->shown = TRUE;
@@ -226,29 +228,7 @@ echo section_content_text_outline();
   $pane->locks = array();
   $pane->uuid = 'a1c743fc-3dd6-4e8d-8350-f02358f08561';
   $display->content['new-a1c743fc-3dd6-4e8d-8350-f02358f08561'] = $pane;
-  $display->panels['outline'][0] = 'new-a1c743fc-3dd6-4e8d-8350-f02358f08561';
-  $pane = new stdClass();
-  $pane->pid = 'new-c5a71284-2b49-4419-9a2b-bf7e750b8285';
-  $pane->panel = 'tools';
-  $pane->type = 'block';
-  $pane->subtype = 'section_content-content_authors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 0,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'c5a71284-2b49-4419-9a2b-bf7e750b8285';
-  $display->content['new-c5a71284-2b49-4419-9a2b-bf7e750b8285'] = $pane;
-  $display->panels['tools'][0] = 'new-c5a71284-2b49-4419-9a2b-bf7e750b8285';
+  $display->panels['navigation'][0] = 'new-a1c743fc-3dd6-4e8d-8350-f02358f08561';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

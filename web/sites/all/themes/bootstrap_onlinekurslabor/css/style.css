@@ -277,7 +277,7 @@ BOOTSTRAP 3
 #page_top_navigation .navbar-brand {
     padding: 0px;
     padding-top: 5px;
-    margin-left: 15px;
+    margin-left: 10px;
 }
 
 #page_top_navigation .navbar-inverse{
@@ -853,9 +853,10 @@ powered by
     margin-top:25px;
     margin-bottom:25px;
 }
+
 .footer_region_right a {
-    margin-left:20px;
-    margin-right:15px;
+  margin-left: 20px;
+  margin-right: 15px;
 }
 
 .footer .menu.nav-list {

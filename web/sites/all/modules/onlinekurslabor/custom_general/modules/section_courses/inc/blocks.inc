@@ -63,11 +63,11 @@ function _section_courses_node_tabs_view() {
       }
     }
 
-    if (count($single_links) < 1)
+    if (count($single_links) < 1) {
       return array();
+    }
 
-    $output_single = _custom_general_theme_tools_block($single_links, "content_node_tabs", "btn-grop");
-
+    $output_single = _custom_general_theme_tools_block($single_links, "content_node_tabs", "btn-group");
 
     // Block output in HTML with div wrapper
     $block = $output_single;
@@ -156,15 +156,15 @@ function _course_header_section_view() {
 
       $output .= '</div>';
     }
-    
-    
+
+
     if(! $active_course->status)
     {
-        $output .= '<div class="view_courses_label draft badge" title="'.t("This course is currently being tested not public yet.").'">'.t('Draft').'</div>';   
+        $output .= '<div class="view_courses_label draft badge" title="'.t("This course is currently being tested not public yet.").'">'.t('Draft').'</div>';
     }
-    
+
     $output .= '<div id="course_header_title">';
-   
+
     $output .= '<h1>';
     $output .= $active_course->title;
     $output .= '</h1>';
@@ -363,17 +363,6 @@ function _section_courses_get_instructor_tools() {
       'title' => '',
   ));
 
-  /*
-    $members_overview_options = $default_options;
-    $groups_overview_options = $news_options;
-
-    $docs_options = $news_options;
-    $members_options = $news_options;
-    $groups_options = $news_options;
-    $forums_overview_options = $news_options;
-    $course_settings_options = $news_options; */
-
-
   $links = array();
 
   $links['instr_category_members']['label'] = "Teilnehmende";
@@ -393,7 +382,6 @@ function _section_courses_get_instructor_tools() {
   $links['instr_add_task']['label_long'] = "Aufgabe hinzufügen";
   $links['instr_overview_content']['label'] = "Inhaltsübersicht";
   $links['instr_overview_content']['label_long'] = "Inhaltsübersicht";
-
 
 
   $links['instr_category_groups']['label'] = "Gruppen";
@@ -443,31 +431,6 @@ function _section_courses_get_instructor_tools() {
   $links['instr_course_settings']['group']['gid'] = 6;
   $links['instr_course_settings']['group']['root'] = TRUE;
 
-
-
-  /*
-    $groups = array();
-    $groups[1] = array();
-    $groups[1][] = $links['instr_overview_members'];
-    $groups[1][] = $links['instr_add_members'];
-    $groups[2] = array();
-    $groups[2][] = $links['instr_overview_groups'];
-    $groups[2][] = $links['instr_add_groups'];
-    $groups[3] = array();
-    $groups[3][] = $links['instr_overview_forums'];
-    $groups[4] = array();
-    $groups[4][] = $links['instr_course_settings']; */
-
-
-  //$links['instr_course_settings2'] = "Kurseinstellungen";
-  //$links['instr_course_settings3'] = "Kurseinstellungen";
-  //$links['instr_course_settings4'] = "Kurseinstellungen";
-  //$links['instr_course_settings5'] = "Kurseinstellungen";
-
-  /*
-    $links['instr_view_members'] = "Teilnehmer";
-    $links['instr_view_groups'] = "Kursgruppen";' */
-
   //categorization
   $path = 'course/admin/' . $group_id . '/members'; //fallback-path für "neuer tab"
   $id = 'instr_category_members';
@@ -480,8 +443,6 @@ function _section_courses_get_instructor_tools() {
   $path = 'course/admin/' . $group_id . '/groups';
   $id = 'instr_category_groups';
   $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
-
-
 
   //settings
   $path = 'course/admin/' . $group_id . '/settings';
@@ -581,10 +542,6 @@ function _course_top_navigation_view() {
   $nav_items_single_links = _section_courses_top_navigation_label_to_link($nav_items_single, $course);
   $nav_items_collab_links = _section_courses_top_navigation_label_to_link($nav_items_collab, $course);
 
-  $single_links = $nav_items_single_links;
-  $collab_links = $nav_items_collab_links;
-
-
   // administration
   $admin_tools = "";
   if(section_courses_instructors_tools_access()) {
@@ -599,25 +556,7 @@ function _course_top_navigation_view() {
   $variables['collab_links'] = $nav_items_collab_links;
   $variables['admin_tools'] = $admin_tools;
 
-  /*
-  $navigation_options = array('class' => 'section_navigation_course');
-  $navigation_items = array(
-    'single' => array(
-      'header' => '<div id="course_top_nav_single-icon"></div>',
-      'prefix' => '<div class="col-md-6">',
-      'suffix' => '</div>',
-      'urls' => $single_links
-    ),
-    'collab' => array(
-      'header' => '<div id="course_top_nav_collab-icon"></div>',
-      'prefix' => '<div class="col-md-6">',
-      'suffix' => '</div>',
-      'urls' => $collab_links
-    )
-  );*/
-
   return theme('section_courses_top_navigation', $variables);
-  //return _onlinekurslabor_misc_get_renderable_section_navigation($navigation_items , $navigation_options);
 }
 
 /**

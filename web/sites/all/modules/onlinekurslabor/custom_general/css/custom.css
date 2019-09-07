@@ -621,9 +621,7 @@ show new (mobile) instructor tools
 #mobile_authors_tools-container {
   max-width: 400px;
   float: right;
-  min-height: 70vh !important;
   box-shadow: -2px 2px 5px #eee;
-  top: 40px;
 }
 
 #mobile_authors_tools-container li.menu_entry_collapsable.btn a,
@@ -784,7 +782,7 @@ Authors's Tools
 }
 
 #authoring-tools {
-  top: 10px;
+  padding-bottom: 20px;
 }
 
 
@@ -842,6 +840,16 @@ Authors's Tools
 #mobile_authors_tools-container .btn#author_biblio_overview a:hover::before, #mobile_authors_tools-container .btn#author_biblio_overview a.active:before,
 #authors_tools-container .btn#author_biblio_overview a:hover::before, #authors_tools-container .btn#author_biblio_overview a.active:before {
   background-position: 0px -50px;
+}
+
+#mobile_authors_tools-container .btn#auth_domain_settings > a::before {
+  background-image: url(../images/icons/transparent-icons---instructor.png);
+  left: -18px;
+  background-position: 0px -100px;
+}
+
+#mobile_authors_tools-container .btn#auth_domain_settings > a:hover::before, #mobile_authors_tools-container .btn#auth_domain_settings > a.active:before {
+  background-position: 0px -150px;
 }
 
 #mobile_authors_tools-container .btn#author_biblio_add a::before,

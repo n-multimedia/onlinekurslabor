@@ -6,8 +6,15 @@
   padding: 0;
 }
 
+#page_top_navigation .navbar-toggle {
+  margin-right: 10px;
+}
+
 #section-nav-authoring-tools button.navbar-toggle {
   top: -30px;
+  right: 6px;
+  z-index: 1004;
+  border-radius: 4px;
 }
 
 #custom_general_space {
@@ -73,7 +80,7 @@
 
   #page_top_navigation {
     position: absolute;
-    z-index: 1002;
+    z-index: 1005;
     width: 100%;
   }
   #page-header {

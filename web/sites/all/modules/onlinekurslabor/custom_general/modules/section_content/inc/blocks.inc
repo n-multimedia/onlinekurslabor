@@ -13,7 +13,7 @@ function _section_content_node_tabs_view() {
     $nav_items_single = array();
     $nav_items_single['overview'] = "Ansicht";
     $nav_items_single['course'] = "Bearbeiten";
-    $nav_items_single['sub_chapter'] = "Unterkapitel hinzufügen";
+    //$nav_items_single['sub_chapter'] = "Unterkapitel hinzufügen";
     $nav_items_single['revisions'] = "Versionen";
 
     $single_links = array();
@@ -167,6 +167,7 @@ function _section_courses_get_authors_tools() {
   ];
 
   $active_node = NULL;
+  $subchapter_disabled = FALSE;
   //wenn man in /domain ist und im unterbereich text,edit, übersicht media etc lade den aktuellen node
   if (arg(0) == 'domain' && (arg(1) == 'text' || arg(1) == 'edit' || arg(1) == 'media' || arg(1) == 'biblio' || arg(1) == 'h5p' || arg(1) == 'tasks' || arg(1) == 'add') && is_numeric(arg(2))) {
     $active_node = node_load(arg(2));
@@ -193,14 +194,9 @@ function _section_courses_get_authors_tools() {
       $add_chapter_options['query']['parent'] = $plid;
     }
 
-    //disable subchapter creatin, if mlid == plid
-    $subchapter_disabled = FALSE;
     if ($plid != $mlid) {
       $add_subchapter_options = $default_options;
       $add_subchapter_options['query']['parent'] = $mlid;
-    }
-    else {
-      $subchapter_disabled = TRUE;
     }
   }
 
@@ -252,6 +248,10 @@ function _section_courses_get_authors_tools() {
   $links['author_tasks_overview']['label'] = "Aufgaben";
   $links['author_tasks_overview']['label_long'] = "Aufgaben verwalten";
 
+
+  $links['auth_domain_settings']['label'] = "Lehrtext";
+  $links['auth_domain_settings']['label_long'] = "Lehrtexteinstellungen";
+
   //Groups
   $links['author_category_chapter']['group']['gid'] = 1;
   $links['author_category_chapter']['group']['root'] = TRUE;
@@ -281,10 +281,12 @@ function _section_courses_get_authors_tools() {
     $links['author_annvid_add']['group']['gid'] = 6;
   }
 
+  $links['auth_domain_settings']['group']['gid'] = 7;
+  $links['auth_domain_settings']['group']['root'] = TRUE;
+
   $path = 'domain/text/' . $group_id . '/rearrange';
   $id = 'author_category_chapter';
   $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
-
 
   $id = 'author_chapter_add';
   if (!empty($add_chapter_options)) {
@@ -379,6 +381,11 @@ function _section_courses_get_authors_tools() {
   $label = $links[$id];
   $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
 
+  //settings
+  $path = 'domain/edit/' . $group_id;
+  $id = 'auth_domain_settings';
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
+
 
   $result = [];
   foreach ($links as $name => $item) {
@@ -395,14 +402,13 @@ function _section_courses_get_authors_tools() {
     $group = isset($item['group']) ? $item['group'] : NULL;
     $link = isset($item['link']) ? $item['link'] : NULL;
     $link_long = isset($item['link_long']) ? $item['link_long'] : NULL;
-    $result[] = [
+    $result[$name] = [
       'link' => $link,
       'link_long' => $link_long,
       'group' => $group,
       'attributes' => $attributes['attributes'],
     ];
   }
-
 
   return $result;
 }

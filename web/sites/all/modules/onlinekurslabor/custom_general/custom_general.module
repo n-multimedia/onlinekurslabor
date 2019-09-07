@@ -280,7 +280,7 @@ function custom_general_init() {
     }
   }
 
-  
+
 }
 
 /**
@@ -534,49 +534,68 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
 
   //generate context link action(s) (most popular actions)
   if (_section_course_active()) {
-    $context_item_id = NULL;
+    $context_item_ids = NULL;
     // News erstellen
     if(arg(1) == 'home') {
-      $context_item_id = "instr_add_news";
+      $context_item_ids[] = "instr_add_news";
     }
     // Dokument hochladen
     if(arg(1) == 'docs') {
-      $context_item_id = "instr_add_docs";
+      $context_item_ids[] = "instr_add_docs";
     }
     // Aufgabe erstellen
     if(arg(1) == 'tasks') {
-      $context_item_id = "instr_add_task";
+      $context_item_ids[] = "instr_add_task";
     }
     // Kursgruppe erstellen
     if(arg(1) == 'groups') {
-      $context_item_id = "instr_add_groups";
+      $context_item_ids[] = "instr_add_groups";
     }
     // Teilnehmenden hinzufügen
     if(arg(1) == 'members') {
-      $context_item_id = "instr_add_members";
+      $context_item_ids[] = "instr_add_members";
     }
 
   }
   else {
     if (_section_domain_active()) {
-
+      // Kapitel erstellen
+      if(arg(1) == 'text') {
+        $context_item_ids[] = "author_chapter_add";
+        $context_item_ids[] = "author_subchapter_add";
+      }
+      // Biblio erstellen
+      if(arg(1) == 'biblio') {
+        $context_item_ids[] = "author_biblio_add";
+      }
+      // Interaktive Inhalte erstellen
+      if(arg(1) == 'h5p') {
+        $context_item_ids[] = "author_h5p_add";
+        $context_item_ids[] = "author_annvid_add";
+      }
+      // Aufgaben erstellen
+      if(arg(1) == 'tasks') {
+        $context_item_ids[] = "author_tasks_mc_add";
+        $context_item_ids[] = "author_tasks_qaa_add";
+      }
     }
   }
 
   // render context action(s)
-  if($context_item_id) {
+  if($context_item_ids) {
     $output .= '<div id="tools-context-actions">';
     $output .= '<ul>';
 
-    if (isset($tool_links[$context_item_id]['attributes'])) {
-      $subitems_attributes = drupal_attributes($tool_links[$context_item_id]['attributes']);
+    foreach ($context_item_ids as $context_item_id) {
+      if (isset($tool_links[$context_item_id]['attributes'])) {
+        $subitems_attributes = drupal_attributes($tool_links[$context_item_id]['attributes']);
+      }
+      $output .= '<li ' . $subitems_attributes . '>' . $tool_links[$context_item_id]['link_long'] . '</button>';
     }
-    $output .= '<li ' . $subitems_attributes . '>' . $tool_links[$context_item_id]['link_long'] . '</button>';
 
     $output .= '</ul>';
     $output .= '</div>';
   }
-
 
 
   $output .= '<div id="tools-all-actions">';
