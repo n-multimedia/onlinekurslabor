@@ -249,64 +249,6 @@ Course Info
 Instructor's Tools
 */
 
-#instructors_tools-container, #authors_tools-container, #projects_tools-container {
-  width: 60px;
-  overflow: hidden;
-  display: block;
-  padding: 0;
-  direction: rtl;
-  text-align: right;
-  position: absolute;
-  right: 0;
-  background-color: rgba(200, 200, 200, 0.3);
-  z-index: 500;
-}
-
-#projects_tools-container {
-  background: none;
-}
-
-#instructors_tools-container div, #instructors_tools-container ul, #authors_tools-container div, #authors_tools-container ul, #projects_tools-container div, #projects_tools-container ul {
-  margin: 0;
-  padding: 0;
-}
-
-#instructors_tools {
-  display: inline-block;
-  position: relative;
-}
-
-#instructors_tools-container .btn, #authors_tools-container .btn, #projects_tools-container .btn {
-  display: inline-block;
-  width: 58px;
-  white-space: normal;
-  font-size: 10px;
-  word-wrap: break-word;
-  height: 60px;
-  padding: 0;
-  font-weight: bold;
-  line-height: 8px;
-  margin-left: -1px;
-  left: 1px;
-
-}
-
-/*same, nur geringfuegig anders*/
-#authors_tools-container .btn {
-  height: 65px;
-  width: 60px;
-}
-
-#projects_tools-container .btn {
-  height: 65px;
-  width: 58px;
-}
-
-#instructors_tools-container .row:hover, #projects_tools-container .row:hover {
-
-  background-color: rgba(0, 136, 204, 0.03);
-}
-
 /*fuer hover-funktionalitaet siehe ganz unten*/
 
 #content_node_tabs-container li {
@@ -326,130 +268,6 @@ a.disabled {
   height: 300px;
 }
 
-#instructors_tools-container .btn a {
-  display: block;
-  height: 60px;
-}
-
-#instructors_tools-container .btn a::before {
-  content: ' ';
-  display: block;
-  width: 60px;
-  height: 45px;
-  position: relative;
-  margin: auto;
-  background-image: url(../images/icons/transparent-icons---instructor.png);
-  background-repeat: no-repeat;
-}
-
-#instructors_tools-container .btn#instr_add_news a::before {
-  background-position: 0px 0px;
-}
-
-#instructors_tools-container .btn#instr_add_news a::before {
-  background-position: 0px 0px;
-}
-
-#instructors_tools-container .btn#instr_add_news a:hover::before, #instructors_tools-container .btn#instr_add_news a.active::before {
-  background-position: 0px -50px;
-}
-
-#instructors_tools-container .btn#instr_add_docs a::before {
-  background-position: -60px 0px;
-}
-
-#instructors_tools-container .btn#instr_add_docs a:hover::before, #instructors_tools-container .btn#instr_add_docs a.active::before {
-  background-position: -60px -50px;
-}
-
-#instructors_tools-container .btn#instr_add_groups a::before {
-  background-position: -120px 0px;
-}
-
-#instructors_tools-container .btn#instr_add_groups a:hover::before, #instructors_tools-container .btn#instr_add_groups a.active::before {
-  background-position: -120px -50px;
-}
-
-#instructors_tools-container .btn#instr_add_members a::before {
-  background-position: -180px 0px;
-}
-
-#instructors_tools-container .btn#instr_add_members a:hover::before, #instructors_tools-container .btn#instr_add_members a.active::before {
-  background-position: -180px -50px;
-}
-
-#instructors_tools-container .btn#instr_add_task a::before {
-  background-position: -180px -100px;
-}
-
-#instructors_tools-container .btn#instr_add_task a:hover::before, #instructors_tools-container .btn#instr_add_task a.active::before {
-  background-position: -180px -150px;
-}
-
-/*
-Lists / Overviews
-*/
-
-#instructors_tools-container .btn#instr_overview_members a::before {
-  background-position: -240px 0px;
-}
-
-#instructors_tools-container .btn#instr_overview_members a:hover::before, #instructors_tools-container .btn#instr_overview_members a.active::before {
-  background-position: -240px -50px;
-}
-
-#instructors_tools-container .btn#instr_overview_groups a::before {
-  background-position: -300px 0px;
-}
-
-#instructors_tools-container .btn#instr_overview_groups a:hover::before, #instructors_tools-container .btn#instr_overview_groups a.active::before {
-  background-position: -300px -50px;
-}
-
-#instructors_tools-container .btn#instr_overview_projects a::before {
-  background-position: -300px -100px;
-}
-
-#instructors_tools-container .btn#instr_overview_projects a:hover::before, #instructors_tools-container .btn#instr_overview_projects a.active::before {
-  background-position: -300px -150px;
-}
-
-#instructors_tools-container .btn#instr_course_settings a::before {
-  background-position: 0px -100px;
-}
-
-#instructors_tools-container .btn#instr_course_settings a:hover::before, #instructors_tools-container .btn#instr_course_settings a.active::before {
-  background-position: 0px -150px;
-}
-
-#instructors_tools-container .btn#instr_overview_content a::before {
-  background-position: -60px -100px;
-}
-
-#instructors_tools-container .btn#instr_overview_content a:hover::before, #instructors_tools-container .btn#instr_overview_content a.active::before {
-  background-position: -60px -150px;
-}
-
-/*
-Settings
-*/
-
-#instructors_tools-container .btn#instr_overview_forums a::before {
-  background-position: -360px 0px;
-}
-
-#instructors_tools-container .btn#instr_overview_forums a:hover::before, #instructors_tools-container .btn#instr_overview_forums a.active::before {
-  background-position: -360px -50px;
-}
-
-#instructors_tools-toolbar {
-  display: none;
-  position: absolute;
-  background-color: #aaa;
-  color: #fff;
-  bottom: 55px;
-  left: 0;
-}
 
 
 /**
@@ -484,7 +302,6 @@ show new (mobile) instructor tools
   display: block;
 }
 
-#ssection-nav-authoring-tools,
 #section-nav-instructor-tools {
   display: block;
   position: absolute;
@@ -781,11 +598,6 @@ Authors's Tools
   background-color: transparent;
 }
 
-#authoring-tools {
-  padding-bottom: 20px;
-}
-
-
 #mobile_authors_tools-container ul {
   padding: 0;
 }
@@ -800,8 +612,7 @@ Authors's Tools
   display: block;
 }
 
-#mobile_authors_tools-container .btn a::before,
-#authors_tools-container .btn a::before {
+#mobile_authors_tools-container .btn a::before {
   content: ' ';
   display: block;
   width: 60px;
@@ -830,15 +641,16 @@ Authors's Tools
   left: -15px;
 }
 
+#mobile_authors_tools-container .btn#author_category_chapter a::before,
 #mobile_authors_tools-container .btn#author_category_biblio a::before,
-#mobile_authors_tools-container .btn#author_biblio_overview a::before,
-#authors_tools-container .btn#author_biblio_overview a::before {
+#mobile_authors_tools-container .btn#author_biblio_overview a::before {
   background-position: 0px 0px;
 }
 
+#mobile_authors_tools-container .btn#author_category_chapter a:hover::before, #mobile_authors_tools-container .btn#author_category_chapter a.active:before,
 #mobile_authors_tools-container .btn#author_category_biblio a:hover::before, #mobile_authors_tools-container .btn#author_category_biblio a.active:before,
-#mobile_authors_tools-container .btn#author_biblio_overview a:hover::before, #mobile_authors_tools-container .btn#author_biblio_overview a.active:before,
-#authors_tools-container .btn#author_biblio_overview a:hover::before, #authors_tools-container .btn#author_biblio_overview a.active:before {
+#mobile_authors_tools-container .btn#author_biblio_overview a:hover::before, #mobile_authors_tools-container .btn#author_biblio_overview a.active:before
+{
   background-position: 0px -50px;
 }
 
@@ -852,137 +664,106 @@ Authors's Tools
   background-position: 0px -150px;
 }
 
-#mobile_authors_tools-container .btn#author_biblio_add a::before,
-#authors_tools-container .btn#author_biblio_add a::before {
+#mobile_authors_tools-container .btn#author_biblio_add a::before {
   background-position: -60px 0px;
 }
 
-#mobile_authors_tools-container .btn#author_biblio_add a:hover::before, #mobile_authors_tools-container .btn#author_biblio_add a.active:before,
-#authors_tools-container .btn#author_biblio_add a:hover::before, #authors_tools-container .btn#author_biblio_add a.active:before {
+#mobile_authors_tools-container .btn#author_biblio_add a:hover::before, #mobile_authors_tools-container .btn#author_biblio_add a.active:before {
   background-position: -60px -50px;
 }
 
-#mobile_authors_tools-container .btn#author_media_overview a::before,
-#authors_tools-container .btn#author_media_overview a::before {
+#mobile_authors_tools-container .btn#author_media_overview a::before {
   background-position: -120px 0px;
 }
 
-#mobile_authors_tools-container .btn#author_media_overview a:hover::before, #mobile_authors_tools-container .btn#author_media_overview a.active:before,
-#authors_tools-container .btn#author_media_overview a:hover::before, #authors_tools-container .btn#author_media_overview a.active:before {
+#mobile_authors_tools-container .btn#author_media_overview a:hover::before, #mobile_authors_tools-container .btn#author_media_overview a.active:before {
   background-position: -120px -50px;
 }
 
 /*category: interactive video*/
-#mobile_authors_tools-container .btn#author_category_interactive a::before,
-#authors_tools-container .btn#author_category_interactive a::before {
+#mobile_authors_tools-container .btn#author_category_interactive a::before {
   background-position: -180px 0px;
 }
 /*interactive video*/
-#mobile_authors_tools-container .btn#author_interactive_overview a::before,
-#authors_tools-container .btn#author_interactive_overview a::before {
+#mobile_authors_tools-container .btn#author_interactive_overview a::before {
   background-position: -180px 0px;
 }
-/**nötig?
-#mobile_authors_tools-container .btn#author_interactive_overview a:hover::before, #mobile_authors_tools-container .btn#author_interactive_overview a.active:before,
-#authors_tools-container .btn#author_interactive_overview a:hover::before, #authors_tools-container .btn#author_interactive_overview a.active:before {
-  background-position: -180px -50px;
-}*/
 
-#mobile_authors_tools-container .btn#author_h5p_add a::before,
-#authors_tools-container .btn#author_h5p_add a::before {
+#mobile_authors_tools-container .btn#author_category_interactive a:hover::before, #mobile_authors_tools-container .btn#author_category_interactive a.active:before,
+#mobile_authors_tools-container .btn#author_interactive_overview a:hover::before, #mobile_authors_tools-container .btn#author_interactive_overview a.active:before {
+  background-position: -180px -50px;
+}
+
+#mobile_authors_tools-container .btn#author_h5p_add a::before {
   background-position: -180px -100px;
 }
 
-#mobile_authors_tools-container .btn#author_h5p_add a:hover::before, #mobile_authors_tools-container .btn#author_h5p_add a.active:before,
-#authors_tools-container .btn#author_h5p_add a:hover::before, #authors_tools-container .btn#author_h5p_add a.active:before {
+#mobile_authors_tools-container .btn#author_h5p_add a:hover::before, #mobile_authors_tools-container .btn#author_h5p_add a.active:before {
   background-position: -180px -150px;
 }
 
-#mobile_authors_tools-container .btn#author_annvid_add a::before,
-#authors_tools-container .btn#author_annvid_add a::before {
+#mobile_authors_tools-container .btn#author_annvid_add a::before{
   background-position: -412px -100px;
 }
 
-#mobile_authors_tools-container .btn#author_annvid_add a:hover::before, #mobile_authors_tools-container .btn#author_annvid_add a.active:before,
-#authors_tools-container .btn#author_annvid_add a:hover::before, #authors_tools-container .btn#author_annvid_add a.active:before {
+#mobile_authors_tools-container .btn#author_annvid_add a:hover::before, #mobile_authors_tools-container .btn#author_annvid_add a.active:before {
   background-position: -412px -150px;
 }
 
-#mobile_authors_tools-container .btn#author_chapter_add a::before,
-#authors_tools-container .btn#author_chapter_add a::before {
+#mobile_authors_tools-container .btn#author_chapter_add a::before {
   background-position: -240px 0px;
 }
 
-#mobile_authors_tools-container .btn#author_chapter_add a:hover::before, #mobile_authors_tools-container .btn#author_chapter_add a.active:before,
-#authors_tools-container .btn#author_chapter_add a:hover::before, #authors_tools-container .btn#author_chapter_add a.active:before {
+#mobile_authors_tools-container .btn#author_chapter_add a:hover::before, #mobile_authors_tools-container .btn#author_chapter_add a.active:before{
   background-position: -240px -50px;
 }
 
-#mobile_authors_tools-container .btn#author_subchapter_add a::before,
-#authors_tools-container .btn#author_subchapter_add a::before {
+#mobile_authors_tools-container .btn#author_subchapter_add a::before {
   background-position: -300px 0px;
 }
 
-#mobile_authors_tools-container .btn#author_subchapter_add a:hover::before, #mobile_authors_tools-container .btn#author_subchapter_add a.active:before,
-#authors_tools-container .btn#author_subchapter_add a:hover::before, #authors_tools-container .btn#author_subchapter_add a.active:before {
+#mobile_authors_tools-container .btn#author_subchapter_add a:hover::before, #mobile_authors_tools-container .btn#author_subchapter_add a.active:before {
   background-position: -300px -50px;
 }
 
-#mobile_authors_tools-container .btn#author_chapter_order a::before,
-#authors_tools-container .btn#author_chapter_order a::before {
+#mobile_authors_tools-container .btn#author_chapter_order a::before {
   background-position: -360px 0px;
 }
 
-#mobile_authors_tools-container .btn#author_chapter_order a:hover::before, #mobile_authors_tools-container .btn#author_chapter_order a.active:before,
-#authors_tools-container .btn#author_chapter_order a:hover::before, #authors_tools-container .btn#author_chapter_order a.active:before {
+#mobile_authors_tools-container .btn#author_chapter_order a:hover::before, #mobile_authors_tools-container .btn#author_chapter_order a.active:before {
   background-position: -360px -50px;
 }
 
 
 /*Aufgaben*/
 
-#mobile_authors_tools-container .btn#author_category_tasks a::before,
-#authors_tools-container .btn#author_category_tasks a::before {
+#mobile_authors_tools-container .btn#author_category_tasks a::before {
   background-position: 0px -100px;
 }
 
-#mobile_authors_tools-container .btn#author_tasks_overview a::before,
-#authors_tools-container .btn#author_tasks_overview a::before {
+#mobile_authors_tools-container .btn#author_tasks_overview a::before {
   background-position: 0px -100px;
 }
 
-#mobile_authors_tools-container .btn#author_tasks_overview a:hover::before, #mobile_authors_tools-container .btn#author_tasks_overview a.active:before,
-#authors_tools-container .btn#author_tasks_overview a:hover::before, #authors_tools-container .btn#author_tasks_overview a.active:before {
+#mobile_authors_tools-container .btn#author_category_tasks a:hover::before, #mobile_authors_tools-container .btn#author_category_tasks a.active:before,
+#mobile_authors_tools-container .btn#author_tasks_overview a:hover::before, #mobile_authors_tools-container .btn#author_tasks_overview a.active:before {
   background-position: 0px -150px;
 }
 
-#mobile_authors_tools-container .btn#author_tasks_qaa_add a::before,
-#authors_tools-container .btn#author_tasks_qaa_add a::before {
+#mobile_authors_tools-container .btn#author_tasks_qaa_add a::before {
   background-position: -60px -100px;
 }
 
-#mobile_authors_tools-container .btn#author_tasks_qaa_add a:hover::before, #mobile_authors_tools-container .btn#author_tasks_qaa_add a.active:before,
-#authors_tools-container .btn#author_tasks_qaa_add a:hover::before, #authors_tools-container .btn#author_tasks_qaa_add a.active:before {
+#mobile_authors_tools-container .btn#author_tasks_qaa_add a:hover::before, #mobile_authors_tools-container .btn#author_tasks_qaa_add a.active:before {
   background-position: -60px -150px;
 }
 
-#mobile_authors_tools-container .btn#author_tasks_mc_add a::before,
-#authors_tools-container .btn#author_tasks_mc_add a::before {
+#mobile_authors_tools-container .btn#author_tasks_mc_add a::before {
   background-position: -120px -100px;
 }
 
-#mobile_authors_tools-container .btn#author_tasks_mc_add a:hover::before, #mobile_authors_tools-container .btn#author_tasks_mc_add a.active:before,
-#authors_tools-container .btn#author_tasks_mc_add a:hover::before, #authors_tools-container .btn#author_tasks_mc_add a.active:before {
+#mobile_authors_tools-container .btn#author_tasks_mc_add a:hover::before, #mobile_authors_tools-container .btn#author_tasks_mc_add a.active:before {
   background-position: -120px -150px;
-}
-
-#authors_tools-toolbar {
-  display: none;
-  position: absolute;
-  background-color: #aaa;
-  color: #fff;
-  bottom: 55px;
-  left: 0;
 }
 
 /*
@@ -996,10 +777,6 @@ Project's Tools
 #projects_tools {
   display: inline-block;
   position: relative;
-}
-
-#instructors_tools-container .one_item_toobar #projects_tools-container .one_item_toobar, #authors_tools-container .one_item_toobar {
-  overflow: hidden;
 }
 
 #block-block-4, .pane-block-4 {
@@ -1185,103 +962,6 @@ Course Toolbar items
 }
 
 /*
-#course_tools_single, #course_tools_collab
-{
-  padding:2px 5px;
-  display:inline-block;
-  position:relative;
-
-}
-
-#course_top_nav_single-icon, #course_top_nav_collab-icon{
-  display:inline-block;
-  height:45px;
-  width:45px;
-  background-image:  url(../images/icons/transparent-icons---course.gif);
-  background-repeat: no-repeat;
-  margin-right:20px;
-  position:absolute;
-}
-
-#course_top_nav_single-icon{
-  background-position: 0px 0px;
-}
-#course_top_nav_collab-icon{
-  background-position: -45px 0px;
-}
-
-
-#course_tools_collab
-{
-  margin-left:30px;
-}
- */
-
-/*
-#instructors_tools li
-{
-    display: block;
-}
-*/
-
-/*
-NAV
-
-*/
-
-/*
-.unread_tiny_box
-{
-  font-size: 11px;
-  color: white;
-  font-weight: bold;
-  border: 1px solid #ddd;
-  position:absolute;
-  bottom:20px;
-  right: 0px;
-  padding:2px;
-  margin-left: 2px;
-  display:inline;
-  background-color:#f20000;
-}*/
-
-/*
-Nav single
-*/
-/*
-#course_top_nav_single, #course_top_nav_collab
-{
-  display:inline-block;
-  padding-left: 45px;
-}
-
-#course_top_nav_single li a
-{
-  border:none;
-  color: #fff;
-}
-*/
-
-/*
-Nav collab
-*/
-
-/*
-#course_top_nav_collab li a
-{
-  border:none;
-  color: #fff;
-}
-
-
-.yui-toolbar-container > fieldset
-{
-  position: inherit;
-  padding-top: 5px !important;
-}
-*/
-
-/*
 Editor
 */
 
@@ -1369,38 +1049,6 @@ Embeded Tasks
 .node-content-multiple-choice label {
   display: inline-block;
 }
-
-/*
-Instructors Block
-*/
-/*wrapper*/
-/*
-#block-block-4 {
-    left: -40px;
-    position: absolute;
-    width: 40px;
-
-}
-#block-block-4 ul {
-    padding: 0;
-    margin: 0;
-}
-
-#block-block-4 .content{
-    position: absolute;
-    top: 0;
-    margin-top: 0px;
-    padding-top: 0px;
-
-}
-
-
-#block-block-4 .content.fixed{
-    position: fixed;
-    top: 70px;
-}
-
-*/
 
 body.cke_show_borders {
   padding: 0;
@@ -1561,20 +1209,6 @@ for timespan span problem
 div.field-name-field-proposal-timespan {
   margin: 0 !important;
 }
-
-/*hover-funktionalitaet ganz unten wegen überschreibgefahr*/
-#instructors_tools-container:hover, #authors_tools-container:hover {
-  width: 240px;
-}
-
-#instructors_tools-container .toolbar_hidden, #authors_tools-container .toolbar_hidden {
-  display: none;
-}
-
-#instructors_tools-container:hover .toolbar_hidden, #authors_tools-container:hover .toolbar_hidden {
-  display: inline-block;
-}
-
 
 /*
  * die "meine Kurse-Ansicht auf home / Profil"

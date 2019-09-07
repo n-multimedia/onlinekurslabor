@@ -11,7 +11,7 @@
 }
 
 #section-nav-authoring-tools button.navbar-toggle {
-  top: -30px;
+  top: 0px;
   right: 6px;
   z-index: 1004;
   border-radius: 4px;
@@ -32,6 +32,10 @@
   #okl-nav-bar #custom-top-nav {
     margin: 0;
   }
+
+  #section-nav-authoring-tools button.navbar-toggle {
+    top: -30px !important;
+  }
 }
 
 @media (min-width: 768px) {
@@ -44,10 +48,6 @@
     margin-right: -15px !important;;
   }
 
-
-  #section-nav-authoring-tools button.navbar-toggle {
-    top: 5px;
-  }
 }
 
 @media (max-width: 992px) {
@@ -58,6 +58,10 @@
 
   .main-content {
     padding: 15px 10px;
+  }
+
+  #section-nav-authoring-tools button.navbar-toggle {
+    top: 5px;
   }
 
   .okl-home-container .bootstrap_tabs-stacked-left,
