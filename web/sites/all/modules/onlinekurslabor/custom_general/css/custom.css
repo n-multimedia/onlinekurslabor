@@ -680,17 +680,9 @@ Authors's Tools
   background-position: -120px -50px;
 }
 
-/*category: interactive video*/
-#mobile_authors_tools-container .btn#author_category_interactive a::before {
-  background-position: -180px 0px;
-}
-/*interactive video*/
-#mobile_authors_tools-container .btn#author_interactive_overview a::before {
-  background-position: -180px 0px;
-}
-
-#mobile_authors_tools-container .btn#author_category_interactive a:hover::before, #mobile_authors_tools-container .btn#author_category_interactive a.active:before,
-#mobile_authors_tools-container .btn#author_interactive_overview a:hover::before, #mobile_authors_tools-container .btn#author_interactive_overview a.active:before {
+/*interaktives 2x*/
+#mobile_authors_tools-container .btn#author_category_interactive a::before, #mobile_authors_tools-container .btn#author_category_interactive a:hover::before, #mobile_authors_tools-container .btn#author_category_interactive a.active:before,
+#mobile_authors_tools-container .btn#author_interactive_overview a::before, #mobile_authors_tools-container .btn#author_interactive_overview a:hover::before, #mobile_authors_tools-container .btn#author_interactive_overview a.active:before {
   background-position: -180px -50px;
 }
 
