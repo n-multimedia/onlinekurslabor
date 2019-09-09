@@ -531,10 +531,10 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
 
 
   _custom_general_tools_prepare_group_items($tool_links, $groups);
-
+  
+  $context_item_ids = array();
   //generate context link action(s) (most popular actions)
   if (_section_course_active()) {
-    $context_item_ids = NULL;
     // News erstellen
     if(arg(1) == 'home') {
       $context_item_ids[] = "instr_add_news";
@@ -582,7 +582,7 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
   }
 
   // render context action(s)
-  if($context_item_ids) {
+  if(count($context_item_ids)) {
     $output .= '<div id="tools-context-actions">';
     $output .= '<ul>';
 
