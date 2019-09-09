@@ -194,9 +194,14 @@ function _section_courses_get_authors_tools() {
       $add_chapter_options['query']['parent'] = $plid;
     }
 
+    //disable subchapter creation, if mlid == plid
+    $subchapter_disabled = FALSE;
     if ($plid != $mlid) {
       $add_subchapter_options = $default_options;
       $add_subchapter_options['query']['parent'] = $mlid;
+    }
+    else {
+      $subchapter_disabled = TRUE;
     }
   }
 

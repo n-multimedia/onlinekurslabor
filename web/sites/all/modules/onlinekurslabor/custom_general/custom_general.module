@@ -519,7 +519,7 @@ function _media_browser_get_referer_nid() {
 }
 
 /**
- *
+ * fügt im dropdown-menü kontextsensitiv passende items hinzu.
  */
 function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
   //($instructor_tools, "mobile_instructors_tools", "btn-group btn-group-vertical", 1)
@@ -532,28 +532,28 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
 
   _custom_general_tools_prepare_group_items($tool_links, $groups);
   
-  $context_item_ids = array();
+  $context_item_candidate_ids = array();
   //generate context link action(s) (most popular actions)
   if (_section_course_active()) {
     // News erstellen
     if(arg(1) == 'home') {
-      $context_item_ids[] = "instr_add_news";
+      $context_item_candidate_ids[] = "instr_add_news";
     }
     // Dokument hochladen
     if(arg(1) == 'docs') {
-      $context_item_ids[] = "instr_add_docs";
+      $context_item_candidate_ids[] = "instr_add_docs";
     }
     // Aufgabe erstellen
     if(arg(1) == 'tasks') {
-      $context_item_ids[] = "instr_add_task";
+      $context_item_candidate_ids[] = "instr_add_task";
     }
     // Kursgruppe erstellen
     if(arg(1) == 'groups') {
-      $context_item_ids[] = "instr_add_groups";
+      $context_item_candidate_ids[] = "instr_add_groups";
     }
     // Teilnehmenden hinzufügen
     if(arg(1) == 'members') {
-      $context_item_ids[] = "instr_add_members";
+      $context_item_candidate_ids[] = "instr_add_members";
     }
 
   }
@@ -561,36 +561,42 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
     if (_section_domain_active()) {
       // Kapitel erstellen
       if(arg(1) == 'text') {
-        $context_item_ids[] = "author_chapter_add";
-        $context_item_ids[] = "author_subchapter_add";
+        $context_item_candidate_ids[] = "author_chapter_add";
+        $context_item_candidate_ids[] = "author_subchapter_add";
       }
       // Biblio erstellen
       if(arg(1) == 'biblio') {
-        $context_item_ids[] = "author_biblio_add";
+        $context_item_candidate_ids[] = "author_biblio_add";
       }
       // Interaktive Inhalte erstellen
       if(arg(1) == 'h5p') {
-        $context_item_ids[] = "author_h5p_add";
-        $context_item_ids[] = "author_annvid_add";
+        $context_item_candidate_ids[] = "author_h5p_add";
+        $context_item_candidate_ids[] = "author_annvid_add";
       }
       // Aufgaben erstellen
       if(arg(1) == 'tasks') {
-        $context_item_ids[] = "author_tasks_mc_add";
-        $context_item_ids[] = "author_tasks_qaa_add";
+        $context_item_candidate_ids[] = "author_tasks_mc_add";
+        $context_item_candidate_ids[] = "author_tasks_qaa_add";
       }
     }
   }
 
   // render context action(s)
-  if(count($context_item_ids)) {
+  if(count($context_item_candidate_ids)) {
     $output .= '<div id="tools-context-actions">';
     $output .= '<ul>';
 
-    foreach ($context_item_ids as $context_item_id) {
-      if (isset($tool_links[$context_item_id]['attributes'])) {
-        $subitems_attributes = drupal_attributes($tool_links[$context_item_id]['attributes']);
+    foreach ($context_item_candidate_ids as $context_item_id) {
+      //die kandidaten werden geprüft, ob sie in der hauptnavigation existieren
+      if(isset($tool_links[$context_item_id]))
+      {
+        //attribute
+        $subitems_attributes = "";
+        if (isset($tool_links[$context_item_id]['attributes'])) {
+         $subitems_attributes = drupal_attributes($tool_links[$context_item_id]['attributes']);
+        }
+        $output .= '<li ' . $subitems_attributes . '>' . $tool_links[$context_item_id]['link_long'] . '</li>';
       }
-      $output .= '<li ' . $subitems_attributes . '>' . $tool_links[$context_item_id]['link_long'] . '</button>';
     }
 
     $output .= '</ul>';
