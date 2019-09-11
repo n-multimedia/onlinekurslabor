@@ -681,9 +681,15 @@ Authors's Tools
 }
 
 /*interaktives 2x*/
-#mobile_authors_tools-container .btn#author_category_interactive a::before, #mobile_authors_tools-container .btn#author_category_interactive a:hover::before, #mobile_authors_tools-container .btn#author_category_interactive a.active:before,
-#mobile_authors_tools-container .btn#author_interactive_overview a::before, #mobile_authors_tools-container .btn#author_interactive_overview a:hover::before, #mobile_authors_tools-container .btn#author_interactive_overview a.active:before {
-  background-position: -180px -50px;
+#mobile_authors_tools-container .btn#author_category_interactive a::before,
+#mobile_authors_tools-container .btn#author_interactive_overview a::before {
+  background-position: -180px 0px;
+}
+/*interaktives: hovereffekt*/
+#mobile_authors_tools-container .btn#author_category_interactive a:hover::before, #mobile_authors_tools-container .btn#author_category_interactive a.active:before,
+#mobile_authors_tools-container .btn#author_interactive_overview a:hover::before, #mobile_authors_tools-container .btn#author_interactive_overview a.active:before
+{
+     background-position: -180px -50px;
 }
 
 #mobile_authors_tools-container .btn#author_h5p_add a::before {
