@@ -3300,3 +3300,30 @@ function section_courses_views_pre_render(&$view) {
     $view->field['new_comments']->options['hide_alter_empty'] = 1;
   }
 }
+
+/**
+ * implements hook_views_pre_execute
+ * @param type $view
+ */
+function section_courses_views_pre_execute(&$view) {
+    
+    //------------- ersetze "Kein Ergebnis"-Text bei definierten views
+    $affected_views_and_types = array(
+        'courses_course_news' => NM_COURSE_NEWS,
+        'courses_course_docs' => NM_COURSE_DOCS,
+        'courses_tasks' => NM_COURSE_GENERIC_TASK,
+        'courses_admin_groups' => NM_COURSE_GROUP
+    );
+
+    if (in_array($view->name, array_keys($affected_views_and_types))) {
+        //course-nid
+        $og_gid = $view->argument['gid']->argument;
+        if (count($view->empty)) {
+            // ersetze "empty text"
+            $view->empty['area']->options['content'] = _custom_general_get_no_content_text($affected_views_and_types[$view->name], $og_gid);
+        }
+    }
+    
+    
+    //-----------------------------
+}

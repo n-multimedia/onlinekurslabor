@@ -14,6 +14,7 @@ define("NM_FILTER_FORMAT_FILTERED_HTML", 'filtered_html');
 //Blocks
 define("NM_BLOCK_AUTOREN", 53);
 
+//lauter fallbacks, falls die admin-variablen nicht gesetzt ist
 //Global Forum
 define("NM_GLOBAL_FORUM_TID", 180);
 //Courses Parent Forum Term
@@ -1784,3 +1785,59 @@ function _custom_general_collapse_filter_tips($filter, $format, $long = FALSE) {
 }
 
 
+
+/**
+ * Liefert einheitliche "Kein-Eintrag-gefunden"-Texte mit Erstelllink
+ * @param type $type Typ des fehlenden Contents, z.B. NM_COURSE_NEWS
+ * @param type $og_gid derzeit die Kurs-NID. Später ggf auch Lehrtext-NID
+ */
+function _custom_general_get_no_content_text($type, $og_gid)
+{   
+    //kann man bei Gelegenheit ausgliedern
+    //"übersetzt" Definition-Strings in englisch
+    $ARR_Definition_to_String = array(
+                NM_COURSE_DOCS => 'course doc',
+                NM_COURSE_NEWS => 'news',
+                NM_COURSE_GROUP => 'course group',
+                NM_COURSE_GENERIC_TASK => 'task'
+            );
+    
+    $affected_node = node_load($og_gid);
+    
+
+    //anlege-url
+    $default_url = NM_COURSE_ADMIN_PREFIX_PATH . DIRECTORY_SEPARATOR . $og_gid . DIRECTORY_SEPARATOR . 'add' . DIRECTORY_SEPARATOR . str_replace('_', '-',$type);
+    //"Erstellen Sie derdiedas erste!" (Mit Context für Übersetzung)
+    $add_text = t('Create the first one!', array(), array('context' => $type));
+
+    //"Noch kein Kursdokumente angelegt"
+    $default_no_content_text = t('No ' . $ARR_Definition_to_String[$type] . ' has been created yet.');
+
+  
+    $default_text_without_add = $default_no_content_text;
+    $default_text_with_add = $default_no_content_text .' '. l($add_text, $default_url, array('query'=>array('og_group_ref'=>$og_gid)));
+ 
+    //Erstellrechte?
+    if (node_access('update', $affected_node)) {
+        $default_text = $default_text_with_add;
+    } else {
+        $default_text = $default_text_without_add;
+    }
+
+    switch ($affected_node->type) {
+        //erstmal nur für Views in "Kurs" umgesetzt
+        case NM_COURSE:
+            switch ($type) {
+                case NM_COURSE_NEWS: //"news" is plural!
+                    $text = t('No ' . $ARR_Definition_to_String[$type] . ' have been created yet.') . (node_access('update', $affected_node)? ' '. l($add_text, $default_url, array('query'=>array('og_group_ref'=>$og_gid))):'');
+                    return $text;
+                    
+                default: return $default_text;
+            }
+            break;
+
+
+        default:
+            throw new Exception("No implementation in 578tuzghjdsf323dfed");
+    }
+}
