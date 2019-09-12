@@ -641,15 +641,25 @@ Authors's Tools
   left: -15px;
 }
 
-#mobile_authors_tools-container .btn#author_category_chapter a::before,
+/*category: chapter*/
+#mobile_authors_tools-container .btn#author_category_chapter a::before
+{
+  background-position: -240px 0px;
+}
+
+#mobile_authors_tools-container .btn#author_category_chapter a:hover::before, #mobile_authors_tools-container .btn#author_category_chapter a.active::before
+{
+  background-position: -240px -50px;
+}
+
+/*category: biblio // overview: biblio*/
 #mobile_authors_tools-container .btn#author_category_biblio a::before,
 #mobile_authors_tools-container .btn#author_biblio_overview a::before {
   background-position: 0px 0px;
 }
 
-#mobile_authors_tools-container .btn#author_category_chapter a:hover::before, #mobile_authors_tools-container .btn#author_category_chapter a.active:before,
-#mobile_authors_tools-container .btn#author_category_biblio a:hover::before, #mobile_authors_tools-container .btn#author_category_biblio a.active:before,
-#mobile_authors_tools-container .btn#author_biblio_overview a:hover::before, #mobile_authors_tools-container .btn#author_biblio_overview a.active:before
+#mobile_authors_tools-container .btn#author_category_biblio a:hover::before, #mobile_authors_tools-container .btn#author_category_biblio a.active::before,
+#mobile_authors_tools-container .btn#author_biblio_overview a:hover::before, #mobile_authors_tools-container .btn#author_biblio_overview a.active::before
 {
   background-position: 0px -50px;
 }
@@ -709,27 +719,27 @@ Authors's Tools
 }
 
 #mobile_authors_tools-container .btn#author_chapter_add a::before {
-  background-position: -240px 0px;
-}
-
-#mobile_authors_tools-container .btn#author_chapter_add a:hover::before, #mobile_authors_tools-container .btn#author_chapter_add a.active:before{
-  background-position: -240px -50px;
-}
-
-#mobile_authors_tools-container .btn#author_subchapter_add a::before {
   background-position: -300px 0px;
 }
 
-#mobile_authors_tools-container .btn#author_subchapter_add a:hover::before, #mobile_authors_tools-container .btn#author_subchapter_add a.active:before {
+#mobile_authors_tools-container .btn#author_chapter_add a:hover::before, #mobile_authors_tools-container .btn#author_chapter_add a.active:before{
   background-position: -300px -50px;
 }
 
-#mobile_authors_tools-container .btn#author_chapter_order a::before {
+#mobile_authors_tools-container .btn#author_subchapter_add a::before {
   background-position: -360px 0px;
 }
 
-#mobile_authors_tools-container .btn#author_chapter_order a:hover::before, #mobile_authors_tools-container .btn#author_chapter_order a.active:before {
+#mobile_authors_tools-container .btn#author_subchapter_add a:hover::before, #mobile_authors_tools-container .btn#author_subchapter_add a.active:before {
   background-position: -360px -50px;
+}
+
+#mobile_authors_tools-container .btn#author_chapter_order a::before {
+  background-position: -420px 0px;
+}
+
+#mobile_authors_tools-container .btn#author_chapter_order a:hover::before, #mobile_authors_tools-container .btn#author_chapter_order a.active:before {
+  background-position: -420px -50px;
 }
 
 
