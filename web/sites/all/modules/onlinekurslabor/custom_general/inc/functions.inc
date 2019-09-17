@@ -14,7 +14,11 @@ function _section_domain_active() {
   return FALSE;
 }
 
-function _section_course_active($group) {
+/**
+ * bin ich derzeit im Kurs-Kontext?
+ * @return boolean
+ */
+function _section_course_active() {
 
   //$node = menu_get_object();
   //_custom_general_get_group($group);
