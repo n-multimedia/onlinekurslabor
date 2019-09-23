@@ -77,8 +77,14 @@
     padding: 0;
   }
 
-  .view-nm-activity-stream {
-    display: none;
+
+  /*
+  Mobil - activity - größere Pager-Buttons
+  */
+  div.activity-mobile .view-nm-activity-stream ul.pager a{
+      /**padding: 5px 55px;*/
+      padding-left: 15%;
+      padding-right: 15%;
   }
 
 
