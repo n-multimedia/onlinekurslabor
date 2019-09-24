@@ -27,5 +27,8 @@ $user = user_load($uid);
         <?php if (module_exists('privatemsg_okl')): ?>
             <?php echo privatemsg_okl_get_profile_btn(); ?>
         <?php endif ?>
+        <?php if(user_access('switch users')):?>
+            <?php echo _section_profile_get_user_switch_btn($uid); ?>
+        <?php endif ?>
     </div>
 </div>
