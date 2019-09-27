@@ -980,6 +980,7 @@ function custom_general_preprocess_page(&$variables) {
 }
 
 function custom_general_append_active_class($path, &$options) {
+  global $language_url;
   // Append active class.
   if (($path == $_GET['q'] || ($path == '<front>' && drupal_is_front_page())) && (empty($options['language']) || $options['language']->language == $language_url->language)) {
     $options['attributes']['class'][] = 'active';
