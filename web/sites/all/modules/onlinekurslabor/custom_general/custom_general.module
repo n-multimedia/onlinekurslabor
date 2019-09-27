@@ -532,28 +532,28 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
 
 
   _custom_general_tools_prepare_group_items($tool_links, $groups);
-  
-  $context_item_candidate_ids = array();
+
+  $context_item_candidate_ids = [];
   //generate context link action(s) (most popular actions)
   if (_section_course_active()) {
     // News erstellen
-    if(arg(1) == 'home') {
+    if (arg(1) == 'home') {
       $context_item_candidate_ids[] = "instr_add_news";
     }
     // Dokument hochladen
-    if(arg(1) == 'docs') {
+    if (arg(1) == 'docs') {
       $context_item_candidate_ids[] = "instr_add_docs";
     }
     // Aufgabe erstellen
-    if(arg(1) == 'tasks') {
+    if (arg(1) == 'tasks') {
       $context_item_candidate_ids[] = "instr_add_task";
     }
     // Kursgruppe erstellen
-    if(arg(1) == 'groups') {
+    if (arg(1) == 'groups') {
       $context_item_candidate_ids[] = "instr_add_groups";
     }
     // Teilnehmenden hinzufügen
-    if(arg(1) == 'members') {
+    if (arg(1) == 'members') {
       $context_item_candidate_ids[] = "instr_add_members";
     }
 
@@ -561,21 +561,21 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
   else {
     if (_section_domain_active()) {
       // Kapitel erstellen
-      if(arg(1) == 'text') {
+      if (arg(1) == 'text') {
         $context_item_candidate_ids[] = "author_chapter_add";
         $context_item_candidate_ids[] = "author_subchapter_add";
       }
       // Biblio erstellen
-      if(arg(1) == 'biblio') {
+      if (arg(1) == 'biblio') {
         $context_item_candidate_ids[] = "author_biblio_add";
       }
       // Interaktive Inhalte erstellen
-      if(arg(1) == 'h5p') {
+      if (arg(1) == 'h5p') {
         $context_item_candidate_ids[] = "author_h5p_add";
         $context_item_candidate_ids[] = "author_annvid_add";
       }
       // Aufgaben erstellen
-      if(arg(1) == 'tasks') {
+      if (arg(1) == 'tasks') {
         $context_item_candidate_ids[] = "author_tasks_mc_add";
         $context_item_candidate_ids[] = "author_tasks_qaa_add";
       }
@@ -583,18 +583,17 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
   }
 
   // render context action(s)
-  if(count($context_item_candidate_ids)) {
+  if (count($context_item_candidate_ids)) {
     $output .= '<div id="tools-context-actions">';
     $output .= '<ul>';
 
     foreach ($context_item_candidate_ids as $context_item_id) {
       //die kandidaten werden geprüft, ob sie in der hauptnavigation existieren
-      if(isset($tool_links[$context_item_id]))
-      {
+      if (isset($tool_links[$context_item_id])) {
         //attribute
         $subitems_attributes = "";
         if (isset($tool_links[$context_item_id]['attributes'])) {
-         $subitems_attributes = drupal_attributes($tool_links[$context_item_id]['attributes']);
+          $subitems_attributes = drupal_attributes($tool_links[$context_item_id]['attributes']);
         }
         $output .= '<li ' . $subitems_attributes . '>' . $tool_links[$context_item_id]['link_long'] . '</li>';
       }
@@ -614,62 +613,59 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
 
     $rootitem = array_shift($group_items);
 
-
-
-     //ist in diesem menü ein punkt "active" gesetzt?
-     $menu_has_active_component = false;
-     $submenu_entries = '';
-     foreach ($group_items as $gi) {
+    //ist in diesem menü ein punkt "active" gesetzt?
+    $menu_has_active_component = FALSE;
+    $submenu_entries = '';
+    foreach ($group_items as $gi) {
 
       $subitems_attributes = "";
       if (isset($gi['attributes'])) {
         $subitems_attributes = drupal_attributes($gi['attributes']);
-        $menu_has_active_component |= array_search('active', $gi['attributes']['class']);
+        //$menu_has_active_component |= array_search('active', $gi['attributes']['class']);
+        $menu_has_active_component |= (strstr($gi['link_long'], 'class="active"') != FALSE);
       }
       //$output .= '<li '.$attributes.'>' . $tl['link'] . '</li>';
       $submenu_entries .= '<li ' . $subitems_attributes . '>' . $gi['link_long'] . '</li>';
     }
 
 
-     $menu_has_active_component |=  array_search('active', $rootitem['attributes']['class'] );
+    $menu_has_active_component |= array_search('active', $rootitem['attributes']['class']);
 
 
     //attribute für das <li>
-    $rootitem_attributes = array();
+    $rootitem_attributes = [];
     //attribute für das <ul>
-    $uls_attributes = array();
+    $uls_attributes = [];
 
-     if (isset($rootitem['attributes'])) {
-        $rootitem_attributes = $rootitem['attributes'];
+    if (isset($rootitem['attributes'])) {
+      $rootitem_attributes = $rootitem['attributes'];
     }
 
-    if($group_has_items)
-    {
-        $rootitem_attributes['class'][] = 'menu_entry_collapsable';
-        $rootitem_attributes['data-toggle'] = 'collapse';
-        $rootitem_attributes['data-target'] = '#navgroup_'.$rootitem['attributes']['id'];
+    if ($group_has_items) {
+      $rootitem_attributes['class'][] = 'menu_entry_collapsable';
+      $rootitem_attributes['data-toggle'] = 'collapse';
+      $rootitem_attributes['data-target'] = '#navgroup_' . $rootitem['attributes']['id'];
 
-        $uls_attributes['class'][] = 'collapse';
-        $uls_attributes['id'] = 'navgroup_'.$rootitem['attributes']['id'];
+      $uls_attributes['class'][] = 'collapse';
+      $uls_attributes['id'] = 'navgroup_' . $rootitem['attributes']['id'];
 
-        if($menu_has_active_component)
-        {
-            $uls_attributes['class'][] = 'in';
-        }
-        else{
-            $rootitem_attributes['class'][] ='collapsed';
-        }
+      if ($menu_has_active_component) {
+        $uls_attributes['class'][] = 'in';
+      }
+      else {
+        $rootitem_attributes['class'][] = 'collapsed';
+      }
 
 
     }
 
 
-    $output .= '<li  '.drupal_attributes($rootitem_attributes) . '>' . $rootitem['link_long'] . '</li>';
+    $output .= '<li  ' . drupal_attributes($rootitem_attributes) . '>' . $rootitem['link_long'] . '</li>';
 
     // group items below
     //do the collapse here
 
-    $output .= '<ul '. drupal_attributes($uls_attributes)  .'>';
+    $output .= '<ul ' . drupal_attributes($uls_attributes) . '>';
     $output .= $submenu_entries;
     $output .= '</ul>';
 
@@ -719,7 +715,7 @@ function _custom_general_theme_tools_block($tool_links, $id = "", $class = "sect
             $gi['attributes']['class'][] = 'toolbar_hidden';
           }
           else {
-            $gi['attributes']['class'] = array('toolbar_hidden');
+            $gi['attributes']['class'] = ['toolbar_hidden'];
           }
         }
         $attributes = "";
@@ -1792,7 +1788,7 @@ function _custom_general_collapse_filter_tips($filter, $format, $long = FALSE) {
  * @param type $og_gid derzeit die Kurs-NID. Später ggf auch Lehrtext-NID
  */
 function _custom_general_get_no_content_text($type, $og_gid)
-{   
+{
     //kann man bei Gelegenheit ausgliedern
     //"übersetzt" Definition-Strings in englisch
     $ARR_Definition_to_String = array(
@@ -1801,9 +1797,9 @@ function _custom_general_get_no_content_text($type, $og_gid)
                 NM_COURSE_GROUP => 'course group',
                 NM_COURSE_GENERIC_TASK => 'task'
             );
-    
+
     $affected_node = node_load($og_gid);
-    
+
 
     //anlege-url
     $default_url = NM_COURSE_ADMIN_PREFIX_PATH . DIRECTORY_SEPARATOR . $og_gid . DIRECTORY_SEPARATOR . 'add' . DIRECTORY_SEPARATOR . str_replace('_', '-',$type);
@@ -1813,10 +1809,10 @@ function _custom_general_get_no_content_text($type, $og_gid)
     //"Noch kein Kursdokumente angelegt"
     $default_no_content_text = t('No ' . $ARR_Definition_to_String[$type] . ' has been created yet.');
 
-  
+
     $default_text_without_add = $default_no_content_text;
     $default_text_with_add = $default_no_content_text .' '. l($add_text, $default_url, array('query'=>array('og_group_ref'=>$og_gid)));
- 
+
     //Erstellrechte?
     if (node_access('update', $affected_node)) {
         $default_text = $default_text_with_add;
@@ -1831,7 +1827,7 @@ function _custom_general_get_no_content_text($type, $og_gid)
                 case NM_COURSE_NEWS: //"news" is plural!
                     $text = t('No ' . $ARR_Definition_to_String[$type] . ' have been created yet.') . (node_access('update', $affected_node)? ' '. l($add_text, $default_url, array('query'=>array('og_group_ref'=>$og_gid))):'');
                     return $text;
-                    
+
                 default: return $default_text;
             }
             break;
