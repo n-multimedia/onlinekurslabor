@@ -621,8 +621,8 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
       $subitems_attributes = "";
       if (isset($gi['attributes'])) {
         $subitems_attributes = drupal_attributes($gi['attributes']);
-        //$menu_has_active_component |= array_search('active', $gi['attributes']['class']);
-        $menu_has_active_component |= (strstr($gi['link_long'], 'class="active"') != FALSE);
+        $menu_has_active_component |= array_search('active', $gi['attributes']['class']);
+        //$menu_has_active_component |= (strstr($gi['link_long'], 'class="active"') != FALSE);
       }
       //$output .= '<li '.$attributes.'>' . $tl['link'] . '</li>';
       $submenu_entries .= '<li ' . $subitems_attributes . '>' . $gi['link_long'] . '</li>';
