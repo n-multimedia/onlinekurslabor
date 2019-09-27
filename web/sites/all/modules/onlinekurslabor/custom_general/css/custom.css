@@ -383,9 +383,19 @@ show new (mobile) instructor tools
   margin-left: 30px;
 }
 
-#mobile_authors_tools-container ul li.btn.active:not(.menu_entry_collapsable),
 #mobile_instructors_tools-container ul li.btn.active:not(.menu_entry_collapsable) {
   background-color: #337ab7;
+}
+
+#mobile_authors_tools-container ul li.btn.active {
+    /*override bootstrap-style */
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+#mobile_authors_tools-container ul li.btn.active:not(.menu_entry_collapsable)
+{
+    background-color: #F6F6F6;
 }
 
 #mobile_authors_tools-container ul li.btn.active a,

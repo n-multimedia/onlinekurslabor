@@ -400,7 +400,7 @@ function _section_courses_get_authors_tools() {
         'class' => ['btn', 'btn-default'],
       ],
     ];
-    if (isset($link['path'])) {
+    if (isset($item['path'])) {
       custom_general_append_active_class(($item['path']), $attributes);
     }
 
