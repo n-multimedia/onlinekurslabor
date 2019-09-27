@@ -15,6 +15,34 @@ msgstr "Bitten Sie die Kursleitung darum, Sie in eine einzutragen."
 msgid "This course is currently being tested not public yet."
 msgstr "Dieser Kurs wird derzeit noch getestet und wurde noch nicht veröffentlicht."
 
+msgid "No course doc has been created yet."
+msgstr "Es wurde noch kein Kursdokument erstellt."
+
+msgid "No task has been created yet."
+msgstr "Es wurde noch keine Aufgabe angelegt."
+
+msgid "No course group has been created yet."
+msgstr "Es wurde noch keine Kursgruppe erstellt."
+
+msgid "No news have been created yet."
+msgstr "Es wurde noch keine Ankündigung veröffentlicht."
+
+msgctxt "courses_docs"
+msgid "Create the first one!"
+msgstr "Erstellen Sie das erste!"
+
+msgctxt "courses_generic_task"
+msgid "Create the first one!"
+msgstr "Erstellen Sie die erste!"
+
+msgctxt "courses_news"
+msgid "Create the first one!"
+msgstr "Erstellen Sie die erste!"
+
+msgctxt "courses_group"
+msgid "Create the first one!"
+msgstr "Erstellen Sie die erste!"
+
 
 msgid ""
 msgstr ""

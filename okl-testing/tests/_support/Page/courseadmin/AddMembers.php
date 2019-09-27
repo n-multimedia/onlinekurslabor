@@ -12,6 +12,10 @@ class AddMembers {
     
     public static $teilnehmendeMenuButton = 'Teilnehmende';
     
+
+    //müsstman refactorn, betrifft wohl mehrere bereiche
+    public static $coursemenu_class = '.section_navigation_course';
+    
     /* created in constructor */
     public $course_memberadd_url; 
  
@@ -89,7 +93,7 @@ class AddMembers {
     private function confirmSuccessfulAdding(\AcceptanceTester $I, $name)
     {
         //neuer student taucht in der Liste auf
-        $I->click(self::$teilnehmendeMenuButton);
+        $I->click(self::$teilnehmendeMenuButton,self::$coursemenu_class);
         $I->see($name);
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_section_content_features.views_default.inc
@@ -64,7 +65,7 @@ function nm_section_content_features_views_default_views() {
       'empty_column' => 0,
     ),
   );
-  /* Relationship: OG membership: OG membership from Node */
+  /* Relationship: OG membership: OG membership from Beitrag */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
@@ -76,13 +77,13 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = 'Titel';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Delete link */
+  /* Field: Content: Link to delete content */
   $handler->display->display_options['fields']['delete_node']['id'] = 'delete_node';
   $handler->display->display_options['fields']['delete_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['delete_node']['field'] = 'delete_node';
   $handler->display->display_options['fields']['delete_node']['label'] = '';
   $handler->display->display_options['fields']['delete_node']['element_label_colon'] = FALSE;
-  /* Field: Content: Edit link */
+  /* Field: Content: Link to edit content */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
@@ -103,7 +104,7 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['arguments']['gid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['gid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['gid']['summary_options']['items_per_page'] = '25';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -235,7 +236,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Gruppe */
+  /* Field: Beitrag: Gruppe */
   $handler->display->display_options['fields']['group_group']['id'] = 'group_group';
   $handler->display->display_options['fields']['group_group']['table'] = 'field_data_group_group';
   $handler->display->display_options['fields']['group_group']['field'] = 'group_group';
@@ -248,7 +249,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -334,7 +335,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
-  /* Contextual filter: Content: Thema (field_domain_ref) */
+  /* Contextual filter: Beitrag: Thema (field_domain_ref) */
   $handler->display->display_options['arguments']['field_domain_ref_target_id']['id'] = 'field_domain_ref_target_id';
   $handler->display->display_options['arguments']['field_domain_ref_target_id']['table'] = 'field_data_field_domain_ref';
   $handler->display->display_options['arguments']['field_domain_ref_target_id']['field'] = 'field_domain_ref_target_id';
@@ -347,7 +348,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['arguments']['field_domain_ref_target_id']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['field_domain_ref_target_id']['validate']['type'] = 'numeric';
   $handler->display->display_options['arguments']['field_domain_ref_target_id']['validate']['fail'] = 'empty';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -389,7 +390,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Verwendung als Demo-Lehrtext (öffentlich zugänglich)';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Thema (Demo) (field_domain_demo_ref) */
+  /* Contextual filter: Beitrag: Thema (Demo) (field_domain_demo_ref) */
   $handler->display->display_options['arguments']['field_domain_demo_ref_target_id']['id'] = 'field_domain_demo_ref_target_id';
   $handler->display->display_options['arguments']['field_domain_demo_ref_target_id']['table'] = 'field_data_field_domain_demo_ref';
   $handler->display->display_options['arguments']['field_domain_demo_ref_target_id']['field'] = 'field_domain_demo_ref_target_id';
@@ -484,7 +485,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
       'empty_column' => 0,
     ),
   );
-  /* Relationship: OG membership: OG membership from Node */
+  /* Relationship: OG membership: OG membership from Beitrag */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';
@@ -496,11 +497,11 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['fields']['title']['label'] = 'Aufgabe';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Delete link */
+  /* Field: Content: Link to delete content */
   $handler->display->display_options['fields']['delete_node']['id'] = 'delete_node';
   $handler->display->display_options['fields']['delete_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['delete_node']['field'] = 'delete_node';
-  /* Field: Content: Edit link */
+  /* Field: Content: Link to edit content */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
@@ -519,7 +520,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['arguments']['gid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['gid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['gid']['summary_options']['items_per_page'] = '25';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -564,8 +565,8 @@ Oben <code>Neues Thema anlegen</code> drücken.
     t('letzte Seite »'),
     t('OG membership from node'),
     t('Aufgabe'),
-    t('Delete link'),
-    t('Edit link'),
+    t('Link to delete content'),
+    t('Link to edit content'),
     t('Alle'),
     t('Content pane'),
     t('View panes'),
@@ -607,12 +608,12 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = '- keine -';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
-  /* Relationship: OG membership: OG membership from Node group */
+  /* Relationship: OG membership: OG membership from Beitrag group */
   $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
   $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
   $handler->display->display_options['relationships']['og_membership_rel_group']['required'] = TRUE;
-  /* Relationship: OG membership: User from OG membership */
+  /* Relationship: OG membership: Person from OG membership */
   $handler->display->display_options['relationships']['og_membership_related_user']['id'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
@@ -655,7 +656,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['uid']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['uid']['validate']['type'] = 'user';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -780,7 +781,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['arguments']['null']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['null']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['null']['validate']['type'] = 'numeric';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -967,7 +968,7 @@ $vorkommens_counter +=  $query2->entityCondition(\'entity_type\', \'node\')
       'empty_column' => 0,
     ),
   );
-  /* Relationship: OG membership: OG membership from File */
+  /* Relationship: OG membership: OG membership from Datei */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'file_managed';
   $handler->display->display_options['relationships']['og_membership_rel']['field'] = 'og_membership_rel';

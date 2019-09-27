@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_general_features.layouts.inc
@@ -721,7 +722,7 @@ See template.php';
           0 => 'main-row',
         ),
         'parent' => 'canvas',
-        'class' => 'col-md-6',
+        'class' => 'col-md-6 col-xs-12',
       ),
       'main-row' => array(
         'type' => 'row',
@@ -747,7 +748,7 @@ See template.php';
         'children' => array(
           0 => 2,
         ),
-        'class' => 'col-md-6',
+        'class' => 'col-md-6 col-xs-12',
       ),
       2 => array(
         'type' => 'row',
@@ -854,6 +855,275 @@ See template.php';
     ),
   );
   $export['span8span4'] = $layout;
+
+  $layout = new stdClass();
+  $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
+  $layout->api_version = 1;
+  $layout->name = 'span8span4_mobile_bottom_up';
+  $layout->admin_title = 'col-md-8col-md-4:mobile-bottom-up';
+  $layout->admin_description = 'mobil befindet sich die rechte Spalte oben statt nach unten
+Vorsicht beim Befüllen: tools und main erscheinen vertauscht.';
+  $layout->category = '';
+  $layout->plugin = 'flexible';
+  $layout->settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+          1 => 1,
+        ),
+        'parent' => NULL,
+        'class' => 'row',
+        'column_class' => '',
+        'row_class' => '',
+        'region_class' => '',
+        'no_scale' => FALSE,
+        'fixed_width' => '',
+        'column_separation' => '0.5em',
+        'region_separation' => '0.5em',
+        'row_separation' => '0.5em',
+        'hide_empty' => 0,
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+        'class' => 'col-md-4 col-md-push-8 col-xs-12 custom-general--column-right',
+        'hide_empty' => 0,
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'news',
+        ),
+        'parent' => 'main',
+      ),
+      'news' => array(
+        'type' => 'region',
+        'title' => 'tools (wird rechts dargestellt)',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => '',
+        'hide_empty' => 0,
+      ),
+      1 => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'parent' => 'canvas',
+        'children' => array(
+          0 => 2,
+        ),
+        'class' => 'col-md-8 col-md-pull-4 col-xs-12 custom-general--column-left',
+        'hide_empty' => 0,
+      ),
+      2 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'tools',
+        ),
+        'parent' => '1',
+        'class' => '',
+      ),
+      'tools' => array(
+        'type' => 'region',
+        'title' => 'main (wird links dargestellt)',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '2',
+        'class' => '',
+        'hide_empty' => 0,
+      ),
+    ),
+  );
+  $export['span8span4_mobile_bottom_up'] = $layout;
+
+  $layout = new stdClass();
+  $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
+  $layout->api_version = 1;
+  $layout->name = 'span9span3';
+  $layout->admin_title = 'col-md-9col-md-3';
+  $layout->admin_description = '';
+  $layout->category = '';
+  $layout->plugin = 'flexible';
+  $layout->settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+          1 => 1,
+        ),
+        'parent' => NULL,
+        'class' => 'row',
+        'column_class' => '',
+        'row_class' => '',
+        'region_class' => '',
+        'no_scale' => FALSE,
+        'fixed_width' => '',
+        'column_separation' => '0.5em',
+        'region_separation' => '0.5em',
+        'row_separation' => '0.5em',
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+        'class' => 'col-md-9 col-xs-12',
+        'hide_empty' => 0,
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'news',
+        ),
+        'parent' => 'main',
+      ),
+      'news' => array(
+        'type' => 'region',
+        'title' => 'main',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => '',
+      ),
+      1 => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'parent' => 'canvas',
+        'children' => array(
+          0 => 2,
+        ),
+        'class' => 'col-md-3 col-xs-12',
+        'hide_empty' => 0,
+      ),
+      2 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'tools',
+        ),
+        'parent' => '1',
+        'class' => '',
+      ),
+      'tools' => array(
+        'type' => 'region',
+        'title' => 'tools',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '2',
+        'class' => '',
+      ),
+    ),
+  );
+  $export['span9span3'] = $layout;
+
+  $layout = new stdClass();
+  $layout->disabled = FALSE; /* Edit this to true to make a default layout disabled initially */
+  $layout->api_version = 1;
+  $layout->name = 'span9span3_mobile_bottom_up';
+  $layout->admin_title = 'col-md-9col-md-3:mobile-bottom-up';
+  $layout->admin_description = 'mobil befindet sich die rechte Spalte oben statt nach unten
+Vorsicht beim Befüllen: tools und main erscheinen vertauscht.';
+  $layout->category = '';
+  $layout->plugin = 'flexible';
+  $layout->settings = array(
+    'items' => array(
+      'canvas' => array(
+        'type' => 'row',
+        'contains' => 'column',
+        'children' => array(
+          0 => 'main',
+          1 => 1,
+        ),
+        'parent' => NULL,
+        'class' => 'row',
+        'column_class' => '',
+        'row_class' => '',
+        'region_class' => '',
+        'no_scale' => FALSE,
+        'fixed_width' => '',
+        'column_separation' => '0.5em',
+        'region_separation' => '0.5em',
+        'row_separation' => '0.5em',
+        'hide_empty' => 0,
+      ),
+      'main' => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'children' => array(
+          0 => 'main-row',
+        ),
+        'parent' => 'canvas',
+        'class' => 'col-md-3 col-md-push-9 col-xs-12 custom-general--column-right',
+        'hide_empty' => 0,
+      ),
+      'main-row' => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'news',
+        ),
+        'parent' => 'main',
+      ),
+      'news' => array(
+        'type' => 'region',
+        'title' => 'tools (wird rechts dargestellt)',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => 'main-row',
+        'class' => '',
+        'hide_empty' => 0,
+      ),
+      1 => array(
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
+        'parent' => 'canvas',
+        'children' => array(
+          0 => 2,
+        ),
+        'class' => 'col-md-9 col-md-pull-3 col-xs-12 custom-general--column-left',
+        'hide_empty' => 0,
+      ),
+      2 => array(
+        'type' => 'row',
+        'contains' => 'region',
+        'children' => array(
+          0 => 'tools',
+        ),
+        'parent' => '1',
+        'class' => '',
+      ),
+      'tools' => array(
+        'type' => 'region',
+        'title' => 'main (wird links dargestellt)',
+        'width' => 100,
+        'width_type' => '%',
+        'parent' => '2',
+        'class' => '',
+        'hide_empty' => 0,
+      ),
+    ),
+  );
+  $export['span9span3_mobile_bottom_up'] = $layout;
 
   return $export;
 }

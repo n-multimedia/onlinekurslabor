@@ -1,122 +1,125 @@
-
 /*
 Knob
 */
 
 input[disabled].knob {
-    display: none;
+  display: none;
 }
 
-
 .nm_circle_progress_bar {
-    width:200px;
-    position:relative;
-    margin-left:auto;
-    margin-right:auto;
+  width: 200px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /*
-user profile smaller 
+user profile smaller
 */
 .user-courses-item .nm_circle_progress_bar {
-  width:auto;
-  position:inherit;
+  width: auto;
+  position: inherit;
 }
-.user-courses-item .nm_circle_progress_bar, .user-courses-item .nm_circle_progress_bar>div  {
+
+.user-courses-item .nm_circle_progress_bar, .user-courses-item .nm_circle_progress_bar > div {
   height: 38px !important;
-  overflow:hidden;
-}
-.user-courses-item .user-courses-item-progress{
-    background-color:#fff;
-    opacity:0.8;
-    height:100%;
-    padding-top:5px;
-    display:none;
-}
-.user-courses-item:hover .user-courses-item-progress{
-  display:block !important;
+  overflow: hidden;
 }
 
+.user-courses-item .user-courses-item-progress {
+  background-color: #fff;
+  opacity: 0.8;
+  height: 100%;
+  padding-top: 5px;
+  display: none;
+}
 
-.nm_circle_progress_bar .nm_cb_title, .nm_circle_progress_bar canvas, .nm_circle_progress_bar div{
-    display: block;
+.user-courses-item:hover .user-courses-item-progress {
+  display: block !important;
+}
 
-    margin-left:auto;
-    margin-right:auto;
-    text-align: center;
-    position:relative;
+.nm_circle_progress_bar .nm_cb_title, .nm_circle_progress_bar canvas, .nm_circle_progress_bar div {
+  display: block;
+
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  position: relative;
 
 }
 
 .nm_circle_progress_bar .nm_cb_title {
-    position:absolute;
+  position: absolute;
 
-    top:60px;
-    left:28px;
+  top: 60px;
+  left: 28px;
 }
 
 .nm_cb_title_1 {
-    font-weight: bold;
-}
-.nm_cb_title_2 {
-    margin-bottom:0;
-    font-weight: bold;
-}
-.nm_cb_title_3 {
-    margin-top:0;
-    font-weight: bold;
+  font-weight: bold;
 }
 
+.nm_cb_title_2 {
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+.nm_cb_title_3 {
+  margin-top: 0;
+  font-weight: bold;
+}
 
 /*
 Content-Section
 */
 
-.region-sidebar-first h2
-{
-    font-size: 18px;
+.region-sidebar-first h2 {
+  font-size: 18px;
 }
+
 .unread_tiny_box {
-    position: absolute;
-    background: #f20000;
-    border: 1px solid #ddd;
+  position: absolute;
+  background: #f20000;
+  border: 1px solid #ddd;
 
-    font-size: 11px; 
-    color: white; 
-    font-weight: bold; 
+  font-size: 11px;
+  color: white;
+  font-weight: bold;
 
-    bottom:25px; 
-    right: 0px; 
-    padding:2px; 
-    margin-left: 2px; 
-    display:inline; 
+  bottom: 25px;
+  right: 0px;
+  padding: 2px;
+  margin-left: 2px;
+  display: inline;
 
-    padding:2px 6px;
+  padding: 2px 6px;
 
 }
+
 .unread_tiny_box:after, .unread_tiny_box:before {
-    top: 100%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
 }
 
 .unread_tiny_box:after {
-    border-color: rgba(242, 0, 0, 0);
-    border-top-color: #f20000;
-    border-width: 4px;
-    left: 50%;
-    margin-left: -4px;
+  border-color: rgba(242, 0, 0, 0);
+  border-top-color: #f20000;
+  border-width: 4px;
+  left: 50%;
+  margin-left: -4px;
 }
+
 .unread_tiny_box:before {
-    border-color: rgba(204, 204, 204, 0);
-    border-top-color: #ccc;
-    border-width: 5px;
-    left: 50%;
-    margin-left: -5px;
+  border-color: rgba(204, 204, 204, 0);
+  border-top-color: #ccc;
+  border-width: 5px;
+  left: 50%;
+  margin-left: -5px;
 }
 
 /**
@@ -129,24 +132,25 @@ Sponsors
 
 .courses_sponsors_cols {
 
-    height:auto;
-    overflow:hidden;
-    padding:7px 10px;
-    position:absolute;
-    top:0;
-    right:1px;
+  height: auto;
+  overflow: hidden;
+  padding: 7px 10px;
+  position: absolute;
+  top: 0;
+  right: 1px;
 
 }
+
 .courses_sponsors_col {
-    display:inline-block;
-    vertical-align: top;
-    margin-left:10px;
-    float:right;
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 10px;
+  float: right;
 }
 
 .courses_sponsors a {
-    margin-bottom:7px;
-    display:block;
+  margin-bottom: 7px;
+  display: block;
 }
 
 /*
@@ -168,17 +172,35 @@ div ul.section_nav_tools li a
 
 }
 
- 
-*/
 
- 
+*/
 
 /*
 AUTHOR AND INSTRUCOT'S TOOLS
 */
 
 .row .panels-flexible-column {
-    position:relative;
+  position: relative;
+}
+
+/* bei den mobile_bottom_up-Layouts passt das padding nicht, weil automatisch "links" kein Padding auf der linken Seite ist
+und "rechts" keines auf der rechten Seite.
+Wir haben aber links und rechts vertauscht.
+bei mobile_bottom_up-Layouts muss also den Columns die Klasse
+custom-general--column-left bzw custom-general--column-right
+zugewiesen werden
+*/
+
+.row .panels-flexible-column.custom-general--column-left {
+  padding-right: 0.5em;
+}
+
+.row .custom-general--column-left .panels-flexible-column-inside {
+  padding-left: 0px;
+}
+
+.row .custom-general--column-right .panels-flexible-column-inside-first {
+  padding-left: 0.5em;
 }
 
 /*
@@ -186,761 +208,776 @@ Course Info
 */
 
 .panels-flexible-row.course-info-header .panel-separator {
-    display:none;
+  display: none;
 }
-.panels-flexible-row.course-info-header .panels-flexible-row-inside, 
-.panels-flexible-row.course-info-subheader .panels-flexible-row-inside, 
-.panels-flexible-region-course-info-content{
-    padding: 15px !important;
+
+.panels-flexible-row.course-info-header .panels-flexible-row-inside,
+.panels-flexible-row.course-info-subheader .panels-flexible-row-inside,
+.panels-flexible-region-course-info-content {
+  padding: 15px !important;
 }
 
 .panels-flexible-row.course-info-header h2, .panels-flexible-region.course-info-content h2 {
-    font-size: 25px;
-}
-.panels-flexible-row.course-info-header h2 {
-    margin-bottom:5px;
+  font-size: 25px;
 }
 
+.panels-flexible-row.course-info-header h2 {
+  margin-bottom: 5px;
+}
 
 .view-instructor-subtitle {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
+
 .panels-flexible-row.course-info-subheader .pane-entity-field {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .panels-flexible-row.course-info-header, .panels-flexible-region.course-info-content {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 .view-instructor-subtitle {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .view-instructor-subtitle a {
-    color: #555;
+  color: #555;
 }
 
 /*
 Instructor's Tools
 */
 
-
-#instructors_tools-container, #authors_tools-container, #projects_tools-container
-{
-    width:60px;
-    overflow: hidden;
-    display: block;
-    padding:0;
-    direction:rtl;
-    text-align: right;
-    position:absolute;
-    right:0;
-    background-color: rgba(200,200,200, 0.3);
-    z-index: 500;
-}
- #projects_tools-container
- {
-     background:none;
- }
-
-#instructors_tools-container div, #instructors_tools-container ul, #authors_tools-container div, #authors_tools-container ul, #projects_tools-container div , #projects_tools-container ul{
-    margin:0;
-    padding:0;
-}
-
-
- 
-
-#instructors_tools
-{
-    display:inline-block;
-    position:relative;
-}
-
-
-
-#instructors_tools-container .btn , #authors_tools-container .btn , #projects_tools-container .btn
-{
-    display: inline-block;
-    width: 58px;
-    white-space: normal;
-    font-size:  10px;
-    word-wrap: break-word;
-    height: 60px;
-    padding:0;
-    font-weight: bold;
-    line-height: 8px;
-    margin-left:-1px;
-    left:1px;
-
-}
-/*same, nur geringfuegig anders*/
- #authors_tools-container .btn
-{
-    height: 65px;
-    width:60px;
-}
-#projects_tools-container .btn
-{
-     height: 65px;
-    width:58px; 
-}
-#instructors_tools-container .row:hover , #projects_tools-container .row:hover {
-
-    background-color: rgba(0,136,204, 0.03);
-}
-
-
-  
-/*fuer hover-funktionalitaet siehe ganz unten*/ 
-
-
+/*fuer hover-funktionalitaet siehe ganz unten*/
 
 #content_node_tabs-container li {
-    display: inline-block;
-    margin-right: 5px;
+  display: inline-block;
+  margin-right: 5px;
 }
 
 a.disabled {
-    pointer-events: none;
-    cursor: default;
-    color: #333;
+  pointer-events: none;
+  cursor: default;
+  color: #333;
 }
 
-.col-md-1 .pane-block
-{
-    width:100%;
-    position:relative;
-    height: 300px;
-}
-
-#instructors_tools-container .btn a
-{
-    display:block;
-    height: 60px;
+.col-md-1 .pane-block {
+  width: 100%;
+  position: relative;
+  height: 300px;
 }
 
 
-#instructors_tools-container .btn a:before {
-    content: ' ';
-    display: block;
-    width: 60px;
-    height: 45px;  
-    position:relative;
-    margin: auto;
-    background-image: url(../images/icons/transparent-icons---instructor.png);
-    background-repeat: no-repeat;
+
+/**
+show new (mobile) instructor tools
+ */
+
+#instructor-tools {
+  padding: 0;
+  width: 100%;
+  margin: 0;
 }
 
-#instructors_tools-container .btn#instr_add_news a:before
-{
-    background-position: 0px 0px;
-}
-#instructors_tools-container .btn#instr_add_news a:before
-{
-    background-position: 0px 0px;
-}
-#instructors_tools-container .btn#instr_add_news a:hover:before, #instructors_tools-container .btn#instr_add_news a.active:before
-{
-    background-position: 0px -50px;
-}
-#instructors_tools-container .btn#instr_add_docs a:before
-{
-    background-position: -60px 0px;
-}
-#instructors_tools-container .btn#instr_add_docs a:hover:before, #instructors_tools-container .btn#instr_add_docs a.active:before
-{
-    background-position: -60px -50px;
-}
-#instructors_tools-container .btn#instr_add_groups a:before
-{
-    background-position: -120px 0px;
-}
-#instructors_tools-container .btn#instr_add_groups a:hover:before, #instructors_tools-container .btn#instr_add_groups a.active:before
-{
-    background-position: -120px -50px;
-}
-#instructors_tools-container .btn#instr_add_members a:before
-{
-    background-position: -180px 0px;
-}
-#instructors_tools-container .btn#instr_add_members a:hover:before, #instructors_tools-container .btn#instr_add_members a.active:before
-{
-    background-position: -180px -50px;
+#authoring-tools,
+#instructor-tools.collapse {
+  display: none !important;
+  position: absolute;
 }
 
-#instructors_tools-container .btn#instr_add_task a:before
-{
-    background-position: -180px -100px;
+#authoring-tools.collapsing,
+#authoring-tools.collapse.in,
+#instructor-tools.collapse.in {
+  display: block !important;
 }
-#instructors_tools-container .btn#instr_add_task a:hover:before, #instructors_tools-container .btn#instr_add_task a.active:before
+
+#block-section-courses-course-top-navigation .container-fluid {
+  padding: 0;
+}
+
+
+#section-nav-authoring-tools button.navbar-toggle,
+#section-nav-instructor-tools button.navbar-toggle {
+  display: block;
+}
+
+#section-nav-instructor-tools {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 40px;
+  background: none;
+  border: 0;
+  width: 100%;
+  box-sizing: border-box;
+  height: 0;
+  min-height: 0;
+}
+
+
+#section-nav-authoring-tools button.navbar-toggle,
+#section-nav-instructor-tools button.navbar-toggle {
+  border: 0;
+  background-color: #467DBD;
+  margin: 0px;
+  position: absolute;
+  right: 0;
+  top: -40px;
+  z-index: 1001;
+  border-radius: 0;
+  width: 48px;
+  height: 40px;
+  border-left: 1px solid #CCCCCC;
+}
+
+#section-nav-authoring-tools button.navbar-toggle {
+  top: 0;
+}
+
+#section-nav-authoring-tools button.navbar-toggle {
+  background-color: #fff;
+  border: 0;
+}
+
+#mobile_authors_tools-container,
+#mobile_instructors_tools-container {
+  width: 100%;
+  z-index: 1002;
+  background-color: #426DA0;
+  padding-top: 20px;
+  padding-bottom: 50px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+#mobile_instructors_tools-container {
+  z-index: 1001;
+}
+
+#mobile_authors_tools-container ul,
+#mobile_instructors_tools-container ul {
+  padding: 0;
+  margin: 0;
+}
+
+#mobile_authors_tools-container ul ul,
+#mobile_instructors_tools-container ul ul {
+  margin-left: 0px;
+}
+
+
+#mobile_authors_tools-container ul li.btn,
+#mobile_instructors_tools-container ul li.btn {
+  background-color: transparent;
+  padding: 0 10px;
+  margin: 0;
+  border: 0;
+  display: block;
+  text-align: left;
+  width: 100%;
+  color: white;
+}
+
+#mobile_authors_tools-container ul ul li.btn a,
+#mobile_instructors_tools-container ul ul li.btn a {
+  margin-left: 30px;
+}
+
+#mobile_instructors_tools-container ul li.btn.active:not(.menu_entry_collapsable) {
+  background-color: #337ab7;
+}
+
+#mobile_authors_tools-container ul li.btn.active {
+    /*override bootstrap-style */
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+#mobile_authors_tools-container ul li.btn.active:not(.menu_entry_collapsable)
 {
-    background-position: -180px -150px;
+    background-color: #F6F6F6;
+}
+
+#mobile_authors_tools-container ul li.btn.active a,
+#mobile_instructors_tools-container ul li.btn.active a {
+  background-color: transparent;
+}
+
+#mobile_authors_tools-container ul li.btn a,
+#mobile_instructors_tools-container ul li.btn a {
+  padding: 15px 5px 15px 40px;
+  display: block;
+  color: #ffffff;
+  position: relative;
+}
+#mobile_authors_tools-container ul li.btn a {
+  color: #337ab7;
+}
+
+#mobile_authors_tools-container #tools-context-actions,
+#mobile_instructors_tools-container #tools-context-actions {
+  margin-bottom: 20px;
+}
+
+#mobile_instructors_tools-container #tools-all-actions {
+
+}
+
+#section-nav-authoring-tools button.navbar-toggle .icon-bar,
+#section-nav-instructor-tools button.navbar-toggle .icon-bar {
+  width: 2px;
+  margin: 0 0 0 20px;
+}
+
+
+
+#mobile_instructors_tools-container .btn a::before {
+  content: ' ';
+  display: block;
+  width: 60px;
+  height: 45px;
+  position: absolute;
+  margin: auto;
+  background-image: url(../images/icons/transparent-icons---white-instructor.png);
+  background-repeat: no-repeat;
+  transform: scale(0.7);
+  top: -5px;
+  left: -15px;
+}
+
+#mobile_authors_tools-container {
+  max-width: 400px;
+  float: right;
+  box-shadow: -2px 2px 5px #eee;
+}
+
+#mobile_authors_tools-container li.menu_entry_collapsable.btn a,
+#mobile_instructors_tools-container li.menu_entry_collapsable.btn a {
+    padding-left: 40px;
+}
+#mobile_authors_tools-container li.menu_entry_collapsable.btn a::after,
+#mobile_instructors_tools-container li.menu_entry_collapsable.btn a::after {
+    content:"\e260";
+    font-family: 'Glyphicons Halflings';
+    font-size: 10px;
+    background: transparent;
+    text-decoration: none;
+    position: absolute;
+    top: 18px;
+    margin-left: 10px;
+}
+#mobile_authors_tools-container li.menu_entry_collapsable.collapsed.btn a::after,
+#mobile_instructors_tools-container li.menu_entry_collapsable.collapsed.btn a::after {
+    content:"\e259";
+}
+
+
+#mobile_authors_tools-container .btn#instr_add_news a::before,
+#mobile_instructors_tools-container .btn#instr_add_news a::before {
+  background-position: 0px 0px;
+}
+#mobile_instructors_tools-container .btn#instr_add_news a:hover::before, #mobile_instructors_tools-container .btn#instr_add_news a.active:before {
+  background-position: 0px -50px;
+}
+
+#mobile_instructors_tools-container .btn#instr_add_docs a::before {
+  background-position: -60px 0px;
+}
+
+#mobile_instructors_tools-container .btn#instr_add_docs a:hover::before, #mobile_instructors_tools-container .btn#instr_add_docs a.active:before {
+  background-position: -60px -50px;
+}
+
+#mobile_instructors_tools-container .btn#instr_add_groups a::before {
+  background-position: -120px 0px;
+}
+
+#mobile_instructors_tools-container .btn#instr_add_groups a:hover::before, #mobile_instructors_tools-container .btn#instr_add_groups a.active:before {
+  background-position: -120px -50px;
+}
+
+#mobile_instructors_tools-container .btn#instr_add_members a::before {
+  background-position: -180px 0px;
+}
+
+#mobile_instructors_tools-container .btn#instr_add_members a:hover::before, #mobile_instructors_tools-container .btn#instr_add_members a.active:before {
+  background-position: -180px -50px;
+}
+
+#mobile_instructors_tools-container .btn#instr_add_task a::before {
+  background-position: -180px -100px;
+}
+
+#mobile_instructors_tools-container .btn#instr_add_task a:hover::before, #mobile_instructors_tools-container .btn#instr_add_task a.active:before {
+  background-position: -180px -150px;
 }
 
 /*
 Lists / Overviews
 */
 
-#instructors_tools-container .btn#instr_overview_members a:before
-{
-    background-position: -240px 0px;
-}
-#instructors_tools-container .btn#instr_overview_members a:hover:before, #instructors_tools-container .btn#instr_overview_members a.active:before
-{
-    background-position: -240px -50px;
-}
-#instructors_tools-container .btn#instr_overview_groups a:before
-{
-    background-position: -300px 0px;
-}
-#instructors_tools-container .btn#instr_overview_groups a:hover:before, #instructors_tools-container .btn#instr_overview_groups a.active:before
-{
-    background-position: -300px -50px;
+#mobile_instructors_tools-container .btn#instr_category_members > a::before,
+#mobile_instructors_tools-container .btn#instr_settings_members > a::before,
+#mobile_instructors_tools-container .btn#instr_overview_members > a::before {
+  background-position: -240px 0px;
 }
 
-#instructors_tools-container .btn#instr_overview_projects a:before
-{
-    background-position: -300px -100px;
-}
-#instructors_tools-container .btn#instr_overview_projects a:hover:before, #instructors_tools-container .btn#instr_overview_projects a.active:before
-{
-    background-position: -300px -150px;
+#mobile_instructors_tools-container .btn#instr_category_members > a:hover::before, #mobile_instructors_tools-container .btn#instr_category_members > a.active:before,
+#mobile_instructors_tools-container .btn#instr_settings_members > a:hover::before, #mobile_instructors_tools-container .btn#instr_settings_members > a.active:before,
+#mobile_instructors_tools-container .btn#instr_overview_members > a:hover::before, #mobile_instructors_tools-container .btn#instr_overview_members > a.active:before {
+  background-position: -240px -50px;
 }
 
-#instructors_tools-container .btn#instr_course_settings a:before
-{
-    background-position: 0px -100px;
-}
-#instructors_tools-container .btn#instr_course_settings a:hover:before, #instructors_tools-container .btn#instr_course_settings a.active:before
-{
-    background-position: 0px -150px;
+#mobile_instructors_tools-container .btn#instr_category_groups > a::before,
+#mobile_instructors_tools-container .btn#instr_overview_groups > a::before {
+  background-position: -300px 0px;
 }
 
-#instructors_tools-container .btn#instr_overview_content a:before
-{
-    background-position: -60px -100px;
+#mobile_instructors_tools-container .btn#instr_category_groups > a:hover::before, #mobile_instructors_tools-container .btn#instr_category_groups > a.active:before,
+#mobile_instructors_tools-container .btn#instr_overview_groups > a:hover::before, #mobile_instructors_tools-container .btn#instr_overview_groups > a.active:before {
+  background-position: -300px -50px;
 }
-#instructors_tools-container .btn#instr_overview_content a:hover:before, #instructors_tools-container .btn#instr_overview_content a.active:before
-{
-    background-position: -60px -150px;
+
+#mobile_instructors_tools-container .btn#instr_overview_projects > a::before {
+  background-position: -300px -100px;
+}
+
+#mobile_instructors_tools-container .btn#instr_overview_projects > a:hover::before, #mobile_instructors_tools-container .btn#instr_overview_projects > a.active:before {
+  background-position: -300px -150px;
+}
+
+#mobile_instructors_tools-container .btn#instr_course_settings > a::before {
+  background-position: 0px -100px;
+}
+
+#mobile_instructors_tools-container .btn#instr_course_settings > a:hover::before, #mobile_instructors_tools-container .btn#instr_course_settings > a.active:before {
+  background-position: 0px -150px;
+}
+
+#mobile_instructors_tools-container .btn#instr_category_content > a::before,
+#mobile_instructors_tools-container .btn#instr_overview_content > a::before {
+  background-position: -60px -100px;
+}
+
+#mobile_instructors_tools-container .btn#instr_category_content > a:hover::before, #mobile_instructors_tools-container .btn#instr_category_content > a.active:before,
+#mobile_instructors_tools-container .btn#instr_overview_content > a:hover::before, #mobile_instructors_tools-container .btn#instr_overview_content > a.active:before {
+  background-position: -60px -150px;
 }
 
 /*
 Settings
 */
 
-#instructors_tools-container .btn#instr_overview_forums a:before
-{
-    background-position: -360px 0px;
-}
-#instructors_tools-container .btn#instr_overview_forums a:hover:before, #instructors_tools-container .btn#instr_overview_forums a.active:before
-{
-    background-position: -360px -50px;
+#mobile_instructors_tools-container .btn#instr_overview_forums > a::before {
+  background-position: -360px 0px;
 }
 
-#instructors_tools-toolbar 
-{
-    display:none;
-    position:absolute;
-    background-color: #aaa;
-    color:#fff;
-    bottom:55px;
-    left:0;  
+#mobile_instructors_tools-container .btn#instr_overview_forums > a:hover::before, #mobile_instructors_tools-container .btn#instr_overview_forums > a.active:before {
+  background-position: -360px -50px;
 }
-
 
 /*
 Authors's Tools
 */
 
-#authors_tools
-{
-    display:inline-block;
-    position:relative;
+#authors_tools {
+  display: inline-block;
+  position: relative;
+}
+
+#authors_tools-container .row:hover {
+  background-color: rgba(0, 136, 204, 0.03);
+}
+
+#block-block-4, .pane-block-4 {
+  width: 100%;
+  position: relative;
+  height: 300px;
 }
 
 
-
-#authors_tools-container .row:hover 
-{
-    background-color: rgba(0,136,204, 0.03);
+#section-nav-authoring-tools,
+#authoring-tools,
+#section-nav-authoring-tools div.container-fluid,
+#mobile_authors_tools-container {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  min-height: auto;
+  background-color: transparent;
 }
 
-
-
-  
-#block-block-4, .pane-block-4
-{
-    width:100%;
-    position:relative;
-    height: 300px;
+#mobile_authors_tools-container ul {
+  padding: 0;
 }
 
-#authors_tools-container .btn a
+#section-nav-authoring-tools .btn {
+  border: 0;
+  width: 100%;
+  position: relative;
+}
+
+#section-nav-authoring-tools .btn a {
+  display: block;
+}
+
+#mobile_authors_tools-container .btn a::before {
+  content: ' ';
+  display: block;
+  width: 60px;
+  height: 45px;
+  position: relative;
+  margin: auto;
+  background-image: url(../images/icons/transparent-icons---author.png);
+  background-repeat: no-repeat;
+  margin-bottom: 1px;
+}
+
+#mobile_authors_tools-container {
+  background-color: #fff;
+  border: 0;
+}
+
+#mobile_authors_tools-container .btn {
+  text-align: left;
+  height: 45px;
+}
+
+#mobile_authors_tools-container .btn a::before {
+  position: absolute;
+  transform: scale(0.7);
+  top: -5px;
+  left: -15px;
+}
+
+/*category: chapter*/
+#mobile_authors_tools-container .btn#author_category_chapter a::before
 {
-    display:block;
+  background-position: -240px 0px;
+}
+
+#mobile_authors_tools-container .btn#author_category_chapter a:hover::before, #mobile_authors_tools-container .btn#author_category_chapter a.active::before
+{
+  background-position: -240px -50px;
+}
+
+/*category: biblio // overview: biblio*/
+#mobile_authors_tools-container .btn#author_category_biblio a::before,
+#mobile_authors_tools-container .btn#author_biblio_overview a::before {
+  background-position: 0px 0px;
+}
+
+#mobile_authors_tools-container .btn#author_category_biblio a:hover::before, #mobile_authors_tools-container .btn#author_category_biblio a.active::before,
+#mobile_authors_tools-container .btn#author_biblio_overview a:hover::before, #mobile_authors_tools-container .btn#author_biblio_overview a.active::before
+{
+  background-position: 0px -50px;
+}
+
+#mobile_authors_tools-container .btn#auth_domain_settings > a::before {
+  background-image: url(../images/icons/transparent-icons---instructor.png);
+  left: -18px;
+  background-position: 0px -100px;
+}
+
+#mobile_authors_tools-container .btn#auth_domain_settings > a:hover::before, #mobile_authors_tools-container .btn#auth_domain_settings > a.active:before {
+  background-position: 0px -150px;
+}
+
+#mobile_authors_tools-container .btn#author_biblio_add a::before {
+  background-position: -60px 0px;
+}
+
+#mobile_authors_tools-container .btn#author_biblio_add a:hover::before, #mobile_authors_tools-container .btn#author_biblio_add a.active:before {
+  background-position: -60px -50px;
+}
+
+#mobile_authors_tools-container .btn#author_media_overview a::before {
+  background-position: -120px 0px;
+}
+
+#mobile_authors_tools-container .btn#author_media_overview a:hover::before, #mobile_authors_tools-container .btn#author_media_overview a.active:before {
+  background-position: -120px -50px;
+}
+
+/*interaktives 2x*/
+#mobile_authors_tools-container .btn#author_category_interactive a::before,
+#mobile_authors_tools-container .btn#author_interactive_overview a::before {
+  background-position: -180px 0px;
+}
+/*interaktives: hovereffekt*/
+#mobile_authors_tools-container .btn#author_category_interactive a:hover::before, #mobile_authors_tools-container .btn#author_category_interactive a.active:before,
+#mobile_authors_tools-container .btn#author_interactive_overview a:hover::before, #mobile_authors_tools-container .btn#author_interactive_overview a.active:before
+{
+     background-position: -180px -50px;
+}
+
+#mobile_authors_tools-container .btn#author_h5p_add a::before {
+  background-position: -180px -100px;
+}
+
+#mobile_authors_tools-container .btn#author_h5p_add a:hover::before, #mobile_authors_tools-container .btn#author_h5p_add a.active:before {
+  background-position: -180px -150px;
+}
+
+#mobile_authors_tools-container .btn#author_annvid_add a::before{
+  background-position: -412px -100px;
+}
+
+#mobile_authors_tools-container .btn#author_annvid_add a:hover::before, #mobile_authors_tools-container .btn#author_annvid_add a.active:before {
+  background-position: -412px -150px;
+}
+
+#mobile_authors_tools-container .btn#author_chapter_add a::before {
+  background-position: -300px 0px;
+}
+
+#mobile_authors_tools-container .btn#author_chapter_add a:hover::before, #mobile_authors_tools-container .btn#author_chapter_add a.active:before{
+  background-position: -300px -50px;
+}
+
+#mobile_authors_tools-container .btn#author_subchapter_add a::before {
+  background-position: -360px 0px;
+}
+
+#mobile_authors_tools-container .btn#author_subchapter_add a:hover::before, #mobile_authors_tools-container .btn#author_subchapter_add a.active:before {
+  background-position: -360px -50px;
+}
+
+#mobile_authors_tools-container .btn#author_chapter_order a::before {
+  background-position: -420px 0px;
+}
+
+#mobile_authors_tools-container .btn#author_chapter_order a:hover::before, #mobile_authors_tools-container .btn#author_chapter_order a.active:before {
+  background-position: -420px -50px;
 }
 
 
-#authors_tools-container .btn a:before {
-    content: ' ';
-    display: block;
-    width: 60px;
-    height: 45px;  
-    position:relative;
-    margin: auto;
-    background-image: url(../images/icons/transparent-icons---author.png);
-    background-repeat: no-repeat;
-    margin-bottom:1px;
+/*Aufgaben*/
+
+#mobile_authors_tools-container .btn#author_category_tasks a::before {
+  background-position: 0px -100px;
 }
 
-
-#authors_tools-container .btn#author_biblio_overview a:before
-{
-    background-position: 0px 0px;
-}
-#authors_tools-container .btn#author_biblio_overview a:hover:before, #authors_tools-container .btn#author_biblio_overview a.active:before
-{
-    background-position: 0px -50px;
+#mobile_authors_tools-container .btn#author_tasks_overview a::before {
+  background-position: 0px -100px;
 }
 
-#authors_tools-container .btn#author_biblio_add a:before
-{
-    background-position: -60px 0px;
-}
-#authors_tools-container .btn#author_biblio_add a:hover:before, #authors_tools-container .btn#author_biblio_add a.active:before
-{
-    background-position: -60px -50px;
+#mobile_authors_tools-container .btn#author_category_tasks a:hover::before, #mobile_authors_tools-container .btn#author_category_tasks a.active:before,
+#mobile_authors_tools-container .btn#author_tasks_overview a:hover::before, #mobile_authors_tools-container .btn#author_tasks_overview a.active:before {
+  background-position: 0px -150px;
 }
 
-#authors_tools-container .btn#author_media_overview a:before
-{
-    background-position: -120px 0px;
-}
-#authors_tools-container .btn#author_media_overview a:hover:before, #authors_tools-container .btn#author_media_overview a.active:before
-{
-    background-position: -120px -50px;
-}
-/*interactive video*/
-#authors_tools-container .btn#author_interactive_overview a:before
-{
-    background-position: -180px 0px;
-}
-#authors_tools-container .btn#author_interactive_overview a:hover:before, #authors_tools-container .btn#author_interactive_overview a.active:before
-{
-    background-position: -180px -50px;
+#mobile_authors_tools-container .btn#author_tasks_qaa_add a::before {
+  background-position: -60px -100px;
 }
 
-#authors_tools-container .btn#author_h5p_add a:before
-{
-    background-position: -180px -100px;
-}
-#authors_tools-container .btn#author_h5p_add a:hover:before, #authors_tools-container .btn#author_h5p_add a.active:before
-{
-    background-position: -180px -150px;
+#mobile_authors_tools-container .btn#author_tasks_qaa_add a:hover::before, #mobile_authors_tools-container .btn#author_tasks_qaa_add a.active:before {
+  background-position: -60px -150px;
 }
 
-#authors_tools-container .btn#author_annvid_add a:before
-{
-    background-position: -412px -100px;
-}
-#authors_tools-container .btn#author_annvid_add a:hover:before, #authors_tools-container .btn#author_annvid_add a.active:before
-{
-    background-position: -412px -150px;
+#mobile_authors_tools-container .btn#author_tasks_mc_add a::before {
+  background-position: -120px -100px;
 }
 
-#authors_tools-container .btn#author_chapter_add a:before
-{
-    background-position: -240px 0px;
-}
-#authors_tools-container .btn#author_chapter_add a:hover:before, #authors_tools-container .btn#author_chapter_add a.active:before
-{
-    background-position: -240px -50px;
-}
-
-#authors_tools-container .btn#author_subchapter_add a:before
-{
-    background-position: -300px 0px;
-}
-#authors_tools-container .btn#author_subchapter_add a:hover:before, #authors_tools-container .btn#author_subchapter_add a.active:before
-{
-    background-position: -300px -50px;
-}
-
-#authors_tools-container .btn#author_chapter_order a:before
-{
-    background-position: -360px 0px;
-}
-#authors_tools-container .btn#author_chapter_order a:hover:before, #authors_tools-container .btn#author_chapter_order a.active:before
-{
-    background-position: -360px -50px;
-}
-
-#authors_tools-container .btn#author_tasks_overview a:before
-{
-    background-position: 0px -100px;
-}
-#authors_tools-container .btn#author_tasks_overview a:hover:before, #authors_tools-container .btn#author_tasks_overview a.active:before
-{
-    background-position: 0px -150px;
-}
-
-#authors_tools-container .btn#author_tasks_qaa_add a:before
-{
-    background-position: -60px -100px;
-}
-#authors_tools-container .btn#author_tasks_qaa_add a:hover:before, #authors_tools-container .btn#author_tasks_qaa_add a.active:before
-{
-    background-position: -60px -150px;
-}
-
-#authors_tools-container .btn#author_tasks_mc_add a:before
-{
-    background-position: -120px -100px;
-}
-#authors_tools-container .btn#author_tasks_mc_add a:hover:before, #authors_tools-container .btn#author_tasks_mc_add a.active:before
-{
-    background-position: -120px -150px;
-}
-
-#authors_tools-toolbar 
-{
-    display:none;
-    position:absolute;
-    background-color: #aaa;
-    color:#fff;
-    bottom:55px;
-    left:0;  
+#mobile_authors_tools-container .btn#author_tasks_mc_add a:hover::before, #mobile_authors_tools-container .btn#author_tasks_mc_add a.active:before {
+  background-position: -120px -150px;
 }
 
 /*
 END  - Authors's Tools
 */
 
-
-
 /*
 Project's Tools
 */
 
-#projects_tools
-{
-    display:inline-block;
-    position:relative;
+#projects_tools {
+  display: inline-block;
+  position: relative;
 }
 
-
- 
-#instructors_tools-container .one_item_toobar #projects_tools-container .one_item_toobar , #authors_tools-container .one_item_toobar
-{
-    overflow:hidden;
-}
- 
-
-#block-block-4, .pane-block-4
-{
-    width:100%;
-    position:relative;
-    height: 300px;
+#block-block-4, .pane-block-4 {
+  width: 100%;
+  position: relative;
+  height: 300px;
 }
 
-#projects_tools-container .btn a
-{
-    display:block;
+#projects_tools-container .btn a {
+  display: block;
 }
 
-
-#projects_tools-container .btn a:before {
-    content: ' ';
-    display: block;
-    width: 60px;
-    height: 45px;  
-    position:relative;
-    margin: auto;
-    background-image: url(../images/icons/transparent-icons---projects.gif);
-    background-repeat: no-repeat;
-    margin-bottom:1px;
+#projects_tools-container .btn a::before {
+  content: ' ';
+  display: block;
+  width: 60px;
+  height: 45px;
+  position: relative;
+  margin: auto;
+  background-image: url(../images/icons/transparent-icons---projects.gif);
+  background-repeat: no-repeat;
+  margin-bottom: 1px;
 }
 
-
-#projects_tools-container .btn#tools_projektvorschlag a:before
-{
-    background-position: -300px -150px;
-}
-#projects_tools-container .btn#tools_projektvorschlag a:hover:before, #projects_tools-container .btn#tools_projektvorschlag a.active:before
-{
-    background-position: -300px -100px;
+#projects_tools-container .btn#tools_projektvorschlag a::before {
+  background-position: -300px -150px;
 }
 
-#projects_tools-container .btn#tools_kooperationsvereinbarung a:before
-{
-    background-position: -60px -100px;
-}
-#projects_tools-container .btn#tools_kooperationsvereinbarung a:hover:before, #projects_tools-container .btn#tools_kooperationsvereinbarung a.active:before
-{
-    background-position: -60px -150px;
+#projects_tools-container .btn#tools_projektvorschlag a:hover::before, #projects_tools-container .btn#tools_projektvorschlag a.active:before {
+  background-position: -300px -100px;
 }
 
-#projects_tools-container .btn#tools_cockpit a:before
-{
-    background-position: -180px -100px;
-}
-#projects_tools-container .btn#tools_cockpit a:hover:before, #projects_tools-container .btn#tools_cockpit a.active:before
-{
-    background-position: -180px -150px;
+#projects_tools-container .btn#tools_kooperationsvereinbarung a::before {
+  background-position: -60px -100px;
 }
 
-#projects_tools-container .btn#tools_tagebuch a:before
-{
-    background-position: -60px 0px;
-}
-#projects_tools-container .btn#tools_tagebuch a:hover:before, #projects_tools-container .btn#tools_tagebuch a.active:before
-{
-    background-position: -60px -50px;
+#projects_tools-container .btn#tools_kooperationsvereinbarung a:hover::before, #projects_tools-container .btn#tools_kooperationsvereinbarung a.active:before {
+  background-position: -60px -150px;
 }
 
-#projects_tools-container .btn#tools_dokumentation a:before
-{
-    background-position: -60px 0px;
-}
-#projects_tools-container .btn#tools_dokumentation a:hover:before, #projects_tools-container .btn#tools_dokumentation a.active:before
-{
-    background-position: -60px -50px;
+#projects_tools-container .btn#tools_cockpit a::before {
+  background-position: -180px -100px;
 }
 
-#projects_tools-container .btn#tools_lernzielvereinbarung a:before
-{
-    background-position: -60px 0px;
-}
-#projects_tools-container .btn#tools_lernzielvereinbarung a:hover:before, #projects_tools-container .btn#tools_lernzielvereinbarung a.active:before
-{
-    background-position: -60px -50px;
+#projects_tools-container .btn#tools_cockpit a:hover::before, #projects_tools-container .btn#tools_cockpit a.active:before {
+  background-position: -180px -150px;
 }
 
+#projects_tools-container .btn#tools_tagebuch a::before {
+  background-position: -60px 0px;
+}
 
-#projects_tools-container .btn#tools_edit a:before
-{
-    background-image: url(../images/icons/transparent-icons---instructor.png);
-    background-position: 0px -100px;
+#projects_tools-container .btn#tools_tagebuch a:hover::before, #projects_tools-container .btn#tools_tagebuch a.active:before {
+  background-position: -60px -50px;
 }
-#projects_tools-container .btn#tools_edit a:hover:before, #projects_tools-container .btn#tools__edit a.active:before
-{
-    background-image: url(../images/icons/transparent-icons---instructor.png);
-    background-position: 0px -150px;
+
+#projects_tools-container .btn#tools_dokumentation a::before {
+  background-position: -60px 0px;
 }
+
+#projects_tools-container .btn#tools_dokumentation a:hover::before, #projects_tools-container .btn#tools_dokumentation a.active:before {
+  background-position: -60px -50px;
+}
+
+#projects_tools-container .btn#tools_lernzielvereinbarung a::before {
+  background-position: -60px 0px;
+}
+
+#projects_tools-container .btn#tools_lernzielvereinbarung a:hover::before, #projects_tools-container .btn#tools_lernzielvereinbarung a.active:before {
+  background-position: -60px -50px;
+}
+
+#projects_tools-container .btn#tools_edit a::before {
+  background-image: url(../images/icons/transparent-icons---instructor.png);
+  background-position: 0px -100px;
+}
+
+#projects_tools-container .btn#tools_edit a:hover::before, #projects_tools-container .btn#tools__edit a.active:before {
+  background-image: url(../images/icons/transparent-icons---instructor.png);
+  background-position: 0px -150px;
+}
+
 /*interactive video*/
-#projects_tools-container .btn#author_interactive_overview a:before
-{
-    background-position: -180px 0px;
-}
-#projects_tools-container .btn#author_interactive_overview a:hover:before, #projects_tools-container .btn#author_interactive_overview a.active:before
-{
-    background-position: -180px -50px;
+#projects_tools-container .btn#author_interactive_overview a::before {
+  background-position: -180px 0px;
 }
 
-#projects_tools-container .btn#author_h5p_add a:before
-{
-    background-position: -180px -100px;
-}
-#projects_tools-container .btn#author_h5p_add a:hover:before, #projects_tools-container .btn#author_h5p_add a.active:before
-{
-    background-position: -180px -150px;
+#projects_tools-container .btn#author_interactive_overview a:hover::before, #projects_tools-container .btn#author_interactive_overview a.active:before {
+  background-position: -180px -50px;
 }
 
-#projects_tools-container .btn#author_chapter_add a:before
-{
-    background-position: -240px 0px;
-}
-#projects_tools-container .btn#author_chapter_add a:hover:before, #projects_tools-container .btn#author_chapter_add a.active:before
-{
-    background-position: -240px -50px;
+#projects_tools-container .btn#author_h5p_add a::before {
+  background-position: -180px -100px;
 }
 
-#projects_tools-container .btn#author_subchapter_add a:before
-{
-    background-position: -300px 0px;
-}
-#projects_tools-container .btn#author_subchapter_add a:hover:before, #projects_tools-container .btn#author_subchapter_add a.active:before
-{
-    background-position: -300px -50px;
+#projects_tools-container .btn#author_h5p_add a:hover::before, #projects_tools-container .btn#author_h5p_add a.active:before {
+  background-position: -180px -150px;
 }
 
-#projects_tools-container .btn#author_chapter_order a:before
-{
-    background-position: -360px 0px;
-}
-#projects_tools-container .btn#author_chapter_order a:hover:before, #projects_tools-container .btn#author_chapter_order a.active:before
-{
-    background-position: -360px -50px;
+#projects_tools-container .btn#author_chapter_add a::before {
+  background-position: -240px 0px;
 }
 
-#projects_tools-container .btn#author_tasks_overview a:before
-{
-    background-position: 0px -100px;
-}
-#projects_tools-container .btn#author_tasks_overview a:hover:before, #projects_tools-container .btn#author_tasks_overview a.active:before
-{
-    background-position: 0px -150px;
+#projects_tools-container .btn#author_chapter_add a:hover::before, #projects_tools-container .btn#author_chapter_add a.active:before {
+  background-position: -240px -50px;
 }
 
-#projects_tools-container .btn#author_tasks_qaa_add a:before
-{
-    background-position: -60px -100px;
-}
-#projects_tools-container .btn#author_tasks_qaa_add a:hover:before, #projects_tools-container .btn#author_tasks_qaa_add a.active:before
-{
-    background-position: -60px -150px;
+#projects_tools-container .btn#author_subchapter_add a::before {
+  background-position: -300px 0px;
 }
 
-#projects_tools-container .btn#author_tasks_mc_add a:before
-{
-    background-position: -120px -100px;
-}
-#projects_tools-container .btn#author_tasks_mc_add a:hover:before, #projects_tools-container .btn#author_tasks_mc_add a.active:before
-{
-    background-position: -120px -150px;
+#projects_tools-container .btn#author_subchapter_add a:hover::before, #projects_tools-container .btn#author_subchapter_add a.active:before {
+  background-position: -300px -50px;
 }
 
+#projects_tools-container .btn#author_chapter_order a::before {
+  background-position: -360px 0px;
+}
 
+#projects_tools-container .btn#author_chapter_order a:hover::before, #projects_tools-container .btn#author_chapter_order a.active:before {
+  background-position: -360px -50px;
+}
 
-#projects_tools-toolbar 
-{
-    display:none;
-    position:absolute;
-    background-color: #aaa;
-    color:#fff;
-    bottom:55px;
-    left:0;  
+#projects_tools-container .btn#author_tasks_overview a::before {
+  background-position: 0px -100px;
+}
+
+#projects_tools-container .btn#author_tasks_overview a:hover::before, #projects_tools-container .btn#author_tasks_overview a.active:before {
+  background-position: 0px -150px;
+}
+
+#projects_tools-container .btn#author_tasks_qaa_add a::before {
+  background-position: -60px -100px;
+}
+
+#projects_tools-container .btn#author_tasks_qaa_add a:hover::before, #projects_tools-container .btn#author_tasks_qaa_add a.active:before {
+  background-position: -60px -150px;
+}
+
+#projects_tools-container .btn#author_tasks_mc_add a::before {
+  background-position: -120px -100px;
+}
+
+#projects_tools-container .btn#author_tasks_mc_add a:hover::before, #projects_tools-container .btn#author_tasks_mc_add a.active:before {
+  background-position: -120px -150px;
+}
+
+#projects_tools-toolbar {
+  display: none;
+  position: absolute;
+  background-color: #aaa;
+  color: #fff;
+  bottom: 55px;
+  left: 0;
 }
 
 /*
 END  - Project's Tools
 */
 
+.navbar-collapse {
+  padding: 0;
+}
+
 /*
 Course Toolbar items
 */
 
-#course_top_nav_single-icon, #course_top_nav_collab-icon
-{
-   float:left;
-    width: 45px;
-    height:42px;
-    background-image:  url(../images/icons/transparent-icons---course.png);
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    width: 65px;
-}
-
-#course_top_nav_collab-icon
-{
-
-    background-position: -65px 0px;
-
-}
-
-/*
-#course_tools_single, #course_tools_collab
-{
-  padding:2px 5px;
-  display:inline-block;
-  position:relative;
-  
-}
-
-#course_top_nav_single-icon, #course_top_nav_collab-icon{
-  display:inline-block;
-  height:45px;
-  width:45px;
-  background-image:  url(../images/icons/transparent-icons---course.gif);
+#course_top_nav_single-icon, #course_top_nav_collab-icon {
+  float: left;
+  width: 45px;
+  height: 42px;
+  background-image: url(../images/icons/transparent-icons---course.png);
   background-repeat: no-repeat;
-  margin-right:20px;
-  position:absolute;
+  vertical-align: middle;
+  width: 70px;
 }
 
-#course_top_nav_single-icon{
-  background-position: 0px 0px;
+#course_top_nav_collab-icon {
+
+  background-position: -65px 0px;
+
 }
-#course_top_nav_collab-icon{
-  background-position: -45px 0px;
-}
-
-
-#course_tools_collab 
-{
-  margin-left:30px;
-}
- */
-
-
-/*
-#instructors_tools li
-{
-    display: block;
-}
-*/
-
-
-/*
-NAV
-
-*/
-
-/*
-.unread_tiny_box
-{
-  font-size: 11px; 
-  color: white; 
-  font-weight: bold; 
-  border: 1px solid #ddd; 
-  position:absolute; 
-  bottom:20px; 
-  right: 0px; 
-  padding:2px; 
-  margin-left: 2px; 
-  display:inline; 
-  background-color:#f20000;
-}*/
-
-/*
-Nav single
-*/
-/*
-#course_top_nav_single, #course_top_nav_collab
-{
-  display:inline-block;
-  padding-left: 45px;
-}
-
-#course_top_nav_single li a
-{
-  border:none;
-  color: #fff;
-}
-*/
-
-
-/*
-Nav collab
-*/
-
-/*
-#course_top_nav_collab li a
-{
-  border:none;
-  color: #fff;
-}
-
-
-.yui-toolbar-container > fieldset
-{
-  position: inherit;
-  padding-top: 5px !important;
-}
-*/
-
 
 /*
 Editor
@@ -950,232 +987,200 @@ Editor
 3d
 */
 .cke_skin_kama .cke_wrapper {
-    background:none;
+  background: none;
 }
+
 span.cke_skin_kama {
 
 }
 
-#linkit-modal #edit-biblio-search, 
+#linkit-modal #edit-biblio-search,
 #linkit-modal #edit-tasks-search {
-    background: transparent url(../images/icons/throbber-inactive.gif) no-repeat 99% 10px;
-} 
-#linkit-modal #edit-biblio-search.fetching,
-#linkit-modal #edit-tasks-search.fetching{ 
-    background-image: url(../images/icons/throbber-active.gif); 
+  background: transparent url(../images/icons/throbber-inactive.gif) no-repeat 99% 10px;
 }
 
-#linkit-modal #edit-biblio-tag, #linkit-modal #edit-biblio-search, 
+#linkit-modal #edit-biblio-search.fetching,
+#linkit-modal #edit-tasks-search.fetching {
+  background-image: url(../images/icons/throbber-active.gif);
+}
+
+#linkit-modal #edit-biblio-tag, #linkit-modal #edit-biblio-search,
 #linkit-modal #edit-tasks-tag, #linkit-modal #edit-tasks-search {
-    font-size: 1em;
-    height: 2em;
-    padding: 3px 25px 3px 5px;
-    width: 440px;
-    margin:auto;
+  font-size: 1em;
+  height: 2em;
+  padding: 3px 25px 3px 5px;
+  width: 440px;
+  margin: auto;
 }
 
 #linkit-modal .form-item {
-    margin-bottom: 15px;
-}
-#linkit-modal .btn
-{
-    margin-right: 5px;
+  margin-bottom: 15px;
 }
 
-#wysiwyg-toggle-edit-assessment-value
-{
-    display: none !important;
+#linkit-modal .btn {
+  margin-right: 5px;
 }
 
+#wysiwyg-toggle-edit-assessment-value {
+  display: none !important;
+}
 
 /*
 Embeded Tasks
 */
 
 .embeded_task {
-    padding: 20px 20px 0px 80px;
-    background-color: #e6f2fc;
-    border:1px solid #ccc;
-    margin: 15px 0 15px 0;
-    position:relative;
-    min-height:70px;
+  padding: 20px 20px 0px 80px;
+  background-color: #e6f2fc;
+  border: 1px solid #ccc;
+  margin: 15px 0 15px 0;
+  position: relative;
+  min-height: 70px;
 
 }
 
-.embeded_task:before
-{
-    content: ' ';
-    position:absolute;
-    display:block;
-    width: 60px;
-    height:50px;
-    left:10px;
-    top:20px;
-    background-image: url(../images/icons/transparent-icons---author.png);
-    background-repeat: no-repeat;
-    background-position: -420px 0;
+.embeded_task::before {
+  content: ' ';
+  position: absolute;
+  display: block;
+  width: 60px;
+  height: 50px;
+  left: 10px;
+  top: 20px;
+  background-image: url(../images/icons/transparent-icons---author.png);
+  background-repeat: no-repeat;
+  background-position: -420px 0;
 }
 
-.embeded_task .solution{
-    margin-top:15px;
+.embeded_task .solution {
+  margin-top: 15px;
 }
 
 /*
   Questions
 */
 
-.node-content-multiple-choice .form-type-checkbox
-{
-    display:inline-block;
-}
-.node-content-multiple-choice label
-{
-    display:inline-block;
+.node-content-multiple-choice .form-type-checkbox {
+  display: inline-block;
 }
 
-
-/*
-Instructors Block
-*/
-/*wrapper*/
-/*
-#block-block-4 {
-    left: -40px;
-    position: absolute;
-    width: 40px;
-
-}
-#block-block-4 ul {
-    padding: 0;
-    margin: 0;
+.node-content-multiple-choice label {
+  display: inline-block;
 }
 
-#block-block-4 .content{
-    position: absolute;
-    top: 0;
-    margin-top: 0px;
-    padding-top: 0px;
-
+body.cke_show_borders {
+  padding: 0;
 }
 
-
-#block-block-4 .content.fixed{
-    position: fixed;
-    top: 70px;
+span.cke_skin_kama {
+  -webkit-border-radius: 0px !important;
+  border-radius: 0px !important;
+  -moz-border-radius: 0px !important;
+  padding: 0 !important;
 }
 
-*/
-
-body.cke_show_borders
-{
-    padding:0;
-}
-
-
-span.cke_skin_kama
-{
-    -webkit-border-radius:0px !important;
-    border-radius: 0px !important;
-    -moz-border-radius: 0px !important;
-    padding:0 !important;
-}
-.cke_skin_kama .cke_wrapper{
-    background:none !important;
-    background-color: #eee !important;
+.cke_skin_kama .cke_wrapper {
+  background: none !important;
+  background-color: #eee !important;
 }
 
 div#autocomplete li:hover {
-    background-color: #467DBD;
+  background-color: #467DBD;
 }
+
 .cke_skin_kama .cke_browser_webkit a.cke_dialog_ui_button {
-    -webkit-border-radius:0px !important;
-    border-radius: 0px !important;
-    -moz-border-radius: 0px !important;
+  -webkit-border-radius: 0px !important;
+  border-radius: 0px !important;
+  -moz-border-radius: 0px !important;
 }
+
 .cke_skin_kama a.cke_dialog_ui_button {
-    background-image:none !important;
-    background-color: #eee;
-
+  background-image: none !important;
+  background-color: #eee;
 
 }
+
 .cke_skin_kama span.cke_dialog_ui_button {
-    cursor: pointer !important;
+  cursor: pointer !important;
 }
 
 .cke_skin_kama .cke_dialog_ui_button_ok span.cke_dialog_ui_button {
-    color: #fff;
+  color: #fff;
 }
 
 .cke_skin_kama a.cke_dialog_ui_button.cke_dialog_ui_button_ok {
-    background-color: #467DBD;    
-    border:1px solid #555;
-}
-.cke_skin_kama a.cke_dialog_ui_button.cke_dialog_ui_button_ok:hover {
-    background-color: #426DA0;
+  background-color: #467DBD;
+  border: 1px solid #555;
 }
 
+.cke_skin_kama a.cke_dialog_ui_button.cke_dialog_ui_button_ok:hover {
+  background-color: #426DA0;
+}
 
 .cke_skin_kama a.cke_dialog_ui_button.cke_dialog_ui_button_cancel {
-    background-color: #eee;   
-    border:1px solid #888;
+  background-color: #eee;
+  border: 1px solid #888;
 }
 
 .cke_skin_kama a.cke_dialog_ui_button.cke_dialog_ui_button_cancel:hover {
-    background-color: #e6e6e6;    
+  background-color: #e6e6e6;
 }
 
-
-.cke_skin_kama input.cke_dialog_ui_input_text.form-autocomplete  {
-    height: 25px !important;
-    padding:5px;
+.cke_skin_kama input.cke_dialog_ui_input_text.form-autocomplete {
+  height: 25px !important;
+  padding: 5px;
 }
-
 
 .cke_skin_kama .cke_dialog .cke_dialog_body .cke_dialog_close_button {
-    background-image:none !important;
-    background-color: #333;
+  background-image: none !important;
+  background-color: #333;
 }
+
 .cke_skin_kama .cke_dialog .cke_dialog_body .cke_dialog_close_button {
-    background-color: #888;
+  background-color: #888;
 }
+
 .cke_skin_kama .cke_dialog .cke_dialog_body .cke_dialog_close_button:before {
-    content: '✖';
-    color: #fff;
+  content: '✖';
+  color: #fff;
 }
+
 /*
-Admin Add 
+Admin Add
 */
 
 /*
 Student
 */
-#students-add-wrapper .input-prepend
-{
-    margin-bottom:0px;
+#students-add-wrapper .input-prepend {
+  margin-bottom: 0px;
 }
+
 #users_item_container .form-item {
-    display:inline-block;
-    margin-right:5px;
+  display: inline-block;
+  margin-right: 5px;
 }
+
 #students-add-wrapper .form-item {
-    display:inline-block;
+  display: inline-block;
 }
+
 #students-add-wrapper .form-item-users-container-add-user-num .form-text {
-    width:40px;
-    margin-bottom:0px;
+  width: 40px;
+  margin-bottom: 0px;
 }
+
 #section-courses-student-registration-form #edit-submit {
-    margin-top:40px;
+  margin-top: 40px;
 }
 
 /*
 * Video Embed
 */
 
-.row .col-md-12 .node iframe{
-    margin: 0;
+.row .col-md-12 .node iframe {
+  margin: 0;
 }
-
 
 /*
 MEDIA Browser
@@ -1184,58 +1189,44 @@ MEDIA Browser
 .media-thumbnail {
 
 }
+
 .media-item {
-    min-height: 120px;
-}
-.media-item img{
-    width:100px;
-    height:auto;
+  min-height: 120px;
 }
 
-.view-domain-media img{
-    width:100px;
-    height:auto;
+.media-item img {
+  width: 100px;
+  height: auto;
+}
+
+.view-domain-media img {
+  width: 100px;
+  height: auto;
 }
 
 /*
 PRINT
 */
 
-@media print
-{
-    ul.footnotes li {
-        margin-left:0;
-    }
-    .footnotes .footnote-label {
-        position: relative;
-        display:block;
-    }
+@media print {
+  ul.footnotes li {
+    margin-left: 0;
+  }
+
+  .footnotes .footnote-label {
+    position: relative;
+    display: block;
+  }
 
 }
+
 /*
 for timespan span problem
 */
 
 div.field-name-field-proposal-timespan {
-    margin:0 !important;
+  margin: 0 !important;
 }
-
-
-/*hover-funktionalitaet ganz unten wegen überschreibgefahr*/
-#instructors_tools-container:hover, #authors_tools-container:hover
-{
-    width:240px;
-}
-#instructors_tools-container .toolbar_hidden,  #authors_tools-container  .toolbar_hidden
-{
-    display: none;
-}
-#instructors_tools-container:hover .toolbar_hidden, #authors_tools-container:hover  .toolbar_hidden
-{
-    display: inline-block;
-}
-
-
 
 /*
  * die "meine Kurse-Ansicht auf home / Profil"
@@ -1286,7 +1277,7 @@ div.view-courses-kurse-bersicht .courses_small_container div.progress_circle_con
     {
         display: block;
     }
-    
+
 }
 /*bilder mit klasse halbtransparent setzen*/
 div.view-courses-kurse-bersicht .courses_small_container:hover .courseitem_image_hover_transp
@@ -1302,22 +1293,50 @@ div.view-courses-kurse-bersicht .courses_small_containerhome_course_item  img.co
 /* draft-label fuer kurse */
 .view_courses_label
 {
-    color:white; 
+    color:white;
     font-weight:bold;
     text-align:center;
     transform: rotate(-30deg);
     width: 90px;
-    position:absolute; 
+    position:absolute;
     left: 0px;
     top: 20px;
-    z-index:2 
+    z-index:2
 }
-.view_courses_label.draft
-{
-      background: #D9534F;
+
+.view_courses_label.draft {
+  background: #D9534F;
 }
-.view_courses_label.unconfirmed
-{
-      background: orange;
+
+.view_courses_label.unconfirmed {
+  background: orange;
+}
+
+/*meine kurse-ansicht auf start*/
+/*progress-badge*/
+div.view-courses-kurse-bersicht .nm-stream-node-container div.progress_circle_container {
+  display: none;
+  position: absolute;
+  padding-top: 5px;
+  background-color: rgba(247, 247, 247, 0.5);
+}
+
+/*progress-badge zeigen erst ab mindest-resolution*/
+@media (min-width: 400px) {
+  div.view-courses-kurse-bersicht .nm-stream-node-container:hover div.progress_circle_container {
+    display: block;
+
+  }
+
+}
+
+/*bilder mit klasse halbtransparent setzen*/
+div.view-courses-kurse-bersicht .nm-stream-node-container:hover .courseitem_image_hover_transp {
+  opacity: 0.5;
+}
+
+/*verhinderte überlauf des kurs-bilds auf mobil*/
+div.view-courses-kurse-bersicht .nm-stream-node-container img.courseitem_courselogo {
+  max-width: 100%;
 }
 

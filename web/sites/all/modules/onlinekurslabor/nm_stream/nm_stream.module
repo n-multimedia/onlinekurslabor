@@ -2469,6 +2469,7 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   $data['stream']['privacyOptions'] = $privacy_options;
   $data['stream']['privacyOptionsAll'] = $privacy_options_all;
   $data['stream']['token'] = drupal_get_token();
+
   // $allowed_attachm_filetypes from field configuration
   $stream_CT_field_data = field_info_instances("node", "nm_stream");
   $stream_attachments_filetypes = $stream_CT_field_data['field_nm_attachments']['settings']['file_extensions'];
@@ -3355,9 +3356,9 @@ function nm_stream_api_v2_comment_delete_callback($comment, $token = NULL) {
  */
 function nm_stream_api_v2_set_localhost_headers() {
   //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
-    
+
     RETURN; #NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
-    
+
   //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
   drupal_add_http_header('Access-Control-Allow-Credentials', 'true');
   drupal_add_http_header('Access-Control-Allow-Origin', 'http://localhost:8080');

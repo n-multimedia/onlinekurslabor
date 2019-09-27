@@ -644,7 +644,7 @@ function _section_projects_header_and_navigation_view() {
   if (!isset($arg2)) {
     //projects overview page
     $output = '';
-  } 
+  }
 
   //header for partner -> projektvorschlag -> cockpit
   if (is_numeric($arg2) || $arg2 == 'add') {
@@ -773,20 +773,19 @@ function _section_projects_header_and_navigation_view() {
       //$url_array = file_create_url($uri);
       //$url = parse_url($url_array);
       //$path = $url['path'];
-      $header_pic = '<div style="
+      $header_pic = '<div id="course-header-background" style="
         background-image:url(' . $path . ');
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
-        height:200px;
         ">
         </div>';
     }
     $output .= $header_pic;
 
     $output .= '</div>';
-    
+
     //partner logo
     $field_view = field_view_field('node', $po_node, 'field_po_logo', array('settings' => array('image_style' => 'projects_logo')));
     $field_view['#label_display'] = 'hidden';
@@ -805,8 +804,8 @@ function _section_projects_header_and_navigation_view() {
     //container
     $output .= "</div>";
   }
-    
-    
+
+
   $blocks = array();
   $block = array(
     'content' => array(
@@ -820,7 +819,7 @@ function _section_projects_header_and_navigation_view() {
   }else if(($arg0 == 'projects') && ($arg1 == 'admin')) {
      $blocks[] = _section_projects_project_cockpit_tabs_view_static();
   }
- 
+
   RETURN $blocks;
 }
 
@@ -928,7 +927,7 @@ function _section_projects_project_cockpit_tabs_view_static() {
     foreach ($navigation_items as $item) {
         $items_url = '/projects/partners/' . $po_node->nid . '/' . $proposal->nid . '/cockpit/' . $ca->nid ;
         $active_class = ($i == $active_tab) ? 'active' : '';
-        $urldef = 
+        $urldef =
            array('path' => $items_url,
                  'fragment'=>  drupal_html_class(transliteration_get($item)),
                  'text' => $item,
@@ -949,8 +948,8 @@ function _section_projects_project_cockpit_tabs_view_static() {
 }
 
 /**
- * 
- * laedt das aktuelle projekt und erstellt ein block-renderbares menue, das auf 
+ *
+ * laedt das aktuelle projekt und erstellt ein block-renderbares menue, das auf
  * einen hash fuehrt
  * ist block-renderable
  * @return array menu
@@ -968,7 +967,7 @@ function _section_projects_project_cockpit_tabs_view() {
 
   $i = 0;
   if ($active_project) {
-    
+
     foreach ($navigation_items as $item) {
        $urldef = array( 'path' => request_uri(),
                         'fragment'=> drupal_html_class(transliteration_get($item)),
@@ -978,7 +977,7 @@ function _section_projects_project_cockpit_tabs_view() {
        $urls[] =$urldef;
     }
   }
-    
+
    $navigation_items_for_menu = array(
         'single' => array(
             'header' => '',
@@ -987,7 +986,7 @@ function _section_projects_project_cockpit_tabs_view() {
             'urls' => $urls
            )
        );
-    
+
    return _onlinekurslabor_misc_get_renderable_section_navigation($navigation_items_for_menu,  array('class' => 'section_navigation_cockpit'));
 }
 
@@ -1192,7 +1191,7 @@ function _section_projects_po_tools_view() {
         ))));
 
 
-    
+
       }
 
     }
@@ -2109,8 +2108,8 @@ function section_projects_sign_inform_action($entity, $context) {
   if ($signing_state_new == $signing_state_old) {
     return TRUE;
   }
-  $signed_all_old = _section_projects_seal_get_signing_states_array($signing_state_old); 
-  $signed_all_new =  _section_projects_seal_get_signing_states_array($signing_state_new); 
+  $signed_all_old = _section_projects_seal_get_signing_states_array($signing_state_old);
+  $signed_all_new =  _section_projects_seal_get_signing_states_array($signing_state_new);
 
   $sign_intersect = array_intersect($signed_all_new, $signed_all_old);
   $new_sigs = array_diff($signed_all_new, $signed_all_old);
@@ -2164,7 +2163,7 @@ function section_projects_sign_inform_action($entity, $context) {
     $the_course_group = node_load($the_course_group_id);
 
     /* lade kursgruppenmitglieder aus db */
-    
+
     //laden und nutzeraccounts laden
     $course_group_user_ids = custom_general_get_users_in_group($the_course_group->nid);
      foreach ($course_group_user_ids as $mini_coursegroup) {
@@ -2329,7 +2328,7 @@ function section_projects_sign_inform_action($entity, $context) {
       }
 
     }
-    
+
     //  alle mails, dies interessiert
     foreach ($singular_affected_users as $user_to_mail_to) {
       $params_new = $params;
@@ -2371,7 +2370,7 @@ function _section_projects_get_signing_states_array($node_id)
      $signing_state = @$the_node->field_seal;
      if(!$signing_state)
          return false;
-     
+
     $signing_state = (int) ($signing_state['und'][0]['value']);
 return _section_projects_seal_get_signing_states_array($signing_state);
 

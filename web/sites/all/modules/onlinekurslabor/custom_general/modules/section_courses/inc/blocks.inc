@@ -63,11 +63,11 @@ function _section_courses_node_tabs_view() {
       }
     }
 
-    if (count($single_links) < 1)
+    if (count($single_links) < 1) {
       return array();
+    }
 
-    $output_single = _custom_general_theme_tools_block($single_links, "content_node_tabs", "btn-grop");
-
+    $output_single = _custom_general_theme_tools_block($single_links, "content_node_tabs", "btn-group");
 
     // Block output in HTML with div wrapper
     $block = $output_single;
@@ -156,15 +156,15 @@ function _course_header_section_view() {
 
       $output .= '</div>';
     }
-    
-    
+
+
     if(! $active_course->status)
     {
-        $output .= '<div class="view_courses_label draft badge" title="'.t("This course is currently being tested not public yet.").'">'.t('Draft').'</div>';   
+        $output .= '<div class="view_courses_label draft badge" title="'.t("This course is currently being tested not public yet.").'">'.t('Draft').'</div>';
     }
-    
+
     $output .= '<div id="course_header_title">';
-   
+
     $output .= '<h1>';
     $output .= $active_course->title;
     $output .= '</h1>';
@@ -190,13 +190,12 @@ function _course_header_section_view() {
       //$url_array = file_create_url($uri);
       //$url = parse_url($url_array);
       //$path = $url['path'];
-      $header_pic = '<div style="
+      $header_pic = '<div id="course-header-background" style="
         background-image:url(' . $path . ');
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover; 
-        height:200px;
         ">
         </div>';
     }
@@ -220,7 +219,7 @@ function _course_header_section_view() {
 
 /*
  * check if we are in course demo mode
- * 
+ *
  * return boolean
  */
 
@@ -245,14 +244,18 @@ function section_courses_demo_mode($nid = 0) {
 }
 
 /**
- * Theme Instrucotr's Tools Block 
- * 
+ * Theme Instrucotr's Tools Block
+ *
  * @param type $variables
  * @return type
  */
 function _section_courses_theme_instructor_tools($variables = NULL) {
 
+  // 12.07.2019 - 16:31 - SN
+  // no more instructor toolbar > alpha14
+  // todo remove from all panels using instructors toolbar
   $output = "";
+  return $output;
 
   if (section_courses_instructors_tools_access()) {
 
@@ -328,7 +331,7 @@ function section_courses_tutor_tools_access() {
 
 /**
  * get link Items for Insructor's Tools Block
- * 
+ *
  * @global type $user
  * @return string
  */
@@ -360,53 +363,64 @@ function _section_courses_get_instructor_tools() {
       'title' => '',
   ));
 
-  /*
-    $members_overview_options = $default_options;
-    $groups_overview_options = $news_options;
-
-    $docs_options = $news_options;
-    $members_options = $news_options;
-    $groups_options = $news_options;
-    $forums_overview_options = $news_options;
-    $course_settings_options = $news_options; */
-
-
   $links = array();
 
-  //wg css-rtl
-  $links['instr_overview_members']['label'] = ".Teilnehm";
+  $links['instr_category_members']['label'] = "Teilnehmende";
+  $links['instr_category_members']['label_long'] = "Teilnehmende";
   $links['instr_add_members']['label'] = ".Teilnehm";
+  $links['instr_add_members']['label_long'] = "Teilnehmende hinzufügen"; //obacht!
+  $links['instr_settings_members']['label'] = "verwalten";
+  $links['instr_settings_members']['label_long'] = "Teilnehmende verwalten";
 
-  $links['instr_overview_content']['label'] = "Inhalte";
-  $links['instr_add_news']['label'] = "Neuigkeit";
+  $links['instr_category_content']['label'] = "Kursinhalte";
+  $links['instr_category_content']['label_long'] = "Kursinhalte";
+  $links['instr_add_news']['label'] = "Ankündigung";
+  $links['instr_add_news']['label_long'] = "Ankündigung hinzufügen";
   $links['instr_add_docs']['label'] = "Dokument";
+  $links['instr_add_docs']['label_long'] = "Dokument hinzufügen";
   $links['instr_add_task']['label'] = "Aufgabe";
+  $links['instr_add_task']['label_long'] = "Aufgabe hinzufügen";
+  $links['instr_overview_content']['label'] = "Inhaltsübersicht";
+  $links['instr_overview_content']['label_long'] = "Inhaltsübersicht";
 
-  $links['instr_overview_groups']['label'] = "Gruppe";
+
+  $links['instr_category_groups']['label'] = "Gruppen";
+  $links['instr_category_groups']['label_long'] = "Kursgruppen";
   $links['instr_add_groups']['label'] = "Gruppe";
+  $links['instr_add_groups']['label_long'] = "Gruppe hinzufügen";
+  $links['instr_overview_groups']['label'] = "Gruppen";
+  $links['instr_overview_groups']['label_long'] = "Gruppenübersicht";
 
-
+  //kann man auch langsam raushauen ;-)
   $links['instr_overview_projects']['label'] = "Projekte";
+  $links['instr_overview_projects']['label_long'] = "Projekte";
 
   $links['instr_overview_forums']['label'] = "Forum";
+  $links['instr_overview_forums']['label_long'] = "Forum";
 
   $links['instr_course_settings']['label'] = "Kurs";
+  $links['instr_course_settings']['label_long'] = "Kurseinstellungen";
 
 
   //Groups
-  $links['instr_overview_members']['group']['gid'] = 1;
-  $links['instr_overview_members']['group']['root'] = TRUE;
+  $links['instr_category_members']['group']['gid'] = 1;
+  $links['instr_category_members']['group']['root'] = TRUE;
   $links['instr_add_members']['group']['gid'] = 1;
+  $links['instr_settings_members']['group']['gid'] = 1;
 
-  $links['instr_overview_content']['group']['gid'] = 2;
-  $links['instr_overview_content']['group']['root'] = TRUE;
+
+  $links['instr_category_content']['group']['gid'] = 2;
+  $links['instr_category_content']['group']['root'] = TRUE;
   $links['instr_add_news']['group']['gid'] = 2;
   $links['instr_add_docs']['group']['gid'] = 2;
   $links['instr_add_task']['group']['gid'] = 2;
+  $links['instr_overview_content']['group']['gid'] = 2;
 
-  $links['instr_overview_groups']['group']['gid'] = 3;
-  $links['instr_overview_groups']['group']['root'] = TRUE;
+
+  $links['instr_category_groups']['group']['gid'] = 3;
+  $links['instr_category_groups']['group']['root'] = TRUE;
   $links['instr_add_groups']['group']['gid'] = 3;
+  $links['instr_overview_groups']['group']['gid'] = 3;
 
   $links['instr_overview_projects']['group']['gid'] = 4;
   $links['instr_overview_projects']['group']['root'] = TRUE;
@@ -417,104 +431,85 @@ function _section_courses_get_instructor_tools() {
   $links['instr_course_settings']['group']['gid'] = 6;
   $links['instr_course_settings']['group']['root'] = TRUE;
 
+  //categorization
+  $path = 'course/admin/' . $group_id . '/members'; //fallback-path für "neuer tab"
+  $id = 'instr_category_members';
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
+  $path = 'course/admin/' . $group_id . '/content';
+  $id = 'instr_category_content';
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options );
 
-  /*
-    $groups = array();
-    $groups[1] = array();
-    $groups[1][] = $links['instr_overview_members'];
-    $groups[1][] = $links['instr_add_members'];
-    $groups[2] = array();
-    $groups[2][] = $links['instr_overview_groups'];
-    $groups[2][] = $links['instr_add_groups'];
-    $groups[3] = array();
-    $groups[3][] = $links['instr_overview_forums'];
-    $groups[4] = array();
-    $groups[4][] = $links['instr_course_settings']; */
-
-
-  //$links['instr_course_settings2'] = "Kurseinstellungen";
-  //$links['instr_course_settings3'] = "Kurseinstellungen";
-  //$links['instr_course_settings4'] = "Kurseinstellungen";
-  //$links['instr_course_settings5'] = "Kurseinstellungen";
-
-  /*
-    $links['instr_view_members'] = "Teilnehmer";
-    $links['instr_view_groups'] = "Kursgruppen";' */
-
+  $path = 'course/admin/' . $group_id . '/groups';
+  $id = 'instr_category_groups';
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   //settings
   $path = 'course/admin/' . $group_id . '/settings';
   $id = 'instr_course_settings';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'course/projects/' . $group_id; //todo
   $id = 'instr_overview_projects';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'course/admin/' . $group_id . '/forums';
   $id = 'instr_overview_forums';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   //overviews
   $path = 'course/admin/' . $group_id . '/members';
-  $id = 'instr_overview_members';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $id = 'instr_settings_members';
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'course/admin/' . $group_id . '/groups';
   $id = 'instr_overview_groups';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
+
 
   $path = 'course/admin/' . $group_id . '/content';
-  $id = 'instr_overview_content';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $id='instr_overview_content';
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options );
+
 
   //adds
   $path = 'course/admin/' . $group_id . '/add/courses-news';
   $id = 'instr_add_news';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'course/admin/' . $group_id . '/add/courses-docs';
   $id = 'instr_add_docs';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'course/admin/' . $group_id . '/add/courses-generic-task';
   $id = 'instr_add_task';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'course/admin/' . $group_id . '/members/add';
   $id = 'instr_add_members';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $path = 'course/admin/' . $group_id . '/add/courses-group';
   $id = 'instr_add_groups';
-  $label = $links[$id]['label'];
-  $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
-
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
   $result = array();
-  foreach ($links as $name => $link) {
+  foreach ($links as $name => $item) {
     $attributes = array('attributes' => array('id' => $name, 'class' => array('btn','btn-default')));
-    if (isset($link['path'])) {
-      custom_general_append_active_class(($link['path']), $attributes);
+    if (isset($item['path'])) {
+      custom_general_append_active_class(($item['path']), $attributes);
     }
 
-    $group = isset($link['group']) ? $link['group'] : NULL;
-    $link = isset($link['link']) ? $link['link'] : NULL;
-    $result[] = array('link' => $link, 'group' => $group, 'attributes' => $attributes['attributes']);
+    $group = isset($item['group']) ? $item['group'] : NULL;
+    $link = isset($item['link']) ? $item['link'] : NULL;
+    $link_long = isset($item['link_long']) ? $item['link_long'] : NULL;
+    $result[$name] = [
+      'link' => $link,
+      'link_long' => $link_long,
+      'group' => $group,
+      'attributes' => $attributes['attributes'],
+    ];
   }
-
 
   return $result;
 }
@@ -527,146 +522,100 @@ function _section_courses_get_instructor_tools() {
  *   returns a renderable array of block content.
  */
 function _course_top_navigation_view() {
-     $options = array('class'=>'section_navigation_course');
-     
-   
-  $block = array();
   $course = _section_courses_get_active_course();
+  if (!isset($course) || empty($course)) {
+    return [];
+  }
 
-  if (!isset($course) || empty($course))
-    return array();
-
-  $nav_items_single = array();
+  $nav_items_single = [];
   $nav_items_single['overview'] = "Aktuelles";
   $nav_items_single['course'] = "Lehrtext";
   $nav_items_single['documents'] = "Kursdokumente";
-//$nav_items['notes'] = "Notizen";
   $nav_items_single['information'] = "Kursinfo";
 
-
-  $nav_items_collab = array();
+  $nav_items_collab = [];
   $nav_items_collab['tasks'] = "Aufgaben";
   $nav_items_collab['cours_groups'] = "Kursgruppe";
   $nav_items_collab['forum'] = "Forum";
   $nav_items_collab['members'] = "Teilnehmende";
-  $nav_items_collab['wiki'] = "Wiki";
+
+  $nav_items_single_links = _section_courses_top_navigation_label_to_link($nav_items_single, $course);
+  $nav_items_collab_links = _section_courses_top_navigation_label_to_link($nav_items_collab, $course);
+
+  // administration
+  $admin_tools = "";
+  if(section_courses_instructors_tools_access()) {
+    $instructor_tools = _section_courses_get_instructor_tools();
+    $id = "mobile_instructors_tools";
+    $class = "btn-group btn-group-vertical";
+    $admin_tools = _custom_general_theme_tools_navbar_block($instructor_tools, $id, $class);
+  }
 
 
-//single links
-  $single_links = array();
-//$output_single = '';
-//$output_single .= '<ul class="links inline clearfix">';
+  $variables['single_links'] = $nav_items_single_links;
+  $variables['collab_links'] = $nav_items_collab_links;
+  $variables['admin_tools'] = $admin_tools;
+
+  return theme('section_courses_top_navigation', $variables);
+}
+
+/**
+ * @param $nav_items_single
+ * @param $course
+ *
+ * @return array
+ */
+function _section_courses_top_navigation_label_to_link($nav_items_single, $course) {
+  $links = [];
   foreach ($nav_items_single as $si) {
     $text_link = _section_courses_navtext_to_link($course, $si);
 
-    //only render this item, if feature is turned on.
+    // only render this item, if feature is turned on.
     // render as disabled button if no text is assigned
-    if($si == "Lehrtext" && !_section_courses_feature_active($course, NM_COURSE_FEATURE_TEXT)){
+    if ($si == "Lehrtext" && !_section_courses_feature_active($course, NM_COURSE_FEATURE_TEXT)) {
       continue;
     }
-
-    $options = array(
-      'link' => $text_link['link'],
-      'text' => $text_link['text'],
-      'path' => $text_link['path'],
-      'data' => @$text_link['data'],
-      'attributes' => array('class' => array('btn'))
-    );
-    //disable path buttons user doesn't have access to
-    if (!drupal_valid_path($options['path'])) {
-      $options['path'] = '#';
-      $options['link'] = '<a href="#">' . $si . '</a>';
-      $options['attributes']['class'][] = 'disabled';
-    }
-    $options['attributes']['class'][] = drupal_html_class($si);
-
-
-    $single_links[] = $options;
-
-//$si_link = _section_courses_navtext_to_link($course, $si);
-//$output_single .= "<li>" . $si_link . "</li>";
-  }
-
-//$output_single .= "</ul>";
-//collaborative links
-  $collab_links = array();
-//$output_collab = '';
-//$output_collab .= '<ul class="links inline clearfix">';
-  /* Waruuum? Selber Code doppelt, nur fuer andere Variable!*/
-  foreach ($nav_items_collab as $si) {
-    $text_link = _section_courses_navtext_to_link($course, $si);
     if (strtolower($si) != strtolower($text_link['link'])) {
-      $options = array('link' => $text_link['link'], 'path' => $text_link['path'], 'data' => @$text_link['data'],'text' => $text_link['text'],'attributes' => array('class' => array('btn')));
+      $options = [
+        'link' => $text_link['link'],
+        'text' => $text_link['text'],
+        'path' => $text_link['path'],
+        'data' => @$text_link['data'],
+        'attributes' => ['class' => ['btn']],
+      ];
 
-      //disable path buttons where user doen't have access to
+      //disable path buttons user doesn't have access to
       if (!drupal_valid_path($options['path'])) {
         $options['path'] = '#';
         $options['link'] = '<a href="#">' . $si . '</a>';
         $options['attributes']['class'][] = 'disabled';
       }
+
+      $unread_count = $options['data']['unread'];
+      $unread_badge = '';
+      if ($unread_count) {
+        $unread_badge = '<div class="unread_tiny_box"><div style="" class="arrow-down"></div>' . $unread_count . '</div>';
+      }
+
+      $options['rendered_link'] = '<li class="' . _onlinekurslabor_misc_umlaut_to_text(strtolower($options['text'])) . '">'
+        . l($options['text'] . ' ' . $unread_badge, $options['path'], [
+          'fragment' => @$options['fragment'],
+          'html' => TRUE,
+          'attributes' => ['class' => $options['attributes']['class']],
+        ])
+        . '</li>';
+
       $options['attributes']['class'][] = drupal_html_class($si);
-
-      $collab_links[] = $options;
+      $links[] = $options;
     }
-//$si_link = _section_courses_navtext_to_link($course, $si);
-//$output_collab .= '<li>' . $si_link . '</li>';
+
   }
-    
-    
-//$output_collab .= '</ul>';
-    $navigation_options = array('class' => 'section_navigation_course');
-    $navigation_items = array(
-        'single' => array(
-            'header' => '<div id="course_top_nav_single-icon"></div>',
-            'prefix' => '<div class="col-md-6">',
-            'suffix' => '</div>',
-            'urls' => $single_links
-        ),
-        'collab' => array(
-            'header' => '<div id="course_top_nav_collab-icon"></div>',
-            'prefix' => '<div class="col-md-6">',
-            'suffix' => '</div>',
-            'urls' => $collab_links
-        )
-    );
-      
- return _onlinekurslabor_misc_get_renderable_section_navigation($navigation_items , $navigation_options);
-    /*
-  $output_single = _custom_general_theme_tools_block($single_links, "course_top_nav_single");
-  $output_collab = _custom_general_theme_tools_block($collab_links, "course_top_nav_collab");
-
-// Block output in HTML with div wrapper
-  $block = array(
-    'prefix' => array(
-      '#prefix' => '<div id="course_top_navigation" class="btn-toolbar row">',
-      '#type' => 'markup',
-      '#markup' => "",
-    ),
-    'single' => array(
-      '#prefix' => '<div id="course_tools_single" class="btn-group col-md-5">',
-      '#type' => 'markup',
-      '#markup' => $output_single,
-      '#suffix' => '</div>',
-    ),
-    'collab' => array(
-      '#prefix' => '<div id="course_tools_collab" class="btn-group col-md-6">',
-      '#type' => 'markup',
-      '#markup' => $output_collab,
-      '#suffix' => '</div>',
-    ),
-    'suffix' => array(
-      '#type' => 'markup',
-      '#markup' => "",
-      '#suffix' => '</div>',
-    ),
-  );
-
-  return $block;*/
+  return $links;
 }
 
 /**
  * returns a themed link item for the courses top navigation
- * 
+ *
  * @param type $course
  * @param type $text
  * @return string
@@ -702,8 +651,8 @@ function _section_courses_navtext_to_link($course, $text) {
 
   $text_temp = $text;
   $text = ($text);
- 
-  
+
+
   switch ($text_temp) {
     case "Aktuelles":
       $num_unread = _section_courses_course_get_num_unread_by_type($user->uid, NM_COURSE_NEWS);
@@ -777,7 +726,7 @@ function _section_courses_navtext_to_link($course, $text) {
 
         $path = $forum_link;
 
-        //get number of active forum containers and link to first container 
+        //get number of active forum containers and link to first container
         //directly if only one cotainer is available
         $forum_container = taxonomy_get_children($term->tid);
         if (count($forum_container) == 1) {

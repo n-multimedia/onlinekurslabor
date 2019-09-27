@@ -81,6 +81,14 @@ abstract class CestHelper {
         Fixtures::add('current_context_nid', $nid);
     }
     
+    /**
+     * sollte nach Ende eines Cests, in dem ein Kurs angelegt wird, ausgeführt werden.
+     * Damit können spätere Tests wieder mit dem Fallbackkurs arbeiten.
+     */
+    protected function resetCurrentContextNid()
+    {
+         $this->setCurrentContextNid(_okl_testing_getFallbackData()->nid);
+    }
     
     
     /**
@@ -189,7 +197,7 @@ abstract class CestHelper {
             $fallback_data = _okl_testing_getFallbackData();
         }
         $runner = 0;
-        for ($i = $ident_num_start; $i < $count; $i++) {
+        for ($i = $ident_num_start; $i < $ident_num_start+$count; $i++) {
             $sample[$runner++] = $this->getPersonSample(array(NM_ROLE_STUDENT), $i) + ['type' => 'default'];
             if($with_fallback)
             {

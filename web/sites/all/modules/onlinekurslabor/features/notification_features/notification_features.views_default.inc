@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * notification_features.views_default.inc
@@ -22,6 +23,7 @@ function notification_features_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -29,9 +31,13 @@ function notification_features_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
-  $handler->display->display_options['pager']['type'] = 'some';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '15';
+  $handler->display->display_options['pager']['type'] = 'mini';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options'] = '5, 20';
+  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ ';
+  $handler->display->display_options['pager']['options']['tags']['next'] = ' ›';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
   /* Field: Message: Rendered Message */
@@ -50,9 +56,21 @@ function notification_features_views_default_views() {
   $handler->display->display_options['sorts']['timestamp']['field'] = 'timestamp';
   $handler->display->display_options['sorts']['timestamp']['order'] = 'DESC';
 
-  /* Display: Activity pane */
-  $handler = $view->new_display('panel_pane', 'Activity pane', 'activity_display');
-  $handler->display->display_options['display_description'] = 'shows activity ';
+  /* Display: Activity pane Desktop */
+  $handler = $view->new_display('panel_pane', 'Activity pane Desktop', 'activity_pane_desktop');
+  $handler->display->display_options['display_description'] = 'shows activity (Desktop)';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'mini';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '15';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options'] = '5, 20';
+  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ ';
+  $handler->display->display_options['pager']['options']['tags']['next'] = ' ›';
+
+  /* Display: Activity pane Mobile */
+  $handler = $view->new_display('panel_pane', 'Activity pane Mobile', 'activity_pane_mobile');
+  $handler->display->display_options['display_description'] = 'shows activity (Mobile)';
   $translatables['nm_activity_stream'] = array(
     t('Master'),
     t('more'),
@@ -61,9 +79,18 @@ function notification_features_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('Activity pane'),
-    t('shows activity '),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ '),
+    t(' ›'),
+    t('last »'),
+    t('Activity pane Desktop'),
+    t('shows activity (Desktop)'),
     t('View panes'),
+    t('Activity pane Mobile'),
+    t('shows activity (Mobile)'),
   );
   $export['nm_activity_stream'] = $view;
 

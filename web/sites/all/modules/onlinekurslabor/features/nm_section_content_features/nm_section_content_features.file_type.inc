@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_section_content_features.file_type.inc

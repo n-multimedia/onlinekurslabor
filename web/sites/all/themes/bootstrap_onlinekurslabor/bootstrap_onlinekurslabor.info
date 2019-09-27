@@ -22,11 +22,12 @@ stylesheets[all][] = css/media.css
 stylesheets[all][] = css/user.css
 stylesheets[all][] = css/nm_fancy_box.css
 stylesheets[all][] = css/bootstrap_tabs.css
+stylesheets[all][] = css/mobile.css
 
 ;**********************************
 ; METHOD 1: Bootstrap Source Files
 ;**********************************
-; 
+;
 ; ; Scripts
 ; scripts[] = 'js/jquery.cookie.js'
 scripts[] = 'js/tabscookie.js'
@@ -43,7 +44,7 @@ scripts[] = 'js/custom.js'
 ; scripts[] = 'bootstrap/js/bootstrap-scrollspy.js'
 ; scripts[] = 'bootstrap/js/bootstrap-transition.js'
 ; scripts[] = 'bootstrap/js/bootstrap-typeahead.js'
-; 
+;
 ; ; Settings inherited by base theme, uncomment to override.
 ; ;settings[toggle_name] = 0
 ; ;settings[toggle_search] = 1
@@ -54,7 +55,7 @@ scripts[] = 'js/custom.js'
 ;*************************
 ; METHOD 2: Bootstrap CDN
 ;*************************
-; 
+;
 ; ; Settings inherited by base theme, uncomment to override.
 ; ;settings[toggle_name] = 0
 ; ;settings[toggle_search] = 1
