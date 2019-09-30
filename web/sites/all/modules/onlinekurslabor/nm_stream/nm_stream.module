@@ -2469,7 +2469,6 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   $data['stream']['privacyOptions'] = $privacy_options;
   $data['stream']['privacyOptionsAll'] = $privacy_options_all;
   $data['stream']['token'] = drupal_get_token();
-
   // $allowed_attachm_filetypes from field configuration
   $stream_CT_field_data = field_info_instances("node", "nm_stream");
   $stream_attachments_filetypes = $stream_CT_field_data['field_nm_attachments']['settings']['file_extensions'];
@@ -2500,12 +2499,12 @@ function nm_stream_api_v2_render_stream($container) {
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.667a6230156013d6c7fe.js", [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.d8804e8bffb79a911323.js", [
     'scope' => 'footer',
     'weight' => 5,
   ]);
 
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.b97c745baa0e7892da34fc1a65c824d5.css', [
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.d766e5e503f9f05cb63f0e9e852c7b20.css', [
     'scope' => 'footer',
     'weight' => 5,
   ]);
