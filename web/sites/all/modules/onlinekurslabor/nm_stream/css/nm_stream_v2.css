@@ -133,7 +133,7 @@
 
 
 
-#stream .dz-error-message {
+#stream .dz-error .dz-error-message {
   opacity: 1 !important;
   display: block;
   top: -5%;

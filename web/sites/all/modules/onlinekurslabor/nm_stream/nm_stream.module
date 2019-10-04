@@ -2499,12 +2499,12 @@ function nm_stream_api_v2_render_stream($container) {
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.d8804e8bffb79a911323.js", [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.8fcd6aa12daf4c86932b.js", [
     'scope' => 'footer',
     'weight' => 5,
   ]);
 
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.d766e5e503f9f05cb63f0e9e852c7b20.css', [
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.236d7332c9cac79319fdbdaf7c3089ed.css', [
     'scope' => 'footer',
     'weight' => 5,
   ]);
