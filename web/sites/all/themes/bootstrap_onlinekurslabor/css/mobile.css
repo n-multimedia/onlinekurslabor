@@ -77,14 +77,8 @@
     padding: 0;
   }
 
-
-  /*
-  Mobil - activity - größere Pager-Buttons
-  */
-  div.activity-mobile .view-nm-activity-stream ul.pager a{
-      /**padding: 5px 55px;*/
-      padding-left: 15%;
-      padding-right: 15%;
+  .view-nm-activity-stream {
+    display: none;
   }
 
 
@@ -171,6 +165,69 @@
     width: 100%;
   }
 
+  #stream .post-context .col-12 {
+    padding-right: 5px;
+  }
+
+  #stream .post-header.col-12 {
+    padding-right: 2px;
+  }
+
+  #home_loggedin .home_icon_container_right span {
+    font-size: 18px;
+    margin-left: 7px;
+  }
+
+  #home_loggedin .glyphicon-option-horizontal {
+    font-size: 30px;
+    margin-top: 10px;
+  }
+
+
+  .horizontal-tabs fieldset.horizontal-tabs-pane {
+    padding: 0;
+  }
+  .horizontal-tabs .panel-body {
+    padding: 5px;
+  }
+
+  .partners-po-item {
+    padding: 0;
+  }
+
+  .partners-projects-item-image,
+  .partners-projects-item-title,
+  .partners-projects-item-list,
+  .partners-projects-item-changed {
+    padding: 0 !important;
+  }
+
+  div[id^="forum-table-"] {
+    overflow: scroll;
+  }
+
+  #forum-topic-header .topic-post-count {
+    float: none;
+  }
+  .forum-post-wrapper .forum-post-panel-main {
+    margin-left: 0;
+    border: none;
+  }
+  .forum-post-wrapper .forum-post-panel-sub {
+    width: 100%;
+  }
+
+  .forum-post-wrapper .author-pane .picture img {
+    width: 80px;
+  }
+
+  .page-course-projects .main-content,
+  .page-course-docs .main-content,
+  .page-course-info .main-content,
+  .page-course-tasks .main-content,
+  .page-course-admin .main-content {
+    overflow: scroll;
+  }
 }
 
 @media (max-width: 992px) {
