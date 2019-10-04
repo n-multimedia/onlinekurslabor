@@ -169,9 +169,10 @@
     padding-right: 5px;
   }
 
-  #stream .post-header.col-12 {
-    padding-right: 2px;
+  #stream .stream-post > .row > .col-10 {
+    padding-right: 5px !important;
   }
+
 
   #home_loggedin .home_icon_container_right span {
     font-size: 18px;
