@@ -40,17 +40,16 @@ function _section_home_getRenderedStream() {
   return nm_stream_api_v2_render_stream(NULL);
 }
 
-
 /**
- * Die Activity-Ansicht (neues Kursdoc etc)
- * @param type $panel_pane The pane. Valid values: activity_pane_desktop, activity_pane_mobile
+ * Die Activity-Ansicht
  * @return String $html
  */
-function _section_home_getRenderedActivity($panel_pane = 'activity_pane_desktop') {
+function _section_home_getRenderedActivity() {
 
-    $view = _section_home_getView('nm_activity_stream',$panel_pane);
+    $view = _section_home_getView('nm_activity_stream','activity_display');
+
    # $view->set_title(t('Activity'));
-    return _section_home_renderView($view, $panel_pane, true);
+    return _section_home_renderView($view, 'activity_display', true);
 }
 
 /**

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * notification_features.rules_defaults.inc
