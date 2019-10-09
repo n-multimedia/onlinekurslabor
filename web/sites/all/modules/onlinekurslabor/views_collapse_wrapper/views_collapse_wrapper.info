@@ -1,0 +1,13 @@
+name = views_collapse_wrapper
+description = Bei der Anzeige in Views kann man "Collapse-Wrapper" wählen. Dann werden nur die ersten Items mit einem "show-more"-Button angezeigt.
+core = 7.x
+
+dependencies[] = views
+
+
+files[] = includes/views/views_collapse_wrapper.views.inc
+files[] = includes/views/views_collapse_wrapper_plugin_style_collapse_wrapper.inc
+
+
+stylesheets[all][] = assets/css/views-view-collapse-wrapper.css
+scripts[] = assets/javascript/views-view-collapse-wrapper.js

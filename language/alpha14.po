@@ -43,6 +43,8 @@ msgctxt "courses_group"
 msgid "Create the first one!"
 msgstr "Erstellen Sie die erste!"
 
+msgid "Show more"
+msgstr "Mehr anzeigen"
 
 msgid ""
 msgstr ""

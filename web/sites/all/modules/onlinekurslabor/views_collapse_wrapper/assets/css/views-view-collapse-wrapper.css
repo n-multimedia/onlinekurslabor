@@ -1,0 +1,28 @@
+.views-view-collapse-wrapper--wrapper{
+}
+
+
+.views-view-collapse-wrapper--collapse-container{
+    max-height: 320px; /*wert kann man in eigenen plugins überschreiben / eine höhen-option für den view programmieren*/
+    overflow: hidden;
+}
+
+.views-view-collapse-wrapper--collapse-container-hover{
+    height: 40px;
+    margin-top: -40px;
+    position: relative;
+    width: 100%;
+
+    background-image: linear-gradient(transparent 0%, white 70%);
+}
+
+.views-view-collapse-wrapper--collapsebutton-container{
+    width: 100%;
+}
+
+#views-view-collapse--button
+{
+
+}
+
+

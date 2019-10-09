@@ -19,7 +19,7 @@ drush language-import-translations de ../language/alpha14.po --replace --groups=
 drush updatedb --yes
 
 drush en newmenue_tooltip --y
-
+drush en views_collapse_wrapper --yes
 
 drush cc all
 
