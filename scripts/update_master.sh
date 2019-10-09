@@ -10,7 +10,7 @@ drush cc all
 
 #revert single features
 
-drush fr nm_general_features nm_section_courses_features nm_section_content_features nm_h5p_features --yes
+drush fr nm_general_features nm_section_courses_features nm_section_content_features nm_h5p_features notification_features --yes
 #drush fr nm_section_content_features nm_section_courses_features nm_general_features section_projects_features nm_h5p_features section_courses_clone_features --yes
 
 #import language

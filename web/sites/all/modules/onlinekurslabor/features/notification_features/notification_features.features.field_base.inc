@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * notification_features.features.field_base.inc
