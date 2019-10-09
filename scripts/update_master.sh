@@ -21,6 +21,8 @@ drush updatedb --yes
 drush en newmenue_tooltip --y
 drush en views_collapse_wrapper --yes
 
+drush vdel h5p_crossoriginRegex 1 --yes
+
 drush cc all
 
 drush vset maintenance_mode 0

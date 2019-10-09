@@ -60,13 +60,13 @@
         /*wegen h5p-api-changes wird nun vor ausführung immer die version geprüft und auch bei minor-changes ein fehler geworfen*/
         compareVersionAndCallback: function(what, callback)
         {
-            var notgood_error = "Severe error: Current version of H5P or H5PEditor does not match h5p_connector_api. Contact developers!!!!";
+            var notgood_error = "Severe error: Current version of H5P or H5PEditor does not match h5p_connector_api. Contact developers!!!! Version is:";
             if(what === 'H5PEditor')
             {
                 var edit_api = window[0].H5PEditor.apiVersion.majorVersion +"." + window[0].H5PEditor.apiVersion.minorVersion;
 
-                if(edit_api !== "1.20")
-                    alert(notgood_error);
+                if(edit_api !== "1.23")
+                    alert(notgood_error+edit_api);
                 else
                     callback();
             }
