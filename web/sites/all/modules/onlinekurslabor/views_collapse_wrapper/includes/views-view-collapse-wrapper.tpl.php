@@ -20,7 +20,7 @@ $content_count = 0;
   <h3><?php print $title; ?></h3>
 <?php endif; ?>
 <div class="views-view-collapse-wrapper--wrapper">
-    <div class="views-view-collapse-wrapper--collapse-container collapse show">
+    <div class="views-view-collapse-wrapper--collapse-container collapsed">
       
     <?php foreach ($rows as $id => $row): ?>
       <div<?php if (!empty($classes_array[$id])): ?> class="<?php print $classes_array[$id]; ?>"<?php endif; ?>>

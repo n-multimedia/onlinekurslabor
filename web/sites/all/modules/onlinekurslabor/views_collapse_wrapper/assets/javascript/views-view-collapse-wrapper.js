@@ -5,6 +5,7 @@
      * collapse_wrapper-behaviour
      */
     Drupal.behaviors.collapse_wrapper = {
+
         /*Auf großen Devices ist wrapping deaktiviert. Dann sollen auch alle Layer verschwinden.
          Ansonsten soll der Layer "collapsed" gesetzt werden.*/
         handleWrapperLayout: function ()
@@ -12,19 +13,28 @@
             //if no collapse active
             if ($("#views-view-collapse--button").is(":hidden"))
             {
+                $(".views-view-collapse-wrapper--collapse-container").removeClass("collapsed");
                 //scrollheight = tatsächliche content-length
                 var div_height = $(".views-view-collapse-wrapper--collapse-container").get(0).scrollHeight;
                 $(".views-view-collapse-wrapper--collapse-container").animate({"maxHeight": div_height}, 400);
+
             } else //collapse active
             {
-                $(".views-view-collapse-wrapper--collapse-container").removeAttr("style");
                 $(".views-view-collapse-wrapper--collapse-container").addClass("collapsed");
+                $(".views-view-collapse-wrapper--collapse-container").removeAttr("style");
             }
         }
     }
 
 })(jQuery);
+
+
+
+
 jQuery(document).ready(function () {
+
+
+
 
     //ggf. wrapper verstecken / zeigen
     Drupal.behaviors.collapse_wrapper.handleWrapperLayout();
