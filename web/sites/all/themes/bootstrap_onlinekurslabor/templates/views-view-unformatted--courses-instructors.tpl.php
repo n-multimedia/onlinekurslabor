@@ -16,11 +16,8 @@
 ?>
 
 <div class="view-instructor-subtitle">
-  <?php foreach ($rows as $id => $row): ?>
-
-    <?php print $row; ?>
-
-    <?php if ($last_key != $id) echo ", "; ?>
-
-  <?php endforeach; ?>
+<?php foreach ($rows as $id => $row): ?>
+<?php print trim($row); ?>
+<?php if ($last_key != $id) echo ", "; ?>
+<?php endforeach; ?>
 </div>

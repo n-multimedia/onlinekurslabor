@@ -2595,7 +2595,7 @@ function nm_section_courses_features_views_default_views() {
 
   $view = new view();
   $view->name = 'courses_instructors';
-  $view->description = 'Newest group members.';
+  $view->description = 'kursdozenten. wird bei kursinfo angezeigt.';
   $view->tag = 'og';
   $view->base_table = 'users';
   $view->human_name = 'Courses - Kursdozenten';
@@ -2616,16 +2616,15 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'default';
-  $handler->display->display_options['style_options']['row_class'] = 'pane-node-field-instructor';
   $handler->display->display_options['style_options']['default_row_class'] = FALSE;
   $handler->display->display_options['style_options']['row_class_special'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['inline'] = array(
-    'name' => 'name',
     'uid' => 'uid',
+    'name' => 'name',
   );
-  $handler->display->display_options['row_options']['separator'] = ',';
   $handler->display->display_options['row_options']['hide_empty'] = TRUE;
+  $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
   /* Relationship: OG membership: OG membership from User */
   $handler->display->display_options['relationships']['og_membership_rel']['id'] = 'og_membership_rel';
   $handler->display->display_options['relationships']['og_membership_rel']['table'] = 'users';
