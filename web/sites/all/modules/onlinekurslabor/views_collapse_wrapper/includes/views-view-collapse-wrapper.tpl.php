@@ -10,6 +10,8 @@
 
 //how many rows must be present to add the "collapse"-feature?
 $min_number_of_content = 4; 
+//can be used to disable the wrapping on large devices
+$additional_classes = 'hidden-md hidden-lg';
 
 //internal
 $content_count = 0;
@@ -29,8 +31,8 @@ $content_count = 0;
     </div>
     
     <?php if($content_count >= $min_number_of_content):?>
-        <div class="views-view-collapse-wrapper--collapse-container-hover"></div>
-         <div class="views-view-collapse-wrapper--collapsebutton-container">
+        <div class="views-view-collapse-wrapper--collapse-container-hover <?php echo $additional_classes?>"></div>
+         <div class="views-view-collapse-wrapper--collapsebutton-container <?php echo $additional_classes?>">
            <button class="btn btn-default btn-block" type="button"  id="views-view-collapse--button">
                 <?php echo t('Show more');?>
            </button>

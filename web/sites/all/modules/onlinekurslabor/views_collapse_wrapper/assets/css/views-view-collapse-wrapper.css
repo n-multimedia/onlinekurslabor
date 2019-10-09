@@ -2,7 +2,7 @@
 }
 
 
-.views-view-collapse-wrapper--collapse-container{
+.views-view-collapse-wrapper--collapse-container.collapsed{
     max-height: 320px; /*wert kann man in eigenen plugins überschreiben / eine höhen-option für den view programmieren*/
     overflow: hidden;
 }
