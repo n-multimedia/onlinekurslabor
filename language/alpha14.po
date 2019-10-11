@@ -46,6 +46,12 @@ msgstr "Erstellen Sie die erste!"
 msgid "Show more"
 msgstr "Mehr anzeigen"
 
+msgid "Course direction"
+msgstr "Kursleitung"
+
+msgid "Visible for course direction in this course"
+msgstr "Sichtbar für die Leitung und Unterstützung im Kurs"
+
 msgid ""
 msgstr ""
 

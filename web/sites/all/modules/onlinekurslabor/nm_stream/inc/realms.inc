@@ -48,8 +48,8 @@ function nm_stream_node_access_records($node) {
    'grant_delete' => 1,
    'priority' => 1
   ];
-  
-  
+
+
 
   $records = [];
   // handle the Section node itself
@@ -77,8 +77,6 @@ function nm_stream_node_access_records($node) {
           /* ============= container annvid ================== */
           case ANNVID_CONTENTTYPE: {
             switch ($privacy) {
-
-
               case NM_STREAM_COURSE:
                 $records[] = [
                     'realm' => 'nm_stream_course',
@@ -107,6 +105,14 @@ function nm_stream_node_access_records($node) {
                     'gid' => $node_environment['container']->parent->nid,
                   ] + $record_template_delete;
                 break;
+              case NM_STREAM_COURSE_DIRECTION:
+                // add access for course direction
+                if ($privacy != NM_STREAM_PRIVATE) {
+                  $records[] = [
+                      'gid' => $node_environment['context']->nid,
+                    ] + $record_template_teacher_stream;
+                }
+                break;
             }
           }
             break;
@@ -126,10 +132,7 @@ function nm_stream_node_access_records($node) {
                     'realm' => 'nm_stream_course_delete',
                     'gid' => $node_environment['container']->parent->nid,
                   ] + $record_template_delete;
-                
-     
                 break;
-
               case NM_STREAM_COURSE:
                 $records[] = [
                     'realm' => 'nm_stream_course',
@@ -145,39 +148,40 @@ function nm_stream_node_access_records($node) {
                   ] + $record_template_delete;
                 break;
             }
-             //in any case: add a new realm for dozent / tutor
+            //in any case: add a new realm for dozent / tutor
             // except stream entry is private
-              if ($privacy != NM_STREAM_PRIVATE) {                      
-                                    $records[] = [
-                                        'gid' => $node_environment['container']->parent->nid,
-                                            ] + $record_template_teacher_stream;
-                                }
-            }
-            break;
-          /* ============= container koop agreement ================== */
-          case NM_PROJECTS_KOOPERATIONSVEREINBARUNG: {
-            switch ($privacy) {
-
-              case NM_STREAM_TEAM:
-                dpm("TODO JSFOIJH wie komm ich hier an coursegroup?");
-                break;
-
-              case NM_STREAM_PROJECT:
-                $records[] = [
-                    'realm' => 'nm_stream_project',
-                    'gid' => $node_environment['container']->parent->nid,
-                  ] + $record_template_view;
-                $records[] = [
-                    'realm' => 'nm_stream_project_update',
-                    'gid' => $node_environment['container']->parent->nid,
-                  ] + $record_template_update;
-                $records[] = [
-                    'realm' => 'nm_stream_project_delete',
-                    'gid' => $node_environment['container']->parent->nid,
-                  ] + $record_template_delete;
-                break;
+            if ($privacy != NM_STREAM_PRIVATE) {
+              $records[] = [
+                  'gid' => $node_environment['container']->parent->nid,
+                ] + $record_template_teacher_stream;
             }
           }
+            break;
+          /* ============= container koop agreement ================== */
+          case NM_PROJECTS_KOOPERATIONSVEREINBARUNG:
+            {
+              switch ($privacy) {
+
+                case NM_STREAM_TEAM:
+                  dpm("TODO JSFOIJH wie komm ich hier an coursegroup?");
+                  break;
+
+                case NM_STREAM_PROJECT:
+                  $records[] = [
+                      'realm' => 'nm_stream_project',
+                      'gid' => $node_environment['container']->parent->nid,
+                    ] + $record_template_view;
+                  $records[] = [
+                      'realm' => 'nm_stream_project_update',
+                      'gid' => $node_environment['container']->parent->nid,
+                    ] + $record_template_update;
+                  $records[] = [
+                      'realm' => 'nm_stream_project_delete',
+                      'gid' => $node_environment['container']->parent->nid,
+                    ] + $record_template_delete;
+                  break;
+              }
+            }
             break;
         }
       }
@@ -247,11 +251,11 @@ function nm_stream_node_grants($account, $op) {
   if ($op != 'view') {
     return;
   }*/
-  //speedup by 40% using static cache  
+  //speedup by 40% using static cache
   $grants = &drupal_static(__FUNCTION__);
   if (isset($grants)) {
       return $grants;
-  }  
+  }
   $grants = [];
   $my_lehrtexte = [];
 
@@ -303,7 +307,7 @@ function nm_stream_node_grants($account, $op) {
         $user_groups[] = $ugn;
         $grants['nm_stream_team'][] = $ugn;
       }
- 
+
 
       //bin als TN in einem Lehrtext eingetragen
       if (_custom_general_get_node_type($ugn) == NM_CONTENT_DOMAIN) {
