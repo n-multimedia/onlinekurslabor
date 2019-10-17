@@ -846,7 +846,7 @@ function section_courses_text_outline() {
 
   //Outline retraction by domain setting
   if(_custom_general_outline_retraction_enabled($domain_ref)) {
-    drupal_add_js(drupal_get_path('module', 'section_content') . "/js/section_content.js");
+    drupal_add_js(drupal_get_path('module', 'section_content') . "/js/section_content_outline.js");
     drupal_add_js(drupal_get_path('module', 'section_content') . "/js/bootstrap-treeview.min.js");
     drupal_add_css(drupal_get_path('module', 'section_content') . "/css/bootstrap-treeview.min.css");
     drupal_add_css(drupal_get_path('module', 'section_content') . "/css/nm-bootstrap-treeview.css");
