@@ -1,7 +1,6 @@
 <?php
 
 
-
 /**
  * Implements hook_wysiwyg_plugin
  * @param type $editor
@@ -61,11 +60,15 @@ function h5p_integration_filter_info() {
  * foo with our custom defined string in the settings page.
  */
 function _h5p_integration_filter_h5p_process($text, $filter, $format) {
-  //$replacement = isset($filter->settings['filter_example_foo']) ? $filter->settings['filter_example_foo'] : 'bar';
-  //return str_replace('foo', $replacement, $text);
-  $regex = '#\[h5p\]([0-9]+)(:*.*?)\[\/h5p\]#s';
+    $h5p_integration_replace_regex = '#\[h5p\]([0-9]+)(:*.*?)\[\/h5p\]#s';
 
-  return preg_replace_callback($regex, '_h5p_integration_h5p_replacements', $text);
+    $replace_counter = 0;
+    $text_after_replacement = preg_replace_callback($h5p_integration_replace_regex, '_h5p_integration_h5p_replacements', $text, -1, $replace_counter);
+    //Zeige Warnmeldung im Lehrtext-Kontext an
+    if ($replace_counter > 1 && _section_content_get_active_domain()) {
+        drupal_set_message(t('There are multiple H5Ps embedded in this chapter. <ul><li>This can result in errors and a limited accessability on mobile devices.</li><li>Therefore this chapter should be split up in multiples.</li></ul>'), 'warning', false);
+    }
+    return $text_after_replacement;
 }
 
 function _h5p_integration_h5p_replacements($matches) {
@@ -185,7 +188,7 @@ function h5p_integration_form_h5p_content_node_form_alter(&$form, &$form_state, 
  */
 function _h5p_integration_filter_h5p_tips($filter, $format, $long = FALSE) {
 
-  return t('Every [h5p](node_id)[/h5p] pattern is being replaced by its content.');
+  return t('Every [h5p](node_id)[/h5p] pattern is being replaced by its content. Please embed only one H5P per page.');
 }
 
 

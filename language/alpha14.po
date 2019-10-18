@@ -46,6 +46,12 @@ msgstr "Erstellen Sie die erste!"
 msgid "Show more"
 msgstr "Mehr anzeigen"
 
+msgid "There are multiple H5Ps embedded in this chapter. <ul><li>This can result in errors and a limited accessability on mobile devices.</li><li>Therefore this chapter should be split up in multiples.</li></ul>"
+msgstr "In dieses Kapitel sind mehrere H5P-Elemente eingebettet. <ul><li>Dies kann zu Fehlern und einer schlechten Erreichbarkeit auf Mobilgeräten führen.</li><li>Dieses Kapitel sollte in mehrere unterteilt werden.</li></ul>"
+
+msgid "Every [h5p](node_id)[/h5p] pattern is being replaced by its content. Please embed only one H5P per page."
+msgstr "Jeder Eintrag in der Form [h5p](node_id)[/h5p] wird durch das entsprechende H5P-Element ersetzt. Bitte fügen Sie nur eines pro Seite ein."
+
 msgid ""
 msgstr ""
 
