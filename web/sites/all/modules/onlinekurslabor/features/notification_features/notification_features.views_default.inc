@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * notification_features.views_default.inc
@@ -32,7 +33,7 @@ function notification_features_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '15';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_plugin'] = 'collapse_wrapper';
   $handler->display->display_options['row_plugin'] = 'fields';
   /* Field: Message: Rendered Message */
   $handler->display->display_options['fields']['rendered_entity']['id'] = 'rendered_entity';

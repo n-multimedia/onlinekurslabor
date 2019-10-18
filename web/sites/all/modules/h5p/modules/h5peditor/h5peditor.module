@@ -74,6 +74,15 @@ function h5peditor_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['h5peditor/%/%/filter'] = array(
+    'title' => 'H5peditor Filter',
+    'page callback' => 'h5peditor_filter_callback',
+    'page arguments' => array(1, 2),
+    'access callback' => 'h5peditor_access',
+    'access arguments' => array(2),
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -392,6 +401,14 @@ function h5peditor_library_callback($machine_name, $major_version, $minor_versio
 function h5peditor_files_callback($token, $content_id) {
   $editor = h5peditor_get_instance();
   $editor->ajax->action(H5PEditorEndpoints::FILES, $token, $content_id);
+}
+
+/**
+ * Callback for file uploads.
+ */
+function h5peditor_filter_callback($token, $content_id) {
+  $editor = h5peditor_get_instance();
+  $editor->ajax->action(H5PEditorEndpoints::FILTER, $token, $_POST['libraryParameters']);
 }
 
 /**

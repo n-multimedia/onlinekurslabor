@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * ABOUT
+ * 
+ * Plugin funktioniert so erstmal. 
+ * Aber die festkodierten 320px Contentheight sind nicht schön, da könnt man entsprechend eine Option bauen.
+ * Anzahl an "Rows" ist auf 4 gesetzt, da wär eine Option auch schön.
+ * Wenn man mehrere Collapse-Wrapper auf einer Seite haben möchte, muss man vmtl. mit IDs arbeiten (ggf. auch als Option).
+ * 
+ * Funktioniert nicht im Preview!
+ */
+
+/**
+ * Implements hook_views_api().
+ */
+function views_collapse_wrapper_views_api() {
+    //hinweis für D8: https://www.drupal.org/node/1875596
+  return array(
+    'api' => '3.0',
+    'path' => drupal_get_path('module', 'views_collapse_wrapper') . '/includes/views',
+  );
+}
+ 

@@ -16,6 +16,10 @@ class UserSteps extends \AcceptanceTester {
   public function login($userName,  \Codeception\Step\Argument\PasswordArgument $securedPassword = null, $saveSession = TRUE) {
     $I = $this;
 
+    //boah hässlich, aber sonst scheitert die $drupalUser->login- Prüfung später.
+    entity_get_controller('user')->resetCache();
+    $drupalUser = user_load_by_mail($userName)?: user_load_by_name($userName); 
+    
     //$I->amOnPage("/user/logout");
 
     //do not log in, if session is already active
@@ -41,9 +45,8 @@ class UserSteps extends \AcceptanceTester {
     $I->click('Anmelden', '.form-actions');
 
     
-    $drupalUser = user_load_by_mail($userName)?: user_load_by_name($userName); 
     //noch nie eingeloggt
-    if(!$drupalUser->access)
+    if(!$drupalUser->login)
     {
         $I->click(LoginPage::$acceptLegalTermsCheckbox);
         $I->click(LoginPage::$acceptLegalButton);
@@ -161,6 +164,30 @@ class UserSteps extends \AcceptanceTester {
 
         $webDriver->switchTo()->defaultContent();
       });
+  }
+  
+  
+  /**
+   * Helperfunktion zur Nutzung des Coursemenus
+   * @param String $open_region z.B. "Teinehmende"
+   * @param type $click_option z.B. "Teilnehmde verwalten"
+   * @throws Exception
+   */
+  public function useCourseMenu($open_region = false , $click_option= false)
+  {
+    $this->click( '#instructor_tools_toggle_button' );
+    $this->wait(1);
+    //add context
+    if($open_region)
+    {
+        $this->click($open_region,'#mobile_instructors_tools-container' );
+        $this->wait(1);
+    }
+    if($click_option)
+    {
+         $this->click($click_option,'#mobile_instructors_tools-container' );
+    }
+    
   }
 
 }

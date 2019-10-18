@@ -506,6 +506,43 @@ function _section_courses_task_solution_form($form, &$form_state, $task_nid) {
         '#attributes' => array('class' => array('btn','btn-info')),
         '#value' => 'Speichern und Einreichen',
       );
+        
+    $task_node = node_load($task_nid);
+    $task_is_gruppenaufgabe = (boolean) $task_node->field_task_type[LANGUAGE_NONE][0]['value'];
+     if($task_is_gruppenaufgabe)
+     {   //erhalte kursgruppe
+         $users_cg = _section_courses_student_get_coursegroup_gid();
+         //user ist in keiner KG und nicht kurs-admin
+         if(!$users_cg && !section_courses_instructors_tools_access())
+         {
+
+           $course_object =  node_load($task_node->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+           $cg_selfsignup_denied = !empty($course_object->field_access_features[LANGUAGE_NONE][0]) && $course_object->field_access_features[LANGUAGE_NONE][0]['value'] ==  'course_group_lock';
+
+           //sperre für alle "studentenformulare" die ausfüllung
+           foreach ($form['solutions'] as $counter => &$solution_form_object) {
+                     //prüfe ob $counter ein integer
+                     if (is_int($counter))
+                     {
+                           //vernichte textfeld und setze text
+                           $solution_form_object = array();
+                           $text = t('This is a coursetask but you are not member of a coursegroup in this course.').'<br>';
+
+                           if($cg_selfsignup_denied)
+                           {
+                               $text .= t('Ask the staff to assign you to a coursegroup.');
+                           }
+                           else
+                           { 
+                               $text .= l(t('Sign up for a coursegroup'), "course/groups/" . $course_object->nid . '/'. $course_object->nid).' '. t('or ask the staff to assign you to one.');
+                           }
+                          $solution_form_object['#markup'] = $text;
+                     }
+                 }
+           unset($form['save_submit']);
+           unset($form['save']);
+         }
+     } 
       break;
   }
 

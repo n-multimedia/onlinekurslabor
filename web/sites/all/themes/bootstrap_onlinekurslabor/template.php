@@ -494,3 +494,33 @@ function bootstrap_onlinekurslabor_preprocess_menu_link(array &$variables) {
   }
 
 }
+
+/**
+ * implements HOOK_preprocess_usernameMYTHEME_preprocess_username
+ * Usernames wurden tw. sehr früh abgeschnitten. Fixes.
+ * @param type $vars
+ */
+function bootstrap_onlinekurslabor_preprocess_username(&$vars) {
+
+  // Update the username so it's the full name of the user.
+  $account = $vars['account'];
+
+  // Revise the name trimming done in template_preprocess_username.
+  $name = $vars['name_raw'] = format_username($account);
+
+  //nichtssagendes title-field ersetzen
+  if($vars['link_attributes']['title'] == t('View user profile.'))
+  {
+    
+    $vars['link_attributes']['title'] = $name;
+  }
+  
+  // Trim the altered name as core does, but with a higher character limit.
+  if (drupal_strlen($name) > 30) {
+    $name = drupal_substr($name, 0, 27) . '...';
+  } 
+
+  // Assign the altered name to $vars['name'].
+  $vars['name'] = check_plain($name);
+
+}

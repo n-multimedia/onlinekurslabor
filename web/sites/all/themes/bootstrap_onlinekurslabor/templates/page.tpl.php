@@ -1,10 +1,8 @@
 <nav class="<?php print $navbar_classes; ?>" id="page_top_navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
+      <button type="button" class="navbar-toggle okl-nav-bar-btn" data-toggle="collapse" data-target="#okl-nav-bar" aria-controls="navbarSupportedContent20" aria-expanded="false" aria-label="Toggle navigation">
+        <div class="animated-icon2"><span></span><span></span><span></span><span></span></div>
       </button>
           <?php if (!empty($logo)): ?>
                 <a class="navbar-brand" href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>">
@@ -13,8 +11,8 @@
       <?php endif; ?>
     </div>
        <?php if (!empty($primary_nav) || !empty($secondary_nav) || !empty($page['navigation'])): ?>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      
+    <div class="collapse navbar-collapse" id="okl-nav-bar">
+
           <?php if (!empty($primary_nav)): ?>
               <?php print render($primary_nav); ?>
             <?php endif; ?>
@@ -24,7 +22,7 @@
             <?php if (!empty($page['navigation'])): ?>
               <?php print render($page['navigation']); ?>
             <?php endif; ?>
- 
+
     </div>
       <?php endif; ?>
   </div>
@@ -46,9 +44,9 @@
       <aside class="col-md-3" role="complementary">
         <?php print render($page['sidebar_first']); ?>
       </aside>  <!-- /#sidebar-first -->
-    <?php endif; ?>  
+    <?php endif; ?>
 
-    <section class="<?php print @_bootstrap_content_span($columns); ?>">  
+    <section class="<?php print @_bootstrap_content_span($columns); ?>">
       <?php if (!empty($page['highlighted'])): ?>
         <div class="highlighted hero-unit"><?php print render($page['highlighted']); ?></div>
       <?php endif; ?>
@@ -97,7 +95,7 @@
       </div>
       <?php print render($page['footer']); ?>
     </div>
-    
+
   </div>
 
 </footer>

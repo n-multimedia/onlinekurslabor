@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_section_content_features.views_default.inc
@@ -76,13 +77,13 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = 'Titel';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Delete link */
+  /* Field: Content: Link to delete content */
   $handler->display->display_options['fields']['delete_node']['id'] = 'delete_node';
   $handler->display->display_options['fields']['delete_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['delete_node']['field'] = 'delete_node';
   $handler->display->display_options['fields']['delete_node']['label'] = '';
   $handler->display->display_options['fields']['delete_node']['element_label_colon'] = FALSE;
-  /* Field: Content: Edit link */
+  /* Field: Content: Link to edit content */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
@@ -103,7 +104,7 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['arguments']['gid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['gid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['gid']['summary_options']['items_per_page'] = '25';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -248,7 +249,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -323,6 +324,10 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
   $handler->display->display_options['style_plugin'] = 'list';
   $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'title' => 'title',
+    'status' => 'status',
+  );
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -330,6 +335,16 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Published status */
+  $handler->display->display_options['fields']['status']['id'] = 'status';
+  $handler->display->display_options['fields']['status']['table'] = 'node';
+  $handler->display->display_options['fields']['status']['field'] = 'status';
+  $handler->display->display_options['fields']['status']['label'] = '';
+  $handler->display->display_options['fields']['status']['element_type'] = 'em';
+  $handler->display->display_options['fields']['status']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['status']['type'] = 'custom';
+  $handler->display->display_options['fields']['status']['type_custom_false'] = 'Entwurf';
+  $handler->display->display_options['fields']['status']['not'] = 0;
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
@@ -347,13 +362,6 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['arguments']['field_domain_ref_target_id']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['field_domain_ref_target_id']['validate']['type'] = 'numeric';
   $handler->display->display_options['arguments']['field_domain_ref_target_id']['validate']['fail'] = 'empty';
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
@@ -437,6 +445,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('last »'),
+    t('Entwurf'),
     t('Alle'),
     t('Usage as Lehrtext'),
     t('View panes'),
@@ -496,11 +505,11 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['fields']['title']['label'] = 'Aufgabe';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Delete link */
+  /* Field: Content: Link to delete content */
   $handler->display->display_options['fields']['delete_node']['id'] = 'delete_node';
   $handler->display->display_options['fields']['delete_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['delete_node']['field'] = 'delete_node';
-  /* Field: Content: Edit link */
+  /* Field: Content: Link to edit content */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
@@ -519,7 +528,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['arguments']['gid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['gid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['gid']['summary_options']['items_per_page'] = '25';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -564,8 +573,8 @@ Oben <code>Neues Thema anlegen</code> drücken.
     t('letzte Seite »'),
     t('OG membership from node'),
     t('Aufgabe'),
-    t('Delete link'),
-    t('Edit link'),
+    t('Link to delete content'),
+    t('Link to edit content'),
     t('Alle'),
     t('Content pane'),
     t('View panes'),
@@ -655,7 +664,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['uid']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['uid']['validate']['type'] = 'user';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -780,7 +789,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['arguments']['null']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['null']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['null']['validate']['type'] = 'numeric';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';

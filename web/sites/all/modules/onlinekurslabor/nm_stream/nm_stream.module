@@ -2499,12 +2499,12 @@ function nm_stream_api_v2_render_stream($container) {
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.667a6230156013d6c7fe.js", [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.8fcd6aa12daf4c86932b.js", [
     'scope' => 'footer',
     'weight' => 5,
   ]);
 
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.b97c745baa0e7892da34fc1a65c824d5.css', [
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.236d7332c9cac79319fdbdaf7c3089ed.css', [
     'scope' => 'footer',
     'weight' => 5,
   ]);
@@ -3355,9 +3355,9 @@ function nm_stream_api_v2_comment_delete_callback($comment, $token = NULL) {
  */
 function nm_stream_api_v2_set_localhost_headers() {
   //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
-    
+
     RETURN; #NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
-    
+
   //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
   drupal_add_http_header('Access-Control-Allow-Credentials', 'true');
   drupal_add_http_header('Access-Control-Allow-Origin', 'http://localhost:8080');

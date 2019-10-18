@@ -50,7 +50,33 @@ function _section_profile_get_profile_edit_btn($user_id) {
     return $html_str;
 }
 
+/**
+ * Add a "switch user" link to any profile
+ * @param type $user_id
+ * @return type
+ */
+function _section_profile_get_user_switch_btn($user_id) {
+    global $user;
+    //abbruch für sich selbst
+    if ($user_id == $user->uid) {
+        return "";
+    }
+    //pre + suffix
+    $user_switch_button = '<button class="btn btn-default switch-user"><i class="glyphicon glyphicon-pawn"></i> ' . t('Switch user') . '</button>';
+    $html_str = "";
+    $affected_user = user_load($user_id);
 
+    $link_title = "";
+    if (user_access('switch users', $affected_user)) {
+        $link_title = t('This user can switch back.');
+    } else {
+        $link_title = t('Caution: this user will be unable to switch back.');
+    }
+
+    $path = 'devel/switch/' . $affected_user->name;
+    $html_str .= l($user_switch_button, $path, array('query' => array('token' => drupal_get_token($path)), 'attributes' => array('title' => $link_title), 'html' => TRUE));
+    return $html_str;
+}
 
 /**
  * get Infos about a user stored in profile.

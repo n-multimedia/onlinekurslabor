@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_section_content_features.features.wysiwyg.inc
@@ -77,7 +78,7 @@ function nm_section_content_features_wysiwyg_default_profiles() {
       'default' => 1,
       'show_toggle' => 1,
       'user_choose' => 0,
-      'version' => '4.9.2.95e5d83',
+      'version' => '4.12.1.64749bb245',
     ),
     'name' => 'formatfiltered_html',
     'rdf_mapping' => array(),

@@ -1,0 +1,9 @@
+/**
+* Die Global Note wird via WYSIWYG gefüllt, deswegen passen wir Überschriften darin an.
+*/
+div.global-note h1, div.global-note h2, div.global-note h3, div.global-note h4, div.global-note h5
+{
+    margin: 0px;
+    clear: none;
+}
+

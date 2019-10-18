@@ -9,11 +9,6 @@
  * Implements hook_init().
  */
 
-function h5p_text_annotations_init() {
- 
-
-  $nid = (arg(0) == 'node' && is_numeric(arg(1))) ? arg(1) : NULL;
-  
+function h5p_text_annotations_page_build() { 
   drupal_add_js(drupal_get_path('module', 'h5p_text_annotations') . '/assets/javascript/h5p_text_annotations.js');
- 
 } 

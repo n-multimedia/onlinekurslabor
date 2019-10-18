@@ -954,14 +954,14 @@ class H5PDrupal implements H5PFrameworkInterface {
    * library. This means that the content dependencies will have to be rebuilt,
    * and the parameters refiltered.
    *
-   * @param int $library_id
+   * @param array $library_ids
    */
-  public function clearFilteredParameters($library_id) {
+  public function clearFilteredParameters($library_ids) {
     db_update('h5p_nodes')
     ->fields(array(
       'filtered' => '',
     ))
-    ->condition('main_library_id', $library_id)
+    ->condition('main_library_id', $library_ids, 'IN')
     ->execute();
 
     _drupal_flush_css_js();

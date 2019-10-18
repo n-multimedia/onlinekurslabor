@@ -51,13 +51,13 @@
 /**
  * replace oembed protocol in oembed's response message
  * Implements hook_oembed_response_alter
- * 
+ *
  * @global type $is_https
  * @param type $embed
  */
 function onlinekurslabor_misc_oembed_response_alter(&$embed) {
   global $is_https;
-  
+
   if ($is_https) {
     //iframe: replace http protocol by https
     if (isset($embed['html'])) {
@@ -108,7 +108,7 @@ function onlinekurslabor_misc_remove_button_js($form, $form_state) {
 
 /**
  * Implements hook__field_widget_form_alter
- * 
+ *
  * @param type $element
  * @param type $form_state
  * @param type $context
@@ -269,7 +269,7 @@ function onlinekurslabor_misc_form_alter($form, $form_state, $form_id) {
 }
 
 /**
- * New default method for rendering horizontal menus. 
+ * New default method for rendering horizontal menus.
  * Use without any parameters to get an example.
  * Output will be renderable block-syntax
  * @param array $navigation_items. The navigation-items, see example
@@ -320,22 +320,28 @@ function _onlinekurslabor_misc_get_renderable_section_navigation($navigation_ite
             $nav_entries .= '<li class="'._onlinekurslabor_misc_umlaut_to_text(strtolower($url_def['text'])).'">'
                              . l( $url_def['text'] .' '. $unread_badge, $url_def['path'], array('fragment' => @$url_def['fragment'],'html'=>true,'attributes'=>array('class'=>  $url_def['attributes']['class']))) # <a href="%s" class="%s">%s %s</a></li>', , $url_def['url'],, $url_def['text'], $unread_badge);
                              .'</li>';
-            }                    
+            }
 
         $block[$id] = array(
             '#prefix' => $definition['prefix'],
             '#type' => 'markup',
             '#markup' => '<div class="navbar-header">' . $definition['header'] . '</div>
-                          <ul class="nav navbar-nav">' . $nav_entries . '</ul>',
+                          <ul class="nav navbar-nav okl-nav-course-bar">' . $nav_entries . '</ul>',
             '#suffix' => $definition['suffix'],
         );
     }
-    $block['suffix'] = array(
-        '#type' => 'markup',
-        '#markup' => "",
-        '#suffix' => '</div></nav>',
-    );
-    return $block;
+
+  /*$hamburger_btn = '<button type="button" class="navbar-toggle okl-nav-bar-course-btn" data-toggle="collapse" data-target=".okl-nav-course-bar" aria-controls="navbarSupportedContent20" aria-expanded="false" aria-label="Toggle navigation">
+        <div class="animated-icon-dots"><span></span><span></span><span></span><span></span></div></button>';
+
+  $block['prefix']['#prefix'] = $hamburger_btn . $block['prefix']['#prefix'];*/
+
+  $block['suffix'] = [
+    '#type' => 'markup',
+    '#markup' => "",
+    '#suffix' => '</div></nav>',
+  ];
+  return $block;
 }
 
 function _onlinekurslabor_misc_umlaut_to_text($string) {

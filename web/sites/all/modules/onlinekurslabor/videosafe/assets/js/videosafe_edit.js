@@ -20,36 +20,69 @@
    {
        //speichere originalfunktion in variable
        var original_function = window[0].H5PEditor.widgets.video.createAdd;
-       /*callback, wenn jmd im modal-fenster ein video selectiert hat,
-        *  argument sind die video-urls*/
-       var h5p_callback_function_when_video_selected = function(json_video_data)
-       {
-           //kann mehrere urls beinhalten mit ogg, mp4 etc
-           for (var i in json_video_data) {
-               var video_url = json_video_data[i];
-               H5P.jQuery(".h5p-add-dialog .h5p-dialog-box").find("input.h5p-file-url").val(video_url);
-               H5P.jQuery(".h5p-add-dialog .h5p-buttons").find("button.h5p-insert").click();
-           }
-       };
+      
 
        //hier wird original-funktion ueberschrieben
        window[0].H5PEditor.widgets.video.createAdd = function(type) {
            //lade original html
            var h5p_html = original_function(type);
-
-           //bei audio nicht html replacen
-           if (type === 'audio')
-               return h5p_html;
            
-           //statt ersatz-html auszuliefern, haengen wir einfach JS an, das das originale manipuliert
-           h5p_html += '<script type="text/javascript">H5P.jQuery(".h5p-dialog-box h3").first().html("Video");'+
-                   'H5P.jQuery(".h5p-add-dialog .h5p-file-drop-upload").removeClass("h5p-file-drop-upload").addClass("h5peditor-button-textual").attr("id", "open_videosafe").html("auswählen").off("click").click(function(){' +
-                   'top.Drupal.behaviors.videosafe_ajax_browser.openAjaxBrowser( ' + h5p_callback_function_when_video_selected + '  );' +
-                   'return false;' +
-                   '});</script>';
+           //wir müssen das js im Interval einhängen, damits zuverlässig ausgeführt wird.
+            function manipulate_js ()
+            {  
+                    
+                     /*helperfunktion: callback, wenn jmd im modal-fenster ein video selectiert hat,
+                        *  argument sind die video-urls*/
+                       var h5p_callback_function_when_video_selected = function(json_video_data)
+                       {
+                           //kann mehrere urls beinhalten mit ogg, mp4 etc
+                           for (var i in json_video_data) {
+                               var video_url = json_video_data[i];
+                               //ok, das funziert nicht. da müsster mehrere fenster aufmachen.@todo
+                               H5P.jQuery(".h5p-add-dialog .h5p-dialog-box").find("input.h5p-file-url").val(video_url);
+                               H5P.jQuery(".h5p-add-dialog .h5p-buttons").find("button.h5p-insert").click();
+                           }
+                       };
+                       
+                //buttons, auf die jQ reagieren soll       
+                var jQSelector = ".h5p-thumbnail, .h5p-add-file";
+                //welche libraries sind in verwendung?
+                var loaded_libs = H5PEditor.libraryLoaded; 
+                Object.keys(loaded_libs).forEach(function(element) {
+                    //Audiolibrary geladen (zB CoursePresentation) - dann Buttons nur für video
+                    if(element.indexOf("Audio") >=0 )
+                    {
+                        jQSelector = ".h5p-video-editor .h5p-thumbnail,.h5p-video-editor .h5p-add-file";
+                    }
+                    });
+
+                    
+                //klick auf "add / edit file" - nur bei video
+                H5P.jQuery(jQSelector).not('.videosafe-processed').click(
+                    function () {
+                       
+                        //verändere gui
+                        H5P.jQuery(".h5p-dialog-box h3").first().html("Video");
+                        //ersetze upload-button durch videosafe-öffnen-button
+                        H5P.jQuery(".h5p-add-dialog .h5p-file-drop-upload").removeClass("h5p-file-drop-upload").addClass("h5peditor-button-textual").attr("id", "open_videosafe").html("auswählen").off("click").click(function(){
+                            top.Drupal.behaviors.videosafe_ajax_browser.openAjaxBrowser(  h5p_callback_function_when_video_selected  );
+                            return false;
+                            });
+
+                        //zu guter letzt: button als processed-markieren
+                        H5P.jQuery(this).addClass("videosafe-processed");
+                    });
+            }
+            
+            //js alle 1500 ms ausführen, damit die buttons gehen (Problem war im Editmode)
+            setInterval(function(){  window[0].H5P.jQuery('head').append('<script>'+manipulate_js+';manipulate_js();<\/script>') }, 1500);
+            
            return h5p_html;
 
-       }
+       };
+      
+       
+       
    },
    /**
     * 

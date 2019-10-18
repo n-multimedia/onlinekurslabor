@@ -4,8 +4,8 @@ bootstrap_tabs
 .tab-content .tab-pane h3{
     margin-top:0px;
 }
-/*layout wenn navigation links bei >= 768px. Kleiner rutschen die tabs nach oben u brauchen keine aenderung */
-@media (min-width: 768px) {
+/*layout wenn navigation links bei >= 992px. Kleiner rutschen die tabs nach oben u brauchen keine aenderung */
+@media (min-width: 992px) {
 
     .bootstrap_tabs-stacked-left
     {
