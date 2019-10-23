@@ -13,6 +13,36 @@ function notification_features_ds_field_settings_info() {
 
   $ds_fieldsetting = new stdClass();
   $ds_fieldsetting->api_version = 1;
+  $ds_fieldsetting->id = 'message|message_changed_node|default';
+  $ds_fieldsetting->entity_type = 'message';
+  $ds_fieldsetting->bundle = 'message_changed_node';
+  $ds_fieldsetting->view_mode = 'default';
+  $ds_fieldsetting->settings = array(
+    'message_new' => array(
+      'weight' => '0',
+      'label' => 'hidden',
+      'format' => 'default',
+    ),
+  );
+  $export['message|message_changed_node|default'] = $ds_fieldsetting;
+
+  $ds_fieldsetting = new stdClass();
+  $ds_fieldsetting->api_version = 1;
+  $ds_fieldsetting->id = 'message|message_changed_node|full';
+  $ds_fieldsetting->entity_type = 'message';
+  $ds_fieldsetting->bundle = 'message_changed_node';
+  $ds_fieldsetting->view_mode = 'full';
+  $ds_fieldsetting->settings = array(
+    'message_new' => array(
+      'weight' => '0',
+      'label' => 'hidden',
+      'format' => 'default',
+    ),
+  );
+  $export['message|message_changed_node|full'] = $ds_fieldsetting;
+
+  $ds_fieldsetting = new stdClass();
+  $ds_fieldsetting->api_version = 1;
   $ds_fieldsetting->id = 'message|message_new_node|default';
   $ds_fieldsetting->entity_type = 'message';
   $ds_fieldsetting->bundle = 'message_new_node';
@@ -53,7 +83,7 @@ function notification_features_ds_custom_fields_info() {
   $ds_field = new stdClass();
   $ds_field->api_version = 1;
   $ds_field->field = 'message_new';
-  $ds_field->label = 'Message New';
+  $ds_field->label = 'Message New|Changed';
   $ds_field->field_type = 3;
   $ds_field->entities = array(
     'message' => 'message',
@@ -73,19 +103,21 @@ function notification_features_ds_layout_settings_info() {
 
   $ds_layout = new stdClass();
   $ds_layout->api_version = 1;
-  $ds_layout->id = 'message|message_new_node|default';
+  $ds_layout->id = 'message|message_changed_node|default';
   $ds_layout->entity_type = 'message';
-  $ds_layout->bundle = 'message_new_node';
+  $ds_layout->bundle = 'message_changed_node';
   $ds_layout->view_mode = 'default';
   $ds_layout->layout = 'ds_1col';
   $ds_layout->settings = array(
     'regions' => array(
       'ds_content' => array(
         0 => 'message_new',
+        1 => 'message__message_text__0',
       ),
     ),
     'fields' => array(
       'message_new' => 'ds_content',
+      'message__message_text__0' => 'ds_content',
     ),
     'classes' => array(),
     'wrappers' => array(
@@ -96,6 +128,69 @@ function notification_features_ds_layout_settings_info() {
     'layout_attributes_merge' => 1,
     'layout_link_attribute' => '',
     'layout_link_custom' => '',
+    'layout_disable_css' => FALSE,
+  );
+  $export['message|message_changed_node|default'] = $ds_layout;
+
+  $ds_layout = new stdClass();
+  $ds_layout->api_version = 1;
+  $ds_layout->id = 'message|message_changed_node|full';
+  $ds_layout->entity_type = 'message';
+  $ds_layout->bundle = 'message_changed_node';
+  $ds_layout->view_mode = 'full';
+  $ds_layout->layout = 'ds_1col';
+  $ds_layout->settings = array(
+    'regions' => array(
+      'ds_content' => array(
+        0 => 'message_new',
+        1 => 'message__message_text__0',
+      ),
+    ),
+    'fields' => array(
+      'message_new' => 'ds_content',
+      'message__message_text__0' => 'ds_content',
+    ),
+    'classes' => array(),
+    'wrappers' => array(
+      'ds_content' => 'div',
+    ),
+    'layout_wrapper' => 'div',
+    'layout_attributes' => '',
+    'layout_attributes_merge' => 1,
+    'layout_link_attribute' => '',
+    'layout_link_custom' => '',
+    'layout_disable_css' => FALSE,
+  );
+  $export['message|message_changed_node|full'] = $ds_layout;
+
+  $ds_layout = new stdClass();
+  $ds_layout->api_version = 1;
+  $ds_layout->id = 'message|message_new_node|default';
+  $ds_layout->entity_type = 'message';
+  $ds_layout->bundle = 'message_new_node';
+  $ds_layout->view_mode = 'default';
+  $ds_layout->layout = 'ds_1col';
+  $ds_layout->settings = array(
+    'regions' => array(
+      'ds_content' => array(
+        0 => 'message_new',
+        1 => 'message__message_text__0',
+      ),
+    ),
+    'fields' => array(
+      'message_new' => 'ds_content',
+      'message__message_text__0' => 'ds_content',
+    ),
+    'classes' => array(),
+    'wrappers' => array(
+      'ds_content' => 'div',
+    ),
+    'layout_wrapper' => 'div',
+    'layout_attributes' => '',
+    'layout_attributes_merge' => 1,
+    'layout_link_attribute' => '',
+    'layout_link_custom' => '',
+    'layout_disable_css' => FALSE,
   );
   $export['message|message_new_node|default'] = $ds_layout;
 
@@ -110,10 +205,12 @@ function notification_features_ds_layout_settings_info() {
     'regions' => array(
       'ds_content' => array(
         0 => 'message_new',
+        1 => 'message__message_text__0',
       ),
     ),
     'fields' => array(
       'message_new' => 'ds_content',
+      'message__message_text__0' => 'ds_content',
     ),
     'classes' => array(),
     'wrappers' => array(
@@ -124,6 +221,7 @@ function notification_features_ds_layout_settings_info() {
     'layout_attributes_merge' => 1,
     'layout_link_attribute' => '',
     'layout_link_custom' => '',
+    'layout_disable_css' => FALSE,
   );
   $export['message|message_new_node|full'] = $ds_layout;
 
