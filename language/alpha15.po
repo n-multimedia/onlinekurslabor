@@ -21,6 +21,9 @@ msgstr "hat eine Lösung verfasst"
 msgid "assessed a solution"
 msgstr "hat eine Lösung bewertet"
 
+msgid "created a @printable_node_type"
+msgstr "hat etwas erstellt"
+
 msgid ""
 msgstr ""
 
