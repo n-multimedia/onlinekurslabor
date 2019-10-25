@@ -17,6 +17,9 @@ drush language-import-translations de ../language/alpha15.po --replace --groups=
 
 drush updatedb --yes 
 
+drush pm-disable newmenue_tooltip --y
+drush pm-uninstall newmenue_tooltip --y
+
 drush cc all
 
 drush vset maintenance_mode 0
