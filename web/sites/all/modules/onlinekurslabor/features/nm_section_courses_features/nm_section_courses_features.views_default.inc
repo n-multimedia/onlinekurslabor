@@ -3551,6 +3551,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['pager']['options']['tags']['next'] = '›';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
+    'php_2' => 'php_2',
     'gid' => 'gid',
     'uid' => 'uid',
     'field_generic_task' => 'field_generic_task',
@@ -3560,9 +3561,16 @@ function nm_section_courses_features_views_default_views() {
     'nid' => 'nid',
     'php' => 'php',
     'php_1' => 'php_1',
+    'field_submitted_on' => 'field_submitted_on',
   );
+  $handler->display->display_options['style_options']['class'] = '';
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
+    'php_2' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'gid' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
@@ -3623,6 +3631,13 @@ function nm_section_courses_features_views_default_views() {
       'align' => '',
       'separator' => '',
       'empty_column' => 1,
+    ),
+    'field_submitted_on' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
     ),
   );
   /* Footer: Global: Result summary */
@@ -3757,6 +3772,20 @@ return   ($task_type == NM_COURSES_TASK_TYPE_GROUP )? _section_courses_get_cours
   $handler->display->display_options['fields']['php_1']['php_output'] = '<?php  echo $value ?  node_load($value)->title:\'\';?>';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '3';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
+  /* Field: Content: eingereicht am */
+  $handler->display->display_options['fields']['field_submitted_on']['id'] = 'field_submitted_on';
+  $handler->display->display_options['fields']['field_submitted_on']['table'] = 'field_data_field_submitted_on';
+  $handler->display->display_options['fields']['field_submitted_on']['field'] = 'field_submitted_on';
+  $handler->display->display_options['fields']['field_submitted_on']['label'] = 'Eingereicht am';
+  $handler->display->display_options['fields']['field_submitted_on']['settings'] = array(
+    'format_type' => 'short',
+    'custom_date_format' => '',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_remaining_days' => 0,
+  );
   /* Sort criterion: Content: eingereicht am (field_submitted_on) */
   $handler->display->display_options['sorts']['field_submitted_on_value']['id'] = 'field_submitted_on_value';
   $handler->display->display_options['sorts']['field_submitted_on_value']['table'] = 'field_data_field_submitted_on';
@@ -3883,6 +3912,7 @@ return   ($task_type == NM_COURSES_TASK_TYPE_GROUP )? _section_courses_get_cours
     t('aufgaben-nid'),
     t('Task-Type (Aufgabentyp)'),
     t('Kursgruppe'),
+    t('Eingereicht am'),
     t('Alle'),
     t('Role Name'),
     t('Content pane'),
