@@ -35,24 +35,63 @@ if ($node->type == 'videosafe_video') {
         $video_referenced_in_string = ((count($h5p_strings)>1)?'den Texten: ':'dem Text: ') . implode(', ', $h5p_ref_strings);
     if (count($h5p_strings))
         $video_referenced_in_string .= ((count($h5p_strings)>1)?'<br>in den interaktiven Inhalten: ':'<br>im interaktiven Inhalt: ') . implode(', ', $h5p_strings);
-}
+
+    $content['field_exclusive_access']['#title']='Sperrvermerk, einsehbar für';
+    
+    
+ 
+    $multivideo_type_str = render($content['field_multivideo_type'][0])?:'Videospur';
+    //das video-html
+    $video_markup = '';
+    //die einzelnen hochgeladenen videos als "Spur"
+    foreach($node->field_video[LANGUAGE_NONE] as $vidcounter => $videospur)
+    {
+        $video_heading = $multivideo_type_str.' '.($videospur['description']?:$vidcounter+1);
+        $collapse_marker = $vidcounter == 0 ?'':'collapsed';
+        $rendered_videospur = render(file_view(file_load($videospur['fid']), 'media_6'));
+        $video_markup .=
+                <<<EOF
+                [collapsible $collapse_marker]<h2>$video_heading</h2>
+                    <div class="media-element-container media-media_6">
+                        $rendered_videospur
+                    </div>
+                [/collapsible]
+EOF;
+    }
+    //applies the "collapse"-filter for markup
+    $video_markup = check_markup($video_markup,'full_html');
+    //Bezeichnung des Buttons
+    $button_text_chose_video = 'Dieses Video auswählen';
+    if($vidcounter >0)
+      {
+           $button_text_chose_video = 'Alle Spuren übernehmen';
+      }
+
+    
+    }
+
+
+
 ?>
 
 <small><? print render($content['body']); ?></small>
 <small><i><?= t('Created by'); ?> <?= realname_load(user_load($node->uid)); ?></i></small>
 <br>
-<?php
-if ($node->type == 'videosafe_video') {
-     
-    $content['field_exclusive_access']['#title']='Sperrvermerk, einsehbar für';
-?>
-    <div class="media-element-container media-media_6">
-        <?print render(file_view(file_load($node->field_video[LANGUAGE_NONE][0]['fid']), 'media_6'));?>
-    </div>
+<?php if ($node->type == 'videosafe_video') : ?>
+<!-- mehrere Spuren -->
+    <?php if (count($node->field_video[LANGUAGE_NONE]) >1):?>
+        <b>Dieses Video hat mehrere Spuren</b>
+    <?php endif?>  
+        
+    <?php print render($video_markup)?>
+ 
+
+       
+
     <? if($node->render_ajax):?>
     <div class="urls">
         <br><br>
-        <button type="submit" class="btn btn-primary select_video" rel='<?=  drupal_json_encode($video_urls)?>' >Dieses Video auswählen</button>
+        <button type="submit" class="btn btn-primary select_video" rel='<?=  drupal_json_encode($video_urls)?>' ><?php echo $button_text_chose_video?></button>
     </div>
         <?else:?>
    <div class="urls"><b>URLs zum Kopieren:</b>
@@ -68,9 +107,8 @@ if ($node->type == 'videosafe_video') {
     <?= $video_referenced_in_string; ?>
     <br><br>
     <?= $node_edit_button ?>
-    <?
-} else if ($node->type == 'videosafe_folder') {
-    ?>
+ 
+<?php  elseif ($node->type == 'videosafe_folder'): ?>
     <ul>
         <? echo $node_edit_button;?>
         <li class="btn btn-default" id=""><a title="Unterordner erstellen" href="/node/add/videosafe-folder?field_parent_folder=<?= $node->nid ?>">Unterordner erstellen</a></li>
@@ -78,5 +116,5 @@ if ($node->type == 'videosafe_video') {
             <li class="btn btn-default" id=""><a title="Video hochladen" href="/node/add/videosafe-video?field_parent_folder=<?= $node->nid ?>">Video hochladen</a></li>
         <?php endif; ?>    
     </ul>
-    <?
-}
+
+<?php endif;?>
