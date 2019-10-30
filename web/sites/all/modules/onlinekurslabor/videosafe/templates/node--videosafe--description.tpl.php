@@ -9,11 +9,13 @@ if ($node->nid != _videosafe_get_root_directory()->nid)
 else
     $node_edit_button = '';
 if ($node->type == 'videosafe_video') {
-      $video_urls_with_li = $video_urls = array();
-    
-    foreach (_videosafe_get_video_urls($node->nid) as $url) {
-        $video_urls_with_li[] = '<li>' . $url . '</li>'; #'<li>' . file_create_url($file_entry['file']->uri) . '</li>';
-        $video_urls[] = $url;
+      $video_urls_with_li = $video_data_for_json = array();
+ 
+    $data_videospuren = _videosafe_get_video_tracks_data($node->nid);
+    $video_data_for_json = ['video_track_title' => $data_videospuren['video_track_title']];
+    foreach ($data_videospuren['videos'] as $ct=>$data) {
+        $video_urls_with_li[] = '<li>' . $data['url'] . '</li>';
+        $video_data_for_json['videos'][$data['description_short']] = $data['url'];
     }
 
     /* errechnet den string, wo das video verwendet wird
@@ -40,13 +42,13 @@ if ($node->type == 'videosafe_video') {
     
     
  
-    $multivideo_type_str = render($content['field_multivideo_type'][0])?:'Videospur';
+    
     //das video-html
     $video_markup = '';
     //die einzelnen hochgeladenen videos als "Spur"
-    foreach($node->field_video[LANGUAGE_NONE] as $vidcounter => $videospur)
+    foreach($data_videospuren['videos'] as $vidcounter => $videospur)
     {
-        $video_heading = $multivideo_type_str.' '.($videospur['description']?:$vidcounter+1);
+        $video_heading = $videospur['description'];
         $collapse_marker = $vidcounter == 0 ?'':'collapsed';
         $rendered_videospur = render(file_view(file_load($videospur['fid']), 'media_6'));
         $video_markup .=
@@ -91,7 +93,7 @@ EOF;
     <? if($node->render_ajax):?>
     <div class="urls">
         <br><br>
-        <button type="submit" class="btn btn-primary select_video" rel='<?=  drupal_json_encode($video_urls)?>' ><?php echo $button_text_chose_video?></button>
+        <button type="submit" class="btn btn-primary select_video" rel='<?=  drupal_json_encode($video_data_for_json)?>' ><?php echo $button_text_chose_video?></button>
     </div>
         <?else:?>
    <div class="urls"><b>URLs zum Kopieren:</b>

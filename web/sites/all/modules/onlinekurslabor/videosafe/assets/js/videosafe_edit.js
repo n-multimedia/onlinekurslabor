@@ -34,14 +34,26 @@
                      /*helperfunktion: callback, wenn jmd im modal-fenster ein video selectiert hat,
                         *  argument sind die video-urls*/
                        var h5p_callback_function_when_video_selected = function(json_video_data)
-                       {
-                           //kann mehrere urls beinhalten mit ogg, mp4 etc
-                           for (var i in json_video_data) {
-                               var video_url = json_video_data[i];
-                               //ok, das funziert nicht. da müsster mehrere fenster aufmachen.@todo
+                       {  
+                           //es können mehrere videos in versch. Formaten übergeben werden, nicht nur eines 
+                           var video_url_counter = 0;
+                          
+                           var video_data = json_video_data.videos;
+                           for (var video_description in video_data) {
+                              
+                               var video_url = video_data[video_description];
+                               //funzioniert tatsächlich in h5p
                                H5P.jQuery(".h5p-add-dialog .h5p-dialog-box").find("input.h5p-file-url").val(video_url);
                                H5P.jQuery(".h5p-add-dialog .h5p-buttons").find("button.h5p-insert").click();
+                             
+                               //Verwende Bezeichnung der Videos. Für Textboxes muss man das change-event anwerfen für H5P
+                               H5P.jQuery("#h5p-av-"+(video_url_counter+1)).val(video_description).change();
+                               video_url_counter++;
                            }
+                           //Bezeichnung des "Qualität"-Buttons in H5P 
+                           var video_track_title = json_video_data.video_track_title;
+                           //event: change
+                           H5P.jQuery(".field-name-quality > input.h5peditor-text").val(video_track_title).change();
                        };
                        
                 //buttons, auf die jQ reagieren soll       
