@@ -251,7 +251,7 @@ function videosafe_features_field_default_field_instances() {
     'bundle' => 'videosafe_video',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Wenn Sie hier mehrere Videospuren hochladen, wählen Sie bitte aus, wie sich diese voneinander unterscheiden.',
+    'description' => 'Wenn Sie mehrere Videospuren hochladen, wählen Sie bitte aus, wie sich diese voneinander unterscheiden.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -329,7 +329,7 @@ function videosafe_features_field_default_field_instances() {
   $field_instances['node-videosafe_video-field_video'] = array(
     'bundle' => 'videosafe_video',
     'deleted' => 0,
-    'description' => 'Wählen Sie mindestens ein Video zum Upload aus.<br>
+    'description' => 'Laden Sie mindestens ein Video hoch.<br>
 <ul>
 <li> Sie können Videos aus unterschiedlichen Perspektiven und oder Qualitätsstufen hochladen. </li>
 <li> Geben Sie den Videos nach dem Hochladen eine sinnvolle Beschreibung, z.B. <em>Hohe Qualität</em> oder <em>Perspektive Tafel</em> </li>
@@ -376,13 +376,7 @@ Für die bestmögliche Browserunterstützung sollten Sie das Video im  <b>.webm<
   t('Hat das Video einen <strong>Sperrvermerk</strong>, so können hier einzelne Autoren ausgewählt werden, die exklusiv die Berechtigung erhalten, das Video einzusehen und in Lehrtexten zu verwenden.  
 <br><strong>Mehrere Werte kommagetrennt.</strong>');
   t('Interne Bemerkung');
-  t('Oberordner');
-  t('Optional: Zugriff nur für');
-  t('Ordner');
-  t('Unterschiede der Videospuren');
-  t('Video-Spuren');
-  t('Wenn Sie hier mehrere Videospuren hochladen, wählen Sie bitte aus, wie sich diese voneinander unterscheiden.');
-  t('Wählen Sie mindestens ein Video zum Upload aus.<br>
+  t('Laden Sie mindestens ein Video hoch.<br>
 <ul>
 <li> Sie können Videos aus unterschiedlichen Perspektiven und oder Qualitätsstufen hochladen. </li>
 <li> Geben Sie den Videos nach dem Hochladen eine sinnvolle Beschreibung, z.B. <em>Hohe Qualität</em> oder <em>Perspektive Tafel</em> </li>
@@ -391,6 +385,12 @@ Für die bestmögliche Browserunterstützung sollten Sie das Video im  <b>.webm<
 <br>
 <br>
 <b>Achten Sie vor dem Hochladen idealerweise auf eine sinnvolle Benennung der Datei!</b>');
+  t('Oberordner');
+  t('Optional: Zugriff nur für');
+  t('Ordner');
+  t('Unterschiede der Videospuren');
+  t('Video-Spuren');
+  t('Wenn Sie mehrere Videospuren hochladen, wählen Sie bitte aus, wie sich diese voneinander unterscheiden.');
   t('Übergeordneter Ordner');
 
   return $field_instances;
