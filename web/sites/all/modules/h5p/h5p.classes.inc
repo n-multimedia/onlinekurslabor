@@ -957,12 +957,16 @@ class H5PDrupal implements H5PFrameworkInterface {
    * @param array $library_ids
    */
   public function clearFilteredParameters($library_ids) {
-    db_update('h5p_nodes')
-    ->fields(array(
-      'filtered' => '',
-    ))
-    ->condition('main_library_id', $library_ids, 'IN')
-    ->execute();
+    db_query(
+      "UPDATE {h5p_nodes} AS n " .
+      "JOIN {h5p_nodes_libraries} AS l " . 
+      "ON n.content_id = l.content_id " .
+      "SET n.filtered = '' " . 
+      "WHERE l.library_id IN (:library_ids) ",
+      array(
+        ':library_ids' => $library_ids
+      )
+    );
 
     _drupal_flush_css_js();
     drupal_clear_js_cache();
