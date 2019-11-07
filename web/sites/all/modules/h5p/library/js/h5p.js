@@ -642,7 +642,7 @@ H5P.fullScreen = function ($element, instance, exitCallback, body, forceSemiFull
     // Create real fullscreen.
 
     before('h5p-fullscreen');
-    var first, eventName = (H5P.fullScreenBrowserPrefix === 'ms' ? 'MSFullscreenChange' : H5P.fullScreenBrowserPrefix + 'fullscreenchange');
+    var first, eventName = (H5P.fullScreenBrowserPrefix === 'ms' ? 'MSFullscreenChange' : (H5P.fullScreenBrowserPrefix === 'moz'?'fullscreenchange' : H5P.fullScreenBrowserPrefix + 'fullscreenchange'));
     document.addEventListener(eventName, function () {
       if (first === undefined) {
         // We are entering fullscreen mode
