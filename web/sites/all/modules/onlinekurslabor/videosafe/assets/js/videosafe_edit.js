@@ -24,12 +24,13 @@
 
        //hier wird original-funktion ueberschrieben
        window[0].H5PEditor.widgets.video.createAdd = function(type) {
+           
            //lade original html
            var h5p_html = original_function(type);
            
            //wir müssen das js im Interval einhängen, damits zuverlässig ausgeführt wird.
             function manipulate_js ()
-            {  
+            {
                     
                      /*helperfunktion: callback, wenn jmd im modal-fenster ein video selectiert hat,
                         *  argument sind die video-urls*/
@@ -72,7 +73,6 @@
                 //klick auf "add / edit file" - nur bei video
                 H5P.jQuery(jQSelector).not('.videosafe-processed').click(
                     function () {
-                       
                         //verändere gui
                         H5P.jQuery(".h5p-dialog-box h3").first().html("Video");
                         //ersetze upload-button durch videosafe-öffnen-button
@@ -86,8 +86,10 @@
                     });
             }
             
-            //js alle 1500 ms ausführen, damit die buttons gehen (Problem war im Editmode)
-            setInterval(function(){  window[0].H5P.jQuery('head').append('<script>'+manipulate_js+';manipulate_js();<\/script>') }, 1500);
+            //js einmal ausführen, danach alle 1500ms im intervall
+            setTimeout(function(){window[0].H5P.jQuery('head').append('<script>'+manipulate_js+';manipulate_js();<\/script>') }, 500);
+            //js alle 1500 ms ausführen, damit die buttons ersetzt werden (Problem war im coursepresentation-Editmode)
+            setInterval(function(){window[0].H5P.jQuery('head').append('<script>'+manipulate_js+';manipulate_js();<\/script>') }, 1500);
             
            return h5p_html;
 
