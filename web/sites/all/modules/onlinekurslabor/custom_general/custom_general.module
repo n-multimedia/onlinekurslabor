@@ -1782,6 +1782,25 @@ function _custom_general_collapse_filter_tips($filter, $format, $long = FALSE) {
 }
 
 
+/**
+ * "übersetzt" Definition-Strings in englisch
+ * returned eine ausgebbare Repräsentation eines Contenttypes
+ * z.B. COURSES_COURSE = course
+ * @param String $content_type
+ * @return String the printable contenttype
+ */
+function _custom_general_get_printable_contenttype_name($content_type) {
+    $ARR_Definition_to_String = array(
+        NM_COURSE => 'course',
+        NM_COURSE_DOCS => 'course doc',
+        NM_COURSE_FORUMTOPIC => 'forum topic',
+        NM_COURSE_NEWS => 'news',
+        NM_COURSE_GROUP => 'course group',
+        NM_COURSE_GENERIC_TASK => 'task',
+        NM_COURSE_GENERIC_TASK_SOLUTION => 'solution'
+    );
+    return $ARR_Definition_to_String[$content_type];
+}
 
 /**
  * Liefert einheitliche "Kein-Eintrag-gefunden"-Texte mit Erstelllink
@@ -1790,15 +1809,6 @@ function _custom_general_collapse_filter_tips($filter, $format, $long = FALSE) {
  */
 function _custom_general_get_no_content_text($type, $og_gid)
 {
-    //kann man bei Gelegenheit ausgliedern
-    //"übersetzt" Definition-Strings in englisch
-    $ARR_Definition_to_String = array(
-                NM_COURSE_DOCS => 'course doc',
-                NM_COURSE_NEWS => 'news',
-                NM_COURSE_GROUP => 'course group',
-                NM_COURSE_GENERIC_TASK => 'task'
-            );
-
     $affected_node = node_load($og_gid);
 
 
@@ -1808,7 +1818,7 @@ function _custom_general_get_no_content_text($type, $og_gid)
     $add_text = t('Create the first one!', array(), array('context' => $type));
 
     //"Noch kein Kursdokumente angelegt"
-    $default_no_content_text = t('No ' . $ARR_Definition_to_String[$type] . ' has been created yet.');
+    $default_no_content_text = t('No ' ._custom_general_get_printable_contenttype_name($type) . ' has been created yet.');
 
 
     $default_text_without_add = $default_no_content_text;
@@ -1826,7 +1836,7 @@ function _custom_general_get_no_content_text($type, $og_gid)
         case NM_COURSE:
             switch ($type) {
                 case NM_COURSE_NEWS: //"news" is plural!
-                    $text = t('No ' . $ARR_Definition_to_String[$type] . ' have been created yet.') . (node_access('update', $affected_node)? ' '. l($add_text, $default_url, array('query'=>array('og_group_ref'=>$og_gid))):'');
+                    $text = t('No ' . _custom_general_get_printable_contenttype_name($type) . ' have been created yet.') . (node_access('update', $affected_node)? ' '. l($add_text, $default_url, array('query'=>array('og_group_ref'=>$og_gid))):'');
                     return $text;
 
                 default: return $default_text;

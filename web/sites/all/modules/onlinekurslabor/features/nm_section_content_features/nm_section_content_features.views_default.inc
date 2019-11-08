@@ -324,6 +324,10 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
   $handler->display->display_options['style_plugin'] = 'list';
   $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'title' => 'title',
+    'status' => 'status',
+  );
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -331,6 +335,16 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Published status */
+  $handler->display->display_options['fields']['status']['id'] = 'status';
+  $handler->display->display_options['fields']['status']['table'] = 'node';
+  $handler->display->display_options['fields']['status']['field'] = 'status';
+  $handler->display->display_options['fields']['status']['label'] = '';
+  $handler->display->display_options['fields']['status']['element_type'] = 'em';
+  $handler->display->display_options['fields']['status']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['status']['type'] = 'custom';
+  $handler->display->display_options['fields']['status']['type_custom_false'] = 'Entwurf';
+  $handler->display->display_options['fields']['status']['not'] = 0;
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
@@ -348,13 +362,6 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['arguments']['field_domain_ref_target_id']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['field_domain_ref_target_id']['validate']['type'] = 'numeric';
   $handler->display->display_options['arguments']['field_domain_ref_target_id']['validate']['fail'] = 'empty';
-  /* Filter criterion: Content: Published status */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
@@ -438,6 +445,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('last »'),
+    t('Entwurf'),
     t('Alle'),
     t('Usage as Lehrtext'),
     t('View panes'),

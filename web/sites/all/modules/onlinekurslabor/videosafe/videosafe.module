@@ -520,22 +520,36 @@ function _videosafe_h5p_get_refs($h5p_node) {
 }
 
 /**
- * gets urls to a videosafe-id
+ * gets video-tracks-data to a videosafe-node-id
  * @param string $videsafe_video_id 1111
- * @return array<String> $urls in the form http://.. for all videos in a videosafe
+ * @return array<String> video_track_title =>... , videos => [fid=>..., url=>..., description =>..., description_short=>... ]}
  */
-function _videosafe_get_video_urls($videsafe_video_id) {
+function _videosafe_get_video_tracks_data($videsafe_video_id) {
   global $base_url;
+  
   $node = node_load($videsafe_video_id);
-  $urls = array();
-  foreach (@$node->field_video[LANGUAGE_NONE] as $video_data) {
+  
+  $multivideo_type_str = 'Videospur';
+  if (!empty($node->field_multivideo_type)) {
+        $multivideo_type_str = field_view_value('node', $node, 'field_multivideo_type', $node->field_multivideo_type[LANGUAGE_NONE][0])['#markup'];
+    }
+
+    $data_array = array();
+    $data_array['video_track_title'] = $multivideo_type_str;
+  foreach (@$node->field_video[LANGUAGE_NONE] as $vidcounter => $video_data) {
     if (count($video_data)) {
       $file = file_load($video_data['fid']);
-      $urls[] = _videosafe_get_relative_url($file->uri);
-
+      $video_description_short = ($video_data['description']?:$vidcounter+1);
+      $video_description = $multivideo_type_str.' '.$video_description_short;
+      
+      $data_array['videos'][$vidcounter]['fid'] = $video_data['fid'];
+      $data_array['videos'][$vidcounter]['description'] = $video_description; 
+      $data_array['videos'][$vidcounter]['description_short'] = $video_description_short; 
+      $data_array['videos'][$vidcounter]['url'] = _videosafe_get_relative_url($file->uri);
+      
     }
   }
-  return ($urls);
+  return ($data_array);
 }
 
 /**
