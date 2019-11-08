@@ -214,6 +214,11 @@
          */
         initializeHelper: function()
         {
+            //es wird kein video-/audioelement angezeigt und somit brechen wir ab.
+            if(H5P.instances.length === 0)
+            {
+                return; 
+            }
             for (var i = 0; i < H5P.instances.length; i++) {
                 
                 var version = H5P.instances[i].libraryInfo.majorVersion + "." + H5P.instances[i].libraryInfo.minorVersion;
