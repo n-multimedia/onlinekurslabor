@@ -16,6 +16,33 @@ function annvid_features_og_features_default_permissions() {
     'roles' => array(),
   );
 
+  // Exported og permission: 'node:annvid:create nm_stream content'
+  $permissions['node:annvid:create nm_stream content'] = array(
+    'roles' => array(
+      'member' => 'member',
+    ),
+  );
+
+  // Exported og permission: 'node:annvid:delete any nm_stream content'
+  $permissions['node:annvid:delete any nm_stream content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:annvid:delete own nm_stream content'
+  $permissions['node:annvid:delete own nm_stream content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:annvid:update any nm_stream content'
+  $permissions['node:annvid:update any nm_stream content'] = array(
+    'roles' => array(),
+  );
+
+  // Exported og permission: 'node:annvid:update own nm_stream content'
+  $permissions['node:annvid:update own nm_stream content'] = array(
+    'roles' => array(),
+  );
+
   // Exported og permission: 'node:content_domain:create annvid content'
   $permissions['node:content_domain:create annvid content'] = array(
     'roles' => array(
