@@ -24,8 +24,11 @@ msgstr "hat eine Lösung bewertet"
 msgid "created a @printable_node_type"
 msgstr "hat etwas erstellt"
 
-msgid ""
-msgstr ""
+msgid "Course direction"
+msgstr "Kursleitung"
+
+msgid "Visible for course direction in this course"
+msgstr "Sichtbar für die Leitung und Unterstützung im Kurs"
 
 msgid ""
 msgstr ""
