@@ -11,6 +11,11 @@
 function annvid_features_og_features_default_permissions() {
   $permissions = array();
 
+  // Exported og permission: 'node:annvid:administer group'
+  $permissions['node:annvid:administer group'] = array(
+    'roles' => array(),
+  );
+
   // Exported og permission: 'node:content_domain:create annvid content'
   $permissions['node:content_domain:create annvid content'] = array(
     'roles' => array(

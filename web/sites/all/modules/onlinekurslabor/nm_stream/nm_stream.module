@@ -12,6 +12,8 @@ define('NM_STREAM_PUBLIC', 4);
 define('NM_STREAM_PROJECT', 5);
 //Domain (annvid)
 define('NM_STREAM_DOMAIN', 6);
+//Course Direction
+define('NM_STREAM_COURSE_DIRECTION', 7);
 
 // API
 define('NM_STREAM_API_INIT_POSTS_LIMIT', 10);
@@ -1777,6 +1779,12 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
       'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
       'default' => FALSE,
     ];
+    $options_items[NM_STREAM_COURSE_DIRECTION] = [
+      'label' => t('Course direction'),
+      'description' => t('Visible for course direction in this course'),
+      'icon_path' => $module_path . '/images/privacy-icons/privacy-course-direction.png',
+      'default' => FALSE,
+    ];
     $options_items[NM_STREAM_PROJECT] = [
       'label' => t('Project'),
       'description' => t('@TODO describe this'),
@@ -1798,6 +1806,7 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
           drupal_set_message ("No environment given in 98uohe2fuw! Contact support!", "error");*/
       // global area (home page) => all options
       if (empty($current_environment['container'])) {
+        // all options of the active node in edit mode should be accessable
         $options_items[NM_STREAM_TEAM] = [
           'label' => t('Team'), //todo: wer ist team?
           'description' => t('@TODO describe this'),
@@ -1816,10 +1825,14 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
           'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
           'default' => FALSE,
         ];
+        $options_items[NM_STREAM_COURSE_DIRECTION] = [
+          'label' => t('Course direction'),
+          'description' => t('Visible for course direction in this course'),
+          'icon_path' => $module_path . '/images/privacy-icons/privacy-course-direction.png',
+          'default' => FALSE,
+        ];
       }
-
     }
-
 
     //private - always possible
     $options_items[NM_STREAM_PRIVATE] = [
@@ -1848,6 +1861,12 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
             'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
             'default' => TRUE,
           ];
+          $options_items[NM_STREAM_COURSE_DIRECTION] = [
+            'label' => t('Course direction'),
+            'description' => t('Visible for course direction in this course'),
+            'icon_path' => $module_path . '/images/privacy-icons/privacy-course-direction.png',
+            'default' => FALSE,
+          ];
           if (node_access('update', $current_environment['container'], $user) || $stream_nodes_privacy_setting == NM_STREAM_COURSE) {
             $options_items[NM_STREAM_COURSE] = [
               'label' => t('Course'),
@@ -1863,6 +1882,12 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
             'label' => t('Team'), //todo: wer ist team?
             'description' => t('@TODO describe this'),
             'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+            'default' => FALSE,
+          ];
+          $options_items[NM_STREAM_COURSE_DIRECTION] = [
+            'label' => t('Course direction'),
+            'description' => t('Visible for course direction in this course'),
+            'icon_path' => $module_path . '/images/privacy-icons/privacy-course-direction.png',
             'default' => FALSE,
           ];
           $options_items[NM_STREAM_PROJECT] = [
@@ -1916,6 +1941,12 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
                   'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
                   'default' => TRUE,
                 ];
+                $options_items[NM_STREAM_COURSE_DIRECTION] = [
+                  'label' => t('Course direction'),
+                  'description' => t('Visible for course direction in this course'),
+                  'icon_path' => $module_path . '/images/privacy-icons/privacy-course-direction.png',
+                  'default' => FALSE,
+                ];
               }
               //privacy lehrtext nur als editor des lehrtexts
               if (node_access('update', $current_environment['container']->parent, $user) || $stream_nodes_privacy_setting == NM_STREAM_DOMAIN) {
@@ -1935,6 +1966,12 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
                 'description' => t('Visible for members of your course group'),
                 'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
                 'default' => TRUE,
+              ];
+              $options_items[NM_STREAM_COURSE_DIRECTION] = [
+                'label' => t('Course direction'),
+                'description' => t('Visible for course direction in this course'),
+                'icon_path' => $module_path . '/images/privacy-icons/privacy-course-direction.png',
+                'default' => FALSE,
               ];
               // visibility kurs nur falls ich kurs bearbeiten darf
               if (node_access('update', $current_environment['context'], $user) || $stream_nodes_privacy_setting == NM_STREAM_COURSE) {
@@ -1956,6 +1993,12 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
                 'label' => t('Team'), //todo: wer ist team?
                 'description' => t('@TODO describe this'),
                 'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+                'default' => FALSE,
+              ];
+              $options_items[NM_STREAM_COURSE_DIRECTION] = [
+                'label' => t('Course direction'),
+                'description' => t('Visible for course direction in this course'),
+                'icon_path' => $module_path . '/images/privacy-icons/privacy-course-direction.png',
                 'default' => FALSE,
               ];
               $options_items[NM_STREAM_PROJECT] = [

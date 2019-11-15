@@ -46,6 +46,12 @@ msgstr "Erstellen Sie die erste!"
 msgid "Show more"
 msgstr "Mehr anzeigen"
 
+msgid "Course direction"
+msgstr "Kursleitung"
+
+msgid "Visible for course direction in this course"
+msgstr "Sichtbar für die Leitung und Unterstützung im Kurs"
+
 msgid "There are multiple H5Ps embedded in this chapter. <ul><li>This can result in errors and a limited accessability on mobile devices.</li><li>Therefore this chapter should be split up in multiples.</li></ul>"
 msgstr "In dieses Kapitel sind mehrere H5P-Elemente eingebettet. <ul><li>Dies kann zu Fehlern und einer schlechten Erreichbarkeit auf Mobilgeräten führen.</li><li>Dieses Kapitel sollte in mehrere unterteilt werden.</li></ul>"
 
