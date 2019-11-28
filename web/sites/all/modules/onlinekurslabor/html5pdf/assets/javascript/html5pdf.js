@@ -105,7 +105,10 @@ HTML5PDF.prototype.zoomOut = function()
 HTML5PDF.prototype.loadPDF = function(optionalcallback, errorcallback)
 {
     var innerthis = this;
-    PDFJS.getDocument(this.pdffile).then(function(pdfDoc_) {
+    
+    var loadingTask = pdfjsLib.getDocument(this.pdffile);
+ 
+    loadingTask.promise.then(function(pdfDoc_) {
         innerthis.pdfDoc = pdfDoc_;
         innerthis.initializePDF();
         //optionales callback nach Aufruf der renderPage
@@ -125,7 +128,7 @@ HTML5PDF.prototype.initializePDF = function() {
     this.pdfDoc.getPage(1).then(function(page) {
         innerthis.initizialized = true;
         /*calculate canvas size and scale */
-        var chkport = page.getViewport(1);
+        var chkport = page.getViewport({scale: 1});
         innerthis.defaultscale = 0.95 * innerthis.containerwidth / chkport.width;
         innerthis.resetScale();
         //set counter of html-element
@@ -150,7 +153,7 @@ HTML5PDF.prototype.renderPage = function(num) {
     this.pdfDoc.getPage(num).then(function(page) {
         //var viewport = page.getViewport(1.0);
         //  innerthis.defaultscale = innerthis.containerwidth  
-        var viewport = page.getViewport(innerthis.scale);
+        var viewport = page.getViewport({scale: innerthis.scale});
         
         // resizing canvas...
         innerthis.canvas.height = viewport.height;

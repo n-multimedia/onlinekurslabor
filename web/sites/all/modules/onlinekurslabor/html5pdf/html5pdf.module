@@ -9,6 +9,8 @@
  * https://www.drupal.org/project/pdf/issues/3047899
  * 
  * 
+ * HINT: find new versions of pdf.js here: https://github.com/mozilla/pdf.js/releases
+ * and extract contents of e.g. pdfjs-2.2.228-dist.zip\build\  to html5pdf\assets\javascript
  */
 /**
  * @file

@@ -26,8 +26,13 @@ dpm($module_path);
 </div>
 
 <script type="text/javascript">
-            /*autodetect doesnt work*/
-            PDFJS.workerSrc = '<?php echo $module_path ?>/assets/javascript/pdf.worker.js';
+           
+    var pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+    // The workerSrc property shall be specified.
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '<?php echo $module_path ?>/assets/javascript/pdf.worker.js';
+
+
     var identifierstring = '<?php echo $identifier ?>';
     var settings;
     Drupal.behaviors.html5pdf.createReader({
