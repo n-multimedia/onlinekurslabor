@@ -30,5 +30,14 @@ msgstr "Durch die Schreibweise [collapsible]<h2>Überschrift</h2> ... Text... [/
 msgid "Error loading the PDF!"
 msgstr "Fehler beim Laden des PDFs!"
 
+msgid "Course direction"
+msgstr "Kursleitung"
+
+msgid "Visible for course direction in this course"
+msgstr "Sichtbar für die Leitung und Unterstützung im Kurs"
+
+msgid ""
+msgstr ""
+
 msgid ""
 msgstr ""
