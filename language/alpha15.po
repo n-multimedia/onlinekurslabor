@@ -24,8 +24,11 @@ msgstr "hat eine Lösung bewertet"
 msgid "created a @printable_node_type"
 msgstr "hat etwas erstellt"
 
-msgid ""
-msgstr ""
+msgid "Pattern [collapsible]<h2>heading</h2> ... text... [/collapsible] is collapsible"
+msgstr "Durch die Schreibweise [collapsible]<h2>Überschrift</h2> ... Text... [/collapsible] wird Text einklappbar"
+
+msgid "Error loading the PDF!"
+msgstr "Fehler beim Laden des PDFs!"
 
 msgid ""
 msgstr ""

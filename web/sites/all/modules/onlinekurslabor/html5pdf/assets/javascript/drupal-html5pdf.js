@@ -34,7 +34,7 @@
             ,
             //errorcallback
                     function(error) {
-                        $('#'+identifierstring+'_pdfscrollcontainer').html('<div style="background:white;min-height: 70px;"><div class="alert alert-block alert-danger messages error">Fehler beim Laden des PDFs!</div></div>');
+                        $('#'+identifierstring+'_pdfscrollcontainer').html('<div style="background:white;min-height: 70px;"><div class="alert alert-block alert-danger messages error">'+Drupal.t('Error loading the PDF!')+'</div></div>');
                     }
             );
             var that = this;

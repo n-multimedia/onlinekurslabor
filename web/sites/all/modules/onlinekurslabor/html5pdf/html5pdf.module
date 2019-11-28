@@ -1,73 +1,44 @@
 <?php
 
 /**
+ * replace by https://www.drupal.org/project/pdf ?????????
+ * EDIT: das wird zwar auch für 8.x umgesetzt, aber 
+ * javascript not compatible with pdf.js version 2.x
+ * pdf.js version 2.x no longer has the global PDFJS object.
+ * seit 8monaten unfixed
+ * https://www.drupal.org/project/pdf/issues/3047899
+ * 
+ * 
+ */
+/**
  * @file
  * ein modul, das pdfs rendern kann. 
  */
-/**
- * @ingroup image
- * @{
- */
 
 /**
- * Implements hook_init().
+ * Implements hook_page_build(&$page) {
  */
-function html5pdf_init() {
-#return;
-  $nid = (arg(0) == 'node' && is_numeric(arg(1))) ? arg(1) : NULL;
+function html5pdf_page_build($page) {
+    if ($node = menu_get_object()) {
+        // Get the nid
+        $nid = $node->nid;
+    } else {
+        $nid = 'default';
+    }
 
-  drupal_add_js(array('html5pdf' => array('json_video_id' => 'cid-' . $nid)), 'setting');
-  #drupal_add_js(drupal_get_path('module', 'html5pdf') . '/assets/javascript/pdf.js', array('cache' => FALSE));  
-  
-  //add core-js
-  drupal_add_js(drupal_get_path('module', 'html5pdf') . '/assets/javascript/html5pdf.js');
-  drupal_add_js(drupal_get_path('module', 'html5pdf') . '/assets/javascript/jquery.scrollview.js');
-  
+    drupal_add_js(array('html5pdf' => array('json_video_id' => 'cid-' . $nid)), 'setting');
+    #drupal_add_js(drupal_get_path('module', 'html5pdf') . '/assets/javascript/pdf.js', array('cache' => FALSE));  
+    //add core-js
+    drupal_add_js(drupal_get_path('module', 'html5pdf') . '/assets/javascript/html5pdf.js');
+    drupal_add_js(drupal_get_path('module', 'html5pdf') . '/assets/javascript/jquery.scrollview.js');
 
-  //add plugin-js
-  drupal_add_js(drupal_get_path('module', 'html5pdf') . '/assets/javascript/drupal-html5pdf.js');
-  //add plugin-js for controlss
-  drupal_add_css(drupal_get_path('module', 'html5pdf') . '/assets/css/main.css');
-  
+
+    //add plugin-js
+    drupal_add_js(drupal_get_path('module', 'html5pdf') . '/assets/javascript/drupal-html5pdf.js');
+    //add plugin-js for controlss
+    drupal_add_css(drupal_get_path('module', 'html5pdf') . '/assets/css/main.css');
 }
 
-/*noch zu klären: wie geht man mit width um? in php festzulegen ist tendentiell dumm. Evtl $.live*/
-function _html5pdf_getPDFReader($identifier,$pdf_url)
-{ 
-   #  $nid = (arg(0) == 'node' && is_numeric(arg(1))) ? arg(1) : NULL;
-   $html_code =  '<script src="'.base_path().drupal_get_path('module', 'html5pdf') . '/assets/javascript/pdf.js'.'"></script>';
-   //generate html-block including IDs and some pdf-controls
-   $html_code .=  <<<EOF
-                       <div id="{$identifier}-html5pdf" style="width:700px;">
-                          <div class=html5pdf_control id="{$identifier}_control">
-                           <i id="{$identifier}_prev" class="html5pdfsprite html5pdfsprite-last"></i> 
-                            <span class="html5pdf_pager"><span id="{$identifier}_page_num">-</span> / <span id="{$identifier}_page_count">-</span></span>
-                             <i id="{$identifier}_next" class="html5pdfsprite html5pdfsprite-next"></i>
-                             <i id="{$identifier}_zoomin" class="html5pdfsprite html5pdfsprite-zoomin"></i>
-                             <i id="{$identifier}_zoomout" class="html5pdfsprite html5pdfsprite-zoomout"></i>
-                            </div><div style="clear:both;"></div>
-                           <div  id="{$identifier}_pdfscrollcontainer" class="html5pdf_pdfscrollcontainer"><div><canvas id="{$identifier}_pdfcanvas"  class="pdf_canvas"></canvas></div></div>
-                      </div>
-EOF;
-                             $worker_src = base_path().drupal_get_path('module', 'html5pdf') . '/assets/javascript/pdf.worker.js';
-    //generate a jscript-code to read the pdf
-      $html_code .=  <<<EOF
-                      <script type="text/javascript">
-                        /*autodetect doesnt work*/
-                        PDFJS.workerSrc='$worker_src';
-                        var identifierstring = '{$identifier}';
-                        var settings;
-                        Drupal.behaviors.html5pdf.createReader({
-                            pdffile: '$pdf_url'
-                          }, identifierstring);
-                                
-                         jQuery("#{$identifier}_pdfscrollcontainer").scrollview();
- 
-       
-                      </script>
-EOF;
-    return $html_code;
-}
 
 /*
  * the following functions are so that you can select "Display PDF" for a file in display_options
@@ -75,18 +46,66 @@ EOF;
  */
 /**
  * Implements hook_field_formatter_info().
+ * "Display" a pdf-file
+ * 
  */
 function html5pdf_field_formatter_info() {
-  return array(
-    // the key must be unique, so it's best to prefix with your module's name.
-    'html5pdf_pdfviewer' => array(
-      // the label is is what is displayed in the select box in the UI.
-      'label' => t('Display PDF in a viewer'),
-      // field types is the important bit!! List the field types your formatter is for.
-      'field types' => array('file')
-    ),
-  );
+    return array(
+        // the key must be unique, so it's best to prefix with your module's name.
+        'html5pdf_pdfviewer' => array(
+            // the label is is what is displayed in the select box in the UI.
+            'label' => t('Display PDF'),
+            // field types is the important bit!! List the field types your formatter is for.
+            'field types' => array('file'),
+             'settings' => array(
+                'css_wrapper_class' => t('html5pdf_standard_wrapper_class'),
+             ),
+        ),
+    );
 }
+
+ 
+
+/**
+ * Implements hook_field_formatter_settings_summary().
+ * shown next to "display" settings of the pdf-field
+ */
+function html5pdf_field_formatter_settings_summary($field, $instance, $view_mode) {
+    $display = $instance['display'][$view_mode];
+    $settings = $display['settings'];
+    $element = array();
+    $summary[] = 'Displays a PDF directly on your website';
+
+    if ($display['type'] == 'html5pdf_pdfviewer') {
+        $summary[] = t('CSS wrapper-class is: %text', array('%text' => $settings['css_wrapper_class']));
+    }
+
+
+
+    return implode('<br />', $summary);
+}
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ * settings form for setting the css-wrapper class
+ */
+function html5pdf_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+    $display = $instance['display'][$view_mode];
+    $settings = $display['settings'];
+    $element = array();
+
+    if ($display['type'] == 'html5pdf_pdfviewer') {
+        $element['css_wrapper_class'] = array(
+            '#type' => 'textfield',
+            '#title' => t('CSS wrapper-class'),
+            '#description' => t('Name a class which is used in the wrapper. It sould have a width assigned, e.g. 700px.'),
+            '#default_value' => $settings['css_wrapper_class'],
+            '#required' => TRUE,
+        );
+    }
+    return $element;
+}
+ 
 
 /**
  * Implements hook_field_formatter_view(). This code just passes straight
@@ -110,22 +129,28 @@ function html5pdf_field_formatter_view($entity_type, $entity, $field, $instance,
 function html5pdf_theme() {
   return array(
     // The theme function that our formatter uses:
+      //@todo rename the formatter -too long!
     'html5pdf_formatter_html5pdf_pdfviewer' => array(
       // Don't forget that all Drupal 7 theme functions have only one argument,
       // so you declare what variables get passed within that argument instead.
       // See http://drupal.org/node/224333#theme_changes
-      'variables' => array('element' => NULL),
+      'arguments' => array('identifier' => NULL, 'pdf_file_url' => null, 'module_path'=> null, 'css_wrapepr_class'=>null),
+       'template' => 'templates/html5pdf',
     ),
   );
 }
 
-/*the theme just calls the pdf-reader-function*/
- function theme_html5pdf_formatter_html5pdf_pdfviewer($element) {
- 
- return _html5pdf_getPDFReader($element['element']['fid'],file_create_url($element['element']['uri']));
-      
- }
-
 /**
- * @} End of "ingroup image".
+ * my module template_preprocess
+ * set variables for .tpl-file
+ * @param type $variables
  */
+function template_preprocess_html5pdf_formatter_html5pdf_pdfviewer(&$variables) {   
+
+  $variables['identifier']  = $variables['element']['fid'];;
+  $variables['pdf_file_url']  = file_create_url($variables['element']['uri']);
+  $variables['module_path']  =  base_path().drupal_get_path('module', 'html5pdf');
+  $variables['css_wrapepr_class'] = $variables['field']['display']['default']['settings']['css_wrapper_class'];
+}
+  
+  
