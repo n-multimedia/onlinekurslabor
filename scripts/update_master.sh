@@ -2,6 +2,7 @@
 ##!/bin/sh
 drush vset maintenance_mode 1
 
+chmod 0444 sites/default/settings.php
 
 #bug in drush - cc before FR!!
 drush cc all
