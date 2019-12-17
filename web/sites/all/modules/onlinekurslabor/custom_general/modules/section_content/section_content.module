@@ -665,6 +665,10 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
     $description .= '</li></ul>';
 
     $form['field_domain_demo_ref']['#suffix'] = $description;
+    
+    
+    $lehet_description = '<li>Bitte wählen Sie hier nur etwas an, wenn es sich bei diesem Kurs um einen <a href="https://www.uni-augsburg.de/de/forschung/projekte/lehet/" target=_blank>LeHet</a>-Kurs handelt.</li>';
+    $form['field_lehet_kompetenzbereich']['#prefix'] = $lehet_description;
   }
 
 

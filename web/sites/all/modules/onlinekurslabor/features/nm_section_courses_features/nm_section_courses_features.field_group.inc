@@ -121,12 +121,13 @@ function nm_section_courses_features_field_group_info() {
     'label' => 'Kurs - Allgemein',
     'weight' => '0',
     'children' => array(
-      0 => 'group_course_design',
-      1 => 'group_course_features',
-      2 => 'group_course_general_data',
-      3 => 'group_course_projects',
-      4 => 'group_courses_text',
-      5 => 'group_courses_vhb',
+      0 => 'group_course_lehet',
+      1 => 'group_course_design',
+      2 => 'group_course_features',
+      3 => 'group_course_general_data',
+      4 => 'group_course_projects',
+      5 => 'group_courses_text',
+      6 => 'group_courses_vhb',
     ),
     'format_type' => 'htabs',
     'format_settings' => array(
@@ -141,6 +142,39 @@ function nm_section_courses_features_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_course_lehet|node|courses_course|form';
+  $field_group->group_name = 'group_course_lehet';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'courses_course';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_course_general';
+  $field_group->data = array(
+    'label' => 'LeHet',
+    'weight' => '10',
+    'children' => array(
+      0 => 'field_lehet_kompetenzbereich',
+      1 => 'field_lehet_material',
+      2 => 'field_lehet_subjects',
+      3 => 'field_lehet_content',
+      4 => 'field_lehet_schooltype',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'LeHet',
+      'instance_settings' => array(
+        'required_fields' => 0,
+        'id' => '',
+        'classes' => 'group-course-lehet field-group-fieldset',
+        'description' => '',
+      ),
+      'formatter' => 'collapsible',
+    ),
+  );
+  $field_groups['group_course_lehet|node|courses_course|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_course_projects|node|courses_course|form';
   $field_group->group_name = 'group_course_projects';
   $field_group->entity_type = 'node';
@@ -149,7 +183,7 @@ function nm_section_courses_features_field_group_info() {
   $field_group->parent_name = 'group_course_general';
   $field_group->data = array(
     'label' => 'Projekte',
-    'weight' => '11',
+    'weight' => '13',
     'children' => array(
       0 => 'field_course_proposals',
     ),
@@ -208,7 +242,7 @@ function nm_section_courses_features_field_group_info() {
   $field_group->parent_name = 'group_course_general';
   $field_group->data = array(
     'label' => 'VHB Einstellungen',
-    'weight' => '10',
+    'weight' => '12',
     'children' => array(
       0 => 'field_vhb_lvnr',
     ),
@@ -454,6 +488,7 @@ function nm_section_courses_features_field_group_info() {
   t('Einstellungen');
   t('Features');
   t('Kurs - Allgemein');
+  t('LeHet');
   t('Lehrtext');
   t('Meine Kurse');
   t('Persönliche Informationen');
