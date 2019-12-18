@@ -44,7 +44,32 @@ function section_courses_preprocess_panels_pane(&$variables) {
 
 
 
+/**
+ * implements function hook_entity_info_alter(&$entity_info) {
+ * bei "rndereed entity" in views kann man nun "Node -course" als Ziel auswählen
+ * @param type $entity_info
+ */
+function section_courses_entity_info_alter(&$entity_info) {
+    
+  $entity_info['node']['view modes']['view_mode_course'] = array(
+    'label' => t('Node - course'),
+    // This is what you'll see in your "Manage Display" tab.
+    'custom settings' => FALSE,
+    #   'view callback' => 'videosafe_node_formatter_viewmode_description'
+  );
 
+}
+
+/**
+ * benötigt von section_courses_entity_info_alter zusammen mit section_courses_theme
+ * (in letzterer wird die konkrete .tpl-file gewählt)
+ * @param string $vars
+ */
+function section_courses_preprocess_node(&$vars) {
+  if ($vars['view_mode'] == 'view_mode_course') {
+    $vars['theme_hook_suggestions'][] = 'views__view__courses__render_course';
+  }
+}
 
 
 
@@ -3045,6 +3070,11 @@ function section_courses_theme() {
       'template' => 'templates/section-courses-top-navigation',
       'variables' => [
       ],
+    ],
+    'views__view__courses__render_course' => [
+      'template' => 'views-view-fields--courses-kurse-bersicht--my-courses-small',
+      'variables' => array(),
+        'path' => drupal_get_path('theme', 'bootstrap_onlinekurslabor') . '/templates',
     ],
   ];
 }
