@@ -4,7 +4,7 @@
 */
 
 /*
-ADAPING BOOTSTRAP
+ADAPTING BOOTSTRAP
 */
 .btn.btn-inverse {
     background-color: #666;
@@ -1099,6 +1099,26 @@ fixes for BEF - bootstrap
 /**
 END fixes for BEF - bootstrap
 */
+
+
+/**
+fixes for views_ef_fieldset -  BEF - bootstrap
+*/
+
+
+.views-ef-fieldset-container  .form-type-bef-checkbox
+{
+    display: block;
+}
+/**
+END fixes for views_ef_fieldset - BEF - bootstrap
+*/
+
+/*SPECIAL VIEW KURSFINDER*/
+.view-kursfinder .form-item
+{
+    margin-right:8px;
+}
 
 /* PrivateMSG */
 
