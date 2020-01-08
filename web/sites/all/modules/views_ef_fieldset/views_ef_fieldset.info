@@ -1,0 +1,15 @@
+name = Views Exposed Form Fieldset
+description = Provide an option to render the "exposed form widgets" in fieldsets or vertical tabs.
+core = 7.x
+package = Views
+dependencies[] = views
+files[] = views/views_ef_fieldset_display_extender_plugin.inc
+files[] = includes/ViewsEFFieldsetData.php
+files[] = includes/ArrayDataItemIterator.php
+
+; Information added by Drupal.org packaging script on 2015-05-19
+version = "7.x-1.6"
+core = "7.x"
+project = "views_ef_fieldset"
+datestamp = "1432055602"
+
