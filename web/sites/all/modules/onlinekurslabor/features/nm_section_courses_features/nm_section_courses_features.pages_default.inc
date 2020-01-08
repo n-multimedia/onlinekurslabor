@@ -7739,32 +7739,6 @@ return section_courses_text_outline();
   $pane->uuid = '10d719c2-0805-4b43-bf4b-e709b42323e1';
   $display->content['new-10d719c2-0805-4b43-bf4b-e709b42323e1'] = $pane;
   $display->panels['middle'][0] = 'new-10d719c2-0805-4b43-bf4b-e709b42323e1';
-  $pane = new stdClass();
-  $pane->pid = 'new-6ec067fa-32f3-4eb6-aaf2-a89d415fa5dd';
-  $pane->panel = 'middle';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'admin_title' => 'kursfinder-description',
-    'title' => '',
-    'title_heading' => 'h2',
-    'body' => '<p>* Kurse im Entwurfsmodus werden nicht angezeigt</p>',
-    'format' => 'filtered_html',
-    'substitute' => TRUE,
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 1;
-  $pane->locks = array();
-  $pane->uuid = '6ec067fa-32f3-4eb6-aaf2-a89d415fa5dd';
-  $display->content['new-6ec067fa-32f3-4eb6-aaf2-a89d415fa5dd'] = $pane;
-  $display->panels['middle'][1] = 'new-6ec067fa-32f3-4eb6-aaf2-a89d415fa5dd';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-10d719c2-0805-4b43-bf4b-e709b42323e1';
   $handler->conf['display'] = $display;
