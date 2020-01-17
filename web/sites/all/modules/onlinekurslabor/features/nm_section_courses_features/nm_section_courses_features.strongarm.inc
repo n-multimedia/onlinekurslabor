@@ -525,7 +525,7 @@ function nm_section_courses_features_strongarm() {
           'weight' => '7',
         ),
         'path' => array(
-          'weight' => '5',
+          'weight' => '2',
         ),
         'workflow' => array(
           'weight' => '8',

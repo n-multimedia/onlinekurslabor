@@ -152,11 +152,7 @@ function nm_section_courses_features_field_group_info() {
     'label' => 'LeHet',
     'weight' => '10',
     'children' => array(
-      0 => 'field_lehet_kompetenzbereich',
-      1 => 'field_lehet_material',
-      2 => 'field_lehet_subjects',
-      3 => 'field_lehet_content',
-      4 => 'field_lehet_schooltype',
+      0 => 'group_lehet_responsive',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -165,7 +161,7 @@ function nm_section_courses_features_field_group_info() {
         'required_fields' => 0,
         'id' => '',
         'classes' => 'group-course-lehet field-group-fieldset',
-        'description' => '',
+        'description' => 'Bitte wählen Sie hier nur etwas an, wenn es sich bei diesem Kurs um einen <a href="https://www.uni-augsburg.de/de/forschung/projekte/lehet/" target=_blank>LeHet</a>-Kurs handelt.',
       ),
       'formatter' => 'collapsible',
     ),
@@ -259,6 +255,109 @@ function nm_section_courses_features_field_group_info() {
     ),
   );
   $field_groups['group_courses_vhb|node|courses_course|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_lehet_responsive_left|node|courses_course|form';
+  $field_group->group_name = 'group_lehet_responsive_left';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'courses_course';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_lehet_responsive';
+  $field_group->data = array(
+    'label' => 'lehet-responsive-left',
+    'weight' => '5',
+    'children' => array(
+      0 => 'field_lehet_kompetenzbereich',
+      1 => 'field_lehet_material',
+      2 => 'field_lehet_subjects',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'lehet-responsive-left',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'id' => '',
+        'classes' => 'group-lehet-responsive-left field-group-div col-md-6 col-xs-12',
+        'description' => '',
+        'show_label' => '0',
+        'label_element' => 'h3',
+        'effect' => 'none',
+        'speed' => 'fast',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $field_groups['group_lehet_responsive_left|node|courses_course|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_lehet_responsive_right|node|courses_course|form';
+  $field_group->group_name = 'group_lehet_responsive_right';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'courses_course';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_lehet_responsive';
+  $field_group->data = array(
+    'label' => 'lehet-responsive-right',
+    'weight' => '7',
+    'children' => array(
+      0 => 'field_lehet_content',
+      1 => 'field_lehet_schooltype',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'lehet-responsive-right',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'id' => '',
+        'classes' => 'group-lehet-responsive-right field-group-div col-md-6 col-xs-12',
+        'description' => '',
+        'show_label' => '0',
+        'label_element' => 'h3',
+        'effect' => 'none',
+        'speed' => 'fast',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $field_groups['group_lehet_responsive_right|node|courses_course|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_lehet_responsive|node|courses_course|form';
+  $field_group->group_name = 'group_lehet_responsive';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'courses_course';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_course_lehet';
+  $field_group->data = array(
+    'label' => 'LeHet',
+    'weight' => '19',
+    'children' => array(
+      0 => 'group_lehet_responsive_left',
+      1 => 'group_lehet_responsive_right',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'LeHet',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'id' => '',
+        'classes' => 'group-lehet-responsive field-group-div',
+        'description' => '',
+        'show_label' => '0',
+        'label_element' => 'h3',
+        'effect' => 'none',
+        'speed' => 'fast',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $field_groups['group_lehet_responsive|node|courses_course|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -499,6 +598,8 @@ function nm_section_courses_features_field_group_info() {
   t('Tab Container');
   t('VHB Einstellungen');
   t('Zugangsdaten');
+  t('lehet-responsive-left');
+  t('lehet-responsive-right');
 
   return $field_groups;
 }

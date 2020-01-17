@@ -788,7 +788,7 @@ function nm_section_courses_features_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 21,
+      'weight' => 23,
     ),
   );
 
@@ -831,7 +831,7 @@ function nm_section_courses_features_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 18,
+      'weight' => 6,
     ),
   );
 
@@ -874,7 +874,7 @@ function nm_section_courses_features_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 20,
+      'weight' => 8,
     ),
   );
 
@@ -917,7 +917,7 @@ function nm_section_courses_features_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 22,
+      'weight' => 24,
     ),
   );
 
@@ -963,7 +963,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'options_buttons',
-      'weight' => 19,
+      'weight' => 7,
     ),
   );
 
@@ -1520,7 +1520,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'og_hide' => TRUE,
       ),
       'type' => 'options_onoff',
-      'weight' => 4,
+      'weight' => 1,
     ),
   );
 
