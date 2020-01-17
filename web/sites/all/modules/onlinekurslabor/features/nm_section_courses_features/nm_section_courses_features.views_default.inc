@@ -3522,7 +3522,7 @@ function nm_section_courses_features_views_default_views() {
   $view->description = 'Kurse filtern. Optional mit den Lehet-Klickschlampen-Tags.';
   $view->tag = 'default';
   $view->base_table = 'node';
-  $view->human_name = 'Courses - Kursfilter';
+  $view->human_name = 'Courses - Kursfinder';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -3766,11 +3766,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['field_semester_tid']['expose']['label'] = 'Semester';
   $handler->display->display_options['filters']['field_semester_tid']['expose']['operator'] = 'field_semester_tid_op';
   $handler->display->display_options['filters']['field_semester_tid']['expose']['identifier'] = 'field_semester_tid';
-  $handler->display->display_options['filters']['field_semester_tid']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_semester_tid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_semester_tid']['expose']['remember_roles'] = array(
-    2 => '2',
-  );
   $handler->display->display_options['filters']['field_semester_tid']['reduce_duplicates'] = TRUE;
   $handler->display->display_options['filters']['field_semester_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_semester_tid']['vocabulary'] = 'semester';
@@ -3784,11 +3780,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['field_lehet_kompetenzbereich_tid']['expose']['label'] = 'Kompetenzbereich';
   $handler->display->display_options['filters']['field_lehet_kompetenzbereich_tid']['expose']['operator'] = 'field_lehet_kompetenzbereich_tid_op';
   $handler->display->display_options['filters']['field_lehet_kompetenzbereich_tid']['expose']['identifier'] = 'field_lehet_kompetenzbereich_tid';
-  $handler->display->display_options['filters']['field_lehet_kompetenzbereich_tid']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_lehet_kompetenzbereich_tid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_lehet_kompetenzbereich_tid']['expose']['remember_roles'] = array(
-    2 => '2',
-  );
   $handler->display->display_options['filters']['field_lehet_kompetenzbereich_tid']['reduce_duplicates'] = TRUE;
   $handler->display->display_options['filters']['field_lehet_kompetenzbereich_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_lehet_kompetenzbereich_tid']['vocabulary'] = 'lehet_kompetenzbereich';
@@ -3803,11 +3795,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['field_lehet_subjects_tid']['expose']['label'] = 'Fächer';
   $handler->display->display_options['filters']['field_lehet_subjects_tid']['expose']['operator'] = 'field_lehet_subjects_tid_op';
   $handler->display->display_options['filters']['field_lehet_subjects_tid']['expose']['identifier'] = 'field_lehet_subjects_tid';
-  $handler->display->display_options['filters']['field_lehet_subjects_tid']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_lehet_subjects_tid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_lehet_subjects_tid']['expose']['remember_roles'] = array(
-    2 => '2',
-  );
   $handler->display->display_options['filters']['field_lehet_subjects_tid']['reduce_duplicates'] = TRUE;
   $handler->display->display_options['filters']['field_lehet_subjects_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_lehet_subjects_tid']['vocabulary'] = 'lehet_subjects';
@@ -3840,11 +3828,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['field_lehet_content_tid']['expose']['label'] = 'Inhalt';
   $handler->display->display_options['filters']['field_lehet_content_tid']['expose']['operator'] = 'field_lehet_content_tid_op';
   $handler->display->display_options['filters']['field_lehet_content_tid']['expose']['identifier'] = 'field_lehet_content_tid';
-  $handler->display->display_options['filters']['field_lehet_content_tid']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_lehet_content_tid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_lehet_content_tid']['expose']['remember_roles'] = array(
-    2 => '2',
-  );
   $handler->display->display_options['filters']['field_lehet_content_tid']['reduce_duplicates'] = TRUE;
   $handler->display->display_options['filters']['field_lehet_content_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_lehet_content_tid']['vocabulary'] = 'lehet_content';
