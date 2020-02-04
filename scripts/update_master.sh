@@ -7,7 +7,8 @@ chmod 0444 sites/default/settings.php
 #bug in drush - cc before FR!!
 drush cc all
 
-
+drush en better_exposed_filters  --y
+drush en views_ef_fieldset --y
 
 #revert single features
 drush fr notification_features nm_section_courses_features videosafe_features nm_section_content_features annvid_features --yes
