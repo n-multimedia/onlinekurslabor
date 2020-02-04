@@ -2,13 +2,17 @@
 /*
  * home: meine kurse ansicht
  */
-$nid = $fields['nid']->raw;
+$nid = $variables['nid'];
+if(!$nid)
+{
+    $nid = $fields['nid']->raw;
+    unset($fields['nid']);
+}
 
 $node_path = url('node/' . $nid);
 
 $node = node_load($nid);
-
-unset($fields['nid']);
+ 
 
   
 $items = field_get_items('node', $node, 'field_description'); 

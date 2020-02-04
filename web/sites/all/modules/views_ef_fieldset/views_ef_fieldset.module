@@ -1,0 +1,50 @@
+<?php
+/**
+ * @file
+ * Main module file.
+ */
+
+/**
+ * Implements hook_views_api().
+ */
+function views_ef_fieldset_views_api() {
+  return array(
+    'api' => 3.0,
+  );
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function views_ef_fieldset_form_views_exposed_form_alter(&$form, &$form_state) {
+  if (isset($form_state['display'])) {
+    if (isset($form_state['display']->display_options['views_ef_fieldset'])) {
+      $options = $form_state['display']->display_options['views_ef_fieldset'];
+
+      if ($options['enabled']) {
+
+        if (is_array($options['options']['sort'])) {
+          $form['#attached']['css'] = array(
+            drupal_get_path('module', 'views_ef_fieldset') . '/css/views_ef_fieldset.css'
+          );
+
+          $viewsEFFieldsetData = new ViewsEFFieldsetData($options['options']['sort'], $form);
+          $form['filters']['children'] = $viewsEFFieldsetData->treeToFAPI();
+          $form['#info']['views_ef_fieldset']['value'] = 'filters';
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function views_ef_fieldset_theme() {
+  return array(
+    'views_ef_fieldset_reorder_form' => array(
+      'render element' => 'form',
+      'file' => 'views_ef_fieldset.theme.inc'
+    ),
+  );
+}

@@ -4,7 +4,7 @@
 */
 
 /*
-ADAPING BOOTSTRAP
+ADAPTING BOOTSTRAP
 */
 .btn.btn-inverse {
     background-color: #666;
@@ -361,7 +361,7 @@ Course Header
     font-size: 20px;
     max-height: 37px;
     text-align:justify;
-    //hyphens: silbentrennung
+    /*hyphens: silbentrennung*/
     hyphens: auto;
 }
 }
@@ -1080,6 +1080,44 @@ PROJECTS
     padding-left: 2em;
     padding-right: 2em;
     padding-bottom: 1em;
+}
+
+/**
+fixes for BEF - bootstrap
+*/
+.form-control.bef-select-as-checkboxes 
+{
+    height: auto;
+}
+
+.form-type-bef-checkbox .form-control, .form-type-bef-checkbox label
+{
+    width: auto;
+    display: inline-block;
+    height: auto;
+}
+/**
+END fixes for BEF - bootstrap
+*/
+
+
+/**
+fixes for views_ef_fieldset -  BEF - bootstrap
+*/
+
+
+.views-ef-fieldset-container  .form-type-bef-checkbox
+{
+    display: block;
+}
+/**
+END fixes for views_ef_fieldset - BEF - bootstrap
+*/
+
+/*SPECIAL VIEW KURSFINDER*/
+.view-kursfinder .form-item
+{
+    margin-right:8px;
 }
 
 /* PrivateMSG */
