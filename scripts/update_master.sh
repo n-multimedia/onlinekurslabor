@@ -22,6 +22,11 @@ drush updatedb --yes
 drush pm-disable newmenue_tooltip --y
 drush pm-uninstall newmenue_tooltip --y
 
+drush en environment_indicator environment_indicator_feature --y
+drush pm-disable dev_live_warner --y
+drush pm-uninstall dev_live_warner --y
+
+
 drush cc all
 
 drush vset maintenance_mode 0
