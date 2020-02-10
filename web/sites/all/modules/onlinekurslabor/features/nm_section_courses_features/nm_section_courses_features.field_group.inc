@@ -121,10 +121,10 @@ function nm_section_courses_features_field_group_info() {
     'label' => 'Kurs - Allgemein',
     'weight' => '0',
     'children' => array(
-      0 => 'group_course_lehet',
-      1 => 'group_course_design',
-      2 => 'group_course_features',
-      3 => 'group_course_general_data',
+      0 => 'group_course_design',
+      1 => 'group_course_features',
+      2 => 'group_course_general_data',
+      3 => 'group_course_lehet',
       4 => 'group_course_projects',
       5 => 'group_courses_text',
       6 => 'group_courses_vhb',
@@ -149,14 +149,14 @@ function nm_section_courses_features_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = 'group_course_general';
   $field_group->data = array(
-    'label' => 'LeHet',
+    'label' => 'LeHet (disabled in section_courses_form_alter)',
     'weight' => '10',
     'children' => array(
       0 => 'group_lehet_responsive',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'label' => 'LeHet',
+      'label' => 'LeHet (disabled in section_courses_form_alter)',
       'instance_settings' => array(
         'required_fields' => 0,
         'id' => '',
@@ -588,6 +588,7 @@ function nm_section_courses_features_field_group_info() {
   t('Features');
   t('Kurs - Allgemein');
   t('LeHet');
+  t('LeHet (disabled in section_courses_form_alter)');
   t('Lehrtext');
   t('Meine Kurse');
   t('Persönliche Informationen');

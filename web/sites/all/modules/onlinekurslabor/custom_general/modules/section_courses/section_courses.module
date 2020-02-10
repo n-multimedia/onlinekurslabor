@@ -2365,6 +2365,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
     /* Feature Lehrtext deaktivieren + Link auf Lehrtext erstellen */
     /** Lehet_Settings field */
     if ($form_id == 'courses_course_node_form') {
+        
         $description = "<ul>";
         //add domain add link to
         $description .= "<li>" . 'Ein als Demo genutzter Lehrtext wird dadurch öffentlich zugänglich.' . "</li>";
@@ -2381,7 +2382,18 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
 
         $form['field_domain_demo_ref']['#suffix'] = $description;
 
-    }
+        
+        
+        /*DISABLE LEHET-TAB: remove this block to enable again*/
+        if(true){
+                $form['#groups']['group_course_lehet']->format_type = 'div';
+                $form['#groups']['group_course_lehet']->format_settings['instance_settings']['classes'] = "hidden";
+                $form['#groups']['group_course_lehet']->format_settings['instance_settings']['element'] = 'div';
+
+                $form['#groups']['group_course_lehet']->format_settings['label'] = 'Hanswurst'; // LeHet (disabled in section_courses_form_alter)
+
+            }
+        }
     
   }
 
