@@ -33,6 +33,8 @@
         // search callback
         var search = function (e) {
           var pattern = search_input.val();
+          //erlaube wort- statt textbasierter Suche
+          pattern = pattern.replace(' ','.*');
           if (pattern === lastPattern) {
             return;
           }
