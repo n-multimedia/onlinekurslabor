@@ -7377,20 +7377,16 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $display->content['new-d9b72f36-2b7e-46e0-bacf-00cc5c23ac5c'] = $pane;
   $display->panels['center'][1] = 'new-d9b72f36-2b7e-46e0-bacf-00cc5c23ac5c';
   $pane = new stdClass();
-  $pane->pid = 'new-d445add9-630c-48d1-b4e6-375b2d616005';
+  $pane->pid = 'new-7e1fe81a-ef66-4ce9-aeba-11cf8ae19a6f';
   $pane->panel = 'navigation';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_text_outline';
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'admin_title' => '',
-    'title' => '',
-    'body' => '<?php
-return section_courses_text_outline();
-?>',
-    'format' => 'php_code',
-    'substitute' => 0,
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -7400,9 +7396,9 @@ return section_courses_text_outline();
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
-  $pane->uuid = 'd445add9-630c-48d1-b4e6-375b2d616005';
-  $display->content['new-d445add9-630c-48d1-b4e6-375b2d616005'] = $pane;
-  $display->panels['navigation'][0] = 'new-d445add9-630c-48d1-b4e6-375b2d616005';
+  $pane->uuid = '7e1fe81a-ef66-4ce9-aeba-11cf8ae19a6f';
+  $display->content['new-7e1fe81a-ef66-4ce9-aeba-11cf8ae19a6f'] = $pane;
+  $display->panels['navigation'][0] = 'new-7e1fe81a-ef66-4ce9-aeba-11cf8ae19a6f';
   $pane = new stdClass();
   $pane->pid = 'new-34bfc27b-c755-4677-a814-91555cdd9e92';
   $pane->panel = 'navigation';

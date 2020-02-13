@@ -794,6 +794,11 @@ function _section_courses_text_outline_add_active_path(&$subtree_pointer) {
   _section_courses_book_add_active_path($subtree_pointer, $active_mlid, $parents);
 }
 
+/**
+ * FAST das gleiche wie section_content_text_outline
+ * leider gibts ein paar Fallstricke und der Doppelcode bleibt bestehen... 
+ * @return type
+ */
 function section_courses_text_outline() {
 
   $active_course = _section_courses_get_active_course();

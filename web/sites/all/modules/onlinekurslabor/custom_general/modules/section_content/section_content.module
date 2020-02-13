@@ -21,6 +21,9 @@ function section_content_block_info() {
   $blocks['content_node_revisions'] = array(
     'info' => t('Content - Node Revisions'),
   );
+   $blocks['content_text_outline'] = array(
+    'info' => t('Content - Text Outline'),
+  );
 
   return $blocks;
 }
@@ -41,6 +44,11 @@ function section_content_block_view($delta = '') {
     case 'content_node_revisions' :
       $block['content'] = _section_content_theme_node_revisions();
       break;
+    case 'content_text_outline' :
+      $block['subject'] = t('Table of contents');
+      $block['content'] = _section_content_block_text_outline();
+      break;
+
   }
 
 
