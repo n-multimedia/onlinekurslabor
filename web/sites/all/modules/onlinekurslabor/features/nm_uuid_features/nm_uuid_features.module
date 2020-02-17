@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * @file
+ * Code for the nm_uuid_features feature.
+ */
+
+include_once 'nm_uuid_features.features.inc';
 /**
  * @file
  * Drupal needs this blank file.
