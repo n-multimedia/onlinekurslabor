@@ -300,7 +300,7 @@ function _support_form_popup_render_suffix() {//die 3 divs, die am anfang aufgeh
  * @return HTML-code for the Button
  */
 function _support_form_render_support_button($label) {
-  return '<button type="button"  class="btn btn-warning btn-lg hidden-xs" id="support_form_btn" href="#supportModal" data-toggle="modal">' . $label . '</a>';
+  return '<button type="button"  class="btn btn-warning btn-lg hidden-xs" id="support_form_btn" href="#supportModal" data-toggle="modal">' . $label . '</button>';
 }
 
 /**
