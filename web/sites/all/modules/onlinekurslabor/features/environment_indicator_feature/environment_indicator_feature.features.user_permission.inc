@@ -57,6 +57,16 @@ function environment_indicator_feature_user_default_permissions() {
     'module' => 'environment_indicator',
   );
 
+  // Exported permission: 'access environment indicator test_environment'.
+  $permissions['access environment indicator test_environment'] = array(
+    'name' => 'access environment indicator test_environment',
+    'roles' => array(
+      'anonymous user' => 'anonymous user',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'environment_indicator',
+  );
+
   // Exported permission: 'administer environment indicator settings'.
   $permissions['administer environment indicator settings'] = array(
     'name' => 'administer environment indicator settings',

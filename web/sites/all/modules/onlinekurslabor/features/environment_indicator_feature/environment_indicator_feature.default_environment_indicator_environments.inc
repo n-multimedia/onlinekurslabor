@@ -41,5 +41,20 @@ function environment_indicator_feature_default_environment_indicator_environment
   );
   $export['live_environment'] = $environment;
 
+  $environment = new stdClass();
+  $environment->disabled = FALSE; /* Edit this to true to make a default environment disabled initially */
+  $environment->api_version = 1;
+  $environment->machine = 'test_environment';
+  $environment->name = 'test environment';
+  $environment->regexurl = '.*test.*';
+  $environment->settings = array(
+    'color' => '#A5073E',
+    'text_color' => '#ffffff',
+    'weight' => '4',
+    'position' => 'top',
+    'fixed' => 1,
+  );
+  $export['test_environment'] = $environment;
+
   return $export;
 }
