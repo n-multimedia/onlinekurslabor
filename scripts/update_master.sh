@@ -26,6 +26,8 @@ drush en environment_indicator environment_indicator_feature --y
 drush pm-disable dev_live_warner --y
 drush pm-uninstall dev_live_warner --y
 
+drush en lehet_ouzo --yes
+
 
 drush cc all
 

@@ -33,8 +33,6 @@
         // search callback
         var search = function (e) {
           var pattern = search_input.val();
-          //erlaube wort- statt textbasierter Suche
-          pattern = pattern.replace(' ','.*');
           if (pattern === lastPattern) {
             return;
           }
@@ -45,7 +43,11 @@
             tree.clearSearch();
             tree.expandNode(0);
           } else {
-            tree.search(pattern);
+           /*direction-independent searchpattern */
+           var pattern_no_direction = Drupal.behaviors.section_content_outline.convertInputToDirectionIndependentPattern(pattern);
+           //!!!!todo if no success then errormessage!
+           
+           tree.search(pattern_no_direction);
             // get all root nodes: node 0 who is assumed to be
             //   a root node, and all siblings of node 0.
             var roots = tree.getSiblings(0);
@@ -53,7 +55,7 @@
             //first collect all nodes to disable, then call disable once.
             //  Calling disable on each of them directly is extremely slow!
             var unrelated = collectUnrelated(roots);
-            tree.disableNode(unrelated, {silent: true});
+            tree.disableNode(unrelated, {silent: true});  return;
           }
         };
 
@@ -78,6 +80,7 @@
           });
           return unrelated;
         }
+        
 
 
         /**
@@ -145,6 +148,45 @@
         //outline_tree.treeview('collapseAll');
       });
 
+
+    }
+    ,
+    /**
+     * convertiert aus einem suchstring ein einfaches reihenfolgeunabhängiges pattern 
+     * aus 
+     *       1 2 3 wird
+     *       1|2|3 1|2|3 1|2|3 
+     * @param {type} inputstring
+     * @returns {String}
+     */
+     convertInputToDirectionIndependentPattern: function (inputstring)
+    {
+        inputstring = inputstring.trim();
+        //erlaube wort- statt textbasierter Suche
+        var split_pattern = inputstring.split(" ");
+
+        var single_search_term = "(";
+
+        for (let i = 0; i < split_pattern.length; i++) {
+            split_pattern[i] = split_pattern[i].trim();
+            if (i < split_pattern.length - 1)
+            {
+                single_search_term += split_pattern[i] + '|';
+            } else
+            {
+                single_search_term += split_pattern[i] + ')';
+            }
+        }
+        var pattern_no_direction = "";
+        for (let i = 0; i < split_pattern.length; i++) {
+            pattern_no_direction += single_search_term;
+            if (i < split_pattern.length - 1)
+            {
+                pattern_no_direction += '.*'
+            }
+        }
+        console.debug(pattern_no_direction);
+        return(pattern_no_direction);
 
     }
   };

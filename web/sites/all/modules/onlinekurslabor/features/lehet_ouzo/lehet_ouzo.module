@@ -1,0 +1,89 @@
+<?php
+
+/**
+ * @file
+ * Code for the lehet_ouzo feature.
+ */
+
+include_once 'lehet_ouzo.features.inc';
+
+/**
+ * FEATURE AND MODULE IN THIS FEATURE
+ */
+
+/**
+ * implements hook_block_view_alter
+ * changes "inhaltsverzeichnis" in lehrtext
+ * @param type $data
+ * @param type $block
+ */
+function lehet_ouzo_block_view_alter(&$data, $block) {
+
+    if ($block->module == 'section_content' && $block->delta == 'content_text_outline') {
+        $active_domain_nid = _section_content_get_active_domain() ? _section_content_get_active_domain()->nid : _section_courses_course_get_domain_id(_section_courses_get_active_course());
+
+      
+        //add the modal. "Wählen"-Button added via JS
+        if (_custom_general_outline_retraction_enabled($active_domain_nid)) {
+            $data['content'] = 
+            array(
+             '#markup' => _lehet_ouzo_get_rendered_modal() . $data['content'],
+              '#attached' => array(
+                           'js' => array(drupal_get_path('module', 'lehet_ouzo') . '/assets/js/lehet_ouzo.js')
+                            )
+            );
+        }
+    }
+}
+
+function _lehet_ouzo_get_rendered_modal() {
+    //3 divs auf - THE HEADER
+    $content = '
+      <div class="modal fade" id="lehet_ouzo_popup" role="dialog">
+      <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">LeHet-Schlagwörter</h4>
+        </div>';
+
+    // THE CONTENT
+    $content .= '<div class="modal-body">';
+    $content .='<form id="lehet-ouzo-filter">';
+    $content .= _lehet_ouzo_get_rendered_taxonomy_list();
+    $content .= '<input type="submit" id="lehet-ouzo-filter-submit" value="Filtern"></input>'; //data-dismiss="modal" 
+    $content .='</form>';
+    $content .= '</div>';
+   
+
+    //THE FOOTER
+    //3 divs zu
+    $content .= '</div>
+    </div></div>';
+
+    return $content;
+}
+
+function _lehet_ouzo_get_rendered_taxonomy_list() {
+    #$view = views_get_view('courses_lehet_kursfilter');
+        $view = views_get_view('lehet_sonderbar_taxonomy');
+    
+    if (!is_object($view)) {
+        return "ERROR: VIEW lehet_sonderbar_taxonomy not found!";
+    }
+    //ausfuehren des views
+    $view->execute(null);
+    $rendered_view = $view->render();
+   
+    
+    //regex_tax_terms
+    //suche nach "a"s mit ziel lehet-../name und greppe den begriff raus
+    $regex_a = '/(?:<a href="\/lehet[\w\W]*">)([\w\W]*)(?:<\/a>)/mXU';
+    //ersetze nun "a" durch <label><checkbox>Begriff
+    $view_with_checkboxes  = preg_replace($regex_a, '<label><input type="checkbox" name="lehet_ouzo[]" value="$1"> $1</label>', $rendered_view);
+  #  dpm($view_with_checkboxes );
+    return $view_with_checkboxes ; 
+     
+}
