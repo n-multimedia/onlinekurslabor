@@ -6,12 +6,12 @@
         /*toggle solution for qaa questions*/
         attach: function (context, settings) {
             var outline_tree = $('.panels-flexible-column-first ul.menu').first();
-            var search_input = $("#countent-outline-search");
+            var search_wrapper = $("#outline-search-element");
             //$(".panels-flexible-column-first ul.menu").treemenu();
-            search_input.once('lehet_ouzo', function () {
+            search_wrapper.once('lehet_ouzo', function () {
+ 
 
-
-                var lehet_ouzo_button = search_input.after('<a id="lehet_ouzo_open" href="#lehet_ouzo_popup" data-toggle="modal">LeHet-Schlagwörter wählen</a><hr>');
+               search_wrapper.after('<a id="lehet_ouzo_open" href="#lehet_ouzo_popup" data-toggle="modal">LeHet-Schlagwörter wählen</a><hr>');
 
 
                 /*Submit-Aktion für Lehet-Kategorien-Form*/

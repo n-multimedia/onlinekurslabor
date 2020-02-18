@@ -83,7 +83,9 @@ function _lehet_ouzo_get_rendered_taxonomy_list() {
     $regex_a = '/(?:<a href="\/lehet[\w\W]*">)([\w\W]*)(?:<\/a>)/mXU';
     //ersetze nun "a" durch <label><checkbox>Begriff
     $view_with_checkboxes  = preg_replace($regex_a, '<label><input type="checkbox" name="lehet_ouzo[]" value="$1"> $1</label>', $rendered_view);
+    
+    $view_with_other_hs = preg_replace('/h3/', 'h5', $view_with_checkboxes);
   #  dpm($view_with_checkboxes );
-    return $view_with_checkboxes ; 
+    return $view_with_other_hs ; 
      
 }
