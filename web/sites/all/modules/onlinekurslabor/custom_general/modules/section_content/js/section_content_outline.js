@@ -19,7 +19,7 @@
         var tree = section_content_parse_tree(outline_tree);
 
         //search input dom
-        var content_search = outline_tree.before('<input id="countent-outline-search" type="text" placeholder="' + Drupal.t("Search outline...") + '">');
+        var content_search = outline_tree.before('<div id="outline-search-element"><input id="countent-outline-search" class="outline-search-element" type="text" placeholder="' + Drupal.t("Search outline...") + '">&nbsp;<span class="no-result-badge glyphicon glyphicon-exclamation-sign" title="Kein Ergebnis" ></span></div>');
         var search_input = $("#countent-outline-search");
 
         var expand_all = outline_tree.before('<a href="#" id="content-outline-expand-all">' + Drupal.t("Expand all") + '</a>');
@@ -45,8 +45,6 @@
           } else {
            /*direction-independent searchpattern */
            var pattern_no_direction = Drupal.behaviors.section_content_outline.convertInputToDirectionIndependentPattern(pattern);
-           //!!!!todo if no success then errormessage!
-           
            tree.search(pattern_no_direction);
             // get all root nodes: node 0 who is assumed to be
             //   a root node, and all siblings of node 0.
@@ -55,6 +53,11 @@
             //first collect all nodes to disable, then call disable once.
             //  Calling disable on each of them directly is extremely slow!
             var unrelated = collectUnrelated(roots);
+            var all_node_count = recurisvelyCountNodes(roots);
+            if(unrelated.length == all_node_count)
+            {
+                $("#outline-search-element").addClass("no-result");
+            }
             tree.disableNode(unrelated, {silent: true});  return;
           }
         };
@@ -63,6 +66,7 @@
         function reset(tree) {
           tree.collapseAll();
           tree.enableAll();
+          $("#outline-search-element").removeClass("no-result");
         }
 
         // find all nodes that are not related to search and should be disabled:
@@ -81,6 +85,25 @@
           return unrelated;
         }
         
+        /**
+         * counts all nodes in a tree
+         * @param {type} nodes
+         * @returns {Number}
+         */
+        function recurisvelyCountNodes(nodes) {
+             
+          var counter = 0;
+          $.each(nodes, function (i, n) {
+             counter++; 
+ 
+            if (n.nodes) { // recurse for non-result children
+              counter +=  recurisvelyCountNodes
+            (n.nodes);
+            }
+          });
+          return counter;
+       
+        }
 
 
         /**
@@ -185,7 +208,7 @@
                 pattern_no_direction += '.*'
             }
         }
-        console.debug(pattern_no_direction);
+        
         return(pattern_no_direction);
 
     }
