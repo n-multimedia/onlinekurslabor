@@ -307,9 +307,7 @@ function nm_stream_poll_update_access($nid) {
   else {
     return TRUE;
   }
-
 }
-
 
 /**
  * get node updates
@@ -870,6 +868,7 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
     //consider adapting for in add callback too!
     $body = _nm_stream_filter_xss($_REQUEST['body']) ;
     $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
+    $sticky = isset($_REQUEST['sticky']) ? check_plain($_REQUEST['sticky']) : '';
 
     //prevent csrf attacks
     //@todo CSRF-Checks in einzelne Funktion auslagern & nicht 10x im Code
@@ -888,7 +887,12 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
     else {
       //set new values
       $node->body[LANGUAGE_NONE][0]['value'] = $body;
-      $node->field_nm_privacy [LANGUAGE_NONE][0]['value'] = $privacy;
+      $node->field_nm_privacy[LANGUAGE_NONE][0]['value'] = $privacy;
+
+      // check if user may set sticky option
+      if(og_node_access($node, 'nm_stream_sticky')) {
+        $node->sticky = $sticky;
+      }
 
       //file attachments
       if (!isset($node->field_nm_attachments[LANGUAGE_NONE])) {
@@ -2467,10 +2471,6 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   // CORS Setting to allow localhost accessing the API
   nm_stream_api_v2_set_localhost_headers();
 
-  // todo faking group url
-  // $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347";
-  // $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/";
-
   $environment = nm_stream_get_environment();
   $context = $environment["context"];
   $container = $environment["container"];
@@ -2501,13 +2501,19 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
     ];
   }
 
+  // check set sticky permission
+  $perm_create_sticky_post = FALSE;
+  if (!empty($container->nid) && og_node_access($container, 'update', $account) == NODE_ACCESS_ALLOW) {
+    $perm_create_sticky_post = TRUE;
+  }
+
   $data = [];
   $data['stream'] = [];
-  $data['stream']['containerNID'] = (!empty($container->nid)? $container->nid : false);
-  $data['stream']['contextNID'] = (!empty($context->nid)? $context->nid : false);
+  $data['stream']['containerNID'] = (!empty($container->nid) ? $container->nid : false);
+  $data['stream']['contextNID'] = (!empty($context->nid) ? $context->nid : false);
   $data['stream']['privacyDefault'] = $privacy_key_default;
   $data['stream']['permissions'] = [];
-  $data['stream']['permissions'][] = ["canCreatePost" => TRUE];
+  $data['stream']['permissions'] = ["canCreatePost" => TRUE, 'canCreateStickyPost' => $perm_create_sticky_post];
   $data['stream']['loggedInUser'] = $account->uid;
   $data['stream']['privacyOptions'] = $privacy_options;
   $data['stream']['privacyOptionsAll'] = $privacy_options_all;
@@ -2617,7 +2623,7 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
   $account = clone $user;
 
   // todo faking group url
-  //$_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347";
+  $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347";
   //$_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/";
 
   $types = nm_stream_get_stream_content_types();
@@ -2634,7 +2640,8 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
     //->condition('n.nid', $top_node->nid, '>')
     ->condition('n.type', $types, 'IN')
     ->condition('n.status', NODE_PUBLISHED)
-    ->orderBy("n.created", "DESC")//order important!
+    ->orderBy("n.sticky", "DESC") //respect sticky posts
+    ->orderBy("n.created", "DESC") // order important!
     ->range($offset, $limit)
     ->addTag('node_access');
 
@@ -2827,6 +2834,7 @@ function nm_stream_api_v2_get_posts_json_data($account, $node) {
 
   $node_data['created'] = date(DATE_FORMAT_ISO, $node->created);
   $node_data['updated'] = date(DATE_FORMAT_ISO, (!empty($node->updated)? $node->updated : 0));
+  $node_data['sticky'] = $node->sticky;
   $node_data['privacy'] = [];
   $node_data['privacy']['privacyDefault'] = $node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
   $node_data['privacy']['privacyOptions'] = $privacy_options;
@@ -2835,6 +2843,7 @@ function nm_stream_api_v2_get_posts_json_data($account, $node) {
   $node_data['permissions']['canCreateComment'] = node_access('view', $node, $account);
   $node_data['permissions']['canEdit'] = node_access('update', $node, $account);;
   $node_data['permissions']['canDelete'] = node_access('delete', $node, $account);;
+  $node_data['permissions']['canSetSticky'] = og_node_access($node_container, 'update', $account) == NODE_ACCESS_ALLOW;
 
   $node_data['context'] = [];
   $node_data['context']['nid'] = $node_context->nid;
@@ -3072,15 +3081,20 @@ function nm_stream_api_v2_node_add_callback($token = NULL) {
 
   if (is_array($node_data)) {
 
-    //consider adapting for in add callback too!
-    $body = _nm_stream_filter_xss($node_data['body']);
-    $body = $node_data['body'];
-    $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
     $containerNID = _nm_stream_filter_xss($node_data['containerNID']);
     $contextNID = _nm_stream_filter_xss($node_data['contextNID']);
 
+    // consider adapting for in add callback too!
+    $body = _nm_stream_filter_xss($node_data['body']);
+    // $body = $node_data['body'];
+    $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
 
-    if (!is_numeric($privacy) || empty($body)) {
+    // check set sticky permission
+    if (og_user_access('node', $containerNID, 'nm_stream_sticky', $account)) {
+      $sticky = isset($node_data['sticky']) ? check_plain($node_data['sticky']) : '';
+    }
+
+    if (!is_numeric($privacy) || !is_numeric($sticky) || empty($body)) {
       // $response['status'] = 0;
       // $response['error'] = 'Invalid data has been transmitted.';
       return drupal_access_denied();
@@ -3090,6 +3104,7 @@ function nm_stream_api_v2_node_add_callback($token = NULL) {
       $node = new stdClass();
       $node->title = time();
       $node->type = 'nm_stream';
+      $node->sticky = $sticky;
       //$node->body[LANGUAGE_NONE][0]['value'] = $body;
       $node->body = array(
         LANGUAGE_NONE => array(
@@ -3195,6 +3210,7 @@ function nm_stream_api_v2_node_update_callback($node, $token = NULL) {
     //$body = _nm_stream_filter_xss($node_data['body']);
     $body = $node_data['body'];
     $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
+    $sticky = isset($node_data['sticky']) ? check_plain($node_data['sticky']) : '';
 
     //prevent csrf attacks
     if (!drupal_valid_token($token)) {
@@ -3213,6 +3229,7 @@ function nm_stream_api_v2_node_update_callback($node, $token = NULL) {
       //set new values
       $node->body[LANGUAGE_NONE][0]['value'] = $body;
       $node->field_nm_privacy[LANGUAGE_NONE][0]['value'] = $privacy;
+      $node->sticky = $sticky;
 
       $node->changed = REQUEST_TIME;
 
@@ -3399,11 +3416,14 @@ function nm_stream_api_v2_comment_delete_callback($comment, $token = NULL) {
 function nm_stream_api_v2_set_localhost_headers() {
   //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
 
-    RETURN; #NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
+  RETURN; #NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
 
   //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
   drupal_add_http_header('Access-Control-Allow-Credentials', 'true');
   drupal_add_http_header('Access-Control-Allow-Origin', 'http://localhost:8080');
   drupal_add_http_header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
   drupal_add_http_header('Access-Control-Allow-Headers', 'x-requested-with, Content-Type, origin, authorization, accept, client-security-token');
+
+  // todo faking group url
+  $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347";
 }
