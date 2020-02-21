@@ -2623,8 +2623,8 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
   $account = clone $user;
 
   // todo faking group url
-  $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347";
-  //$_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/";
+  // $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347";
+  // $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/";
 
   $types = nm_stream_get_stream_content_types();
 
@@ -3414,9 +3414,9 @@ function nm_stream_api_v2_comment_delete_callback($comment, $token = NULL) {
  *
  */
 function nm_stream_api_v2_set_localhost_headers() {
-  //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
+  // NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
 
-  RETURN; #NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
+  // RETURN; #NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
 
   //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
   drupal_add_http_header('Access-Control-Allow-Credentials', 'true');
