@@ -350,9 +350,19 @@ function custom_general_form_alter(&$form, &$form_state, $form_id) {
         $form['og_domain_ref'][LANGUAGE_NONE]['#after_build'][] = '_custom_general_collapse_og_ref_field';
     }
 
-    // inaccessbible for non-admins
+    //zuweisen zu buch: inaccessbible for non-admins
   if (!in_array('administrator', array_values($user->roles))) {
     $form['#group_children']['biblio_fieldset']['#access'] = FALSE;
+  }
+
+  /** logo / by ML an prominenten stellen */
+  if(in_array($form_id, array('user_login', 'user_pass')))
+  {   $path_logo_lq = theme_get_setting('logo', 'bootstrap_onlinekurslabor');
+      $html_logo_lq = '<img src="'. str_replace('header.svg', 'header-black.svg', $path_logo_lq).'" alt="">';
+      $help_str = 'Probleme beim Login? <a href="https://ml.phil.uni-augsburg.de/kontakt/" target="_blank">Wir helfen</a>';
+     // $about_str = 'Eine Initiave des <a href="https://ml.phil.uni-augsburg.de/">Medienlabors</a>';
+      $ml_string = '<div class="row"><div class="col-md-9 col-xs-3"></div><div class="col-md-3 col-xs-9">'.$help_str.'<br>'.$html_logo_lq.'</div></div>';
+        $form['#suffix'] = $ml_string;
   }
 
 
