@@ -2952,6 +2952,7 @@ function nm_stream_node_get_poll_json($node) {
   $user_vote = votingapi_select_votes($criteria += $user_criteria);
 
   $show_results = FALSE;
+  $final_results = FALSE;
 
   // get poll values
   foreach ($poll->answers as $answer) {
@@ -2967,7 +2968,19 @@ function nm_stream_node_get_poll_json($node) {
     }
   }
 
+  // check end date
+  if(!empty($poll->endDate)) {
+    $endDate = strtotime($poll->endDate);
+    // check if poll is closed
+    if(time() > $endDate) {
+      $final_results = TRUE;
+    }
+  }
+
   $poll->showResults = $show_results;
+  $poll->finalResults = $final_results;
+
+
 
   return $poll;
 }
@@ -3271,24 +3284,36 @@ function nm_stream_api_v2_node_poll_add_vote_callback($node, $token = NULL) {
 
   $vote_data = json_decode(file_get_contents('php://input'), true);
 
-  // Get the unique identifier for the user (IP Address if anonymous).
-  $user_criteria = votingapi_current_user_identifier();
+  $response = [];
 
-  // Get the user's current vote.
-  $criteria = array('entity_type' => $entity_type, 'entity_id' => $nid) + $user_criteria;
+  //check poll state
+  $poll = nm_stream_node_get_poll_json($node);
 
-  foreach ($vote_data as $vote) {
-    $vote_data = $criteria + array('value' => $vote['value']);
-    votingapi_set_votes($vote_data, []);
+  if($poll->finalResults) {
+    // poll closed
+    $response['status'] = 0;
+    $response['poll'] = nm_stream_node_get_poll_json($node);
+  }else {
+    //save vote
+
+    // Get the unique identifier for the user (IP Address if anonymous).
+    $user_criteria = votingapi_current_user_identifier();
+
+    // Get the user's current vote.
+    $criteria = array('entity_type' => $entity_type, 'entity_id' => $nid) + $user_criteria;
+
+    foreach ($vote_data as $vote) {
+      $vote_data = $criteria + array('value' => $vote['value']);
+      votingapi_set_votes($vote_data, []);
+    }
+
+    // Moving the calculationg after saving/deleting the vote but before getting the votes.
+    votingapi_recalculate_results($entity_type, $nid);
+
+    $response['status'] = 1;
+    $response['poll'] = nm_stream_node_get_poll_json($node);
+
   }
-
-
-  // Moving the calculationg after saving/deleting the vote but before getting the votes.
-  votingapi_recalculate_results($entity_type, $nid);
-
-  $response['status'] = 1;
-  $response['poll'] = nm_stream_node_get_poll_json($node);
-
 
   return drupal_json_output($response);
 }
@@ -3347,6 +3372,9 @@ function nm_stream_api_v2_node_update_callback($node, $token = NULL) {
     $body = $node_data['body'];
     $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
     $sticky = isset($node_data['sticky']) ? check_plain($node_data['sticky']) : '';
+    // poll
+    $poll = $node_data['poll'];
+
 
     //prevent csrf attacks
     if (!drupal_valid_token($token)) {
@@ -3365,7 +3393,6 @@ function nm_stream_api_v2_node_update_callback($node, $token = NULL) {
       //set new values
       $node->body[LANGUAGE_NONE][0]['value'] = $body;
       $node->field_nm_privacy[LANGUAGE_NONE][0]['value'] = $privacy;
-      $node->sticky = $sticky;
 
       $node->changed = REQUEST_TIME;
 
@@ -3373,6 +3400,19 @@ function nm_stream_api_v2_node_update_callback($node, $token = NULL) {
       /*if (!isset($node->field_nm_attachments[LANGUAGE_NONE])) {
         $node->field_nm_attachments[LANGUAGE_NONE] = [];
       }*/
+
+      // Plugins
+      // sticky
+      $node->sticky = $sticky;
+
+      //poll
+      // important - delete existing votes poll has been deleted
+      if (empty($poll)) {
+        $criteria = array('entity_id' => $node->nid);
+        $votes = votingapi_select_votes($criteria);
+        votingapi_delete_votes($votes);
+      }
+      $node->field_nm_poll[LANGUAGE_NONE][0]['value'] = !empty($poll) ? json_encode($poll) : '';
 
       node_save($node);
 
