@@ -131,10 +131,35 @@
   margin-top: 15px;
 }
 
-
+#stream .stream-post .post-sticky {
+  bottom: 10px;
+}
 
 #stream .dz-error .dz-error-message {
   opacity: 1 !important;
   display: block;
   top: -5%;
+}
+
+
+#stream .custom-control.custom-checkbox {
+  margin: 2rem 0 !important;
+}
+
+#stream .custom-control .custom-control-label {
+  padding-left: 5px;
+}
+
+#stream .custom-control .custom-control-label::after,
+#stream .custom-control .custom-control-label::before {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+#stream .poll-actions {
+  margin-top: 2rem;
+}
+
+#stream .stream-post h4 {
+  font-weight: bold;
 }
