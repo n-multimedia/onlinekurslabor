@@ -2551,20 +2551,22 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
  */
 function nm_stream_api_v2_render_stream($container) {
 
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/manifest.js", [
+  $version = "";
+
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/manifest.js" . $version, [
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/vendor.js", [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/vendor.js" . $version, [
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.js", [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.js" . $version, [
     'scope' => 'footer',
     'weight' => 5,
   ]);
 
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.css', [
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.css' . $version, [
     'scope' => 'footer',
     'weight' => 5,
   ]);
@@ -3188,6 +3190,7 @@ function nm_stream_api_v2_node_add_callback($token = NULL) {
     // poll
     $poll = $node_data['poll'];
 
+    $sticky = 0;
     // check set sticky permission
     if (og_user_access('node', $containerNID, 'nm_stream_sticky', $account)) {
       $sticky = isset($node_data['sticky']) ? check_plain($node_data['sticky']) : '';
@@ -3215,7 +3218,7 @@ function nm_stream_api_v2_node_add_callback($token = NULL) {
       );
 
       //$node->field_nm_poll[LANGUAGE_NONE][0]['value'] = $poll;
-      $node->field_nm_poll[LANGUAGE_NONE][0]['value'] = json_encode($poll);
+      $node->field_nm_poll[LANGUAGE_NONE][0]['value'] = !empty($poll) ? json_encode($poll) : '';
       $node->field_nm_privacy[LANGUAGE_NONE][0]['value'] = $privacy;
       node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
       $node->language = 'de';
@@ -3592,7 +3595,7 @@ function nm_stream_api_v2_comment_delete_callback($comment, $token = NULL) {
 function nm_stream_api_v2_set_localhost_headers() {
   // NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
 
-  // RETURN; #NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
+  RETURN; #NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
 
   //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
   drupal_add_http_header('Access-Control-Allow-Credentials', 'true');
@@ -3601,5 +3604,5 @@ function nm_stream_api_v2_set_localhost_headers() {
   drupal_add_http_header('Access-Control-Allow-Headers', 'x-requested-with, Content-Type, origin, authorization, accept, client-security-token');
 
   // todo faking group url
-  $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347";
+  $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/20817/20821";
 }
