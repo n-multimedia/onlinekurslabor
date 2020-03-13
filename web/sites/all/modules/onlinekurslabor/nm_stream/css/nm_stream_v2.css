@@ -163,3 +163,7 @@
 #stream .stream-post h4 {
   font-weight: bold;
 }
+
+#stream  .poll-container > .col-12 {
+  padding: 0;
+}
