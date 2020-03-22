@@ -271,6 +271,14 @@ function nm_stream_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['api/v2.0/nm_stream/node/%node/get/mention_members'] = array(
+    'title' => 'NM Stream - mention members Options',
+    'page callback' => 'nm_stream_api_v2_node_get_mention_members',
+    'page arguments' => array(4),
+    'access callback' => 'node_access',
+    'access arguments' => array('view', 4),
+    'type' => MENU_CALLBACK,
+  );
   /*
     //file upload
     $items['nm_stream/file_upload'] = array(
@@ -3588,6 +3596,143 @@ function nm_stream_api_v2_comment_delete_callback($comment, $token = NULL) {
   return drupal_json_output($response);
 
 }
+
+/**
+ * get next mentionalable users
+ * @param $nid
+ */
+function nm_stream_api_v2_node_get_mention_members($node_group)
+{
+  global $user;
+  $account = clone $user;
+
+  $members = custom_general_get_users_in_group($node_group->nid);
+
+  $mentionMembers = [];
+  // Loop through and load each user
+  foreach ($members AS $member_db) {
+
+    // exclude acting user from list
+    if ($member_db->uid == $account->uid) {
+      continue;
+    }
+
+    // Load the user object if necessary
+    $member = user_load($member_db->uid);
+    $profile = profile2_load_by_user($member, 'master');
+    $user_pic = "";
+    if (isset($profile->field_photo)) {
+      $user_picture_field = field_view_field('profile2', $profile, 'field_photo', 'value');
+      $user_pic_url = image_style_url('profile_nano_thumbnail', $user_picture_field['#items'][0]['uri']);
+    }
+    $realname = realname_load($member);
+
+    $member_entry = [];
+    $member_entry['avatar'] = $user_pic_url;
+    $member_entry['name'] = $member->name;
+    $member_entry['realname'] = $realname ? $realname : $member->name;
+
+    array_push($mentionMembers, $member_entry);
+  }
+
+  /*
+  //todo implement get users logic
+  $mentionMembers = [
+    [
+      'avatar' => 'https://randomuser.me/api/portraits/men/2.jpg',
+      'name' => 'sergej.naumenko.fake',
+      'realname' => 'Sergej Naumenko',
+    ],
+    [
+      'avatar' => 'https://randomuser.me/api/portraits/men/7.jpg',
+      'name' => 'berni.guybrush',
+      'realname' => 'Berni Guybrush',
+    ],
+  ];*/
+
+  $response['status'] = 1;
+  $response['mention_members'] = $mentionMembers;
+
+return drupal_json_output($response);
+
+}
+
+
+/**
+ * Implements hook_filter_info().
+ *
+ */
+function nm_stream_filter_info()
+{
+  $filters['filter_nm_stream_mention'] = array(
+    'title' => t('Mention People'),
+    'description' => t('write @username to mention users'),
+    'process callback' => '_nm_stream_filter_mention_process',
+    'tips callback' => '_nm_stream_filter_mention_tips',
+    'cache' => FALSE,
+  );
+  return $filters;
+}
+
+/**
+ *   Filter  process callback.
+ *   Content - look for @user mentions
+ * The actual filtering is performed here. The supplied text should be returned,
+ * once any necessary substitutions have taken place.
+ */
+function _nm_stream_filter_mention_process($text, $filter, $format)
+{
+
+  // @user
+  // @sergio.nachio, @sergio-nachio, @sergio_nachio @sergio_nachio
+  $regex = "/@([A-Z][\w\-]*\s[A-Z][\w\-]*)|@([\w\d]*[\.|\-|_][\w\d]*)/";
+
+  return preg_replace_callback($regex, '_nm_stream_filter_mention_replacements', $text);
+}
+
+
+/**
+ * entfernt matches auf [collapsible]elements
+ * @see _nm_stream_filter_mention_replacements
+ * @param type $matches
+ * @return string
+ */
+function _nm_stream_filter_mention_replacements($matches)
+{
+  $text = "";
+
+  if (!empty($matches)) {
+    // get last match
+    $user_name = end($matches);
+    $account = user_load_by_name($user_name);
+
+    if(!empty($account)) {
+      $text = l('@' . $user_name, 'user/' . $account->uid);
+
+      // todo mentioned notification
+
+    }else {
+      // return text, if no matching user could be found
+      $text = $matches[0];
+    }
+  }
+  return $text;
+}
+
+
+/**
+ * Filter tips callback for menton  filter.
+ *
+ * The tips callback allows filters to provide help text to users during the
+ * content editing process. Short tips are provided on the content editing
+ * screen, while long tips are provided on a separate linked page. Short tips
+ * are optional, but long tips are highly recommended.
+ */
+function _nm_stream_filter_mention_tips($filter, $format, $long = FALSE) {
+
+  return t('@username to mention users');
+}
+
 
 /**
  *
