@@ -3685,14 +3685,14 @@ function _nm_stream_filter_mention_process($text, $filter, $format)
 
   // @user
   // @sergio.nachio, @sergio-nachio, @sergio_nachio @sergio_nachio
-  $regex = "/@([A-Z][\w\-]*\s[A-Z][\w\-]*)|@([\w\d]*[\.|\-|_][\w\d]*)/";
+  $regex = "/@([A-Z][\w\-]*\s[A-Z][\w\-]*)|@([\w\d]*[\.|\-|_]?[\w\d]*)/";
 
   return preg_replace_callback($regex, '_nm_stream_filter_mention_replacements', $text);
 }
 
 
 /**
- * entfernt matches auf [collapsible]elements
+ * transforming @user mentions to links
  * @see _nm_stream_filter_mention_replacements
  * @param type $matches
  * @return string
