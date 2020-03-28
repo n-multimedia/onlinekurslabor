@@ -2959,7 +2959,7 @@ function nm_stream_node_get_poll_json($node) {
   $nid = $node->nid;
 
   $criteria = array('entity_id' => $nid);
-  $user_vote = votingapi_select_votes($criteria += $user_criteria);
+  $user_vote = votingapi_select_votes($criteria + $user_criteria);
 
   $show_results = FALSE;
   $final_results = FALSE;
@@ -3700,17 +3700,14 @@ function _nm_stream_filter_mention_process($text, $filter, $format)
 function _nm_stream_filter_mention_replacements($matches)
 {
   $text = "";
-
   if (!empty($matches)) {
     // get last match
     $user_name = end($matches);
     $account = user_load_by_name($user_name);
 
-    if(!empty($account)) {
+    if(!empty($account) && $account->uid > 0) {
       $text = l('@' . $user_name, 'user/' . $account->uid);
-
       // todo mentioned notification
-
     }else {
       // return text, if no matching user could be found
       $text = $matches[0];
