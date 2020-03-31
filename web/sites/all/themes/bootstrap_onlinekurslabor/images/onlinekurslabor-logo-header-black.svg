@@ -7,11 +7,11 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   inkscape:export-ydpi="293"
-   inkscape:export-xdpi="293"
-   inkscape:export-filename="I:\Eigene Dateien\My Dropbox\Onlinekurslabor - Kursplattform\Gestaltung\plattform design\onlinekurslabor - logo und screendesign\aktuell\mit Sub\onlinekurslabor-logo-mit-subvgl.png"
+   inkscape:export-ydpi="900"
+   inkscape:export-xdpi="900"
+   inkscape:export-filename="I:\Eigene Dateien\My Dropbox\Onlinekurslabor - Kursplattform\Gestaltung\plattform design\onlinekurslabor - logo und screendesign\aktuell\onlinekurslabor-logo-mit-sub-black.png"
    inkscape:version="1.0beta1 (fe3e306, 2019-09-17)"
-   sodipodi:docname="onlinekurslabor-logo-header-black.svg"
+   sodipodi:docname="onlinekurslabor-logo-mit-sub.svg"
    viewBox="0 0 269.66666 61"
    height="61"
    width="269.66666"
@@ -24,6 +24,8 @@
       <cc:Work
    rdf:about="">
         <dc:format>image/svg+xml</dc:format>
+
+
 
 
 
@@ -50,7 +52,11 @@
 
 
 
+
+
         <dc:title />
+
+
 
 
 
@@ -76,6 +82,8 @@
 
 
 
+
+
     </rdf:RDF>
 
 
@@ -89,7 +97,11 @@
 
 
 
+
+
   </metadata>
+
+
 
 
 
@@ -119,12 +131,16 @@
 
 
 
+
+
     <rect
    id="rect384"
    height="16.146244"
    width="6.5859685"
    y="75.354744"
    x="68.19664" />
+
+
 
 
 
@@ -156,7 +172,11 @@
 
 
 
+
+
     </clipPath>
+
+
 
 
 
@@ -182,6 +202,8 @@
 
 
 
+
+
   <sodipodi:namedview
    inkscape:guide-bbox="true"
    showguides="true"
@@ -189,9 +211,9 @@
    inkscape:window-maximized="1"
    inkscape:window-y="-8"
    inkscape:window-x="-8"
-   inkscape:cy="40.749743"
-   inkscape:cx="137.72452"
-   inkscape:zoom="2.8"
+   inkscape:cy="56.509847"
+   inkscape:cx="119.78052"
+   inkscape:zoom="2.8284271"
    showgrid="true"
    id="namedview276"
    inkscape:window-height="837"
@@ -221,10 +243,14 @@
 
 
 
+
+
     <sodipodi:guide
    id="guide390"
    orientation="1,0"
    position="230.17012,36.022555" />
+
+
 
 
 
@@ -253,10 +279,14 @@
 
 
 
+
+
     <sodipodi:guide
    id="guide399"
    orientation="0,-1"
    position="192.38847,10.308999" />
+
+
 
 
 
@@ -283,10 +313,14 @@
 
 
 
+
+
 <sodipodi:guide
    id="guide157"
    orientation="1,0"
    position="243.03572,25.821428" />
+
+
 
 
 
@@ -313,6 +347,8 @@
 
 
 
+
+
 <sodipodi:guide
    position="225.277,25.003906"
    orientation="-1,0"
@@ -320,6 +356,8 @@
    inkscape:label=""
    inkscape:locked="false"
    inkscape:color="rgb(164,0,0)" />
+
+
 
 
 
@@ -340,10 +378,14 @@
 
 
 
+
+
 <sodipodi:guide
    id="guide144"
    orientation="1,0"
    position="39.377009,42.504738" />
+
+
 
 
 
@@ -358,6 +400,8 @@
 
 
 
+
+
 <sodipodi:guide
    position="249.886,21.352"
    orientation="0,1"
@@ -368,13 +412,19 @@
 
 
 
+
+
 <inkscape:grid
    type="xygrid"
    id="grid136" />
 
 
 
+
+
 </sodipodi:namedview>
+
+
 
 
 
@@ -413,7 +463,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -439,7 +493,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -466,7 +524,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -493,12 +555,18 @@
 
 
 
+
+
         </g>
 
 
 
 
+
+
 </g>
+
+
 
 
 
@@ -517,7 +585,7 @@
    clip-path="url(#clipPath290)"
    id="g286">
         <g
-   style="display:inline;fill:#000000"
+   style="display:none;fill:#000000"
    transform="translate(32.0942,18.1484)"
    id="g292">
           <path
@@ -537,7 +605,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -555,10 +627,13 @@
    transform="translate(26.8848,17.7969)"
    id="g296">
           <path
+   sodipodi:nodetypes="ccscccscccc"
    inkscape:connector-curvature="0"
    id="path298"
-   style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
-   d="M 0,0 -0.41,0.344 C -0.387,0.371 1.9,3.112 2.351,4.199 L 2.626,4.865 2.853,4.182 C 3.32,2.765 4.943,0.898 5.374,0.564 L 5.045,0.141 C 4.625,0.467 3.237,2.035 2.568,3.459 1.8,2.156 0.084,0.1 0,0" />
+   style="display:inline;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+   d="M 0,0 -1.3379244,0.48462501 C -0.93179235,0.65928382 -0.9311932,0.71872546 0.79747048,1.783753 1.696913,2.3378984 2.3358696,3.5261764 2.4974844,4.1726328 2.5922932,4.4538829 2.6479573,4.865 2.6479573,4.865 L 2.806125,4.1585625 C 3.0369015,3.4620967 3.5157931,2.1572429 4.2587809,1.7326737 6.1152008,0.67185046 6.6421965,0.44620744 5.7197031,0.66946875 c 1.5,0.2109375 -1.8545023,-1.21636832 -1.8545023,-1.21636832 -0.42,0.326 -0.5482435,0.076 -1.2172435,1.50000004 C 2.7741174,-0.79785153 0.08532526,0.09933608 0,0" />
+
+
 
 
 
@@ -572,6 +647,8 @@
 
 
         </g>
+
+
 
 
 
@@ -637,7 +714,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -671,7 +752,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -701,11 +786,15 @@
 
 
 
+
+
         <path
    inkscape:connector-curvature="0"
    id="path326"
    style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
    d="M 53.228,19.168 H 56.29 V 7.578 h -3.062 z m 0,4.24 h 3.062 v -2.851 h -3.062 z" />
+
+
 
 
 
@@ -739,7 +828,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -773,7 +866,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -807,7 +904,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -841,7 +942,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -875,7 +980,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -909,7 +1018,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -927,6 +1040,8 @@
    id="path352"
    style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
    d="m 124.368,23.408 h 3.062 V 7.577 h -3.062 z" />
+
+
 
 
 
@@ -960,7 +1075,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -994,7 +1113,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -1028,7 +1151,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -1062,7 +1189,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -1098,7 +1229,11 @@
 
 
 
+
+
         </g>
+
+
 
 
 
@@ -1124,6 +1259,8 @@
 
 
 
+
+
 </g>
 
 
@@ -1137,7 +1274,11 @@
 
 
 
+
+
     </g>
+
+
 
 
 
@@ -1169,7 +1310,37 @@
 
 
 
-  
+
+
+  <ellipse
+   style="display:none;fill:#000000;fill-opacity:1;stroke-width:0.51661"
+   id="ellipse87"
+   cx="187.7282"
+   cy="-7.9607844"
+   transform="scale(1,-1)"
+   rx="11.602743"
+   ry="11.519452"
+   inkscape:label="dot non-extracted"
+   sodipodi:insensitive="true" />
+
+
+
+
+
+<text
+   transform="scale(1,-1)"
+   inkscape:label="alpha"
+   id="text101"
+   y="-3.039763"
+   x="180.9868"
+   style="font-weight:bold;font-size:20.1935px;line-height:10;font-family:'Myriad Pro';-inkscape-font-specification:'Myriad Pro Bold';letter-spacing:0px;word-spacing:0px;display:none;fill:#000000;stroke-width:1.06281"
+   xml:space="preserve"
+   sodipodi:insensitive="true"><tspan
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Bold';fill:#000000;stroke-width:1.06281"
+     y="0"
+     x="0"
+     id="tspan99"
+     sodipodi:role="line">α</tspan></text>
 
 
 
@@ -1203,19 +1374,23 @@
 
 
 
+
+
     <text
    inkscape:label="text-sub-line"
-   transform="scale(0.98336976,-1.0169115)"
+   transform="scale(0.97922674,-1.0212139)"
    id="text380"
-   y="3.3814478"
-   x="22.976646"
-   style="font-size:9.28012px;line-height:87.0012px;font-family:Montserrat;-inkscape-font-specification:Montserrat;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;stroke-width:0.737558;"
+   y="3.3672013"
+   x="24.330635"
+   style="font-size:9.24102px;line-height:86.6347px;font-family:Montserrat;-inkscape-font-specification:Montserrat;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;stroke-width:0.734451;"
    xml:space="preserve"><tspan
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Montserrat;-inkscape-font-specification:Montserrat;fill:#000000;stroke-width:0.737558;"
-     y="3.3814478"
-     x="22.976646"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Montserrat;-inkscape-font-specification:Montserrat;fill:#000000;stroke-width:0.734451;"
+     y="3.3672013"
+     x="24.330635"
      id="tspan378"
      sodipodi:role="line">Eine Initiative des Medienlabors</tspan></text>
+
+
 
 
 
@@ -1233,6 +1408,8 @@
 
 
   </g>
+
+
 
 
 
