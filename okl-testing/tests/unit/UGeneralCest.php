@@ -69,7 +69,7 @@ class UGeneralCest
         $regex = NM_STREAM_MENTION_REGEX;
         $result = preg_match($regex, $example['text'], $matches, PREG_OFFSET_CAPTURE);
 
-        // $I->assertEquals($result, $example['result'], 'regex match found');
+        $I->assertEquals($result, $example['result'], 'regex match found');
 
         // check if the found result is correct
         if ($example['result'] == true) {
