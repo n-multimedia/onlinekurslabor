@@ -89,7 +89,7 @@ function nm_bookchapters_rewrite_menu_link_title(&$item, $toc_num_enabled) {
 
     if (!empty($item['below'])) {
       foreach ($item['below'] as $key => $value) {
-        nm_bookchapters_rewrite_menu_link_title($item['below'][$key]);
+        nm_bookchapters_rewrite_menu_link_title($item['below'][$key], $toc_num_enabled);
       }
     }
   } else {
