@@ -21,11 +21,10 @@
   height: 35px;
 }
 
-#okl-nav-bar {
-  float: right;
-}
-
-@media (max-width: 768px) {
+/**
+kleiner iPad
+*/
+@media (max-width: 767px) {
   #okl-nav-bar {
     float: none;
   }
@@ -37,9 +36,14 @@
     top: -30px !important;
   }
 }
-
+/**
+größer gleich iPad
+*/
 @media (min-width: 768px) {
-
+    
+  #okl-nav-bar {
+    padding-top: 15px;
+  }
   #custom_general_space {
     height: 25px;
   }
@@ -82,9 +86,10 @@
     position: absolute;
     z-index: 1005;
     width: 100%;
+    min-height: 85px;
   }
   #page-header {
-    margin-top: 53px;
+    margin-top: 83px;
   }
   #page-header .collapse {
     opacity: 0;
@@ -328,7 +333,9 @@
   }
 }
 
-
+button.okl-nav-bar-btn{
+    margin-top: 20px;
+}
 button.okl-nav-bar-btn .animated-icon2 {
   width: 20px;
   height: 15px;

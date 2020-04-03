@@ -38,6 +38,7 @@ class UGeneralCest
 
     }
 
+
     /**
      * @param \UnitTester $I
      * @example { "text": "@sergio-nachio ciao", "result": true }
@@ -61,7 +62,8 @@ class UGeneralCest
      * @example { "text": "hallo @ sergio2 ciao", "result": false }
      * @example { "text": "hallo @ sergio_nachio ciao", "result": false }
      */
-    public function G001_mention_regex(UnitTester $I, \Codeception\Example $example)
+    public
+    function G001_mention_regex(UnitTester $I, \Codeception\Example $example)
     {
         $matches = [];
         $regex = NM_STREAM_MENTION_REGEX;
