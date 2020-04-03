@@ -2898,34 +2898,6 @@ function nm_stream_api_v2_get_posts_json_data($account, $node) {
 
   // poll data
   $node_data['poll'] = nm_stream_node_get_poll_json($node);
-  // get current votes
-
-  /*if ($node->nid % 2) {
-    $node_data['poll'] = [
-        'multiple' => random_int(0,1) == 1 ? true : false,
-        'question' => 'Fake Data by dev1 for test purposes?',
-        'answers' => [
-          [
-            'value' => 1,
-            'text' => 'Answer 1',
-            'votes' => 53,
-            'selected' => false
-          ],
-          [
-            'value' => 2,
-            'text' => 'Answer 5',
-            'votes' => 35,
-            'selected' => false
-          ],
-          [
-            'value' => 3,
-            'text' => 'Answer 8',
-            'votes' => 10,
-            'selected' => false
-          ],
-        ],
-      ];
-  }*/
 
   return $node_data;
 }
