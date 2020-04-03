@@ -21,6 +21,8 @@ define('NM_STREAM_API_INIT_POSTS_LIMIT', 10);
 define('NM_STREAM_ALLOWED_HTML_TAGS', serialize(array('a', 'em', 'b','u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
     'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot')));
 
+define('NM_STREAM_MENTION_REGEX', "/@([A-Z][\w\-]+\s[A-Z][\w\-]*)|@([\w\d]+[\.|\-|_]?[\w\d]*)/");
+
 
 /**
  * Implements hook_block_info().
@@ -3685,7 +3687,7 @@ function _nm_stream_filter_mention_process($text, $filter, $format)
 
   // @user
   // @sergio.nachio, @sergio-nachio, @sergio_nachio @sergio_nachio
-  $regex = "/@([A-Z][\w\-]*\s[A-Z][\w\-]*)|@([\w\d]*[\.|\-|_]?[\w\d]*)/";
+  $regex = NM_STREAM_MENTION_REGEX;
 
   return preg_replace_callback($regex, '_nm_stream_filter_mention_replacements', $text);
 }
