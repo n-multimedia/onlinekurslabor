@@ -765,6 +765,10 @@ Book Navigation
 .book-navigation .menu {
     margin-bottom: 35px;
 }
+
+.menu-node-unpublished {
+  color: #aaa;
+}
 /*
 .book-navigation .page-links a.page-previous
 {
@@ -1098,7 +1102,7 @@ PROJECTS
 /**
 fixes for BEF - bootstrap
 */
-.form-control.bef-select-as-checkboxes 
+.form-control.bef-select-as-checkboxes
 {
     height: auto;
 }
@@ -1161,4 +1165,8 @@ margin-left:0.5em;
 {
     width: 90px !important;
     padding-left: 10px !important;
+}
+
+.link-unpublished {
+  color: #aaa;
 }

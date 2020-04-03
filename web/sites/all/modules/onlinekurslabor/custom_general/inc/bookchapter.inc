@@ -74,24 +74,32 @@ function _custom_general_toc_enabled($nid) {
   return FALSE;
 }
 
-function nm_bookchapters_rewrite_menu_link_title(&$item) {
+function nm_bookchapters_rewrite_menu_link_title(&$item, $toc_num_enabled) {
 
-  $chapter_numbering = nm_bookchapters_get_chapter_numbering_recursive($item['link']['menu_name'], $item['link']['plid'], $item['link']['mlid']);
-  //wrap chapter number into label
-  $chapter_numbering = '<table><tr valign="top"><td><span class="badge">' . $chapter_numbering .  '</span></td>';
-  $title = $item['link']['link_title'];
-  //wrap title
-  $title = '<td style="padding-left:5px;">' . $title . '</td></tr></table>';
-  
-  $item['link']['localized_options']['html'] = TRUE;
-  $item['link']['link_title'] = $chapter_numbering . ' ' . $title;
-  $item['link']['title'] = $chapter_numbering . ' ' . $title;
+  if ($toc_num_enabled) {
+    $chapter_numbering = nm_bookchapters_get_chapter_numbering_recursive($item['link']['menu_name'], $item['link']['plid'], $item['link']['mlid']);
+    //wrap chapter number into label
+    $title = $item['link']['link_title'];
+    //wrap title
+    $title = _book_preprocess_title($item, $title, $chapter_numbering);
 
-  if (!empty($item['below'])) {
-    foreach ($item['below'] as $key => $value) {
-      nm_bookchapters_rewrite_menu_link_title($item['below'][$key]);
+    $item['link']['localized_options']['html'] = TRUE;
+    $item['link']['link_title'] = $title;
+    $item['link']['title'] = $item['link']['link_title'];
+
+    if (!empty($item['below'])) {
+      foreach ($item['below'] as $key => $value) {
+        nm_bookchapters_rewrite_menu_link_title($item['below'][$key], $toc_num_enabled);
+      }
     }
+  } else {
+    $title = $item['link']['link_title'];
+    //wrap title
+    $title = _book_preprocess_title($item, $title);
+    $item['link']['title'] = $title;
+    $item['link']['localized_options']['html'] = TRUE;
   }
+
 }
 
 function nm_bookchapters_get_chapter_numbering($nid) {

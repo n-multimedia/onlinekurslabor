@@ -1,3 +1,12 @@
+.panels-flexible-column-first ul.menu {
+  display: none;
+}
+
+.panels-flexible-column-first ul.menu.treeview {
+  display: block;
+}
+
+
 .panels-flexible-column-first .treeview .node-disabled {
     display: none;
 }
@@ -64,7 +73,7 @@
     display: inline-block;
     width: 97%;
 }
- 
+
 
 #outline-search-element #countent-outline-search {
     width: 100%;

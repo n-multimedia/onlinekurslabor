@@ -38,4 +38,36 @@ class UGeneralCest
 
     }
 
+    /**
+     * @param \UnitTester $I
+     * @example { "text": "@sergio-nachio ciao", "result": true }
+     * @example { "text": "@sergio-nachio2 ciao", "result": true }
+     * @example { "text": "hallo @sergio_nachio ciao", "result": true }
+     * @example { "text": "hallo @sergio_nachio2 ciao", "result": true }
+     * @example { "text": "@sergio_nachio", "result": true }
+     * @example { "text": "@sergio_nachio2", "result": true }
+     * @example { "text": "@Sergio Nacho", "result": true }
+     * @example { "text": "@Sergio Nacho2", "result": true }
+     * @example { "text": "@Sergio Nacho-Macho", "result": true }
+     * @example { "text": "@Sergio Nacho-Macho2", "result": true }
+     * @example { "text": "hallo @sergio.nachio", "result": true }
+     * @example { "text": "@sergio", "result": true }
+     * @example { "text": "@sergio2", "result": true }
+     * @example { "text": "hallo @sergio", "result": true }
+     * @example { "text": "hallo @sergio2", "result": true }
+     * @example { "text": "hallo @sergio ciao", "result": true }
+     * @example { "text": "hallo @sergio2 ciao", "result": true }
+     * @example { "text": "hallo sergio2 ciao", "result": false }
+     * @example { "text": "hallo @ sergio2 ciao", "result": false }
+     * @example { "text": "hallo @ sergio_nachio ciao", "result": false }
+     */
+    public function G001_mention_regex(UnitTester $I, \Codeception\Example $example)
+    {
+        $matches = [];
+        $regex = NM_STREAM_MENTION_REGEX;
+        $result = preg_match($regex, $example['text'], $matches, PREG_OFFSET_CAPTURE);
+
+        $I->assertEquals($result, $example['result'], 'regex match found');
+    }
+    
 }
