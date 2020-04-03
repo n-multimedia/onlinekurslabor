@@ -37,6 +37,10 @@ function okl_dev_page_build(&$page) {
  */
 function _okl_dev_is_no_live_system()
 {
+    if(!module_exists('environment_indicator'))
+    {
+        return true;
+    }
     $current_environment = environment_indicator_get_active();
     return $current_environment['machine'] != 'live_environment';
 }

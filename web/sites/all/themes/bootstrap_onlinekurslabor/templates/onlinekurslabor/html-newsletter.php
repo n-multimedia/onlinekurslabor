@@ -479,7 +479,7 @@ $body =
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateHeader">
                                         <tr>
                                             <td valign="top" class="headerContent">
-                                            	<img src="http://okldev2.naumenko-multimedia.de/sites/all/themes/bootstrap_onlinekurslabor/images/onlinekurslabor-logo-header.png" style="max-width:600px; margin-left:20px;" id="headerImage" mc:label="header_image" mc:edit="header_image" mc:allowdesigner mc:allowtext />
+                                            	<img src="<?=str_replace('.svg', '.png', theme_get_setting('logo', 'bootstrap_onlinekurslabor'));?>" style="max-width:600px; margin-left:20px;" id="headerImage" mc:label="header_image" mc:edit="header_image" mc:allowdesigner mc:allowtext />
                                             </td>
                                         </tr>
                                     </table>

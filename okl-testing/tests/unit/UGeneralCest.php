@@ -69,5 +69,5 @@ class UGeneralCest
 
         $I->assertEquals($result, $example['result'], 'regex match found');
     }
-
+    
 }
