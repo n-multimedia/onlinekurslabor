@@ -176,4 +176,9 @@ DirectoryIndex index.php index.html index.htm
 <IfModule mod_headers.c>
   # Disable content sniffing, since it's an attack vector.
   Header always set X-Content-Type-Options nosniff
+
+  #Content-Security-Policy: erlaube, okl auf SUB.medienlabor-uni-augsburg.de (z.B. videokonferenz)
+  Header always set Content-Security-Policy: "frame-ancestors 'self' *.medienlabor-uni-augsburg.de;"
 </IfModule>
+
+
