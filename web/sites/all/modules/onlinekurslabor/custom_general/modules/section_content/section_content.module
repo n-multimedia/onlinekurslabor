@@ -29,6 +29,17 @@ function section_content_block_info() {
 }
 
 /**
+ * Implements hook_permission().
+ */
+function section_content_permission() {
+  return array(
+    'menu view unpublished' => array(
+      'title' => t('View menu links to unpublished but accessible content'),
+    ),
+  );
+}
+
+/**
  * Implements hook_block_view().
  */
 function section_content_block_view($delta = '') {
@@ -183,13 +194,11 @@ function section_content_menu_block_tree_alter(&$tree, &$config) {
   $node = node_load($node_id);
 
 
-
-//Only apply when top_leaf is of type 'domain'
+  //Only apply when top_leaf is of type 'domain'
   if ($node->type == NM_CONTENT_DOMAIN) {
-//TOC functionality. Numbering Chapters
-//check if numbering is enabled in domain settings
-    if (!_custom_general_toc_enabled($node->nid))
-      return;
+    //TOC functionality. Numbering Chapters
+    //check if numbering is enabled in domain settings
+    $toc_num_enabled = _custom_general_toc_enabled($node->nid);
 
     $book_menus = array();
     $result = db_query("SELECT menu_name FROM {menu_links} WHERE module = 'book' GROUP BY menu_name");
@@ -201,7 +210,7 @@ function section_content_menu_block_tree_alter(&$tree, &$config) {
       $root_index = key($tree);
       if (!empty($tree[$root_index]['below'])) {
         foreach ($tree[$root_index]['below'] as $key => $value) {
-          nm_bookchapters_rewrite_menu_link_title($tree[$root_index]['below'][$key]);
+          nm_bookchapters_rewrite_menu_link_title($tree[$root_index]['below'][$key], $toc_num_enabled);
         }
       }
     }
@@ -223,6 +232,7 @@ function book_preprocess(&$variables, $hook) {
 
     $flat = book_get_flat_menu($book_link);
 
+
     // DO THE WHOLE TREE
     if ($book_link['has_children']) {
     // Walk through the array until we find the current page.
@@ -231,14 +241,13 @@ function book_preprocess(&$variables, $hook) {
       } while ($link && ($link['mlid'] != $book_link['mlid']));
       // Continue though the array and collect the links whose parent is this page.
       while (($link = array_shift($flat)) && $link['plid'] == $book_link['mlid']) {
-        $numbering = nm_bookchapters_get_chapter_numbering_mlid($link['mlid']);
+        $chapter_numbering = nm_bookchapters_get_chapter_numbering_mlid($link['mlid']);
 
         if (!empty($numbering)) {
-          $chapter_numbering = '<table><tr valign="top"><td><span class="badge">' . $numbering . '</span></td>';
           $title = $link['title'];
           //wrap title
-          $title = '<td style="padding-left:5px;">' . $title . '</td></tr></table>';
-          $link['link_title'] = $chapter_numbering . ' ' . $title;
+          $title = _book_preprocess_title($link, $title, $chapter_numbering);
+          $link['link_title'] = $title;
           $link['title'] = $link['link_title'];
           $link['localized_options']['html'] = TRUE;
           $data['link'] = $link;
@@ -256,31 +265,65 @@ function book_preprocess(&$variables, $hook) {
     // DO PREV
     if ($variables['prev_url']) {
       $prev = book_prev($book_link);
-      $pnumbering = nm_bookchapters_get_chapter_numbering_mlid($prev['mlid']);
+      $chapter_numbering = nm_bookchapters_get_chapter_numbering_mlid($prev['mlid']);
       if (!empty($pnumbering)) {
-
-        $chapter_numbering = '<table><tr valign="top"><td><span class="badge">' . $pnumbering . '</span></td>';
         $title = $variables['prev_title'];
         //wrap title
-        $title = '<td style="padding-left:5px;">' . $title . '</td></tr></table>';
-        $variables['prev_title'] = $chapter_numbering . " " . $title;
+        $title = _book_preprocess_title($variables, $title, $chapter_numbering);
+        $variables['prev_title'] = $title;
       }
     }
 
     // DO NEXT
     if ($variables['next_url']) {
       $next = book_next($book_link);
-      $nnumbering = nm_bookchapters_get_chapter_numbering_mlid($next['mlid']);
-
+      $chapter_numbering = nm_bookchapters_get_chapter_numbering_mlid($next['mlid']);
       if (!empty($nnumbering)) {
-        $chapter_numbering = '<table><tr valign="top"><td><span class="badge">' . $nnumbering . '</span></td>';
         $title = $variables['next_title'];
         //wrap title
-        $title = '<td style="padding-left:5px;">' . $title . '</td></tr></table>';
-        $variables['next_title'] = $chapter_numbering . " " . $title;
+        $title = _book_preprocess_title($variables, $title, $chapter_numbering);
+        $variables['next_title'] = $title;
       }
     }
   }
+}
+
+/**
+ * @param $link
+ * @param $title
+ */
+function _book_preprocess_title($item, $title, $chapter_numbering = NULL) {
+  $prefix = '';
+  $suffix = '';
+  if($chapter_numbering) {
+    $prefix = '<table><tr valign="top"><td><span class="badge">' . $chapter_numbering . '</span></td>';
+    $suffix = '</tr></table>';
+  }
+
+  $link = $item['book_link']? $item['book_link'] : $item['link'];
+  // mark unpublished chapter links
+  if (preg_match('@^node/(\d+)$@', $link['link_path'], $matches)) {
+    $node = node_load((int)$matches[1]);
+    if ($node && $node->status == NODE_NOT_PUBLISHED) {
+      // There appear to be some inconsistency in that sometimes the classes come
+      // through as an array and sometimes as a string.
+      if (empty($link['options']['attributes']['class'])) {
+        $link['options']['attributes']['class'] = array();
+      } elseif (is_string($link['options']['attributes']['class'])) {
+        $link['options']['attributes']['class'] = explode(' ', $link['options']['attributes']['class']);
+      }
+      $link['options']['attributes']['class'][] = 'menu-node-unpublished';
+    }
+  }
+
+  $link_attributes = !empty($link['options']['attributes']) ? drupal_attributes($link['options']['attributes'] )  : '';
+  $title = '<span' . $link_attributes . '>' . $title . '</span>';
+
+  if($chapter_numbering) {
+    $title = '<td style="padding-left:5px;">' . $title . '</td>';
+  }
+
+  return $prefix . $title . $suffix;
 }
 
 /**
@@ -655,7 +698,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
         }
     }
 
-   
+
 
 
   return $form;
@@ -1237,8 +1280,7 @@ function section_content_text_outline() {
   $menu_name = 'book-toc-' . $domain_ref;
   $tree = menu_tree_all_data($menu_name);
 
-// And add the active trail data back to the full tree.
-//menu_tree_add_active_path($tree);
+  // And add the active trail data back to the full tree.
 
   $config = array();
   $config['title_link'] = "test";
@@ -1645,3 +1687,51 @@ function section_content_field_formatter_settings_form($field, $instance, $view_
 
   return $element;
 }
+
+
+
+/**
+ * Implements hook_query_TAG_alter().
+ *
+ * @see menu_tree_check_access()
+ *   Contains the query being altered here. This is most likely the only query
+ *   with tag node_access where the first condition is for the node.status column.
+ */
+function section_content_query_node_access_alter(QueryAlterableInterface $query)
+{
+  if (user_access('menu view unpublished')) {
+    $c = &$query->conditions();
+    // Remove the status condition if we suspect this query originates from
+    // menu_tree_check_access().
+    if (count($c) == 3 &&
+      is_string($c[0]['field']) && $c[0]['field'] == 'n.status' &&
+      is_string($c[1]['field']) && $c[1]['field'] == 'n.nid' && $c[1]['operator'] == 'IN') {
+      unset($c[0]);
+    }
+  }
+}
+
+/**
+ * Implements hook_menu_link_alter().
+ */
+/*
+function section_content_menu_link_alter(&$item)
+{
+  return;
+  // Add a class to menu links that link to unpublished nodes.
+  if (preg_match('@^node/(\d+)$@', $item['link_path'], $matches)) {
+    $node = node_load((int)$matches[1]);
+    if ($node && $node->status == NODE_NOT_PUBLISHED) {
+      // There appear to be some inconsistency in that sometimes the classes come
+      // through as an array and sometimes as a string.
+      if (empty($item['options']['attributes']['class'])) {
+        $item['options']['attributes']['class'] = array();
+      } elseif (is_string($item['options']['attributes']['class'])) {
+        $item['options']['attributes']['class'] = explode(' ', $item['options']['attributes']['class']);
+      }
+
+      $item['options']['attributes']['class'][] = 'menu-node-unpublished';
+    }
+  }
+}
+*/
