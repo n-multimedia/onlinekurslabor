@@ -266,7 +266,7 @@ function book_preprocess(&$variables, $hook) {
     if ($variables['prev_url']) {
       $prev = book_prev($book_link);
       $chapter_numbering = nm_bookchapters_get_chapter_numbering_mlid($prev['mlid']);
-      if (!empty($pnumbering)) {
+      if (!empty($chapter_numbering)) {
         $title = $variables['prev_title'];
         //wrap title
         $title = _book_preprocess_title($variables, $title, $chapter_numbering);
@@ -278,7 +278,7 @@ function book_preprocess(&$variables, $hook) {
     if ($variables['next_url']) {
       $next = book_next($book_link);
       $chapter_numbering = nm_bookchapters_get_chapter_numbering_mlid($next['mlid']);
-      if (!empty($nnumbering)) {
+      if (!empty($chapter_numbering)) {
         $title = $variables['next_title'];
         //wrap title
         $title = _book_preprocess_title($variables, $title, $chapter_numbering);
