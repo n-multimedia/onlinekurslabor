@@ -9,6 +9,7 @@ drush cc all
 
 drush en better_exposed_filters  --y
 drush en views_ef_fieldset --y
+drush en votingapi --y
 
 #revert single features
 drush fr notification_features nm_section_courses_features videosafe_features nm_section_content_features annvid_features nm_h5p_features  nm_uuid_features environment_indicator_feature nm_general_features --yes
