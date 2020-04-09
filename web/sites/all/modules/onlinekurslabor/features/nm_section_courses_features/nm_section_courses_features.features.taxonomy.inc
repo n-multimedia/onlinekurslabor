@@ -34,7 +34,7 @@ function nm_section_courses_features_taxonomy_default_vocabularies() {
       ),
     ),
     'lehet_kompetenzbereich' => array(
-      'name' => 'Lehet: Kompetenzbereich',
+      'name' => 'Lehet: Kompetenzbereich [unbenutzt]',
       'machine_name' => 'lehet_kompetenzbereich',
       'description' => 'Tax. für die Kompetenzbereiche A,B,etc',
       'hierarchy' => 0,
