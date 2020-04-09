@@ -350,16 +350,16 @@ function custom_general_form_alter(&$form, &$form_state, $form_id) {
         $form['og_domain_ref'][LANGUAGE_NONE]['#after_build'][] = '_custom_general_collapse_og_ref_field';
     }
 
-    
-    
     //noch ein warning
-    $form['book']['text_warning'] = array
-    (
-        '#prefix' => '<b><i class="glyphicon glyphicon-warning-sign"></i> ',
-        '#suffix' => '</b><hr>',
-        '#markup' => t('Beware! Change this if you are aware of consequences only!'),
-        '#weight' => -100,
-    );
+    if (!empty($form['book'])) {
+        $form['book']['text_warning'] = array
+            (
+            '#prefix' => '<b><i class="glyphicon glyphicon-warning-sign"></i> ',
+            '#suffix' => '</b><hr>',
+            '#markup' => t('Beware! Change this if you are aware of consequences only!'),
+            '#weight' => -100,
+        );
+    }
     //zuweisen zu buch: inaccessbible for non-admins
     if (!in_array('administrator', array_values($user->roles))) {
         $form['#group_children']['biblio_fieldset']['#access'] = FALSE;
