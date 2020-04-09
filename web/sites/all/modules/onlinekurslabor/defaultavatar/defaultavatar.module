@@ -73,9 +73,8 @@ function _DefaultAvatar_alterProfileWithDefaultAvatar($profile) {
     $file = null;
     $account = user_load($profile->uid);
    
- 
     //kein bild existiert ODER die picture-url entspricht dem user-default-image
-    if ( empty($profile->field_photo[LANGUAGE_NONE]) || strpos($profile->field_photo[LANGUAGE_NONE][0]['uri'],'://default_images/noprofile_default.jpg') ) {
+    if ( empty($profile->field_photo[LANGUAGE_NONE]) || (!empty($profile->field_photo[LANGUAGE_NONE][0]['uri']) && strpos($profile->field_photo[LANGUAGE_NONE][0]['uri'],'://default_images/noprofile_default.jpg')) ) {
         $localfilename = 'avatar_' . _DefaultAvatar_getUserIdentifier($account) . '.png';
         //Nutzer möchte Bild löschen (index "original": inhalt vor letzter aktion)
         //ist das bild der default-avatar, dann zwangsweise löschen verhindern
