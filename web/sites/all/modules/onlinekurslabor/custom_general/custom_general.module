@@ -360,12 +360,19 @@ function custom_general_form_alter(&$form, &$form_state, $form_id) {
             '#weight' => -100,
         );
     }
-    //zuweisen zu buch: inaccessbible for non-admins
+    
+    //entferne für < admin
     if (!in_array('administrator', array_values($user->roles))) {
-        $form['#group_children']['biblio_fieldset']['#access'] = FALSE;
-
-        //lehrtextkapitel zu buch zuweisen  
-        $form['book']['#access'] = FALSE;
+        //zuweisen zu buch: inaccessbible for non-admins
+        if(!empty($form['#group_children']['biblio_fieldset']) && is_array($form['#group_children']['biblio_fieldset']))
+        {
+             $form['#group_children']['biblio_fieldset']['#access'] = FALSE;
+        }
+       
+        if (!empty($form['book'])) {
+            //lehrtextkapitel zu buch zuweisen  
+            $form['book']['#access'] = FALSE;
+        }
     }
 
     /** logo / by ML an prominenten stellen */
