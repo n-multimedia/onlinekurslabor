@@ -2,7 +2,7 @@
 /*
  * home: meine kurse ansicht
  */
-$nid = $variables['nid'];
+$nid = !empty($variables['nid'])? $variables['nid']: false;
 if(!$nid)
 {
     $nid = $fields['nid']->raw;
