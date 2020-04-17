@@ -2948,6 +2948,10 @@ function nm_stream_api_v2_get_posts_json_data($account, $node) {
 function nm_stream_node_get_poll_json($node) {
   global $user;
 
+  if(empty($node->field_nm_poll[LANGUAGE_NONE][0]['value'])) {
+    return;
+  }
+
   $poll_serialized = $node->field_nm_poll[LANGUAGE_NONE][0]['value'];
   if(empty($poll_serialized)) {
     return json_decode('');
@@ -3198,7 +3202,7 @@ function nm_stream_api_v2_node_add_callback($token = NULL) {
     // $body = $node_data['body'];
     $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
     // poll
-    $poll = $node_data['poll'];
+    $poll = empty($node_data['poll']) ? $node_data['poll'] : NULL;
 
     $sticky = 0;
     // check set sticky permission
@@ -3708,6 +3712,7 @@ function _nm_stream_filter_mention_replacements($matches)
 
     $user_match = _nm_stream_mention_get_username_by_match($match_without_at);
 
+    return $text;
     if(!empty($user_match)) {
       $account = $user_match['account'];
       $user_name = $user_match['user_name'];
