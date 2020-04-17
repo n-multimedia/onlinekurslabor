@@ -21,7 +21,7 @@ define('NM_STREAM_API_INIT_POSTS_LIMIT', 10);
 define('NM_STREAM_ALLOWED_HTML_TAGS', serialize(array('a', 'em', 'b','u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
     'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot')));
 
-define('NM_STREAM_MENTION_REGEX', "/@([A-Z][\w\-]*(\s[A-Z][\w\-]*)+)|@([\w\d]+[\.|\-|_]?[\w\d]*)/");
+define('NM_STREAM_MENTION_REGEX', "/@([A-Z][\w\-]*(\s[A-Z][\w\-]*)*)|@([\w\d]+[\.|\-|_]?[\w\d]*)/");
 
 
 /**
@@ -3704,18 +3704,53 @@ function _nm_stream_filter_mention_replacements($matches)
   $text = "";
   if (!empty($matches)) {
     // get last match
-    $user_name = substr(current($matches)[0] , 1);
-    $account = user_load_by_name($user_name);
+    $match_without_at = substr(current($matches) , 1);
 
-    if(!empty($account) && $account->uid > 0) {
-      $text = l('@' . $user_name, 'user/' . $account->uid);
+    $user_match = _nm_stream_mention_get_username_by_match($match_without_at);
+
+    if(!empty($user_match)) {
+      $account = $user_match['account'];
+      $user_name = $user_match['user_name'];
+
+      $suffix = "";
+      if(strlen($user_name) < strlen($match_without_at)) {
+        $suffix = substr($match_without_at, strlen($user_name));
+      }
+
+      $text = l('@' . $user_name, 'user/' . $account->uid) . $suffix;
       // todo mentioned notification
     }else {
       // return text, if no matching user could be found
       $text = $matches[0];
     }
   }
+
   return $text;
+}
+
+function _nm_stream_mention_get_username_by_match($match) {
+
+  $account = user_load_by_name($match);
+  if(!empty($account) && $account->uid > 0) {
+    return ['account' => $account, 'user_name' => $match];
+  }
+
+  while($next_match = _nm_stream_mention_get_next_match_candidate($match)) {
+    $account = user_load_by_name($next_match);
+    if (!empty($account) && $account->uid > 0) {
+      return ['account' => $account, 'user_name' => $next_match];
+    }
+  }
+
+  return NULL;
+}
+
+function _nm_stream_mention_get_next_match_candidate($match) {
+  $pos_ws = strrpos($match, ' ');
+  $pos_minus = strrpos($match, '-');
+  $pos_underscore = strrpos($match, '_');
+  $pos = max($pos_ws, $pos_minus, $pos_underscore);
+  return substr($match, 0, $pos);
 }
 
 

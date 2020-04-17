@@ -51,6 +51,7 @@ class UGeneralCest
      * @example { "mention": "Sergio Nacho2", "text": "@Sergio Nacho2", "result": true }
      * @example { "mention": "Sergio Nacho-Macho", "text": "@Sergio Nacho-Macho", "result": true }
      * @example { "mention": "Sergio Nacho Macho", "text": "@Sergio Nacho Macho", "result": true }
+     * @example { "mention": "Sergio Nacho", "text": "Test @Sergio Nacho Aufgabe 1", "result": true }
      * @example { "mention": "Sergio Nacho-Macho2", "text": "@Sergio Nacho-Macho2", "result": true }
      * @example { "mention": "sergio.nachio", "text": "hallo @sergio.nachio", "result": true }
      * @example { "mention": "sergio", "text": "@sergio", "result": true }
@@ -74,10 +75,23 @@ class UGeneralCest
 
         // check if the found result is correct
         if ($example['result'] == true) {
-            $I->assertEquals($example['mention'], substr(current($matches)[0] , 1), 'mention was selected correctly');
+            $match_without_at = substr(current($matches)[0] , 1);
+            $next_match = _nm_stream_mention_get_next_match_candidate($match_without_at);
+            $I->assertContains($example['mention'], [$match_without_at, $next_match] , 'mention was selected correctly');
         }
+    }
 
-
+    /**
+     * mention get candidates works properly
+     * @param UnitTester $I
+     * @example { "match": "Sergio Nachio Augabe", "candidate":  "Sergio Nachio"}
+     * @example { "match": "Sergio Nachio-Augabe", "candidate":  "Sergio Nachio"}
+     */
+    function G001_mention_candidates(UnitTester $I, \Codeception\Example $example)
+    {
+        $match = $example['match'];
+        $candidate = _nm_stream_mention_get_next_match_candidate($match);
+        $I->assertEquals($example['candidate'], $candidate, 'correct candidate found');
     }
 
 }
