@@ -32,6 +32,7 @@ dependencies[] = media_internet
 dependencies[] = media_wysiwyg
 dependencies[] = menu_block
 dependencies[] = nm_general_features
+dependencies[] = nm_stream
 dependencies[] = node
 dependencies[] = og
 dependencies[] = options
