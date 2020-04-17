@@ -112,6 +112,10 @@
                 }
                 if ((typeof item_label === 'undefined') || item_label.length === 0 )
                 {
+                    item_label = item.action.metadata.title;
+                }
+                if ((typeof item_label === 'undefined') || item_label.length === 0 )
+                {
                     item_label = '- ohne -';
                 }
                  //entferne formatierungen

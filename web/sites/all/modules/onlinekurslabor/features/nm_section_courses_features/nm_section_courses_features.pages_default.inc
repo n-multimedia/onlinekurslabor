@@ -7657,7 +7657,10 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->admin_title = 'kursfinder';
   $page->admin_description = 'find courses';
   $page->path = 'kursfinder';
-  $page->access = array();
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
   $page->menu = array();
   $page->arguments = array();
   $page->conf = array(

@@ -116,6 +116,12 @@ function nm_login_vhb_convert_to_utf8($array_of_values)
     return $params;
 }
 
+
+/**
+ * The login function
+ * @global type $user
+ * @return boolean|string
+ */
 function nm_login_vhb() {
     $output = '';
 
@@ -176,13 +182,29 @@ function nm_login_vhb() {
             return "";
         }
     }
-    //kein user gefunden, anlegen..
-    else {
+    //kein user gefunden. CHECK: Mail schon in usage?? ABBRUCH!
+    elseif(user_load_by_mail($params['EMAIL'])) 
+    {
+        watchdog("LOGIN VHB", 'Usercreate denied, Mail exists: '.$params['EMAIL'], array(), WATCHDOG_ERROR);
+        drupal_set_message('Tut uns leid, wir konnten keinen Account für Sie anlegen. Bitte kontaktieren Sie uns. Fehlercode: M41E8', 'warning');
+        return "Login Interface VHB threw an exception";
+    }
+    //Neunutzer anlegen
+    else{
         //hier fehlt eigentlich eine Fehlerbehandlung bei unbekannter Hochschule. Dafür refactor notwendig
         drupal_set_message('Konto wird angelegt...');
         $vhb_user = nm_login_vhb_add_user($params);
-        watchdog("LOGIN VHB", 'New user entry added', array(), WATCHDOG_INFO);
+        if(is_object($vhb_user))
+        {
+            watchdog("LOGIN VHB", 'New user entry added', array(), WATCHDOG_INFO);
+        }
+        else
+        {
+            watchdog("LOGIN VHB", 'New user entry CANCELLED due to error', array(), WATCHDOG_ERROR);
+        }
+        
     }
+   
 
 
     //jetzt ist angelegt, wir können einloggen..
@@ -346,6 +368,15 @@ function nm_login_vhb_load_user_by_entity($entity_type, $entity1, $entity2 = nul
  *
  */
 function nm_login_vhb_add_user($params) {
+    
+    
+    //important! CHECK IF MAIL IN USAGE! CANCEL ELSE
+    $secondaccount_check = user_load_by_mail($params['EMAIL']);
+    if (user_load_by_mail($params['EMAIL'])) {
+         watchdog("LOGIN VHB", 'New user with e-mail' . $params['EMAIL'] . ' DENIED, is already in use by '.$secondaccount_check->uid, array(), WATCHDOG_ALERT);
+        return FALSE;
+    }
+
 
     //some redundand aspects
     //refactor new generic function

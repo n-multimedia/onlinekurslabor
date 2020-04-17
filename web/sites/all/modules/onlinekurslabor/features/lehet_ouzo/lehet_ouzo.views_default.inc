@@ -70,10 +70,9 @@ function lehet_ouzo_views_default_views() {
   $handler->display->display_options['filters']['vid']['table'] = 'taxonomy_term_data';
   $handler->display->display_options['filters']['vid']['field'] = 'vid';
   $handler->display->display_options['filters']['vid']['value'] = array(
-    9 => '9',
     13 => '13',
-    10 => '10',
     11 => '11',
+    9 => '9',
     12 => '12',
   );
 
