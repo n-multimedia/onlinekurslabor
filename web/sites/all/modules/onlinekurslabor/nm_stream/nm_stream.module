@@ -3711,7 +3711,7 @@ function _nm_stream_filter_mention_replacements($matches)
     $match_without_at = substr(current($matches) , 1);
 
     $user_match = _nm_stream_mention_get_username_by_match($match_without_at);
-    
+
     if(!empty($user_match)) {
       $account = $user_match['account'];
       $user_name = $user_match['user_name'];
@@ -3739,7 +3739,9 @@ function _nm_stream_mention_get_username_by_match($match) {
     return ['account' => $account, 'user_name' => $match];
   }
 
-  while($next_match = _nm_stream_mention_get_next_match_candidate($match)) {
+  $next_match = $match;
+
+  while($next_match = _nm_stream_mention_get_next_match_candidate($next_match)) {
     $account = user_load_by_name($next_match);
     if (!empty($account) && $account->uid > 0) {
       return ['account' => $account, 'user_name' => $next_match];
