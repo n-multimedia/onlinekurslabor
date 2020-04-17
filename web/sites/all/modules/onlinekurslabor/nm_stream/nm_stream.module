@@ -3711,8 +3711,7 @@ function _nm_stream_filter_mention_replacements($matches)
     $match_without_at = substr(current($matches) , 1);
 
     $user_match = _nm_stream_mention_get_username_by_match($match_without_at);
-
-    return $text;
+    
     if(!empty($user_match)) {
       $account = $user_match['account'];
       $user_name = $user_match['user_name'];
