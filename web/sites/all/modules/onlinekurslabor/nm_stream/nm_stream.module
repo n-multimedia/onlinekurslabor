@@ -21,7 +21,7 @@ define('NM_STREAM_API_INIT_POSTS_LIMIT', 10);
 define('NM_STREAM_ALLOWED_HTML_TAGS', serialize(array('a', 'em', 'b','u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
     'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot')));
 
-define('NM_STREAM_MENTION_REGEX', "/@([A-Z][\w\-]*\s[A-Z][\w\-]*)|@([\w\d]+[\.|\-|_]?[\w\d]*)/");
+define('NM_STREAM_MENTION_REGEX', "/@([A-Z][\w\-]*(\s[A-Z][\w\-]*)+)|@([\w\d]+[\.|\-|_]?[\w\d]*)/");
 
 
 /**
@@ -3704,7 +3704,7 @@ function _nm_stream_filter_mention_replacements($matches)
   $text = "";
   if (!empty($matches)) {
     // get last match
-    $user_name = end($matches);
+    $user_name = substr(current($matches)[0] , 1);
     $account = user_load_by_name($user_name);
 
     if(!empty($account) && $account->uid > 0) {

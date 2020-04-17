@@ -50,6 +50,7 @@ class UGeneralCest
      * @example { "mention": "Sergio Nacho", "text": "@Sergio Nacho", "result": true }
      * @example { "mention": "Sergio Nacho2", "text": "@Sergio Nacho2", "result": true }
      * @example { "mention": "Sergio Nacho-Macho", "text": "@Sergio Nacho-Macho", "result": true }
+     * @example { "mention": "Sergio Nacho Macho", "text": "@Sergio Nacho Macho", "result": true }
      * @example { "mention": "Sergio Nacho-Macho2", "text": "@Sergio Nacho-Macho2", "result": true }
      * @example { "mention": "sergio.nachio", "text": "hallo @sergio.nachio", "result": true }
      * @example { "mention": "sergio", "text": "@sergio", "result": true }
@@ -73,7 +74,7 @@ class UGeneralCest
 
         // check if the found result is correct
         if ($example['result'] == true) {
-            $I->assertEquals($example['mention'], end($matches)[0], 'mention was selected correctly');
+            $I->assertEquals($example['mention'], substr(current($matches)[0] , 1), 'mention was selected correctly');
         }
 
 
