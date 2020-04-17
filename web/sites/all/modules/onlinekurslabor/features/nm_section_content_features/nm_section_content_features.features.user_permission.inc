@@ -392,6 +392,15 @@ function nm_section_content_features_user_default_permissions() {
     'module' => 'biblio',
   );
 
+  // Exported permission: 'menu view unpublished'.
+  $permissions['menu view unpublished'] = array(
+    'name' => 'menu view unpublished',
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'section_content',
+  );
+
   // Exported permission: 'revert revisions'.
   $permissions['revert revisions'] = array(
     'name' => 'revert revisions',
