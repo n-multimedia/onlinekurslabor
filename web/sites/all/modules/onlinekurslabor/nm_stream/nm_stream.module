@@ -22,7 +22,7 @@ define('NM_STREAM_ALLOWED_HTML_TAGS', serialize(array('a', 'em', 'b','u', 'i', '
     'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot')));
 
 setlocale(LC_ALL, 'de_DE');
-define('NM_STREAM_MENTION_REGEX', "/@([A-Z][\w\-äöüß]*(\s[A-Z][\w\-äöüß]*)*)|@([\w\d]+[\.|\-|_]?[\w\d]*)/");
+define('NM_STREAM_MENTION_REGEX', "/@(\p{Lu}[\w\p{L}\-]*(\s\p{Lu}[\w\p{L}\-]*)*)|@([\w\d]+[\.|\-|_]?[\w\d]*)/u");
 
 
 /**
@@ -3711,7 +3711,6 @@ function _nm_stream_filter_mention_replacements($matches)
     // get last match
     $match_without_at = substr(current($matches) , 1);
 
-    dpm($matches);
     $user_match = _nm_stream_mention_get_username_by_match($match_without_at);
 
     if(!empty($user_match)) {
