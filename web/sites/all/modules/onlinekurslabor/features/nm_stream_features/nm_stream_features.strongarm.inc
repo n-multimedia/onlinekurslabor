@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_stream_features.strongarm.inc
