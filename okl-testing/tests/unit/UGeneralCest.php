@@ -59,6 +59,7 @@ class UGeneralCest
      * @example { "mention": "sergio", "text": "hallo @sergio", "result": true }
      * @example { "mention": "sergio2", "text": "hallo @sergio2", "result": true }
      * @example { "mention": "sergio", "text": "hallo @sergio ciao", "result": true }
+     * @example { "mention": "David Völkle", "text": "hallo @David Völkle ciao", "result": true }
      * @example { "mention": "sergio2", "text": "hallo @sergio2 ciao", "result": true }
      * @example { "mention": "sergio2", "text": "hallo sergio2 ciao", "result": false }
      * @example { "mention": "", "text": "hallo @ sergio2 ciao", "result": false }

@@ -21,7 +21,7 @@ define('NM_STREAM_API_INIT_POSTS_LIMIT', 10);
 define('NM_STREAM_ALLOWED_HTML_TAGS', serialize(array('a', 'em', 'b','u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
     'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot')));
 
-define('NM_STREAM_MENTION_REGEX', "/@([A-Z][\w\-]*(\s[A-Z][\w\-]*)*)|@([\w\d]+[\.|\-|_]?[\w\d]*)/");
+define('NM_STREAM_MENTION_REGEX', "/@([A-ZÄÖÜ][\w\-äöüß]*(\s[A-ZÄÖÜ][\w\-äöüß]*)*)|@([\w\d]+[\.|\-|_]?[\w\d]*)/");
 
 
 /**
