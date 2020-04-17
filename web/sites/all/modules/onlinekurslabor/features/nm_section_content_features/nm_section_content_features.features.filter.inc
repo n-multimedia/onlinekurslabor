@@ -253,6 +253,11 @@ tel',
         'status' => 1,
         'settings' => array(),
       ),
+      'filter_nm_stream_mention' => array(
+        'weight' => 0,
+        'status' => 1,
+        'settings' => array(),
+      ),
     ),
   );
 
