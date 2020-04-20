@@ -59,6 +59,9 @@ class UGeneralCest
      * @example { "mention": "sergio", "text": "hallo @sergio", "result": true }
      * @example { "mention": "sergio2", "text": "hallo @sergio2", "result": true }
      * @example { "mention": "sergio", "text": "hallo @sergio ciao", "result": true }
+     * @example { "mention": "David Völkle", "text": "hallo @David Völkle ciao", "result": true }
+     * @example { "mention": "Özil Völkle", "text": "hallo @Özil Völkle ciao", "result": true }
+     * @example { "mention": "Özil Äölkleß", "text": "hallo @Özil Äölkleß ciao", "result": true }
      * @example { "mention": "sergio2", "text": "hallo @sergio2 ciao", "result": true }
      * @example { "mention": "sergio2", "text": "hallo sergio2 ciao", "result": false }
      * @example { "mention": "", "text": "hallo @ sergio2 ciao", "result": false }
@@ -72,6 +75,7 @@ class UGeneralCest
         $result = preg_match($regex, $example['text'], $matches, PREG_OFFSET_CAPTURE);
 
         $I->assertEquals($result, $example['result'], 'regex match found');
+
 
         // check if the found result is correct
         if ($example['result'] == true) {

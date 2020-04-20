@@ -21,7 +21,8 @@ define('NM_STREAM_API_INIT_POSTS_LIMIT', 10);
 define('NM_STREAM_ALLOWED_HTML_TAGS', serialize(array('a', 'em', 'b','u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
     'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot')));
 
-define('NM_STREAM_MENTION_REGEX', "/@([A-Z][\w\-]*(\s[A-Z][\w\-]*)*)|@([\w\d]+[\.|\-|_]?[\w\d]*)/");
+setlocale(LC_ALL, 'de_DE');
+define('NM_STREAM_MENTION_REGEX', "/@(\p{Lu}[\w\p{L}\-]*(\s\p{Lu}[\w\p{L}\-]*)*)|@([\w\d]+[\.|\-|_]?[\w\d]*)/u");
 
 
 /**
@@ -2948,6 +2949,10 @@ function nm_stream_api_v2_get_posts_json_data($account, $node) {
 function nm_stream_node_get_poll_json($node) {
   global $user;
 
+  if(empty($node->field_nm_poll[LANGUAGE_NONE][0]['value'])) {
+    return;
+  }
+
   $poll_serialized = $node->field_nm_poll[LANGUAGE_NONE][0]['value'];
   if(empty($poll_serialized)) {
     return json_decode('');
@@ -3198,7 +3203,7 @@ function nm_stream_api_v2_node_add_callback($token = NULL) {
     // $body = $node_data['body'];
     $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
     // poll
-    $poll = $node_data['poll'];
+    $poll = empty($node_data['poll']) ? $node_data['poll'] : NULL;
 
     $sticky = 0;
     // check set sticky permission
@@ -3735,7 +3740,9 @@ function _nm_stream_mention_get_username_by_match($match) {
     return ['account' => $account, 'user_name' => $match];
   }
 
-  while($next_match = _nm_stream_mention_get_next_match_candidate($match)) {
+  $next_match = $match;
+
+  while($next_match = _nm_stream_mention_get_next_match_candidate($next_match)) {
     $account = user_load_by_name($next_match);
     if (!empty($account) && $account->uid > 0) {
       return ['account' => $account, 'user_name' => $next_match];
