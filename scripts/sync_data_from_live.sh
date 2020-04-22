@@ -31,7 +31,7 @@ sleep 3s
 # hole master-password aus drupal-config
 LOGIN_MASTERPASSWORD=`drush php-eval "echo NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT;"`
 #SYSTEM_IDENT fuer die email-adresse
-calculated_system_identifier=`drush php-eval 'echo _dev_live_warner_get_system_name()'`  >/dev/null 2>/dev/null
+calculated_system_identifier=`drush php-eval 'echo _okl_dev_get_system_name()'`  >/dev/null 2>/dev/null
 SYSTEM_IDENT="${calculated_system_identifier:-NO_IDENT_FOUND}"
 
 PULL_FILES=false
@@ -103,7 +103,7 @@ fi
 printf "\n\nINVOKING UPDATESCRIPT\n\n"
 sleep 3s
 sh ../scripts/update_master.sh
-
+drush en okl_dev --y
 
 sleep 5  # Waits 5 seconds.
 drush cc all

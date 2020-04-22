@@ -46,6 +46,32 @@ function _okl_dev_is_no_live_system()
 }
 
 /**
+ * Gets a name from the current system based on doc-root
+ * used for identifying systems
+ *
+ * @return (string)
+ */
+function _okl_dev_get_system_name() {
+    $root = str_replace("/web", "",_okl_dev_get_document_root());
+    $last = end(explode("/", $root));
+    $ident =  explode(".", $last) ;
+    return $ident[0];
+}
+/**
+ * Get the document root for the current Drupal installation.
+ * $_SERVER['DOCUMENT_ROOT'] is not reliable across all
+ * systems, so we need a way to get the correct value.
+ *
+ * @return (string)
+ */
+function _okl_dev_get_document_root() {
+    $absolute_dir = dirname(__FILE__);
+    $relative_dir = drupal_get_path('module', 'okl_dev');
+    return substr($absolute_dir, 0, -1 * (1 + strlen($relative_dir)));
+}
+
+
+/**
  * Implements hook_menu().
  * pfad, für GUI, um DB zu leeren
  */
@@ -102,18 +128,6 @@ function _okl_dev_updatelog_exists() {
 function _okl_dev_get_updatelog_path() {
     $files_dir = _okl_dev_get_document_root() . DIRECTORY_SEPARATOR . variable_get('file_public_path', conf_path() . '/files/');
     return $files_dir . '/last_update_log';
-}
-/**
- * Get the document root for the current Drupal installation.
- * $_SERVER['DOCUMENT_ROOT'] is not reliable across all
- * systems, so we need a way to get the correct value.
- *
- * @return (string)
- */
-function _okl_dev_get_document_root() {
-    $absolute_dir = dirname(__FILE__);
-    $relative_dir = drupal_get_path('module', 'okl_dev');
-    return substr($absolute_dir, 0, -1 * (1 + strlen($relative_dir)));
 }
 
 /**
