@@ -54,8 +54,38 @@ function nm_stream_update_7000() {
     else {
       watchdog('nm_stream', 'Could not find a proper context for stream node with nid %nid', array("%nid" => $node->nid), WATCHDOG_ERROR);
     }
-
   }
+}
 
 
+
+
+/**
+ * stream migration
+ * by not we have nm_stream content in projects and course_groups
+ * by itroducing the new context field we need to update the existent content (.. what? ;-)
+ */
+function nm_stream_update_15000()
+{
+  //get all stream nodes
+
+  //get nm_stream nodes where created > $node->created
+  $results = db_select('node', 'n')
+    ->fields('n', array("nid"))
+    ->condition('type', 'nm_stream')
+    ->execute()
+    ->fetchAllKeyed(0, 0);
+
+  $loaded_nodes = node_load_multiple($results);
+
+  foreach ($loaded_nodes as $node) {
+    $container = $node->og_group_ref;
+
+    if (empty($container[LANGUAGE_NONE][0]['target_id'])) {
+      // missing context => delete this node!
+      //todo log this
+      //dpm($node->nid);
+      //node_delete($node->nid);
+    }
+  }
 }
