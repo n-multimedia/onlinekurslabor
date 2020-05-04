@@ -30,7 +30,7 @@ class CourseBase extends \Page\node\Node {
 
         $I->click("Lehrtext",self::$formEditContext);
         //cutte ggf. falsche zeichen am ende des titels
-        $I->fillField($fieldName, substr($domain_title, 0, -3));
+        $I->fillField($fieldName, trim(substr($domain_title, 0, -3)));
         $I->wait(5);
         //das geht.
         $I->click($domain_title);

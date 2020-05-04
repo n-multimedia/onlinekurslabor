@@ -123,6 +123,17 @@ abstract class CestHelper {
             $scenario->skip($message);
         }
     }
+    
+    
+    /**
+     * if PARAM $saveSession was set to  TRUE  in function login() then you can re-use this login in your next test.
+     * Best: Use syntax "ATbefore renewSession"
+     * @param \Step\Acceptance\UserSteps $I
+     * @param Codeception\Scenario $scenario
+     */
+    protected function renewSession(AcceptanceTester $I, Codeception\Scenario $scenario) {
+            $I->loadSessionSnapshot("login");
+    }  
 
     /**
      * accessed via  @before-syntax
@@ -324,7 +335,7 @@ abstract class CestHelper {
 
         if ($with_demo_domain) {
             $demo_domain = $domain;
-            $demo_domain['title'] = substr($demo_domain['title'], 0, -7) . ' (DEMO)';
+            $demo_domain['title'] = trim(substr($demo_domain['title'], 0, -7)) . ' (DEMO)';
             $sample[] = $demo_domain + ['type' => 'default'];
         }
 
