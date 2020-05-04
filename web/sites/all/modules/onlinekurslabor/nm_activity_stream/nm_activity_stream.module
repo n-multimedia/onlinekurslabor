@@ -117,7 +117,7 @@ function nm_activity_stream_preprocess_message(&$variables)
         $vars['activity_title'] = $ref_node->title;
         $vars['activity_path'] = 'node/' . $ref_node->nid;
         $vars['activity_type'] = $ref_node->type;
-        $vars['activity_timestamp_create'] = $ref_node->created;
+        $vars['activity_timestamp_create'] = $message->timestamp;
         $vars['activity_unread'] = _custom_general_get_num_unread(NULL, $ref_node->nid) ? TRUE : FALSE;
 
 
