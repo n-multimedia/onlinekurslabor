@@ -84,9 +84,10 @@ class PrepareCest extends CestHelper{
      * @depends P001_02_createTeachers
      */
     public function P001_03_switchUser(\Step\Acceptance\Dozent $I, \Codeception\Example $random_teacher) {
-        //logout nicht nötig
+        //do logout to kill session
+        $I->logout();
         $I->amGoingTo('Login as ' . $random_teacher['mail']);
-        $I->login($random_teacher['mail'], null, true, true);
+        $I->login($random_teacher['mail'], null, true);
     }
 
     /**
