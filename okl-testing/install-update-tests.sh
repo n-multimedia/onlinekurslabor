@@ -36,4 +36,4 @@ echo -e "Making Symlinks..."
 rm vendor/bin/phantomjs
 #ln -s ../jakoch/phantomjs/bin/phantomjs vendor/bin/phantomjs
 
-echo "todo: add binary vendor/bin/phantomjs"
+echo "todo4you: grab a phantomjs-binary and copy it to  vendor/bin/phantomjs"
