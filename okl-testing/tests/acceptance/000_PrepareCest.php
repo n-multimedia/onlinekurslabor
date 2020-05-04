@@ -40,7 +40,7 @@ class PrepareCest extends CestHelper{
      */
      public function P001_01_logSuperAdminIn(\Step\Acceptance\SuperAdmin $I) {
          //login ist in diesem cest gültig, bis logout geschieht
-           $I->loginAsSuperAdmin(false);
+           $I->loginAsSuperAdmin(true);
          
      }
     /**
@@ -51,9 +51,10 @@ class PrepareCest extends CestHelper{
      * @param \Codeception\Example $example Example-array
      * @dataProvider P001_dummyTeachersProvider
      * @depends P001_01_logSuperAdminIn
+     * @before renewSession 
      */
     public function P001_02_createTeachers(\Step\Acceptance\SuperAdmin $I, \Codeception\Example $example) {
-      
+        
         if (!user_load_by_mail($example['mail'])) {
 
             $createPage = new UserCreatePage($I);
@@ -83,12 +84,9 @@ class PrepareCest extends CestHelper{
      * @depends P001_02_createTeachers
      */
     public function P001_03_switchUser(\Step\Acceptance\Dozent $I, \Codeception\Example $random_teacher) {
-        //logout
-        $I->logout();
-
+        //logout nicht nötig
         $I->amGoingTo('Login as ' . $random_teacher['mail']);
-        //login ist in diesem cest gültig, bis logout geschieht
-        $I->login($random_teacher['mail'], null, false);
+        $I->login($random_teacher['mail'], null, true, true);
     }
 
     /**
@@ -138,6 +136,7 @@ class PrepareCest extends CestHelper{
      * @param \Codeception\Example $domain_example Example-object
      * @dataProvider P001_createDomainsProvider
      * @depends P001_03_switchUser
+     * @before renewSession
      */
     public function P001_04_createDomains(\Step\Acceptance\Dozent $I, Codeception\Example $domain_example) {
 
@@ -170,7 +169,7 @@ class PrepareCest extends CestHelper{
      */
     protected function getDemoTitleForDomainTitle($title)
     {
-        return  substr($title, 0, -7).' (DEMO)';
+        return  trim(substr($title, 0, -7)).' (DEMO)';
     }
 
     
@@ -183,6 +182,7 @@ class PrepareCest extends CestHelper{
      * @dataProvider P001_createDomainContentProvider
      * @depends P001_04_createDomains
      * @before skipIfOnShittyBrowser
+     * @before renewSession
      */
     public function P001_05_createDomainContent(\Step\Acceptance\Dozent $I, Codeception\Example $domain_content_example) {
         $domain_nids = [Fixtures::get('domain_nid'), Fixtures::get('domain_demo_nid')];
@@ -222,9 +222,9 @@ class PrepareCest extends CestHelper{
      * @param \Codeception\Example $example Example-object
      * @dataProvider P001_createCourseProvider
      * @depends P001_04_createDomains
+     * @before renewSession
      */
     public function P001_06_createCourse(\Step\Acceptance\Dozent $I, Codeception\Example $course_example) {
-
         
         $course_example['domain_title'] = Fixtures::get('domain_title');
                 
@@ -254,6 +254,7 @@ class PrepareCest extends CestHelper{
      * @param \Codeception\Example $example Example-object
      * @dataprovider P001_createDomainsProvider
      * @depends P001_06_createCourse
+     * @before renewSession
      */
     public function P001_07_editCourse(\Step\Acceptance\Dozent $I, Codeception\Example $domain_example) {
         $new_course_nid = $this->getCurrentContextNid();
@@ -279,7 +280,8 @@ class PrepareCest extends CestHelper{
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $students_example Example-array mit name und mail
      * @dataProvider P001_addStudentsProvider
-     * @depends P001_06_createCourse
+     * @depends P001_07_editCourse
+     * @before renewSession
      */
     public function P001_08_addStudentsToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $students_example) {
         $I->comment(sprintf('now I add memmber %s to the course %s' ,$students_example['mail'], $this->getCurrentContextNid()));
@@ -316,6 +318,7 @@ class PrepareCest extends CestHelper{
      * @dataProvider P001_otherTeacherProvider
      * @before skipEmptyExample
      * @depends P001_06_createCourse
+     * @before renewSession
      */
      public function P001_09_addDozentenToCourse(\Step\Acceptance\Dozent $I, Codeception\Example $dozenten_example) {
 
@@ -338,6 +341,7 @@ class PrepareCest extends CestHelper{
      * doesnt @uses P001_dummySingleTeacherProvider Infos about currently loggedin dozent
      * @dataProvider P001_createCoursegroupsProvider
      * @depends P001_06_createCourse
+     * @before renewSession
      */
     public function P001_10_addCoursegroups(\Step\Acceptance\Dozent $I, Codeception\Example $cg_example) {
         //$current_teacher = $this->P001_dummySingleTeacherProvider()[0];
@@ -353,7 +357,8 @@ class PrepareCest extends CestHelper{
      * @return Codeception\Example $course_example 
      */
     protected function P001_createCoursegroupsProvider() {
-        $num_groups = floor(self::$count_students / 3); 
+        //minimum 1, sonst student/3 gruppen
+        $num_groups = max(array(floor(self::$count_students / 3),1)); 
         return $this->DP_getSampleCoursegroups($num_groups, 0, false);
     }
     
@@ -367,6 +372,7 @@ class PrepareCest extends CestHelper{
      * @param \Codeception\Example $users_to_coursegroup Example-array ['users' =>array(), 'coursegroup_title'=> ...]
      * @dataProvider P001_addUsersToCoursegroupsProvider
      * @depends P001_10_addCoursegroups
+     * @before renewSession
      */
     public function P001_11_addUsersToCoursegroups(\Step\Acceptance\Dozent $I, Codeception\Example $users_to_coursegroup) {
 
@@ -390,6 +396,7 @@ class PrepareCest extends CestHelper{
      *
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @depends P001_11_addUsersToCoursegroups
+     * @before renewSession
      */
     public function P001_19_storeFallback(\Step\Acceptance\Dozent $I) {
         _okl_testing_storeFallbackNID($this->getCurrentContextNid());
@@ -415,6 +422,7 @@ class PrepareCest extends CestHelper{
      *
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @depends P001_01_logSuperAdminIn
+     * @before renewSession
      */
     public function P001_20_logOut(\Step\Acceptance\Dozent $I){
         $I->logout();
