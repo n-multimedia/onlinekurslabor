@@ -67,6 +67,7 @@ class UserSteps extends \AcceptanceTester {
      $I = $this;
      $I->amOnPage(LogoutPage::$URL);
      $I->see(LoginPage::$loginMenuButton);
+     $I->deleteSessionSnapshot('login');
   }
   
   /**
