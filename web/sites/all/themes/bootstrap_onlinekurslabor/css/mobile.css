@@ -13,7 +13,7 @@
 #section-nav-authoring-tools button.navbar-toggle {
   top: 0px;
   right: 6px;
-  z-index: 1004;
+  z-index: 99;
   border-radius: 4px;
 }
 
@@ -377,8 +377,13 @@ button.okl-nav-bar-btn .animated-icon2 span {
 }
 
 #section-nav-authoring-tools button.navbar-toggle {
-  background: #efefef;
+  background: #E5E5E5;
+  border: 1px solid #ADADAD;
 }
+#section-nav-authoring-tools button.navbar-toggle:hover {
+  background: #F8F8F8;
+}
+
 
 #section-nav-authoring-tools.navbar-inverse .navbar-toggle .icon-bar {
   background-color: #666 !important;
