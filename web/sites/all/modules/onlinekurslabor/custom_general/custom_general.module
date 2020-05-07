@@ -360,7 +360,7 @@ function custom_general_form_alter(&$form, &$form_state, $form_id) {
             '#weight' => -100,
         );
     }
-    
+
     //entferne für < admin
     if (!in_array('administrator', array_values($user->roles))) {
         //zuweisen zu buch: inaccessbible for non-admins
@@ -368,9 +368,9 @@ function custom_general_form_alter(&$form, &$form_state, $form_id) {
         {
              $form['#group_children']['biblio_fieldset']['#access'] = FALSE;
         }
-       
+
         if (!empty($form['book'])) {
-            //lehrtextkapitel zu buch zuweisen  
+            //lehrtextkapitel zu buch zuweisen
             $form['book']['#access'] = FALSE;
         }
     }
@@ -390,7 +390,7 @@ function custom_general_form_alter(&$form, &$form_state, $form_id) {
   {
       return;
   }
-    
+
   $plugin = context_get_plugin('condition', 'custom_general_condition_section_content');
   if ($plugin) {
 
@@ -1666,8 +1666,9 @@ function _custom_general_get_max_weight_in_book_tree($tree) {
  */
 function custom_general_og_membership_insert(OgMembership $og_membership) {
     //invalidate caches for affected group
-    if ($og_membership->gid)
-        og_invalidate_cache($og_membership->gid);
+    if ($og_membership->gid) {
+      og_invalidate_cache($og_membership->gid);
+    }
 }
 
 

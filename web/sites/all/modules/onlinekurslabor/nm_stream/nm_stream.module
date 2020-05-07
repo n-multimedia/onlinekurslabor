@@ -3231,7 +3231,7 @@ function nm_stream_api_v2_node_add_callback($token = NULL) {
     // $body = $node_data['body'];
     $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
     // poll
-    $poll = empty($node_data['poll']) ? $node_data['poll'] : NULL;
+    $poll = !empty($node_data['poll']) ? $node_data['poll'] : NULL;
 
     $sticky = 0;
     // check set sticky permission
@@ -3419,7 +3419,7 @@ function nm_stream_api_v2_node_update_callback($node, $token = NULL) {
     $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
     $sticky = isset($node_data['sticky']) ? check_plain($node_data['sticky']) : '';
     // poll
-    $poll = $node_data['poll'];
+    $poll = !empty($node_data['poll']) ? $node_data['poll'] : '';
 
 
     //prevent csrf attacks
