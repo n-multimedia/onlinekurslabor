@@ -337,6 +337,7 @@ function nm_stream_poll_update_access($nid) {
 }
 
 /**
+ * Implements hook_node_delete().
  * @param $node
  */
 function nm_stream_node_delete($node)
