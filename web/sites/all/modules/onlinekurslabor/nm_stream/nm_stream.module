@@ -296,6 +296,12 @@ function nm_stream_menu() {
   return $items;
 }
 
+/**
+ * @return array
+ */
+function nm_stream_get_stream_containers() {
+  return [ANNVID_CONTENTTYPE, NM_COURSE_GROUP];
+}
 
 function nm_stream_user_has_role($roles) {
   if (user_is_logged_in()) {
@@ -327,6 +333,27 @@ function nm_stream_poll_update_access($nid) {
   }
   else {
     return TRUE;
+  }
+}
+
+/**
+ * @param $node
+ */
+function nm_stream_node_delete($node)
+{
+  // delete all stream entries linked to this container
+  $container_types = nm_stream_get_stream_containers();
+  if (in_array($node->type, $container_types)) {
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+      ->propertyCondition('status', 1)
+      ->fieldCondition('og_group_ref', 'target_id', $node->nid);
+    $result = $query->execute();
+
+    if (!empty($result['node'])) {
+      $keys = array_keys($result['node']);
+      node_delete_multiple($keys);
+    }
   }
 }
 
