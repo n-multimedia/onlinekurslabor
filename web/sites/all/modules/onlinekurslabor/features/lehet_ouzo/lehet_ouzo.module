@@ -23,7 +23,7 @@ function lehet_ouzo_block_view_alter(&$data, $block) {
         $active_domain_nid = _section_content_get_active_domain() ? _section_content_get_active_domain()->nid : _section_courses_course_get_domain_id(_section_courses_get_active_course());
 
         
-        //hardcoded: domain 21883 "Plattform Heterogenität in der Schule Beispiele (21883)"
+        //hardcoded: domain 21872 "Heterogenität in der Schule  (21872)"
         if (!$active_domain_nid || $active_domain_nid != 21883) {
             return;
         }

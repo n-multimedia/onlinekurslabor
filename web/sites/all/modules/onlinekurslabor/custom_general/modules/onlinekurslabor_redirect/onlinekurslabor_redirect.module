@@ -11,11 +11,7 @@ function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
   if (arg(0) != 'node' || arg(2) == 'revisions') {
     return;
   }
-  /*
-   *  NEW LOGICs
-   * 18.09.2014 - 17:34 - SN
-   */
-
+  
   //redirection rules for domains and projects
   switch ($node->type) {
     case NM_CONTENT_DOMAIN:
