@@ -203,20 +203,16 @@ function nm_h5p_features_default_page_manager_pages() {
   $display->content['new-30d9dee4-6bfa-428e-ad1f-23e2f2812a28'] = $pane;
   $display->panels['center'][2] = 'new-30d9dee4-6bfa-428e-ad1f-23e2f2812a28';
   $pane = new stdClass();
-  $pane->pid = 'new-a1c743fc-3dd6-4e8d-8350-f02358f08561';
+  $pane->pid = 'new-4d72689a-5d05-4d7b-b094-d7e8c2cea1c5';
   $pane->panel = 'navigation';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_text_outline';
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'admin_title' => '',
-    'title' => '',
-    'body' => '<?php 
-echo section_content_text_outline();
-?>',
-    'format' => 'php_code',
-    'substitute' => 0,
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -226,9 +222,9 @@ echo section_content_text_outline();
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
-  $pane->uuid = 'a1c743fc-3dd6-4e8d-8350-f02358f08561';
-  $display->content['new-a1c743fc-3dd6-4e8d-8350-f02358f08561'] = $pane;
-  $display->panels['navigation'][0] = 'new-a1c743fc-3dd6-4e8d-8350-f02358f08561';
+  $pane->uuid = '4d72689a-5d05-4d7b-b094-d7e8c2cea1c5';
+  $display->content['new-4d72689a-5d05-4d7b-b094-d7e8c2cea1c5'] = $pane;
+  $display->panels['navigation'][0] = 'new-4d72689a-5d05-4d7b-b094-d7e8c2cea1c5';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

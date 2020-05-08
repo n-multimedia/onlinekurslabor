@@ -60,3 +60,12 @@ canvas.pdf_canvas_loaded
 {
     border:1px solid black;
 }
+
+/*
+* unter field settings kann man eine eigene class setzen. 
+*    Falls nicht getan, hier ein Standardwrapper mit Breite 700px
+*/
+.html5pdf_standard_wrapper_class
+{
+    width: 700px;
+}

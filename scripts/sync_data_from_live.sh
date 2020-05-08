@@ -24,20 +24,20 @@
 
 #use printf instead of echo -e for escape-sequences
 printf  "\033[0;31m THIS WILL delete DATA like db and files on local system and replace with data from live"
-printf "\n\033[0mYou have 5 seconds to abort."
+printf "\n\033[0mYou have 3 seconds to abort."
 printf "\n"
-sleep 5s
+sleep 3s
 
 # hole master-password aus drupal-config
 LOGIN_MASTERPASSWORD=`drush php-eval "echo NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT;"`
 #SYSTEM_IDENT fuer die email-adresse
-calculated_system_identifier=`drush php-eval 'echo _dev_live_warner_get_system_name()'`  >/dev/null 2>/dev/null
+calculated_system_identifier=`drush php-eval 'echo _okl_dev_get_system_name()'`  >/dev/null 2>/dev/null
 SYSTEM_IDENT="${calculated_system_identifier:-NO_IDENT_FOUND}"
 
 PULL_FILES=false
 PULL_DB=false
 
-
+#Fehler: Masterpassword not set
 if [ "$LOGIN_MASTERPASSWORD" = "NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT"  ]   ;
 then
  printf "\n\nConstant NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT not defined in settings.php! Exit!"
@@ -81,32 +81,45 @@ drush @okl.live cache-clear all
 printf "\n\n"
 
 
+#synce Datenbank
 if [  "$PULL_DB" = true  ]; 
 then
 printf "\n\nSYNCING DATABASE\n\n"
 drush sql-sync @okl.live @self  --create-db --sanitize --sanitize-email=%mail+$SYSTEM_IDENT@div.onlinekurslabor.de --sanitize-password=$LOGIN_MASTERPASSWORD 
 
+echo "Sync & Sanitation complete!"
+
 fi
 
 
-
+#synce Dateien
 if [  "$PULL_FILES" = true  ]; 
 then
 printf "\n\nSYNCING FILES\n\n"
 drush rsync -v @okl.live:%files @self:%files
 drush rsync -v @okl.live:%private  @self:%private 
-fi
+fi 
 
-drush cc all
-drush en okl_testing  --yes
 printf "\n\nINVOKING UPDATESCRIPT\n\n"
 sleep 3s
 sh ../scripts/update_master.sh
+drush en okl_dev --y
+
+sleep 5  # Waits 5 seconds.
+drush cc all
+drush en okl_testing  --yes
+echo "3ccs following"
+drush cc all
+drush cc all
+drush cc all
+printf "\n\n"
+echo "done"
 printf '\007'
 sleep 1s
 printf '\007'
 
 
+#bei neuer DB: erstelle ggf demokurs
 if [  "$PULL_DB" = true  ]; 
 then
 

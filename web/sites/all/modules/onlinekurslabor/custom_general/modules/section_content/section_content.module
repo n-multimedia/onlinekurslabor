@@ -21,6 +21,9 @@ function section_content_block_info() {
   $blocks['content_node_revisions'] = array(
     'info' => t('Content - Node Revisions'),
   );
+   $blocks['content_text_outline'] = array(
+    'info' => t('Content - Text Outline'),
+  );
 
   return $blocks;
 }
@@ -41,6 +44,11 @@ function section_content_block_view($delta = '') {
     case 'content_node_revisions' :
       $block['content'] = _section_content_theme_node_revisions();
       break;
+    case 'content_text_outline' :
+      $block['subject'] = t('Table of contents');
+      $block['content'] = _section_content_block_text_outline();
+      break;
+
   }
 
 
@@ -647,25 +655,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
         }
     }
 
-    /*Feature Lehrtext deaktivieren + Link auf Lehrtext erstellen*/
-  /*DAS gehört aber definitiv in section_courses!!!!!!*/
-  if($form_id == 'courses_course_node_form'){
-     $description ="<ul>";
-    //add domain add link to
-    $description .= "<li>".'Ein als Demo genutzter Lehrtext wird dadurch öffentlich zugänglich.'."</li>";
-    $description .= "<li>".'Den Lehrtext komplett deaktivieren können Sie im Tab "Features".'."</li>";
-    section_courses_instructors_tools_access();
-    $description .= '<li>';
-    if(node_access('create', NM_CONTENT_DOMAIN)){
-      $description .= "<p>Falls Sie noch keinen Lehrtext zu Ihrem Kurs haben können Sie einen ".l('neuen Lehrtext erstellen', 'node/add/content-domain', array('attributes'=>array('target'=>'_blank'))).".</p>";
-    }else {
-      $description .= "<p>Falls Sie keinen Lehrtext zur Auswahl haben, kontaktieren Sie unseren Support. Dieser kann Ihnen die benötigten Rechte freischalten.</p>";
-      $description .= l('Kontakt', 'kontakt', array('attributes'=>array('target'=>'_blank')));
-    }
-    $description .= '</li></ul>';
-
-    $form['field_domain_demo_ref']['#suffix'] = $description;
-  }
+   
 
 
   return $form;

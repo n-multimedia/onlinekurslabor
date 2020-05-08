@@ -4,7 +4,7 @@
 */
 
 /*
-ADAPING BOOTSTRAP
+ADAPTING BOOTSTRAP
 */
 .btn.btn-inverse {
     background-color: #666;
@@ -151,6 +151,11 @@ BOOTSTRAP 3
  /* geht nicht   cursor: not-allowed;*/
 }
 
+#okl-nav-bar {
+  float: right;
+  padding-top:10px;
+}
+
 /*Navigationsleiste im Kurs*/
 .section_navigation_course.navbar{
     background: #467DBD;
@@ -211,7 +216,7 @@ BOOTSTRAP 3
 
 /*schwarze top-navigation*/
 #page_top_navigation.navbar{
-   padding-top: 7px;
+   padding-top: 0px;
    margin: 0;
 }
 /*logo klickbar machen in allen kontexten*/
@@ -219,6 +224,7 @@ BOOTSTRAP 3
     position: relative;
     z-index: 3;
 }
+
 
 /*aenderungen fuer icon-navigation top*/
 #page_top_navigation a.top_nav_link span
@@ -278,6 +284,13 @@ BOOTSTRAP 3
     padding: 0px;
     padding-top: 5px;
     margin-left: 10px;
+    height: 60px;
+    max-width: 240px;
+}
+
+ 
+#page_top_navigation .navbar-brand img{
+   width: 100%; 
 }
 
 #page_top_navigation .navbar-inverse{
@@ -361,7 +374,7 @@ Course Header
     font-size: 20px;
     max-height: 37px;
     text-align:justify;
-    //hyphens: silbentrennung
+    /*hyphens: silbentrennung*/
     hyphens: auto;
 }
 }
@@ -1080,6 +1093,44 @@ PROJECTS
     padding-left: 2em;
     padding-right: 2em;
     padding-bottom: 1em;
+}
+
+/**
+fixes for BEF - bootstrap
+*/
+.form-control.bef-select-as-checkboxes 
+{
+    height: auto;
+}
+
+.form-type-bef-checkbox .form-control, .form-type-bef-checkbox label
+{
+    width: auto;
+    display: inline-block;
+    height: auto;
+}
+/**
+END fixes for BEF - bootstrap
+*/
+
+
+/**
+fixes for views_ef_fieldset -  BEF - bootstrap
+*/
+
+
+.views-ef-fieldset-container  .form-type-bef-checkbox
+{
+    display: block;
+}
+/**
+END fixes for views_ef_fieldset - BEF - bootstrap
+*/
+
+/*SPECIAL VIEW KURSFINDER*/
+.view-kursfinder .form-item
+{
+    margin-right:8px;
 }
 
 /* PrivateMSG */

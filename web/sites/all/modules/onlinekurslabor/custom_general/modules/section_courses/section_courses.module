@@ -44,7 +44,32 @@ function section_courses_preprocess_panels_pane(&$variables) {
 
 
 
+/**
+ * implements function hook_entity_info_alter(&$entity_info) {
+ * bei "rndereed entity" in views kann man nun "Node -course" als Ziel auswählen
+ * @param type $entity_info
+ */
+function section_courses_entity_info_alter(&$entity_info) {
+    
+  $entity_info['node']['view modes']['view_mode_course'] = array(
+    'label' => t('Node - course'),
+    // This is what you'll see in your "Manage Display" tab.
+    'custom settings' => FALSE,
+    #   'view callback' => 'videosafe_node_formatter_viewmode_description'
+  );
 
+}
+
+/**
+ * benötigt von section_courses_entity_info_alter zusammen mit section_courses_theme
+ * (in letzterer wird die konkrete .tpl-file gewählt)
+ * @param string $vars
+ */
+function section_courses_preprocess_node(&$vars) {
+  if ($vars['view_mode'] == 'view_mode_course') {
+    $vars['theme_hook_suggestions'][] = 'views__view__courses__render_course';
+  }
+}
 
 
 
@@ -769,6 +794,11 @@ function _section_courses_text_outline_add_active_path(&$subtree_pointer) {
   _section_courses_book_add_active_path($subtree_pointer, $active_mlid, $parents);
 }
 
+/**
+ * FAST das gleiche wie section_content_text_outline
+ * leider gibts ein paar Fallstricke und der Doppelcode bleibt bestehen... 
+ * @return type
+ */
 function section_courses_text_outline() {
 
   $active_course = _section_courses_get_active_course();
@@ -2231,7 +2261,8 @@ function section_courses_og_membership_insert(OgMembership $og_membership) {
 }
 
 /**
- * hook_form_alter
+ * implements hook_form_alter(&$form, &$form_state, $form_id)
+ * Kurs-Forms... 
  *
  * @param string $form
  * @param type $form_state
@@ -2335,6 +2366,40 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
       }else {
 
       } */
+    
+    /* Feature Lehrtext deaktivieren + Link auf Lehrtext erstellen */
+    /** Lehet_Settings field */
+    if ($form_id == 'courses_course_node_form') {
+        
+        $description = "<ul>";
+        //add domain add link to
+        $description .= "<li>" . 'Ein als Demo genutzter Lehrtext wird dadurch öffentlich zugänglich.' . "</li>";
+        $description .= "<li>" . 'Den Lehrtext komplett deaktivieren können Sie im Tab "Features".' . "</li>";
+        section_courses_instructors_tools_access();
+        $description .= '<li>';
+        if (node_access('create', NM_CONTENT_DOMAIN)) {
+            $description .= "<p>Falls Sie noch keinen Lehrtext zu Ihrem Kurs haben können Sie einen " . l('neuen Lehrtext erstellen', 'node/add/content-domain', array('attributes' => array('target' => '_blank'))) . ".</p>";
+        } else {
+            $description .= "<p>Falls Sie keinen Lehrtext zur Auswahl haben, kontaktieren Sie unseren Support. Dieser kann Ihnen die benötigten Rechte freischalten.</p>";
+            $description .= l('Kontakt', 'kontakt', array('attributes' => array('target' => '_blank')));
+        }
+        $description .= '</li></ul>';
+
+        $form['field_domain_demo_ref']['#suffix'] = $description;
+
+        
+        
+        /*DISABLE LEHET-TAB: remove this block to enable again*/
+        if(true){
+                $form['#groups']['group_course_lehet']->format_type = 'div';
+                $form['#groups']['group_course_lehet']->format_settings['instance_settings']['classes'] = "hidden";
+                $form['#groups']['group_course_lehet']->format_settings['instance_settings']['element'] = 'div';
+
+                $form['#groups']['group_course_lehet']->format_settings['label'] = 'Hanswurst'; // LeHet (disabled in section_courses_form_alter)
+
+            }
+        }
+    
   }
 
 
@@ -2453,6 +2518,10 @@ function section_courses_save_draft_submit($form, &$form_state) {
   node_form_submit($form, $form_state);
 }
 
+
+        
+
+        
 /**
  * alter taxonomy reference widget for forum references
  * we need to only show the options which are possible in course section
@@ -3045,6 +3114,11 @@ function section_courses_theme() {
       'template' => 'templates/section-courses-top-navigation',
       'variables' => [
       ],
+    ],
+    'views__view__courses__render_course' => [
+      'template' => 'views-view-fields--courses-kurse-bersicht--my-courses-small',
+      'variables' => array(),
+        'path' => drupal_get_path('theme', 'bootstrap_onlinekurslabor') . '/templates',
     ],
   ];
 }

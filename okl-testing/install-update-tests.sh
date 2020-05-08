@@ -6,26 +6,34 @@ cd "$(dirname "$0")"
 
 
 cd "$current_directory"
-echo -e "\n\n\n##################################\nEinrichtung Autotests\n##################################\n"
-sleep 2
+
 
 
 
 ## .ymls existieren, verzeichnis /vendor nicht - installiere dependencies neu
 if [ ! -d ./vendor/ ]; then
+    echo -e "\n\n\n##################################\nEinrichtung Autotests\n##################################\n"
+    sleep 2
     echo -e "Ich installiere nun die Dependencies\n\n"
     sleep 2
     composer install
-    exit
+
+else # ymls existieren, vendor-verzeichnis auch. Dann mach ich ein Update
+
+    echo -e "##################################\nUpdate Autotests\n##################################\n"
+
+    echo -e "Ich aktualisiere in 10 Sekunden die Dependencies\n\n"
+    sleep 10
+
+    composer update
+
 fi
 
-## ELSE
-# ymls existieren, vendor-verzeichnis auch. Dann mach ich ein Update
 
-echo -e "##################################\nUpdate Autotests\n##################################\n"
 
-echo -e "Ich aktualisiere in 10 Sekunden die Dependencies\n\n"
-sleep 10
- 
-composer update
+echo -e "Making Symlinks..."
 
+rm vendor/bin/phantomjs
+#ln -s ../jakoch/phantomjs/bin/phantomjs vendor/bin/phantomjs
+
+echo "todo4you: grab a phantomjs-binary and copy it to  vendor/bin/phantomjs"

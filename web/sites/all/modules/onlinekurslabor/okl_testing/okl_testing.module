@@ -357,13 +357,6 @@ function okl_testing_theme($existing, $type, $theme, $path) {
  * ################
  */
 
-/**
- * hook_dev_live_force_live_mode
- * @return true for automatic testing
- */
-function okl_testing_dev_live_force_live_mode() {
-    return (bool) variable_get('okl_testing_running');
-}
 
 /**
  * hook_page_build

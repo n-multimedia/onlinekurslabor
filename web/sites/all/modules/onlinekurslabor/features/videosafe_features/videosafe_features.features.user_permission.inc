@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * videosafe_features.features.user_permission.inc

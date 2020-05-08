@@ -1208,23 +1208,66 @@ function file_entity_upload_archive_form_submit($form, &$form_state) {
   if ($archive = file_load($form_state['values']['upload'])) {
     if ($archiver = archiver_get_archiver($archive->uri)) {
       $files = $archiver->listContents();
+      $destination = pathinfo($archive->filename, PATHINFO_FILENAME);
 
-      $extract_dir = file_default_scheme() . '://' . pathinfo($archive->filename, PATHINFO_FILENAME);
-      $extract_dir = file_destination($extract_dir, FILE_EXISTS_RENAME);
-      if (!file_prepare_directory($extract_dir, FILE_MODIFY_PERMISSIONS | FILE_CREATE_DIRECTORY)) {
-        throw new Exception(t('Unable to prepare directory %dir for extraction.', array('%dir' => $extract_dir)));
+      // Prepare a temporary directory to extract the archive to before saving
+      // it is content.
+      $extract_location = 'temporary://' . $destination;
+      $extract_location = file_destination($extract_location, FILE_EXISTS_RENAME);
+      if (!file_prepare_directory($extract_location, FILE_MODIFY_PERMISSIONS | FILE_CREATE_DIRECTORY)) {
+        throw new Exception(t('Unable to prepar, a temporary directory %dir for extraction.', array('%dir' => $extract_location)));
       }
 
-      $archiver->extract($extract_dir);
+      // Prepare target directory where files are going to be saved.
+      $target_dir = file_default_scheme() . '://' . $destination;
+      $target_dir = file_destination($target_dir, FILE_EXISTS_RENAME);
+      if (!file_prepare_directory($target_dir, FILE_MODIFY_PERMISSIONS | FILE_CREATE_DIRECTORY)) {
+        throw new Exception(t('Unable to prepar, a directory %dir for extraction.', array('%dir' => $target_dir)));
+      }
+
+      $archiver->extract($extract_location);
       $pattern = '/' . $form_state['values']['pattern'] . '/';
-      if ($files = file_scan_directory($extract_dir, $pattern)) {
-        foreach ($files as $file) {
+      if ($extracted_files = file_scan_directory($extract_location, $pattern)) {
+        foreach ($extracted_files as $extracted_file) {
+          $file = new stdClass();
+          $file->fid = NULL;
+           $file->uid = $archive->uid;
+          $file->filename = $extracted_file->filename;
+          $file->origname = $extracted_file->filename;
           $file->status = FILE_STATUS_PERMANENT;
-          $file->uid = $archive->uid;
+          $file->filemime = file_get_mimetype($extracted_file->filename);
+
+          // destination uri should match the current file directory hierarchy.
+          $file->uri = $target_dir . str_replace($extract_location, '', $extracted_file->uri);
+
+          // Rename potentially executable files, to help prevent exploits (i.e. will
+          // rename filename.php.foo and filename.php to filename.php.foo.txt and
+          // filename.php.txt, respectively). Don't rename if 'allow_insecure_uploads'
+          // evaluates to TRUE.
+          if (!variable_get('allow_insecure_uploads', 0) && preg_match('/\.(php|pl|py|cgi|asp|js)(\.|$)/i', $file->filename) && (substr($file->filename, -4) != '.txt')) {
+            $file->filemime = 'text/plain';
+            $file->uri .= '.txt';
+            $file->filename .= '.txt';
+          }
+
+          // prepare destination path for the extracted file while keeping the
+          // directory hierarchy of the file.
+          $destination = pathinfo($file->uri, PATHINFO_DIRNAME);
+          if (!file_prepare_directory($destination, FILE_MODIFY_PERMISSIONS | FILE_CREATE_DIRECTORY)) {
+            throw new Exception(t('Unable to prepar, a directory %dir for extraction.', array('%dir' => $destination)));
+          }
+
+          if (!file_unmanaged_move($extracted_file->uri, $file->uri)) {
+            throw new Exception(t('Could not move uploaded file %file to destination %destination.', array('%file' => $extracted_file->filename, '%destination' => $file->uri)));
+            return FALSE;
+          }
+
           file_save($file);
           $form_state['files'][$file->fid] = $file;
         }
       }
+      // Delete extract location
+      file_unmanaged_delete_recursive($extract_location);
       drupal_set_message(t('Extracted %file and added @count new files.', array('%file' => $archive->filename, '@count' => count($files))));
     }
     else {

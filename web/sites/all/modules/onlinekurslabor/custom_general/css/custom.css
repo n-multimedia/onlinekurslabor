@@ -343,7 +343,7 @@ show new (mobile) instructor tools
 #mobile_authors_tools-container,
 #mobile_instructors_tools-container {
   width: 100%;
-  z-index: 1002;
+  z-index: 98;
   background-color: #426DA0;
   padding-top: 20px;
   padding-bottom: 50px;
@@ -1049,7 +1049,7 @@ Embeded Tasks
   top: 20px;
   background-image: url(../images/icons/transparent-icons---author.png);
   background-repeat: no-repeat;
-  background-position: -420px 0;
+  background-position: -480px 0;
 }
 
 .embeded_task .solution {

@@ -350,14 +350,46 @@ function custom_general_form_alter(&$form, &$form_state, $form_id) {
         $form['og_domain_ref'][LANGUAGE_NONE]['#after_build'][] = '_custom_general_collapse_og_ref_field';
     }
 
-    // inaccessbible for non-admins
-  if (!in_array('administrator', array_values($user->roles))) {
-    $form['#group_children']['biblio_fieldset']['#access'] = FALSE;
-  }
+    //noch ein warning
+    if (!empty($form['book'])) {
+        $form['book']['text_warning'] = array
+            (
+            '#prefix' => '<b><i class="glyphicon glyphicon-warning-sign"></i> ',
+            '#suffix' => '</b><hr>',
+            '#markup' => t('Beware! Change this if you are aware of consequences only!'),
+            '#weight' => -100,
+        );
+    }
+
+    //entferne für < admin
+    if (!in_array('administrator', array_values($user->roles))) {
+        //zuweisen zu buch: inaccessbible for non-admins
+        if(!empty($form['#group_children']['biblio_fieldset']) && is_array($form['#group_children']['biblio_fieldset']))
+        {
+             $form['#group_children']['biblio_fieldset']['#access'] = FALSE;
+        }
+
+        if (!empty($form['book'])) {
+            //lehrtextkapitel zu buch zuweisen
+            $form['book']['#access'] = FALSE;
+        }
+    }
+
+    /** logo / by ML an prominenten stellen */
+    if(in_array($form_id, array('user_login', 'user_pass')))
+    {   $path_logo_lq = theme_get_setting('logo', 'bootstrap_onlinekurslabor');
+      $html_logo_lq = '<img src="'. str_replace('header.svg', 'header-black.svg', $path_logo_lq).'" alt="">';
+      $help_str = 'Probleme beim Login? <a href="https://ml.phil.uni-augsburg.de/kontakt/" target="_blank">Wir helfen</a>';
+     // $about_str = 'Eine Initiave des <a href="https://ml.phil.uni-augsburg.de/">Medienlabors</a>';
+      $ml_string = '<div class="row"><div class="col-md-9 col-xs-3"></div><div class="col-md-3 col-xs-9">'.$help_str.'<br>'.$html_logo_lq.'</div></div>';
+        $form['#suffix'] = $ml_string;
+    }
 
 
   if ($form_id != "book_admin_edit")
-    return;
+  {
+      return;
+  }
 
   $plugin = context_get_plugin('condition', 'custom_general_condition_section_content');
   if ($plugin) {
@@ -1634,8 +1666,9 @@ function _custom_general_get_max_weight_in_book_tree($tree) {
  */
 function custom_general_og_membership_insert(OgMembership $og_membership) {
     //invalidate caches for affected group
-    if ($og_membership->gid)
-        og_invalidate_cache($og_membership->gid);
+    if ($og_membership->gid) {
+      og_invalidate_cache($og_membership->gid);
+    }
 }
 
 
@@ -1782,6 +1815,25 @@ function _custom_general_collapse_filter_tips($filter, $format, $long = FALSE) {
 }
 
 
+/**
+ * "übersetzt" Definition-Strings in englisch
+ * returned eine ausgebbare Repräsentation eines Contenttypes
+ * z.B. COURSES_COURSE = course
+ * @param String $content_type
+ * @return String the printable contenttype
+ */
+function _custom_general_get_printable_contenttype_name($content_type) {
+    $ARR_Definition_to_String = array(
+        NM_COURSE => 'course',
+        NM_COURSE_DOCS => 'course doc',
+        NM_COURSE_FORUMTOPIC => 'forum topic',
+        NM_COURSE_NEWS => 'news',
+        NM_COURSE_GROUP => 'course group',
+        NM_COURSE_GENERIC_TASK => 'task',
+        NM_COURSE_GENERIC_TASK_SOLUTION => 'solution'
+    );
+    return $ARR_Definition_to_String[$content_type];
+}
 
 /**
  * Liefert einheitliche "Kein-Eintrag-gefunden"-Texte mit Erstelllink
@@ -1790,15 +1842,6 @@ function _custom_general_collapse_filter_tips($filter, $format, $long = FALSE) {
  */
 function _custom_general_get_no_content_text($type, $og_gid)
 {
-    //kann man bei Gelegenheit ausgliedern
-    //"übersetzt" Definition-Strings in englisch
-    $ARR_Definition_to_String = array(
-                NM_COURSE_DOCS => 'course doc',
-                NM_COURSE_NEWS => 'news',
-                NM_COURSE_GROUP => 'course group',
-                NM_COURSE_GENERIC_TASK => 'task'
-            );
-
     $affected_node = node_load($og_gid);
 
 
@@ -1808,7 +1851,7 @@ function _custom_general_get_no_content_text($type, $og_gid)
     $add_text = t('Create the first one!', array(), array('context' => $type));
 
     //"Noch kein Kursdokumente angelegt"
-    $default_no_content_text = t('No ' . $ARR_Definition_to_String[$type] . ' has been created yet.');
+    $default_no_content_text = t('No ' ._custom_general_get_printable_contenttype_name($type) . ' has been created yet.');
 
 
     $default_text_without_add = $default_no_content_text;
@@ -1826,7 +1869,7 @@ function _custom_general_get_no_content_text($type, $og_gid)
         case NM_COURSE:
             switch ($type) {
                 case NM_COURSE_NEWS: //"news" is plural!
-                    $text = t('No ' . $ARR_Definition_to_String[$type] . ' have been created yet.') . (node_access('update', $affected_node)? ' '. l($add_text, $default_url, array('query'=>array('og_group_ref'=>$og_gid))):'');
+                    $text = t('No ' . _custom_general_get_printable_contenttype_name($type) . ' have been created yet.') . (node_access('update', $affected_node)? ' '. l($add_text, $default_url, array('query'=>array('og_group_ref'=>$og_gid))):'');
                     return $text;
 
                 default: return $default_text;

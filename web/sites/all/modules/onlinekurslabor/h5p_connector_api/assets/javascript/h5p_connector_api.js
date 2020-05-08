@@ -43,19 +43,35 @@
 
 (function($) {
     Drupal.behaviors.h5p_connector_api = {
-        h5pEditorreadyCount: 0,
+        
+        /**
+         * H5P triggert dieverse Events, auf die man reagieren kann
+         * @param {type} eventname
+         * @param {type} callback
+         * @returns {undefined}
+         */
+        reactOnH5PEvent: function (eventname, callback)
+        {   
+            // alle events:  Drupal.behaviors.h5p_connector_api.reactOnH5PEvent('*', function(event){console.debug("H5P-Event"); console.debug(event)});
+            if(typeof H5P !== 'undefined')
+            {
+                H5P.externalDispatcher.on(eventname, callback);
+            }
+        },         
         /*wenn h5p geladen hat, wird der uebergebene callback ausgefuehrt*/
         onH5Pready: function(callback)
         {
-            (typeof H5P !== 'object' || typeof H5P.instances !== 'object' || H5P.instances.length === 0) ? setTimeout(Drupal.behaviors.h5p_connector_api.onH5Pready, 1000, callback) : callback();
+            return this.reactOnH5PEvent('initialized', callback);
         },
         /*API-Funktion beim Erstellen eines neuen H5P-Contents / editieren eines vorhandenen*/
          onH5PEditorready: function(callback)
-        { 
-            //bricht nach 15 sec ab
-            if(Drupal.behaviors.h5p_connector_api.h5pEditorreadyCount++ >15)
-                return false;
-             (typeof window[0] === 'undefined' || typeof window[0].H5PEditor === 'undefined' || typeof window[0].H5PEditor.widgets === 'undefined' || typeof window[0].H5PEditor.widgets.video === 'undefined') ? setTimeout(Drupal.behaviors.h5p_connector_api.onH5PEditorready, 1000, callback) : Drupal.behaviors.h5p_connector_api.compareVersionAndCallback("H5PEditor", callback);
+        {  
+            return this.reactOnH5PEvent('editorload', callback);
+        },
+        /*API-Funktion beim Erstellen eines neuen H5P-Contents / editieren eines vorhandenen. Die Editor-GUI ist fertig gerendered.*/
+         onH5PEditorrendered: function(callback)
+        {    //man beachte beim Event das "..ED"
+             return this.reactOnH5PEvent('editorloaded', callback);
         },
         /*wegen h5p-api-changes wird nun vor ausführung immer die version geprüft und auch bei minor-changes ein fehler geworfen*/
         compareVersionAndCallback: function(what, callback)
@@ -65,7 +81,7 @@
             {
                 var edit_api = window[0].H5PEditor.apiVersion.majorVersion +"." + window[0].H5PEditor.apiVersion.minorVersion;
 
-                if(edit_api !== "1.23")
+                if(edit_api !== "1.24")
                     alert(notgood_error+edit_api);
                 else
                     callback();
@@ -198,6 +214,11 @@
          */
         initializeHelper: function()
         {
+            //es wird kein video-/audioelement angezeigt und somit brechen wir ab.
+            if(H5P.instances.length === 0)
+            {
+                return; 
+            }
             for (var i = 0; i < H5P.instances.length; i++) {
                 
                 var version = H5P.instances[i].libraryInfo.majorVersion + "." + H5P.instances[i].libraryInfo.minorVersion;
@@ -232,7 +253,7 @@
         onAVReady: function(callback)
         {
 
-         Drupal.behaviors.h5p_connector_api.onH5Pready(function(){Drupal.behaviors.h5p_connector_api.av_player.onAVReadyhelper(callback)})   ;
+         Drupal.behaviors.h5p_connector_api.onH5Pready(function(){Drupal.behaviors.h5p_connector_api.av_player.onAVReadyhelper(callback);})   ;
                    
         },
         /**
@@ -470,7 +491,6 @@ jQuery(window).on('hashchange', function(e) {
 */
 
 jQuery(document).ready(function() {
-    
     Drupal.behaviors.h5p_connector_api.av_player.initialize();
     Drupal.behaviors.h5p_connector_api.av_player.onAVReady(function() {
         

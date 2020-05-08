@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_stream_features.features.og_features_permission.inc

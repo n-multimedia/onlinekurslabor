@@ -7377,20 +7377,16 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $display->content['new-d9b72f36-2b7e-46e0-bacf-00cc5c23ac5c'] = $pane;
   $display->panels['center'][1] = 'new-d9b72f36-2b7e-46e0-bacf-00cc5c23ac5c';
   $pane = new stdClass();
-  $pane->pid = 'new-d445add9-630c-48d1-b4e6-375b2d616005';
+  $pane->pid = 'new-7e1fe81a-ef66-4ce9-aeba-11cf8ae19a6f';
   $pane->panel = 'navigation';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_text_outline';
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'admin_title' => '',
-    'title' => '',
-    'body' => '<?php
-return section_courses_text_outline();
-?>',
-    'format' => 'php_code',
-    'substitute' => 0,
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -7400,9 +7396,9 @@ return section_courses_text_outline();
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
-  $pane->uuid = 'd445add9-630c-48d1-b4e6-375b2d616005';
-  $display->content['new-d445add9-630c-48d1-b4e6-375b2d616005'] = $pane;
-  $display->panels['navigation'][0] = 'new-d445add9-630c-48d1-b4e6-375b2d616005';
+  $pane->uuid = '7e1fe81a-ef66-4ce9-aeba-11cf8ae19a6f';
+  $display->content['new-7e1fe81a-ef66-4ce9-aeba-11cf8ae19a6f'] = $pane;
+  $display->panels['navigation'][0] = 'new-7e1fe81a-ef66-4ce9-aeba-11cf8ae19a6f';
   $pane = new stdClass();
   $pane->pid = 'new-34bfc27b-c755-4677-a814-91555cdd9e92';
   $pane->panel = 'navigation';
@@ -7652,6 +7648,101 @@ return section_courses_text_outline();
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['kursdokumente_in_kurs_'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'kursfinder';
+  $page->task = 'page';
+  $page->admin_title = 'kursfinder';
+  $page->admin_description = 'find courses';
+  $page->path = 'kursfinder';
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
+  $page->menu = array();
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_kursfinder__panel_context_f2a3a1b1-a230-4047-bd1d-a20000168d38';
+  $handler->task = 'page';
+  $handler->subtask = 'kursfinder';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Panel',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'name' => '',
+  );
+  $display = new panels_display();
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = 'Kursfinder';
+  $display->uuid = '1ba7c280-9dc6-4655-8f32-17ec42abd31e';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_kursfinder__panel_context_f2a3a1b1-a230-4047-bd1d-a20000168d38';
+  $display->content = array();
+  $display->panels = array();
+  $pane = new stdClass();
+  $pane->pid = 'new-10d719c2-0805-4b43-bf4b-e709b42323e1';
+  $pane->panel = 'middle';
+  $pane->type = 'views';
+  $pane->subtype = 'courses_lehet_kursfilter';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_pager_settings' => 0,
+    'use_pager' => 1,
+    'nodes_per_page' => '20',
+    'pager_id' => '0',
+    'offset' => '0',
+    'more_link' => 0,
+    'feed_icons' => 0,
+    'panel_args' => 0,
+    'link_to_view' => 0,
+    'args' => '',
+    'url' => '/kursfinder',
+    'display' => 'default',
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '10d719c2-0805-4b43-bf4b-e709b42323e1';
+  $display->content['new-10d719c2-0805-4b43-bf4b-e709b42323e1'] = $pane;
+  $display->panels['middle'][0] = 'new-10d719c2-0805-4b43-bf4b-e709b42323e1';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = 'new-10d719c2-0805-4b43-bf4b-e709b42323e1';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['kursfinder'] = $page;
 
   $page = new stdClass();
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */

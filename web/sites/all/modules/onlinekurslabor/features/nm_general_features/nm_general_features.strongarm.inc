@@ -356,7 +356,7 @@ dasddasdasd',
     'domain' => '',
     'prefix' => 'de',
     'weight' => '0',
-    'javascript' => 'ygBvr9SgONRpQyjV3K3Rnh5iHQJRLhteRXVpqFO7LLk',
+    'javascript' => 'SQI09F7sMg4bPh0_t2u1axMZC-bQF4EbUhka41umIU8',
   );
   $export['language_default'] = $strongarm;
 
@@ -1114,7 +1114,7 @@ Wenn Sie in Zukunft nicht mehr über neue Nachrichten informiert werden wollen, 
     'toggle_main_menu' => 0,
     'toggle_secondary_menu' => 0,
     'default_logo' => 0,
-    'logo_path' => 'sites/all/themes/bootstrap_onlinekurslabor/images/onlinekurslabor-logo-header.png',
+    'logo_path' => 'sites/all/themes/bootstrap_onlinekurslabor/images/onlinekurslabor-logo-header.svg',
     'logo_upload' => '',
     'default_favicon' => 0,
     'favicon_path' => 'sites/all/themes/bootstrap_onlinekurslabor/favicon_touch/favicon.ico',

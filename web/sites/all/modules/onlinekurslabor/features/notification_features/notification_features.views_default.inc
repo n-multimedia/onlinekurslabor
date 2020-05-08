@@ -30,6 +30,9 @@ function notification_features_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortieren nach';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Aufsteigend';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Absteigend';
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '15';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -59,9 +62,9 @@ function notification_features_views_default_views() {
     t('more'),
     t('Anwenden'),
     t('Zurücksetzen'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
+    t('Sortieren nach'),
+    t('Aufsteigend'),
+    t('Absteigend'),
     t('Activity pane'),
     t('shows activity '),
     t('View panes'),

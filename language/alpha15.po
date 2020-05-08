@@ -1,0 +1,43 @@
+#Translation File - onlinekurslabor
+
+msgid "created a course doc"
+msgstr "hat ein Kursdokument bereitgestellt"
+
+msgid "created a course group"
+msgstr "hat eine Kursgruppe angelegt"
+
+msgid "created a task"
+msgstr "hat eine Aufgabe gestellt"
+
+msgid "created a news"
+msgstr "hat eine Ankündigung verfasst"
+
+msgid "created a forum topic"
+msgstr "hat ein Forenthema erstellt"
+
+msgid "created a solution"
+msgstr "hat eine Lösung verfasst"
+
+msgid "assessed a solution"
+msgstr "hat eine Lösung bewertet"
+
+msgid "created a @printable_node_type"
+msgstr "hat etwas erstellt"
+
+msgid "Pattern [collapsible]<h2>heading</h2> ... text... [/collapsible] is collapsible"
+msgstr "Durch die Schreibweise [collapsible]<h2>Überschrift</h2> ... Text... [/collapsible] wird Text einklappbar"
+
+msgid "Error loading the PDF!"
+msgstr "Fehler beim Laden des PDFs!"
+
+msgid "Course direction"
+msgstr "Kursleitung"
+
+msgid "Visible for course direction in this course"
+msgstr "Sichtbar für die Leitung und Unterstützung im Kurs"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""

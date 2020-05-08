@@ -116,7 +116,7 @@ a.interaction_icon_h5ptext,a.interaction_icon_h5pimage,a.interaction_icon_h5ptab
 background: #1d5cff ;
 }
 /*pinker hintergrund*/
-a.interaction_icon_h5pmultichoice,a.interaction_icon_h5pblanks,a.interaction_icon_h5pdragquestion,a.interaction_icon_h5psummary,a.interaction_icon_h5plink
+a.interaction_icon_h5psinglechoiceset, a.interaction_icon_h5pmultichoice,a.interaction_icon_h5pblanks,a.interaction_icon_h5pdragquestion,a.interaction_icon_h5psummary,a.interaction_icon_h5plink
 {
 background: #981D99;
 }
@@ -131,6 +131,10 @@ a.interaction_icon_h5pimage:before {
 }
 a.interaction_icon_h5ptable:before {
   content:  "\f0ce";
+}
+
+a.interaction_icon_h5psinglechoiceset:before {
+    content: "\f00c";
 }
 a.interaction_icon_h5pmultichoice:before {
   content: "\f046";

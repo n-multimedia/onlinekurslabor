@@ -3,11 +3,25 @@
 require_once(dirname(__FILE__) . '/okl_dev.truncate.inc');
 
 function okl_dev_page_build(&$page) {
+   
     //dev
-    if (_dev_live_warner_is_no_live_system()) {
-
+    if (_okl_dev_is_no_live_system()){
         if (!defined('NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT'))
+        {
             drupal_set_message('const NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT is not defined. This is not acceptable!', 'error');
+        }
+         /*//add plugin-js for controlss
+        drupal_add_css(drupal_get_path('module', 'dev_live_warner') . '/assets/css/dev.css');
+        //add plugin-js for controlss
+        drupal_add_js(drupal_get_path('module', 'dev_live_warner') . '/assets/js/dev.js');
+          */
+        
+        //fuege link unten ans seitenende zum log
+        $link = '<a href=/last_update_log>Log des letzten Updates</a>';
+        $page['page_bottom']['dev_live_warner'] = array(
+            '#weight' => 80,
+            '#markup' => '<center>' . $link . '</center><br><br>',
+        );
     }
     //live
     else {
@@ -15,6 +29,47 @@ function okl_dev_page_build(&$page) {
         drupal_set_message(t('You appear to be on a live-system, but okl_dev is enabled. R u sure?'), 'warning');
     }
 }
+
+
+/**
+ * checks if you are NOT on a livesystem
+ * @return boolean true if not on live-system
+ */
+function _okl_dev_is_no_live_system()
+{
+    if(!module_exists('environment_indicator'))
+    {
+        return true;
+    }
+    $current_environment = environment_indicator_get_active();
+    return $current_environment['machine'] != 'live_environment';
+}
+
+/**
+ * Gets a name from the current system based on doc-root
+ * used for identifying systems
+ *
+ * @return (string)
+ */
+function _okl_dev_get_system_name() {
+    $root = str_replace("/web", "",_okl_dev_get_document_root());
+    $last = end(explode("/", $root));
+    $ident =  explode(".", $last) ;
+    return $ident[0];
+}
+/**
+ * Get the document root for the current Drupal installation.
+ * $_SERVER['DOCUMENT_ROOT'] is not reliable across all
+ * systems, so we need a way to get the correct value.
+ *
+ * @return (string)
+ */
+function _okl_dev_get_document_root() {
+    $absolute_dir = dirname(__FILE__);
+    $relative_dir = drupal_get_path('module', 'okl_dev');
+    return substr($absolute_dir, 0, -1 * (1 + strlen($relative_dir)));
+}
+
 
 /**
  * Implements hook_menu().
@@ -32,8 +87,54 @@ function okl_dev_menu() {
         'type' => MENU_LOCAL_TASK,
         'weight' => 3,
     );
+    
+    $items['last_update_log'] = array(
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+        'page callback' => 'okl_dev_view_update_log', // Magic goes here
+    );
+
     return $items;
 }
+
+
+/**
+ *  VIEW LAST UPDATE LOG
+ */
+/**
+ * liefert die seite mit dem letzten log aus 
+ * @return type array page-definition
+ */
+function okl_dev_view_update_log() {
+    if (_okl_dev_updatelog_exists())
+        $log = file_get_contents(_okl_dev_get_updatelog_path());
+    else
+        $log = "n/a";
+    return array('#markup' => '<h1>Letztes Update Log:</h1><pre>' . $log . '</pre>');
+}
+
+/**
+ * schaut ob das logtype existiert
+ * @return boolean true false
+ */
+function _okl_dev_updatelog_exists() {
+    $file = _okl_dev_get_updatelog_path();
+    return file_exists($file);
+}
+/**
+ * liefert pfad zur logfile
+ * @return type string absolute path to logfile
+ */
+function _okl_dev_get_updatelog_path() {
+    $files_dir = _okl_dev_get_document_root() . DIRECTORY_SEPARATOR . variable_get('file_public_path', conf_path() . '/files/');
+    return $files_dir . '/last_update_log';
+}
+
+/**
+ *  ----END VIEW LAST UPDATE LOG
+ */
+
+
 
 /**
  * implements hook_form_FORM_ID_alter(&$form, &$form_state, $form_id) {

@@ -133,6 +133,26 @@ function _section_content_theme_authors_tools($variables = NULL) {
 }
 
 /**
+ * used for block "content_text_outline"
+ * @param type $vars
+ */
+function _section_content_block_text_outline($vars = NULL)
+{
+    /**
+     * functions in COURSE are slightly different :((
+     */
+    if(  _section_courses_get_active_course())
+    {
+        return section_courses_text_outline();
+    }
+    else
+    {
+        return section_content_text_outline();
+    }
+    
+}
+
+/**
  * get link Items for Author's Tools Block
  *
  * @global type $user

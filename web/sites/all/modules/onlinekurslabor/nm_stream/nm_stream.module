@@ -12,12 +12,17 @@ define('NM_STREAM_PUBLIC', 4);
 define('NM_STREAM_PROJECT', 5);
 //Domain (annvid)
 define('NM_STREAM_DOMAIN', 6);
+//Course Direction
+define('NM_STREAM_COURSE_DIRECTION', 7);
 
 // API
 define('NM_STREAM_API_INIT_POSTS_LIMIT', 10);
 
 define('NM_STREAM_ALLOWED_HTML_TAGS', serialize(array('a', 'em', 'b','u', 'i', 'strong', 'cite', 'blockquote', 'code', 'ul', 'ol', 'li', 'dl', 'dt',
     'dd', 'p', 'img', 'video', 'div', 'strike', 'table', 'tr', 'td', 'tbody', 'thead', 'tfoot')));
+
+setlocale(LC_ALL, 'de_DE');
+define('NM_STREAM_MENTION_REGEX', "/@(\p{Lu}[\w\p{L}\-]*(\s\p{Lu}[\w\p{L}\-]*)*)|@([\w\d]+[\.|\-|_]?[\w\d]*)/u");
 
 
 /**
@@ -259,6 +264,24 @@ function nm_stream_menu() {
   );
 
 
+  // Poll
+  $items['api/v2.0/nm_stream/node/%node/poll/add_vote/%'] = array(
+    'title' => 'NM Stream Node Poll Add Vote',
+    'page callback' => 'nm_stream_api_v2_node_poll_add_vote_callback',
+    'page arguments' => array(4, 7), // node, answer_value, token
+    'access callback' => 'node_access',
+    'access arguments' => array('view', 4),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['api/v2.0/nm_stream/node/%node/get/mention_members'] = array(
+    'title' => 'NM Stream - mention members Options',
+    'page callback' => 'nm_stream_api_v2_node_get_mention_members',
+    'page arguments' => array(4),
+    'access callback' => 'node_access',
+    'access arguments' => array('view', 4),
+    'type' => MENU_CALLBACK,
+  );
   /*
     //file upload
     $items['nm_stream/file_upload'] = array(
@@ -273,6 +296,12 @@ function nm_stream_menu() {
   return $items;
 }
 
+/**
+ * @return array
+ */
+function nm_stream_get_stream_containers() {
+  return [ANNVID_CONTENTTYPE, NM_COURSE_GROUP];
+}
 
 function nm_stream_user_has_role($roles) {
   if (user_is_logged_in()) {
@@ -305,9 +334,29 @@ function nm_stream_poll_update_access($nid) {
   else {
     return TRUE;
   }
-
 }
 
+/**
+ * Implements hook_node_delete().
+ * @param $node
+ */
+function nm_stream_node_delete($node)
+{
+  // delete all stream entries linked to this container
+  $container_types = nm_stream_get_stream_containers();
+  if (in_array($node->type, $container_types)) {
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+      ->propertyCondition('status', 1)
+      ->fieldCondition('og_group_ref', 'target_id', $node->nid);
+    $result = $query->execute();
+
+    if (!empty($result['node'])) {
+      $keys = array_keys($result['node']);
+      node_delete_multiple($keys);
+    }
+  }
+}
 
 /**
  * get node updates
@@ -825,6 +874,7 @@ function nm_stream_nm_stream_node_add_callback($type = 'nm_stream') {
   }
 }
 
+
 function nm_stream_nm_stream_node_load_callback($node) {
   $response = array();
 
@@ -868,6 +918,7 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
     //consider adapting for in add callback too!
     $body = _nm_stream_filter_xss($_REQUEST['body']) ;
     $privacy = isset($_REQUEST['privacy']) ? check_plain($_REQUEST['privacy']) : '';
+    $sticky = isset($_REQUEST['sticky']) ? check_plain($_REQUEST['sticky']) : '';
 
     //prevent csrf attacks
     //@todo CSRF-Checks in einzelne Funktion auslagern & nicht 10x im Code
@@ -886,7 +937,12 @@ function nm_stream_nm_stream_node_edit_callback($node, $type = 'nm_stream') {
     else {
       //set new values
       $node->body[LANGUAGE_NONE][0]['value'] = $body;
-      $node->field_nm_privacy [LANGUAGE_NONE][0]['value'] = $privacy;
+      $node->field_nm_privacy[LANGUAGE_NONE][0]['value'] = $privacy;
+
+      // check if user may set sticky option
+      if(og_node_access($node, 'nm_stream_sticky')) {
+        $node->sticky = $sticky;
+      }
 
       //file attachments
       if (!isset($node->field_nm_attachments[LANGUAGE_NONE])) {
@@ -1777,6 +1833,12 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
       'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
       'default' => FALSE,
     ];
+    $options_items[NM_STREAM_COURSE_DIRECTION] = [
+      'label' => t('Course direction'),
+      'description' => t('Visible for course direction in this course'),
+      'icon_path' => $module_path . '/images/privacy-icons/privacy-course-direction.png',
+      'default' => FALSE,
+    ];
     $options_items[NM_STREAM_PROJECT] = [
       'label' => t('Project'),
       'description' => t('@TODO describe this'),
@@ -1798,6 +1860,7 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
           drupal_set_message ("No environment given in 98uohe2fuw! Contact support!", "error");*/
       // global area (home page) => all options
       if (empty($current_environment['container'])) {
+        // all options of the active node in edit mode should be accessable
         $options_items[NM_STREAM_TEAM] = [
           'label' => t('Team'), //todo: wer ist team?
           'description' => t('@TODO describe this'),
@@ -1816,10 +1879,14 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
           'icon_path' => $module_path . '/images/privacy-icons/privacy-domain.png',
           'default' => FALSE,
         ];
+        $options_items[NM_STREAM_COURSE_DIRECTION] = [
+          'label' => t('Course direction'),
+          'description' => t('Visible for course direction in this course'),
+          'icon_path' => $module_path . '/images/privacy-icons/privacy-course-direction.png',
+          'default' => FALSE,
+        ];
       }
-
     }
-
 
     //private - always possible
     $options_items[NM_STREAM_PRIVATE] = [
@@ -1848,6 +1915,12 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
             'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
             'default' => TRUE,
           ];
+          $options_items[NM_STREAM_COURSE_DIRECTION] = [
+            'label' => t('Course direction'),
+            'description' => t('Visible for course direction in this course'),
+            'icon_path' => $module_path . '/images/privacy-icons/privacy-course-direction.png',
+            'default' => FALSE,
+          ];
           if (node_access('update', $current_environment['container'], $user) || $stream_nodes_privacy_setting == NM_STREAM_COURSE) {
             $options_items[NM_STREAM_COURSE] = [
               'label' => t('Course'),
@@ -1863,6 +1936,12 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
             'label' => t('Team'), //todo: wer ist team?
             'description' => t('@TODO describe this'),
             'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+            'default' => FALSE,
+          ];
+          $options_items[NM_STREAM_COURSE_DIRECTION] = [
+            'label' => t('Course direction'),
+            'description' => t('Visible for course direction in this course'),
+            'icon_path' => $module_path . '/images/privacy-icons/privacy-course-direction.png',
             'default' => FALSE,
           ];
           $options_items[NM_STREAM_PROJECT] = [
@@ -1916,6 +1995,12 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
                   'icon_path' => $module_path . '/images/privacy-icons/privacy-course.png',
                   'default' => TRUE,
                 ];
+                $options_items[NM_STREAM_COURSE_DIRECTION] = [
+                  'label' => t('Course direction'),
+                  'description' => t('Visible for course direction in this course'),
+                  'icon_path' => $module_path . '/images/privacy-icons/privacy-course-direction.png',
+                  'default' => FALSE,
+                ];
               }
               //privacy lehrtext nur als editor des lehrtexts
               if (node_access('update', $current_environment['container']->parent, $user) || $stream_nodes_privacy_setting == NM_STREAM_DOMAIN) {
@@ -1935,6 +2020,12 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
                 'description' => t('Visible for members of your course group'),
                 'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
                 'default' => TRUE,
+              ];
+              $options_items[NM_STREAM_COURSE_DIRECTION] = [
+                'label' => t('Course direction'),
+                'description' => t('Visible for course direction in this course'),
+                'icon_path' => $module_path . '/images/privacy-icons/privacy-course-direction.png',
+                'default' => FALSE,
               ];
               // visibility kurs nur falls ich kurs bearbeiten darf
               if (node_access('update', $current_environment['context'], $user) || $stream_nodes_privacy_setting == NM_STREAM_COURSE) {
@@ -1956,6 +2047,12 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
                 'label' => t('Team'), //todo: wer ist team?
                 'description' => t('@TODO describe this'),
                 'icon_path' => $module_path . '/images/privacy-icons/privacy-team.png',
+                'default' => FALSE,
+              ];
+              $options_items[NM_STREAM_COURSE_DIRECTION] = [
+                'label' => t('Course direction'),
+                'description' => t('Visible for course direction in this course'),
+                'icon_path' => $module_path . '/images/privacy-icons/privacy-course-direction.png',
                 'default' => FALSE,
               ];
               $options_items[NM_STREAM_PROJECT] = [
@@ -2424,10 +2521,6 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   // CORS Setting to allow localhost accessing the API
   nm_stream_api_v2_set_localhost_headers();
 
-  // todo faking group url
-  // $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347";
-  // $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/";
-
   $environment = nm_stream_get_environment();
   $context = $environment["context"];
   $container = $environment["container"];
@@ -2458,13 +2551,19 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
     ];
   }
 
+  // check set sticky permission
+  $perm_create_sticky_post = FALSE;
+  if (!empty($container->nid) && og_node_access($container, 'update', $account) == NODE_ACCESS_ALLOW) {
+    $perm_create_sticky_post = TRUE;
+  }
+
   $data = [];
   $data['stream'] = [];
-  $data['stream']['containerNID'] = (!empty($container->nid)? $container->nid : false);
-  $data['stream']['contextNID'] = (!empty($context->nid)? $context->nid : false);
+  $data['stream']['containerNID'] = (!empty($container->nid) ? $container->nid : false);
+  $data['stream']['contextNID'] = (!empty($context->nid) ? $context->nid : false);
   $data['stream']['privacyDefault'] = $privacy_key_default;
   $data['stream']['permissions'] = [];
-  $data['stream']['permissions'][] = ["canCreatePost" => TRUE];
+  $data['stream']['permissions'] = ["canCreatePost" => TRUE, 'canCreateStickyPost' => $perm_create_sticky_post];
   $data['stream']['loggedInUser'] = $account->uid;
   $data['stream']['privacyOptions'] = $privacy_options;
   $data['stream']['privacyOptionsAll'] = $privacy_options_all;
@@ -2491,20 +2590,22 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
  */
 function nm_stream_api_v2_render_stream($container) {
 
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/manifest.2ae2e69a05c33dfc65f8.js", [
+  $version = "";
+
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/manifest.js" . $version, [
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/vendor.89b75ce90b5b56f71af2.js", [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/vendor.js" . $version, [
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.8fcd6aa12daf4c86932b.js", [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.js" . $version, [
     'scope' => 'footer',
     'weight' => 5,
   ]);
 
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.236d7332c9cac79319fdbdaf7c3089ed.css', [
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.css' . $version, [
     'scope' => 'footer',
     'weight' => 5,
   ]);
@@ -2573,9 +2674,7 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
   global $base_url;
   $account = clone $user;
 
-  // todo faking group url
-  //$_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/15344/15347";
-  //$_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/";
+  nm_stream_api_v2_set_localhost_headers();
 
   $types = nm_stream_get_stream_content_types();
 
@@ -2591,7 +2690,8 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
     //->condition('n.nid', $top_node->nid, '>')
     ->condition('n.type', $types, 'IN')
     ->condition('n.status', NODE_PUBLISHED)
-    ->orderBy("n.created", "DESC")//order important!
+    ->orderBy("n.sticky", "DESC") //respect sticky posts
+    ->orderBy("n.created", "DESC") // order important!
     ->range($offset, $limit)
     ->addTag('node_access');
 
@@ -2784,6 +2884,7 @@ function nm_stream_api_v2_get_posts_json_data($account, $node) {
 
   $node_data['created'] = date(DATE_FORMAT_ISO, $node->created);
   $node_data['updated'] = date(DATE_FORMAT_ISO, (!empty($node->updated)? $node->updated : 0));
+  $node_data['sticky'] = $node->sticky;
   $node_data['privacy'] = [];
   $node_data['privacy']['privacyDefault'] = $node->field_nm_privacy[LANGUAGE_NONE][0]['value'];
   $node_data['privacy']['privacyOptions'] = $privacy_options;
@@ -2792,6 +2893,7 @@ function nm_stream_api_v2_get_posts_json_data($account, $node) {
   $node_data['permissions']['canCreateComment'] = node_access('view', $node, $account);
   $node_data['permissions']['canEdit'] = node_access('update', $node, $account);;
   $node_data['permissions']['canDelete'] = node_access('delete', $node, $account);;
+  $node_data['permissions']['canSetSticky'] = og_node_access($node_container, 'update', $account) == NODE_ACCESS_ALLOW;
 
   $node_data['context'] = [];
   $node_data['context']['nid'] = $node_context->nid;
@@ -2832,9 +2934,101 @@ function nm_stream_api_v2_get_posts_json_data($account, $node) {
       $node_data['attachments'][] = $attachment;
     }
   }
+
+  // poll data
+  $node_data['poll'] = nm_stream_node_get_poll_json($node);
+  // get current votes
+
+  /*if ($node->nid % 2) {
+    $node_data['poll'] = [
+        'multiple' => random_int(0,1) == 1 ? true : false,
+        'question' => 'Fake Data by dev1 for test purposes?',
+        'answers' => [
+          [
+            'value' => 1,
+            'text' => 'Answer 1',
+            'votes' => 53,
+            'selected' => false
+          ],
+          [
+            'value' => 2,
+            'text' => 'Answer 5',
+            'votes' => 35,
+            'selected' => false
+          ],
+          [
+            'value' => 3,
+            'text' => 'Answer 8',
+            'votes' => 10,
+            'selected' => false
+          ],
+        ],
+      ];
+  }*/
+
   return $node_data;
 }
 
+
+/**
+ * @param $node
+ * @return mixed
+ */
+function nm_stream_node_get_poll_json($node) {
+  global $user;
+
+  if(empty($node->field_nm_poll[LANGUAGE_NONE][0]['value'])) {
+    return;
+  }
+
+  $poll_serialized = $node->field_nm_poll[LANGUAGE_NONE][0]['value'];
+  if(empty($poll_serialized)) {
+    return json_decode('');
+  }
+  // deserealize poll
+  $poll = json_decode($node->field_nm_poll[LANGUAGE_NONE][0]['value']);
+
+  // Get the unique identifier for the user (IP Address if anonymous).
+  $user_criteria = votingapi_current_user_identifier();  // Get the unique identifier for the user (IP Address if anonymous).
+
+  $nid = $node->nid;
+
+  $criteria = array('entity_id' => $nid);
+  $user_vote = votingapi_select_votes($criteria + $user_criteria);
+
+  $show_results = FALSE;
+  $final_results = FALSE;
+
+  // get poll values
+  foreach ($poll->answers as $answer) {
+    // get all votes for current aswer
+    $votes = votingapi_select_votes($criteria + ['value' => $answer->value]);
+    $answer->votes = $votes ? count($votes) : 0;
+    // check: active user has selected this answer
+    foreach ($user_vote as $uv) {
+      if($uv['value'] == $answer->value) {
+        $answer->selected = TRUE;
+        $show_results = TRUE;
+      }
+    }
+  }
+
+  // check end date
+  if(!empty($poll->endDate)) {
+    $endDate = strtotime($poll->endDate);
+    // check if poll is closed
+    if(time() > $endDate) {
+      $final_results = TRUE;
+    }
+  }
+
+  $poll->showResults = $show_results;
+  $poll->finalResults = $final_results;
+
+
+
+  return $poll;
+}
 
 
 /**
@@ -3029,15 +3223,23 @@ function nm_stream_api_v2_node_add_callback($token = NULL) {
 
   if (is_array($node_data)) {
 
-    //consider adapting for in add callback too!
-    $body = _nm_stream_filter_xss($node_data['body']);
-    $body = $node_data['body'];
-    $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
     $containerNID = _nm_stream_filter_xss($node_data['containerNID']);
     $contextNID = _nm_stream_filter_xss($node_data['contextNID']);
 
+    // consider adapting for in add callback too!
+    $body = _nm_stream_filter_xss($node_data['body']);
+    // $body = $node_data['body'];
+    $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
+    // poll
+    $poll = !empty($node_data['poll']) ? $node_data['poll'] : NULL;
 
-    if (!is_numeric($privacy) || empty($body)) {
+    $sticky = 0;
+    // check set sticky permission
+    if (og_user_access('node', $containerNID, 'nm_stream_sticky', $account)) {
+      $sticky = isset($node_data['sticky']) ? check_plain($node_data['sticky']) : '';
+    }
+
+    if (!is_numeric($privacy) || !is_numeric($sticky) || empty($body)) {
       // $response['status'] = 0;
       // $response['error'] = 'Invalid data has been transmitted.';
       return drupal_access_denied();
@@ -3047,6 +3249,7 @@ function nm_stream_api_v2_node_add_callback($token = NULL) {
       $node = new stdClass();
       $node->title = time();
       $node->type = 'nm_stream';
+      $node->sticky = $sticky;
       //$node->body[LANGUAGE_NONE][0]['value'] = $body;
       $node->body = array(
         LANGUAGE_NONE => array(
@@ -3056,7 +3259,10 @@ function nm_stream_api_v2_node_add_callback($token = NULL) {
           )
         )
       );
-      $node->field_nm_privacy [LANGUAGE_NONE][0]['value'] = $privacy;
+
+      //$node->field_nm_poll[LANGUAGE_NONE][0]['value'] = $poll;
+      $node->field_nm_poll[LANGUAGE_NONE][0]['value'] = !empty($poll) ? json_encode($poll) : '';
+      $node->field_nm_privacy[LANGUAGE_NONE][0]['value'] = $privacy;
       node_object_prepare($node); // Sets some defaults. Invokes hook_prepare() and hook_node_prepare().
       $node->language = 'de';
       $node->uid = $account->uid;
@@ -3094,6 +3300,65 @@ function nm_stream_api_v2_node_add_callback($token = NULL) {
       $response['nid'] = $node->nid;
       $response['nodeData'] = nm_stream_api_v2_get_posts_json_data($account, $node);
     }
+  }
+
+  return drupal_json_output($response);
+}
+
+
+/**
+ * @param $node
+ * @param string $type
+ *
+ * @throws \Exception
+ */
+function nm_stream_api_v2_node_poll_add_vote_callback($node, $token = NULL) {
+  global $user;
+
+  // prevent csrf attacks
+  if (!drupal_valid_token($token)) {
+    return drupal_access_denied();
+  }
+
+  nm_stream_api_v2_set_localhost_headers();
+
+  $entity_type = 'node';
+  $nid = $node->nid;
+
+  $response = [];
+
+
+  $vote_data = json_decode(file_get_contents('php://input'), true);
+
+  $response = [];
+
+  //check poll state
+  $poll = nm_stream_node_get_poll_json($node);
+
+  if($poll->finalResults) {
+    // poll closed
+    $response['status'] = 0;
+    $response['poll'] = nm_stream_node_get_poll_json($node);
+  }else {
+    //save vote
+
+    // Get the unique identifier for the user (IP Address if anonymous).
+    $user_criteria = votingapi_current_user_identifier();
+
+    // Get the user's current vote.
+    $criteria = array('entity_type' => $entity_type, 'entity_id' => $nid) + $user_criteria;
+
+    foreach ($vote_data as $vote) {
+      $vote_data = $criteria + array('value' => $vote['value']);
+      votingapi_set_votes($vote_data, []);
+    }
+
+    // Moving the calculationg after saving/deleting the vote but before getting the votes.
+    votingapi_recalculate_results($entity_type, $nid);
+
+    $response['status'] = 1;
+    $response['poll'] = nm_stream_node_get_poll_json($node);
+
   }
 
   return drupal_json_output($response);
@@ -3152,6 +3417,10 @@ function nm_stream_api_v2_node_update_callback($node, $token = NULL) {
     //$body = _nm_stream_filter_xss($node_data['body']);
     $body = $node_data['body'];
     $privacy = isset($node_data['privacy']) ? check_plain($node_data['privacy']) : '';
+    $sticky = isset($node_data['sticky']) ? check_plain($node_data['sticky']) : '';
+    // poll
+    $poll = !empty($node_data['poll']) ? $node_data['poll'] : '';
+
 
     //prevent csrf attacks
     if (!drupal_valid_token($token)) {
@@ -3177,6 +3446,19 @@ function nm_stream_api_v2_node_update_callback($node, $token = NULL) {
       /*if (!isset($node->field_nm_attachments[LANGUAGE_NONE])) {
         $node->field_nm_attachments[LANGUAGE_NONE] = [];
       }*/
+
+      // Plugins
+      // sticky
+      $node->sticky = $sticky;
+
+      //poll
+      // important - delete existing votes poll has been deleted
+      if (empty($poll)) {
+        $criteria = array('entity_id' => $node->nid);
+        $votes = votingapi_select_votes($criteria);
+        votingapi_delete_votes($votes);
+      }
+      $node->field_nm_poll[LANGUAGE_NONE][0]['value'] = !empty($poll) ? json_encode($poll) : '';
 
       node_save($node);
 
@@ -3351,16 +3633,190 @@ function nm_stream_api_v2_comment_delete_callback($comment, $token = NULL) {
 }
 
 /**
+ * get next mentionalable users
+ * @param $nid
+ */
+function nm_stream_api_v2_node_get_mention_members($node_group)
+{
+  global $user;
+  $account = clone $user;
+
+  $members = custom_general_get_users_in_group($node_group->nid);
+
+  $mentionMembers = [];
+  // Loop through and load each user
+  foreach ($members AS $member_db) {
+
+    // exclude acting user from list
+    if ($member_db->uid == $account->uid) {
+      continue;
+    }
+
+    // Load the user object if necessary
+    $member = user_load($member_db->uid);
+    $profile = profile2_load_by_user($member, 'master');
+    $user_pic = "";
+    if (isset($profile->field_photo)) {
+      $user_picture_field = field_view_field('profile2', $profile, 'field_photo', 'value');
+      $user_pic_url = image_style_url('profile_nano_thumbnail', $user_picture_field['#items'][0]['uri']);
+    }
+    $realname = realname_load($member);
+
+    $member_entry = [];
+    $member_entry['avatar'] = $user_pic_url;
+    $member_entry['name'] = $member->name;
+    $member_entry['realname'] = $realname ? $realname : $member->name;
+
+    array_push($mentionMembers, $member_entry);
+  }
+
+  /*
+  //todo implement get users logic
+  $mentionMembers = [
+    [
+      'avatar' => 'https://randomuser.me/api/portraits/men/2.jpg',
+      'name' => 'sergej.naumenko.fake',
+      'realname' => 'Sergej Naumenko',
+    ],
+    [
+      'avatar' => 'https://randomuser.me/api/portraits/men/7.jpg',
+      'name' => 'berni.guybrush',
+      'realname' => 'Berni Guybrush',
+    ],
+  ];*/
+
+  $response['status'] = 1;
+  $response['mention_members'] = $mentionMembers;
+
+return drupal_json_output($response);
+
+}
+
+
+/**
+ * Implements hook_filter_info().
+ *
+ */
+function nm_stream_filter_info()
+{
+  $filters['filter_nm_stream_mention'] = array(
+    'title' => t('Mention People'),
+    'description' => t('write @username to mention users'),
+    'process callback' => '_nm_stream_filter_mention_process',
+    'tips callback' => '_nm_stream_filter_mention_tips',
+    'cache' => FALSE,
+  );
+  return $filters;
+}
+
+/**
+ *   Filter  process callback.
+ *   Content - look for @user mentions
+ * The actual filtering is performed here. The supplied text should be returned,
+ * once any necessary substitutions have taken place.
+ */
+function _nm_stream_filter_mention_process($text, $filter, $format)
+{
+
+  // @user
+  // @sergio.nachio, @sergio-nachio, @sergio_nachio @sergio_nachio
+  $regex = NM_STREAM_MENTION_REGEX;
+
+  return preg_replace_callback($regex, '_nm_stream_filter_mention_replacements', $text);
+}
+
+
+/**
+ * transforming @user mentions to links
+ * @see _nm_stream_filter_mention_replacements
+ * @param type $matches
+ * @return string
+ */
+function _nm_stream_filter_mention_replacements($matches)
+{
+  $text = "";
+  if (!empty($matches)) {
+    // get last match
+    $match_without_at = substr(current($matches) , 1);
+
+    $user_match = _nm_stream_mention_get_username_by_match($match_without_at);
+
+    if(!empty($user_match)) {
+      $account = $user_match['account'];
+      $user_name = $user_match['user_name'];
+
+      $suffix = "";
+      if(strlen($user_name) < strlen($match_without_at)) {
+        $suffix = substr($match_without_at, strlen($user_name));
+      }
+
+      $text = l('@' . $user_name, 'user/' . $account->uid) . $suffix;
+      // todo mentioned notification
+    }else {
+      // return text, if no matching user could be found
+      $text = $matches[0];
+    }
+  }
+
+  return $text;
+}
+
+function _nm_stream_mention_get_username_by_match($match) {
+
+  $account = user_load_by_name($match);
+  if(!empty($account) && $account->uid > 0) {
+    return ['account' => $account, 'user_name' => $match];
+  }
+
+  $next_match = $match;
+
+  while($next_match = _nm_stream_mention_get_next_match_candidate($next_match)) {
+    $account = user_load_by_name($next_match);
+    if (!empty($account) && $account->uid > 0) {
+      return ['account' => $account, 'user_name' => $next_match];
+    }
+  }
+
+  return NULL;
+}
+
+function _nm_stream_mention_get_next_match_candidate($match) {
+  $pos_ws = strrpos($match, ' ');
+  $pos_minus = strrpos($match, '-');
+  $pos_underscore = strrpos($match, '_');
+  $pos = max($pos_ws, $pos_minus, $pos_underscore);
+  return substr($match, 0, $pos);
+}
+
+
+/**
+ * Filter tips callback for menton  filter.
+ *
+ * The tips callback allows filters to provide help text to users during the
+ * content editing process. Short tips are provided on the content editing
+ * screen, while long tips are provided on a separate linked page. Short tips
+ * are optional, but long tips are highly recommended.
+ */
+function _nm_stream_filter_mention_tips($filter, $format, $long = FALSE) {
+
+  return t('@username to mention users');
+}
+
+
+/**
  *
  */
 function nm_stream_api_v2_set_localhost_headers() {
-  //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
+  // NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
 
-    RETURN; #NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
+  RETURN; #NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
 
   //NUR BEI ENTWICKLUNG AUF VUE.JS WIEDER AKTIVIEREN
   drupal_add_http_header('Access-Control-Allow-Credentials', 'true');
   drupal_add_http_header('Access-Control-Allow-Origin', 'http://localhost:8080');
   drupal_add_http_header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
   drupal_add_http_header('Access-Control-Allow-Headers', 'x-requested-with, Content-Type, origin, authorization, accept, client-security-token');
+
+  // todo faking group url
+  $_SERVER['HTTP_REFERER'] = "https://dev1.div.onlinekurslabor.de/course/groups/20817/20821";
 }

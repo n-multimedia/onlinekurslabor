@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * videosafe_features.features.field_instance.inc
@@ -76,6 +77,7 @@ function videosafe_features_field_default_field_instances() {
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
@@ -212,6 +214,7 @@ function videosafe_features_field_default_field_instances() {
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
@@ -243,6 +246,37 @@ function videosafe_features_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-videosafe_video-field_multivideo_type'.
+  $field_instances['node-videosafe_video-field_multivideo_type'] = array(
+    'bundle' => 'videosafe_video',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Wenn Sie mehrere Videospuren hochladen, wählen Sie bitte aus, wie sich diese voneinander unterscheiden.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 8,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_multivideo_type',
+    'label' => 'Unterschiede der Videospuren',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 3,
+    ),
+  );
+
   // Exported field_instance: 'node-videosafe_video-field_parent_folder'.
   $field_instances['node-videosafe_video-field_parent_folder'] = array(
     'bundle' => 'videosafe_video',
@@ -255,6 +289,7 @@ function videosafe_features_field_default_field_instances() {
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
@@ -286,7 +321,7 @@ function videosafe_features_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 4,
+      'weight' => 5,
     ),
   );
 
@@ -294,8 +329,15 @@ function videosafe_features_field_default_field_instances() {
   $field_instances['node-videosafe_video-field_video'] = array(
     'bundle' => 'videosafe_video',
     'deleted' => 0,
-    'description' => 'Wählen Sie mindestens ein Video zum Upload aus. Für die bestmögliche Browserunterstützung sollten Sie das Video im  <b>.webm</b>-Format und im  <b>.mp4</b>-Format hochladen.<br>
-Achten Sie idealerweise auf eine sinnvolle Benennung der Datei!',
+    'description' => 'Laden Sie mindestens ein Video hoch.<br>
+<ul>
+<li> Sie können Videos aus unterschiedlichen Perspektiven und oder Qualitätsstufen hochladen. </li>
+<li> Geben Sie den Videos nach dem Hochladen eine sinnvolle Beschreibung, z.B. <em>Hohe Qualität</em> oder <em>Perspektive Tafel</em> </li>
+</ul>
+Für die bestmögliche Browserunterstützung sollten Sie das Video im  <b>.webm</b>-Format und im  <b>.mp4</b>-Format hochladen.<br>
+<br>
+<br>
+<b>Achten Sie vor dem Hochladen idealerweise auf eine sinnvolle Benennung der Datei!</b>',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -307,10 +349,10 @@ Achten Sie idealerweise auf eine sinnvolle Benennung der Datei!',
     ),
     'entity_type' => 'node',
     'field_name' => 'field_video',
-    'label' => 'Video-Dateien',
+    'label' => 'Video-Spuren',
     'required' => 1,
     'settings' => array(
-      'description_field' => 0,
+      'description_field' => 1,
       'file_directory' => 'videosafe',
       'file_extensions' => 'mp4 m4v avi ogg ogm ogv webm weba',
       'max_filesize' => '',
@@ -324,7 +366,7 @@ Achten Sie idealerweise auf eine sinnvolle Benennung der Datei!',
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 3,
+      'weight' => 4,
     ),
   );
 
@@ -334,12 +376,21 @@ Achten Sie idealerweise auf eine sinnvolle Benennung der Datei!',
   t('Hat das Video einen <strong>Sperrvermerk</strong>, so können hier einzelne Autoren ausgewählt werden, die exklusiv die Berechtigung erhalten, das Video einzusehen und in Lehrtexten zu verwenden.  
 <br><strong>Mehrere Werte kommagetrennt.</strong>');
   t('Interne Bemerkung');
+  t('Laden Sie mindestens ein Video hoch.<br>
+<ul>
+<li> Sie können Videos aus unterschiedlichen Perspektiven und oder Qualitätsstufen hochladen. </li>
+<li> Geben Sie den Videos nach dem Hochladen eine sinnvolle Beschreibung, z.B. <em>Hohe Qualität</em> oder <em>Perspektive Tafel</em> </li>
+</ul>
+Für die bestmögliche Browserunterstützung sollten Sie das Video im  <b>.webm</b>-Format und im  <b>.mp4</b>-Format hochladen.<br>
+<br>
+<br>
+<b>Achten Sie vor dem Hochladen idealerweise auf eine sinnvolle Benennung der Datei!</b>');
   t('Oberordner');
   t('Optional: Zugriff nur für');
   t('Ordner');
-  t('Video-Dateien');
-  t('Wählen Sie mindestens ein Video zum Upload aus. Für die bestmögliche Browserunterstützung sollten Sie das Video im  <b>.webm</b>-Format und im  <b>.mp4</b>-Format hochladen.<br>
-Achten Sie idealerweise auf eine sinnvolle Benennung der Datei!');
+  t('Unterschiede der Videospuren');
+  t('Video-Spuren');
+  t('Wenn Sie mehrere Videospuren hochladen, wählen Sie bitte aus, wie sich diese voneinander unterscheiden.');
   t('Übergeordneter Ordner');
 
   return $field_instances;

@@ -13,7 +13,7 @@
 #section-nav-authoring-tools button.navbar-toggle {
   top: 0px;
   right: 6px;
-  z-index: 1004;
+  z-index: 99;
   border-radius: 4px;
 }
 
@@ -21,11 +21,10 @@
   height: 35px;
 }
 
-#okl-nav-bar {
-  float: right;
-}
-
-@media (max-width: 768px) {
+/**
+kleiner iPad
+*/
+@media (max-width: 767px) {
   #okl-nav-bar {
     float: none;
   }
@@ -37,9 +36,14 @@
     top: -30px !important;
   }
 }
-
+/**
+größer gleich iPad
+*/
 @media (min-width: 768px) {
-
+    
+  #okl-nav-bar {
+    padding-top: 15px;
+  }
   #custom_general_space {
     height: 25px;
   }
@@ -82,9 +86,10 @@
     position: absolute;
     z-index: 1005;
     width: 100%;
+    min-height: 85px;
   }
   #page-header {
-    margin-top: 53px;
+    margin-top: 83px;
   }
   #page-header .collapse {
     opacity: 0;
@@ -328,7 +333,9 @@
   }
 }
 
-
+button.okl-nav-bar-btn{
+    margin-top: 20px;
+}
 button.okl-nav-bar-btn .animated-icon2 {
   width: 20px;
   height: 15px;
@@ -370,8 +377,13 @@ button.okl-nav-bar-btn .animated-icon2 span {
 }
 
 #section-nav-authoring-tools button.navbar-toggle {
-  background: #efefef;
+  background: #E5E5E5;
+  border: 1px solid #ADADAD;
 }
+#section-nav-authoring-tools button.navbar-toggle:hover {
+  background: #F8F8F8;
+}
+
 
 #section-nav-authoring-tools.navbar-inverse .navbar-toggle .icon-bar {
   background-color: #666 !important;

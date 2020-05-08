@@ -11,17 +11,17 @@
 function nm_general_features_menu_default_menu_links() {
   $menu_links = array();
 
-  // Exported menu link: menu-footer_datenschutzerklrung:https://www.uni-augsburg.de/datenschutz.html.
-  $menu_links['menu-footer_datenschutzerklrung:https://www.uni-augsburg.de/datenschutz.html'] = array(
+  // Exported menu link: menu-footer_datenschutzerklrung:https://www.uni-augsburg.de/de/impressum/datenschutz/.
+  $menu_links['menu-footer_datenschutzerklrung:https://www.uni-augsburg.de/de/impressum/datenschutz/'] = array(
     'menu_name' => 'menu-footer',
-    'link_path' => 'https://www.uni-augsburg.de/datenschutz.html',
+    'link_path' => 'https://www.uni-augsburg.de/de/impressum/datenschutz/',
     'router_path' => '',
     'link_title' => 'Datenschutzerklärung',
     'options' => array(
       'attributes' => array(
         'title' => '',
       ),
-      'identifier' => 'menu-footer_datenschutzerklrung:https://www.uni-augsburg.de/datenschutz.html',
+      'identifier' => 'menu-footer_datenschutzerklrung:https://www.uni-augsburg.de/de/impressum/datenschutz/',
     ),
     'module' => 'menu',
     'hidden' => 0,

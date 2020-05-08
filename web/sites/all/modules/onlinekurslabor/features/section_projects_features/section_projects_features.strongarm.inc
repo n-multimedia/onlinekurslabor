@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * section_projects_features.strongarm.inc

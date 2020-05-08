@@ -10,6 +10,7 @@ function nm_activity_stream_theme($existing, $type, $theme, $path)
             'variables' => array(
                 'user_realname' => NULL,
                 'user_path' => NULL,
+                'activity_action' => NULL,
                 'activity_title' => NULL,
                 'activity_path' => NULL,
                 'activity_type' => NULL,
@@ -91,10 +92,8 @@ function nm_activity_stream_preprocess_message(&$variables)
 {
 
     $message = $variables['elements']['#entity'];
-
-    //dpm($message);
-    //dpm($variables);
-    if (isset($message) && $message->type == 'message_new_node')
+  
+    if (isset($message) && in_array($message->type , array( 'message_new_node', 'message_changed_node')))
     {
         //get currently loggedin user
         $ref_current_user = $GLOBALS['user'];
@@ -102,23 +101,29 @@ function nm_activity_stream_preprocess_message(&$variables)
         //create objects of the node and the user that created the node
         $ref_node_id = $message->field_message_node_ref[LANGUAGE_NONE][0]['target_id'];
         $ref_node = node_load($ref_node_id);
-        $ref_user = user_load($ref_node->uid);
-
+        //$ref_user = user_load($ref_node->uid);
+        $ref_user = user_load($message->uid);
         /* create vars for the template */
         $vars = array();
+        
+        //translatable mist
+        $rendered_stripped_activity = trim(strip_tags(render($variables['content']['message__message_text__0']))); 
+        $vars['activity_action'] = t($rendered_stripped_activity);
      
-        $vars['user_realname'] =  format_username($ref_user);
-        $vars['user_path'] = 'user/'.$ref_user->uid;
+
+        $vars['user_realname'] = format_username($ref_user);
+        $vars['user_path'] = 'user/' . $ref_user->uid;
         $vars['user_image'] = strip_tags(_nm_activity_stream_get_user_pic($ref_user), '<img>');
         $vars['activity_title'] = $ref_node->title;
         $vars['activity_path'] = 'node/' . $ref_node->nid;
         $vars['activity_type'] = $ref_node->type;
-        $vars['activity_timestamp_create'] = $ref_node->created;
+        $vars['activity_timestamp_create'] = $message->timestamp;
         $vars['activity_unread'] = _custom_general_get_num_unread(NULL, $ref_node->nid) ? TRUE : FALSE;
 
 
         $variables['message_new'] = theme('nm_activity_stream_theme_single_activity', $vars);
-        //
+
+
         return;
          
     }

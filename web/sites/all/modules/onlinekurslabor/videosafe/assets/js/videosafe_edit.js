@@ -24,24 +24,37 @@
 
        //hier wird original-funktion ueberschrieben
        window[0].H5PEditor.widgets.video.createAdd = function(type) {
+           
            //lade original html
            var h5p_html = original_function(type);
            
            //wir müssen das js im Interval einhängen, damits zuverlässig ausgeführt wird.
             function manipulate_js ()
-            {  
+            {
                     
                      /*helperfunktion: callback, wenn jmd im modal-fenster ein video selectiert hat,
                         *  argument sind die video-urls*/
                        var h5p_callback_function_when_video_selected = function(json_video_data)
-                       {
-                           //kann mehrere urls beinhalten mit ogg, mp4 etc
-                           for (var i in json_video_data) {
-                               var video_url = json_video_data[i];
-                               //ok, das funziert nicht. da müsster mehrere fenster aufmachen.@todo
+                       {  
+                           //es können mehrere videos in versch. Formaten übergeben werden, nicht nur eines 
+                           var video_url_counter = 0;
+                          
+                           var video_data = json_video_data.videos;
+                           for (var video_description in video_data) {
+                              
+                               var video_url = video_data[video_description];
+                               //funzioniert tatsächlich in h5p
                                H5P.jQuery(".h5p-add-dialog .h5p-dialog-box").find("input.h5p-file-url").val(video_url);
                                H5P.jQuery(".h5p-add-dialog .h5p-buttons").find("button.h5p-insert").click();
+                             
+                               //Verwende Bezeichnung der Videos. Für Textboxes muss man das change-event anwerfen für H5P
+                               H5P.jQuery("#h5p-av-"+(video_url_counter+1)).val(video_description).change();
+                               video_url_counter++;
                            }
+                           //Bezeichnung des "Qualität"-Buttons in H5P 
+                           var video_track_title = json_video_data.video_track_title;
+                           //event: change
+                           H5P.jQuery(".field-name-quality > input.h5peditor-text").val(video_track_title).change();
                        };
                        
                 //buttons, auf die jQ reagieren soll       
@@ -60,7 +73,6 @@
                 //klick auf "add / edit file" - nur bei video
                 H5P.jQuery(jQSelector).not('.videosafe-processed').click(
                     function () {
-                       
                         //verändere gui
                         H5P.jQuery(".h5p-dialog-box h3").first().html("Video");
                         //ersetze upload-button durch videosafe-öffnen-button
@@ -74,8 +86,10 @@
                     });
             }
             
-            //js alle 1500 ms ausführen, damit die buttons gehen (Problem war im Editmode)
-            setInterval(function(){  window[0].H5P.jQuery('head').append('<script>'+manipulate_js+';manipulate_js();<\/script>') }, 1500);
+            //js einmal ausführen, danach alle 1500ms im intervall
+            setTimeout(function(){window[0].H5P.jQuery('head').append('<script>'+manipulate_js+';manipulate_js();<\/script>') }, 500);
+            //js alle 1500 ms ausführen, damit die buttons ersetzt werden (Problem war im coursepresentation-Editmode)
+            setInterval(function(){window[0].H5P.jQuery('head').append('<script>'+manipulate_js+';manipulate_js();<\/script>') }, 1500);
             
            return h5p_html;
 

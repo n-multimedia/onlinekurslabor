@@ -211,6 +211,21 @@ function nm_login_vhb_set_profile_fields($account, $params, $force = FALSE) {
     //some redundand aspects
     //refactor new generic function
     //course/admin/%1/members/add
+    
+    
+    //bei vhb mail gewechselt - kleiner check..... 
+    if ($account->mail != $params['EMAIL']) {
+        $secondaccount_check = user_load_by_mail($params['EMAIL']);
+        if (user_load_by_mail($params['EMAIL'])) {
+            drupal_set_message('Konnte die Mailadresse nicht auf "' . $params['EMAIL'] . '" ändern! Fehlercode: M41E8', 'error');
+            return FALSE;
+        }
+        //update email
+        $account->mail = $params['EMAIL'];
+    }
+
+
+
     $role = user_role_load_by_name(NM_ROLE_STUDENT);
 
     if (!$account) {
@@ -321,8 +336,8 @@ function nm_login_vhb_set_profile_fields($account, $params, $force = FALSE) {
 
     $wrapper->save();
     realname_update($account);
-    //update email
-    $account->mail = $params['EMAIL'];
+    
+
     user_save($account);
     return true;
 }

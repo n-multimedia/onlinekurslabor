@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_stream_features.views_default.inc
@@ -100,7 +101,7 @@ function nm_stream_features_views_default_views() {
   $handler->display->display_options['arguments']['field_nm_privacy_value']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['field_nm_privacy_value']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['field_nm_privacy_value']['break_phrase'] = TRUE;
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';

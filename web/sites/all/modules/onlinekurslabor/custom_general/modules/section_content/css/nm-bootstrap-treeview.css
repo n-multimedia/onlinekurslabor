@@ -64,14 +64,24 @@
     display: inline-block;
     width: 97%;
 }
+ 
 
-#countent_outline_search {
-    width: 100%;
-}
-
-#countent-outline-search {
+#outline-search-element #countent-outline-search {
     width: 100%;
     margin-bottom: 10px;
+}
+
+#outline-search-element.no-result #countent-outline-search {
+   width: 90%;
+   border-color: #8B0000;
+}
+#outline-search-element .no-result-badge  {
+    color: #8B0000;
+    display: none;
+    width: 10%;
+}
+#outline-search-element.no-result .no-result-badge   {
+    display: inline;
 }
 
 #content-outline-expand-all,

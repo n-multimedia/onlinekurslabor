@@ -51,6 +51,7 @@ class TaskCest extends CestHelper {
      * @param \Codeception\Example $example array holds dataprovider's data
      * @dataProvider TC001_02_AddNonKGMemberProvider
      * @depends TC001_01_DozentLoggedin
+     * @before renewSession
      */
     public function TC001_02_AddNonKGMember(AcceptanceTester $I, \Codeception\Example $example) {
 
@@ -73,6 +74,7 @@ class TaskCest extends CestHelper {
      * @param \Codeception\Example $example array holds dataprovider's data
      * @dataProvider TC001_02_AddKGMemberProvider
      * @depends TC001_02_AddNonKGMember
+     * @before renewSession
      */
     public function TC001_02_AddKGMembers(\Step\Acceptance\Dozent $I, \Codeception\Example $example) {
 
@@ -103,6 +105,7 @@ class TaskCest extends CestHelper {
      * @param \Step\Acceptance\Dozent $I
      * @dataProvider TC001_AddTaskProvider
      * @depends TC001_02_AddKGMembers
+     * @before renewSession
      */
     public function TC001_03_AddTasks(\Step\Acceptance\Dozent $I, \Codeception\Example $example) {
 
@@ -229,7 +232,7 @@ class TaskCest extends CestHelper {
      * @param \AcceptanceTester $I
      */
     public function TC001_05_logDozentIn(\Step\Acceptance\Dozent $I) {
-        $I->loginAsDozent(FALSE);
+        $I->loginAsDozent(true);
     }
 
     
@@ -240,6 +243,7 @@ class TaskCest extends CestHelper {
      * @param \Step\Acceptance\Student $I
      * @dataProvider TC001_StudentAndTaskProvider
      * @depends TC001_05_logDozentIn
+     * @before renewSession
      */
     public function TC001_04_TestSolutions(\Step\Acceptance\Dozent $I, \Codeception\Example $studentsandtasks) {
         $this->goToContextHome($I);

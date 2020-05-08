@@ -13,7 +13,7 @@ class UserSteps extends \AcceptanceTester {
    * @param $userName
    * @param $securedPassword (Obj of class  \Codeception\Step\Argument\PasswordArgument)
    */
-  public function login($userName,  \Codeception\Step\Argument\PasswordArgument $securedPassword = null, $saveSession = TRUE) {
+  public function login($userName,  \Codeception\Step\Argument\PasswordArgument $securedPassword = null, $saveSession = TRUE, $force_relogin = false) {
     $I = $this;
 
     //boah hässlich, aber sonst scheitert die $drupalUser->login- Prüfung später.
@@ -23,7 +23,7 @@ class UserSteps extends \AcceptanceTester {
     //$I->amOnPage("/user/logout");
 
     //do not log in, if session is already active
-    if ($saveSession) {
+    if ($saveSession && ! $force_relogin) {
         if($I->loadSessionSnapshot('login'))
         {
             return;
@@ -67,6 +67,7 @@ class UserSteps extends \AcceptanceTester {
      $I = $this;
      $I->amOnPage(LogoutPage::$URL);
      $I->see(LoginPage::$loginMenuButton);
+     $I->deleteSessionSnapshot('login');
   }
   
   /**
