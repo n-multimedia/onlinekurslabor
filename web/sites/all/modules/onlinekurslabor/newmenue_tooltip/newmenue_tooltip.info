@@ -1,6 +1,0 @@
-name = newmenue_tooltip
-description = temporäre bubble für die neue navigation
-core = 7.x
-version = 7.x-1.0-alpha14
-package = custom
- 
