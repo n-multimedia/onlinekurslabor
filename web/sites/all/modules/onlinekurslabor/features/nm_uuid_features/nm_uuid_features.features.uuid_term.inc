@@ -98,6 +98,9 @@ function nm_uuid_features_uuid_features_default_terms() {
     'weight' => 0,
     'uuid' => '3894191d-309a-41e9-b820-01bb8732d53e',
     'vocabulary_machine_name' => 'hochschulen',
+    'path' => array(
+      'pathauto' => 1,
+    ),
   );
   $terms[] = array(
     'name' => 'FH Amberg-Weiden',
@@ -242,6 +245,9 @@ function nm_uuid_features_uuid_features_default_terms() {
     'weight' => 0,
     'uuid' => 'aeeba44c-6724-49b6-9135-f900ec8c27ff',
     'vocabulary_machine_name' => 'hochschulen',
+    'path' => array(
+      'pathauto' => 1,
+    ),
   );
   $terms[] = array(
     'name' => 'FH Coburg',
