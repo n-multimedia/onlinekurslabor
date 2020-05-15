@@ -204,11 +204,12 @@ function h5p_integration_h5p_filtered_params_alter(&$filtered) {
     //api-doc: so kann man die timeline sperren.
     #$filtered->override->preventSkipping = true; 
     //kein interactive video - abbruch
-    if (empty($filtered->interactiveVideo)) {
+    if (empty($filtered->interactiveVideo) || !property_exists($filtered->interactiveVideo->assets, 'interactions')) {
         return;
     }
     $url_object = null; 
     $all_interactions = $filtered->interactiveVideo->assets->interactions;
+
     foreach ($all_interactions as &$interaction) {
         //lösche variable
         unset($url_object);
