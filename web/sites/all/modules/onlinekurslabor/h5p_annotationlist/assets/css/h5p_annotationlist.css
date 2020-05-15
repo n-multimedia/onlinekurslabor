@@ -112,7 +112,7 @@ div.interaction_icon   a:link, div.interaction_icon   a:visited, div.interaction
 Definitionen fuer die einzelnen Interaction-Buttons
 */
 /*blauer hintergrund*/
-a.interaction_icon_h5ptext,a.interaction_icon_h5pimage,a.interaction_icon_h5ptable{
+a.interaction_icon_h5ptext,a.interaction_icon_h5pimage,a.interaction_icon_h5ptable, a.interaction_icon_h5pivhotspot {
 background: #1d5cff ;
 }
 /*pinker hintergrund*/
@@ -132,6 +132,10 @@ a.interaction_icon_h5pimage:before {
 a.interaction_icon_h5ptable:before {
   content:  "\f0ce";
 }
+a.interaction_icon_h5pivhotspot:before {
+  content:  "\f067";
+}
+
 
 a.interaction_icon_h5psinglechoiceset:before {
     content: "\f00c";
