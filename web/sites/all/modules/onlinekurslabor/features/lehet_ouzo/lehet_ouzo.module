@@ -24,7 +24,7 @@ function lehet_ouzo_block_view_alter(&$data, $block) {
 
         
         //hardcoded: domain 21872 "Heterogenität in der Schule  (21872)"
-        if (!$active_domain_nid || $active_domain_nid != 21883) {
+        if (!$active_domain_nid || $active_domain_nid != 21872) {
             return;
         }
 
