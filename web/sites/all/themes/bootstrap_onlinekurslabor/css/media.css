@@ -79,3 +79,9 @@ iframe#mediaStyleSelector {
     width: inherit !important;
     height: inherit !important;
 }
+
+
+.media-element-container video,
+.media-element-container img {
+    max-width: 100%;
+}

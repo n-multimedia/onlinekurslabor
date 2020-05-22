@@ -63,6 +63,7 @@
 .panels-flexible-column-first .treeview a {
     display: inline-block;
     width: 97%;
+    word-break: break-word;
 }
  
 
