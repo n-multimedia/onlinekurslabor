@@ -524,3 +524,13 @@ function bootstrap_onlinekurslabor_preprocess_username(&$vars) {
   $vars['name'] = check_plain($name);
 
 }
+
+    
+    
+/**
+ * Declare various hook_*_alter() hooks.
+ *
+ * All hook_*_alter() implementations must live (via include) inside this file
+ * so they are properly detected when drupal_alter() is invoked.
+ */
+require_once(__DIR__. '/includes/alter.inc');

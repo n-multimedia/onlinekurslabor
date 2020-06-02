@@ -14,6 +14,7 @@ drush fr  lehet_ouzo --yes
 #import language
 drush language-import-translations de ../language/alpha16.po --replace --groups=default
 
+drush en BootstrapCDNToLocal --y
 drush updatedb --yes
 
 drush cc all
