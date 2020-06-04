@@ -1251,10 +1251,9 @@ function custom_general_query_alter(QueryAlterableInterface $query) {
  * node-delete-confirm
  * alter node deletion form
  */
-
 function custom_general_form_node_delete_confirm_alter(&$form, &$form_state){
   $attachment_fields = array(
-    'field_course_docs',
+    'field_course_documents',
     'field_attachments',
     'field_nm_attachments',
   );
@@ -1286,15 +1285,15 @@ function custom_general_form_node_delete_confirm_alter(&$form, &$form_state){
     $form['#prefix'] = "<div>" . t("Please check, if the file attachments are not used elsewhere."). "</div><br/>";
     $form['actions']['#prefix'] = "<br/><br/>";
 
-    $form['actions']['keep_files'] = array(
+    $form['actions']['kill_files'] = array(
       '#type' => 'submit',
-      '#value' => 'Delete node and files',
+      '#value' => t('Delete node and files'),
       '#weight' => -10,
       '#attributes' => array('class' => array('btn','btn-danger')),
       '#submit' => array('custom_general_form_node_delete_node_and_files_submit'),
     );
 
-    $form['actions']['submit']['#value'] = 'Delete (node only)';
+    $form['actions']['submit']['#value'] = t('Delete (node only)');
     $form['actions']['submit']['#attributes'] = array('class' => array('btn','btn-danger'));
     $form['actions']['submit']['#weight'] = -11;
 

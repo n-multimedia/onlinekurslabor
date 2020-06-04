@@ -3075,9 +3075,9 @@ function _section_courses_clone_content($content_id, $new_course_id) {
 
   $clone_object = _section_courses_clone_node_prepare($content_object);
 
-  if (isset($clone_object->field_course_docs)) {
+  if (isset($clone_object->field_course_documents)) {
     /*kopiere attachments auf dateieebnee*/
-    $docs = $clone_object->field_course_docs[LANGUAGE_NONE];
+    $docs = $clone_object->field_course_documents[LANGUAGE_NONE];
     foreach ($docs as $counter => $entry) {
       $fid = $entry['fid'];
       $file = file_load($fid);
@@ -3085,7 +3085,7 @@ function _section_courses_clone_content($content_id, $new_course_id) {
       $new_file = file_copy($file, $file->uri, FILE_EXISTS_RENAME);
       //on success set new id
       if ($new_file) {
-        $clone_object->field_course_docs[LANGUAGE_NONE][$counter]['fid'] = $new_file->fid;
+        $clone_object->field_course_documents[LANGUAGE_NONE][$counter]['fid'] = $new_file->fid;
       }
 
     }
