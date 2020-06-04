@@ -1,5 +1,8 @@
 #Translation File - onlinekurslabor
 
+msgid "This file is currently in use and may cause problems if deleted."
+msgstr "Diese Datei ist noch in Verwendung - dies kann zu Problemen führen!"
+
 msgid ""
 msgstr ""
 
