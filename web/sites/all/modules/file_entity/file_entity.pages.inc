@@ -63,6 +63,12 @@ function file_entity_download_page($file) {
   else {
     // For remote files, just redirect the user to that file's actual URL.
     $headers['Location'] = file_create_url($file->uri);
+    // If using S3 as a replacement for the file system, default headers
+    // for downloading will cause the server to not respond. Remove them.
+    if (module_exists('s3fs')) {
+      unset($headers['Content-Length']);
+      unset($headers['Content-Transfer-Encoding']);
+    }
     foreach ($headers as $name => $value) {
       drupal_add_http_header($name, $value);
     }
@@ -127,6 +133,33 @@ function file_entity_add_upload_step_upload($form, &$form_state, array $options 
     '#default_value' => isset($form_state['storage']['upload']) ? $form_state['storage']['upload'] : NULL,
   );
 
+  $form['upload']['#description'] = t('Files must be less than !size.', array('!size' => '<strong>' . format_size($form['upload']['#upload_validators']['file_entity_validate_size_extensions'][0]) . '</strong>'));
+
+  // Get list of extensions.
+  $extensions = explode("\n", variable_get('file_entity_max_filesize_extensions'));
+
+  if (!empty($extensions)) {
+
+    $limits = '';
+
+    foreach ($extensions as $position => $text) {
+      $matches = array();
+      preg_match('/(.*)\|(.*)/', $text, $matches);
+
+      if (is_array($matches) && count($matches) == 3) {
+        $extension = $matches[1];
+        $filesize = $matches[2];
+
+        $limits .= $extension . ': ' . $filesize . ',';
+      }
+    }
+
+    $limits = rtrim($limits, ',');
+
+    $form['upload']['#description'] = t('Files must be less than !size (!limits).', array('!size' => '<strong>' . format_size($form['upload']['#upload_validators']['file_entity_validate_size_extensions'][0]) . '</strong>', '!limits' => $limits));
+
+  }
+
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['next'] = array(
     '#type' => 'submit',
@@ -136,6 +169,44 @@ function file_entity_add_upload_step_upload($form, &$form_state, array $options 
   form_load_include($form_state, 'inc', 'file_entity', 'file_entity.pages');
 
   return $form;
+}
+
+function file_entity_validate_size_extensions(stdClass $file, $file_limit = 0, $user_limit = 0) {
+  global $user;
+  $errors = array();
+
+  // Current file extension.
+  $current_extension = pathinfo($file->filename, PATHINFO_EXTENSION);
+
+  // Get list of extensions.
+  $extensions = explode("\n", variable_get('file_entity_max_filesize_extensions'));
+
+  if ($extensions) {
+    foreach ($extensions as $position => $text) {
+      $matches = array();
+      preg_match('/(.*)\|(.*)/', $text, $matches);
+
+      if (is_array($matches) && count($matches) == 3) {
+        $extension = $matches[1];
+        $filesize = $matches[2];
+
+        if (strtolower($extension) == strtolower($current_extension)) {
+          $file_limit = parse_size($filesize);
+        }
+      }
+    }
+  }
+
+  if ($file_limit && $file->filesize > $file_limit) {
+    $errors[] = t('The file is %filesize exceeding the maximum file size of %maxsize.', array('%filesize' => format_size($file->filesize), '%maxsize' => format_size($file_limit)));
+  }
+
+  // Save a query by only calling file_space_used() when a limit is provided.
+  if ($user_limit && (file_space_used($user->uid) + $file->filesize) > $user_limit) {
+    $errors[] = t('The file is %filesize which would exceed your disk quota of %quota.', array('%filesize' => format_size($file->filesize), '%quota' => format_size($user_limit)));
+  }
+
+  return $errors;
 }
 
 /**
@@ -265,7 +336,7 @@ function file_entity_usage_page($file) {
 
   // Determine all of the locations where a file is used, then loop through the
   // occurrences and filter out any duplicates.
-  foreach (file_usage_list($file) as $module => $type) {
+  foreach (file_usage_list($file) as $type) {
     foreach ($type as $entity_type => $entity_ids) {
       // There are cases where the actual entity doesn't exist.
       // We have to handle this.
@@ -277,17 +348,25 @@ function file_entity_usage_page($file) {
         // additional usage to the total count column in the table row and
         // continue on to the next iteration of the loop.
         if (isset($occured_entities[$entity_type][$entity_id])) {
-          $rows[$occured_entities[$entity_type][$entity_id]][2] += $count;
+          $rows[$occured_entities[$entity_type][$entity_id]][3] += $count;
           continue;
         }
 
         // Retrieve the label and the URI of the entity.
-        $label = empty($entities[$entity_id]) ? $module : entity_label($entity_type, $entities[$entity_id]);
+        $label = empty($entities[$entity_id]) ? t('(entity not loaded)') : entity_label($entity_type, $entities[$entity_id]);
+        if (empty($label)) {
+          $label = t('(entity label not loaded)');
+        }
         $entity_uri = empty($entities[$entity_id]) ? NULL : entity_uri($entity_type, $entities[$entity_id]);
 
         // Link the label to the URI when possible.
         if (!empty($entity_uri['path']) && $entity_type != 'paragraphs_item') {
-          $entity_label = l($label, $entity_uri['path']);
+          if (empty($entity_uri['options'])) {
+            $entity_label = l($label, $entity_uri['path']);
+          }
+          else {
+            $entity_label = l($label, $entity_uri['path'], $entity_uri['options']);
+          }
         }
         // For paragraphs items, we are searching for usages in nodes.
         elseif ($entity_type == 'paragraphs_item') {
@@ -311,7 +390,12 @@ function file_entity_usage_page($file) {
           $entity_label = check_plain($label);
         }
 
-        $rows[] = array($entity_label, $entity_type, $count);
+        $rows[] = array(
+          $entity_label,
+          $entity_id,
+          $entity_type,
+          $count,
+        );
 
         // Record the occurrence of the entity to ensure that it isn't listed in
         // the table again.
@@ -320,7 +404,12 @@ function file_entity_usage_page($file) {
     }
   }
 
-  $header = array(t('Entity'), t('Entity type'), t('Use count'));
+  $header = array(
+    t('Entity label'),
+    t('Entity ID'),
+    t('Entity type'),
+    t('Times this file used by this entity'),
+  );
   $build['usage_table'] = array(
     '#theme' => 'table',
     '#header' => $header,
@@ -1149,7 +1238,7 @@ function file_entity_get_upload_validators(array $options = array()) {
   }
 
   // There is always a file size limit due to the PHP server limit.
-  $validators['file_validate_size'] = array($max_filesize);
+  $validators['file_entity_validate_size_extensions'] = array($max_filesize);
 
   // Add image validators.
   $options += array('min_resolution' => 0, 'max_resolution' => 0);
@@ -1215,14 +1304,14 @@ function file_entity_upload_archive_form_submit($form, &$form_state) {
       $extract_location = 'temporary://' . $destination;
       $extract_location = file_destination($extract_location, FILE_EXISTS_RENAME);
       if (!file_prepare_directory($extract_location, FILE_MODIFY_PERMISSIONS | FILE_CREATE_DIRECTORY)) {
-        throw new Exception(t('Unable to prepar, a temporary directory %dir for extraction.', array('%dir' => $extract_location)));
+        throw new Exception(t('Unable to prepare, a temporary directory %dir for extraction.', array('%dir' => $extract_location)));
       }
 
       // Prepare target directory where files are going to be saved.
       $target_dir = file_default_scheme() . '://' . $destination;
       $target_dir = file_destination($target_dir, FILE_EXISTS_RENAME);
       if (!file_prepare_directory($target_dir, FILE_MODIFY_PERMISSIONS | FILE_CREATE_DIRECTORY)) {
-        throw new Exception(t('Unable to prepar, a directory %dir for extraction.', array('%dir' => $target_dir)));
+        throw new Exception(t('Unable to prepare, a directory %dir for extraction.', array('%dir' => $target_dir)));
       }
 
       $archiver->extract($extract_location);
@@ -1254,7 +1343,7 @@ function file_entity_upload_archive_form_submit($form, &$form_state) {
           // directory hierarchy of the file.
           $destination = pathinfo($file->uri, PATHINFO_DIRNAME);
           if (!file_prepare_directory($destination, FILE_MODIFY_PERMISSIONS | FILE_CREATE_DIRECTORY)) {
-            throw new Exception(t('Unable to prepar, a directory %dir for extraction.', array('%dir' => $destination)));
+            throw new Exception(t('Unable to prepare, a directory %dir for extraction.', array('%dir' => $destination)));
           }
 
           if (!file_unmanaged_move($extracted_file->uri, $file->uri)) {
