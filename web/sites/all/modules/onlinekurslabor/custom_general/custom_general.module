@@ -1031,7 +1031,6 @@ function custom_general_block_info() {
     'info' => t('Custom General - Space'),
   );
 
-
   return $blocks;
 }
 
@@ -1051,6 +1050,18 @@ function custom_general_block_view($delta = '') {
   }
 
   return $block;
+}
+
+/**
+ * gets a html list with usage of file identified by $fid
+ * @param int $fid
+ * @return String $html
+ */
+function _custom_general_get_rendered_file_usage_table($fid)
+{  
+    $file = file_load($fid);
+  $usage_list = custom_general_file_entity_usage_page($file);
+  return drupal_render($usage_list);
 }
 
 /**

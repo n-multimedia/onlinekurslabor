@@ -16,7 +16,7 @@ function nm_section_content_features_default_page_manager_pages() {
   $page->task = 'page';
   $page->admin_title = 'content-domain-media';
   $page->admin_description = '';
-  $page->path = 'domain/media/%1';
+  $page->path = 'domain/media/%1/!fid';
   $page->access = array(
     'plugins' => array(
       0 => array(
@@ -43,6 +43,12 @@ function nm_section_content_features_default_page_manager_pages() {
       'name' => 'entity_id:node',
       'settings' => array(),
     ),
+    'fid' => array(
+      'id' => 1,
+      'identifier' => 'Datei: FID',
+      'name' => 'entity_id:file',
+      'settings' => array(),
+    ),
   );
   $page->conf = array(
     'admin_paths' => FALSE,
@@ -57,7 +63,7 @@ function nm_section_content_features_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
+    'title' => 'Overview',
     'no_blocks' => 0,
     'pipeline' => 'standard',
     'body_classes_to_remove' => '',
@@ -76,6 +82,14 @@ function nm_section_content_features_default_page_manager_pages() {
             ),
           ),
           'context' => 'argument_entity_id:node_1',
+          'not' => FALSE,
+        ),
+        1 => array(
+          'name' => 'context_exists',
+          'settings' => array(
+            'exists' => '0',
+          ),
+          'context' => 'argument_entity_id:file_1',
           'not' => FALSE,
         ),
       ),
@@ -202,6 +216,178 @@ echo drupal_render($output);
   $display->panels['navigation'][0] = 'new-fa196b8a-7b48-4867-9332-81e6330ccd60';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-1372a02f-af1a-4a17-969e-dea5cc505e38';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page__thema_medien__media_entity';
+  $handler->task = 'page';
+  $handler->subtask = '_thema_medien';
+  $handler->handler = 'panel_context';
+  $handler->weight = 1;
+  $handler->conf = array(
+    'title' => 'Media_Entity',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'access' => array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'node_type',
+          'settings' => array(
+            'type' => array(
+              'content_domain' => 'content_domain',
+            ),
+          ),
+          'context' => 'argument_entity_id:node_1',
+          'not' => FALSE,
+        ),
+      ),
+      'logic' => 'and',
+    ),
+    'name' => 'media_entity',
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible:span4span8';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'center' => NULL,
+      'outline' => NULL,
+      'tools' => NULL,
+      'navigation' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '79fb8291-2d31-44cb-b8ea-24d04a55af19';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page__thema_medien__media_entity';
+  $display->content = array();
+  $display->panels = array();
+  $pane = new stdClass();
+  $pane->pid = 'new-013c6315-7df0-4087-9b08-0c69085a5bf6';
+  $pane->panel = 'center';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => '',
+    'title' => '',
+    'body' => '<h2>Medien</h2>',
+    'format' => 'filtered_html',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '013c6315-7df0-4087-9b08-0c69085a5bf6';
+  $display->content['new-013c6315-7df0-4087-9b08-0c69085a5bf6'] = $pane;
+  $display->panels['center'][0] = 'new-013c6315-7df0-4087-9b08-0c69085a5bf6';
+  $pane = new stdClass();
+  $pane->pid = 'new-6512570a-dcd2-4c39-a45b-c43dd0eba63a';
+  $pane->panel = 'center';
+  $pane->type = 'views';
+  $pane->subtype = 'view_single_file';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_pager_settings' => 0,
+    'use_pager' => 1,
+    'nodes_per_page' => '0',
+    'pager_id' => '0',
+    'offset' => '0',
+    'more_link' => 0,
+    'feed_icons' => 0,
+    'panel_args' => 0,
+    'link_to_view' => 0,
+    'args' => '',
+    'url' => '',
+    'display' => 'default',
+    'context' => array(
+      0 => 'argument_entity_id:file_1.fid',
+    ),
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = '6512570a-dcd2-4c39-a45b-c43dd0eba63a';
+  $display->content['new-6512570a-dcd2-4c39-a45b-c43dd0eba63a'] = $pane;
+  $display->panels['center'][1] = 'new-6512570a-dcd2-4c39-a45b-c43dd0eba63a';
+  $pane = new stdClass();
+  $pane->pid = 'new-19b421fe-f861-4464-a8eb-cabeefaf89a9';
+  $pane->panel = 'center';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'file usage',
+    'title' => 'Dateiverwendung',
+    'title_heading' => 'h2',
+    'body' => '<?php
+echo _custom_general_get_rendered_file_usage_table(%fid:fid);
+?>',
+    'format' => 'php_code',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '19b421fe-f861-4464-a8eb-cabeefaf89a9';
+  $display->content['new-19b421fe-f861-4464-a8eb-cabeefaf89a9'] = $pane;
+  $display->panels['center'][2] = 'new-19b421fe-f861-4464-a8eb-cabeefaf89a9';
+  $pane = new stdClass();
+  $pane->pid = 'new-fa196b8a-7b48-4867-9332-81e6330ccd60';
+  $pane->panel = 'navigation';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_text_outline';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'fa196b8a-7b48-4867-9332-81e6330ccd60';
+  $display->content['new-fa196b8a-7b48-4867-9332-81e6330ccd60'] = $pane;
+  $display->panels['navigation'][0] = 'new-fa196b8a-7b48-4867-9332-81e6330ccd60';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['_thema_medien'] = $page;

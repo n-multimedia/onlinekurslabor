@@ -766,5 +766,110 @@ function nm_general_features_views_default_views() {
   );
   $export['users_media'] = $view;
 
+  $view = new view();
+  $view->name = 'view_single_file';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'file_managed';
+  $view->human_name = 'View single file';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['style_plugin'] = 'grid';
+  $handler->display->display_options['style_options']['columns'] = '2';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'edit' => 'edit',
+    'delete' => 'delete',
+  );
+  /* Field: File: Edit link */
+  $handler->display->display_options['fields']['edit']['id'] = 'edit';
+  $handler->display->display_options['fields']['edit']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['edit']['field'] = 'edit';
+  $handler->display->display_options['fields']['edit']['label'] = '';
+  $handler->display->display_options['fields']['edit']['element_class'] = 'btn btn-default';
+  $handler->display->display_options['fields']['edit']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['edit']['element_default_classes'] = FALSE;
+  /* Field: File: Delete link */
+  $handler->display->display_options['fields']['delete']['id'] = 'delete';
+  $handler->display->display_options['fields']['delete']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['delete']['field'] = 'delete';
+  $handler->display->display_options['fields']['delete']['label'] = '';
+  $handler->display->display_options['fields']['delete']['element_class'] = 'btn btn-default';
+  $handler->display->display_options['fields']['delete']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['delete']['element_default_classes'] = FALSE;
+  /* Field: File: Name */
+  $handler->display->display_options['fields']['filename']['id'] = 'filename';
+  $handler->display->display_options['fields']['filename']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['filename']['field'] = 'filename';
+  $handler->display->display_options['fields']['filename']['label'] = '';
+  $handler->display->display_options['fields']['filename']['element_type'] = 'h4';
+  $handler->display->display_options['fields']['filename']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['filename']['link_to_file'] = FALSE;
+  /* Field: File: Rendered File */
+  $handler->display->display_options['fields']['rendered_entity']['id'] = 'rendered_entity';
+  $handler->display->display_options['fields']['rendered_entity']['table'] = 'views_entity_file';
+  $handler->display->display_options['fields']['rendered_entity']['field'] = 'rendered_entity';
+  $handler->display->display_options['fields']['rendered_entity']['label'] = '';
+  $handler->display->display_options['fields']['rendered_entity']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['rendered_entity']['link_to_entity'] = 0;
+  $handler->display->display_options['fields']['rendered_entity']['display'] = 'view';
+  $handler->display->display_options['fields']['rendered_entity']['view_mode'] = 'media_12';
+  $handler->display->display_options['fields']['rendered_entity']['bypass_access'] = 0;
+  /* Field: File: Download link */
+  $handler->display->display_options['fields']['download']['id'] = 'download';
+  $handler->display->display_options['fields']['download']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['download']['field'] = 'download';
+  $handler->display->display_options['fields']['download']['label'] = '';
+  $handler->display->display_options['fields']['download']['element_label_colon'] = FALSE;
+  /* Field: File: Size */
+  $handler->display->display_options['fields']['filesize']['id'] = 'filesize';
+  $handler->display->display_options['fields']['filesize']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['filesize']['field'] = 'filesize';
+  $handler->display->display_options['fields']['filesize']['label'] = 'Größe';
+  /* Contextual filter: File: File ID */
+  $handler->display->display_options['arguments']['fid']['id'] = 'fid';
+  $handler->display->display_options['arguments']['fid']['table'] = 'file_managed';
+  $handler->display->display_options['arguments']['fid']['field'] = 'fid';
+  $handler->display->display_options['arguments']['fid']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['fid']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['fid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['fid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['fid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['fid']['summary_options']['items_per_page'] = '25';
+
+  /* Display: Default */
+  $handler = $view->new_display('panel_pane', 'Default', 'panel_pane_1');
+  $translatables['view_single_file'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Größe'),
+    t('Alle'),
+    t('Default'),
+    t('View panes'),
+  );
+  $export['view_single_file'] = $view;
+
   return $export;
 }

@@ -29,7 +29,11 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortieren nach';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Aufsteigend';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Absteigend';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '25';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -74,7 +78,6 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Titel';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   /* Field: Content: Link to delete content */
@@ -134,11 +137,11 @@ function nm_section_content_features_views_default_views() {
   $translatables['content_annvid_overview'] = array(
     t('Master'),
     t('more'),
-    t('Apply'),
+    t('Anwenden'),
     t('Zurücksetzen'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
+    t('Sortieren nach'),
+    t('Aufsteigend'),
+    t('Absteigend'),
     t('Items per page'),
     t('- All -'),
     t('Offset'),
@@ -147,7 +150,7 @@ function nm_section_content_features_views_default_views() {
     t('nächste Seite ›'),
     t('letzte Seite »'),
     t('OG membership from node'),
-    t('Titel'),
+    t('Title'),
     t('Alle'),
     t('Content pane'),
     t('View panes'),
@@ -175,6 +178,9 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortieren nach';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Aufsteigend';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Absteigend';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '30';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -273,9 +279,9 @@ Oben <code>Neues Thema anlegen</code> drücken.
     t('more'),
     t('Anwenden'),
     t('Zurücksetzen'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
+    t('Sortieren nach'),
+    t('Aufsteigend'),
+    t('Absteigend'),
     t('Items per page'),
     t('- All -'),
     t('Offset'),
@@ -316,12 +322,19 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortieren nach';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Aufsteigend';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Absteigend';
   $handler->display->display_options['pager']['type'] = 'mini';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
   $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ vorherige Seite';
   $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
+  $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['style_plugin'] = 'list';
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['inline'] = array(
@@ -433,18 +446,18 @@ Oben <code>Neues Thema anlegen</code> drücken.
     t('Master'),
     t('Verwendung als Lehrtext'),
     t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
+    t('Anwenden'),
+    t('Zurücksetzen'),
+    t('Sortieren nach'),
+    t('Aufsteigend'),
+    t('Absteigend'),
     t('Items per page'),
     t('- All -'),
     t('Offset'),
-    t('« first'),
+    t('« erste Seite'),
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
-    t('last »'),
+    t('letzte Seite »'),
     t('Entwurf'),
     t('Alle'),
     t('Usage as Lehrtext'),
@@ -474,6 +487,9 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortieren nach';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Aufsteigend';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Absteigend';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
   $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ vorherige Seite';
@@ -561,9 +577,9 @@ Oben <code>Neues Thema anlegen</code> drücken.
     t('more'),
     t('Anwenden'),
     t('Zurücksetzen'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
+    t('Sortieren nach'),
+    t('Aufsteigend'),
+    t('Absteigend'),
     t('Items per page'),
     t('- All -'),
     t('Offset'),
@@ -602,6 +618,9 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortieren nach';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Aufsteigend';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Absteigend';
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'default';
@@ -612,7 +631,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
-  $handler->display->display_options['empty']['area']['label'] = 'none';
+  $handler->display->display_options['empty']['area']['label'] = 'keine';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = '- keine -';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
@@ -709,10 +728,10 @@ Oben <code>Neues Thema anlegen</code> drücken.
     t('more'),
     t('Anwenden'),
     t('Zurücksetzen'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('none'),
+    t('Sortieren nach'),
+    t('Aufsteigend'),
+    t('Absteigend'),
+    t('keine'),
     t('- keine -'),
     t('OG membership from node group'),
     t('user from OG membership'),
@@ -743,6 +762,9 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortieren nach';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Aufsteigend';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Absteigend';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '40';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -888,9 +910,9 @@ $vorkommens_counter +=  $query2->entityCondition(\'entity_type\', \'node\')
     t('more'),
     t('Anwenden'),
     t('Zurücksetzen'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
+    t('Sortieren nach'),
+    t('Aufsteigend'),
+    t('Absteigend'),
     t('Items per page'),
     t('- All -'),
     t('Offset'),
@@ -1007,6 +1029,11 @@ $vorkommens_counter +=  $query2->entityCondition(\'entity_type\', \'node\')
   $handler->display->display_options['fields']['count']['field'] = 'count';
   $handler->display->display_options['fields']['count']['group_type'] = 'sum';
   $handler->display->display_options['fields']['count']['label'] = 'in Beiträgen verwendet';
+  /* Field: File: Edit link */
+  $handler->display->display_options['fields']['edit']['id'] = 'edit';
+  $handler->display->display_options['fields']['edit']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['edit']['field'] = 'edit';
+  $handler->display->display_options['fields']['edit']['label'] = 'Verlinkung bearbeiten';
   /* Contextual filter: OG membership: Group ID */
   $handler->display->display_options['arguments']['gid']['id'] = 'gid';
   $handler->display->display_options['arguments']['gid']['table'] = 'og_membership';
@@ -1105,6 +1132,51 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; ge
 Alle Medien aus dem <code>Lehrtext</code> werden hier aufgelistet.
 </div>';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: File: File ID */
+  $handler->display->display_options['fields']['fid']['id'] = 'fid';
+  $handler->display->display_options['fields']['fid']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['fid']['field'] = 'fid';
+  $handler->display->display_options['fields']['fid']['label'] = '';
+  $handler->display->display_options['fields']['fid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['fid']['element_label_colon'] = FALSE;
+  /* Field: File: Rendered */
+  $handler->display->display_options['fields']['rendered']['id'] = 'rendered';
+  $handler->display->display_options['fields']['rendered']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['rendered']['field'] = 'rendered';
+  $handler->display->display_options['fields']['rendered']['label'] = '';
+  $handler->display->display_options['fields']['rendered']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['rendered']['file_view_mode'] = 'preview';
+  /* Field: File: Name */
+  $handler->display->display_options['fields']['filename']['id'] = 'filename';
+  $handler->display->display_options['fields']['filename']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['filename']['field'] = 'filename';
+  $handler->display->display_options['fields']['filename']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['filename']['alter']['text'] = '[filename]';
+  $handler->display->display_options['fields']['filename']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['filename']['alter']['path'] = '/domain/media/!1/[fid]?og_group_ref=!1';
+  $handler->display->display_options['fields']['filename']['alter']['absolute'] = TRUE;
+  $handler->display->display_options['fields']['filename']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['filename']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['filename']['link_to_file'] = FALSE;
+  /* Field: SUM(File Usage: Use count) */
+  $handler->display->display_options['fields']['count']['id'] = 'count';
+  $handler->display->display_options['fields']['count']['table'] = 'file_usage';
+  $handler->display->display_options['fields']['count']['field'] = 'count';
+  $handler->display->display_options['fields']['count']['group_type'] = 'sum';
+  $handler->display->display_options['fields']['count']['label'] = 'in Beiträgen verwendet';
+  /* Field: File: Edit link */
+  $handler->display->display_options['fields']['edit']['id'] = 'edit';
+  $handler->display->display_options['fields']['edit']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['edit']['field'] = 'edit';
+  $handler->display->display_options['fields']['edit']['label'] = '';
+  $handler->display->display_options['fields']['edit']['element_label_colon'] = FALSE;
+  /* Field: File: Delete link */
+  $handler->display->display_options['fields']['delete']['id'] = 'delete';
+  $handler->display->display_options['fields']['delete']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['delete']['field'] = 'delete';
+  $handler->display->display_options['fields']['delete']['label'] = '';
+  $handler->display->display_options['fields']['delete']['element_label_colon'] = FALSE;
   $handler->display->display_options['argument_input'] = array(
     'gid' => array(
       'type' => 'panel',
@@ -1144,6 +1216,7 @@ Alle Medien aus dem <code>Lehrtext</code> werden hier aufgelistet.
     t('in Beiträgen verwendet'),
     t('.'),
     t(','),
+    t('Verlinkung bearbeiten'),
     t('Alle'),
     t('Typ'),
     t('Page'),
@@ -1158,6 +1231,7 @@ Hinzufügen über die Werkzeugleiste(rechts) -&gt; <code>Inhalte</code> -&gt; ge
 <div class="visible-admin visible-dozent">
 Alle Medien aus dem <code>Lehrtext</code> werden hier aufgelistet.
 </div>'),
+    t('[filename]'),
     t('View panes'),
     t('Media browser tab'),
   );
