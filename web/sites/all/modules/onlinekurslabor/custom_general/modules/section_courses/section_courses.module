@@ -50,7 +50,7 @@ function section_courses_preprocess_panels_pane(&$variables) {
  * @param type $entity_info
  */
 function section_courses_entity_info_alter(&$entity_info) {
-    
+
   $entity_info['node']['view modes']['view_mode_course'] = array(
     'label' => t('Node - course'),
     // This is what you'll see in your "Manage Display" tab.
@@ -796,7 +796,7 @@ function _section_courses_text_outline_add_active_path(&$subtree_pointer) {
 
 /**
  * FAST das gleiche wie section_content_text_outline
- * leider gibts ein paar Fallstricke und der Doppelcode bleibt bestehen... 
+ * leider gibts ein paar Fallstricke und der Doppelcode bleibt bestehen...
  * @return type
  */
 function section_courses_text_outline() {
@@ -1392,6 +1392,7 @@ function _section_courses_student_get_coursegroup_gid() {
  * get the users's course group in the active course
  *
  * @param type $uid
+ * @param Object $course Course-Object
  * @return Group ID of the first course group that matched
  */
 function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
@@ -2262,7 +2263,7 @@ function section_courses_og_membership_insert(OgMembership $og_membership) {
 
 /**
  * implements hook_form_alter(&$form, &$form_state, $form_id)
- * Kurs-Forms... 
+ * Kurs-Forms...
  *
  * @param string $form
  * @param type $form_state
@@ -2366,11 +2367,11 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
       }else {
 
       } */
-    
+
     /* Feature Lehrtext deaktivieren + Link auf Lehrtext erstellen */
     /** Lehet_Settings field */
     if ($form_id == 'courses_course_node_form') {
-        
+
         $description = "<ul>";
         //add domain add link to
         $description .= "<li>" . 'Ein als Demo genutzter Lehrtext wird dadurch öffentlich zugänglich.' . "</li>";
@@ -2387,8 +2388,8 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
 
         $form['field_domain_demo_ref']['#suffix'] = $description;
 
-        
-        
+
+
         /*DISABLE LEHET-TAB: remove this block to enable again*/
         if(true){
                 $form['#groups']['group_course_lehet']->format_type = 'div';
@@ -2399,7 +2400,7 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
 
             }
         }
-    
+
   }
 
 
@@ -2487,6 +2488,65 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
   {
     drupal_set_message('Be aware of hook_workflow which can limit the access.', 'warning');
   }
+
+  // og subscribe: Kursgruppe beitreten
+    if ($form_id === 'og_ui_confirm_subscribe') {
+
+        $og_nid = $form['#entity']->gid;
+        $og_node = node_load($og_nid);
+        //if is coursegroup and NOT enter allowed
+        if ($og_node->type == NM_COURSE_GROUP && !_section_courses_user_may_enter_coursegroup($form['gid']['#value'])) {
+            $form['actions']['submit']['#access'] = false;
+            $form['#validate'][] = '_section_courses_validate_og_subscribe';
+        }
+    }
+}
+
+
+/**
+ * Validate OG subscribe: Cancel, falls man der Kursgruppe nicht beitreten darf.
+ * @param type $form
+ */
+function _section_courses_validate_og_subscribe($form) {
+    $og_gid = $form['gid']['#value'];
+    $og_node = node_load($og_gid);
+    //Kursgruppe
+    if ($og_node->type == NM_COURSE_GROUP) {
+        if (!_section_courses_user_may_enter_coursegroup($coursegroup_nid, false))
+            form_error($form['actions']['submit'], 'Access denied!');
+    }
+}
+
+/**
+ * Prüft, ob die aktuelle Person einer Kursgruppe $nid beitreten darf: true/false
+ * $output_denied_reason: Ggf wird über drupal_set_message der Grund ausgegeben.
+ * @global type $user
+ * @param String $coursegroup_nid
+ * @param boolean $output_denied_reason
+ * @return boolean
+ */
+function _section_courses_user_may_enter_coursegroup($coursegroup_nid, $output_denied_reason = true) {
+    global $user;
+    $reason_text = t('You may not enter this coursegroup.');
+    $oCG = node_load($coursegroup_nid);
+    //eigtl unnötig, da der Beitreten-Button schon entfernt is. Aber zur Sicherheit für Direktlinks...
+    if (node_access('update', $oCG)) {
+        if ($output_denied_reason) {
+            drupal_set_message($reason_text . ' ' . t('As a teammember you already have full read/write-access.'), 'error');
+        }
+        return false;
+    }
+    $course = node_load($oCG->og_group_ref[LANGUAGE_NONE][0]['target_id']);
+    $users_own_coursegroup_nid = _section_courses_get_coursegroup_gid($user->uid, $course);
+    if ($users_own_coursegroup_nid) {
+        $users_own_coursegroup = node_load($users_own_coursegroup_nid);
+        if ($output_denied_reason) {
+            drupal_set_message($reason_text . ' ' . t('You are already in %group_name. You must leave this group first.', array('%group_name' => $users_own_coursegroup->title)), 'error');
+        }
+
+        return false;
+    }
+    return true;
 }
 
 /**
@@ -2519,9 +2579,9 @@ function section_courses_save_draft_submit($form, &$form_state) {
 }
 
 
-        
 
-        
+
+
 /**
  * alter taxonomy reference widget for forum references
  * we need to only show the options which are possible in course section
@@ -3380,7 +3440,7 @@ function section_courses_views_pre_render(&$view) {
  * @param type $view
  */
 function section_courses_views_pre_execute(&$view) {
-    
+
     //------------- ersetze "Kein Ergebnis"-Text bei definierten views
     $affected_views_and_types = array(
         'courses_course_news' => NM_COURSE_NEWS,
@@ -3397,7 +3457,7 @@ function section_courses_views_pre_execute(&$view) {
             $view->empty['area']->options['content'] = _custom_general_get_no_content_text($affected_views_and_types[$view->name], $og_gid);
         }
     }
-    
-    
+
+
     //-----------------------------
 }

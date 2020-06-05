@@ -6,6 +6,15 @@ msgstr "Diese Datei ist noch in Verwendung - dies kann zu Problemen führen!"
 msgid "Used in (including old revisions)"
 msgstr "Verwendet in (inklusive alten Versionen)"
 
+msgid "You may not enter this coursegroup."
+msgstr "Sie dürfen dieser Kursgruppe nicht beitreten"
+
+msgid "As a teammember you already have full read/write-access."
+msgstr "Als Kursleitung haben Sie bereits Vollzugriff auf diese Gruppe."
+
+msgid "You are already in %group_name. You must leave this group first."
+msgstr "Sie sind bereits in %group_name und müssten die Mitgliedschaft in dieser zunächst beenden."
+
 msgid ""
 msgstr ""
 
