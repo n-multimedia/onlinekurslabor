@@ -2500,6 +2500,12 @@ function section_courses_form_alter(&$form, &$form_state, $form_id) {
             $form['#validate'][] = '_section_courses_validate_og_subscribe';
         }
     }
+
+    //forum alter: Entferne Vorschaufunktion
+    if(in_array($form_id, array('comment_node_forum_form','forum_node_form')))
+    {
+        $form['actions']['preview']['#access'] = false;
+    }
 }
 
 
