@@ -3,6 +3,9 @@
 msgid "This file is currently in use and may cause problems if deleted."
 msgstr "Diese Datei ist noch in Verwendung - dies kann zu Problemen führen!"
 
+msgid "Used in (including old revisions)"
+msgstr "Verwendet in (inklusive alten Versionen)"
+
 msgid ""
 msgstr ""
 
