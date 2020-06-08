@@ -65,7 +65,7 @@ function videosafe_node_insert($node)
 function videosafe_form_h5p_content_node_form_alter(&$form, &$form_state, $form_id) {
   
     //needed for ajax within form-scope and prepopulate
-     $currently_set_og_group = drupal_get_query_parameters()['og_group_ref'];
+     $currently_set_og_group = !empty(drupal_get_query_parameters()['og_group_ref'])?drupal_get_query_parameters()['og_group_ref'] : null;
     //enable hook on failed validation!!
      $form_state['no_cache'] = TRUE;
     /* with big thx to http://stackoverflow.com/questions/4932523/embed-a-view-using-ajax for pointing in the right direction */
