@@ -1074,6 +1074,16 @@ function nm_section_courses_features_views_default_views() {
 
   /* Display: Block-Studenten */
   $handler = $view->new_display('block', 'Block-Studenten', 'bl_2');
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '50';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
+  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ vorherige Seite';
+  $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
+  $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Realname: Name */
@@ -1211,6 +1221,16 @@ function nm_section_courses_features_views_default_views() {
 
   /* Display: Block-Alle */
   $handler = $view->new_display('block', 'Block-Alle', 'bl_6');
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '50';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
+  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ vorherige Seite';
+  $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
+  $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
 
   /* Display: Block-Pending */
   $handler = $view->new_display('block', 'Block-Pending', 'bl_1');
@@ -2103,14 +2123,15 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
-  $handler->display->display_options['pager']['type'] = 'mini';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '20';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '50';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
-  $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
-  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ vorherige Seite';
-  $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
-  $handler->display->display_options['pager']['options']['tags']['last'] = 'letzte Seite »';
+  $handler->display->display_options['pager']['options']['quantity'] = '5';
+  $handler->display->display_options['pager']['options']['tags']['first'] = '«';
+  $handler->display->display_options['pager']['options']['tags']['previous'] = '‹';
+  $handler->display->display_options['pager']['options']['tags']['next'] = '›';
+  $handler->display->display_options['pager']['options']['tags']['last'] = '»';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'uid' => 'uid',
@@ -2399,10 +2420,10 @@ function nm_section_courses_features_views_default_views() {
     t('Items per page'),
     t('- All -'),
     t('Offset'),
-    t('« erste Seite'),
-    t('‹ vorherige Seite'),
-    t('nächste Seite ›'),
-    t('letzte Seite »'),
+    t('«'),
+    t('‹'),
+    t('›'),
+    t('»'),
     t('OG membership from user'),
     t('Profile'),
     t('OG Roles from OG membership'),
@@ -3923,13 +3944,16 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
-  $handler->display->display_options['pager']['type'] = 'mini';
+  $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '15';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '1';
+  $handler->display->display_options['pager']['options']['quantity'] = '4';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = TRUE;
+  $handler->display->display_options['pager']['options']['tags']['first'] = '«';
   $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ ';
   $handler->display->display_options['pager']['options']['tags']['next'] = '›';
+  $handler->display->display_options['pager']['options']['tags']['last'] = '»';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'php_2' => 'php_2',
@@ -4274,10 +4298,10 @@ return   ($task_type == NM_COURSES_TASK_TYPE_GROUP )? _section_courses_get_cours
     t('Items per page'),
     t('- All -'),
     t('Offset'),
-    t('« first'),
+    t('«'),
     t('‹ '),
     t('›'),
-    t('last »'),
+    t('»'),
     t('Anzahl: @total'),
     t('Es wurde noch keine Lösung für diese Aufgabe angelegt.
 <hr>'),
