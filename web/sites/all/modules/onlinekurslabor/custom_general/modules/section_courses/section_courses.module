@@ -1576,8 +1576,7 @@ function section_courses_student_registration_form($form, &$form_state) {
         '#rows' => 3,
         '#chars' => 200,
         '#description' => t('Write some words to inform the new members about your course.'),
-        '#default_value' => t('Welcome to my course!'),
-        '#attributes'=>array('placeholder' => t('Welcome to my course'))
+        '#attributes'=>array('placeholder' => t('Welcome to my course!'))
     );
     $form['import_container']['import'] = array(
     '#type' => 'button',
