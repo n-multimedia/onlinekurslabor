@@ -1265,11 +1265,11 @@ function file_entity_file_formatter_file_field_settings($form, &$form_state, $se
  * @return string
  *   Returns the replaced title text.
  */
-function file_entity_replace_title($file, $replace_options = [], $title = NULL, $langcode = NULL) {
-  $replace_options += [
+function file_entity_replace_title($file, $replace_options = array(), $title = NULL, $langcode = NULL) {
+  $replace_options += array(
     'clear' => TRUE,
     'sanitize' => FALSE,
-  ];
+  );
 
   $title_default = '[file:field_file_image_title_text]';
   if (!isset($title)) {
@@ -1282,7 +1282,7 @@ function file_entity_replace_title($file, $replace_options = [], $title = NULL, 
     return $title_items ? $title_items[0]['value'] : '';
   }
   elseif (!empty($title)) {
-    $token_replaced = token_replace($title, ['file' => $file], $replace_options);
+    $token_replaced = token_replace($title, array('file' => $file), $replace_options);
     return decode_entities($token_replaced); // Filter out possible XSS.
   }
 
@@ -1304,11 +1304,11 @@ function file_entity_replace_title($file, $replace_options = [], $title = NULL, 
  * @return string
  *   Returns the replaced alt text.
  */
-function file_entity_replace_alt($file, $replace_options = [], $alt = NULL, $langcode = NULL) {
-  $replace_options += [
+function file_entity_replace_alt($file, $replace_options = array(), $alt = NULL, $langcode = NULL) {
+  $replace_options += array(
     'clear' => TRUE,
     'sanitize' => FALSE,
-  ];
+  );
 
   $alt_default = '[file:field_file_image_alt_text]';
 
@@ -1323,7 +1323,7 @@ function file_entity_replace_alt($file, $replace_options = [], $alt = NULL, $lan
     return $alt_items ? $alt_items[0]['value'] : '';
   }
   elseif (!empty($alt)) {
-    $token_replaced = token_replace($alt, ['file' => $file], $replace_options);
+    $token_replaced = token_replace($alt, array('file' => $file), $replace_options);
     return decode_entities($token_replaced); // Filter out possible XSS.
   }
 

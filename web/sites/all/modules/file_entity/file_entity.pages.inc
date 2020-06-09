@@ -122,11 +122,12 @@ function file_entity_add_upload($form, &$form_state, $options = array()) {
  * Generate form fields for the first step in the add file wizard.
  */
 function file_entity_add_upload_step_upload($form, &$form_state, array $options = array()) {
+  $upload_validators = file_entity_get_upload_validators($options);
   $form['upload'] = array(
     '#type' => 'managed_file',
     '#title' => t('Upload a new file'),
     '#upload_location' => file_entity_upload_destination_uri($options),
-    '#upload_validators' => file_entity_get_upload_validators($options),
+    '#upload_validators' => $upload_validators,
     '#progress_indicator' => 'bar',
     '#required' => TRUE,
     '#pre_render' => array('file_managed_file_pre_render', 'file_entity_upload_validators_pre_render'),
@@ -139,8 +140,19 @@ function file_entity_add_upload_step_upload($form, &$form_state, array $options 
   $extensions = explode("\n", variable_get('file_entity_max_filesize_extensions'));
 
   if (!empty($extensions)) {
+    $limits = array();
 
-    $limits = '';
+    // Limit extensions displayed to those in upload validator.
+    $valid_extensions = array();
+    if (!empty($upload_validators)) {
+      foreach ($upload_validators['file_validate_extensions'] as $key => $values) {
+        $valid_extensions[$key] = explode(' ', strtolower($values));
+      }
+    }
+    // If there are valid extensions, merge sub-arrays into a single array.
+    if (!empty($valid_extensions)) {
+      $valid_extensions = call_user_func_array('array_merge', $valid_extensions);
+    }
 
     foreach ($extensions as $position => $text) {
       $matches = array();
@@ -150,14 +162,37 @@ function file_entity_add_upload_step_upload($form, &$form_state, array $options 
         $extension = $matches[1];
         $filesize = $matches[2];
 
-        $limits .= $extension . ': ' . $filesize . ',';
+        if (empty($valid_extensions) || in_array(strtolower($extension), $valid_extensions)) {
+          $limits[] = trim($extension) . ': <strong>' . trim($filesize) . '</strong>';
+        }
       }
     }
 
-    $limits = rtrim($limits, ',');
+    if (!empty($limits)) {
+      // If less than or equal to 15 items to display, show as unordered list.
+      // Otherwise, implode into a single list item.
+      $list = array(
+        '#theme' => 'item_list',
+        '#list_type' => 'ul',
+        '#items' => (count($limits) <= 15) ? $limits : array(implode(', ', $limits)),
+      );
 
-    $form['upload']['#description'] = t('Files must be less than !size (!limits).', array('!size' => '<strong>' . format_size($form['upload']['#upload_validators']['file_entity_validate_size_extensions'][0]) . '</strong>', '!limits' => $limits));
-
+      if (!empty($valid_extensions)) {
+        $form['upload']['#description'] = t('Files must be less than these sizes: !list',
+          array(
+            '!list' => render($list),
+          )
+        );
+      }
+      else {
+        $form['upload']['#description'] = t('Files must be less than these sizes: !list The default maximum size is !size.',
+          array(
+            '!list' => render($list),
+            '!size' => '<strong>' . format_size($form['upload']['#upload_validators']['file_entity_validate_size_extensions'][0]) . '</strong>'
+          )
+        );
+      }
+    }
   }
 
   $form['actions'] = array('#type' => 'actions');
@@ -357,6 +392,7 @@ function file_entity_usage_page($file) {
         if (empty($label)) {
           $label = t('(entity label not loaded)');
         }
+        $entity_label = $label;
         $entity_uri = empty($entities[$entity_id]) ? NULL : entity_uri($entity_type, $entities[$entity_id]);
 
         // Link the label to the URI when possible.

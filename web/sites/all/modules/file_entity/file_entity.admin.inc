@@ -1195,6 +1195,7 @@ function file_entity_settings_form($form, &$form_state) {
 
 /**
  * Element validate callback for the maximum upload size / file extension field.
+ * Only validates non-empty values.
  */
 function file_entity_max_filesize_extensions_validate($element, &$form_state) {
   $list = explode("\n", $element['#value']);
@@ -1203,17 +1204,20 @@ function file_entity_max_filesize_extensions_validate($element, &$form_state) {
     $matches = array();
     preg_match('/(.*)\|(.*)/', $text, $matches);
 
-    $extension = $matches[1];
-    $filesize = $matches[2];
+    if (isset($matches[1]) && isset($matches[2]) && !empty($matches[1]) && !empty($matches[2])) {
+      // Only validate non-empty values.
+      $extension = $matches[1];
+      $filesize = $matches[2];
 
-    //Validate filesize.
-    $element['#value'] = $filesize;
-    _file_generic_settings_max_filesize($element, $form_state);
+      //Validate filesize.
+      $element['#value'] = $filesize;
+      _file_generic_settings_max_filesize($element, $form_state);
 
-    //Validate extension.
-    $extensions = explode(' ', $form_state['input']['file_entity_default_allowed_extensions']);
-    if (!in_array($extension, $extensions)) {
-      form_error($element, t('"!extension" was not found in the list of allowed extensions.', array('!extension' => $extension)));
+      //Validate extension.
+      $extensions = explode(' ', $form_state['input']['file_entity_default_allowed_extensions']);
+      if (!in_array($extension, $extensions)) {
+        form_error($element, t('"!extension" was not found in the list of allowed extensions.', array('!extension' => $extension)));
+      }
     }
   }
 }
