@@ -486,6 +486,9 @@ function section_courses_block_info() {
   $blocks['course_text_biblio'] = array(
     'info' => t('Course - Text Biblio'),
   );
+  $blocks['course_admin_members_add_form'] = array(
+    'info' => t('Course - Admin - Member Add Form'),
+  );
 
   return $blocks;
 }
@@ -525,7 +528,11 @@ function section_courses_block_view($delta = '') {
     case 'course_text_biblio' :
       $block['content'] = _section_courses_text_biblio_view();
       break;
-  }
+    case 'course_admin_members_add_form' :
+        $form = drupal_get_form('section_courses_student_registration_form');
+        $block['content'] = drupal_render($form);
+        break;
+    }
 
   return $block;
 
@@ -657,6 +664,7 @@ function _section_courses_get_active_course($reset = FALSE) {
   return $course;
 }
 
+    
 /**
  * gets the Lehrtext domain id
  */
@@ -1543,7 +1551,7 @@ function section_courses_student_registration_form($form, &$form_state) {
   );
 
   if (isset($form_state['triggering_element']['#id']) && strstr($form_state['triggering_element']['#id'], 'import')) {
-    $output_msg = _section_courses_student_registration_import($form_state['values']['import_container']['import_users']);
+    $output_msg = _section_courses_student_registration_import($form_state['values']['import_container']['import_users'],$form_state['values']['import_container']['more']['import_message']);
     $form['import_container']['import_message'] = array(
       '#markup' => $output_msg,
     );
@@ -1553,9 +1561,25 @@ function section_courses_student_registration_form($form, &$form_state) {
   $form['import_container']['import_users'] = array(
     '#title' => t('Import List'),
     '#type' => 'textarea',
+    '#attributes'=>array('placeholder' => t('Uli Uptmor uli.uptmor@student.uni-augsburg.de')),
     '#description' => t('One entry per line! Syntax "Firstname Lastname example@email.com". Existing users can also be added by entering their e-mail-adress.')
   );
-  $form['import_container']['import'] = array(
+   $form['import_container']['more'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Notification of new members'),
+        '#collapsed' => true,
+        '#collapsible' => true
+    );
+    $form['import_container']['more']['import_message'] = array(
+        '#title' => t('New members will receive the following text via e-mail'),
+        '#type' => 'textarea',
+        '#rows' => 3,
+        '#chars' => 200,
+        '#description' => t('Write some words to inform the new members about your course.'),
+        '#default_value' => t('Welcome to my course!'),
+        '#attributes'=>array('placeholder' => t('Welcome to my course'))
+    );
+    $form['import_container']['import'] = array(
     '#type' => 'button',
     '#value' => '<i class="glyphicon glyphicon-user"></i> '.t("Import"),
     '#submit' => array('section_courses_student_registration_import_submit'),
@@ -1804,12 +1828,12 @@ function _section_course_get_user_info_assign_course($userdata){
  *
  * @return HTML-DIV containing the proper course entrance information(success, failure, etc)
  */
-function _section_courses_student_registration_import($input) {
+function _section_courses_student_registration_import($strUserList, $strWelcomeText='') {
 
-  $input = check_plain($input);
+  $strUserList = check_plain($strUserList);
 
-  if (!empty($input)) {
-    watchdog('section_courses', 'Importing user list %input', array('%input' => $input), WATCHDOG_INFO);
+  if (!empty($strUserList)) {
+    watchdog('section_courses', 'Importing user list %input', array('%input' => $strUserList), WATCHDOG_INFO);
 
     //email list = account activation
     //first + lastname; emaillist =  account creation!
@@ -1822,7 +1846,7 @@ function _section_courses_student_registration_import($input) {
     $missing_accounts   = array();
 
     // Split input into rows representing users
-    $rows = explode("\n", $input);
+    $rows = explode("\n", $strUserList);
 
     foreach ($rows as $row) {
       // Count Parameters given
@@ -1871,7 +1895,16 @@ function _section_courses_student_registration_import($input) {
         //ignore empty lines
         continue;
       }
-
+      //sets a message to be included in the welcome-to-course-mail (handled via RULES)
+      if(trim($strWelcomeText))
+      {
+          $strNew_welcome_text = t("Message from course management:")."\r\n"."-------------------\r\n".$strWelcomeText. "\r\n-------------------\r\n";
+           $_SESSION['section_courses_new_member_add_welcome_message'] = $strNew_welcome_text;
+      }
+      else
+      {
+         unset($_SESSION['section_courses_new_member_add_welcome_message']);
+      }
       $user_state = _section_course_get_user_info_assign_course($userdata);
 
       switch($user_state){

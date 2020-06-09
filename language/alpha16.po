@@ -15,6 +15,21 @@ msgstr "Als Kursleitung haben Sie bereits Vollzugriff auf diese Gruppe."
 msgid "You are already in %group_name. You must leave this group first."
 msgstr "Sie sind bereits in %group_name und müssten die Mitgliedschaft in dieser zunächst beenden."
 
+msgid "Notification of new members"
+msgstr "Benachrichtigung der Teilnehmenden"
+
+msgid "New members will receive the following text via e-mail"
+msgstr "Neue Kursmitglieder erhalten diesen Text per E-Mail"
+
+msgid "Write some words to inform the new members about your course."
+msgstr "Schreiben Sie einige Wörter, um die neuen Kursmitglieder über Ihren Kurs zu informieren."
+
+msgid "Welcome to my course!"
+msgstr "Willkommen zu meinem Kurs!"
+
+msgid "Message from course management:"
+msgstr "Nachricht der Kursleitung:"
+
 msgid ""
 msgstr ""
 

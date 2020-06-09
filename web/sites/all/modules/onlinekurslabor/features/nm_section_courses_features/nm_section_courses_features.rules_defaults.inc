@@ -14,7 +14,7 @@ function nm_section_courses_features_default_rules_configuration() {
       "LABEL" : "Courses Member Added",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "REQUIRES" : [ "rules", "og" ],
+      "REQUIRES" : [ "rules", "og", "rules_session_vars" ],
       "ON" : { "og_user_insert" : [], "og_user_approved" : [] },
       "IF" : [
         { "AND" : [
@@ -40,10 +40,15 @@ function nm_section_courses_features_default_rules_configuration() {
             "PROVIDE" : { "entity_fetched" : { "entity_course" : "Fetched entity" } }
           }
         },
+        { "load_data_from_session" : {
+            "USING" : { "data_key" : "section_courses_new_member_add_welcome_message" },
+            "PROVIDE" : { "loaded_session_data" : { "course_welcome_message" : "Course welcome message" } }
+          }
+        },
         { "mail" : {
             "to" : [ "account:mail" ],
             "subject" : "[site:name] - Anmeldung f\\u00fcr [entity-course:title]",
-            "message" : "Hallo [account:name],\\r\\nSie sind nun im Kurs \\u0022[entity-course:title]\\u0022 eingetragen.\\r\\n\\r\\nLink zum Kurs: [entity-course:url].\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
+            "message" : "Hallo [account:name],\\r\\nSie sind nun im Kurs \\u0022[entity-course:title]\\u0022 eingetragen.\\r\\n[course-welcome-message:value]\\r\\n\\r\\nLink zum Kurs: [entity-course:url].\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
             "language" : [ "account:language" ]
           }
         }

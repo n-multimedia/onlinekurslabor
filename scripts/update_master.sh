@@ -6,6 +6,7 @@ drush vset maintenance_mode 1
 #bug in drush - cc before FR!!
 drush cc all
 
+drush en rules_session_vars --yes
 
 #revert single features
 drush fr  lehet_ouzo nm_general_features  nm_section_content_features nm_section_courses_features --yes
