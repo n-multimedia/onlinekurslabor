@@ -142,3 +142,7 @@ die height wird per JS gesetzt */
     width:auto !important;
 }
 
+#annvid_button_hide_pdf
+{
+    float:right;
+}
