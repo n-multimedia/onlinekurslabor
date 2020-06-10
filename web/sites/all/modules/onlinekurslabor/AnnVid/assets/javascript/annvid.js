@@ -44,14 +44,10 @@
                     jQuery("#annvid_pdfdiv").removeClass("pdf_visible");
                     //zeige book-navi links
                     jQuery(".panels-flexible-column-first:has('ul.menu.nav')").show();
-                    //author-tools rechts
-                    jQuery(".col-md-1:has('#authors_tools-container')").show();
-                    jQuery(".col-md-1:has('#instructors_tools-container')").show();
                     
                     jQuery(".main-container").removeAttr("style");
                     Drupal.behaviors.annvid.stream.fillStreamTimeline();
                     jQuery("#annvid_button_show_pdf_container").show();
-                    
                     
                     jQuery.event.trigger({
                                            type: "event_site_in_fullscreen",
@@ -67,12 +63,12 @@
                     jQuery("#annvid_pdfdiv").addClass("pdf_visible");
                     //verstecke book-navi links
                     jQuery(".panels-flexible-column-first:has('ul.menu.nav')").hide();
-                    //author-tools rechts
-                    jQuery(".col-md-1:has('#authors_tools-container')").hide();
-                     jQuery(".col-md-1:has('#instructors_tools-container')").hide();
+
                     jQuery(".main-container").attr("style", "width:100%;");
                     Drupal.behaviors.annvid.stream.fillStreamTimeline();
                     jQuery("#annvid_button_show_pdf_container").hide();
+                    //muss per JS gesetzt werden - wenn  beim Laden vorhanden, verschluckt sich pdfjs
+                    jQuery(".html5pdf_standard_wrapper_class").addClass('html5pdf_annvid_wrapper_class');
                     jQuery.event.trigger({
                                          type: "event_site_in_fullscreen",
                                          message: true,
