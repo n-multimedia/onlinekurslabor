@@ -38,6 +38,7 @@
         {
             if (jQuery("#annvid_pdfdiv").is(":visible") == true)
                 {
+                    //hide the PDF
                     jQuery("#annvid_videodiv").removeClass("col-md-6").addClass("col-md-12");
                     jQuery(".page_maincontent").removeClass("col-md-12").addClass("col-md-8") ;
                     jQuery("#annvid_pdfdiv").removeClass("pdf_visible");
@@ -50,6 +51,13 @@
                     jQuery(".main-container").removeAttr("style");
                     Drupal.behaviors.annvid.stream.fillStreamTimeline();
                     jQuery("#annvid_button_show_pdf_container").show();
+                    
+                    
+                    jQuery.event.trigger({
+                                           type: "event_site_in_fullscreen",
+                                           message: false,
+                                           time: new Date()
+                                   });
                     
                 } else
                 {   //now show pdf!
@@ -65,6 +73,11 @@
                     jQuery(".main-container").attr("style", "width:100%;");
                     Drupal.behaviors.annvid.stream.fillStreamTimeline();
                     jQuery("#annvid_button_show_pdf_container").hide();
+                    jQuery.event.trigger({
+                                         type: "event_site_in_fullscreen",
+                                         message: true,
+                                         time: new Date()
+                                 });
                 }
         },
         notifyInitialized: function(name)
