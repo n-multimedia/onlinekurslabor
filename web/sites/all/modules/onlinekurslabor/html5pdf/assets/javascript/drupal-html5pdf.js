@@ -5,6 +5,7 @@
 
 
         },
+        //todo: make array. else only one object.
         renderer: null,
         createReader: function(options, identifierstring)
         {
