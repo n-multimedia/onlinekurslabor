@@ -51,12 +51,7 @@
                     jQuery(".main-container").removeAttr("style");
                     Drupal.behaviors.annvid.stream.fillStreamTimeline();
                     jQuery("#annvid_button_show_pdf_container").show();
-                    
-                    jQuery.event.trigger({
-                                           type: "event_site_in_fullscreen",
-                                           message: false,
-                                           time: new Date()
-                                   });
+
                     
                 } else
                 {   //now show pdf!
@@ -79,11 +74,6 @@
                     //schiebe pdf-close-button in die html-control-leiste mit rein - gibt keine Dopplung!
                      jQuery("div.html5pdf_control i.html5pdfsprite-zoomin").before(jQuery("button#annvid_button_hide_pdf"));
                 
-                    jQuery.event.trigger({
-                                         type: "event_site_in_fullscreen",
-                                         message: true,
-                                         time: new Date()
-                                 });
                 }
         },
         notifyInitialized: function(name)

@@ -111,7 +111,6 @@ function support_form_page_build(&$page) {
     if (isset($page['footer_region_left'])) {
         $block = module_invoke('support_form', 'block_view', 'support_form');
         $blocks = array('#markup' => $block['content']);
-        $blocks['#attached']['js'][] = drupal_get_path('module', 'support_form') . '/js/support_form.js';
         $page['footer_region_left']['support_form'] = $blocks;
     }
 }
