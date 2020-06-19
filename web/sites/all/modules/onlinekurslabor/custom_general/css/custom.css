@@ -125,33 +125,7 @@ Content-Section
 /**
 *  Courses
 */
-
-/*
-Sponsors
-*/
-
-.courses_sponsors_cols {
-
-  height: auto;
-  overflow: hidden;
-  padding: 7px 10px;
-  position: absolute;
-  top: 0;
-  right: 1px;
-
-}
-
-.courses_sponsors_col {
-  display: inline-block;
-  vertical-align: top;
-  margin-left: 10px;
-  float: right;
-}
-
-.courses_sponsors a {
-  margin-bottom: 7px;
-  display: block;
-}
+ 
 
 /*
 div ul.section_nav_tools

@@ -38,6 +38,18 @@ msgid "Choose the type of display you would like for this
       they are inserted into an editor."
 msgstr "Wählen Sie den Anzeigentyp für diese Datei."
 
+msgid "Your request is being looked at"
+msgstr "Ihre Kursanfrage wird bearbeitet"
+
+msgid "In demo-mode you can only access the course info and text."
+msgstr "Im Demo-Modus haben Sie ausschließlich Zugriff auf die allgemeinen Kursinformationen und den Lehrtext."
+
+msgid "Enroll in course"
+msgstr "Melden Sie sich am Kurs an"
+
+msgid "!enroll_link to participate."
+msgstr "!enroll_link um mitzuwirken."
+
 msgid ""
 msgstr ""
 

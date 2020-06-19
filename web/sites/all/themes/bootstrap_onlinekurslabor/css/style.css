@@ -70,6 +70,7 @@ Panels reset - homepage
 }
 
 
+
 /*
 PANELS
 */
@@ -347,49 +348,133 @@ body.cke_show_borders{
     margin:0px;
 }
 
+
+/**
+apply to row. makes all columns the same height.
+*/
+.equal {
+  display: flex;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+}
+
 /*
 Course Header
 */
 #course_header
 {
-    position:relative;
+    
     overflow:hidden;
-    height:200px;
+    height:100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    position:relative; /*fürs badge*/
 }
 
+#course_header .course_header_left
+{
+    /*überschrift unten angedotzt*/
+    display: flex;
+    align-items: flex-end;
+    padding-left:0;
+}
+
+#course_header .course_header_right
+{
+ padding-right: 0px;
+ overflow: hidden;
+ max-height:200px;
+}
+#course_header .course_header_right .courses_sponsors
+{
+    background-color: rgba(255,255,255,0.8);
+    padding-left: 7px;
+    padding-top: 5px;
+    height:100%;
+    backdrop-filter: blur(4px); /*currently only chrome*/
+}
+#course_header .course_header_right .courses_sponsors.one-col
+{
+    margin-left: 41%;
+}
+#course_header .course_header_right .courses_sponsors.two-col
+{
+    margin-left: 32%;
+}
+
+#course_header .courses_sponsors * {
+    display: inline;
+    margin-left: 1px;
+    margin-bottom: 10px;
+}
+#course_header .course_header_right .courses_sponsors.two-col a
+{
+     margin-left: 15px;
+}
+
+
 #course_header #course_header_title {
-    position: absolute;
+    
     color: #ffffff;
-    left: 10px;
-    bottom: 0;
     overflow:hidden;
+    display: inline;
+    width:100%;
 }
 
 #course_header #course_header_title h1 {
     font-weight: normal;
+    padding: 5px;
+    margin-bottom:0;
+    background: linear-gradient(to right,rgba(0, 0, 0, 0.34),rgba(0, 0, 0, 0.08))
 }
-/*kurs-header und projektheader h1 in mobilansicht*/
-@media (max-width: 767px) {
-#course_header #course_header_title h1 {
-    font-size: 20px;
-    max-height: 37px;
+/*erster breakpoint*/
+@media (max-width: 1199px) {
+#course_header .course_header_right .courses_sponsors.one-col, #course_header .course_header_right .courses_sponsors.two-col{
+    margin-left:25%;
+}
+
+}
+/*zweiter breakpoint*/
+@media (max-width: 992px) {
+    #course_header #course_header_title h1 {
+    font-size: 25px;
     text-align:justify;
     /*hyphens: silbentrennung*/
     hyphens: auto;
 }
+#course_header .course_header_right
+{
+ max-height:110px;
 }
+}
+
+/*kurs-header und projektheader h1 in mobilansicht*/
+@media (max-width: 768px) {
+#course_header #course_header_title h1 {
+    font-size: 20px;
+    text-align:justify;
+    /*hyphens: silbentrennung*/
+    hyphens: auto;
+    
+}
+}
+
 
 #course_header .col-md-12{
     padding:0px;
 }
+
+
+
 #course_demo_info{
-    position:absolute;
     padding: 5px;
-    z-index: 1;
     background-color: #eee;
-    left:10px;
-    top:10px;
     opacity: 0.9;
+    position:absolute;
+    top:0px;
+    margin-left: 5px;
 }
 
 /*

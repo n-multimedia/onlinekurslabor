@@ -77,144 +77,86 @@ function _section_courses_node_tabs_view() {
 }
 
 function _course_header_section_view() {
-  global $user;
-  $user_uid = $user->uid;
+    global $user;
+    $user_uid = $user->uid;
 
-  $block = array();
-  $active_course = _section_courses_get_active_course();
+    $block = array();
+    $active_course = _section_courses_get_active_course();
 
-  if (!isset($active_course) || empty($active_course))
-    return array();
-
-  if ($active_course) {
-    $output = "";
-    $output .= '<div style="position:relative">';
-    if (section_courses_demo_mode()) {
-      //show pending message
-      $pending_msg = "";
-      $og_membership = og_get_membership('node', $active_course->nid, 'user', $user_uid);
-      if ($og_membership && $og_membership->state != OG_STATE_ACTIVE) {
-        $pending_msg = '<span class="label label-warning"> <b>... Ihre Kursanfrage wird bearbeitet ...</b> </span> ';
-      }
-
-      $output .= '<div id="course_demo_info" class=""><h5>' . NM_COURSE_DEMO_LABEL . ' ' . $pending_msg . '</h5>';
-      $output .= '<p>Im Demo-Modus haben Sie ausschließlich Zugriff auf den Lehrtext und die allgemeinen Kursinformationen.</p> ';
-
-      $url = 'group/node/' . $active_course->nid . '/subscribe';
-      $subscribe_link = l('Melden Sie sich am Kurs an', $url, array('query' => array('destination' => 'course/home/' . $active_course->nid)));
-      $output .= '<p>' . $subscribe_link . ', um mitzuwirken.</p> ';
-
-      $output .= '</div>';
+    if (!isset($active_course) || empty($active_course)) {
+        return array();
     }
 
-    $output .= '<div id="course_header" >';
-    $output .= '<div class="col-md-12">';
+
+
+    $variables = array();
+
+
+    if (section_courses_demo_mode()) {
+        $variables['course_state']['demo'] = true;
+        $variables['demo']['title'] = NM_COURSE_DEMO_LABEL;
+        $variables['demo']['text'] = t('In demo-mode you can only access the course info and text.');
+        $og_membership = og_get_membership('node', $active_course->nid, 'user', $user_uid);
+        if ($og_membership && $og_membership->state != OG_STATE_ACTIVE) {
+            $variables['course_state']['pending'] = true;
+            $variables['demo']['pending_text'] = t('Your request is being processed');
+        }
+
+
+        $url = 'group/node/' . $active_course->nid . '/subscribe';
+        $subscribe_link = l(t('Enroll in course'), $url, array('query' => array('destination' => 'course/home/' . $active_course->nid)));
+
+        $variables['course_subscribe_link'] = t('!enroll_link to participate.', array('!enroll_link'=>$subscribe_link));
+    }
 
 
     $sponsors_out = '';
     $sponsors_tids = field_get_items('node', $active_course, 'field_field_courses_sponsors');
     if ($sponsors_tids) {
-      $count_sponsors = 0;
-      //simulate more
-      /*
-        $tt = array_pop($sponsors_tids);
-        $sponsors_tids[] = $tt;
-        $sponsors_tids[] = $tt;
-        $sponsors_tids[] = $tt;
-        $sponsors_tids[] = $tt;
-        $sponsors_tids[] = $tt;
-       */
+        $count_sponsors = 0;
+        //simulate more
+        /*
+          $tt = array_pop($sponsors_tids);
+          $sponsors_tids[] = $tt;
+          $sponsors_tids[] = $tt;
+          $sponsors_tids[] = $tt;
+          $sponsors_tids[] = $tt;
+          $sponsors_tids[] = $tt;
+         */
+        foreach (($sponsors_tids) as $tid_array) {
+            $term = taxonomy_term_load($tid_array['tid']);
+            $url = $term->field_sponsors_url[LANGUAGE_NONE][0]['value'];
 
+            $field_view = field_view_field('taxonomy_term', $term, 'field_sponsors_image', array('settings' => array('image_style' => 'course_sponsor_logo')));
 
-      $output .= '<div class="courses_sponsors_cols">';
-      foreach (($sponsors_tids) as $tid_array) {
-        $term = taxonomy_term_load($tid_array['tid']);
-        $url = $term->field_sponsors_url[LANGUAGE_NONE][0]['value'];
+            $field_view['#label_display'] = 'hidden';
+            $sponsor_img = drupal_render($field_view);
 
-        $field_view = field_view_field('taxonomy_term', $term, 'field_sponsors_image', array('settings' => array('image_style' => 'course_sponsor_logo')));
-
-        $field_view['#label_display'] = 'hidden';
-        $sponsor_img = drupal_render($field_view);
-
-        $sponsors_out .= l($sponsor_img, $url, array('html' => TRUE, 'target' => '_blank', 'attributes' => array('target' => '_blank')));
-
-        $count_sponsors++;
-
-        //new row every %1 logos
-        if ($count_sponsors % 4 == 0 && $count_sponsors < count($sponsors_tids)) {
-          $output .= '<div class="courses_sponsors_col">';
-          $sponsors_out = '<div class="courses_sponsors">' . $sponsors_out . '</div>';
-          $output .= $sponsors_out;
-          $sponsors_out = "";
-          $output .= '</div>';
+            $variables['sponsors_links'][] = l($sponsor_img, $url, array('html' => TRUE, 'target' => '_blank', 'attributes' => array('target' => '_blank')));
+            $count_sponsors++;
         }
-      }
-      $output .= '<div class="courses_sponsors_col">';
-      $sponsors_out = '<div class="courses_sponsors">' . $sponsors_out . '</div>';
-      $output .= $sponsors_out;
-      $output .= '</div>';
-
-      $output .= '</div>';
     }
 
 
-    if(! $active_course->status)
-    {
-        $output .= '<div class="view_courses_label draft badge" title="'.t("This course is currently being tested not public yet.").'">'.t('Draft').'</div>';
+
+    if (!$active_course->status) {
+        $variables['course_state']['draft'] = true;
     }
 
-    $output .= '<div id="course_header_title">';
+    $variables['course_title'] = $active_course->title;
 
-    $output .= '<h1>';
-    $output .= $active_course->title;
-    $output .= '</h1>';
-
-    $output .= '</div>';
 
 
     //header here
-    $header_pic = '';
     if (isset($active_course->field_course_header)) {
-      //$field_items = field_get_items('node', $active_course, 'field_course_header');
-      $field_view = field_view_field('node', $active_course, 'field_course_header', array('settings' => array('image_style' => 'course_header')));
-      //$field_view['#label_display'] = 'hidden';
-      $uri = $field_view['#items'][0]['uri'];
+        $field_view = field_view_field('node', $active_course, 'field_course_header', array('settings' => array('image_style' => 'course_header')));
+        $uri = $field_view['#items'][0]['uri'];
 
-      $url = image_style_url('course_header', $uri);
-
-      //$url = parse_url($url_array);
-      //        dpm($url);
-      //$path = $url['path'];
-      $path = $url;
-      //dpm($active_course->field_course_header);
-      //$url_array = file_create_url($uri);
-      //$url = parse_url($url_array);
-      //$path = $url['path'];
-      $header_pic = '<div id="course-header-background" style="
-        background-image:url(' . $path . ');
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover; 
-        ">
-        </div>';
+        $url = image_style_url('course_header', $uri);
+        $variables['course_header_url'] = $url;
     }
-    $output .= $header_pic;
 
-    $output .= '</div>';
-    $output .= '</div>';
-
-    //container
-    $output .= "</div>";
-
-    $block = array(
-      'content' => array(
-        '#type' => 'markup',
-        '#markup' => $output,
-    ));
-  }
-
-  return $block;
+    return theme('section_courses_course_header_theme', $variables);
 }
 
 /*

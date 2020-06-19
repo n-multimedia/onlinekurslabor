@@ -3213,6 +3213,11 @@ function section_courses_theme() {
       'variables' => [
       ],
     ],
+    'section_courses_course_header_theme' => [
+      'template' => 'templates/section-courses-course-header',
+      'variables' => [
+      ],
+    ],
     'views__view__courses__render_course' => [
       'template' => 'views-view-fields--courses-kurse-bersicht--my-courses-small',
       'variables' => array(),
