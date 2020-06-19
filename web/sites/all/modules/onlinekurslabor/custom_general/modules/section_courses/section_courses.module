@@ -1898,12 +1898,9 @@ function _section_courses_student_registration_import($strUserList, $strWelcomeT
       if(trim($strWelcomeText))
       {
           $strNew_welcome_text = t("Message from course management:")."\r\n"."-------------------\r\n".$strWelcomeText. "\r\n-------------------\r\n";
-           $_SESSION['section_courses_new_member_add_welcome_message'] = $strNew_welcome_text;
+          $_SESSION['section_courses_new_member_add_welcome_message'] = $strNew_welcome_text;
       }
-      else
-      {
-         unset($_SESSION['section_courses_new_member_add_welcome_message']);
-      }
+      
       $user_state = _section_course_get_user_info_assign_course($userdata);
 
       switch($user_state){

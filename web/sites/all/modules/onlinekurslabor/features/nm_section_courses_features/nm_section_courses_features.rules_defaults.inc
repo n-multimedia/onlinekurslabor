@@ -51,7 +51,8 @@ function nm_section_courses_features_default_rules_configuration() {
             "message" : "Hallo [account:name],\\r\\nSie sind nun im Kurs \\u0022[entity-course:title]\\u0022 eingetragen.\\r\\n[course-welcome-message:value]\\r\\n\\r\\nLink zum Kurs: [entity-course:url].\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
             "language" : [ "account:language" ]
           }
-        }
+        },
+        { "remove_data_from_session" : { "data_key" : "section_courses_new_member_add_welcome_message" } }
       ]
     }
   }');
