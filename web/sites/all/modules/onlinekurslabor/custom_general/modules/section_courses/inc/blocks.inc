@@ -110,7 +110,6 @@ function _course_header_section_view() {
     }
 
 
-    $sponsors_out = '';
     $sponsors_tids = field_get_items('node', $active_course, 'field_field_courses_sponsors');
     if ($sponsors_tids) {
         $count_sponsors = 0;

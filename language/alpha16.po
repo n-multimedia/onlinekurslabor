@@ -33,9 +33,7 @@ msgstr "Nachricht der Kursleitung:"
 msgid "Embedding %filename"
 msgstr "%filename einfügen"
 
-msgid "Choose the type of display you would like for this
-      file. Please be aware that files may display differently than they do when
-      they are inserted into an editor."
+msgid "Choose the type of display you would like for this file. Please be aware that files may display differently than they do when they are inserted into an editor."
 msgstr "Wählen Sie den Anzeigentyp für diese Datei."
 
 msgid "Your request is being looked at"
