@@ -343,7 +343,7 @@ function nm_section_content_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'biblio_orphan_clean_next_execution';
-  $strongarm->value = 1591358975;
+  $strongarm->value = 1593244102;
   $export['biblio_orphan_clean_next_execution'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -902,7 +902,7 @@ function nm_section_content_features_strongarm() {
         'custom_settings' => FALSE,
       ),
       'media_12' => array(
-        'custom_settings' => FALSE,
+        'custom_settings' => TRUE,
       ),
       'media_3' => array(
         'custom_settings' => FALSE,
@@ -914,6 +914,18 @@ function nm_section_content_features_strongarm() {
         'custom_settings' => FALSE,
       ),
       'media_9' => array(
+        'custom_settings' => FALSE,
+      ),
+      'wysiwyg' => array(
+        'custom_settings' => TRUE,
+      ),
+      'media_original' => array(
+        'custom_settings' => FALSE,
+      ),
+      'preview_with_link_to_original' => array(
+        'custom_settings' => FALSE,
+      ),
+      'media_600px' => array(
         'custom_settings' => FALSE,
       ),
     ),
@@ -934,6 +946,10 @@ function nm_section_content_features_strongarm() {
             'visible' => TRUE,
           ),
           'full' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'media_12' => array(
             'weight' => '0',
             'visible' => TRUE,
           ),
@@ -994,6 +1010,15 @@ function nm_section_content_features_strongarm() {
       'media_600px' => array(
         'custom_settings' => TRUE,
       ),
+      'wysiwyg' => array(
+        'custom_settings' => TRUE,
+      ),
+      'preview_with_link_to_original' => array(
+        'custom_settings' => TRUE,
+      ),
+      'media_original' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -1043,6 +1068,10 @@ function nm_section_content_features_strongarm() {
             'visible' => TRUE,
           ),
           'media_600px' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'preview_with_link_to_original' => array(
             'weight' => '0',
             'visible' => TRUE,
           ),
@@ -1100,6 +1129,18 @@ function nm_section_content_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
+      'wysiwyg' => array(
+        'custom_settings' => TRUE,
+      ),
+      'preview_with_link_to_original' => array(
+        'custom_settings' => TRUE,
+      ),
+      'media_original' => array(
+        'custom_settings' => FALSE,
+      ),
+      'media_600px' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -1145,6 +1186,10 @@ function nm_section_content_features_strongarm() {
             'visible' => TRUE,
           ),
           'media_9' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'preview_with_link_to_original' => array(
             'weight' => '0',
             'visible' => TRUE,
           ),

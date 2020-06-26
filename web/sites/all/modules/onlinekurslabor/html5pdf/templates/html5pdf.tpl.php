@@ -24,6 +24,10 @@ dpm($module_path);
     </div><div style="clear:both;"></div>
     <div  id="<?php echo $identifier ?>_pdfscrollcontainer" class="html5pdf_pdfscrollcontainer"><div><canvas id="<?php echo $identifier ?>_pdfcanvas"  class="pdf_canvas"></canvas></div></div>
 </div>
+<?php if($show_file_link):?>
+<br>
+&nbsp;&nbsp;<a href="<?php echo $pdf_file_url ?>"><?php echo pathinfo ( $pdf_file_url, PATHINFO_FILENAME).'.'.pathinfo ( $pdf_file_url, PATHINFO_EXTENSION)?></a>
+<?endif?>
 
 <script type="text/javascript">
            

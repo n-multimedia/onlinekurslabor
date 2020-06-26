@@ -123,6 +123,9 @@ function annvid_features_strongarm() {
       'videosafe_description' => array(
         'custom_settings' => FALSE,
       ),
+      'view_mode_course' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(

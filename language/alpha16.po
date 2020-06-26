@@ -48,8 +48,26 @@ msgstr "Melden Sie sich am Kurs an"
 msgid "!enroll_link to participate."
 msgstr "!enroll_link um mitzuwirken."
 
-msgid ""
-msgstr ""
+msgid "Below the embedded PDF a link to the file will be shown for convenient download."
+msgstr "Unterhalb des gerenderten PDFs befindet sich ein Link zur Datei."
+
+msgid "Show link to file"
+msgstr "Zeige Link zur Datei"
+
+msgid "Show link to file: %text"
+msgstr "Zeige Link zur Datei: %text"
+
+msgid "Embedded PDF with link to file"
+msgstr "Gerendertes PDF mit Link zur Originaldatei"
+
+msgid "Embedded PDF"
+msgstr "Gerendertes PDF"
+
+msgid "Edit file"
+msgstr "Quelldatei bearbeiten"
+
+msgid "Filename"
+msgstr "Dateiname"
 
 msgid ""
 msgstr ""

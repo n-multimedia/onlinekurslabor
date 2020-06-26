@@ -411,6 +411,12 @@ function nm_section_content_features_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 1,
       ),
+      'media_12' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
       'preview' => array(
         'label' => 'above',
         'settings' => array(),
@@ -552,6 +558,12 @@ function nm_section_content_features_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 0,
       ),
+      'preview_with_link_to_original' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -657,6 +669,12 @@ function nm_section_content_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'preview_with_link_to_original' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -764,6 +782,12 @@ function nm_section_content_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'preview_with_link_to_original' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'wysiwyg' => array(
         'label' => 'above',
@@ -890,6 +914,12 @@ function nm_section_content_features_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 0,
+      ),
+      'preview_with_link_to_original' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'wysiwyg' => array(
         'label' => 'above',
