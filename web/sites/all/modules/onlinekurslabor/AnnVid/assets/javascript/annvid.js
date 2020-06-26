@@ -57,9 +57,9 @@
                 {   //now show pdf!
                  
                     jQuery("#annvid_videodiv").removeClass("col-md-12").addClass("col-md-6");
-                    //ganze breite ausnutzen - entferne col-9 oder col-8
-                    jQuery(".col-md-9").removeClass("col-md-9").addClass("col-md-12").addClass("page_maincontent-9");
-                    jQuery(".col-md-8").removeClass("col-md-8").addClass("col-md-12").addClass("page_maincontent-8");
+                    //ganze breite ausnutzen - entferne col-9 oder col-8 vom hauptinhalt
+                    jQuery("div.main-content .col-md-9").removeClass("col-md-9").addClass("col-md-12").addClass("page_maincontent-9");
+                    jQuery("div.main-content .col-md-8").removeClass("col-md-8").addClass("col-md-12").addClass("page_maincontent-8");
                     
                     jQuery("#annvid_pdfdiv").addClass("pdf_visible");
                     //verstecke book-navi links
