@@ -26,7 +26,7 @@ dpm($module_path);
 </div>
 <?php if($show_file_link):?>
 <br>
-&nbsp;&nbsp;<a href="<?php echo $pdf_file_url ?>"><?php echo pathinfo ( $pdf_file_url, PATHINFO_FILENAME).'.'.pathinfo ( $pdf_file_url, PATHINFO_EXTENSION)?></a>
+<a href="<?php echo $pdf_file_url ?>"><span class="glyphicon glyphicon-arrow-right">&nbsp;</span><?php echo pathinfo ( $pdf_file_url, PATHINFO_FILENAME).'.'.pathinfo ( $pdf_file_url, PATHINFO_EXTENSION)?></a>
 <?endif?>
 
 <script type="text/javascript">
