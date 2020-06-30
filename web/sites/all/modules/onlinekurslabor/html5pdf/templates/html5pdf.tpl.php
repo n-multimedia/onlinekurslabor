@@ -21,12 +21,15 @@ dpm($module_path);
         <i id="<?php echo $identifier ?>_next" class="html5pdfsprite html5pdfsprite-next"></i>
         <i id="<?php echo $identifier ?>_zoomin" class="html5pdfsprite html5pdfsprite-zoomin"></i>
         <i id="<?php echo $identifier ?>_zoomout" class="html5pdfsprite html5pdfsprite-zoomout"></i>
-    </div><div style="clear:both;"></div>
+    </div>
+ 
     <div  id="<?php echo $identifier ?>_pdfscrollcontainer" class="html5pdf_pdfscrollcontainer"><div><canvas id="<?php echo $identifier ?>_pdfcanvas"  class="pdf_canvas"></canvas></div></div>
 </div>
 <?php if($show_file_link):?>
-<br>
-<a href="<?php echo $pdf_file_url ?>"><span class="glyphicon glyphicon-arrow-right">&nbsp;</span><?php echo pathinfo ( $pdf_file_url, PATHINFO_FILENAME).'.'.pathinfo ( $pdf_file_url, PATHINFO_EXTENSION)?></a>
+<?php
+    $file_object = file_load($identifier);
+    echo theme('file_link', array('file' => $file_object));
+?>
 <?endif?>
 
 <script type="text/javascript">
