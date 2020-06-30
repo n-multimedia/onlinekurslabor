@@ -141,6 +141,24 @@ function nm_section_content_features_image_default_styles() {
     ),
   );
 
+  // Exported image style: media_fakevideo.
+  $styles['media_fakevideo'] = array(
+    'label' => 'media_fakevideo',
+    'effects' => array(
+      8 => array(
+        'name' => 'canvasactions_file2canvas',
+        'data' => array(
+          'xpos' => 'center, right - 10%',
+          'ypos' => 'center, right - 10%',
+          'alpha' => 100,
+          'scale' => 30,
+          'path' => 'sites/all/modules/onlinekurslabor/custom_general/images/image_styles/video-play-buttton-160.png',
+        ),
+        'weight' => 3,
+      ),
+    ),
+  );
+
   return $styles;
 }
 
