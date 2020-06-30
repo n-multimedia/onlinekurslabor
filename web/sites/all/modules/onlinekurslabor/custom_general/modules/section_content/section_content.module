@@ -1673,9 +1673,9 @@ function theme_section_content_formatter_video($variables) {
 
   $output .= '<video' . drupal_attributes($video_attributes) . ' ' . $classes . '>';
   foreach ($files as $delta => $file) {
+    $file_object = file_load($file['fid']);
     $videourl = file_create_url($file['uri']);  
-    $pfeil = '<span class="glyphicon glyphicon-arrow-right">&nbsp;</span>';
-    $file_source_list .='<br>'.l($pfeil  . pathinfo ( $videourl, PATHINFO_FILENAME).'.'.pathinfo ( $videourl, PATHINFO_EXTENSION), $videourl, array('html' => 'true'));
+    $file_source_list .='<br>'.theme('file_link', array('file' => $file_object));
     $source_attributes = array(
       'src' => $videourl,
       'type' => $file['filemime'],
