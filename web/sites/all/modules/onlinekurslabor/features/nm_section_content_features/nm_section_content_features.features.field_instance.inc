@@ -878,18 +878,16 @@ function nm_section_content_features_field_default_field_instances() {
         'weight' => 1,
       ),
       'media_3' => array(
-        'label' => 'above',
-        'module' => 'og_ui',
+        'label' => 'hidden',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 0,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'media_4' => array(
         'label' => 'above',
-        'module' => 'og_ui',
         'settings' => array(),
-        'type' => 'og_list_default',
-        'weight' => 0,
+        'type' => 'hidden',
+        'weight' => 1,
       ),
       'media_6' => array(
         'label' => 'above',
@@ -904,6 +902,12 @@ function nm_section_content_features_field_default_field_instances() {
         'weight' => 1,
       ),
       'media_12' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
+      'media_600px' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',

@@ -69,6 +69,18 @@ msgstr "Quelldatei bearbeiten"
 msgid "Filename"
 msgstr "Dateiname"
 
+msgid "Show link to file"
+msgstr "Hänge Link zu Datei an"
+
+msgid "Below the video a link to the file will be shown for convenient download."
+msgstr "Unter dem Video befindet sich ein Link zur Datei."
+
+msgid "Sources"
+msgstr "Quellen"
+
+msgid "Source"
+msgstr "Quelle"
+
 msgid ""
 msgstr ""
 

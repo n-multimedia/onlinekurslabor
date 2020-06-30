@@ -727,3 +727,66 @@ function _videosafe_get_videoduration_for_file($location) {
     trigger_error('neither PHP-Package php5-ffmpeg nor ffmpeg is installed. ', E_USER_WARNING);
     return 0;
 }
+
+
+
+/**
+ * stores a screenshot for any videofile
+ * @todo: refactor for PARAM $timestamp_at_location
+ * @param string $file_uri  drupal file-uri ("private://...video.mp4")
+ */
+function _videosafe_store_screenshot_for_file($file_uri) {
+    
+    /**
+     * TEMPORÄR nur ein Dummy. 
+     * Echte screenshots zu händeln, ist ein größerer Aufand
+     */
+    $FAKE_SCREENSHOT_URI = 'private://dummy-video-screenshot.png';
+    $FAKE_FILE_candidates = file_load_multiple(array(), array('uri' => $FAKE_SCREENSHOT_URI));
+    return reset($FAKE_FILE_candidates); // If empty, $file will be false, otherwise will contain the required file
+    
+    EXIT;
+     //TODO NIMM GROUPREF UND AUTOR VON ORIGINLA
+    //passe zugriffsrechte an video an
+    $real_file_path = drupal_realpath($file_uri);
+ 
+    $file_directory_uri = pathinfo($file_uri,PATHINFO_DIRNAME).DIRECTORY_SEPARATOR; 
+    $videotime_50percent = round(_videosafe_get_videoduration_for_file($real_file_path) / 2);
+    //date respects timezone. substract current offset-hour * 60 min * 60 sec
+    $videotime_50percent_formatted = date("G:i:s", ($videotime_50percent - date("G", 0) * 60 * 60));
+    
+    $videotime_50percent_file_compatible = str_replace(':','_', $videotime_50percent_formatted);
+
+    //Dateiname ohne .mp4 endung
+    $jpg_base_filename = pathinfo($file_uri, PATHINFO_FILENAME);
+    //VIDEO_screen@0_00_30.jpg
+    $jpg_base_filename .='_screen@'.$videotime_50percent_file_compatible.'.jpg';
+   
+    $drupal_jpg_target_filename = $file_directory_uri . $jpg_base_filename;
+  
+    /**
+     * check if drupal has screenshot stored - 
+     * todo test: worx?
+     * todo: oder eher als temp-files anlegen, die gelöscht werden können?`?
+     */
+    $drupal_file_candidates = file_load_multiple(array(), array('uri' => $drupal_jpg_target_filename));
+    $drupal_screenshot_candidate = reset($drupal_file_candidates); // If empty, $file will be false, otherwise will contain the required file
+    if(is_object($drupal_screenshot_candidate))
+    {
+        return $drupal_screenshot_candidate;
+    }
+    
+    $temporary_screenshot_file =  file_directory_temp() . DIRECTORY_SEPARATOR . $jpg_base_filename;
+
+    #"-quality: 2 (1= excellent, 32 = mau)"
+    //todo: test: räumt cron auf oder läuft tmp voll?
+    $ffmpg_cmd = "/usr/bin/ffmpeg -ss  $videotime_50percent_formatted -i $real_file_path -vframes 1 -q:v 2 $temporary_screenshot_file";
+    @passthru($ffmpg_cmd);
+    if (file_exists($temporary_screenshot_file)) {
+        $drupal_screenshot_candidate = file_save_data(file_get_contents($temporary_screenshot_file), $drupal_jpg_target_filename, FILE_EXISTS_REPLACE);
+        return $drupal_screenshot_candidate;
+    } else {
+        trigger_error('Could not store video-screenshot to '.$temporary_screenshot_file. ", created with: ".$ffmpg_cmd, E_USER_WARNING);
+        return null;
+    }
+}

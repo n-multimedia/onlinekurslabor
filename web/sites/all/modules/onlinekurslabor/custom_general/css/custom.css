@@ -1314,3 +1314,12 @@ div.view-courses-kurse-bersicht .nm-stream-node-container img.courseitem_coursel
   max-width: 100%;
 }
 
+
+
+/**
+FILE DISPLAYS
+*/
+.okl-preview-style.video-preview-container:hover
+{
+ filter: brightness(85%);
+}
