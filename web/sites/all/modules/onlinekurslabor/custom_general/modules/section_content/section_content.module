@@ -1601,7 +1601,31 @@ function _section_content_authors_tools_role_access() {
   return !empty($one_of_needed_roles);
 }
 
+/**
+ * implements hook_entity_view_alter
+ * Füge im Displaymode STANDARD nen Link zur File ein
+ * @param type $build
+ * @param type $type
+ */
+function section_content_entity_view_alter(&$build, $type) {
+    //im default-view-mode soll ein Link auf eine Datei erscheinen. Nur nötig für Audio, Rest ist selbst-handled
+    if ($type === 'file' && in_array($build['#bundle'], array('audio')) && $build['#view_mode'] === 'default') {
+        // Add a #post_render callback to act on the rendered HTML of the entity.
+        $build['#post_render'][] = '_section_content_file_display_post_render';
+    }
+}
 
+/**
+ * used in custom_general_entity_view_alter
+ * Add Link to a rendered File
+ * @param String $rendered_html HTML
+ * @param type $entity
+ * @return type
+ */
+function _section_content_file_display_post_render($rendered_html, $entity) {
+    $file = $entity['file']['#file'];
+    return $rendered_html . theme('file_link', array('file' => $file));
+}
 /**
  * inspired by theme_file_entity_file_video
  * Returns HTML for displaying an HTML5 <video> tag.

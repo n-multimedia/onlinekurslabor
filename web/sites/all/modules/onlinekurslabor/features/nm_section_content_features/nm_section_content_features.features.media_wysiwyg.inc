@@ -20,7 +20,7 @@ function nm_section_content_features_media_wysiwyg_defaults() {
   $media_wysiwyg['video_file_icon_restrict_wysiwyg'] = TRUE;
 
   // Restricted view modes for audio files.
-  $media_wysiwyg['audio_wysiwyg_restrict_wysiwyg'] = FALSE;
+  $media_wysiwyg['audio_wysiwyg_restrict_wysiwyg'] = TRUE;
   $media_wysiwyg['audio_file_icon_restrict_wysiwyg'] = TRUE;
 
   // Restricted view modes for document files.

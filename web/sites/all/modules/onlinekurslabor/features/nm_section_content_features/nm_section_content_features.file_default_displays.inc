@@ -269,7 +269,9 @@ function nm_section_content_features_file_default_displays() {
   $file_display->name = 'audio__preview__file_field_media_large_icon';
   $file_display->weight = 50;
   $file_display->status = TRUE;
-  $file_display->settings = '';
+  $file_display->settings = array(
+    'image_style' => '',
+  );
   $export['audio__preview__file_field_media_large_icon'] = $file_display;
 
   $file_display = new stdClass();
@@ -279,6 +281,10 @@ function nm_section_content_features_file_default_displays() {
   $file_display->status = FALSE;
   $file_display->settings = array(
     'controls' => 1,
+    'controls_list' => array(
+      'download' => 'download',
+      'remote_playback' => 'remote_playback',
+    ),
     'autoplay' => 0,
     'loop' => 0,
     'preload' => '',

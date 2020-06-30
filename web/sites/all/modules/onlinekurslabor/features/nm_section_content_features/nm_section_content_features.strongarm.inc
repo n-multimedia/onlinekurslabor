@@ -809,7 +809,7 @@ function nm_section_content_features_strongarm() {
         'custom_settings' => TRUE,
       ),
       'full' => array(
-        'custom_settings' => TRUE,
+        'custom_settings' => FALSE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
@@ -827,7 +827,7 @@ function nm_section_content_features_strongarm() {
         'custom_settings' => FALSE,
       ),
       'media_12' => array(
-        'custom_settings' => FALSE,
+        'custom_settings' => TRUE,
       ),
       'media_3' => array(
         'custom_settings' => FALSE,
@@ -839,6 +839,18 @@ function nm_section_content_features_strongarm() {
         'custom_settings' => FALSE,
       ),
       'media_9' => array(
+        'custom_settings' => FALSE,
+      ),
+      'wysiwyg' => array(
+        'custom_settings' => TRUE,
+      ),
+      'media_original' => array(
+        'custom_settings' => FALSE,
+      ),
+      'preview_with_link_to_original' => array(
+        'custom_settings' => FALSE,
+      ),
+      'media_600px' => array(
         'custom_settings' => FALSE,
       ),
     ),
@@ -859,6 +871,10 @@ function nm_section_content_features_strongarm() {
             'visible' => TRUE,
           ),
           'full' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'media_12' => array(
             'weight' => '0',
             'visible' => TRUE,
           ),
