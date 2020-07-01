@@ -177,7 +177,7 @@ function file_entity_add_upload_step_upload($form, &$form_state, array $options 
         '#items' => (count($limits) <= 15) ? $limits : array(implode(', ', $limits)),
       );
 
-      if (!empty($valid_extensions)) {
+      if (!empty($valid_extensions) && count($limits) == count($valid_extensions)) {
         $form['upload']['#description'] = t('Files must be less than these sizes: !list',
           array(
             '!list' => render($list),

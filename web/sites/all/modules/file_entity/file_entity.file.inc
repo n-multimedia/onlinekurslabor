@@ -282,8 +282,12 @@ function file_entity_set_title_alt_properties($files, $language = NULL) {
   );
 
   foreach ($files as $file) {
-    $file->title = file_entity_replace_title($file, $replace_options, NULL, $language->language);
-    $file->alt = file_entity_replace_alt($file, $replace_options, NULL, $language->language);
+    if (empty($file->title)) {
+      $file->title = file_entity_replace_title($file, $replace_options, NULL, $language->language);
+    }
+    if (empty($file->alt)) {
+      $file->alt = file_entity_replace_alt($file, $replace_options, NULL, $language->language);
+    }
   }
 }
 
