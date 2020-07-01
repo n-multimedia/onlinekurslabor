@@ -18,7 +18,7 @@ drush language-import-translations de ../language/alpha16.po --replace --groups=
 drush en BootstrapCDNToLocal --y
 drush updatedb --yes
 
-drush vset media_wysiwyg_wysiwyg_default_view_mode standard
+drush vset media_wysiwyg_wysiwyg_default_view_mode embedded_with_link_to_original
 
 drush cc all
 

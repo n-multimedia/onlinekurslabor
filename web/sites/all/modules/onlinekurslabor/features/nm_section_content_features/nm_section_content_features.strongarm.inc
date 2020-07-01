@@ -853,6 +853,9 @@ function nm_section_content_features_strongarm() {
       'media_600px' => array(
         'custom_settings' => FALSE,
       ),
+      'embedded_with_link_to_original' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(),
@@ -875,6 +878,10 @@ function nm_section_content_features_strongarm() {
             'visible' => TRUE,
           ),
           'media_12' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'embedded_with_link_to_original' => array(
             'weight' => '0',
             'visible' => TRUE,
           ),
@@ -944,6 +951,9 @@ function nm_section_content_features_strongarm() {
       'media_600px' => array(
         'custom_settings' => FALSE,
       ),
+      'embedded_with_link_to_original' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(),
@@ -966,6 +976,10 @@ function nm_section_content_features_strongarm() {
             'visible' => TRUE,
           ),
           'media_12' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'embedded_with_link_to_original' => array(
             'weight' => '0',
             'visible' => TRUE,
           ),
@@ -1035,6 +1049,9 @@ function nm_section_content_features_strongarm() {
       'media_original' => array(
         'custom_settings' => FALSE,
       ),
+      'embedded_with_link_to_original' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -1088,6 +1105,10 @@ function nm_section_content_features_strongarm() {
             'visible' => TRUE,
           ),
           'preview_with_link_to_original' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'embedded_with_link_to_original' => array(
             'weight' => '0',
             'visible' => TRUE,
           ),
@@ -1157,6 +1178,9 @@ function nm_section_content_features_strongarm() {
       'media_600px' => array(
         'custom_settings' => TRUE,
       ),
+      'embedded_with_link_to_original' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -1210,6 +1234,10 @@ function nm_section_content_features_strongarm() {
             'visible' => TRUE,
           ),
           'media_600px' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'embedded_with_link_to_original' => array(
             'weight' => '0',
             'visible' => TRUE,
           ),

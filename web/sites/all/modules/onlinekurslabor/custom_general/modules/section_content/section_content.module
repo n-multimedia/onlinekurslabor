@@ -1609,7 +1609,7 @@ function _section_content_authors_tools_role_access() {
  */
 function section_content_entity_view_alter(&$build, $type) {
     //im default-view-mode soll ein Link auf eine Datei erscheinen. Nur nötig für Audio, Rest ist selbst-handled
-    if ($type === 'file' && in_array($build['#bundle'], array('audio')) && $build['#view_mode'] === 'default') {
+    if ($type === 'file' && in_array($build['#bundle'], array('audio')) && $build['#view_mode'] === 'embedded_with_link_to_original') {
         // Add a #post_render callback to act on the rendered HTML of the entity.
         $build['#post_render'][] = '_section_content_file_display_post_render';
     }

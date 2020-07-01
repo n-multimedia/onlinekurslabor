@@ -566,7 +566,9 @@ function nm_section_content_features_file_default_displays() {
   $file_display->name = 'image__default__file_field_media_large_icon';
   $file_display->weight = -44;
   $file_display->status = FALSE;
-  $file_display->settings = '';
+  $file_display->settings = array(
+    'image_style' => '',
+  );
   $export['image__default__file_field_media_large_icon'] = $file_display;
 
   $file_display = new stdClass();
@@ -1610,7 +1612,9 @@ function nm_section_content_features_file_default_displays() {
   $file_display->name = 'image__preview__file_field_media_large_icon';
   $file_display->weight = -48;
   $file_display->status = FALSE;
-  $file_display->settings = '';
+  $file_display->settings = array(
+    'image_style' => '',
+  );
   $export['image__preview__file_field_media_large_icon'] = $file_display;
 
   $file_display = new stdClass();
@@ -1759,7 +1763,7 @@ function nm_section_content_features_file_default_displays() {
     'height' => '',
     'multiple_file_behavior' => 'tags',
     'classes' => '',
-    'show_file_link' => 1,
+    'show_file_link' => 0,
   );
   $export['video__default__file_field_section_content_formatter_video'] = $file_display;
 

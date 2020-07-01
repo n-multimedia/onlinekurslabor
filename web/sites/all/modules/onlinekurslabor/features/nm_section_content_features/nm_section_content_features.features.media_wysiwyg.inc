@@ -12,7 +12,7 @@ function nm_section_content_features_media_wysiwyg_defaults() {
   $media_wysiwyg = array();
 
   // Restricted view modes for image files.
-  $media_wysiwyg['image_wysiwyg_restrict_wysiwyg'] = FALSE;
+  $media_wysiwyg['image_wysiwyg_restrict_wysiwyg'] = TRUE;
   $media_wysiwyg['image_file_icon_restrict_wysiwyg'] = TRUE;
 
   // Restricted view modes for audio files.
@@ -24,7 +24,7 @@ function nm_section_content_features_media_wysiwyg_defaults() {
   $media_wysiwyg['document_file_icon_restrict_wysiwyg'] = TRUE;
 
   // Restricted view modes for application files.
-  $media_wysiwyg['application_wysiwyg_restrict_wysiwyg'] = FALSE;
+  $media_wysiwyg['application_wysiwyg_restrict_wysiwyg'] = TRUE;
 
   return $media_wysiwyg;
 }

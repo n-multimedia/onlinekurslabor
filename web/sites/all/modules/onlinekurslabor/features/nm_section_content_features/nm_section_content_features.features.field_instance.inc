@@ -293,6 +293,12 @@ function nm_section_content_features_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 1,
       ),
+      'embedded_with_link_to_original' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
       'file_icon' => array(
         'label' => 'above',
         'settings' => array(),
@@ -399,6 +405,12 @@ function nm_section_content_features_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 1,
       ),
+      'embedded_with_link_to_original' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
       'file_icon' => array(
         'label' => 'above',
         'settings' => array(),
@@ -499,6 +511,12 @@ function nm_section_content_features_field_default_field_instances() {
     'description' => 'Alternative text is used by screen readers, search engines, and when the image cannot be loaded. By adding alt text you improve accessibility and search engine optimization.',
     'display' => array(
       'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
+      'embedded_with_link_to_original' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -616,6 +634,12 @@ function nm_section_content_features_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 3,
       ),
+      'embedded_with_link_to_original' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
       'file_icon' => array(
         'label' => 'above',
         'settings' => array(),
@@ -724,6 +748,12 @@ function nm_section_content_features_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
+      'embedded_with_link_to_original' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -860,6 +890,12 @@ function nm_section_content_features_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
+      'embedded_with_link_to_original' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
