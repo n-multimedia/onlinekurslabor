@@ -1306,7 +1306,9 @@ function nm_section_content_features_file_default_displays() {
   $file_display->name = 'image__media_600px__file_field_media_large_icon';
   $file_display->weight = 0;
   $file_display->status = FALSE;
-  $file_display->settings = '';
+  $file_display->settings = array(
+    'image_style' => '',
+  );
   $export['image__media_600px__file_field_media_large_icon'] = $file_display;
 
   $file_display = new stdClass();
@@ -1862,10 +1864,10 @@ function nm_section_content_features_file_default_displays() {
   $file_display->api_version = 1;
   $file_display->name = 'video__default__oembed';
   $file_display->weight = 0;
-  $file_display->status = FALSE;
+  $file_display->status = TRUE;
   $file_display->settings = array(
-    'width' => '400',
-    'height' => '300',
+    'width' => '768',
+    'height' => '578',
     'wmode' => '',
   );
   $export['video__default__oembed'] = $file_display;
