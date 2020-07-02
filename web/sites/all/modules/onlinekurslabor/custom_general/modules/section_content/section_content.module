@@ -958,16 +958,17 @@ function section_content_field_formatter_info() {
       'field types' => array('double_field'),
     ),
     'section_content_formatter_video_preview' => array(
-            'label' => t('okl Videopreview'),
+            'label' => t('OKL Videopreview'),
             'description' => t('Show a screenshot linking to the original video.'),
             'field types' => array('file'),
             'settings' => array(
+                'image_width' => false
             ),
             'file formatter' => array(
                 'mime types' => array('video/*'),
             )),
       'section_content_formatter_video' => array(
-      'label' => t('okl Video'),
+      'label' => t('OKL Video'),
       'description' => t('Render the file using an HTML5 video tag and additional parameters.'),
       'field types' => array('file'),
       'settings' => array(
@@ -992,6 +993,7 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
   if (!$items) {
     return;
   }
+  $blacklist_filenime = array('video/oembed');
 
   $element = array();
   $settings = $display['settings'];
@@ -1022,14 +1024,14 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
       $source_lists = array();
       if ($multiple_file_behavior == 'tags') {
         foreach ($items as $delta => $item) {
-          if ($item['type'] == 'video') {
+          if ($item['type'] == 'video'  && !in_array($item['filemime'], $blacklist_filenime)) {
             $source_lists[] = array($item);
           }
         }
       }
       else {
         foreach ($items as $delta => $item) {
-          if ($item['type'] == 'video') {
+          if ($item['type'] == 'video'  && !in_array($item['filemime'], $blacklist_filenime)) {
             $source_lists[0][] = $item;
           }
         }
@@ -1043,6 +1045,7 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
           '#theme' => 'section_content_formatter_video_preview',
           '#files' => $sources,
           '#is_wysiwyg_preview' => $is_wysiwyg_preview,
+          '#image_width' => $settings['image_width'],
      #       '#markup'=>theme('section_content_formatter_video_preview', array('#files' => $sources,    'is_wysiwyg_preview' => $is_wysiwyg_preview))
         );
       }
@@ -1063,14 +1066,14 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
       $source_lists = array();
       if ($multiple_file_behavior == 'tags') {
         foreach ($items as $delta => $item) {
-          if ($item['type'] == 'video') {
+          if ($item['type'] == 'video' && !in_array($item['filemime'], $blacklist_filenime)) {
             $source_lists[] = array($item);
           }
         }
       }
       else {
         foreach ($items as $delta => $item) {
-          if ($item['type'] == 'video') {
+          if ($item['type'] == 'video'  && !in_array($item['filemime'], $blacklist_filenime)) {
             $source_lists[0][] = $item;
           }
         }
@@ -1159,7 +1162,6 @@ function section_content_theme() {
       'variables' => array(
         'files' => array(),
         'is_wysiwyg_preview' => false,
-          //nur für video-preview im wysiwyg benötigt
         'image_width'  => false
           )),
     'section_content_formatter_video' => array(
@@ -1679,6 +1681,7 @@ function theme_section_content_formatter_video($variables) {
     $source_attributes = array(
       'src' => $videourl,
       'type' => $file['filemime'],
+      'class' => 'okl_video'
     );
     $output .= '<source' . drupal_attributes($source_attributes) . ' />';
   }
@@ -1804,6 +1807,13 @@ function section_content_field_formatter_settings_form($field, $instance, $view_
   $settings = $display['settings'];
   $element = array();
 
+   if ($display['type'] == 'section_content_formatter_video_preview') {
+    $element['image_width'] = array(
+     '#title' => t('Image width in pixels'),
+     '#type' => 'textfield',
+     '#default_value' => $settings['image_width'],
+     );
+   }
   if ($display['type'] == 'section_content_formatter_video') {
     $element['controls'] = array(
       '#title' => t('Show video controls'),
