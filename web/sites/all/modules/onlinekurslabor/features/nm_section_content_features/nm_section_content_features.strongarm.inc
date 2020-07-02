@@ -1125,7 +1125,7 @@ function nm_section_content_features_strongarm() {
   $strongarm->value = array(
     'view_modes' => array(
       'preview' => array(
-        'custom_settings' => FALSE,
+        'custom_settings' => TRUE,
       ),
       'teaser' => array(
         'custom_settings' => FALSE,
@@ -1238,6 +1238,10 @@ function nm_section_content_features_strongarm() {
             'visible' => TRUE,
           ),
           'embedded_with_link_to_original' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'preview' => array(
             'weight' => '0',
             'visible' => TRUE,
           ),
