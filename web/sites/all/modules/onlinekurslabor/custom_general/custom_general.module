@@ -338,6 +338,14 @@ function custom_general_context_page_reaction() {
 function custom_general_form_alter(&$form, &$form_state, $form_id) {
     global $user;
 
+    
+    //Change progressbar for file upload (Medienbrowser)
+    if(in_array($form_id , array('file_entity_add_upload')))
+    {
+        $form['upload']['#progress_indicator'] = 'throbber';
+    }
+    
+    
     //og-group-ref not to be edited!
     if (!empty($form['og_group_ref'][LANGUAGE_NONE])) {
         $bugmenot_info = '<div class="messages warning alert alert-block alert-warning">' . t('This is only needed for debugging and not to be changed normally') . '</div>';
