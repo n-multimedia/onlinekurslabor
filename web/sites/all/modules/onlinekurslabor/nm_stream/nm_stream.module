@@ -391,7 +391,6 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
         ->orderBy("n.nid", "DESC") //order important!
         ->addTag('node_access');
 
-
     //01.04.2014 - 22:53 - SN context needed
     //if we are in a special context e.g. course group, we just want to see
     //filtered entries which are assign to this group
@@ -450,6 +449,7 @@ function nm_stream_nm_stream_node_get_update_callback($nid, $format = 'JSON') {
       $query->join('og_membership', 'og_membership', "n.nid = og_membership.etid AND og_membership.entity_type = 'node'"); //JOIN
       $query->condition('og_membership.gid', $container->nid);
     }
+
 
     $results = $query->execute()->fetchAll();
 
@@ -2592,23 +2592,25 @@ function nm_stream_api_v2_render_stream($container) {
 
   $version = "";
 
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/manifest.js" . $version, [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/dist/js/app.js" . $version, [
     'scope' => 'footer',
     'weight' => 5,
   ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/vendor.js" . $version, [
-    'scope' => 'footer',
-    'weight' => 5,
-  ]);
-  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/static/js/app.js" . $version, [
+  drupal_add_js(drupal_get_path('module', 'nm_stream') . "/libs/nm_stream/dist/js/chunk-vendors.js" . $version, [
     'scope' => 'footer',
     'weight' => 5,
   ]);
 
-  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/static/css/app.css' . $version, [
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/dist/css/app.css' . $version, [
     'scope' => 'footer',
     'weight' => 5,
   ]);
+
+  drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/dist/css/chunk-vendors.css' . $version, [
+    'scope' => 'footer',
+    'weight' => 5,
+  ]);
+
 
   //fixes drupal.attach for vue.js
   drupal_add_js(drupal_get_path('module', 'nm_stream') . "/js/attach_fixer.js", [
@@ -2654,8 +2656,13 @@ function nm_stream_api_v2_poll_update_callback($stream_container_nid, $offset = 
 
   $data['stream'] = [];
 
+  $filter = [];
+  $filter['context_nid'] = !empty($_GET['context_nid']) ? $_GET['context_nid'] : NULL;
+  $filter['user_uid'] = !empty($_GET['user_uid']) ? $_GET['user_uid'] : NULL;
+  $filter['privacy_key'] = !empty($_GET['privacy_key']) ? $_GET['privacy_key'] : NULL;
+
   // get nodes created or changed after last update timestamp
-  $posts_comments_users = nm_stream_api_v2_get_posts($stream_container_node, $offset, $limit);
+  $posts_comments_users = nm_stream_api_v2_get_posts($stream_container_node, $filter, $offset, $limit);
   $data['stream']['posts'] = $posts_comments_users['posts'];
   $data['stream']['comments'] = $posts_comments_users['comments'];
   $data['stream']['users'] = $posts_comments_users['users'];
@@ -2669,7 +2676,7 @@ function nm_stream_api_v2_poll_update_callback($stream_container_nid, $offset = 
 /**
  * @param $stream_container_node
  */
-function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit = NM_STREAM_API_INIT_POSTS_LIMIT) {
+function nm_stream_api_v2_get_posts($stream_container_node, $filter=[], $offset = 0, $limit = NM_STREAM_API_INIT_POSTS_LIMIT) {
   global $user;
   global $base_url;
   $account = clone $user;
@@ -2761,6 +2768,25 @@ function nm_stream_api_v2_get_posts($stream_container_node, $offset = 0, $limit 
     $query->join('og_membership', 'og_membership', "n.nid = og_membership.etid AND og_membership.entity_type = 'node'"); //JOIN
     $query->condition('og_membership.gid', $container->nid);
   }
+
+
+  // ** FILTER **
+  // context_nid
+  if (!empty($filter['context_nid'])) {
+    $query->condition('field_data_field_nm_stream_context.field_nm_stream_context_target_id', $filter['context_nid']);
+  }
+  // uid
+  if (!empty($filter['user_uid'])) {
+    $query->condition('n.uid', $filter['user_uid']);
+  }
+  // privacy
+  if (!empty($filter['privacy_key'])) {
+    // privacy filter only possible in multicontext environments
+    // so no join has been made yet
+    $query->join('field_data_field_nm_privacy', 'field_data_field_nm_privacy', "n.nid = field_data_field_nm_privacy.entity_id  AND field_data_field_nm_privacy.entity_type = 'node'"); //JOIN
+    $query->condition('field_data_field_nm_privacy.field_nm_privacy_value', $filter['privacy_key']);
+  }
+
 
   $results = $query->execute()->fetchAll();
 
