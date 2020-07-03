@@ -104,8 +104,8 @@ function annvid_features_field_default_field_instances() {
     'default_value' => NULL,
     'default_value_function' => '',
     'deleted' => 0,
-    'description' => 'Beginnen Sie damit, den Namen eines H5P-Videos einzutippen. 
-<em>Das Video muss in diesem Lehrtext unter "Interaktiv" gelistet sein</em>',
+    'description' => 'Beginnen Sie damit, den Namen eines H5P-Videos einzutippen.
+<em>Das Video muss in diesem Lehrtext unter "Interaktive Inhalte verwalten" gelistet sein</em>',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -167,6 +167,7 @@ function annvid_features_field_default_field_instances() {
         'module' => 'html5pdf',
         'settings' => array(
           'css_wrapper_class' => 'html5pdf_standard_wrapper_class',
+          'show_file_link' => 0,
         ),
         'type' => 'html5pdf_pdfviewer',
         'weight' => 5,
@@ -393,8 +394,8 @@ function annvid_features_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Annotationsliste anzeigen');
-  t('Beginnen Sie damit, den Namen eines H5P-Videos einzutippen. 
-<em>Das Video muss in diesem Lehrtext unter "Interaktiv" gelistet sein</em>');
+  t('Beginnen Sie damit, den Namen eines H5P-Videos einzutippen.
+<em>Das Video muss in diesem Lehrtext unter "Interaktive Inhalte verwalten" gelistet sein</em>');
   t('Determine if this is an OG group.');
   t('Groups audience');
   t('Gruppe');

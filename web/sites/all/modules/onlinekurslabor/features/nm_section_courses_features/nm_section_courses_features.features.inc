@@ -46,13 +46,21 @@ function nm_section_courses_features_image_default_styles() {
   $styles['course_header'] = array(
     'label' => 'course_header',
     'effects' => array(
-      6 => array(
+      12 => array(
+        'name' => 'coloractions_convert',
+        'data' => array(
+          'format' => 'image/png',
+          'quality' => 75,
+        ),
+        'weight' => -10,
+      ),
+      11 => array(
         'name' => 'image_scale_and_crop',
         'data' => array(
           'width' => 1170,
           'height' => 200,
         ),
-        'weight' => 1,
+        'weight' => -9,
       ),
     ),
   );

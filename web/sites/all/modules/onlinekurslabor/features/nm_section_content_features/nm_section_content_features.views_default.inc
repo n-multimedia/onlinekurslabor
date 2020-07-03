@@ -950,6 +950,9 @@ $vorkommens_counter +=  $query2->entityCondition(\'entity_type\', \'node\')
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortieren nach';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Aufsteigend';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Absteigend';
   $handler->display->display_options['exposed_form']['options']['autosubmit'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '30';
@@ -1033,7 +1036,6 @@ $vorkommens_counter +=  $query2->entityCondition(\'entity_type\', \'node\')
   $handler->display->display_options['fields']['edit']['id'] = 'edit';
   $handler->display->display_options['fields']['edit']['table'] = 'file_managed';
   $handler->display->display_options['fields']['edit']['field'] = 'edit';
-  $handler->display->display_options['fields']['edit']['label'] = 'Verlinkung bearbeiten';
   /* Contextual filter: OG membership: Group ID */
   $handler->display->display_options['arguments']['gid']['id'] = 'gid';
   $handler->display->display_options['arguments']['gid']['table'] = 'og_membership';
@@ -1201,9 +1203,9 @@ Alle Medien aus dem <code>Lehrtext</code> werden hier aufgelistet.
     t('more'),
     t('Anwenden'),
     t('Zurücksetzen'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
+    t('Sortieren nach'),
+    t('Aufsteigend'),
+    t('Absteigend'),
     t('Items per page'),
     t('- All -'),
     t('Offset'),
@@ -1216,7 +1218,7 @@ Alle Medien aus dem <code>Lehrtext</code> werden hier aufgelistet.
     t('in Beiträgen verwendet'),
     t('.'),
     t(','),
-    t('Verlinkung bearbeiten'),
+    t('Edit link'),
     t('Alle'),
     t('Typ'),
     t('Page'),

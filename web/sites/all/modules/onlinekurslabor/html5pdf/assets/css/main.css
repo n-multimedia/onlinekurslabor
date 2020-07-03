@@ -69,3 +69,14 @@ canvas.pdf_canvas_loaded
 {
     width: 700px;
 }
+
+.html5pdf_small_wrapper_class
+{
+    width: 420px;
+}
+
+
+.html5pdf_fullsize_wrapper_class
+{
+    width: 100%;
+}
