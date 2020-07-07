@@ -22,6 +22,15 @@ function nm_section_content_features_ds_view_modes_info() {
 
   $ds_view_mode = new stdClass();
   $ds_view_mode->api_version = 1;
+  $ds_view_mode->view_mode = 'preview_with_link_to_original';
+  $ds_view_mode->label = 'Vorschau mit Link auf Original';
+  $ds_view_mode->entities = array(
+    'file' => 'file',
+  );
+  $export['preview_with_link_to_original'] = $ds_view_mode;
+
+  $ds_view_mode = new stdClass();
+  $ds_view_mode->api_version = 1;
   $ds_view_mode->view_mode = 'media_12';
   $ds_view_mode->label = 'Volle Textbreite';
   $ds_view_mode->entities = array(
@@ -73,15 +82,6 @@ function nm_section_content_features_ds_view_modes_info() {
     'file' => 'file',
   );
   $export['media_9'] = $ds_view_mode;
-
-  $ds_view_mode = new stdClass();
-  $ds_view_mode->api_version = 1;
-  $ds_view_mode->view_mode = 'preview_with_link_to_original';
-  $ds_view_mode->label = 'Vorschau mit Link auf Original';
-  $ds_view_mode->entities = array(
-    'file' => 'file',
-  );
-  $export['preview_with_link_to_original'] = $ds_view_mode;
 
   $ds_view_mode = new stdClass();
   $ds_view_mode->api_version = 1;
