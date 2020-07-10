@@ -148,12 +148,26 @@ function nm_login_vhb() {
         drupal_set_message("Hashes stimmen <strong>nicht</strong> überein."/*.$hash*/, 'error');
         return "";
     }
+
+    //CHECKS: Kurs - Hochschule - USER
     //Kursexistenz generell prüfen
     $course = nm_login_vhb_get_course($params['LVNR']);
     if (!$course->nid) {
         drupal_set_message("Kurs " . $params['LVNR'] . " wurde nicht gefunden. Bitte kontaktieren Sie uns.", 'error');
         return "";
     }
+
+    //Hochschule-Check
+    //load term id and set hochschule field
+    $terms = taxonomy_get_term_by_name($params['HOCHSCHULE']);
+    if(empty($terms))
+    {
+        drupal_set_message(sprintf("Hochschule '%s' wurde nicht gefunden - Login nicht möglich. Bitte kontaktieren Sie uns.", $params['HOCHSCHULE'] ), 'error');
+        watchdog("LOGIN VHB", 'Hochschule "'.$params['HOCHSCHULE'].'" nicht vorhanden!', array(), WATCHDOG_ALERT);
+        return "";
+    }
+
+
 
 
     //sign in logic for students
@@ -183,7 +197,7 @@ function nm_login_vhb() {
         }
     }
     //kein user gefunden. CHECK: Mail schon in usage?? ABBRUCH!
-    elseif(user_load_by_mail($params['EMAIL'])) 
+    elseif(user_load_by_mail($params['EMAIL']))
     {
         watchdog("LOGIN VHB", 'Usercreate denied, Mail exists: '.$params['EMAIL'], array(), WATCHDOG_ERROR);
         drupal_set_message('Tut uns leid, wir konnten keinen Account für Sie anlegen. Bitte kontaktieren Sie uns. Fehlercode: M41E8', 'warning');
@@ -202,9 +216,9 @@ function nm_login_vhb() {
         {
             watchdog("LOGIN VHB", 'New user entry CANCELLED due to error', array(), WATCHDOG_ERROR);
         }
-        
+
     }
-   
+
 
 
     //jetzt ist angelegt, wir können einloggen..
@@ -215,7 +229,7 @@ function nm_login_vhb() {
         drupal_session_regenerate();
         $vhb_user = clone $user;
 
-        
+
         nm_login_vhb_update_empty_profile_fields($vhb_user, $params);
 
         //kursexistenz geprüft, falls nicht eingetragen nun zum mitglied machen
@@ -224,8 +238,8 @@ function nm_login_vhb() {
             nm_login_vhb_user_subscribe($user, $course);
             drupal_set_message("Erfolgreich in Kurs " . $course->title . " eingetragen");
         }
-        
-        
+
+
          //das ghert si ganz zum schluss!!
 
         //needed for legal, but also important for general usage
@@ -234,7 +248,7 @@ function nm_login_vhb() {
           ->fields(array('login' => $user->login))
           ->condition('uid', $user->uid)
           ->execute();
-       
+
         //trigger legal for VHB users
         if (module_exists('legal')) {
           $edit = [];
@@ -243,8 +257,8 @@ function nm_login_vhb() {
           //trigger legal acceppt
           legal_user_login($edit, $user);
         }
-        
-        
+
+
         drupal_goto(NM_COURSE_HOME_PATH . '/' . $course->nid);
     } else {
 
@@ -368,8 +382,8 @@ function nm_login_vhb_load_user_by_entity($entity_type, $entity1, $entity2 = nul
  *
  */
 function nm_login_vhb_add_user($params) {
-    
-    
+
+
     //important! CHECK IF MAIL IN USAGE! CANCEL ELSE
     $secondaccount_check = user_load_by_mail($params['EMAIL']);
     if (user_load_by_mail($params['EMAIL'])) {

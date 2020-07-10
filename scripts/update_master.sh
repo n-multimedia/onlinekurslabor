@@ -2,33 +2,23 @@
 ##!/bin/sh
 drush vset maintenance_mode 1
 
-chmod 0444 sites/default/settings.php
 
 #bug in drush - cc before FR!!
 drush cc all
 
-drush en better_exposed_filters  --y
-drush en views_ef_fieldset --y
-drush en votingapi --y
+drush en rules_session_vars --yes
 
 #revert single features
-drush fr notification_features nm_stream_features nm_section_courses_features videosafe_features nm_section_content_features annvid_features nm_h5p_features  nm_uuid_features environment_indicator_feature nm_general_features lehet_ouzo --yes
-#drush fr nm_section_content_features nm_section_courses_features nm_general_features section_projects_features nm_h5p_features section_courses_clone_features --yes
+drush fr  lehet_ouzo nm_general_features  nm_section_content_features nm_section_courses_features annvid_features --yes
+#drush fr annvid_features nm_section_content_features nm_section_courses_features nm_general_features section_projects_features nm_h5p_features section_courses_clone_features --yes
 
 #import language
-drush language-import-translations de ../language/alpha15.po --replace --groups=default
+drush language-import-translations de ../language/alpha16.po --replace --groups=default
 
+drush en BootstrapCDNToLocal --y
 drush updatedb --yes
 
-drush pm-disable newmenue_tooltip --y
-drush pm-uninstall newmenue_tooltip --y
-
-drush en environment_indicator environment_indicator_feature --y
-drush pm-disable dev_live_warner --y
-drush pm-uninstall dev_live_warner --y
-
-drush en lehet_ouzo --yes
-
+drush vset media_wysiwyg_wysiwyg_default_view_mode embedded_with_link_to_original
 
 drush cc all
 

@@ -1,0 +1,88 @@
+#Translation File - onlinekurslabor
+
+msgid "This file is currently in use and may cause problems if deleted."
+msgstr "Diese Datei ist noch in Verwendung - dies kann zu Problemen führen!"
+
+msgid "Used in (including old revisions)"
+msgstr "Verwendet in (inklusive alten Versionen)"
+
+msgid "You may not enter this coursegroup."
+msgstr "Sie dürfen dieser Kursgruppe nicht beitreten"
+
+msgid "As a teammember you already have full read/write-access."
+msgstr "Als Kursleitung haben Sie bereits Vollzugriff auf diese Gruppe."
+
+msgid "You are already in %group_name. You must leave this group first."
+msgstr "Sie sind bereits in %group_name und müssten die Mitgliedschaft in dieser zunächst beenden."
+
+msgid "Notification of new members"
+msgstr "Benachrichtigung der Teilnehmenden"
+
+msgid "New members will receive the following text via e-mail"
+msgstr "Neue Kursmitglieder erhalten diesen Text per E-Mail"
+
+msgid "Write some words to inform the new members about your course."
+msgstr "Schreiben Sie einige Wörter, um die neuen Kursmitglieder über Ihren Kurs zu informieren."
+
+msgid "Welcome to my course!"
+msgstr "Willkommen zu meinem Kurs!"
+
+msgid "Message from course management:"
+msgstr "Nachricht der Kursleitung:"
+
+msgid "Embedding %filename"
+msgstr "%filename einfügen"
+
+msgid "Choose the type of display you would like for this file. Please be aware that files may display differently than they do when they are inserted into an editor."
+msgstr "Wählen Sie den Anzeigentyp für diese Datei."
+
+msgid "Your request is being looked at"
+msgstr "Ihre Kursanfrage wird bearbeitet"
+
+msgid "In demo-mode you can only access the course info and text."
+msgstr "Im Demo-Modus haben Sie ausschließlich Zugriff auf die allgemeinen Kursinformationen und den Lehrtext."
+
+msgid "Enroll in course"
+msgstr "Melden Sie sich am Kurs an"
+
+msgid "!enroll_link to participate."
+msgstr "!enroll_link um mitzuwirken."
+
+msgid "Below the embedded PDF a link to the file will be shown for convenient download."
+msgstr "Unterhalb des gerenderten PDFs befindet sich ein Link zur Datei."
+
+msgid "Show link to file"
+msgstr "Zeige Link zur Datei"
+
+msgid "Show link to file: %text"
+msgstr "Zeige Link zur Datei: %text"
+
+msgid "Embedded PDF with link to file"
+msgstr "Gerendertes PDF mit Link zur Originaldatei"
+
+msgid "Embedded PDF"
+msgstr "Gerendertes PDF"
+
+msgid "Edit file"
+msgstr "Quelldatei bearbeiten"
+
+msgid "Filename"
+msgstr "Dateiname"
+
+msgid "Show link to file"
+msgstr "Hänge Link zu Datei an"
+
+msgid "Below the video a link to the file will be shown for convenient download."
+msgstr "Unter dem Video befindet sich ein Link zur Datei."
+
+msgid "Sources"
+msgstr "Quellen"
+
+msgid "Source"
+msgstr "Quelle"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""

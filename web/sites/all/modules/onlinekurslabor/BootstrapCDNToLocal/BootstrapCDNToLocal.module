@@ -1,0 +1,225 @@
+<?php
+
+/**
+ * wo die Bootstrap-Files abgelegt werden. Default: public://bootstrapcdntolocal
+ */
+define('BOOTSTRAPCDNTOLOCAL_FILESYSTEM_PATH', 'public://bootstrapcdntolocal');
+
+
+
+/**
+ * Theme-Settings-Form für Bootstrap-Derivate
+ * @param type $form
+ * @param type $form_state
+ */
+function BootstrapCDNToLocal_form_system_theme_settings_alter(&$form, $form_state) {
+ 
+   $theme_name = arg(3) ; //bootstrap_onlinekurslabor
+  $form['advanced']['cdn']['localize'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Make jsDelivr files local'),
+        '#description' => t("jsDelivr files will be loaded to your server and served from there. First pageload will give some weird errors, afterwards files will be available."),
+    );
+
+    $form['advanced']['cdn']['localize']['localizejsdelivr'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('make it local!'),
+        '#default_value' => theme_get_setting('localizejsdelivr',$theme_name),
+        '#description' => t("Yes, load required bootstrap-files from local hdd instead of jsDelivr.net"),
+    );
+ 
+}
+
+        
+/**
+ * haut ne warning bei unvollständiger Installation raus
+ * @param type $page
+ * @return type
+ */
+function BootstrapCDNToLocal_page_build(&$page) {
+    global $theme;
+    if (!defined('BootstrapCDNToLocal_ALTER_INCLUDED') && strstr($theme, 'bootstrap')) {
+        drupal_set_message(t('BootstrapCDNToLocal not configured properly. Read attached INSTALL-File!'), 'warning');
+    }
+}
+
+
+ 
+
+ 
+// * Geht so leider nicht wegen tiefer Pfadverschachtelung
+// * Deletes old cached assts.
+//function BootstrapCDNToLocal_cache_flush() {
+//    _BootstrapCDNToLocal_clear_asset_cache();
+//}
+//function _BootstrapCDNToLocal_clear_asset_cache() {
+//  file_scan_directory(BOOTSTRAPCDNTOLOCAL_FILESYSTEM_PATH, '/.*/', array('callback' => 'drupal_delete_file_if_stale'));
+//}
+
+
+ 
+
+/**
+ * function is called via YOURTHEME_preprocess_page(&$variables)
+ * and not to be used otherwise.
+ * If a CDN-File is requested it will be downloaded.
+ */
+function _BootstrapCDNToLocal_DownloadFileIfRequested() {
+
+    $cdn_paths = array();
+    $current_path = current_path();
+
+
+    //gives: cdn.jsdelivr.net
+    $cdn_jsdelivr_base_host = parse_url(current(bootstrap_get_cdn_assets('css', 'jsdelivr', 'bootstrap')), PHP_URL_HOST);
+
+    //gives: /sites/default/files/bootstrapcdntolocal/
+    $sites_default_relative_dir = parse_url(file_create_url(BOOTSTRAPCDNTOLOCAL_FILESYSTEM_PATH), PHP_URL_PATH) . '/';
+
+    //$_GET set via nginx
+    $drupal_get_params =  drupal_get_query_parameters();
+    $curr_path_from_GET =!empty($drupal_get_params['bootstrapcdntolocal_createfile'])?$drupal_get_params['bootstrapcdntolocal_createfile']:'';
+
+    foreach (array($current_path, $curr_path_from_GET) as $asset_candidate_path) {
+
+        //entfernt /sites/default/files/bootstrapcdntolocal/ aus asset_path
+        $asset_candidate_relative_path = str_replace($sites_default_relative_dir, '', $asset_candidate_path);
+        $full_url_file_candidate = 'https://' . $asset_candidate_relative_path;
+
+        //nur eine einfache skip-bedingung
+        if (empty($asset_candidate_relative_path) || strpos($asset_candidate_relative_path, $cdn_jsdelivr_base_host) !== 0) {
+            continue;
+        }
+
+        if (_BootstrapCDNToLocal_url_is_whitelisted($full_url_file_candidate)) {
+            _BootstrapCDNToLocal_saveAsset($asset_candidate_relative_path);
+        } else {
+                watchdog("Theme", 'ILLEGAL ASSET detected: ' . $asset_candidate_relative_path, array(), WATCHDOG_ALERT);
+        }
+    }
+}
+
+/**
+ * speichert ein Remote-Asset auf dem lokalen Dateisystem
+ * @param type $relativePath
+ */
+function _BootstrapCDNToLocal_saveAsset($relativePath) {
+    $full_url_requestedfile = 'https://' . $relativePath;
+    $full_url_content = _BootstrapCDNToLocal_downloadRemoteAsset($full_url_requestedfile);
+    if (strlen($full_url_content)) {
+        $file_target = BOOTSTRAPCDNTOLOCAL_FILESYSTEM_PATH . '/' . $relativePath;
+        $dirname_file_target = dirname($file_target);
+        file_prepare_directory($dirname_file_target, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
+
+        /* speichern hat geklappt */
+        if ($new_file = file_unmanaged_save_data($full_url_content, $file_target, FILE_EXISTS_REPLACE)) {
+            //ok.
+        } else {
+            watchdog("Theme", 'Asset could not be saved to: ' . $file_target, array(), WATCHDOG_ALERT);
+        }
+    } else {
+        watchdog("Theme", 'Remote asset ' . $full_url_content . ' is empty! ', array(), WATCHDOG_ALERT);
+    }
+}
+
+
+/**
+ * loads a file via CURL
+ * @param type $url
+ * @return String $result
+ */
+function _BootstrapCDNToLocal_downloadRemoteAsset($url) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_VERBOSE, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_AUTOREFERER, false);
+    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    return($result);
+}
+
+/**
+ * ist die übergegebene URL whitelisted? 
+ * @param type $url
+ * @return boolean
+ */
+function _BootstrapCDNToLocal_url_is_whitelisted($url) {
+
+    $whitelist_host_repo = array('cdn.jsdelivr.net' =>
+        ['/npm/@unicorn-fail/drupal-bootstrap-styles@0.0.2',
+            '/npm/bootstrap@3.3.5'
+        ],
+       /* 'dev2.div.onlinekurslabor.de' =>
+        ['/sites/']*/
+    );
+    $whitelist_extension = array('js', 'css', 'ttf', 'woff', 'woff2');
+
+
+    $url_host = parse_url($url, PHP_URL_HOST);
+    $url_path = parse_url($url, PHP_URL_PATH);
+
+    //prüfe Host, z.B. 	cdn.jsdelivr.net			
+    if (!in_array($url_host, array_keys($whitelist_host_repo))) {
+        return false;
+    }
+
+
+    /*
+     * prüfe dateiendung (siehe $whitelist_extension)
+     */
+    $file_ending = pathinfo($url, PATHINFO_EXTENSION);
+    if (!in_array($file_ending, $whitelist_extension)) {
+        return false;
+    }
+
+
+
+    //jetzt müssen aber noch die REPOS geprüft werden. Bei JSdelivr kann man URLs bauen, die von github laden
+    //z.B. https://cdn.jsdelivr.net/gh/null/onlinekurslabor@master/web/index.php
+    //schlecht. Zummindest geeignet, dass ein Angreifer einen unverdächtigen Link mit lokaler Domain verschicken kann.... 
+    $host_repo_match = false;
+    //analysiere Pfad, also z.B. /npm/@unicorn-fail/drupal-bootstrap-styles@0.0.2
+    foreach ($whitelist_host_repo as $white_host => $white_repositories) {
+        if ($url_host == $white_host) {
+            foreach ($white_repositories as $white_repo) {
+                //string BEGINNT mit white-list
+                if (strpos($url_path, $white_repo) === 0) {
+                    $host_repo_match = true;
+                }
+            }
+        }
+    }
+
+    if (!$host_repo_match) {
+        return false;
+    }
+
+
+
+    //überall false zurück, also passts
+    return true;
+}
+
+
+
+/*
+function _BootstrapCDNToLocal_getAllBSCDNAssets() {
+  //needs: use   Drupal\bootstrap\Backport\Plugin\Provider;
+    bootstrap_include('bootstrap', 'includes/cdn/ProviderBase.php');
+    bootstrap_include('bootstrap', 'includes/cdn/JsDelivr.php');
+    $a = (new Drupal\bootstrap\Backport\Plugin\Provider\JsDelivr);
+    $al_assets = $a->getCdnAssets();
+    dpm($al_assets);
+    $oRecIt = new RecursiveIteratorIterator(new RecursiveArrayIterator($al_assets));
+    $all_assets = array();
+    foreach ($oRecIt as $asset_candidate) {
+
+        if (parse_url($asset_candidate, PHP_URL_SCHEME)) {
+            $all_assets[] = $asset_candidate;
+        }
+    }
+    return $all_assets;
+}*/

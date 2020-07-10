@@ -1,17 +1,6 @@
-div.annvid_pdf  {
-    margin-left: 2em; 
+div#annvid_pdfdiv  {
+    padding-right: 60px;
 }
-div.annvid_pdf > div, div.gradient_background {
-    background-color: #f2f2f2;
-    border: 1px solid #d4d4d4;
-    border-radius: 4px;
-    background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
-  
-}
-div.gradient_background{
-    padding:1em;
-}
-
 
 .nm-stream-main-body {
       transition: all 0.6s;
@@ -128,6 +117,7 @@ div#annvid_pdfbutton
     z-index: 5;
     top: 0px;
     margin-left: 50%;;
+    padding-right: 80px;
 }
 /*der eigentliche pdf-container
 die height wird per JS gesetzt */
@@ -136,3 +126,13 @@ die height wird per JS gesetzt */
     background:#ffffff;
 }
  
+
+.html5pdf_annvid_wrapper_class
+{
+    width:auto !important;
+}
+
+#annvid_button_hide_pdf
+{
+    float:right;
+}

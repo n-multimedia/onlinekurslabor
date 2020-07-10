@@ -23,7 +23,7 @@ function nm_general_features_ds_view_modes_info() {
   $ds_view_mode = new stdClass();
   $ds_view_mode->api_version = 1;
   $ds_view_mode->view_mode = 'filename';
-  $ds_view_mode->label = 'Filename';
+  $ds_view_mode->label = 'Link auf Datei';
   $ds_view_mode->entities = array(
     'file' => 'file',
   );

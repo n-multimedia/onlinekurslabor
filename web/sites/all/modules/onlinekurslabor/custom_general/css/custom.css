@@ -125,33 +125,7 @@ Content-Section
 /**
 *  Courses
 */
-
-/*
-Sponsors
-*/
-
-.courses_sponsors_cols {
-
-  height: auto;
-  overflow: hidden;
-  padding: 7px 10px;
-  position: absolute;
-  top: 0;
-  right: 1px;
-
-}
-
-.courses_sponsors_col {
-  display: inline-block;
-  vertical-align: top;
-  margin-left: 10px;
-  float: right;
-}
-
-.courses_sponsors a {
-  margin-bottom: 7px;
-  display: block;
-}
+ 
 
 /*
 div ul.section_nav_tools
@@ -324,7 +298,7 @@ show new (mobile) instructor tools
   position: absolute;
   right: 0;
   top: -40px;
-  z-index: 1001;
+  z-index: 49;
   border-radius: 0;
   width: 48px;
   height: 40px;
@@ -1340,3 +1314,17 @@ div.view-courses-kurse-bersicht .nm-stream-node-container img.courseitem_coursel
   max-width: 100%;
 }
 
+
+
+/**
+FILE DISPLAYS
+*/
+.okl-preview-style.video-preview-container:hover
+{
+ filter: brightness(85%);
+}
+
+div.media-full div.file-audio audio
+{
+width:100%;
+}

@@ -214,13 +214,20 @@ function nm_login_vhb_set_profile_fields($account, $params, $force = FALSE) {
     
     
     //bei vhb mail gewechselt - kleiner check..... 
-    if ($account->mail != $params['EMAIL']) {
+    if (strtolower($account->mail) != strtolower($params['EMAIL'])){
+        
         $secondaccount_check = user_load_by_mail($params['EMAIL']);
         if (user_load_by_mail($params['EMAIL'])) {
             drupal_set_message('Konnte die Mailadresse nicht auf "' . $params['EMAIL'] . '" ändern! Fehlercode: M41E8', 'error');
             return FALSE;
         }
         //update email
+        $account->mail = $params['EMAIL'];
+    }
+    //mailadressen zwar unterschiedlich aber inhaltlich gleich
+    elseif(strtolower($account->mail) == strtolower($params['EMAIL']) && $account->mail != $params['EMAIL'] )
+    {
+         //update email
         $account->mail = $params['EMAIL'];
     }
 

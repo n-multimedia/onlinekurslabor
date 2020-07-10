@@ -1,0 +1,34 @@
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+1. install plugin 
+
+2. copy files (@todo) to your theme
+
+3. in YOURTHEME/template.php: add the line
+     require_once(__DIR__. '/includes/alter.inc');
+
+4a. in your theme: find a function YOURTHEME_preprocess_page(&$variables)
+as last line add:  
+     module_load_include('php', 'bootstrapcdntolocal', 'preprocess_page');
+
+4b.
+if 4a) is not possible, add a function (e.g. in templates/page.vars.php): 
+ YOURTHEME_preprocess_page(&$variables)
+ {
+  module_load_include('php', 'bootstrapcdntolocal', 'preprocess_page');
+ }
+ 
+
+5.  Go to admin/appearance/settings/
+    Click YOURTHEME
+    click "Advanced"
+    tick the checkbox "make it local!"
+    
+6. done.
+
+6a) Sorry, it's more complicated than a normal plugin due to how Drupal loads the stuff.

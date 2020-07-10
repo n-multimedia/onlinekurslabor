@@ -1,0 +1,12 @@
+name = "Rules Session Vars"
+description = "Provides functionality for Rules to work with Drupal user sessions."
+core = "7.x"
+package = "Rules"
+dependencies[] = rules
+
+; Information added by drupal.org packaging script on 2013-06-26
+version = "7.x-1.0"
+core = "7.x"
+project = "rules_session_vars"
+datestamp = "1372259457"
+

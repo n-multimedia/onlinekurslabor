@@ -338,6 +338,14 @@ function custom_general_context_page_reaction() {
 function custom_general_form_alter(&$form, &$form_state, $form_id) {
     global $user;
 
+    
+    //Change progressbar for file upload (Medienbrowser)
+    if(in_array($form_id , array('file_entity_add_upload')))
+    {
+        $form['upload']['#progress_indicator'] = 'throbber';
+    }
+    
+    
     //og-group-ref not to be edited!
     if (!empty($form['og_group_ref'][LANGUAGE_NONE])) {
         $bugmenot_info = '<div class="messages warning alert alert-block alert-warning">' . t('This is only needed for debugging and not to be changed normally') . '</div>';
@@ -1031,7 +1039,6 @@ function custom_general_block_info() {
     'info' => t('Custom General - Space'),
   );
 
-
   return $blocks;
 }
 
@@ -1051,6 +1058,18 @@ function custom_general_block_view($delta = '') {
   }
 
   return $block;
+}
+
+/**
+ * gets a html list with usage of file identified by $fid
+ * @param int $fid
+ * @return String $html
+ */
+function _custom_general_get_rendered_file_usage_table($fid)
+{  
+    $file = file_load($fid);
+  $usage_list = custom_general_file_entity_usage_page($file);
+  return drupal_render($usage_list);
 }
 
 /**
@@ -1251,10 +1270,9 @@ function custom_general_query_alter(QueryAlterableInterface $query) {
  * node-delete-confirm
  * alter node deletion form
  */
-
 function custom_general_form_node_delete_confirm_alter(&$form, &$form_state){
   $attachment_fields = array(
-    'field_course_docs',
+    'field_course_documents',
     'field_attachments',
     'field_nm_attachments',
   );
@@ -1286,15 +1304,15 @@ function custom_general_form_node_delete_confirm_alter(&$form, &$form_state){
     $form['#prefix'] = "<div>" . t("Please check, if the file attachments are not used elsewhere."). "</div><br/>";
     $form['actions']['#prefix'] = "<br/><br/>";
 
-    $form['actions']['keep_files'] = array(
+    $form['actions']['kill_files'] = array(
       '#type' => 'submit',
-      '#value' => 'Delete node and files',
+      '#value' => t('Delete node and files'),
       '#weight' => -10,
       '#attributes' => array('class' => array('btn','btn-danger')),
       '#submit' => array('custom_general_form_node_delete_node_and_files_submit'),
     );
 
-    $form['actions']['submit']['#value'] = 'Delete (node only)';
+    $form['actions']['submit']['#value'] = t('Delete (node only)');
     $form['actions']['submit']['#attributes'] = array('class' => array('btn','btn-danger'));
     $form['actions']['submit']['#weight'] = -11;
 
@@ -1365,7 +1383,7 @@ function custom_general_file_entity_usage_page($file) {
     }
   }
   $header[] = array(
-    'data' => t('Used in'),
+    'data' => t('Used in (including old revisions)'),
   );
   $header[] = array(
     'data' => t('Use count'),

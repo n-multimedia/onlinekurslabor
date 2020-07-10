@@ -114,6 +114,14 @@
                 {
                     item_label = item.action.metadata.title;
                 }
+                 if ((typeof item_label === 'undefined') || item_label.length === 0 )
+                {console.debug(item.action.params.texts);
+                    if(typeof item.action.params.texts !== 'undefined' && item.action.params.texts.showLabel)
+                    {
+                        item_label = item.action.params.texts.label;
+                    }
+                    
+                }
                 if ((typeof item_label === 'undefined') || item_label.length === 0 )
                 {
                     item_label = '- ohne -';

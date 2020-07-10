@@ -1,0 +1,5 @@
+name = BootstrapCDNToLocal
+description = Replaces bootstrap-CDN-files with local files
+core = 7.x
+version = 7.x-1.0-alpha16
+package = custom

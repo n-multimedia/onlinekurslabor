@@ -1848,20 +1848,16 @@ return section_courses_text_outline();
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
-  $pane->pid = 'new-a9432128-769f-44a9-a00c-01675f65cd26';
+  $pane->pid = 'new-19b162f0-fdab-4ef6-be9b-e7a59eef684e';
   $pane->panel = 'center';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
+  $pane->type = 'block';
+  $pane->subtype = 'section_courses-course_admin_members_add_form';
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'admin_title' => '',
-    'title' => '',
-    'body' => '<?php
-   echo drupal_render(drupal_get_form(\'section_courses_student_registration_form\'));
-?>',
-    'format' => 'php_code',
-    'substitute' => 0,
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1871,9 +1867,9 @@ return section_courses_text_outline();
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
-  $pane->uuid = 'a9432128-769f-44a9-a00c-01675f65cd26';
-  $display->content['new-a9432128-769f-44a9-a00c-01675f65cd26'] = $pane;
-  $display->panels['center'][0] = 'new-a9432128-769f-44a9-a00c-01675f65cd26';
+  $pane->uuid = '19b162f0-fdab-4ef6-be9b-e7a59eef684e';
+  $display->content['new-19b162f0-fdab-4ef6-be9b-e7a59eef684e'] = $pane;
+  $display->panels['center'][0] = 'new-19b162f0-fdab-4ef6-be9b-e7a59eef684e';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

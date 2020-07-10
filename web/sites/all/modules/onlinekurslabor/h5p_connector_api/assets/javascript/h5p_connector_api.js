@@ -178,9 +178,13 @@
                 entry = matches[counter];
 
                 if (entry[0] == "pdf")
+                {
                     Drupal.behaviors.annvid.getPDFRenderObject().goToPage(entry[1]);
+                }
                 if (entry[0] == "video")
+                {
                     Drupal.behaviors.h5p_connector_api.av_player.goTo(entry[1]);
+                }
 
             }
         }

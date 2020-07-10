@@ -38,33 +38,42 @@
         {
             if (jQuery("#annvid_pdfdiv").is(":visible") == true)
                 {
+                    //hide the PDF
                     jQuery("#annvid_videodiv").removeClass("col-md-6").addClass("col-md-12");
-                    jQuery(".page_maincontent").removeClass("col-md-12").addClass("col-md-8") ;
+                    //pagecontent wieder auf normalbreite
+                    jQuery(".page_maincontent-9").removeClass("col-md-12").addClass("col-md-9");
+                    jQuery(".page_maincontent-8").removeClass("col-md-12").addClass("col-md-8");
+                    
                     jQuery("#annvid_pdfdiv").removeClass("pdf_visible");
                     //zeige book-navi links
                     jQuery(".panels-flexible-column-first:has('ul.menu.nav')").show();
-                    //author-tools rechts
-                    jQuery(".col-md-1:has('#authors_tools-container')").show();
-                    jQuery(".col-md-1:has('#instructors_tools-container')").show();
                     
                     jQuery(".main-container").removeAttr("style");
                     Drupal.behaviors.annvid.stream.fillStreamTimeline();
                     jQuery("#annvid_button_show_pdf_container").show();
+
                     
                 } else
                 {   //now show pdf!
                  
                     jQuery("#annvid_videodiv").removeClass("col-md-12").addClass("col-md-6");
-                    jQuery(".col-md-8").removeClass("col-md-8").addClass("col-md-12").addClass("page_maincontent");
+                    //ganze breite ausnutzen - entferne col-9 oder col-8 vom hauptinhalt
+                    jQuery("div.main-content .col-md-9").removeClass("col-md-9").addClass("col-md-12").addClass("page_maincontent-9");
+                    jQuery("div.main-content .col-md-8").removeClass("col-md-8").addClass("col-md-12").addClass("page_maincontent-8");
+                    
                     jQuery("#annvid_pdfdiv").addClass("pdf_visible");
                     //verstecke book-navi links
                     jQuery(".panels-flexible-column-first:has('ul.menu.nav')").hide();
-                    //author-tools rechts
-                    jQuery(".col-md-1:has('#authors_tools-container')").hide();
-                     jQuery(".col-md-1:has('#instructors_tools-container')").hide();
+
                     jQuery(".main-container").attr("style", "width:100%;");
                     Drupal.behaviors.annvid.stream.fillStreamTimeline();
                     jQuery("#annvid_button_show_pdf_container").hide();
+                    //muss per JS gesetzt werden - wenn  beim Laden vorhanden, verschluckt sich pdfjs
+                    jQuery(".html5pdf_standard_wrapper_class").addClass('html5pdf_annvid_wrapper_class');
+                    
+                    //schiebe pdf-close-button in die html-control-leiste mit rein - gibt keine Dopplung!
+                     jQuery("div.html5pdf_control i.html5pdfsprite-zoomin").before(jQuery("button#annvid_button_hide_pdf"));
+                
                 }
         },
         notifyInitialized: function(name)

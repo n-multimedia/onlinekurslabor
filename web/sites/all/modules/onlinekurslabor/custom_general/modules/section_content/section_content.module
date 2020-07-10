@@ -248,6 +248,7 @@ function book_preprocess(&$variables, $hook) {
       }
     }
 
+
     if (isset($children)) {
       $elements = menu_tree_output($children);
       $variables['tree'] = drupal_render($elements);
@@ -280,6 +281,7 @@ function book_preprocess(&$variables, $hook) {
         $variables['next_title'] = $chapter_numbering . " " . $title;
       }
     }
+
   }
 }
 
@@ -955,8 +957,18 @@ function section_content_field_formatter_info() {
       'label' => t('Multiple Choice'),
       'field types' => array('double_field'),
     ),
-    'section_content_formatter_video' => array(
-      'label' => t('okl Video'),
+    'section_content_formatter_video_preview' => array(
+            'label' => t('OKL Videopreview'),
+            'description' => t('Show a screenshot linking to the original video.'),
+            'field types' => array('file'),
+            'settings' => array(
+                'image_width' => false
+            ),
+            'file formatter' => array(
+                'mime types' => array('video/*'),
+            )),
+      'section_content_formatter_video' => array(
+      'label' => t('OKL Video'),
       'description' => t('Render the file using an HTML5 video tag and additional parameters.'),
       'field types' => array('file'),
       'settings' => array(
@@ -968,6 +980,7 @@ function section_content_field_formatter_info() {
         'height' => NULL,
         'multiple_file_behavior' => 'tags',
         'classes' => array(),
+        'show_file_link' => FALSE,
       ),
       'file formatter' => array(
         'mime types' => array('video/*'),
@@ -980,6 +993,7 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
   if (!$items) {
     return;
   }
+  $blacklist_filenime = array('video/oembed');
 
   $element = array();
   $settings = $display['settings'];
@@ -994,6 +1008,48 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
         );
       }
       break;
+      
+     case 'section_content_formatter_video_preview':
+      // Use the media_thumbnail image style so that the output in media browser
+      // is consistent.
+      $multiple_file_behavior = $settings['multiple_file_behavior'];
+
+      // Prevent 'empty' fields from causing a WSOD.
+      $items = array_filter($items);
+      if($items[0]['override']['wysiwyg'])
+      {
+          $is_wysiwyg_preview = true;
+      }
+      // Build an array of sources for each <video> element.
+      $source_lists = array();
+      if ($multiple_file_behavior == 'tags') {
+        foreach ($items as $delta => $item) {
+          if ($item['type'] == 'video'  && !in_array($item['filemime'], $blacklist_filenime)) {
+            $source_lists[] = array($item);
+          }
+        }
+      }
+      else {
+        foreach ($items as $delta => $item) {
+          if ($item['type'] == 'video'  && !in_array($item['filemime'], $blacklist_filenime)) {
+            $source_lists[0][] = $item;
+          }
+        }
+      }
+
+      // Render each source list as an image
+      foreach ($source_lists as $delta => $sources) {
+        $width = $settings['width'];
+        $height = $settings['height'];
+        $element[$delta] = array(
+          '#theme' => 'section_content_formatter_video_preview',
+          '#files' => $sources,
+          '#is_wysiwyg_preview' => $is_wysiwyg_preview,
+          '#image_width' => $settings['image_width'],
+     #       '#markup'=>theme('section_content_formatter_video_preview', array('#files' => $sources,    'is_wysiwyg_preview' => $is_wysiwyg_preview))
+        );
+      }
+      break;
     case 'section_content_formatter_video':
       // Use the media_thumbnail image style so that the output in media browser
       // is consistent.
@@ -1002,18 +1058,22 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
       // Prevent 'empty' fields from causing a WSOD.
       $items = array_filter($items);
 
+      if($items[0]['override']['wysiwyg'])
+      {
+          $is_wysiwyg_preview = true;
+      }
       // Build an array of sources for each <video> element.
       $source_lists = array();
       if ($multiple_file_behavior == 'tags') {
         foreach ($items as $delta => $item) {
-          if ($item['type'] == 'video') {
+          if ($item['type'] == 'video' && !in_array($item['filemime'], $blacklist_filenime)) {
             $source_lists[] = array($item);
           }
         }
       }
       else {
         foreach ($items as $delta => $item) {
-          if ($item['type'] == 'video') {
+          if ($item['type'] == 'video'  && !in_array($item['filemime'], $blacklist_filenime)) {
             $source_lists[0][] = $item;
           }
         }
@@ -1021,22 +1081,33 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
 
       // Render each source list as an <video> element.
       foreach ($source_lists as $delta => $sources) {
-        $width = $settings['width'];
-        $height = $settings['height'];
-        $element[$delta] = array(
-          '#theme' => 'section_content_formatter_video',
-          '#files' => $sources,
-          '#controls' => $settings['controls'],
-          '#autoplay' => $settings['autoplay'],
-          '#loop' => $settings['loop'],
-          '#muted' => $settings['muted'],
-          '#width' => $width,
-          '#height' => $height,
-          '#classes' => $settings['classes'],
-        );
-      }
-
-  }
+                $width = $settings['width'];
+                $height = $settings['height'];
+                //der WYSIWYG macht da irgendn schmarrn und was un-bedienbares. 
+                //deswegen rendern wir darin kein video sondern nur den screenshot
+                if ($is_wysiwyg_preview) {
+                    $element[$delta] = array(
+                        '#theme' => 'section_content_formatter_video_preview',
+                        '#files' => $sources,
+                        '#is_wysiwyg_preview' => $is_wysiwyg_preview,
+                        '#image_width' => $settings['width'] );
+                } else {
+                    $element[$delta] = array(
+                        '#theme' => 'section_content_formatter_video',
+                        '#files' => $sources,
+                        '#is_wysiwyg_preview' => $is_wysiwyg_preview,
+                        '#controls' => $settings['controls'],
+                        '#autoplay' => $settings['autoplay'],
+                        '#loop' => $settings['loop'],
+                        '#muted' => $settings['muted'],
+                        '#width' => $width,
+                        '#height' => $height,
+                        '#classes' => $settings['classes'],
+                        '#show_file_link' => $settings['show_file_link']
+                    );
+                }
+            }
+    }
 
   return $element;
 }
@@ -1087,16 +1158,24 @@ function section_content_theme() {
     'multiple_choice_field' => array('render element' => 'element'),
     'multiple_choice_field_group' => array('render element' => 'element'),
     'question_and_answer_field' => array('render element' => 'element'),
+    'section_content_formatter_video_preview' => array(
+      'variables' => array(
+        'files' => array(),
+        'is_wysiwyg_preview' => false,
+        'image_width'  => false
+          )),
     'section_content_formatter_video' => array(
       'variables' => array(
         'files' => array(),
+        'is_wysiwyg_preview' => false,
         'controls' => TRUE,
         'autoplay' => FALSE,
         'loop' => FALSE,
         'muted' => FALSE,
         'width' => NULL,
         'height' => NULL,
-        'classes' => NULL
+        'classes' => NULL,
+        'show_file_link' => NULL
       )
     ),
   );
@@ -1524,7 +1603,31 @@ function _section_content_authors_tools_role_access() {
   return !empty($one_of_needed_roles);
 }
 
+/**
+ * implements hook_entity_view_alter
+ * Füge im Displaymode STANDARD nen Link zur File ein
+ * @param type $build
+ * @param type $type
+ */
+function section_content_entity_view_alter(&$build, $type) {
+    //im default-view-mode soll ein Link auf eine Datei erscheinen. Nur nötig für Audio, Rest ist selbst-handled
+    if ($type === 'file' && in_array($build['#bundle'], array('audio')) && $build['#view_mode'] === 'embedded_with_link_to_original') {
+        // Add a #post_render callback to act on the rendered HTML of the entity.
+        $build['#post_render'][] = '_section_content_file_display_post_render';
+    }
+}
 
+/**
+ * used in custom_general_entity_view_alter
+ * Add Link to a rendered File
+ * @param String $rendered_html HTML
+ * @param type $entity
+ * @return type
+ */
+function _section_content_file_display_post_render($rendered_html, $entity) {
+    $file = $entity['file']['#file'];
+    return $rendered_html . theme('file_link', array('file' => $file));
+}
 /**
  * inspired by theme_file_entity_file_video
  * Returns HTML for displaying an HTML5 <video> tag.
@@ -1570,20 +1673,132 @@ function theme_section_content_formatter_video($variables) {
     $classes = 'class="' . $variables['classes'] . '""';
   }
 
-
   $output .= '<video' . drupal_attributes($video_attributes) . ' ' . $classes . '>';
   foreach ($files as $delta => $file) {
+    $file_object = file_load($file['fid']);
+    $videourl = file_create_url($file['uri']);  
+    $file_source_list .='<br>'.theme('file_link', array('file' => $file_object));
     $source_attributes = array(
-      'src' => file_create_url($file['uri']),
+      'src' => $videourl,
       'type' => $file['filemime'],
+      'class' => 'okl_video'
     );
     $output .= '<source' . drupal_attributes($source_attributes) . ' />';
   }
   $output .= '</video>';
-  return $output;
+    if ($variables['show_file_link']) {
+        $output .= '<br><em>' . (count($files) > 1 ? t('Sources') : t('Source') ). '</em>';
+        $output .= $file_source_list;
+    }
+    return $output;
 }
 
 
+/**
+ * inspired by theme_file_entity_file_video
+ * Returns HTML for creating video preview
+ *
+ * @param array $variables TODO
+ *   An associative array containing:
+ *   - file: Associative array of file data, which must include "uri".
+ *   - controls: Boolean indicating whether or not controls should be displayed.
+ *   - autoplay: Boolean indicating whether or not the video should start
+ *     playing automatically.
+ *   - loop: Boolean indicating whether or not the video should loop.
+ *   - muted: Boolean indicating whether or not the sound should be muted.
+ *   - width: Width, in pixels, of the video player.
+ *   - height: Height, in pixels, of the video player.
+ *
+ * @ingroup themeable
+ */
+function theme_section_content_formatter_video_preview($variables) {
+
+    $files = $variables['files'];
+    $output = '';
+
+    foreach ($files as $delta => $file) {
+
+        $playerbutton_image_style = 'media_fakevideo';
+
+
+        $vid_url = file_create_url($file['uri']);
+
+        //get screenshot for video
+        $screenshot_file_obj = _videosafe_store_screenshot_for_file($file['uri']);
+
+
+        // preview eines videos. passe preview an videosize an. 
+        if ($variables['image_width']) {
+            $scaling_style = _section_content_get_image_media_style_for_width($variables['image_width']);
+        }
+        if (!$scaling_style) {
+            $scaling_style = image_styles()['media_6'];
+        }
+
+        //doppeltes image-styling: 1) passe größe an, 2) wende style an, der einen videobutton überlagert
+        $image_with_width = image_style_path($scaling_style['name'], $screenshot_file_obj->uri);
+        // Create the image.
+        image_style_create_derivative($scaling_style, $screenshot_file_obj->uri, $image_with_width);
+
+
+        //get dimensions of pic in pixels
+        $img_dimensions = _section_content_get_image_style_dimensions($scaling_style['name']);
+        $img_with_play_button = theme('image_style', array('path' => $image_with_width, 'style_name' => $playerbutton_image_style));# 'attributes' => array('class' => 'thumb', 'width' => '150', 'height' => '162')));
+
+        $video_subtitle = str_replace(array('_'), ' ', pathinfo($file['filename'], PATHINFO_FILENAME));
+
+        if ($variables['is_wysiwyg_preview']) {
+            $output .= $img_with_play_button;
+        } else {
+            //Div with image and subtitle
+            $output .= '<div class="okl-preview-style video-preview-container" style="width:' . $img_dimensions['width'] . 'px; font-size:80%; text-align:center;"><a href="' . $vid_url . '" target="_blank">' . $img_with_play_button . '<br>' . $video_subtitle . '</a></div>';
+            #              $output .= '<div class="okl-preview-style video-preview-container" style="width:'.$img_dimensions['width'].'px; height:'.$img_dimensions['height'].'px; background: url(\''.$image_url.'\')">asdf</div>';
+        }
+    }
+
+    return $output;
+}
+
+/**
+ * gets an image style which scales input to $width_in_px  px
+ * @param int $width_in_px
+ * @return array $style or null
+ */
+function _section_content_get_image_media_style_for_width($width_in_px) {
+    foreach (image_styles() as $imgstyle) {
+        foreach ($imgstyle['effects'] as $style_effect) {
+            
+            if ($style_effect['name'] == 'image_scale') {
+                if($style_effect['data']['width'] == $width_in_px)
+                {
+                    return $imgstyle;
+                }
+            }
+        }
+    }
+}
+
+/**
+ * gets array [width, height] for images created with named $style
+ * @param type $image_style_name e.g. 'media_3'
+ * @return type
+ * @throws Exception
+ */
+function _section_content_get_image_style_dimensions($image_style_name)
+{
+    $style = image_styles()[$image_style_name];
+    if(!$style)
+    {
+        throw new Exception('Style '.$image_style_name.' not found!');
+    }
+    foreach($style['effects'] as $style_effect)
+    {
+        if($style_effect['name']=='image_scale')
+        {
+            return $style_effect['data'];
+        }
+    }
+}
 /**
  * Implements hook_field_formatter_settings_form().
  */
@@ -1592,6 +1807,13 @@ function section_content_field_formatter_settings_form($field, $instance, $view_
   $settings = $display['settings'];
   $element = array();
 
+   if ($display['type'] == 'section_content_formatter_video_preview') {
+    $element['image_width'] = array(
+     '#title' => t('Image width in pixels'),
+     '#type' => 'textfield',
+     '#default_value' => $settings['image_width'],
+     );
+   }
   if ($display['type'] == 'section_content_formatter_video') {
     $element['controls'] = array(
       '#title' => t('Show video controls'),
@@ -1640,6 +1862,12 @@ function section_content_field_formatter_settings_form($field, $instance, $view_
       '#title' => t('Classes'),
       '#default_value' => $settings['classes'],
       '#field_suffix' => t('separated by a space'),
+    );
+      $element['show_file_link'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Show link to file'),
+      '#default_value' => $settings['show_file_link'],
+      '#description' => t('Below the video a link to the file will be shown for convenient download.'),
     );
   }
 
