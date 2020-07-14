@@ -1178,7 +1178,9 @@ function nm_section_content_features_file_default_displays() {
   $file_display->name = 'image__media_4__file_field_media_large_icon';
   $file_display->weight = 0;
   $file_display->status = FALSE;
-  $file_display->settings = '';
+  $file_display->settings = array(
+    'image_style' => '',
+  );
   $export['image__media_4__file_field_media_large_icon'] = $file_display;
 
   $file_display = new stdClass();
