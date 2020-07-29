@@ -90,8 +90,9 @@ function _course_header_section_view() {
 
 
     $variables = array();
-
-
+    $variables['course_state'] = array();
+    $variables['course_state']['demo'] =   $variables['course_state']['draft']  =  false;
+    
     if (section_courses_demo_mode()) {
         $variables['course_state']['demo'] = true;
         $variables['demo']['title'] = NM_COURSE_DEMO_LABEL;
@@ -109,7 +110,7 @@ function _course_header_section_view() {
         $variables['course_subscribe_link'] = t('!enroll_link to participate.', array('!enroll_link'=>$subscribe_link));
     }
 
-
+    $variables['sponsors_links'] = array();
     $sponsors_tids = field_get_items('node', $active_course, 'field_field_courses_sponsors');
     if ($sponsors_tids) {
         $count_sponsors = 0;

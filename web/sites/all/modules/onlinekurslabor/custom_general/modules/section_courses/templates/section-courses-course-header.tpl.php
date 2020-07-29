@@ -18,6 +18,7 @@ if (count($sponsors_links) > 4) {
 } else {
     $additional_classes_left = "col-md-12";
     $additional_classes_right = "";
+    $courses_sponsors_class = "";
 }
 ?>
 
