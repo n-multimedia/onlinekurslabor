@@ -195,3 +195,21 @@ function custom_general_update_9002() {
             ))
             ->execute();
 }
+
+
+/**
+ * create OKL Bot Account
+ */
+function custom_general_update_9003() {
+  $botaccount_edit = array(
+    'name' => 'Onlinekurslabor Bot',
+    'mail' => NM_OKL_BOT_MAIL,
+    'init' => NM_OKL_BOT_MAIL,
+    'pass' => md5(random_bytes(41)),
+    'status' => 1,
+  );
+  $botaccount = user_save(NULL, $botaccount_edit);
+  if (!$botaccount->uid) {
+    trigger_error('BOT Account could not be created!');
+  }
+}
