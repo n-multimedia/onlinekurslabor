@@ -7,10 +7,10 @@
 #
 # a) Script testen aus dem script-directory: /web/scripts$ bash drupalgeddon_react.sh
 # b) cronjob einrichten: 
-#     0 */6 * * * bash --SITENAME--/web/scripts/drupalgeddon_react.sh	
-# 	b1) cronjob konfigurieren: Benachrichtigungen => Nur Fehler => E-Mail eingeben
-# c) gibt es ein security-drupal-Release, wird die Webseite komplett abgeschaltet.
-# 
+#     b1) 0 */6 * * * bash --SITENAME--/web/scripts/drupalgeddon_react.sh	
+#     b2) mit Mailbenachrichtigung:0 */6 * * * bash --SITENAME--/web/scripts/drupalgeddon_react.sh   2>&1 > /dev/null  |  bash --SITENAME--/web/scripts/mail_if_output.sh RECIPIENT@HOST.COM,RECIPIENT@HOSTER.COM
+# c1) gibt es ein security-drupal-Release, wird die Webseite komplett abgeschaltet.
+# c2) bei Verwendung von b2) erhalten die Empfänger auch eine E-Mail.
 # 
 
 
@@ -22,7 +22,7 @@ export PATH=$PATH:/usr/local/bin
 #path von drush in userfolder benoetigt
 export PATH=$PATH:~/drush/:~/.composer/vendor/bin/
 cd ../web/
-drush rf  2> /dev/null   ||  (>&2 printf "DRUSH COMMAND NOT FOUND\n\n") # pm-refresh OR warning if drush not found
+drush rf  2> /dev/null   ||  ((>&2 printf "DRUSH COMMAND NOT FOUND\n\n") && exit 1);# pm-refresh OR warning if drush not found
 
 #StdErr wird nach null umgeleitet. Darin enthalten sind die warnings über "missing plugins"
 CHANGED_DRUP=`drush up drupal --no  2> /dev/null  | grep "SECURITY UPDATE available"`
@@ -38,12 +38,11 @@ else
 
  bash_user=$(whoami)
  #ueberschreibe htaccess
- printf 'ErrorDocument 403 \"Diese Seite ist aufgrund eines dringenden Updates voruebergehend ausser Betrieb!<br>Das Medienlabor.\" \n order deny,allow \n deny from all\n' > .htaccess
+../scripts/drupalgeddon_activate_maintenance.sh
  
- 
- #write to stdErr. Crone will send stdErr via email.
+#write to stdErr. stdErr will be sent via email.
  (>&2 printf "$bash_user WAS SHUT DOWN!\n\n")
- (>&2 printf "\n\nPfad: $PWD \n\nNotice: $CHANGED_DRUP")
+ (>&2 printf "Pfad: $PWD \nNotice: $CHANGED_DRUP\n")
  
  exit 1;
 fi
