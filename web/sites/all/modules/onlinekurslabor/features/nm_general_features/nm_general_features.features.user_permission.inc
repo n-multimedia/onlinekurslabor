@@ -72,6 +72,7 @@ function nm_general_features_user_default_permissions() {
     'roles' => array(
       'Autor' => 'Autor',
       'Dozent' => 'Dozent',
+      'Moderator' => 'Moderator',
       'administrator' => 'administrator',
     ),
     'module' => 'contextual',
