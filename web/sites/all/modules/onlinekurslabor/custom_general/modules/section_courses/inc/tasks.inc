@@ -126,6 +126,7 @@ function _course_tasks_generic_solution_workflow_form($node) {
 
 
     //add a title       
+    //@todo buttons sollen weg
     if (!empty($form['workflow']['buttons'])) {
         $form_title = array('title' => array(
                 '#markup' => '<h4>' . t('Actions') . '</h4>'
@@ -369,62 +370,68 @@ function _course_tasks_generic_solution_form_view() {
   return $output;
 }
 
+/**
+ * Erstellt die Form, um eine Lösung zu bewerten / zurückzuweisen etc
+ * @param type $form
+ * @param type $form_state
+ * @param type $solution_nid
+ * @return string
+ */
 function _section_courses_task_solution_assesment_form($form, &$form_state, $solution_nid) {
-    $node_wrapper = entity_metadata_wrapper('node', $solution_nid);
+  $node_wrapper = entity_metadata_wrapper('node', $solution_nid);
 
-    $field_val = $node_wrapper->field_generic_task_assessment->value();
+  $field_val = $node_wrapper->field_generic_task_assessment->value();
 
-    $form = array();
-
-
-    //[todo] generate possible transitionbuttons automatically ?
-    //temporarly - manually checking possible transitions
-
-    $solution = node_load($solution_nid);
-    $current_state = workflow_node_current_state($solution);
-    
-    switch ($current_state) {
-        case NM_COURSES_TASK_WORKFLOW_SUBMITTED:
-
-            $form['assessment'] = array(
-                '#type' => 'text_format',
-                '#title' => 'Bewertung',
-                '#base_type' => 'textarea',
-                '#default_value' => $field_val['value'],
-                '#format' => NM_FILTER_FORMAT_FILTERED_HTML,
-            );
-
-            $form['solution_nid'] = array(
-                '#type' => 'hidden',
-                '#value' => $solution_nid,
-            );
-            $form['save'] = array(
-                '#type' => 'submit',
-                '#attributes' => array('class' => array('btn', 'btn-primary')),
-                '#value' => 'Speichern',
-            );
-            //limit button to permission
-            if (in_array('Bewertet', workflow_field_choices($solution))) {
-                $form['store_assets'] = array(
-                    '#type' => 'submit',
-                    '#attributes' => array('class' => array('btn', 'btn-success')),
-                    '#value' => 'Speichern und Bewerten',
-                );
-            }
-            //limit button to permission
-            if (in_array('Entwurf', workflow_field_choices($solution))) {
-                $form['store_cancel_submission'] = array(
-                    '#type' => 'submit',
-                    '#attributes' => array('class' => array('btn', 'btn-default')),
-                    '#value' => 'Speichern und Einreichung aufheben',
-                );
-            }
-            break;
-        
-    }
+  $form = array();
 
 
-    return $form;
+  //[todo] generate possible transitionbuttons automatically ?
+  //temporarly - manually checking possible transitions
+
+  $solution = node_load($solution_nid);
+  $current_state = workflow_node_current_state($solution);
+
+  switch ($current_state) {
+    case NM_COURSES_TASK_WORKFLOW_SUBMITTED:
+
+      $form['assessment'] = array(
+        '#type' => 'text_format',
+        '#title' => 'Bewertung',
+        '#base_type' => 'textarea',
+        '#default_value' => $field_val['value'],
+        '#format' => NM_FILTER_FORMAT_FILTERED_HTML,
+      );
+
+      $form['solution_nid'] = array(
+        '#type' => 'hidden',
+        '#value' => $solution_nid,
+      );
+      $form['save'] = array(
+        '#type' => 'submit',
+        '#attributes' => array('class' => array('btn', 'btn-primary')),
+        '#value' => 'Speichern',
+      );
+      //limit button to permission
+      if (in_array('Bewertet', workflow_field_choices($solution))) {
+        $form['store_assets'] = array(
+          '#type' => 'submit',
+          '#attributes' => array('class' => array('btn', 'btn-success')),
+          '#value' => 'Speichern und Bewerten',
+        );
+      }
+      //limit button to permission
+      if (in_array('Entwurf', workflow_field_choices($solution))) {
+        $form['store_cancel_submission'] = array(
+          '#type' => 'submit',
+          '#attributes' => array('class' => array('btn', 'btn-default')),
+          '#value' => 'Speichern und Einreichung aufheben',
+        );
+      }
+      break;
+  }
+
+
+  return $form;
 }
 
 function _section_courses_task_solution_assesment_form_submit($form, &$form_state) {
