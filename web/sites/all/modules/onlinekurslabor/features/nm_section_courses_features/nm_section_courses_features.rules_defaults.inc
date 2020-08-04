@@ -97,6 +97,44 @@ function nm_section_courses_features_default_rules_configuration() {
       ]
     }
   }');
+  $items['nm_section_courses_features_rejected_solution_mail'] = entity_import('rules_config', '{ "nm_section_courses_features_rejected_solution_mail" : {
+      "LABEL" : "Rejected solution: Mail",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "REQUIRES" : [ "rules", "workflow_rules" ],
+      "ON" : { "workflow_state_changed" : [] },
+      "IF" : [
+        { "AND" : [
+            { "node_is_of_type" : {
+                "node" : [ "node" ],
+                "type" : { "value" : { "courses_generic_task_solution" : "courses_generic_task_solution" } }
+              }
+            },
+            { "workflow_check_transition" : {
+                "node" : [ "node" ],
+                "old_state" : { "value" : { "3" : "3", "4" : "4" } },
+                "new_state" : { "value" : { "2" : "2" } }
+              }
+            }
+          ]
+        }
+      ],
+      "DO" : [
+        { "entity_fetch" : {
+            "USING" : { "type" : "user", "id" : [ "node:author:uid" ] },
+            "PROVIDE" : { "entity_fetched" : { "solutions_owner" : "Owner of solution" } }
+          }
+        },
+        { "mail" : {
+            "to" : "[solutions-owner:mail]",
+            "subject" : "L\\u00f6sung zur\\u00fcckgewiesen",
+            "message" : "Ihre L\\u00f6sung \\u0022[node:title]\\u0022 wurde zur\\u00fcckgewiesen mit der Bitte um \\u00dcberarbeitung.\\r\\n\\r\\nMehr dazu unter:\\r\\n[node:url]\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
+            "language" : [ "" ]
+          }
+        }
+      ]
+    }
+  }');
   $items['rules_course_forum_topic_created'] = entity_import('rules_config', '{ "rules_course_forum_topic_created" : {
       "LABEL" : "Course Forum Topic Created",
       "PLUGIN" : "reaction rule",
