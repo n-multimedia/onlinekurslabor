@@ -56,6 +56,52 @@ function notification_features_default_rules_configuration() {
       ]
     }
   }');
+  $items['notification_features_chnd_msg_solution_rejected'] = entity_import('rules_config', '{ "notification_features_chnd_msg_solution_rejected" : {
+      "LABEL" : "Changed Node Message: L\\u00f6sung zur\\u00fcckgewiesen",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "REQUIRES" : [ "rules", "workflow_rules" ],
+      "ON" : { "workflow_state_changed" : [] },
+      "IF" : [
+        { "AND" : [
+            { "node_is_of_type" : {
+                "node" : [ "node" ],
+                "type" : { "value" : { "courses_generic_task_solution" : "courses_generic_task_solution" } }
+              }
+            },
+            { "workflow_check_transition" : {
+                "node" : [ "node" ],
+                "old_state" : { "value" : { "3" : "3", "4" : "4" } },
+                "new_state" : { "value" : { "2" : "2" } }
+              }
+            }
+          ]
+        }
+      ],
+      "DO" : [
+        { "entity_create" : {
+            "USING" : {
+              "type" : "message",
+              "param_type" : "message_changed_node",
+              "param_user" : [ "site:current-user" ]
+            },
+            "PROVIDE" : { "entity_created" : { "entity_changed" : "Changed entity" } }
+          }
+        },
+        { "data_set" : { "data" : [ "entity-changed:arguments:action" ], "value" : "rejected" } },
+        { "data_set" : {
+            "data" : [ "entity-changed:field-message-node-ref" ],
+            "value" : [ "node" ]
+          }
+        },
+        { "data_set" : {
+            "data" : [ "entity-changed:arguments:printable-node-type" ],
+            "value" : "solution"
+          }
+        }
+      ]
+    }
+  }');
   $items['rules_new_node_message'] = entity_import('rules_config', '{ "rules_new_node_message" : {
       "LABEL" : "New Node Message",
       "PLUGIN" : "reaction rule",

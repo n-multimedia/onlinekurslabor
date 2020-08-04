@@ -21,6 +21,9 @@ msgstr "Zurückweisen und Korrektur anfordern"
 msgid "other actions"
 msgstr "Sonstige Aktionen"
 
+msgid "assessed a solution"
+msgstr "hat eine Lösung zurückgewiesen"
+
 msgid ""
 msgstr ""
 
