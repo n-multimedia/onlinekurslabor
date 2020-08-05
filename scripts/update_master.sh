@@ -1,5 +1,6 @@
-#!/usr/bin/env bash
-##!/bin/sh
+#!/bin/bash
+
+
 drush vset maintenance_mode 1
 
 
