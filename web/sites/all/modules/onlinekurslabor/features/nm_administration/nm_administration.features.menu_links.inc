@@ -48,7 +48,7 @@ function nm_administration_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -48,
+    'weight' => -46,
     'customized' => 1,
   );
   // Exported menu link: menu-administration_inhalt:administration/content.
@@ -68,7 +68,7 @@ function nm_administration_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -49,
+    'weight' => -48,
     'customized' => 1,
   );
   // Exported menu link: menu-administration_kurse:administration/courses.
@@ -88,7 +88,7 @@ function nm_administration_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -47,
+    'weight' => -49,
     'customized' => 1,
   );
   // Exported menu link: menu-administration_personen:administration/users.
@@ -108,7 +108,7 @@ function nm_administration_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -46,
+    'weight' => -47,
     'customized' => 1,
   );
   // Exported menu link: menu-administration_semester:administration/semester.
@@ -128,7 +128,7 @@ function nm_administration_menu_default_menu_links() {
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -46,
+    'weight' => -44,
     'customized' => 1,
   );
 
