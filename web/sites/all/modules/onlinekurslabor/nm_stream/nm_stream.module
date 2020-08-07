@@ -2576,9 +2576,13 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   $data['stream']['acceptedFiles'] = $allowed_attachm_filetypes;
 
   $posts_comments_users = nm_stream_api_v2_get_posts($stream_container_node);
+  $filter_available_contexts = nm_stream_api_v2_filter_get_contexts($stream_container_node);
+  $filter_available_users = nm_stream_api_v2_filter_get_users($filter_available_contexts);
   $data['stream']['posts'] = $posts_comments_users['posts'];
   $data['stream']['comments'] = $posts_comments_users['comments'];
   $data['stream']['users'] = $posts_comments_users['users'];
+  $data['stream']['filterAvailableContexts'] = array_values($filter_available_contexts);
+  $data['stream']['filterAvailableUsers'] = array_values($filter_available_users);
 
   $data['stream']['timestamp'] = REQUEST_TIME;
 
@@ -2673,25 +2677,11 @@ function nm_stream_api_v2_poll_update_callback($stream_container_nid, $offset = 
 }
 
 
-/**
- * @param $stream_container_node
- */
-function nm_stream_api_v2_get_posts($stream_container_node, $filter=[], $offset = 0, $limit = NM_STREAM_API_INIT_POSTS_LIMIT) {
-  global $user;
-  global $base_url;
-  $account = clone $user;
-
-  nm_stream_api_v2_set_localhost_headers();
-
+function _nm_stream_api_v2_get_posts_query($filter = []) {
   $types = nm_stream_get_stream_content_types();
-
-  $result_posts = [];
-  $result_users = [];
-  $result_comments = [];
 
   //get nm_stream nodes where created > $top_node->created
   $query = db_select('node', 'n');
-  $query->addField('n', 'nid');
 
   $query
     //->condition('n.nid', $top_node->nid, '>')
@@ -2699,32 +2689,16 @@ function nm_stream_api_v2_get_posts($stream_container_node, $filter=[], $offset 
     ->condition('n.status', NODE_PUBLISHED)
     ->orderBy("n.sticky", "DESC") //respect sticky posts
     ->orderBy("n.created", "DESC") // order important!
-    ->range($offset, $limit)
     ->addTag('node_access');
-
-  // only get nodes created or updated after last update $timestamp
-  /*if ($timestamp) {
-    $or = db_or();
-    $or->condition('n.created', $timestamp, ">");
-    $or->condition('n.changed', $timestamp, ">");
-    $query->condition($or);
-  }*/
-
-  //01.04.2014 - 22:53 - SN context needed
-  //if we are in a special context e.g. course group, we just want to see
-  //filtered entries which are assign to this group
-  //for now we only have course groups as special context
-  //27.01.2017 - 11:14 - SN
-  //now we also have annvid as special context
-
-  $environment = nm_stream_get_environment();
-  $context = $environment["context"];
-  $container = $environment["container"];
 
   //24.02.2017 - 11:48 - SN
   //prevent fetching updates of nodes without any context!
   $query->join('field_data_field_nm_stream_context', 'field_data_field_nm_stream_context', "n.nid = field_data_field_nm_stream_context.entity_id  AND field_data_field_nm_stream_context.entity_type = 'node'"); //JOIN
   $query->isNotNull('field_data_field_nm_stream_context.field_nm_stream_context_target_id');
+
+  $environment = nm_stream_get_environment();
+  $context = $environment["context"];
+  $container = $environment["container"];
 
   if (!empty($context)) {
     if ($context->type == NM_CONTENT_DOMAIN) {
@@ -2769,7 +2743,6 @@ function nm_stream_api_v2_get_posts($stream_container_node, $filter=[], $offset 
     $query->condition('og_membership.gid', $container->nid);
   }
 
-
   // ** FILTER **
   // context_nid
   if (!empty($filter['context_nid'])) {
@@ -2787,20 +2760,113 @@ function nm_stream_api_v2_get_posts($stream_container_node, $filter=[], $offset 
     $query->condition('field_data_field_nm_privacy.field_nm_privacy_value', $filter['privacy_key']);
   }
 
+  return $query;
+}
+
+/**
+ * @param $contexts
+ *
+ * @return array
+ */
+function nm_stream_api_v2_filter_get_users($filter=[]) {
+  /*$result_users = [];
+  foreach ($contexts as $context) {
+    $users = custom_general_get_users_in_group($context['nid']);
+    foreach ($users as $user) {
+      $realname = realname_load($user);
+      $user->realname = $realname ? $realname : $user->name;
+
+      $result_users[$user->uid] = $user;
+    }
+  }
+
+  return $result_users;*/
+
+  //todo all vailable users vs. users who have potential stream content results?
+
+  //get nm_stream nodes where created > $top_node->created
+  $query = _nm_stream_api_v2_get_posts_query($filter);
+  $orderby =& $query->getOrderBy();
+  $orderby = null;
+  $query->addField('n', 'uid');
+  $query->groupBy('uid');
+  $query->orderBy('MAX(n.created)', 'DESC');
+  $query->range(0, NM_STREAM_API_INIT_POSTS_LIMIT * 10); // fetchlimit
 
   $results = $query->execute()->fetchAll();
 
-  $output = '';
+  $result_users = [];
+  foreach ($results as $result) {
+    $account = user_load($result->uid);
+    $realname = realname_load($account);
+
+    $account->realname = $realname ? $realname : $account->name;
+
+    $account_result = [];
+    $account_result['uid'] = $account->uid;
+    $account_result['realname'] = $realname;
+    $account_result['name'] = $account->name;
+
+    $result_users[$account->uid] = $account_result;
+  }
+
+  return $result_users;
+}
+
+/**
+ * @param $stream_container_node
+ * @param array $filter
+ *
+ * @return array
+ */
+function nm_stream_api_v2_filter_get_contexts($stream_container_node, $filter=[]) {
+  //get nm_stream nodes where created > $top_node->created
+  $query = _nm_stream_api_v2_get_posts_query($filter);
+  $query->addField('field_data_field_nm_stream_context', 'field_nm_stream_context_target_id');
+  $query->groupBy('field_nm_stream_context_target_id');
+  $query->condition('field_nm_stream_context_target_id', 0, '>');
+  $query->range(0, NM_STREAM_API_INIT_POSTS_LIMIT * 5); // fetchlimit
+
+  $results = $query->execute()->fetchAll();
+
+  $result_contexts = [];
+  foreach ($results as $result) {
+    $context_node = node_load($result->field_nm_stream_context_target_id);
+    if (empty($context_node)) {
+      continue;
+    }
+    $context = [];
+    $context['nid'] = $context_node->nid;
+    $context['title'] = $context_node->title;
+    $result_contexts[$context['nid']]  = $context;
+  }
+
+  return $result_contexts;
+
+}
+/**
+ * @param $stream_container_node
+ */
+function nm_stream_api_v2_get_posts($stream_container_node, $filter=[], $offset = 0, $limit = NM_STREAM_API_INIT_POSTS_LIMIT) {
+  global $user;
+  global $base_url;
+  $account = clone $user;
+
+  nm_stream_api_v2_set_localhost_headers();
+
+  $result_posts = [];
+  $result_users = [];
+  $result_comments = [];
+
+  //get nm_stream nodes where created > $top_node->created
+  $query = _nm_stream_api_v2_get_posts_query($filter);
+  $query->addField('n', 'nid');
+  $query->range($offset, $limit);
+
+  $results = $query->execute()->fetchAll();
+
   foreach ($results as $result) {
     $node = node_load($result->nid);
-    //check if node is visible in context
-    //29.03.2019 - 12:16 - SN do we still need this?
-    /*if ($node->field_nm_privacy[LANGUAGE_NONE][0]['value'] == NM_STREAM_COURSE) {
-      //we are in course context and only want to see whats happaning here
-      if ($node->field_nm_stream_context [LANGUAGE_NONE][0]['target_id'] != $context->nid) {
-        continue;
-      }
-    }*/
 
     $node_data = nm_stream_api_v2_get_posts_json_data($account, $node);
 
