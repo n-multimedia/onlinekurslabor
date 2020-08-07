@@ -131,6 +131,26 @@ function nm_administration_menu_default_menu_links() {
     'weight' => -44,
     'customized' => 1,
   );
+  // Exported menu link: menu-administration_videosafe:administration/videosafe.
+  $menu_links['menu-administration_videosafe:administration/videosafe'] = array(
+    'menu_name' => 'menu-administration',
+    'link_path' => 'administration/videosafe',
+    'router_path' => 'administration',
+    'link_title' => 'Videosafe',
+    'options' => array(
+      'attributes' => array(
+        'title' => '',
+      ),
+      'identifier' => 'menu-administration_videosafe:administration/videosafe',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -45,
+    'customized' => 1,
+  );
 
   // Translatables
   // Included for use with string extractors like potx.
@@ -140,6 +160,7 @@ function nm_administration_menu_default_menu_links() {
   t('Kurse');
   t('Personen');
   t('Semester');
+  t('Videosafe');
 
   return $menu_links;
 }
