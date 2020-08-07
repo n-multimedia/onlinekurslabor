@@ -11,6 +11,123 @@
 function nm_general_features_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance: 'file-image-field_file_belongs_to'.
+  $field_instances['file-image-field_file_belongs_to'] = array(
+    'bundle' => 'image',
+    'default_value' => NULL,
+    'default_value_function' => '',
+    'deleted' => 0,
+    'description' => 'Verknüpft eine Datei1 mit einer anderen Ziel1. Datei1 erhält die gleichen Zugriffsrechte wie Ziel1. 
+Derzeit verwendet, um Screenshots aus einem Video einem echten Video zuzuordnen.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'bypass_access' => 0,
+          'link' => 1,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 1,
+      ),
+      'embedded_with_link_to_original' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'file_icon' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'filename' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'media_3' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'media_4' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'media_6' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'media_9' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'media_12' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'media_600px' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'preview_with_link_to_original' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'wysiwyg' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'file',
+    'field_name' => 'field_file_belongs_to',
+    'label' => 'File belongs to',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'prepopulate' => array(
+          'status' => 0,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete_tags',
+      'weight' => -1,
+    ),
+  );
+
   // Exported field_instance: 'node-page-body'.
   $field_instances['node-page-body'] = array(
     'bundle' => 'page',
@@ -528,11 +645,14 @@ function nm_general_features_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Beschreiben Sie sich und Themen, die Sie besonders interessieren.');
   t('Body');
+  t('File belongs to');
   t('Foto');
   t('Geburtstag');
   t('Geschlecht');
   t('Nachname');
   t('VHB LOGIN');
+  t('Verknüpft eine Datei1 mit einer anderen Ziel1. Datei1 erhält die gleichen Zugriffsrechte wie Ziel1. 
+Derzeit verwendet, um Screenshots aus einem Video einem echten Video zuzuordnen.');
   t('Vorname');
   t('Über mich');
 

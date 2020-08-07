@@ -459,6 +459,27 @@ function nm_section_courses_features_field_default_field_bases() {
     'type' => 'double_field',
   );
 
+  // Exported field_base: 'field_generic_task_reject_notice'.
+  $field_bases['field_generic_task_reject_notice'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_generic_task_reject_notice',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'profile2_private' => FALSE,
+    ),
+    'translatable' => 0,
+    'type' => 'text_long',
+  );
+
   // Exported field_base: 'field_hochschule'.
   $field_bases['field_hochschule'] = array(
     'active' => 1,

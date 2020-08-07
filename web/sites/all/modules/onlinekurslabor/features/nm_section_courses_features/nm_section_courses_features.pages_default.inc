@@ -2017,14 +2017,24 @@ return section_courses_text_outline();
   $page->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
+        'name' => 'og_member',
         'settings' => array(
-          'type' => 'view',
+          'state' => array(
+            1 => '1',
+          ),
         ),
         'context' => array(
           0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_2',
+          1 => 'argument_entity_id:node_1',
         ),
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'perm',
+        'settings' => array(
+          'perm' => 'administer nodes',
+        ),
+        'context' => 'logged-in-user',
         'not' => FALSE,
       ),
     ),

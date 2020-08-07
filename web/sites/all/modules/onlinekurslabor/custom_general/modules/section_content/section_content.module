@@ -1016,6 +1016,7 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
 
       // Prevent 'empty' fields from causing a WSOD.
       $items = array_filter($items);
+      $is_wysiwyg_preview = false;
       if($items[0]['override']['wysiwyg'])
       {
           $is_wysiwyg_preview = true;
@@ -1673,7 +1674,8 @@ function theme_section_content_formatter_video($variables) {
     $classes = 'class="' . $variables['classes'] . '""';
   }
 
-  $output .= '<video' . drupal_attributes($video_attributes) . ' ' . $classes . '>';
+  $first_video_uri = reset($files)['uri'];
+  $output .= '<video' . drupal_attributes($video_attributes) . ' ' . $classes . ' poster="'._videosafe_get_themed_screenshot_url_for_file($first_video_uri).'">';
   foreach ($files as $delta => $file) {
     $file_object = file_load($file['fid']);
     $videourl = file_create_url($file['uri']);  
@@ -1718,45 +1720,71 @@ function theme_section_content_formatter_video_preview($variables) {
 
     foreach ($files as $delta => $file) {
 
-        $playerbutton_image_style = 'media_fakevideo';
-
-
         $vid_url = file_create_url($file['uri']);
 
         //get screenshot for video
         $screenshot_file_obj = _videosafe_store_screenshot_for_file($file['uri']);
-
-
-        // preview eines videos. passe preview an videosize an. 
-        if ($variables['image_width']) {
-            $scaling_style = _section_content_get_image_media_style_for_width($variables['image_width']);
-        }
-        if (!$scaling_style) {
-            $scaling_style = image_styles()['media_6'];
-        }
-
-        //doppeltes image-styling: 1) passe größe an, 2) wende style an, der einen videobutton überlagert
-        $image_with_width = image_style_path($scaling_style['name'], $screenshot_file_obj->uri);
-        // Create the image.
-        image_style_create_derivative($scaling_style, $screenshot_file_obj->uri, $image_with_width);
-
-
-        //get dimensions of pic in pixels
-        $img_dimensions = _section_content_get_image_style_dimensions($scaling_style['name']);
-        $img_with_play_button = theme('image_style', array('path' => $image_with_width, 'style_name' => $playerbutton_image_style));# 'attributes' => array('class' => 'thumb', 'width' => '150', 'height' => '162')));
-
+        $screenshot_uri = $screenshot_file_obj->uri;
+        $arr_screenshot = _section_content_get_themed_video_screenshot_array($screenshot_uri, $variables['image_width']);
+        
+        
         $video_subtitle = str_replace(array('_'), ' ', pathinfo($file['filename'], PATHINFO_FILENAME));
 
         if ($variables['is_wysiwyg_preview']) {
-            $output .= $img_with_play_button;
+            $output .= $arr_screenshot['img'];
         } else {
             //Div with image and subtitle
-            $output .= '<div class="okl-preview-style video-preview-container" style="width:' . $img_dimensions['width'] . 'px; font-size:80%; text-align:center;"><a href="' . $vid_url . '" target="_blank">' . $img_with_play_button . '<br>' . $video_subtitle . '</a></div>';
+            $output .= '<div class="okl-preview-style video-preview-container" style="width:' . $arr_screenshot['width'] . 'px; font-size:80%; text-align:center;"><a href="' . $vid_url . '" target="_blank">' . $arr_screenshot['img'] . '<br>' . $video_subtitle . '</a></div>';
             #              $output .= '<div class="okl-preview-style video-preview-container" style="width:'.$img_dimensions['width'].'px; height:'.$img_dimensions['height'].'px; background: url(\''.$image_url.'\')">asdf</div>';
         }
     }
 
     return $output;
+}
+
+/**
+ * gets an array with screenshot-information
+ * * width
+ * * path
+ * * img (image-html-tag)
+ * @param String $screenshot_uri URI to screenshot file
+ * @param int $image_width requested with in px
+ * @param boolean $with_play_button Render a play button on the file.
+ * @return array $screenshot_array
+ */
+function _section_content_get_themed_video_screenshot_array($screenshot_uri, $image_width = null, $with_play_button = true) {
+  $return_arr = array();
+
+  $playerbutton_image_style = 'media_fakevideo';
+  // preview eines videos. passe preview an videosize an. 
+  if ($image_width) {
+    $scaling_style = _section_content_get_image_media_style_for_width($image_width);
+  }
+  if (!$scaling_style) {
+    $scaling_style = image_styles()['media_6'];
+  }
+
+  //doppeltes image-styling: 1) passe größe an, 2) erstelle bild 
+  $image_uri_with_width = image_style_path($scaling_style['name'], $screenshot_uri);
+  $image_url_with_width = image_style_url($scaling_style['name'], $screenshot_uri);
+  // Create the image.
+  image_style_create_derivative($scaling_style, $screenshot_uri, $image_uri_with_width);
+
+
+  //get dimensions of pic in pixels
+  $img_dimensions = _section_content_get_image_style_dimensions($scaling_style['name']);
+  $return_arr['width'] = $img_dimensions['width'];
+
+  if ($with_play_button) {
+    //3) wende style an, der einen videobutton überlagert
+    $return_arr['url'] = image_style_url($playerbutton_image_style, $image_uri_with_width);
+    $return_arr['img'] = theme('image_style', array('path' => $image_uri_with_width, 'style_name' => $playerbutton_image_style)); # 'attributes' => array('class' => 'thumb', 'width' => '150', 'height' => '162')));
+  }
+  else {
+    $return_arr['url'] = $image_url_with_width;
+    $return_arr['img'] = theme('image', array('path' => $image_uri_with_width, 'width'=>$img_dimensions['width']));
+  }
+  return $return_arr;
 }
 
 /**

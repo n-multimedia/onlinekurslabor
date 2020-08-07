@@ -2063,7 +2063,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 2,
       ),
     ),
     'entity_type' => 'node',
@@ -2150,7 +2150,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 3,
       ),
     ),
     'entity_type' => 'node',
@@ -2206,7 +2206,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 4,
       ),
     ),
     'entity_type' => 'node',
@@ -2265,6 +2265,89 @@ function nm_section_courses_features_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'node-courses_generic_task_solution-field_generic_task_reject_notice'.
+  $field_instances['node-courses_generic_task_solution-field_generic_task_reject_notice'] = array(
+    'bundle' => 'courses_generic_task_solution',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Describe, why you can\'t accept this solution and wish improvements.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 5,
+      ),
+      'nm_stream' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 5,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_generic_task_reject_notice',
+    'label' => 'Zurückweisungs-Notiz',
+    'required' => 0,
+    'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'ds_code' => 0,
+          'filtered_html' => 'filtered_html',
+          'full_html' => 0,
+          'php_code' => 0,
+          'plain_text' => 'plain_text',
+        ),
+        'allowed_formats_toggle' => 1,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'ds_code' => array(
+              'weight' => 12,
+            ),
+            'filtered_html' => array(
+              'weight' => 0,
+            ),
+            'full_html' => array(
+              'weight' => 1,
+            ),
+            'php_code' => array(
+              'weight' => 11,
+            ),
+            'plain_text' => array(
+              'weight' => 10,
+            ),
+          ),
+        ),
+      ),
+      'linkit' => array(
+        'button_text' => 'Suche',
+        'enable' => 0,
+        'profile' => '',
+      ),
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'multiple_value_widget' => 'table',
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance:
   // 'node-courses_generic_task_solution-field_submitted_on'.
   $field_instances['node-courses_generic_task_solution-field_submitted_on'] = array(
     'bundle' => 'courses_generic_task_solution',
@@ -2283,7 +2366,7 @@ function nm_section_courses_features_field_default_field_instances() {
           'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'nm_stream' => array(
         'label' => 'above',
@@ -2295,7 +2378,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 7,
       ),
     ),
     'entity_type' => 'node',
@@ -2323,7 +2406,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'year_range' => '-3:+3',
       ),
       'type' => 'date_popup',
-      'weight' => 7,
+      'weight' => 8,
     ),
   );
 
@@ -2352,7 +2435,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 6,
       ),
     ),
     'entity_type' => 'node',
@@ -2404,7 +2487,7 @@ function nm_section_courses_features_field_default_field_instances() {
         'multiple_value_widget' => 'table',
       ),
       'type' => 'og_complex',
-      'weight' => 5,
+      'weight' => 6,
     ),
   );
 
@@ -3318,6 +3401,7 @@ function nm_section_courses_features_field_default_field_instances() {
   t('Bild');
   t('Body');
   t('Comment');
+  t('Describe, why you can\'t accept this solution and wish improvements.');
   t('Determine if this is an OG group.');
   t('Foren');
   t('Fächer');
@@ -3349,6 +3433,7 @@ function nm_section_courses_features_field_default_field_instances() {
   t('Untertitel');
   t('VHB-LVNR');
   t('Zugriffseinstellungen');
+  t('Zurückweisungs-Notiz');
   t('eingereicht am');
   t('wird programmatisch gesetzt');
 

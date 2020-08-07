@@ -31,28 +31,28 @@
         }
         ,
         initialize: function() {
-            var view_container = jQuery(".view-videosafe-folderview.view-id-videosafe_folderview.view-display-id-ajax_browser");
-            Drupal.behaviors.videosafe_ajax_browser.debug("der view_container ist: view_container");
+            var view_container = jQuery("div#videosafe_ajax_modal_view_container");
+            Drupal.behaviors.videosafe_ajax_browser.debug("der view_container ist: "+view_container);
 
 
             this.view_container = view_container;
             this.exposed_form.form = jQuery("form#views-exposed-form-videosafe-folderview-ajax-browser", view_container);
-            this.exposed_form.input_folder = jQuery("input#edit-field-parent-folder-target-id", this.exposed_form.form);
+            this.exposed_form.input_folder = jQuery('input[name="field_parent_folder_target_id"]', this.exposed_form.form);
             if (typeof this.exposed_form.input_folder === 'undefined' || this.exposed_form.input_folder.length == 0)
             {   //view noch nicht ready, breche ab. wird spaeter wieder aufgerufen
                 Drupal.behaviors.videosafe_ajax_browser.debug("skipping empty exposed_form.input_folder!!");
                 return false;
             }
             //view ready, jetzt sucht er sich die ganzen html-elemente zusammen
-            this.exposed_form.input_title = jQuery("input#edit-title--2", this.exposed_form.form);
-            this.exposed_form.button_apply = jQuery("button#edit-submit-videosafe-folderview", this.exposed_form.form);
-            this.exposed_form.button_reset = jQuery("button#edit-reset", this.exposed_form.form);
+            this.exposed_form.input_title = jQuery("div.form-item-title input[name='title']", this.exposed_form.form);
+            this.exposed_form.button_apply = jQuery("div.views-submit-button button", this.exposed_form.form);
+            this.exposed_form.button_reset = jQuery("div.views-reset-button button", this.exposed_form.form);
             this.convertToAjaxfunctionality(this.exposed_form.button_reset, Drupal.settings.videosafe.root_nid);
             Drupal.behaviors.videosafe_ajax_browser.debug("livE1!");
             this.processClickableElements();
             Drupal.behaviors.videosafe_ajax_browser.debug("livE2!");
             //verstecke oberordner-feld des views
-            jQuery("#edit-field-parent-folder-target-id-wrapper", this.exposed_form.form).hide();
+            jQuery('div.views-widget-filter-field_parent_folder_target_id', this.exposed_form.form).hide();
             var that = this;
             //man tippt was in die suche ein: ordner-feld leeren
             this.exposed_form.input_title.keydown(function() {

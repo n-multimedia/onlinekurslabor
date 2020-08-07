@@ -357,6 +357,10 @@ apply to row. makes all columns the same height.
   display: -webkit-flex;
   flex-wrap: wrap;
 }
+/*IMPORTANT FIX for Safari/iOS-Rendering (broken layout); from: https://stackoverrun.com/de/q/9440693*/
+.equal:after, .equal:before{
+     display: none;
+}
 
 /*
 Course Header
@@ -376,6 +380,9 @@ Course Header
 #course_header .course_header_left
 {
     /*überschrift unten angedotzt*/
+    /*downwards-compatibility*/
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
     align-items: flex-end;
     padding-left:0;
@@ -383,17 +390,23 @@ Course Header
 
 #course_header .course_header_right
 {
- padding-right: 0px;
- overflow: hidden;
- max-height:200px;
+    /*downwards-compatibility*/
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-right: 0px;
+    overflow: hidden;
+    max-height:200px;
 }
 #course_header .course_header_right .courses_sponsors
 {
-    background-color: rgba(255,255,255,0.8);
+		background: white;
+    background-color: rgba(255,255,255,0.9);
     padding-left: 7px;
     padding-top: 5px;
-    height:100%;
-    backdrop-filter: blur(4px); /*currently only chrome*/
+    padding-right: 7px;
+    height: auto; /* = 100% due to FLEX */
+    backdrop-filter: blur(4px); /*currently chrome only*/
 }
 #course_header .course_header_right .courses_sponsors.one-col
 {
@@ -427,7 +440,7 @@ Course Header
     font-weight: normal;
     padding: 5px;
     margin-bottom:0;
-    background: linear-gradient(to right,rgba(0, 0, 0, 0.34),rgba(0, 0, 0, 0.08))
+    background: linear-gradient(to right,rgba(0, 0, 0, 0.34),rgba(0, 0, 0, 0.08));
 }
 /*erster breakpoint*/
 @media (max-width: 1199px) {

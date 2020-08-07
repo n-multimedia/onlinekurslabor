@@ -1169,6 +1169,15 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
                     if ($type == NM_COURSE_FORUMTOPIC) {
                       $path = "course/forumcontent/" . $course->nid . '/' . $nid . '/edit';
                     }
+                    if (in_array($type, array(
+                             NM_CONTENT_DOMAIN,
+                             NM_CONTENT_CHAPTER,
+                             NM_INTERACTIVE_CONTENT,
+                             ANNVID_CONTENTTYPE
+                           ))) {
+                             $path = "domain/edit" . '/' . $nid;
+                           }
+                    
                     $original_path = $path;
 
                     //edit -> delete not working because of destination query parameter -> unset
@@ -1189,6 +1198,15 @@ function section_courses_url_outbound_alter(&$path, &$options, &$original_path) 
 
                       $options['query'] = array('destination' => NM_COURSE_FORUM_PATH . '/' . $course->nid . '/' . $topic_term_id);
                     }
+                    if (in_array($type, array(
+                             NM_CONTENT_DOMAIN,
+                             NM_CONTENT_CHAPTER,
+                             NM_INTERACTIVE_CONTENT,
+                             ANNVID_CONTENTTYPE
+                           ))) {
+                             $path = "domain/delete" . '/' . $nid;
+                             $options['query'] = array();
+                           }
                     $original_path = $path;
                   }
                 }

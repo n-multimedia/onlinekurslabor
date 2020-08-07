@@ -1,0 +1,31 @@
+#Translation File - onlinekurslabor
+
+msgid "File belongs to"
+msgstr "Datei gehört zu"
+
+msgid "Enable rich-text"
+msgstr "Rich Text Format (RTF) aktivieren"
+
+msgid "assess solution"
+msgstr "Lösung bewerten"
+
+msgid "reject solution"
+msgstr "Lösung zurückweisen"
+
+msgid "Describe, why you can't accept this solution and wish improvements."
+msgstr "Beschreiben Sie, weshalb Sie diese Lösung so nicht annehmen können und Korrekturen wünschen."
+
+msgid "Reject and request improvements"
+msgstr "Zurückweisen und Korrektur anfordern"
+
+msgid "other actions"
+msgstr "Sonstige Aktionen"
+
+msgid "rejected a solution"
+msgstr "hat eine Lösung zurückgewiesen"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""

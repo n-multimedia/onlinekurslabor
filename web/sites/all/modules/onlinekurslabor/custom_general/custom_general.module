@@ -144,6 +144,8 @@ define("NM_VIEW_DOMAIN_MEDIA", "domain_media");
 define("NM_CHAPTER_SEPARATOR", ".");
 
 define("NM_SUPPORT_MAIL", "support@medienlabor-uni-augsburg.de");
+define("NM_OKL_BOT_MAIL",'bot@onlinekurslabor.de');
+
 
 
 module_load_include('inc', 'custom_general', 'inc/functions');
@@ -385,8 +387,8 @@ function custom_general_form_alter(&$form, &$form_state, $form_id) {
 
     /** logo / by ML an prominenten stellen */
     if(in_array($form_id, array('user_login', 'user_pass')))
-    {   $path_logo_lq = theme_get_setting('logo', 'bootstrap_onlinekurslabor');
-      $html_logo_lq = '<img src="'. str_replace('header.svg', 'header-black.svg', $path_logo_lq).'" alt="">';
+    {
+      $html_logo_lq = '<img src="'. theme_get_setting('logo', 'bootstrap_onlinekurslabor').'" alt="">';
       $help_str = 'Probleme beim Login? <a href="https://ml.phil.uni-augsburg.de/kontakt/" target="_blank">Wir helfen</a>';
      // $about_str = 'Eine Initiave des <a href="https://ml.phil.uni-augsburg.de/">Medienlabors</a>';
       $ml_string = '<div class="row"><div class="col-md-9 col-xs-3"></div><div class="col-md-3 col-xs-9">'.$help_str.'<br>'.$html_logo_lq.'</div></div>';
@@ -953,6 +955,14 @@ function custom_general_onlinekurslabor_admin_settings() {
         '#default_value' => variable_get('okl_support_email', NM_SUPPORT_EMAIL),
         '#description' => t("Email adress of the support team."),
         '#required' => TRUE,
+    );
+
+    $setting_items['okl_bot_info'] = array(
+        '#type' => 'textfield',
+        '#title' => t('OKL Bot'),
+        '#description' => t('E-Mail-Adresse des OKL-Bot als Owner so mancher Files (hardcoded)'),
+        '#default_value' => NM_OKL_BOT_MAIL,
+        '#disabled' => true
     );
 
 
