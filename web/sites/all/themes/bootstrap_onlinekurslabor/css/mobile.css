@@ -40,7 +40,7 @@ kleiner iPad
 größer gleich iPad
 */
 @media (min-width: 768px) {
-    
+
   #okl-nav-bar {
     padding-top: 15px;
   }
@@ -157,8 +157,7 @@ größer gleich iPad
     margin: auto;
   }
 
-  #stream .stream-post  .post-privacy {
-    top: 0;
+  #stream .stream-post .post-privacy {
     right: 5px;
   }
 
