@@ -19,3 +19,10 @@ drush updatedb --yes
 drush cc all
 
 drush vset maintenance_mode 0
+drush vset maintenance_mode 1
+
+drush @none dl utf8mb4_convert-7.x --y
+drush cc drush
+drush utf8mb4-convert-databases --y
+
+echo "Now fix your config. Enter drush vset maintenance_mode 0 afterwards."
