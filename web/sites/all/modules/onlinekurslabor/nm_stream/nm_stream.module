@@ -3116,7 +3116,7 @@ function nm_stream_node_get_poll_json($node) {
 
   $poll->showResults = $show_results;
   $poll->finalResults = $final_results;
-
+  $poll->canEdit = node_access('update', $node);
 
 
   return $poll;
