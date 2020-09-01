@@ -4,6 +4,7 @@
 # Perform tests in browser using the WebDriver or PhpBrowser.
 # If you need both WebDriver and PHPBrowser tests - create a separate suite.
 
+
 actor: AcceptanceTester
 modules:
   enabled:
@@ -15,13 +16,8 @@ modules:
   config:
     WebDriver:
       url: https://default.div.onlinekurslabor.de
-      #             port: 9515
-      browser: phantomjs
-      restart: true
-      clear_cookies: true
-      window_size: 1400x1200
-      log_js_errors: true
-      capabilities: []
+      #combine with codecept run --env chrome-env,dev2". See below.
+      
 #             capabilities:
 #                 unexpectedAlertBehaviour: 'accept'
 #                 acceptInsecureCerts: true
@@ -49,6 +45,7 @@ modules:
 #            delete: true                 # Whether to delete all defined test users at the end of the suite.
 #            drush-alias: '@dev1' # The Drush alias to use when managing users via DrushTestUserManager.
 
+# über "codecept run --env E1,E2,E3..." kann man versch. Envs kombinieren. Bspw. "--env chrome-env,dev2"
 env:
   dev1:
     modules:
@@ -70,6 +67,45 @@ env:
       config:
         WebDriver:
           url: https://instatest.div.onlinekurslabor.de
+#verschiedene environments für verschiedene browser
+  chrome-env:
+    modules:
+        config:
+            WebDriver:
+                browser: 'chrome'
+                port: 3000
+                path: /webdriver
+                #restart: false
+                clear_cookies: false
+                #log_js_errors: false
+                window_size: false # disabled in ChromeDriver
+                capabilities:
+                    acceptSslCerts: true
+                    acceptInsecureCerts: true
+                    chromeOptions:
+                        args: ["headless", "no-sandbox","window-size=1400,1200"]
+  phantomjs-env:
+      modules:
+        config:
+            WebDriver:
+                browser: phantomjs
+                restart: true
+                clear_cookies: true
+                window_size: 1400x1200
+                log_js_errors: true
+                capabilities: []
+      extensions:
+          enabled:
+                #0: über killall -9 phantomjs prozess killen. Das klappt wohl nicht zuverlässig <:-]
+                #vor Start des Tests wird phantomjs gestartet, danach wird der prozess automatisch gekillt.
+                # ssl-fehler werden ignoriert
+              - Codeception\Extension\RunProcess:
+                  0: killall -9 phantomjs
+                  1: vendor/bin/phantomjs --webdriver=4444  --web-security=false --ignore-ssl-errors=true  --ssl-protocol=any
+                  sleep: 2 # wait 2 seconds for processes to boot
+                  
+          
+
 
 
 ## der recorder zeichnet alle durchläufe in web/okl-testing/tests/_output/records.html
@@ -78,10 +114,3 @@ extensions:
   enabled:
   - Codeception\Extension\Recorder:
       delete_successful: false # keep screenshots of successful tests
-  #0: über killall -9 phantomjs prozess killen. Das klappt wohl nicht zuverlässig <:-]
-  #vor Start des Tests wird phantomjs gestartet, danach wird der prozess automatisch gekillt.
-  # ssl-fehler werden ignoriert
-  - Codeception\Extension\RunProcess:
-      0: killall -9 phantomjs
-      1: vendor/bin/phantomjs --webdriver=4444  --web-security=false --ignore-ssl-errors=true  --ssl-protocol=any
-      sleep: 2 # wait 2 seconds for processes to boot
