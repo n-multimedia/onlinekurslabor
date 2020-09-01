@@ -25,25 +25,6 @@ modules:
 #                 chromeOptions: # additional chrome options
 #        - PhpBrowser:
 #            url: https://dev1.div.onlinekurslabor.de
-#        - DrupalUserRegistry:
-#            defaultPass: "zpi1UvEOXdNarNUqaDXA"
-#            users:
-#                administrator:
-#                    name: administrator.account
-#                    email: administrator.account@onlinekurslabor.de
-#                    roles: [ administrator, editor ]
-#                    root: true
-#                dozent:
-#                    name: editor
-#                    email: editor.account@onlinekurslabor.de
-#                    roles: [ editor, sub-editor ]
-#                authenticated:
-#                    name: authenticated.account
-#                    email: authenticated.account@onlinekurslabor.de
-#                    roles: [ "authenticated user" ]
-#            create: true                 # Whether to create all defined test users at the start of the suite.
-#            delete: true                 # Whether to delete all defined test users at the end of the suite.
-#            drush-alias: '@dev1' # The Drush alias to use when managing users via DrushTestUserManager.
 
 # über "codecept run --env E1,E2,E3..." kann man versch. Envs kombinieren. Bspw. "--env chrome-env,dev2"
 env:
