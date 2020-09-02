@@ -283,8 +283,19 @@ function okl_testing_getcontentfromurlarg($url_arg_1, $url_arg_2) {
             return $thelist;
         }
     }
-    //pfad zu den test-output-files
-    return is_file($full_path)? file_get_contents($full_path): '<b>'.t('No result available').'</b>' ;
+    
+    
+  $filetype = pathinfo($full_path, PATHINFO_EXTENSION);
+
+  if (is_file($full_path)) {
+    return file_get_contents($full_path);
+  }
+  elseif ($filetype != 'png') {
+    return '<b>' . t('No result available') . '</b>';
+  }
+  else {
+    return file_get_contents(__DIR__ . '/assets/autotest-404.png');
+  }
 }
 
 
