@@ -55,9 +55,8 @@ env:
         config:
             WebDriver:
                 browser: 'chrome'
-                port: 3000
+                port: 4445
                 path: /webdriver
-                #restart: false
                 clear_cookies: false
                 #log_js_errors: false
                 window_size: false # disabled in ChromeDriver
@@ -65,7 +64,7 @@ env:
                     acceptSslCerts: true
                     acceptInsecureCerts: true
                     chromeOptions:
-                        args: ["headless", "no-sandbox","window-size=1400,1200"]
+                        args: ["window-size=1400,1200"]
   phantomjs-env:
       modules:
         config:
