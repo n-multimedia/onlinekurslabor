@@ -135,7 +135,12 @@ function _okl_testing_stop_test() {
     variable_del('okl_testing_running');
 }
 
-
+/**
+ * läuft irgendn cest gerade? 
+ */
+function _okl_testing_is_any_cest_running() {
+  return (bool) variable_get('okl_testing_running');
+}
 
 /**
  * setzt die Variable okl_testing_preparecest_running
@@ -368,6 +373,15 @@ function okl_testing_page_build(&$page) {
     $test_runing = (bool) variable_get('okl_testing_running');
     $is_open_page = strstr($curr_url, 'devel') ||  strstr($curr_url, 'okl-testing') || strstr($curr_url, 'reports/dblog');
     $is_autotest_browser = isset($_COOKIE["okl_testing_is_autotest_browser"]);
+    
+     /**
+     * fixe überlappung durch Bar: environment_indicator
+     */
+    if($test_runing && $is_autotest_browser)
+    {
+       unset($page['page_top']['environment_indicator']);
+    }
+    
     //normale systemansicht
     if (!$test_runing || $is_autotest_browser || $is_open_page) {
         //füge link auf testresult ein
@@ -378,6 +392,7 @@ function okl_testing_page_build(&$page) {
          );
         return;
     }
+   
     //sperre system fuer user. Entferne dazu alle Seitenelemente
     foreach ($page as $key => $elem) {
         if (!strstr($key, '#'))

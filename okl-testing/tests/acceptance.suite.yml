@@ -17,6 +17,7 @@ modules:
     WebDriver:
       url: https://default.div.onlinekurslabor.de
       #combine with codecept run --env chrome-env,dev2". See below.
+      restart: true
       
 #             capabilities:
 #                 unexpectedAlertBehaviour: 'accept'
@@ -70,7 +71,6 @@ env:
         config:
             WebDriver:
                 browser: phantomjs
-                restart: true
                 clear_cookies: true
                 window_size: 1400x1200
                 log_js_errors: true

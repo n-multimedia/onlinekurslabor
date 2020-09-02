@@ -185,7 +185,11 @@ class PrepareCest extends CestHelper{
      * @before skipIfOnShittyBrowser
      * @before renewSession
      */
-    public function P001_05_createDomainContent(\Step\Acceptance\Dozent $I, Codeception\Example $domain_content_example) {
+    /**
+     * ACHTUNG
+     * createDomainContent -  chrome verschluckt sich. deswegen funktion durch PRIVATE auf nicht-auszuführen gesetzt
+     */
+    private function P001_05_createDomainContent(\Step\Acceptance\Dozent $I, Codeception\Example $domain_content_example) {
         $domain_nids = [Fixtures::get('domain_nid'), Fixtures::get('domain_demo_nid')];
         foreach ($domain_nids as $nid) {
             //create H5Ps
