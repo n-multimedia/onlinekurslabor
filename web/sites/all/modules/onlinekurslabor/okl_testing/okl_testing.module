@@ -42,8 +42,12 @@ function _okl_testing_getDataObjectForCourse($course_nid)
     $course_groups = array();
     //gehe durch coursegroups, lade node
     foreach ($coursegroups_basic as $cg) {
-        $c_group = new TestingObject(node_load($cg->nid));
-        $c_group->url = NM_COURSE_GROUPS_PATH . '/' . $course_nid . '/' . $cg->nid;
+        //achtung: sub-"objects" müssen ein array sein, sofern sie wieder subobjects haben.
+        //Das wird später automatisch in Objects konvertiert
+        //sind das bereits pseudo-objects, greift die Konvertierung nicht. 
+        //in dem fall: course->coursegroups->STUDENTS
+        $c_group =  (array) (node_load($cg->nid));
+        $c_group['url'] = NM_COURSE_GROUPS_PATH . '/' . $course_nid . '/' . $cg->nid;
         $course_groups[$cg->nid] = &$c_group;
     }
 
@@ -66,8 +70,8 @@ function _okl_testing_getDataObjectForCourse($course_nid)
             //setze coursegroup bei student
             $student->coursegroup = &$course_groups[$cg->nid];
             //füge student zu coursegroup-members hinzu
-            $course_groups[$cg_nid]->students[$uid] = $student;
-        }
+            $course_groups[$cg_nid]['students'][$uid] = $student;
+           }
     }
     
 
