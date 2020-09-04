@@ -94,10 +94,14 @@
   margin: 0;
 }
 
-#stream .multiselect__tags {
+#stream .stream-post-form .multiselect__tags {
   min-height: 35px;
   display: block;
   padding: 4px 30px 0 8px;
+}
+
+#stream .stream-post-privacy-settings {
+  min-width: 140px;
 }
 
 #stream .multiselect__single span.option__desc,
@@ -131,9 +135,6 @@
   margin-top: 15px;
 }
 
-#stream .stream-post .post-sticky {
-  bottom: 10px;
-}
 
 #stream .dz-error .dz-error-message {
   opacity: 1 !important;
@@ -164,6 +165,10 @@
   font-weight: bold;
 }
 
-#stream  .poll-container > .col-12 {
+#stream .poll-container > .col-12 {
   padding: 0;
+}
+
+#stream .row:before, #stream .row:after {
+  width: 0;
 }

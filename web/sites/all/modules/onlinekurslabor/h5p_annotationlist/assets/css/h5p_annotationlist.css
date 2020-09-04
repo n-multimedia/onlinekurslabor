@@ -110,13 +110,14 @@ div.interaction_icon   a:link, div.interaction_icon   a:visited, div.interaction
 } 
 /*
 Definitionen fuer die einzelnen Interaction-Buttons
+Weitere Icon-Codes erhält man via https://fontawesome.com/icons?d=gallery&q=check
 */
 /*blauer hintergrund*/
-a.interaction_icon_h5ptext,a.interaction_icon_h5pimage,a.interaction_icon_h5ptable, a.interaction_icon_h5pivhotspot {
+a.interaction_icon_h5ptext,a.interaction_icon_h5pimage,a.interaction_icon_h5ptable, a.interaction_icon_h5pivhotspot,a.interaction_icon_h5pnil  {
 background: #1d5cff ;
 }
 /*pinker hintergrund*/
-a.interaction_icon_h5psinglechoiceset, a.interaction_icon_h5pmultichoice,a.interaction_icon_h5pblanks,a.interaction_icon_h5pdragquestion,a.interaction_icon_h5psummary,a.interaction_icon_h5plink
+a.interaction_icon_h5psinglechoiceset, a.interaction_icon_h5pmultichoice,a.interaction_icon_h5pblanks,a.interaction_icon_h5pdragquestion,a.interaction_icon_h5psummary,a.interaction_icon_h5plink,a.interaction_icon_h5ptruefalse
 {
 background: #981D99;
 }
@@ -135,7 +136,9 @@ a.interaction_icon_h5ptable:before {
 a.interaction_icon_h5pivhotspot:before {
   content:  "\f067";
 }
-
+a.interaction_icon_h5pnil:before {
+  content:  "\f02b";
+}
 
 a.interaction_icon_h5psinglechoiceset:before {
     content: "\f00c";
@@ -154,4 +157,6 @@ a.interaction_icon_h5psummary:before {
   content: "\f0ca";
 } 
  
- 
+a.interaction_icon_h5ptruefalse:before {
+  content: "\f128";
+}

@@ -55,12 +55,28 @@ function _course_tasks_generic_tips_view() {
   //allow assessment if node is in state 3
   $current = workflow_node_current_state($solution_node);
 
-        
-  if ($current == NM_COURSES_TASK_WORKFLOW_SUBMITTED) {
+  if ($current == NM_COURSES_TASK_WORKFLOW_DRAFT) {
+
+
+    $fview = field_view_field('node', $solution_node, 'field_generic_task_reject_notice');
+    //hide field label
+    $fview['#label_display'] = 'hidden';
+    if (strlen(render($fview))) {
+
+      $output .= '<div class="alert alert-danger">';
+      $output .= "<h3>Hinweis</h3>";
+      $output .= "Die Lösung entsprach nicht den Vorgaben und ist zu verbessern:<hr>";
+      $output .= render($fview);
+
+      $output .= '</div>';
+    }
+  }
+  elseif ($current == NM_COURSES_TASK_WORKFLOW_SUBMITTED) {
     if (node_access("update", $task_node)) {
       //add bewertung feld
       $form = drupal_get_form('_section_courses_task_solution_assesment_form', $solution_node->nid);
-      $form['assessment']['format']['#attributes']['style'] = 'display:none';
+      $form['to_assess']['assessment']['format']['#attributes']['style'] = 'display:none';
+      $form['to_reject']['reject_notice']['format']['#attributes']['style'] = 'display:none';
       $output .= drupal_render($form);
     }
     else {
@@ -125,14 +141,19 @@ function _course_tasks_generic_solution_workflow_form($node) {
     $form = drupal_get_form('workflow_tab_form', $node, $workflow->wid, $states, $current);
 
 
-    //add a title       
+    //buttons ein wenig versteckt, da irritierend
     if (!empty($form['workflow']['buttons'])) {
-        $form_title = array('title' => array(
-                '#markup' => '<h4>' . t('Actions') . '</h4>'
-        ));
-        $form['workflow'] = $form_title + $form['workflow'];
-    }
-    //rename and style in workflow form
+    $new_form_workflow = array();
+    $new_form_workflow['fieldset_workflow'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('other actions'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $new_form_workflow['fieldset_workflow']['workflow'] = $form['workflow'];
+    $form['workflow'] = $new_form_workflow;
+  }
+  //rename and style in workflow form
     /*
       if (isset($form['workflow']['buttons']['submit_to_Eingereicht'])) {
       $form['workflow']['buttons']['submit_to_Eingereicht']['#value'] = "Einreichen";
@@ -369,85 +390,128 @@ function _course_tasks_generic_solution_form_view() {
   return $output;
 }
 
+/**
+ * Erstellt die Form, um eine Lösung zu bewerten / zurückzuweisen etc
+ * @param type $form
+ * @param type $form_state
+ * @param type $solution_nid
+ * @return string
+ */
 function _section_courses_task_solution_assesment_form($form, &$form_state, $solution_nid) {
-    $node_wrapper = entity_metadata_wrapper('node', $solution_nid);
+  $node_wrapper = entity_metadata_wrapper('node', $solution_nid);
+  $field_notice_instance = field_info_instance('node', 'field_generic_task_reject_notice', 'courses_generic_task_solution');
 
-    $field_val = $node_wrapper->field_generic_task_assessment->value();
-
-    $form = array();
-
-
-    //[todo] generate possible transitionbuttons automatically ?
-    //temporarly - manually checking possible transitions
-
-    $solution = node_load($solution_nid);
-    $current_state = workflow_node_current_state($solution);
-    
-    switch ($current_state) {
-        case NM_COURSES_TASK_WORKFLOW_SUBMITTED:
-
-            $form['assessment'] = array(
-                '#type' => 'text_format',
-                '#title' => 'Bewertung',
-                '#base_type' => 'textarea',
-                '#default_value' => $field_val['value'],
-                '#format' => NM_FILTER_FORMAT_FILTERED_HTML,
-            );
-
-            $form['solution_nid'] = array(
-                '#type' => 'hidden',
-                '#value' => $solution_nid,
-            );
-            $form['save'] = array(
-                '#type' => 'submit',
-                '#attributes' => array('class' => array('btn', 'btn-primary')),
-                '#value' => 'Speichern',
-            );
-            //limit button to permission
-            if (in_array('Bewertet', workflow_field_choices($solution))) {
-                $form['store_assets'] = array(
-                    '#type' => 'submit',
-                    '#attributes' => array('class' => array('btn', 'btn-success')),
-                    '#value' => 'Speichern und Bewerten',
-                );
-            }
-            //limit button to permission
-            if (in_array('Entwurf', workflow_field_choices($solution))) {
-                $form['store_cancel_submission'] = array(
-                    '#type' => 'submit',
-                    '#attributes' => array('class' => array('btn', 'btn-default')),
-                    '#value' => 'Speichern und Einreichung aufheben',
-                );
-            }
-            break;
-        
-    }
+  $assessment_val = $node_wrapper->field_generic_task_assessment->value();
+  $notice_val = $node_wrapper->field_generic_task_reject_notice->value();
+  $form = array();
 
 
-    return $form;
+  //[todo] generate possible transitionbuttons automatically ?
+  //temporarly - manually checking possible transitions
+
+  $solution = node_load($solution_nid);
+  $current_state = workflow_node_current_state($solution);
+
+  switch ($current_state) {
+    case NM_COURSES_TASK_WORKFLOW_SUBMITTED:
+
+      $form['solution_nid'] = array(
+        '#type' => 'hidden',
+        '#value' => $solution_nid,
+      );
+      $form['to_assess'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('assess solution'),
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+      );
+      $form['to_assess']['assessment'] = array(
+        '#type' => 'text_format',
+        '#base_type' => 'textarea',
+        '#default_value' => $assessment_val['value'],
+        '#format' => NM_FILTER_FORMAT_FILTERED_HTML,
+      );
+      $form['to_assess']['save'] = array(
+        '#type' => 'submit',
+        '#attributes' => array('class' => array('btn', 'btn-primary')),
+        '#id' => 'save_assessment',
+        '#value' => 'Speichern',
+      );
+      //limit button to permission
+      if (in_array('Bewertet', workflow_field_choices($solution))) {
+        $form['to_assess']['assess_solution'] = array(
+          '#type' => 'submit',
+          '#id' => 'assess_solution',
+          '#attributes' => array('class' => array('btn', 'btn-success')),
+          '#value' => 'Speichern und Bewerten',
+        );
+      }
+
+      //limit button to permission
+      if (in_array('Entwurf', workflow_field_choices($solution))) {
+        $form['to_reject'] = array(
+          '#type' => 'fieldset',
+          '#title' => t('reject solution'),
+          '#collapsible' => TRUE,
+          '#collapsed' => TRUE,
+        );
+        $form['to_reject']['reject_notice'] = array(
+          '#type' => 'text_format',
+          '#base_type' => 'textarea',
+          '#description' => t($field_notice_instance['description']),
+          '#default_value' => $notice_val['value'],
+          '#format' => NM_FILTER_FORMAT_FILTERED_HTML,
+        );
+        $form['to_reject']['store_cancel_submission'] = array(
+          '#type' => 'submit',
+          '#id' => 'reject_solution',
+          '#attributes' => array('class' => array('btn', 'btn-primary')),
+          '#value' => t('Reject and request improvements'),
+        );
+      }
+      break;
+  }
+
+
+  return $form;
 }
 
+/**
+ * submit-funktion für _section_courses_task_solution_assesment_form
+ * @global type $user
+ * @param type $form
+ * @param type $form_state
+ */
 function _section_courses_task_solution_assesment_form_submit($form, &$form_state) {
   global $user;
 
   $solution_nid = $form_state['values']['solution_nid'];
-
+ 
+  //possible: reject_solution, assess_solution, save_assessment
+  $function_called = $form_state['triggering_element']['#id'];
   $node = node_load($solution_nid);
 
-  $node->field_generic_task_assessment[LANGUAGE_NONE][0]['value'] = $form_state['values']['assessment']['value'];
-  $node->field_generic_task_assessment[LANGUAGE_NONE][0]['format'] = NM_FILTER_FORMAT_FILTERED_HTML;
+
+  switch ($function_called) {
+
+    case 'save_assessment':
+      $node->field_generic_task_assessment[LANGUAGE_NONE][0]['value'] = $form_state['values']['assessment']['value'];
+      $node->field_generic_task_assessment[LANGUAGE_NONE][0]['format'] = NM_FILTER_FORMAT_FILTERED_HTML;
+      break;
+    case 'assess_solution':
+      $node->field_generic_task_assessment[LANGUAGE_NONE][0]['value'] = $form_state['values']['assessment']['value'];
+      $node->field_generic_task_assessment[LANGUAGE_NONE][0]['format'] = NM_FILTER_FORMAT_FILTERED_HTML;
+      workflow_execute_transition($node, NM_COURSES_TASK_WORKFLOW_ASSESSED);
+      break;
+    case 'reject_solution':
+      $node->field_generic_task_reject_notice[LANGUAGE_NONE][0]['value'] = $form_state['values']['reject_notice']['value'];
+      $node->field_generic_task_reject_notice[LANGUAGE_NONE][0]['format'] = NM_FILTER_FORMAT_FILTERED_HTML;
+      workflow_execute_transition($node, NM_COURSES_TASK_WORKFLOW_DRAFT);
+      break;
+  }
 
 
   node_save($node);
-
-  //check which button was clicked
-  //if save and submit was clicked, move node to submitted state
-  if (isset($form_state['values']['store_assets']) && ($form_state['values']['store_assets'] == $form_state['triggering_element']['#value'])) {
-    workflow_execute_transition($node, NM_COURSES_TASK_WORKFLOW_ASSESSED);
-  }
-  elseif (isset($form_state['values']['store_cancel_submission']) && ($form_state['values']['store_cancel_submission'] == $form_state['triggering_element']['#value'])) {
-    workflow_execute_transition($node, NM_COURSES_TASK_WORKFLOW_DRAFT);
-  }
 }
 
 /**

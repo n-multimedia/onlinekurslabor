@@ -702,9 +702,9 @@ function _videosafe_downloadRange($location) {
 }
 
 /**
- * liefert die länge eines videos, falls ffmpeg oder php5-ffmpeg vorhanden ist
+ * liefert die länge eines videos in Sekunden, falls ffmpeg oder php5-ffmpeg vorhanden ist
  * @param string $location  path of the file on server's filesystem
- * @return float $duration
+ * @return int $duration in seconds
  */
 function _videosafe_get_videoduration_for_file($location) {
     //php-package
@@ -734,59 +734,90 @@ function _videosafe_get_videoduration_for_file($location) {
  * stores a screenshot for any videofile
  * @todo: refactor for PARAM $timestamp_at_location
  * @param string $file_uri  drupal file-uri ("private://...video.mp4")
+ * @param float $at_relative_position position in the video for the screenshot, e.g. 0.5 = 50% of videolength
+ * @return StdClass $ImageObject or null
  */
-function _videosafe_store_screenshot_for_file($file_uri) {
-    
-    /**
-     * TEMPORÄR nur ein Dummy. 
-     * Echte screenshots zu händeln, ist ein größerer Aufand
-     */
+function _videosafe_store_screenshot_for_file($file_uri, $at_relative_position = 0.5) {
+  /**
+   * TEMPORÄR nur ein Dummy. 
+   * Echte screenshots zu händeln, ist ein größerer Aufand
+
     $FAKE_SCREENSHOT_URI = 'private://dummy-video-screenshot.png';
     $FAKE_FILE_candidates = file_load_multiple(array(), array('uri' => $FAKE_SCREENSHOT_URI));
     return reset($FAKE_FILE_candidates); // If empty, $file will be false, otherwise will contain the required file
-    
-    EXIT;
-     //TODO NIMM GROUPREF UND AUTOR VON ORIGINLA
-    //passe zugriffsrechte an video an
-    $real_file_path = drupal_realpath($file_uri);
- 
-    $file_directory_uri = pathinfo($file_uri,PATHINFO_DIRNAME).DIRECTORY_SEPARATOR; 
-    $videotime_50percent = round(_videosafe_get_videoduration_for_file($real_file_path) / 2);
-    //date respects timezone. substract current offset-hour * 60 min * 60 sec
-    $videotime_50percent_formatted = date("G:i:s", ($videotime_50percent - date("G", 0) * 60 * 60));
-    
-    $videotime_50percent_file_compatible = str_replace(':','_', $videotime_50percent_formatted);
-
-    //Dateiname ohne .mp4 endung
-    $jpg_base_filename = pathinfo($file_uri, PATHINFO_FILENAME);
-    //VIDEO_screen@0_00_30.jpg
-    $jpg_base_filename .='_screen@'.$videotime_50percent_file_compatible.'.jpg';
-   
-    $drupal_jpg_target_filename = $file_directory_uri . $jpg_base_filename;
+    EXIT; */
   
-    /**
-     * check if drupal has screenshot stored - 
-     * todo test: worx?
-     * todo: oder eher als temp-files anlegen, die gelöscht werden können?`?
-     */
-    $drupal_file_candidates = file_load_multiple(array(), array('uri' => $drupal_jpg_target_filename));
-    $drupal_screenshot_candidate = reset($drupal_file_candidates); // If empty, $file will be false, otherwise will contain the required file
-    if(is_object($drupal_screenshot_candidate))
-    {
-        return $drupal_screenshot_candidate;
-    }
-    
-    $temporary_screenshot_file =  file_directory_temp() . DIRECTORY_SEPARATOR . $jpg_base_filename;
+  //passe zugriffsrechte an video an
+  $real_videofile_path = drupal_realpath($file_uri);
 
-    #"-quality: 2 (1= excellent, 32 = mau)"
-    //todo: test: räumt cron auf oder läuft tmp voll?
-    $ffmpg_cmd = "/usr/bin/ffmpeg -ss  $videotime_50percent_formatted -i $real_file_path -vframes 1 -q:v 2 $temporary_screenshot_file";
-    @passthru($ffmpg_cmd);
-    if (file_exists($temporary_screenshot_file)) {
-        $drupal_screenshot_candidate = file_save_data(file_get_contents($temporary_screenshot_file), $drupal_jpg_target_filename, FILE_EXISTS_REPLACE);
-        return $drupal_screenshot_candidate;
-    } else {
-        trigger_error('Could not store video-screenshot to '.$temporary_screenshot_file. ", created with: ".$ffmpg_cmd, E_USER_WARNING);
-        return null;
-    }
+  $videofile_candidates = file_load_multiple(array(), array('uri' => $file_uri));
+  $videofile_object = reset($videofile_candidates);
+  $drupal_target_file_folder = pathinfo($file_uri, PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR;
+
+  $videotime_full_seconds = round(_videosafe_get_videoduration_for_file($real_videofile_path) * $at_relative_position);
+  //date respects timezone. substract current offset-hour * 60 min * 60 sec
+  $videotime_full_seconds_formatted = date("G:i:s", ($videotime_full_seconds - date("G", 0) * 60 * 60));
+
+  $videotime_formatted_filecompatible = str_replace(':', '_', $videotime_full_seconds_formatted);
+
+  //Dateiname ohne .mp4 endung
+  $jpg_base_filename = pathinfo($file_uri, PATHINFO_FILENAME);
+  //VIDEO_screen@0_00_30.jpg
+  $jpg_base_filename .= '_screen@' . $videotime_formatted_filecompatible . '.jpg';
+  #$jpg_base_filename = md5($file_uri) . '_screen@' . $videotime_at_absolute_position_file_compatible . '.jpg';
+  $drupal_jpg_target_filename = $drupal_target_file_folder . $jpg_base_filename;
+
+  /**
+   * check if drupal has screenshot stored - return it
+   */
+  $drupal_file_candidates = file_load_multiple(array(), array('uri' => $drupal_jpg_target_filename));
+  $drupal_screenshot_candidate = reset($drupal_file_candidates); // If empty, $file will be false, otherwise will contain the required file
+  if (is_object($drupal_screenshot_candidate)) {
+    return $drupal_screenshot_candidate;
+  }
+
+  
+  $temporary_screenshot_file = file_directory_temp() . DIRECTORY_SEPARATOR . 'screen_' .md5($drupal_jpg_target_filename).'.jpg';
+
+  #"-quality: 2 (1= excellent, 32 = mau)"
+  //todo: test: räumt cron auf oder läuft tmp voll?
+  $ffmpg_cmd = "/usr/bin/ffmpeg -ss  $videotime_full_seconds_formatted -i $real_videofile_path -vframes 1 -q:v 2 $temporary_screenshot_file";
+  @passthru($ffmpg_cmd);
+
+  if (file_exists($temporary_screenshot_file)) {
+    //unmanaged file geht nicht, da auf diese kein permission-check möglich ist
+    
+    //create a dummy file, setting the parameters
+    $file = new stdClass();
+
+    //UID des OKL-Bots
+    $file->uid = user_load_by_mail(NM_OKL_BOT_MAIL)->uid;
+    $file->uri = $temporary_screenshot_file;
+    $file->filemime = file_get_mimetype($temporary_screenshot_file);
+    //temporary. get deleted after a while.
+    $file->status = 0;
+    //set the new field
+    $file->field_file_belongs_to = array(LANGUAGE_NONE => array(array('target_id' => $videofile_object->fid)));
+    
+   $screenshot_object = file_copy($file, $drupal_jpg_target_filename, FILE_EXISTS_REPLACE);
+
+    return $screenshot_object;
+  }
+  else {
+    trigger_error('Could not store video-screenshot to ' . $temporary_screenshot_file . ", created with: " . $ffmpg_cmd, E_USER_WARNING);
+    return null;
+  }
+}
+
+/**
+ * gets a screenshot with style media_6 for a video defined by $file_uri
+ * @param string $file_uri  drupal file-uri ("private://...video.mp4")
+ * @param float $at_relative_position position in the video for the screenshot, e.g. 0.5 = 50% of videolength
+ * @return string $url
+ */
+function _videosafe_get_themed_screenshot_url_for_file($file_uri, $at_relative_position = 0.5) 
+{
+  $poster_file_obj = _videosafe_store_screenshot_for_file($file_uri, $at_relative_position);
+
+  return _section_content_get_themed_video_screenshot_array($poster_file_obj->uri, null, false)['url'];
 }

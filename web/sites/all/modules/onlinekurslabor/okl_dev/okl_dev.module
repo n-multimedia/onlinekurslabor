@@ -18,7 +18,7 @@ function okl_dev_page_build(&$page) {
         
         //fuege link unten ans seitenende zum log
         $link = '<a href=/last_update_log>Log des letzten Updates</a>';
-        $page['page_bottom']['dev_live_warner'] = array(
+        $page['page_bottom']['okl_dev'] = array(
             '#weight' => 80,
             '#markup' => '<center>' . $link . '</center><br><br>',
         );
@@ -28,6 +28,8 @@ function okl_dev_page_build(&$page) {
 
         drupal_set_message(t('You appear to be on a live-system, but okl_dev is enabled. R u sure?'), 'warning');
     }
+     
+
 }
 
 

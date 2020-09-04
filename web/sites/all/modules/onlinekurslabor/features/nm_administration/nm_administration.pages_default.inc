@@ -1062,6 +1062,146 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_administration__videosafe';
+  $handler->task = 'page';
+  $handler->subtask = 'administration';
+  $handler->handler = 'panel_context';
+  $handler->weight = 6;
+  $handler->conf = array(
+    'title' => 'Videosafe',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'name' => 'videosafe',
+    'access' => array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'string_equal',
+          'settings' => array(
+            'operator' => '=',
+            'value' => 'videosafe',
+            'case' => 0,
+          ),
+          'context' => 'argument_string_1',
+          'not' => FALSE,
+        ),
+      ),
+      'logic' => 'and',
+    ),
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible:span3span6span3';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'picture_' => NULL,
+      'main_' => NULL,
+      'tabs_' => NULL,
+      'center' => NULL,
+      'left' => NULL,
+      'right' => NULL,
+      'navigation' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '812cb22d-b415-448a-b0ba-d177e188680d';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_administration__videosafe';
+  $display->content = array();
+  $display->panels = array();
+  $pane = new stdClass();
+  $pane->pid = 'new-9975bba5-9d04-40d8-9ecb-7f808e464863';
+  $pane->panel = 'center';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => '',
+    'title' => '',
+    'title_heading' => 'h2',
+    'body' => '<h4><a href="/videosafe">Direkt zum Videosafe</a></h4><p>&nbsp;</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - oder -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p>&nbsp;</p>',
+    'format' => 'filtered_html',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '9975bba5-9d04-40d8-9ecb-7f808e464863';
+  $display->content['new-9975bba5-9d04-40d8-9ecb-7f808e464863'] = $pane;
+  $display->panels['center'][0] = 'new-9975bba5-9d04-40d8-9ecb-7f808e464863';
+  $pane = new stdClass();
+  $pane->pid = 'new-0ff6d3c7-89ff-498d-8301-9ba0a6d71d7f';
+  $pane->panel = 'center';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'videosafe_folderview-panel_pane_5';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array();
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = '0ff6d3c7-89ff-498d-8301-9ba0a6d71d7f';
+  $display->content['new-0ff6d3c7-89ff-498d-8301-9ba0a6d71d7f'] = $pane;
+  $display->panels['center'][1] = 'new-0ff6d3c7-89ff-498d-8301-9ba0a6d71d7f';
+  $pane = new stdClass();
+  $pane->pid = 'new-a3b10c57-cd41-4203-b01b-1b53336c8dd5';
+  $pane->panel = 'left';
+  $pane->type = 'menu_tree';
+  $pane->subtype = 'menu-administration';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'parent' => 'menu-administration:0',
+    'title_link' => 0,
+    'admin_title' => '',
+    'level' => '1',
+    'follow' => 0,
+    'depth' => '1',
+    'depth_relative' => 0,
+    'expanded' => 0,
+    'sort' => 0,
+    'menu_name' => 'menu-administration',
+    'parent_mlid' => '0',
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'a3b10c57-cd41-4203-b01b-1b53336c8dd5';
+  $display->content['new-a3b10c57-cd41-4203-b01b-1b53336c8dd5'] = $pane;
+  $display->panels['left'][0] = 'new-a3b10c57-cd41-4203-b01b-1b53336c8dd5';
+  $display->hide_title = PANELS_TITLE_NONE;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
   $pages['administration'] = $page;
 
   return $pages;

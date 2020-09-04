@@ -1,6 +1,5 @@
 name = okl_dev
 description = Dev-Plugin ONLY FOR OKL-DEV-SYSTEMS
 core = 7.x
-version = 7.x-1.0-alpha15
+version = 7.x-1.0-alpha17
 package = custom
-dependencies [] = dev_live_warner

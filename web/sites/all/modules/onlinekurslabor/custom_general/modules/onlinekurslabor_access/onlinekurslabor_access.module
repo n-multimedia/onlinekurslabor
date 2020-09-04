@@ -464,15 +464,31 @@ function onlinekurslabor_access_file_download($uri) {
                 $access_allowed = true;
             //Video protecten
             if ($node->type == NM_VIDEOSAFE_VIDEO) {
+              
+              /* OK das ist jetzt ein bisschen spooky. Fordere ich einen Screenshot 
+               * zu einem Videosafe-Video an wird über file_download_headers geprüft, 
+               * ob ich Zugriff aufs zugehörige Video habe (also hier).
+               * deswegen schau ich mir die URI in der Adresszeile des Browsers an, ob ich wirklich das Video 
+               * oder eigtl den Screenshot möchte, damit der mir nicht die
+               * Video-Daten rausschiebt.
+               */
+              $browser_uri_args = arg();
+              $requested_file_name = array_pop($browser_uri_args); //letztes Argument der Adresszeile ("screenshot.jpg")
+              $requested_file_ending = pathinfo($requested_file_name, PATHINFO_EXTENSION);
+              $HAS_REQUESTED_SCREENSHOT = ($requested_file_ending == 'jpg');
                 /* leider leider zicken sonst die browser, wenn man dann als student und autor abwechselnd testen möchte.
                  *  das erste geladene bleibt im cache.. 
                  */
                 //watchdog('videosafe-file-stream', "requesting" . var_export($_SERVER, true), array(), WATCHDOG_DEBUG);
-                header('Expires: Sun, 01 Jan 2014 00:00:00 GMT');
-                header('Cache-Control: no-store, no-cache, must-revalidate');
-                header('Cache-Control: post-check=0, pre-check=0', FALSE);
-                header('Pragma: no-cache');
-                header('Content-Type: ' . $mime);
+                if(!$HAS_REQUESTED_SCREENSHOT)
+                {
+                  header('Expires: Sun, 01 Jan 2014 00:00:00 GMT');
+                  header('Cache-Control: no-store, no-cache, must-revalidate');
+                  header('Cache-Control: post-check=0, pre-check=0', FALSE);
+                  header('Pragma: no-cache');
+                  header('Content-Type: ' . $mime);
+                }
+               
                 //wir schauen nach, in welchem h5p-content das gelistet wird  
                 $h5p_nodes = _videosafe_get_h5p_usage($uri);
                 //watchdog('videosafe-file-stream', "URI $uri used in ".count($h5p_nodes)." h5p-objects" , array(), WATCHDOG_DEBUG);
@@ -485,8 +501,11 @@ function onlinekurslabor_access_file_download($uri) {
                         break;
                     }
                 }
-
-                if (!$access_allowed) {
+                if($HAS_REQUESTED_SCREENSHOT)
+                {
+                    continue;
+                }
+                elseif (!$access_allowed) {
                     drupal_goto(drupal_get_path('module', 'onlinekurslabor_access') . '/assets/video/403.mp4', array(), 307);
                 } //_videosafe_was_node_edited: wuerde nach node-bearbeiten aufs video leiten
                 elseif (!_videosafe_was_node_edited($node) && $access_allowed) {
@@ -519,6 +538,20 @@ function onlinekurslabor_access_file_download($uri) {
            $other_usage_found++;
         //wenn andere usage gefunden, access erlauben
         $access_allowed = (boolean) $other_usage_found;
+    }
+    
+    
+    //jetzt müssen wir für video-screenshots noch prüfen wie das mit field_file_belongs_to ist.
+    $fileobject_candidates = file_load_multiple(array(), array('uri' => $uri));
+    $fileobject = reset($fileobject_candidates);
+
+    if($fileobject && !empty($fileobject->field_file_belongs_to))
+    {
+        $file_belongs_to_fid = $fileobject->field_file_belongs_to[LANGUAGE_NONE][0]['target_id'];
+        $file_belongs_to_object = file_load($file_belongs_to_fid);    
+        //prüft, ob headers ankommen. ja = access.
+        $file_headers_download_check =  file_download_headers($file_belongs_to_object->uri);
+        $access_allowed = !empty($file_headers_download_check);
     }
 
     if ($access_allowed) {
