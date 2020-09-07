@@ -1,7 +1,8 @@
 #!/bin/bash
 cd "$(dirname "$0")"
 #cronetab needs some infos about pathes
-export PATH=$PATH:/usr/local/bin
+source $PWD/get-drush-include-path.sh
+
 
 # zeit seit letztem push
 #currdate=`date +%s`
@@ -13,8 +14,6 @@ changed_dev=`git remote update && git status -uno | grep "Your branch is behind"
 
 if [ "$changed_dev" != "Fetching origin" ];
 then 
-	#path von drush in userfolder benoetigt
-        export PATH=$PATH:~/drush/:~/.composer/vendor/bin/
 	cd ../web/
 	#leere log und setze start
 	echo "RUNNING UPDATE" > sites/default/files/last_update_log
