@@ -158,6 +158,23 @@ abstract class CestHelper {
     
     /**
      * accessed via  @before-syntax
+     * based on @dataProvider-syntax this will skip if sample['mail'] equals the Mail last time someone logged in with ("EQUALS ME")
+     * @param type $I
+     * @param Codeception\Scenario $scenario
+     */
+    protected function skipIfSamplePersonEqualsMe(AcceptanceTester $I, Codeception\Scenario $scenario) {
+        $mymail = Fixtures::get('LASTLOGIN_USERNAME');
+        //get current @dataprovider-sample
+        $example = ($scenario->current('example'));
+            
+        //hier: kontext wurde im Cest erstellt und möchte fallback ausführen: skip
+        if ($example['mail'] ==  $mymail) {
+            $scenario->skip("Skipping example as email ".$example['mail']." equals mine!");
+        }
+    }
+    
+    /**
+     * accessed via  @before-syntax
      * this will skip the testcase if _okl_testing_start_prepare_cest was not called before the test
      * @param type $I
      * @param Codeception\Scenario $scenario
@@ -262,9 +279,9 @@ abstract class CestHelper {
         $runner = 0;
         for ($i = $ident_num_start; $i < $count; $i++) {
             $sample[$runner++] = $this->getNodeSample(NM_COURSE_GROUP, $i) + ['type' => 'default'];
-
+            
             if ($with_fallback) {
-                $sample[$runner++] = array_values($fallback_data->course_groups)[$runner - 1]->toDataProviderSample() + ['type' => 'fallback'];
+                $sample[$runner++] = array_values((array) ($fallback_data->course_groups))[$runner - 1]->toDataProviderSample() + ['type' => 'fallback'];
             }
         }
         return $sample;
@@ -295,24 +312,30 @@ abstract class CestHelper {
             $users_and_coursegroups[$u['type']]['users'][] = $u;
         }
         foreach ($coursegroups as $cg) {
-            $users_and_coursegroups[$u['type']]['coursegroups'][] = $cg;
+            $users_and_coursegroups[$cg['type']]['coursegroups'][] = $cg;
         }
 
         $unique = _okl_testing_get_dataprovider_identifier() . '_userstogroups_' . $ident_num_start;
         $randomizer = \RealisticFaker\OklDataCreator::get($unique);
-
+            
         $sample = array();
-        $users_per_group = max(1, floor($count_users / $count_coursegroups));
+        //$users_per_group = max(1, floor($count_users / $count_coursegroups));
         foreach ($users_and_coursegroups as $type => $values) {
             foreach ($values['coursegroups'] as $cg) {
                 $sample[] = array('coursegroup_title' => $cg['title'], 'users' => array(), 'type' => $type);
             }
+            //gehe alle users durch
             foreach ($values['users'] as $u) {
-                $random_key = $randomizer->randomKey($sample);
+              //verteile auf kursgruppen.
+              //wenn type (fallback) nicht zur kursgruppe passt, versuchs nochmal.
+              do{
+                  $random_key = $randomizer->randomKey($sample);
+              } while($type != $sample[$random_key]['type']);
+            
                 $sample[$random_key]['users'][] = array('name' => $u['name'], 'mail' => $u['mail']);
             }
         }
-
+            
 
         return $sample;
     }

@@ -1,7 +1,7 @@
 <?php
 
 namespace Step\Acceptance;
-
+use \Codeception\Util\Fixtures;
 use Page\Acceptance\LoginPage;
 use Page\Acceptance\LogoutPage;
 use \Codeception\Step\Argument\PasswordArgument;
@@ -43,7 +43,7 @@ class UserSteps extends \AcceptanceTester {
     $I->fillField('pass', $securedPassword);
 
     $I->click('Anmelden', '.form-actions');
-
+    Fixtures::add('LASTLOGIN_USERNAME', $userName);
     
     //noch nie eingeloggt
     if(!$drupalUser->login)
