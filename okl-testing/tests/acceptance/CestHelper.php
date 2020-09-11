@@ -122,6 +122,10 @@ abstract class CestHelper {
             $message = sprintf("Skipped because a shitty browser is used (%s: %s).", $browser["browserName"], $browser["version"]);
             $scenario->skip($message);
         }
+        elseif ($browser["browserName"] != "firefox") {
+            $message = sprintf("Skipping, currently only Firefox supports H5P. ".'For chrome chromeOptions: args: ["--disable-gpu" must be set. Browser used: (%s: %s).', $browser["browserName"], $browser["version"]);
+            $scenario->skip($message);
+        }
     }
     
     

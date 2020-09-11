@@ -65,6 +65,19 @@ env:
                     acceptInsecureCerts: true
                     chromeOptions:
                         args: ["window-size=1400,1200"]
+  firefox-env:
+    modules:
+        config:
+            WebDriver:
+                browser: 'firefox'
+                port: 4446
+                path: /webdriver
+                clear_cookies: false
+                window-size: 1400x1200
+                #log_js_errors: false
+                capabilities:
+                    acceptSslCerts: true
+                    acceptInsecureCerts: true
   phantomjs-env:
       modules:
         config:
