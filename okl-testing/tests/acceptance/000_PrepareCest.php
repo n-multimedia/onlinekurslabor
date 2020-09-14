@@ -177,7 +177,7 @@ class PrepareCest extends CestHelper{
     /**
      * @UserStory null
      * @UserStoryURL null
-     *
+     * Erstellt Lehrtext-Content - in dem Fall H5Ps und Einbinden in ein Kapitel.
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $domain_content_example Example-object
      * @dataProvider P001_createDomainContentProvider
@@ -185,11 +185,7 @@ class PrepareCest extends CestHelper{
      * @before skipIfOnShittyBrowser
      * @before renewSession
      */
-    /**
-     * ACHTUNG
-     * createDomainContent -  chrome verschluckt sich. deswegen funktion durch PRIVATE auf nicht-auszuführen gesetzt
-     */
-    private function P001_05_createDomainContent(\Step\Acceptance\Dozent $I, Codeception\Example $domain_content_example) {
+    public function P001_05_createDomainContent(\Step\Acceptance\Dozent $I, Codeception\Example $domain_content_example) {
         $domain_nids = [Fixtures::get('domain_nid'), Fixtures::get('domain_demo_nid')];
         foreach ($domain_nids as $nid) {
             //create H5Ps
