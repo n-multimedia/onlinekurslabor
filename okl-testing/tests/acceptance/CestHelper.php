@@ -266,7 +266,7 @@ abstract class CestHelper {
      * Uniqueness is dependend of $ident_number
      * @param int $count how many coursegroups
      * @param type $ident_num_start same number = same sample [within one run]
-     * @param boolean $with_fallback
+     * @param boolean $with_fallback with fallback. ACHTUNG liefert Kursgruppen ohne Randomisierung.
      * @uses _okl_testing_get_dataprovider_identifier()
      */
     protected function DP_getSampleCoursegroups($count, $ident_num_start = 0, $with_fallback = true) {
@@ -299,8 +299,8 @@ abstract class CestHelper {
      * 
      * @param type $count_users how many users
      * @param type $count_coursegroups how many different coursegroups
-     * @param type $ident_num_start
-     * @param boolean $with_fallback
+     * @param type $ident_num_start Identifizierer für Wiederholbarkeit
+     * @param boolean $with_fallback Returns existing coursegroup[s] with student[s] in it/them
      * @return array   'users' => [['name' => ..., 'mail' => ...], ['name' => ..., 'mail' => ...]],  'coursegroup_title' => ... 'type' => ...,];
      */
     protected function DP_getSampleUsersToCoursegroups($count_users, $count_coursegroups, $ident_num_start, $with_fallback = true) {
@@ -308,8 +308,8 @@ abstract class CestHelper {
         $users_and_coursegroups = array(); //endresultat: array('default' => array('users' => null, 'coursegroups' => null), 'fallback' => array('users' => null, 'coursegroups' => null));
 
         //get values from other providers
-        $users = $this->DP_getSampleStudents($count_users, $ident_num_start, $with_fallback);
-        $coursegroups = $this->DP_getSampleCoursegroups($count_coursegroups, $ident_num_start, $with_fallback);
+        $users = $this->DP_getSampleStudents($count_users, $ident_num_start, false);
+        $coursegroups = $this->DP_getSampleCoursegroups($count_coursegroups, $ident_num_start, false);
 
         //assign to our array
         foreach ($users as $u) {
@@ -324,24 +324,46 @@ abstract class CestHelper {
             
         $sample = array();
         //$users_per_group = max(1, floor($count_users / $count_coursegroups));
-        foreach ($users_and_coursegroups as $type => $values) {
+        foreach ($users_and_coursegroups as  $values) {
             foreach ($values['coursegroups'] as $cg) {
-                $sample[] = array('coursegroup_title' => $cg['title'], 'users' => array(), 'type' => $type);
+                $sample[] = array('coursegroup_title' => $cg['title'], 'users' => array(), 'type' => 'default');
             }
             //gehe alle users durch
             foreach ($values['users'] as $u) {
               //verteile auf kursgruppen.
-              //wenn type (fallback) nicht zur kursgruppe passt, versuchs nochmal.
-              do{
-                  $random_key = $randomizer->randomKey($sample);
-              } while($type != $sample[$random_key]['type']);
-            
-                $sample[$random_key]['users'][] = array('name' => $u['name'], 'mail' => $u['mail']);
+              $random_key = $randomizer->randomKey($sample);
+              $sample[$random_key]['users'][] = array('name' => $u['name'], 'mail' => $u['mail']);
             }
         }
+        
+        if($with_fallback)
+        {
+            $fallback_data = _okl_testing_getFallbackData();
+            $fallbacksample = [];
+            for($cg_runner = 0; $cg_runner < $count_coursegroups ; $cg_runner++)
+            {
+              $cg = $fallback_data->random('course_group');
+              $fallbacksample[$cg_runner]["coursegroup_title"] = $cg->title;
+              for($stud_runner = 0; $stud_runner < ceil($count_users / $count_coursegroups); )
+              {
+                $random_student = $cg->random('student')->toDataProviderSample();
+                //random student noch nicht im array
+                if(!in_array($random_student, $fallbacksample[$cg_runner]["users"]))
+                {
+                   $fallbacksample[$cg_runner]["users"][] = $random_student;
+                   $stud_runner++;
+                }
+               
+              }
+                $fallbacksample[$cg_runner]['type'] = 'fallback';
+            }
+          
+        }
             
-
-        return $sample;
+        $fullsample = array_merge($sample, $fallbacksample);
+            
+           
+        return $fullsample;
     }
 
     /**
