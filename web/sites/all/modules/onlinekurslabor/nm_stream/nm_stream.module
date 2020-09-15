@@ -3091,10 +3091,12 @@ function nm_stream_node_get_poll_json($node) {
   $show_results = FALSE;
   $final_results = FALSE;
 
+  $numberParticipants = [];
   // get poll values
   foreach ($poll->answers as $answer) {
     // get all votes for current aswer
     $votes = votingapi_select_votes($criteria + ['value' => $answer->value]);
+    $numberParticipants = array_merge($numberParticipants, array_column($votes, 'uid'));
     $answer->votes = $votes ? count($votes) : 0;
     // check: active user has selected this answer
     foreach ($user_vote as $uv) {
@@ -3104,6 +3106,9 @@ function nm_stream_node_get_poll_json($node) {
       }
     }
   }
+
+  // get distinct uids
+  $numberParticipants = count(array_unique($numberParticipants));
 
   // check end date
   if(!empty($poll->endDate)) {
@@ -3116,6 +3121,7 @@ function nm_stream_node_get_poll_json($node) {
 
   $poll->showResults = $show_results;
   $poll->finalResults = $final_results;
+  $poll->numberParticipants = $numberParticipants;
   $poll->canEdit = node_access('update', $node);
 
 
