@@ -48,7 +48,7 @@ function _okl_testing_getDataObjectForCourse($course_nid)
         //in dem fall: course->coursegroups->STUDENTS
         $c_group =  (array) (node_load($cg->nid));
         $c_group['url'] = NM_COURSE_GROUPS_PATH . '/' . $course_nid . '/' . $cg->nid;
-        $course_groups[$cg->nid] = &$c_group;
+        $course_groups[$cg->nid] = $c_group;
     }
 
      if(empty($teachers))
@@ -64,7 +64,7 @@ function _okl_testing_getDataObjectForCourse($course_nid)
     foreach ($students as $uid => &$student) {
         $student = new TestingObject($student);
         $student->type = 'user';
-        
+       
         $cg_nid = _section_courses_get_coursegroup_gid($uid, $course);
         if (!empty($course_groups[$cg_nid])) {
             //setze coursegroup bei student
@@ -100,7 +100,6 @@ function _okl_testing_getDataObjectForCourse($course_nid)
 
         $course->domain_demo = $course_domain_demo;
     }
-
 
     //convert to object
     $course_class_object = new    TestingObject ($course)  ;
