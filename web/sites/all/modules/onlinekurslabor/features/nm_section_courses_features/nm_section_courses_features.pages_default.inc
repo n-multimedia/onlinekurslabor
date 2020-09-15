@@ -2241,7 +2241,7 @@ return section_courses_text_outline();
   $pane->access = array();
   $pane->configuration = array(
     'label' => 'title',
-    'formatter' => 'og_group_subscribe',
+    'formatter' => 'okl_og_group_subscribe',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,

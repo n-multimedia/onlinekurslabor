@@ -2012,7 +2012,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['group_group']['table'] = 'field_data_group_group';
   $handler->display->display_options['fields']['group_group']['field'] = 'group_group';
   $handler->display->display_options['fields']['group_group']['label'] = 'Status';
-  $handler->display->display_options['fields']['group_group']['type'] = 'og_group_subscribe';
+  $handler->display->display_options['fields']['group_group']['type'] = 'okl_og_group_subscribe';
   $handler->display->display_options['fields']['group_group']['settings'] = array(
     'field_name' => '0',
   );
