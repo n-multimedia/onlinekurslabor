@@ -3,6 +3,37 @@
 msgid "This is a closed group. Only a group administrator can add you."
 msgstr "Um Teil der geschlossenen Gruppe zu werden, wenden Sie sich an die Gruppenleitung."
 
+msgid "Request group membership"
+msgstr "Beitrittsanfrage senden"
+
+msgid "Request message"
+msgstr "Beitrittsanfrage"
+
+msgctxt "courses_course"
+msgid "%accountname is the group creator and cannot be removed."
+msgstr "%accountname hat den Kurs erstellt und kann nicht entfernt werden."
+
+msgctxt "courses_course"
+msgid "Remove from group"
+msgstr "Aus Kurs austragen"
+
+msgctxt "content_domain"
+msgid "%accountname is the group creator and cannot be removed."
+msgstr "%accountname hat den Lehrtext erstellt und kann nicht entfernt werden."
+
+msgctxt "content_domain"
+msgid "Remove from group"
+msgstr "Aus Lehrtext austragen"
+
+msgid "Request message"
+msgstr "Beitritssanfrage"
+
+msgid "Modify membership state / remove"
+msgstr "Mitgliedschaft ändern / austragen"
+
+msgid "Your request is being processed"
+msgstr "Ihre Anfrage wird bearbeitet"
+
 msgid ""
 msgstr ""
 
