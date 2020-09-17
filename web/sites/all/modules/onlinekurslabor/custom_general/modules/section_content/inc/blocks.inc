@@ -189,7 +189,7 @@ function _section_courses_get_authors_tools() {
   $active_node = NULL;
   $subchapter_disabled = FALSE;
   //wenn man in /domain ist und im unterbereich text,edit, übersicht media etc lade den aktuellen node
-  if (arg(0) == 'domain' && (arg(1) == 'text' || arg(1) == 'edit' || arg(1) == 'media' || arg(1) == 'biblio' || arg(1) == 'h5p' || arg(1) == 'tasks' || arg(1) == 'add') && is_numeric(arg(2))) {
+  if (arg(0) == 'domain' && (arg(1) == 'text' || arg(1) == 'edit' || arg(1) == 'media' || arg(1) == 'biblio' ||arg(1) == 'members' || arg(1) == 'h5p' || arg(1) == 'tasks' || arg(1) == 'add') && is_numeric(arg(2))) {
     $active_node = node_load(arg(2));
     if (isset($active_node->type) && in_array($active_node->type, [
         NM_CONTENT_MULTIPLE_CHOICE,

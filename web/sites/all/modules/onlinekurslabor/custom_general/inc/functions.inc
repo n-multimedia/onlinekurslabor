@@ -43,6 +43,7 @@ function _section_domain_author_section_active($path = NULL) {
   $biblio_active = (arg(0, $path) == 'node' && arg(1, $path) == 'add' && arg(2, $path) == 'biblio' ); //not necessary ?
   $media_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'media');
   $biblio_overview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'biblio');
+  $members_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'members');
   $tasks_overview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'tasks');
   $h5p_overview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'h5p');
   $domain_text_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'text');
@@ -59,7 +60,7 @@ function _section_domain_author_section_active($path = NULL) {
       $tasks_overview_active || $domain_text_active ||
       $domain_add_active || $domain_edit_active ||
       $domain_delete_active || $h5p_overview_active || $ajax_linkit_tasks ||
-      $ajax_linkit_h5p;
+      $ajax_linkit_h5p || $members_active;
 }
 
 /**

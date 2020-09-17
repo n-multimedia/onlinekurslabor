@@ -1172,6 +1172,207 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $page = new stdClass();
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
   $page->api_version = 1;
+  $page->name = 'content_domain_members';
+  $page->task = 'page';
+  $page->admin_title = 'content-domain-members';
+  $page->admin_description = '';
+  $page->path = 'domain/members/%1';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_access',
+        'settings' => array(
+          'type' => 'update',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
+  );
+  $page->menu = array();
+  $page->arguments = array(
+    1 => array(
+      'id' => 1,
+      'identifier' => 'Beitrag: ID',
+      'name' => 'entity_id:node',
+      'settings' => array(),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_content_domain_members__panel_context_b453014b-a458-4030-b714-58131c1556e2';
+  $handler->task = 'page';
+  $handler->subtask = 'content_domain_members';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Panel',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'access' => array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'node_type',
+          'settings' => array(
+            'type' => array(
+              'content_domain' => 'content_domain',
+            ),
+          ),
+          'context' => 'argument_entity_id:node_1',
+          'not' => FALSE,
+        ),
+      ),
+      'logic' => 'and',
+    ),
+    'name' => '',
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible:span4span8';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'center' => NULL,
+      'outline' => NULL,
+      'tools' => NULL,
+      'navigation' => NULL,
+    ),
+    'center' => array(
+      'style' => 'tabs',
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = 'd71c9f71-33fe-472f-8843-ea88a58ffd27';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_content_domain_members__panel_context_b453014b-a458-4030-b714-58131c1556e2';
+  $display->content = array();
+  $display->panels = array();
+  $pane = new stdClass();
+  $pane->pid = 'new-787bff3f-bc9d-432a-a24d-9819ec40d958';
+  $pane->panel = 'center';
+  $pane->type = 'views';
+  $pane->subtype = 'content_admin_mitglieder_tabelle';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_pager_settings' => 0,
+    'use_pager' => 1,
+    'nodes_per_page' => '50',
+    'pager_id' => '0',
+    'offset' => '0',
+    'more_link' => 0,
+    'feed_icons' => 0,
+    'panel_args' => 0,
+    'link_to_view' => 0,
+    'args' => '',
+    'url' => '',
+    'display' => 'block',
+    'context' => array(
+      0 => 'argument_entity_id:node_1.nid',
+    ),
+    'override_title' => 1,
+    'override_title_text' => 'Mitglieder',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '787bff3f-bc9d-432a-a24d-9819ec40d958';
+  $display->content['new-787bff3f-bc9d-432a-a24d-9819ec40d958'] = $pane;
+  $display->panels['center'][0] = 'new-787bff3f-bc9d-432a-a24d-9819ec40d958';
+  $pane = new stdClass();
+  $pane->pid = 'new-93be2e3b-fe65-463a-b22f-ea6e7480b084';
+  $pane->panel = 'center';
+  $pane->type = 'views';
+  $pane->subtype = 'content_admin_mitglieder_tabelle';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_pager_settings' => 0,
+    'use_pager' => 1,
+    'nodes_per_page' => '50',
+    'pager_id' => '0',
+    'offset' => '0',
+    'more_link' => 0,
+    'feed_icons' => 0,
+    'panel_args' => 0,
+    'link_to_view' => 0,
+    'args' => '',
+    'url' => '',
+    'display' => 'bl_1',
+    'context' => array(
+      0 => 'argument_entity_id:node_1.nid',
+    ),
+    'override_title' => 1,
+    'override_title_text' => 'Anfragen',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = '93be2e3b-fe65-463a-b22f-ea6e7480b084';
+  $display->content['new-93be2e3b-fe65-463a-b22f-ea6e7480b084'] = $pane;
+  $display->panels['center'][1] = 'new-93be2e3b-fe65-463a-b22f-ea6e7480b084';
+  $pane = new stdClass();
+  $pane->pid = 'new-8f16e9aa-1e2a-44d6-b6ad-7cb278edc060';
+  $pane->panel = 'navigation';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_text_outline';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '8f16e9aa-1e2a-44d6-b6ad-7cb278edc060';
+  $display->content['new-8f16e9aa-1e2a-44d6-b6ad-7cb278edc060'] = $pane;
+  $display->panels['navigation'][0] = 'new-8f16e9aa-1e2a-44d6-b6ad-7cb278edc060';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['content_domain_members'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
   $page->name = 'content_domain_overview';
   $page->task = 'page';
   $page->admin_title = 'content-domain-overview';
