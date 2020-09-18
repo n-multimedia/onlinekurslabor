@@ -42,9 +42,13 @@ function _okl_testing_getDataObjectForCourse($course_nid)
     $course_groups = array();
     //gehe durch coursegroups, lade node
     foreach ($coursegroups_basic as $cg) {
-        $c_group = new TestingObject(node_load($cg->nid));
-        $c_group->url = NM_COURSE_GROUPS_PATH . '/' . $course_nid . '/' . $cg->nid;
-        $course_groups[$cg->nid] = &$c_group;
+        //achtung: sub-"objects" müssen ein array sein, sofern sie wieder subobjects haben.
+        //Das wird später automatisch in Objects konvertiert
+        //sind das bereits pseudo-objects, greift die Konvertierung nicht. 
+        //in dem fall: course->coursegroups->STUDENTS
+        $c_group =  (array) (node_load($cg->nid));
+        $c_group['url'] = NM_COURSE_GROUPS_PATH . '/' . $course_nid . '/' . $cg->nid;
+        $course_groups[$cg->nid] = $c_group;
     }
 
      if(empty($teachers))
@@ -60,14 +64,14 @@ function _okl_testing_getDataObjectForCourse($course_nid)
     foreach ($students as $uid => &$student) {
         $student = new TestingObject($student);
         $student->type = 'user';
-        
+       
         $cg_nid = _section_courses_get_coursegroup_gid($uid, $course);
         if (!empty($course_groups[$cg_nid])) {
             //setze coursegroup bei student
             $student->coursegroup = &$course_groups[$cg->nid];
             //füge student zu coursegroup-members hinzu
-            $course_groups[$cg_nid]->students[$uid] = $student;
-        }
+            $course_groups[$cg_nid]['students'][$uid] = $student;
+           }
     }
     
 
@@ -96,7 +100,6 @@ function _okl_testing_getDataObjectForCourse($course_nid)
 
         $course->domain_demo = $course_domain_demo;
     }
-
 
     //convert to object
     $course_class_object = new    TestingObject ($course)  ;
@@ -135,7 +138,12 @@ function _okl_testing_stop_test() {
     variable_del('okl_testing_running');
 }
 
-
+/**
+ * läuft irgendn cest gerade? 
+ */
+function _okl_testing_is_any_cest_running() {
+  return (bool) variable_get('okl_testing_running');
+}
 
 /**
  * setzt die Variable okl_testing_preparecest_running
@@ -278,8 +286,19 @@ function okl_testing_getcontentfromurlarg($url_arg_1, $url_arg_2) {
             return $thelist;
         }
     }
-    //pfad zu den test-output-files
-    return is_file($full_path)? file_get_contents($full_path): '<b>'.t('No result available').'</b>' ;
+    
+    
+  $filetype = pathinfo($full_path, PATHINFO_EXTENSION);
+
+  if (is_file($full_path)) {
+    return file_get_contents($full_path);
+  }
+  elseif ($filetype != 'png') {
+    return '<b>' . t('No result available') . '</b>';
+  }
+  else {
+    return file_get_contents(__DIR__ . '/assets/autotest-404.png');
+  }
 }
 
 
@@ -368,6 +387,15 @@ function okl_testing_page_build(&$page) {
     $test_runing = (bool) variable_get('okl_testing_running');
     $is_open_page = strstr($curr_url, 'devel') ||  strstr($curr_url, 'okl-testing') || strstr($curr_url, 'reports/dblog');
     $is_autotest_browser = isset($_COOKIE["okl_testing_is_autotest_browser"]);
+    
+     /**
+     * fixe überlappung durch Bar: environment_indicator
+     */
+    if($test_runing && $is_autotest_browser)
+    {
+       unset($page['page_top']['environment_indicator']);
+    }
+    
     //normale systemansicht
     if (!$test_runing || $is_autotest_browser || $is_open_page) {
         //füge link auf testresult ein
@@ -378,6 +406,7 @@ function okl_testing_page_build(&$page) {
          );
         return;
     }
+   
     //sperre system fuer user. Entferne dazu alle Seitenelemente
     foreach ($page as $key => $elem) {
         if (!strstr($key, '#'))

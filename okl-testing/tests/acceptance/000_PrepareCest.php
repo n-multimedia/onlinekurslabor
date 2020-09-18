@@ -177,7 +177,7 @@ class PrepareCest extends CestHelper{
     /**
      * @UserStory null
      * @UserStoryURL null
-     *
+     * Erstellt Lehrtext-Content - in dem Fall H5Ps und Einbinden in ein Kapitel.
      * @param \Step\Acceptance\Dozent $I (instead of type \AcceptanceTester)
      * @param \Codeception\Example $domain_content_example Example-object
      * @dataProvider P001_createDomainContentProvider

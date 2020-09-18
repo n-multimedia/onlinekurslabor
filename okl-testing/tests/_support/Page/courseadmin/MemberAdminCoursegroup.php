@@ -43,7 +43,8 @@ class MemberAdminCoursegroup extends MemberAdmin {
         $this->selectBulkOperation('Einer Kursgruppe zuweisen');
 
         foreach ($students as $student) { 
-            $I->clickTagContaining('tr', $student['mail']);
+            //td instead of tr for firefox
+            $I->clickTagContaining('td', $student['mail']);
         }
         $I->click(parent::$executeButton);
        

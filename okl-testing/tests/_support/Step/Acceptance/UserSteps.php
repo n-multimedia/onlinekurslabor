@@ -1,7 +1,7 @@
 <?php
 
 namespace Step\Acceptance;
-
+use \Codeception\Util\Fixtures;
 use Page\Acceptance\LoginPage;
 use Page\Acceptance\LogoutPage;
 use \Codeception\Step\Argument\PasswordArgument;
@@ -43,7 +43,7 @@ class UserSteps extends \AcceptanceTester {
     $I->fillField('pass', $securedPassword);
 
     $I->click('Anmelden', '.form-actions');
-
+    Fixtures::add('LASTLOGIN_USERNAME', $userName);
     
     //noch nie eingeloggt
     if(!$drupalUser->login)
@@ -95,15 +95,20 @@ class UserSteps extends \AcceptanceTester {
   }
 
   public function fillCkEditorById($element_id, $content) {
+
+    $css_id = '#cke_' . $element_id . ' .cke_wysiwyg_frame';
+    #$this->clickWithLeftButton($css_id);
     $this->fillRteEditor(
       \Facebook\WebDriver\WebDriverBy::cssSelector(
-        '#cke_' . $element_id . ' .cke_wysiwyg_frame'
+        $css_id
       ),
       $content
     );
   }
 
   public function fillCkEditorByName($element_name, $content) {
+    $css_selector = 'textarea[name="' . $element_name . '"] + .cke .cke_wysiwyg_frame';
+    $this->clickWithLeftButton($css_selector);
     $this->fillRteEditor(
       \Facebook\WebDriver\WebDriverBy::cssSelector(
         'textarea[name="' . $element_name . '"] + .cke .cke_wysiwyg_frame'

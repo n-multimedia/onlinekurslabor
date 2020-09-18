@@ -51,6 +51,7 @@ abstract class Node {
 
         //click: Veröffentlichen
         $I->click(self::$publishButton);
+        $I->wait(1);
         //check: wurde angelegt
         $I->see($params['title'] . ' wurde erstellt.');
     }
@@ -63,8 +64,10 @@ abstract class Node {
         $I = $this->tester;
 
         $I->amOnPage(self::$editURL);
+        $I->wait(1);
         $this->editFields($I, $params);
         $I->click(self::$publishButton);
+        $I->wait(1);
         //check: wurde bearbeitet
         $I->see("wurde aktualisiert");
     }
