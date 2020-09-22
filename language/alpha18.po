@@ -3,8 +3,17 @@
 msgid "This is a closed group. Only a group administrator can add you."
 msgstr "Um Teil der geschlossenen Gruppe zu werden, wenden Sie sich an die Gruppenleitung."
 
-msgid ""
-msgstr ""
+msgid "Days"
+msgstr "Tagen"
+
+msgid "Hours"
+msgstr "Stunden"
+
+msgid "Minutes"
+msgstr "Minuten"
+
+msgid "Seconds"
+msgstr "Sekunden"
 
 msgid ""
 msgstr ""
