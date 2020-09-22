@@ -10,6 +10,7 @@
                 </a>
       <?php endif; ?>
     </div>
+   
        <?php if (!empty($primary_nav) || !empty($secondary_nav) || !empty($page['navigation'])): ?>
     <div class="collapse navbar-collapse" id="okl-nav-bar">
 
@@ -83,6 +84,13 @@
 
   </div>
 </div>
+
+  <div class="content_below container <?php echo empty($page['content_below'])?'empty':'';?>">
+          <div class="row">
+               <?php print render($page['content_below']); ?>
+          </div>
+  </div>
+
 <footer class="footer container">
   <div class="footer_powered_by_wrapper row">
     <div id="footer_regions_container col-md-12">
@@ -97,5 +105,4 @@
     </div>
 
   </div>
-
 </footer>
