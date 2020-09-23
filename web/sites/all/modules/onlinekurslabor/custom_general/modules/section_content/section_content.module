@@ -779,15 +779,13 @@ function section_content_og_user_access_alter(&$perm, $context) {
 
     if ($group_type == 'node' && $group->type == NM_CONTENT_DOMAIN) {
 
-        $access_perm = in_array(NM_ROLE_AUTOR, $account->roles) || in_array(NM_ROLE_ADMIN, $account->roles);
+        $access_perm = array_intersect(array(NM_ROLE_AUTOR, NM_ROLE_MODERATOR, NM_ROLE_ADMIN), $account->roles);
         //var_dump($access_perm);
         //if(isset($perm["subscribe without approval"]) && !$access_perm)
 
         if (isset($perm["subscribe"]) && !$access_perm) {
             //$perm["subscribe without approval"] = FALSE;
             $perm["subscribe"] = FALSE;
-        } else {
-            $perm["subscribe without approval"] = TRUE;
         }
     }
 
@@ -1179,6 +1177,10 @@ function section_content_theme() {
         'show_file_link' => NULL
       )
     ),
+    'views_view_field__courses_user_domains__title' => array(
+      'template' => 'views-view-field--courses-user-domains--title',
+      'path' => drupal_get_path('module', 'section_content') . '/templates'
+    )
   );
 }
 

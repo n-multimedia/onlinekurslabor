@@ -511,6 +511,26 @@ function _custom_general_get_group($referer_node, $enforce_parent = FALSE) {
 }
 
 /**
+ * Gets User State in a OG_Group
+ * @param StdClass $og_group_object
+ * @param StdClass $user_account: useraccount, if null then current user
+ * @return 
+ */
+function _custom_general_get_user_state_in_group($og_group_object, $user_account = null) {
+  global $user;
+  if(!$user_account)
+  {
+    $user_account = clone $user;
+  }
+
+  $og_membership = og_get_membership('node', $og_group_object->nid, 'user', $user_account->uid);
+  
+  return $og_membership->state;
+    
+}
+
+
+/**
  *  Implementation of hook_field_attach_form
  */
 /*
@@ -1687,6 +1707,7 @@ function _custom_general_get_max_weight_in_book_tree($tree) {
     return $high;
 }
 
+
 /**
  * og hook_og_membership_insert
  * used to clear cache of group a membership was inserted
@@ -1698,6 +1719,7 @@ function custom_general_og_membership_insert(OgMembership $og_membership) {
       og_invalidate_cache($og_membership->gid);
     }
 }
+
 
 
 // fuegt im eigenen profil einen settings-bereich fuer eigene einstellungen hinzu, der einfach

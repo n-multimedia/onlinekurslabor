@@ -1315,6 +1315,25 @@ div.view-courses-kurse-bersicht .nm-stream-node-container img.courseitem_coursel
 }
 
 
+/* unbestätigt-label für lehrtexte oder generell gruppen*/
+.group_label
+{
+    color:white;
+    text-align:center;
+    width: 90px;
+    position:relative;
+    z-index:2
+}
+
+.group_label.rotated
+{
+     transform: rotate(-30deg);
+     margin-top: 20px;
+}
+
+.group_label.unconfirmed {
+  background: orange;
+}
 
 /**
 FILE DISPLAYS

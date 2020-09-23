@@ -1107,22 +1107,23 @@ siehe auch custom.css
 
 /*meine Lehrtexte auf startseite */
 /*die einzelnen links auf lehrtexte*/
-div.view-id-courses_user_domains.view-display-id-nid_only a {
+div.view-id-courses_user_domains.view-display-id-nid_only span {
     padding: 7px 5px 7px;
     border-top: 1px solid #cecece;
     display: block;
     background: rgba(255,255,255,0.75);
 }
 /*hovereffekt*/
-div.view-id-courses_user_domains.view-display-id-nid_only a:hover
+div.view-id-courses_user_domains.view-display-id-nid_only span:hover
 {
     background: #F7F7F7;
 }
 /*allerletzter link*/
-div.view-id-courses_user_domains.view-display-id-nid_only a:last-child {
+div.view-id-courses_user_domains.view-display-id-nid_only span:last-child {
        border-bottom: 1px solid #cecece;
        margin-bottom:15px;
 }
+
 
 
 /*

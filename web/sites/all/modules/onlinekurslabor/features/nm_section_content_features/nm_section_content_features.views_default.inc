@@ -654,9 +654,10 @@ function nm_section_content_features_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Themen Übersicht';
+  $handler->display->display_options['title'] = 'Alle Lehrtexte';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['link_display'] = 'custom_url';
+  $handler->display->display_options['group_by'] = TRUE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -671,6 +672,7 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['pager']['options']['expose']['items_per_page_options'] = '5, 10, 15, 30, 60';
   $handler->display->display_options['pager']['options']['tags']['first'] = '« erste Seite';
   $handler->display->display_options['pager']['options']['tags']['previous'] = '‹ vorherige Seite';
   $handler->display->display_options['pager']['options']['tags']['next'] = 'nächste Seite ›';
@@ -710,6 +712,20 @@ function nm_section_content_features_views_default_views() {
 Oben <code>Neues Thema anlegen</code> drücken.
 </div>';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  /* Relationship: Content: Content author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Relationship: OG membership: OG membership from Node group */
+  $handler->display->display_options['relationships']['og_membership_rel_group']['id'] = 'og_membership_rel_group';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['table'] = 'node';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['field'] = 'og_membership_rel_group';
+  $handler->display->display_options['relationships']['og_membership_rel_group']['required'] = TRUE;
+  /* Relationship: OG membership: User from OG membership */
+  $handler->display->display_options['relationships']['og_membership_related_user']['id'] = 'og_membership_related_user';
+  $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
+  $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
+  $handler->display->display_options['relationships']['og_membership_related_user']['relationship'] = 'og_membership_rel_group';
   /* Field: Content: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
@@ -740,6 +756,13 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
+  /* Contextual filter: User: Uid */
+  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['table'] = 'users';
+  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
   /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -760,7 +783,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['defaults']['title'] = FALSE;
   $translatables['content_gebiete_bersicht'] = array(
     t('Master'),
-    t('Themen Übersicht'),
+    t('Alle Lehrtexte'),
     t('more'),
     t('Anwenden'),
     t('Zurücksetzen'),
@@ -781,8 +804,12 @@ Oben <code>Neues Thema anlegen</code> drücken.
 <div class="visible-autor visible-admin">
 Oben <code>Neues Thema anlegen</code> drücken.
 </div>'),
+    t('author'),
+    t('OG membership from node group'),
+    t('user from OG membership'),
     t('Name'),
     t('Status'),
+    t('All'),
     t('Content pane'),
     t('View panes'),
   );
@@ -1094,18 +1121,19 @@ Oben <code>Neues Thema anlegen</code> drücken.
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Content - User - Themen';
-  $handler->display->display_options['use_ajax'] = TRUE;
+  $handler->display->display_options['title'] = 'Meine Lehrtexte';
   $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['group_by'] = TRUE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
-  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurücksetzen';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Filtern';
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Zurüc23setzen1234';
   $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sortieren nach';
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Aufsteigend';
   $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Absteigend';
+  $handler->display->display_options['exposed_form']['options']['autosubmit_hide'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'default';
@@ -1130,7 +1158,6 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['relationship'] = 'og_membership_rel_group';
-  $handler->display->display_options['relationships']['og_membership_related_user']['required'] = TRUE;
   /* Field: Content: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
@@ -1151,6 +1178,15 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Field: Content: Gruppe */
+  $handler->display->display_options['fields']['group_group']['id'] = 'group_group';
+  $handler->display->display_options['fields']['group_group']['table'] = 'field_data_group_group';
+  $handler->display->display_options['fields']['group_group']['field'] = 'group_group';
+  $handler->display->display_options['fields']['group_group']['label'] = 'Status';
+  $handler->display->display_options['fields']['group_group']['type'] = 'og_group_subscribe';
+  $handler->display->display_options['fields']['group_group']['settings'] = array(
+    'field_name' => '0',
+  );
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
@@ -1182,6 +1218,18 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['filters']['type']['value'] = array(
     'content_domain' => 'content_domain',
   );
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+  );
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block');
@@ -1207,12 +1255,186 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['fields']['nid']['alter']['path'] = 'domain/text/[nid]';
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['nid']['element_default_classes'] = FALSE;
+
+  /* Display: Meine Lehrtexte */
+  $handler = $view->new_display('panel_pane', 'Meine Lehrtexte', 'my_domains');
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'nid' => 'nid',
+    'title' => 'title',
+  );
+  $handler->display->display_options['style_options']['class'] = '';
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'nid' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['nid']['alter']['path'] = 'domain/text/[nid]';
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['path'] = 'domain/text/[nid]';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Field: Content: Gruppe */
+  $handler->display->display_options['fields']['group_group']['id'] = 'group_group';
+  $handler->display->display_options['fields']['group_group']['table'] = 'field_data_group_group';
+  $handler->display->display_options['fields']['group_group']['field'] = 'group_group';
+  $handler->display->display_options['fields']['group_group']['label'] = 'Status';
+  $handler->display->display_options['fields']['group_group']['type'] = 'og_group_subscribe';
+  $handler->display->display_options['fields']['group_group']['settings'] = array(
+    'field_name' => '0',
+  );
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'content_domain' => 'content_domain',
+  );
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+  );
+  $handler->display->display_options['allow']['use_pager'] = 'use_pager';
+  $handler->display->display_options['allow']['items_per_page'] = 'items_per_page';
+  $handler->display->display_options['allow']['offset'] = 'offset';
+  $handler->display->display_options['allow']['link_to_view'] = 0;
+  $handler->display->display_options['allow']['more_link'] = 0;
+  $handler->display->display_options['allow']['path_override'] = 0;
+  $handler->display->display_options['allow']['title_override'] = 'title_override';
+  $handler->display->display_options['allow']['exposed_form'] = 0;
+  $handler->display->display_options['allow']['fields_override'] = 0;
+  $handler->display->display_options['argument_input'] = array(
+    'uid' => array(
+      'type' => 'none',
+      'context' => 'token.current-user:uid',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'Person: Uid',
+    ),
+  );
+
+  /* Display: Alle Lehrtexte */
+  $handler = $view->new_display('panel_pane', 'Alle Lehrtexte', 'all_domains');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Alle Lehrtexte';
+  $handler->display->display_options['defaults']['group_by'] = FALSE;
+  $handler->display->display_options['group_by'] = TRUE;
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'nid' => 'nid',
+    'title' => 'title',
+  );
+  $handler->display->display_options['style_options']['class'] = '';
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'nid' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['nid']['alter']['path'] = 'domain/text/[nid]';
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['path'] = 'domain/text/[nid]';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Field: Content: Gruppe */
+  $handler->display->display_options['fields']['group_group']['id'] = 'group_group';
+  $handler->display->display_options['fields']['group_group']['table'] = 'field_data_group_group';
+  $handler->display->display_options['fields']['group_group']['field'] = 'group_group';
+  $handler->display->display_options['fields']['group_group']['label'] = 'Status';
+  $handler->display->display_options['fields']['group_group']['type'] = 'og_group_subscribe';
+  $handler->display->display_options['fields']['group_group']['settings'] = array(
+    'field_name' => '0',
+  );
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['allow']['use_pager'] = 'use_pager';
+  $handler->display->display_options['allow']['items_per_page'] = 'items_per_page';
+  $handler->display->display_options['allow']['offset'] = 'offset';
+  $handler->display->display_options['allow']['link_to_view'] = 0;
+  $handler->display->display_options['allow']['more_link'] = 0;
+  $handler->display->display_options['allow']['path_override'] = 0;
+  $handler->display->display_options['allow']['title_override'] = 'title_override';
+  $handler->display->display_options['allow']['exposed_form'] = 0;
+  $handler->display->display_options['allow']['fields_override'] = 0;
   $translatables['courses_user_domains'] = array(
     t('Master'),
-    t('Content - User - Themen'),
+    t('Meine Lehrtexte'),
     t('more'),
-    t('Anwenden'),
-    t('Zurücksetzen'),
+    t('Filtern'),
+    t('Zurüc23setzen1234'),
     t('Sortieren nach'),
     t('Aufsteigend'),
     t('Absteigend'),
@@ -1220,10 +1442,13 @@ Oben <code>Neues Thema anlegen</code> drücken.
     t('- keine -'),
     t('OG membership from node group'),
     t('user from OG membership'),
+    t('Status'),
     t('Alle'),
     t('Block'),
     t('nid-only'),
     t('for templating'),
+    t('View panes'),
+    t('Alle Lehrtexte'),
   );
   $export['courses_user_domains'] = $view;
 
