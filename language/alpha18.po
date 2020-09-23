@@ -34,8 +34,17 @@ msgstr "Mitgliedschaft ändern / austragen"
 msgid "Your request is being processed"
 msgstr "Ihre Anfrage wird bearbeitet"
 
-msgid ""
-msgstr ""
+msgid "member"
+msgstr "Mitglied"
+
+msgid "unconfirmed"
+msgstr "unbestätigt"
+
+msgid "Full view: !s"
+msgstr "Vollansicht: !s"
+
+msgid "Membership state"
+msgstr "Status der Mitgliedschaft"
 
 msgid ""
 msgstr ""

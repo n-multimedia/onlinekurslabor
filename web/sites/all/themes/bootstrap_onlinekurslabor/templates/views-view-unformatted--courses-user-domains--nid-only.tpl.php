@@ -12,20 +12,18 @@
 <?php foreach ($rows as $id => $row): ?>
   <?php $nid = trim($row); ?>
   <span>
-  <?php
-  $row_node = node_load($nid);
-  $users_state_for_domain = _custom_general_get_user_state_in_group($row_node);
-  if ($users_state_for_domain == OG_STATE_ACTIVE) {
-    echo l($row_node->title, '/node/' . $row_node->nid);
-  }
-  elseif ($users_state_for_domain == OG_STATE_PENDING) {
-    ?>
-    <div class="group_label unconfirmed badge">
-    <?= t('unconfirmed') ?>
-    </div>
-        <?php
-        echo $row_node->title;
-      }
+      <?php
+      $row_node = node_load($nid);
+      $users_state_for_domain = _custom_general_get_group_state_for_user($row_node);
       ?>
+      <?php if ($users_state_for_domain != OG_STATE_ACTIVE): ?>
+        <?php echo theme('custom_general_personal_group_state_badge', array('state' => $users_state_for_domain)); ?>
+      <?php endif ?>
+      <a href="/node/<?= $nid ?>" >
+          <?php
+          echo node_load($nid)->title;
+          ?>
+      </a>
   </span>
+
 <?php endforeach; ?>

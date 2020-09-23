@@ -24,7 +24,14 @@ function section_content_block_info() {
    $blocks['content_text_outline'] = array(
     'info' => t('Content - Text Outline'),
   );
+   $blocks['content_link_to_fulltext'] = array(
+    'info' => t('Content - Link to fulltext'),
+  );
+   $blocks['content_link_to_lehrtext_home'] = array(
+    'info' => t('Content - Link to domain home'),
+  );
 
+   
   return $blocks;
 }
 
@@ -33,7 +40,7 @@ function section_content_block_info() {
  */
 function section_content_block_view($delta = '') {
   $block = array();
-
+  $current_domain = _section_content_get_active_domain();
   switch ($delta) {
     case 'content_node_tabs' :
       $block['content'] = _section_content_node_tabs_view();
@@ -48,7 +55,16 @@ function section_content_block_view($delta = '') {
       $block['subject'] = t('Table of contents');
       $block['content'] = _section_content_block_text_outline();
       break;
-
+    case 'content_link_to_fulltext':
+      if(_custom_general_get_group_state_for_user($current_domain)== OG_STATE_ACTIVE || node_access('update', $current_domain))
+      {
+        //perspektivisch kann man den linktext auch in ne block_config rausziehen. 
+        $block['content'] = l('› '.t("Full view: !s", array("!s"=>$current_domain->title)), NM_CONTENT_TEXT_PATH.DIRECTORY_SEPARATOR.$current_domain->nid);
+      }
+      break;
+    case 'content_link_to_lehrtext_home':
+        $block['content'] = l($current_domain->title, DIRECTORY_SEPARATOR.'node'.DIRECTORY_SEPARATOR.$current_domain->nid);
+     break;
   }
 
 
@@ -1448,7 +1464,6 @@ function _section_content_get_active_domain($reset = FALSE) {
     if ($node) {
       $domain = $node;
     }
-
     if (is_object($node) && in_array($node->type, array(NM_FILE, NM_CONTENT_CHAPTER, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_DOMAIN, ANNVID_CONTENTTYPE))) {
       if ($node->type == NM_CONTENT_DOMAIN) {
         //get course which this group is assigned to

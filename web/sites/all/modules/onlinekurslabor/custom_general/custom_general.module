@@ -34,6 +34,7 @@ define("NM_BIBLIO_PATH", "domain/biblio");
 define("NM_TASKS_PATH", "domain/tasks");
 define("NM_CONTENT_DOMAIN_PATH", "domain");
 define("NM_CONTENT_TEXT_PATH", "domain/text");
+define("NM_CONTENT_TEXT_PREVIEW_PATH", "domain/preview");
 define("NM_CONTENT_ADD_CONTENT_PATH", "domain/add");
 define("NM_CONTENT_DELETE_CONTENT_PATH", "domain/delete");
 define("NM_DOMAIN_ACCESS_REALM", "NM_DOMAIN_ACCESS_REALM");
@@ -512,18 +513,22 @@ function _custom_general_get_group($referer_node, $enforce_parent = FALSE) {
 
 /**
  * Gets User State in a OG_Group
- * @param StdClass $og_group_object
+ * @param StdClass $og_group Node-Object oder nid
  * @param StdClass $user_account: useraccount, if null then current user
  * @return 
  */
-function _custom_general_get_user_state_in_group($og_group_object, $user_account = null) {
+function _custom_general_get_group_state_for_user($og_group, $user_account = null) {
   global $user;
   if(!$user_account)
   {
     $user_account = clone $user;
   }
+  if(!is_object($og_group))
+  {
+    $og_group = node_load($og_group);
+  }
 
-  $og_membership = og_get_membership('node', $og_group_object->nid, 'user', $user_account->uid);
+  $og_membership = og_get_membership('node', $og_group->nid, 'user', $user_account->uid);
   
   return $og_membership->state;
     
@@ -1068,6 +1073,9 @@ function custom_general_block_info() {
   $blocks['custom_general_space'] = array(
     'info' => t('Custom General - Space'),
   );
+  $blocks['custom_general_groupstate_badge'] = array(
+    'info' => t('(OG) Personal group-state badge'),
+  );
 
   return $blocks;
 }
@@ -1077,13 +1085,22 @@ function custom_general_block_info() {
  */
 function custom_general_block_view($delta = '') {
   $block = array();
-
   switch ($delta) {
     case 'custom_general_top_nav' :
       $block['content'] = _custom_general_theme_top_nav();
       break;
     case 'custom_general_space' :
       $block['content'] = _custom_general_theme_space();
+      break;
+    case 'custom_general_groupstate_badge':
+      
+      $current_context = _section_content_get_active_domain()?: _section_courses_get_active_course();
+      $block['subject'] =  t("Membership state");
+      $block['content'] = array(
+        '#title' =>  t("Membership state"),
+        '#markup' => theme('custom_general_personal_group_state_badge', array(
+          'state' => _custom_general_get_group_state_for_user($current_context)
+        )));
       break;
   }
 
@@ -1615,15 +1632,20 @@ function _custom_general_taxonomy_get_children($tid, $vid = 0) {
  * wird genutzt, wenn bspw theme('custom_html5_video', array(...)); ausgeführt wird
  */
 function custom_general_theme() {
-    return array(
-        // Name to be called with theme(). theme('custom_html5_video', ...)
-        'custom_html5_video' => array(
-            // Which .tpl.php file to use custom-html5-video.tpl.php
-            'template' => 'custom-html5-video',
-            'path' => drupal_get_path('module', 'custom_general') . '/templates')
-        )
-    ;
+  return array(
+    // Name to be called with theme(). theme('custom_html5_video', ...)
+    'custom_html5_video' => array(
+      // Which .tpl.php file to use custom-html5-video.tpl.php
+      'template' => 'custom-html5-video',
+      'path' => drupal_get_path('module', 'custom_general') . '/templates'),
+    
+    'custom_general_personal_group_state_badge' => array(
+      'template' => 'templates/custom_general_personal_group_state_badge', //ignore .tpl.php
+    ),
+    )
+  ;
 }
+
 
 /**
  * Erstellt einen einfachen HTML-5-Videoplayer fuer verschiedene Bildschirmgrößen und unterschiedlichen

@@ -1315,24 +1315,21 @@ div.view-courses-kurse-bersicht .nm-stream-node-container img.courseitem_coursel
 }
 
 
-/* unbestätigt-label für lehrtexte oder generell gruppen*/
+/* label für lehrtexte oder generell gruppen*/
+/* use colors from https://getbootstrap.com/docs/4.0/components/badge/*/
 .group_label
 {
     color:white;
     text-align:center;
     width: 90px;
     position:relative;
-    z-index:2
+    z-index:2;
 }
 
 .group_label.rotated
 {
      transform: rotate(-30deg);
      margin-top: 20px;
-}
-
-.group_label.unconfirmed {
-  background: orange;
 }
 
 /**

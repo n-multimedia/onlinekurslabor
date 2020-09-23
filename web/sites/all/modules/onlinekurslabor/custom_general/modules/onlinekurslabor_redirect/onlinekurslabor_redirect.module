@@ -20,7 +20,16 @@ function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
     case ANNVID_CONTENTTYPE:
       if ($view_mode == 'full') {
         /*das ist alt... bei h5p wird in den themenbereich umgeleitet. aber nur wenns vollansicht ist. */
-        drupal_goto(NM_CONTENT_TEXT_PATH . '/' . $node->nid);
+        //Vollzugriff auf CONTENT: 
+        if(_custom_general_get_group_state_for_user(_custom_general_get_group($node)) == OG_STATE_ACTIVE || node_access('update', _custom_general_get_group($node)))
+        {
+          drupal_goto(NM_CONTENT_TEXT_PATH . DIRECTORY_SEPARATOR . $node->nid);
+        }
+        else
+        { //keine Memberberechtigung => PReview
+          drupal_goto(NM_CONTENT_TEXT_PREVIEW_PATH.DIRECTORY_SEPARATOR. $node->nid);
+        }
+        
       }
       break;
     //projects

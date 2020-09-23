@@ -1423,50 +1423,22 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
     'relationships' => array(),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span12';
+  $display->layout = 'flexible:span11span1';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
       'default' => NULL,
       'center' => NULL,
+      'tools' => NULL,
     ),
   );
   $display->cache = array();
-  $display->title = 'Lehrtexte';
+  $display->title = '';
   $display->uuid = 'c934c2f1-88da-4a44-b94a-7c1236afb18e';
   $display->storage_type = 'page_manager';
   $display->storage_id = 'page_content_domain_overview_panel_context';
   $display->content = array();
   $display->panels = array();
-  $pane = new stdClass();
-  $pane->pid = 'new-f9870e43-99cb-4682-9489-c5d7330bb5fa';
-  $pane->panel = 'center';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'admin_title' => '',
-    'title' => '',
-    'body' => '<?php
-if(section_content_authors_tools_access())
-echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neues Thema anlegen</a></p>\';
-
-?>',
-    'format' => 'php_code',
-    'substitute' => TRUE,
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'f9870e43-99cb-4682-9489-c5d7330bb5fa';
-  $display->content['new-f9870e43-99cb-4682-9489-c5d7330bb5fa'] = $pane;
-  $display->panels['center'][0] = 'new-f9870e43-99cb-4682-9489-c5d7330bb5fa';
   $pane = new stdClass();
   $pane->pid = 'new-cfbdaa96-1d4c-43ee-b8b2-d2013e01addb';
   $pane->panel = 'center';
@@ -1489,11 +1461,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neues Thema
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 1;
+  $pane->position = 0;
   $pane->locks = array();
   $pane->uuid = 'cfbdaa96-1d4c-43ee-b8b2-d2013e01addb';
   $display->content['new-cfbdaa96-1d4c-43ee-b8b2-d2013e01addb'] = $pane;
-  $display->panels['center'][1] = 'new-cfbdaa96-1d4c-43ee-b8b2-d2013e01addb';
+  $display->panels['center'][0] = 'new-cfbdaa96-1d4c-43ee-b8b2-d2013e01addb';
   $pane = new stdClass();
   $pane->pid = 'new-db9f76c7-c1b9-49bd-bfdf-96533f4ade51';
   $pane->panel = 'center';
@@ -1516,11 +1488,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neues Thema
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 2;
+  $pane->position = 1;
   $pane->locks = array();
   $pane->uuid = 'db9f76c7-c1b9-49bd-bfdf-96533f4ade51';
   $display->content['new-db9f76c7-c1b9-49bd-bfdf-96533f4ade51'] = $pane;
-  $display->panels['center'][2] = 'new-db9f76c7-c1b9-49bd-bfdf-96533f4ade51';
+  $display->panels['center'][1] = 'new-db9f76c7-c1b9-49bd-bfdf-96533f4ade51';
   $pane = new stdClass();
   $pane->pid = 'new-cab0dcbb-116b-4741-8d67-ed6aecb2fed2';
   $pane->panel = 'center';
@@ -1543,11 +1515,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neues Thema
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 3;
+  $pane->position = 2;
   $pane->locks = array();
   $pane->uuid = 'cab0dcbb-116b-4741-8d67-ed6aecb2fed2';
   $display->content['new-cab0dcbb-116b-4741-8d67-ed6aecb2fed2'] = $pane;
-  $display->panels['center'][3] = 'new-cab0dcbb-116b-4741-8d67-ed6aecb2fed2';
+  $display->panels['center'][2] = 'new-cab0dcbb-116b-4741-8d67-ed6aecb2fed2';
   $pane = new stdClass();
   $pane->pid = 'new-0ccd70ae-f992-4272-a657-c4be449d7458';
   $pane->panel = 'center';
@@ -1578,16 +1550,571 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neues Thema
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 4;
+  $pane->position = 3;
   $pane->locks = array();
   $pane->uuid = '0ccd70ae-f992-4272-a657-c4be449d7458';
   $display->content['new-0ccd70ae-f992-4272-a657-c4be449d7458'] = $pane;
-  $display->panels['center'][4] = 'new-0ccd70ae-f992-4272-a657-c4be449d7458';
-  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->panels['center'][3] = 'new-0ccd70ae-f992-4272-a657-c4be449d7458';
+  $pane = new stdClass();
+  $pane->pid = 'new-f9870e43-99cb-4682-9489-c5d7330bb5fa';
+  $pane->panel = 'tools';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => '',
+    'title' => '',
+    'body' => '<?php
+if(section_content_authors_tools_access())
+echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrtext anlegen</a></p>\';
+
+?>',
+    'format' => 'php_code',
+    'substitute' => TRUE,
+    'title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'f9870e43-99cb-4682-9489-c5d7330bb5fa';
+  $display->content['new-f9870e43-99cb-4682-9489-c5d7330bb5fa'] = $pane;
+  $display->panels['tools'][0] = 'new-f9870e43-99cb-4682-9489-c5d7330bb5fa';
+  $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = 'new-0ccd70ae-f992-4272-a657-c4be449d7458';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['content_domain_overview'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'content_domain_preview';
+  $page->task = 'page';
+  $page->admin_title = 'content-domain-preview';
+  $page->admin_description = '';
+  $page->path = 'domain/preview/%1/!optional_nid';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_access',
+        'settings' => array(
+          'type' => 'view',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
+      1 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 30037204,
+            1 => 197637936,
+            2 => 16675960,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
+  );
+  $page->menu = array();
+  $page->arguments = array(
+    1 => array(
+      'id' => 1,
+      'identifier' => 'Beitrag: ID',
+      'name' => 'entity_id:node',
+      'settings' => array(),
+    ),
+    'optional_nid' => array(
+      'id' => 2,
+      'identifier' => 'Beitrag: optional',
+      'name' => 'entity_id:node',
+      'settings' => array(),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_content_domain_preview__panel_context_89d9b17c-90a5-4df8-82aa-65b76bf8b98e';
+  $handler->task = 'page';
+  $handler->subtask = 'content_domain_preview';
+  $handler->handler = 'panel_context';
+  $handler->weight = 2;
+  $handler->conf = array(
+    'title' => 'Panel',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'access' => array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'node_type',
+          'settings' => array(
+            'type' => array(
+              'content_domain' => 'content_domain',
+            ),
+          ),
+          'context' => 'argument_entity_id:node_1',
+          'not' => FALSE,
+        ),
+      ),
+      'logic' => 'and',
+    ),
+    'name' => '',
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible:span9span3_mobile_bottom_up';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'center' => NULL,
+      'outline' => NULL,
+      'tools' => NULL,
+      'navigation' => NULL,
+      'news' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '876d0461-4391-48e4-8124-1844f2f67393';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_content_domain_preview__panel_context_89d9b17c-90a5-4df8-82aa-65b76bf8b98e';
+  $display->content = array();
+  $display->panels = array();
+  $pane = new stdClass();
+  $pane->pid = 'new-125d30e0-ec3e-4772-bd79-dfb12f90333b';
+  $pane->panel = 'news';
+  $pane->type = 'block';
+  $pane->subtype = 'custom_general-custom_general_groupstate_badge';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '125d30e0-ec3e-4772-bd79-dfb12f90333b';
+  $display->content['new-125d30e0-ec3e-4772-bd79-dfb12f90333b'] = $pane;
+  $display->panels['news'][0] = 'new-125d30e0-ec3e-4772-bd79-dfb12f90333b';
+  $pane = new stdClass();
+  $pane->pid = 'new-a8acea0a-a611-4853-b68b-f25bc9b71aa6';
+  $pane->panel = 'news';
+  $pane->type = 'entity_field';
+  $pane->subtype = 'node:group_group';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'label' => 'title',
+    'formatter' => 'og_group_subscribe',
+    'delta_limit' => 0,
+    'delta_offset' => '0',
+    'delta_reversed' => FALSE,
+    'formatter_settings' => array(
+      'field_name' => '0',
+    ),
+    'context' => 'argument_entity_id:node_1',
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = 'a8acea0a-a611-4853-b68b-f25bc9b71aa6';
+  $display->content['new-a8acea0a-a611-4853-b68b-f25bc9b71aa6'] = $pane;
+  $display->panels['news'][1] = 'new-a8acea0a-a611-4853-b68b-f25bc9b71aa6';
+  $pane = new stdClass();
+  $pane->pid = 'new-9e4b8000-18ca-451d-bfe0-dc2b9060d434';
+  $pane->panel = 'news';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_link_to_fulltext';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '9e4b8000-18ca-451d-bfe0-dc2b9060d434';
+  $display->content['new-9e4b8000-18ca-451d-bfe0-dc2b9060d434'] = $pane;
+  $display->panels['news'][2] = 'new-9e4b8000-18ca-451d-bfe0-dc2b9060d434';
+  $pane = new stdClass();
+  $pane->pid = 'new-af5545fc-55ee-4251-adee-dedfe09d8f6a';
+  $pane->panel = 'tools';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'preview',
+    'title' => '-- Vorschau --',
+    'title_heading' => 'h2',
+    'body' => '',
+    'format' => 'filtered_html',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'af5545fc-55ee-4251-adee-dedfe09d8f6a';
+  $display->content['new-af5545fc-55ee-4251-adee-dedfe09d8f6a'] = $pane;
+  $display->panels['tools'][0] = 'new-af5545fc-55ee-4251-adee-dedfe09d8f6a';
+  $pane = new stdClass();
+  $pane->pid = 'new-87c73d1d-3012-4ded-9ce6-95ea4bf9852b';
+  $pane->panel = 'tools';
+  $pane->type = 'entity_view';
+  $pane->subtype = 'node';
+  $pane->shown = TRUE;
+  $pane->access = array(
+    'plugins' => array(),
+  );
+  $pane->configuration = array(
+    'view_mode' => 'full',
+    'context' => 'argument_entity_id:node_1',
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = '87c73d1d-3012-4ded-9ce6-95ea4bf9852b';
+  $display->content['new-87c73d1d-3012-4ded-9ce6-95ea4bf9852b'] = $pane;
+  $display->panels['tools'][1] = 'new-87c73d1d-3012-4ded-9ce6-95ea4bf9852b';
+  $pane = new stdClass();
+  $pane->pid = 'new-7553bf90-888a-42b2-bb62-77e02186f4fb';
+  $pane->panel = 'tools';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_node_tabs';
+  $pane->shown = FALSE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 0,
+    'override_title_text' => '',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '7553bf90-888a-42b2-bb62-77e02186f4fb';
+  $display->content['new-7553bf90-888a-42b2-bb62-77e02186f4fb'] = $pane;
+  $display->panels['tools'][2] = 'new-7553bf90-888a-42b2-bb62-77e02186f4fb';
+  $pane = new stdClass();
+  $pane->pid = 'new-867a6f59-1ee3-4488-8d03-cee89a28c347';
+  $pane->panel = 'tools';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_text_outline';
+  $pane->shown = FALSE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 3;
+  $pane->locks = array();
+  $pane->uuid = '867a6f59-1ee3-4488-8d03-cee89a28c347';
+  $display->content['new-867a6f59-1ee3-4488-8d03-cee89a28c347'] = $pane;
+  $display->panels['tools'][3] = 'new-867a6f59-1ee3-4488-8d03-cee89a28c347';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_content_domain_preview__no_access_to_rest';
+  $handler->task = 'page';
+  $handler->subtask = 'content_domain_preview';
+  $handler->handler = 'panel_context';
+  $handler->weight = 3;
+  $handler->conf = array(
+    'title' => 'no_access_to_rest',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'access' => array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'node_type',
+          'settings' => array(
+            'type' => array(
+              'content_domain' => 'content_domain',
+            ),
+          ),
+          'context' => 'argument_entity_id:node_1',
+          'not' => TRUE,
+        ),
+      ),
+      'logic' => 'and',
+    ),
+    'name' => 'no_access_to_rest',
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible:span9span3_mobile_bottom_up';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'center' => NULL,
+      'outline' => NULL,
+      'tools' => NULL,
+      'navigation' => NULL,
+      'news' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = '876d0461-4391-48e4-8124-1844f2f67393';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_content_domain_preview__no_access_to_rest';
+  $display->content = array();
+  $display->panels = array();
+  $pane = new stdClass();
+  $pane->pid = 'new-95ba47fe-9f63-4a85-acda-79cb654ae271';
+  $pane->panel = 'news';
+  $pane->type = 'block';
+  $pane->subtype = 'custom_general-custom_general_groupstate_badge';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '95ba47fe-9f63-4a85-acda-79cb654ae271';
+  $display->content['new-95ba47fe-9f63-4a85-acda-79cb654ae271'] = $pane;
+  $display->panels['news'][0] = 'new-95ba47fe-9f63-4a85-acda-79cb654ae271';
+  $pane = new stdClass();
+  $pane->pid = 'new-a8acea0a-a611-4853-b68b-f25bc9b71aa6';
+  $pane->panel = 'news';
+  $pane->type = 'entity_field';
+  $pane->subtype = 'node:group_group';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'label' => 'title',
+    'formatter' => 'og_group_subscribe',
+    'delta_limit' => 0,
+    'delta_offset' => '0',
+    'delta_reversed' => FALSE,
+    'formatter_settings' => array(
+      'field_name' => '0',
+    ),
+    'context' => 'argument_entity_id:node_1',
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = 'a8acea0a-a611-4853-b68b-f25bc9b71aa6';
+  $display->content['new-a8acea0a-a611-4853-b68b-f25bc9b71aa6'] = $pane;
+  $display->panels['news'][1] = 'new-a8acea0a-a611-4853-b68b-f25bc9b71aa6';
+  $pane = new stdClass();
+  $pane->pid = 'new-9e4b8000-18ca-451d-bfe0-dc2b9060d434';
+  $pane->panel = 'news';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_link_to_fulltext';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '9e4b8000-18ca-451d-bfe0-dc2b9060d434';
+  $display->content['new-9e4b8000-18ca-451d-bfe0-dc2b9060d434'] = $pane;
+  $display->panels['news'][2] = 'new-9e4b8000-18ca-451d-bfe0-dc2b9060d434';
+  $pane = new stdClass();
+  $pane->pid = 'new-45316a9c-20b7-4b35-a579-c37782f41b38';
+  $pane->panel = 'tools';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'no access',
+    'title' => '%1:title',
+    'title_heading' => 'h2',
+    'body' => '<p><strong>Kein Zugriff</strong></p><p>Nur Mitglieder haben Zugriff auf die Unterkapitel.</p>',
+    'format' => 'filtered_html',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '45316a9c-20b7-4b35-a579-c37782f41b38';
+  $display->content['new-45316a9c-20b7-4b35-a579-c37782f41b38'] = $pane;
+  $display->panels['tools'][0] = 'new-45316a9c-20b7-4b35-a579-c37782f41b38';
+  $pane = new stdClass();
+  $pane->pid = 'new-7553bf90-888a-42b2-bb62-77e02186f4fb';
+  $pane->panel = 'tools';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_node_tabs';
+  $pane->shown = FALSE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 0,
+    'override_title_text' => '',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = '7553bf90-888a-42b2-bb62-77e02186f4fb';
+  $display->content['new-7553bf90-888a-42b2-bb62-77e02186f4fb'] = $pane;
+  $display->panels['tools'][1] = 'new-7553bf90-888a-42b2-bb62-77e02186f4fb';
+  $pane = new stdClass();
+  $pane->pid = 'new-867a6f59-1ee3-4488-8d03-cee89a28c347';
+  $pane->panel = 'tools';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_text_outline';
+  $pane->shown = FALSE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '867a6f59-1ee3-4488-8d03-cee89a28c347';
+  $display->content['new-867a6f59-1ee3-4488-8d03-cee89a28c347'] = $pane;
+  $display->panels['tools'][2] = 'new-867a6f59-1ee3-4488-8d03-cee89a28c347';
+  $pane = new stdClass();
+  $pane->pid = 'new-db8e6e72-0c53-4c4a-8d81-1cdbbbe9360f';
+  $pane->panel = 'tools';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_link_to_lehrtext_home';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 3;
+  $pane->locks = array();
+  $pane->uuid = 'db8e6e72-0c53-4c4a-8d81-1cdbbbe9360f';
+  $display->content['new-db8e6e72-0c53-4c4a-8d81-1cdbbbe9360f'] = $pane;
+  $display->panels['tools'][3] = 'new-db8e6e72-0c53-4c4a-8d81-1cdbbbe9360f';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['content_domain_preview'] = $page;
 
   $page = new stdClass();
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
