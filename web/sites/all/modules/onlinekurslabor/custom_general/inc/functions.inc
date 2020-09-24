@@ -583,16 +583,26 @@ function _custom_general_book_get_parents(&$subtree_pointer, $active_mlid) {
   return $parents;
 }
 
+
 /**
- * Get all users of a group
+ * Get all users of a group not limited to a role.
+ * @see custom_general_get_users_in_group_by_role_real
+ * @param int $gid GroupID - e.g. course-nid
+ * @param bool $only_approved_users onlyActive users - no blocked/pending
+ * @return array $users
  */
-function custom_general_get_users_in_group($gid) {
+function custom_general_get_users_in_group($gid, $only_approved_users = false) {
   $query = db_select('users', 'u');
 
+  $user_states = array(OG_STATE_ACTIVE, OG_STATE_PENDING, OG_STATE_BLOCKED);
+  if($only_approved_users)
+  {
+    $user_states = array(OG_STATE_ACTIVE);
+  }
   $query->condition('u.uid', 0, '<>')
       ->condition('u.status', 1, '=')
       ->fields('u', array('uid', 'name'))
-      ->join('og_membership', 'ogm', "ogm.gid = :gid AND u.uid = ogm.etid AND ogm.entity_type = 'user'", array(':gid' => $gid));
+      ->join('og_membership', 'ogm', "ogm.gid = :gid AND u.uid = ogm.etid AND ogm.entity_type = 'user' AND ogm.state IN (:array_user_states)", array(':gid' => $gid, ':array_user_states' => $user_states));
 
   $result = $query->execute();
 

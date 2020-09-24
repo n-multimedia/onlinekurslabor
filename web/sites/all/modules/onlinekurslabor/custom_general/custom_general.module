@@ -529,9 +529,28 @@ function _custom_general_get_group_state_for_user($og_group, $user_account = nul
   }
 
   $og_membership = og_get_membership('node', $og_group->nid, 'user', $user_account->uid);
-  
+  if(!$og_membership)
+  {
+    return false;
+  }
   return $og_membership->state;
     
+}
+
+/**
+ * gets all og-roles of the plattform. member, kurs-dozent, kurs-tutor etc.
+ * @return array $list key->value (samesame)
+ */
+function _custom_general_get_og_group_roles()
+{
+  $og_base = og_get_default_roles();
+  $all_roles = [];
+  foreach($og_base as $rolename)
+  {
+    $all_roles[$rolename] = $rolename;
+  }
+  $all_roles = array_merge($all_roles, _section_courses_get_default_course_roles());
+  return $all_roles;
 }
 
 
