@@ -41,13 +41,13 @@ function _section_course_active() {
 function _section_domain_author_section_active($path = NULL) {
   $book_active = (arg(0, $path) == 'admin' && arg(1, $path) == 'content' && arg(2, $path) == 'book' );
   $biblio_active = (arg(0, $path) == 'node' && arg(1, $path) == 'add' && arg(2, $path) == 'biblio' ); //not necessary ?
-  $media_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'media');
   $biblio_overview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'biblio');
   $members_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'members');
   $tasks_overview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'tasks');
   $h5p_overview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'h5p');
   $domain_text_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'text');
   $domain_preview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'preview');
+  $domain_stats_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'stats');
   $domain_add_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'add');
   $domain_edit_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'edit');
   $domain_delete_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'delete');
@@ -57,8 +57,9 @@ function _section_domain_author_section_active($path = NULL) {
   $ajax_linkit_h5p = (arg(0, $path) == 'h5p_integration' && arg(1, $path) == 'item' && arg(2, $path) == 'autocomplete');
 
   return $biblio_active || $biblio_overview_active ||
-      $media_active || $book_active ||
-      $tasks_overview_active || $domain_text_active || $domain_preview_active ||
+      $book_active ||
+      $tasks_overview_active || $domain_text_active ||
+      $domain_preview_active || $domain_stats_active ||
       $domain_add_active || $domain_edit_active ||
       $domain_delete_active || $h5p_overview_active || $ajax_linkit_tasks ||
       $ajax_linkit_h5p || $members_active;

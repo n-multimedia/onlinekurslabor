@@ -249,8 +249,6 @@ function _section_courses_get_authors_tools() {
   $links['author_biblio_overview']['label'] = "Biblio";
   $links['author_biblio_overview']['label_long'] = "Biblio verwalten";
 
-  $links['author_media_overview']['label'] = "Medien";
-  $links['author_media_overview']['label_long'] = "Medien";
 
   $links['author_category_interactive']['label'] = "Interaktiv";
   $links['author_category_interactive']['label_long'] = "Interaktive Inhalte";
@@ -273,10 +271,19 @@ function _section_courses_get_authors_tools() {
   $links['author_tasks_overview']['label'] = "Aufgaben";
   $links['author_tasks_overview']['label_long'] = "Aufgaben verwalten";
 
-
+  $links['author_category_config']['label'] = "Lehrtext";
+  $links['author_category_config']['label_long'] = "Lehrtextkonfiguration";
+  
+  $links['auth_domain_stats']['label'] = "LT-Stat";
+  $links['auth_domain_stats']['label_long'] = "Statistik & Info";
+  
+  $links['auth_domain_members']['label'] = "Mitglieder";
+  $links['auth_domain_members']['label_long'] = "Mitglieder verwalten";
+  
   $links['auth_domain_settings']['label'] = "Lehrtext";
   $links['auth_domain_settings']['label_long'] = "Lehrtexteinstellungen";
 
+  
   //Groups
   $links['author_category_chapter']['group']['gid'] = 1;
   $links['author_category_chapter']['group']['root'] = TRUE;
@@ -289,25 +296,26 @@ function _section_courses_get_authors_tools() {
   $links['author_biblio_add']['group']['gid'] = 3;
   $links['author_biblio_overview']['group']['gid'] = 3;
 
-  $links['author_media_overview']['group']['gid'] = 4;
-  $links['author_media_overview']['group']['root'] = TRUE;
-
-  $links['author_category_tasks']['group']['gid'] = 5;
+  $links['author_category_tasks']['group']['gid'] = 4;
   $links['author_category_tasks']['group']['root'] = TRUE;
-  $links['author_tasks_mc_add']['group']['gid'] = 5;
-  $links['author_tasks_qaa_add']['group']['gid'] = 5;
-  $links['author_tasks_overview']['group']['gid'] = 5;
+  $links['author_tasks_mc_add']['group']['gid'] = 4;
+  $links['author_tasks_qaa_add']['group']['gid'] = 4;
+  $links['author_tasks_overview']['group']['gid'] = 4;
 
-  $links['author_category_interactive']['group']['gid'] = 6;
+  $links['author_category_interactive']['group']['gid'] = 5;
   $links['author_category_interactive']['group']['root'] = TRUE;
-  $links['author_interactive_overview']['group']['gid'] = 6;
-  $links['author_h5p_add']['group']['gid'] = 6;
+  $links['author_interactive_overview']['group']['gid'] = 5;
+  $links['author_h5p_add']['group']['gid'] = 5;
   if (module_exists('annvid')) {
-    $links['author_annvid_add']['group']['gid'] = 6;
+    $links['author_annvid_add']['group']['gid'] = 5;
   }
 
-  $links['auth_domain_settings']['group']['gid'] = 7;
-  $links['auth_domain_settings']['group']['root'] = TRUE;
+  $links['author_category_config']['group']['gid'] = 6;
+  $links['author_category_config']['group']['root'] = TRUE;
+  $links['auth_domain_stats']['group']['gid'] = 6;
+  $links['auth_domain_members']['group']['gid'] = 6;
+  $links['auth_domain_settings']['group']['gid'] = 6;
+
 
   $path = 'domain/text/' . $group_id . '/rearrange';
   $id = 'author_category_chapter';
@@ -354,12 +362,6 @@ function _section_courses_get_authors_tools() {
   $id = 'author_biblio_overview';
   $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
 
-
-  $path = 'domain/media/' . $group_id;
-  $id = 'author_media_overview';
-  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
-
-
   $path = 'domain/h5p/' . $group_id;
   $id = 'author_category_interactive';
   $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
@@ -405,6 +407,22 @@ function _section_courses_get_authors_tools() {
   $id = 'author_tasks_overview';
   $label = $links[$id];
   $links[$id] += _custom_general_get_structered_tool_link($id, $label, $path, $default_options);
+
+  
+  //Lehrtext-Konfiguration
+  $path = 'domain/edit/' . $group_id;
+  $id = 'author_category_config';
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
+
+  $path = 'domain/stats/' . $group_id;
+  $id = 'auth_domain_stats';
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
+
+  
+  $path = 'domain/members/' . $group_id;
+  $id = 'auth_domain_members';
+  $links[$id] += _custom_general_get_structered_tool_link($id, $links[$id], $path, $default_options);
+
 
   //settings
   $path = 'domain/edit/' . $group_id;
