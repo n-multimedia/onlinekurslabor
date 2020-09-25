@@ -46,6 +46,9 @@ msgstr "Vollansicht: !s"
 msgid "Membership state"
 msgstr "Status der Mitgliedschaft"
 
+msgid "Usage in courses"
+msgstr "Verwendung in Kursen"
+
 msgid ""
 msgstr ""
 

@@ -2172,6 +2172,203 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $page = new stdClass();
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
   $page->api_version = 1;
+  $page->name = 'content_domain_stats';
+  $page->task = 'page';
+  $page->admin_title = 'content-domain-stats';
+  $page->admin_description = '';
+  $page->path = 'domain/stats/%1';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'node_access',
+        'settings' => array(
+          'type' => 'update',
+        ),
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
+  );
+  $page->menu = array();
+  $page->arguments = array(
+    1 => array(
+      'id' => 1,
+      'identifier' => 'Beitrag: ID',
+      'name' => 'entity_id:node',
+      'settings' => array(),
+    ),
+  );
+  $page->conf = array(
+    'admin_paths' => FALSE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass();
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_content_domain_stats__panel_context_21358ad9-b863-4179-9d58-c9bdcd7df271';
+  $handler->task = 'page';
+  $handler->subtask = 'content_domain_stats';
+  $handler->handler = 'panel_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Panel',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'body_classes_to_remove' => '',
+    'body_classes_to_add' => '',
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'access' => array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'node_type',
+          'settings' => array(
+            'type' => array(
+              'content_domain' => 'content_domain',
+            ),
+          ),
+          'context' => 'argument_entity_id:node_1',
+          'not' => FALSE,
+        ),
+      ),
+      'logic' => 'and',
+    ),
+    'name' => '',
+  );
+  $display = new panels_display();
+  $display->layout = 'flexible:span4span8';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'center' => NULL,
+      'outline' => NULL,
+      'tools' => NULL,
+      'navigation' => NULL,
+    ),
+    'center' => array(
+      'style' => 'tabs',
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->uuid = 'd71c9f71-33fe-472f-8843-ea88a58ffd27';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'page_content_domain_stats__panel_context_21358ad9-b863-4179-9d58-c9bdcd7df271';
+  $display->content = array();
+  $display->panels = array();
+  $pane = new stdClass();
+  $pane->pid = 'new-6f4a2837-30bc-4c82-ae54-5f08ab895657';
+  $pane->panel = 'center';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_lt_usage_block';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '6f4a2837-30bc-4c82-ae54-5f08ab895657';
+  $display->content['new-6f4a2837-30bc-4c82-ae54-5f08ab895657'] = $pane;
+  $display->panels['center'][0] = 'new-6f4a2837-30bc-4c82-ae54-5f08ab895657';
+  $pane = new stdClass();
+  $pane->pid = 'new-45b86522-e0b3-4f55-85f6-e34fdfe5628b';
+  $pane->panel = 'center';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'domain_media-panel_pane_1';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 1,
+    'override_title_text' => 'Medienübersicht',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = '45b86522-e0b3-4f55-85f6-e34fdfe5628b';
+  $display->content['new-45b86522-e0b3-4f55-85f6-e34fdfe5628b'] = $pane;
+  $display->panels['center'][1] = 'new-45b86522-e0b3-4f55-85f6-e34fdfe5628b';
+  $pane = new stdClass();
+  $pane->pid = 'new-da0b6e9e-7a2b-42d5-9ff2-3de7bff3a02d';
+  $pane->panel = 'center';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => '',
+    'title' => 'Lehrtext exportieren',
+    'title_heading' => 'h2',
+    'body' => '<p>Sie können diesen Lehrtext auf einer einzelnen Seite ausgeben lassen und bspw. als PDF abspeichern.</p><p><em>Die Darstellung kann abweichen; interaktive Elemente wie Videos sowie andere Medien außer Bildern sind nicht enthalten</em></p><p><strong><a href="/book/export/html/%1:nid" target="_blank">Export starten</a></strong></p>',
+    'format' => 'filtered_html',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = 'da0b6e9e-7a2b-42d5-9ff2-3de7bff3a02d';
+  $display->content['new-da0b6e9e-7a2b-42d5-9ff2-3de7bff3a02d'] = $pane;
+  $display->panels['center'][2] = 'new-da0b6e9e-7a2b-42d5-9ff2-3de7bff3a02d';
+  $pane = new stdClass();
+  $pane->pid = 'new-8f16e9aa-1e2a-44d6-b6ad-7cb278edc060';
+  $pane->panel = 'navigation';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_text_outline';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '8f16e9aa-1e2a-44d6-b6ad-7cb278edc060';
+  $display->content['new-8f16e9aa-1e2a-44d6-b6ad-7cb278edc060'] = $pane;
+  $display->panels['navigation'][0] = 'new-8f16e9aa-1e2a-44d6-b6ad-7cb278edc060';
+  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->title_pane = '0';
+  $handler->conf['display'] = $display;
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['content_domain_stats'] = $page;
+
+  $page = new stdClass();
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
   $page->name = 'content_domain_text';
   $page->task = 'page';
   $page->admin_title = 'content-domain-text';

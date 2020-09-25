@@ -30,6 +30,9 @@ function section_content_block_info() {
    $blocks['content_link_to_lehrtext_home'] = array(
     'info' => t('Content - Link to domain home'),
   );
+   $blocks['content_lt_usage_block'] = array(
+    'info' => t('Content - Show course-usage of this domain'),
+  );
 
    
   return $blocks;
@@ -65,6 +68,12 @@ function section_content_block_view($delta = '') {
     case 'content_link_to_lehrtext_home':
         $block['content'] = l($current_domain->title, DIRECTORY_SEPARATOR.'node'.DIRECTORY_SEPARATOR.$current_domain->nid);
      break;
+    case 'content_lt_usage_block':
+      $block['subject'] =  t("Usage in courses");
+      $block['content'] = array(
+        '#title' =>  t("Usage in courses"),
+        '#markup' => _section_content_get_rendered_usage_in_course_block());
+      break;
   }
 
 
@@ -106,35 +115,6 @@ function _section_content_theme_node_revisions() {
  * Dynamically modify book titles, adding numbering to the beginning.
  */
 function section_content_node_view($node, $view_mode, $langcode) {
-    /* Zeigt Verwendung: in Kursen... als Demo an */
-    //Aktueller Node ist Themen-Ansicht, aber nicht innerhalb eines Kurses
-    if (in_array($node->type, array(NM_CONTENT_DOMAIN)) && !_section_courses_get_active_course()) {
-
-        $html_output__view_usage_in = "";
-        //die zwei view-varianten: als kurs-lehrtext und als-demo-lehrtext
-        $display_ids = array('usage_lehrtext', 'usage_demo_lehrtext');
-        foreach ($display_ids as $display_id) {
-            $view_usage_in = views_get_view('content_show_usage_in_courses');
-            $view_usage_in->set_arguments(array($node->nid));
-            //die panel-variante setzen
-            $view_usage_in->set_display($display_id);
-            //ausfuehren des views
-            $view_usage_in->execute($display_id);
-            //preview enables ajax-next-pager!!
-            $view_usage_in->preview($display_id);
-            //holt anzahl eintraege
-            //gibts einträge? dann diese anzeigen; sonst: 404
-                $html_output__view_usage_in .= $view_usage_in->get_title() .( $view_usage_in->total_rows? $view_usage_in->render($display_id):"<br><i>&nbsp;&nbsp;- keine - </i><br>");
-
-        }
-
-
-        //Zeigt oberhalb des Inhaltsverzeichnis, in welchen Kursen dieser LT genutzt wird
-        if ($html_output__view_usage_in) {
-            $node->content['content_usage']['#markup'] = '<hr><h3>' . t('Verwendung in Kursen') . '</h3>' . $html_output__view_usage_in;
-            $node->content['content_usage']['#weight'] = 50;
-        }
-    }
 
 //test todo remove
 //dpm(section_author($node->nid));
@@ -1516,7 +1496,34 @@ function _section_content_get_active_domain($reset = FALSE) {
 }
 
 
-/**
+function _section_content_get_rendered_usage_in_course_block() {
+  $current_domain = _section_content_get_active_domain();
+  if (!$current_domain) {
+    return "--error--";
+  }
+  /* Zeigt Verwendung: in Kursen... als Demo an */
+
+
+  $html_output__view_usage_in = "";
+  //die zwei view-varianten: als kurs-lehrtext und als-demo-lehrtext
+  $display_ids = array('usage_lehrtext', 'usage_demo_lehrtext');
+  foreach ($display_ids as $display_id) {
+    $view_usage_in = views_get_view('content_show_usage_in_courses');
+    $view_usage_in->set_arguments(array($current_domain->nid));
+    //die panel-variante setzen
+    $view_usage_in->set_display($display_id);
+    //ausfuehren des views
+    $view_usage_in->execute($display_id);
+    //preview enables ajax-next-pager!!
+    $view_usage_in->preview($display_id);
+    //holt anzahl eintraege
+    //gibts einträge? dann diese anzeigen; sonst: 404
+    $html_output__view_usage_in .= $view_usage_in->get_title() . ( $view_usage_in->total_rows ? $view_usage_in->render($display_id) : "<br><i>&nbsp;&nbsp;- keine - </i><br>");
+  }
+  return $html_output__view_usage_in;
+}
+
+  /**
  * Holt Lehrtexte, die in Kursen als Demo-LT eingebunden sind und somit öffentlich zugänglich sind.
  * @return array
  */
