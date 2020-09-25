@@ -1285,6 +1285,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
@@ -1341,7 +1342,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['allow']['offset'] = 'offset';
   $handler->display->display_options['allow']['link_to_view'] = 0;
   $handler->display->display_options['allow']['more_link'] = 0;
-  $handler->display->display_options['allow']['path_override'] = 0;
+  $handler->display->display_options['allow']['path_override'] = 'path_override';
   $handler->display->display_options['allow']['title_override'] = 'title_override';
   $handler->display->display_options['allow']['exposed_form'] = 0;
   $handler->display->display_options['allow']['fields_override'] = 0;
@@ -1389,6 +1390,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
@@ -1425,7 +1427,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['allow']['offset'] = 'offset';
   $handler->display->display_options['allow']['link_to_view'] = 0;
   $handler->display->display_options['allow']['more_link'] = 0;
-  $handler->display->display_options['allow']['path_override'] = 0;
+  $handler->display->display_options['allow']['path_override'] = 'path_override';
   $handler->display->display_options['allow']['title_override'] = 'title_override';
   $handler->display->display_options['allow']['exposed_form'] = 0;
   $handler->display->display_options['allow']['fields_override'] = 0;

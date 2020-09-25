@@ -1423,13 +1423,14 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
     'relationships' => array(),
   );
   $display = new panels_display();
-  $display->layout = 'flexible:span11span1';
+  $display->layout = 'flexible:span8span4_mobile_bottom_up';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
       'default' => NULL,
       'center' => NULL,
       'tools' => NULL,
+      'news' => NULL,
     ),
   );
   $display->cache = array();
@@ -1440,8 +1441,88 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
+  $pane->pid = 'new-59380199-5ffc-40f8-a68f-ee83ec0f49ce';
+  $pane->panel = 'news';
+  $pane->type = 'block';
+  $pane->subtype = 'views-39b270ef35cd36d59833b7fb869475ea';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'inherit_path' => 1,
+    'override_title' => 1,
+    'override_title_text' => 'Nach Titel filtern',
+    'override_title_heading' => 'div',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '59380199-5ffc-40f8-a68f-ee83ec0f49ce';
+  $display->content['new-59380199-5ffc-40f8-a68f-ee83ec0f49ce'] = $pane;
+  $display->panels['news'][0] = 'new-59380199-5ffc-40f8-a68f-ee83ec0f49ce';
+  $pane = new stdClass();
+  $pane->pid = 'new-c64ae76c-2207-474a-ae5f-b85034a7a8fb';
+  $pane->panel = 'news';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = FALSE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'admin-info',
+    'title' => 'Infos fürn Admin',
+    'title_heading' => 'h2',
+    'body' => '<p>hier wird die exposed form für "meine lehrtexte" - filter: titel angezeigt admin/structure/views/view/courses_user_domains/edit/my_domains</p><p>dieser filter funktioniert zugleich für "alle lehrtexte", obwohl exposed form nicht dargestellt, da in der adresszeile der parameter ?title=... mitgegeben wird und der identifier für "meine lehrtexte" der gleiche wie für "alle lehrtexte"</p>',
+    'format' => 'filtered_html',
+    'substitute' => TRUE,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = 'c64ae76c-2207-474a-ae5f-b85034a7a8fb';
+  $display->content['new-c64ae76c-2207-474a-ae5f-b85034a7a8fb'] = $pane;
+  $display->panels['news'][1] = 'new-c64ae76c-2207-474a-ae5f-b85034a7a8fb';
+  $pane = new stdClass();
+  $pane->pid = 'new-f9870e43-99cb-4682-9489-c5d7330bb5fa';
+  $pane->panel = 'news';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => '',
+    'title' => '',
+    'body' => '<?php
+if(section_content_authors_tools_access())
+echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrtext anlegen</a></p>\';
+
+?>',
+    'format' => 'php_code',
+    'substitute' => TRUE,
+    'title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = 'f9870e43-99cb-4682-9489-c5d7330bb5fa';
+  $display->content['new-f9870e43-99cb-4682-9489-c5d7330bb5fa'] = $pane;
+  $display->panels['news'][2] = 'new-f9870e43-99cb-4682-9489-c5d7330bb5fa';
+  $pane = new stdClass();
   $pane->pid = 'new-cfbdaa96-1d4c-43ee-b8b2-d2013e01addb';
-  $pane->panel = 'center';
+  $pane->panel = 'tools';
   $pane->type = 'views_panes';
   $pane->subtype = 'courses_user_domains-my_domains';
   $pane->shown = TRUE;
@@ -1454,6 +1535,7 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
     'override_title' => 0,
     'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'path' => '/domains',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1465,10 +1547,10 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $pane->locks = array();
   $pane->uuid = 'cfbdaa96-1d4c-43ee-b8b2-d2013e01addb';
   $display->content['new-cfbdaa96-1d4c-43ee-b8b2-d2013e01addb'] = $pane;
-  $display->panels['center'][0] = 'new-cfbdaa96-1d4c-43ee-b8b2-d2013e01addb';
+  $display->panels['tools'][0] = 'new-cfbdaa96-1d4c-43ee-b8b2-d2013e01addb';
   $pane = new stdClass();
   $pane->pid = 'new-db9f76c7-c1b9-49bd-bfdf-96533f4ade51';
-  $pane->panel = 'center';
+  $pane->panel = 'tools';
   $pane->type = 'custom';
   $pane->subtype = 'custom';
   $pane->shown = TRUE;
@@ -1492,10 +1574,10 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $pane->locks = array();
   $pane->uuid = 'db9f76c7-c1b9-49bd-bfdf-96533f4ade51';
   $display->content['new-db9f76c7-c1b9-49bd-bfdf-96533f4ade51'] = $pane;
-  $display->panels['center'][1] = 'new-db9f76c7-c1b9-49bd-bfdf-96533f4ade51';
+  $display->panels['tools'][1] = 'new-db9f76c7-c1b9-49bd-bfdf-96533f4ade51';
   $pane = new stdClass();
   $pane->pid = 'new-cab0dcbb-116b-4741-8d67-ed6aecb2fed2';
-  $pane->panel = 'center';
+  $pane->panel = 'tools';
   $pane->type = 'views_panes';
   $pane->subtype = 'courses_user_domains-all_domains';
   $pane->shown = TRUE;
@@ -1503,11 +1585,12 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $pane->configuration = array(
     'use_pager' => 1,
     'pager_id' => '2',
-    'items_per_page' => '30',
+    'items_per_page' => '40',
     'offset' => '0',
     'override_title' => 0,
     'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'path' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1519,10 +1602,10 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $pane->locks = array();
   $pane->uuid = 'cab0dcbb-116b-4741-8d67-ed6aecb2fed2';
   $display->content['new-cab0dcbb-116b-4741-8d67-ed6aecb2fed2'] = $pane;
-  $display->panels['center'][2] = 'new-cab0dcbb-116b-4741-8d67-ed6aecb2fed2';
+  $display->panels['tools'][2] = 'new-cab0dcbb-116b-4741-8d67-ed6aecb2fed2';
   $pane = new stdClass();
   $pane->pid = 'new-0ccd70ae-f992-4272-a657-c4be449d7458';
-  $pane->panel = 'center';
+  $pane->panel = 'tools';
   $pane->type = 'views';
   $pane->subtype = 'content_gebiete_bersicht';
   $pane->shown = FALSE;
@@ -1554,37 +1637,7 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $pane->locks = array();
   $pane->uuid = '0ccd70ae-f992-4272-a657-c4be449d7458';
   $display->content['new-0ccd70ae-f992-4272-a657-c4be449d7458'] = $pane;
-  $display->panels['center'][3] = 'new-0ccd70ae-f992-4272-a657-c4be449d7458';
-  $pane = new stdClass();
-  $pane->pid = 'new-f9870e43-99cb-4682-9489-c5d7330bb5fa';
-  $pane->panel = 'tools';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'admin_title' => '',
-    'title' => '',
-    'body' => '<?php
-if(section_content_authors_tools_access())
-echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrtext anlegen</a></p>\';
-
-?>',
-    'format' => 'php_code',
-    'substitute' => TRUE,
-    'title_heading' => 'h2',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'f9870e43-99cb-4682-9489-c5d7330bb5fa';
-  $display->content['new-f9870e43-99cb-4682-9489-c5d7330bb5fa'] = $pane;
-  $display->panels['tools'][0] = 'new-f9870e43-99cb-4682-9489-c5d7330bb5fa';
+  $display->panels['tools'][3] = 'new-0ccd70ae-f992-4272-a657-c4be449d7458';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = 'new-0ccd70ae-f992-4272-a657-c4be449d7458';
   $handler->conf['display'] = $display;
