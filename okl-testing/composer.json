@@ -2,7 +2,6 @@
     "require-dev": {
         "codeception/module-webdriver": "1.0.7",
         "codeception/codeception": "^4.0",
-        "ixis/codeception-module-drupal-user-registry": "~0.2.1",
         "fzaninotto/faker": "1.8.0",
         "frequenc1/newage-ipsum":"dev-master",
         "null/realisticfaker":"dev-master"

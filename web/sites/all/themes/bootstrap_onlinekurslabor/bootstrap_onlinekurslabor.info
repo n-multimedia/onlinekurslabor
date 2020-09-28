@@ -12,9 +12,11 @@ regions[help]           = 'Help'
 regions[content]        = 'Content'
 regions[sidebar_first]  = 'Primary'
 regions[sidebar_second] = 'Secondary'
+regions[content_below]         = 'Underneath the content but above footer'
 regions[footer]         = 'Footer'
 regions[footer_region_left]         = 'Footer Region Left'
 regions[footer_region_right]         = 'Footer Region Right'
+
 
 ; Stylesheets
 stylesheets[all][] = css/style.css
@@ -62,3 +64,4 @@ scripts[] = 'js/custom.js'
 ; ;settings[toggle_search] = 1
 ; ;settings[cdn_bootstrap] = 1
 ; ;settings[cdn_bootstrap_version] = 2.3.2
+
