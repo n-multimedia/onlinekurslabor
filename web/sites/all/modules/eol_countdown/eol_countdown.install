@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the eol_countdown module.
+ */ 
+ 
+/**
+ * Implements hook_uninstall().
+ */
+function eol_countdown_uninstall() {
+  // Delete variables.
+  variable_del('eol_countdown_before');
+  variable_del('eol_countdown_after');
+  variable_del('eol_countdown_theme');
+  variable_del('eol_countdown_hide_days_secs');
+  variable_del('eol_countdown_whiteout');
+  variable_del('eol_countdown_whiteout_message');
+}

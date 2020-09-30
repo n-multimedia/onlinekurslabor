@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>jQuery dsCountDown Examples</title>
+<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+<link rel='stylesheet' href='dscountdown.css' type='text/css' media='all' />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!-- <script type="text/javascript" src="dscountdown.js"></script> -->
+<script type="text/javascript" src="dscountdown.min.js"></script>
+<script>
+			jQuery(document).ready(function($){
+				
+				$('.demo1').dsCountDown({
+					endDate: new Date("December 24, 2020 23:59:00")
+				});
+				
+				$('.demo2').dsCountDown({
+					endDate: new Date("December 24, 2020 23:59:00"),
+					theme: 'black'
+				});
+				
+				$('.demo3').dsCountDown({
+					endDate: new Date("December 24, 2020 23:59:00"),
+					theme: 'red'
+				});
+				
+				$('.demo4').dsCountDown({
+					endDate: new Date("December 24, 2020 23:59:00"),
+					theme: 'flat'
+				});
+				
+				$('.demo5').dsCountDown({
+					endDate: new Date("December 24, 2020 23:59:00"),
+					theme: 'custome'
+				});
+				
+				$('.demo6').dsCountDown({
+					endDate: new Date("December 24, 2020 23:59:00"),
+					titleDays: 'Hari',
+					titleHours: 'Jam',
+					titleMinutes: 'Menit',
+					titleSeconds: 'Detik'
+				});
+				
+				$('.demo7').dsCountDown({
+					startDate: new Date("December 24, 2020 23:59:00"), // this value is picked up by PHP script &lt;?php echo date('F d, Y h:i:s'); ?&gt;
+					endDate: new Date("December 24, 2020 23:59:00")
+				});
+				
+			});
+		</script>
+</head>
+<body id="ds-body">
+<div id="jquery-script-menu">
+<div class="jquery-script-center">
+<ul>
+<li><a href="http://www.jqueryscript.net/time-clock/Customizable-Themeable-jQuery-Countdown-Plugin-dsCountDown.html">Download This Plugin</a></li>
+<li><a href="http://www.jqueryscript.net/">Back To jQueryScript.Net</a></li>
+</ul>
+<div class="jquery-script-ads"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-2783044520727903";
+/* jQuery_demo */
+google_ad_slot = "2780937993";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+<div class="jquery-script-clear"></div>
+</div>
+</div>
+<div class="wrapper" style="margin-top:150px;">
+<h1>jQuery dsCountDown Examples</h1>
+<ul>
+<li>
+<h3>Themes</h3>
+<ul>
+<li>
+<h4>Default Theme</h4>
+<br/>
+<div class="demo1"></div>
+</li>
+<li>
+<h4>Black Theme</h4>
+<div class="demo2"></div>
+</li>
+<li>
+<h4>Red Theme</h4>
+<div class="demo3"></div>
+
+</li>
+<li>
+<h4>Flat Theme</h4>
+<div class="demo4"></div>
+
+</li>
+<li>
+<h4>Custom Theme (Not Styled)</h4>
+<div class="demo5"></div>
+</li>
+</ul>
+</li>
+<li>
+<h3>Language</h3>
+<br/>
+<div class="demo6"></div>
+
+</li>
+<li>
+<h3>Server Time (PHP Script)</h3>
+<br/>
+<p>Use server time for the count down, don't care about client time.</p>
+<div class="demo7"></div>
+</li>
+</ul>
+</div>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</body>
+</html>
