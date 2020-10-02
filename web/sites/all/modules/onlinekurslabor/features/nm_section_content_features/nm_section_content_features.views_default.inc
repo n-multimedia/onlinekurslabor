@@ -1169,6 +1169,17 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['relationships']['og_membership_related_user']['table'] = 'og_membership';
   $handler->display->display_options['relationships']['og_membership_related_user']['field'] = 'og_membership_related_user';
   $handler->display->display_options['relationships']['og_membership_related_user']['relationship'] = 'og_membership_rel_group';
+  /* Field: Content: Group visibility */
+  $handler->display->display_options['fields']['group_access']['id'] = 'group_access';
+  $handler->display->display_options['fields']['group_access']['table'] = 'field_data_group_access';
+  $handler->display->display_options['fields']['group_access']['field'] = 'group_access';
+  $handler->display->display_options['fields']['group_access']['label'] = '';
+  $handler->display->display_options['fields']['group_access']['element_label_type'] = 'span';
+  $handler->display->display_options['fields']['group_access']['element_label_class'] = 'glyphicon glyphicon-eye-open';
+  $handler->display->display_options['fields']['group_access']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['group_access']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['group_access']['type'] = 'okl_badge_domain_visibility';
+  $handler->display->display_options['fields']['group_access']['group_column'] = 'entity_id';
   /* Field: Content: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
@@ -1297,36 +1308,6 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['exposed_block'] = TRUE;
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Nid */
-  $handler->display->display_options['fields']['nid']['id'] = 'nid';
-  $handler->display->display_options['fields']['nid']['table'] = 'node';
-  $handler->display->display_options['fields']['nid']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid']['label'] = '';
-  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['nid']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['nid']['alter']['path'] = 'domain/text/[nid]';
-  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['path'] = 'node/[nid]';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Gruppe */
-  $handler->display->display_options['fields']['group_group']['id'] = 'group_group';
-  $handler->display->display_options['fields']['group_group']['table'] = 'field_data_group_group';
-  $handler->display->display_options['fields']['group_group']['field'] = 'group_group';
-  $handler->display->display_options['fields']['group_group']['label'] = 'Status';
-  $handler->display->display_options['fields']['group_group']['type'] = 'og_group_subscribe';
-  $handler->display->display_options['fields']['group_group']['settings'] = array(
-    'field_name' => '0',
-  );
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Type */
@@ -1402,36 +1383,6 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['exposed_block'] = TRUE;
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Nid */
-  $handler->display->display_options['fields']['nid']['id'] = 'nid';
-  $handler->display->display_options['fields']['nid']['table'] = 'node';
-  $handler->display->display_options['fields']['nid']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid']['label'] = '';
-  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['nid']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['nid']['alter']['path'] = 'domain/text/[nid]';
-  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['path'] = 'node/[nid]';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Gruppe */
-  $handler->display->display_options['fields']['group_group']['id'] = 'group_group';
-  $handler->display->display_options['fields']['group_group']['table'] = 'field_data_group_group';
-  $handler->display->display_options['fields']['group_group']['field'] = 'group_group';
-  $handler->display->display_options['fields']['group_group']['label'] = 'Status';
-  $handler->display->display_options['fields']['group_group']['type'] = 'og_group_subscribe';
-  $handler->display->display_options['fields']['group_group']['settings'] = array(
-    'field_name' => '0',
-  );
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['allow']['use_pager'] = 'use_pager';
   $handler->display->display_options['allow']['items_per_page'] = 'items_per_page';

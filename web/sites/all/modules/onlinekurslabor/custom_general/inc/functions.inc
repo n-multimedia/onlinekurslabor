@@ -926,6 +926,26 @@ function _section_content_get_domains() {
   return $result->fetchAll();
 }
 
+/**
+ * gets domains with setting /private / public
+ * @param type $access_type boolean - 0 = public, 1 = membersonly
+ * @return type
+ */
+function _section_content_get_domains_having_group_access($access_type = 0) {
+
+  $query = db_select('node', 'n');
+  $query->join('field_data_group_access', 'ga','n.nid = ga.entity_id and n.type = ga.bundle');
+  $query->condition('n.nid', 0, '<>')
+    //->condition('n.status', 1, '=')
+    ->condition('n.type', NM_CONTENT_DOMAIN)
+    ->condition('ga.group_access_value', $access_type)
+    ->fields('n', array('nid', 'title', 'type'))
+    ->fields('ga', array('group_access_value'));
+
+  $result = $query->execute();
+
+  return $result->fetchAllAssoc("nid");
+}
 
 
 function _section_courses_fix_solution_og(){

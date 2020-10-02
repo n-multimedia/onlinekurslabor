@@ -58,8 +58,8 @@ function section_content_block_view($delta = '') {
       $block['subject'] = t('Table of contents');
       $block['content'] = _section_content_block_text_outline();
       break;
-    case 'content_link_to_fulltext':
-      if(_custom_general_get_group_state_for_user($current_domain)== OG_STATE_ACTIVE || node_access('update', $current_domain))
+    case 'content_link_to_fulltext': //aktives kursmitglied ODER update-perm auf domain ODER domain is public
+      if(_custom_general_get_group_state_for_user($current_domain)== OG_STATE_ACTIVE || node_access('update', $current_domain) || $current_domain->group_access[LANGUAGE_NONE][0]['value'] === "0")
       {
         //perspektivisch kann man den linktext auch in ne block_config rausziehen. 
         $block['content'] = l('› '.t("Full view: !s", array("!s"=>$current_domain->title)), NM_CONTENT_TEXT_PATH.DIRECTORY_SEPARATOR.$current_domain->nid);
@@ -79,7 +79,6 @@ function section_content_block_view($delta = '') {
 
   return $block;
 }
-
 
 /**
  * Revisions Block.
@@ -979,7 +978,14 @@ function section_content_field_formatter_info() {
       'file formatter' => array(
         'mime types' => array('video/*'),
       ),
-    )
+    ),
+    'okl_badge_domain_visibility' => array(
+      'label' => t('OKL badge domain visibility'),
+      'field types' => array('list_boolean'),
+      'settings' => array(
+        'field_name' => FALSE,
+      ),
+  )
   );
 }
 
@@ -1002,8 +1008,28 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
         );
       }
       break;
-      
-     case 'section_content_formatter_video_preview':
+    case 'okl_badge_domain_visibility':
+      $is_public = false;
+      if (!empty($entity->group_access)) {
+        $is_public = $entity->group_access[LANGUAGE_NONE][0]['value'] === "0";
+      }
+      if ($is_public) {
+        $element[$delta] = array('#type' => 'html_tag',
+          '#tag' => 'span',
+          '#attributes' => array(
+             'class' => 'badge-info badge', 'title' => t('accessible for everyone')
+          ),
+          '#value' => t('public'));
+      }
+      else {
+        $element[$delta] = array('#type' => 'html_tag',
+         '#tag' => 'span',
+          '#attributes' => array(
+             'class' => 'badge-secondary badge','title' => t('accessible only for confirmed group members')
+          ),
+          '#value' => t('limited'));
+      }
+    case 'section_content_formatter_video_preview':
       // Use the media_thumbnail image style so that the output in media browser
       // is consistent.
       $multiple_file_behavior = $settings['multiple_file_behavior'];

@@ -49,6 +49,24 @@ msgstr "Status der Mitgliedschaft"
 msgid "Usage in courses"
 msgstr "Verwendung in Kursen"
 
+msgid "Public - accessible to all site users"
+msgstr "Öffentlich - zugreifbar für alle"
+
+msgid "Private - accessible only to group members"
+msgstr "Privat - Zugriff nur für aktive Mitglieder"
+
+msgid "accessible for everyone"
+msgstr "zugreifbar für jeden"
+
+msgid "accessible only for confirmed group members"
+msgstr "nur für aktive Mitglieder zugreifbar"
+
+msgid "public"
+msgstr "öffentlich"
+
+msgid "limited"
+msgstr "eingeschränkt"
+
 msgid ""
 msgstr ""
 

@@ -8,6 +8,11 @@
 }
 
 
+.badge.badge-light {
+   color: #212529;
+   background-color: #f8f9fa;
+}
+
 .badge.badge-success {
     color: #fff;
     background-color: #28a745;
