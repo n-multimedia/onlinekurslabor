@@ -1757,15 +1757,17 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
-  $pane->pid = 'new-125d30e0-ec3e-4772-bd79-dfb12f90333b';
+  $pane->pid = 'new-59733ad4-8ece-43de-a299-d1410984ad0a';
   $pane->panel = 'news';
-  $pane->type = 'block';
-  $pane->subtype = 'custom_general-custom_general_groupstate_badge';
+  $pane->type = 'token';
+  $pane->subtype = 'node:group_access';
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_title' => 0,
-    'override_title_text' => '',
+    'sanitize' => 1,
+    'context' => 'argument_entity_id:node_1',
+    'override_title' => 1,
+    'override_title_text' => 'Sichtbarkeitsstatus',
     'override_title_heading' => 'h2',
   );
   $pane->cache = array();
@@ -1776,9 +1778,62 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
+  $pane->uuid = '59733ad4-8ece-43de-a299-d1410984ad0a';
+  $display->content['new-59733ad4-8ece-43de-a299-d1410984ad0a'] = $pane;
+  $display->panels['news'][0] = 'new-59733ad4-8ece-43de-a299-d1410984ad0a';
+  $pane = new stdClass();
+  $pane->pid = 'new-59cbc4ef-5476-4f27-86ac-9b299155d407';
+  $pane->panel = 'news';
+  $pane->type = 'entity_field';
+  $pane->subtype = 'node:group_access';
+  $pane->shown = FALSE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'label' => 'title',
+    'formatter' => 'list_key',
+    'delta_limit' => 0,
+    'delta_offset' => '0',
+    'delta_reversed' => FALSE,
+    'formatter_settings' => array(),
+    'context' => 'argument_entity_id:node_1',
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = '59cbc4ef-5476-4f27-86ac-9b299155d407';
+  $display->content['new-59cbc4ef-5476-4f27-86ac-9b299155d407'] = $pane;
+  $display->panels['news'][1] = 'new-59cbc4ef-5476-4f27-86ac-9b299155d407';
+  $pane = new stdClass();
+  $pane->pid = 'new-125d30e0-ec3e-4772-bd79-dfb12f90333b';
+  $pane->panel = 'news';
+  $pane->type = 'block';
+  $pane->subtype = 'custom_general-custom_general_groupstate_badge';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 1,
+    'override_title_text' => 'Ihre Mitgliedschaft',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
   $pane->uuid = '125d30e0-ec3e-4772-bd79-dfb12f90333b';
   $display->content['new-125d30e0-ec3e-4772-bd79-dfb12f90333b'] = $pane;
-  $display->panels['news'][0] = 'new-125d30e0-ec3e-4772-bd79-dfb12f90333b';
+  $display->panels['news'][2] = 'new-125d30e0-ec3e-4772-bd79-dfb12f90333b';
   $pane = new stdClass();
   $pane->pid = 'new-a8acea0a-a611-4853-b68b-f25bc9b71aa6';
   $pane->panel = 'news';
@@ -1806,11 +1861,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 1;
+  $pane->position = 3;
   $pane->locks = array();
   $pane->uuid = 'a8acea0a-a611-4853-b68b-f25bc9b71aa6';
   $display->content['new-a8acea0a-a611-4853-b68b-f25bc9b71aa6'] = $pane;
-  $display->panels['news'][1] = 'new-a8acea0a-a611-4853-b68b-f25bc9b71aa6';
+  $display->panels['news'][3] = 'new-a8acea0a-a611-4853-b68b-f25bc9b71aa6';
   $pane = new stdClass();
   $pane->pid = 'new-9e4b8000-18ca-451d-bfe0-dc2b9060d434';
   $pane->panel = 'news';
@@ -1829,11 +1884,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 2;
+  $pane->position = 4;
   $pane->locks = array();
   $pane->uuid = '9e4b8000-18ca-451d-bfe0-dc2b9060d434';
   $display->content['new-9e4b8000-18ca-451d-bfe0-dc2b9060d434'] = $pane;
-  $display->panels['news'][2] = 'new-9e4b8000-18ca-451d-bfe0-dc2b9060d434';
+  $display->panels['news'][4] = 'new-9e4b8000-18ca-451d-bfe0-dc2b9060d434';
   $pane = new stdClass();
   $pane->pid = 'new-af5545fc-55ee-4251-adee-dedfe09d8f6a';
   $pane->panel = 'tools';
@@ -2266,6 +2321,31 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
+  $pane->pid = 'new-883ec0cd-5795-458a-a2a5-34707a60bd07';
+  $pane->panel = 'center';
+  $pane->type = 'token';
+  $pane->subtype = 'node:group_access';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'sanitize' => 1,
+    'context' => 'argument_entity_id:node_1',
+    'override_title' => 1,
+    'override_title_text' => 'Zugriffsbeschränkung',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '883ec0cd-5795-458a-a2a5-34707a60bd07';
+  $display->content['new-883ec0cd-5795-458a-a2a5-34707a60bd07'] = $pane;
+  $display->panels['center'][0] = 'new-883ec0cd-5795-458a-a2a5-34707a60bd07';
+  $pane = new stdClass();
   $pane->pid = 'new-6f4a2837-30bc-4c82-ae54-5f08ab895657';
   $pane->panel = 'center';
   $pane->type = 'block';
@@ -2283,11 +2363,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 0;
+  $pane->position = 1;
   $pane->locks = array();
   $pane->uuid = '6f4a2837-30bc-4c82-ae54-5f08ab895657';
   $display->content['new-6f4a2837-30bc-4c82-ae54-5f08ab895657'] = $pane;
-  $display->panels['center'][0] = 'new-6f4a2837-30bc-4c82-ae54-5f08ab895657';
+  $display->panels['center'][1] = 'new-6f4a2837-30bc-4c82-ae54-5f08ab895657';
   $pane = new stdClass();
   $pane->pid = 'new-45b86522-e0b3-4f55-85f6-e34fdfe5628b';
   $pane->panel = 'center';
@@ -2306,11 +2386,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 1;
+  $pane->position = 2;
   $pane->locks = array();
   $pane->uuid = '45b86522-e0b3-4f55-85f6-e34fdfe5628b';
   $display->content['new-45b86522-e0b3-4f55-85f6-e34fdfe5628b'] = $pane;
-  $display->panels['center'][1] = 'new-45b86522-e0b3-4f55-85f6-e34fdfe5628b';
+  $display->panels['center'][2] = 'new-45b86522-e0b3-4f55-85f6-e34fdfe5628b';
   $pane = new stdClass();
   $pane->pid = 'new-da0b6e9e-7a2b-42d5-9ff2-3de7bff3a02d';
   $pane->panel = 'center';
@@ -2332,11 +2412,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 2;
+  $pane->position = 3;
   $pane->locks = array();
   $pane->uuid = 'da0b6e9e-7a2b-42d5-9ff2-3de7bff3a02d';
   $display->content['new-da0b6e9e-7a2b-42d5-9ff2-3de7bff3a02d'] = $pane;
-  $display->panels['center'][2] = 'new-da0b6e9e-7a2b-42d5-9ff2-3de7bff3a02d';
+  $display->panels['center'][3] = 'new-da0b6e9e-7a2b-42d5-9ff2-3de7bff3a02d';
   $pane = new stdClass();
   $pane->pid = 'new-8f16e9aa-1e2a-44d6-b6ad-7cb278edc060';
   $pane->panel = 'navigation';
