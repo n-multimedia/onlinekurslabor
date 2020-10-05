@@ -1,0 +1,55 @@
+
+.eol_countdown_counter.eolcountdown_no_days .ds-element.ds-element-days
+{
+    display: none;
+}
+
+.eol_countdown_counter.eolcountdown_no_secs .ds-element.ds-element-seconds{
+    display: none;
+}
+.eol_countdown_counter.eolcountdown_no_secs  .ds-element.ds-element-minutes
+{
+    border-right:none;
+}
+
+/**
+makes any theme smaller
+*/
+
+.eol_countdown_counter.eol_countdown_small_theme .ds-element-title
+{
+    font-size: 0.6em;
+}
+.eol_countdown_counter.eol_countdown_small_theme .ds-element
+{
+    padding: 2px 5px;
+}
+.eol_countdown_counter.eol_countdown_small_theme   .ds-element-value
+{
+    font-size:1.3em;
+}
+
+/** The whiteout-modal */
+.eol_countdown_modal
+{
+    background:white;
+    z-index: 10000;
+    position:fixed;
+    width: 100%;
+    height:100%;
+    left:0;
+    top:0;
+    display: none;
+    
+}
+
+/*centered box within the whiteout-modal, will be animated via JS */
+.eol_countdown_modal .eol_countdown_centered_box
+{
+    width:15%;
+    padding-top:15%;
+    margin:auto;
+    text-align: center;
+    opacity: 0;
+ 
+}

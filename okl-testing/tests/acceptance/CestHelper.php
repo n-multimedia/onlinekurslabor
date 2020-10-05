@@ -323,6 +323,7 @@ abstract class CestHelper {
         $randomizer = \RealisticFaker\OklDataCreator::get($unique);
             
         $sample = array();
+        $fallbacksample = array();
         //$users_per_group = max(1, floor($count_users / $count_coursegroups));
         foreach ($users_and_coursegroups as  $values) {
             foreach ($values['coursegroups'] as $cg) {
