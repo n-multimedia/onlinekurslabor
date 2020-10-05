@@ -67,6 +67,7 @@ class InteractiveCreate extends DomainContentBase implements \Page\node\ContentC
             $I->wait(5);
             //goto top
             $I->switchToIFrame();
+             $I->click("#edit-title--2");
             $I->fillField("#edit-title--2", $params['videoname']);
             $I->click("Anwenden");
             $I->wait(3);

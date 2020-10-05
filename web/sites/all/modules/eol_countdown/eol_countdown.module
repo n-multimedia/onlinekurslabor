@@ -1,0 +1,184 @@
+<?php
+//drupal EOL is 28.11.2022 23:59:59 US TIME
+$eol_cd_timezone_us = 'America/New_York';
+/**
+ * EOL_ENDTIME: 28.11.2022 23:59:59 - (NY TIME)
+ */
+define('EOL_ENDTIME', "28.11.2022 23:59:59");
+$eol_cd_DateTimeUS =  DateTime::createFromFormat("d.m.Y H:i:s",EOL_ENDTIME, new DateTimeZone($eol_cd_timezone_us));
+/**
+ * EOL_TIMESTAMP: Timestamp for 28.11.2022 23:59:59 in TZ US/NY
+ */
+define('EOL_TIMESTAMP', $eol_cd_DateTimeUS->getTimestamp()); #time() + 9; //enddate for timer
+ 
+/**
+ * Implements hook_block_info().
+ */
+function eol_countdown_block_info() {
+  $blocks['eol_countdown'] = array(
+    // The name that will appear in the block list.
+    'info' => t('Drupal 7 EOL Counter'),
+    // Default setting.
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function eol_countdown_block_configure($delta) {
+  $form = array();
+  switch ($delta) {
+    case 'eol_countdown':
+      $form['eol_countdown_description'] = array(
+        '#type' => 'markup',
+        '#markup' => t('This will show a little countdown until EOL of your page. If you wish, the site will be white-out after that date.')
+      );
+      $form['eol_countdown_enddate'] = array(
+        '#type' => 'textfield',
+        '#attributes' => array('disabled' => 'disabled'),
+        '#title' => t('End of support'),
+        '#default_value' => EOL_ENDTIME,
+        '#description' => t("On @endtime (Timezone US/NY) Drupal 7 will be EOL.", array("@endtime" => EOL_ENDTIME)),
+      );
+      $form['eol_countdown_before'] = array(
+        '#type' => 'textfield',
+        '#title' => t('HTML before counter'),
+        '#default_value' => variable_get('eol_countdown_before', ''),
+        '#size' => 100,
+        '#maxlength' => 200,
+      );
+      $form['eol_countdown_after'] = array(
+        '#type' => 'textfield',
+        '#title' => t('HTML after counter'),
+        '#default_value' => variable_get('eol_countdown_after', ''),
+        '#size' => 100,
+        '#maxlength' => 200,
+      );
+      $form['eol_countdown_theme'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Theme'),
+        '#default_value' => variable_get('eol_countdown_theme', 'flat'),
+        '#description' => t('Available') . ': black, flat, white, red. Optionally combined with eol_countdown_small_theme (or implement your own .dsCountDown.ds-THEMENAME class)',
+        '#size' => 70,
+        '#maxlength' => 100,
+      );
+      $form['eol_countdown_hide_days_secs'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Hide secs/days'),
+        '#default_value' => variable_get('eol_countdown_hide_days_secs', true),
+        '#description' => t("If there's only one day left, seconds will be shown and days hidden. Otherwise, seconds will be hidden."),
+        '#size' => 3,
+        '#maxlength' => 30,
+      );
+      $form['eol_countdown_whiteout'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('White-Out page after EOL'),
+        '#default_value' => variable_get('eol_countdown_whiteout', true),
+        '#description' => t('Your site will be white-out as soon as Drupal 7 EOL is reached. WARNING: Neither does this offer protection against hackers nor is this functional if javascript is disabled. You must shutdown your site on your own.'),
+      );
+
+      $form['eol_countdown_whiteout_message'] = array(
+        '#type' => 'textarea',
+        '#title' => t('White-Out message'),
+        '#default_value' => variable_get('eol_countdown_whiteout_message', 'This site is permanently offline. It could not be upgraded to Drupal&nbsp;9 in time.'),
+        '#description' => t('Message to show on white-out screen.'),
+        '#rows' => 3,
+        '#cols' => 40,
+        '#resizable' => FALSE,
+        '#states' => array(
+          // Only show this field when the 'eol_countdown_whiteout' checkbox is enabled.
+          'visible' => array(
+            ':input[name="eol_countdown_whiteout"]' => array(
+              'checked' => TRUE,
+            ),
+          ),
+        ),
+      );
+
+
+      break;
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function eol_countdown_block_save($delta = '', $edit = array()) {
+  switch ($delta) {
+    case 'eol_countdown':
+      foreach (array('eol_countdown_before', 'eol_countdown_after', 'eol_countdown_theme', 'eol_countdown_hide_days_secs', 'eol_countdown_whiteout', 'eol_countdown_whiteout_message') as $block_option_name) {
+        variable_set($block_option_name, $edit[$block_option_name]);
+      }
+      break;
+  }
+}
+
+/**
+ * implements hook_block_view
+ * @param type $delta
+ * @return array
+ */
+function eol_countdown_block_view($delta = '') {
+  switch ($delta) {
+
+    case 'eol_countdown':
+      $whiteout_message_pure = variable_get('eol_countdown_whiteout_message');
+      $replace_line_breaks = array("\n", "\r");
+      $whiteout_message = str_replace($replace_line_breaks, "<br />", $whiteout_message_pure);
+      $block['subject'] =  t("End of life for !sitename in", array("!sitename"=> variable_get('site_name')));
+      $block['content'] = array(
+        '#title' => t("End of life for !sitename in", array("!sitename"=> variable_get('site_name'))),
+        '#markup' => theme('eol_countdown_block', array(
+          'before' => variable_get('eol_countdown_before'),
+          'after' => variable_get('eol_countdown_after'),
+          'theme' => variable_get('eol_countdown_theme'),
+          'hide_days_secs' => variable_get('eol_countdown_hide_days_secs'),
+          'timestamp' => EOL_TIMESTAMP,
+          'white_out' => variable_get('eol_countdown_whiteout'),
+        )),
+        '#attached' => array(
+          'css' => array(
+            drupal_get_path('module', 'eol_countdown') . '/assets/vendor/dscountdown/dscountdown.css',
+            drupal_get_path('module', 'eol_countdown') . '/assets/css/eol_countdown.css',
+          ),
+          'js' => array(
+            array(
+              'data' => drupal_get_path('module', 'eol_countdown') . '/assets/vendor/dscountdown/dscountdown.min.js',
+              'group' => JS_DEFAULT,
+              'scope' => 'footer',
+            ),
+            //settings
+            array(
+              'data' => array(
+                'eol_countdown' => array(
+                  'whiteout_message' => $whiteout_message
+                ),
+              ),
+              'type' => 'setting'
+            ),
+            array(
+              'data' => drupal_get_path('module', 'eol_countdown') . '/assets/js/eol_countdown.js',
+              'group' => JS_DEFAULT,
+              'scope' => 'footer',
+            ),
+          ),
+        ),
+      );
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function eol_countdown_theme() {
+  return array(
+    'eol_countdown_block' => array(
+      'template' => 'templates/eol_countdown_block', //ignore .tpl.php
+    ),
+  );
+}

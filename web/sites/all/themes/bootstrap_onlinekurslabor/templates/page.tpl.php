@@ -93,7 +93,7 @@
 
 <footer class="footer container">
   <div class="footer_powered_by_wrapper row">
-    <div id="footer_regions_container col-md-12">
+    <div id="footer_regions_container" class="col-md-12">
       <div class="col-md-8 col-xs-12 footer_region_left">
          <?php print render($page['footer_region_left']); ?>
       </div>
