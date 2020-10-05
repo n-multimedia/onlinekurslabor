@@ -55,10 +55,10 @@ msgid "Private - accessible only to group members"
 msgstr "Privat - Zugriff nur für aktive Mitglieder"
 
 msgid "accessible for everyone"
-msgstr "zugreifbar für jeden"
+msgstr "Zugreifbar für jeden"
 
 msgid "accessible only for confirmed group members"
-msgstr "nur für aktive Mitglieder zugreifbar"
+msgstr "Nur für aktive Mitglieder zugreifbar"
 
 msgid "public"
 msgstr "öffentlich"
