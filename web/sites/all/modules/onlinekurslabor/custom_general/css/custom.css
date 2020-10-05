@@ -1351,6 +1351,30 @@ div.view-courses-kurse-bersicht .nm-stream-node-container img.courseitem_coursel
 {
      transform: rotate(-30deg);
      margin-top: 20px;
+
+  
+/**EOL_COUNTDOWN  - local customization of plugin*/
+.okl-death-container
+{
+    margin:auto; 
+    width: 50%; 
+    text-align: center
+}
+.okl-death-container a:link span.okl-death-link, .okl-death-container a:visited span.okl-death-link, .okl-death-container  a span.okl-death-link
+{
+    color: black;
+    font-size: 0.75em;
+    text-decoration: underline;
+    font-weight: bold;
+}
+.okl-death-container a:hover span.okl-death-link
+{
+    color:darkslategray;
+}
+.okl-death-container .ds-element-title
+{
+    text-transform: none !important;
+
 }
 
 /**

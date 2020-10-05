@@ -45,7 +45,7 @@ class InteractiveCreate extends DomainContentBase implements \Page\node\ContentC
     public function create(\Codeception\Example $params) {
         $I = $this->tester;
         $I->amOnPage(self::$createURL);
- $I->wait(15);
+        $I->wait(3);
         $this->fillFields($I, $params);
 
         //click: Veröffentlichen
@@ -55,43 +55,26 @@ class InteractiveCreate extends DomainContentBase implements \Page\node\ContentC
     }
 
     public function fillFields(\AcceptanceTester $I, \Codeception\Example $params) {
-        //fix missing ID of iframe
-        $I->makeScreenshot('H5P in: ' . 'execjs');
-        $I->wait(5);
-        $I->makeScreenshot('H5P in: ' . 'after wait 5 sec');
-        $I->executeJS("jQuery('." . self::$h5pEditorIframe . "').attr('id', '" . self::$h5pEditorIframe . "')");
-       // var_dump("jQuery('." . self::$h5pEditorIframe . "').attr('id', '" . self::$h5pEditorIframe . "');");
-        $I->switchToIFrame(self::$h5pEditorIframe);
-        $I->makeScreenshot('H5P in: ' . 'iframe');
+        $I->switchToIFrame(".".self::$h5pEditorIframe);
         $I->selectOption(self::$h5peditorlibrarySelect, $params['h5p_type']);
-        $I->makeScreenshot('H5P in: ' . 'selected library');
-        $I->wait(5);
-        $I->makeScreenshot('H5P in: ' . 'after wait');
-        $I->see("Please fix this function in ".__FILE__.". Couldnt be tested using phantomJS");
-        return;
-        $I->makeScreenshot('H5P in: ' . 'swtichto:iframe');
-        $I->switchToIFrame(self::$h5pEditorIframe);
-        $I->makeScreenshot('H5P in: ' . 'iframe');
-        $I->wait(5);
-        $I->makeScreenshot('H5P in: ' . 'after wait');
-        $I->selectOption(self::$h5peditorlibrarySelect, $params['h5p_type']);
-        $I->wait(5);
-        $I->fillField('h5peditor-text', $params['title']);
+        $I->wait(3);
+        $I->fillField('.h5peditor-text', $params['title']);
         if ($params['h5p_type'] === 'Interactive Video') {
 
             $I->click(".h5p-add-file");
-            //geht nicht, da ein div: $I->click("auswählen"); ; geht auch nicht:  $I->clickWithLeftButton(['css' => '#open_videosafe']);
-            $I->executeJS("H5P.jQuery('#open_videosafe').click();");
+            //geht nicht, da ein div: $I->click("auswählen");
+            $I->clickWithLeftButton(['css' => '#open_videosafe']);
+            $I->wait(5);
             //goto top
             $I->switchToIFrame();
             $I->fillField("#edit-title--2", $params['videoname']);
             $I->click("Anwenden");
-            $I->wait(5);
+            $I->wait(3);
             $I->click($params['videoname']);
-            $I->wait(5);
+            $I->wait(3);
             $I->click("Dieses Video auswählen");
-            $I->switchToIFrame(self::$h5pEditorIframe);
-            $I->see("Videoauflösung");
+            $I->switchToIFrame(".".self::$h5pEditorIframe);
+            $I->see("Beschreibung der Videoqualität");
             //goto top
             $I->switchToIFrame();
             //nun kommt "speichern"
