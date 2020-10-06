@@ -1541,7 +1541,7 @@ function nm_section_content_features_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Entscheiden Sie, ob dieser Inhalt nur für Mitglieder oder jeden zugreifbar ist.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1564,8 +1564,8 @@ function nm_section_content_features_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'group_access',
-    'label' => 'Group visibility',
-    'required' => TRUE,
+    'label' => 'Zugriffsbeschränkung',
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -1580,6 +1580,7 @@ function nm_section_content_features_field_default_field_instances() {
       ),
     ),
     'widget' => array(
+      'active' => 1,
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
@@ -2299,9 +2300,9 @@ function nm_section_content_features_field_default_field_instances() {
   t('Body');
   t('Comment');
   t('Determine if this is an OG group.');
+  t('Entscheiden Sie, ob dieser Inhalt nur für Mitglieder oder jeden zugreifbar ist.');
   t('Frage');
   t('Gliederung');
-  t('Group visibility');
   t('Groups audience');
   t('Gruppe');
   t('Inhaltsverzeichnis');
@@ -2309,6 +2310,7 @@ function nm_section_content_features_field_default_field_instances() {
   t('Text des Kapitels');
   t('Title Text');
   t('Title text is used in the tool tip when a user hovers their mouse over the image. Adding title text makes it easier to understand the context of an image and improves usability.');
+  t('Zugriffsbeschränkung');
 
   return $field_instances;
 }
