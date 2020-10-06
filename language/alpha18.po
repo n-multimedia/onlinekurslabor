@@ -36,7 +36,7 @@ msgstr "Ihre Anfrage wird bearbeitet"
 msgid "No member"
 msgstr "Kein Mitglied"
 
-msgid "member"
+msgid "Member"
 msgstr "Mitglied"
 
 msgid "unconfirmed"
