@@ -55,13 +55,13 @@ class StreamCest extends CestHelper {
    ////siehe  _okl_testing_getDataObjectForCourse
     //.... 
     if (!empty($studentandstream['stream']['message'])) {
-      $I->fillField('textarea.stream-post-body', $studentandstream['stream']['message']);
+      $I->fillField('.stream-post-form textarea.stream-textbody', $studentandstream['stream']['message']);
       $I->click("Speichern");
       $I->wait(2);
       $I->see($studentandstream['stream']['message']);
     }
     else {
-      $I->fillField('textarea.stream-comment-body', $studentandstream['stream']['comment']);
+      $I->fillField('.stream-comment-from  textarea.stream-textbody', $studentandstream['stream']['comment']);
       $I->click("Speichern");
       $I->wait(2);
       $I->see($studentandstream['stream']['comment']);
