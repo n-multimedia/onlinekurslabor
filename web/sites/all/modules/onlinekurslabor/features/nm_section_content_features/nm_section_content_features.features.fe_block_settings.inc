@@ -22,6 +22,12 @@ function nm_section_content_features_default_fe_block_settings() {
     'pages' => '',
     'roles' => array(),
     'themes' => array(
+      'bootstrap' => array(
+        'region' => '',
+        'status' => 0,
+        'theme' => 'bootstrap',
+        'weight' => -20,
+      ),
       'bootstrap_onlinekurslabor' => array(
         'region' => '',
         'status' => 0,

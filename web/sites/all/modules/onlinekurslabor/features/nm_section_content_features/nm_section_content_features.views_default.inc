@@ -479,7 +479,6 @@ function nm_section_content_features_views_default_views() {
     t('Profil_master'),
     t('Person'),
     t('- Choose an operation -'),
-    t('Einer Kursgruppe zuweisen'),
     t('Vorname'),
     t('Nachname'),
     t('Name'),

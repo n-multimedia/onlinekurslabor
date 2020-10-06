@@ -1757,18 +1757,19 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
-  $pane->pid = 'new-59733ad4-8ece-43de-a299-d1410984ad0a';
+  $pane->pid = 'new-af5545fc-55ee-4251-adee-dedfe09d8f6a';
   $pane->panel = 'news';
-  $pane->type = 'token';
-  $pane->subtype = 'node:group_access';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'sanitize' => 1,
-    'context' => 'argument_entity_id:node_1',
-    'override_title' => 1,
-    'override_title_text' => 'Sichtbarkeitsstatus',
-    'override_title_heading' => 'h2',
+    'admin_title' => 'preview',
+    'title' => 'Lehrtextvorschau',
+    'title_heading' => 'h2',
+    'body' => '<p>Sie sehen eine Vorschau des Lehrtexts.</p>',
+    'format' => 'filtered_html',
+    'substitute' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1778,9 +1779,59 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
+  $pane->uuid = 'af5545fc-55ee-4251-adee-dedfe09d8f6a';
+  $display->content['new-af5545fc-55ee-4251-adee-dedfe09d8f6a'] = $pane;
+  $display->panels['news'][0] = 'new-af5545fc-55ee-4251-adee-dedfe09d8f6a';
+  $pane = new stdClass();
+  $pane->pid = 'new-59733ad4-8ece-43de-a299-d1410984ad0a';
+  $pane->panel = 'news';
+  $pane->type = 'token';
+  $pane->subtype = 'node:group_access';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'sanitize' => 0,
+    'context' => 'argument_entity_id:node_1',
+    'override_title' => 1,
+    'override_title_text' => 'Sichtbarkeit',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
   $pane->uuid = '59733ad4-8ece-43de-a299-d1410984ad0a';
   $display->content['new-59733ad4-8ece-43de-a299-d1410984ad0a'] = $pane;
-  $display->panels['news'][0] = 'new-59733ad4-8ece-43de-a299-d1410984ad0a';
+  $display->panels['news'][1] = 'new-59733ad4-8ece-43de-a299-d1410984ad0a';
+  $pane = new stdClass();
+  $pane->pid = 'new-c6a13a76-4fa5-4efd-82f1-9243340defe6';
+  $pane->panel = 'news';
+  $pane->type = 'token';
+  $pane->subtype = 'node:group-access';
+  $pane->shown = FALSE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'sanitize' => 1,
+    'context' => 'argument_entity_id:node_1',
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = 'c6a13a76-4fa5-4efd-82f1-9243340defe6';
+  $display->content['new-c6a13a76-4fa5-4efd-82f1-9243340defe6'] = $pane;
+  $display->panels['news'][2] = 'new-c6a13a76-4fa5-4efd-82f1-9243340defe6';
   $pane = new stdClass();
   $pane->pid = 'new-59cbc4ef-5476-4f27-86ac-9b299155d407';
   $pane->panel = 'news';
@@ -1806,11 +1857,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 1;
+  $pane->position = 3;
   $pane->locks = array();
   $pane->uuid = '59cbc4ef-5476-4f27-86ac-9b299155d407';
   $display->content['new-59cbc4ef-5476-4f27-86ac-9b299155d407'] = $pane;
-  $display->panels['news'][1] = 'new-59cbc4ef-5476-4f27-86ac-9b299155d407';
+  $display->panels['news'][3] = 'new-59cbc4ef-5476-4f27-86ac-9b299155d407';
   $pane = new stdClass();
   $pane->pid = 'new-125d30e0-ec3e-4772-bd79-dfb12f90333b';
   $pane->panel = 'news';
@@ -1829,11 +1880,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 2;
+  $pane->position = 4;
   $pane->locks = array();
   $pane->uuid = '125d30e0-ec3e-4772-bd79-dfb12f90333b';
   $display->content['new-125d30e0-ec3e-4772-bd79-dfb12f90333b'] = $pane;
-  $display->panels['news'][2] = 'new-125d30e0-ec3e-4772-bd79-dfb12f90333b';
+  $display->panels['news'][4] = 'new-125d30e0-ec3e-4772-bd79-dfb12f90333b';
   $pane = new stdClass();
   $pane->pid = 'new-a8acea0a-a611-4853-b68b-f25bc9b71aa6';
   $pane->panel = 'news';
@@ -1861,11 +1912,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 3;
+  $pane->position = 5;
   $pane->locks = array();
   $pane->uuid = 'a8acea0a-a611-4853-b68b-f25bc9b71aa6';
   $display->content['new-a8acea0a-a611-4853-b68b-f25bc9b71aa6'] = $pane;
-  $display->panels['news'][3] = 'new-a8acea0a-a611-4853-b68b-f25bc9b71aa6';
+  $display->panels['news'][5] = 'new-a8acea0a-a611-4853-b68b-f25bc9b71aa6';
   $pane = new stdClass();
   $pane->pid = 'new-9e4b8000-18ca-451d-bfe0-dc2b9060d434';
   $pane->panel = 'news';
@@ -1884,37 +1935,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 4;
+  $pane->position = 6;
   $pane->locks = array();
   $pane->uuid = '9e4b8000-18ca-451d-bfe0-dc2b9060d434';
   $display->content['new-9e4b8000-18ca-451d-bfe0-dc2b9060d434'] = $pane;
-  $display->panels['news'][4] = 'new-9e4b8000-18ca-451d-bfe0-dc2b9060d434';
-  $pane = new stdClass();
-  $pane->pid = 'new-af5545fc-55ee-4251-adee-dedfe09d8f6a';
-  $pane->panel = 'tools';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'admin_title' => 'preview',
-    'title' => '-- Vorschau --',
-    'title_heading' => 'h2',
-    'body' => '',
-    'format' => 'filtered_html',
-    'substitute' => 1,
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = 'af5545fc-55ee-4251-adee-dedfe09d8f6a';
-  $display->content['new-af5545fc-55ee-4251-adee-dedfe09d8f6a'] = $pane;
-  $display->panels['tools'][0] = 'new-af5545fc-55ee-4251-adee-dedfe09d8f6a';
+  $display->panels['news'][6] = 'new-9e4b8000-18ca-451d-bfe0-dc2b9060d434';
   $pane = new stdClass();
   $pane->pid = 'new-87c73d1d-3012-4ded-9ce6-95ea4bf9852b';
   $pane->panel = 'tools';
@@ -1937,11 +1962,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 1;
+  $pane->position = 0;
   $pane->locks = array();
   $pane->uuid = '87c73d1d-3012-4ded-9ce6-95ea4bf9852b';
   $display->content['new-87c73d1d-3012-4ded-9ce6-95ea4bf9852b'] = $pane;
-  $display->panels['tools'][1] = 'new-87c73d1d-3012-4ded-9ce6-95ea4bf9852b';
+  $display->panels['tools'][0] = 'new-87c73d1d-3012-4ded-9ce6-95ea4bf9852b';
   $pane = new stdClass();
   $pane->pid = 'new-7553bf90-888a-42b2-bb62-77e02186f4fb';
   $pane->panel = 'tools';
@@ -1959,11 +1984,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 2;
+  $pane->position = 1;
   $pane->locks = array();
   $pane->uuid = '7553bf90-888a-42b2-bb62-77e02186f4fb';
   $display->content['new-7553bf90-888a-42b2-bb62-77e02186f4fb'] = $pane;
-  $display->panels['tools'][2] = 'new-7553bf90-888a-42b2-bb62-77e02186f4fb';
+  $display->panels['tools'][1] = 'new-7553bf90-888a-42b2-bb62-77e02186f4fb';
   $pane = new stdClass();
   $pane->pid = 'new-867a6f59-1ee3-4488-8d03-cee89a28c347';
   $pane->panel = 'tools';
@@ -1982,11 +2007,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 3;
+  $pane->position = 2;
   $pane->locks = array();
   $pane->uuid = '867a6f59-1ee3-4488-8d03-cee89a28c347';
   $display->content['new-867a6f59-1ee3-4488-8d03-cee89a28c347'] = $pane;
-  $display->panels['tools'][3] = 'new-867a6f59-1ee3-4488-8d03-cee89a28c347';
+  $display->panels['tools'][2] = 'new-867a6f59-1ee3-4488-8d03-cee89a28c347';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

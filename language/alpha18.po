@@ -33,6 +33,9 @@ msgstr "Mitgliedschaft ändern / austragen"
 msgid "Your request is being processed"
 msgstr "Ihre Anfrage wird bearbeitet"
 
+msgid "No member"
+msgstr "Kein Mitglied"
+
 msgid "member"
 msgstr "Mitglied"
 
