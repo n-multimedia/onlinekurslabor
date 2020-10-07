@@ -1291,7 +1291,7 @@ display:none;
   $display->content['new-830b1a45-d949-4fdb-af1d-0a328cc1967e'] = $pane;
   $display->panels['users_s_courses'][1] = 'new-830b1a45-d949-4fdb-af1d-0a328cc1967e';
   $pane = new stdClass();
-  $pane->pid = 'new-e75f663a-bd63-46d7-8fd9-88a9758353d5';
+  $pane->pid = 'new-5668eb22-acbe-410f-a944-b9e9b017edf4';
   $pane->panel = 'users_s_courses';
   $pane->type = 'views';
   $pane->subtype = 'courses_user_domains';
@@ -1299,12 +1299,9 @@ display:none;
   $pane->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'role',
+        'name' => 'perm',
         'settings' => array(
-          'rids' => array(
-            0 => 30037204,
-            1 => 197637936,
-          ),
+          'perm' => 'bypass node access',
         ),
         'context' => 'logged-in-user',
         'not' => FALSE,
@@ -1321,7 +1318,6 @@ display:none;
         'not' => FALSE,
       ),
     ),
-    'logic' => 'and',
   );
   $pane->configuration = array(
     'override_pager_settings' => 0,
@@ -1335,7 +1331,7 @@ display:none;
     'link_to_view' => 0,
     'args' => '',
     'url' => '',
-    'display' => 'nid_only',
+    'display' => 'title_only',
     'context' => array(
       0 => 'argument_entity_id:user_1.uid',
     ),
@@ -1345,24 +1341,7 @@ display:none;
   );
   $pane->cache = array();
   $pane->style = array(
-    'settings' => array(
-      'title' => array(
-        'element' => '',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
-      'content' => array(
-        'element' => '',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
-      'theme' => 1,
-    ),
-    'style' => 'wrapper_element',
+    'settings' => NULL,
   );
   $pane->css = array(
     'css_id' => 'profile-lehrtexte-wrapper',
@@ -1371,9 +1350,9 @@ display:none;
   $pane->extras = array();
   $pane->position = 2;
   $pane->locks = array();
-  $pane->uuid = 'e75f663a-bd63-46d7-8fd9-88a9758353d5';
-  $display->content['new-e75f663a-bd63-46d7-8fd9-88a9758353d5'] = $pane;
-  $display->panels['users_s_courses'][2] = 'new-e75f663a-bd63-46d7-8fd9-88a9758353d5';
+  $pane->uuid = '5668eb22-acbe-410f-a944-b9e9b017edf4';
+  $display->content['new-5668eb22-acbe-410f-a944-b9e9b017edf4'] = $pane;
+  $display->panels['users_s_courses'][2] = 'new-5668eb22-acbe-410f-a944-b9e9b017edf4';
   $pane = new stdClass();
   $pane->pid = 'new-962a9704-44ef-4eaa-b257-e13876dc0ce9';
   $pane->panel = 'users_s_courses';
