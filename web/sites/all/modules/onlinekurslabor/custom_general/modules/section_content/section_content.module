@@ -399,6 +399,26 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
       }
     }
   }
+  else { //not in domain context but link to domain
+    if (strstr($path, "node/")) {
+      $regex = '#^/*node/([0-9]+)$#s';
+      preg_match($regex, $path, $matches);
+      if (!empty($matches)) {
+        $nid = $matches[1];
+        $type = _custom_general_get_node_type($nid);
+        $node = node_load($nid);
+        if ($type == NM_CONTENT_DOMAIN) {
+          //Vollzugriff auf CONTENT: 
+          if (_custom_general_get_group_state_for_user(_custom_general_get_group($node)) == OG_STATE_ACTIVE || node_access('update', _custom_general_get_group($node))) {
+            $path = NM_CONTENT_TEXT_PATH . DIRECTORY_SEPARATOR . $node->nid;
+          }
+          else { //keine Memberberechtigung => PReview
+            $path = NM_CONTENT_TEXT_PREVIEW_PATH . DIRECTORY_SEPARATOR . $node->nid;
+          }
+        }
+      }
+    }
+  }
 }
 
 /*
