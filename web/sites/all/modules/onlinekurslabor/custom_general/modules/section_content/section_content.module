@@ -1231,9 +1231,29 @@ function section_content_theme() {
     ),
     'views_view_field__courses_user_domains__title' => array(
       'template' => 'views-view-field--courses-user-domains--title',
-      'path' => drupal_get_path('module', 'section_content') . '/templates'
+      'variables' => array('users_state_for_domain' => null), //nur für static, dynamisch: später in section_content_preprocess_views_view_field__courses_user_domains__title
+     'path' => drupal_get_path('module', 'section_content') . '/templates'
     )
   );
+}
+
+/**
+ * implements hook_preprocess_THEME-NAME
+ * erstellt die theme-variablen für views_view_field__courses_user_domains__title / template: views-view-field--courses-user-domains--title
+ * @param array $variables
+ */
+function section_content_preprocess_views_view_field__courses_user_domains__title(&$variables) {
+
+  global $user;
+  $user_for_state = $user;
+  //if we're viewing a different user
+  if (!empty($variables["view"]->argument['uid'])) {
+    $affected_user_uid = $variables["view"]->argument['uid']->argument;
+    $user_for_state = user_load($affected_user_uid);
+  }
+  $node = node_load($variables['row']->nid);
+  $users_state_for_domain = _custom_general_get_group_state_for_user($node, $user_for_state);
+  $variables['users_state_for_domain'] = $users_state_for_domain;
 }
 
 /**
