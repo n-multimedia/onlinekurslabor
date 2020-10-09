@@ -27,6 +27,9 @@ function section_content_block_info() {
    $blocks['content_link_to_fulltext'] = array(
     'info' => t('Content - Link to fulltext'),
   );
+  $blocks['content_not_accessible_message'] = array(
+    'info' => t('Content - Not public - No member message'),
+  );
    $blocks['content_link_to_lehrtext_home'] = array(
     'info' => t('Content - Link to domain home'),
   );
@@ -58,8 +61,15 @@ function section_content_block_view($delta = '') {
       $block['subject'] = t('Table of contents');
       $block['content'] = _section_content_block_text_outline();
       break;
+    case 'content_not_accessible_message' :
+      if (!_section_content_get_have_full_read_access_to_domain($current_domain)) {
+        $member_block = custom_general_block_view('custom_general_groupstate_badge');
+        $member_badge = render($member_block['content']);
+        $block['content'] = t("Your state: !s<br> Thus you don't have access to this domain's subchapters.", array("!s" => $member_badge));
+      }
+      break;
     case 'content_link_to_fulltext': //aktives kursmitglied ODER update-perm auf domain ODER domain is public
-      if(_custom_general_get_group_state_for_user($current_domain)== OG_STATE_ACTIVE || node_access('update', $current_domain) || $current_domain->group_access[LANGUAGE_NONE][0]['value'] === "0")
+      if(_section_content_get_have_full_read_access_to_domain($current_domain))
       {
         //perspektivisch kann man den linktext auch in ne block_config rausziehen. 
         $block['content'] = l('› '.t("Full view: !s", array("!s"=>$current_domain->title)), NM_CONTENT_TEXT_PATH.DIRECTORY_SEPARATOR.$current_domain->nid);
@@ -1521,6 +1531,20 @@ function _section_content_get_active_domain($reset = FALSE) {
   return $domain;
 }
 
+
+/**
+ * returns true, if currently loggedin user has (at least) full read access to  all contents
+ * of given domain $domain_obj
+ * @global StdClass $user
+ * @param StdClass $domain_obj the domain (lehrtext)
+ */
+function _section_content_get_have_full_read_access_to_domain($domain_obj) {
+  global $user;
+
+  return _custom_general_get_group_state_for_user($domain_obj) == OG_STATE_ACTIVE ||
+    node_access('update', $domain_obj) ||
+    $domain_obj->group_access[LANGUAGE_NONE][0]['value'] === "0";
+}
 
 function _section_content_get_rendered_usage_in_course_block() {
   $current_domain = _section_content_get_active_domain();

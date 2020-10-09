@@ -2596,6 +2596,29 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
+  $pane->pid = 'new-cfd931b2-7f37-45f6-9269-4946afa53d32';
+  $pane->panel = 'center';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_not_accessible_message';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'cfd931b2-7f37-45f6-9269-4946afa53d32';
+  $display->content['new-cfd931b2-7f37-45f6-9269-4946afa53d32'] = $pane;
+  $display->panels['center'][0] = 'new-cfd931b2-7f37-45f6-9269-4946afa53d32';
+  $pane = new stdClass();
   $pane->pid = 'new-7553bf90-888a-42b2-bb62-77e02186f4fb';
   $pane->panel = 'center';
   $pane->type = 'block';
@@ -2612,11 +2635,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 0;
+  $pane->position = 1;
   $pane->locks = array();
   $pane->uuid = '7553bf90-888a-42b2-bb62-77e02186f4fb';
   $display->content['new-7553bf90-888a-42b2-bb62-77e02186f4fb'] = $pane;
-  $display->panels['center'][0] = 'new-7553bf90-888a-42b2-bb62-77e02186f4fb';
+  $display->panels['center'][1] = 'new-7553bf90-888a-42b2-bb62-77e02186f4fb';
   $pane = new stdClass();
   $pane->pid = 'new-87c73d1d-3012-4ded-9ce6-95ea4bf9852b';
   $pane->panel = 'center';
@@ -2638,11 +2661,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 1;
+  $pane->position = 2;
   $pane->locks = array();
   $pane->uuid = '87c73d1d-3012-4ded-9ce6-95ea4bf9852b';
   $display->content['new-87c73d1d-3012-4ded-9ce6-95ea4bf9852b'] = $pane;
-  $display->panels['center'][1] = 'new-87c73d1d-3012-4ded-9ce6-95ea4bf9852b';
+  $display->panels['center'][2] = 'new-87c73d1d-3012-4ded-9ce6-95ea4bf9852b';
   $pane = new stdClass();
   $pane->pid = 'new-867a6f59-1ee3-4488-8d03-cee89a28c347';
   $pane->panel = 'navigation';
