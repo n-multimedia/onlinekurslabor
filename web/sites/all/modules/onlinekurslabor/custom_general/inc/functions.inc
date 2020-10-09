@@ -41,11 +41,13 @@ function _section_course_active() {
 function _section_domain_author_section_active($path = NULL) {
   $book_active = (arg(0, $path) == 'admin' && arg(1, $path) == 'content' && arg(2, $path) == 'book' );
   $biblio_active = (arg(0, $path) == 'node' && arg(1, $path) == 'add' && arg(2, $path) == 'biblio' ); //not necessary ?
-  $media_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'media');
   $biblio_overview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'biblio');
+  $members_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'members');
   $tasks_overview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'tasks');
   $h5p_overview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'h5p');
   $domain_text_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'text');
+  $domain_preview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'preview');
+  $domain_stats_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'stats');
   $domain_add_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'add');
   $domain_edit_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'edit');
   $domain_delete_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'delete');
@@ -55,11 +57,12 @@ function _section_domain_author_section_active($path = NULL) {
   $ajax_linkit_h5p = (arg(0, $path) == 'h5p_integration' && arg(1, $path) == 'item' && arg(2, $path) == 'autocomplete');
 
   return $biblio_active || $biblio_overview_active ||
-      $media_active || $book_active ||
+      $book_active ||
       $tasks_overview_active || $domain_text_active ||
+      $domain_preview_active || $domain_stats_active ||
       $domain_add_active || $domain_edit_active ||
       $domain_delete_active || $h5p_overview_active || $ajax_linkit_tasks ||
-      $ajax_linkit_h5p;
+      $ajax_linkit_h5p || $members_active;
 }
 
 /**
@@ -581,16 +584,26 @@ function _custom_general_book_get_parents(&$subtree_pointer, $active_mlid) {
   return $parents;
 }
 
+
 /**
- * Get all users of a group
+ * Get all users of a group not limited to a role.
+ * @see custom_general_get_users_in_group_by_role_real
+ * @param int $gid GroupID - e.g. course-nid
+ * @param bool $only_approved_users onlyActive users - no blocked/pending
+ * @return array $users
  */
-function custom_general_get_users_in_group($gid) {
+function custom_general_get_users_in_group($gid, $only_approved_users = false) {
   $query = db_select('users', 'u');
 
+  $user_states = array(OG_STATE_ACTIVE, OG_STATE_PENDING, OG_STATE_BLOCKED);
+  if($only_approved_users)
+  {
+    $user_states = array(OG_STATE_ACTIVE);
+  }
   $query->condition('u.uid', 0, '<>')
       ->condition('u.status', 1, '=')
       ->fields('u', array('uid', 'name'))
-      ->join('og_membership', 'ogm', "ogm.gid = :gid AND u.uid = ogm.etid AND ogm.entity_type = 'user'", array(':gid' => $gid));
+      ->join('og_membership', 'ogm', "ogm.gid = :gid AND u.uid = ogm.etid AND ogm.entity_type = 'user' AND ogm.state IN (:array_user_states)", array(':gid' => $gid, ':array_user_states' => $user_states));
 
   $result = $query->execute();
 
@@ -913,6 +926,26 @@ function _section_content_get_domains() {
   return $result->fetchAll();
 }
 
+/**
+ * gets domains with setting /private / public
+ * @param type $access_type boolean - 0 = public, 1 = membersonly
+ * @return type
+ */
+function _section_content_get_domains_having_group_access($access_type = 0) {
+
+  $query = db_select('node', 'n');
+  $query->join('field_data_group_access', 'ga','n.nid = ga.entity_id and n.type = ga.bundle');
+  $query->condition('n.nid', 0, '<>')
+    //->condition('n.status', 1, '=')
+    ->condition('n.type', NM_CONTENT_DOMAIN)
+    ->condition('ga.group_access_value', $access_type)
+    ->fields('n', array('nid', 'title', 'type'))
+    ->fields('ga', array('group_access_value'));
+
+  $result = $query->execute();
+
+  return $result->fetchAllAssoc("nid");
+}
 
 
 function _section_courses_fix_solution_og(){

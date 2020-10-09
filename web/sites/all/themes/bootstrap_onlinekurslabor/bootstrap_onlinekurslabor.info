@@ -23,6 +23,7 @@ stylesheets[all][] = css/style.css
 stylesheets[all][] = css/media.css
 stylesheets[all][] = css/user.css
 stylesheets[all][] = css/nm_fancy_box.css
+stylesheets[all][] = css/bootstrap4-extension.css
 stylesheets[all][] = css/bootstrap_tabs.css
 stylesheets[all][] = css/mobile.css
 

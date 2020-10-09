@@ -126,16 +126,20 @@ function onlinekurslabor_access_node_grants($account, $op) {
 
         
   //DOMAINS
-
+    
   $domains = _section_content_get_domains();
+  $public_domains_nids = array_keys(_section_content_get_domains_having_group_access(0));
+  $realm_domain = 'onlinekurslabor_domain';
   $realm_domain_content = 'onlinekurslabor_domain_content';
   foreach ($domains as $domain) {
-    //give view access for all domain group members
-    if(og_is_member('node', $domain->nid, 'user', $account)) {
+    //give view access for all domain group members OR if domain is "public"
+    if (og_is_member('node', $domain->nid, 'user', $account) || in_array($domain->nid, $public_domains_nids)) {
+      $grants[$realm_domain][] = $domain->nid;
       $grants[$realm_domain_content][] = $domain->nid;
-    }else if (array_intersect($account->roles, array(NM_ROLE_DOZENT, NM_ROLE_TUTOR))) {
-      //access for authors
-      $grants[$realm_domain_content][] = $domain->nid;
+    }
+    else if (array_intersect($account->roles, array(NM_ROLE_DOZENT, NM_ROLE_TUTOR))) {
+      //give view access ONLY for Domain, not for its content!
+      $grants[$realm_domain][] = $domain->nid;
     }
   }
 
@@ -307,7 +311,7 @@ function onlinekurslabor_access_node_access_records($node) {
    */
   if ($node->type == NM_CONTENT_DOMAIN) {
     $grants[] = array(
-      'realm' => 'onlinekurslabor_domain_content',
+      'realm' => 'onlinekurslabor_domain',
       'gid' => $node->nid,
       'grant_view' => 1,
       'grant_update' => 0,
