@@ -515,7 +515,7 @@ function _custom_general_get_group($referer_node, $enforce_parent = FALSE) {
  * Gets User State in a OG_Group
  * @param StdClass $og_group Node-Object oder nid
  * @param StdClass $user_account: useraccount, if null then current user
- * @return 
+ * @return int $state (1,2,3) [OG_STATE_ACTIVE OG_STATE_PENDING OG_STATE_BLOCKED]
  */
 function _custom_general_get_group_state_for_user($og_group, $user_account = null) {
   global $user;
