@@ -15,8 +15,8 @@
 
 
 cd "$(dirname "$0")"
-#cronetab needs some infos about pathes
-source $PWD/get-drush-include-path.sh
+#environment needs some infos about pathes - keep line! ("." means "source")
+. $(readlink -f $0 | xargs dirname)/get-drush-include-path.sh
 
 
 cd ../web/
