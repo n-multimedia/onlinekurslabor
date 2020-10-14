@@ -1524,8 +1524,11 @@ function _section_content_get_active_domain($reset = FALSE) {
     if ($node) {
       $domain = $node;
     }
-    if (is_object($node) && in_array($node->type, array(NM_FILE, NM_CONTENT_CHAPTER, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_DOMAIN, ANNVID_CONTENTTYPE))) {
+    if (is_object($node) && in_array($node->type, array(NM_FILE, NM_CONTENT_CHAPTER, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_DOMAIN,NM_INTERACTIVE_CONTENT, ANNVID_CONTENTTYPE))) {
       if ($node->type == NM_CONTENT_DOMAIN) {
+        /**
+         * das kann doch gar nicht sein. domain itself hat kein og-group-ref. Was war das?
+         */
         //get course which this group is assigned to
         if (isset($node->og_group_ref)) {
           //$lang_og = field_language('node', $node, 'og_group_ref');
@@ -1544,6 +1547,13 @@ function _section_content_get_active_domain($reset = FALSE) {
       //arg 2 may be a chapter
       $domain = node_load(_custom_general_get_group($domain_tmp, TRUE));
 
+    }
+    
+    //falls der Parameter og_group_ref in der url gesetzt ist, überschreibt der den errechneten wert
+    
+    if(arg(0) == 'domain' && ! empty(drupal_get_query_parameters()[og_group_ref]))
+    {
+      $domain = node_load(drupal_get_query_parameters()[og_group_ref]);
     }
 
     //check linkin ajax requests

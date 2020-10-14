@@ -497,7 +497,8 @@ function _custom_general_get_group($referer_node, $enforce_parent = FALSE) {
       $domain_id = $course_nid;
     }
     else {
-      $entities = og_get_entity_groups('node', $referer_node->nid);
+      //forciere laden des og_group_ref-fields
+      $entities = og_get_entity_groups('node', $referer_node->nid, null, 'og_group_ref');
       if (!empty($entities)) {
         $domain_id = current(current($entities));
       }else {
