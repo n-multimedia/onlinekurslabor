@@ -2735,6 +2735,7 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
           'name' => 'node_type',
           'settings' => array(
             'type' => array(
+              'h5p_content' => 'h5p_content',
               'biblio' => 'biblio',
             ),
           ),
@@ -2820,7 +2821,7 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_title' => 0,
+    'override_title' => 1,
     'override_title_text' => '',
     'override_title_heading' => 'h2',
   );

@@ -367,10 +367,10 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
         //solution for biblio and course text needed
         $type = _custom_general_get_node_type($nid);
 
-        if (in_array($type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN,  NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER, NM_INTERACTIVE_CONTENT))) {
+        if (in_array($type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN,  NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER))) {
           $path = 'domain/text/' . $nid;
         }
-        elseif(in_array($type, array( NM_BIBLIO)))
+        elseif(in_array($type, array( NM_BIBLIO,NM_INTERACTIVE_CONTENT)))
         {
             $current_nid = arg(2);
             $current_node = node_load($current_nid);
