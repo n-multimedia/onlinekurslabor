@@ -62,7 +62,11 @@ function section_content_block_view($delta = '') {
       $block['content'] = _section_content_block_text_outline();
       break;
     case 'content_not_accessible_message' :
-      if (!_section_content_get_have_full_read_access_to_domain($current_domain)) {
+      if(!is_object($current_domain))
+      {
+         $block['content'] = '';
+      }
+      elseif (!_section_content_get_have_full_read_access_to_domain($current_domain)) {
         $member_block = custom_general_block_view('custom_general_groupstate_badge');
         $member_badge = render($member_block['content']);
         $block['content'] = t("Your state: !s<br> Thus you don't have access to this domain's subchapters.", array("!s" => $member_badge));
