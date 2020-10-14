@@ -1551,9 +1551,9 @@ function _section_content_get_active_domain($reset = FALSE) {
     
     //falls der Parameter og_group_ref in der url gesetzt ist, überschreibt der den errechneten wert
     
-    if(arg(0) == 'domain' && ! empty(drupal_get_query_parameters()[og_group_ref]))
+    if(arg(0) == 'domain' && ! empty(drupal_get_query_parameters()['og_group_ref']))
     {
-      $domain = node_load(drupal_get_query_parameters()[og_group_ref]);
+      $domain = node_load(drupal_get_query_parameters()['og_group_ref']);
     }
 
     //check linkin ajax requests
