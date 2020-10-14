@@ -278,13 +278,21 @@ function onlinekurslabor_access_node_access_records($node) {
           }
         }
       }
-      //watchdog('onlinekurslabor_access', 'Course content without course reference (%d)', array('%d' => $node->nid . ' ' . $node->title), WATCHDOG_ALERT);
     }
 
   }
+  
+  //trigger warning for course-corpses [kills "rebuild node access"]
+   if (in_array($node->type, array(NM_COURSE_GROUP, NM_COURSE_GENERIC_TASK, NM_COURSE_NEWS, NM_COURSE_DOCS, NM_COURSE_GENERIC_TASK_SOLUTION))) {
+    if (empty($node->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
+      watchdog('onlinekurslabor_access', 'Course content without course reference (%d)', array('%d' => '/node/'.$node->nid . ' ' . $node->title), WATCHDOG_ALERT);
+    }
+  }
+
 
   //todo solution
   if ($node->type == NM_COURSE_GENERIC_TASK_SOLUTION) {
+    
     $grants[] = array(
       'realm' => 'onlinekurslabor_course_solution',
       'gid' => $node->nid,
@@ -333,7 +341,7 @@ function onlinekurslabor_access_node_access_records($node) {
       );
     }
     else {
-      watchdog('onlinekurslabor_access', 'Domain content without domain reference (%d)', array('%d' => $node->nid . ' ' . $node->title), WATCHDOG_ALERT);
+      watchdog('onlinekurslabor_access', 'Domain content without domain reference (%d)', array('%d' => '/node/'.$node->nid . ' ' . $node->title), WATCHDOG_ALERT);
     }
   }
 
