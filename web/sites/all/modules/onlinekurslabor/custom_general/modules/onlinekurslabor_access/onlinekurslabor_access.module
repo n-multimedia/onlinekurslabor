@@ -151,6 +151,7 @@ function onlinekurslabor_access_node_grants($account, $op) {
       //access complete domain text
       //set domain field target id
       if(!empty($course->field_domain_ref[LANGUAGE_NONE][0]['target_id'])){
+        $grants[$realm_domain][] = $course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
         $grants[$realm_domain_content][] = $course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
       }
     }
@@ -158,6 +159,7 @@ function onlinekurslabor_access_node_grants($account, $op) {
     //access demotext
     //set demo domain field target id
     if(!empty($course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id'])){
+      $grants[$realm_domain][] = $course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id'];
       $grants[$realm_domain_content][] = $course->field_domain_demo_ref[LANGUAGE_NONE][0]['target_id'];
     }
   }
