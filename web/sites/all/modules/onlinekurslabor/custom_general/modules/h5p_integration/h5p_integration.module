@@ -2,6 +2,118 @@
 
 
 /**
+ * Implements hook_menu
+ *
+ * @return array
+ */
+function h5p_integration_menu() {
+  $items = array();
+  $items['h5p-export'] = array(
+    'access callback' => '_h5p_integration_user_has_perm_on_exportfile',
+    'access arguments' => array('download', 1), //check: may I download arg(1)
+    'page callback' => '_h5p_integration_menu_download_h5p_export',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * needed in h5p_integration_menu: may I download the export-file?
+ * @param type $access_type
+ * @param type $filename
+ * @return boolean
+ */
+function _h5p_integration_user_has_perm_on_exportfile($access_type, $filename) {
+  //some drupal bug
+  if (!$filename) {
+    return false;
+  }
+  $permission_ok = false;
+  $h5p_internal_id = _h5p_integration_extract_h5p_id_from_file_url($filename);
+
+  if ($h5p_internal_id) {
+    // Get the drupal nid for this $h5p_internal_nid
+    $drupal_node = _h5p_integration_get_node_to_internal_h5p_id($h5p_internal_id);
+    //NOT Found is handled later
+    if (!$drupal_node) {
+      return true;
+    }
+    //what we gonna do with the file?
+    switch ($access_type) {
+      case 'download':
+        if (user_access('download all h5ps') || (node_access('update', $drupal_node) && (user_access('download own h5ps')))) {
+          $permission_ok = true;
+        }
+        break;
+    }
+  }
+
+  return $permission_ok;
+}
+
+/**
+ * loads drupal-node-object of internal h5p-content-id
+ * @param int $h5p_id internal h5p id
+ * @return StdClass $node_object
+ */
+function _h5p_integration_get_node_to_internal_h5p_id($h5p_id) {
+  $nid = db_query("SELECT nid FROM {h5p_nodes} WHERE content_id = :h5p_id", array(':h5p_id' => $h5p_id))->fetchField();
+  return $nid ? node_load($nid) : null;
+}
+
+/**
+ * extract ID from filename.
+ * filename is sth like kap-1-1-tun-sommerschule-15205.h5p
+ * Thus the h5p-ID is 15205
+ * @param string $h5p_file_name the filename, like "kap-1-1-tun-sommerschule-15205.h5p"
+ * @return int $h5p_internal_id
+ */
+function _h5p_integration_extract_h5p_id_from_file_url($h5p_file_name) {
+
+  $matches = array();
+  preg_match('/-(\d+)\.h5p/', $h5p_file_name, $matches);
+  $h5p_internal_id = false;
+  if (!empty($matches[1])) {
+    $h5p_internal_id = $matches[1];
+  }
+  else {
+    trigger_error("FILE URL $h5p_file_name has invalid format.");
+  }
+  return (int)$h5p_internal_id;
+}
+
+/**
+ * downlaods the requested h5p-export-file
+ * WARNING: NO permission-check. Check is done in _h5p_integration_user_has_perm_on_exportfile
+ * @see h5p_integration_menu
+ * @param String $filename like "my-great-h5p-23452.h5p"
+ */
+function _h5p_integration_menu_download_h5p_export($filename) {
+  $h5p_internal_id = _h5p_integration_extract_h5p_id_from_file_url($filename);
+
+  if ($h5p_internal_id) {
+    // Get the drupal nid for this $h5p_internal_nid
+    $drupal_node = _h5p_integration_get_node_to_internal_h5p_id($h5p_internal_id);
+    //NOT Found handler if no corresponding node for perm-check.
+    if (!$drupal_node) {
+      return drupal_not_found();
+    }
+
+
+    $drupal_file_uri = 'public://h5p/exports/' . $filename;
+    $full_file_path = drupal_realpath($drupal_file_uri);
+
+    $http_headers = array(
+      'Content-Type' => 'application/force-download',
+      'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+      'Content-Length' => filesize($full_file_path),
+    );
+    file_transfer($drupal_file_uri, $http_headers);
+  }
+  return;
+}
+
+/**
  * Implements hook_wysiwyg_plugin
  * @param type $editor
  * @param type $version
