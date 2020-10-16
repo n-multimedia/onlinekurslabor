@@ -324,7 +324,7 @@ function h5p_integration_h5p_filtered_params_alter(&$filtered) {
 
     foreach ($all_interactions as &$interaction) {
         //lösche variable
-        unset($url_object);
+        $url_object = null; 
 
         //navigation hotspot
         if (!empty($interaction->action->params->destination->url)) {

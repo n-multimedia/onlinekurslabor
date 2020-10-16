@@ -91,7 +91,7 @@ function _course_header_section_view() {
 
     $variables = array();
     $variables['course_state'] = array();
-    $variables['course_state']['demo'] =   $variables['course_state']['draft']  =  false;
+    $variables['course_state']['demo'] = $variables['course_state']['draft'] = $variables['course_state']['pending'] = false;
     
     if (section_courses_demo_mode()) {
         $variables['course_state']['demo'] = true;
@@ -662,6 +662,10 @@ function _section_courses_navtext_to_link($course, $text) {
 
         if(empty($term) && _section_courses_user_can_edit_course($user, $course)){
           drupal_set_message('Das Forumfeature ist in diesem Kurs aktiv aber es konnte kein passender Eintrag gefunden werden.<br/>Bitte kontaktieren Sie den Support.', 'error');
+          
+        }
+        if(empty($term))
+        {
           break;
         }
         $num_unread = _section_courses_advanced_forum_get_num_unread($user->uid, $term->tid);

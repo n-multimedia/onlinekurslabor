@@ -162,8 +162,8 @@ function onlinekurslabor_redirect_node_view($node, $view_mode, $langcode) {
       case NM_CONTENT_CHAPTER:
       case NM_INTERACTIVE_CONTENT:
         // annvid stream entries might be created in domain oder course context
-        $streamNid = $_GET['streamNode'];
-        if (!empty($streamNid)) {
+        if (!empty(drupal_get_query_parameters()['streamNode'])) {
+          $streamNid = drupal_get_query_parameters()['streamNode'];
           //redirect to the right position
           $streamNode = node_load($streamNid);
           $environment = _nm_stream_get_node_environment($streamNode);

@@ -47,6 +47,7 @@ function _section_content_node_tabs_view() {
 
 function _section_content_navtext_to_link($domain, $text) {
   global $user;
+  $optional_group = null;
   $result = $text;
 
   //break if domain argument is not set

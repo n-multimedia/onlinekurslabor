@@ -1529,7 +1529,7 @@ function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
 
   //get all gids the user belongs to
   $groups = og_get_groups_by_user($account);
-  $groups = $groups['node'] ? $groups['node'] : array();
+  $groups = !empty($groups['node']) ? $groups['node'] : array();
 
   foreach ($groups as $gid) {
     //check if group's type is a course group
