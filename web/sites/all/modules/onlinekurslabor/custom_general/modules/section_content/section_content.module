@@ -1066,36 +1066,26 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
     case 'section_content_formatter_video_preview':
       // Use the media_thumbnail image style so that the output in media browser
       // is consistent.
-      $multiple_file_behavior = $settings['multiple_file_behavior'];
 
       // Prevent 'empty' fields from causing a WSOD.
       $items = array_filter($items);
       $is_wysiwyg_preview = false;
-      if($items[0]['override']['wysiwyg'])
+      if(!empty($items[0]['override']['wysiwyg']))
       {
           $is_wysiwyg_preview = true;
       }
       // Build an array of sources for each <video> element.
       $source_lists = array();
-      if ($multiple_file_behavior == 'tags') {
-        foreach ($items as $delta => $item) {
-          if ($item['type'] == 'video'  && !in_array($item['filemime'], $blacklist_filenime)) {
-            $source_lists[] = array($item);
-          }
-        }
-      }
-      else {
+      
         foreach ($items as $delta => $item) {
           if ($item['type'] == 'video'  && !in_array($item['filemime'], $blacklist_filenime)) {
             $source_lists[0][] = $item;
           }
         }
-      }
+      
 
       // Render each source list as an image
       foreach ($source_lists as $delta => $sources) {
-        $width = $settings['width'];
-        $height = $settings['height'];
         $element[$delta] = array(
           '#theme' => 'section_content_formatter_video_preview',
           '#files' => $sources,
@@ -1109,11 +1099,11 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
       // Use the media_thumbnail image style so that the output in media browser
       // is consistent.
       $multiple_file_behavior = $settings['multiple_file_behavior'];
-
+      
       // Prevent 'empty' fields from causing a WSOD.
       $items = array_filter($items);
-
-      if($items[0]['override']['wysiwyg'])
+      $is_wysiwyg_preview = false;
+      if(!empty($items[0]['override']['wysiwyg']))
       {
           $is_wysiwyg_preview = true;
       }
@@ -1776,7 +1766,7 @@ function _section_content_file_display_post_render($rendered_html, $entity) {
  */
 function theme_section_content_formatter_video($variables) {
   $files = $variables['files'];
-  $output = '';
+  $output = $classes = $file_source_list = '';
 
   $video_attributes = array();
   if ($variables['controls']) {
@@ -1882,7 +1872,7 @@ function theme_section_content_formatter_video_preview($variables) {
  */
 function _section_content_get_themed_video_screenshot_array($screenshot_uri, $image_width = null, $with_play_button = true) {
   $return_arr = array();
-
+  $scaling_style = false;
   $playerbutton_image_style = 'media_fakevideo';
   // preview eines videos. passe preview an videosize an. 
   if ($image_width) {
