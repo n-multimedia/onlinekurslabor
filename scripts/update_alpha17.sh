@@ -1,6 +1,6 @@
 #!/bin/bash
 #environment needs some infos about pathes - keep line!
-source $PWD/get-drush-include-path.sh
+. $( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )/get-drush-include-path.sh
 
 
 drush vset maintenance_mode 1

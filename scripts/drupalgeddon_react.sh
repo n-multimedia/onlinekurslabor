@@ -15,8 +15,9 @@
 
 
 cd "$(dirname "$0")"
+
 #environment needs some infos about pathes - keep line! ("." means "source")
-. $(dirname $(readlink -f $0))/get-drush-include-path.sh
+. $( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )/get-drush-include-path.sh
 
 
 cd ../web/
