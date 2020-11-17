@@ -96,7 +96,7 @@ function _h5p_integration_menu_download_h5p_export($filename) {
     $drupal_node = _h5p_integration_get_node_to_internal_h5p_id($h5p_internal_id);
     //NOT Found handler if no corresponding node for perm-check.
     if (!$drupal_node) {
-      return drupal_not_found();
+      return MENU_NOT_FOUND;
     }
 
 
@@ -108,9 +108,20 @@ function _h5p_integration_menu_download_h5p_export($filename) {
       'Content-Disposition' => 'attachment; filename="' . $filename . '"',
       'Content-Length' => filesize($full_file_path),
     );
-    file_transfer($drupal_file_uri, $http_headers);
+    if(file_exists($full_file_path))
+    {
+      file_transfer($drupal_file_uri, $http_headers);
+    }
+    else
+    {
+      return MENU_NOT_FOUND;
+    }
+
   }
-  return;
+  else
+  {
+      return MENU_NOT_FOUND;
+  }
 }
 
 /**
