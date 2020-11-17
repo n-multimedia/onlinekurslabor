@@ -183,7 +183,7 @@ function nm_h5p_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'h5p_export';
-  $strongarm->value = '0';
+  $strongarm->value = '4';
   $export['h5p_export'] = $strongarm;
 
   $strongarm = new stdClass();

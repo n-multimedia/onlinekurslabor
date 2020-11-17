@@ -11,6 +11,22 @@
 function nm_h5p_features_user_default_permissions() {
   $permissions = array();
 
+  // Exported permission: 'download all h5ps'.
+  $permissions['download all h5ps'] = array(
+    'name' => 'download all h5ps',
+    'roles' => array(),
+    'module' => 'h5p',
+  );
+
+  // Exported permission: 'download own h5ps'.
+  $permissions['download own h5ps'] = array(
+    'name' => 'download own h5ps',
+    'roles' => array(
+      'Autor' => 'Autor',
+    ),
+    'module' => 'h5p',
+  );
+
   // Exported permission: 'update h5p libraries'.
   $permissions['update h5p libraries'] = array(
     'name' => 'update h5p libraries',
