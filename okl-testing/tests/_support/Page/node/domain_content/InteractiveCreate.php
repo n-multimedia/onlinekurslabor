@@ -37,6 +37,16 @@ class InteractiveCreate extends DomainContentBase implements \Page\node\ContentC
         $I->amOnPage(self::$createURL);
         $I->cantSee("Hochladen");
     }
+    
+     /**
+     * Confirmation: existiert das Basisformular für H5P?
+     */
+    public function seeUploadCreateField() {
+        $I = $this->tester;
+        $I->amOnPage(self::$createURL);
+        $I->see("Hochladen");
+        $I->see("Erstellen");
+    }
 
     /**
      * Create is different for h5p. no title-field available!
