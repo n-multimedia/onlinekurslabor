@@ -143,7 +143,7 @@ function section_content_node_view($node, $view_mode, $langcode) {
 
 
     if ($has_children) {
-      $node->content['book_navigation']['#markup'] = '<hr><h3>Unterkapitel</h3>' . $node->content['book_navigation']['#markup'];
+      $node->content['book_navigation']['#markup'] = '<h3>'.t('Subchapters').'</h3>' . $node->content['book_navigation']['#markup'];
     }
 
     //TOC functionality. Numbering Chapters
@@ -225,8 +225,9 @@ function book_preprocess(&$variables, $hook) {
     //TOC functionality. Numbering Chapters
     //check if numbering is enabled in domain settings
     if (!_custom_general_toc_enabled($variables['book_id']))
+    {
       return;
-
+    }
 
     $book_link = $variables['book_link'];
 

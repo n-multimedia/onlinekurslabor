@@ -87,6 +87,9 @@ msgstr "Entscheiden Sie, ob dieser Inhalt nur für Mitglieder oder jeden zugreif
 msgid "Your state: !s<br> Thus you don't have access to this domain's subchapters."
 msgstr "Ihr Status: !s<br> Somit haben Sie keinen Zugriff auf die Unterkapitel des Lehrtexts."
 
+msgid "Subchapters"
+msgstr "Unterkapitel"
+
 msgid ""
 msgstr ""
 
