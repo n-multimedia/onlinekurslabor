@@ -66,7 +66,7 @@ class StreamCest extends CestHelper {
       $I->wait(2);
       $I->see($studentandstream['stream']['comment']);
     }
-    $I->makeScreenshot('STREAM saved' . $studentandstream['mail']);
+    $I->makeScreenshot('STREAM_saved' . $studentandstream['mail']);
   }
 
   /**
