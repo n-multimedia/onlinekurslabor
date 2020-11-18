@@ -1372,21 +1372,27 @@ function array_search_i($str, $array) {
   return $result;
 }
 
-function section_content_text_outline() {
-  $active_domain = _section_content_get_active_domain();
+/**
+ * rendert das Inhaltsverzeichnis im Lehrtext links
+ * wird benutzt in _section_content_block_text_outline
+ * kann eingesetzt werden durch: Add Block ->  content text outline
+ * Course oder Domain muss aktiv gesetzt werden für Funktionalität.
+ * 
+ * @param int $domain_nid Die Domain-ID 
+ * @param bool $rendered_in_course Inhaltsvz wird im Kurs angezeigt
+ * @return String
+ */
+function section_content_text_outline($domain_nid, $rendered_in_course = false) {
 
-
-  if (!$active_domain) {
+  if (!$domain_nid) {
     return;
   }
 
-  $domain_ref = $active_domain->nid;
-
-  $menu_name = 'book-toc-' . $domain_ref;
+  $menu_name = 'book-toc-' . $domain_nid;
   $tree = menu_tree_all_data($menu_name);
 
-// And add the active trail data back to the full tree.
-//menu_tree_add_active_path($tree);
+  // And add the active trail data back to the full tree.
+  //menu_tree_add_active_path($tree);
 
   $config = array();
   $config['title_link'] = "test";
@@ -1394,15 +1400,23 @@ function section_content_text_outline() {
   $config['menu_name'] = $menu_name;
   $config['title_link'] = '';
   $config['parent_mlid'] = 0;
-  $config['level'] = 1;
+  $config['level'] = $rendered_in_course? 2 : 1;
 
-  _section_content_text_outline_add_active_path($tree);
+  if($rendered_in_course)
+  {
+      _section_courses_text_outline_add_active_path($tree);
+  }
+  else
+  {
+      _section_content_text_outline_add_active_path($tree);
+  }
 
-// Allow alteration of the tree and config before we begin operations on it.
+
+  // Allow alteration of the tree and config before we begin operations on it.
   drupal_alter('menu_block_tree', $tree, $config);
 
 
-// Prune the tree along the active trail to the specified level.
+  // Prune the tree along the active trail to the specified level.
   if ($config['level'] > 1 || $config['parent_mlid']) {
     if ($config['parent_mlid']) {
       $parent_item = menu_link_load($config['parent_mlid']);
@@ -1413,40 +1427,36 @@ function section_content_text_outline() {
     }
   }
 
-// Render the tree.
+  // Render the tree.
   $data = array();
   $title = menu_block_get_title($config['title_link'], $config);
-  //$data['subject_array'] = $title;
-  $data['subject'] = drupal_render($title);
-  $data['content']['#content'] = menu_block_tree_output($tree, $config);
-  if (!empty($data['content']['#content'])) {
-    $data['content']['#theme'] = array(
+  //$data['#title'] =  drupal_render($title);
+  $data['#content'] = menu_block_tree_output($tree, $config);
+  if (!empty($data['#content'])) {
+    $data['#theme'] = array(
       'menu_block_wrapper__' . str_replace('-', '_', $config['delta']),
       'menu_block_wrapper__' . str_replace('-', '_', $config['menu_name']),
       'menu_block_wrapper'
     );
-    $data['content']['#config'] = $config;
-    $data['content']['#delta'] = $config['delta'];
+    $data['#config'] = $config;
+    $data['#delta'] = $config['delta'];
   }
   else {
-    $data['content'] = '';
+    $data = array();
   }
 
-  $output = drupal_render($data);
-
-
-  //$output = '<div><h5><u>' . l($active_domain->title, 'domain/text/' . $active_domain->nid) . '</u></h5></div>' . $output;
-
   //Outline retraction by domain setting
-  if(_custom_general_outline_retraction_enabled($domain_ref)) {
+  if (_custom_general_outline_retraction_enabled($domain_nid) && $rendered_in_course) {
     drupal_add_js(drupal_get_path('module', 'section_content') . "/js/section_content_outline.js");
     drupal_add_js(drupal_get_path('module', 'section_content') . "/js/bootstrap-treeview.min.js");
     drupal_add_css(drupal_get_path('module', 'section_content') . "/css/bootstrap-treeview.min.css");
     drupal_add_css(drupal_get_path('module', 'section_content') . "/css/nm-bootstrap-treeview.css");
   }
-  drupal_add_js(drupal_get_path('module', 'section_content') . "/js/section_content.js");
+  if (!$rendered_in_course) {
+    drupal_add_js(drupal_get_path('module', 'section_content') . "/js/section_content.js");
+  }
 
-
+ $output = drupal_render($data);
   return $output;
 }
 

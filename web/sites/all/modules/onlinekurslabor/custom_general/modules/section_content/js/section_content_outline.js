@@ -162,10 +162,12 @@
 
         expand_button.on('click', function () {
           outline_tree.treeview('expandAll');
+          return false;
         });
 
         collapse_button.on('click', function () {
           outline_tree.treeview('collapseAll');
+          return false;
         });
         ////initial collapse
         //outline_tree.treeview('collapseAll');

@@ -137,20 +137,14 @@ function _section_content_theme_authors_tools($variables = NULL) {
  * used for block "content_text_outline"
  * @param type $vars
  */
-function _section_content_block_text_outline($vars = NULL)
-{
-    /**
-     * functions in COURSE are slightly different :((
-     */
-    if(  _section_courses_get_active_course())
-    {
-        return section_courses_text_outline();
-    }
-    else
-    {
-        return section_content_text_outline();
-    }
-    
+function _section_content_block_text_outline($vars = NULL) {
+  if ($active_course = _section_courses_get_active_course()) {
+    $ref_domain_nid = _section_courses_course_get_domain_id($active_course);
+    return section_content_text_outline($ref_domain_nid, true);
+  }
+  elseif ($active_domain = _section_content_get_active_domain()) {
+    return section_content_text_outline($active_domain->nid, false);
+  }
 }
 
 /**

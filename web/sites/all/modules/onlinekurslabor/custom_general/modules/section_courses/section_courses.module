@@ -806,9 +806,10 @@ function _section_courses_text_outline_add_active_path(&$subtree_pointer) {
  * FAST das gleiche wie section_content_text_outline
  * leider gibts ein paar Fallstricke und der Doppelcode bleibt bestehen...
  * @return type
+ * @deprecated since alpha18
  */
 function section_courses_text_outline() {
-
+  trigger_error("DEPRECATED; NO USAGE! IN ".__FUNCTION__);
   $active_course = _section_courses_get_active_course();
   //$lang = field_language('node', $active_course, 'field_domain_ref');
   //$domain_ref = $active_course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
