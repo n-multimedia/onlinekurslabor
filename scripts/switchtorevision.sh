@@ -21,6 +21,8 @@ sleep 5s
 
 drush fr  nm_general_features nm_section_content_features nm_section_courses_features videosafe_features  --yes
 drush cc all
+echo 'rebuilding permissions in 3s'
+sleep 3s
 drush php-eval 'node_access_rebuild();'
 echo  '\007'
 

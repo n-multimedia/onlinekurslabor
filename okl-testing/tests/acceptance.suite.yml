@@ -49,6 +49,11 @@ env:
       config:
         WebDriver:
           url: https://instatest.div.onlinekurslabor.de
+  gittest:
+    modules:
+      config:
+        WebDriver:
+          url: https://gittest.div.onlinekurslabor.de
 #verschiedene environments für verschiedene browser
   chrome-env:
     modules:
