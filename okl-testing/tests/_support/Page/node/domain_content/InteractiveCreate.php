@@ -98,7 +98,7 @@ class InteractiveCreate extends DomainContentBase implements \Page\node\ContentC
      */
     public function getNewNid() {
         $I = $this->tester;
-        return $I->grabFromCurrentUrl('~/domain/text/(\d+)~');
+        return $I->grabFromCurrentUrl('~/domain/text/\d+/(\d+)~');
     }
 
 }
