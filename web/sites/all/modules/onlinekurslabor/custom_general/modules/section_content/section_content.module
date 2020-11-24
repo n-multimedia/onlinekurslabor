@@ -912,8 +912,8 @@ function _section_content_filter_links_process($text, $filter, $format){
     $regex_domain = '#((http:\/\/|https:\/\/)' . $url_without_http . ')#s';
     $text_without_domain = preg_replace($regex_domain, "", $text);
 
-    //2) ersetzt angaben wie course/text/1234/567 sowie domain/text/567 durch /node/567
-    $regex_text = '#(\/domain\/text|\/course\/text\/\d+)\/(\d+)#s';
+    //2) ersetzt angaben wie course/text/1234/567 sowie domain/text/567 durch /node/567, aber NICHT domain/text/123/567, das bleibt. https://regex101.com/r/8Y17Wr/1
+    $regex_text = '#(\/domain\/text(?!\/\d+\/\d+)|\/course\/text\/\d+)\/(\d+)#s';
     return $text_new = preg_replace($regex_text, "/node/$2", $text_without_domain);
 }
 
