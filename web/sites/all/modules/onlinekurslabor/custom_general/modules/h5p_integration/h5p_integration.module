@@ -324,8 +324,7 @@ function h5p_integration_h5p_filtered_params_alter(&$filtered) {
     $all_interactions = $filtered->interactiveVideo->assets->interactions;
 
     foreach ($all_interactions as &$interaction) {
-        //lösche variable
-        $url_object = null; 
+       
 
         //navigation hotspot
         if (!empty($interaction->action->params->destination->url)) {
@@ -339,10 +338,15 @@ function h5p_integration_h5p_filtered_params_alter(&$filtered) {
         elseif (!empty($interaction->action->params->linkWidget)) {
             $url_object = &$interaction->action->params->linkWidget;
         }
+        else
+        {
+           //lösche variable, nicht content-by-reference
+           unset($url_object);
+        }
         
 
         if(is_object($url_object) && !empty($url_object->url))
-        {
+        { 
             $real_url = $url_object->protocol . $url_object->url;
             //konvertiere alt-urls in /node/nid
             //dpm("realurl vor filter : " . $real_url);
@@ -367,12 +371,13 @@ function h5p_integration_h5p_filtered_params_alter(&$filtered) {
                 $url_object->url = $real_url;
                 $url_object->protocol = '/';
             }
-            
         //dpm("interaction neu:");
         //dpm($interaction);
-            
+
         }
+       
 
         
     }
+   
 }
