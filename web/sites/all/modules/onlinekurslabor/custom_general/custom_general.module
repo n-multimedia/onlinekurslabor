@@ -1251,7 +1251,7 @@ function custom_general_mail_alter(&$message){
   //empfänger
     $user_mail = $message['to'];
     $user_acc_to = user_load_by_mail($user_mail);
-    if ($user_acc_to->status == 0) {
+    if (is_object($user_acc_to) && $user_acc_to->status == 0) {
         drupal_set_message(t('@realname is blocked and thus will not receive an e-mail.', array('@realname' => $user_acc_to->realname)), 'warning');
         //  Prevent the mail from being sent
         $message['send'] = FALSE;
