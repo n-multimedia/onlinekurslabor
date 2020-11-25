@@ -368,18 +368,27 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
         //solution for biblio and course text needed
         $type = _custom_general_get_node_type($nid);
 
-        if (in_array($type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN,  NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER))) {
+        if (in_array($type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN,  NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER, ANNVID_CONTENTTYPE))) {
           $path = 'domain/text/' . $nid;
         }
         elseif(in_array($type, array( NM_BIBLIO,NM_INTERACTIVE_CONTENT)))
         {
+            //current_nid: Kann ein element sein (NM_CONTENT_CHAPTER, NM_CONTENT_MULTIPLE_CHOICE) (domain/text/nid)
+            // oder bei doppel-urls (domain/text/bid/nid) ein verweis auf das buch
             $current_nid = arg(2);
             $current_node = node_load($current_nid);
-
             if(is_object($current_node) && !empty($current_node->book))
             {
                 $curr_bookid  = $current_node->book['bid'];
-                $path = 'domain/text/' .$curr_bookid.'/'. $nid;
+            }
+            elseif(!empty($current_node->og_group_ref))
+            {
+               $curr_bookid  = $current_node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+            }
+            
+            if($curr_bookid)
+            {
+              $path = 'domain/text/' .$curr_bookid.'/'. $nid;
             }
         }
         $original_path = $path;
