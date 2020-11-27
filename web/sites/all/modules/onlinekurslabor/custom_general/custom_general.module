@@ -1338,20 +1338,30 @@ function custom_general_query_alter(QueryAlterableInterface $query) {
  * @param type $node
  */
 function custom_general_node_presave($node) {
-  if ($node->nid) {
-    $node_vars = get_object_vars($node);
 
-    $bad_embed_regex = "/\[.*\]" . $node->nid . "(?::.*)\[\/.*\]/";
-    foreach ($node_vars as $node_key => $variable) {
-      //handelt es sich um einen textblock?
-      if (is_array($variable) && !empty($variable[LANGUAGE_NONE][0]['value'])) {
-        //tritt bad_embed_regex auf?
-        if (preg_match($bad_embed_regex, $variable[LANGUAGE_NONE][0]['value'])) {
-          drupal_set_message("Ein Objekt kann nicht in sich selbst eingebettet werden. Der entsprechende Befehl wurde entfernt.", 'error');
-          watchdog('custom_general', 'DENIED self-embed, content was: %input', array('%input' => $variable[LANGUAGE_NONE][0]['value']), WATCHDOG_CRITICAL);
-          //ersetze bad_embed_regex durch eine "Entfernt-Notiz"
-          $node->$node_key[LANGUAGE_NONE][0]['value'] = preg_replace($bad_embed_regex, "-- verbotene Einbettung entfernt --", $variable[LANGUAGE_NONE][0]['value']);
-        }
+  //node-insert: calculate the expected nid for this node.
+  if ($node->is_new) {
+    $last_nodes = node_get_recent(1);
+    $last_nid = array_pop(array_keys($last_nodes));
+    $own_nid = $last_nid + 1;
+  }
+  else {
+    $own_nid = $node->nid;
+  }
+
+  //die eigenschaften des nodes
+  $node_vars = get_object_vars($node);
+
+  $bad_embed_regex = "/\[.*\]" . $own_nid . "(?::.*)\[\/.*\]/";
+  foreach ($node_vars as $node_key => $variable) {
+    //handelt es sich um einen textblock?
+    if (is_array($variable) && !empty($variable[LANGUAGE_NONE][0]['value'])) {
+      //tritt bad_embed_regex auf?
+      if (preg_match($bad_embed_regex, $variable[LANGUAGE_NONE][0]['value'])) {
+        drupal_set_message("Ein Objekt kann nicht in sich selbst eingebettet werden. Der entsprechende Befehl wurde entfernt.", 'error');
+        watchdog('custom_general', 'DENIED self-embed, content was: %input', array('%input' => $variable[LANGUAGE_NONE][0]['value']), WATCHDOG_CRITICAL);
+        //ersetze bad_embed_regex durch eine "Entfernt-Notiz"
+        $node->$node_key[LANGUAGE_NONE][0]['value'] = preg_replace($bad_embed_regex, "-- verbotene Einbettung entfernt --", $variable[LANGUAGE_NONE][0]['value']);
       }
     }
   }
