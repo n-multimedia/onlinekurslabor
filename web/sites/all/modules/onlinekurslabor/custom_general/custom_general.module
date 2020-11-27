@@ -1342,7 +1342,8 @@ function custom_general_node_presave($node) {
   //node-insert: calculate the expected nid for this node.
   if ($node->is_new) {
     $last_nodes = node_get_recent(1);
-    $last_nid = array_pop(array_keys($last_nodes));
+    $last_nids = array_keys($last_nodes);
+    $last_nid = array_pop($last_nids);
     $own_nid = $last_nid + 1;
   }
   else {
