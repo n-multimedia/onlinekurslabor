@@ -194,6 +194,12 @@ function _h5p_integration_filter_h5p_process($text, $filter, $format) {
     return $text_after_replacement;
 }
 
+
+/**
+ * called in _h5p_integration_filter_h5p_process. replace h5p-tag with the interactive-content $node
+ * @param type $matches
+ * @return string
+ */
 function _h5p_integration_h5p_replacements($matches) {
   //preg_match($regex, $text, $matches);
   //$match = $matches[0];
@@ -204,23 +210,15 @@ function _h5p_integration_h5p_replacements($matches) {
     $nid = $matches[1];
     $node = node_load($nid);
 
-    if ($node != FALSE && node_access('view', $node) && $node->status) {
-
-      //bei embed auch den view-mode anpassen
-      $node_view = node_view($node, 'embed', NULL);
-
-      //28.05.2013 - 12:22 - SN hack, title must be unset at another place (template)
-      if (isset($node_view['#node']->title)) {
-        $node_view['#node']->title = "";
-      }
-      //dpm($node_view);
-      $node_output = drupal_render($node_view);
-      //$text = preg_replace($regex, $node_output, $text);
-      $text = '<div class="embeded_h5p">' . $node_output . '</div>';
+    if (!$node || $node->type !== 'h5p_content' || !node_access('view', $node) || !$node->status) {
+      return t('The interactive content %nid does not exist.', array('%nid' => $nid));
     }
+    //this is ELSE
+    $html = _include_h5p($node);
+    h5p_set_started(h5p_get_content_id($node));
+    return $html;
   }
-
-  return $text;
+  return "";
 }
 
 /**

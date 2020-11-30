@@ -937,21 +937,21 @@ function _section_content_task_replacements($matches) {
     $nid = $matches[1];
     $node = node_load($nid);
 
-    if ($node != FALSE && node_access('view', $node) && $node->status) {
-      $node_view = node_view($node, 'task', NULL);
-
-      //28.05.2013 - 12:22 - SN hack, title must be unset at another place (template)
-      if (isset($node_view['#node']->title)) {
-        $node_view['#node']->title = "";
-      }
-      //dpm($node_view);
-      $node_output = drupal_render($node_view);
-      //$text = preg_replace($regex, $node_output, $text);
-      $text = '<div class="embeded_task">' . $node_output . '</div>';
+    if (!$node || !in_array($node->type, array(NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER)) || !node_access('view', $node) || !$node->status) {
+      return t('The task %nid does not exist.', array('%nid' => $nid));
     }
-  }
 
-  return $text;
+    $node_view = node_view($node, 'task', NULL);
+
+    //28.05.2013 - 12:22 - SN hack, title must be unset at another place (template)
+    if (isset($node_view['#node']->title)) {
+      $node_view['#node']->title = "";
+    }
+
+    $node_output = drupal_render($node_view);
+    $text = '<div class="embeded_task">' . $node_output . '</div>';
+  }
+   return $text; 
 }
 
 /**
