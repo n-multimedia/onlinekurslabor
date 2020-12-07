@@ -539,6 +539,18 @@ function _custom_general_get_group_state_for_user($og_group, $user_account = nul
 }
 
 /**
+ * gets last NID in Database
+ * @return array $list key->value (samesame)
+ */
+function _custom_general_get_latest_nid()
+{
+$last_nid = db_query("SELECT nid FROM {node} ORDER BY nid DESC LIMIT 0,1")->fetchColumn();
+return $last_nid;
+}
+
+
+
+/**
  * gets all og-roles of the plattform. member, kurs-dozent, kurs-tutor etc.
  * @return array $list key->value (samesame)
  */
@@ -1341,9 +1353,7 @@ function custom_general_node_presave($node) {
 
   //node-insert: calculate the expected nid for this node.
   if ($node->is_new) {
-    $last_nodes = node_get_recent(1);
-    $last_nids = array_keys($last_nodes);
-    $last_nid = array_pop($last_nids);
+    $last_nid = _custom_general_get_latest_nid();
     $own_nid = $last_nid + 1;
   }
   else {
