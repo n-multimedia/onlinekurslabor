@@ -21,7 +21,7 @@ class FinalizeCest extends CestHelper {
    * setze current Context wieder auf den Fallbackkurs statt den eben erstellten.
    * @param \Step\Acceptance\Dozent $I
    */
-  public function C001_06_resetContext(\Step\Acceptance\Dozent $I) {
+  public function F001_01_resetContext(\Step\Acceptance\Dozent $I) {
     $this->resetCurrentContextNid();
   }
 
