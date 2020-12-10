@@ -36,7 +36,7 @@ class CourseBase extends \Page\node\Node {
     $I->click("Lehrtext", self::$formEditContext);
     //cutte ggf. falsche zeichen am ende des titels
     $I->fillField($fieldName, trim(substr($domain_title, 0, -3)));
-    $I->wait(3);
+    $I->wait(6);
     //FF-freundliche Alternative zu: $I->click($domain_title);
     $I->clickWithLeftButton(['css' => 'input[name="' . $fieldName . '"]'], 0, 30);
     $I->see($domain_title);

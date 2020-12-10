@@ -80,7 +80,7 @@ class InteractiveCreate extends DomainContentBase implements \Page\node\ContentC
              $I->click("#edit-title--2");
             $I->fillField("#edit-title--2", $params['videoname']);
             $I->click("Anwenden");
-            $I->wait(3);
+            $I->wait(5);
             $I->click($params['videoname']);
             $I->wait(3);
             $I->click("Dieses Video auswählen");

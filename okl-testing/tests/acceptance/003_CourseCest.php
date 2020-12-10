@@ -173,6 +173,7 @@ class CourseCest  extends CestHelper{
     $I->useCourseMenu('Kursinhalte', 'Ankündigung hinzufügen');
     $I->expect('AK-1: Ankündigung lässt sich per wysiwyg erstellen');
     $I->see("Neue Ankündigung erstellen");
+    $I->wait(1);
     $I->seeElement("#cke_edit-body-und-0-value");
 
     $I->fillField('title', $news['title']);
