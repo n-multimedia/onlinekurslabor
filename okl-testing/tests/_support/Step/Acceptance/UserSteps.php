@@ -84,16 +84,33 @@ class UserSteps extends \AcceptanceTester {
   
   /**
    * click on a <$html_tag> in which a text is included
+   * mainly used for a firefox-bug: https://sqa.stackexchange.com/questions/32697/webdriver-firefox-element-could-not-be-scrolled-into-view
    * @param String $html_tag
    * @param type $text
    */
-  public function clickTagContaining($html_tag, $text)
-  {
-      $I = $this;
-      $obj = Locator::contains($html_tag, $text);
-      $I->click($obj);
+  public function clickTagContaining($html_tag, $text) {
+    $I = $this;
+
+    $obj = Locator::contains($html_tag, $text);
+    $I->click($obj);
   }
 
+  /**
+   * if links cannot be clicked (BUG: "Element <option> could not be scrolled into view"), use this function
+   * 
+   * @param type $link_text the linktext like "Impressum" or "Login". May be contained in a subelement like <span>
+   */
+  public function clickLinkBugProof($link_text) {
+    $I = $this;
+    $this->executeJS("href=jQuery('a:contains(" . addslashes($link_text) . ")').attr('href'); document.location=href;");
+    $I->wait(2);
+  }
+
+  /**
+   * Fill a ckeditor. The $element_id is the string included in '#cke_' . $element_id . ' .cke_wysiwyg_frame';
+   * @param type $element_id
+   * @param type $content
+   */
   public function fillCkEditorById($element_id, $content) {
 
     $css_id = '#cke_' . $element_id . ' .cke_wysiwyg_frame';
@@ -106,8 +123,14 @@ class UserSteps extends \AcceptanceTester {
     );
   }
 
+  /**
+   * fill ck-editor. For the element_name check the dome for a HIDDEN textarea just before the ckeditor.
+   * @param type $element_name name of this hidden textarea
+   * @param type $content
+   */
   public function fillCkEditorByName($element_name, $content) {
     $css_selector = 'textarea[name="' . $element_name . '"] + .cke .cke_wysiwyg_frame';
+    $this->scrollTo($css_selector);
     $this->clickWithLeftButton($css_selector);
     $this->fillRteEditor(
       \Facebook\WebDriver\WebDriverBy::cssSelector(
