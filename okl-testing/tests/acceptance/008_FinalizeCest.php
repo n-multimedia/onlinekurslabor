@@ -19,10 +19,20 @@ class FinalizeCest extends CestHelper {
 
   /**
    * setze current Context wieder auf den Fallbackkurs statt den eben erstellten.
+   * @param AcceptanceTester $I
+   */
+  public function F001_01_resetContext(AcceptanceTester $I) {
+    $this->resetCurrentContextNid();
+  }
+
+  /**
+   * Nötige Aktion, damit records.html nicht leer ist. 
    * @param \Step\Acceptance\Dozent $I
    */
-  public function F001_01_resetContext(\Step\Acceptance\Dozent $I) {
-    $this->resetCurrentContextNid();
+  public function F001_02_fixRecordsHTML(AcceptanceTester $I) {
+    //When a komplete CEST doesn\'t have an $I->do()... this leads to the records.html being empty.
+    //so just do something.
+    $I->amOnPage('/');
   }
 
 }
