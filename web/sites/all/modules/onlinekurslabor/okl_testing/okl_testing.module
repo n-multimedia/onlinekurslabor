@@ -271,14 +271,13 @@ function okl_testing_getcontentfromurlarg($url_arg_1, $url_arg_2) {
     $basepath_to_output = $_SERVER['DOCUMENT_ROOT'].'/../okl-testing/tests/_output/';
     $full_path = $basepath_to_output.$full_url_arg; 
 
-
     //sollte es ein VZ sein, baue directory-index
     if (is_dir($full_path)) {
         $thelist = '<html><body><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"><center><br><br>';
         if ($directory_handle = opendir($full_path)) {
             while (false !== ($element_in_dir = readdir($directory_handle))) {
                 if (!in_array($element_in_dir, array('.', '..'))) {
-                    $thelist .= '<LI><a href="' . $full_url_arg . '/' . $element_in_dir . '">' . $element_in_dir . '</a></li>';
+                    $thelist .= '<li><a href="' . $full_url_arg . '/' . urlencode($element_in_dir) . '">' . $element_in_dir . '</a></li>';
                 }
             }
             closedir($directory_handle);
