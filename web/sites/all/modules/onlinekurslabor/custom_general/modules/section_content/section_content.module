@@ -938,7 +938,7 @@ function _section_content_task_replacements($matches) {
     $node = node_load($nid);
 
     if (!$node || !in_array($node->type, array(NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER)) || !node_access('view', $node) || !$node->status) {
-      return t('The task %nid does not exist.', array('%nid' => $nid));
+      return t('The task %nid is not accessible.', array('%nid' => $nid));
     }
 
     $node_view = node_view($node, 'task', NULL);

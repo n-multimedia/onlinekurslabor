@@ -211,7 +211,7 @@ function _h5p_integration_h5p_replacements($matches) {
     $node = node_load($nid);
 
     if (!$node || $node->type !== 'h5p_content' || !node_access('view', $node) || !$node->status) {
-      return t('The interactive content %nid does not exist.', array('%nid' => $nid));
+      return t('The interactive content %nid is not accessible.', array('%nid' => $nid));
     }
     //this is ELSE
     $html = _include_h5p($node);

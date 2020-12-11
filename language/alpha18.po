@@ -90,11 +90,11 @@ msgstr "Ihr Status: !s<br> Somit haben Sie keinen Zugriff auf die Unterkapitel d
 msgid "Subchapters"
 msgstr "Unterkapitel"
 
-msgid "The interactive content %nid does not exist."
-msgstr "Der interaktive Inhalt %nid existiert nicht."
+msgid "The interactive content %nid is not accessible."
+msgstr "Der interaktive Inhalt %nid ist nicht zugreifbar."
 
-msgid "The task %nid does not exist."
-msgstr "Die Aufgabe %nid existiert nicht."
+msgid "The task %nid is not accessible."
+msgstr "Die Aufgabe %nid ist nicht zugreifbar."
 
 msgid ""
 msgstr ""
