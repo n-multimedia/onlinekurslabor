@@ -115,7 +115,7 @@ class CourseForumCest extends CestHelper {
       $forum_title = "";
       foreach ($userarr as $user) {
 
-        $rand_data_creator = \RealisticFaker\OklDataCreator::get();
+        $rand_data_creator = \RealisticFaker\OklFactory::create();
         $return_arr[$totalcounter] = $user;
 
         //1 forumseintrag darauf 2 antworten

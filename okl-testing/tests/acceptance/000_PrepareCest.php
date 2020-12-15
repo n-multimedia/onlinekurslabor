@@ -98,7 +98,7 @@ class PrepareCest extends CestHelper{
 
         $all_teachers = $this->P001_dummyTeachersProvider();
         //geseedeter RealisticFaker für nachvollziehbarkeit
-        $single_teacher = \RealisticFaker\OklDataCreator::get(_okl_testing_get_dataprovider_identifier())->randomElement($all_teachers);
+        $single_teacher = \RealisticFaker\OklFactory::create(_okl_testing_get_dataprovider_identifier())->randomElement($all_teachers);
         //providers müssen immer array(data1, data..n) sein
         return array($single_teacher);
     }
@@ -209,7 +209,7 @@ class PrepareCest extends CestHelper{
      */
     protected function P001_createDomainContentProvider() {
         $return = array();
-        $rand_data = \RealisticFaker\OklDataCreator::get('domaincontent_' . _okl_testing_get_dataprovider_identifier());
+        $rand_data = \RealisticFaker\OklFactory::create('domaincontent_' . _okl_testing_get_dataprovider_identifier());
         //@todo: move fixed Videoname "berries sample" to a config
         $return[] = ['title' => implode(' ', $rand_data->words(4)), 'h5p_type' => 'Interactive Video', 'videoname' => 'berries sample'];
         return $return;

@@ -84,7 +84,7 @@ class StreamCest extends CestHelper {
     $return_arr = [];
     $totalcounter = 0;
     foreach ($student_arr as $entry) {
-      $rand_data_creator = \RealisticFaker\OklDataCreator::get();
+      $rand_data_creator = \RealisticFaker\OklFactory::create();
    
       $type = $entry['type'];
       foreach ($entry['users'] as $types_usercount => $user) {

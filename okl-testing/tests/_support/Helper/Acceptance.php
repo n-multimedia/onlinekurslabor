@@ -1,7 +1,8 @@
 <?php
 
 namespace Helper;
-require_once(__DIR__ . '/../customFaker/OklDataCreator.php'); 
+require_once(__DIR__ . '/../customFaker/OklFactory.php'); 
+require_once(__DIR__ . '/../customFaker/OklGenerator.php'); 
 require_once (__DIR__ . '/../../acceptance/CestHelper.php');
 
 // here you can define custom actions

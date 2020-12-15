@@ -320,7 +320,7 @@ abstract class CestHelper {
         }
 
         $unique = _okl_testing_get_dataprovider_identifier() . '_userstogroups_' . $ident_num_start;
-        $randomizer = \RealisticFaker\OklDataCreator::get($unique);
+        $randomizer = \RealisticFaker\OklFactory::create($unique);
             
         $sample = array();
         $fallbacksample = array();
@@ -379,7 +379,7 @@ abstract class CestHelper {
      protected function DP_getSampleDomain($ident_number = 0, $with_demo_domain = true, $with_fallback = true) {
         $sample = array();
         $domain = $this->getNodeSample(NM_CONTENT_DOMAIN, $ident_number);
-        $domain['title'] = RealisticFaker\OklDataCreator::getSafeText($domain['title']);
+        $domain['title'] = RealisticFaker\OklGenerator::getSafeText($domain['title']);
         $sample[] = $domain + ['type' => 'default'];
 
 
@@ -453,8 +453,8 @@ abstract class CestHelper {
      */
     private function getPersonSample(array $roles, $ident_number = 0) {
         $unique = _okl_testing_get_dataprovider_identifier() . '_user_' . implode('-', $roles) . '_' . $ident_number;
-        $fakerobject = \RealisticFaker\OklDataCreator::get($unique);
-        return ['sex' => $fakerobject->sex, 'name' => $fakerobject->name, 'firstName' => trim($fakerobject->firstName . ' ' . $fakerobject->middleName), 'lastName' => $fakerobject->lastName, 'mail' => $fakerobject->email, 'roles' => $roles, 'password' => new PasswordArgument(NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT)];
+        $fakerobject = \RealisticFaker\OklFactory::create($unique);
+        return ['gender' => $fakerobject->gender, 'name' => $fakerobject->name, 'firstName' => trim($fakerobject->firstName . ' ' . $fakerobject->middleName), 'lastName' => $fakerobject->lastName, 'mail' => $fakerobject->email, 'roles' => $roles, 'password' => new PasswordArgument(NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT)];
     }
 
     /**
@@ -486,11 +486,11 @@ abstract class CestHelper {
      * get a Faker-Object based on parameters
      * @param type $node_type
      * @param type $ident_numer
-     * @return \RealisticFaker\OklDataCreator $faker
+     * @return \RealisticFaker\OklGenerator $faker
      */
     private function getNodeFaker($node_type, $ident_numer) {
         $ID = _okl_testing_get_dataprovider_identifier() . '_node_' . $node_type . '_' . $ident_numer;
-        return \RealisticFaker\OklDataCreator::get($ID);
+        return \RealisticFaker\OklFactory::create($ID);
     }
 
 }

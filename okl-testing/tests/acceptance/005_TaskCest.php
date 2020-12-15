@@ -123,15 +123,15 @@ class TaskCest extends CestHelper {
         $return = array();
 
 
-        $rand_data = \RealisticFaker\OklDataCreator::get();
+        $rand_data = \RealisticFaker\OklFactory::create();
 
         $node_data = $this->getNodeSample(NM_COURSE_GENERIC_TASK, 0);
         //title : sonderheit bei aufgaben.. siehe _section_courses_courses_generic_task_node_form_submit. Test schlägt sonst bei manchen Chars fehl
-        $return[] = ['title' => RealisticFaker\OklDataCreator::getSafeText($node_data['title']), 'field_task_type' => 0, 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]], 'preparedanswer' => $rand_data->realText(200)];
+        $return[] = ['title' => RealisticFaker\OklGenerator::getSafeText($node_data['title']), 'field_task_type' => 0, 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]], 'preparedanswer' => $rand_data->realText(200)];
 
         $node_data = $this->getNodeSample(NM_COURSE_GENERIC_TASK, 1);
         //field_task_type=1: gruppenaufgabe
-        $return[] = ['title' => 'GROUP_' . RealisticFaker\OklDataCreator::getSafeText($node_data['title']), 'field_task_type' => '1', 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]], 'preparedanswer' => $rand_data->realText(200)];
+        $return[] = ['title' => 'GROUP_' . RealisticFaker\OklGenerator::getSafeText($node_data['title']), 'field_task_type' => '1', 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]], 'preparedanswer' => $rand_data->realText(200)];
 
         return $return;
     }

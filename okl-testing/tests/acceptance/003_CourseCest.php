@@ -319,9 +319,9 @@ class CourseCest  extends CestHelper{
         $return = array();
         $node_data = $this->getNodeSample(NM_COURSE_GENERIC_TASK);
         
-        $rand_data = \RealisticFaker\OklDataCreator::get();
+        $rand_data = \RealisticFaker\OklFactory::create();
         //title : sonderheit bei aufgaben.. siehe _section_courses_courses_generic_task_node_form_submit. Test schlägt sonst bei manchen Chars fehl
-        $return[] = ['title' => RealisticFaker\OklDataCreator::getSafeText($node_data['title']), 'field_task_type' => 0, 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]]];
+        $return[] = ['title' => \RealisticFaker\OklGenerator::getSafeText($node_data['title']), 'field_task_type' => 0, 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]]];
         return $return;
     }
     
@@ -336,7 +336,7 @@ class CourseCest  extends CestHelper{
    */
   protected function C001_BasicDataProvider() {
         $return = array();
-        $rand_data = \RealisticFaker\OklDataCreator::get();
+        $rand_data = \RealisticFaker\OklFactory::create();
         $return[] = ['title' => $rand_data->realText(40), 'body' => $rand_data->realText(240)];
         return $return;
     }
