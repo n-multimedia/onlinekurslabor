@@ -159,7 +159,7 @@ function nm_stream_features_field_default_field_instances() {
     'settings' => array(
       'description_field' => 0,
       'file_directory' => 'nm_stream',
-      'file_extensions' => 'jpg jpeg gif png txt xls pdf mp3 doc docx pps ppt pptx odt ods odp mp4 keynote pages',
+      'file_extensions' => 'jpg jpeg gif png txt doc docx xls xlsx pdf ppt pptx pps ppsx odt ods odp mp3 mov mp4 m4a m4v mpg mpeg avi ogg oga ogv weba webp webm wmv ico zip',
       'max_filesize' => '',
       'user_register_form' => FALSE,
     ),
