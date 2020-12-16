@@ -91,10 +91,10 @@ msgid "Subchapters"
 msgstr "Unterkapitel"
 
 msgid "The interactive content %nid is not accessible."
-msgstr "Der interaktive Inhalt %nid ist nicht zugreifbar."
+msgstr "Der interaktive Inhalt %nid ist nicht verfügbar."
 
 msgid "The task %nid is not accessible."
-msgstr "Die Aufgabe %nid ist nicht zugreifbar."
+msgstr "Die Aufgabe %nid ist nicht verfügbar."
 
 msgid ""
 msgstr ""
