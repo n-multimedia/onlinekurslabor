@@ -384,7 +384,7 @@ function okl_testing_page_build(&$page) {
     $curr_url =   request_uri();
     
     $test_runing = (bool) variable_get('okl_testing_running');
-    $is_open_page = strstr($curr_url, 'devel') ||  strstr($curr_url, 'okl-testing') || strstr($curr_url, 'reports/dblog');
+    $is_open_page = strstr($curr_url, 'devel') ||  strstr($curr_url, 'okl-testing') || strstr($curr_url, 'reports/dblog'  ) || strstr($curr_url, 'reports/event');;
     $is_autotest_browser = isset($_COOKIE["okl_testing_is_autotest_browser"]);
     
      /**
