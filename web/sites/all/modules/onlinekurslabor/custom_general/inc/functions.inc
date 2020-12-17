@@ -419,7 +419,7 @@ function custom_general_get_task_solutions_by_uid($tid, $uid) {
 
   $result = $query->execute();
 
-  return isset($result['node']) ? $result['node'] : NULL;
+  return isset($result['node']) ? $result['node'] : array();
 }
 
 /**
