@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * section_courses_clone_features.pages_default.inc
@@ -29,6 +30,8 @@ Currently for courses only';
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array(
     'type' => 'none',

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * section_courses_clone_features.features.inc

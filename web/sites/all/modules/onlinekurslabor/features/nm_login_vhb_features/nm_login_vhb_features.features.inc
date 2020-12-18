@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_login_vhb_features.features.inc

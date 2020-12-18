@@ -9,7 +9,7 @@ drush vset maintenance_mode 1
 drush cc all
 
 #revert single features
-drush fr  nm_section_courses_features nm_section_content_features nm_general_features notification_features nm_h5p_features nm_stream_features --yes
+drush fr  nm_section_courses_features nm_section_content_features nm_general_features notification_features nm_h5p_features nm_stream_features videosafe_features annvid_features help_features home_features nm_general_features nm_login_vhb_features  section_courses_clone_features videosafe_features  --yes
 #drush fr annvid_features nm_section_content_features nm_section_courses_features nm_general_features section_projects_features nm_h5p_features section_courses_clone_features --yes
 
 drush php-eval 'node_access_rebuild();'
