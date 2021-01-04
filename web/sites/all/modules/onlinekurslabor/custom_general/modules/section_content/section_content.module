@@ -1340,7 +1340,8 @@ function section_content_mc_submit_form($form, $form_state) {
 
   //solution / explanation
   $lang = field_language('node', $mc_node, 'field_mc_solution');
-  $output_solution = drupal_render(field_view_field('node', $mc_node, 'field_mc_solution'));
+  $field_to_render = field_view_field('node', $mc_node, 'field_mc_solution');
+  $output_solution = drupal_render($field_to_render);
 
   //$output .= $tmp['value'];
   //04.06.2013 - 23:56 - SN
