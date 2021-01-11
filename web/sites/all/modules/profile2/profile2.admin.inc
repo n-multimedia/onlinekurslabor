@@ -43,7 +43,7 @@ function profile2_type_form($form, &$form_state, $profile_type, $op = 'edit') {
     '#type' => 'machine_name',
     '#default_value' => isset($profile_type->type) ? $profile_type->type : '',
     '#maxlength' => 32,
-    '#disabled' => $profile_type->isLocked() && $op != 'clone',
+    '#disabled' => $op != 'add' && $op != 'clone',
     '#machine_name' => array(
       'exists' => 'profile2_get_types',
       'source' => array('label'),
@@ -58,6 +58,26 @@ function profile2_type_form($form, &$form_state, $profile_type, $op = 'edit') {
     '#default_value' => !empty($profile_type->data['registration']),
   );
 
+  $form['data']['revisions'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Create new revision.'),
+    '#default_value' => !empty($profile_type->data['revisions']),
+    '#description' => t('Users with <em>Administer profiles</em> permission will be able to override this option.'),
+  );
+  $form['data']['revision_admin'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use administration theme for revision pages.'),
+    '#default_value' => !empty($profile_type->data['revision_admin']),
+    '#description' => t('If checked revision pages will be shown using the administration theme (for users with appropriate permission).'),
+  );
+  // Add the profile2_diff form item here to avoid unnecessary messing.
+  if (module_exists('profile2_diff')) {
+    $form['data']['preview_changes'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Show %preview_changes button on profile edit form', array('%preview_changes' => t('View changes'))),
+      '#default_value' => !empty($profile_type->data['preview_changes']),
+    );
+  }
   $user_roles = user_roles();
   // Exclude anonymous user role.
   unset($user_roles[DRUPAL_ANONYMOUS_RID]);
