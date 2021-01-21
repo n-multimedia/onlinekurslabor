@@ -54,6 +54,13 @@ env:
       config:
         WebDriver:
           url: https://gittest.div.onlinekurslabor.de
+  master:
+    modules:
+      config:
+        WebDriver:
+          url: https://master.div.onlinekurslabor.de          
+          
+          
 #verschiedene environments für verschiedene browser
   chrome-env:
     modules:

@@ -345,6 +345,7 @@ abstract class CestHelper {
             {
               $cg = $fallback_data->random('course_group');
               $fallbacksample[$cg_runner]["coursegroup_title"] = $cg->title;
+              $fallbacksample[$cg_runner]["users"] = array();
               for($stud_runner = 0; $stud_runner < ceil($count_users / $count_coursegroups); )
               {
                 $random_student = $cg->random('student')->toDataProviderSample();
