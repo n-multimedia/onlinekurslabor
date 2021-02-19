@@ -2588,6 +2588,7 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   $data['stream']['permissions'] = [];
   $data['stream']['permissions'] = ["canCreatePost" => TRUE, 'canCreateStickyPost' => $perm_create_sticky_post];
   $data['stream']['loggedInUser'] = $account->uid;
+  $data['stream']['aggregated'] = FALSE;
   $data['stream']['privacyOptions'] = $privacy_options;
   $data['stream']['privacyOptionsAll'] = $privacy_options_all;
   $data['stream']['token'] = drupal_get_token();
@@ -2596,9 +2597,16 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   $stream_attachments_filetypes = $stream_CT_field_data['field_nm_attachments']['settings']['file_extensions'];
   $allowed_attachm_filetypes = '.'. implode(',  .', explode(' ', $stream_attachments_filetypes));
 
+
+  // initialize filter
+  $filter = [];
+  $filter['context_nid'] = !empty($_GET['context_nid']) ? $_GET['context_nid'] : NULL;
+  $filter['user_uid'] = !empty($_GET['user_uid']) ? $_GET['user_uid'] : NULL;
+  $filter['privacy_key'] = !empty($_GET['privacy_key']) ? $_GET['privacy_key'] : NULL;
+
   $data['stream']['acceptedFiles'] = $allowed_attachm_filetypes;
 
-  $posts_comments_users = nm_stream_api_v2_get_posts($stream_container_node);
+  $posts_comments_users = nm_stream_api_v2_get_posts($stream_container_node, $filter);
   $filter_available_contexts = nm_stream_api_v2_filter_get_contexts();
   $filter_available_users = nm_stream_api_v2_filter_get_users($filter_available_contexts);
   $data['stream']['posts'] = $posts_comments_users['posts'];
@@ -2667,6 +2675,7 @@ function nm_stream_api_v2_initialize_aggregated_callback() {
   $data['stream'] = [];
   //$data['stream']['containerNID'] = (!empty($container->nid) ? $container->nid : false);
   //$data['stream']['contextNID'] = (!empty($context->nid) ? $context->nid : false);
+  $data['stream']['aggregated'] = TRUE;
   $data['stream']['privacyDefault'] = $privacy_key_default;
   $data['stream']['permissions'] = [];
   //$data['stream']['permissions'] = ["canCreatePost" => TRUE, 'canCreateStickyPost' => $perm_create_sticky_post];
@@ -2716,7 +2725,6 @@ function nm_stream_api_v2_render_stream($container) {
     'scope' => 'footer',
     'weight' => 5,
   ]);
-
   drupal_add_css(drupal_get_path('module', 'nm_stream') . '/libs/nm_stream/dist/css/app.css' . $version, [
     'scope' => 'footer',
     'weight' => 5,
@@ -2827,6 +2835,7 @@ function _nm_stream_api_v2_get_posts_query($filter = [], $stream_container_node 
   $query = db_select('node', 'n');
 
   $query
+    ->distinct()
     //->condition('n.nid', $top_node->nid, '>')
     ->condition('n.type', $types, 'IN')
     ->condition('n.status', NODE_PUBLISHED)

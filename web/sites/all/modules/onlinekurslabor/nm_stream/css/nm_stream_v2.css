@@ -7,168 +7,168 @@
 */
 
 
-#stream {
+#stream-wrapper {
   margin-top: 0 !important;
   padding: 0;
 }
 
-#stream {
+#stream-wrapper {
   max-width: 100%;
 }
 
-#stream .comments-wrapper {
+#stream-wrapper .comments-wrapper {
 
 }
 
-#stream .post-context {
+#stream-wrapper .post-context {
   font-size: 12px;
   margin-bottom: 10px !important;;
   opacity: 0.8 !important;;
 }
 
-#stream .post-context span {
+#stream-wrapper .post-context span {
 
 }
 
-#stream .card,
-#stream .stream-post {
+#stream-wrapper .card,
+#stream-wrapper .stream-post {
   padding: 15px 0 !important;
 }
 
-#stream .stream-post > div {
+#stream-wrapper .stream-post > div {
   padding: 0;
 }
 
-#stream .stream-post-from,
-#stream .stream-post-from .stream-attachments,
-#stream .stream-post-from .action-buttons,
-#stream .stream-post-from > div,
-#stream .stream-comment-from > div,
-#stream .stream-comment-from .action-buttons {
+#stream-wrapper .stream-post-from,
+#stream-wrapper .stream-post-from .stream-attachments,
+#stream-wrapper .stream-post-from .action-buttons,
+#stream-wrapper .stream-post-from > div,
+#stream-wrapper .stream-comment-from > div,
+#stream-wrapper .stream-comment-from .action-buttons {
   padding: 0;
 }
 
-#stream .stream-comment-from {
+#stream-wrapper .stream-comment-from {
   padding: 15px 0;
 }
 
-#stream .post-actions-dropdown .dropdown-toggle {
+#stream-wrapper .post-actions-dropdown .dropdown-toggle {
   margin-top: -5px;
   font-weight: bold;
   font-size: 16px;
 }
 
-#stream .stream-comment {
+#stream-wrapper .stream-comment {
   padding: 15px 0px;
 }
 
-#stream .stream-comment > .row > .col-10,
-#stream .stream-post > .row > .col-10 {
+#stream-wrapper .stream-comment > .row > .col-10,
+#stream-wrapper .stream-post > .row > .col-10 {
   padding: 0 !important;
 }
 
-#stream .stream-post > .row > .col-10.offset-2 {
+#stream-wrapper .stream-post > .row > .col-10.offset-2 {
   padding-right: 15px !important;
 }
 
-#stream .stream-post-attachments,
-#stream .action-buttons {
+#stream-wrapper .stream-post-attachments,
+#stream-wrapper .action-buttons {
   margin-top: 20px;
 }
 
-#stream .action-buttons button {
+#stream-wrapper .action-buttons button {
   height: 35px;
 }
 
-#stream button.btn,
-#stream .action-buttons button.btn,
-#stream .dropdown-item {
+#stream-wrapper button.btn,
+#stream-wrapper .action-buttons button.btn,
+#stream-wrapper .dropdown-item {
   font-size: 12px;
 }
 
-#stream .stream-action-2 > .col-12 {
+#stream-wrapper .stream-action-2 > .col-12 {
   padding: 0;
 }
 
-#stream .multiselect__single {
+#stream-wrapper .multiselect__single {
   margin: 0;
 }
 
-#stream .stream-post-form .multiselect__tags {
+#stream-wrapper .stream-post-form .multiselect__tags {
   min-height: 35px;
   display: block;
   padding: 4px 30px 0 8px;
 }
 
-#stream .stream-post-privacy-settings {
+#stream-wrapper .stream-post-privacy-settings {
   min-width: 140px;
 }
 
-#stream .multiselect__single span.option__desc,
-#stream .multiselect__content-wrapper span.multiselect__option,
-#stream .multiselect__single span.option__title {
+#stream-wrapper .multiselect__single span.option__desc,
+#stream-wrapper .multiselect__content-wrapper span.multiselect__option,
+#stream-wrapper .multiselect__single span.option__title {
   font-size: 14px !important;
   min-height: auto;
 }
 
-#stream .multiselect__select {
+#stream-wrapper .multiselect__select {
   height: 35px;
 }
 
-#stream .multiselect__content-wrapper span.multiselect__option {
+#stream-wrapper .multiselect__content-wrapper span.multiselect__option {
   padding: 7px 15px;
 }
 
-#stream .back-delete .stream-post {
+#stream-wrapper .back-delete .stream-post {
   padding: 15px !important;
 }
 
-#stream .modal.fade.show {
+#stream-wrapper .modal.fade.show {
   opacity: 1 !important;
 }
 
-#stream .modal.fade .modal-dialog {
+#stream-wrapper .modal.fade .modal-dialog {
   transform: translate(0, 50%) !important;
 }
 
-#stream .stream-post-footer {
+#stream-wrapper .stream-post-footer {
   margin-top: 15px;
 }
 
 
-#stream .dz-error .dz-error-message {
+#stream-wrapper .dz-error .dz-error-message {
   opacity: 1 !important;
   display: block;
   top: -5%;
 }
 
 
-#stream .custom-control.custom-checkbox {
+#stream-wrapper .custom-control.custom-checkbox {
   margin: 2rem 0 !important;
 }
 
-#stream .custom-control .custom-control-label {
+#stream-wrapper .custom-control .custom-control-label {
   padding-left: 5px;
 }
 
-#stream .custom-control .custom-control-label::after,
-#stream .custom-control .custom-control-label::before {
+#stream-wrapper .custom-control .custom-control-label::after,
+#stream-wrapper .custom-control .custom-control-label::before {
   width: 1.5rem !important;
   height: 1.5rem !important;
 }
 
-#stream .poll-actions {
+#stream-wrapper .poll-actions {
   margin-top: 2rem;
 }
 
-#stream .stream-post h4 {
+#stream-wrapper .stream-post h4 {
   font-weight: bold;
 }
 
-#stream .poll-container > .col-12 {
+#stream-wrapper .poll-container > .col-12 {
   padding: 0;
 }
 
-#stream .row:before, #stream .row:after {
+#stream-wrapper .row:before, #stream-wrapper .row:after {
   width: 0;
 }
