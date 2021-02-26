@@ -2601,8 +2601,9 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   // $allowed_attachm_filetypes from field configuration
   $stream_CT_field_data = field_info_instances("node", "nm_stream");
   $stream_attachments_filetypes = $stream_CT_field_data['field_nm_attachments']['settings']['file_extensions'];
-  $allowed_attachm_filetypes = '.'. implode(',  .', explode(' ', $stream_attachments_filetypes));
-
+  if(!empty($stream_attachments_filetypes)) {
+    $allowed_attachm_filetypes = '.'. implode(',  .', explode(' ', $stream_attachments_filetypes));
+  }
 
   // initialize filter
   $filter = [];
@@ -3409,9 +3410,17 @@ function nm_stream_api_v2_node_file_upload_callback($node, $token) {
 
   //get configurated file extensions
   $file_instance = field_info_instance('node', 'field_nm_attachments', 'nm_stream');
+  //set default setting
   $validators = [
-    'file_validate_extensions' => [$file_instance['settings']['file_extensions']],
+    'file_validate_extensions' => [variable_get('file_entity_default_allowed_extensions')],
   ];
+  //override via field settings
+  if (!empty($file_instance['settings']['file_extensions'])) {
+    $validators = [
+      'file_validate_extensions' => [$file_instance['settings']['file_extensions']],
+    ];
+  }
+
 
   $files = [];
   for ($i = 0; $i < $num_files; $i++) {
@@ -3423,6 +3432,12 @@ function nm_stream_api_v2_node_file_upload_callback($node, $token) {
     else {
       //no file uploaded
       //toto implement error handling
+      $response['status'] = 0;
+      $response['message'] = 'error storing file';
+      $response['nid'] = $node->nid;
+      drupal_add_http_header('Status', '500 Internal Server Error');
+      return drupal_access_denied();
+
     }
   }
 
