@@ -287,8 +287,15 @@ function nm_general_features_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'htmlmail_html_with_plain';
+  $strongarm->value = 1;
+  $export['htmlmail_html_with_plain'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'htmlmail_postfilter';
-  $strongarm->value = '0';
+  $strongarm->value = 'email_filtered_html';
   $export['htmlmail_postfilter'] = $strongarm;
 
   $strongarm = new stdClass();

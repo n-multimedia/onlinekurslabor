@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * nm_login_vhb_features.views_default.inc
@@ -251,7 +252,7 @@ function nm_login_vhb_features_views_default_views() {
   $handler->display->display_options['fields']['login']['label'] = 'Letzte Anmeldung';
   $handler->display->display_options['fields']['login']['date_format'] = 'medium';
   $handler->display->display_options['fields']['login']['second_date_format'] = 'long';
-  /* Field: User: Active */
+  /* Field: User: Active status */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'users';
   $handler->display->display_options['fields']['status']['field'] = 'status';
@@ -260,7 +261,7 @@ function nm_login_vhb_features_views_default_views() {
   $handler->display->display_options['fields']['archivated']['id'] = 'archivated';
   $handler->display->display_options['fields']['archivated']['table'] = 'nm_login_vhb';
   $handler->display->display_options['fields']['archivated']['field'] = 'archivated';
-  /* Field: User: Edit link */
+  /* Field: User: Link to edit user */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'users';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
@@ -304,10 +305,10 @@ function nm_login_vhb_features_views_default_views() {
     t('Letzter Zugriff'),
     t('VHB LOGIN field'),
     t('Letzte Anmeldung'),
-    t('Active'),
+    t('Active status'),
     t('archivated'),
     t(','),
-    t('Edit link'),
+    t('Link to edit user'),
     t('Alle'),
   );
   $export['nm_login_vhb'] = $view;

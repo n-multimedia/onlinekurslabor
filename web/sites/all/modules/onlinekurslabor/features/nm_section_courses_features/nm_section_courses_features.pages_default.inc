@@ -1291,7 +1291,7 @@ display:none;
   $display->content['new-830b1a45-d949-4fdb-af1d-0a328cc1967e'] = $pane;
   $display->panels['users_s_courses'][1] = 'new-830b1a45-d949-4fdb-af1d-0a328cc1967e';
   $pane = new stdClass();
-  $pane->pid = 'new-e75f663a-bd63-46d7-8fd9-88a9758353d5';
+  $pane->pid = 'new-5668eb22-acbe-410f-a944-b9e9b017edf4';
   $pane->panel = 'users_s_courses';
   $pane->type = 'views';
   $pane->subtype = 'courses_user_domains';
@@ -1299,12 +1299,9 @@ display:none;
   $pane->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'role',
+        'name' => 'perm',
         'settings' => array(
-          'rids' => array(
-            0 => 30037204,
-            1 => 197637936,
-          ),
+          'perm' => 'bypass node access',
         ),
         'context' => 'logged-in-user',
         'not' => FALSE,
@@ -1321,7 +1318,6 @@ display:none;
         'not' => FALSE,
       ),
     ),
-    'logic' => 'and',
   );
   $pane->configuration = array(
     'override_pager_settings' => 0,
@@ -1335,7 +1331,7 @@ display:none;
     'link_to_view' => 0,
     'args' => '',
     'url' => '',
-    'display' => 'nid_only',
+    'display' => 'title_only',
     'context' => array(
       0 => 'argument_entity_id:user_1.uid',
     ),
@@ -1345,24 +1341,7 @@ display:none;
   );
   $pane->cache = array();
   $pane->style = array(
-    'settings' => array(
-      'title' => array(
-        'element' => '',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
-      'content' => array(
-        'element' => '',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
-      'theme' => 1,
-    ),
-    'style' => 'wrapper_element',
+    'settings' => NULL,
   );
   $pane->css = array(
     'css_id' => 'profile-lehrtexte-wrapper',
@@ -1371,9 +1350,9 @@ display:none;
   $pane->extras = array();
   $pane->position = 2;
   $pane->locks = array();
-  $pane->uuid = 'e75f663a-bd63-46d7-8fd9-88a9758353d5';
-  $display->content['new-e75f663a-bd63-46d7-8fd9-88a9758353d5'] = $pane;
-  $display->panels['users_s_courses'][2] = 'new-e75f663a-bd63-46d7-8fd9-88a9758353d5';
+  $pane->uuid = '5668eb22-acbe-410f-a944-b9e9b017edf4';
+  $display->content['new-5668eb22-acbe-410f-a944-b9e9b017edf4'] = $pane;
+  $display->panels['users_s_courses'][2] = 'new-5668eb22-acbe-410f-a944-b9e9b017edf4';
   $pane = new stdClass();
   $pane->pid = 'new-962a9704-44ef-4eaa-b257-e13876dc0ce9';
   $pane->panel = 'users_s_courses';
@@ -1559,6 +1538,7 @@ function nm_section_courses_features_default_page_manager_pages() {
       'center' => NULL,
       'outline' => NULL,
       'tools' => NULL,
+      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -1606,20 +1586,16 @@ function nm_section_courses_features_default_page_manager_pages() {
   $display->content['new-3b0c085e-85c9-465b-be3e-fbd604c75c4b'] = $pane;
   $display->panels['center'][0] = 'new-3b0c085e-85c9-465b-be3e-fbd604c75c4b';
   $pane = new stdClass();
-  $pane->pid = 'new-236b5613-32fb-4a5b-ab7c-4d0deeb37e68';
-  $pane->panel = 'center';
-  $pane->type = 'custom';
-  $pane->subtype = 'custom';
+  $pane->pid = 'new-20353fe4-d1ac-498b-b024-6c9a9cef1a64';
+  $pane->panel = 'navigation';
+  $pane->type = 'block';
+  $pane->subtype = 'section_content-content_text_outline';
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'admin_title' => '',
-    'title' => '',
-    'body' => '<?php
-return section_courses_text_outline();
-?>',
-    'format' => 'php_code',
-    'substitute' => 0,
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1627,14 +1603,14 @@ return section_courses_text_outline();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 1;
+  $pane->position = 0;
   $pane->locks = array();
-  $pane->uuid = '236b5613-32fb-4a5b-ab7c-4d0deeb37e68';
-  $display->content['new-236b5613-32fb-4a5b-ab7c-4d0deeb37e68'] = $pane;
-  $display->panels['center'][1] = 'new-236b5613-32fb-4a5b-ab7c-4d0deeb37e68';
+  $pane->uuid = '20353fe4-d1ac-498b-b024-6c9a9cef1a64';
+  $display->content['new-20353fe4-d1ac-498b-b024-6c9a9cef1a64'] = $pane;
+  $display->panels['navigation'][0] = 'new-20353fe4-d1ac-498b-b024-6c9a9cef1a64';
   $pane = new stdClass();
   $pane->pid = 'new-ee641611-2ffa-4e44-a25b-de6c9ee5c709';
-  $pane->panel = 'center';
+  $pane->panel = 'navigation';
   $pane->type = 'block';
   $pane->subtype = 'section_courses-course_text_biblio';
   $pane->shown = TRUE;
@@ -1649,33 +1625,11 @@ return section_courses_text_outline();
   );
   $pane->css = array();
   $pane->extras = array();
-  $pane->position = 2;
+  $pane->position = 1;
   $pane->locks = array();
   $pane->uuid = 'ee641611-2ffa-4e44-a25b-de6c9ee5c709';
   $display->content['new-ee641611-2ffa-4e44-a25b-de6c9ee5c709'] = $pane;
-  $display->panels['center'][2] = 'new-ee641611-2ffa-4e44-a25b-de6c9ee5c709';
-  $pane = new stdClass();
-  $pane->pid = 'new-c3fb50ad-abdb-420d-a6d3-74c224de324e';
-  $pane->panel = 'center';
-  $pane->type = 'block';
-  $pane->subtype = 'section_courses-course_instructors_tools';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_title' => 1,
-    'override_title_text' => '',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array();
-  $pane->extras = array();
-  $pane->position = 3;
-  $pane->locks = array();
-  $pane->uuid = 'c3fb50ad-abdb-420d-a6d3-74c224de324e';
-  $display->content['new-c3fb50ad-abdb-420d-a6d3-74c224de324e'] = $pane;
-  $display->panels['center'][3] = 'new-c3fb50ad-abdb-420d-a6d3-74c224de324e';
+  $display->panels['navigation'][1] = 'new-ee641611-2ffa-4e44-a25b-de6c9ee5c709';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -2241,7 +2195,7 @@ return section_courses_text_outline();
   $pane->access = array();
   $pane->configuration = array(
     'label' => 'title',
-    'formatter' => 'og_group_subscribe',
+    'formatter' => 'okl_og_group_subscribe',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,

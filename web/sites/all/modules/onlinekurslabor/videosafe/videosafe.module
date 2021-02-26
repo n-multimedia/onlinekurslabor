@@ -23,7 +23,7 @@ function videosafe_views_pre_view(&$view, &$display_id, &$args) {
             $view->display_handler->options['empty']['area']['content'] = drupal_render(node_view($curr_node, 'videosafe_description'));
         }
 
-        $parent_dir_nid = $curr_node->field_parent_folder[LANGUAGE_NONE][0]['target_id'];
+        $parent_dir_nid = !empty($curr_node->field_parent_folder)?$curr_node->field_parent_folder[LANGUAGE_NONE][0]['target_id']:false;
         $addfolder_glyph = '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> ' . t("Add Subfolder");
         $addfolder_html = '<a href="/node/add/videosafe-folder?field_parent_folder=' . $current_node_nid . '" id="add_new_folder">' . $addfolder_glyph . '</a>';
         $before_html = '';

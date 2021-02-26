@@ -16,10 +16,10 @@ require_once(__DIR__ . '/OklProvider.php');
  * @property string $node_body
  * @property string $node_body_summary
  */
-class OklDataCreator extends \RealisticFaker\DataCreator {
+class OklGenerator extends \RealisticFaker\Generator {
 
     public static function get($identifier = null, $langcode = 'de_DE') {
-        return new OklDataCreator($identifier, $langcode);
+        return new OklGenerator($identifier, $langcode);
     }
 
     public function __construct($identifier = null, $langcode = 'de_DE') {

@@ -215,6 +215,15 @@ function nm_general_features_user_default_permissions() {
     'module' => 'og',
   );
 
+  // Exported permission: 'administer message types'.
+  $permissions['administer message types'] = array(
+    'name' => 'administer message types',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'message',
+  );
+
   // Exported permission: 'administer modules'.
   $permissions['administer modules'] = array(
     'name' => 'administer modules',
@@ -503,6 +512,15 @@ function nm_general_features_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'no_mailer',
+  );
+
+  // Exported permission: 'create messages'.
+  $permissions['create messages'] = array(
+    'name' => 'create messages',
+    'roles' => array(
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'message',
   );
 
   // Exported permission: 'create plattform_log content'.

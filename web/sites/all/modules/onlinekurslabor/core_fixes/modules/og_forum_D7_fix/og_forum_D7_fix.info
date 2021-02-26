@@ -1,0 +1,5 @@
+name = og_forum_D7_fix
+description = og_form_d7 makes false changes to forms ("$form[OG_AUDIENCE_FIELD]['#type'] = 'hidden';") thus breaks forum-functionality in PHP>7.0
+core = 7.x
+version = 7.x-1.0-alpha18
+package = custom

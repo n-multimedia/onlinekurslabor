@@ -102,8 +102,8 @@ function onlinekurslabor_user_action_info() {
     'configurable' => TRUE,
     'triggers' => array('any'),
   );
-  $actions['user_modify_course_membership_state'] = array(
-    'label' => t('Modify membership state'),
+  $actions['user_modify_membership_state'] = array(
+    'label' => t('Modify membership state / remove'),
     'type' => 'user',
     /*
     *
@@ -163,19 +163,19 @@ function onlinekurslabor_user_action_info() {
  *   Form definition.
  *
  */
-function user_modify_course_membership_state_form($context) {
-  $active_course = _section_courses_get_active_course();
-
+function user_modify_membership_state_form($context) {
+  $active_context = (_section_courses_get_active_course() ?:  _section_content_get_active_domain());
+  $active_context_type = _custom_general_get_node_type($active_context->nid);
   $form['state'] = array(
     '#title' => t('State'),
     '#type' => 'select',
     //array_merge reindexes and thus killed the key
-    '#options' => og_group_content_states() + array('delete' => t('Remove from course')),
+    '#options' => og_group_content_states() + array('delete' => t('Remove from group', array(), array('context'=>$active_context_type))),
     '#default_value' => OG_STATE_ACTIVE,
     '#description' => t('Choose the state to set for the selected users in the group.'),
   );
 
-  $form['course_nid'] = array('#type' => 'hidden', '#value' => $active_course->nid);
+  $form['context_nid'] = array('#type' => 'hidden', '#value' => $active_context->nid);
 
   return $form;
 }
@@ -374,9 +374,9 @@ function og_membership_assign_course_role_submit($form_id, $form_state) {
   return $result;
 }
 
-function user_modify_course_membership_state_submit($form_id, $form_state) {
+function user_modify_membership_state_submit($form_id, $form_state) {
   return array('state' => $form_state['values']['state'],
-    'course_nid' => $form_state['values']['course_nid'],
+    'context_nid' => $form_state['values']['context_nid'],
   );
 }
 
@@ -497,11 +497,12 @@ function og_membership_assign_course_role(&$entity, $context = array()) {
   }
 }
 
-function user_modify_course_membership_state(&$entity, $context = array()) {
+function user_modify_membership_state(&$entity, $context = array()) {
 
-    $course_nid = $context['course_nid'];
+    $context_nid = $context['context_nid'];
+    $active_context_type = _custom_general_get_node_type($context_nid);
     $state = $context['state'];
-    $og_membership = og_get_membership('node', $course_nid, 'user', $entity->uid);
+    $og_membership = og_get_membership('node', $context_nid, 'user', $entity->uid);
 
     if ($og_membership->state == $state) {
         return;
@@ -511,7 +512,7 @@ function user_modify_course_membership_state(&$entity, $context = array()) {
     $group = entity_load_single($og_membership->group_type, $og_membership->gid);
     if (!empty($group->uid) && $group->uid == $og_membership->etid && $og_membership->entity_type == 'user') {
         $owner = user_load($og_membership->etid);
-        drupal_set_message(t('%accountname is the course creator and cannot be removed.', array('%accountname'=> realname_load($owner))) ,'error');
+        drupal_set_message(t('%accountname is the group creator and cannot be removed.', array('%accountname'=> realname_load($owner)), array('context'=>$active_context_type)) ,'error');
         return;
     }
 

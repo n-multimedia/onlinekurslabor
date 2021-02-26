@@ -1713,18 +1713,24 @@ function nm_stream_get_environment() {
  *               $environment['container']->parent (node)
  */
 function _nm_stream_get_node_environment($stream_node) {
-    $environment = array();
+  $environment = array();
 
-    // _nm_stream_get_node_environment(node_load(5342));
-    $container = $stream_node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
-    $context = $stream_node->field_nm_stream_context[LANGUAGE_NONE][0]['target_id'];
-    $environment['context'] = node_load($context);
-    $environment['context']->parent = node_load(_custom_general_get_group($environment['context'], true));
+  $container = $stream_node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+  $context = $stream_node->field_nm_stream_context[LANGUAGE_NONE][0]['target_id'];
+  $environment['context'] = node_load($context);
+  $context_parent = _custom_general_get_group($environment['context'], true);
+  if ($context_parent) {
+    $environment['context']->parent = node_load($context_parent);
+  }
+  else {
+    //zumeist ok. lehrtext hat z.B. kein parent.
+  }
 
-    $environment['container'] = node_load($container);
-    $environment['container']->parent = node_load(_custom_general_get_group($environment['container'], true));
 
-    return $environment;
+  $environment['container'] = node_load($container);
+  $environment['container']->parent = node_load(_custom_general_get_group($environment['container'], true));
+
+  return $environment;
 }
 
 /**

@@ -509,7 +509,7 @@ function bootstrap_onlinekurslabor_preprocess_username(&$vars) {
   $name = $vars['name_raw'] = format_username($account);
 
   //nichtssagendes title-field ersetzen
-  if($vars['link_attributes']['title'] == t('View user profile.'))
+  if(!empty($vars['link_attributes']['title']) && ($vars['link_attributes']['title'] == t('View user profile.')))
   {
     
     $vars['link_attributes']['title'] = $name;

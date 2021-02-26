@@ -806,9 +806,10 @@ function _section_courses_text_outline_add_active_path(&$subtree_pointer) {
  * FAST das gleiche wie section_content_text_outline
  * leider gibts ein paar Fallstricke und der Doppelcode bleibt bestehen...
  * @return type
+ * @deprecated since alpha18
  */
 function section_courses_text_outline() {
-
+  trigger_error("DEPRECATED; NO USAGE! IN ".__FUNCTION__);
   $active_course = _section_courses_get_active_course();
   //$lang = field_language('node', $active_course, 'field_domain_ref');
   //$domain_ref = $active_course->field_domain_ref[LANGUAGE_NONE][0]['target_id'];
@@ -1011,6 +1012,107 @@ function _section_courses_feature_active($course, $feature) {
 
   return FALSE;
 }
+
+
+
+/**
+ * custom OG JOIN BUTTON
+ * Use "Join" instead of "request access"
+ * ginge auch über section_courses_field_attach_view_alter(&$output, $context) - so ists aber sauberer.
+ */
+function section_courses_field_formatter_info() {
+  return array(
+    'okl_og_group_subscribe' => array(
+      'label' => t('OKL custom OG subscribe link'),
+      'field types' => array('list_boolean'),
+      'settings' => array(
+        'field_name' => FALSE,
+      ),
+  ));
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function section_courses_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  global $user;
+
+  $output = array();
+  $settings = $display['settings'];
+  switch ($display['type']) {
+    case 'okl_og_group_subscribe':
+      $dummydisplay = $display;
+      //call original function
+      $dummydisplay['type'] = 'og_group_subscribe';
+      $output = og_ui_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $dummydisplay);
+
+      //gehe alle elemente durch
+      foreach ($output as &$element) {
+        //drupal_set_message(var_export($element, 1));
+        //dieses $element ist kein link...
+        if ($element['#type'] == 'html_tag') {
+          //kann im aktuellen kurs editieren => bin kursadmin => anderer Text
+          if (strstr($element['#value'], 'Um Teil der geschlossenen Gruppe zu werden, wenden Sie sich an die Gruppenleitung.')) {
+            $current_course = _section_courses_get_active_course();
+            if (node_access('update', $current_course)) {
+              $element['#value'] = $element['#attributes']['title'] = 'Sie haben Vollzugriff auf die Kursgruppen.';
+            }
+          }
+          break;
+        }
+
+        //es muss sich um einen kursgruppenlink handeln [ggf später zu erweitern]
+        if (!preg_match('/group\/node\/(\d+)\/subscribe\/og_user_node/', $element['#href'], $coursegroup_matches)) {
+          return $output;
+        }
+        $coursgroup_nid = $coursegroup_matches[1];
+
+        $coursgroup_obj = node_load($coursgroup_nid);
+        $course_nid = $coursgroup_obj->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+        $course = node_load($course_nid);
+        $groups_open = !_section_courses_feature_active($course, NM_COURSE_FEATURE_COURSE_GROUP_LOCK);
+
+        //benenne in JOIN um
+        if ($groups_open && in_array('group subscribe', $element['#options']['attributes']['class'])) {
+          $element['#title'] = $element['#options']['attributes']['title'] = t('Join');
+        }
+        //user is a member
+        if (_section_courses_get_coursegroup_gid($user->uid, $course) == $coursgroup_nid) {
+          //do nothing
+        }
+        //ich kann nicht beitreten...
+        elseif (!_section_courses_user_may_enter_coursegroup($coursgroup_nid, FALSE)) {
+          //entferne "Join"-Buttons, wenn Gruppenadmin
+          if (node_access('update', $course)) {
+            $element = array('#type' => 'html_tag',
+              '#tag' => 'span',
+              '#attributes' => array(
+                'title' => 'Sie haben Vollzugriff auf die Kursgruppen.', 'class' => 'group admin'
+              ),
+              '#value' => 'Sie haben Vollzugriff auf die Kursgruppen.');
+          }
+          else { //kein gruppenadmin -  gib konstruktives feedback
+            $element = array('#type' => 'html_tag',
+              '#tag' => 'span',
+              '#attributes' => array(
+                'title' => 'Sie können nur einer Kursgruppe angehören.', 'class' => 'group denied'
+              ),
+              '#value' => 'Sie können nur einer Kursgruppe angehören.');
+          }
+        }
+      }
+     
+      // User didn't have permissions.
+      break;
+  }
+   return $output;
+}
+
+/**
+ * -- END custom OG JOIN BUTTON
+ */
+
+
 
 /*
  *  FORUM
@@ -1428,7 +1530,7 @@ function _section_courses_get_coursegroup_gid($uid, $course = NULL) {
 
   //get all gids the user belongs to
   $groups = og_get_groups_by_user($account);
-  $groups = $groups['node'] ? $groups['node'] : array();
+  $groups = !empty($groups['node']) ? $groups['node'] : array();
 
   foreach ($groups as $gid) {
     //check if group's type is a course group

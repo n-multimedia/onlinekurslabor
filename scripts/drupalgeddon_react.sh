@@ -15,12 +15,11 @@
 
 
 cd "$(dirname "$0")"
-#cronetab needs some infos about pathes
-export PATH=$PATH:/usr/local/bin
+
+#environment needs some infos about pathes - keep line! ("." means "source")
+. $( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )/get-drush-include-path.sh
 
 
-#path von drush in userfolder benoetigt
-export PATH=$PATH:~/drush/:~/.composer/vendor/bin/
 cd ../web/
 drush rf  2> /dev/null   ||  ((>&2 printf "DRUSH COMMAND NOT FOUND\n\n") && exit 1);# pm-refresh OR warning if drush not found
 

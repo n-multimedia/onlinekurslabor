@@ -14,7 +14,7 @@ web/.htaccess
 web/tmp
 web/stats
 web/sites/*/settings*.php
-files_private/
+files_private
 tmp/
 
 
@@ -23,4 +23,5 @@ okl-testing/phantom-cookies.txt
 okl-testing/bin/
 okl-testing/tests/_support/_generated/
 okl-testing/vendor
+okl-testing/vendor_development
 okl-testing/tests/_output

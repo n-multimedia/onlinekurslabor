@@ -2,6 +2,129 @@
 
 
 /**
+ * Implements hook_menu
+ *
+ * @return array
+ */
+function h5p_integration_menu() {
+  $items = array();
+  $items['h5p-export'] = array(
+    'access callback' => '_h5p_integration_user_has_perm_on_exportfile',
+    'access arguments' => array('download', 1), //check: may I download arg(1)
+    'page callback' => '_h5p_integration_menu_download_h5p_export',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * needed in h5p_integration_menu: may I download the export-file?
+ * @param type $access_type
+ * @param type $filename
+ * @return boolean
+ */
+function _h5p_integration_user_has_perm_on_exportfile($access_type, $filename) {
+  //some drupal bug
+  if (!$filename) {
+    return false;
+  }
+  $permission_ok = false;
+  $h5p_internal_id = _h5p_integration_extract_h5p_id_from_file_url($filename);
+
+  if ($h5p_internal_id) {
+    // Get the drupal nid for this $h5p_internal_nid
+    $drupal_node = _h5p_integration_get_node_to_internal_h5p_id($h5p_internal_id);
+    //NOT Found is handled later
+    if (!$drupal_node) {
+      return true;
+    }
+    //what we gonna do with the file?
+    switch ($access_type) {
+      case 'download':
+        if (user_access('download all h5ps') || (node_access('update', $drupal_node) && (user_access('download own h5ps')))) {
+          $permission_ok = true;
+        }
+        break;
+    }
+  }
+
+  return $permission_ok;
+}
+
+/**
+ * loads drupal-node-object of internal h5p-content-id
+ * @param int $h5p_id internal h5p id
+ * @return StdClass $node_object
+ */
+function _h5p_integration_get_node_to_internal_h5p_id($h5p_id) {
+  $nid = db_query("SELECT nid FROM {h5p_nodes} WHERE content_id = :h5p_id", array(':h5p_id' => $h5p_id))->fetchField();
+  return $nid ? node_load($nid) : null;
+}
+
+/**
+ * extract ID from filename.
+ * filename is sth like kap-1-1-tun-sommerschule-15205.h5p
+ * Thus the h5p-ID is 15205
+ * @param string $h5p_file_name the filename, like "kap-1-1-tun-sommerschule-15205.h5p"
+ * @return int $h5p_internal_id
+ */
+function _h5p_integration_extract_h5p_id_from_file_url($h5p_file_name) {
+
+  $matches = array();
+  preg_match('/-(\d+)\.h5p/', $h5p_file_name, $matches);
+  $h5p_internal_id = false;
+  if (!empty($matches[1])) {
+    $h5p_internal_id = $matches[1];
+  }
+  else {
+    trigger_error("FILE URL $h5p_file_name has invalid format.");
+  }
+  return (int)$h5p_internal_id;
+}
+
+/**
+ * downlaods the requested h5p-export-file
+ * WARNING: NO permission-check. Check is done in _h5p_integration_user_has_perm_on_exportfile
+ * @see h5p_integration_menu
+ * @param String $filename like "my-great-h5p-23452.h5p"
+ */
+function _h5p_integration_menu_download_h5p_export($filename) {
+  $h5p_internal_id = _h5p_integration_extract_h5p_id_from_file_url($filename);
+
+  if ($h5p_internal_id) {
+    // Get the drupal nid for this $h5p_internal_nid
+    $drupal_node = _h5p_integration_get_node_to_internal_h5p_id($h5p_internal_id);
+    //NOT Found handler if no corresponding node for perm-check.
+    if (!$drupal_node) {
+      return MENU_NOT_FOUND;
+    }
+
+
+    $drupal_file_uri = 'public://h5p/exports/' . $filename;
+    $full_file_path = drupal_realpath($drupal_file_uri);
+
+    $http_headers = array(
+      'Content-Type' => 'application/force-download',
+      'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+      'Content-Length' => filesize($full_file_path),
+    );
+    if(file_exists($full_file_path))
+    {
+      file_transfer($drupal_file_uri, $http_headers);
+    }
+    else
+    {
+      return MENU_NOT_FOUND;
+    }
+
+  }
+  else
+  {
+      return MENU_NOT_FOUND;
+  }
+}
+
+/**
  * Implements hook_wysiwyg_plugin
  * @param type $editor
  * @param type $version
@@ -71,6 +194,12 @@ function _h5p_integration_filter_h5p_process($text, $filter, $format) {
     return $text_after_replacement;
 }
 
+
+/**
+ * called in _h5p_integration_filter_h5p_process. replace h5p-tag with the interactive-content $node
+ * @param type $matches
+ * @return string
+ */
 function _h5p_integration_h5p_replacements($matches) {
   //preg_match($regex, $text, $matches);
   //$match = $matches[0];
@@ -81,23 +210,24 @@ function _h5p_integration_h5p_replacements($matches) {
     $nid = $matches[1];
     $node = node_load($nid);
 
-    if ($node != FALSE && node_access('view', $node) && $node->status) {
-
-      //bei embed auch den view-mode anpassen
-      $node_view = node_view($node, 'embed', NULL);
-
-      //28.05.2013 - 12:22 - SN hack, title must be unset at another place (template)
-      if (isset($node_view['#node']->title)) {
-        $node_view['#node']->title = "";
-      }
-      //dpm($node_view);
-      $node_output = drupal_render($node_view);
-      //$text = preg_replace($regex, $node_output, $text);
-      $text = '<div class="embeded_h5p">' . $node_output . '</div>';
+    if (!$node || $node->type !== 'h5p_content' || !node_access('view', $node) || !$node->status) {
+      return t('The interactive content %nid is not accessible.', array('%nid' => $nid));
     }
+    //this is ELSE
+    //bei embed auch den view-mode anpassen
+    $node_view = node_view($node, 'embed', NULL);
+    //28.05.2013 - 12:22 - SN hack, title must be unset at another place (template)
+    if (isset($node_view['#node']->title)) {
+      $node_view['#node']->title = "";
+    }
+    $node_output = drupal_render($node_view);
+    $html = '<div class="embeded_h5p">' . $node_output . '</div>';
+    //core-h5p-embed: hat keine contextual links
+    //$html = _include_h5p($node);
+    h5p_set_started(h5p_get_content_id($node));
+    return $html;
   }
-
-  return $text;
+  return "";
 }
 
 /**
@@ -166,16 +296,6 @@ function h5p_integration_form_h5p_content_node_form_alter(&$form, &$form_state, 
             $form['h5p_options']['#access'] = false;
         }
     }
-
-
-    //verbiete Hochladen von .h5p-datei für non-admin
-    global $user;
-    if (!in_array(NM_ROLE_ADMIN, $user->roles)) {
-        //der upload-form-bereich
-        $form['h5p']['#access'] = false;
-        //die option "upload" in buttonlist
-        unset($form['h5p_type']['#options']['upload']);
-    }
 }
 
 /**
@@ -211,8 +331,7 @@ function h5p_integration_h5p_filtered_params_alter(&$filtered) {
     $all_interactions = $filtered->interactiveVideo->assets->interactions;
 
     foreach ($all_interactions as &$interaction) {
-        //lösche variable
-        unset($url_object);
+       
 
         //navigation hotspot
         if (!empty($interaction->action->params->destination->url)) {
@@ -226,10 +345,15 @@ function h5p_integration_h5p_filtered_params_alter(&$filtered) {
         elseif (!empty($interaction->action->params->linkWidget)) {
             $url_object = &$interaction->action->params->linkWidget;
         }
+        else
+        {
+           //lösche variable, nicht content-by-reference
+           unset($url_object);
+        }
         
 
         if(is_object($url_object) && !empty($url_object->url))
-        {
+        { 
             $real_url = $url_object->protocol . $url_object->url;
             //konvertiere alt-urls in /node/nid
             //dpm("realurl vor filter : " . $real_url);
@@ -254,12 +378,13 @@ function h5p_integration_h5p_filtered_params_alter(&$filtered) {
                 $url_object->url = $real_url;
                 $url_object->protocol = '/';
             }
-            
         //dpm("interaction neu:");
         //dpm($interaction);
-            
+
         }
+       
 
         
     }
+   
 }

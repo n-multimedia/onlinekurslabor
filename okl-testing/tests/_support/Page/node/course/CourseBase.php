@@ -25,15 +25,21 @@ class CourseBase extends \Page\node\Node {
 
     
  
+    /**
+     * setze Lehrtext in Kurs
+     * @param \AcceptanceTester $I
+     * @param type $domain_title Tiel des Lehrtexts
+     * @param boolean $is_demo Nicht Lehrtext, sondern Demolehrtext einbinden
+     */
     public function setDomain(\AcceptanceTester $I, $domain_title, $is_demo = false) {
-        $fieldName = $is_demo ? self::$domainDemoField : self::$domainField;
-
-        $I->click("Lehrtext",self::$formEditContext);
-        //cutte ggf. falsche zeichen am ende des titels
-        $I->fillField($fieldName, trim(substr($domain_title, 0, -3)));
-        $I->wait(5);
-        //das geht.
-        $I->click($domain_title);
-    }
+    $fieldName = $is_demo ? self::$domainDemoField : self::$domainField;
+    $I->click("Lehrtext", self::$formEditContext);
+    //cutte ggf. falsche zeichen am ende des titels
+    $I->fillField($fieldName, trim(substr($domain_title, 0, -3)));
+    $I->wait(6);
+    //FF-freundliche Alternative zu: $I->click($domain_title);
+    $I->clickWithLeftButton(['css' => 'input[name="' . $fieldName . '"]'], 0, 30);
+    $I->see($domain_title);
+  }
 
 }

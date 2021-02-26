@@ -1,7 +1,7 @@
 name = help_features
 core = 7.x
 package = Features
-version = 7.x-1.0-alpha9.0
+version = 7.x-1.0-alpha18.0
 dependencies[] = nm_section_content_features
 dependencies[] = node
 dependencies[] = views
