@@ -7,18 +7,16 @@
 */
 
 
+#stream-aggregated,
 #stream-wrapper {
   margin-top: 0 !important;
   padding: 0;
 }
-
+#stream-aggregated,
 #stream-wrapper {
   max-width: 100%;
 }
 
-#stream-wrapper .comments-wrapper {
-
-}
 
 #stream-wrapper .post-context {
   font-size: 12px;
