@@ -3436,7 +3436,7 @@ function nm_stream_api_v2_node_file_upload_callback($node, $token) {
       $response['message'] = 'error storing file';
       $response['nid'] = $node->nid;
       drupal_add_http_header('Status', '500 Internal Server Error');
-      return drupal_access_denied();
+      return drupal_json_output($response);
 
     }
   }
