@@ -2400,7 +2400,7 @@ function nm_section_courses_features_default_page_manager_pages() {
     'title' => '',
     'title_heading' => 'h2',
     'body' => '<?php
-$container = node_load(%1:nid);
+$container = node_load(%2:nid);
 return nm_stream_api_v2_render_stream($container );
 ?>',
     'format' => 'php_code',
@@ -7284,7 +7284,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->configuration = array(
     'admin_title' => 'Edit Course Text Link',
     'title' => '<none>',
-    'body' => '<?php 
+    'body' => '<?php
 
   $active_course = _section_courses_get_active_course();
   if ($active_course) {
