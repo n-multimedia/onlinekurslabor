@@ -289,9 +289,9 @@ BOOTSTRAP 3
     max-width: 240px;
 }
 
- 
+
 #page_top_navigation .navbar-brand img{
-   width: 100%; 
+   width: 100%;
 }
 
 #page_top_navigation .navbar-inverse{
@@ -367,7 +367,7 @@ Course Header
 */
 #course_header
 {
-    
+
     overflow:hidden;
     height:100%;
     -webkit-background-size: cover;
@@ -429,7 +429,7 @@ Course Header
 
 
 #course_header #course_header_title {
-    
+
     color: #ffffff;
     overflow:hidden;
     display: inline;
@@ -470,7 +470,7 @@ Course Header
     text-align:justify;
     /*hyphens: silbentrennung*/
     hyphens: auto;
-    
+
 }
 }
 
@@ -1194,7 +1194,7 @@ PROJECTS
 /**
 fixes for BEF - bootstrap
 */
-.form-control.bef-select-as-checkboxes 
+.form-control.bef-select-as-checkboxes
 {
     height: auto;
 }
@@ -1257,4 +1257,9 @@ margin-left:0.5em;
 {
     width: 90px !important;
     padding-left: 10px !important;
+}
+
+
+#views-exposed-form-courses-user-domains-my-domains #edit-submit-courses-user-domains {
+  margin-top: 0;
 }
