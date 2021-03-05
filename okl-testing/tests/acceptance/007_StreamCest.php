@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Teste den Nachrichten-Stream 
+ * Teste den Nachrichten-Stream
  */
 class StreamCest extends CestHelper {
 
@@ -9,7 +9,7 @@ class StreamCest extends CestHelper {
    * setze Typ des aktuellen HauptContexts.
    * Also das, was prinzipiell im aktuellen Cest getestet wird.
    * Entweder NM_COURSE oder NM_CONTENT_DOMAIN
-   * 
+   *
    * @return string type
    */
   protected function getMaincontextType() {
@@ -17,11 +17,11 @@ class StreamCest extends CestHelper {
   }
 
   public function _before(\Step\Acceptance\Dozent $I) {
-    
+
   }
 
   public function _after(AcceptanceTester $I) {
-    
+
   }
 
   /**
@@ -34,7 +34,7 @@ class StreamCest extends CestHelper {
 
   /**
    * all students in coursegroups test the stream
-   * 
+   *
    * @UserStory null
    * @param \Step\Acceptance\Student $I
    * @dataProvider SC001_StudentAndStreamProvider
@@ -53,7 +53,7 @@ class StreamCest extends CestHelper {
     //TODO fallback muss man nochmal testen. in der kursgruppe sind angeblich viel zu vilee
    # ./codecept-run-tests.sh 006_StreamCest
    ////siehe  _okl_testing_getDataObjectForCourse
-    //.... 
+    //....
     if (!empty($studentandstream['stream']['message'])) {
       $I->fillField('.stream-post-form textarea.stream-textbody', $studentandstream['stream']['message']);
       $I->click("Speichern");
@@ -61,7 +61,7 @@ class StreamCest extends CestHelper {
       $I->see($studentandstream['stream']['message']);
     }
     else {
-      $I->fillField('.stream-comment-from  textarea.stream-textbody', $studentandstream['stream']['comment']);
+      $I->fillField('.stream-comment-form  textarea.stream-textbody', $studentandstream['stream']['comment']);
       $I->click("Speichern");
       $I->wait(2);
       $I->see($studentandstream['stream']['comment']);
@@ -76,8 +76,8 @@ class StreamCest extends CestHelper {
   protected function SC001_StudentAndStreamProvider() {
 
     // Man kann hier nicht mit $course_nid = $this->getCurrentContextNid() etc arbeiten, da providers vor Ausführung "kompiliert" werden
-    
-    
+
+
     //holt gefakten student und fallback als array
     //ein streameintrag, darauf zwei antworten.
     $student_arr = $this->DP_getSampleUsersToCoursegroups(3, 1, 0, true);
@@ -85,7 +85,7 @@ class StreamCest extends CestHelper {
     $totalcounter = 0;
     foreach ($student_arr as $entry) {
       $rand_data_creator = \RealisticFaker\OklFactory::create();
-   
+
       $type = $entry['type'];
       foreach ($entry['users'] as $types_usercount => $user) {
         $return_arr[$totalcounter] = $user;
@@ -104,7 +104,7 @@ class StreamCest extends CestHelper {
         $totalcounter++;
       }
     }
-    
+
 
     return $return_arr;
   }
