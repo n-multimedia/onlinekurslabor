@@ -2989,7 +2989,7 @@ function nm_stream_api_v2_filter_get_contexts($filter=[]) {
   $query = _nm_stream_api_v2_get_posts_query($filter);
   $query->addField('field_data_field_nm_stream_context', 'field_nm_stream_context_target_id');
   $query->groupBy('field_nm_stream_context_target_id');
-  $query->condition('field_nm_stream_context_target_id', 0, '>');
+  $query->having('COUNT(n.nid) >= :matches', array(':matches' => 1));
   $query->range(0, NM_STREAM_API_INIT_POSTS_LIMIT * 5); // fetchlimit
 
   $results = $query->execute()->fetchAll();
