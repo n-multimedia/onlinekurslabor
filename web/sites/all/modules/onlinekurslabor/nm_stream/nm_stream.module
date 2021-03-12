@@ -2836,6 +2836,9 @@ function nm_stream_api_v2_poll_update_callback($stream_container_nid, $offset = 
 
 
 function _nm_stream_api_v2_get_posts_query($filter = [], $stream_container_node = NULL) {
+  global $user;
+  global $base_url;
+  
   $types = nm_stream_get_stream_content_types();
 
   //get nm_stream nodes where created > $top_node->created
@@ -2864,6 +2867,7 @@ function _nm_stream_api_v2_get_posts_query($filter = [], $stream_container_node 
     $context = $environment["context"];
     $container = $environment["container"];
   }
+
 
   // do not apply context privacy on front page
   if ($_SERVER['HTTP_REFERER'] . '/' == $base_url ||
