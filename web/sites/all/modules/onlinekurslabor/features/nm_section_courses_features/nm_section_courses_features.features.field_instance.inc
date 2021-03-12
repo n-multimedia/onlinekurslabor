@@ -1638,7 +1638,7 @@ function nm_section_courses_features_field_default_field_instances() {
     'settings' => array(
       'description_field' => 0,
       'file_directory' => 'courses_documents',
-      'file_extensions' => 'jpg jpeg gif png txt doc docx xls xlsx pdf ppt pptx pps ppsx odt ods odp mp3 mov mp4 m4a m4v mpeg avi ogg oga ogv wmv ico',
+      'file_extensions' => '',
       'max_filesize' => '',
       'user_register_form' => FALSE,
     ),

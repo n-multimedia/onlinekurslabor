@@ -7,16 +7,16 @@ class OklProvider extends Base
 {
     public function node_title()
     {
-        return "is set in OklDataCreator!"; 
+        return "is set in OklGenerator!"; 
     }
     
     public function node_body()
     {
-        return "is set in OklDataCreator!"; 
+        return "is set in OklGenerator!"; 
     }
      public function node_body_summary()
     {
-        return "is set in OklDataCreator!"; 
+        return "is set in OklGenerator!"; 
     }
     
     

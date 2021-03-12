@@ -1,0 +1,412 @@
+<?php
+
+/**
+ * @file
+ * Provides functionality to show a diff between two profile2 revisions.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function profile2_diff_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#profile2_diff':
+      $output = '<p>' . t('The Profile2-diff module replaces the profile2 <em>Revisions</em> tab. It enhances the listing of revisions with an option to view the differences between any two profile revisions. Access to this feature is controlled with the <em>View profile revisions</em> permission. It also provides an optional <em>View changes</em> button while editing a profile.') . '</p>';
+      return $output;
+
+// ToDo
+//     case 'user/%/revisions/%/%/view':
+//       // The translated strings should match profile_help('profile/%/revisions').
+//       return '<p>' . t('Revisions allow you to track differences between multiple versions of your content, and revert back to older versions.') . '</p>';
+//
+//     case 'user/%/revisions/%/view/%/%':
+//       return '<p>' . t('Comparing two revisions:') . '</p>';
+
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function profile2_diff_menu() {
+  foreach (profile2_get_types() as $type_name => $type) {
+    if (empty($type->data['use_page'])) {
+
+      $items["user/%user/revisions/$type_name/diff"] = array(
+        'title' => 'Compare revisions',
+        'page callback' => 'profile2_diff_diffs_show_by_user',
+        'page arguments' => array($type_name, 1, 5, 6),
+        'type' => MENU_LOCAL_TASK,
+        'access callback' => '_profile2_revision_tab_access',
+        'access arguments' => array($type_name, 1, array('view own profile revisions', 'view any profile revisions')),
+        'file' => 'profile2_diff.pages.inc',
+      );
+      $items["user/%user/revisions/$type_name/latest"] = array(
+        'title' => 'Show latest difference',
+        'page callback' => 'profile2_diff_latest_by_user',
+        'page arguments' => array($type_name, 1),
+        'type' => MENU_CALLBACK,
+        'access callback' => '_profile2_revision_tab_access',
+        'access arguments' => array($type_name, 1, array('view own profile revisions', 'view any profile revisions')),
+        'file' => 'profile2_diff.pages.inc',
+      );
+    }
+    else {
+      $path = profile2_page_get_base_path($type);
+      $count = count(explode('/', $path));
+
+      $items[$path . '/%profile2_by_uid/revisions/ops/diff'] = array(
+        'title' => 'Compare revisions',
+        'page callback' => 'profile2_diff_diffs_show',
+        'page arguments' => array($count, $count + 4, $count + 5),
+        'load arguments' => array($type_name),
+        'access callback' => '_profile2_revision_access',
+        'access arguments' => array($count, array('view own profile revisions', 'view any profile revisions')),
+        'type' => MENU_LOCAL_TASK,
+        'file' => 'profile2_diff.pages.inc',
+      );
+      $items[$path . '/%profile2_by_uid/revisions/latest'] = array(
+        'title' => 'Show latest difference',
+        'page callback' => 'profile2_diff_latest',
+        'page arguments' => array($count),
+        'load arguments' => array($type_name),
+        'access callback' => '_profile2_revision_access',
+        'access arguments' => array($count, array('view own profile revisions', 'view any profile revisions')),
+        'type' => MENU_CALLBACK,
+        'file' => 'profile2_diff.pages.inc',
+      );
+    }
+  }
+
+  $items['admin/config/content/diff/entities/profile'] = array(
+    'title' => 'Profiles',
+    'description' => 'User profile diff settings.',
+    'file' => 'diff.admin.inc',
+    'file path' => drupal_get_path('module', 'diff'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('diff_admin_global_entity_settings', 'profile2'),
+    'access arguments' => array('administer site configuration'),
+    'weight' => 1,
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_admin_paths().
+ */
+function profile2_diff_admin_paths() {
+  $paths = array();
+  if (variable_get('diff_admin_path_profile2', 0)) {
+    foreach (profile2_get_types() as $type_name => $type) {
+      if (empty($type->data['use_page'])) {
+        $paths["user/*/revisions/$type_name/diff/*"] = TRUE;
+      }
+      else {
+        $paths["profile-$type_name/*/revisions/ops/diff/*"] = TRUE;
+      }
+    }
+  }
+  return $paths;
+}
+
+/**
+ * Implements hook_entity_diff() on behalf of the Profile2 module.
+ */
+function profile2_entity_diff($old_profile, $new_profile, $context) {
+  $result = array();
+  if ($context['entity_type'] == 'profile2') {
+    $options = variable_get('diff_additional_options_profile', array(
+      'label' => 'label',
+    ));
+    foreach (profile2_entity_diff_options('profile2') as $key => $option_label) {
+      if (!empty($options[$key])) {
+        $func = '_profile2_entity_diff_additional_options_' . $key;
+        $result[$key] = $func($old_profile, $new_profile, $context);
+      }
+    }
+  }
+  return $result;
+}
+
+/**
+ * Implements hook_entity_diff_options() on behalf of the Profile2 module.
+ */
+function profile2_entity_diff_options($entity_type) {
+  if ($entity_type == 'profile2') {
+    $options = array(
+      'label' => t('Profile title'),
+    );
+    return $options;
+  }
+}
+
+/**
+ * Private callback function to render the label field.
+ */
+function _profile2_entity_diff_additional_options_label($old_profile, $new_profile, $context) {
+  $row = array(
+    '#name' => 'Label',
+    '#states' => array(),
+    '#weight' => -5,
+    '#settings' => array(
+      'show_header' => variable_get('diff_show_header_profile', 1),
+    ),
+  );
+  foreach ($context['states'] as $state) {
+    $row['#states'][$state] = array(
+      '#old' => array($old_profile->label()),
+      '#new' => array($new_profile->label()),
+    );
+  }
+  return $row;
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Add View Changes button to profile edit form.
+ */
+function profile2_diff_form_profile2_form_alter(&$form, $form_state, $form_id) {
+  // Only one profile is expected, but this gets the key and value.
+  foreach ($form_state['profiles'] as $type => $profile) {
+    if (!empty(profile2_get_types($type)->data['preview_changes'])
+        && $profile->pid > 0 && user_access('diff view changes')) {
+      $form['actions']['preview_changes'] = array(
+        '#type' => 'submit',
+        '#value' => t('View changes'),
+        '#weight' => 40,
+        '#submit' => array('profile2_diff_profile2_form_preview_changes')
+        );
+    }
+    // If content for changes has been added to the form_state,
+    // display using the form #prefix.
+    if (isset($form_state['profile_preview'])) {
+      $form['#prefix'] = $form_state['profile_preview'];
+    }
+  }
+}
+
+/**
+ * Callback if 'View changes' is pressed.
+ *
+ * The profile form architecture allows for more than one profile form
+ * on one edit page, although in practice this never happens,
+ * but for consistency we maintain this approach.
+ */
+function profile2_diff_profile2_form_preview_changes($form, &$form_state) {
+  module_load_include('inc', 'profile2_diff', 'profile2_diff.pages');
+
+  // Clone the existing profile(s) for later comparison.
+  foreach ($form_state['profiles'] as $type => $profile) {
+    $old_profiles[$type] = clone($profile);
+  }
+  // Build the profile object(s) within the form_state.
+  // If there are multiple profile forms, this processes all of them.
+  profile2_form_submit_build_profile($form, $form_state);
+
+  // Generate a diff for each profile.
+  $changes = '';
+  foreach ($form_state['profiles'] as $type => $new_profile) {
+    // Create diff of old node and edited node
+    $state = variable_get('diff_default_state_profile2', 'raw');
+    $rows = _profile2_diff_body_rows($old_profiles[$type], $new_profile, $state);
+
+    // Build the table with the list of changes.
+    $cols = _diff_default_cols();
+    $header = _diff_default_header(t('Original'), t('Changes'));
+    $changes .= theme('table__diff__preview', array(
+      'header' => $header,
+      'rows' => $rows,
+      'attributes' => array('class' => array('diff')),
+      'colgroups' => $cols,
+      'sticky' => FALSE,
+    ));
+    // Restore the old profile in the form state, otherwise successive
+    // use of View Changes will cascade the differences.
+    $form_state['profiles'][$type] = $old_profiles[$type];
+  }
+  // Attach diff to form state, is added to form in hook_form_alter().
+  $form_state['profile_preview'] = $changes;
+  $form_state['rebuild'] = TRUE;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function profile2_diff_block_info() {
+  return array('inline' => array('info' => t('Inline Profile diff')));
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function profile2_diff_block_configure($delta = '') {
+  $form = array();
+  switch ($delta) {
+    case 'inline':
+      $options = array();
+      foreach (profile2_get_types() as $name => $type) {
+        $options[$name] = $type->label;
+      }
+      $form['profile_types'] = array(
+        '#type' => 'checkboxes',
+        '#title' => t('Enabled profile types'),
+        '#default_value' => variable_get('profile2_diff_show_diff_inline_types', array()),
+        '#options' => $options,
+        '#description' => t('Show this block only on pages that display profiles of the given type(s).'),
+      );
+      break;
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function profile2_diff_block_save($delta = '', $edit = array()) {
+  switch ($delta) {
+    case 'inline':
+      variable_set('profile2_diff_show_diff_inline_types', $edit['profile_types']);
+      break;
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function profile2_diff_block_view($delta) {
+  $block = array();
+  if ($delta === 'inline') {
+    // A profile tab has a menu object for 'user', a profile page has one for 'profile2_by_uid'.
+    if ($user = menu_get_object('user')) {
+      // A profile tab, the profile type is arg(3).
+      $profile = profile2_load_by_user($user, arg(3));
+    }
+    else {
+      // A profile page, the profile is loaded by the menu.
+      $profile = menu_get_object('profile2_by_uid');
+    }
+    if (is_object($profile) && _profile2_revision_access($profile,
+        array('view own profile revisions', 'view any profile revisions'))) {
+      $enabled_types = variable_get('profile2_diff_show_diff_inline_types', array());
+      if (!empty($enabled_types[$profile->type])) {
+        // Check if we're on the view-revision page of a profile.
+        $path = current_path();
+        $base_path = _profile2_revision_base_path($profile, TRUE);
+        if (strpos($path, $base_path) === 0 && strpos($path, '/view/') == strlen($base_path)) {
+          // Load the correct vid
+          $count = count(explode('/', $base_path));
+          $vid = arg($count + 1);
+          $profile = profile2_load($profile->pid, $vid);
+          $revisions = profile2_revision_list($profile);
+          if (count($revisions) > 1) {
+            unset($revisions[$profile->vid]);
+            $old_vid = arg($count + 2);
+            $block['subject'] = t('Highlight changes');
+            $block['content'] = drupal_get_form('profile2_diff_inline_form', $profile, $old_vid, $revisions);
+          }
+        }
+      }
+    }
+  }
+  return $block;
+}
+
+/**
+ * Implementation of hook_entity_view_alter().
+ */
+function profile2_diff_entity_view_alter(&$build) {
+  if (isset($build['#entity_type']) && $build['#entity_type'] == 'profile2') {
+    $profile = $build['#entity'];
+    if (_profile2_revision_access($profile,
+        array('view own profile revisions', 'view any profile revisions'))) {
+      $enabled_types = variable_get('profile2_diff_show_diff_inline_types', array());
+      if (!empty($enabled_types[$profile->type])) {
+        $path = current_path();
+        $base_path = _profile2_revision_base_path($profile, TRUE);
+        if (strpos($path, $base_path) === 0 && strpos($path, '/view/') == strlen($base_path)) {
+          module_load_include('inc', 'profile2_diff', 'profile2_diff.pages');
+          module_load_include('inc', 'diff', 'diff.pages');
+          // Allow for old vid as extra URL arg.
+          $count = count(explode('/', $base_path));
+          $old_vid = arg($count + 2);
+          $build = array('#markup' => profile2_diff_inline_show($profile, $old_vid));
+        }
+        $tmp = isset($build['#prefix'])? $build['#prefix'] : '';
+        $build['#prefix'] = "<div id='diff-inline-{$profile->pid}'>" . $tmp;
+        $tmp = isset($build['#suffix'])? $build['#suffix'] : '';
+        $build['#suffix'] = $tmp . '</div>';
+      }
+    }
+  }
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function profile2_diff_theme() {
+  return array(
+    'profile2_diff_inline_metadata' => array(
+      'arguments' => array('profile' => NULL),
+      'file' => 'profile2_diff.theme.inc',
+    ),
+  );
+}
+
+/**
+ * Form builder: Inline diff controls.
+ */
+function profile2_diff_inline_form($form, $form_state, $profile, $old_vid, $revisions) {
+  $form = array();
+  $form['profile'] = array(
+    '#type' => 'value',
+    '#value' => $profile
+  );
+  $form['revision'] = array(
+    '#type' => 'select',
+    '#options' => array(0 => '< '. t('No highlighting') . ' >'),
+    '#default_value' => (arg(2) === 'revisions' && arg(5) === $profile->vid) ? $old_vid : 0,
+    '#ajax' => array(
+      'callback' => 'profile2_diff_inline_ajax',
+      'wrapper' => "diff-inline-{$profile->pid}",
+      'method' => 'replace',
+    ),
+  );
+  foreach ($revisions as $revision) {
+    $form['revision']['#options'][$revision->vid] = t('@revision by @name', array(
+      '@revision' => format_date($revision->timestamp, 'short'),
+      '@name' => $revision->name,
+    ));
+  }
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('View'),
+    '#submit' => array('profile2_diff_inline_form_submit'),
+    '#attributes' => array('class' => array('diff-js-hidden')),
+  );
+  return $form;
+}
+
+/**
+ * AJAX callback for rendering the inline diff of a user.
+ */
+function profile2_diff_inline_ajax($form, $form_state) {
+  module_load_include('inc', 'profile2_diff', 'profile2_diff.pages');
+  $profile = $form['profile']['#value'];
+  $old_vid = isset($form_state['values']['revision']) ? $form_state['values']['revision'] : 0;
+  return "<div id='diff-inline-{$profile->pid}'>" . profile2_diff_inline_show($profile, $old_vid) . "</div>";
+}
+
+/**
+ * Form submission handler for diff_inline_form() for JS-disabled clients.
+ */
+function profile2_diff_inline_form_submit(&$form, &$form_state) {
+  if (isset($form_state['values']['revision'], $form_state['values']['profile'])) {
+    $profile = $form_state['values']['profile'];
+    $old_vid = $form_state['values']['revision'];
+    $link_base = _profile2_revision_base_path($profile, TRUE);
+    $form_state['redirect'] = "$link_base/view/{$profile->vid}/$old_vid";
+  }
+}

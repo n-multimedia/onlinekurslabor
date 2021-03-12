@@ -24,7 +24,20 @@ function section_content_block_info() {
    $blocks['content_text_outline'] = array(
     'info' => t('Content - Text Outline'),
   );
+   $blocks['content_link_to_fulltext'] = array(
+    'info' => t('Content - Link to fulltext'),
+  );
+  $blocks['content_not_accessible_message'] = array(
+    'info' => t('Content - Not public - No member message'),
+  );
+   $blocks['content_link_to_lehrtext_home'] = array(
+    'info' => t('Content - Link to domain home'),
+  );
+   $blocks['content_lt_usage_block'] = array(
+    'info' => t('Content - Show course-usage of this domain'),
+  );
 
+   
   return $blocks;
 }
 
@@ -33,7 +46,7 @@ function section_content_block_info() {
  */
 function section_content_block_view($delta = '') {
   $block = array();
-
+  $current_domain = _section_content_get_active_domain();
   switch ($delta) {
     case 'content_node_tabs' :
       $block['content'] = _section_content_node_tabs_view();
@@ -48,13 +61,38 @@ function section_content_block_view($delta = '') {
       $block['subject'] = t('Table of contents');
       $block['content'] = _section_content_block_text_outline();
       break;
-
+    case 'content_not_accessible_message' :
+      if(!is_object($current_domain))
+      {
+         $block['content'] = '';
+      }
+      elseif (!_section_content_get_have_full_read_access_to_domain($current_domain)) {
+        $member_block = custom_general_block_view('custom_general_groupstate_badge');
+        $member_badge = render($member_block['content']);
+        $block['content'] = t("Your state: !s<br> Thus you don't have access to this domain's subchapters.", array("!s" => $member_badge));
+      }
+      break;
+    case 'content_link_to_fulltext': //aktives kursmitglied ODER update-perm auf domain ODER domain is public
+      if(_section_content_get_have_full_read_access_to_domain($current_domain))
+      {
+        //perspektivisch kann man den linktext auch in ne block_config rausziehen. 
+        $block['content'] = l('› '.t("Full view: !s", array("!s"=>$current_domain->title)), NM_CONTENT_TEXT_PATH.DIRECTORY_SEPARATOR.$current_domain->nid);
+      }
+      break;
+    case 'content_link_to_lehrtext_home':
+        $block['content'] = l($current_domain->title, DIRECTORY_SEPARATOR.'node'.DIRECTORY_SEPARATOR.$current_domain->nid);
+     break;
+    case 'content_lt_usage_block':
+      $block['subject'] =  t("Usage in courses");
+      $block['content'] = array(
+        '#title' =>  t("Usage in courses"),
+        '#markup' => _section_content_get_rendered_usage_in_course_block());
+      break;
   }
 
 
   return $block;
 }
-
 
 /**
  * Revisions Block.
@@ -90,35 +128,6 @@ function _section_content_theme_node_revisions() {
  * Dynamically modify book titles, adding numbering to the beginning.
  */
 function section_content_node_view($node, $view_mode, $langcode) {
-    /* Zeigt Verwendung: in Kursen... als Demo an */
-    //Aktueller Node ist Themen-Ansicht, aber nicht innerhalb eines Kurses
-    if (in_array($node->type, array(NM_CONTENT_DOMAIN)) && !_section_courses_get_active_course()) {
-
-        $html_output__view_usage_in = "";
-        //die zwei view-varianten: als kurs-lehrtext und als-demo-lehrtext
-        $display_ids = array('usage_lehrtext', 'usage_demo_lehrtext');
-        foreach ($display_ids as $display_id) {
-            $view_usage_in = views_get_view('content_show_usage_in_courses');
-            $view_usage_in->set_arguments(array($node->nid));
-            //die panel-variante setzen
-            $view_usage_in->set_display($display_id);
-            //ausfuehren des views
-            $view_usage_in->execute($display_id);
-            //preview enables ajax-next-pager!!
-            $view_usage_in->preview($display_id);
-            //holt anzahl eintraege
-            //gibts einträge? dann diese anzeigen; sonst: 404
-                $html_output__view_usage_in .= $view_usage_in->get_title() .( $view_usage_in->total_rows? $view_usage_in->render($display_id):"<br><i>&nbsp;&nbsp;- keine - </i><br>");
-
-        }
-
-
-        //Zeigt oberhalb des Inhaltsverzeichnis, in welchen Kursen dieser LT genutzt wird
-        if ($html_output__view_usage_in) {
-            $node->content['content_usage']['#markup'] = '<hr><h3>' . t('Verwendung in Kursen') . '</h3>' . $html_output__view_usage_in;
-            $node->content['content_usage']['#weight'] = 50;
-        }
-    }
 
 //test todo remove
 //dpm(section_author($node->nid));
@@ -134,7 +143,7 @@ function section_content_node_view($node, $view_mode, $langcode) {
 
 
     if ($has_children) {
-      $node->content['book_navigation']['#markup'] = '<hr><h3>Unterkapitel</h3>' . $node->content['book_navigation']['#markup'];
+      $node->content['book_navigation']['#markup'] = '<h3>'.t('Subchapters').'</h3>' . $node->content['book_navigation']['#markup'];
     }
 
     //TOC functionality. Numbering Chapters
@@ -216,8 +225,9 @@ function book_preprocess(&$variables, $hook) {
     //TOC functionality. Numbering Chapters
     //check if numbering is enabled in domain settings
     if (!_custom_general_toc_enabled($variables['book_id']))
+    {
       return;
-
+    }
 
     $book_link = $variables['book_link'];
 
@@ -358,18 +368,27 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
         //solution for biblio and course text needed
         $type = _custom_general_get_node_type($nid);
 
-        if (in_array($type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN,  NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER, NM_INTERACTIVE_CONTENT))) {
+        if (in_array($type, array(NM_CONTENT_CHAPTER, NM_CONTENT_DOMAIN,  NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER, ANNVID_CONTENTTYPE))) {
           $path = 'domain/text/' . $nid;
         }
-        elseif(in_array($type, array( NM_BIBLIO)))
+        elseif(in_array($type, array( NM_BIBLIO,NM_INTERACTIVE_CONTENT)))
         {
+            //current_nid: Kann ein element sein (NM_CONTENT_CHAPTER, NM_CONTENT_MULTIPLE_CHOICE) (domain/text/nid)
+            // oder bei doppel-urls (domain/text/bid/nid) ein verweis auf das buch
             $current_nid = arg(2);
             $current_node = node_load($current_nid);
-
             if(is_object($current_node) && !empty($current_node->book))
             {
                 $curr_bookid  = $current_node->book['bid'];
-                $path = 'domain/text/' .$curr_bookid.'/'. $nid;
+            }
+            elseif(!empty($current_node->og_group_ref))
+            {
+               $curr_bookid  = $current_node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+            }
+            
+            if($curr_bookid)
+            {
+              $path = 'domain/text/' .$curr_bookid.'/'. $nid;
             }
         }
         $original_path = $path;
@@ -391,6 +410,26 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
       if (!empty($matches)) {
         $tid = $matches[1];
         $path = "domain/edit/" . $tid;
+      }
+    }
+  }
+  else { //not in domain context but link to domain
+    if (strstr($path, "node/")) {
+      $regex = '#^/*node/([0-9]+)$#s';
+      preg_match($regex, $path, $matches);
+      if (!empty($matches)) {
+        $nid = $matches[1];
+        $type = _custom_general_get_node_type($nid);
+        $node = node_load($nid);
+        if ($type == NM_CONTENT_DOMAIN) {
+          //Vollzugriff auf CONTENT: 
+          if (_custom_general_get_group_state_for_user(_custom_general_get_group($node)) == OG_STATE_ACTIVE || node_access('update', _custom_general_get_group($node))) {
+            $path = NM_CONTENT_TEXT_PATH . DIRECTORY_SEPARATOR . $node->nid;
+          }
+          else { //keine Memberberechtigung => PReview
+            $path = NM_CONTENT_TEXT_PREVIEW_PATH . DIRECTORY_SEPARATOR . $node->nid;
+          }
+        }
       }
     }
   }
@@ -779,15 +818,13 @@ function section_content_og_user_access_alter(&$perm, $context) {
 
     if ($group_type == 'node' && $group->type == NM_CONTENT_DOMAIN) {
 
-        $access_perm = in_array(NM_ROLE_AUTOR, $account->roles) || in_array(NM_ROLE_ADMIN, $account->roles);
+        $access_perm = array_intersect(array(NM_ROLE_AUTOR, NM_ROLE_MODERATOR, NM_ROLE_ADMIN), $account->roles);
         //var_dump($access_perm);
         //if(isset($perm["subscribe without approval"]) && !$access_perm)
 
         if (isset($perm["subscribe"]) && !$access_perm) {
             //$perm["subscribe without approval"] = FALSE;
             $perm["subscribe"] = FALSE;
-        } else {
-            $perm["subscribe without approval"] = TRUE;
         }
     }
 
@@ -884,8 +921,8 @@ function _section_content_filter_links_process($text, $filter, $format){
     $regex_domain = '#((http:\/\/|https:\/\/)' . $url_without_http . ')#s';
     $text_without_domain = preg_replace($regex_domain, "", $text);
 
-    //2) ersetzt angaben wie course/text/1234/567 sowie domain/text/567 durch /node/567
-    $regex_text = '#(\/domain\/text|\/course\/text\/\d+)\/(\d+)#s';
+    //2) ersetzt angaben wie course/text/1234/567 sowie domain/text/567 durch /node/567, aber NICHT domain/text/123/567, das bleibt. https://regex101.com/r/8Y17Wr/1
+    $regex_text = '#(\/domain\/text(?!\/\d+\/\d+)|\/course\/text\/\d+)\/(\d+)#s';
     return $text_new = preg_replace($regex_text, "/node/$2", $text_without_domain);
 }
 
@@ -900,21 +937,21 @@ function _section_content_task_replacements($matches) {
     $nid = $matches[1];
     $node = node_load($nid);
 
-    if ($node != FALSE && node_access('view', $node) && $node->status) {
-      $node_view = node_view($node, 'task', NULL);
-
-      //28.05.2013 - 12:22 - SN hack, title must be unset at another place (template)
-      if (isset($node_view['#node']->title)) {
-        $node_view['#node']->title = "";
-      }
-      //dpm($node_view);
-      $node_output = drupal_render($node_view);
-      //$text = preg_replace($regex, $node_output, $text);
-      $text = '<div class="embeded_task">' . $node_output . '</div>';
+    if (!$node || !in_array($node->type, array(NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER)) || !node_access('view', $node) || !$node->status) {
+      return t('The task %nid is not accessible.', array('%nid' => $nid));
     }
-  }
 
-  return $text;
+    $node_view = node_view($node, 'task', NULL);
+
+    //28.05.2013 - 12:22 - SN hack, title must be unset at another place (template)
+    if (isset($node_view['#node']->title)) {
+      $node_view['#node']->title = "";
+    }
+
+    $node_output = drupal_render($node_view);
+    $text = '<div class="embeded_task">' . $node_output . '</div>';
+  }
+   return $text; 
 }
 
 /**
@@ -985,7 +1022,14 @@ function section_content_field_formatter_info() {
       'file formatter' => array(
         'mime types' => array('video/*'),
       ),
-    )
+    ),
+    'okl_badge_domain_visibility' => array(
+      'label' => t('OKL badge domain visibility'),
+      'field types' => array('list_boolean'),
+      'settings' => array(
+        'field_name' => FALSE,
+      ),
+  )
   );
 }
 
@@ -1008,40 +1052,50 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
         );
       }
       break;
-      
-     case 'section_content_formatter_video_preview':
+    case 'okl_badge_domain_visibility':
+      $is_public = false;
+      if (!empty($entity->group_access)) {
+        $is_public = $entity->group_access[LANGUAGE_NONE][0]['value'] === "0";
+      }
+      if ($is_public) {
+        $element[$delta] = array('#type' => 'html_tag',
+          '#tag' => 'span',
+          '#attributes' => array(
+             'class' => 'badge-info badge', 'title' => t('accessible for everyone')
+          ),
+          '#value' => t('public'));
+      }
+      else {
+        $element[$delta] = array('#type' => 'html_tag',
+         '#tag' => 'span',
+          '#attributes' => array(
+             'class' => 'badge-secondary badge','title' => t('accessible only for confirmed group members')
+          ),
+          '#value' => t('limited'));
+      }
+    case 'section_content_formatter_video_preview':
       // Use the media_thumbnail image style so that the output in media browser
       // is consistent.
-      $multiple_file_behavior = $settings['multiple_file_behavior'];
 
       // Prevent 'empty' fields from causing a WSOD.
       $items = array_filter($items);
       $is_wysiwyg_preview = false;
-      if($items[0]['override']['wysiwyg'])
+      if(!empty($items[0]['override']['wysiwyg']))
       {
           $is_wysiwyg_preview = true;
       }
       // Build an array of sources for each <video> element.
       $source_lists = array();
-      if ($multiple_file_behavior == 'tags') {
-        foreach ($items as $delta => $item) {
-          if ($item['type'] == 'video'  && !in_array($item['filemime'], $blacklist_filenime)) {
-            $source_lists[] = array($item);
-          }
-        }
-      }
-      else {
+      
         foreach ($items as $delta => $item) {
           if ($item['type'] == 'video'  && !in_array($item['filemime'], $blacklist_filenime)) {
             $source_lists[0][] = $item;
           }
         }
-      }
+      
 
       // Render each source list as an image
       foreach ($source_lists as $delta => $sources) {
-        $width = $settings['width'];
-        $height = $settings['height'];
         $element[$delta] = array(
           '#theme' => 'section_content_formatter_video_preview',
           '#files' => $sources,
@@ -1055,11 +1109,11 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
       // Use the media_thumbnail image style so that the output in media browser
       // is consistent.
       $multiple_file_behavior = $settings['multiple_file_behavior'];
-
+      
       // Prevent 'empty' fields from causing a WSOD.
       $items = array_filter($items);
-
-      if($items[0]['override']['wysiwyg'])
+      $is_wysiwyg_preview = false;
+      if(!empty($items[0]['override']['wysiwyg']))
       {
           $is_wysiwyg_preview = true;
       }
@@ -1179,7 +1233,31 @@ function section_content_theme() {
         'show_file_link' => NULL
       )
     ),
+    'views_view_field__courses_user_domains__title' => array(
+      'template' => 'views-view-field--courses-user-domains--title',
+      'variables' => array('users_state_for_domain' => null), //nur für static, dynamisch: später in section_content_preprocess_views_view_field__courses_user_domains__title
+     'path' => drupal_get_path('module', 'section_content') . '/templates'
+    )
   );
+}
+
+/**
+ * implements hook_preprocess_THEME-NAME
+ * erstellt die theme-variablen für views_view_field__courses_user_domains__title / template: views-view-field--courses-user-domains--title
+ * @param array $variables
+ */
+function section_content_preprocess_views_view_field__courses_user_domains__title(&$variables) {
+
+  global $user;
+  $user_for_state = $user;
+  //if we're viewing a different user
+  if (!empty($variables["view"]->argument['uid'])) {
+    $affected_user_uid = $variables["view"]->argument['uid']->argument;
+    $user_for_state = user_load($affected_user_uid);
+  }
+  $node = node_load($variables['row']->nid);
+  $users_state_for_domain = _custom_general_get_group_state_for_user($node, $user_for_state);
+  $variables['users_state_for_domain'] = $users_state_for_domain;
 }
 
 /**
@@ -1262,7 +1340,8 @@ function section_content_mc_submit_form($form, $form_state) {
 
   //solution / explanation
   $lang = field_language('node', $mc_node, 'field_mc_solution');
-  $output_solution = drupal_render(field_view_field('node', $mc_node, 'field_mc_solution'));
+  $field_to_render = field_view_field('node', $mc_node, 'field_mc_solution');
+  $output_solution = drupal_render($field_to_render);
 
   //$output .= $tmp['value'];
   //04.06.2013 - 23:56 - SN
@@ -1304,21 +1383,27 @@ function array_search_i($str, $array) {
   return $result;
 }
 
-function section_content_text_outline() {
-  $active_domain = _section_content_get_active_domain();
+/**
+ * rendert das Inhaltsverzeichnis im Lehrtext links
+ * wird benutzt in _section_content_block_text_outline
+ * kann eingesetzt werden durch: Add Block ->  content text outline
+ * Course oder Domain muss aktiv gesetzt werden für Funktionalität.
+ * 
+ * @param int $domain_nid Die Domain-ID 
+ * @param bool $rendered_in_course Inhaltsvz wird im Kurs angezeigt
+ * @return String
+ */
+function section_content_text_outline($domain_nid, $rendered_in_course = false) {
 
-
-  if (!$active_domain) {
+  if (!$domain_nid) {
     return;
   }
 
-  $domain_ref = $active_domain->nid;
-
-  $menu_name = 'book-toc-' . $domain_ref;
+  $menu_name = 'book-toc-' . $domain_nid;
   $tree = menu_tree_all_data($menu_name);
 
-// And add the active trail data back to the full tree.
-//menu_tree_add_active_path($tree);
+  // And add the active trail data back to the full tree.
+  //menu_tree_add_active_path($tree);
 
   $config = array();
   $config['title_link'] = "test";
@@ -1326,15 +1411,23 @@ function section_content_text_outline() {
   $config['menu_name'] = $menu_name;
   $config['title_link'] = '';
   $config['parent_mlid'] = 0;
-  $config['level'] = 1;
+  $config['level'] = $rendered_in_course? 2 : 1;
 
-  _section_content_text_outline_add_active_path($tree);
+  if($rendered_in_course)
+  {
+      _section_courses_text_outline_add_active_path($tree);
+  }
+  else
+  {
+      _section_content_text_outline_add_active_path($tree);
+  }
 
-// Allow alteration of the tree and config before we begin operations on it.
+
+  // Allow alteration of the tree and config before we begin operations on it.
   drupal_alter('menu_block_tree', $tree, $config);
 
 
-// Prune the tree along the active trail to the specified level.
+  // Prune the tree along the active trail to the specified level.
   if ($config['level'] > 1 || $config['parent_mlid']) {
     if ($config['parent_mlid']) {
       $parent_item = menu_link_load($config['parent_mlid']);
@@ -1345,40 +1438,36 @@ function section_content_text_outline() {
     }
   }
 
-// Render the tree.
+  // Render the tree.
   $data = array();
   $title = menu_block_get_title($config['title_link'], $config);
-  //$data['subject_array'] = $title;
-  $data['subject'] = drupal_render($title);
-  $data['content']['#content'] = menu_block_tree_output($tree, $config);
-  if (!empty($data['content']['#content'])) {
-    $data['content']['#theme'] = array(
+  //$data['#title'] =  drupal_render($title);
+  $data['#content'] = menu_block_tree_output($tree, $config);
+  if (!empty($data['#content'])) {
+    $data['#theme'] = array(
       'menu_block_wrapper__' . str_replace('-', '_', $config['delta']),
       'menu_block_wrapper__' . str_replace('-', '_', $config['menu_name']),
       'menu_block_wrapper'
     );
-    $data['content']['#config'] = $config;
-    $data['content']['#delta'] = $config['delta'];
+    $data['#config'] = $config;
+    $data['#delta'] = $config['delta'];
   }
   else {
-    $data['content'] = '';
+    $data = array();
   }
 
-  $output = drupal_render($data);
-
-
-  //$output = '<div><h5><u>' . l($active_domain->title, 'domain/text/' . $active_domain->nid) . '</u></h5></div>' . $output;
-
   //Outline retraction by domain setting
-  if(_custom_general_outline_retraction_enabled($domain_ref)) {
+  if (_custom_general_outline_retraction_enabled($domain_nid) && $rendered_in_course) {
     drupal_add_js(drupal_get_path('module', 'section_content') . "/js/section_content_outline.js");
     drupal_add_js(drupal_get_path('module', 'section_content') . "/js/bootstrap-treeview.min.js");
     drupal_add_css(drupal_get_path('module', 'section_content') . "/css/bootstrap-treeview.min.css");
     drupal_add_css(drupal_get_path('module', 'section_content') . "/css/nm-bootstrap-treeview.css");
   }
-  drupal_add_js(drupal_get_path('module', 'section_content') . "/js/section_content.js");
+  if (!$rendered_in_course) {
+    drupal_add_js(drupal_get_path('module', 'section_content') . "/js/section_content.js");
+  }
 
-
+ $output = drupal_render($data);
   return $output;
 }
 
@@ -1446,9 +1535,11 @@ function _section_content_get_active_domain($reset = FALSE) {
     if ($node) {
       $domain = $node;
     }
-
-    if (is_object($node) && in_array($node->type, array(NM_FILE, NM_CONTENT_CHAPTER, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_DOMAIN, ANNVID_CONTENTTYPE))) {
+    if (is_object($node) && in_array($node->type, array(NM_FILE, NM_CONTENT_CHAPTER, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_DOMAIN,NM_INTERACTIVE_CONTENT, ANNVID_CONTENTTYPE))) {
       if ($node->type == NM_CONTENT_DOMAIN) {
+        /**
+         * das kann doch gar nicht sein. domain itself hat kein og-group-ref. Was war das?
+         */
         //get course which this group is assigned to
         if (isset($node->og_group_ref)) {
           //$lang_og = field_language('node', $node, 'og_group_ref');
@@ -1467,6 +1558,13 @@ function _section_content_get_active_domain($reset = FALSE) {
       //arg 2 may be a chapter
       $domain = node_load(_custom_general_get_group($domain_tmp, TRUE));
 
+    }
+    
+    //falls der Parameter og_group_ref in der url gesetzt ist, überschreibt der den errechneten wert
+    
+    if(arg(0) == 'domain' && ! empty(drupal_get_query_parameters()['og_group_ref']))
+    {
+      $domain = node_load(drupal_get_query_parameters()['og_group_ref']);
     }
 
     //check linkin ajax requests
@@ -1500,6 +1598,47 @@ function _section_content_get_active_domain($reset = FALSE) {
 
 
 /**
+ * returns true, if currently loggedin user has (at least) full read access to  all contents
+ * of given domain $domain_obj
+ * @global StdClass $user
+ * @param StdClass $domain_obj the domain (lehrtext)
+ */
+function _section_content_get_have_full_read_access_to_domain($domain_obj) {
+  global $user;
+
+  return _custom_general_get_group_state_for_user($domain_obj) == OG_STATE_ACTIVE ||
+    node_access('update', $domain_obj) ||
+    $domain_obj->group_access[LANGUAGE_NONE][0]['value'] === "0";
+}
+
+function _section_content_get_rendered_usage_in_course_block() {
+  $current_domain = _section_content_get_active_domain();
+  if (!$current_domain) {
+    return "--error--";
+  }
+  /* Zeigt Verwendung: in Kursen... als Demo an */
+
+
+  $html_output__view_usage_in = "";
+  //die zwei view-varianten: als kurs-lehrtext und als-demo-lehrtext
+  $display_ids = array('usage_lehrtext', 'usage_demo_lehrtext');
+  foreach ($display_ids as $display_id) {
+    $view_usage_in = views_get_view('content_show_usage_in_courses');
+    $view_usage_in->set_arguments(array($current_domain->nid));
+    //die panel-variante setzen
+    $view_usage_in->set_display($display_id);
+    //ausfuehren des views
+    $view_usage_in->execute($display_id);
+    //preview enables ajax-next-pager!!
+    $view_usage_in->preview($display_id);
+    //holt anzahl eintraege
+    //gibts einträge? dann diese anzeigen; sonst: 404
+    $html_output__view_usage_in .= $view_usage_in->get_title() . ( $view_usage_in->total_rows ? $view_usage_in->render($display_id) : "<br><i>&nbsp;&nbsp;- keine - </i><br>");
+  }
+  return $html_output__view_usage_in;
+}
+
+  /**
  * Holt Lehrtexte, die in Kursen als Demo-LT eingebunden sind und somit öffentlich zugänglich sind.
  * @return array
  */
@@ -1648,7 +1787,7 @@ function _section_content_file_display_post_render($rendered_html, $entity) {
  */
 function theme_section_content_formatter_video($variables) {
   $files = $variables['files'];
-  $output = '';
+  $output = $classes = $file_source_list = '';
 
   $video_attributes = array();
   if ($variables['controls']) {
@@ -1754,7 +1893,7 @@ function theme_section_content_formatter_video_preview($variables) {
  */
 function _section_content_get_themed_video_screenshot_array($screenshot_uri, $image_width = null, $with_play_button = true) {
   $return_arr = array();
-
+  $scaling_style = false;
   $playerbutton_image_style = 'media_fakevideo';
   // preview eines videos. passe preview an videosize an. 
   if ($image_width) {

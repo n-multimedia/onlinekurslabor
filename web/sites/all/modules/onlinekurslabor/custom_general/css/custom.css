@@ -648,15 +648,43 @@ Authors's Tools
   background-position: 0px -50px;
 }
 
+
+#mobile_authors_tools-container .btn#author_category_config > a::before {
+    background-position: -600px 0px;
+}
+#mobile_authors_tools-container .btn#author_category_config > a:hover::before, #mobile_authors_tools-container .btn#author_category_config > a.active::before{
+    background-position: -600px -50px;
+}
+
+
+#mobile_authors_tools-container .btn#auth_domain_stats > a::before {
+    background-position: -480px -100px;
+}
+#mobile_authors_tools-container .btn#auth_domain_stats > a:hover::before, #mobile_authors_tools-container .btn#auth_domain_stats > a.active::before{
+    background-position: -480px -150px;
+}
+
+
+
+#mobile_authors_tools-container .btn#auth_domain_members > a::before {
+    background-image: url(../images/icons/transparent-icons---instructor.png);
+    background-position: -300px 0px;
+
+}
+#mobile_authors_tools-container .btn#auth_domain_members > a:hover::before, #mobile_authors_tools-container .btn#auth_domain_members > a.active::before{
+    background-position: -300px -50px;
+}
+
+
 #mobile_authors_tools-container .btn#auth_domain_settings > a::before {
-  background-image: url(../images/icons/transparent-icons---instructor.png);
   left: -18px;
-  background-position: 0px -100px;
+  background-position: -540px 0px;
 }
 
 #mobile_authors_tools-container .btn#auth_domain_settings > a:hover::before, #mobile_authors_tools-container .btn#auth_domain_settings > a.active:before {
-  background-position: 0px -150px;
+  background-position: -540px -50px;
 }
+
 
 #mobile_authors_tools-container .btn#author_biblio_add a::before {
   background-position: -60px 0px;
@@ -666,13 +694,6 @@ Authors's Tools
   background-position: -60px -50px;
 }
 
-#mobile_authors_tools-container .btn#author_media_overview a::before {
-  background-position: -120px 0px;
-}
-
-#mobile_authors_tools-container .btn#author_media_overview a:hover::before, #mobile_authors_tools-container .btn#author_media_overview a.active:before {
-  background-position: -120px -50px;
-}
 
 /*interaktives 2x*/
 #mobile_authors_tools-container .btn#author_category_interactive a::before,
@@ -1315,6 +1336,46 @@ div.view-courses-kurse-bersicht .nm-stream-node-container img.courseitem_coursel
 }
 
 
+/* label für lehrtexte oder generell gruppen*/
+/* use colors from https://getbootstrap.com/docs/4.0/components/badge/*/
+.group_label
+{
+    color:white;
+    text-align:center;
+    width: 90px;
+    position:relative;
+    z-index:2;
+}
+
+.group_label.rotated
+{
+     transform: rotate(-30deg);
+     margin-top: 20px;
+}
+  
+/**EOL_COUNTDOWN  - local customization of plugin*/
+.okl-death-container
+{
+    margin:auto; 
+    width: 50%; 
+    text-align: center
+}
+.okl-death-container a:link span.okl-death-link, .okl-death-container a:visited span.okl-death-link, .okl-death-container  a span.okl-death-link
+{
+    color: black;
+    font-size: 0.75em;
+    text-decoration: underline;
+    font-weight: bold;
+}
+.okl-death-container a:hover span.okl-death-link
+{
+    color:darkslategray;
+}
+.okl-death-container .ds-element-title
+{
+    text-transform: none !important;
+
+}
 
 /**
 FILE DISPLAYS

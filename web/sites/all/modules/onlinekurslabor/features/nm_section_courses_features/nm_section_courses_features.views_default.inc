@@ -674,7 +674,7 @@ function nm_section_courses_features_views_default_views() {
 
   $view = new view();
   $view->name = 'courses_admin_members';
-  $view->description = 'Newest group members.';
+  $view->description = 'Kurs - Admin - Mitglieder verwalten';
   $view->tag = 'og';
   $view->base_table = 'users';
   $view->human_name = 'Courses - Admin - Kursmitglieder Tabelle';
@@ -888,7 +888,7 @@ function nm_section_courses_features_views_default_views() {
       'override_label' => 0,
       'label' => '',
     ),
-    'action::user_modify_course_membership_state' => array(
+    'action::user_modify_membership_state' => array(
       'selected' => 1,
       'postpone_processing' => 0,
       'skip_confirmation' => 1,
@@ -1115,6 +1115,14 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['filters']['name']['value'] = array(
     'kurs-student' => 'kurs-student',
   );
+  /* Filter criterion: OG membership: State */
+  $handler->display->display_options['filters']['state']['id'] = 'state';
+  $handler->display->display_options['filters']['state']['table'] = 'og_membership';
+  $handler->display->display_options['filters']['state']['field'] = 'state';
+  $handler->display->display_options['filters']['state']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['filters']['state']['value'] = array(
+    1 => '1',
+  );
 
   /* Display: Block-Dozenten */
   $handler = $view->new_display('block', 'Block-Dozenten', 'bl_4');
@@ -1151,6 +1159,14 @@ function nm_section_courses_features_views_default_views() {
     'kurs-dozent' => 'kurs-dozent',
   );
   $handler->display->display_options['filters']['name']['group'] = 1;
+  /* Filter criterion: OG membership: State */
+  $handler->display->display_options['filters']['state']['id'] = 'state';
+  $handler->display->display_options['filters']['state']['table'] = 'og_membership';
+  $handler->display->display_options['filters']['state']['field'] = 'state';
+  $handler->display->display_options['filters']['state']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['filters']['state']['value'] = array(
+    1 => '1',
+  );
 
   /* Display: Block-Test Studenten */
   $handler = $view->new_display('block', 'Block-Test Studenten', 'bl_5');
@@ -1218,6 +1234,14 @@ function nm_section_courses_features_views_default_views() {
     24708420 => 0,
     1 => 0,
   );
+  /* Filter criterion: OG membership: State */
+  $handler->display->display_options['filters']['state']['id'] = 'state';
+  $handler->display->display_options['filters']['state']['table'] = 'og_membership';
+  $handler->display->display_options['filters']['state']['field'] = 'state';
+  $handler->display->display_options['filters']['state']['relationship'] = 'og_membership_rel';
+  $handler->display->display_options['filters']['state']['value'] = array(
+    1 => '1',
+  );
 
   /* Display: Block-Alle */
   $handler = $view->new_display('block', 'Block-Alle', 'bl_6');
@@ -1262,7 +1286,7 @@ function nm_section_courses_features_views_default_views() {
       'override_label' => 0,
       'label' => '',
     ),
-    'action::user_modify_course_membership_state' => array(
+    'action::user_modify_membership_state' => array(
       'selected' => 1,
       'postpone_processing' => 0,
       'skip_confirmation' => 1,
@@ -2012,7 +2036,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['group_group']['table'] = 'field_data_group_group';
   $handler->display->display_options['fields']['group_group']['field'] = 'group_group';
   $handler->display->display_options['fields']['group_group']['label'] = 'Status';
-  $handler->display->display_options['fields']['group_group']['type'] = 'og_group_subscribe';
+  $handler->display->display_options['fields']['group_group']['type'] = 'okl_og_group_subscribe';
   $handler->display->display_options['fields']['group_group']['settings'] = array(
     'field_name' => '0',
   );

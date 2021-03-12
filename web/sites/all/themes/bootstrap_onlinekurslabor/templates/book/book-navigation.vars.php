@@ -27,6 +27,7 @@ function bootstrap_onlinekurslabor_preprocess_book_navigation(&$variables) {
     $tree = menu_tree_build($configuration);
 
     $tree['subject_array'] = array();
+    unset($tree['subject']); //fixes: strange chars.
     $variables['tree'] = drupal_render($tree);
 
 }

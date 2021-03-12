@@ -65,7 +65,7 @@ class DomainCest {
    */
   protected function CD001_02_CreateDomainProvider() {
         $return = array();
-        $rand_data = \RealisticFaker\OklDataCreator::get();
+        $rand_data = \RealisticFaker\OklFactory::create();
          
         $return[] = ['title' => $rand_data->text(40), 'body' => $rand_data->paragraph(30)];
         

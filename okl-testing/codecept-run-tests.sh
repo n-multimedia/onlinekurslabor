@@ -48,7 +48,7 @@ rm -rf tests/_output/*
 
 
 #hier haben wir den fertigen Befehl. Lauf, kleiner Padawan!
-vendor/bin/codecept run acceptance $commandline_arguments --env $current_testsystem
+vendor/bin/codecept run acceptance $commandline_arguments --env firefox-env,$current_testsystem
 
 
 echo "<h1>Achtung Bug: die einzeln gelisteten Tests enthalten alle das selbe Sample mit den zuletzt ausgeführten Daten. Da stimmt was mitm Recorder nicht...</h1>" >> tests/_output/records.html

@@ -1,0 +1,103 @@
+#Translation File - onlinekurslabor
+
+msgid "This is a closed group. Only a group administrator can add you."
+msgstr "Um Teil der geschlossenen Gruppe zu werden, wenden Sie sich an die Gruppenleitung."
+msgid "Request group membership"
+msgstr "Beitrittsanfrage senden"
+
+msgid "Request message"
+msgstr "Beitrittsanfrage"
+
+msgctxt "courses_course"
+msgid "%accountname is the group creator and cannot be removed."
+msgstr "%accountname hat den Kurs erstellt und kann nicht entfernt werden."
+
+msgctxt "courses_course"
+msgid "Remove from group"
+msgstr "Aus Kurs austragen"
+
+msgctxt "content_domain"
+msgid "%accountname is the group creator and cannot be removed."
+msgstr "%accountname hat den Lehrtext erstellt und kann nicht entfernt werden."
+
+msgctxt "content_domain"
+msgid "Remove from group"
+msgstr "Aus Lehrtext austragen"
+
+msgid "Request message"
+msgstr "Beitritssanfrage"
+
+msgid "Modify membership state / remove"
+msgstr "Mitgliedschaft ändern / austragen"
+
+msgid "Your request is being processed"
+msgstr "Ihre Anfrage wird bearbeitet"
+
+msgid "No member"
+msgstr "Kein Mitglied"
+
+msgid "Member"
+msgstr "Mitglied"
+
+msgid "unconfirmed"
+msgstr "unbestätigt"
+
+msgid "Full view: !s"
+msgstr "Vollansicht: !s"
+
+msgid "Membership state"
+msgstr "Status der Mitgliedschaft"
+
+msgid "Usage in courses"
+msgstr "Verwendung in Kursen"
+
+msgid "Public - accessible to all site users"
+msgstr "Öffentlich - zugreifbar für alle"
+
+msgid "Private - accessible only to group members"
+msgstr "Privat - Zugriff nur für aktive Mitglieder"
+
+msgid "accessible for everyone"
+msgstr "Zugreifbar für jeden"
+
+msgid "accessible only for confirmed group members"
+msgstr "Nur für aktive Mitglieder zugreifbar"
+
+msgid "public"
+msgstr "öffentlich"
+
+msgid "limited"
+msgstr "eingeschränkt"
+
+msgid "Days"
+msgstr "Tagen"
+
+msgid "Hours"
+msgstr "Stunden"
+
+msgid "Minutes"
+msgstr "Minuten"
+
+msgid "Seconds"
+msgstr "Sekunden"
+
+msgid "Decide, whether this content is accessible to members only or everyone."
+msgstr "Entscheiden Sie, ob dieser Inhalt nur für Mitglieder oder jeden zugreifbar ist."
+
+msgid "Your state: !s<br> Thus you don't have access to this domain's subchapters."
+msgstr "Ihr Status: !s<br> Somit haben Sie keinen Zugriff auf die Unterkapitel des Lehrtexts."
+
+msgid "Subchapters"
+msgstr "Unterkapitel"
+
+msgid "The interactive content %nid is not accessible."
+msgstr "Der interaktive Inhalt %nid ist nicht verfügbar."
+
+msgid "The task %nid is not accessible."
+msgstr "Die Aufgabe %nid ist nicht verfügbar."
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""

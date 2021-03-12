@@ -79,15 +79,49 @@ class CourseCest  extends CestHelper{
   protected function C001_02_CreateCourseProvider() {
         return array($this->getCourseSample(0)); 
     }
+    
+    
+  /**
+   * @UserStoryies KD.01 | Kurs - Dozent - andere Dozenten hinzu | TRELLO
+   * @param \AcceptanceTester $I
+   * @param \Codeception\Example $example array holds dataprovider's data
+   * @dataProvider C001_AddDozentenProvider
+   * @before skipIfSamplePersonEqualsMe
+   */
+  public function C001_03_AddOtherDozenten(\Step\Acceptance\Dozent $I, \Codeception\Example $example) {
 
-    /**
+    $this->goToContextHome($I);
+
+    $course_nid = $I->grabFromCurrentUrl('~/course/home/(\d+)~');
+    //annahme: ich bin im neu erstellten Kurs
+    $I->useCourseMenu('Teilnehmende');
+    $I->see("Teilnehmende hinzufügen");
+
+    $addmempage = new AddMembersPage($I, $course_nid);
+    $addmempage->addByMail($example['mail']);
+  }
+
+  /**
+   * DataProvider für C001_03_AddOtherDozenten
+   * @return array
+   */
+  protected function C001_AddDozentenProvider() {
+    $sample = array(); 
+    $fallback_teachers = _okl_testing_getFallbackData()->teachers;
+    foreach ($fallback_teachers as  $fb_teacher) {
+      $sample[]['mail'] = $fb_teacher->mail;
+    }
+    return $sample;
+  }
+
+  /**
    * @UserStoryies KD.01 | Kurs - Dozent - Kursteilnehmer einladen | https://trello.com/c/lr17dgl0/9-kd01-kurs-dozent-kursteilnehmer-einladen
    * @param \AcceptanceTester $I
    * @param \Codeception\Example $example array holds dataprovider's data
-   * @dataProvider C001_03_AddMemberProvider
+   * @dataProvider C001_04_AddMemberProvider
    * @before skipNonApplicableExample
    */
-  public function C001_03_AddMember(\Step\Acceptance\Dozent $I,  \Codeception\Example $example) {
+  public function C001_04_AddMember(\Step\Acceptance\Dozent $I,  \Codeception\Example $example) {
 
     $this->goToContextHome($I);
 
@@ -117,7 +151,7 @@ class CourseCest  extends CestHelper{
    * Funktion ist der dataprovider für C001_03_AddMember
    * @return array
    */
-  protected function C001_03_AddMemberProvider() {
+  protected function C001_04_AddMemberProvider() {
         return $this->DP_getSampleStudents(1, 0, false);
     }
 
@@ -127,7 +161,7 @@ class CourseCest  extends CestHelper{
    * @param \Codeception\Example $news
    * @dataProvider C001_NewsProvider
    */
-  public function C001_04_AddNews(\Step\Acceptance\Dozent $I, \Codeception\Example $news) {
+  public function C001_05_AddNews(\Step\Acceptance\Dozent $I, \Codeception\Example $news) {
     
       $this->goToContextHome($I);
    // $news = [];
@@ -139,6 +173,7 @@ class CourseCest  extends CestHelper{
     $I->useCourseMenu('Kursinhalte', 'Ankündigung hinzufügen');
     $I->expect('AK-1: Ankündigung lässt sich per wysiwyg erstellen');
     $I->see("Neue Ankündigung erstellen");
+    $I->wait(1);
     $I->seeElement("#cke_edit-body-und-0-value");
 
     $I->fillField('title', $news['title']);
@@ -176,7 +211,7 @@ class CourseCest  extends CestHelper{
      * @before skipNonApplicableExample
      * 
      */
-    public function C001_04_AddCourseGroup(\Step\Acceptance\Dozent $I, \Codeception\Example $course_group) {
+    public function C001_06_AddCourseGroup(\Step\Acceptance\Dozent $I, \Codeception\Example $course_group) {
         
         $this->goToContextHome($I);
 
@@ -200,12 +235,12 @@ class CourseCest  extends CestHelper{
 
 
     /**
-     * @UserStoryi KD.09 - Kurs - Dozent - Kursgruppe anlegen | https://trello.com/c/0w86zeYF/17-kd09-kurs-dozent-kursgruppe-anlegen
+     * @UserStoryi KD.09 - Kurs - Dozent - Kursgruppenmitglieder hinzufügen |->TODO https://trello.com/c/0w86zeYF/17-kd09-kurs-dozent-kursgruppe-anlegen
      * @param \AcceptanceTester $I
-     * @dataProvider C001_05_AddUsersToGroupProvider
+     * @dataProvider C001_AddUsersToGroupProvider
      * @before skipNonApplicableExample
      */
-    public function C001_05_AddUsersToGroup(\Step\Acceptance\Dozent $I, \Codeception\Example $user_to_coursegroup) {
+    public function C001_07_AddUsersToGroup(\Step\Acceptance\Dozent $I, \Codeception\Example $user_to_coursegroup) {
 
         $this->goToContextHome($I);
 
@@ -222,7 +257,7 @@ class CourseCest  extends CestHelper{
      * returns array with keys ['user' => ['name','email'], 'coursegroup_title' => ... ];
      * @return array $UsersToGroup
      */
-    protected function C001_05_AddUsersToGroupProvider() {
+    protected function C001_AddUsersToGroupProvider() {
         $return = array();
         $default_course_group = $this->C001_Coursegroup_Provider()[0];
         $fallback_course_group = _okl_testing_getFallbackData()->random('course_group')->toDataProviderSample();
@@ -254,7 +289,7 @@ class CourseCest  extends CestHelper{
      * @dataProvider C001_AddSingleTaskProvider
      * todolater.. before skipNonApplicableExample
      */
-    public function C001_06_AddSingleTask(\Step\Acceptance\Dozent $I, \Codeception\Example $example) {
+    public function C001_08_AddSingleTask(\Step\Acceptance\Dozent $I, \Codeception\Example $example) {
 
         $this->goToContextHome($I);
 
@@ -284,23 +319,14 @@ class CourseCest  extends CestHelper{
         $return = array();
         $node_data = $this->getNodeSample(NM_COURSE_GENERIC_TASK);
         
-        $rand_data = \RealisticFaker\OklDataCreator::get();
+        $rand_data = \RealisticFaker\OklFactory::create();
         //title : sonderheit bei aufgaben.. siehe _section_courses_courses_generic_task_node_form_submit. Test schlägt sonst bei manchen Chars fehl
-        $return[] = ['title' => RealisticFaker\OklDataCreator::getSafeText($node_data['title']), 'field_task_type' => 0, 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]]];
+        $return[] = ['title' => \RealisticFaker\OklGenerator::getSafeText($node_data['title']), 'field_task_type' => 0, 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]]];
         return $return;
     }
     
     
-    
-    /**
-     * setze current Context wieder auf den Fallbackkurs statt den eben erstellten.
-     * @param \Step\Acceptance\Dozent $I
-     */
-    public function C001_06_resetContext(\Step\Acceptance\Dozent $I)
-    {
-        $this->resetCurrentContextNid();
-    }
-        
+     
 
     //##########################################################################
 
@@ -310,7 +336,7 @@ class CourseCest  extends CestHelper{
    */
   protected function C001_BasicDataProvider() {
         $return = array();
-        $rand_data = \RealisticFaker\OklDataCreator::get();
+        $rand_data = \RealisticFaker\OklFactory::create();
         $return[] = ['title' => $rand_data->realText(40), 'body' => $rand_data->realText(240)];
         return $return;
     }

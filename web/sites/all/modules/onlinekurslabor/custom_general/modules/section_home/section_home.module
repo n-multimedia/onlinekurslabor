@@ -58,14 +58,14 @@ function _section_home_getRenderedActivity() {
  */
 function _section_home_getRenderedDomains() {
     global $user;
-    $view = _section_home_getView('courses_user_domains','nid_only');
+    $view = _section_home_getView('courses_user_domains','title_only');
     $view->set_title('Meine Lehrtexte');
 
     //gibts nur fuer autoren+
     if(drupal_valid_path('domains'))
     {
         $html = _section_home_get_rendered_tiitle($view->get_title(), array(_section_home_getMoreTag('domains','add')));
-        return $html._section_home_renderView($view, 'nid_only', true)._section_home_getMoreTag('domains','all');
+        return $html._section_home_renderView($view, 'title_only', true)._section_home_getMoreTag('domains','all');
     }
     else
     {

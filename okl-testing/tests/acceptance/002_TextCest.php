@@ -74,7 +74,7 @@ class TextCest extends CestHelper{
     }
 
      /**
-     * Test H5P: "Hochladen" für non-admin nicht möglich
+     * Test H5P: existiert das Basisformular für H5P?
      *  @UserStory null
      * @UserStoryURL null
      *
@@ -85,8 +85,7 @@ class TextCest extends CestHelper{
         $this->goToContextHome($I);
         $nid = $this->getCurrentContextNid();
         $civPage = new CreateInteractiveVideoPage($I, $nid);
-        $civPage->dontSeeUploadField();
-        $I->makeScreenshot('dontSeeUploadField');
+        $civPage->seeUploadCreateField();
     }
 
 }

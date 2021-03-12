@@ -167,7 +167,7 @@ function annvid_features_field_default_field_instances() {
         'module' => 'html5pdf',
         'settings' => array(
           'css_wrapper_class' => 'html5pdf_standard_wrapper_class',
-          'show_file_link' => 0,
+          'show_file_link' => FALSE,
         ),
         'type' => 'html5pdf_pdfviewer',
         'weight' => 5,

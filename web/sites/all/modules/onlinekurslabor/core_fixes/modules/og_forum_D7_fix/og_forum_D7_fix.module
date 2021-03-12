@@ -1,0 +1,15 @@
+<?php
+/**
+ * fixes wrong implementation of hidden form fields in og_forum_form_forum_node_form_alter
+ * Hide the OG Field on the topic form
+ * @param type $form
+ * @param type $form_state
+ */
+function og_forum_D7_fix_form_forum_node_form_alter(&$form, &$form_state) {
+  //restore old type
+  $form[OG_AUDIENCE_FIELD]['#type'] = 'container';
+  $form[OG_CONTENT_ACCESS_FIELD]['#type'] = 'container';
+  //remove access
+  $form[OG_AUDIENCE_FIELD]['#access'] = false;
+  $form[OG_CONTENT_ACCESS_FIELD]['#access'] = false;
+}

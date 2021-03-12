@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * help_features.views_default.inc
@@ -83,7 +84,7 @@ es fehlt ein wrapper class=row und ohne rewrite nicht hinzukriege. kotz';
   $handler->display->display_options['sorts']['weight']['id'] = 'weight';
   $handler->display->display_options['sorts']['weight']['table'] = 'book_menu_links';
   $handler->display->display_options['sorts']['weight']['field'] = 'weight';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';

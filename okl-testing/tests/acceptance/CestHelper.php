@@ -122,6 +122,10 @@ abstract class CestHelper {
             $message = sprintf("Skipped because a shitty browser is used (%s: %s).", $browser["browserName"], $browser["version"]);
             $scenario->skip($message);
         }
+        elseif ($browser["browserName"] != "firefox") {
+            $message = sprintf("Skipping, currently only Firefox supports H5P. ".'For chrome chromeOptions: args: ["--disable-gpu" must be set. Browser used: (%s: %s).', $browser["browserName"], $browser["version"]);
+            $scenario->skip($message);
+        }
     }
     
     
@@ -153,6 +157,23 @@ abstract class CestHelper {
         //hier: kein kontext erstellt, aber default ausführen: skip
         elseif (!Fixtures::exists('current_context_nid') && $example['type'] == 'default') {
             $scenario->skip($example['type'] . "-example since NO Fixtures::exists('current_context_nid')");
+        }
+    }
+    
+    /**
+     * accessed via  @before-syntax
+     * based on @dataProvider-syntax this will skip if sample['mail'] equals the Mail last time someone logged in with ("EQUALS ME")
+     * @param type $I
+     * @param Codeception\Scenario $scenario
+     */
+    protected function skipIfSamplePersonEqualsMe(AcceptanceTester $I, Codeception\Scenario $scenario) {
+        $mymail = Fixtures::get('LASTLOGIN_USERNAME');
+        //get current @dataprovider-sample
+        $example = ($scenario->current('example'));
+            
+        //hier: kontext wurde im Cest erstellt und möchte fallback ausführen: skip
+        if ($example['mail'] ==  $mymail) {
+            $scenario->skip("Skipping example as email ".$example['mail']." equals mine!");
         }
     }
     
@@ -245,7 +266,7 @@ abstract class CestHelper {
      * Uniqueness is dependend of $ident_number
      * @param int $count how many coursegroups
      * @param type $ident_num_start same number = same sample [within one run]
-     * @param boolean $with_fallback
+     * @param boolean $with_fallback with fallback. ACHTUNG liefert Kursgruppen ohne Randomisierung.
      * @uses _okl_testing_get_dataprovider_identifier()
      */
     protected function DP_getSampleCoursegroups($count, $ident_num_start = 0, $with_fallback = true) {
@@ -262,9 +283,9 @@ abstract class CestHelper {
         $runner = 0;
         for ($i = $ident_num_start; $i < $count; $i++) {
             $sample[$runner++] = $this->getNodeSample(NM_COURSE_GROUP, $i) + ['type' => 'default'];
-
+            
             if ($with_fallback) {
-                $sample[$runner++] = array_values($fallback_data->course_groups)[$runner - 1]->toDataProviderSample() + ['type' => 'fallback'];
+                $sample[$runner++] = array_values((array) ($fallback_data->course_groups))[$runner - 1]->toDataProviderSample() + ['type' => 'fallback'];
             }
         }
         return $sample;
@@ -278,8 +299,8 @@ abstract class CestHelper {
      * 
      * @param type $count_users how many users
      * @param type $count_coursegroups how many different coursegroups
-     * @param type $ident_num_start
-     * @param boolean $with_fallback
+     * @param type $ident_num_start Identifizierer für Wiederholbarkeit
+     * @param boolean $with_fallback Returns existing coursegroup[s] with student[s] in it/them
      * @return array   'users' => [['name' => ..., 'mail' => ...], ['name' => ..., 'mail' => ...]],  'coursegroup_title' => ... 'type' => ...,];
      */
     protected function DP_getSampleUsersToCoursegroups($count_users, $count_coursegroups, $ident_num_start, $with_fallback = true) {
@@ -287,34 +308,64 @@ abstract class CestHelper {
         $users_and_coursegroups = array(); //endresultat: array('default' => array('users' => null, 'coursegroups' => null), 'fallback' => array('users' => null, 'coursegroups' => null));
 
         //get values from other providers
-        $users = $this->DP_getSampleStudents($count_users, $ident_num_start, $with_fallback);
-        $coursegroups = $this->DP_getSampleCoursegroups($count_coursegroups, $ident_num_start, $with_fallback);
+        $users = $this->DP_getSampleStudents($count_users, $ident_num_start, false);
+        $coursegroups = $this->DP_getSampleCoursegroups($count_coursegroups, $ident_num_start, false);
 
         //assign to our array
         foreach ($users as $u) {
             $users_and_coursegroups[$u['type']]['users'][] = $u;
         }
         foreach ($coursegroups as $cg) {
-            $users_and_coursegroups[$u['type']]['coursegroups'][] = $cg;
+            $users_and_coursegroups[$cg['type']]['coursegroups'][] = $cg;
         }
 
         $unique = _okl_testing_get_dataprovider_identifier() . '_userstogroups_' . $ident_num_start;
-        $randomizer = \RealisticFaker\OklDataCreator::get($unique);
-
+        $randomizer = \RealisticFaker\OklFactory::create($unique);
+            
         $sample = array();
-        $users_per_group = max(1, floor($count_users / $count_coursegroups));
-        foreach ($users_and_coursegroups as $type => $values) {
+        $fallbacksample = array();
+        //$users_per_group = max(1, floor($count_users / $count_coursegroups));
+        foreach ($users_and_coursegroups as  $values) {
             foreach ($values['coursegroups'] as $cg) {
-                $sample[] = array('coursegroup_title' => $cg['title'], 'users' => array(), 'type' => $type);
+                $sample[] = array('coursegroup_title' => $cg['title'], 'users' => array(), 'type' => 'default');
             }
+            //gehe alle users durch
             foreach ($values['users'] as $u) {
-                $random_key = $randomizer->randomKey($sample);
-                $sample[$random_key]['users'][] = array('name' => $u['name'], 'mail' => $u['mail']);
+              //verteile auf kursgruppen.
+              $random_key = $randomizer->randomKey($sample);
+              $sample[$random_key]['users'][] = array('name' => $u['name'], 'mail' => $u['mail']);
             }
         }
-
-
-        return $sample;
+        
+        if($with_fallback)
+        {
+            $fallback_data = _okl_testing_getFallbackData();
+            $fallbacksample = [];
+            for($cg_runner = 0; $cg_runner < $count_coursegroups ; $cg_runner++)
+            {
+              $cg = $fallback_data->random('course_group');
+              $fallbacksample[$cg_runner]["coursegroup_title"] = $cg->title;
+              $fallbacksample[$cg_runner]["users"] = array();
+              for($stud_runner = 0; $stud_runner < ceil($count_users / $count_coursegroups); )
+              {
+                $random_student = $cg->random('student')->toDataProviderSample();
+                //random student noch nicht im array
+                if(!in_array($random_student, $fallbacksample[$cg_runner]["users"]))
+                {
+                   $fallbacksample[$cg_runner]["users"][] = $random_student;
+                   $stud_runner++;
+                }
+               
+              }
+                $fallbacksample[$cg_runner]['type'] = 'fallback';
+            }
+          
+        }
+            
+        $fullsample = array_merge($sample, $fallbacksample);
+            
+           
+        return $fullsample;
     }
 
     /**
@@ -329,7 +380,7 @@ abstract class CestHelper {
      protected function DP_getSampleDomain($ident_number = 0, $with_demo_domain = true, $with_fallback = true) {
         $sample = array();
         $domain = $this->getNodeSample(NM_CONTENT_DOMAIN, $ident_number);
-        $domain['title'] = RealisticFaker\OklDataCreator::getSafeText($domain['title']);
+        $domain['title'] = RealisticFaker\OklGenerator::getSafeText($domain['title']);
         $sample[] = $domain + ['type' => 'default'];
 
 
@@ -403,8 +454,8 @@ abstract class CestHelper {
      */
     private function getPersonSample(array $roles, $ident_number = 0) {
         $unique = _okl_testing_get_dataprovider_identifier() . '_user_' . implode('-', $roles) . '_' . $ident_number;
-        $fakerobject = \RealisticFaker\OklDataCreator::get($unique);
-        return ['sex' => $fakerobject->sex, 'name' => $fakerobject->name, 'firstName' => trim($fakerobject->firstName . ' ' . $fakerobject->middleName), 'lastName' => $fakerobject->lastName, 'mail' => $fakerobject->email, 'roles' => $roles, 'password' => new PasswordArgument(NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT)];
+        $fakerobject = \RealisticFaker\OklFactory::create($unique);
+        return ['gender' => $fakerobject->gender, 'name' => $fakerobject->name, 'firstName' => trim($fakerobject->firstName . ' ' . $fakerobject->middleName), 'lastName' => $fakerobject->lastName, 'mail' => $fakerobject->email, 'roles' => $roles, 'password' => new PasswordArgument(NM_DEVELOP_LOGIN_MASTERPASSWORD_DEFAULT)];
     }
 
     /**
@@ -436,11 +487,11 @@ abstract class CestHelper {
      * get a Faker-Object based on parameters
      * @param type $node_type
      * @param type $ident_numer
-     * @return \RealisticFaker\OklDataCreator $faker
+     * @return \RealisticFaker\OklGenerator $faker
      */
     private function getNodeFaker($node_type, $ident_numer) {
         $ID = _okl_testing_get_dataprovider_identifier() . '_node_' . $node_type . '_' . $ident_numer;
-        return \RealisticFaker\OklDataCreator::get($ID);
+        return \RealisticFaker\OklFactory::create($ID);
     }
 
 }

@@ -1,0 +1,17 @@
+name = eol_configuration_feature
+description = configuration for eol_countdown-module
+core = 7.x
+package = Features
+version = 7.x-1.0
+dependencies[] = ctools
+dependencies[] = eol_countdown
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:2
+features[variable][] = eol_countdown_after
+features[variable][] = eol_countdown_before
+features[variable][] = eol_countdown_hide_days_secs
+features[variable][] = eol_countdown_theme
+features[variable][] = eol_countdown_whiteout
+features[variable][] = eol_countdown_whiteout_message
+project path = sites/all/modules/onlinekurslabor\features

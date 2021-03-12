@@ -31,7 +31,7 @@ foreach ($rows as &$row_item) {
     
     //check solution state for that task
     $solutions = custom_general_get_task_solutions($row_item['nid'], NULL);
-    if(count($solutions) > 0)
+    if(is_array($solutions) && count($solutions) > 0)
     {
       $solution = current($solutions);
       $row_item['nid'] = _courses_tasks_solution_workflow_label($solution->nid);
