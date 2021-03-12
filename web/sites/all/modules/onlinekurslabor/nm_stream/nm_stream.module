@@ -2866,7 +2866,8 @@ function _nm_stream_api_v2_get_posts_query($filter = [], $stream_container_node 
   }
 
   // do not apply context privacy on front page
-  if(arg(0) != "api") {
+  if ($_SERVER['HTTP_REFERER'] . '/' == $base_url ||
+    $_SERVER['HTTP_REFERER'] . '/' . variable_get('site_frontpage', 'node') == $base_url) {
     if (!empty($context)) {
       if ($context->type == NM_CONTENT_DOMAIN) {
         //in case of Domains, we just want to see content wich has the privacy setting DOMAIN or PRIVATE
