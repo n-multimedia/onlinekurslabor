@@ -2601,8 +2601,9 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   // $allowed_attachm_filetypes from field configuration
   $stream_CT_field_data = field_info_instances("node", "nm_stream");
   $stream_attachments_filetypes = $stream_CT_field_data['field_nm_attachments']['settings']['file_extensions'];
-  if(!empty($stream_attachments_filetypes)) {
-    $allowed_attachm_filetypes = '.'. implode(',  .', explode(' ', $stream_attachments_filetypes));
+  $allowed_attachm_filetypes = '';
+  if (!empty($stream_attachments_filetypes)) {
+    $allowed_attachm_filetypes = '.' . implode(',  .', explode(' ', $stream_attachments_filetypes));
   }
 
   // initialize filter
