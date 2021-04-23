@@ -2601,8 +2601,9 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   // $allowed_attachm_filetypes from field configuration
   $stream_CT_field_data = field_info_instances("node", "nm_stream");
   $stream_attachments_filetypes = $stream_CT_field_data['field_nm_attachments']['settings']['file_extensions'];
-  if(!empty($stream_attachments_filetypes)) {
-    $allowed_attachm_filetypes = '.'. implode(',  .', explode(' ', $stream_attachments_filetypes));
+  $allowed_attachm_filetypes = '';
+  if (!empty($stream_attachments_filetypes)) {
+    $allowed_attachm_filetypes = '.' . implode(',  .', explode(' ', $stream_attachments_filetypes));
   }
 
   // initialize filter
@@ -2838,7 +2839,7 @@ function nm_stream_api_v2_poll_update_callback($stream_container_nid, $offset = 
 function _nm_stream_api_v2_get_posts_query($filter = [], $stream_container_node = NULL) {
   global $user;
   global $base_url;
-  
+
   $types = nm_stream_get_stream_content_types();
 
   //get nm_stream nodes where created > $top_node->created
@@ -2868,10 +2869,9 @@ function _nm_stream_api_v2_get_posts_query($filter = [], $stream_container_node 
     $container = $environment["container"];
   }
 
-
   // do not apply context privacy on front page
-  if ($_SERVER['HTTP_REFERER'] . '/' == $base_url ||
-    $_SERVER['HTTP_REFERER'] . '/' . variable_get('site_frontpage', 'node') == $base_url) {
+  if (!strstr($base_url . '/', $_SERVER['HTTP_REFERER']) &&
+    !strstr($_SERVER['HTTP_REFERER'], $base_url . '/' . variable_get('site_frontpage', 'node'))) {
     if (!empty($context)) {
       if ($context->type == NM_CONTENT_DOMAIN) {
         //in case of Domains, we just want to see content wich has the privacy setting DOMAIN or PRIVATE
