@@ -21,6 +21,8 @@ drush updatedb --yes
 
 drush en og_forum_D7_fix --yes 
 
+drush vset user_password_reset_timeout 172800
+
 drush cc all
 
 drush vset maintenance_mode 0
