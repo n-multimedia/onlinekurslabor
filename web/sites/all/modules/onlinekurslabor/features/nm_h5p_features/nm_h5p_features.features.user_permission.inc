@@ -23,6 +23,7 @@ function nm_h5p_features_user_default_permissions() {
     'name' => 'download own h5ps',
     'roles' => array(
       'Autor' => 'Autor',
+      'Moderator' => 'Moderator',
     ),
     'module' => 'h5p',
   );
