@@ -2859,8 +2859,11 @@ function _nm_stream_api_v2_get_posts_query($filter = [], $stream_container_node 
   $query->join('field_data_field_nm_stream_context', 'field_data_field_nm_stream_context', "n.nid = field_data_field_nm_stream_context.entity_id  AND field_data_field_nm_stream_context.entity_type = 'node'"); //JOIN
   $query->isNotNull('field_data_field_nm_stream_context.field_nm_stream_context_target_id');
 
+  $request_from_dashboard = strstr($base_url . '/', $_SERVER['HTTP_REFERER']) ||
+    strstr($_SERVER['HTTP_REFERER'], $base_url . '/' . variable_get('site_frontpage', 'node'));
+
   $environment = null;
-  if (!empty($stream_container_node)) {
+  if (!empty($stream_container_node) && $request_from_dashboard) {
     $context = node_load(_custom_general_get_group($stream_container_node));
     $container = $stream_container_node;
   } else {
@@ -2870,8 +2873,7 @@ function _nm_stream_api_v2_get_posts_query($filter = [], $stream_container_node 
   }
 
   // do not apply context privacy on front page
-  if (!strstr($base_url . '/', $_SERVER['HTTP_REFERER']) &&
-    !strstr($_SERVER['HTTP_REFERER'], $base_url . '/' . variable_get('site_frontpage', 'node'))) {
+  if (!$request_from_dashboard) {
     if (!empty($context)) {
       if ($context->type == NM_CONTENT_DOMAIN) {
         //in case of Domains, we just want to see content wich has the privacy setting DOMAIN or PRIVATE
