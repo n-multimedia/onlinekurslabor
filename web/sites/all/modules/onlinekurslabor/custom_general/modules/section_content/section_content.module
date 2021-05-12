@@ -37,7 +37,7 @@ function section_content_block_info() {
     'info' => t('Content - Show course-usage of this domain'),
   );
 
-   
+
   return $blocks;
 }
 
@@ -75,7 +75,7 @@ function section_content_block_view($delta = '') {
     case 'content_link_to_fulltext': //aktives kursmitglied ODER update-perm auf domain ODER domain is public
       if(_section_content_get_have_full_read_access_to_domain($current_domain))
       {
-        //perspektivisch kann man den linktext auch in ne block_config rausziehen. 
+        //perspektivisch kann man den linktext auch in ne block_config rausziehen.
         $block['content'] = l('› '.t("Full view: !s", array("!s"=>$current_domain->title)), NM_CONTENT_TEXT_PATH.DIRECTORY_SEPARATOR.$current_domain->nid);
       }
       break;
@@ -385,7 +385,7 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
             {
                $curr_bookid  = $current_node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
             }
-            
+
             if($curr_bookid)
             {
               $path = 'domain/text/' .$curr_bookid.'/'. $nid;
@@ -422,7 +422,7 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
         $type = _custom_general_get_node_type($nid);
         $node = node_load($nid);
         if ($type == NM_CONTENT_DOMAIN) {
-          //Vollzugriff auf CONTENT: 
+          //Vollzugriff auf CONTENT:
           if (_custom_general_get_group_state_for_user(_custom_general_get_group($node)) == OG_STATE_ACTIVE || node_access('update', _custom_general_get_group($node))) {
             $path = NM_CONTENT_TEXT_PATH . DIRECTORY_SEPARATOR . $node->nid;
           }
@@ -696,7 +696,7 @@ function section_content_form_alter(&$form, &$form_state, $form_id) {
         }
     }
 
-   
+
 
 
   return $form;
@@ -951,7 +951,7 @@ function _section_content_task_replacements($matches) {
     $node_output = drupal_render($node_view);
     $text = '<div class="embeded_task">' . $node_output . '</div>';
   }
-   return $text; 
+   return $text;
 }
 
 /**
@@ -1086,13 +1086,13 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
       }
       // Build an array of sources for each <video> element.
       $source_lists = array();
-      
+
         foreach ($items as $delta => $item) {
           if ($item['type'] == 'video'  && !in_array($item['filemime'], $blacklist_filenime)) {
             $source_lists[0][] = $item;
           }
         }
-      
+
 
       // Render each source list as an image
       foreach ($source_lists as $delta => $sources) {
@@ -1109,7 +1109,7 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
       // Use the media_thumbnail image style so that the output in media browser
       // is consistent.
       $multiple_file_behavior = $settings['multiple_file_behavior'];
-      
+
       // Prevent 'empty' fields from causing a WSOD.
       $items = array_filter($items);
       $is_wysiwyg_preview = false;
@@ -1138,7 +1138,7 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
       foreach ($source_lists as $delta => $sources) {
                 $width = $settings['width'];
                 $height = $settings['height'];
-                //der WYSIWYG macht da irgendn schmarrn und was un-bedienbares. 
+                //der WYSIWYG macht da irgendn schmarrn und was un-bedienbares.
                 //deswegen rendern wir darin kein video sondern nur den screenshot
                 if ($is_wysiwyg_preview) {
                     $element[$delta] = array(
@@ -1388,8 +1388,8 @@ function array_search_i($str, $array) {
  * wird benutzt in _section_content_block_text_outline
  * kann eingesetzt werden durch: Add Block ->  content text outline
  * Course oder Domain muss aktiv gesetzt werden für Funktionalität.
- * 
- * @param int $domain_nid Die Domain-ID 
+ *
+ * @param int $domain_nid Die Domain-ID
  * @param bool $rendered_in_course Inhaltsvz wird im Kurs angezeigt
  * @return String
  */
@@ -1413,19 +1413,14 @@ function section_content_text_outline($domain_nid, $rendered_in_course = false) 
   $config['parent_mlid'] = 0;
   $config['level'] = $rendered_in_course? 2 : 1;
 
-  if($rendered_in_course)
-  {
-      _section_courses_text_outline_add_active_path($tree);
+  if ($rendered_in_course) {
+    _section_courses_text_outline_add_active_path($tree);
+  } else {
+    _section_content_text_outline_add_active_path($tree);
   }
-  else
-  {
-      _section_content_text_outline_add_active_path($tree);
-  }
-
 
   // Allow alteration of the tree and config before we begin operations on it.
   drupal_alter('menu_block_tree', $tree, $config);
-
 
   // Prune the tree along the active trail to the specified level.
   if ($config['level'] > 1 || $config['parent_mlid']) {
@@ -1457,7 +1452,7 @@ function section_content_text_outline($domain_nid, $rendered_in_course = false) 
   }
 
   //Outline retraction by domain setting
-  if (_custom_general_outline_retraction_enabled($domain_nid) && $rendered_in_course) {
+  if (_custom_general_outline_retraction_enabled($domain_nid)) {
     drupal_add_js(drupal_get_path('module', 'section_content') . "/js/section_content_outline.js");
     drupal_add_js(drupal_get_path('module', 'section_content') . "/js/bootstrap-treeview.min.js");
     drupal_add_css(drupal_get_path('module', 'section_content') . "/css/bootstrap-treeview.min.css");
@@ -1559,9 +1554,9 @@ function _section_content_get_active_domain($reset = FALSE) {
       $domain = node_load(_custom_general_get_group($domain_tmp, TRUE));
 
     }
-    
+
     //falls der Parameter og_group_ref in der url gesetzt ist, überschreibt der den errechneten wert
-    
+
     if(arg(0) == 'domain' && ! empty(drupal_get_query_parameters()['og_group_ref']))
     {
       $domain = node_load(drupal_get_query_parameters()['og_group_ref']);
@@ -1817,7 +1812,7 @@ function theme_section_content_formatter_video($variables) {
   $output .= '<video' . drupal_attributes($video_attributes) . ' ' . $classes . ' poster="'._videosafe_get_themed_screenshot_url_for_file($first_video_uri).'">';
   foreach ($files as $delta => $file) {
     $file_object = file_load($file['fid']);
-    $videourl = file_create_url($file['uri']);  
+    $videourl = file_create_url($file['uri']);
     $file_source_list .='<br>'.theme('file_link', array('file' => $file_object));
     $source_attributes = array(
       'src' => $videourl,
@@ -1865,8 +1860,8 @@ function theme_section_content_formatter_video_preview($variables) {
         $screenshot_file_obj = _videosafe_store_screenshot_for_file($file['uri']);
         $screenshot_uri = $screenshot_file_obj->uri;
         $arr_screenshot = _section_content_get_themed_video_screenshot_array($screenshot_uri, $variables['image_width']);
-        
-        
+
+
         $video_subtitle = str_replace(array('_'), ' ', pathinfo($file['filename'], PATHINFO_FILENAME));
 
         if ($variables['is_wysiwyg_preview']) {
@@ -1895,7 +1890,7 @@ function _section_content_get_themed_video_screenshot_array($screenshot_uri, $im
   $return_arr = array();
   $scaling_style = false;
   $playerbutton_image_style = 'media_fakevideo';
-  // preview eines videos. passe preview an videosize an. 
+  // preview eines videos. passe preview an videosize an.
   if ($image_width) {
     $scaling_style = _section_content_get_image_media_style_for_width($image_width);
   }
@@ -1903,7 +1898,7 @@ function _section_content_get_themed_video_screenshot_array($screenshot_uri, $im
     $scaling_style = image_styles()['media_6'];
   }
 
-  //doppeltes image-styling: 1) passe größe an, 2) erstelle bild 
+  //doppeltes image-styling: 1) passe größe an, 2) erstelle bild
   $image_uri_with_width = image_style_path($scaling_style['name'], $screenshot_uri);
   $image_url_with_width = image_style_url($scaling_style['name'], $screenshot_uri);
   // Create the image.
@@ -1934,7 +1929,7 @@ function _section_content_get_themed_video_screenshot_array($screenshot_uri, $im
 function _section_content_get_image_media_style_for_width($width_in_px) {
     foreach (image_styles() as $imgstyle) {
         foreach ($imgstyle['effects'] as $style_effect) {
-            
+
             if ($style_effect['name'] == 'image_scale') {
                 if($style_effect['data']['width'] == $width_in_px)
                 {
