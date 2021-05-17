@@ -202,6 +202,7 @@ function nm_section_content_features_default_linkit_profiles() {
       'remoteTimeout' => '10000',
     ),
   );
+  $linkit_profile->weight = 0;
   $export['biblio'] = $linkit_profile;
 
   $linkit_profile = new LinkitProfile();
@@ -432,6 +433,7 @@ function nm_section_content_features_default_linkit_profiles() {
       'remoteTimeout' => '10000',
     ),
   );
+  $linkit_profile->weight = 0;
   $export['tasks'] = $linkit_profile;
 
   return $export;

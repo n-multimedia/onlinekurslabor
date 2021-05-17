@@ -371,7 +371,7 @@ function nm_section_content_features_field_default_field_bases() {
     'no_ui' => TRUE,
     'settings' => array(
       'allowed_values' => array(
-        0 => 'Öffentlich - zugreifbar für alle',
+        0 => 'Personen mit der Rolle "Autor" können den Text lesen',
         1 => 'Privat - Zugriff nur für aktive Mitglieder',
       ),
       'allowed_values_function' => '',

@@ -128,18 +128,19 @@ function onlinekurslabor_access_node_grants($account, $op) {
   //DOMAINS
     
   $domains = _section_content_get_domains();
-  $public_domains_nids = array_keys(_section_content_get_domains_having_group_access(0));
+  $author_access_domains = array_keys(_section_content_get_domains_having_group_access(0));
   $realm_domain = 'onlinekurslabor_domain';
   $realm_domain_content = 'onlinekurslabor_domain_content';
   foreach ($domains as $domain) {
-    //give view access for all domain group members OR if domain is "public"
-    if (og_is_member('node', $domain->nid, 'user', $account) || in_array($domain->nid, $public_domains_nids)) {
+
+
+    if (array_intersect($account->roles, array(NM_ROLE_DOZENT, NM_ROLE_TUTOR, NM_ROLE_AUTOR))) {
+      //give view access  for Domain, not for its content!
       $grants[$realm_domain][] = $domain->nid;
-      $grants[$realm_domain_content][] = $domain->nid;
-    }
-    else if (array_intersect($account->roles, array(NM_ROLE_DOZENT, NM_ROLE_TUTOR))) {
-      //give view access ONLY for Domain, not for its content!
-      $grants[$realm_domain][] = $domain->nid;
+      //if member or it is a readable domains AND user has autor-perms
+      if ((og_is_member('node', $domain->nid, 'user', $account) || in_array($domain->nid, $author_access_domains)) && in_array(NM_ROLE_AUTOR, $account->roles)) {
+        $grants[$realm_domain_content][] = $domain->nid;
+      }
     }
   }
 

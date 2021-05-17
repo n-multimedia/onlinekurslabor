@@ -1053,26 +1053,31 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
       }
       break;
     case 'okl_badge_domain_visibility':
-      $is_public = false;
+      $is_readable_for_authors = false;
       if (!empty($entity->group_access)) {
-        $is_public = $entity->group_access[LANGUAGE_NONE][0]['value'] === "0";
+        $is_readable_for_authors = $entity->group_access[LANGUAGE_NONE][0]['value'] === "0";
       }
-      if ($is_public) {
-        $element[$delta] = array('#type' => 'html_tag',
-          '#tag' => 'span',
-          '#attributes' => array(
-             'class' => 'badge-info badge', 'title' => t('accessible for everyone')
-          ),
-          '#value' => t('public'));
+      foreach ($items as $delta => $item) {
+
+
+        if ($is_readable_for_authors) {
+          $element[$delta] = array('#type' => 'html_tag',
+            '#tag' => 'span',
+            '#attributes' => array(
+              'class' => 'badge-info badge', 'title' => t('All autors can read the text')
+            ),
+            '#value' => t('Read access'));
+        }
+        else {
+          $element[$delta] = array('#type' => 'html_tag',
+            '#tag' => 'span',
+            '#attributes' => array(
+              'class' => 'badge-secondary badge', 'title' => t('Read and write access only for confirmed group members')
+            ),
+            '#value' => t('limited'));
+        }
       }
-      else {
-        $element[$delta] = array('#type' => 'html_tag',
-         '#tag' => 'span',
-          '#attributes' => array(
-             'class' => 'badge-secondary badge','title' => t('accessible only for confirmed group members')
-          ),
-          '#value' => t('limited'));
-      }
+      break;
     case 'section_content_formatter_video_preview':
       // Use the media_thumbnail image style so that the output in media browser
       // is consistent.
@@ -1163,7 +1168,6 @@ function section_content_field_formatter_view($entity_type, $entity, $field, $in
                 }
             }
     }
-
   return $element;
 }
 
