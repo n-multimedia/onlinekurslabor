@@ -1124,7 +1124,7 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $view->description = '';
   $view->tag = 'default';
   $view->base_table = 'node';
-  $view->human_name = 'Content - User - Themen';
+  $view->human_name = 'Content - User - Lehrtexte (Domain|Themen)';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -1255,6 +1255,10 @@ Oben <code>Neues Thema anlegen</code> drücken.
   /* Display: title-only */
   $handler = $view->new_display('block', 'title-only', 'title_only');
   $handler->display->display_options['display_description'] = 'for templating';
+  $handler->display->display_options['defaults']['cache'] = FALSE;
+  $handler->display->display_options['cache']['type'] = 'php';
+  $handler->display->display_options['cache']['php_cache_results'] = 'return _onlinekurslabor_cache_is_group_cache_valid(20,\'courses_user_domains__title_only\');';
+  $handler->display->display_options['cache']['php_cache_output'] = 'return _onlinekurslabor_cache_is_group_cache_valid(60,\'courses_user_domains__title_only\');';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
