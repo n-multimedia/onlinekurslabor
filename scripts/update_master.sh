@@ -19,7 +19,8 @@ drush language-import-translations de ../language/alpha18.po --replace --groups=
 
 drush updatedb --yes
 
-drush en og_forum_D7_fix --yes 
+drush en og_forum_D7_fix --yes
+drush en onlinekurslabor_delete_cascade --yes
 
 drush vset user_password_reset_timeout 172800
 

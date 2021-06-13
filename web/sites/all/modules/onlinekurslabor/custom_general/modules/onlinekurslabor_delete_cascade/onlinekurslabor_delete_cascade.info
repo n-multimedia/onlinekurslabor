@@ -1,0 +1,8 @@
+name = onlinekurslabor_delete_cascade
+description = delete-cascade: handels delete-cascading for onlinekurslabor
+package = custom
+
+
+core = 7.x
+
+dependencies[] = custom_general

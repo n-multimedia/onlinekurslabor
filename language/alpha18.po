@@ -96,6 +96,12 @@ msgstr "Der interaktive Inhalt %nid ist nicht verfügbar."
 msgid "The task %nid is not accessible."
 msgstr "Die Aufgabe %nid ist nicht verfügbar."
 
+msgid "Deleted %count solutions belonging to task %task_title"
+msgstr "%count Lösungen zur Aufgabe %task_title wurden ebenfalls gelöscht"
+
+msgid "Deleted %count files"
+msgstr "%count Dateien ebenfalls gelöscht"
+
 msgid ""
 msgstr ""
 
