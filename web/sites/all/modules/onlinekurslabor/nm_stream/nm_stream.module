@@ -2861,9 +2861,10 @@ function _nm_stream_api_v2_get_posts_query($filter = [], $stream_container_node 
 
   $request_from_dashboard = strstr($base_url . '/', $_SERVER['HTTP_REFERER']) ||
     strstr($_SERVER['HTTP_REFERER'], $base_url . '/' . variable_get('site_frontpage', 'node'));
+  $is_annvid = $stream_container_node->type == ANNVID_CONTENTTYPE;
 
   $environment = null;
-  if (!empty($stream_container_node) && $request_from_dashboard) {
+  if (!empty($stream_container_node) && ($request_from_dashboard)) {
     $context = node_load(_custom_general_get_group($stream_container_node));
     $container = $stream_container_node;
   } else {
@@ -2900,6 +2901,10 @@ function _nm_stream_api_v2_get_posts_query($filter = [], $stream_container_node 
               $context->nid,
               $container->nid,
             ], "IN");
+
+            // set context filter
+            // case: course => show only posts relevant for the active course
+            $query->condition('field_data_field_nm_stream_context.field_nm_stream_context_target_id', array($context->nid, $domain_id),'IN');
             break;
         }
       }
