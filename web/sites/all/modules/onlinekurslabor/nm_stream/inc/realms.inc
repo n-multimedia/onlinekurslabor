@@ -69,7 +69,6 @@ function nm_stream_node_access_records($node) {
     $node_environment = _nm_stream_get_node_environment($node);
     switch ($node_environment['context']->type) {
 
-
       /* ============= CONTEXT COURSE ================== */
       case NM_COURSE: {
         switch ($node_environment['container']->type) {
