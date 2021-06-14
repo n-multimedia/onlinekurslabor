@@ -56,7 +56,7 @@ function onlinekurslabor_access_node_grants($account, $op) {
   if (isset($grants)) {
       return $grants;
   }
-  
+
   $grants = array();
 
   //COURSES
@@ -68,7 +68,7 @@ function onlinekurslabor_access_node_grants($account, $op) {
     $grants['onlinekurslabor_authenticated'][] = 1;
   }
 
-  
+
   //Videosafe-Videos
   if (in_array(NM_ROLE_AUTOR, array_values($account->roles)))
   {
@@ -78,34 +78,34 @@ function onlinekurslabor_access_node_grants($account, $op) {
           }
     $grants['onlinekurslabor_author_access'][] = 1;
   }
-  
+
 
 
 
 
     /*
-  
+
   */
-  
-  
+
+
   $courses = _section_course_get_courses_by_uid($account->uid);
 
   $realm_content = 'onlinekurslabor_course_content';
   $realm_solution = 'onlinekurslabor_course_solution';
   $realm_solution_teacher = 'onlinekurslabor_course_solution_teacher';
   foreach ($courses as $course) {
-       
+
     if(og_is_member('node', $course->nid, 'user', $account)) {
       //give view access for contents  in course
       $grants[$realm_content][] = $course->nid;
 
-    //separater realm fuer Zugriff auf Lösungen durch  dozenten/tutoren. 
-    //Durch Nutzung der Course-Nid nur wenige Einträge nötig.  
+    //separater realm fuer Zugriff auf Lösungen durch  dozenten/tutoren.
+    //Durch Nutzung der Course-Nid nur wenige Einträge nötig.
     if(_section_courses_user_can_edit_course($account, $course))
       {
-           $grants[$realm_solution_teacher][] = $course->nid ; 
+           $grants[$realm_solution_teacher][] = $course->nid ;
       }
-        
+
     }
   }
 
@@ -124,9 +124,9 @@ function onlinekurslabor_access_node_grants($account, $op) {
       $grants[$realm_solution][] = $group_solution["solution"]->nid;
     }
 
-        
+
   //DOMAINS
-    
+
   $domains = _section_content_get_domains();
   $public_domains_nids = array_keys(_section_content_get_domains_having_group_access(0));
   $realm_domain = 'onlinekurslabor_domain';
@@ -209,7 +209,7 @@ function onlinekurslabor_access_node_access_records($node) {
     );
   }
   if ($node->type == NM_VIDEOSAFE_VIDEO) {
-      
+
       /*video mit sperrvermerk*/
         if ($node->field_exclusive_access) {
             $flattened_exclusive_access_iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($node->field_exclusive_access));
@@ -283,7 +283,7 @@ function onlinekurslabor_access_node_access_records($node) {
     }
 
   }
-  
+
   //trigger warning for course-corpses [kills "rebuild node access"]
    if (in_array($node->type, array(NM_COURSE_GROUP, NM_COURSE_GENERIC_TASK, NM_COURSE_NEWS, NM_COURSE_DOCS, NM_COURSE_GENERIC_TASK_SOLUTION))) {
     if (empty($node->og_group_ref[LANGUAGE_NONE][0]['target_id'])) {
@@ -294,7 +294,7 @@ function onlinekurslabor_access_node_access_records($node) {
 
   //todo solution
   if ($node->type == NM_COURSE_GENERIC_TASK_SOLUTION) {
-    
+
     $grants[] = array(
       'realm' => 'onlinekurslabor_course_solution',
       'gid' => $node->nid,
@@ -304,7 +304,7 @@ function onlinekurslabor_access_node_access_records($node) {
       'priority' => 1,
     );
    //teacher override
-   //separater realm spart weitere 60% Zeit 
+   //separater realm spart weitere 60% Zeit
    $grants[] = array(
     'realm' => 'onlinekurslabor_course_solution_teacher',
     'gid' => $node->og_group_ref[LANGUAGE_NONE][0]['target_id'],
@@ -347,7 +347,7 @@ function onlinekurslabor_access_node_access_records($node) {
     }
   }
 
-        
+
 
   //additional visibility
   //h5p is being used in different domains
@@ -386,17 +386,17 @@ function onlinekurslabor_access_media_browser_plugins_alter(&$plugins) {
 
  /**
  * Implements hook_file_download_access($file_item, $entity_type, $entity)
- * hook_file_download_access wird zunächst aufgerufen. 
+ * hook_file_download_access wird zunächst aufgerufen.
  * Hier wird Zugriff auf private files in a field freigegeben (insbesondere Taxonomy wie Kurs-Sponsoren)
- * 
+ *
  * Eine Freigabe allein aufgrund hook_file_download ist nicht immer möglich!
- * 
- * Anschließend wird onlinekurslabor_access_file_download aufgerufen. 
- * Darin kann ein erlaubter Zugriff noch abgebrochen werden.  
- *  
- */ 
+ *
+ * Anschließend wird onlinekurslabor_access_file_download aufgerufen.
+ * Darin kann ein erlaubter Zugriff noch abgebrochen werden.
+ *
+ */
 function onlinekurslabor_access_file_download_access($file_item, $entity_type, $entity) {
-   
+
     //bilder in taxonomien oder profilbilder? Access!
     if(in_array($entity_type, array('taxonomy_term','profile2')))
         return true;
@@ -417,19 +417,19 @@ function onlinekurslabor_access_file_download_access($file_item, $entity_type, $
         }
     }
 }
- 
+
 
 /**
  * Implements hook_file_download().
- * notice: 
+ * notice:
  * http://stackoverflow.com/questions/19215098/html5-video-audio-player-on-mobile-safari-ios-7-ios-10-excludes-cookies
  * http://stackoverflow.com/questions/39636103/video-requiring-asp-net-authentication-not-working-on-ios-10
  * IOS 10 (safari, chrome) unterstuetzt keine Videos mit Sessioncookies.
  * beispielhafter Test: https://www.bizify.me/test-if-your-ios-device-is-broken/
  * https://moodle.org/mod/forum/discuss.php?d=340465
- * 
+ *
  * 403-Workaround funktioniert nur einmalig, macht Springen kaputt
- * 
+ *
  */
 function onlinekurslabor_access_file_download($uri) {
     #    drupal_set_message("access" . $uri); return -1;
@@ -463,7 +463,7 @@ function onlinekurslabor_access_file_download($uri) {
     if (!$mime) {
       $mime = file_get_mimetype($uri);
     }
-        
+
     #drupal_set_message("db_result" . var_export($fileusage_result, true));  dpm(count($fileusage_result)); return -1;
     $node_usage_found = false;
     foreach ($fileusage_result as $record) {
@@ -478,11 +478,11 @@ function onlinekurslabor_access_file_download($uri) {
                 $access_allowed = true;
             //Video protecten
             if ($node->type == NM_VIDEOSAFE_VIDEO) {
-              
-              /* OK das ist jetzt ein bisschen spooky. Fordere ich einen Screenshot 
-               * zu einem Videosafe-Video an wird über file_download_headers geprüft, 
+
+              /* OK das ist jetzt ein bisschen spooky. Fordere ich einen Screenshot
+               * zu einem Videosafe-Video an wird über file_download_headers geprüft,
                * ob ich Zugriff aufs zugehörige Video habe (also hier).
-               * deswegen schau ich mir die URI in der Adresszeile des Browsers an, ob ich wirklich das Video 
+               * deswegen schau ich mir die URI in der Adresszeile des Browsers an, ob ich wirklich das Video
                * oder eigtl den Screenshot möchte, damit der mir nicht die
                * Video-Daten rausschiebt.
                */
@@ -491,7 +491,7 @@ function onlinekurslabor_access_file_download($uri) {
               $requested_file_ending = pathinfo($requested_file_name, PATHINFO_EXTENSION);
               $HAS_REQUESTED_SCREENSHOT = ($requested_file_ending == 'jpg');
                 /* leider leider zicken sonst die browser, wenn man dann als student und autor abwechselnd testen möchte.
-                 *  das erste geladene bleibt im cache.. 
+                 *  das erste geladene bleibt im cache..
                  */
                 //watchdog('videosafe-file-stream', "requesting" . var_export($_SERVER, true), array(), WATCHDOG_DEBUG);
                 if(!$HAS_REQUESTED_SCREENSHOT)
@@ -502,11 +502,11 @@ function onlinekurslabor_access_file_download($uri) {
                   header('Pragma: no-cache');
                   header('Content-Type: ' . $mime);
                 }
-               
-                //wir schauen nach, in welchem h5p-content das gelistet wird  
+
+                //wir schauen nach, in welchem h5p-content das gelistet wird
                 $h5p_nodes = _videosafe_get_h5p_usage($uri);
                 //watchdog('videosafe-file-stream', "URI $uri used in ".count($h5p_nodes)." h5p-objects" , array(), WATCHDOG_DEBUG);
-                
+
                 foreach ($h5p_nodes as $h5p_node) {
                     //watchdog('videosafe-file-stream', "found h5p_object is: nid: ".$h5p_node->nid.' title:  '.$h5p_node->title , array(), WATCHDOG_DEBUG);
                     //zugriff auf einen h5p, dann auf das video, egal wo
@@ -536,7 +536,7 @@ function onlinekurslabor_access_file_download($uri) {
     //file in keinem node verwendet => zugriff
     if (!$node_usage_found) {
         $access_allowed = true;
-    } 
+    }
     //verwendet in einer node und kein access darauf
     elseif(!$access_allowed) {
         //Jetzt kann irgendn Scherzkeks bspw ein Profilbild aber in einer Kursnews verwendet haben.
@@ -548,13 +548,13 @@ function onlinekurslabor_access_file_download($uri) {
         $other_usage = $additional_usage_query->execute();
         $other_usage_found = 0;
         //count gibt falsches ergebnis, deswegen foreach
-        foreach($other_usage as $other_usage_record) 
+        foreach($other_usage as $other_usage_record)
            $other_usage_found++;
         //wenn andere usage gefunden, access erlauben
         $access_allowed = (boolean) $other_usage_found;
     }
-    
-    
+
+
     //jetzt müssen wir für video-screenshots noch prüfen wie das mit field_file_belongs_to ist.
     $fileobject_candidates = file_load_multiple(array(), array('uri' => $uri));
     $fileobject = reset($fileobject_candidates);
@@ -562,7 +562,7 @@ function onlinekurslabor_access_file_download($uri) {
     if($fileobject && !empty($fileobject->field_file_belongs_to))
     {
         $file_belongs_to_fid = $fileobject->field_file_belongs_to[LANGUAGE_NONE][0]['target_id'];
-        $file_belongs_to_object = file_load($file_belongs_to_fid);    
+        $file_belongs_to_object = file_load($file_belongs_to_fid);
         //prüft, ob headers ankommen. ja = access.
         $file_headers_download_check =  file_download_headers($file_belongs_to_object->uri);
         $access_allowed = !empty($file_headers_download_check);
@@ -578,7 +578,7 @@ function onlinekurslabor_access_file_download($uri) {
 
 /**
  * Prüft, ob der übergebene Content im Objekt $o_object verfügbar ist.
- *  
+ *
  * @param StdClass $o_domain_content ein Domain-Content wie Frage-Antwort oder H5P
  * @param StdClass $o_object ein Kurs oder ein Lehrtext
  * @return boolean true or false
