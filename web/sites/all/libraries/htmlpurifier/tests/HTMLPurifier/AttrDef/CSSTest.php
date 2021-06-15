@@ -64,8 +64,14 @@ class HTMLPurifier_AttrDef_CSSTest extends HTMLPurifier_AttrDefHarness
         $this->assertDef('width:-50px;', false);
         $this->assertDef('min-width:50%;');
         $this->assertDef('min-width:50px;');
-        $this->assertDef('min-width:auto;');
+        $this->assertDef('min-width:auto;', false);
+        $this->assertDef('min-width:initial;');
+        $this->assertDef('min-width:inherit;');
         $this->assertDef('min-width:-50px;', false);
+        $this->assertDef('min-width:50ch;');
+        $this->assertDef('min-width:50rem;');
+        $this->assertDef('min-width:50vw;');
+        $this->assertDef('min-width:-50vw;', false);
         $this->assertDef('text-decoration:underline;');
         $this->assertDef('font-family:sans-serif;');
         $this->assertDef("font-family:Gill, 'Times New Roman', sans-serif;");
@@ -134,8 +140,8 @@ class HTMLPurifier_AttrDef_CSSTest extends HTMLPurifier_AttrDefHarness
         $this->assertDef('scrollbar-highlight-color:#ff69b4;');
         $this->assertDef('scrollbar-shadow-color:#f0f;');
 
-        $this->assertDef('-moz-opacity:.2;');
-        $this->assertDef('-khtml-opacity:.2;');
+        $this->assertDef('-moz-opacity:0.2;');
+        $this->assertDef('-khtml-opacity:0.2;');
         $this->assertDef('filter:alpha(opacity=20);');
 
         $this->assertDef('border-top-left-radius:55pt 25pt;');
@@ -154,7 +160,7 @@ class HTMLPurifier_AttrDef_CSSTest extends HTMLPurifier_AttrDefHarness
         $this->assertDef('display:none;');
         $this->assertDef('visibility:visible;');
         $this->assertDef('overflow:scroll;');
-        $this->assertDef('opacity:.2;');
+        $this->assertDef('opacity:0.2;');
     }
 
     public function testForbidden()
