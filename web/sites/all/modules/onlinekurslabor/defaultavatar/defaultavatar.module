@@ -150,8 +150,10 @@ function defaultavatar_profile2_presave($profile) {
  * @return string filesystemstring
  */
 function _DefaultAvatar_getPhotoFileSystemtype() {
+    $profile2field =  field_info_instance('profile2', 'field_photo', 'master');;
+    $subdirectory = $profile2field['settings']['file_directory'];
     $field_info = field_info_field('field_photo');
-    return $field_info['settings']['uri_scheme'] . '://';
+    return $field_info['settings']['uri_scheme'] . '://'.($subdirectory ? $subdirectory.'/' : '');
 }
 
  

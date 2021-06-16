@@ -1,0 +1,12 @@
+name = onlinekurslabor_cache
+description = adds functions for caching to be used in code / views-php
+package = custom
+
+
+core = 7.x
+
+; Information added by drupal.org packaging script on 2013-12-16
+version = "7.x-1.x"
+core = "7.x"
+
+dependencies[] = custom_general

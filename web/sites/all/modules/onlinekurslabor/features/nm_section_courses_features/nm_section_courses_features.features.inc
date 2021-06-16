@@ -183,7 +183,7 @@ function nm_section_courses_features_default_profile2_type() {
     "type" : "student",
     "label" : "Student",
     "weight" : "0",
-    "data" : { "registration" : 1 },
+    "data" : { "registration" : 1, "revisions" : 0 },
     "rdf_mapping" : []
   }');
   return $items;

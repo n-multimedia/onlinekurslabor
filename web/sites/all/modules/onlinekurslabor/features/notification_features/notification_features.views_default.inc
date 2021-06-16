@@ -25,7 +25,9 @@ function notification_features_views_default_views() {
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'none';
-  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['cache']['type'] = 'php';
+  $handler->display->display_options['cache']['php_cache_results'] = 'return  _onlinekurslabor_cache_is_group_cache_valid(5,\'nm_activity_stream\')';
+  $handler->display->display_options['cache']['php_cache_output'] = 'return _onlinekurslabor_cache_is_group_cache_valid(60,\'nm_activity_stream\')';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';
@@ -37,23 +39,18 @@ function notification_features_views_default_views() {
   $handler->display->display_options['pager']['options']['items_per_page'] = '15';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'collapse_wrapper';
-  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_plugin'] = 'entity';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_message_node_ref_target_id']['id'] = 'field_message_node_ref_target_id';
   $handler->display->display_options['relationships']['field_message_node_ref_target_id']['table'] = 'field_data_field_message_node_ref';
   $handler->display->display_options['relationships']['field_message_node_ref_target_id']['field'] = 'field_message_node_ref_target_id';
   $handler->display->display_options['relationships']['field_message_node_ref_target_id']['label'] = 'node_ref';
   $handler->display->display_options['relationships']['field_message_node_ref_target_id']['required'] = TRUE;
-  /* Field: Message: Rendered Message */
-  $handler->display->display_options['fields']['rendered_entity']['id'] = 'rendered_entity';
-  $handler->display->display_options['fields']['rendered_entity']['table'] = 'views_entity_message';
-  $handler->display->display_options['fields']['rendered_entity']['field'] = 'rendered_entity';
-  $handler->display->display_options['fields']['rendered_entity']['label'] = '';
-  $handler->display->display_options['fields']['rendered_entity']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['rendered_entity']['link_to_entity'] = 1;
-  $handler->display->display_options['fields']['rendered_entity']['display'] = 'view';
-  $handler->display->display_options['fields']['rendered_entity']['view_mode'] = 'full';
-  $handler->display->display_options['fields']['rendered_entity']['bypass_access'] = 0;
+  /* Field: Message: Nachricht ID */
+  $handler->display->display_options['fields']['mid']['id'] = 'mid';
+  $handler->display->display_options['fields']['mid']['table'] = 'message';
+  $handler->display->display_options['fields']['mid']['field'] = 'mid';
+  $handler->display->display_options['fields']['mid']['label'] = 'Rendered Nachricht';
   /* Sort criterion: Message: Timestamp */
   $handler->display->display_options['sorts']['timestamp']['id'] = 'timestamp';
   $handler->display->display_options['sorts']['timestamp']['table'] = 'message';
@@ -64,13 +61,6 @@ function notification_features_views_default_views() {
   $handler->display->display_options['filters']['nid']['table'] = 'node_access';
   $handler->display->display_options['filters']['nid']['field'] = 'nid';
   $handler->display->display_options['filters']['nid']['relationship'] = 'field_message_node_ref_target_id';
-  /* Filter criterion: Message: Timestamp */
-  $handler->display->display_options['filters']['timestamp']['id'] = 'timestamp';
-  $handler->display->display_options['filters']['timestamp']['table'] = 'message';
-  $handler->display->display_options['filters']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['filters']['timestamp']['operator'] = '>';
-  $handler->display->display_options['filters']['timestamp']['value']['value'] = '-30 days';
-  $handler->display->display_options['filters']['timestamp']['value']['type'] = 'offset';
 
   /* Display: Activity pane */
   $handler = $view->new_display('panel_pane', 'Activity pane', 'activity_display');
@@ -84,6 +74,9 @@ function notification_features_views_default_views() {
     t('Aufsteigend'),
     t('Absteigend'),
     t('node_ref'),
+    t('Rendered Nachricht'),
+    t('.'),
+    t(','),
     t('Activity pane'),
     t('shows activity '),
     t('View panes'),

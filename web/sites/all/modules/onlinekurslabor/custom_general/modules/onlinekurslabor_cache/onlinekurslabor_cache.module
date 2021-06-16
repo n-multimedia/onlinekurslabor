@@ -1,0 +1,73 @@
+<?php
+
+/**
+ * Wurde der aktuell eingeloggte Nutzer NICHT innerhalb der letzten $max_timespan Minuten
+ * einer Gruppe hinzugefügt (Kurs, KG, ...), so liefert die Methode true (=cache valid).
+ * Wurde der aktuell eingeloggte Nutzer innerhalb der letzten $max_timespan Minuten einer Gruppe hinzugefügt,
+ * liefert sie EINMALIG false. 
+ * Dann entweder nach erneuter Eintragung oder nach $max_timespan Minuten
+ * @param int $max_timespan max cache duration in minutes, e.g. 60
+ * @param string $identifier - internal identifier, in which context is the cache used. e.g. view-name
+ */
+function _onlinekurslabor_cache_is_group_cache_valid($max_timespan, $identifier) {
+  #_onlinekurslabor_cache_debugmessage("_onlinekurslabor_cache_is_group_cache_valid caches disabled");
+  #return false;
+  global $user;
+  $identifier_written = 'timestamp_for_' . $identifier;
+  $default_timediff = $max_timespan * 60;
+  if ($user->uid) {
+    //jetzt + 2x zeitdifferenz zum letzten speicher oder einfach: jetzt
+    #$unix_timestamp = $_SESSION['okl_cache'][$identifier_written] ? time() + 2 * (time() - $_SESSION['okl_cache'][$identifier_written]) : time();
+    $unix_timestamp = time();
+    $timediff = $_SESSION['okl_cache'][$identifier_written] ? time() - $_SESSION['okl_cache'][$identifier_written] : $default_timediff;
+    $result = db_query('select created as last_group_added_timestamp from og_membership where etid = :userid AND  :now_timestamp - created < :timediff order by created DESC LIMIT 0,1', array(':userid' => $user->uid, ':now_timestamp' => $unix_timestamp, ':timediff' => $timediff))->fetchField();
+    //_onlinekurslabor_cache_debugmessage($result);
+    if ($result) {
+      _onlinekurslabor_cache_debugmessage("cache INVALID for $identifier, last written: " . $_SESSION['okl_cache'][$identifier_written] . " timestamp for sql is: " . $unix_timestamp . " result: " . $result);
+      $_SESSION['okl_cache'][$identifier_written] = $result;
+      return false;
+    }
+    //kein gruppen-neueintrag
+    else {
+      //zeitspanne noch ok?
+      if (isset($_SESSION['okl_cache'][$identifier_written]) && time() < $_SESSION['okl_cache'][$identifier_written] + $default_timediff) {
+        _onlinekurslabor_cache_debugmessage("cache valid, for $identifier , last store: @ " . $_SESSION['okl_cache'][$identifier_written] . ", current time: " . time() . " result: " . $result);
+        return true;
+      }
+      else {
+        //timeout hit
+        _onlinekurslabor_cache_debugmessage("cache INVALID  by time or empty for $identifier");
+        $_SESSION['okl_cache'][$identifier_written] = time();
+        return false;
+      }
+    }
+  }
+  //no cache für ausgeloggt, kann man ggff anpassen
+  else {
+    _onlinekurslabor_cache_debugmessage("cache invalid loggedout");
+    return false;
+  }
+}
+
+/**
+ * Implements hook_flush_caches().
+ */
+function onlinekurslabor_cache_flush_caches() {
+  //bug: funzioniert nur für den admin, der das flush auslöst. 
+  //Optimierung z.B. siehe views_plugin_cache.inc
+  //aber kein problem - es wird zwar ein valider cache gemeldet, er wird aber im hintergrund neu aufgebaut. macht ja dann nix.
+  //drupal_set_message("'okl_cache' flushed too!");
+  $_SESSION['okl_cache'] = array();
+
+  // We don't want to add any custom cache-tables, so just return an empty array
+  return array();
+}
+
+/**
+ * helperfunction for debugging.
+ * @param type $str
+ */
+function _onlinekurslabor_cache_debugmessage($str) {
+  //silence is golden
+  //drupal_set_message($str);
+}

@@ -213,3 +213,30 @@ function custom_general_update_9003() {
     trigger_error('BOT Account could not be created!');
   }
 }
+
+
+
+/**
+ * publicize files:
+ * - profile pics
+ * - default profile pics (robots)
+ * - course: preview-image
+ */
+function custom_general_update_9004() {
+  
+  db_query("
+update file_managed
+set uri = REPLACE(uri, 'private://profile/', 'public://profile/')
+WHERE uri LIKE 'private://profile/%'
+");
+  db_query("
+update file_managed
+set uri = REPLACE(uri, 'private://avatar_', 'public://profile/avatar_')
+WHERE uri LIKE 'private://avatar_%'");
+  
+  db_query("
+update file_managed
+set uri = REPLACE(uri, 'private://courses/', 'public://courses_preview/')
+WHERE uri LIKE 'private://courses/%'");
+  
+}
