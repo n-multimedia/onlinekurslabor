@@ -2904,7 +2904,11 @@ function _nm_stream_api_v2_get_posts_query($filter = [], $stream_container_node 
 
             // set context filter
             // case: course => show only posts relevant for the active course
-            $query->condition('field_data_field_nm_stream_context.field_nm_stream_context_target_id', array($context->nid, $domain_id),'IN');
+            if (empty($filter['context_nid'])) {
+              $query->condition('field_data_field_nm_stream_context.field_nm_stream_context_target_id',
+                array($context->nid, $domain_id), 'IN');
+
+            }
             break;
         }
       }
