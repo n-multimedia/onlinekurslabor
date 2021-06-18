@@ -1,21 +1,21 @@
 <?php
-
 /**
  * @file
  * Date API views argument handler.
- *
- * This argument combines multiple date arguments into a single argument where
- * all fields are controlled by the same date and can be combined with either
- * AND or OR.
+ * This argument combines multiple date arguments into a single argument
+ * where all fields are controlled by the same date and can be combined
+ * with either AND or OR.
  */
 
 /**
  * Date API argument handler.
  */
+// @codingStandardsIgnoreStart
 class date_views_argument_handler extends date_views_argument_handler_simple {
 
   /**
-   * {@inheritdoc}
+   * Get granularity and use it to create the formula and a format
+   * for the results.
    */
   function init(&$view, &$options) {
     parent::init($view, $options);
@@ -30,7 +30,7 @@ class date_views_argument_handler extends date_views_argument_handler_simple {
   }
 
   /**
-   * {@inheritdoc}
+   * Default value for the date_fields option.
    */
   function option_definition() {
     $options = parent::option_definition();
@@ -41,7 +41,7 @@ class date_views_argument_handler extends date_views_argument_handler_simple {
   }
 
   /**
-   * {@inheritdoc}
+   * Add a form element to select date_fields for this argument.
    */
   function options_form(&$form, &$form_state) {
     parent::options_form($form, $form_state);
@@ -72,12 +72,9 @@ class date_views_argument_handler extends date_views_argument_handler_simple {
     );
   }
 
-  /**
-   * {@inheritdoc}
-   */
   function options_validate(&$form, &$form_state) {
-    // Views will whine if we don't have something for the these values even
-    // though we removed the option for summaries.
+
+    // Views will whine if we don't have something for the these values even though we removed the option for summaries.
     $form_state['values']['options']['summary']['format'] = 'none';
     $form_state['values']['options']['summary']['options']['none'] = array();
 
@@ -92,9 +89,6 @@ class date_views_argument_handler extends date_views_argument_handler_simple {
     }
   }
 
-  /**
-   * {@inheritdoc}
-   */
   function options_submit(&$form, &$form_state) {
     // It is very important to call the parent function here:
     parent::options_submit($form, $form_state);
@@ -103,9 +97,7 @@ class date_views_argument_handler extends date_views_argument_handler_simple {
     }
   }
 
-  /**
-   * {@inheritdoc}
-   */
+  // Update the summary values to show selected granularity.
   function admin_summary() {
     $fields = date_views_fields($this->base_table);
     if (!empty($this->options['date_fields'])) {
@@ -123,13 +115,15 @@ class date_views_argument_handler extends date_views_argument_handler_simple {
   }
 
   /**
-   * {@inheritdoc}
+   * Provide a list of default behaviors for this argument if the argument
+   * is not present.
+   *
+   * Override this method to provide additional (or fewer) default behaviors.
    */
   function default_actions($which = NULL) {
     $defaults = parent::default_actions();
 
-    // There is no easy way to do summary queries on multiple fields, so remove
-    // that option.
+    // There is no easy way to do summary queries on multiple fields, so remove that option.
     unset($defaults['summary']);
 
     if ($which) {
@@ -143,11 +137,14 @@ class date_views_argument_handler extends date_views_argument_handler_simple {
   }
 
   /**
-   * {@inheritdoc}
+   * Set up the query for this argument.
+   *
+   * The argument sent may be found at $this->argument.
    */
   function query($group_by = FALSE) {
-    // @todo Not doing anything with $group_by yet, need to figure out what has
-    // to be done.
+
+    // @TODO Not doing anything with $group_by yet, need to figure out what has to be done.
+
     if ($this->date_forbid()) {
       return;
     }
@@ -159,8 +156,8 @@ class date_views_argument_handler extends date_views_argument_handler_simple {
     $this->placeholders = array();
 
     if (!empty($this->query_fields)) {
-      // Use set_where_group() with the selected date_method of 'AND' or 'OR'
-      // to create the where clause.
+      // Use set_where_group() with the selected date_method
+      // of 'AND' or 'OR' to create the where clause.
       foreach ($this->query_fields as $count => $query_field) {
         $field = $query_field['field'];
         $this->date_handler = $query_field['date_handler'];
@@ -171,9 +168,8 @@ class date_views_argument_handler extends date_views_argument_handler_simple {
         if ($field['table_name'] != $this->table || !empty($this->relationship)) {
           $this->table = $this->query->ensure_table($field['table_name'], $this->relationship);
         }
-        // $this->table_alias gets set when the first field is processed if
-        // otherwise empty. For subsequent fields, we need to be sure it is
-        // emptied again.
+        // $this->table_alias gets set when the first field is processed if otherwise empty.
+        // For subsequent fields, we need to be sure it is emptied again.
         elseif (empty($this->relationship)) {
           $this->table_alias = NULL;
         }
@@ -185,7 +181,7 @@ class date_views_argument_handler extends date_views_argument_handler_simple {
   }
 
   /**
-   * {@inheritdoc}
+   * Collect information about our fields we will need to create the right query.
    */
   function get_query_fields() {
     $fields = date_views_fields($this->base_table);
@@ -204,3 +200,4 @@ class date_views_argument_handler extends date_views_argument_handler_simple {
   }
 
 }
+// @codingStandardsIgnoreEnd

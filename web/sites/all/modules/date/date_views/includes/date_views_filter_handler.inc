@@ -1,22 +1,14 @@
 <?php
-
 /**
  * @file
  * A flexible, configurable date filter.
+ * This filter combines multiple date filters into a single filter
+ * where all fields are controlled by the same date and can be combined
+ * with either AND or OR.
  */
 
-/**
- * A flexible, configurable date filter.
- *
- * This filter combines multiple date filters into a single filter where all
- * fields are controlled by the same date and can be combined with either AND or
- * OR.
- */
+// @codingStandardsIgnoreStart
 class date_views_filter_handler extends date_views_filter_handler_simple {
-
-  /**
-   * {@inheritdoc}
-   */
   function init(&$view, &$options) {
     parent::init($view, $options);
 
@@ -29,9 +21,7 @@ class date_views_filter_handler extends date_views_filter_handler_simple {
     $this->view->date_info->date_fields = array_merge($this->view->date_info->date_fields, $this->options['date_fields']);
   }
 
-  /**
-   * {@inheritdoc}
-   */
+  // Set default values for the date filter.
   function option_definition() {
     $options = parent::option_definition();
     $options['date_fields'] = array('default' => array());
@@ -40,30 +30,18 @@ class date_views_filter_handler extends date_views_filter_handler_simple {
     return $options;
   }
 
-  /**
-   * @todo
-   */
   function op_between($field) {
     $this->date_combine_conditions('op_between');
   }
 
-  /**
-   * @todo
-   */
   function op_simple($field) {
     $this->date_combine_conditions('op_simple');
   }
 
-  /**
-   * @todo
-   */
   function op_contains($field) {
     $this->date_combine_conditions('op_contains');
   }
 
-  /**
-   * @todo
-   */
   function op_empty($field) {
     $this->get_query_fields();
     if (empty($this->query_fields)) {
@@ -105,7 +83,6 @@ class date_views_filter_handler extends date_views_filter_handler_simple {
 
     // Create a custom filter group for the conditions.
     $this->query->set_where_group($this->options['date_method'], $this->options['date_group']);
-
     // Add each condition to the custom filter group.
     foreach ((array) $this->query_fields as $query_field) {
       $field = $query_field['field'];
@@ -143,9 +120,6 @@ class date_views_filter_handler extends date_views_filter_handler_simple {
     $this->query->add_where_expression($this->options['group'], $conditions, $placeholders);
   }
 
-  /**
-   * {@inheritdoc}
-   */
   function extra_options_form(&$form, &$form_state) {
     parent::extra_options_form($form, $form_state);
 
@@ -173,9 +147,6 @@ class date_views_filter_handler extends date_views_filter_handler_simple {
       );
   }
 
-  /**
-   * {@inheritdoc}
-   */
   function extra_options_validate($form, &$form_state) {
     $check_fields = array_filter($form_state['values']['options']['date_fields']);
     if (empty($check_fields)) {
@@ -183,16 +154,12 @@ class date_views_filter_handler extends date_views_filter_handler_simple {
     }
   }
 
-  /**
-   * {@inheritdoc}
-   */
   function extra_options_submit($form, &$form_state) {
     $form_state['values']['options']['date_fields'] = array_filter($form_state['values']['options']['date_fields']);
   }
 
-  /**
-   * {@inheritdoc}
-   */
+  // Update the summary values to provide
+  // meaningful information for each option.
   function admin_summary() {
     if (empty($this->options['date_fields'])) {
       return t('Missing date fields!');
@@ -228,9 +195,6 @@ class date_views_filter_handler extends date_views_filter_handler_simple {
     return $output;
   }
 
-  /**
-   * @todo
-   */
   function get_query_fields() {
     $fields = date_views_fields($this->base_table);
     $fields = $fields['name'];
@@ -245,5 +209,5 @@ class date_views_filter_handler extends date_views_filter_handler_simple {
       }
     }
   }
-
 }
+// @codingStandardsIgnoreEnd
