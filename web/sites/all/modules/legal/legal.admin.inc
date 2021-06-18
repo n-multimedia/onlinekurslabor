@@ -373,7 +373,6 @@ function legal_administration_submit($form, &$form_state) {
     drupal_set_message(t('Display setting has been saved.'));
   }
 
-
   if (isset($values['link_target']) ) {
     variable_set('legal_link_target', $values['link_target']);
     drupal_set_message(t('Link target setting has been saved.'));
