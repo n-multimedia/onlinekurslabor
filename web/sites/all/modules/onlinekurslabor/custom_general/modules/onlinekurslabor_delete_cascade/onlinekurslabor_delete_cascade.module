@@ -69,7 +69,7 @@ function _onlinekurslabor_delete_cascade_delete_used_files_in_content_if_single(
     }
   }
   if ($deleted_file_counter) {
-    drupal_set_message(t("Deleted %count files", array("%count" => count($deleted_file_counter))));
+    drupal_set_message(t("Deleted %count files", array("%count" => $deleted_file_counter)));
   }
 }
 
