@@ -41,7 +41,7 @@ function wysiwyg_yui_editor() {
       ),
     ),
     'install note callback' => 'wysiwyg_yui_install_note',
-    'deprecation message' => t('YUI is no longer maintained and support will be dropped in a release January 2020. See this <a href="!url" target="_blank">announcement</a>', ['!url' => 'http://yahooeng.tumblr.com/post/96098168666/important-announcement-regarding-yui/']),
+    'deprecation message' => t('YUI is no longer available and support will be dropped in the next release. Editor profiles using YUI will be removed. See this <a href="!url" target="_blank">announcement</a>', array('!url' => 'http://yahooeng.tumblr.com/post/96098168666/important-announcement-regarding-yui/')),
     'verified version range' => array('2.7.0', '2.9.0'),
     'version callback' => 'wysiwyg_yui_version',
     'themes callback' => 'wysiwyg_yui_themes',
