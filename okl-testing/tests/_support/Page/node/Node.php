@@ -64,7 +64,7 @@ abstract class Node {
         $I = $this->tester;
 
         $I->amOnPage(self::$editURL);
-        $I->wait(1);
+        $I->wait(2);
         $this->editFields($I, $params);
         $I->click(self::$publishButton);
         $I->wait(1);

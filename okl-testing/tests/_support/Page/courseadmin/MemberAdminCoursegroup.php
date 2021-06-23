@@ -47,7 +47,7 @@ class MemberAdminCoursegroup extends MemberAdmin {
             $I->clickTagContaining('td', $student['mail']);
         }
         $I->click(parent::$executeButton);
-       
+        $I->wait(1);
         $I->clickTagContaining('label', $coursegroup_title);
         $I->click(parent::$forwardButton);
 
