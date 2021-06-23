@@ -5,11 +5,12 @@
 drush vset maintenance_mode 1
 
 
+rsync -va --remove-source-files    ../files_private/profile sites/default/files/
+rsync -va --remove-source-files    ../files_private/avatar_* sites/default/files/profile/
+rsync -va --remove-source-files    ../files_private/courses/ sites/default/files/courses_preview
+
 #bug in drush - cc before FR!!
 drush cc all
-mv ../files_private/profile/ sites/default/files/
-mv ../files_private/avatar_* sites/default/files/profile/
-mv ../files_private/courses/ sites/default/files/courses_preview
 
 drush en onlinekurslabor_cache --yes
 
@@ -20,18 +21,21 @@ drush fr  nm_section_courses_features nm_section_content_features nm_general_fea
 drush image-flush --all
 
 
-drush php-eval 'node_access_rebuild();'
 
 #import language
 drush language-import-translations de ../language/alpha18.po --replace --groups=default
 
 drush updatedb --yes
 
+drush php-eval 'node_access_rebuild();'
+
 drush en og_forum_D7_fix --yes
 drush en onlinekurslabor_delete_cascade --yes
 
 
 drush vset user_password_reset_timeout 172800
+
+drush php-eval "devel_rebuild_node_comment_statistics();"
 
 drush cc all
 
