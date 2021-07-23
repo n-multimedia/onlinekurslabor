@@ -1806,14 +1806,13 @@ function form_error(&$element, $message = '') {
  *   $_POST data.
  */
 function _drupal_form_hack_applied() {return true;}
+
 function form_builder($form_id, &$element, &$form_state) {
-    /* before processing the callback, we have to be sure, the theme was loaded   */
-    global $theme;
-    if (!$theme) {
-        drupal_theme_initialize();
-    }
-  // Initialize as unprocessed.
-  $element['#processed'] = FALSE;
+  /* before processing the callback, we have to be sure, the theme was loaded   */
+  global $theme;
+  if (!$theme) {
+    drupal_theme_initialize();
+  }
 
   // Use element defaults.
   if (isset($element['#type']) && empty($element['#defaults_loaded']) && ($info = element_info($element['#type']))) {
