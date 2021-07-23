@@ -1,3 +1,8 @@
+# -----------------------------------
+#   ONLINEKURSLABOR COMMON .HTACCESS
+# -----------------------------------
+
+
 #
 # Apache/PHP/Drupal settings:
 #
@@ -59,6 +64,13 @@ DirectoryIndex index.php index.html index.htm
 
 # Various rewrite rules.
 <IfModule mod_rewrite.c>
+
+ # load any touch-icons or favicon from theme-dir instead of from main
+  RewriteEngine on
+  RewriteRule "^apple-touch-icon(.*).png$" "/sites/all/themes/bootstrap_onlinekurslabor/favicon_touch/apple-touch-icon$1.png" [L]
+  RewriteRule "^touch-icon(.*).png$" "/sites/all/themes/bootstrap_onlinekurslabor/favicon_touch/touch-icon$1.png" [L]
+  RewriteRule "^favicon.ico$" "/sites/all/themes/bootstrap_onlinekurslabor/favicon_touch/favicon.ico" [L]
+
   RewriteEngine on
 
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
@@ -67,6 +79,11 @@ DirectoryIndex index.php index.html index.htm
   RewriteRule ^ - [E=protossl]
   RewriteCond %{HTTPS} on
   RewriteRule ^ - [E=protossl:s]
+
+  # force https by bs
+  RewriteCond %{SERVER_PORT} 80
+  RewriteRule ^ https://%{HTTP_HOST}/%{REQUEST_URI} [R,L]
+
 
   # Make sure Authorization HTTP header is available to PHP
   # even when running as CGI or FastCGI.
@@ -121,6 +138,14 @@ DirectoryIndex index.php index.html index.htm
   RewriteCond %{REQUEST_URI} !=/favicon.ico
   RewriteRule ^ index.php [L]
 
+ # Remove double slashes
+  # https://stackoverflow.com/questions/6339145/how-to-remove-multiple-slashes-in-uri-with-preg-or-htaccess by Mike
+  RewriteCond %{THE_REQUEST} ^[A-Z]+\ //*(.+)//+(.*)\ HTTP
+  RewriteRule ^ /%1/%2 [R,L]
+  RewriteCond %{THE_REQUEST} ^[A-Z]+\ //+(.*)\ HTTP
+  RewriteRule ^ /%1 [R,L]
+
+
   # Rules to correctly serve gzip compressed CSS and JS files.
   # Requires both mod_rewrite and mod_headers to be enabled.
   <IfModule mod_headers.c>
@@ -138,6 +163,7 @@ DirectoryIndex index.php index.html index.htm
     RewriteRule \.css\.gz$ - [T=text/css,E=no-gzip:1,E=no-brotli:1]
     RewriteRule \.js\.gz$ - [T=text/javascript,E=no-gzip:1,E=no-brotli:1]
 
+
     <FilesMatch "(\.js\.gz|\.css\.gz)$">
       # Serve correct encoding type.
       Header set Content-Encoding gzip
@@ -151,6 +177,13 @@ DirectoryIndex index.php index.html index.htm
 <IfModule mod_headers.c>
   # Disable content sniffing, since it's an attack vector.
   Header always set X-Content-Type-Options nosniff
+
+  #Content-Security-Policy: erlaube, okl auf SUB.medienlabor-uni-augsburg.de (z.B. videokonferenz)
+  Header always set Content-Security-Policy: "frame-ancestors 'self' *.medienlabor-uni-augsburg.de;"
+
   # Disable Proxy header, since it's an attack vector.
   RequestHeader unset Proxy
+
 </IfModule>
+
+
