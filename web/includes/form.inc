@@ -1806,14 +1806,13 @@ function form_error(&$element, $message = '') {
  *   $_POST data.
  */
 function _drupal_form_hack_applied() {return true;}
+
 function form_builder($form_id, &$element, &$form_state) {
-    /* before processing the callback, we have to be sure, the theme was loaded   */
-    global $theme;
-    if (!$theme) {
-        drupal_theme_initialize();
-    }
-  // Initialize as unprocessed.
-  $element['#processed'] = FALSE;
+  /* before processing the callback, we have to be sure, the theme was loaded   */
+  global $theme;
+  if (!$theme) {
+    drupal_theme_initialize();
+  }
 
   // Use element defaults.
   if (isset($element['#type']) && empty($element['#defaults_loaded']) && ($info = element_info($element['#type']))) {
@@ -3929,6 +3928,11 @@ function theme_button($variables) {
   $element = $variables['element'];
   $element['#attributes']['type'] = 'submit';
   element_set_attributes($element, array('id', 'name', 'value'));
+
+  // Remove name attribute, if empty, for W3C compliance.
+  if (isset($element['#attributes']['name']) && $element['#attributes']['name'] === '') {
+    unset($element['#attributes']['name']);
+  }
 
   $element['#attributes']['class'][] = 'form-' . $element['#button_type'];
   if (!empty($element['#attributes']['disabled'])) {
