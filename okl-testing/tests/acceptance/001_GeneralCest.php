@@ -59,7 +59,7 @@ class GeneralCest extends CestHelper{
     $I->makeScreenshot(__FUNCTION__);
     //Teil der H5P-Info
     # switch to h5p-iframe
-    $I->switchToIFrame("h5p-iframe-6947");
+    $I->switchToIFrame("#h5p-iframe-6947");
     $I->see('Kursangebot');
   }
   
