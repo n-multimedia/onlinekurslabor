@@ -53,8 +53,20 @@ function onlinekurslabor_access_node_grants($account, $op) {
   //cache_clear_all('onlinekurslabor_access_grants', 'cache');
   //speedup by 40% using static cache
   $grants = &drupal_static(__FUNCTION__);
+  
+  $cache_cid = 'onlinekurslabor_access_grants_' . $account->uid;
   if (!isset($grants)) {
-    if ($cache = cache_get('onlinekurslabor_access_grants_' . $account->uid)) {
+    $cache = cache_get($cache_cid);
+    $cache_valid = true;
+    //schritt1: prüfe cache_expire
+    if(REQUEST_TIME > $cache->expire)
+    {
+        cache_clear_all($cache_cid, 'cache');
+        $cache_valid = false;
+    }
+    
+    //cache nicht expired: nutze daten, sonst neu erstellen
+    if (!empty($cache->data) && $cache_valid) {
       $grants = $cache->data;
     } else {
 
@@ -158,7 +170,7 @@ function onlinekurslabor_access_node_grants($account, $op) {
       }
       // Do your expensive calculations here, and populate $my_data
       // with the correct stuff..
-      cache_set('onlinekurslabor_access_grants_' . $account->uid, $grants, 'cache', time() + 5);
+      cache_set($cache_cid, $grants, 'cache', REQUEST_TIME + 5);
     }
   }
 
