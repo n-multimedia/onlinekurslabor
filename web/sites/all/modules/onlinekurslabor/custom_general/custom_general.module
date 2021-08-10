@@ -374,6 +374,10 @@ function custom_general_form_alter(&$form, &$form_state, $form_id) {
 
     //entferne für < admin
     if (!in_array('administrator', array_values($user->roles))) {
+        if(!empty($form['field_file_belongs_to']))
+        {
+            $form['field_file_belongs_to']['#access'] = FALSE;
+        }
         //zuweisen zu buch: inaccessbible for non-admins
         if(!empty($form['#group_children']['biblio_fieldset']) && is_array($form['#group_children']['biblio_fieldset']))
         {
