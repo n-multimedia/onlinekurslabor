@@ -57,14 +57,14 @@ msgstr "Öffentlich - zugreifbar für alle"
 msgid "Private - accessible only to group members"
 msgstr "Privat - Zugriff nur für aktive Mitglieder"
 
-msgid "accessible for everyone"
-msgstr "Zugreifbar für jeden"
+msgid "All autors can read the text"
+msgstr "Personen mit der Rolle \"Autor\" können den Text lesen"
 
-msgid "accessible only for confirmed group members"
-msgstr "Nur für aktive Mitglieder zugreifbar"
+msgid "Read and write access only for confirmed group members"
+msgstr "Nur für aktive Mitglieder les- und bearbeitbar"
 
-msgid "public"
-msgstr "öffentlich"
+msgid "Read access"
+msgstr "Leseberechtigung"
 
 msgid "limited"
 msgstr "eingeschränkt"
@@ -95,6 +95,15 @@ msgstr "Der interaktive Inhalt %nid ist nicht verfügbar."
 
 msgid "The task %nid is not accessible."
 msgstr "Die Aufgabe %nid ist nicht verfügbar."
+
+msgid "Deleted %count solutions belonging to task %task_title"
+msgstr "%count Lösungen zur Aufgabe %task_title wurden ebenfalls gelöscht"
+
+msgid "Deleted %count files from %context"
+msgstr "%count Dateien aus Kontext %context ebenfalls gelöscht"
+
+msgid "Public - accessible to all site users"
+msgstr "Personen mit der Rolle \"Autor\" können den Text lesen"
 
 msgid ""
 msgstr ""

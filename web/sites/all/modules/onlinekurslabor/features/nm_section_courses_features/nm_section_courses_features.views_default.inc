@@ -3001,6 +3001,10 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Meine Kurse';
   $handler->display->display_options['display_description'] = 'das gleiche wie My Courses, aber durch Template andere Anzeige';
+  $handler->display->display_options['defaults']['cache'] = FALSE;
+  $handler->display->display_options['cache']['type'] = 'php';
+  $handler->display->display_options['cache']['php_cache_results'] = 'return _onlinekurslabor_cache_is_group_cache_valid(20,\'courses_kurse_bersicht__my_courses_small\');';
+  $handler->display->display_options['cache']['php_cache_output'] = 'return _onlinekurslabor_cache_is_group_cache_valid(60,\'courses_kurse_bersicht__my_courses_small\');';
   $handler->display->display_options['defaults']['exposed_form'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Suchen';

@@ -388,3 +388,14 @@ function h5p_integration_h5p_filtered_params_alter(&$filtered) {
     }
    
 }
+
+
+/**
+ * Helperfunktion für Updates. Setzt den embed-typ für InteractiveVideo auf DIV statt IFRAME,
+ * weil sonst alle anderen Features (AnnVid, Sprungmarken etc) nicht gehen
+ */
+function _h5p_integration_set_interactiveVideoToDivEmbed()
+{
+  db_query("update  `h5p_libraries` set `embed_types` = 'div' WHERE `machine_name` LIKE 'H5P.InteractiveVideo' order by `library_id` desc limit 1");
+  drupal_set_message ("Updated `h5p_libraries` to use 'div' for latest 'H5P.InteractiveVideo' ");
+}

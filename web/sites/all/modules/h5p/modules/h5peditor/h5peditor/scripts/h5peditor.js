@@ -283,6 +283,7 @@ ns.resetLoadedLibraries = function () {
   H5PIntegration.loadedJs = [];
   ns.loadedCallbacks = [];
   ns.libraryLoaded = {};
+  ns.libraryCache = {};
 };
 
 /**
@@ -1383,11 +1384,21 @@ ns.canPastePlus = function (clipboard, libs) {
 
   // Check if clipboard library version is available
   const versionClip = clipboard.generic.library.split(' ')[1];
-  const match = candidates.some(function (candidate) {
-    return ('' + candidate.majorVersion + '.' + candidate.minorVersion) === versionClip;
-  });
-  if (match) {
-    return {canPaste: true};
+  for (let i = 0; i < candidates.length; i++) {
+    if (candidates[i].majorVersion + '.' + candidates[i].minorVersion === versionClip) {
+      if (candidates[i].restricted !== true) {
+        return {
+          canPaste: true
+        };
+      }
+      else {
+        return {
+          canPaste: false,
+          reason: 'pasteContentRestricted',
+          description: ns.t('core', 'pasteContentRestricted')
+        };
+      }
+    }
   }
 
   // Sort remaining candidates by version number
@@ -1707,6 +1718,7 @@ ns.supportedLanguages = {
   'en-gb': 'English, British',
   'eo': 'Esperanto',
   'es': 'Spanish (Español)',
+  'es-mx': 'Spanish, Mexican',
   'et': 'Estonian (Eesti)',
   'eu': 'Basque (Euskera)',
   'fa': 'Persian (فارسی)',
@@ -1814,6 +1826,9 @@ ns.supportedLanguages = {
   'sk': 'Slovak (Slovenčina)',
   'sl': 'Slovenian (Slovenščina)',
   'sm': 'Samoan',
+  'sma': 'Sámi (Southern)',
+  'sme': 'Sámi (Northern)',
+  'smj': 'Sámi (Lule)',
   'sn': 'Shona',
   'so': 'Somali',
   'sq': 'Albanian (Shqip)',
@@ -1849,7 +1864,9 @@ ns.supportedLanguages = {
   'yi': 'Yiddish',
   'yo': 'Yoruba (Yorùbá)',
   'za': 'Zhuang',
+  'zh': 'Chinese',
   'zh-hans': 'Chinese, Simplified (简体中文)',
   'zh-hant': 'Chinese, Traditional (繁體中文)',
+  'zh-tw': 'Chinese, Taiwan, Traditional',
   'zu': 'Zulu (isiZulu)'
 };

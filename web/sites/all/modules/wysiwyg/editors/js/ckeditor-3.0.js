@@ -329,6 +329,8 @@ Drupal.wysiwyg.editor.instance.ckeditor = {
             CKEDITOR.instances[this.field].insertHtml(item.getOuterHtml());
             skip++;
             break;
+          default:
+            skip++;
         }
       }
     }

@@ -354,9 +354,11 @@
 
                     break;
                 case 'video':
-                    h5p_object.video.seek(timestamp);
-                    //timeUpdate muss man bisschen verzögern
-                    setTimeout(function(){h5p_object.timeUpdate(timestamp);}, 500);
+                    //object.seek genügt für annotationen
+                    h5p_object.seek(timestamp);
+                    //weitere mögliche aktionen: h5p_object.showInteractions(); h5p_object.recreateCurrentInteractions();  h5p_object.timeUpdate(timestamp); h5p_object.video.seek(timestamp);
+                    //console.debug(h5p_object);
+                    //setTimeout(function(){h5p_object.timeUpdate(timestamp);}, 500);
                     break;
             }
             

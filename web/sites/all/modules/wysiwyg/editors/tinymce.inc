@@ -27,7 +27,7 @@ function wysiwyg_tinymce_editor() {
       ),
     ),
     'version callback' => 'wysiwyg_tinymce_version',
-    'verified version range' => array('3.3.9.2', '4.9.5'),
+    'verified version range' => array('3.3.9.2', '4.9.11'),
     'themes callback' => 'wysiwyg_tinymce_themes',
     'settings form callback' => 'wysiwyg_tinymce_settings_form',
     'init callback' => 'wysiwyg_tinymce_init',

@@ -239,6 +239,7 @@ function nm_h5p_features_default_linkit_profiles() {
       'remoteTimeout' => '10000',
     ),
   );
+  $linkit_profile->weight = 0;
   $export['h5p_interactive_content'] = $linkit_profile;
 
   return $export;

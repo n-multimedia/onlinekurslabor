@@ -1439,8 +1439,9 @@ eine Anfrage zum Zurücksetzen des Passworts für Ihr Benutzerkonto auf [site:na
 Sie können sich jetzt mit einem Klick auf folgenden Link anmelden oder diesen alternativ in Ihren Browser kopieren:
 
 [user:one-time-login-url]
+(Bitte beachten Sie, dass manche E-Mailsysteme Links kürzen. Dann finden Sie den vollständigen möglicherweise im Fußbereich dieser E-Mail)
 
-Dieser Link kann nur einmal verwendet werden und leitet Sie zu einer Seite, auf der Sie ein neues Passwort festlegen können. Er ist einen Tag lang gültig und läuft automatisch aus, falls Sie ihn nicht verwenden.
+Dieser Link kann nur einmal verwendet werden und leitet Sie zu einer Seite, auf der Sie ein neues Passwort vergeben können. Er ist 48 Stunden gültig. Nach Ablauf können Sie sich unter [site:login-url] per "Passwort vergessen" einen neuen Link zuschicken lassen.
 
 Viele Grüße
 Das Team vom [site:name]';
@@ -1462,8 +1463,9 @@ Das Team vom [site:name]';
 Ein Administrator der Website [site:name] hat für Sie ein Benutzerkonto angelegt. Sie können sich jetzt mit einem Klick auf den folgenden Link anmelden oder diesen alternativ in Ihren Browser kopieren:
 
 [user:one-time-login-url]
+(Bitte beachten Sie, dass manche E-Mailsysteme Links kürzen. Dann finden Sie den vollständigen möglicherweise im Fußbereich dieser E-Mail)
 
-Dieser Link kann nur einmal verwendet werden und leitet Sie zu einer Seite, auf der Sie ein neues Passwort vergeben können.
+Dieser Link kann nur einmal verwendet werden und leitet Sie zu einer Seite, auf der Sie ein neues Passwort vergeben können. Er ist 48 Stunden gültig. Nach Ablauf können Sie sich unter [site:login-url] per "Passwort vergessen" einen neuen Link zuschicken lassen.
 
 Nachdem Sie Ihr Passwort festgelegt haben, können Sie sich zukünftig auf [site:login-url] mit den folgenden Zugangsdaten anmelden:
 
@@ -1487,13 +1489,14 @@ Das Team vom [site:name]';
   $strongarm->name = 'user_mail_register_no_approval_required_body';
   $strongarm->value = '[user:name],
 
-vielen Dank für die Registrierung auf [site:name]. Sie können sich jetzt mit einem Klick auf den folgenden Link anmelden oder diesen alternativ in Ihren Browser kopieren:
+Ein Administrator der Website [site:name] hat für Sie ein Benutzerkonto angelegt. Sie können sich jetzt mit einem Klick auf den folgenden Link anmelden oder diesen alternativ in Ihren Browser kopieren:
 
 [user:one-time-login-url]
+(Bitte beachten Sie, dass manche E-Mailsysteme Links kürzen. Dann finden Sie den vollständigen möglicherweise im Fußbereich dieser E-Mail)
 
-Dieser Link kann nur einmal verwendet werden und leitet Sie auf eine Seite, auf der Sie Ihr Passwort festlegen können.
+Dieser Link kann nur einmal verwendet werden und leitet Sie zu einer Seite, auf der Sie ein neues Passwort vergeben können. Er ist 48 Stunden gültig. Nach Ablauf können Sie sich unter [site:login-url] per "Passwort vergessen" einen neuen Link zuschicken lassen.
 
-Nachdem Sie Ihr Passwort festgelegt haben, können Sie sich zukünftig mit folgenden Zugangsdaten bei [site:login-url] anmelden:
+Nachdem Sie Ihr Passwort festgelegt haben, können Sie sich zukünftig auf [site:login-url] mit den folgenden Zugangsdaten anmelden:
 
 Kontoname: [user:mail]
 Passwort: Ihr Passwort
@@ -1540,7 +1543,9 @@ Sie können sich jetzt mit einem Klick auf folgenden Link anmelden oder diesen a
 
 [user:one-time-login-url]
 
-Dieser Link kann nur einmal verwendet werden und leitet Sie zu einer Seite, auf der Sie ein neues Passwort festlegen können.
+(Bitte beachten Sie, dass manche E-Mailsysteme Links kürzen. Dann finden Sie den vollständigen möglicherweise im Fußbereich dieser E-Mail)
+
+Dieser Link kann nur einmal verwendet werden und leitet Sie zu einer Seite, auf der Sie ein neues Passwort vergeben können. Er ist 48 Stunden gültig. Nach Ablauf können Sie sich unter [site:login-url] per "Passwort vergessen" einen neuen Link zuschicken lassen.
 
 Nachdem Sie Ihr Passwort festgelegt haben, können Sie sich zukünftig auf [site:login-url] mit den folgenden Zugangsdaten anmelden:
 

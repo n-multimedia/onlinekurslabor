@@ -175,7 +175,8 @@ function nm_general_features_default_profile2_type() {
         "66784200" : "66784200",
         "24708420" : "24708420",
         "140204299" : "140204299"
-      }
+      },
+      "revisions" : 0
     },
     "rdf_mapping" : []
   }');
@@ -185,7 +186,7 @@ function nm_general_features_default_profile2_type() {
     "type" : "master",
     "label" : "Master Data",
     "weight" : "0",
-    "data" : { "registration" : 1 },
+    "data" : { "registration" : 1, "revisions" : 0 },
     "rdf_mapping" : []
   }');
   return $items;

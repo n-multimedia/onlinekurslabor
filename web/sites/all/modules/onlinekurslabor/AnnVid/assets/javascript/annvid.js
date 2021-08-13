@@ -79,7 +79,9 @@
         notifyInitialized: function(name)
         {
             Drupal.behaviors.annvid.initialized_state.push(name);
-            if(Drupal.behaviors.annvid.initialized_state.length >=2)
+
+            //wenn video geladen...
+            if(name == 'video')
             {
                 //springe zur übergebenen url
               
@@ -158,19 +160,22 @@
          * Nicht berücksichtigt: Fenster-Resize. 
          * @returns {undefined}
          */
-        startScrollListener: function()
+        startScrollListener: function ()
         {
             var video_height = jQuery("#annvid_video_container").height();
-            //der course-header führt sonst zu problemen
-            var header_offset = jQuery("header").height();
+            //Manche schreiben in die "Kurzinfos" ganze Romane. Außerdem hat im Kurskontext der  course-header eine gewisse Höhe.
+            var videocontainer_offset_abs = jQuery('#annvid_videodiv').position().top + jQuery("header").height();
 
-            jQuery(document).on('scroll', function() {
-                //wenn man die Seite eine gewisse Höhe runtergescrollt hat.. 
-                var calculated_scroll_offset = header_offset + video_height * 2 / 3;
+            jQuery(document).on('scroll', function () {
+                //wenn man die Seite so weit runtergescrollt hat, dass das video oben abgeschnitten würde
+                var calculated_scroll_offset = videocontainer_offset_abs + video_height * 3 / 10;
                 if (jQuery(document).scrollTop() >= calculated_scroll_offset)
+                {
                     Drupal.behaviors.annvid.enterScrollMode();
-                else
+                } else
+                {
                     Drupal.behaviors.annvid.leaveScrollMode();
+                }
             });
 
         },
