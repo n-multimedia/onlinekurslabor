@@ -2618,6 +2618,7 @@ function nm_stream_api_v2_initialize_callback($stream_container_nid) {
   $filter_available_contexts = nm_stream_api_v2_filter_get_contexts();
   $filter_available_users = nm_stream_api_v2_filter_get_users($filter_available_contexts);
   $data['stream']['posts'] = $posts_comments_users['posts'];
+  $data['stream']['postsCount'] = $posts_comments_users['postsCount'];
   $data['stream']['comments'] = $posts_comments_users['comments'];
   $data['stream']['users'] = $posts_comments_users['users'];
   $data['stream']['filterAvailableContexts'] = array_values($filter_available_contexts);
@@ -2827,6 +2828,7 @@ function nm_stream_api_v2_poll_update_callback($stream_container_nid, $offset = 
   // get nodes created or changed after last update timestamp
   $posts_comments_users = nm_stream_api_v2_get_posts($stream_container_node, $filter, $offset, $limit);
   $data['stream']['posts'] = $posts_comments_users['posts'];
+  $data['stream']['postsCount'] = $posts_comments_users['postsCount'];
   $data['stream']['comments'] = $posts_comments_users['comments'];
   $data['stream']['users'] = $posts_comments_users['users'];
 
@@ -3092,6 +3094,12 @@ function nm_stream_api_v2_get_posts($stream_container_node, $filter=[], $offset 
 
   $results = $query->execute()->fetchAll();
 
+  // count total number of posts
+  $query_count = _nm_stream_api_v2_get_posts_query($filter, $stream_container_node);
+  $query_count->addField('n', 'nid');
+  // need performant count query here
+  $posts_count = $query_count->countQuery()->execute()->fetchField();
+
   foreach ($results as $result) {
     $node = node_load($result->nid);
 
@@ -3161,6 +3169,7 @@ function nm_stream_api_v2_get_posts($stream_container_node, $filter=[], $offset 
 
   return [
     'posts' => $result_posts,
+    'postsCount' => $posts_count,
     'comments' => $result_comments,
     'users' => array_values($result_users), // reset keys
   ];
