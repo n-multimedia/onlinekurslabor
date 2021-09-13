@@ -86,6 +86,8 @@ function _onlinekurslabor_delete_cascade_delete_used_files_in_content_if_single(
     }
     //sonst: schreibe og-group-ref um
     else {
+        //dpm("NOT deleting file. File has multiusge. See Array:");
+        //dpm($file_usage_records);
       _onlinekurslabor_delete_cascade_fix_og_group_ref_for_file($fid, $content_id);
     }
   }
@@ -103,26 +105,43 @@ function _onlinekurslabor_delete_cascade_delete_used_files_in_content_if_single(
  * @param type $deleted_content_id
  */
 function _onlinekurslabor_delete_cascade_fix_og_group_ref_for_file($file_id, $deleted_content_id) {
+  //ist $deleted_content ein Kurs, ist die OG-Group der Kurs. Sonst (z.B. bei Coursedoc) der Kurs, der zum Content gehört.
+  $og_group_to_deleted_content_id = og_get_entity_groups('node', $deleted_content_id);
+  $og_value_to_deleted_content_id = $deleted_content_id;
+  if (!empty($og_group_to_deleted_content_id)) {
+    $og_value_to_deleted_content_id = current($og_group_to_deleted_content_id['node']);
+  }
+
+
   $file = file_load($file_id);
   $file_usage = _onlinekurslabor_delete_cascade_get_usage_for_files(array($file_id));
   foreach ($file_usage as $fid => $file_usage_records) {
     foreach ($file_usage_records as $usage_record) {
       if ($usage_record->type == 'node') {# && $usage_record->id != $deleted_content_id )
         //find og-group-ref for node
+        //dpm("usage record:"); dpm($usage_record);
+        //erhalte OG_GROUP zur file-usage
         $og_group_to_usage = og_get_entity_groups('node', $usage_record->id);
+        $usage_is_group = og_is_group('node', $usage_record->id);
+        $og_value_to_set = false;
         if (!empty($og_group_to_usage)) {
-          $og_value = current($og_group_to_usage['node']);
-
-          if ($og_value != $deleted_content_id) {
-            //  og_group('node', $og_value, (array('entity_type' => 'file', 'entity'=>$file_id)));
-            $file->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $og_value;
-            //dummy-eigenschaft. in hook_file_presave wird der original-zeitstempel beibehalten
-            $file->keeporiginaltimestamp = true;
-            file_save($file);
-
-            break;
-          }
+          $og_value_to_set = current($og_group_to_usage['node']);
         }
+        elseif ($usage_is_group) {
+          $og_value_to_set = $usage_record->id;
+        }
+        //dpm("i see og_value:" . $og_value_to_set);
+        if ($og_value_to_set && ($og_value_to_set != $og_value_to_deleted_content_id)) {
+          //dpm("i set new og_value:" . $og_value_to_set);
+          //  og_group('node', $og_value, (array('entity_type' => 'file', 'entity'=>$file_id)));
+          $file->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $og_value_to_set;
+          //dummy-eigenschaft. in hook_file_presave wird der original-zeitstempel beibehalten
+          $file->keeporiginaltimestamp = true;
+          file_save($file);
+
+          break;
+        }
+
 
         # $node
         //dpm($usage_record);
