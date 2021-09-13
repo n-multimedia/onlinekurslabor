@@ -10,8 +10,20 @@
  * @param $node
  */
 function onlinekurslabor_delete_cascade_node_delete($node) {
+  
+  if ($node->type == NM_COURSE) {
+    $tasks = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'og_group_ref', NM_COURSE_GENERIC_TASK);
+    $coursenews = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'og_group_ref', NM_COURSE_NEWS);
+    $coursegroups = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'og_group_ref', NM_COURSE_GROUP);
+    $coursedocs = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'og_group_ref', NM_COURSE_DOCS);
+    
+    $delete_nids = array_merge(array_keys($tasks), array_keys($coursenews),array_keys($coursegroups),array_keys($coursedocs));
+    //ruft selbst wiederum onlinekurslabor_delete_cascade_node_delete auf
+    node_delete_multiple($delete_nids);
+    drupal_set_message(t("Deleted %count course contents as well.", array("%count" => count($delete_nids))));
+  }
   // delete all solutions linked to a task
-  if ($node->type == NM_COURSE_GENERIC_TASK) {
+  elseif ($node->type == NM_COURSE_GENERIC_TASK) {
     $referenced_nodes = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'field_generic_task');
     $referenced_nids = array_keys($referenced_nodes);
     if (count($referenced_nids)) {
@@ -22,7 +34,7 @@ function onlinekurslabor_delete_cascade_node_delete($node) {
     //dpm($referenced_nodes);
   }
   //Bilder löschen generisch
-  if (in_array($node->type, [NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION])) {
+  if (in_array($node->type, [NM_COURSE, NM_COURSE_NEWS,NM_COURSE_GROUP,NM_COURSE_DOCS,NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION])) {
     _onlinekurslabor_delete_cascade_delete_used_files_in_content_if_single($node->nid);
   }
 }
@@ -32,18 +44,25 @@ function onlinekurslabor_delete_cascade_node_delete($node) {
  * for example via og_group_ref or a task-solution via the field field_generic_task
  * @param type $referencing_nid The referencing nid, e.g. 1234
  * @param type $referencing_field e.g. og_group_ref, field field_generic_task
+ * @param String $target_node_type node-type to get. e.g. "courses_news" if empty, all node-types will be loaded
  * @return type
  */
-function _onlinekurslabor_get_referenced_nodes_by($referencing_nid, $referencing_field = 'og_group_ref') {
+function _onlinekurslabor_get_referenced_nodes_by($referencing_nid, $referencing_field = 'og_group_ref', $target_node_type = '') {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
     ->fieldCondition($referencing_field, 'target_id', $referencing_nid);
+
+  if ($target_node_type) {
+    $query->entityCondition('bundle', $target_node_type);
+  }
+
   $result = $query->execute();
   if (!empty($result['node'])) {
     return $result['node'];
   }
   return array();
 }
+
 
 /**
  * deletes files that are used in  a content but only if its used exclusively in one content.
