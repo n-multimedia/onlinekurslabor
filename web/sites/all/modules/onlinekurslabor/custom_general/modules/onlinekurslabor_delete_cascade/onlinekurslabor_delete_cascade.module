@@ -10,33 +10,93 @@
  * @param $node
  */
 function onlinekurslabor_delete_cascade_node_delete($node) {
-  
+
   if ($node->type == NM_COURSE) {
     $tasks = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'og_group_ref', NM_COURSE_GENERIC_TASK);
     $coursenews = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'og_group_ref', NM_COURSE_NEWS);
     $coursegroups = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'og_group_ref', NM_COURSE_GROUP);
     $coursedocs = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'og_group_ref', NM_COURSE_DOCS);
-    
-    $delete_nids = array_merge(array_keys($tasks), array_keys($coursenews),array_keys($coursegroups),array_keys($coursedocs));
+
+
+    $delete_nids = array_merge(array_keys($tasks), array_keys($coursenews), array_keys($coursegroups), array_keys($coursedocs));
     //ruft selbst wiederum onlinekurslabor_delete_cascade_node_delete auf
     node_delete_multiple($delete_nids);
     drupal_set_message(t("Deleted %count course contents as well.", array("%count" => count($delete_nids))));
+
+
+    // delete coursforum-taxonomy
+    //sub-taxonomy is deleted automatically
+    $taxonomy_title = "Kursforum" . '-(' . $node->nid . ')';
+    $kursforum_taxonomy = taxonomy_get_term_by_name($taxonomy_title);
+    if (!empty($kursforum_taxonomy)) {
+      if (count($kursforum_taxonomy) == 1) {
+        $tax_to_del = current($kursforum_taxonomy);
+        //führt zu aufruf von onlinekurslabor_delete_cascade_taxonomy_term_delete
+        taxonomy_term_delete($tax_to_del->tid);
+        drupal_set_message(t("Deleted the course forum as well."));
+      }
+      else {
+        drupal_set_message(t("Error deleting %courseforum.", array("%courseforum" => $taxonomy_title)), 'error');
+      }
+    }
   }
   // delete all solutions linked to a task
   elseif ($node->type == NM_COURSE_GENERIC_TASK) {
-    $referenced_nodes = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'field_generic_task');
-    $referenced_nids = array_keys($referenced_nodes);
-    if (count($referenced_nids)) {
+    $referenced_solutions = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'field_generic_task');
+    $referenced_solution_nids = array_keys($referenced_solutions);
+    if (count($referenced_solution_nids)) {
       //ruft selbst wiederum onlinekurslabor_delete_cascade_node_delete auf
-      node_delete_multiple($referenced_nids);
-      drupal_set_message(t("Deleted %count solutions belonging to task %task_title", array("%count" => count($referenced_nids), "%task_title" => $node->title)));
+      node_delete_multiple($referenced_solution_nids);
+      drupal_set_message(t("Deleted %count solutions belonging to task %task_title", array("%count" => count($referenced_solution_nids), "%task_title" => $node->title)));
     }
     //dpm($referenced_nodes);
   }
-  //Bilder löschen generisch
-  if (in_array($node->type, [NM_COURSE, NM_COURSE_NEWS,NM_COURSE_GROUP,NM_COURSE_DOCS,NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION])) {
+  //Dateien löschen generisch
+  if (in_array($node->type, [NM_COURSE, NM_COURSE_NEWS, NM_COURSE_GROUP, NM_COURSE_DOCS, NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION, NM_COURSE_FORUMTOPIC])) {
     _onlinekurslabor_delete_cascade_delete_used_files_in_content_if_single($node->nid);
   }
+}
+
+/**
+ * implements hook_taxonomy_term_delete 
+ * die onlinekurslabor_delete_cascade_node_delete agiert auf kurslöschung, löscht den TERM (inklusive Sub-Terms)
+ * und durch Löscen des Terms wird dieser Hook angestoßen, um Foreneinträge zu löschen.
+ * @param type $term
+ */
+function onlinekurslabor_delete_cascade_taxonomy_term_delete($term) {
+  if($term->vocabulary_machine_name != 'forums')
+  {
+    return;
+  }
+  $forum_posts = _onlinekurslabor_delete_cascade_get_referenced_nodes_by_termid($term->tid, NM_COURSE_FORUMTOPIC);
+  $delete_nids = array_keys($forum_posts);
+
+  if (count($delete_nids)) {
+    node_delete_multiple($delete_nids);
+    drupal_set_message(t("Deleted %count forum posts as well.", array("%count" => count($delete_nids))));
+  }
+}
+
+/**
+ * loads node that are linked to a $term_id
+ * e.g. forumposts linked to a forum-category-taxonomy
+ * @param type $term_id
+ * @param type $target_node_type
+ */
+function _onlinekurslabor_delete_cascade_get_referenced_nodes_by_termid($term_id, $target_node_type = NM_COURSE_FORUMTOPIC) {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->fieldCondition('taxonomy_forums', 'tid', $term_id);
+
+  if ($target_node_type) {
+    $query->entityCondition('bundle', $target_node_type);
+  }
+
+  $result = $query->execute();
+  if (!empty($result['node'])) {
+    return $result['node'];
+  }
+  return array();
 }
 
 /**
@@ -62,6 +122,8 @@ function _onlinekurslabor_get_referenced_nodes_by($referencing_nid, $referencing
   }
   return array();
 }
+
+
 
 
 /**

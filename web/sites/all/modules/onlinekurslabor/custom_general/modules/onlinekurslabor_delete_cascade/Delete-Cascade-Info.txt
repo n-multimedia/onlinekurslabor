@@ -3,10 +3,8 @@
 Person   |   Kurs   
                   X  |   NM_COURSE_NEWS
                   X  |   NM_COURSE_DOCS
-                     |   NM_COURSE_FORUMTOPIC
+                  X  |   kursforum_taxonomy
                                 | NM_COURSE_FORUMTOPIC 
-                                            | NM_COURSE_FORUMTOPIC 
-                                                    | ...   (vmtl in module schön gelöst)
                   X  |   NM_COURSE_GROUP
                   ?              | nm_stream
                   X  |   NM_COURSE_GENERIC_TASK
