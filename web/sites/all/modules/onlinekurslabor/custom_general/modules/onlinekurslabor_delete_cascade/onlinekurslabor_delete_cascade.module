@@ -304,13 +304,18 @@ function _onlinekurslabor_delete_cascade_get_og_to_content($content_id, $content
   {
     return false;
   }
-  $og_group_to_usage = og_get_entity_groups('node', $nid);
-  $usage_is_group = og_is_group('node', $nid);
+  $og_group_to_nid = og_get_entity_groups('node', $nid);
+  $nid_is_group = og_is_group('node', $nid);
   $og_value = false;
-  if (!empty($og_group_to_usage)) {
-    $og_value = current($og_group_to_usage['node']);
+  if (!empty($og_group_to_nid)) {
+    $og_value = current($og_group_to_nid['node']);
+    $has_higher_group = og_get_entity_groups('node', $og_value);
+    //im fall einer kursgruppe ist diese einer noch höheren gruppe (kurs) zugeordnet
+    if (!empty($has_higher_group)) {
+      $og_value = current($has_higher_group['node']);
+    }
   }
-  elseif ($usage_is_group) {
+  elseif ($nid_is_group) {
     $og_value = $nid;
   }
   return $og_value;
