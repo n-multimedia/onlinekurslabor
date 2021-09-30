@@ -4,12 +4,12 @@ Person   |   Kurs
                   X  |   NM_COURSE_NEWS
                   X  |   NM_COURSE_DOCS
                   X  |   kursforum_taxonomy
-                                | NM_COURSE_FORUMTOPIC 
+                  X                | NM_COURSE_FORUMTOPIC 
+                  X                     | comment
                   X  |   NM_COURSE_GROUP
-                  ?              | nm_stream
+                  X              | nm_stream
                   X  |   NM_COURSE_GENERIC_TASK
                   X              | NM_COURSE_GENERIC_TASK_SOLUTION
-                  ?  |   nm_stream [via: NM_COURSE_GROUP, Domain => ANNVID_CONTENTTYPE]
          |   DOMAIN
                     |   NM_CONTENT_CHAPTER
                     |   NM_CONTENT_QUESTION_AND_ANSWER
@@ -18,12 +18,9 @@ Person   |   Kurs
                     |   nm_stream [via: ANNVID_CONTENTTYPE]
                     |   ANNVID_CONTENTTYPE
                                 | nm_stream
-         | nm_stream => conmments??????
+     X    | nm_stream => conmments??????
 
-         |  FILES   => ?? 
-                       [ testen - mglw führt das zu Bugs(FILE: [0], node nicht editier/speicherbar)]
-
-
+     X    |  FILES  => werden gelöscht oder die group-ref auf andere usage umgeschrieben
                     
 
 [PROJECT] ...  
