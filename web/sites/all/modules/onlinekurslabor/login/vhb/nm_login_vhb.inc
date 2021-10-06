@@ -133,7 +133,11 @@ function nm_login_vhb_reactivate_user($uid, $params) {
      $wrapper->field_first_name->set($params['VORNAME']);
      $wrapper->field_last_name->set($params['NACHNAME']);
     */
-    $wrapper->field_birthday->set(strtotime($params['GEBDAT']));
+    $geb_value = strtotime($params['GEBDAT']);
+    if($geb_value)
+      {
+        $wrapper->field_birthday->set($geb_value);
+      }
     //don't know which SEX options possibble
     //weiblich = female so everything !female will be male
     if ($params['SEX'] == 'weiblich') {
@@ -308,7 +312,11 @@ function nm_login_vhb_set_profile_fields($account, $params, $force = FALSE) {
 
     $tmp = $wrapper->field_birthday->value();
     if (empty($tmp) || $force) {
-        $wrapper->field_birthday->set(strtotime($params['GEBDAT']));
+      $geb_value = strtotime($params['GEBDAT']);
+      if($geb_value)
+      {
+        $wrapper->field_birthday->set($geb_value);
+      }
     }
 
     $tmp = $wrapper->field_gender->value();
