@@ -192,13 +192,11 @@ function onlinekurslabor_access_node_update($node) {
 }
 
 /*
- *
+ * clear okl access grant caches for all users
  */
 function onlinekurslabor_access_clear_cache_grants() {
-  global $user;
-
-  $cache_cid = 'onlinekurslabor_access_grants_' . $user->uid;
-  cache_clear_all($cache_cid, 'cache');
+  $cache_cid = 'onlinekurslabor_access_grants_';
+  cache_clear_all($cache_cid, 'cache', true);
 }
 
 /**
