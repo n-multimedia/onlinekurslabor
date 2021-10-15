@@ -53,7 +53,7 @@ function onlinekurslabor_access_node_grants($account, $op) {
   //cache_clear_all('onlinekurslabor_access_grants', 'cache');
   //speedup by 40% using static cache
   $grants = &drupal_static(__FUNCTION__);
-  
+
   $cache_cid = 'onlinekurslabor_access_grants_' . $account->uid;
   if (!isset($grants)) {
     $cache = cache_get($cache_cid);
@@ -64,7 +64,7 @@ function onlinekurslabor_access_node_grants($account, $op) {
         cache_clear_all($cache_cid, 'cache');
         $cache_valid = false;
     }
-    
+
     //cache nicht expired: nutze daten, sonst neu erstellen
     if (!empty($cache->data) && $cache_valid) {
       $grants = $cache->data;
@@ -175,6 +175,30 @@ function onlinekurslabor_access_node_grants($account, $op) {
   }
 
   return !empty($grants) ? $grants : array();
+}
+
+/**
+ * @param $node
+ */
+function onlinekurslabor_access_node_insert($node) {
+  onlinekurslabor_access_clear_cache_grants();
+}
+
+/**
+ * @param $node
+ */
+function onlinekurslabor_access_node_update($node) {
+  onlinekurslabor_access_clear_cache_grants();
+}
+
+/*
+ *
+ */
+function onlinekurslabor_access_clear_cache_grants() {
+  global $user;
+
+  $cache_cid = 'onlinekurslabor_access_grants_' . $user->uid;
+  cache_clear_all($cache_cid, 'cache');
 }
 
 /**
