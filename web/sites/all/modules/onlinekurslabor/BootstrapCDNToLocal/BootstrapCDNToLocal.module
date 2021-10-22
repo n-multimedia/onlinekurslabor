@@ -155,7 +155,7 @@ function _BootstrapCDNToLocal_url_is_whitelisted($url) {
        /* 'dev2.div.onlinekurslabor.de' =>
         ['/sites/']*/
     );
-    $whitelist_extension = array('js', 'css', 'ttf', 'woff', 'woff2');
+    $whitelist_extension = array('js', 'css', 'ttf', 'woff', 'woff2','svg');
 
 
     $url_host = parse_url($url, PHP_URL_HOST);
