@@ -428,7 +428,7 @@ function okl_testing_mail_alter(&$message) {
     $message['send'] = FALSE;
 
     // Next: Log the mail so it can be debugged if necessary
-    watchdog('Development Env', 'The following email was not sent: !message', ['!message' => '<pre>' . print_r($message, TRUE) . '</pre>']);
+    watchdog('Autotest Env', 'The following email was not sent: !message', ['!message' => '<pre>' . print_r($message, TRUE) . '</pre>']);
   }
 }
 
