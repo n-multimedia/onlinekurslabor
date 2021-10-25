@@ -449,7 +449,13 @@ function nm_login_vhb_add_user($params) {
     $wrapper = entity_metadata_wrapper('profile2', $profile2->pid);
     $wrapper->field_first_name->set($params['VORNAME']);
     $wrapper->field_last_name->set($params['NACHNAME']);
-    $wrapper->field_birthday->set(strtotime($params['GEBDAT']));
+    
+    $geb_value = strtotime($params['GEBDAT']);
+    if($geb_value)
+    {
+    	$wrapper->field_birthday->set($geb_value);
+		}
+    
     //not knowing which SEX options posiible
     //weiblich = female so everything !female will be male
     if ($params['SEX'] == 'weiblich') {
