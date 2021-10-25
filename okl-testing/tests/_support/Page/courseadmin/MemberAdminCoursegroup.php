@@ -64,8 +64,8 @@ class MemberAdminCoursegroup extends MemberAdmin {
         
         
         foreach ($students as $student) {
-            //substr, da an dieser stelle durch ... gekürzt
-            $I->see(substr($student['name'], 0, 11));
+            //multi-byte safe substr, da an dieser stelle durch ... gekürzt
+            $I->see(mb_substr($student['name'], 0, 11, 'UTF-8'));
         }
     }
 
