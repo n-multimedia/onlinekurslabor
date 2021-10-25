@@ -1935,6 +1935,8 @@ function _section_course_get_user_info_assign_course($userdata){
 
   return $user_state;
 }
+
+
 /**
  * Takes input from Form-Field and extracts user data from it.
  * Valid users will be added to the course:
@@ -1948,8 +1950,27 @@ function _section_course_get_user_info_assign_course($userdata){
  * @return HTML-DIV containing the proper course entrance information(success, failure, etc)
  */
 function _section_courses_student_registration_import($strUserList, $strWelcomeText='') {
+  $output = '';
+
+  //code found online - removes "tab" "space" '"', ';',',' and so on... 
+  $strUserList = preg_replace('/[^\p{L}0-9\-.@\+\n\']/mu', " ", $strUserList);
+  //[:blank:] ist besser als \s weil es keine new-lines schrottet - braucht man aber gar nimmer, oben schon weg.
+  //$strUserList =  preg_replace('/[[:blank:]]/mu', " ", $strUserList);
+
+  /*
+   * alternativ: entferne empty chars durch "[\s]"
+   * dadurch gehen new-lines verloren. füge wieder hinzu dadurch: 
+   * //format: @(stud.)uni-Y.cz (mit beliebig vielen Zahlen
+    $strUserList = preg_replace('/(@([a-zA-Z0-9-]*[\.]*)+)/', '$1'."\n", $strUserList);
+   */
+
+  //replacements, die unten kamen, jetzt überflüssig
+  //$strUserList = preg_replace("/[\t\",:;]/", " ", $strUserList);
+  //mehrfache Leerzeichen durch eines ersetzen:
+  $strUserList = preg_replace('/([ ]{2,})/mu', " ", $strUserList);
 
   $strUserList = check_plain($strUserList);
+
 
   if (!empty($strUserList)) {
     watchdog('section_courses', 'Importing user list %input', array('%input' => $strUserList), WATCHDOG_INFO);
@@ -1957,73 +1978,85 @@ function _section_courses_student_registration_import($strUserList, $strWelcomeT
     //email list = account activation
     //first + lastname; emaillist =  account creation!
     //$emails             = array();
-    $rows_data          = array();
-    $users              = array();
-    $user_parameters    = 0;
-    $success            = array();
-    $already_in         = array();
-    $missing_accounts   = array();
+    $rows_data = array();
+    $users = array();
+    $success = array();
+    $already_in = array();
+    $missing_accounts = array();
 
     // Split input into rows representing users
     $rows = explode("\n", $strUserList);
 
     foreach ($rows as $row) {
+      //reset array
+      $data = array();
       // Count Parameters given
       $row = html_entity_decode($row, ENT_QUOTES);
 
 
-      //apply any string- and character-replacement here
-      $row = preg_replace("/[\t\",:;]/", " ", $row);
-      //ziehe replacements von sonderchars raus, macht tw. umlaute kaputt. jedesmal zu testen:
-      //Jürgen D'Amélie Wäßnör +jue.wae@gmail.com
-      $row  = preg_replace("/￼/", " ", $row);
-      $user_parameters    = count(explode(" ", $row));
+      //remove multi-whitespace 
+      $row = trim(preg_replace('/[\s\t]+/', ' ', $row));
+      //Teste: Jürgen D'Amélie Wäßnör +jue.wae@gmail.com
+
+
       // Create New User
-      if($user_parameters > 1){
+      //reset vars
+      $first_name = $last_name = '';
+      if (count(explode(" ", $row)) > 1) {
         // Decode HTML-safe data
         $row = ucfirst($row);
         // Email Pattern
-        preg_match( '/[a-zäöüÄÖßÜA-Z]+[a-zA-ZäöüÄßÖÜ0-9+\.\-_]*[@]{1}[a-zA-Z0-9äößüÄÖÜ\.\-+_]*[\.]{1}[\.a-zäöüÄÖßÜA-Z0-9]*/', $row, $email_matches);
+        preg_match('/[a-zäöüÄÖßÜA-Z]+[a-zA-ZäöüÄßÖÜ0-9+\.\-_]*[@]{1}[a-zA-Z0-9äößüÄÖÜ\.\-+_]*[\.]{1}[\.a-zäöüÄÖßÜA-Z0-9]*/', $row, $email_matches);
         // Remove Email from Input, leaving only names
         $name_without_mail = str_replace($email_matches[0], "", $row);
         $names = trim($name_without_mail);
         // Cut Names @ whitespace
         //var_dump($row);
-        $names                = explode(" ", $names);
+        $names = explode(" ", $names);
         // Replace Character not beloning in names
-        $names                = preg_replace("/[0-9\^\%\",;]/", "", $names);
-        $names = array_values(array_filter(preg_replace( '/[a-zäöüÄÖßÜA-Z]+[a-zA-ZäöüÄßÖÜ0-9+\.\-_]*[@]{1}[a-zA-Z0-9äößüÄÖÜ\.\-+_]*[\.]{1}[\.a-zäöüÄÖßÜA-Z0-9]*/',"", $names )));
+        $names = preg_replace("/[0-9\^\%\",;]/", "", $names);
+
+        //remove  Email Pattern from names
+        //already done! $names = preg_replace( '/[a-zäöüÄÖßÜA-Z]+[a-zA-ZäöüÄßÖÜ0-9+\.\-_]*[@]{1}[a-zA-Z0-9äößüÄÖÜ\.\-+_]*[\.]{1}[\.a-zäöüÄÖßÜA-Z0-9]*/',"", $names );
+        $name_array = array_values(array_filter($names));
+        #$names = str_replace(array(' '), '', $names);
         // Extracting 1st & last name
-        $first_name           = implode(' ', array_slice($names, 0, -1));
-        $last_name            = end($names);
-        $data['first_name']   = $first_name;
-        $data['last_name']    = $last_name;
-        $data['email']        = $email_matches[0];
+        $first_name = implode(' ', array_slice($name_array, 0, -1));
+        $last_name = end($name_array);
+        $data['first_name'] = $first_name;
+        $data['last_name'] = $last_name;
+        $data['email'] = $email_matches[0];
         $rows_data[$data['email']] = $data;
       }
-      // Add existing User
-      else{
+      // Add existing User if only mail supplied and row not empty
+      elseif (trim($row)) {
         $data['email'] = $row;
         $rows_data[$data['email']] = $data;
       }
     }
+    //dpm(var_export($rows_data,1));
+    //return;
 
-
-    foreach($rows_data as $email => $userdata) {
+    foreach ($rows_data as $email => $userdata) {
       if (empty($email)) {
         //ignore empty lines
-        continue;
+        $user_state = 'NOMAIL';
       }
-      //sets a message to be included in the welcome-to-course-mail (handled via RULES)
-      if(trim($strWelcomeText))
-      {
-          $strNew_welcome_text = t("Message from course management:")."\r\n"."-------------------\r\n".$strWelcomeText. "\r\n-------------------\r\n";
+      else {
+        //sets a message to be included in the welcome-to-course-mail (handled via RULES)
+        if (trim($strWelcomeText)) {
+          $strNew_welcome_text = t("Message from course management:") . "\r\n" . "-------------------\r\n" . $strWelcomeText . "\r\n-------------------\r\n";
           $_SESSION['section_courses_new_member_add_welcome_message'] = $strNew_welcome_text;
-      }
-      
-      $user_state = _section_course_get_user_info_assign_course($userdata);
+        }
 
-      switch($user_state){
+        $user_state = _section_course_get_user_info_assign_course($userdata);
+      }
+
+
+      switch ($user_state) {
+        case 'NOMAIL':
+          $nomail_accounts[] = $userdata['first_name'].' '. $userdata['last_name'];
+          break;
         case 'MISSING':
           $missing_accounts[] = $email;
           break;
@@ -2037,11 +2070,14 @@ function _section_courses_student_registration_import($strUserList, $strWelcomeT
           break;
       }
     }
-    $output = '';
 
+
+     if ($nomail_accounts) {
+      $output .= '<div class="alert alert-danger"><h3>Keine E-Mail angegeben</h3><h5>Für folgende Einträge, Person nicht importiert</h5>' . '<ol style="padding:0 0 0 25px;margin:0;margin-bottom: 20px;"><li>' . implode('</li><li>', $nomail_accounts) . "</li>" . '</ol></div>';
+    }
     //missing
     if ($missing_accounts) {
-      $output .= '<div class="alert alert-error"><h3>Kein Account vorhanden</h3><h5>Für folgende Einträge</h5>' . '<ol style="padding:0 0 0 25px;margin:0;margin-bottom: 20px;"><li>' . implode('</li><li>', $missing_accounts) . "</li>" . '</ol></div>';
+      $output .= '<div class="alert alert-danger"><h3>Kein Account vorhanden</h3><h5>Für folgende Einträge, Person nicht importiert</h5>' . '<ol style="padding:0 0 0 25px;margin:0;margin-bottom: 20px;"><li>' . implode('</li><li>', $missing_accounts) . "</li>" . '</ol></div>';
     }
     //already in
     if ($already_in) {
@@ -2054,7 +2090,6 @@ function _section_courses_student_registration_import($strUserList, $strWelcomeT
   }
   return $output;
 }
-
 
 /**
  * Submit handler for the "add-one-more" button.
