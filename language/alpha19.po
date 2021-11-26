@@ -1,0 +1,13 @@
+#Translation File - onlinekurslabor
+
+msgid "Deleted %count course contents as well."
+msgstr "%count Kursinhalte wurden ebenfalls gelöscht."
+
+msgid "Deleted %count files"
+msgstr "%count Dateien gelöscht"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""

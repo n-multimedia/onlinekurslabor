@@ -164,7 +164,7 @@ function okl_dev_mail_alter(&$message) {
         $message['send'] = FALSE;
 
         // Next: Log the mail so it can be debugged if necessary
-        watchdog('Truncate-Skript', 'The following email was not sent: !message', array('!message' => '<pre>' . print_r($message, TRUE) . '</pre>'));
+        watchdog('Development Env', 'The following email was not sent: !message', array('!message' => '<pre>' . print_r($message, TRUE) . '</pre>'));
     }
 }
 

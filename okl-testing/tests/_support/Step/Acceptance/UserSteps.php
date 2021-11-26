@@ -112,7 +112,8 @@ class UserSteps extends \AcceptanceTester {
    * @param type $content
    */
   public function fillCkEditorById($element_id, $content) {
-
+    //der CK zickt öfter / lädt zu langsam. Prinzipiell 1 sec warten soll das verbessern.
+    $this->wait(1);
     $css_id = '#cke_' . $element_id . ' .cke_wysiwyg_frame';
     #$this->clickWithLeftButton($css_id);
     $this->fillRteEditor(

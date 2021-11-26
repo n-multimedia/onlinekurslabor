@@ -10,34 +10,104 @@
  * @param $node
  */
 function onlinekurslabor_delete_cascade_node_delete($node) {
+
+  if ($node->type == NM_COURSE) {
+    $tasks = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'og_group_ref', NM_COURSE_GENERIC_TASK);
+    $coursenews = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'og_group_ref', NM_COURSE_NEWS);
+    $coursegroups = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'og_group_ref', NM_COURSE_GROUP);
+    $coursedocs = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'og_group_ref', NM_COURSE_DOCS);
+
+
+    $delete_nids = array_merge(array_keys($tasks), array_keys($coursenews), array_keys($coursegroups), array_keys($coursedocs));
+    //ruft selbst wiederum onlinekurslabor_delete_cascade_node_delete auf
+    node_delete_multiple($delete_nids);
+    drupal_set_message(t("Deleted %count course contents as well.", array("%count" => count($delete_nids))));
+
+
+    // delete coursforum-taxonomy
+    //sub-taxonomy is deleted automatically
+    $taxonomy_title = "Kursforum" . '-(' . $node->nid . ')';
+    $kursforum_taxonomy = taxonomy_get_term_by_name($taxonomy_title);
+    if (!empty($kursforum_taxonomy)) {
+      if (count($kursforum_taxonomy) == 1) {
+        $tax_to_del = current($kursforum_taxonomy);
+        //führt zu aufruf von onlinekurslabor_delete_cascade_taxonomy_term_delete
+        taxonomy_term_delete($tax_to_del->tid);
+        drupal_set_message(t("Deleted the course forum as well."));
+      }
+      else {
+        drupal_set_message(t("Error deleting %courseforum.", array("%courseforum" => $taxonomy_title)), 'error');
+      }
+    }
+  }
   // delete all solutions linked to a task
-  if ($node->type == NM_COURSE_GENERIC_TASK) {
-    $referenced_nodes = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'field_generic_task');
-    $referenced_nids = array_keys($referenced_nodes);
-    if (count($referenced_nids)) {
+  elseif ($node->type == NM_COURSE_GENERIC_TASK) {
+    $referenced_solutions = _onlinekurslabor_get_referenced_nodes_by($node->nid, 'field_generic_task');
+    $referenced_solution_nids = array_keys($referenced_solutions);
+    if (count($referenced_solution_nids)) {
       //ruft selbst wiederum onlinekurslabor_delete_cascade_node_delete auf
-      node_delete_multiple($referenced_nids);
-      drupal_set_message(t("Deleted %count solutions belonging to task %task_title", array("%count" => count($referenced_nids), "%task_title" => $node->title)));
+      node_delete_multiple($referenced_solution_nids);
+      drupal_set_message(t("Deleted %count solutions belonging to task %task_title", array("%count" => count($referenced_solution_nids), "%task_title" => $node->title)));
     }
     //dpm($referenced_nodes);
   }
-  //Bilder löschen generisch
-  if (in_array($node->type, [NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION])) {
-    _onlinekurslabor_delete_cascade_delete_used_files_in_content_if_single($node->nid);
+  //Dateien löschen generisch
+  if (in_array($node->type, [NM_COURSE, NM_COURSE_NEWS, NM_COURSE_GROUP, NM_COURSE_DOCS, NM_COURSE_GENERIC_TASK, NM_COURSE_GENERIC_TASK_SOLUTION, NM_COURSE_FORUMTOPIC])) {
+    _onlinekurslabor_delete_cascade_delete_used_files_in_content_if_single($node->nid, 'node');
+  }
+}
+
+
+/**
+ * implements hook_comment_delete
+ * wird NACH löschen eines kommentars ausgeführt
+ * @param type $comment
+ */
+function onlinekurslabor_delete_cascade_comment_delete($comment) {
+  /*drupal_set_message(t('Comment: @subject has been deleted', array(
+    '@subject' => $comment->subject . ' | '.$comment->cid,
+  )));*/
+  
+  _onlinekurslabor_delete_cascade_delete_used_files_in_content_if_single($comment->cid, 'comment');
+}
+
+
+
+/**
+ * implements hook_taxonomy_term_delete
+ * die onlinekurslabor_delete_cascade_node_delete agiert auf kurslöschung, löscht den TERM (inklusive Sub-Terms)
+ * und durch Löscen des Terms wird dieser Hook angestoßen, um Foreneinträge zu löschen.
+ * @param type $term
+ */
+function onlinekurslabor_delete_cascade_taxonomy_term_delete($term) {
+  if($term->vocabulary_machine_name != 'forums')
+  {
+    return;
+  }
+  $forum_posts = _onlinekurslabor_delete_cascade_get_referenced_nodes_by_termid($term->tid, NM_COURSE_FORUMTOPIC);
+  $delete_nids = array_keys($forum_posts);
+
+  if (count($delete_nids)) {
+    node_delete_multiple($delete_nids);
+    drupal_set_message(t("Deleted %count forum posts as well.", array("%count" => count($delete_nids))));
   }
 }
 
 /**
- * gets nodes, that are referenced from a context.
- * for example via og_group_ref or a task-solution via the field field_generic_task
- * @param type $referencing_nid The referencing nid, e.g. 1234
- * @param type $referencing_field e.g. og_group_ref, field field_generic_task
- * @return type
+ * loads node that are linked to a $term_id
+ * e.g. forumposts linked to a forum-category-taxonomy
+ * @param type $term_id
+ * @param type $target_node_type
  */
-function _onlinekurslabor_get_referenced_nodes_by($referencing_nid, $referencing_field = 'og_group_ref') {
+function _onlinekurslabor_delete_cascade_get_referenced_nodes_by_termid($term_id, $target_node_type = NM_COURSE_FORUMTOPIC) {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
-    ->fieldCondition($referencing_field, 'target_id', $referencing_nid);
+    ->fieldCondition('taxonomy_forums', 'tid', $term_id);
+
+  if ($target_node_type) {
+    $query->entityCondition('bundle', $target_node_type);
+  }
+
   $result = $query->execute();
   if (!empty($result['node'])) {
     return $result['node'];
@@ -46,19 +116,52 @@ function _onlinekurslabor_get_referenced_nodes_by($referencing_nid, $referencing
 }
 
 /**
+ * gets nodes, that are referenced from a context.
+ * for example via og_group_ref or a task-solution via the field field_generic_task
+ * @param type $referencing_nid The referencing nid, e.g. 1234
+ * @param type $referencing_field e.g. og_group_ref, field field_generic_task
+ * @param String $target_node_type node-type to get. e.g. "courses_news" if empty, all node-types will be loaded
+ * @return type
+ */
+function _onlinekurslabor_get_referenced_nodes_by($referencing_nid, $referencing_field = 'og_group_ref', $target_node_type = '') {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->fieldCondition($referencing_field, 'target_id', $referencing_nid);
+
+  if ($target_node_type) {
+    $query->entityCondition('bundle', $target_node_type);
+  }
+
+  $result = $query->execute();
+  if (!empty($result['node'])) {
+    return $result['node'];
+  }
+  return array();
+}
+
+
+
+
+/**
  * deletes files that are used in  a content but only if its used exclusively in one content.
  * if used multiple times, they get a new og-group-ref
+ * @param String  $content_type (node, comment,...)
  * @param type $content_id e.g. $node->nid
  */
-function _onlinekurslabor_delete_cascade_delete_used_files_in_content_if_single($content_id) {
-  $files_in_content = _onlinekurslabor_delete_cascade_get_used_files_in_content($content_id);
- 
+function _onlinekurslabor_delete_cascade_delete_used_files_in_content_if_single($content_id, $content_type) {
+  //dpm("handle file for $content_type : $content_id ");;
+  __onlinekurslabor_delete_cascade_check_param('content_type', $content_type);
+  #dpm("deleting in $content_id");
+  $files_in_content = _onlinekurslabor_delete_cascade_get_used_files_in_content($content_id, $content_type);
+  
+  #dpm($files_in_content);
   if (empty($files_in_content)) {
     return;
   }
   $deleted_file_counter = 0;
   $file_usage = _onlinekurslabor_delete_cascade_get_usage_for_files(array_keys($files_in_content));
- 
+  #dpm("usage");
+  #dpm($file_usage);
   //nur in diesem node verwendet: löschen
   foreach ($file_usage as $fid => $file_usage_records) {
     if (count($file_usage_records) === 1) {
@@ -67,12 +170,13 @@ function _onlinekurslabor_delete_cascade_delete_used_files_in_content_if_single(
     }
     //sonst: schreibe og-group-ref um
     else {
-      _onlinekurslabor_delete_cascade_fix_og_group_ref_for_file($fid, $content_id);
+      //dpm("NOT deleting file. File has multiusge. See Array:");
+      //dpm($file_usage_records);
+      _onlinekurslabor_delete_cascade_fix_og_group_ref_for_file($fid, $content_id, $content_type);
     }
   }
   if ($deleted_file_counter) {
-    $content_node = node_load($content_id);
-    drupal_set_message(t("Deleted %count files from %context", array("%count" => $deleted_file_counter, '%context' =>  $content_node->title.' ('.$content_id.')')));
+    drupal_set_message(t("Deleted %count files", array("%count" => $deleted_file_counter)));
     //drupal_set_message ("delete candidates were: ".var_export($file_usage,1));
   }
 }
@@ -82,28 +186,33 @@ function _onlinekurslabor_delete_cascade_delete_used_files_in_content_if_single(
  * wird, den og_group_ref auf einen existenten content umschreiben
  * @param type $file_id
  * @param type $deleted_content_id
+ * @param String $content_type content-type: node / comment
  */
-function _onlinekurslabor_delete_cascade_fix_og_group_ref_for_file($file_id, $deleted_content_id) {
+function _onlinekurslabor_delete_cascade_fix_og_group_ref_for_file($file_id, $deleted_content_id, $content_type) {
+  __onlinekurslabor_delete_cascade_check_param('content_type', $content_type);
+  //ist $deleted_content ein Kurs, ist die OG-Group der Kurs. Sonst (z.B. bei Coursedoc) der Kurs, der zum Content gehört.
+  $og_value_to_deleted_content_id = _onlinekurslabor_delete_cascade_get_og_to_content($deleted_content_id, $content_type);
+
+
   $file = file_load($file_id);
   $file_usage = _onlinekurslabor_delete_cascade_get_usage_for_files(array($file_id));
   foreach ($file_usage as $fid => $file_usage_records) {
     foreach ($file_usage_records as $usage_record) {
-      if ($usage_record->type == 'node') {# && $usage_record->id != $deleted_content_id )
+      if (in_array($usage_record->type, array('comment', 'node'))) {# && $usage_record->id != $deleted_content_id )
         //find og-group-ref for node
-        $og_group_to_usage = og_get_entity_groups('node', $usage_record->id);
-        if (!empty($og_group_to_usage)) {
-          $og_value = current($og_group_to_usage['node']);
+        $og_value_to_set  = _onlinekurslabor_delete_cascade_get_og_to_content($usage_record->id, $usage_record->type);
+        //dpm("i see og_value:" . $og_value_to_set);
+        if ($og_value_to_set && ($og_value_to_set != $og_value_to_deleted_content_id)) {
+          //dpm("i set new og_value:" . $og_value_to_set);
+          //  og_group('node', $og_value, (array('entity_type' => 'file', 'entity'=>$file_id)));
+          $file->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $og_value_to_set;
+          //dummy-eigenschaft. in hook_file_presave wird der original-zeitstempel beibehalten
+          $file->keeporiginaltimestamp = true;
+          file_save($file);
 
-          if ($og_value != $deleted_content_id) {
-            //  og_group('node', $og_value, (array('entity_type' => 'file', 'entity'=>$file_id)));
-            $file->og_group_ref[LANGUAGE_NONE][0]['target_id'] = $og_value;
-            //dummy-eigenschaft. in hook_file_presave wird der original-zeitstempel beibehalten
-            $file->keeporiginaltimestamp = true;
-            file_save($file);
-
-            break;
-          }
+          break;
         }
+
 
         # $node
         //dpm($usage_record);
@@ -113,7 +222,7 @@ function _onlinekurslabor_delete_cascade_fix_og_group_ref_for_file($file_id, $de
 }
 
 /**
- * implements   hook_file_presave($file) 
+ * implements   hook_file_presave($file)
  * keep original timestamp on cascade operations
  * @param type $file
  */
@@ -125,10 +234,12 @@ function onlinekurslabor_delete_cascade_file_presave($file) {
 
 /**
  * gets files used in a content based on file_usage-table (e.g. wysiwyg)
- * @param type $content_id e.g. $node->nid
+ * @param int $content_id e.g. $node->nid
+ * @param String  $content_type (node, comment,...)
  * @return type array StdClass fid => file-object
  */
-function _onlinekurslabor_delete_cascade_get_used_files_in_content($content_id) {
+function _onlinekurslabor_delete_cascade_get_used_files_in_content($content_id, $content_type = 'node') {
+   __onlinekurslabor_delete_cascade_check_param('content_type', $content_type);
   //laedt file-usage, also wo eine datei genutzt wird
   $files_used_in_content_query = db_select('file_usage', 'fu');
   $files_used_in_content_query->addField('fu', 'id');
@@ -136,7 +247,7 @@ function _onlinekurslabor_delete_cascade_get_used_files_in_content($content_id) 
   $files_used_in_content_query->addField('fu', 'fid');
   $files_used_in_content_query->join('file_managed', 'fm', 'fm.fid = fu.fid');
   $files_used_in_content_query->condition('fu.id', $content_id, '=');
-    $files_used_in_content_query->condition('fu.type', 'node', '='); //nur nodes, nicht profile2 etc
+    $files_used_in_content_query->condition('fu.type', $content_type, '='); //given type (node, comment), nicht profile2 etc
   $file_results = $files_used_in_content_query->execute();
 
   $return_arr = array();
@@ -170,4 +281,58 @@ function _onlinekurslabor_delete_cascade_get_usage_for_files(array $fids) {
     $return_arr[$file_usage_record->fid][] = $file_usage_record;
   }
   return $return_arr;
+}
+
+/**
+ * gets the OG-nid to a content.
+ * @param type $content_id
+ * @param type $content_type
+ */
+function _onlinekurslabor_delete_cascade_get_og_to_content($content_id, $content_type) {
+  __onlinekurslabor_delete_cascade_check_param('content_type', $content_type);
+  if ($content_type == 'node') {
+    $nid = $content_id;
+  }
+  //achtung, das funktioniert zwar, aber der commentar is bei ausführen von hook_comment_delete bereits gelöscht
+  //und somit ist das nicht mehr nutzbar
+  elseif ($content_type == 'comment') {
+    $cid = $content_id;
+    $comment = comment_load($cid);
+    $nid = $comment->nid;
+  }
+  if(!$nid)
+  {
+    return false;
+  }
+  $og_group_to_nid = og_get_entity_groups('node', $nid);
+  $nid_is_group = og_is_group('node', $nid);
+  $og_value = false;
+  if (!empty($og_group_to_nid)) {
+    $og_value = current($og_group_to_nid['node']);
+    $has_higher_group = og_get_entity_groups('node', $og_value);
+    //im fall einer kursgruppe ist diese einer noch höheren gruppe (kurs) zugeordnet
+    if (!empty($has_higher_group)) {
+      $og_value = current($has_higher_group['node']);
+    }
+  }
+  elseif ($nid_is_group) {
+    $og_value = $nid;
+  }
+  return $og_value;
+}
+
+/**
+ * generally used to check params.
+ * Important is, that e.g. content_type has a real value
+ * @param String $param_name (e.g. content_type)
+ * @param String $param_value - the value to check
+ */
+function __onlinekurslabor_delete_cascade_check_param($param_name, $param_value) {
+  switch ($param_name) {
+    case 'content_type':
+      if (!in_array($param_value, array('node', 'comment'))) {
+        throw new Exception('Parameter ' . $param_name . ' has invalid value: ' . $param_value);
+      }
+      break;
+  }
 }
