@@ -18,7 +18,6 @@ files_private
 tmp/
 
 
-okl-testing/composer.lock
 okl-testing/phantom-cookies.txt
 okl-testing/bin/
 okl-testing/tests/_support/_generated/
