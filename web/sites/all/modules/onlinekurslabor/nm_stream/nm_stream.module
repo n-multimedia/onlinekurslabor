@@ -3048,6 +3048,8 @@ function nm_stream_api_v2_get_containers($filter=[], $offset = 0, $limit = NM_ST
   //get nm_stream nodes where created > $top_node->created
   $query = _nm_stream_api_v2_get_posts_query($filter);
   $query->join('og_membership', 'og_membership_node', "n.nid = og_membership_node.etid AND og_membership_node.entity_type = 'node'");
+  $query->join('field_data_field_nm_stream_context', 'og_context_node', "og_membership_node.etid = og_context_node.entity_id AND og_context_node.entity_type = 'node'");
+  $query->addField('og_context_node', 'field_nm_stream_context_target_id');
   $query->addField('og_membership_node', 'gid');
   $query->groupBy('og_membership_node.gid');
   $query->having('COUNT(n.nid) >= :matches', array(':matches' => 1));
@@ -3061,11 +3063,17 @@ function nm_stream_api_v2_get_containers($filter=[], $offset = 0, $limit = NM_ST
     $context_data = [];
     $context_data['nid'] = $node->nid;
     $context_data['title'] = $node->title;
-    $context = node_load(_custom_general_get_group($node, TRUE));
+    $context_data['url'] = url('node/'. $node->nid);
+
+    $context = node_load($result->field_nm_stream_context_target_id, NULL, TRUE);
     $context_data['context_nid'] = $context->nid;
     $context_data['context_title'] = $context->title;
     $context_data['context_url'] = url('node/' . $context->nid);
-    $context_data['url'] = url('node/'. $node->nid);
+
+    // redirect to special context
+    if ($node->type == ANNVID_CONTENTTYPE) {
+      $context_data['url'] = url('course/text/'. $context->nid . '/' . $node->nid);
+    }
 
     // add post result
     $result_contexts[] = $context_data;
