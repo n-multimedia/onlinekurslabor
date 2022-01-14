@@ -78,7 +78,7 @@ function nm_section_content_features_wysiwyg_default_profiles() {
       'user_choose' => 0,
       'show_toggle' => 1,
       'add_to_summaries' => 0,
-      'version' => '4.16.1.cae20318d4',
+      'version' => '4.17.1.f6dd30807a',
     ),
     'name' => 'formatfiltered_html',
     'rdf_mapping' => array(),
