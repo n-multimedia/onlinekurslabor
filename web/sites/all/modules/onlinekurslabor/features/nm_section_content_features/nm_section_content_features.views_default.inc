@@ -1908,6 +1908,8 @@ Alle Medien aus dem <code>Lehrtext</code> werden hier aufgelistet.
     t('in Beiträgen verwendet'),
     t('.'),
     t(','),
+    t('1'),
+    t('@count'),
     t('Edit link'),
     t('Alle'),
     t('Typ'),
