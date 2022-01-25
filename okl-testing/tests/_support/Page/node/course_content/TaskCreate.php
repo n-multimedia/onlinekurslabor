@@ -26,6 +26,7 @@ class TaskCreate extends CourseContentBase implements \Page\node\ContentCreateIn
 
         //nicht ganz sauber, geht vorerst aber. field_task_type=0: singleaufgabe, field_task_type=1: gruppenaufgabe
         $I->checkOptionByValue($params['field_task_type']);
+
         //setze Aufgabenbeginn, sonst Rundungsfehler.. 
         $I->fillField('field_task_handling_period['.LANGUAGE_NONE.'][0][value][time]', date('G:00'));
         foreach ($params['elements'] as $key => $elem) {
@@ -35,10 +36,24 @@ class TaskCreate extends CourseContentBase implements \Page\node\ContentCreateIn
             }
 
             $I->selectOption("field_generic_task_entry[" . LANGUAGE_NONE . "][$key][first]", $elem['title']);
-            $I->fillCkEditorById("edit-field-generic-task-entry-und-" . $key . "-second-value", $elem["content"]);
+            //Careful! only works on FIRST filling. Editor changes it's ID afterwards- Editing is unsure... 
+            $I->fillCkeEditorByAPI("edit-field-generic-task-entry-und-" . $key . "-second-value", $elem["content"]);
         }
 
         //nun kommt "speichern"
+    }
+    
+    /**
+     * overrides parent::create
+     * @param \Codeception\Example $params
+     */
+    public function create(\Codeception\Example $params) {
+      
+      parent::create($params);
+      $I = $this->tester;
+      //a second check: does "Beschreibung" work?
+      $I->amGoingTo("Check, if task-description is visible.");
+      $I->see(mb_substr($params['elements'][0]["content"], 0, 10));
     }
 
     /**
