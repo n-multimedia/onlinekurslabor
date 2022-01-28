@@ -68,7 +68,7 @@ env:
             WebDriver:
                 browser: 'chrome'
                 port: 4445
-                path: /webdriver
+                path: /
                 clear_cookies: false
                 #log_js_errors: false
                 window_size: false # disabled in ChromeDriver
@@ -83,7 +83,7 @@ env:
             WebDriver:
                 browser: 'firefox'
                 port: 4446
-                path: /webdriver
+                path: /
                 clear_cookies: false
                 window-size: 1400x1200
                 #log_js_errors: false

@@ -29,7 +29,7 @@ class DomainEdit extends \Page\node\Node implements \Page\node\NodeEditInterface
     public function editFields(\AcceptanceTester $I, \Codeception\Example $params) {
          if(!empty($params['body']))
          {
-             $I->fillCkEditorById('edit-field-domain-description-und-0-value', $params['body']);
+             $I->fillCkeEditorByAPI('edit-field-domain-description-und-0-value', $params['body']);
          }
          /* if(!empty($params['body-add-h5p']))
           { //göht nisch

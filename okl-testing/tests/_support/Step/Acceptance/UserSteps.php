@@ -106,10 +106,24 @@ class UserSteps extends \AcceptanceTester {
     $I->wait(2);
   }
 
+  
+  /**
+   * a safe function to fill a ck-field. 
+   * The $ck_instance_id is the part in
+   * <div id="cke_edit-field-generic-task-entry-und-2-second-value"
+   * without the "cke_" at the beginning, therefore: edit-field-generic-task-entry-und-2-second-value
+   * @param String  $ck_instance_id see description
+   * @param String $content the string to put in the ck-field
+   */
+  public function fillCkeEditorByAPI($ck_instance_id, $content)
+  {
+       $this->executeJS('CKEDITOR.instances["'.$ck_instance_id.'"].setData("'.addslashes($content).'")');
+  }
   /**
    * Fill a ckeditor. The $element_id is the string included in '#cke_' . $element_id . ' .cke_wysiwyg_frame';
    * @param type $element_id
    * @param type $content
+   * @deprecated since some day. Try "fillCkeEditorByAPI"
    */
   public function fillCkEditorById($element_id, $content) {
     //der CK zickt öfter / lädt zu langsam. Prinzipiell 1 sec warten soll das verbessern.
@@ -128,6 +142,7 @@ class UserSteps extends \AcceptanceTester {
    * fill ck-editor. For the element_name check the dome for a HIDDEN textarea just before the ckeditor.
    * @param type $element_name name of this hidden textarea
    * @param type $content
+   * @deprecated since some day. Try "fillCkeEditorByAPI"
    */
   public function fillCkEditorByName($element_name, $content) {
     $css_selector = 'textarea[name="' . $element_name . '"] + .cke .cke_wysiwyg_frame';
@@ -187,6 +202,7 @@ class UserSteps extends \AcceptanceTester {
           $webDriver->findElement($selector)
         );
 
+         
         $webDriver->executeScript(
           'arguments[0].innerHTML = "' . addslashes($content) . '"',
           [$webDriver->findElement(\Facebook\WebDriver\WebDriverBy::tagName('body'))]

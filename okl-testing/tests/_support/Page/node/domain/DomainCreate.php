@@ -21,7 +21,7 @@ class DomainCreate extends \Page\node\Node implements \Page\node\NodeCreateInter
 
     public function fillFields(\AcceptanceTester $I, \Codeception\Example $params) {
         //body
-        $I->fillCkEditorById('edit-field-domain-description-und-0-value', $params['body']);
+        $I->fillCkeEditorByAPI('edit-field-domain-description-und-0-value', $params['body']);
     }
 
     /**

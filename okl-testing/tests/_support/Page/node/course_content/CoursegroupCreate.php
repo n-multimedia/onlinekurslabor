@@ -24,7 +24,7 @@ class CoursegroupCreate extends CourseContentBase implements \Page\node\ContentC
 
     public function fillFields(\AcceptanceTester $I, \Codeception\Example $params) {
 
-        $I->fillCkEditorById('edit-body-und-0-value', $params['body']);
+        $I->fillCkeEditorByAPI('edit-body-und-0-value', $params['body']);
 
         //nun kommt "speichern"
     }
