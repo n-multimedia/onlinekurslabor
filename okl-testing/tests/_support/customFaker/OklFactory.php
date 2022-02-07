@@ -16,7 +16,7 @@ require_once(__DIR__ . '/OklGenerator.php');
 class OklFactory extends \RealisticFaker\Factory {
   //put your code here
    public static function create($identifier = null, $langcode = 'de_DE') {
-    $generator = new \RealisticFaker\OklGenerator($identifier, $langcode);
-    return $generator;
+    //$generator = new \RealisticFaker\OklGenerator($identifier, $langcode);
+    return parent::create($identifier , $langcode  ,"\RealisticFaker\OklGenerator");
   }
 }
