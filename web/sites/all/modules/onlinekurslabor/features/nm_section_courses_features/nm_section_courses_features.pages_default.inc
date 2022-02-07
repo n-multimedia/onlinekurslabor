@@ -20,58 +20,58 @@ function nm_section_courses_features_default_page_manager_handlers() {
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Student',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(
-      0 => array(
-        'identifier' => 'Profile2 from user',
-        'keyword' => 'profile2',
-        'name' => 'profile2',
-        'type' => 'student',
-        'context' => 'argument_user_edit_1',
-        'id' => 1,
-      ),
-      1 => array(
-        'identifier' => 'Profile2 from user 2',
-        'keyword' => 'profile2_2',
-        'name' => 'profile2',
-        'type' => 'master',
-        'context' => 'argument_user_edit_1',
-        'id' => 2,
-      ),
-    ),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_user_edit_1',
           'name' => 'role',
+          'not' => FALSE,
           'settings' => array(
             'rids' => array(
               0 => 66784200,
             ),
           ),
-          'context' => 'argument_user_edit_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(
+      0 => array(
+        'context' => 'argument_user_edit_1',
+        'id' => 1,
+        'identifier' => 'Profile2 from user',
+        'keyword' => 'profile2',
+        'name' => 'profile2',
+        'type' => 'student',
+      ),
+      1 => array(
+        'context' => 'argument_user_edit_1',
+        'id' => 2,
+        'identifier' => 'Profile2 from user 2',
+        'keyword' => 'profile2_2',
+        'name' => 'profile2',
+        'type' => 'master',
+      ),
+    ),
+    'title' => 'Student',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span8span4';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'left' => NULL,
-      'right' => NULL,
       'news' => NULL,
+      'right' => NULL,
       'tools' => NULL,
     ),
   );
@@ -91,7 +91,6 @@ function nm_section_courses_features_default_page_manager_handlers() {
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'Form',
-    'title' => '',
     'body' => '<?php
 
 $form_id = \'user_profile_form\';
@@ -121,6 +120,7 @@ return drupal_render($form);
 ?>',
     'format' => 'ds_code',
     'substitute' => 1,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -147,44 +147,44 @@ return drupal_render($form);
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Student',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:user_1',
           'name' => 'role',
+          'not' => FALSE,
           'settings' => array(
             'rids' => array(
               0 => 66784200,
               1 => 24708420,
             ),
           ),
-          'context' => 'argument_entity_id:user_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Student',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span3span6span3';
   $display->layout_settings = array();
   $display->panel_settings = array(
-    'style_settings' => array(
-      'default' => NULL,
-      'center' => NULL,
-      'left' => NULL,
-      'right' => NULL,
-    ),
     'left' => array(
       'style' => 'default',
+    ),
+    'style_settings' => array(
+      'center' => NULL,
+      'default' => NULL,
+      'left' => NULL,
+      'right' => NULL,
     ),
   );
   $display->cache = array();
@@ -208,21 +208,21 @@ return drupal_render($form);
   $pane->cache = array();
   $pane->style = array(
     'settings' => array(
-      'title' => array(
-        'element' => 'h3',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
       'content' => array(
-        'element' => '',
         'attributes' => array(
-          'id' => '',
           'class' => '',
+          'id' => '',
         ),
+        'element' => '',
       ),
       'theme' => 0,
+      'title' => array(
+        'attributes' => array(
+          'class' => '',
+          'id' => '',
+        ),
+        'element' => 'h3',
+      ),
     ),
     'style' => 'wrapper_element',
   );
@@ -241,35 +241,35 @@ return drupal_render($form);
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'sanitize' => 1,
     'context' => 'argument_entity_id:user_1',
     'override_title' => 1,
     'override_title_text' => '',
+    'sanitize' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => array(
-      'title' => array(
-        'element' => '',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
       'content' => array(
-        'element' => 'h2',
         'attributes' => array(
-          'id' => '',
           'class' => '',
+          'id' => '',
         ),
+        'element' => 'h2',
       ),
       'theme' => 0,
+      'title' => array(
+        'attributes' => array(
+          'class' => '',
+          'id' => '',
+        ),
+        'element' => '',
+      ),
     ),
     'style' => 'wrapper_element',
   );
   $pane->css = array(
-    'css_id' => '',
     'css_class' => '',
+    'css_id' => '',
   );
   $pane->extras = array();
   $pane->position = 0;
@@ -307,16 +307,16 @@ return drupal_render($form);
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'hidden',
-    'formatter' => 'image',
+    'context' => 'relationship_entity_from_schema:uid-user-profile2_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'image',
     'formatter_settings' => array(
-      'image_style' => 'profile_main_thumbnail',
       'image_link' => '',
+      'image_style' => 'profile_main_thumbnail',
     ),
-    'context' => 'relationship_entity_from_schema:uid-user-profile2_1',
+    'label' => 'hidden',
     'override_title' => 0,
     'override_title_text' => '',
   );
@@ -339,42 +339,42 @@ return drupal_render($form);
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 0,
-    'nodes_per_page' => '7',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'default',
-    'override_title' => 1,
-    'override_title_text' => 'Meine Kurse',
     'context' => array(
       0 => 'argument_entity_id:user_1.uid',
     ),
+    'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '7',
+    'offset' => '0',
+    'override_pager_settings' => 0,
+    'override_title' => 1,
+    'override_title_text' => 'Meine Kurse',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => array(
-      'title' => array(
-        'element' => 'h3',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
       'content' => array(
-        'element' => '',
         'attributes' => array(
-          'id' => '',
           'class' => '',
+          'id' => '',
         ),
+        'element' => '',
       ),
       'theme' => 0,
+      'title' => array(
+        'attributes' => array(
+          'class' => '',
+          'id' => '',
+        ),
+        'element' => 'h3',
+      ),
     ),
     'style' => 'wrapper_element',
   );
@@ -393,40 +393,40 @@ return drupal_render($form);
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'date_default',
+    'context' => 'relationship_entity_from_schema:uid-user-profile2_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'date_default',
     'formatter_settings' => array(
       'format_type' => 'short',
-      'multiple_number' => '',
-      'multiple_from' => '',
-      'multiple_to' => '',
       'fromto' => 'both',
+      'multiple_from' => '',
+      'multiple_number' => '',
+      'multiple_to' => '',
     ),
-    'context' => 'relationship_entity_from_schema:uid-user-profile2_1',
+    'label' => 'title',
     'override_title' => 1,
     'override_title_text' => 'Persönliche Informationen',
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => array(
-      'title' => array(
-        'element' => 'h3',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
       'content' => array(
-        'element' => '',
         'attributes' => array(
-          'id' => '',
           'class' => '',
+          'id' => '',
         ),
+        'element' => '',
       ),
       'theme' => 0,
+      'title' => array(
+        'attributes' => array(
+          'class' => '',
+          'id' => '',
+        ),
+        'element' => 'h3',
+      ),
     ),
     'style' => 'wrapper_element',
   );
@@ -445,13 +445,13 @@ return drupal_render($form);
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'inline',
-    'formatter' => 'taxonomy_term_reference_plain',
+    'context' => 'relationship_profile2_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'taxonomy_term_reference_plain',
     'formatter_settings' => array(),
-    'context' => 'relationship_profile2_1',
+    'label' => 'inline',
     'override_title' => 0,
     'override_title_text' => '',
   );
@@ -474,13 +474,13 @@ return drupal_render($form);
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'inline',
-    'formatter' => 'text_default',
+    'context' => 'relationship_profile2_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'text_default',
     'formatter_settings' => array(),
-    'context' => 'relationship_profile2_1',
+    'label' => 'inline',
     'override_title' => 0,
     'override_title_text' => '',
   );
@@ -503,13 +503,13 @@ return drupal_render($form);
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'text_default',
+    'context' => 'relationship_entity_from_schema:uid-user-profile2_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'text_default',
     'formatter_settings' => array(),
-    'context' => 'relationship_entity_from_schema:uid-user-profile2_1',
+    'label' => 'title',
     'override_title' => 1,
     'override_title_text' => '',
   );
@@ -538,52 +538,52 @@ return drupal_render($form);
   $handler->handler = 'panel_context';
   $handler->weight = 1;
   $handler->conf = array(
-    'title' => 'Autor',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(
-      0 => array(
-        'identifier' => 'Profile2 from user',
-        'keyword' => 'profile2',
-        'name' => 'profile2',
-        'type' => 'master',
-        'context' => 'argument_entity_id:user_1',
-        'id' => 1,
-      ),
-    ),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:user_1',
           'name' => 'role',
+          'not' => FALSE,
           'settings' => array(
             'rids' => array(
               0 => 16675960,
             ),
           ),
-          'context' => 'argument_entity_id:user_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(
+      0 => array(
+        'context' => 'argument_entity_id:user_1',
+        'id' => 1,
+        'identifier' => 'Profile2 from user',
+        'keyword' => 'profile2',
+        'name' => 'profile2',
+        'type' => 'master',
+      ),
+    ),
+    'title' => 'Autor',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span3span6span3';
   $display->layout_settings = array();
   $display->panel_settings = array(
-    'style_settings' => array(
-      'default' => NULL,
-      'center' => NULL,
-      'left' => NULL,
-      'right' => NULL,
-    ),
     'left' => array(
       'style' => 'default',
+    ),
+    'style_settings' => array(
+      'center' => NULL,
+      'default' => NULL,
+      'left' => NULL,
+      'right' => NULL,
     ),
   );
   $display->cache = array();
@@ -601,13 +601,13 @@ return drupal_render($form);
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'hidden',
-    'formatter' => 'text_default',
+    'context' => 'relationship_profile2_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'text_default',
     'formatter_settings' => array(),
-    'context' => 'relationship_profile2_1',
+    'label' => 'hidden',
     'override_title' => 0,
     'override_title_text' => '',
   );
@@ -636,21 +636,21 @@ return drupal_render($form);
   $pane->cache = array();
   $pane->style = array(
     'settings' => array(
-      'title' => array(
-        'element' => 'h3',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
       'content' => array(
-        'element' => '',
         'attributes' => array(
-          'id' => '',
           'class' => '',
+          'id' => '',
         ),
+        'element' => '',
       ),
       'theme' => 0,
+      'title' => array(
+        'attributes' => array(
+          'class' => '',
+          'id' => '',
+        ),
+        'element' => 'h3',
+      ),
     ),
     'style' => 'wrapper_element',
   );
@@ -669,35 +669,35 @@ return drupal_render($form);
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'sanitize' => 1,
     'context' => 'argument_entity_id:user_1',
     'override_title' => 1,
     'override_title_text' => '',
+    'sanitize' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => array(
-      'title' => array(
-        'element' => '',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
       'content' => array(
-        'element' => 'h2',
         'attributes' => array(
-          'id' => '',
           'class' => '',
+          'id' => '',
         ),
+        'element' => 'h2',
       ),
       'theme' => 0,
+      'title' => array(
+        'attributes' => array(
+          'class' => '',
+          'id' => '',
+        ),
+        'element' => '',
+      ),
     ),
     'style' => 'wrapper_element',
   );
   $pane->css = array(
-    'css_id' => '',
     'css_class' => '',
+    'css_id' => '',
   );
   $pane->extras = array();
   $pane->position = 0;
@@ -713,16 +713,16 @@ return drupal_render($form);
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'hidden',
-    'formatter' => 'image',
+    'context' => 'relationship_entity_from_schema:uid-user-profile2_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'image',
     'formatter_settings' => array(
-      'image_style' => 'profile_main_thumbnail',
       'image_link' => '',
+      'image_style' => 'profile_main_thumbnail',
     ),
-    'context' => 'relationship_entity_from_schema:uid-user-profile2_1',
+    'label' => 'hidden',
     'override_title' => 0,
     'override_title_text' => '',
   );
@@ -745,23 +745,23 @@ return drupal_render($form);
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 0,
-    'nodes_per_page' => '7',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'default',
     'context' => array(
       0 => 'argument_entity_id:user_1.uid',
     ),
+    'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '7',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
     'override_title_text' => 'Meine Themen',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -782,40 +782,40 @@ return drupal_render($form);
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'date_default',
+    'context' => 'relationship_entity_from_schema:uid-user-profile2_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'date_default',
     'formatter_settings' => array(
       'format_type' => 'short',
-      'multiple_number' => '',
-      'multiple_from' => '',
-      'multiple_to' => '',
       'fromto' => 'both',
+      'multiple_from' => '',
+      'multiple_number' => '',
+      'multiple_to' => '',
     ),
-    'context' => 'relationship_entity_from_schema:uid-user-profile2_1',
+    'label' => 'title',
     'override_title' => 1,
     'override_title_text' => 'Persönliche Informationen',
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => array(
-      'title' => array(
-        'element' => 'h3',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
       'content' => array(
-        'element' => '',
         'attributes' => array(
-          'id' => '',
           'class' => '',
+          'id' => '',
         ),
+        'element' => '',
       ),
       'theme' => 0,
+      'title' => array(
+        'attributes' => array(
+          'class' => '',
+          'id' => '',
+        ),
+        'element' => 'h3',
+      ),
     ),
     'style' => 'wrapper_element',
   );
@@ -840,152 +840,152 @@ return drupal_render($form);
   $handler->handler = 'panel_context';
   $handler->weight = 3;
   $handler->conf = array(
-    'title' => 'Autor Tutor Dozent Student',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(
-      0 => array(
-        'identifier' => 'Profile2 from user',
-        'keyword' => 'profile2',
-        'name' => 'profile2',
-        'type' => 'master',
-        'context' => 'argument_entity_id:user_1',
-        'id' => 1,
-      ),
-    ),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:user_1',
           'name' => 'role',
+          'not' => FALSE,
           'settings' => array(
             'rids' => array(
               0 => 2,
             ),
           ),
-          'context' => 'argument_entity_id:user_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(
+      0 => array(
+        'context' => 'argument_entity_id:user_1',
+        'id' => 1,
+        'identifier' => 'Profile2 from user',
+        'keyword' => 'profile2',
+        'name' => 'profile2',
+        'type' => 'master',
+      ),
+    ),
+    'title' => 'Autor Tutor Dozent Student',
   );
   $display = new panels_display();
   $display->layout = 'flexible';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
         ),
-        'parent' => NULL,
         'class' => 'row',
         'column_class' => '',
-        'row_class' => '',
-        'region_class' => '',
-        'no_scale' => FALSE,
-        'fixed_width' => '',
         'column_separation' => '0.5em',
+        'contains' => 'column',
+        'fixed_width' => '',
+        'no_scale' => FALSE,
+        'parent' => NULL,
+        'region_class' => '',
         'region_separation' => '0.5em',
+        'row_class' => '',
         'row_separation' => '0.5em',
+        'type' => 'row',
       ),
-      'main' => array(
-        'type' => 'column',
+      'center' => array(
+        'class' => 'row',
+        'hide_empty' => 0,
+        'parent' => 'main-row',
+        'title' => 'profile-header',
+        'type' => 'region',
         'width' => 100,
         'width_type' => '%',
+      ),
+      'dozent_s_courses' => array(
+        'class' => '',
+        'hide_empty' => 1,
+        'parent' => '2',
+        'title' => 'profile - dozent\'s courses',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      'main' => array(
         'children' => array(
           0 => 'main-row',
           1 => 1,
           2 => 2,
         ),
-        'parent' => 'canvas',
         'class' => 'col-xs-12 col-sm-3 col-sm-push-6',
         'hide_empty' => 0,
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
       ),
       'main-row' => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'center',
         ),
+        'contains' => 'region',
         'parent' => 'main',
+        'type' => 'row',
       ),
-      'center' => array(
-        'type' => 'region',
-        'title' => 'profile-header',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => 'main-row',
+      'users_s_courses' => array(
         'class' => 'row',
         'hide_empty' => 0,
+        'parent' => '1',
+        'title' => 'profile - users\'s courses',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
       ),
       1 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'users_s_courses',
         ),
-        'parent' => 'main',
         'class' => '',
+        'contains' => 'region',
         'hide_empty' => 0,
-      ),
-      'users_s_courses' => array(
-        'type' => 'region',
-        'title' => 'profile - users\'s courses',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '1',
-        'class' => 'row',
-        'hide_empty' => 0,
+        'parent' => 'main',
+        'type' => 'row',
       ),
       2 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'dozent_s_courses',
         ),
-        'parent' => 'main',
         'class' => 'dozent\'s courses',
+        'contains' => 'region',
         'hide_empty' => 1,
-      ),
-      'dozent_s_courses' => array(
-        'type' => 'region',
-        'title' => 'profile - dozent\'s courses',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '2',
-        'class' => '',
-        'hide_empty' => 1,
+        'parent' => 'main',
+        'type' => 'row',
       ),
     ),
   );
   $display->panel_settings = array(
+    'left' => array(
+      'style' => 'default',
+    ),
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'dozent_s_courses' => NULL,
       'left' => NULL,
-      'right' => NULL,
       'middle' => NULL,
+      'right' => NULL,
       'users_s_courses' => array(
         'content' => array(
-          'element' => '',
           'attributes' => array(
-            'id' => '',
             'class' => 'row',
+            'id' => '',
           ),
+          'element' => '',
         ),
         'theme' => 0,
       ),
-      'dozent_s_courses' => NULL,
-    ),
-    'left' => array(
-      'style' => 'default',
     ),
     'users_s_courses' => array(
       'style' => 'wrapper_element',
@@ -1007,13 +1007,13 @@ return drupal_render($form);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'user-profile-header',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<?php
 echo theme(\'profile_header\', array(\'uid\'=>%user:uid ));
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1035,38 +1035,38 @@ echo theme(\'profile_header\', array(\'uid\'=>%user:uid ));
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'profile details public',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<?php
 echo theme(\'profile_details\', array(\'uid\'=>%user:uid , \'range\'=>\'public\'));
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => array(
-      'title' => array(
-        'element' => '',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
       'content' => array(
-        'element' => 'div',
         'attributes' => array(
-          'id' => '',
           'class' => 'col-md-12 section_profile-detailinfos public',
+          'id' => '',
         ),
+        'element' => 'div',
       ),
       'theme' => 1,
+      'title' => array(
+        'attributes' => array(
+          'class' => '',
+          'id' => '',
+        ),
+        'element' => '',
+      ),
     ),
     'style' => 'wrapper_element',
   );
   $pane->css = array(
-    'css_id' => '',
     'css_class' => 'row',
+    'css_id' => '',
   );
   $pane->extras = array();
   $pane->position = 1;
@@ -1081,66 +1081,66 @@ echo theme(\'profile_details\', array(\'uid\'=>%user:uid , \'range\'=>\'public\'
   $pane->subtype = 'custom';
   $pane->shown = TRUE;
   $pane->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
+        'context' => 'logged-in-user',
         'name' => 'role',
+        'not' => FALSE,
         'settings' => array(
           'rids' => array(
             0 => 30037204,
             1 => 197637936,
           ),
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
       1 => array(
-        'name' => 'compare_users',
-        'settings' => array(
-          'equality' => '1',
-        ),
         'context' => array(
           0 => 'argument_entity_id:user_1',
           1 => 'logged-in-user',
         ),
+        'name' => 'compare_users',
         'not' => FALSE,
+        'settings' => array(
+          'equality' => '1',
+        ),
       ),
     ),
-    'logic' => 'or',
   );
   $pane->configuration = array(
     'admin_title' => 'profile details private',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<?php
 echo theme(\'profile_details\', array(\'uid\'=>%user:uid , \'range\'=>\'private\'));
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => array(
-      'title' => array(
-        'element' => '',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
       'content' => array(
-        'element' => 'div',
         'attributes' => array(
-          'id' => '',
           'class' => 'col-md-12 section_profile-detailinfos private',
+          'id' => '',
         ),
+        'element' => 'div',
       ),
       'theme' => 1,
+      'title' => array(
+        'attributes' => array(
+          'class' => '',
+          'id' => '',
+        ),
+        'element' => '',
+      ),
     ),
     'style' => 'wrapper_element',
   );
   $pane->css = array(
-    'css_id' => '',
     'css_class' => 'row',
+    'css_id' => '',
   );
   $pane->extras = array();
   $pane->position = 2;
@@ -1157,11 +1157,11 @@ echo theme(\'profile_details\', array(\'uid\'=>%user:uid , \'range\'=>\'private\
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'Admin-Erklärung',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<p>Admin-Erklärung:</p><p>Hier werden angebotene Kurse von Dozenten angezeigt. Gelöst mit Visibility-Einstellungen:</p><p>- nur bei Dozentenaccounts sichtbar</p><p>- nicht, wenn eingeloggte Person Admin/Moderator ist (sonst doppelte Anzeige "Kurse")</p><p><strong>wichtig</strong></p><p>der hook section_profile_views_pre_view schießt hier rein, um auf rolle kurs-dozent zu filtern und Entwürfe auszufiltern!</p>',
     'format' => 'filtered_html',
     'substitute' => 1,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1183,41 +1183,41 @@ echo theme(\'profile_details\', array(\'uid\'=>%user:uid , \'range\'=>\'private\
   $pane->access = array(
     'plugins' => array(
       0 => array(
+        'context' => 'argument_entity_id:user_1',
         'name' => 'role',
+        'not' => FALSE,
         'settings' => array(
           'rids' => array(
             0 => 106505419,
           ),
         ),
-        'context' => 'argument_entity_id:user_1',
-        'not' => FALSE,
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'role',
+        'not' => TRUE,
         'settings' => array(
           'rids' => array(
             0 => 30037204,
             1 => 197637936,
           ),
         ),
-        'context' => 'logged-in-user',
-        'not' => TRUE,
       ),
     ),
   );
   $pane->configuration = array(
-    'use_pager' => 1,
-    'pager_id' => '1',
-    'items_per_page' => '10',
-    'context' => array(
-      0 => 'argument_entity_id:user_1',
-    ),
-    'override_title' => 1,
-    'override_title_text' => 'Angebotene Kurse',
-    'override_title_heading' => 'h2',
     'arguments' => array(
       'null' => '1',
     ),
+    'context' => array(
+      0 => 'argument_entity_id:user_1',
+    ),
+    'items_per_page' => '10',
+    'override_title' => 1,
+    'override_title_heading' => 'h2',
+    'override_title_text' => 'Angebotene Kurse',
+    'pager_id' => '1',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1239,11 +1239,11 @@ echo theme(\'profile_details\', array(\'uid\'=>%user:uid , \'range\'=>\'private\
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'Admin-Erklärung',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<p>Admin-Erklärung:</p><p>Hier werden&nbsp;Admins und Moderatoren</p><p><strong>Kurse + Lehrtexte anderer Personen</strong></p><p>angezeigt. Dies wird durch Visibility-Einstellungen erreicht</p>',
     'format' => 'filtered_html',
     'substitute' => 1,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1265,8 +1265,6 @@ echo theme(\'profile_details\', array(\'uid\'=>%user:uid , \'range\'=>\'private\
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'my-courses-css',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<?php
 drupal_add_css(drupal_get_path(\'module\', \'nm_stream\') . \'/css/nm_stream.css\');
 ?>
@@ -1278,6 +1276,8 @@ display:none;
  </STYLE>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1299,53 +1299,53 @@ display:none;
   $pane->access = array(
     'plugins' => array(
       0 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'bypass node access',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
       1 => array(
-        'name' => 'compare_users',
-        'settings' => array(
-          'equality' => '0',
-        ),
         'context' => array(
           0 => 'argument_entity_id:user_1',
           1 => 'logged-in-user',
         ),
+        'name' => 'compare_users',
         'not' => FALSE,
+        'settings' => array(
+          'equality' => '0',
+        ),
       ),
     ),
   );
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 0,
-    'nodes_per_page' => '0',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'title_only',
     'context' => array(
       0 => 'argument_entity_id:user_1.uid',
     ),
+    'display' => 'title_only',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '0',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
-    'override_title_text' => 'Lehrtexte',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Lehrtexte',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => 'profile-lehrtexte-wrapper',
     'css_class' => 'col-md-4 col-md-push-8 col-xs-12',
+    'css_id' => 'profile-lehrtexte-wrapper',
   );
   $pane->extras = array();
   $pane->position = 2;
@@ -1360,67 +1360,67 @@ display:none;
   $pane->subtype = 'courses_kurse_bersicht-my_courses_small';
   $pane->shown = TRUE;
   $pane->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
+        'context' => 'logged-in-user',
         'name' => 'role',
+        'not' => FALSE,
         'settings' => array(
           'rids' => array(
             0 => 30037204,
             1 => 197637936,
           ),
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
       1 => array(
-        'name' => 'compare_users',
-        'settings' => array(
-          'equality' => '0',
-        ),
         'context' => array(
           0 => 'argument_entity_id:user_1',
           1 => 'logged-in-user',
         ),
+        'name' => 'compare_users',
         'not' => FALSE,
+        'settings' => array(
+          'equality' => '0',
+        ),
       ),
     ),
-    'logic' => 'and',
   );
   $pane->configuration = array(
-    'use_pager' => 1,
-    'pager_id' => '1',
-    'items_per_page' => '10',
     'context' => array(
       0 => 'argument_entity_id:user_1',
     ),
+    'items_per_page' => '10',
     'override_title' => 1,
-    'override_title_text' => 'Kurse',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Kurse',
+    'pager_id' => '1',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => array(
-      'title' => array(
-        'element' => '',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
       'content' => array(
-        'element' => 'div',
         'attributes' => array(
-          'id' => '',
           'class' => '',
+          'id' => '',
         ),
+        'element' => 'div',
       ),
       'theme' => 1,
+      'title' => array(
+        'attributes' => array(
+          'class' => '',
+          'id' => '',
+        ),
+        'element' => '',
+      ),
     ),
     'style' => 'wrapper_element',
   );
   $pane->css = array(
-    'css_id' => 'profile-courses-wrapper',
     'css_class' => 'col-md-8 col-md-pull-4 col-xs-12',
+    'css_id' => 'profile-courses-wrapper',
   );
   $pane->extras = array();
   $pane->position = 3;
@@ -1449,22 +1449,22 @@ function nm_section_courses_features_default_page_manager_pages() {
   $page->admin_description = '';
   $page->path = 'course/biblio/%1/%2';
   $page->access = array(
-    'type' => 'none',
-    'settings' => NULL,
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_2',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
     ),
-    'logic' => 'and',
+    'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -1494,51 +1494,51 @@ function nm_section_courses_features_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Bibliografie in: %1',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
         1 => array(
+          'context' => 'argument_entity_id:node_2',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'content_domain' => 'content_domain',
             ),
           ),
-          'context' => 'argument_entity_id:node_2',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Bibliografie in: %1',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
       'outline' => NULL,
       'tools' => NULL,
-      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -1556,23 +1556,23 @@ function nm_section_courses_features_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '20',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '%3',
-    'url' => '',
-    'display' => 'default',
     'context' => array(
       0 => '',
     ),
+    'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '20',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
     'override_title_text' => 'Bibliografie',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1594,8 +1594,8 @@ function nm_section_courses_features_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1645,33 +1645,33 @@ function nm_section_courses_features_default_page_manager_pages() {
   $page->admin_description = '';
   $page->path = 'course/admin/%1/members/add';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'name' => 'og_role',
+        'not' => FALSE,
         'settings' => array(
           'og_rids' => array(
             0 => 'kurs-dozent',
             1 => 'kurs-tutor',
           ),
         ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -1695,102 +1695,102 @@ function nm_section_courses_features_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span12';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
           1 => 1,
         ),
+        'contains' => 'column',
         'parent' => NULL,
+        'type' => 'row',
+      ),
+      'center' => array(
+        'parent' => 'main-row',
+        'title' => 'Zentriert',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
       ),
       'main' => array(
-        'type' => 'column',
-        'width' => 50,
-        'width_type' => '%',
         'children' => array(
           0 => 'main-row',
         ),
-        'parent' => 'canvas',
         'class' => 'col-md-8',
-      ),
-      'main-row' => array(
-        'type' => 'row',
-        'contains' => 'region',
-        'children' => array(
-          0 => 'center',
-        ),
-        'parent' => 'main',
-      ),
-      'center' => array(
-        'type' => 'region',
-        'title' => 'Zentriert',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => 'main-row',
-      ),
-      1 => array(
+        'parent' => 'canvas',
         'type' => 'column',
         'width' => 50,
         'width_type' => '%',
-        'parent' => 'canvas',
+      ),
+      'main-row' => array(
+        'children' => array(
+          0 => 'center',
+        ),
+        'contains' => 'region',
+        'parent' => 'main',
+        'type' => 'row',
+      ),
+      'tools' => array(
+        'class' => '',
+        'parent' => '2',
+        'title' => 'Tools',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      1 => array(
         'children' => array(
           0 => 2,
         ),
         'class' => 'col-md-4',
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
       ),
       2 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'tools',
         ),
+        'class' => '',
+        'contains' => 'region',
         'parent' => '1',
-        'class' => '',
-      ),
-      'tools' => array(
-        'type' => 'region',
-        'title' => 'Tools',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '2',
-        'class' => '',
+        'type' => 'row',
       ),
     ),
   );
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'tools' => NULL,
     ),
   );
@@ -1810,8 +1810,8 @@ function nm_section_courses_features_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1839,33 +1839,33 @@ function nm_section_courses_features_default_page_manager_pages() {
   $page->admin_description = '';
   $page->path = 'course/admin/%1/settings';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_node_edit_1',
+        ),
         'name' => 'og_role',
+        'not' => FALSE,
         'settings' => array(
           'og_rids' => array(
             0 => 'kurs-dozent',
             1 => 'kurs-tutor',
           ),
         ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_node_edit_1',
-        ),
-        'not' => FALSE,
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -1889,38 +1889,38 @@ function nm_section_courses_features_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_node_edit_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_node_edit_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'tools' => NULL,
     ),
   );
@@ -1969,32 +1969,32 @@ function nm_section_courses_features_default_page_manager_pages() {
   $page->admin_description = '';
   $page->path = 'course/groups/%1/%2';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'name' => 'og_member',
+        'not' => FALSE,
         'settings' => array(
           'state' => array(
             1 => '1',
           ),
         ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -2024,95 +2024,95 @@ function nm_section_courses_features_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = -30;
   $handler->conf = array(
-    'title' => 'Kursgruppe',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_2',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_group' => 'courses_group',
             ),
           ),
-          'context' => 'argument_entity_id:node_2',
-          'not' => FALSE,
         ),
         1 => array(
-          'name' => 'og_perm',
-          'settings' => array(
-            'perm' => 'create nm_stream content',
-          ),
           'context' => array(
             0 => 'logged-in-user',
             1 => 'argument_entity_id:node_2',
           ),
+          'name' => 'og_perm',
           'not' => FALSE,
+          'settings' => array(
+            'perm' => 'create nm_stream content',
+          ),
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Kursgruppe',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span9span3_mobile_bottom_up';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
         ),
+        'contains' => 'column',
         'parent' => NULL,
+        'type' => 'row',
+      ),
+      'center' => array(
+        'parent' => 'main-row',
+        'title' => 'Zentriert',
+        'type' => 'region',
+        'width' => '74.99327088820641',
+        'width_type' => '%',
       ),
       'main' => array(
-        'type' => 'column',
-        'width' => 100,
-        'width_type' => '%',
         'children' => array(
           0 => 'main-row',
         ),
         'parent' => 'canvas',
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
       ),
       'main-row' => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'center',
           1 => 'tools',
         ),
+        'contains' => 'region',
         'parent' => 'main',
-      ),
-      'center' => array(
-        'type' => 'region',
-        'title' => 'Zentriert',
-        'width' => '74.99327088820641',
-        'width_type' => '%',
-        'parent' => 'main-row',
+        'type' => 'row',
       ),
       'tools' => array(
-        'type' => 'region',
+        'class' => '',
+        'parent' => 'main-row',
         'title' => 'tools',
+        'type' => 'region',
         'width' => '25.006729111793597',
         'width_type' => '%',
-        'parent' => 'main-row',
-        'class' => '',
       ),
     ),
   );
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
-      'tools' => NULL,
+      'default' => NULL,
       'news' => NULL,
+      'tools' => NULL,
     ),
   );
   $display->cache = array();
@@ -2130,11 +2130,11 @@ function nm_section_courses_features_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'link' => 0,
-    'markup' => 'h2',
-    'id' => '',
     'class' => '',
     'context' => 'argument_entity_id:node_2',
+    'id' => '',
+    'link' => 0,
+    'markup' => 'h2',
     'override_title' => 1,
     'override_title_text' => '',
   );
@@ -2157,23 +2157,23 @@ function nm_section_courses_features_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 0,
-    'nodes_per_page' => '5',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'block_1',
     'context' => array(
       0 => 'argument_entity_id:node_2.nid',
     ),
+    'display' => 'block_1',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '5',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 0,
     'override_title_text' => '',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2194,15 +2194,15 @@ function nm_section_courses_features_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'okl_og_group_subscribe',
+    'context' => 'argument_entity_id:node_2',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'okl_og_group_subscribe',
     'formatter_settings' => array(
       'field_name' => '0',
     ),
-    'context' => 'argument_entity_id:node_2',
+    'label' => 'title',
     'override_title' => 1,
     'override_title_text' => 'Kursgruppe',
   );
@@ -2248,8 +2248,8 @@ function nm_section_courses_features_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2271,33 +2271,33 @@ function nm_section_courses_features_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => array(
-      'title' => array(
-        'element' => '0',
-        'attributes' => array(
-          'id' => '',
-          'class' => '',
-        ),
-      ),
       'content' => array(
-        'element' => 'h4',
         'attributes' => array(
-          'id' => '',
           'class' => 'visible-xs-block  visible-sm-block ',
+          'id' => '',
         ),
+        'element' => 'h4',
       ),
       'theme' => 0,
+      'title' => array(
+        'attributes' => array(
+          'class' => '',
+          'id' => '',
+        ),
+        'element' => '0',
+      ),
     ),
     'style' => 'wrapper_element',
   );
   $pane->css = array(
-    'css_id' => '',
     'css_class' => '',
+    'css_id' => '',
   );
   $pane->extras = array();
   $pane->position = 0;
@@ -2357,25 +2357,25 @@ function nm_section_courses_features_default_page_manager_pages() {
   $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '10',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'default',
-    'override_title' => 1,
-    'override_title_text' => '',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
       1 => 'argument_entity_id:node_2.nid',
     ),
+    'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '10',
+    'offset' => '0',
+    'override_pager_settings' => 0,
+    'override_title' => 1,
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2397,14 +2397,14 @@ function nm_section_courses_features_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'Render Stream V2',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<?php
 $container = node_load(%2:nid);
 return nm_stream_api_v2_render_stream($container );
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2430,93 +2430,93 @@ return nm_stream_api_v2_render_stream($container );
   $handler->handler = 'panel_context';
   $handler->weight = -29;
   $handler->conf = array(
-    'title' => 'Kursgruppen Übersicht',
+    'access' => array(
+      'logic' => 'and',
+      'plugins' => array(),
+    ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'no_blocks' => 0,
     'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
     'relationships' => array(),
-    'access' => array(
-      'plugins' => array(),
-      'logic' => 'and',
-    ),
+    'title' => 'Kursgruppen Übersicht',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span8span4';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
           1 => 1,
         ),
+        'contains' => 'column',
         'parent' => NULL,
+        'type' => 'row',
+      ),
+      'center' => array(
+        'parent' => 'main-row',
+        'title' => 'Zentriert',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
       ),
       'main' => array(
-        'type' => 'column',
-        'width' => 50,
-        'width_type' => '%',
         'children' => array(
           0 => 'main-row',
         ),
-        'parent' => 'canvas',
         'class' => 'col-md-8',
-      ),
-      'main-row' => array(
-        'type' => 'row',
-        'contains' => 'region',
-        'children' => array(
-          0 => 'center',
-        ),
-        'parent' => 'main',
-      ),
-      'center' => array(
-        'type' => 'region',
-        'title' => 'Zentriert',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => 'main-row',
-      ),
-      1 => array(
+        'parent' => 'canvas',
         'type' => 'column',
         'width' => 50,
         'width_type' => '%',
-        'parent' => 'canvas',
+      ),
+      'main-row' => array(
+        'children' => array(
+          0 => 'center',
+        ),
+        'contains' => 'region',
+        'parent' => 'main',
+        'type' => 'row',
+      ),
+      'tools' => array(
+        'class' => '',
+        'parent' => '2',
+        'title' => 'Tools',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      1 => array(
         'children' => array(
           0 => 2,
         ),
         'class' => 'col-md-4',
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
       ),
       2 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'tools',
         ),
+        'class' => '',
+        'contains' => 'region',
         'parent' => '1',
-        'class' => '',
-      ),
-      'tools' => array(
-        'type' => 'region',
-        'title' => 'Tools',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '2',
-        'class' => '',
+        'type' => 'row',
       ),
     ),
   );
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
-      'tools' => NULL,
+      'default' => NULL,
       'news' => NULL,
+      'tools' => NULL,
     ),
   );
   $display->cache = array();
@@ -2560,22 +2560,22 @@ return nm_stream_api_v2_render_stream($container );
   $page->admin_description = '';
   $page->path = 'course/doc/%1/%2';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_2',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -2605,48 +2605,48 @@ return nm_stream_api_v2_render_stream($container );
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_2',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_docs' => 'courses_docs',
             ),
           ),
-          'context' => 'argument_entity_id:node_2',
-          'not' => FALSE,
         ),
         1 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span8span4';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'news' => NULL,
       'tools' => NULL,
     ),
@@ -2688,10 +2688,10 @@ return nm_stream_api_v2_render_stream($container );
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'view_mode' => 'full',
     'context' => 'argument_entity_id:node_2',
     'override_title' => 0,
     'override_title_text' => '',
+    'view_mode' => 'full',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2741,22 +2741,22 @@ return nm_stream_api_v2_render_stream($container );
   $page->admin_description = '';
   $page->path = 'course/tasks/%1/%2/solution';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_2',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -2786,94 +2786,94 @@ return nm_stream_api_v2_render_stream($container );
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
         1 => array(
+          'context' => 'argument_entity_id:node_2',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_generic_task' => 'courses_generic_task',
             ),
           ),
-          'context' => 'argument_entity_id:node_2',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span8span4';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
         ),
+        'contains' => 'column',
         'parent' => NULL,
+        'type' => 'row',
+      ),
+      'center' => array(
+        'parent' => 'main-row',
+        'title' => 'Zentriert',
+        'type' => 'region',
+        'width' => '74.35863055332082',
+        'width_type' => '%',
       ),
       'main' => array(
-        'type' => 'column',
-        'width' => 100,
-        'width_type' => '%',
         'children' => array(
           0 => 'main-row',
         ),
         'parent' => 'canvas',
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
       ),
       'main-row' => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'center',
           1 => 'rechts',
         ),
+        'contains' => 'region',
         'parent' => 'main',
-      ),
-      'center' => array(
-        'type' => 'region',
-        'title' => 'Zentriert',
-        'width' => '74.35863055332082',
-        'width_type' => '%',
-        'parent' => 'main-row',
+        'type' => 'row',
       ),
       'rechts' => array(
-        'type' => 'region',
+        'class' => '',
+        'parent' => 'main-row',
         'title' => 'Rechts',
+        'type' => 'region',
         'width' => '25.641369446679185',
         'width_type' => '%',
-        'parent' => 'main-row',
-        'class' => '',
       ),
     ),
   );
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
-      'rechts' => NULL,
+      'default' => NULL,
       'news' => NULL,
+      'rechts' => NULL,
       'tools' => NULL,
     ),
   );
@@ -2937,25 +2937,25 @@ return nm_stream_api_v2_render_stream($container );
   $pane->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_perm',
-        'settings' => array(
-          'perm' => 'update group',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'og_perm',
         'not' => FALSE,
+        'settings' => array(
+          'perm' => 'update group',
+        ),
       ),
     ),
   );
   $pane->configuration = array(
     'admin_title' => 'Studentenformularansicht',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<p>Hier sehen Sie den Antwort-Bereich</p>',
     'format' => 'filtered_html',
     'substitute' => 1,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2999,15 +2999,15 @@ return nm_stream_api_v2_render_stream($container );
   $pane->access = array(
     'plugins' => array(
       0 => array(
-        'name' => 'og_perm',
-        'settings' => array(
-          'perm' => 'update group',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'og_perm',
         'not' => FALSE,
+        'settings' => array(
+          'perm' => 'update group',
+        ),
       ),
     ),
   );
@@ -3060,8 +3060,8 @@ return nm_stream_api_v2_render_stream($container );
   $page->admin_description = '';
   $page->path = 'course/info/%1';
   $page->access = array(
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -3085,162 +3085,162 @@ return nm_stream_api_v2_render_stream($container );
   $handler->handler = 'panel_context';
   $handler->weight = 1;
   $handler->conf = array(
-    'title' => 'Kursinformationen',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         1 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Kursinformationen',
   );
   $display = new panels_display();
   $display->layout = 'flexible:course_information';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
           1 => 3,
         ),
+        'contains' => 'column',
         'parent' => NULL,
+        'type' => 'row',
+      ),
+      'content' => array(
+        'class' => 'col-md-12',
+        'parent' => '2',
+        'title' => 'Content',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      'links' => array(
+        'class' => 'header_left col-md-8',
+        'parent' => 'main-row',
+        'title' => 'header_left',
+        'type' => 'region',
+        'width' => '65.40245299300852',
+        'width_type' => '%',
+      ),
+      'links_' => array(
+        'class' => 'subheader_left col-md-8',
+        'parent' => '1',
+        'title' => 'subheader_left',
+        'type' => 'region',
+        'width' => '65.40245205837297',
+        'width_type' => '%',
       ),
       'main' => array(
-        'type' => 'column',
-        'width' => '76.2660045268741',
-        'width_type' => '%',
         'children' => array(
           0 => 'main-row',
           1 => 1,
           2 => 2,
         ),
-        'parent' => 'canvas',
         'class' => 'col-md-11 course-info',
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => '76.2660045268741',
+        'width_type' => '%',
       ),
       'main-row' => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'links',
           1 => 'rechts',
         ),
-        'parent' => 'main',
         'class' => 'header row',
-      ),
-      'links' => array(
-        'type' => 'region',
-        'title' => 'header_left',
-        'width' => '65.40245299300852',
-        'width_type' => '%',
-        'parent' => 'main-row',
-        'class' => 'header_left col-md-8',
+        'contains' => 'region',
+        'parent' => 'main',
+        'type' => 'row',
       ),
       'rechts' => array(
-        'type' => 'region',
+        'class' => 'header_right col-md-4',
+        'parent' => 'main-row',
         'title' => 'header_right',
+        'type' => 'region',
         'width' => '34.597547006991476',
         'width_type' => '%',
-        'parent' => 'main-row',
-        'class' => 'header_right col-md-4',
+      ),
+      'rechts_' => array(
+        'class' => 'subheader_right col-md-4',
+        'parent' => '1',
+        'title' => 'subheader_right',
+        'type' => 'region',
+        'width' => '34.59754794162703',
+        'width_type' => '%',
+      ),
+      'tools' => array(
+        'class' => '',
+        'parent' => '4',
+        'title' => 'Tools',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
       ),
       1 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'links_',
           1 => 'rechts_',
         ),
-        'parent' => 'main',
         'class' => 'subheader',
-      ),
-      'links_' => array(
-        'type' => 'region',
-        'title' => 'subheader_left',
-        'width' => '65.40245205837297',
-        'width_type' => '%',
-        'parent' => '1',
-        'class' => 'subheader_left col-md-8',
-      ),
-      'rechts_' => array(
-        'type' => 'region',
-        'title' => 'subheader_right',
-        'width' => '34.59754794162703',
-        'width_type' => '%',
-        'parent' => '1',
-        'class' => 'subheader_right col-md-4',
+        'contains' => 'region',
+        'parent' => 'main',
+        'type' => 'row',
       ),
       2 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'content',
         ),
-        'parent' => 'main',
         'class' => 'content row',
-      ),
-      'content' => array(
-        'type' => 'region',
-        'title' => 'Content',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '2',
-        'class' => 'col-md-12',
+        'contains' => 'region',
+        'parent' => 'main',
+        'type' => 'row',
       ),
       3 => array(
-        'type' => 'column',
-        'width' => '23.733995473125905',
-        'width_type' => '%',
-        'parent' => 'canvas',
         'children' => array(
           0 => 4,
         ),
         'class' => 'col-md-1',
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => '23.733995473125905',
+        'width_type' => '%',
       ),
       4 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'tools',
         ),
+        'class' => '',
+        'contains' => 'region',
         'parent' => '3',
-        'class' => '',
-      ),
-      'tools' => array(
-        'type' => 'region',
-        'title' => 'Tools',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '4',
-        'class' => '',
+        'type' => 'row',
       ),
     ),
   );
   $display->panel_settings = array(
     'style_settings' => array(
+      'content' => NULL,
       'default' => NULL,
       'links' => NULL,
-      'rechts' => NULL,
       'links_' => NULL,
+      'rechts' => NULL,
       'rechts_' => NULL,
-      'content' => NULL,
       'tools' => NULL,
     ),
   );
@@ -3259,13 +3259,13 @@ return nm_stream_api_v2_render_stream($container );
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'text_default',
+    'context' => 'argument_entity_id:node_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'text_default',
     'formatter_settings' => array(),
-    'context' => 'argument_entity_id:node_1',
+    'label' => 'title',
     'override_title' => 1,
     'override_title_text' => 'Beschreibung des Kurses',
   );
@@ -3288,11 +3288,11 @@ return nm_stream_api_v2_render_stream($container );
   $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
-    'link' => 0,
-    'markup' => 'h2',
-    'id' => '',
     'class' => '',
     'context' => 'argument_entity_id:node_1',
+    'id' => '',
+    'link' => 0,
+    'markup' => 'h2',
     'override_title' => 1,
     'override_title_text' => '',
   );
@@ -3315,23 +3315,23 @@ return nm_stream_api_v2_render_stream($container );
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '20',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 1,
-    'link_to_view' => 0,
     'args' => '%1',
-    'url' => '',
-    'display' => 'default',
     'context' => array(
       0 => '',
     ),
+    'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '20',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 0,
     'override_title_text' => '',
+    'pager_id' => '0',
+    'panel_args' => 1,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -3352,13 +3352,13 @@ return nm_stream_api_v2_render_stream($container );
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'text_default',
+    'context' => 'argument_entity_id:node_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'text_default',
     'formatter_settings' => array(),
-    'context' => 'argument_entity_id:node_1',
+    'label' => 'title',
     'override_title' => 1,
     'override_title_text' => '',
   );
@@ -3381,13 +3381,13 @@ return nm_stream_api_v2_render_stream($container );
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'hidden',
-    'formatter' => 'text_default',
+    'context' => 'argument_entity_id:node_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'text_default',
     'formatter_settings' => array(),
-    'context' => 'argument_entity_id:node_1',
+    'label' => 'hidden',
     'override_title' => 0,
     'override_title_text' => '',
   );
@@ -3410,19 +3410,19 @@ return nm_stream_api_v2_render_stream($container );
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'above',
-    'formatter' => 'date_default',
+    'context' => 'argument_entity_id:node_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'date_default',
     'formatter_settings' => array(
       'format_type' => 'short',
-      'multiple_number' => '',
-      'multiple_from' => '',
-      'multiple_to' => '',
       'fromto' => 'both',
+      'multiple_from' => '',
+      'multiple_number' => '',
+      'multiple_to' => '',
     ),
-    'context' => 'argument_entity_id:node_1',
+    'label' => 'above',
     'override_title' => 0,
     'override_title_text' => '',
   );
@@ -3445,13 +3445,13 @@ return nm_stream_api_v2_render_stream($container );
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'above',
-    'formatter' => 'text_default',
+    'context' => 'argument_entity_id:node_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'text_default',
     'formatter_settings' => array(),
-    'context' => 'argument_entity_id:node_1',
+    'label' => 'above',
     'override_title' => 0,
     'override_title_text' => '',
   );
@@ -3474,15 +3474,15 @@ return nm_stream_api_v2_render_stream($container );
   $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'og_group_subscribe',
+    'context' => 'argument_entity_id:node_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'og_group_subscribe',
     'formatter_settings' => array(
       'field_name' => '0',
     ),
-    'context' => 'argument_entity_id:node_1',
+    'label' => 'title',
     'override_title' => 0,
     'override_title_text' => '',
   );
@@ -3505,16 +3505,16 @@ return nm_stream_api_v2_render_stream($container );
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'hidden',
-    'formatter' => 'image',
+    'context' => 'argument_entity_id:node_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'image',
     'formatter_settings' => array(
-      'image_style' => 'large',
       'image_link' => '',
+      'image_style' => 'large',
     ),
-    'context' => 'argument_entity_id:node_1',
+    'label' => 'hidden',
     'override_title' => 1,
     'override_title_text' => '',
   );
@@ -3538,7 +3538,6 @@ return nm_stream_api_v2_render_stream($container );
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<?php
 if(is_numeric(arg(2))){
 $course= node_load(arg(2));
@@ -3547,6 +3546,7 @@ echo section_courses_render_course_link($course);
 ?>',
     'format' => 'php_code',
     'substitute' => 0,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -3574,9 +3574,15 @@ echo section_courses_render_course_link($course);
   $page->admin_description = '';
   $page->path = 'course/admin/%1/add/%2';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'name' => 'og_role',
+        'not' => FALSE,
         'settings' => array(
           'og_rids' => array(
             0 => 'administrator member',
@@ -3584,24 +3590,18 @@ echo section_courses_render_course_link($course);
             2 => 'kurs-tutor',
           ),
         ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -3631,102 +3631,102 @@ echo section_courses_render_course_link($course);
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span12';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
           1 => 1,
         ),
+        'contains' => 'column',
         'parent' => NULL,
+        'type' => 'row',
+      ),
+      'center' => array(
+        'parent' => 'main-row',
+        'title' => 'Zentriert',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
       ),
       'main' => array(
-        'type' => 'column',
-        'width' => '67.94595703225146',
-        'width_type' => '%',
         'children' => array(
           0 => 'main-row',
         ),
-        'parent' => 'canvas',
         'class' => 'col-md-11',
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => '67.94595703225146',
+        'width_type' => '%',
       ),
       'main-row' => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'center',
         ),
+        'contains' => 'region',
         'parent' => 'main',
+        'type' => 'row',
       ),
-      'center' => array(
+      'tools' => array(
+        'class' => '',
+        'parent' => '2',
+        'title' => 'Tools',
         'type' => 'region',
-        'title' => 'Zentriert',
         'width' => 100,
         'width_type' => '%',
-        'parent' => 'main-row',
       ),
       1 => array(
-        'type' => 'column',
-        'width' => '32.05404296774855',
-        'width_type' => '%',
-        'parent' => 'canvas',
         'children' => array(
           0 => 2,
         ),
         'class' => 'col-md-1',
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => '32.05404296774855',
+        'width_type' => '%',
       ),
       2 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'tools',
         ),
+        'class' => '',
+        'contains' => 'region',
         'parent' => '1',
-        'class' => '',
-      ),
-      'tools' => array(
-        'type' => 'region',
-        'title' => 'Tools',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '2',
-        'class' => '',
+        'type' => 'row',
       ),
     ),
   );
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'tools' => NULL,
     ),
   );
@@ -3775,33 +3775,33 @@ echo section_courses_render_course_link($course);
   $page->admin_description = '';
   $page->path = 'course/admin/%1/content';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'name' => 'og_role',
+        'not' => FALSE,
         'settings' => array(
           'og_rids' => array(
             0 => 'kurs-dozent',
             1 => 'kurs-tutor',
           ),
         ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -3825,155 +3825,155 @@ echo section_courses_render_course_link($course);
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span6span6';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
           1 => 1,
         ),
+        'contains' => 'column',
         'parent' => NULL,
+        'type' => 'row',
       ),
       'main' => array(
-        'type' => 'column',
-        'width' => 50,
-        'width_type' => '%',
         'children' => array(
           0 => 'main-row',
         ),
-        'parent' => 'canvas',
         'class' => 'col-md-11',
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
       ),
       'main-row' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 3,
           1 => 2,
         ),
-        'parent' => 'main',
         'class' => 'row',
+        'contains' => 'column',
+        'parent' => 'main',
+        'type' => 'row',
+      ),
+      'main_left' => array(
+        'class' => '',
+        'parent' => '5',
+        'title' => 'main-left',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      'main_right' => array(
+        'class' => '',
+        'parent' => '6',
+        'title' => 'main-right',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      'tools' => array(
+        'class' => '',
+        'parent' => '4',
+        'title' => 'tools',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
       ),
       1 => array(
-        'type' => 'column',
-        'width' => 50,
-        'width_type' => '%',
-        'parent' => 'canvas',
         'children' => array(
           0 => 4,
         ),
         'class' => 'col-md-1',
-      ),
-      2 => array(
+        'parent' => 'canvas',
         'type' => 'column',
         'width' => 50,
         'width_type' => '%',
-        'parent' => 'main-row',
+      ),
+      2 => array(
         'children' => array(
           0 => 6,
         ),
         'class' => 'col-md-6',
-      ),
-      3 => array(
+        'parent' => 'main-row',
         'type' => 'column',
         'width' => 50,
         'width_type' => '%',
-        'parent' => 'main-row',
+      ),
+      3 => array(
         'children' => array(
           0 => 5,
         ),
         'class' => 'col-md-6',
+        'parent' => 'main-row',
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
       ),
       4 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'tools',
         ),
+        'class' => '',
+        'contains' => 'region',
         'parent' => '1',
-        'class' => '',
-      ),
-      'tools' => array(
-        'type' => 'region',
-        'title' => 'tools',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '4',
-        'class' => '',
+        'type' => 'row',
       ),
       5 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'main_left',
         ),
-        'parent' => '3',
         'class' => '',
+        'contains' => 'region',
+        'parent' => '3',
+        'type' => 'row',
       ),
       6 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'main_right',
         ),
+        'class' => '',
+        'contains' => 'region',
         'parent' => '2',
-        'class' => '',
-      ),
-      'main_left' => array(
-        'type' => 'region',
-        'title' => 'main-left',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '5',
-        'class' => '',
-      ),
-      'main_right' => array(
-        'type' => 'region',
-        'title' => 'main-right',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '6',
-        'class' => '',
+        'type' => 'row',
       ),
     ),
   );
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
-      'tools' => NULL,
+      'default' => NULL,
+      'left' => NULL,
       'main_left' => NULL,
       'main_right' => NULL,
-      'left' => NULL,
+      'tools' => NULL,
     ),
   );
   $display->cache = array();
@@ -4074,22 +4074,22 @@ echo section_courses_render_course_link($course);
   $page->admin_description = '';
   $page->path = 'course/admin/%1/%2/edit';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'update',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_node_edit_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'update',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -4119,29 +4119,23 @@ echo section_courses_render_course_link($course);
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
         1 => array(
+          'context' => 'argument_node_edit_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
@@ -4153,12 +4147,18 @@ echo section_courses_render_course_link($course);
               'forum' => 'forum',
             ),
           ),
-          'context' => 'argument_node_edit_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span8span4';
@@ -4259,33 +4259,33 @@ echo section_courses_render_course_link($course);
   $page->admin_description = '';
   $page->path = 'course/admin/%1/forums';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'name' => 'og_role',
+        'not' => FALSE,
         'settings' => array(
           'og_rids' => array(
             0 => 'kurs-dozent',
             1 => 'kurs-tutor',
           ),
         ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -4309,38 +4309,38 @@ echo section_courses_render_course_link($course);
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'tools' => NULL,
     ),
   );
@@ -4360,7 +4360,6 @@ echo section_courses_render_course_link($course);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<?php
 if(!count(taxonomy_get_term_by_name(_section_courses_get_forum_name(node_load(%1:nid)))))
 {
@@ -4377,6 +4376,7 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
     'title_heading' => 'h2',
   );
   $pane->cache = array();
@@ -4405,33 +4405,33 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $page->admin_description = '';
   $page->path = 'course/admin/%1/groups';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'name' => 'og_role',
+        'not' => FALSE,
         'settings' => array(
           'og_rids' => array(
             0 => 'kurs-dozent',
             1 => 'kurs-tutor',
           ),
         ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -4455,102 +4455,102 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span12';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
           1 => 1,
         ),
+        'contains' => 'column',
         'parent' => NULL,
+        'type' => 'row',
+      ),
+      'center' => array(
+        'parent' => 'main-row',
+        'title' => 'Zentriert',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
       ),
       'main' => array(
-        'type' => 'column',
-        'width' => 50,
-        'width_type' => '%',
         'children' => array(
           0 => 'main-row',
         ),
-        'parent' => 'canvas',
         'class' => 'col-md-11',
-      ),
-      'main-row' => array(
-        'type' => 'row',
-        'contains' => 'region',
-        'children' => array(
-          0 => 'center',
-        ),
-        'parent' => 'main',
-      ),
-      'center' => array(
-        'type' => 'region',
-        'title' => 'Zentriert',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => 'main-row',
-      ),
-      1 => array(
+        'parent' => 'canvas',
         'type' => 'column',
         'width' => 50,
         'width_type' => '%',
-        'parent' => 'canvas',
+      ),
+      'main-row' => array(
+        'children' => array(
+          0 => 'center',
+        ),
+        'contains' => 'region',
+        'parent' => 'main',
+        'type' => 'row',
+      ),
+      'tools' => array(
+        'class' => '',
+        'parent' => '2',
+        'title' => 'Tools',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      1 => array(
         'children' => array(
           0 => 2,
         ),
         'class' => 'col-md-1',
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
       ),
       2 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'tools',
         ),
+        'class' => '',
+        'contains' => 'region',
         'parent' => '1',
-        'class' => '',
-      ),
-      'tools' => array(
-        'type' => 'region',
-        'title' => 'Tools',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '2',
-        'class' => '',
+        'type' => 'row',
       ),
     ),
   );
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'tools' => NULL,
     ),
   );
@@ -4569,23 +4569,23 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '0',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'default',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '0',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 0,
     'override_title_text' => '',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -4613,33 +4613,33 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $page->admin_description = '';
   $page->path = 'course/admin/%1/members';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'name' => 'og_role',
+        'not' => FALSE,
         'settings' => array(
           'og_rids' => array(
             0 => 'kurs-dozent',
             1 => 'kurs-tutor',
           ),
         ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -4663,27 +4663,27 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'no_blocks' => 0,
     'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
     'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
-    'style_settings' => array(
-      'default' => NULL,
-      'center' => NULL,
-      'tools' => NULL,
-    ),
     'center' => array(
       'style' => 'tabs',
+    ),
+    'style_settings' => array(
+      'center' => NULL,
+      'default' => NULL,
+      'tools' => NULL,
     ),
   );
   $display->cache = array();
@@ -4701,23 +4701,23 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '50',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'bl_1',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'bl_1',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '50',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
     'override_title_text' => 'Angefragt/Gesperrt',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -4738,24 +4738,24 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '50',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'bl_2',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'bl_2',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '50',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
-    'override_title_text' => 'Mitwirkung',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Mitwirkung',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -4776,24 +4776,24 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '50',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'bl_3',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'bl_3',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '50',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
-    'override_title_text' => 'Unterstützung',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Unterstützung',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -4814,24 +4814,24 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '50',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'bl_4',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'bl_4',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '50',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
-    'override_title_text' => 'Leitung',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Leitung',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -4852,23 +4852,23 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '50',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'bl_5',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'bl_5',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '50',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
     'override_title_text' => 'Gast/Test Studenten',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -4889,24 +4889,24 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '50',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'bl_6',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'bl_6',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '50',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
-    'override_title_text' => 'Alle',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Alle',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -4934,32 +4934,32 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $page->admin_description = '';
   $page->path = 'course/home/%1';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'name' => 'og_member',
+        'not' => FALSE,
         'settings' => array(
           'state' => array(
             1 => '1',
           ),
         ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -4983,38 +4983,38 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span9span3';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'news' => NULL,
       'tools' => NULL,
     ),
@@ -5054,12 +5054,12 @@ echo (drupal_render(drupal_get_form(\'_section_courses_forum_manage_categories_f
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<?php
 echo section_courses_theme_progressbar();
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -5087,8 +5087,8 @@ echo section_courses_theme_progressbar();
   $page->admin_description = '';
   $page->path = 'courses/!archive';
   $page->access = array(
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -5114,106 +5114,106 @@ echo section_courses_theme_progressbar();
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'allgemein',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_string_1',
           'name' => 'string_equal',
+          'not' => FALSE,
           'settings' => array(
+            'case' => 1,
             'operator' => '!=',
             'value' => 'archive',
-            'case' => 1,
           ),
-          'context' => 'argument_string_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'allgemein',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span11span1';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
           1 => 1,
         ),
+        'contains' => 'column',
         'parent' => NULL,
+        'type' => 'row',
+      ),
+      'center' => array(
+        'class' => 'col-md-11',
+        'hide_empty' => 0,
+        'parent' => 'main-row',
+        'title' => 'main',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
       ),
       'main' => array(
-        'type' => 'column',
-        'width' => 50,
-        'width_type' => '%',
         'children' => array(
           0 => 'main-row',
         ),
+        'class' => 'col-md-11',
         'parent' => 'canvas',
-        'class' => 'col-md-11',
-      ),
-      'main-row' => array(
-        'type' => 'row',
-        'contains' => 'region',
-        'children' => array(
-          0 => 'center',
-        ),
-        'parent' => 'main',
-      ),
-      'center' => array(
-        'type' => 'region',
-        'title' => 'main',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => 'main-row',
-        'class' => 'col-md-11',
-        'hide_empty' => 0,
-      ),
-      1 => array(
         'type' => 'column',
         'width' => 50,
         'width_type' => '%',
-        'parent' => 'canvas',
+      ),
+      'main-row' => array(
+        'children' => array(
+          0 => 'center',
+        ),
+        'contains' => 'region',
+        'parent' => 'main',
+        'type' => 'row',
+      ),
+      'tools' => array(
+        'class' => '',
+        'parent' => '2',
+        'title' => 'tools',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      1 => array(
         'children' => array(
           0 => 2,
         ),
         'class' => 'col-md-1',
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
       ),
       2 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'tools',
         ),
+        'class' => '',
+        'contains' => 'region',
         'parent' => '1',
-        'class' => '',
-      ),
-      'tools' => array(
-        'type' => 'region',
-        'title' => 'tools',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '2',
-        'class' => '',
+        'type' => 'row',
       ),
     ),
   );
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
-      'tools' => NULL,
+      'default' => NULL,
       'news' => NULL,
+      'tools' => NULL,
     ),
   );
   $display->cache = array();
@@ -5231,9 +5231,9 @@ echo section_courses_theme_progressbar();
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'use_pager' => 1,
-    'pager_id' => 'my_drafts',
     'items_per_page' => '10',
+    'pager_id' => 'my_drafts',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -5254,9 +5254,9 @@ echo section_courses_theme_progressbar();
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'use_pager' => 1,
-    'pager_id' => 'my_courses',
     'items_per_page' => '10',
+    'pager_id' => 'my_courses',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -5277,16 +5277,16 @@ echo section_courses_theme_progressbar();
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'use_pager' => 1,
-    'pager_id' => 'courses_offer',
-    'items_per_page' => '15',
     'exposed' => array(
       'sort_by' => 'field_time_span_value',
       'sort_order' => 'ASC',
     ),
+    'items_per_page' => '15',
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'pager_id' => 'courses_offer',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -5308,12 +5308,12 @@ echo section_courses_theme_progressbar();
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'platzhalter',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<h1>&nbsp;</h1>
 ',
     'format' => 'full_html',
     'substitute' => 1,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -5335,7 +5335,6 @@ echo section_courses_theme_progressbar();
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'neuerkurs-link',
-    'title' => '',
     'body' => '<?php
 if(section_courses_instructors_tools_access())
 echo \'<p><a class="btn btn-default" href="/node/add/courses-course">Neuen Kurs anlegen</a></p>\';
@@ -5343,6 +5342,7 @@ echo \'<p><a class="btn btn-default" href="/node/add/courses-course">Neuen Kurs 
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
     'title_heading' => 'h2',
   );
   $pane->cache = array();
@@ -5365,8 +5365,6 @@ echo \'<p><a class="btn btn-default" href="/node/add/courses-course">Neuen Kurs 
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'copy-course-link',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<?php
 if(section_courses_instructors_tools_access())
 echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) kopieren</a></p>\';
@@ -5374,6 +5372,8 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -5395,13 +5395,13 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'kursarchiv-link',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<a class="btn btn-link" href="/courses/archive">
 <?=t(\'archivated courses\');?>
 </a>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -5427,39 +5427,39 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
   $handler->handler = 'panel_context';
   $handler->weight = 1;
   $handler->conf = array(
-    'title' => 'archive',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_string_1',
           'name' => 'string_equal',
+          'not' => FALSE,
           'settings' => array(
+            'case' => 1,
             'operator' => '=',
             'value' => 'archive',
-            'case' => 1,
           ),
-          'context' => 'argument_string_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'name' => 'archive',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'archive',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
     ),
   );
   $display->cache = array();
@@ -5477,16 +5477,16 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'use_pager' => 1,
-    'pager_id' => '0',
-    'items_per_page' => '15',
     'exposed' => array(
       'sort_by' => 'field_time_span_value',
       'sort_order' => 'DESC',
     ),
+    'items_per_page' => '15',
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'pager_id' => '0',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -5514,32 +5514,32 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
   $page->admin_description = '';
   $page->path = 'course/forum/%1/%2';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'name' => 'og_member',
+        'not' => FALSE,
         'settings' => array(
           'state' => array(
             1 => '1',
           ),
         ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -5571,38 +5571,38 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'tools' => NULL,
     ),
   );
@@ -5644,13 +5644,13 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
   $pane->access = array(
     'plugins' => array(
       0 => array(
+        'context' => 'argument_forum_id_2',
         'name' => 'forum_container',
+        'not' => FALSE,
         'settings' => array(
           'container' => '1',
           'rids' => NULL,
         ),
-        'context' => 'argument_forum_id_2',
-        'not' => FALSE,
       ),
     ),
   );
@@ -5701,10 +5701,10 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'show_sort' => 0,
     'context' => 'argument_forum_id_2',
     'override_title' => 0,
     'override_title_text' => '',
+    'show_sort' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -5727,31 +5727,31 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
     'logic' => 'and',
     'plugins' => array(
       0 => array(
+        'context' => 'argument_forum_id_2',
         'name' => 'forum_container',
+        'not' => FALSE,
         'settings' => array(
           'container' => '0',
           'rids' => NULL,
         ),
-        'context' => 'argument_forum_id_2',
-        'not' => FALSE,
       ),
     ),
   );
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '20',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
     'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '20',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 0,
     'override_title_text' => '',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -5779,30 +5779,30 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
   $page->admin_description = '';
   $page->path = 'course/forumcontent/%1/%2/add';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       1 => array(
-        'name' => 'og_perm',
-        'settings' => array(
-          'perm' => 'create forum content',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'og_perm',
         'not' => FALSE,
+        'settings' => array(
+          'perm' => 'create forum content',
+        ),
       ),
       2 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -5834,56 +5834,56 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(
-      0 => array(
-        'identifier' => 'Node add form',
-        'keyword' => 'node_add',
-        'name' => 'node_add_form',
-        'type' => 'forum',
-        'id' => 1,
-      ),
-    ),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
         1 => array(
+          'context' => 'context_node_add_form_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'forum' => 'forum',
             ),
           ),
-          'context' => 'context_node_add_form_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(
+      0 => array(
+        'id' => 1,
+        'identifier' => 'Node add form',
+        'keyword' => 'node_add',
+        'name' => 'node_add_form',
+        'type' => 'forum',
+      ),
+    ),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
     ),
   );
   $display->cache = array();
@@ -5931,22 +5931,22 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
   $page->admin_description = '';
   $page->path = 'course/forumcontent/%1/%2/%3/delete';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'update',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'update',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -5984,38 +5984,38 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
     ),
   );
   $display->cache = array();
@@ -6034,7 +6034,6 @@ echo \'<p><a class="btn btn-default" href="/node/copy/courses-course">Kurs(e) ko
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<?php
 module_load_include(\'inc\', \'comment\', \'comment.admin\');
 echo drupal_render(comment_confirm_delete_page(arg(4)));
@@ -6042,6 +6041,7 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -6069,22 +6069,22 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
   $page->admin_description = '';
   $page->path = 'course/forumcontent/%1/%2/edit';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'update',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_node_edit_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'update',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -6114,48 +6114,48 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
         1 => array(
+          'context' => 'argument_node_edit_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'forum' => 'forum',
             ),
           ),
-          'context' => 'argument_node_edit_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
     ),
   );
   $display->cache = array();
@@ -6203,35 +6203,35 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
   $page->admin_description = '';
   $page->path = 'course/forumcontent/%1/%2/%3/edit';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'name' => 'og_member',
+        'not' => FALSE,
         'settings' => array(
           'state' => array(
             1 => '1',
           ),
         ),
+      ),
+      1 => array(
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
-        'not' => FALSE,
-      ),
-      1 => array(
         'name' => 'node_access',
+        'not' => FALSE,
         'settings' => array(
           'type' => 'view',
         ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -6269,38 +6269,38 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
     ),
   );
   $display->cache = array();
@@ -6319,7 +6319,6 @@ echo drupal_render(comment_confirm_delete_page(arg(4)));
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<?php
 $comment = comment_load(arg(4));
 echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
@@ -6327,6 +6326,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -6354,22 +6354,22 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->admin_description = '';
   $page->path = 'course/forumcontent/%1/%2';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_2',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -6399,48 +6399,48 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
         1 => array(
+          'context' => 'argument_entity_id:node_2',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'forum' => 'forum',
             ),
           ),
-          'context' => 'argument_entity_id:node_2',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'tools' => NULL,
     ),
   );
@@ -6481,10 +6481,10 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'view_mode' => 'full',
     'context' => 'argument_entity_id:node_2',
     'override_title' => 0,
     'override_title_text' => '',
+    'view_mode' => 'full',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -6505,9 +6505,9 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'mode' => '1',
     'comments_per_page' => '50',
     'context' => 'argument_entity_id:node_2',
+    'mode' => '1',
     'override_title' => 1,
     'override_title_text' => '',
   );
@@ -6561,22 +6561,22 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->admin_description = '';
   $page->path = 'course/forumcontent/%1/%2/%3/reply';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_2',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -6612,48 +6612,48 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
         1 => array(
+          'context' => 'argument_entity_id:node_2',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'forum' => 'forum',
             ),
           ),
-          'context' => 'argument_entity_id:node_2',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
     ),
   );
   $display->cache = array();
@@ -6705,22 +6705,22 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->admin_description = '';
   $page->path = 'course/news/%1/%2';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_2',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -6750,48 +6750,48 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
         1 => array(
+          'context' => 'argument_entity_id:node_2',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_news' => 'courses_news',
             ),
           ),
-          'context' => 'argument_entity_id:node_2',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'tools' => NULL,
     ),
   );
@@ -6832,10 +6832,10 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'view_mode' => 'full',
     'context' => 'argument_entity_id:node_2',
     'override_title' => 0,
     'override_title_text' => '',
+    'view_mode' => 'full',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -6863,9 +6863,15 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->admin_description = '';
   $page->path = 'course/projects/%1';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       1 => array(
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'name' => 'og_role',
+        'not' => FALSE,
         'settings' => array(
           'og_rids' => array(
             0 => 'kurs-dozent',
@@ -6873,24 +6879,18 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
             2 => 'kurs-tutor',
           ),
         ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
       ),
       2 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -6914,23 +6914,23 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'no_blocks' => 0,
     'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
     'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'tools' => NULL,
     ),
   );
@@ -6950,12 +6950,12 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<?php
   echo drupal_render(drupal_get_form(\'section_courses_group_projects_form\'));
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -6983,32 +6983,32 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->admin_description = '';
   $page->path = 'course/tasks/%1';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'name' => 'og_member',
+        'not' => FALSE,
         'settings' => array(
           'state' => array(
             1 => '1',
           ),
         ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -7032,102 +7032,102 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span8span4';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
           1 => 1,
         ),
+        'contains' => 'column',
         'parent' => NULL,
+        'type' => 'row',
+      ),
+      'center' => array(
+        'parent' => 'main-row',
+        'title' => 'Zentriert',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
       ),
       'main' => array(
-        'type' => 'column',
-        'width' => 50,
-        'width_type' => '%',
         'children' => array(
           0 => 'main-row',
         ),
-        'parent' => 'canvas',
         'class' => 'col-md-8',
-      ),
-      'main-row' => array(
-        'type' => 'row',
-        'contains' => 'region',
-        'children' => array(
-          0 => 'center',
-        ),
-        'parent' => 'main',
-      ),
-      'center' => array(
-        'type' => 'region',
-        'title' => 'Zentriert',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => 'main-row',
-      ),
-      1 => array(
+        'parent' => 'canvas',
         'type' => 'column',
         'width' => 50,
         'width_type' => '%',
-        'parent' => 'canvas',
+      ),
+      'main-row' => array(
+        'children' => array(
+          0 => 'center',
+        ),
+        'contains' => 'region',
+        'parent' => 'main',
+        'type' => 'row',
+      ),
+      'tools' => array(
+        'class' => '',
+        'parent' => '2',
+        'title' => 'Tools',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      1 => array(
         'children' => array(
           0 => 2,
         ),
         'class' => 'col-md-4',
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
       ),
       2 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'tools',
         ),
+        'class' => '',
+        'contains' => 'region',
         'parent' => '1',
-        'class' => '',
-      ),
-      'tools' => array(
-        'type' => 'region',
-        'title' => 'Tools',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '2',
-        'class' => '',
+        'type' => 'row',
       ),
     ),
   );
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'tools' => NULL,
     ),
   );
@@ -7172,22 +7172,22 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->admin_description = '';
   $page->path = 'course/text/%1/%2';
   $page->access = array(
-    'type' => 'none',
-    'settings' => NULL,
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_2',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
     ),
-    'logic' => 'and',
+    'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -7217,54 +7217,54 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Studientext in: %1',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
         1 => array(
+          'context' => 'argument_entity_id:node_2',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'annvid' => 'annvid',
+              'biblio' => 'biblio',
               'content_chapter' => 'content_chapter',
               'content_domain' => 'content_domain',
-              'biblio' => 'biblio',
             ),
           ),
-          'context' => 'argument_entity_id:node_2',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Studientext in: %1',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span3span9';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
       'outline' => NULL,
       'tools' => NULL,
-      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -7283,7 +7283,6 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'Edit Course Text Link',
-    'title' => '<none>',
     'body' => '<?php
 
   $active_course = _section_courses_get_active_course();
@@ -7300,6 +7299,7 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '<none>',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -7320,10 +7320,10 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'view_mode' => 'full',
     'context' => 'argument_entity_id:node_2',
     'override_title' => 0,
     'override_title_text' => '',
+    'view_mode' => 'full',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -7345,8 +7345,8 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -7396,32 +7396,32 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->admin_description = '';
   $page->path = 'course/docs/%1';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'name' => 'og_member',
+        'not' => FALSE,
         'settings' => array(
           'state' => array(
             1 => '1',
           ),
         ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -7445,104 +7445,104 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Kursdokumente in: (Kurs) ',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Kursdokumente in: (Kurs) ',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span8span4';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
           1 => 1,
         ),
+        'contains' => 'column',
         'parent' => NULL,
+        'type' => 'row',
+      ),
+      'center' => array(
+        'parent' => 'main-row',
+        'title' => 'Zentriert',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
       ),
       'main' => array(
-        'type' => 'column',
-        'width' => 50,
-        'width_type' => '%',
         'children' => array(
           0 => 'main-row',
         ),
-        'parent' => 'canvas',
         'class' => 'col-md-8',
-      ),
-      'main-row' => array(
-        'type' => 'row',
-        'contains' => 'region',
-        'children' => array(
-          0 => 'center',
-        ),
-        'parent' => 'main',
-      ),
-      'center' => array(
-        'type' => 'region',
-        'title' => 'Zentriert',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => 'main-row',
-      ),
-      1 => array(
+        'parent' => 'canvas',
         'type' => 'column',
         'width' => 50,
         'width_type' => '%',
-        'parent' => 'canvas',
+      ),
+      'main-row' => array(
+        'children' => array(
+          0 => 'center',
+        ),
+        'contains' => 'region',
+        'parent' => 'main',
+        'type' => 'row',
+      ),
+      'tools' => array(
+        'class' => '',
+        'parent' => '2',
+        'title' => 'Tools',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      1 => array(
         'children' => array(
           0 => 2,
         ),
         'class' => 'col-md-4',
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
       ),
       2 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'tools',
         ),
+        'class' => '',
+        'contains' => 'region',
         'parent' => '1',
-        'class' => '',
-      ),
-      'tools' => array(
-        'type' => 'region',
-        'title' => 'Tools',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '2',
-        'class' => '',
+        'type' => 'row',
       ),
     ),
   );
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
-      'tools' => NULL,
+      'default' => NULL,
       'news' => NULL,
+      'tools' => NULL,
     ),
   );
   $display->cache = array();
@@ -7580,17 +7580,17 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'kursdokumente-help',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<p><em>Um die Kursdokumente zu sortieren, klicken Sie jeweils auf die obige Bezeichnung.</em></p>',
     'format' => 'filtered_html',
     'substitute' => 1,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array(
     'method' => 'simple',
     'settings' => array(
-      'lifetime' => '300',
       'granularity' => 'none',
+      'lifetime' => '300',
     ),
   );
   $pane->style = array(
@@ -7618,8 +7618,8 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->admin_description = 'find courses';
   $page->path = 'kursfinder';
   $page->access = array(
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array();
@@ -7636,16 +7636,16 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'name' => '',
     'no_blocks' => 0,
     'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
     'relationships' => array(),
-    'name' => '',
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'onecol';
@@ -7671,21 +7671,21 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '20',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '/kursfinder',
     'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '20',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '/kursfinder',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -7713,32 +7713,32 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $page->admin_description = '';
   $page->path = 'course/members/%1';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       0 => array(
+        'context' => array(
+          0 => 'logged-in-user',
+          1 => 'argument_entity_id:node_1',
+        ),
         'name' => 'og_member',
+        'not' => FALSE,
         'settings' => array(
           'state' => array(
             1 => '1',
           ),
         ),
-        'context' => array(
-          0 => 'logged-in-user',
-          1 => 'argument_entity_id:node_1',
-        ),
-        'not' => FALSE,
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'administer nodes',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -7762,149 +7762,149 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
         ),
+        'contains' => 'column',
         'parent' => NULL,
+        'type' => 'row',
       ),
-      'main' => array(
-        'type' => 'column',
+      'left' => array(
+        'class' => '',
+        'parent' => '7',
+        'title' => 'left',
+        'type' => 'region',
         'width' => 100,
         'width_type' => '%',
+      ),
+      'main' => array(
         'children' => array(
           0 => 3,
           1 => 8,
         ),
-        'parent' => 'canvas',
         'class' => '',
         'hide_empty' => 0,
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      'main_' => array(
+        'class' => 'col-md-12',
+        'parent' => '8',
+        'title' => 'main',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      'right' => array(
+        'class' => '',
+        'parent' => '6',
+        'title' => 'right',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
       ),
       3 => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 4,
           1 => 5,
         ),
-        'parent' => 'main',
         'class' => 'row',
+        'contains' => 'column',
+        'parent' => 'main',
+        'type' => 'row',
       ),
       4 => array(
-        'type' => 'column',
-        'width' => 50,
-        'width_type' => '%',
-        'parent' => '3',
         'children' => array(
           0 => 7,
         ),
         'class' => 'col-md-6 col-xs-12',
         'hide_empty' => 0,
-      ),
-      5 => array(
+        'parent' => '3',
         'type' => 'column',
         'width' => 50,
         'width_type' => '%',
-        'parent' => '3',
+      ),
+      5 => array(
         'children' => array(
           0 => 6,
         ),
         'class' => 'col-md-6 col-xs-12',
         'hide_empty' => 0,
+        'parent' => '3',
+        'type' => 'column',
+        'width' => 50,
+        'width_type' => '%',
       ),
       6 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'right',
         ),
-        'parent' => '5',
         'class' => '',
+        'contains' => 'region',
+        'parent' => '5',
+        'type' => 'row',
       ),
       7 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'left',
         ),
+        'class' => '',
+        'contains' => 'region',
         'parent' => '4',
-        'class' => '',
-      ),
-      'left' => array(
-        'type' => 'region',
-        'title' => 'left',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '7',
-        'class' => '',
-      ),
-      'right' => array(
-        'type' => 'region',
-        'title' => 'right',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '6',
-        'class' => '',
+        'type' => 'row',
       ),
       8 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'main_',
         ),
-        'parent' => 'main',
         'class' => 'row',
-      ),
-      'main_' => array(
-        'type' => 'region',
-        'title' => 'main',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '8',
-        'class' => 'col-md-12',
+        'contains' => 'region',
+        'parent' => 'main',
+        'type' => 'row',
       ),
     ),
   );
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
-      'tools' => NULL,
-      'news' => NULL,
+      'default' => NULL,
       'left' => NULL,
-      'right' => NULL,
       'main_' => NULL,
+      'news' => NULL,
+      'right' => NULL,
+      'tools' => NULL,
     ),
   );
   $display->cache = array();
@@ -7922,33 +7922,33 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '20',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'block_3',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'block_3',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '20',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
-    'override_title_text' => 'Leitung',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Leitung',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
-    'style' => 'default',
     'settings' => NULL,
+    'style' => 'default',
   );
   $pane->css = array(
-    'css_id' => '',
     'css_class' => '',
+    'css_id' => '',
   );
   $pane->extras = array();
   $pane->position = 0;
@@ -7964,24 +7964,24 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '20',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'block_2',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'block_2',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '20',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
-    'override_title_text' => 'Mitwirkung',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Mitwirkung',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -8002,32 +8002,32 @@ echo drupal_render(drupal_get_form("comment_node_forum_form",$comment));
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '20',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'block_4',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'block_4',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '20',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
-    'override_title_text' => 'Unterstützung',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Unterstützung',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => '',
     'css_class' => '',
+    'css_id' => '',
   );
   $pane->extras = array();
   $pane->position = 0;

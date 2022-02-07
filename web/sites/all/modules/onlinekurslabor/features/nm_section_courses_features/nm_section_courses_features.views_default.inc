@@ -4339,6 +4339,8 @@ return   ($task_type == NM_COURSES_TASK_TYPE_GROUP )? _section_courses_get_cours
     t('aufgabe zu dieser loesung'),
     t('Current Page'),
     t('.'),
+    t('1'),
+    t('@count'),
     t('[field_generic_task-target_id]'),
     t('Status'),
     t(','),

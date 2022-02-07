@@ -343,7 +343,7 @@ function nm_section_content_features_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'biblio_orphan_clean_next_execution';
-  $strongarm->value = 1601723645;
+  $strongarm->value = 1644247810;
   $export['biblio_orphan_clean_next_execution'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -429,10 +429,10 @@ function nm_section_content_features_strongarm() {
   $strongarm->name = 'biblio_sort_tabs';
   $strongarm->value = array(
     'author' => 'author',
+    'keyword' => 0,
     'title' => 'title',
     'type' => 'type',
     'year' => 'year',
-    'keyword' => 0,
   );
   $export['biblio_sort_tabs'] = $strongarm;
 
@@ -798,32 +798,48 @@ function nm_section_content_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_file__audio';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(
+        'file' => array(
+          'default' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'embedded_with_link_to_original' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'file_icon' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'filename' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'full' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'media_12' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+        ),
+      ),
+      'form' => array(),
+    ),
     'view_modes' => array(
-      'teaser' => array(
+      'embedded_with_link_to_original' => array(
         'custom_settings' => TRUE,
       ),
-      'preview' => array(
+      'file_icon' => array(
         'custom_settings' => TRUE,
       ),
       'filename' => array(
         'custom_settings' => TRUE,
       ),
       'full' => array(
-        'custom_settings' => FALSE,
-      ),
-      'token' => array(
-        'custom_settings' => FALSE,
-      ),
-      'file_icon' => array(
-        'custom_settings' => TRUE,
-      ),
-      'rss' => array(
-        'custom_settings' => FALSE,
-      ),
-      'search_index' => array(
-        'custom_settings' => FALSE,
-      ),
-      'search_result' => array(
         'custom_settings' => FALSE,
       ),
       'media_12' => array(
@@ -838,54 +854,38 @@ function nm_section_content_features_strongarm() {
       'media_6' => array(
         'custom_settings' => FALSE,
       ),
-      'media_9' => array(
+      'media_600px' => array(
         'custom_settings' => FALSE,
       ),
-      'wysiwyg' => array(
-        'custom_settings' => TRUE,
+      'media_9' => array(
+        'custom_settings' => FALSE,
       ),
       'media_original' => array(
         'custom_settings' => FALSE,
       ),
+      'preview' => array(
+        'custom_settings' => TRUE,
+      ),
       'preview_with_link_to_original' => array(
         'custom_settings' => FALSE,
       ),
-      'media_600px' => array(
+      'rss' => array(
         'custom_settings' => FALSE,
       ),
-      'embedded_with_link_to_original' => array(
+      'search_index' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_result' => array(
+        'custom_settings' => FALSE,
+      ),
+      'teaser' => array(
         'custom_settings' => TRUE,
       ),
-    ),
-    'extra_fields' => array(
-      'form' => array(),
-      'display' => array(
-        'file' => array(
-          'default' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'filename' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'file_icon' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'full' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'media_12' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'embedded_with_link_to_original' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-        ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
+      'wysiwyg' => array(
+        'custom_settings' => TRUE,
       ),
     ),
   );
@@ -896,11 +896,42 @@ function nm_section_content_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_file__document';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(
+        'file' => array(
+          'default' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'embedded_with_link_to_original' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'file_icon' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'filename' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'full' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'media_12' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+        ),
+      ),
+      'form' => array(),
+    ),
     'view_modes' => array(
-      'teaser' => array(
+      'embedded_with_link_to_original' => array(
         'custom_settings' => TRUE,
       ),
-      'preview' => array(
+      'file_icon' => array(
         'custom_settings' => TRUE,
       ),
       'filename' => array(
@@ -908,21 +939,6 @@ function nm_section_content_features_strongarm() {
       ),
       'full' => array(
         'custom_settings' => TRUE,
-      ),
-      'token' => array(
-        'custom_settings' => FALSE,
-      ),
-      'file_icon' => array(
-        'custom_settings' => TRUE,
-      ),
-      'rss' => array(
-        'custom_settings' => FALSE,
-      ),
-      'search_index' => array(
-        'custom_settings' => FALSE,
-      ),
-      'search_result' => array(
-        'custom_settings' => FALSE,
       ),
       'media_12' => array(
         'custom_settings' => TRUE,
@@ -936,54 +952,38 @@ function nm_section_content_features_strongarm() {
       'media_6' => array(
         'custom_settings' => FALSE,
       ),
-      'media_9' => array(
+      'media_600px' => array(
         'custom_settings' => FALSE,
       ),
-      'wysiwyg' => array(
-        'custom_settings' => TRUE,
+      'media_9' => array(
+        'custom_settings' => FALSE,
       ),
       'media_original' => array(
         'custom_settings' => FALSE,
       ),
+      'preview' => array(
+        'custom_settings' => TRUE,
+      ),
       'preview_with_link_to_original' => array(
         'custom_settings' => FALSE,
       ),
-      'media_600px' => array(
+      'rss' => array(
         'custom_settings' => FALSE,
       ),
-      'embedded_with_link_to_original' => array(
+      'search_index' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_result' => array(
+        'custom_settings' => FALSE,
+      ),
+      'teaser' => array(
         'custom_settings' => TRUE,
       ),
-    ),
-    'extra_fields' => array(
-      'form' => array(),
-      'display' => array(
-        'file' => array(
-          'default' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'filename' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'file_icon' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'full' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'media_12' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'embedded_with_link_to_original' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-        ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
+      'wysiwyg' => array(
+        'custom_settings' => TRUE,
       ),
     ),
   );
@@ -994,24 +994,80 @@ function nm_section_content_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_file__image';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(
+        'file' => array(
+          'default' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'embedded_with_link_to_original' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'file_icon' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'filename' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'full' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'media_12' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'media_3' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'media_4' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'media_6' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'media_600px' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'media_9' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'preview_with_link_to_original' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+        ),
+      ),
+      'form' => array(
+        'filename' => array(
+          'weight' => '-10',
+        ),
+        'preview' => array(
+          'weight' => '-5',
+        ),
+      ),
+    ),
     'view_modes' => array(
-      'preview' => array(
-        'custom_settings' => TRUE,
-      ),
-      'teaser' => array(
-        'custom_settings' => FALSE,
-      ),
-      'full' => array(
-        'custom_settings' => FALSE,
-      ),
-      'token' => array(
-        'custom_settings' => FALSE,
-      ),
-      'filename' => array(
+      'embedded_with_link_to_original' => array(
         'custom_settings' => TRUE,
       ),
       'file_icon' => array(
         'custom_settings' => TRUE,
+      ),
+      'filename' => array(
+        'custom_settings' => TRUE,
+      ),
+      'full' => array(
+        'custom_settings' => FALSE,
       ),
       'media_12' => array(
         'custom_settings' => TRUE,
@@ -1019,13 +1075,25 @@ function nm_section_content_features_strongarm() {
       'media_3' => array(
         'custom_settings' => TRUE,
       ),
+      'media_4' => array(
+        'custom_settings' => TRUE,
+      ),
       'media_6' => array(
+        'custom_settings' => TRUE,
+      ),
+      'media_600px' => array(
         'custom_settings' => TRUE,
       ),
       'media_9' => array(
         'custom_settings' => TRUE,
       ),
-      'media_4' => array(
+      'media_original' => array(
+        'custom_settings' => FALSE,
+      ),
+      'preview' => array(
+        'custom_settings' => TRUE,
+      ),
+      'preview_with_link_to_original' => array(
         'custom_settings' => TRUE,
       ),
       'rss' => array(
@@ -1037,82 +1105,14 @@ function nm_section_content_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'media_600px' => array(
-        'custom_settings' => TRUE,
+      'teaser' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
       ),
       'wysiwyg' => array(
         'custom_settings' => TRUE,
-      ),
-      'preview_with_link_to_original' => array(
-        'custom_settings' => TRUE,
-      ),
-      'media_original' => array(
-        'custom_settings' => FALSE,
-      ),
-      'embedded_with_link_to_original' => array(
-        'custom_settings' => TRUE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'filename' => array(
-          'weight' => '-10',
-        ),
-        'preview' => array(
-          'weight' => '-5',
-        ),
-      ),
-      'display' => array(
-        'file' => array(
-          'default' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'filename' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'file_icon' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'full' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'media_12' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'media_3' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'media_6' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'media_9' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'media_4' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'media_600px' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'preview_with_link_to_original' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'embedded_with_link_to_original' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-        ),
       ),
     ),
   );
@@ -1123,23 +1123,83 @@ function nm_section_content_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_file__video';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(
+        'file' => array(
+          'default' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'embedded_with_link_to_original' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'file_icon' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'filename' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'full' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'media_12' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'media_3' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'media_4' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'media_6' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'media_600px' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'media_9' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'preview' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'preview_with_link_to_original' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+        ),
+      ),
+      'form' => array(
+        'filename' => array(
+          'weight' => '0',
+        ),
+        'preview' => array(
+          'weight' => '1',
+        ),
+      ),
+    ),
     'view_modes' => array(
-      'preview' => array(
+      'embedded_with_link_to_original' => array(
         'custom_settings' => TRUE,
       ),
-      'teaser' => array(
-        'custom_settings' => FALSE,
-      ),
-      'full' => array(
-        'custom_settings' => FALSE,
-      ),
-      'token' => array(
+      'file_icon' => array(
         'custom_settings' => FALSE,
       ),
       'filename' => array(
         'custom_settings' => TRUE,
       ),
-      'file_icon' => array(
+      'full' => array(
         'custom_settings' => FALSE,
       ),
       'media_12' => array(
@@ -1154,7 +1214,19 @@ function nm_section_content_features_strongarm() {
       'media_6' => array(
         'custom_settings' => TRUE,
       ),
+      'media_600px' => array(
+        'custom_settings' => TRUE,
+      ),
       'media_9' => array(
+        'custom_settings' => TRUE,
+      ),
+      'media_original' => array(
+        'custom_settings' => FALSE,
+      ),
+      'preview' => array(
+        'custom_settings' => TRUE,
+      ),
+      'preview_with_link_to_original' => array(
         'custom_settings' => TRUE,
       ),
       'rss' => array(
@@ -1166,86 +1238,14 @@ function nm_section_content_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
+      'teaser' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
       'wysiwyg' => array(
         'custom_settings' => FALSE,
-      ),
-      'preview_with_link_to_original' => array(
-        'custom_settings' => TRUE,
-      ),
-      'media_original' => array(
-        'custom_settings' => FALSE,
-      ),
-      'media_600px' => array(
-        'custom_settings' => TRUE,
-      ),
-      'embedded_with_link_to_original' => array(
-        'custom_settings' => TRUE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'filename' => array(
-          'weight' => '0',
-        ),
-        'preview' => array(
-          'weight' => '1',
-        ),
-      ),
-      'display' => array(
-        'file' => array(
-          'default' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'filename' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'file_icon' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'full' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'media_12' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'media_3' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'media_4' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'media_6' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'media_9' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'preview_with_link_to_original' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'media_600px' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'embedded_with_link_to_original' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'preview' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-        ),
       ),
     ),
   );
@@ -1256,147 +1256,41 @@ function nm_section_content_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__biblio';
   $strongarm->value = array(
-    'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
-      ),
-      'full' => array(
-        'custom_settings' => FALSE,
-      ),
-      'rss' => array(
-        'custom_settings' => FALSE,
-      ),
-      'search_index' => array(
-        'custom_settings' => FALSE,
-      ),
-      'search_result' => array(
-        'custom_settings' => FALSE,
-      ),
-      'print' => array(
-        'custom_settings' => FALSE,
-      ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
-      'token' => array(
-        'custom_settings' => FALSE,
-      ),
-      'task' => array(
-        'custom_settings' => FALSE,
-      ),
-      'revision' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
     'extra_fields' => array(
+      'display' => array(),
       'form' => array(
-        'title' => array(
-          'weight' => '-5',
-        ),
-        'path' => array(
-          'weight' => '30',
-        ),
-        'biblio_type' => array(
-          'weight' => '-4',
-        ),
-        'biblio_year' => array(
-          'weight' => '-4.5',
-        ),
-        'biblio_authors_field' => array(
-          'weight' => '0.1',
-        ),
-        'biblio_secondary_authors_field' => array(
-          'weight' => '0.2',
-        ),
-        'biblio_tertiary_authors_field' => array(
-          'weight' => '0.3',
-        ),
-        'biblio_subsidiary_authors_field' => array(
-          'weight' => '0.4',
-        ),
-        'biblio_corp_authors_field' => array(
-          'weight' => '0.5',
-        ),
-        'biblio_secondary_title' => array(
-          'weight' => '1.2',
-        ),
-        'biblio_tertiary_title' => array(
-          'weight' => '1.3',
-        ),
-        'biblio_volume' => array(
-          'weight' => '1.4',
-        ),
-        'biblio_number_of_volumes' => array(
-          'weight' => '1.5',
-        ),
-        'biblio_edition' => array(
-          'weight' => '1.5',
-        ),
-        'biblio_issue' => array(
-          'weight' => '1.5',
-        ),
-        'biblio_section' => array(
-          'weight' => '1.5',
-        ),
-        'biblio_number' => array(
-          'weight' => '1.6',
-        ),
-        'biblio_pages' => array(
-          'weight' => '1.7',
-        ),
-        'biblio_date' => array(
-          'weight' => '1.8',
-        ),
-        'biblio_publisher' => array(
-          'weight' => '1.9',
-        ),
-        'biblio_place_published' => array(
-          'weight' => '2',
-        ),
-        'biblio_type_of_work' => array(
-          'weight' => '2.2',
-        ),
-        'biblio_lang' => array(
-          'weight' => '2.3',
-        ),
-        'biblio_other_author_affiliations' => array(
-          'weight' => '2.4',
-        ),
-        'biblio_issn' => array(
-          'weight' => '15',
-        ),
-        'biblio_isbn' => array(
-          'weight' => '15',
-        ),
-        'biblio_accession_number' => array(
-          'weight' => '15.1',
-        ),
-        'biblio_call_number' => array(
-          'weight' => '15.2',
-        ),
-        'biblio_other_number' => array(
-          'weight' => '15.3',
-        ),
-        'biblio_keywords' => array(
-          'weight' => '15.4',
-        ),
         'biblio_abst_e' => array(
           'weight' => '15.5',
         ),
         'biblio_abst_f' => array(
           'weight' => '15.6',
         ),
-        'biblio_notes' => array(
-          'weight' => '15.7',
+        'biblio_access_date' => array(
+          'weight' => '17.9',
         ),
-        'biblio_url' => array(
-          'weight' => '15.8',
+        'biblio_accession_number' => array(
+          'weight' => '15.1',
         ),
-        'biblio_doi' => array(
-          'weight' => '15.9',
+        'biblio_alternate_title' => array(
+          'weight' => '17',
         ),
-        'biblio_research_notes' => array(
-          'weight' => '16',
+        'biblio_auth_address' => array(
+          'weight' => '17.8',
+        ),
+        'biblio_authors_field' => array(
+          'weight' => '0.1',
+        ),
+        'biblio_call_number' => array(
+          'weight' => '15.2',
+        ),
+        'biblio_citekey' => array(
+          'weight' => '17.5',
+        ),
+        'biblio_coins' => array(
+          'weight' => '17.6',
+        ),
+        'biblio_corp_authors_field' => array(
+          'weight' => '0.5',
         ),
         'biblio_custom1' => array(
           'weight' => '16.1',
@@ -1419,53 +1313,159 @@ function nm_section_content_features_strongarm() {
         'biblio_custom7' => array(
           'weight' => '16.8',
         ),
-        'biblio_short_title' => array(
-          'weight' => '16.9',
+        'biblio_date' => array(
+          'weight' => '1.8',
         ),
-        'biblio_translated_title' => array(
-          'weight' => '17',
+        'biblio_doi' => array(
+          'weight' => '15.9',
         ),
-        'biblio_alternate_title' => array(
-          'weight' => '17',
+        'biblio_edition' => array(
+          'weight' => '1.5',
+        ),
+        'biblio_isbn' => array(
+          'weight' => '15',
+        ),
+        'biblio_issn' => array(
+          'weight' => '15',
+        ),
+        'biblio_issue' => array(
+          'weight' => '1.5',
+        ),
+        'biblio_keywords' => array(
+          'weight' => '15.4',
+        ),
+        'biblio_label' => array(
+          'weight' => '17.8',
+        ),
+        'biblio_lang' => array(
+          'weight' => '2.3',
+        ),
+        'biblio_notes' => array(
+          'weight' => '15.7',
+        ),
+        'biblio_number' => array(
+          'weight' => '1.6',
+        ),
+        'biblio_number_of_volumes' => array(
+          'weight' => '1.5',
         ),
         'biblio_original_publication' => array(
           'weight' => '17.1',
         ),
-        'biblio_reprint_edition' => array(
-          'weight' => '17.2',
+        'biblio_other_author_affiliations' => array(
+          'weight' => '2.4',
         ),
-        'biblio_citekey' => array(
-          'weight' => '17.5',
+        'biblio_other_number' => array(
+          'weight' => '15.3',
+        ),
+        'biblio_pages' => array(
+          'weight' => '1.7',
+        ),
+        'biblio_place_published' => array(
+          'weight' => '2',
+        ),
+        'biblio_publisher' => array(
+          'weight' => '1.9',
+        ),
+        'biblio_refereed' => array(
+          'weight' => '18',
         ),
         'biblio_remote_db_name' => array(
-          'weight' => '17.6',
-        ),
-        'biblio_coins' => array(
           'weight' => '17.6',
         ),
         'biblio_remote_db_provider' => array(
           'weight' => '17.7',
         ),
-        'biblio_auth_address' => array(
-          'weight' => '17.8',
+        'biblio_reprint_edition' => array(
+          'weight' => '17.2',
         ),
-        'biblio_label' => array(
-          'weight' => '17.8',
+        'biblio_research_notes' => array(
+          'weight' => '16',
         ),
-        'biblio_access_date' => array(
-          'weight' => '17.9',
+        'biblio_secondary_authors_field' => array(
+          'weight' => '0.2',
         ),
-        'biblio_refereed' => array(
-          'weight' => '18',
+        'biblio_secondary_title' => array(
+          'weight' => '1.2',
+        ),
+        'biblio_section' => array(
+          'weight' => '1.5',
+        ),
+        'biblio_short_title' => array(
+          'weight' => '16.9',
+        ),
+        'biblio_subsidiary_authors_field' => array(
+          'weight' => '0.4',
+        ),
+        'biblio_tertiary_authors_field' => array(
+          'weight' => '0.3',
+        ),
+        'biblio_tertiary_title' => array(
+          'weight' => '1.3',
+        ),
+        'biblio_translated_title' => array(
+          'weight' => '17',
+        ),
+        'biblio_type' => array(
+          'weight' => '-4',
+        ),
+        'biblio_type_of_work' => array(
+          'weight' => '2.2',
+        ),
+        'biblio_url' => array(
+          'weight' => '15.8',
+        ),
+        'biblio_volume' => array(
+          'weight' => '1.4',
+        ),
+        'biblio_year' => array(
+          'weight' => '-4.5',
         ),
         'other_fields' => array(
           'weight' => '0',
+        ),
+        'path' => array(
+          'weight' => '30',
+        ),
+        'title' => array(
+          'weight' => '-5',
         ),
         'workflow' => array(
           'weight' => '10',
         ),
       ),
-      'display' => array(),
+    ),
+    'view_modes' => array(
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
+        'custom_settings' => FALSE,
+      ),
+      'rss' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_index' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_result' => array(
+        'custom_settings' => FALSE,
+      ),
+      'task' => array(
+        'custom_settings' => FALSE,
+      ),
+      'teaser' => array(
+        'custom_settings' => TRUE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
   );
   $export['field_bundle_settings_node__biblio'] = $strongarm;
@@ -1475,11 +1475,31 @@ function nm_section_content_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__content_chapter';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(
+        'path' => array(
+          'weight' => '5',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+        'workflow' => array(
+          'weight' => '4',
+        ),
+      ),
+    ),
     'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
       ),
       'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
         'custom_settings' => FALSE,
       ),
       'rss' => array(
@@ -1491,35 +1511,15 @@ function nm_section_content_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
+      'task' => array(
         'custom_settings' => FALSE,
+      ),
+      'teaser' => array(
+        'custom_settings' => TRUE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
       ),
-      'revision' => array(
-        'custom_settings' => FALSE,
-      ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
-      'task' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '0',
-        ),
-        'path' => array(
-          'weight' => '5',
-        ),
-        'workflow' => array(
-          'weight' => '4',
-        ),
-      ),
-      'display' => array(),
     ),
   );
   $export['field_bundle_settings_node__content_chapter'] = $strongarm;
@@ -1529,11 +1529,34 @@ function nm_section_content_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__content_domain';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(
+        'path' => array(
+          'weight' => '6',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+        'workflow' => array(
+          'weight' => '5',
+        ),
+      ),
+    ),
     'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
       ),
       'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'nm_stream' => array(
+        'custom_settings' => TRUE,
+      ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
         'custom_settings' => FALSE,
       ),
       'rss' => array(
@@ -1545,41 +1568,18 @@ function nm_section_content_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
+      'task' => array(
         'custom_settings' => FALSE,
+      ),
+      'teaser' => array(
+        'custom_settings' => TRUE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
       ),
-      'revision' => array(
-        'custom_settings' => FALSE,
-      ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
-      'task' => array(
-        'custom_settings' => FALSE,
-      ),
-      'nm_stream' => array(
-        'custom_settings' => TRUE,
-      ),
       'videosafe_description' => array(
         'custom_settings' => FALSE,
       ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '0',
-        ),
-        'path' => array(
-          'weight' => '6',
-        ),
-        'workflow' => array(
-          'weight' => '5',
-        ),
-      ),
-      'display' => array(),
     ),
   );
   $export['field_bundle_settings_node__content_domain'] = $strongarm;
@@ -1589,14 +1589,31 @@ function nm_section_content_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__content_multiple_choice';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(
+        'path' => array(
+          'weight' => '5',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+      ),
+    ),
     'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'full' => array(
+        'custom_settings' => FALSE,
       ),
       'node_embed' => array(
         'custom_settings' => TRUE,
       ),
-      'full' => array(
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
         'custom_settings' => FALSE,
       ),
       'rss' => array(
@@ -1608,32 +1625,15 @@ function nm_section_content_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
-        'custom_settings' => FALSE,
+      'task' => array(
+        'custom_settings' => TRUE,
+      ),
+      'teaser' => array(
+        'custom_settings' => TRUE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
       ),
-      'revision' => array(
-        'custom_settings' => FALSE,
-      ),
-      'task' => array(
-        'custom_settings' => TRUE,
-      ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '0',
-        ),
-        'path' => array(
-          'weight' => '5',
-        ),
-      ),
-      'display' => array(),
     ),
   );
   $export['field_bundle_settings_node__content_multiple_choice'] = $strongarm;
@@ -1643,14 +1643,25 @@ function nm_section_content_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__content_question_and_answer';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(
+        'path' => array(
+          'weight' => '4',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+      ),
+    ),
     'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
-      ),
-      'task' => array(
-        'custom_settings' => TRUE,
-      ),
       'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
         'custom_settings' => FALSE,
       ),
       'rss' => array(
@@ -1662,26 +1673,15 @@ function nm_section_content_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
-        'custom_settings' => FALSE,
+      'task' => array(
+        'custom_settings' => TRUE,
+      ),
+      'teaser' => array(
+        'custom_settings' => TRUE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
       ),
-      'revision' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '0',
-        ),
-        'path' => array(
-          'weight' => '4',
-        ),
-      ),
-      'display' => array(),
     ),
   );
   $export['field_bundle_settings_node__content_question_and_answer'] = $strongarm;
@@ -1977,265 +1977,265 @@ function nm_section_content_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'oembedembedly_providers';
   $strongarm->value = array(
-    'youtube' => 1,
-    'justintv' => 1,
-    'twitchtv' => 1,
-    'ustream' => 1,
-    'qik' => 1,
-    'revision3' => 1,
-    'dailymotion' => 1,
-    'collegehumor' => 1,
-    'telly' => 1,
-    'break' => 1,
-    'myspacevideos' => 1,
-    'metacafe' => 1,
-    'bliptv' => 1,
-    'googlevideo' => 1,
-    'yahoovideo' => 1,
-    'viddler' => 1,
-    'liveleak' => 1,
-    'animoto' => 1,
-    'dotsub' => 1,
-    'overstream' => 1,
-    'livestream' => 1,
-    'worldstarhiphop' => 1,
-    'bambuser' => 1,
-    'schooltube' => 1,
-    'bigthink' => 1,
-    'jibjab' => 1,
-    'xtranormal' => 1,
-    'socialcam' => 1,
-    'youku' => 1,
-    'snotr' => 1,
-    'clipfish' => 1,
-    'myvideo' => 1,
-    'vzaar' => 1,
-    'coub' => 1,
-    'streamio' => 1,
-    'vine' => 1,
-    'viddy' => 1,
-    'tudou' => 1,
-    'mixbit' => 1,
-    'sproutvideo' => 1,
-    'minotovideo' => 1,
-    'brainshark' => 1,
+    '23hq' => 1,
     '23video' => 1,
-    'goanimate' => 1,
-    'brainsonic' => 1,
-    'lustich' => 1,
-    'whitehouse' => 1,
-    'hulu' => 1,
-    'crackle' => 1,
-    'funnyordie' => 1,
-    'vimeo' => 1,
-    'ted' => 1,
-    'nfb' => 1,
-    'thedailyshow' => 1,
-    'yahoomovies' => 1,
-    'colbertnation' => 1,
-    'comedycentral' => 1,
-    'theonion' => 1,
-    'wordpresstv' => 1,
-    'traileraddict' => 1,
-    'escapistmagazine' => 1,
-    'trailerspy' => 1,
-    'foratv' => 1,
-    'spike' => 1,
-    'gametrailers' => 1,
-    'koldcasttv' => 1,
-    'mixergy' => 1,
-    'pbsvideo' => 1,
-    'zapiks' => 1,
-    'trutv' => 1,
-    'nzonscreen' => 1,
-    'wistia' => 1,
-    'confreaks' => 1,
-    'allthingsd' => 1,
-    'nymag' => 1,
-    'aniboom' => 1,
-    'grindtv' => 1,
-    'ifoodtv' => 1,
-    'logotv' => 1,
-    'lonelyplanet' => 1,
-    'streetfire' => 1,
-    'sciencestage' => 1,
-    'brightcove' => 1,
-    'wirewax' => 1,
-    'canalplus' => 1,
-    'vevo' => 1,
-    'pixorial' => 1,
-    'spreecast' => 1,
-    'showme' => 1,
-    'looplogic' => 1,
-    'onaol' => 1,
-    'videodetective' => 1,
-    'khanacademy' => 1,
-    'vidyard' => 1,
-    'veoh' => 1,
-    'univision' => 1,
-    'vidcaster' => 1,
-    'godtube' => 1,
-    'mediamatters' => 1,
-    'clikthrough' => 1,
-    'clipsyndicate' => 1,
-    'srf' => 1,
-    'mpora' => 1,
-    'espn' => 1,
     'abcnews' => 1,
-    'washingtonpost' => 1,
+    'achewood' => 1,
+    'allthingsd' => 1,
+    'amazon' => 1,
+    'aniboom' => 1,
+    'animoto' => 1,
+    'apple' => 1,
+    'asofterworld' => 1,
+    'audioboo' => 1,
+    'bambuser' => 1,
+    'bandcamp' => 1,
+    'behance' => 1,
+    'bigthink' => 1,
+    'bliptv' => 1,
     'boston' => 1,
-    'facebook' => 1,
-    'cnbc' => 1,
+    'brainshark' => 1,
+    'brainsonic' => 1,
+    'bravotv' => 1,
+    'break' => 1,
+    'brightcove' => 1,
+    'bubbli' => 1,
+    'canalplus' => 1,
     'cbsnews' => 1,
-    'googleplus' => 1,
+    'chartly' => 1,
+    'clikthrough' => 1,
+    'clipfish' => 1,
+    'clipsyndicate' => 1,
+    'cloudapp' => 1,
+    'cloudup' => 1,
+    'cnbc' => 1,
     'cnn' => 1,
     'cnnedition' => 1,
     'cnnmoney' => 1,
-    'msnbc' => 1,
-    'nbcnews' => 1,
-    'foxsports' => 1,
-    'globalpost' => 1,
-    'guardian' => 1,
-    'bravotv' => 1,
-    'nationalgeographic' => 1,
-    'discovery' => 1,
-    'forbes' => 1,
-    'distrify' => 1,
-    'foxnews' => 1,
-    'foxbusiness' => 1,
-    'reuters' => 1,
-    'huffpost' => 1,
-    'nytimes' => 1,
-    'vorarlberg' => 1,
-    'spiegel' => 1,
-    'github' => 1,
-    'crunchbase' => 1,
-    'slideshare' => 1,
-    'scribd' => 1,
-    'screenr' => 1,
-    'polldaddy' => 1,
-    'howcast' => 1,
-    'screencast' => 1,
-    'issuu' => 1,
-    'kickstarter' => 1,
-    'scrapblog' => 1,
-    'foursquare' => 1,
-    'sliderocket' => 1,
-    'chartly' => 1,
-    'googlemaps' => 1,
-    'craigslist' => 1,
-    'myopera' => 1,
-    'tumblr' => 1,
-    'polleverywhere' => 1,
-    'quantcast' => 1,
+    'colbertnation' => 1,
+    'collegehumor' => 1,
+    'comedycentral' => 1,
     'compete' => 1,
-    'statusnet' => 1,
+    'confreaks' => 1,
+    'coub' => 1,
+    'crackle' => 1,
+    'craigslist' => 1,
+    'crocodoc' => 1,
+    'crowdmap' => 1,
+    'crunchbase' => 1,
+    'dailymile' => 1,
+    'dailymotion' => 1,
+    'deviantart' => 1,
+    'dinosaurcomics' => 1,
+    'discovery' => 1,
+    'distrify' => 1,
+    'dotsub' => 1,
+    'dribbble' => 1,
+    'droplr' => 1,
+    'escapistmagazine' => 1,
+    'espn' => 1,
+    'etsy' => 1,
+    'eyeem' => 1,
+    'facebook' => 1,
+    'fiverr' => 1,
+    'flickr' => 1,
+    'foratv' => 1,
+    'forbes' => 1,
+    'formspring' => 1,
+    'fotopedia' => 1,
+    'foursquare' => 1,
+    'foxbusiness' => 1,
+    'foxnews' => 1,
+    'foxsports' => 1,
+    'freemusicarchive' => 1,
+    'frontback' => 1,
+    'funnyordie' => 1,
+    'gametrailers' => 1,
+    'ganxy' => 1,
+    'giflike' => 1,
+    'giphy' => 1,
+    'github' => 1,
+    'globalpost' => 1,
+    'goanimate' => 1,
+    'godtube' => 1,
+    'gogoyoko' => 1,
+    'googlemaps' => 1,
+    'googleplus' => 1,
+    'googlevideo' => 1,
+    'graphicly' => 1,
+    'grindtv' => 1,
+    'grooveshark' => 1,
+    'guardian' => 1,
+    'hackpad' => 1,
+    'hark' => 1,
+    'howcast' => 1,
+    'huffduffer' => 1,
+    'huffpost' => 1,
+    'hulu' => 1,
+    'hypem' => 1,
     'identica' => 1,
-    'vznetworks' => 1,
+    'ifoodtv' => 1,
+    'ifttt' => 1,
+    'imajize' => 1,
+    'imgly' => 1,
+    'imgur' => 1,
+    'instagram' => 1,
+    'issuu' => 1,
+    'jdsupra' => 1,
+    'jibjab' => 1,
+    'jsfiddle' => 1,
+    'justintv' => 1,
+    'khanacademy' => 1,
+    'kickstarter' => 1,
+    'kinomap' => 1,
+    'kiva' => 1,
+    'koldcasttv' => 1,
+    'lastfm' => 1,
+    'listly' => 1,
+    'liveleak' => 1,
+    'livestream' => 1,
+    'lockerz' => 1,
+    'logotv' => 1,
+    'lonelyplanet' => 1,
+    'looplogic' => 1,
+    'lustich' => 1,
+    'meadd' => 1,
+    'mediamatters' => 1,
+    'meetup' => 1,
+    'metacafe' => 1,
+    'metacdn' => 1,
+    'minilogs' => 1,
+    'minotovideo' => 1,
+    'mixbit' => 1,
+    'mixcloud' => 1,
+    'mixergy' => 1,
+    'mlkshk' => 1,
+    'mobypicture' => 1,
+    'mpora' => 1,
+    'msnbc' => 1,
     'mylocme' => 1,
+    'myopera' => 1,
+    'myspacevideos' => 1,
+    'myvideo' => 1,
+    'nationalgeographic' => 1,
+    'nbcnews' => 1,
+    'nfb' => 1,
+    'npr' => 1,
+    'nymag' => 1,
+    'nytimes' => 1,
+    'nzonscreen' => 1,
+    'onaol' => 1,
+    'overstream' => 1,
+    'owly' => 1,
+    'panorama' => 1,
     'pastebin' => 1,
     'pastie' => 1,
-    'redux' => 1,
-    'cloudapp' => 1,
-    'speakerdeck' => 1,
-    'kiva' => 1,
-    'timetoast' => 1,
-    'storify' => 1,
-    'meetup' => 1,
-    'dailymile' => 1,
-    'kinomap' => 1,
-    'metacdn' => 1,
-    'prezi' => 1,
-    'uservoice' => 1,
-    'formspring' => 1,
-    'twitlonger' => 1,
-    'qwiki' => 1,
-    'crocodoc' => 1,
-    'wikipedia' => 1,
-    'wikimedia' => 1,
-    'urtak' => 1,
-    'graphicly' => 1,
-    'ganxy' => 1,
-    'panorama' => 1,
-    'behance' => 1,
-    'jdsupra' => 1,
-    'minilogs' => 1,
-    'sketchfab' => 1,
-    'jsfiddle' => 1,
-    'ponga' => 1,
-    'listly' => 1,
-    'crowdmap' => 1,
-    'ifttt' => 1,
-    'weavly' => 1,
-    'tagmotion' => 1,
-    'cloudup' => 1,
-    'hackpad' => 1,
-    'talely' => 1,
-    'polar' => 1,
-    'bubbli' => 1,
-    'imajize' => 1,
-    'giflike' => 1,
-    'rapidengage' => 1,
-    'yfrog' => 1,
-    'flickr' => 1,
-    'twitpic' => 1,
-    'imgur' => 1,
-    'twitgoo' => 1,
+    'pbsvideo' => 1,
     'photobucket' => 1,
-    'mobypicture' => 1,
-    'xkcd' => 1,
-    'asofterworld' => 1,
-    'dinosaurcomics' => 1,
-    '23hq' => 1,
-    'dribbble' => 1,
-    'smugmug' => 1,
-    'picasa' => 1,
-    'imgly' => 1,
-    'tinypic' => 1,
-    'meadd' => 1,
-    'deviantart' => 1,
-    'fotopedia' => 1,
     'photozou' => 1,
-    'instagram' => 1,
-    'skitch' => 1,
-    'questionablecontent' => 1,
-    'twitrpix' => 1,
-    'someecards' => 1,
+    'picasa' => 1,
     'pikchur' => 1,
-    'achewood' => 1,
-    'whosay' => 1,
-    'owly' => 1,
-    'mlkshk' => 1,
-    'lockerz' => 1,
-    'droplr' => 1,
-    'eyeem' => 1,
-    'giphy' => 1,
-    'frontback' => 1,
-    'amazon' => 1,
-    'shopstyle' => 1,
-    'apple' => 1,
-    'shoplocket' => 1,
-    'etsy' => 1,
-    'fiverr' => 1,
-    'soundcloud' => 1,
-    'spotify' => 1,
-    'lastfm' => 1,
-    'mixcloud' => 1,
+    'pixorial' => 1,
+    'polar' => 1,
+    'polldaddy' => 1,
+    'polleverywhere' => 1,
+    'ponga' => 1,
+    'prezi' => 1,
+    'qik' => 1,
+    'quantcast' => 1,
+    'questionablecontent' => 1,
+    'qwiki' => 1,
     'radionomy' => 1,
-    'hark' => 1,
-    'rdio' => 1,
-    'zeroinch' => 1,
-    'bandcamp' => 1,
-    'freemusicarchive' => 1,
-    'npr' => 1,
-    'huffduffer' => 1,
-    'audioboo' => 1,
-    'xiami' => 1,
-    'saynow' => 1,
-    'grooveshark' => 1,
     'radioreddit' => 1,
-    'gogoyoko' => 1,
-    'hypem' => 1,
+    'rapidengage' => 1,
+    'rdio' => 1,
+    'redux' => 1,
+    'reuters' => 1,
+    'revision3' => 1,
+    'saynow' => 1,
+    'schooltube' => 1,
+    'sciencestage' => 1,
+    'scrapblog' => 1,
+    'screencast' => 1,
+    'screenr' => 1,
+    'scribd' => 1,
+    'shoplocket' => 1,
+    'shopstyle' => 1,
+    'showme' => 1,
+    'sketchfab' => 1,
+    'skitch' => 1,
+    'sliderocket' => 1,
+    'slideshare' => 1,
+    'smugmug' => 1,
+    'snotr' => 1,
+    'socialcam' => 1,
+    'someecards' => 1,
+    'soundcloud' => 1,
+    'speakerdeck' => 1,
+    'spiegel' => 1,
+    'spike' => 1,
+    'spotify' => 1,
+    'spreecast' => 1,
+    'sproutvideo' => 1,
+    'srf' => 1,
+    'statusnet' => 1,
+    'storify' => 1,
+    'streamio' => 1,
+    'streetfire' => 1,
+    'tagmotion' => 1,
+    'talely' => 1,
+    'ted' => 1,
+    'telly' => 1,
+    'thedailyshow' => 1,
+    'theonion' => 1,
+    'timetoast' => 1,
+    'tinypic' => 1,
+    'traileraddict' => 1,
+    'trailerspy' => 1,
+    'trutv' => 1,
+    'tudou' => 1,
+    'tumblr' => 1,
+    'twitchtv' => 1,
+    'twitgoo' => 1,
+    'twitlonger' => 1,
+    'twitpic' => 1,
+    'twitrpix' => 1,
+    'univision' => 1,
+    'urtak' => 1,
+    'uservoice' => 1,
+    'ustream' => 1,
+    'veoh' => 1,
+    'vevo' => 1,
+    'vidcaster' => 1,
+    'viddler' => 1,
+    'viddy' => 1,
+    'videodetective' => 1,
+    'vidyard' => 1,
+    'vimeo' => 1,
+    'vine' => 1,
+    'vorarlberg' => 1,
+    'vzaar' => 1,
+    'vznetworks' => 1,
+    'washingtonpost' => 1,
+    'weavly' => 1,
+    'whitehouse' => 1,
+    'whosay' => 1,
+    'wikimedia' => 1,
+    'wikipedia' => 1,
+    'wirewax' => 1,
+    'wistia' => 1,
+    'wordpresstv' => 1,
+    'worldstarhiphop' => 1,
+    'xiami' => 1,
+    'xkcd' => 1,
+    'xtranormal' => 1,
+    'yahoomovies' => 1,
+    'yahoovideo' => 1,
+    'yfrog' => 1,
+    'youku' => 1,
+    'youtube' => 1,
+    'zapiks' => 1,
+    'zeroinch' => 1,
   );
   $export['oembedembedly_providers'] = $strongarm;
 

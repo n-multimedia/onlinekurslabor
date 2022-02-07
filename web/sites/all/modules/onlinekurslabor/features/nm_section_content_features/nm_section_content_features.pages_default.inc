@@ -18,35 +18,35 @@ function nm_section_content_features_default_page_manager_pages() {
   $page->admin_description = '';
   $page->path = 'domain/media/%1/!fid';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
-    1 => array(
-      'id' => 1,
-      'identifier' => 'Beitrag: ID',
-      'name' => 'entity_id:node',
-      'settings' => array(),
-    ),
     'fid' => array(
       'id' => 1,
       'identifier' => 'Datei: FID',
       'name' => 'entity_id:file',
+      'settings' => array(),
+    ),
+    1 => array(
+      'id' => 1,
+      'identifier' => 'Beitrag: ID',
+      'name' => 'entity_id:node',
       'settings' => array(),
     ),
   );
@@ -63,49 +63,49 @@ function nm_section_content_features_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Overview',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'content_domain' => 'content_domain',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
         1 => array(
+          'context' => 'argument_entity_id:file_1',
           'name' => 'context_exists',
+          'not' => FALSE,
           'settings' => array(
             'exists' => '0',
           ),
-          'context' => 'argument_entity_id:file_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Overview',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
       'outline' => NULL,
       'tools' => NULL,
-      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -124,10 +124,10 @@ function nm_section_content_features_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<h2>Medien</h2>',
     'format' => 'filtered_html',
     'substitute' => 1,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -168,7 +168,6 @@ function nm_section_content_features_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'Add File',
-    'title' => 'Medien hochladen',
     'body' => '<?php
 /*
 $output = drupal_get_form(\'file_entity_add_upload\');
@@ -179,6 +178,7 @@ echo drupal_render($output);
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => 'Medien hochladen',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -200,8 +200,8 @@ echo drupal_render($output);
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -227,42 +227,42 @@ echo drupal_render($output);
   $handler->handler = 'panel_context';
   $handler->weight = 1;
   $handler->conf = array(
-    'title' => 'Media_Entity',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'content_domain' => 'content_domain',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'name' => 'media_entity',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Media_Entity',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
       'outline' => NULL,
       'tools' => NULL,
-      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -281,10 +281,10 @@ echo drupal_render($output);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<h2>Medien</h2>',
     'format' => 'filtered_html',
     'substitute' => 1,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -305,24 +305,24 @@ echo drupal_render($output);
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '0',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'default',
     'context' => array(
       0 => 'argument_entity_id:file_1.fid',
     ),
+    'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '0',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -344,13 +344,13 @@ echo drupal_render($output);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'file usage',
-    'title' => 'Dateiverwendung',
-    'title_heading' => 'h2',
     'body' => '<?php
 echo _custom_general_get_rendered_file_usage_table(%fid:fid);
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => 'Dateiverwendung',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -372,8 +372,8 @@ echo _custom_general_get_rendered_file_usage_table(%fid:fid);
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -401,22 +401,22 @@ echo _custom_general_get_rendered_file_usage_table(%fid:fid);
   $page->admin_description = '';
   $page->path = 'domain/biblio/%1';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -440,41 +440,41 @@ echo _custom_general_get_rendered_file_usage_table(%fid:fid);
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'content_domain' => 'content_domain',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
       'outline' => NULL,
       'tools' => NULL,
-      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -493,10 +493,10 @@ echo _custom_general_get_rendered_file_usage_table(%fid:fid);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<h2>Bibliografie</h2>',
     'format' => 'filtered_html',
     'substitute' => 1,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -537,8 +537,8 @@ echo _custom_general_get_rendered_file_usage_table(%fid:fid);
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -566,22 +566,22 @@ echo _custom_general_get_rendered_file_usage_table(%fid:fid);
   $page->admin_description = '';
   $page->path = 'domain/add/%1/%2';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'create',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_node_add_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'create',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -611,41 +611,41 @@ echo _custom_general_get_rendered_file_usage_table(%fid:fid);
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'content_domain' => 'content_domain',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
       'outline' => NULL,
       'tools' => NULL,
-      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -687,8 +687,8 @@ echo _custom_general_get_rendered_file_usage_table(%fid:fid);
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -716,22 +716,22 @@ echo _custom_general_get_rendered_file_usage_table(%fid:fid);
   $page->admin_description = '';
   $page->path = 'domain/text/%1/rearrange';
   $page->access = array(
+    'logic' => 'or',
     'plugins' => array(
       1 => array(
-        'name' => 'og_perm',
-        'settings' => array(
-          'perm' => 'update group',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'og_perm',
         'not' => FALSE,
+        'settings' => array(
+          'perm' => 'update group',
+        ),
       ),
     ),
-    'logic' => 'or',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -755,41 +755,41 @@ echo _custom_general_get_rendered_file_usage_table(%fid:fid);
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'content_domain' => 'content_domain',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
       'outline' => NULL,
       'tools' => NULL,
-      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -808,10 +808,10 @@ echo _custom_general_get_rendered_file_usage_table(%fid:fid);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<h2>Kapitelreihenfolge bearbeiten</h2>',
     'format' => 'filtered_html',
     'substitute' => 1,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -833,7 +833,6 @@ echo _custom_general_get_rendered_file_usage_table(%fid:fid);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<?php 
 module_load_include(\'inc\', \'book\', \'book.admin\');
 $active_domain =  _section_content_get_active_domain();
@@ -841,6 +840,7 @@ echo (drupal_render(drupal_get_form(\'book_admin_edit\', $active_domain)));
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -862,8 +862,8 @@ echo (drupal_render(drupal_get_form(\'book_admin_edit\', $active_domain)));
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -891,22 +891,22 @@ echo (drupal_render(drupal_get_form(\'book_admin_edit\', $active_domain)));
   $page->admin_description = '';
   $page->path = 'domain/delete/%1';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'delete',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'delete',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -930,26 +930,26 @@ echo (drupal_render(drupal_get_form(\'book_admin_edit\', $active_domain)));
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'no_blocks' => 0,
     'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
     'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
       'outline' => NULL,
       'tools' => NULL,
-      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -968,7 +968,6 @@ echo (drupal_render(drupal_get_form(\'book_admin_edit\', $active_domain)));
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<?php
 module_load_include(\'inc\', \'node\', \'node.pages\');
 echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
@@ -977,6 +976,7 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
 ',
     'format' => 'php_code',
     'substitute' => 0,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -998,8 +998,8 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1027,22 +1027,22 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $page->admin_description = '';
   $page->path = 'domain/edit/%1';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'update',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_node_edit_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'update',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -1066,26 +1066,26 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'no_blocks' => 0,
     'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
     'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
       'outline' => NULL,
       'tools' => NULL,
-      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -1149,8 +1149,8 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1178,22 +1178,22 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $page->admin_description = '';
   $page->path = 'domain/members/%1';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'update',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'update',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -1217,45 +1217,45 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'content_domain' => 'content_domain',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'name' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
-    'style_settings' => array(
-      'default' => NULL,
-      'center' => NULL,
-      'outline' => NULL,
-      'tools' => NULL,
-      'navigation' => NULL,
-    ),
     'center' => array(
       'style' => 'tabs',
+    ),
+    'style_settings' => array(
+      'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
+      'outline' => NULL,
+      'tools' => NULL,
     ),
   );
   $display->cache = array();
@@ -1273,24 +1273,24 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '50',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'block',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'block',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '50',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
-    'override_title_text' => 'Mitglieder',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Mitglieder',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1311,24 +1311,24 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '50',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'bl_1',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'bl_1',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '50',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
-    'override_title_text' => 'Anfragen',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Anfragen',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1350,8 +1350,8 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1379,9 +1379,12 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $page->admin_description = '';
   $page->path = 'domains';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
+        'context' => 'logged-in-user',
         'name' => 'role',
+        'not' => FALSE,
         'settings' => array(
           'rids' => array(
             0 => 30037204,
@@ -1389,13 +1392,10 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
             2 => 16675960,
           ),
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array();
@@ -1412,25 +1412,25 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'no_blocks' => 0,
     'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
     'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span8span4_mobile_bottom_up';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
-      'tools' => NULL,
+      'default' => NULL,
       'news' => NULL,
+      'tools' => NULL,
     ),
   );
   $display->cache = array();
@@ -1450,8 +1450,8 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $pane->configuration = array(
     'inherit_path' => 1,
     'override_title' => 1,
-    'override_title_text' => 'Nach Titel filtern',
     'override_title_heading' => 'div',
+    'override_title_text' => 'Nach Titel filtern',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1473,11 +1473,11 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'admin-info',
-    'title' => 'Infos fürn Admin',
-    'title_heading' => 'h2',
     'body' => '<p>hier wird die exposed form für "meine lehrtexte" - filter: titel angezeigt admin/structure/views/view/courses_user_domains/edit/my_domains</p><p>dieser filter funktioniert zugleich für "alle lehrtexte", obwohl exposed form nicht dargestellt, da in der adresszeile der parameter ?title=... mitgegeben wird und der identifier für "meine lehrtexte" der gleiche wie für "alle lehrtexte"</p>',
     'format' => 'filtered_html',
     'substitute' => TRUE,
+    'title' => 'Infos fürn Admin',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1499,7 +1499,6 @@ echo drupal_render(drupal_get_form(\'node_delete_confirm\', node_load(arg(2))));
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<?php
 if(section_content_authors_tools_access())
 echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrtext anlegen</a></p>\';
@@ -1507,6 +1506,7 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
 ?>',
     'format' => 'php_code',
     'substitute' => TRUE,
+    'title' => '',
     'title_heading' => 'h2',
   );
   $pane->cache = array();
@@ -1528,14 +1528,14 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'use_pager' => 1,
-    'pager_id' => '0',
     'items_per_page' => '10',
     'offset' => '0',
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'pager_id' => '0',
     'path' => '/domains',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1557,12 +1557,12 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '<hr>',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<hr>',
     'format' => 'filtered_html',
-    'substitute' => TRUE,
     'name' => 'html_hr_line',
+    'substitute' => TRUE,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1583,14 +1583,14 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'use_pager' => 1,
-    'pager_id' => '2',
     'items_per_page' => '40',
     'offset' => '0',
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'pager_id' => '2',
     'path' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1611,21 +1611,21 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 1,
-    'use_pager' => 1,
-    'nodes_per_page' => '30',
-    'pager_id' => '1',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
     'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '30',
+    'offset' => '0',
+    'override_pager_settings' => 1,
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'pager_id' => '1',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1653,20 +1653,23 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $page->admin_description = '';
   $page->path = 'domain/preview/%1/!optional_nid';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'role',
+        'not' => FALSE,
         'settings' => array(
           'rids' => array(
             0 => 30037204,
@@ -1674,25 +1677,22 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
             2 => 16675960,
           ),
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
-    1 => array(
-      'id' => 1,
-      'identifier' => 'Beitrag: ID',
-      'name' => 'entity_id:node',
-      'settings' => array(),
-    ),
     'optional_nid' => array(
       'id' => 2,
       'identifier' => 'Beitrag: optional',
+      'name' => 'entity_id:node',
+      'settings' => array(),
+    ),
+    1 => array(
+      'id' => 1,
+      'identifier' => 'Beitrag: ID',
       'name' => 'entity_id:node',
       'settings' => array(),
     ),
@@ -1710,43 +1710,43 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $handler->handler = 'panel_context';
   $handler->weight = 2;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'content_domain' => 'content_domain',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'name' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span9span3_mobile_bottom_up';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
-      'outline' => NULL,
-      'tools' => NULL,
+      'default' => NULL,
       'navigation' => NULL,
       'news' => NULL,
+      'outline' => NULL,
+      'tools' => NULL,
     ),
   );
   $display->cache = array();
@@ -1765,11 +1765,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'preview',
-    'title' => 'Lehrtextvorschau',
-    'title_heading' => 'h2',
     'body' => '<p>Sie sehen eine Vorschau des Lehrtexts.</p>',
     'format' => 'filtered_html',
     'substitute' => 1,
+    'title' => 'Lehrtextvorschau',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1791,8 +1791,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1814,8 +1814,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => 'Ihre Mitgliedschaft',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Ihre Mitgliedschaft',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1836,18 +1836,18 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'og_group_subscribe',
+    'context' => 'argument_entity_id:node_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'og_group_subscribe',
     'formatter_settings' => array(
       'field_name' => '0',
     ),
-    'context' => 'argument_entity_id:node_1',
+    'label' => 'title',
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1868,11 +1868,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
-    'sanitize' => 1,
     'context' => 'argument_entity_id:node_1',
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'sanitize' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1893,16 +1893,16 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'list_key',
+    'context' => 'argument_entity_id:node_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'list_key',
     'formatter_settings' => array(),
-    'context' => 'argument_entity_id:node_1',
+    'label' => 'title',
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1923,11 +1923,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'sanitize' => 0,
     'context' => 'argument_entity_id:node_1',
     'override_title' => 1,
-    'override_title_text' => 'Sichtbarkeit',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Sichtbarkeit',
+    'sanitize' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1950,11 +1950,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
     'plugins' => array(),
   );
   $pane->configuration = array(
-    'view_mode' => 'full',
     'context' => 'argument_entity_id:node_1',
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'view_mode' => 'full',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1998,8 +1998,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2025,43 +2025,43 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $handler->handler = 'panel_context';
   $handler->weight = 3;
   $handler->conf = array(
-    'title' => 'no_access_to_rest',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => TRUE,
           'settings' => array(
             'type' => array(
               'content_domain' => 'content_domain',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => TRUE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'name' => 'no_access_to_rest',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'no_access_to_rest',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span9span3_mobile_bottom_up';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
-      'outline' => NULL,
-      'tools' => NULL,
+      'default' => NULL,
       'navigation' => NULL,
       'news' => NULL,
+      'outline' => NULL,
+      'tools' => NULL,
     ),
   );
   $display->cache = array();
@@ -2080,8 +2080,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2102,18 +2102,18 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'og_group_subscribe',
+    'context' => 'argument_entity_id:node_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'og_group_subscribe',
     'formatter_settings' => array(
       'field_name' => '0',
     ),
-    'context' => 'argument_entity_id:node_1',
+    'label' => 'title',
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2135,8 +2135,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2158,11 +2158,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'no access',
-    'title' => '%1:title',
-    'title_heading' => 'h2',
     'body' => '<p><strong>Kein Zugriff</strong></p><p>Nur Mitglieder haben Zugriff auf die Unterkapitel.</p>',
     'format' => 'filtered_html',
     'substitute' => 1,
+    'title' => '%1:title',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2206,8 +2206,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2229,8 +2229,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2258,22 +2258,22 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $page->admin_description = '';
   $page->path = 'domain/stats/%1';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'update',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'update',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -2297,45 +2297,45 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'content_domain' => 'content_domain',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'name' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
-    'style_settings' => array(
-      'default' => NULL,
-      'center' => NULL,
-      'outline' => NULL,
-      'tools' => NULL,
-      'navigation' => NULL,
-    ),
     'center' => array(
       'style' => 'tabs',
+    ),
+    'style_settings' => array(
+      'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
+      'outline' => NULL,
+      'tools' => NULL,
     ),
   );
   $display->cache = array();
@@ -2353,11 +2353,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'sanitize' => 1,
     'context' => 'argument_entity_id:node_1',
     'override_title' => 1,
-    'override_title_text' => 'Zugriffsbeschränkung',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Zugriffsbeschränkung',
+    'sanitize' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2379,8 +2379,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2402,8 +2402,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => 'Medienübersicht',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Medienübersicht',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2425,11 +2425,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => 'Lehrtext exportieren',
-    'title_heading' => 'h2',
     'body' => '<p>Sie können diesen Lehrtext auf einer einzelnen Seite ausgeben lassen und bspw. als PDF abspeichern.</p><p><em>Die Darstellung kann abweichen; interaktive Elemente wie Videos sowie andere Medien außer Bildern sind nicht enthalten</em></p><p><strong><a href="/book/export/html/%1:nid" target="_blank">Export starten</a></strong></p>',
     'format' => 'filtered_html',
     'substitute' => 1,
+    'title' => 'Lehrtext exportieren',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2451,8 +2451,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2480,20 +2480,23 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $page->admin_description = '';
   $page->path = 'domain/text/%1/!optional_nid';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'role',
+        'not' => FALSE,
         'settings' => array(
           'rids' => array(
             0 => 30037204,
@@ -2501,25 +2504,22 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
             2 => 16675960,
           ),
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
-    1 => array(
-      'id' => 1,
-      'identifier' => 'Beitrag: ID',
-      'name' => 'entity_id:node',
-      'settings' => array(),
-    ),
     'optional_nid' => array(
       'id' => 2,
       'identifier' => 'Beitrag: optional',
+      'name' => 'entity_id:node',
+      'settings' => array(),
+    ),
+    1 => array(
+      'id' => 1,
+      'identifier' => 'Beitrag: ID',
       'name' => 'entity_id:node',
       'settings' => array(),
     ),
@@ -2537,55 +2537,55 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'annvid' => 'annvid',
-              'h5p_content' => 'h5p_content',
+              'biblio' => 'biblio',
               'content_chapter' => 'content_chapter',
               'content_domain' => 'content_domain',
               'content_multiple_choice' => 'content_multiple_choice',
               'content_question_and_answer' => 'content_question_and_answer',
-              'biblio' => 'biblio',
+              'h5p_content' => 'h5p_content',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
         1 => array(
+          'context' => 'argument_entity_id:node_2',
           'name' => 'context_exists',
+          'not' => FALSE,
           'settings' => array(
             'exists' => '0',
           ),
-          'context' => 'argument_entity_id:node_2',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
       'outline' => NULL,
       'tools' => NULL,
-      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -2604,8 +2604,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2650,10 +2650,10 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
     'plugins' => array(),
   );
   $pane->configuration = array(
-    'view_mode' => 'full',
     'context' => 'argument_entity_id:node_1',
     'override_title' => 0,
     'override_title_text' => '',
+    'view_mode' => 'full',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2675,8 +2675,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2702,61 +2702,61 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $handler->handler = 'panel_context';
   $handler->weight = 1;
   $handler->conf = array(
-    'title' => 'Panel: optional NID',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'content_domain' => 'content_domain',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
         2 => array(
+          'context' => 'argument_entity_id:node_2',
           'name' => 'context_exists',
+          'not' => FALSE,
           'settings' => array(
             'exists' => '1',
           ),
-          'context' => 'argument_entity_id:node_2',
-          'not' => FALSE,
         ),
         3 => array(
+          'context' => 'argument_entity_id:node_2',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
-              'h5p_content' => 'h5p_content',
               'biblio' => 'biblio',
+              'h5p_content' => 'h5p_content',
             ),
           ),
-          'context' => 'argument_entity_id:node_2',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'name' => 'panel_with_optional_nid',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel: optional NID',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
       'outline' => NULL,
       'tools' => NULL,
-      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -2796,11 +2796,11 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'view_mode' => 'full',
     'context' => 'argument_entity_id:node_2',
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'view_mode' => 'full',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2822,8 +2822,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -2851,20 +2851,23 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $page->admin_description = '';
   $page->path = 'domain/text/%1/revisions';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'role',
+        'not' => FALSE,
         'settings' => array(
           'rids' => array(
             0 => 30037204,
@@ -2872,13 +2875,10 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
             2 => 16675960,
           ),
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -2902,46 +2902,46 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'annvid' => 'annvid',
+              'biblio' => 'biblio',
               'content_chapter' => 'content_chapter',
               'content_domain' => 'content_domain',
               'content_multiple_choice' => 'content_multiple_choice',
               'content_question_and_answer' => 'content_question_and_answer',
-              'biblio' => 'biblio',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
       'outline' => NULL,
       'tools' => NULL,
-      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -3004,8 +3004,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -3033,22 +3033,22 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $page->admin_description = '';
   $page->path = 'domain/tasks/%1';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -3072,41 +3072,41 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'content_domain' => 'content_domain',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
       'outline' => NULL,
       'tools' => NULL,
-      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -3125,10 +3125,10 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<h2>Lernzielkontrollaufgaben</h2>',
     'format' => 'filtered_html',
     'substitute' => 1,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -3169,8 +3169,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
