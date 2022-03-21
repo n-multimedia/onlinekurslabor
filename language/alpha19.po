@@ -6,6 +6,16 @@ msgstr "%count Kursinhalte wurden ebenfalls gelöscht."
 msgid "Deleted %count files"
 msgstr "%count Dateien gelöscht"
 
+msgid "Write [iframe] to embed an iframe."
+msgstr "Fügen Sie den Shortcode [iframe] ein, um einen iFrame einzubinden."
+
+msgid 'This iframe can not be shown due to restrictions. Open in new tab: <a href="@iframe_url" target="_blank">@iframe_url</a>'
+msgstr 'Dieser iFrame kann aufgrund von Restriktionen nicht angezeigt werden. In neuem Tab öffnen: <a href="@iframe_url" target="_blank">@iframe_url</a>'
+
+
+msgid 'Write [iframe src="..."] to include an iframe with an url'
+msgstr 'Fügen Sie den Shortcode [iframe src="..."] ein, um einen iFrame mit der Webseite "..." einzubinden.'
+
 msgid ""
 msgstr ""
 

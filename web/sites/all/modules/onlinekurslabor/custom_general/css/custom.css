@@ -1389,3 +1389,9 @@ div.media-media_12 div.file-audio audio
 {
 width:100%;
 }
+
+.okl_filter_iframe
+{
+    width:100%;
+    border: 1px solid black;
+}

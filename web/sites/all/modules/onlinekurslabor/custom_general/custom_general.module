@@ -146,7 +146,7 @@ define("NM_CHAPTER_SEPARATOR", ".");
 
 define("NM_SUPPORT_MAIL", "support@medienlabor-uni-augsburg.de");
 define("NM_OKL_BOT_MAIL",'bot@onlinekurslabor.de');
-
+define("NM_IFRAME_SRC_HOST_WHITELIST_REGEX", ["/\.uni-augsburg.de/"]);
 
 
 module_load_include('inc', 'custom_general', 'inc/functions');
@@ -1865,6 +1865,13 @@ function custom_general_filter_info() {
         'tips callback' => '_custom_general_collapse_filter_tips',
         'cache' => FALSE,
     );
+    $filters['filter_iframe'] = array(
+        'title' => t('Content - iframe'),
+        'description' => t('Write [iframe] to embed an iframe.'),
+        'process callback' => '_custom_general_iframe_filter_process',
+        'tips callback' => '_custom_general_iframe_filter_tips',
+        'cache' => FALSE,
+    );
     return $filters;
 }
 
@@ -1881,6 +1888,22 @@ function _custom_general_collapse_filter_process($text, $filter, $format) {
     $regex = "/\[collapsible[a-zA-Z ]*\][^\[]*\[\/collapsible\]/";
 
     return preg_replace_callback($regex, '_custom_general_collapse_replacements', $text);
+}
+
+
+/**
+ *   Filter  process callback.
+ *   Content - look for [iframe]
+ * The actual filtering is performed here. The supplied text should be returned,
+ * once any necessary substitutions have taken place.
+ */
+function _custom_general_iframe_filter_process($text, $filter, $format) {
+
+    //[iframe (options...)]
+    //ist zweiphasig. hier wird der komplette match rausgesucht und in der funktion dann der content ersetzt.
+    $regex = "/\[iframe.*\]/";
+
+    return preg_replace_callback($regex, '_custom_general_iframe_replacements', $text);
 }
 
 
@@ -1942,6 +1965,59 @@ function _custom_general_collapse_replacements($matches) {
     }
 }
 
+
+/**
+ * ersetzt [iframe] elements durch <iframe ...> code
+ * @see _custom_general_iframe_filter_process
+ * @param type $matches
+ * @return string
+ */
+function _custom_general_iframe_replacements($matches) {
+
+  if (!empty($matches)) {
+    $body = $matches[0];
+
+    //der wysiwyg wandelt urls in links um
+    $body_without_html = strip_tags($body);
+
+    //parse iframe-parameters
+    $iframe_param_regex = '/(?:[a-zA-Z]+=[\'"]\S+[\'"])+/';
+    $iframe_param_matches = [];
+    preg_match_all($iframe_param_regex, $body_without_html, $iframe_param_matches);
+    $iframe_parameters = $iframe_param_matches[0];
+
+    $iframe_src = "";
+    foreach ($iframe_parameters as $iframe_param) {
+      //extrahiere src
+      if (strstr($iframe_param, "src=")) {
+        $iframe_src = preg_replace('/[^a-z0-9:\/\.-]/', '', str_replace("src=", "", $iframe_param));
+      }
+    }
+    $iframe_host = parse_url($iframe_src, PHP_URL_HOST);
+    $iframe_parameters[] = 'class="okl_filter_iframe"';
+
+    //see: NM_IFRAME_SRC_HOST_WHITELIST_REGEX erlaubt derzeit nur interne embeds
+    $iframe_src_allowed = false;
+    foreach (NM_IFRAME_SRC_HOST_WHITELIST_REGEX as $iframe_whitelist_regex) {
+      if (preg_match($iframe_whitelist_regex, $iframe_host)) {
+        $iframe_src_allowed = true;
+      }
+      //relative Pfadangaben sind auch ok
+      elseif (empty(parse_url($iframe_src, PHP_URL_SCHEME))) {
+        $iframe_src_allowed = true;
+      }
+    }
+    $notallowdtext = t('This iframe can not be shown due to restrictions. Open in new tab: <a href="@iframe_url" target="_blank">@iframe_url</a>', array('@iframe_url' => $iframe_src));
+
+    if (!$iframe_src_allowed) {
+      return '<div class="messages warning alert alert-block alert-warning">' . $notallowdtext . '</div>';
+    }
+
+
+    return "<iframe " . implode(" ", $iframe_parameters) . "/>" . $notallowdtext . "</iframe>";
+  }
+}
+
 /**
  * Filter tips callback for collapse filter.
  *
@@ -1954,6 +2030,20 @@ function _custom_general_collapse_filter_tips($filter, $format, $long = FALSE) {
 
     return t('Pattern [collapsible]heading ... text... [/collapsible] is collapsible');
 }
+
+/**
+ * Filter tips callback for collapse filter.
+ *
+ * The tips callback allows filters to provide help text to users during the
+ * content editing process. Short tips are provided on the content editing
+ * screen, while long tips are provided on a separate linked page. Short tips
+ * are optional, but long tips are highly recommended.
+ */
+function _custom_general_iframe_filter_tips($filter, $format, $long = FALSE) {
+
+    return t('Write [iframe src="..."] to include an iframe with an url');
+}
+
 
 
 /**
