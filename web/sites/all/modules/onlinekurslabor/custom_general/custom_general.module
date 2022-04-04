@@ -341,14 +341,14 @@ function custom_general_context_page_reaction() {
 function custom_general_form_alter(&$form, &$form_state, $form_id) {
     global $user;
 
-    
+
     //Change progressbar for file upload (Medienbrowser)
     if(in_array($form_id , array('file_entity_add_upload')))
     {
         $form['upload']['#progress_indicator'] = 'throbber';
     }
-    
-    
+
+
     //og-group-ref not to be edited!
     if (!empty($form['og_group_ref'][LANGUAGE_NONE])) {
         $bugmenot_info = '<div class="messages warning alert alert-block alert-warning">' . t('This is only needed for debugging and not to be changed normally') . '</div>';
@@ -539,7 +539,7 @@ function _custom_general_get_group_state_for_user($og_group, $user_account = nul
     return false;
   }
   return $og_membership->state;
-    
+
 }
 
 /**
@@ -1129,7 +1129,7 @@ function custom_general_block_view($delta = '') {
       $block['content'] = _custom_general_theme_space();
       break;
     case 'custom_general_groupstate_badge':
-      
+
       $current_context = _section_content_get_active_domain()?: _section_courses_get_active_course();
       $block['subject'] =  t("Membership state");
       $block['content'] = array(
@@ -1149,7 +1149,7 @@ function custom_general_block_view($delta = '') {
  * @return String $html
  */
 function _custom_general_get_rendered_file_usage_table($fid)
-{  
+{
     $file = file_load($fid);
   $usage_list = custom_general_file_entity_usage_page($file);
   return drupal_render($usage_list);
@@ -1707,7 +1707,7 @@ function custom_general_theme() {
       // Which .tpl.php file to use custom-html5-video.tpl.php
       'template' => 'custom-html5-video',
       'path' => drupal_get_path('module', 'custom_general') . '/templates'),
-    
+
     'custom_general_personal_group_state_badge' => array(
       'template' => 'templates/custom_general_personal_group_state_badge', //ignore .tpl.php
     ),
@@ -2021,4 +2021,43 @@ function _custom_general_get_no_content_text($type, $og_gid)
         default:
             throw new Exception("No implementation in 578tuzghjdsf323dfed");
     }
+}
+
+
+
+/**
+ * get user picture
+ *
+ * @param type $account
+ */
+function _custom_general_get_user_pic($account, $style="profile_stream_thumbnail", $rendered = FALSE) {
+  $realname = realname_load($account);
+  if (empty($realname))
+    $realname = $account->name;
+
+  $profile = profile2_load_by_user($account, 'master');
+  $user_pic = "";
+
+  if ($rendered) {
+      $field_view = field_view_field('profile2', $profile, 'field_photo',
+        array('settings' => array('image_style' => 'profile_stream_thumbnail')));
+      $field_view['#label_display'] = 'hidden';
+      $field_view[0]['#item']['title'] = $realname;
+      $field_view[0]['#item']['alt'] = $realname;
+      $user_pic = drupal_render($field_view);
+  } else {
+    $info = field_info_field('field_photo');
+    $profile_file = "";
+    if (!empty($profile->field_photo)) {
+      $profile_file = file_load($profile->field_photo[LANGUAGE_NONE][0]['fid']);
+    } else if (!empty($info) && $info['settings']['default_image'] > 0) {
+      $default_img_fid = $info['settings']['default_image'];
+      $profile_file = file_load($default_img_fid);
+    }
+    // return image url
+    return image_style_url($style, $profile_file->uri);
+  }
+
+
+  return $user_pic;
 }

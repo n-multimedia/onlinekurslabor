@@ -1358,7 +1358,7 @@ function nm_stream_preprocess_node(&$vars) {
     $vars['nm_type'] = $node->type;
     $vars['nm_author_name'] = $realname;
     $vars['nm_author_path'] = url('user/' . $streamnode_owner->uid);
-    $vars['nm_author_pic'] = _nm_stream_get_user_pic($streamnode_owner);
+    $vars['nm_author_pic'] = _custom_general_get_user_pic($streamnode_owner);
     $vars['nm_created'] = 'vor ' . format_interval(time() - $node->created); //format_date($node->created);
 
     $body = field_get_items('node', $node, 'body');
@@ -1490,7 +1490,7 @@ function nm_stream_preprocess_nm_stream_node_comment(&$vars) {
   $vars['nm_author_link'] = theme('username', array('account' => $account));
   $vars['nm_author_name'] = $realname;
   $vars['nm_author_path'] = url('user/' . $account->uid);
-  $vars['nm_author_pic'] = _nm_stream_get_user_pic($account);
+  $vars['nm_author_pic'] = _custom_general_get_user_pic($account);
   $vars['nm_created'] = 'vor ' . format_interval(time() - $comment->created);
   $vars['nm_modified'] = ($comment->changed - $comment->created > 5) ? 'geändert am ' . format_date($comment->changed) : '';
   $vars['nm_body'] = $comment->comment_body[LANGUAGE_NONE][0]['value'];
@@ -1526,7 +1526,7 @@ function nm_stream_preprocess_nm_stream_node_comment_form(&$vars) {
 
   $account = clone $user;
 
-  $vars['nm_author_pic'] = _nm_stream_get_user_pic($account);
+  $vars['nm_author_pic'] = _custom_general_get_user_pic($account);
   $vars['nm_node_id'] = $node->nid;
   $vars['nm_comment_form_dummy'] = 'Kommentar hinzufügen...';
 }
@@ -1582,7 +1582,7 @@ function nm_stream_preprocess_nm_stream_stream_node_form(&$vars, $hook) {
 
   $account = clone $user;
 
-  $vars['nm_author_pic'] = _nm_stream_get_user_pic($account);
+  $vars['nm_author_pic'] = _custom_general_get_user_pic($account);
   $vars['nm_node_form_dummy'] = 'Beitrag hinzufügen...';
 
 
@@ -2095,28 +2095,6 @@ function _nm_stream_privacy_options($user, $stream_node, $current_environment = 
 }
 
 
-/**
- * get user picture
- *
- * @param type $account
- */
-function _nm_stream_get_user_pic($account) {
-  $realname = realname_load($account);
-  if (empty($realname))
-    $realname = $account->name;
-
-  $profile = profile2_load_by_user($account, 'master');
-  $user_pic = "";
-  if (isset($profile->field_photo)) {
-    $field_view = field_view_field('profile2', $profile, 'field_photo', array('settings' => array('image_style' => 'profile_stream_thumbnail')));
-    $field_view['#label_display'] = 'hidden';
-    $field_view[0]['#item']['title'] = $realname;
-    $field_view[0]['#item']['alt'] = $realname;
-    $user_pic = drupal_render($field_view);
-  }
-
-  return $user_pic;
-}
 
 /**
  * get action links for a node
@@ -3128,7 +3106,7 @@ function nm_stream_api_v2_get_posts($stream_container_node, $filter=[], $offset 
       $user_data['name'] = format_username($post_user);
       $user_data['username'] = $post_user->name;
       $profile = profile2_load_by_user($post_user, 'master');
-      $user_data['avatarUrl'] = image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
+      $user_data['avatarUrl'] = _custom_general_get_user_pic($post_user);
       $user_data['profileUrl'] = url('user/' . $post_user->uid, ['absolute' => TRUE]);
       $result_users[$user_data['uid']]= $user_data;
     }
@@ -3172,7 +3150,7 @@ function nm_stream_api_v2_get_posts($stream_container_node, $filter=[], $offset 
     $user_data['name'] = format_username($account);
     $user_data['username'] = $account->name;
     $profile = profile2_load_by_user($account, 'master');
-    $user_data['avatarUrl'] =  image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
+    $user_data['avatarUrl'] =   _custom_general_get_user_pic($account);
     $user_data['profileUrl'] = url('user/' . $account->uid, ['absolute' => TRUE]);
 
     $result_users[$user_data['uid']] = $user_data;
@@ -3407,7 +3385,7 @@ function nm_stream_api_v2_get_comments_json_data($account, $comment) {
   $result_user['name'] = format_username($comment_user);
   $result_user['username'] = $comment_user->name;
   $profile = profile2_load_by_user($comment_user, 'master');
-  $result_user['avatarUrl'] = image_style_url('profile_main_thumbnail', $profile->field_photo[LANGUAGE_NONE][0]['uri']);
+  $result_user['avatarUrl'] =  _custom_general_get_user_pic($comment_user);
   $result_user['profileUrl'] = url('user/' . $comment_user->uid, ['absolute' => TRUE]);
 
   return [$result_comment, $result_user];
@@ -4038,16 +4016,12 @@ function nm_stream_api_v2_node_get_mention_members($node_group)
 
     // Load the user object if necessary
     $member = user_load($member_db->uid);
-    $profile = profile2_load_by_user($member, 'master');
-    $user_pic = "";
-    if (isset($profile->field_photo)) {
-      $user_picture_field = field_view_field('profile2', $profile, 'field_photo', 'value');
-      $user_pic_url = image_style_url('profile_nano_thumbnail', $user_picture_field['#items'][0]['uri']);
-    }
+
+    $user_pic =  _custom_general_get_user_pic($member);
     $realname = realname_load($member);
 
     $member_entry = [];
-    $member_entry['avatar'] = $user_pic_url;
+    $member_entry['avatar'] = $user_pic;
     $member_entry['name'] = $member->name;
     $member_entry['realname'] = $realname ? $realname : $member->name;
 
