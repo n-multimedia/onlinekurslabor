@@ -39,7 +39,6 @@ define("NM_CONTENT_ADD_CONTENT_PATH", "domain/add");
 define("NM_CONTENT_DELETE_CONTENT_PATH", "domain/delete");
 define("NM_DOMAIN_ACCESS_REALM", "NM_DOMAIN_ACCESS_REALM");
 
-
 //Contentcontent_multiple_choice
 //Content Types
 define("NM_CONTENT_DOMAIN", "content_domain");
@@ -77,7 +76,6 @@ define("NM_COURSE_ADMIN_PREFIX_PATH", "course/admin");
 
 define("NM_COURSE_DEMO_LABEL", "[DEMO MODUS]");
 
-
 //Tasks
 define("NM_COURSES_TASK_DESCRIPTION", "0");
 define("NM_COURSES_TASK_TASK", "1");
@@ -114,7 +112,6 @@ define("NM_VIDEOSAFE_VIDEO", "videosafe_video");
 //Contet Types
 define("NM_SPACE", "spaces_space");
 
-
 //Features..
 //define('NM_COURSE_FEATURE_WIKI', $value)
 define('NM_COURSE_FEATURE_FORUM', 'forum');
@@ -140,14 +137,11 @@ define("NM_ROLE_KOOPERATIONSPARTNER", "Kooperationspartner");
 //Views
 define("NM_VIEW_DOMAIN_MEDIA", "domain_media");
 
-
 //Content
 define("NM_CHAPTER_SEPARATOR", ".");
 
 define("NM_SUPPORT_MAIL", "support@medienlabor-uni-augsburg.de");
-define("NM_OKL_BOT_MAIL",'bot@onlinekurslabor.de');
-
-
+define("NM_OKL_BOT_MAIL", 'bot@onlinekurslabor.de');
 
 module_load_include('inc', 'custom_general', 'inc/functions');
 module_load_include('inc', 'custom_general', 'inc/blocks');
@@ -233,10 +227,11 @@ function custom_general_init() {
 
   static $init;
 
-  if ($init)
+  if ($init) {
     return;
+  }
 
-  $init = TRUE;
+  $init = true;
 
   // Execute the group type context condition all the time because we want
   // to use that condition to be able to check for "no group context."
@@ -250,12 +245,10 @@ function custom_general_init() {
     $plugin->execute2();
   }
 
-
   $plugin = context_get_plugin('condition', 'custom_general_condition_section_projects');
   if ($plugin) {
     $plugin->execute2();
   }
-
 
   $group = og_context();
   if ($group) {
@@ -284,7 +277,6 @@ function custom_general_init() {
     }
   }
 
-
 }
 
 /**
@@ -292,37 +284,38 @@ function custom_general_init() {
  * es gibt die css-klassen visible-dozent etc. Hier werden die passenden css-Dateien dazu geladen
  */
 function custom_general_page_build(&$page) {
-    global $user;
-    $users_roles = array();
-    // Check to see if $user has the administrator role.
-    $gid = _section_courses_get_active_course();
-    if (in_array(NM_ROLE_ADMIN, array_values($user->roles)) or in_array(NM_ROLE_MODERATOR, array_values($user->roles))) {
-        $users_roles[] = 'admin';
-        $users_roles[] = 'dozent';
-        $users_roles[] = 'autor';
-    }
-    if (in_array(NM_ROLE_DOZENT, array_values($user->roles))) {
-        $users_roles[] = 'dozent';
-    }
-    if (in_array(NM_ROLE_AUTOR, array_values($user->roles))) {
-        $users_roles[] = 'autor';
-    }
+  global $user;
+  $users_roles = array();
+  // Check to see if $user has the administrator role.
+  $gid = _section_courses_get_active_course();
+  if (in_array(NM_ROLE_ADMIN, array_values($user->roles)) or in_array(NM_ROLE_MODERATOR, array_values($user->roles))) {
+    $users_roles[] = 'admin';
+    $users_roles[] = 'dozent';
+    $users_roles[] = 'autor';
+  }
+  if (in_array(NM_ROLE_DOZENT, array_values($user->roles))) {
+    $users_roles[] = 'dozent';
+  }
+  if (in_array(NM_ROLE_AUTOR, array_values($user->roles))) {
+    $users_roles[] = 'autor';
+  }
 
-    if ($gid != null) {
-        $tutors = custom_general_get_users_in_group_by_role_real($gid->nid, NM_COURSES_ROLE_TUTOR);
-        $teachers = custom_general_get_users_in_group_by_role_real($gid->nid, NM_COURSES_ROLE_ADMINISTRATOR);
+  if ($gid != null) {
+    $tutors = custom_general_get_users_in_group_by_role_real($gid->nid, NM_COURSES_ROLE_TUTOR);
+    $teachers = custom_general_get_users_in_group_by_role_real($gid->nid, NM_COURSES_ROLE_ADMINISTRATOR);
 
-        if (($tutors && (array_values($tutors) != false) && in_array($user, array_values($tutors))) || ($teachers && (array_values($teachers) != false) && in_array($user, array_values($teachers)))) {
-            $users_roles[] = 'dozent';
-        }
+    if (($tutors && (array_values($tutors) != false) && in_array($user, array_values($tutors))) ||
+      ($teachers && (array_values($teachers) != false) && in_array($user, array_values($teachers)))) {
+      $users_roles[] = 'dozent';
     }
-    if (count($users_roles) < 1) {
-        $users_roles[] = 'student';
-    }
+  }
+  if (count($users_roles) < 1) {
+    $users_roles[] = 'student';
+  }
 
-    foreach (array_unique($users_roles) as $position) {
-        drupal_add_css(drupal_get_path('module', 'custom_general') . '/css/' . $position . '.css');
-    }
+  foreach (array_unique($users_roles) as $position) {
+    drupal_add_css(drupal_get_path('module', 'custom_general') . '/css/' . $position . '.css');
+  }
 }
 
 function custom_general_context_page_reaction() {
@@ -332,78 +325,73 @@ function custom_general_context_page_reaction() {
 /**
  * implements hook_form_alter
  *
- * @global type $user
  * @param type $form
  * @param type $form_state
  * @param type $form_id
  * @return type
+ * @global type $user
  */
 function custom_general_form_alter(&$form, &$form_state, $form_id) {
-    global $user;
+  global $user;
 
+  //Change progressbar for file upload (Medienbrowser)
+  if (in_array($form_id, array('file_entity_add_upload'))) {
+    $form['upload']['#progress_indicator'] = 'throbber';
+  }
 
-    //Change progressbar for file upload (Medienbrowser)
-    if(in_array($form_id , array('file_entity_add_upload')))
-    {
-        $form['upload']['#progress_indicator'] = 'throbber';
+  //og-group-ref not to be edited!
+  if (!empty($form['og_group_ref'][LANGUAGE_NONE])) {
+    $bugmenot_info = '<div class="messages warning alert alert-block alert-warning">' .
+      t('This is only needed for debugging and not to be changed normally') . '</div>';
+    $form['og_group_ref'][LANGUAGE_NONE][] = array('#markup' => $bugmenot_info, '#weight' => -10);
+    //collapst group-ref-field
+    $form['og_group_ref'][LANGUAGE_NONE]['#after_build'][] = '_custom_general_collapse_og_ref_field';
+  }
+  //collapst domain-ref-field
+  if (!empty($form['og_domain_ref'][LANGUAGE_NONE])) {
+    $form['og_domain_ref'][LANGUAGE_NONE]['#after_build'][] = '_custom_general_collapse_og_ref_field';
+  }
+
+  //noch ein warning
+  if (!empty($form['book'])) {
+    $form['book']['text_warning'] = array
+    (
+      '#prefix' => '<b><i class="glyphicon glyphicon-warning-sign"></i> ',
+      '#suffix' => '</b><hr>',
+      '#markup' => t('Beware! Change this if you are aware of consequences only!'),
+      '#weight' => -100,
+    );
+  }
+
+  //entferne für < admin
+  if (!in_array('administrator', array_values($user->roles))) {
+    if (!empty($form['field_file_belongs_to'])) {
+      $form['field_file_belongs_to']['#access'] = false;
+    }
+    //zuweisen zu buch: inaccessbible for non-admins
+    if (!empty($form['#group_children']['biblio_fieldset']) && is_array($form['#group_children']['biblio_fieldset'])) {
+      $form['#group_children']['biblio_fieldset']['#access'] = false;
     }
 
-
-    //og-group-ref not to be edited!
-    if (!empty($form['og_group_ref'][LANGUAGE_NONE])) {
-        $bugmenot_info = '<div class="messages warning alert alert-block alert-warning">' . t('This is only needed for debugging and not to be changed normally') . '</div>';
-        $form['og_group_ref'][LANGUAGE_NONE][] = array('#markup' => $bugmenot_info, '#weight' => -10);
-        //collapst group-ref-field
-        $form['og_group_ref'][LANGUAGE_NONE]['#after_build'][] = '_custom_general_collapse_og_ref_field';
-    }
-    //collapst domain-ref-field
-    if (!empty($form['og_domain_ref'][LANGUAGE_NONE])) {
-        $form['og_domain_ref'][LANGUAGE_NONE]['#after_build'][] = '_custom_general_collapse_og_ref_field';
-    }
-
-    //noch ein warning
     if (!empty($form['book'])) {
-        $form['book']['text_warning'] = array
-            (
-            '#prefix' => '<b><i class="glyphicon glyphicon-warning-sign"></i> ',
-            '#suffix' => '</b><hr>',
-            '#markup' => t('Beware! Change this if you are aware of consequences only!'),
-            '#weight' => -100,
-        );
+      //lehrtextkapitel zu buch zuweisen
+      $form['book']['#access'] = false;
     }
+  }
 
-    //entferne für < admin
-    if (!in_array('administrator', array_values($user->roles))) {
-        if(!empty($form['field_file_belongs_to']))
-        {
-            $form['field_file_belongs_to']['#access'] = FALSE;
-        }
-        //zuweisen zu buch: inaccessbible for non-admins
-        if(!empty($form['#group_children']['biblio_fieldset']) && is_array($form['#group_children']['biblio_fieldset']))
-        {
-             $form['#group_children']['biblio_fieldset']['#access'] = FALSE;
-        }
+  /** logo / by ML an prominenten stellen */
+  if (in_array($form_id, array('user_login', 'user_pass'))) {
+    $html_logo_lq = '<img src="' . theme_get_setting('logo', 'bootstrap_onlinekurslabor') . '" alt="">';
+    $help_str = 'Probleme beim Login? <a href="https://ml.phil.uni-augsburg.de/kontakt/" target="_blank">Wir helfen</a>';
+    // $about_str = 'Eine Initiave des <a href="https://ml.phil.uni-augsburg.de/">Medienlabors</a>';
+    $ml_string =
+      '<div class="row"><div class="col-md-9 col-xs-3"></div><div class="col-md-3 col-xs-9">' . $help_str . '<br>' . $html_logo_lq .
+      '</div></div>';
+    $form['#suffix'] = $ml_string;
+  }
 
-        if (!empty($form['book'])) {
-            //lehrtextkapitel zu buch zuweisen
-            $form['book']['#access'] = FALSE;
-        }
-    }
-
-    /** logo / by ML an prominenten stellen */
-    if(in_array($form_id, array('user_login', 'user_pass')))
-    {
-      $html_logo_lq = '<img src="'. theme_get_setting('logo', 'bootstrap_onlinekurslabor').'" alt="">';
-      $help_str = 'Probleme beim Login? <a href="https://ml.phil.uni-augsburg.de/kontakt/" target="_blank">Wir helfen</a>';
-     // $about_str = 'Eine Initiave des <a href="https://ml.phil.uni-augsburg.de/">Medienlabors</a>';
-      $ml_string = '<div class="row"><div class="col-md-9 col-xs-3"></div><div class="col-md-3 col-xs-9">'.$help_str.'<br>'.$html_logo_lq.'</div></div>';
-        $form['#suffix'] = $ml_string;
-    }
-
-
-  if ($form_id != "book_admin_edit")
-  {
-      return;
+  if ($form_id != "book_admin_edit") {
+    return;
   }
 
   $plugin = context_get_plugin('condition', 'custom_general_condition_section_content');
@@ -412,7 +400,6 @@ function custom_general_form_alter(&$form, &$form_state, $form_id) {
     $plugin->execute2();
   }
 }
-
 
 /**
  * BIBLIO alter form, fix step 2
@@ -443,7 +430,7 @@ function custom_general_form_biblio_node_form_alter(&$form, &$form_state, $form_
 
     $node = isset($form['#noce']) ? $form['#node'] : null;
     $tid = !empty($form_state['biblio_type']) ? $form_state['biblio_type'] :
-        ( isset($node->biblio_type) ? $node->biblio_type : 0);
+      (isset($node->biblio_type) ? $node->biblio_type : 0);
 
     $step_two = !empty($tid);
 
@@ -467,7 +454,6 @@ function custom_general_form_biblio_node_form_alter(&$form, &$form_state, $form_
   }
 }
 
-
 /**
  * Get the group id the node belongs to
  *
@@ -476,66 +462,60 @@ function custom_general_form_biblio_node_form_alter(&$form, &$form_state, $form_
  * @return mixed|null
  */
 
-function _custom_general_get_group($referer_node, $enforce_parent = FALSE) {
-  $domain_id = NULL;
+function _custom_general_get_group($referer_node, $enforce_parent = false) {
+  $domain_id = null;
   //passed value can be FALSE
-  if (!isset($referer_node) || $referer_node === FALSE) {
+  if (!isset($referer_node) || $referer_node === false) {
     return $domain_id;
   }
   //annvid ist selbst eine group, deswegen muessen wir eine ebene hoeher gehen
-  if($referer_node->type == ANNVID_CONTENTTYPE)
-  {
-      return  _custom_general_get_group(node_load($referer_node->og_group_ref[LANGUAGE_NONE][0]['target_id']), $enforce_parent);
+  if ($referer_node->type == ANNVID_CONTENTTYPE) {
+    return _custom_general_get_group(node_load($referer_node->og_group_ref[LANGUAGE_NONE][0]['target_id']), $enforce_parent);
   }
   //if referer is group -> nid == gid, else look up the gid
   if (og_is_group('node', $referer_node) && !$enforce_parent) {
     $domain_id = $referer_node->nid;
-  }
-  else {
+  } else {
     //forum special case
     if ($referer_node->type == NM_COURSE_FORUMTOPIC) {
       $tid = ($referer_node->taxonomy_forums[LANGUAGE_NONE][0]['tid']);
       $term = taxonomy_term_load($tid);
-      $course_nid = $term->og_group_ref ? $term->og_group_ref[LANGUAGE_NONE][0]['target_id'] : NULL;
+      $course_nid = $term->og_group_ref ? $term->og_group_ref[LANGUAGE_NONE][0]['target_id'] : null;
 
       $domain_id = $course_nid;
-    }
-    else {
+    } else {
       //forciere laden des og_group_ref-fields
       $entities = og_get_entity_groups('node', $referer_node->nid, null, 'og_group_ref');
       if (!empty($entities)) {
         $domain_id = current(current($entities));
-      }else {
+      } else {
         //root group
         $domain_id = $referer_node->nid;
       }
     }
   }
 
-
   return $domain_id;
 }
 
 /**
  * Gets User State in a OG_Group
+ *
  * @param StdClass $og_group Node-Object oder nid
- * @param StdClass $user_account: useraccount, if null then current user
+ * @param StdClass $user_account : useraccount, if null then current user
  * @return int $state (1,2,3) [OG_STATE_ACTIVE OG_STATE_PENDING OG_STATE_BLOCKED]
  */
 function _custom_general_get_group_state_for_user($og_group, $user_account = null) {
   global $user;
-  if(!$user_account)
-  {
+  if (!$user_account) {
     $user_account = clone $user;
   }
-  if(!is_object($og_group))
-  {
+  if (!is_object($og_group)) {
     $og_group = node_load($og_group);
   }
 
   $og_membership = og_get_membership('node', $og_group->nid, 'user', $user_account->uid);
-  if(!$og_membership)
-  {
+  if (!$og_membership) {
     return false;
   }
   return $og_membership->state;
@@ -544,32 +524,28 @@ function _custom_general_get_group_state_for_user($og_group, $user_account = nul
 
 /**
  * gets last NID in Database
+ *
  * @return array $list key->value (samesame)
  */
-function _custom_general_get_latest_nid()
-{
-$last_nid = db_query("SELECT nid FROM {node} ORDER BY nid DESC LIMIT 0,1")->fetchColumn();
-return $last_nid;
+function _custom_general_get_latest_nid() {
+  $last_nid = db_query("SELECT nid FROM {node} ORDER BY nid DESC LIMIT 0,1")->fetchColumn();
+  return $last_nid;
 }
-
-
 
 /**
  * gets all og-roles of the plattform. member, kurs-dozent, kurs-tutor etc.
+ *
  * @return array $list key->value (samesame)
  */
-function _custom_general_get_og_group_roles()
-{
+function _custom_general_get_og_group_roles() {
   $og_base = og_get_default_roles();
   $all_roles = [];
-  foreach($og_base as $rolename)
-  {
+  foreach ($og_base as $rolename) {
     $all_roles[$rolename] = $rolename;
   }
   $all_roles = array_merge($all_roles, _section_courses_get_default_course_roles());
   return $all_roles;
 }
-
 
 /**
  *  Implementation of hook_field_attach_form
@@ -584,7 +560,7 @@ function _custom_general_get_file_og_fields($form, $form_state, $form_id) {
 
   $options = array(
     //specify the language, or use like this for the default language.
-    'language' => field_valid_language(NULL),
+    'language' => field_valid_language(null),
     //IMPORTANT : the field you want to attach to the form
     'field_name' => 'og_group_ref'
   );
@@ -613,10 +589,9 @@ function _media_browser_get_referer_nid() {
   //if no nid is set, a new node is being created, so we need the passed og_group_ref
   if (isset($url_data['query']['og_group_ref']) && is_numeric($url_data['query']['og_group_ref'])) {
     $referer_args['nid'] = $url_data['query']['og_group_ref'];
-  }
-  else {
+  } else {
     $referer_args['nid'] = arg(2, $referer_args['path']);
-    $referer_args['nid'] = is_numeric($referer_args['nid']) ? $referer_args['nid'] : NULL;
+    $referer_args['nid'] = is_numeric($referer_args['nid']) ? $referer_args['nid'] : null;
   }
 
   return $referer_args['nid'];
@@ -632,7 +607,6 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
   $groups = _custom_general_tools_get_groups($tool_links);
 
   $output = '<div id="' . $id . '-container" class="' . $class . ' row">';
-
 
   _custom_general_tools_prepare_group_items($tool_links, $groups);
 
@@ -660,8 +634,7 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
       $context_item_candidate_ids[] = "instr_add_members";
     }
 
-  }
-  else {
+  } else {
     if (_section_domain_active()) {
       // Kapitel erstellen
       if (arg(1) == 'text') {
@@ -706,7 +679,6 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
     $output .= '</div>';
   }
 
-
   $output .= '<div id="tools-all-actions">';
   foreach ($groups as $g) {
 
@@ -717,7 +689,7 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
     $rootitem = array_shift($group_items);
 
     //ist in diesem menü ein punkt "active" gesetzt?
-    $menu_has_active_component = FALSE;
+    $menu_has_active_component = false;
     $submenu_entries = '';
     foreach ($group_items as $gi) {
 
@@ -731,9 +703,7 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
       $submenu_entries .= '<li ' . $subitems_attributes . '>' . $gi['link_long'] . '</li>';
     }
 
-
     $menu_has_active_component |= array_search('active', $rootitem['attributes']['class']);
-
 
     //attribute für das <li>
     $rootitem_attributes = [];
@@ -754,14 +724,11 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
 
       if ($menu_has_active_component) {
         $uls_attributes['class'][] = 'in';
-      }
-      else {
+      } else {
         $rootitem_attributes['class'][] = 'collapsed';
       }
 
-
     }
-
 
     $output .= '<li  ' . drupal_attributes($rootitem_attributes) . '>' . $rootitem['link_long'] . '</li>';
 
@@ -776,15 +743,11 @@ function _custom_general_theme_tools_navbar_block($tool_links, $id, $class) {
   }
   $output .= '</div>';
 
-
   $output .= "</div>";
-
 
   return $output;
 
-
 }
-
 
 function _custom_general_theme_tools_block($tool_links, $id = "", $class = "section_nav_tools", $col_group = 12) {
 
@@ -816,8 +779,7 @@ function _custom_general_theme_tools_block($tool_links, $id = "", $class = "sect
         if ($depth > 0) {
           if (isset($gi['attributes']['class'])) {
             $gi['attributes']['class'][] = 'toolbar_hidden';
-          }
-          else {
+          } else {
             $gi['attributes']['class'] = ['toolbar_hidden'];
           }
         }
@@ -837,8 +799,7 @@ function _custom_general_theme_tools_block($tool_links, $id = "", $class = "sect
     }
     //$output .= '</div>';
     //$output .= '</div>';
-  }
-  //no groups configured - render horizontal toolbar
+  } //no groups configured - render horizontal toolbar
   else {
     foreach ($tool_links as $tl) {
 
@@ -921,7 +882,7 @@ function _section_courses_get_group_root($group, $tool_links) {
       return $tl;
     }
   }
-  return NULL;
+  return null;
 }
 
 function _section_courses_get_group_others($group, $tool_links) {
@@ -937,6 +898,7 @@ function _section_courses_get_group_others($group, $tool_links) {
 
 /**
  * Implements hook_wysiwyg_plugin
+ *
  * @param type $editor
  * @param type $version
  * @return type
@@ -944,7 +906,6 @@ function _section_courses_get_group_others($group, $tool_links) {
 function custom_general_wysiwyg_plugin($editor, $version) {
 
   #_linkit_add_settings($editor);
-
 
   switch ($editor) {
     case 'ckeditor':
@@ -954,7 +915,7 @@ function custom_general_wysiwyg_plugin($editor, $version) {
           'buttons' => array(
             'biblio_button' => t('Biblio'),
           ),
-          'load' => TRUE,
+          'load' => true,
         ),
       );
       break;
@@ -967,28 +928,30 @@ function custom_general_wysiwyg_plugin($editor, $version) {
  * @return array
  */
 function custom_general_menu() {
-    $items = array();
-    $items['admin/onlinekurslabor'] = array(
-        'title' => 'Onlinekurslabor',
-        'access callback' => 'custom_general_user_is_okl_admin',
-        'access arguments' => array(array('administrator')),
-        'page callback' => 'custom_general_onlinekurslabor_admin_page',
-        'type' => MENU_NORMAL_ITEM,
-    );
+  $items = array();
+  $items['admin/onlinekurslabor'] = array(
+    'title' => 'Onlinekurslabor',
+    'access callback' => 'custom_general_user_is_okl_admin',
+    'access arguments' => array(array('administrator')),
+    'page callback' => 'custom_general_onlinekurslabor_admin_page',
+    'type' => MENU_NORMAL_ITEM,
+  );
 
-    $items['admin/onlinekurslabor/setting'] = array(
-        'title' => 'Onlinekurslabor - Settings',
-        'page callback' => 'drupal_get_form',
-        'page arguments' => array('custom_general_onlinekurslabor_admin_settings'),
-        'access callback' => 'custom_general_user_is_okl_admin',
-        'access arguments' => array(array('administrator')),
-        'type' => MENU_NORMAL_ITEM,
-    );
+  $items['admin/onlinekurslabor/setting'] = array(
+    'title' => 'Onlinekurslabor - Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('custom_general_onlinekurslabor_admin_settings'),
+    'access callback' => 'custom_general_user_is_okl_admin',
+    'access arguments' => array(array('administrator')),
+    'type' => MENU_NORMAL_ITEM,
+  );
 
-    return $items;
+  return $items;
 }
+
 /**
  * funktion für die custom_general_menu
+ *
  * @return type
  */
 function custom_general_onlinekurslabor_admin_page() {
@@ -997,77 +960,73 @@ function custom_general_onlinekurslabor_admin_page() {
 
 /**
  * funktion für die custom_general_menu
+ *
  * @return type
  */
 function custom_general_onlinekurslabor_admin_settings() {
 
-    $setting_items = array();
+  $setting_items = array();
 
+  /*invoke hooks*/
+  foreach (module_implements('onlinekurslabor_settingitems_alter') as $module) {
+    $function = $module . '_onlinekurslabor_settingitems_alter';
+    $function($setting_items);
+  }
 
-    /*invoke hooks*/
-    foreach (module_implements('onlinekurslabor_settingitems_alter') as $module) {
-        $function = $module . '_onlinekurslabor_settingitems_alter';
-        $function($setting_items);
-    }
+  $setting_items['okl_support_email'] = array(
+    '#type' => 'textfield',
+    '#title' => t('support team'),
+    '#default_value' => variable_get('okl_support_email', NM_SUPPORT_EMAIL),
+    '#description' => t("Email adress of the support team."),
+    '#required' => true,
+  );
 
-    $setting_items['okl_support_email'] = array(
-        '#type' => 'textfield',
-        '#title' => t('support team'),
-        '#default_value' => variable_get('okl_support_email', NM_SUPPORT_EMAIL),
-        '#description' => t("Email adress of the support team."),
-        '#required' => TRUE,
-    );
+  $setting_items['okl_bot_info'] = array(
+    '#type' => 'textfield',
+    '#title' => t('OKL Bot'),
+    '#description' => t('E-Mail-Adresse des OKL-Bot als Owner so mancher Files (hardcoded)'),
+    '#default_value' => NM_OKL_BOT_MAIL,
+    '#disabled' => true
+  );
 
-    $setting_items['okl_bot_info'] = array(
-        '#type' => 'textfield',
-        '#title' => t('OKL Bot'),
-        '#description' => t('E-Mail-Adresse des OKL-Bot als Owner so mancher Files (hardcoded)'),
-        '#default_value' => NM_OKL_BOT_MAIL,
-        '#disabled' => true
-    );
-
-
-    $global_note_setting = variable_get('okl_global_note', array('value' => '', 'format' => NULL));
-    $setting_items['okl_global_note'] = array(
-        '#type' => 'text_format',
-        //note the bug https://www.drupal.org/project/drupal/issues/820816
-        '#base_type' => 'textarea',
-        '#format' => $global_note_setting['format'],
-        '#title' => t('Global note'),
-        '#default_value' => $global_note_setting['value'],
-        '#description' => t("Provide a global note which will be shown to all users. Will not be shown if empty."),
-        '#required' => false,
-    );
-    return system_settings_form($setting_items);
+  $global_note_setting = variable_get('okl_global_note', array('value' => '', 'format' => null));
+  $setting_items['okl_global_note'] = array(
+    '#type' => 'text_format',
+    //note the bug https://www.drupal.org/project/drupal/issues/820816
+    '#base_type' => 'textarea',
+    '#format' => $global_note_setting['format'],
+    '#title' => t('Global note'),
+    '#default_value' => $global_note_setting['value'],
+    '#description' => t("Provide a global note which will be shown to all users. Will not be shown if empty."),
+    '#required' => false,
+  );
+  return system_settings_form($setting_items);
 }
-
-
-
 
 /**
  * implements hook_menu_alter
+ *
  * @param type $items
  */
 function custom_general_menu_alter(&$items) {
 
   // Example - disable the page at node/add
-  $items['node']['access callback'] = FALSE;
+  $items['node']['access callback'] = false;
   $items['forum']['access callback'] = 'custom_general_user_is_okl_admin';
   $items['forum']['access arguments'] = array(array('administrator'));
 
   //also see custom_general_admin_menu_output_alter hook
-  $items['admin_menu/toggle-modules']['access callback'] = FALSE;
+  $items['admin_menu/toggle-modules']['access callback'] = false;
 
 }
 
 /**
-* Implements hook_admin_menu_output_alter().
-*/
+ * Implements hook_admin_menu_output_alter().
+ */
 function custom_general_admin_menu_output_alter(&$content) {
-	// remove the 'Disable developer modules' link
-	unset($content['icon']['icon']['toggle-modules']);
+  // remove the 'Disable developer modules' link
+  unset($content['icon']['icon']['toggle-modules']);
 }
-
 
 function custom_general_preprocess_page(&$variables) {
   //include js needed for every page
@@ -1078,22 +1037,19 @@ function custom_general_preprocess_page(&$variables) {
 
   drupal_add_library('system', 'ui.progressbar');
 
-
-
-
   /*  global note rendern */
-    $global_note_setting = variable_get('okl_global_note', array('value' => '', 'format' => NULL));
-    if(trim($global_note_setting['value']))
-    {
-        drupal_set_message('<div class="global-note">'.$global_note_setting['value'].'</div>','warning');
-    }
+  $global_note_setting = variable_get('okl_global_note', array('value' => '', 'format' => null));
+  if (trim($global_note_setting['value'])) {
+    drupal_set_message('<div class="global-note">' . $global_note_setting['value'] . '</div>', 'warning');
+  }
 
 }
 
 function custom_general_append_active_class($path, &$options) {
   global $language_url;
   // Append active class.
-  if (($path == $_GET['q'] || ($path == '<front>' && drupal_is_front_page())) && (empty($options['language']) || $options['language']->language == $language_url->language)) {
+  if (($path == $_GET['q'] || ($path == '<front>' && drupal_is_front_page())) &&
+    (empty($options['language']) || $options['language']->language == $language_url->language)) {
     $options['attributes']['class'][] = 'active';
   }
 }
@@ -1130,10 +1086,10 @@ function custom_general_block_view($delta = '') {
       break;
     case 'custom_general_groupstate_badge':
 
-      $current_context = _section_content_get_active_domain()?: _section_courses_get_active_course();
-      $block['subject'] =  t("Membership state");
+      $current_context = _section_content_get_active_domain() ?: _section_courses_get_active_course();
+      $block['subject'] = t("Membership state");
       $block['content'] = array(
-        '#title' =>  t("Membership state"),
+        '#title' => t("Membership state"),
         '#markup' => theme('custom_general_personal_group_state_badge', array(
           'state' => _custom_general_get_group_state_for_user($current_context)
         )));
@@ -1145,12 +1101,12 @@ function custom_general_block_view($delta = '') {
 
 /**
  * gets a html list with usage of file identified by $fid
+ *
  * @param int $fid
  * @return String $html
  */
-function _custom_general_get_rendered_file_usage_table($fid)
-{
-    $file = file_load($fid);
+function _custom_general_get_rendered_file_usage_table($fid) {
+  $file = file_load($fid);
   $usage_list = custom_general_file_entity_usage_page($file);
   return drupal_render($usage_list);
 }
@@ -1196,10 +1152,10 @@ function custom_general_field_default_field_bases_alter(&$fields) {
  * Custom function to set the default image.
  * (It has an _ at the beginning to make sure it never accidentally gets fired as a hook)
  *
- * @param  array $field
- * @param  string $filename Filename of the source image.
- * @param  string $source Filepath of the source image.
- * @param  string $destination Filepath you want to save to.
+ * @param array $field
+ * @param string $filename Filename of the source image.
+ * @param string $source Filepath of the source image.
+ * @param string $destination Filepath you want to save to.
  */
 /*
 function _custom_general_set_default_image(&$field, $filename, $source, $destination) {
@@ -1250,35 +1206,35 @@ function custom_general_user_insert(&$edit, $account, $category) {
   realname_update($account);
 }*/
 
-
 /**
  * Implementation of hook_mail_alter().
  * Here we allow the site name to be used as the senders name for outgoing email.
  * see http://drupal.org/node/209672
  */
-function custom_general_mail_alter(&$message){
+function custom_general_mail_alter(&$message) {
   $default_from = variable_get('site_mail', ini_get('sendmail_from'));
 
-  if($message['from'] == $default_from){
+  if ($message['from'] == $default_from) {
     $default_from = 'onlinekurslabor@medienlabor-uni-augsburg.de';
-    $message['headers']['Reply-To'] = '"'. variable_get('site_name', 'Drupal') .'" <'. $default_from .'>';
+    $message['headers']['Reply-To'] = '"' . variable_get('site_name', 'Drupal') . '" <' . $default_from . '>';
   }
 
   //empfänger
-    $user_mail = $message['to'];
-    $user_acc_to = user_load_by_mail($user_mail);
-    if (is_object($user_acc_to) && $user_acc_to->status == 0) {
-        drupal_set_message(t('@realname is blocked and thus will not receive an e-mail.', array('@realname' => $user_acc_to->realname)), 'warning');
-        //  Prevent the mail from being sent
-        $message['send'] = FALSE;
-    }
+  $user_mail = $message['to'];
+  $user_acc_to = user_load_by_mail($user_mail);
+  if (is_object($user_acc_to) && $user_acc_to->status == 0) {
+    drupal_set_message(t('@realname is blocked and thus will not receive an e-mail.', array('@realname' => $user_acc_to->realname)),
+      'warning');
+    //  Prevent the mail from being sent
+    $message['send'] = false;
+  }
 }
-
 
 /**
  * helper function for linkit autocomplete
  * checks if referer is one of context relevant nodes
  * todo project
+ *
  * @return bool
  */
 function _custom_general_referer_node_add() {
@@ -1300,11 +1256,11 @@ function _custom_general_referer_node_add() {
       ))
     ) {
       //FORCE no results
-      return TRUE;
+      return true;
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 /**
@@ -1318,22 +1274,18 @@ function custom_general_query_alter(QueryAlterableInterface $query) {
 
     //check linkin ajax requests
     //return empty list result, when adding course and domain. no context is set yet.
-      //so no course/domain h5p and other content exist.
-      if (_custom_general_referer_node_add()) {
-        $query->condition("node.nid", "-1");
-      }
+    //so no course/domain h5p and other content exist.
+    if (_custom_general_referer_node_add()) {
+      $query->condition("node.nid", "-1");
+    }
 
+    $domain = _section_content_get_active_domain(true);
+    $course = _section_courses_get_active_course(true);
 
-    $domain = _section_content_get_active_domain(TRUE);
-    $course = _section_courses_get_active_course(TRUE);
-
-
-
-    $group = NULL;
+    $group = null;
     if ($domain) {
       $group = $domain;
-    }
-    else {
+    } else {
       if ($course) {
         $group = node_load(_section_courses_course_get_domain_id($course));
       }
@@ -1351,6 +1303,7 @@ function custom_general_query_alter(QueryAlterableInterface $query) {
 /**
  * implements  hook_node_presave($node)
  * Verbiete Self-Embeds, da das die Seite zerstört.
+ *
  * @param type $node
  */
 function custom_general_node_presave($node) {
@@ -1359,8 +1312,7 @@ function custom_general_node_presave($node) {
   if ($node->is_new) {
     $last_nid = _custom_general_get_latest_nid();
     $own_nid = $last_nid + 1;
-  }
-  else {
+  } else {
     $own_nid = $node->nid;
   }
 
@@ -1373,10 +1325,13 @@ function custom_general_node_presave($node) {
     if (is_array($variable) && !empty($variable[LANGUAGE_NONE][0]['value'])) {
       //tritt bad_embed_regex auf?
       if (preg_match($bad_embed_regex, $variable[LANGUAGE_NONE][0]['value'])) {
-        drupal_set_message("Ein Objekt kann nicht in sich selbst eingebettet werden. Der entsprechende Befehl wurde entfernt.", 'error');
-        watchdog('custom_general', 'DENIED self-embed, content was: %input', array('%input' => $variable[LANGUAGE_NONE][0]['value']), WATCHDOG_CRITICAL);
+        drupal_set_message("Ein Objekt kann nicht in sich selbst eingebettet werden. Der entsprechende Befehl wurde entfernt.",
+          'error');
+        watchdog('custom_general', 'DENIED self-embed, content was: %input',
+          array('%input' => $variable[LANGUAGE_NONE][0]['value']), WATCHDOG_CRITICAL);
         //ersetze bad_embed_regex durch eine "Entfernt-Notiz"
-        $node->$node_key[LANGUAGE_NONE][0]['value'] = preg_replace($bad_embed_regex, "-- verbotene Einbettung entfernt --", $variable[LANGUAGE_NONE][0]['value']);
+        $node->$node_key[LANGUAGE_NONE][0]['value'] =
+          preg_replace($bad_embed_regex, "-- verbotene Einbettung entfernt --", $variable[LANGUAGE_NONE][0]['value']);
       }
     }
   }
@@ -1386,21 +1341,21 @@ function custom_general_node_presave($node) {
  * node-delete-confirm
  * alter node deletion form
  */
-function custom_general_form_node_delete_confirm_alter(&$form, &$form_state){
+function custom_general_form_node_delete_confirm_alter(&$form, &$form_state) {
   $attachment_fields = array(
     'field_course_documents',
     'field_attachments',
     'field_nm_attachments',
   );
 
-  $has_attachments = FALSE;
+  $has_attachments = false;
   $node = $form['#node'];
   $nid = $node->nid;
 
   $file_attachments = array();
   foreach ($attachment_fields as $field) {
     if (!empty($node->$field)) {
-      $has_attachments = TRUE;
+      $has_attachments = true;
       $items = $node->{$field}[LANGUAGE_NONE];
       foreach ($items as $file) {
         $file = file_load($file['fid']);
@@ -1415,21 +1370,20 @@ function custom_general_form_node_delete_confirm_alter(&$form, &$form_state){
     }
   }
 
-
-  if($has_attachments){
-    $form['#prefix'] = "<div>" . t("Please check, if the file attachments are not used elsewhere."). "</div><br/>";
+  if ($has_attachments) {
+    $form['#prefix'] = "<div>" . t("Please check, if the file attachments are not used elsewhere.") . "</div><br/>";
     $form['actions']['#prefix'] = "<br/><br/>";
 
     $form['actions']['kill_files'] = array(
       '#type' => 'submit',
       '#value' => t('Delete node and files'),
       '#weight' => -10,
-      '#attributes' => array('class' => array('btn','btn-danger')),
+      '#attributes' => array('class' => array('btn', 'btn-danger')),
       '#submit' => array('custom_general_form_node_delete_node_and_files_submit'),
     );
 
     $form['actions']['submit']['#value'] = t('Delete (node only)');
-    $form['actions']['submit']['#attributes'] = array('class' => array('btn','btn-danger'));
+    $form['actions']['submit']['#attributes'] = array('class' => array('btn', 'btn-danger'));
     $form['actions']['submit']['#weight'] = -11;
 
     $form_state['file_attachments'] = $file_attachments;
@@ -1437,19 +1391,17 @@ function custom_general_form_node_delete_confirm_alter(&$form, &$form_state){
 
 }
 
-
 function custom_general_form_node_delete_node_and_files_submit($form, &$form_state) {
 
   //delete node
   node_delete_confirm_submit($form, $form_state);
 
   //delete attachments
-  if(!empty($form_state['file_attachments'])) {
+  if (!empty($form_state['file_attachments'])) {
     file_delete_multiple(array_keys($form_state['file_attachments']));
   }
 
 }
-
 
 /**
  * overriding file_entity_usage_page for our usage
@@ -1467,7 +1419,7 @@ function custom_general_file_entity_usage_page($file) {
     // We have to handle this.
     foreach ($usage as $entity_type => $entity_ids) {
       $entity_info = entity_get_info($entity_type);
-      $entities = empty($entity_info) ? NULL : entity_load($entity_type, array_keys($entity_ids));
+      $entities = empty($entity_info) ? null : entity_load($entity_type, array_keys($entity_ids));
 
       foreach ($entity_ids as $entity_id => $count) {
         // If some other module already added this entity just sum all counts.
@@ -1477,19 +1429,18 @@ function custom_general_file_entity_usage_page($file) {
         }
 
         //view - access check
-        if(!entity_access('view', $entity_type, $entities[$entity_id])){
-          $label = t("Access denied").". ".t("Please contact the site administrator.");
+        if (!entity_access('view', $entity_type, $entities[$entity_id])) {
+          $label = t("Access denied") . ". " . t("Please contact the site administrator.");
           $entity_uri = "";
-        }else {
+        } else {
           $label = empty($entities[$entity_id]) ? $module : entity_label($entity_type, $entities[$entity_id]);
-          $entity_uri = empty($entities[$entity_id]) ? NULL : entity_uri($entity_type, $entities[$entity_id]);
+          $entity_uri = empty($entities[$entity_id]) ? null : entity_uri($entity_type, $entities[$entity_id]);
         }
 
         // Some entities do not have URL.
         if (empty($entity_uri)) {
           $rows[] = array(check_plain($label), $count);
-        }
-        else {
+        } else {
           $uri = $entity_uri['path'];
           $rows[] = array(l($label, $uri), $count);
         }
@@ -1516,11 +1467,11 @@ function custom_general_file_entity_usage_page($file) {
 /**
  *
  */
-function custom_general_forum_set_breadcrumb(){
+function custom_general_forum_set_breadcrumb() {
 
 
-  $node = NULL;
-  switch(arg(0)){
+  $node = null;
+  switch (arg(0)) {
     case  'node':
       $nid = arg(1);
       $node = node_load($nid);
@@ -1545,9 +1496,9 @@ function custom_general_forum_set_breadcrumb(){
   $parents = taxonomy_get_parents_all($term->tid);
 
   //render as text not as link
-  switch(arg(0)) {
+  switch (arg(0)) {
     case  'node':
-      $parent_last = (object)array('name' => $node->title);
+      $parent_last = (object) array('name' => $node->title);
       break;
     case  'forum':
       $parent_last = array_shift($parents);
@@ -1558,13 +1509,11 @@ function custom_general_forum_set_breadcrumb(){
     $breadcrumb[] = l($parent->name, 'forum/' . $parent->tid);
   }
 
-
   $breadcrumb[] = $parent_last->name;
 
   // Set Breadcrumbs
   drupal_set_breadcrumb($breadcrumb);
 }
-
 
 /**
  * Implements hook_access().
@@ -1596,32 +1545,33 @@ function custom_general_query_term_access_alter(QueryAlterableInterface $query) 
   // could appear more than once in the query, and could be aliased.
   // Join each one to the forum_access table.
 
-
   //19.02.2016 - 17:39 - SN
   //get forum terms the user may see
   $user_courses = _section_course_get_courses_by_uid($account->uid);
-  $course_nids = array_map(function($o) { return $o->nid; }, $user_courses);
-  if(empty($course_nids)) {
+  $course_nids = array_map(function($o) {
+    return $o->nid;
+  }, $user_courses);
+  if (empty($course_nids)) {
     $course_nids = array(-1);
   }
-
 
   $sub_query = db_select('og_membership', 'om')
     ->fields('om', array('etid', 'entity_type'))
     ->condition('om.type', 'og_membership_type_default')
     ->condition('om.entity_type', 'taxonomy_term')
-    ->condition('om.state',OG_STATE_ACTIVE)
+    ->condition('om.state', OG_STATE_ACTIVE)
     ->condition('om.gid', $course_nids, 'IN');
   $results = $sub_query->execute()->fetchAll();
 
-
-  $forum_term_ids = array_map(function($o) { return $o->etid; }, $results);
-  if(empty($forum_term_ids)) {
+  $forum_term_ids = array_map(function($o) {
+    return $o->etid;
+  }, $results);
+  if (empty($forum_term_ids)) {
     $forum_term_ids = array(-1);
   }
 
   //add global forum term ids for auth users
-  if($user->uid > 0) {
+  if ($user->uid > 0) {
     $forum_term_ids[] = variable_get('okl_global_forum_tid', NM_GLOBAL_FORUM_TID);
     $child_terms = _custom_general_taxonomy_get_children_all(variable_get('okl_global_forum_tid', NM_GLOBAL_FORUM_TID));
     $forum_term_ids = array_merge($forum_term_ids, $child_terms);
@@ -1629,7 +1579,7 @@ function custom_general_query_term_access_alter(QueryAlterableInterface $query) 
   }
 
   //Add course Parent Forum tid
-  if($user->uid > 0) {
+  if ($user->uid > 0) {
     $forum_term_ids[] = NM_GLOBAL_PARENT_FORUM_TID;
   }
 
@@ -1644,16 +1594,16 @@ function custom_general_query_term_access_alter(QueryAlterableInterface $query) 
 
 }
 
-
 /**
  * get plane taxonomy children
  * userful to get all tids
+ *
  * @param $tid
  * @param int $vid
  * @param string $key
  * @return array
  */
-function _custom_general_taxonomy_get_children_all($tid, $vid = 0){
+function _custom_general_taxonomy_get_children_all($tid, $vid = 0) {
   $c = _custom_general_taxonomy_get_children($tid, $vid);
   $result = array();
   foreach ($c as $d) {
@@ -1667,10 +1617,10 @@ function _custom_general_taxonomy_get_children_all($tid, $vid = 0){
   return $result;
 }
 
-
 /**
  * avoid recursion. needed to remove the term access tag
  * sorry future me
+ *
  * @param $tid
  * @param int $vid
  * @return array
@@ -1695,7 +1645,6 @@ function _custom_general_taxonomy_get_children($tid, $vid = 0) {
   return isset($children[$tid]) ? $children[$tid] : array();
 }
 
-
 /**
  * hook_theme um templates im Ordner templates des Moduls auszuliefern
  * wird genutzt, wenn bspw theme('custom_html5_video', array(...)); ausgeführt wird
@@ -1711,10 +1660,8 @@ function custom_general_theme() {
     'custom_general_personal_group_state_badge' => array(
       'template' => 'templates/custom_general_personal_group_state_badge', //ignore .tpl.php
     ),
-    )
-  ;
+  );
 }
-
 
 /**
  * Erstellt einen einfachen HTML-5-Videoplayer fuer verschiedene Bildschirmgrößen und unterschiedlichen
@@ -1723,95 +1670,97 @@ function custom_general_theme() {
  * wird also imagefilm_onlinekurslabor-sm-xs.mp4. Diese Datei muss natürlich unter der URL erreichbar sein.
  * Für mobil werden Dateigrößen < 99 MB empfohlen!
  *
- * @param string $video_base_url URL zum Originalvideo für hohe Auflösungen wie Laptop, bspw http://.../imagefilm_onlinekurslabor.mp4
+ * @param string $video_base_url URL zum Originalvideo für hohe Auflösungen wie Laptop, bspw
+ *   http://.../imagefilm_onlinekurslabor.mp4
  * @param string $video_poster img-src-Pfad fuer Vorschaubild des Videos, bspw /sites/all/.../poster.png
- * @param string $other_formats liegen andere Varianten wie bspw. "webm" für das Video imagefilm_onlinekurslabor.mp4 vor, hier als Array angeben
+ * @param string $other_formats liegen andere Varianten wie bspw. "webm" für das Video imagefilm_onlinekurslabor.mp4 vor, hier als
+ *   Array angeben
  * @return string html5-markup-string
  */
 function _custom_general_get_rendered_html5_video_tag($video_base_url, $video_poster, $other_formats = array("mp4")) {
-    if (count($other_formats) > 1)
-        drupal_set_message('Sorry, feature other_formats is not implemented. Do it on your own ;) ');
+  if (count($other_formats) > 1) {
+    drupal_set_message('Sorry, feature other_formats is not implemented. Do it on your own ;) ');
+  }
 
-    $video_splitted = explode(".", $video_base_url);
-    $video_filetype = array_pop($video_splitted);
-    $video_base = implode(".", $video_splitted);
-    //for $other_formats (like ogg, webm etc) you would implement a loop here
-    //this only adds a smaller-size-identifier to the video_base_url
-    $video_small = $video_base . "-sm-xs" . "." . $video_filetype;
+  $video_splitted = explode(".", $video_base_url);
+  $video_filetype = array_pop($video_splitted);
+  $video_base = implode(".", $video_splitted);
+  //for $other_formats (like ogg, webm etc) you would implement a loop here
+  //this only adds a smaller-size-identifier to the video_base_url
+  $video_small = $video_base . "-sm-xs" . "." . $video_filetype;
 
-    $video_def = array
-        (
-        array('bootstrap' =>
-            array('class' => 'col-md-12', 'hidden_class' => 'hidden-xs hidden-sm'),
-            'poster' => $video_poster,
-            'videos' => array(array('url' => $video_base_url, "type" => "video/" . $video_filetype))),
-        array('bootstrap' =>
-            array('class' => 'col-xs-12', 'hidden_class' => 'hidden-md hidden-lg'),
-            'poster' => $video_poster,
-            'videos' => array(array('url' => $video_small, "type" => "video/" . $video_filetype))),
-    );
+  $video_def = array
+  (
+    array('bootstrap' =>
+      array('class' => 'col-md-12', 'hidden_class' => 'hidden-xs hidden-sm'),
+      'poster' => $video_poster,
+      'videos' => array(array('url' => $video_base_url, "type" => "video/" . $video_filetype))),
+    array('bootstrap' =>
+      array('class' => 'col-xs-12', 'hidden_class' => 'hidden-md hidden-lg'),
+      'poster' => $video_poster,
+      'videos' => array(array('url' => $video_small, "type" => "video/" . $video_filetype))),
+  );
 
-    $output = theme('custom_html5_video', array('video_definition' => $video_def));
-    return $output;
+  $output = theme('custom_html5_video', array('video_definition' => $video_def));
+  return $output;
 }
 
-
-
 /**
- * Sucht in einem per  $books_menu_tree = menu_tree_all_data($books_menu_name); erhaltenen baum nach dem element mit der übergebenen mlid
+ * Sucht in einem per  $books_menu_tree = menu_tree_all_data($books_menu_name); erhaltenen baum nach dem element mit der
+ * übergebenen mlid
+ *
  * @param array $menu_tree
  * @param int $mlid
  */
 function _custom_general_get_menu_tree_entry_to_mlid($menu_tree, $mlid) {
 
-    $found_entry = null;
-    foreach ($menu_tree as $tree_branch) {
-        //ok gleich am anfang gefunden
-        if ($tree_branch['link']['mlid'] == $mlid) {
-            $found_entry = $tree_branch;
-        }
-        //starte rekursion in "below"
-        else {
-            $found_entry = _custom_general_get_menu_tree_entry_to_mlid($tree_branch['below'], $mlid);
-        }
-        //abbruchbedingung der schleife
-        if ($found_entry)
-            break;
+  $found_entry = null;
+  foreach ($menu_tree as $tree_branch) {
+    //ok gleich am anfang gefunden
+    if ($tree_branch['link']['mlid'] == $mlid) {
+      $found_entry = $tree_branch;
+    } //starte rekursion in "below"
+    else {
+      $found_entry = _custom_general_get_menu_tree_entry_to_mlid($tree_branch['below'], $mlid);
     }
-    return $found_entry;
+    //abbruchbedingung der schleife
+    if ($found_entry) {
+      break;
+    }
+  }
+  return $found_entry;
 }
 
 /**
  * Liefert aus einem  $books_menu_tree aus den elementen ['below'] den höchsten weight-wert.
+ *
  * @param array $tree
  * @return int $high
  */
 function _custom_general_get_max_weight_in_book_tree($tree) {
-    //default drupal min(weight)
-    $high = -15;
-    //gehe unter below alle eintraege durch und finde max(weight)
-    if (!empty($tree['below'])) {
-        foreach ($tree['below'] as $elem_below) {
-            $high = max(array($high, (int) $elem_below['link']['weight']));
-        }
+  //default drupal min(weight)
+  $high = -15;
+  //gehe unter below alle eintraege durch und finde max(weight)
+  if (!empty($tree['below'])) {
+    foreach ($tree['below'] as $elem_below) {
+      $high = max(array($high, (int) $elem_below['link']['weight']));
     }
-    return $high;
+  }
+  return $high;
 }
-
 
 /**
  * og hook_og_membership_insert
  * used to clear cache of group a membership was inserted
+ *
  * @param OgMembership $og_membership
  */
 function custom_general_og_membership_insert(OgMembership $og_membership) {
-    //invalidate caches for affected group
-    if ($og_membership->gid) {
-      og_invalidate_cache(array($og_membership->gid));
-    }
+  //invalidate caches for affected group
+  if ($og_membership->gid) {
+    og_invalidate_cache(array($og_membership->gid));
+  }
 }
-
-
 
 // fuegt im eigenen profil einen settings-bereich fuer eigene einstellungen hinzu, der einfach
 // mit anderen modulen erweitert werden kann.
@@ -1819,53 +1768,52 @@ function custom_general_form_user_profile_form_alter(&$form, &$form_state, $form
 
   if ($form['#user_category'] == 'account') {
 
-      $form['custom_general_fieldset'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Various settings'),
-        '#weight' => 5,
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        //enable this placeholder in your own module!
-        '#access' => false,
-          );
+    $form['custom_general_fieldset'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Various settings'),
+      '#weight' => 5,
+      '#collapsible' => true,
+      '#collapsed' => false,
+      //enable this placeholder in your own module!
+      '#access' => false,
+    );
   }
 }
+
 /**
  * in custom_general_form_user_profile_form_alter wird ein settings-fieldset deklariert.
  * auf admin/config/people/accounts/fields kann man dieses beliebig verschieben und
  * die sortierung speichern.
+ *
  * @return array
  */
 function custom_general_field_extra_fields() {
-    $extras = array();
-    $extras['user']['user'] = array(
-        'form' => array(
-            'custom_general_fieldset' => array(
-                'label' => t('Various settings'),
-                'description' => t('Placeholder for various custom settings'),
-                'weight' => 5,
-            ),
-        ),
-    );
-    return $extras;
+  $extras = array();
+  $extras['user']['user'] = array(
+    'form' => array(
+      'custom_general_fieldset' => array(
+        'label' => t('Various settings'),
+        'description' => t('Placeholder for various custom settings'),
+        'weight' => 5,
+      ),
+    ),
+  );
+  return $extras;
 }
-
-
-
 
 /**
  * Implements hook_filter_info().
  *
  */
 function custom_general_filter_info() {
-    $filters['filter_collapse'] = array(
-        'title' => t('Content - Collapsible areas'),
-        'description' => t('write [collapsible] to collapse text.'),
-        'process callback' => '_custom_general_collapse_filter_process',
-        'tips callback' => '_custom_general_collapse_filter_tips',
-        'cache' => FALSE,
-    );
-    return $filters;
+  $filters['filter_collapse'] = array(
+    'title' => t('Content - Collapsible areas'),
+    'description' => t('write [collapsible] to collapse text.'),
+    'process callback' => '_custom_general_collapse_filter_process',
+    'tips callback' => '_custom_general_collapse_filter_tips',
+    'cache' => false,
+  );
+  return $filters;
 }
 
 /**
@@ -1876,70 +1824,71 @@ function custom_general_filter_info() {
  */
 function _custom_general_collapse_filter_process($text, $filter, $format) {
 
-    //[collapsible (options...)]ANYTHING[/collapsible]
-    //ist zweiphasig. hier wird der komplette match rausgesucht und in der funktion dann der content zerbröselt.
-    $regex = "/\[collapsible[a-zA-Z ]*\][^\[]*\[\/collapsible\]/";
+  //[collapsible (options...)]ANYTHING[/collapsible]
+  //ist zweiphasig. hier wird der komplette match rausgesucht und in der funktion dann der content zerbröselt.
+  $regex = "/\[collapsible[a-zA-Z ]*\][^\[]*\[\/collapsible\]/";
 
-    return preg_replace_callback($regex, '_custom_general_collapse_replacements', $text);
+  return preg_replace_callback($regex, '_custom_general_collapse_replacements', $text);
 }
-
 
 /**
  * Collapst aus Usability-Gründen ´das  og_domain_ref-/og-group-ref-field
  * (vmtl aber universal und kann anders auch genutzt werden)
+ *
  * @param array $ref_field das field og_domain_ref oder og_group_ref
  * @return array $field das selbe field, aber collapsed
  */
 function _custom_general_collapse_og_ref_field($ref_field) {
-    $ref_field['#collapsible'] = TRUE;
-    $ref_field['#collapsed'] = TRUE;
-    $ref_field['#type'] = "fieldset";
+  $ref_field['#collapsible'] = true;
+  $ref_field['#collapsed'] = true;
+  $ref_field['#type'] = "fieldset";
 
-    return $ref_field;
+  return $ref_field;
 }
+
 /**
  * entfernt matches auf [collapsible]elements
- * @see _custom_general_collapse_filter_process
+ *
  * @param type $matches
  * @return string
+ * @see _custom_general_collapse_filter_process
  */
 function _custom_general_collapse_replacements($matches) {
 
-    if (!empty($matches) && count($matches) == 1) {
-        $collapse_text = $matches[0];
+  if (!empty($matches) && count($matches) == 1) {
+    $collapse_text = $matches[0];
 
-        $regex_heading = '/<h2>(.*)<\/h2>/';
-        $heading_matches = array();
-        preg_match($regex_heading, $collapse_text, $heading_matches);
+    $regex_heading = '/<h2>(.*)<\/h2>/';
+    $heading_matches = array();
+    preg_match($regex_heading, $collapse_text, $heading_matches);
 
-        if (!empty($heading_matches)) {
-            $heading_h2 = $heading_matches[0];
-            $heading_text = $heading_matches[1];
-        } else {
-            drupal_set_message(t('The collapsible element @mismatch does not contain a heading and won\'t collapse.', array("@mismatch" => $matches[0])), 'warning');
-            return $collapse_text;
-        }
-
-
-        $body = $collapse_text;
-        //body: entferne überschrift.
-        $body = str_replace($heading_h2, '', $body);
-        //body: entferne überschrift und [collapsible], [/collapsible] anweisungen
-        $body = preg_replace('/\[[\/]?collapsible[a-zA-Z ]*\]/', '', $body);
-
-        $href_id = 'collapse_' . crc32($heading_text);
-
-        $collapsible_element = array();
-        $collapsible_element['#collapsible'] = true;
-        //ist die option "collapsed" gesetzt?
-        $collapsible_element['#collapsed'] = preg_match('/\[collapsible[a-zA-Z ]*collapsed[a-zA-Z ]*\]/', $collapse_text);
-        $collapsible_element['#id'] = $href_id;
-        $collapsible_element['#value'] = $body;
-        $collapsible_element['#title'] = $heading_text;
-
-
-        return ( theme('bootstrap_panel', array('element' => $collapsible_element)));
+    if (!empty($heading_matches)) {
+      $heading_h2 = $heading_matches[0];
+      $heading_text = $heading_matches[1];
+    } else {
+      drupal_set_message(t('The collapsible element @mismatch does not contain a heading and won\'t collapse.',
+        array("@mismatch" => $matches[0])), 'warning');
+      return $collapse_text;
     }
+
+    $body = $collapse_text;
+    //body: entferne überschrift.
+    $body = str_replace($heading_h2, '', $body);
+    //body: entferne überschrift und [collapsible], [/collapsible] anweisungen
+    $body = preg_replace('/\[[\/]?collapsible[a-zA-Z ]*\]/', '', $body);
+
+    $href_id = 'collapse_' . crc32($heading_text);
+
+    $collapsible_element = array();
+    $collapsible_element['#collapsible'] = true;
+    //ist die option "collapsed" gesetzt?
+    $collapsible_element['#collapsed'] = preg_match('/\[collapsible[a-zA-Z ]*collapsed[a-zA-Z ]*\]/', $collapse_text);
+    $collapsible_element['#id'] = $href_id;
+    $collapsible_element['#value'] = $body;
+    $collapsible_element['#title'] = $heading_text;
+
+    return (theme('bootstrap_panel', array('element' => $collapsible_element)));
+  }
 }
 
 /**
@@ -1950,101 +1899,102 @@ function _custom_general_collapse_replacements($matches) {
  * screen, while long tips are provided on a separate linked page. Short tips
  * are optional, but long tips are highly recommended.
  */
-function _custom_general_collapse_filter_tips($filter, $format, $long = FALSE) {
+function _custom_general_collapse_filter_tips($filter, $format, $long = false) {
 
-    return t('Pattern [collapsible]heading ... text... [/collapsible] is collapsible');
+  return t('Pattern [collapsible]heading ... text... [/collapsible] is collapsible');
 }
-
 
 /**
  * "übersetzt" Definition-Strings in englisch
  * returned eine ausgebbare Repräsentation eines Contenttypes
  * z.B. COURSES_COURSE = course
+ *
  * @param String $content_type
  * @return String the printable contenttype
  */
 function _custom_general_get_printable_contenttype_name($content_type) {
-    $ARR_Definition_to_String = array(
-        NM_COURSE => 'course',
-        NM_COURSE_DOCS => 'course doc',
-        NM_COURSE_FORUMTOPIC => 'forum topic',
-        NM_COURSE_NEWS => 'news',
-        NM_COURSE_GROUP => 'course group',
-        NM_COURSE_GENERIC_TASK => 'task',
-        NM_COURSE_GENERIC_TASK_SOLUTION => 'solution'
-    );
-    return $ARR_Definition_to_String[$content_type];
+  $ARR_Definition_to_String = array(
+    NM_COURSE => 'course',
+    NM_COURSE_DOCS => 'course doc',
+    NM_COURSE_FORUMTOPIC => 'forum topic',
+    NM_COURSE_NEWS => 'news',
+    NM_COURSE_GROUP => 'course group',
+    NM_COURSE_GENERIC_TASK => 'task',
+    NM_COURSE_GENERIC_TASK_SOLUTION => 'solution'
+  );
+  return $ARR_Definition_to_String[$content_type];
 }
 
 /**
  * Liefert einheitliche "Kein-Eintrag-gefunden"-Texte mit Erstelllink
+ *
  * @param type $type Typ des fehlenden Contents, z.B. NM_COURSE_NEWS
  * @param type $og_gid derzeit die Kurs-NID. Später ggf auch Lehrtext-NID
  */
-function _custom_general_get_no_content_text($type, $og_gid)
-{
-    $affected_node = node_load($og_gid);
+function _custom_general_get_no_content_text($type, $og_gid) {
+  $affected_node = node_load($og_gid);
 
+  //anlege-url
+  $default_url = NM_COURSE_ADMIN_PREFIX_PATH . DIRECTORY_SEPARATOR . $og_gid . DIRECTORY_SEPARATOR . 'add' . DIRECTORY_SEPARATOR .
+    str_replace('_', '-', $type);
+  //"Erstellen Sie derdiedas erste!" (Mit Context für Übersetzung)
+  $add_text = t('Create the first one!', array(), array('context' => $type));
 
-    //anlege-url
-    $default_url = NM_COURSE_ADMIN_PREFIX_PATH . DIRECTORY_SEPARATOR . $og_gid . DIRECTORY_SEPARATOR . 'add' . DIRECTORY_SEPARATOR . str_replace('_', '-',$type);
-    //"Erstellen Sie derdiedas erste!" (Mit Context für Übersetzung)
-    $add_text = t('Create the first one!', array(), array('context' => $type));
+  //"Noch kein Kursdokumente angelegt"
+  $default_no_content_text = t('No ' . _custom_general_get_printable_contenttype_name($type) . ' has been created yet.');
 
-    //"Noch kein Kursdokumente angelegt"
-    $default_no_content_text = t('No ' ._custom_general_get_printable_contenttype_name($type) . ' has been created yet.');
+  $default_text_without_add = $default_no_content_text;
+  $default_text_with_add =
+    $default_no_content_text . ' ' . l($add_text, $default_url, array('query' => array('og_group_ref' => $og_gid)));
 
+  //Erstellrechte?
+  if (node_access('update', $affected_node)) {
+    $default_text = $default_text_with_add;
+  } else {
+    $default_text = $default_text_without_add;
+  }
 
-    $default_text_without_add = $default_no_content_text;
-    $default_text_with_add = $default_no_content_text .' '. l($add_text, $default_url, array('query'=>array('og_group_ref'=>$og_gid)));
-
-    //Erstellrechte?
-    if (node_access('update', $affected_node)) {
-        $default_text = $default_text_with_add;
-    } else {
-        $default_text = $default_text_without_add;
-    }
-
-    switch ($affected_node->type) {
-        //erstmal nur für Views in "Kurs" umgesetzt
-        case NM_COURSE:
-            switch ($type) {
-                case NM_COURSE_NEWS: //"news" is plural!
-                    $text = t('No ' . _custom_general_get_printable_contenttype_name($type) . ' have been created yet.') . (node_access('update', $affected_node)? ' '. l($add_text, $default_url, array('query'=>array('og_group_ref'=>$og_gid))):'');
-                    return $text;
-
-                default: return $default_text;
-            }
-            break;
-
+  switch ($affected_node->type) {
+    //erstmal nur für Views in "Kurs" umgesetzt
+    case NM_COURSE:
+      switch ($type) {
+        case NM_COURSE_NEWS: //"news" is plural!
+          $text = t('No ' . _custom_general_get_printable_contenttype_name($type) . ' have been created yet.') .
+            (node_access('update', $affected_node) ?
+              ' ' . l($add_text, $default_url, array('query' => array('og_group_ref' => $og_gid))) : '');
+          return $text;
 
         default:
-            throw new Exception("No implementation in 578tuzghjdsf323dfed");
-    }
+          return $default_text;
+      }
+      break;
+
+    default:
+      throw new Exception("No implementation in 578tuzghjdsf323dfed");
+  }
 }
-
-
 
 /**
  * get user picture
  *
  * @param type $account
  */
-function _custom_general_get_user_pic($account, $style="profile_stream_thumbnail", $rendered = FALSE) {
+function _custom_general_get_user_pic($account, $style = "profile_stream_thumbnail", $rendered = false) {
   $realname = realname_load($account);
-  if (empty($realname))
+  if (empty($realname)) {
     $realname = $account->name;
+  }
 
   $profile = profile2_load_by_user($account, 'master');
   $user_pic = "";
 
   if ($rendered) {
-      $field_view = field_view_field('profile2', $profile, 'field_photo',
-        array('settings' => array('image_style' => 'profile_stream_thumbnail')));
-      $field_view['#label_display'] = 'hidden';
-      $field_view[0]['#item']['title'] = $realname;
-      $field_view[0]['#item']['alt'] = $realname;
-      $user_pic = drupal_render($field_view);
+    $field_view = field_view_field('profile2', $profile, 'field_photo',
+      array('settings' => array('image_style' => 'profile_stream_thumbnail')));
+    $field_view['#label_display'] = 'hidden';
+    $field_view[0]['#item']['title'] = $realname;
+    $field_view[0]['#item']['alt'] = $realname;
+    $user_pic = drupal_render($field_view);
   } else {
     $info = field_info_field('field_photo');
     $profile_file = "";
@@ -2057,7 +2007,6 @@ function _custom_general_get_user_pic($account, $style="profile_stream_thumbnail
     // return image url
     return image_style_url($style, $profile_file->uri);
   }
-
 
   return $user_pic;
 }
