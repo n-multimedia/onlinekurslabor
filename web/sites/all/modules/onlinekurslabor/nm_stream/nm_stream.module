@@ -2327,25 +2327,27 @@ function _nm_stream_filter_xss($text)
        return  '';
 }
 
-/*
- * import all old status messages
- */
 
-function nm_stream_import_status_stream() {
-  dpm('FUNCTION DEACTIVATED');
-  //Teil dieser Migration war die Funktion
-  /**
+
+/**
  * Implements hook_node_presave().
  *
  *
  */
-  /*
 function nm_stream_node_presave($node) {
   if (isset($node->modified)) {
-    $node->created = $node->modified;
     $node->changed = $node->modified;
   }
-}*/
+}
+
+/*
+ * import all old status messages
+ */
+function nm_stream_import_status_stream() {
+  dpm('FUNCTION DEACTIVATED');
+  //Teil dieser Migration war die Funktion
+
+
   //  ist nun rausgeflogen.
   return;
   //get all course groups
@@ -3459,6 +3461,8 @@ function nm_stream_api_v2_node_file_upload_callback($node, $token) {
   // CASE: node add
   // we have no nid yet
 
+  $node = node_load($node->nid, null, true);
+
   if (node_access('update', $node)) {
     //dpm($files);
     foreach ($files as $file) {
@@ -3473,6 +3477,9 @@ function nm_stream_api_v2_node_file_upload_callback($node, $token) {
       ];
     }
 
+    if ($node->changed == $node->created) {
+        $node->modified = $node->created;
+    }
     node_save($node);
 
     //return json

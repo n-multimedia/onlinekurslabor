@@ -2024,35 +2024,39 @@ function _custom_general_get_no_content_text($type, $og_gid)
 }
 
 
-
 /**
  * get user picture
  *
  * @param type $account
  */
-function _custom_general_get_user_pic($account, $style="profile_stream_thumbnail", $rendered = FALSE) {
+function _custom_general_get_user_pic($account, $style = "profile_stream_thumbnail", $rendered = FALSE) {
   $realname = realname_load($account);
-  if (empty($realname))
+  if (empty($realname)) {
     $realname = $account->name;
+  }
 
   $profile = profile2_load_by_user($account, 'master');
   $user_pic = "";
 
   if ($rendered) {
-      $field_view = field_view_field('profile2', $profile, 'field_photo',
-        array('settings' => array('image_style' => 'profile_stream_thumbnail')));
-      $field_view['#label_display'] = 'hidden';
-      $field_view[0]['#item']['title'] = $realname;
-      $field_view[0]['#item']['alt'] = $realname;
-      $user_pic = drupal_render($field_view);
-  } else {
+    $field_view = field_view_field('profile2', $profile, 'field_photo',
+      ['settings' => ['image_style' => 'profile_stream_thumbnail']]);
+    $field_view['#label_display'] = 'hidden';
+    $field_view[0]['#item']['title'] = $realname;
+    $field_view[0]['#item']['alt'] = $realname;
+    $user_pic = drupal_render($field_view);
+  }
+  else {
     $info = field_info_field('field_photo');
     $profile_file = "";
     if (!empty($profile->field_photo)) {
       $profile_file = file_load($profile->field_photo[LANGUAGE_NONE][0]['fid']);
-    } else if (!empty($info) && $info['settings']['default_image'] > 0) {
-      $default_img_fid = $info['settings']['default_image'];
-      $profile_file = file_load($default_img_fid);
+    }
+    else {
+      if (!empty($info) && $info['settings']['default_image'] > 0) {
+        $default_img_fid = $info['settings']['default_image'];
+        $profile_file = file_load($default_img_fid);
+      }
     }
     // return image url
     return image_style_url($style, $profile_file->uri);
