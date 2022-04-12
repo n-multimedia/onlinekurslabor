@@ -172,7 +172,9 @@ function _DefaultAvatar_getPhotoFileSystemtype() {
 function _DefaultAvatar_createDefaultForAllUsers() {
     $users = entity_load('user');
     foreach ($users as $user_id => $user) {
-
+      if($user_id > 0)
+      {
         _DefaultAvatar_createDefaultAvatarForUser($user->uid);
+      }
     }
 }
