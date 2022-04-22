@@ -4,7 +4,6 @@
 
 drush vset maintenance_mode 1
 
-drush dis  realname_fix --yes
 
 #bug in drush - cc before FR!!
 drush cc all
