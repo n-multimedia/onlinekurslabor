@@ -306,12 +306,15 @@ function nm_uuid_features_uuid_features_default_terms() {
     'vocabulary_machine_name' => 'hochschulen',
   );
   $terms[] = array(
-    'name' => 'FH Weihenstephan-Triesdorf',
+    'name' => 'FH Weihenstephan',
     'description' => '',
     'format' => 'plain_text',
     'weight' => 0,
     'uuid' => 'f53c62c4-e0ca-4500-9e6f-96a4ce6fdef4',
     'vocabulary_machine_name' => 'hochschulen',
+    'path' => array(
+      'pathauto' => 1,
+    ),
   );
   $terms[] = array(
     'name' => 'Uni Passau',
