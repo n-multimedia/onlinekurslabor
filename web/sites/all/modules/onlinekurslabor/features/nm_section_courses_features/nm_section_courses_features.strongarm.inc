@@ -487,11 +487,31 @@ function nm_section_courses_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__courses_course';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(
+        'path' => array(
+          'weight' => '2',
+        ),
+        'title' => array(
+          'weight' => '7',
+        ),
+        'workflow' => array(
+          'weight' => '8',
+        ),
+      ),
+    ),
     'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
       ),
       'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
         'custom_settings' => FALSE,
       ),
       'rss' => array(
@@ -503,35 +523,15 @@ function nm_section_courses_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'token' => array(
-        'custom_settings' => FALSE,
-      ),
-      'revision' => array(
-        'custom_settings' => FALSE,
-      ),
-      'print' => array(
-        'custom_settings' => FALSE,
-      ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
       'task' => array(
         'custom_settings' => FALSE,
       ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '7',
-        ),
-        'path' => array(
-          'weight' => '2',
-        ),
-        'workflow' => array(
-          'weight' => '8',
-        ),
+      'teaser' => array(
+        'custom_settings' => TRUE,
       ),
-      'display' => array(),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
   );
   $export['field_bundle_settings_node__courses_course'] = $strongarm;
@@ -541,11 +541,25 @@ function nm_section_courses_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__courses_docs';
   $strongarm->value = array(
-    'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(
+        'path' => array(
+          'weight' => '3',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
       ),
+    ),
+    'view_modes' => array(
       'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
         'custom_settings' => FALSE,
       ),
       'rss' => array(
@@ -557,29 +571,15 @@ function nm_section_courses_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
+      'task' => array(
         'custom_settings' => FALSE,
+      ),
+      'teaser' => array(
+        'custom_settings' => TRUE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
       ),
-      'revision' => array(
-        'custom_settings' => FALSE,
-      ),
-      'task' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '0',
-        ),
-        'path' => array(
-          'weight' => '3',
-        ),
-      ),
-      'display' => array(),
     ),
   );
   $export['field_bundle_settings_node__courses_docs'] = $strongarm;
@@ -589,18 +589,18 @@ function nm_section_courses_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__courses_generic_task';
   $strongarm->value = array(
-    'view_modes' => array(),
     'extra_fields' => array(
+      'display' => array(),
       'form' => array(
-        'title' => array(
-          'weight' => '0',
-        ),
         'path' => array(
           'weight' => '5',
         ),
+        'title' => array(
+          'weight' => '0',
+        ),
       ),
-      'display' => array(),
     ),
+    'view_modes' => array(),
   );
   $export['field_bundle_settings_node__courses_generic_task'] = $strongarm;
 
@@ -609,14 +609,55 @@ function nm_section_courses_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__courses_generic_task_solution';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(
+        'workflow' => array(
+          'default' => array(
+            'visible' => TRUE,
+            'weight' => '7',
+          ),
+          'teaser' => array(
+            'visible' => TRUE,
+            'weight' => '1',
+          ),
+        ),
+        'workflow_current_state' => array(
+          'default' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'teaser' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+        ),
+      ),
+      'form' => array(
+        'path' => array(
+          'weight' => '5',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+        'workflow' => array(
+          'weight' => '7',
+        ),
+      ),
+    ),
     'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'full' => array(
+        'custom_settings' => FALSE,
       ),
       'nm_stream' => array(
         'custom_settings' => TRUE,
       ),
-      'full' => array(
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
         'custom_settings' => FALSE,
       ),
       'rss' => array(
@@ -628,14 +669,11 @@ function nm_section_courses_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
+      'task' => array(
         'custom_settings' => FALSE,
       ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
-      'view_mode_course' => array(
-        'custom_settings' => FALSE,
+      'teaser' => array(
+        'custom_settings' => TRUE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
@@ -643,46 +681,8 @@ function nm_section_courses_features_strongarm() {
       'videosafe_description' => array(
         'custom_settings' => FALSE,
       ),
-      'task' => array(
+      'view_mode_course' => array(
         'custom_settings' => FALSE,
-      ),
-      'revision' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '0',
-        ),
-        'path' => array(
-          'weight' => '5',
-        ),
-        'workflow' => array(
-          'weight' => '7',
-        ),
-      ),
-      'display' => array(
-        'workflow_current_state' => array(
-          'default' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'teaser' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-        ),
-        'workflow' => array(
-          'default' => array(
-            'weight' => '7',
-            'visible' => TRUE,
-          ),
-          'teaser' => array(
-            'weight' => '1',
-            'visible' => TRUE,
-          ),
-        ),
       ),
     ),
   );
@@ -693,11 +693,25 @@ function nm_section_courses_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__courses_group';
   $strongarm->value = array(
-    'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(
+        'path' => array(
+          'weight' => '4',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
       ),
+    ),
+    'view_modes' => array(
       'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
         'custom_settings' => FALSE,
       ),
       'rss' => array(
@@ -709,26 +723,12 @@ function nm_section_courses_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
-        'custom_settings' => FALSE,
+      'teaser' => array(
+        'custom_settings' => TRUE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
       ),
-      'revision' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '0',
-        ),
-        'path' => array(
-          'weight' => '4',
-        ),
-      ),
-      'display' => array(),
     ),
   );
   $export['field_bundle_settings_node__courses_group'] = $strongarm;
@@ -738,11 +738,25 @@ function nm_section_courses_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__courses_news';
   $strongarm->value = array(
-    'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(
+        'path' => array(
+          'weight' => '1',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
       ),
+    ),
+    'view_modes' => array(
       'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
         'custom_settings' => FALSE,
       ),
       'rss' => array(
@@ -754,29 +768,15 @@ function nm_section_courses_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
+      'task' => array(
         'custom_settings' => FALSE,
+      ),
+      'teaser' => array(
+        'custom_settings' => TRUE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
       ),
-      'revision' => array(
-        'custom_settings' => FALSE,
-      ),
-      'task' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '0',
-        ),
-        'path' => array(
-          'weight' => '1',
-        ),
-      ),
-      'display' => array(),
     ),
   );
   $export['field_bundle_settings_node__courses_news'] = $strongarm;
@@ -786,11 +786,24 @@ function nm_section_courses_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__forum';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(),
+    ),
     'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
       ),
       'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'nm_stream' => array(
+        'custom_settings' => TRUE,
+      ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
         'custom_settings' => FALSE,
       ),
       'rss' => array(
@@ -802,28 +815,15 @@ function nm_section_courses_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
+      'task' => array(
         'custom_settings' => FALSE,
       ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
+      'teaser' => array(
+        'custom_settings' => TRUE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
       ),
-      'task' => array(
-        'custom_settings' => FALSE,
-      ),
-      'revision' => array(
-        'custom_settings' => FALSE,
-      ),
-      'nm_stream' => array(
-        'custom_settings' => TRUE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(),
-      'display' => array(),
     ),
   );
   $export['field_bundle_settings_node__forum'] = $strongarm;
@@ -833,6 +833,10 @@ function nm_section_courses_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_profile2__student';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(),
+    ),
     'view_modes' => array(
       'account' => array(
         'custom_settings' => FALSE,
@@ -840,10 +844,6 @@ function nm_section_courses_features_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
-    ),
-    'extra_fields' => array(
-      'form' => array(),
-      'display' => array(),
     ),
   );
   $export['field_bundle_settings_profile2__student'] = $strongarm;
@@ -853,43 +853,43 @@ function nm_section_courses_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_taxonomy_term__sponsors';
   $strongarm->value = array(
-    'view_modes' => array(
-      'sponsors_logo' => array(
-        'custom_settings' => TRUE,
-      ),
-      'full' => array(
-        'custom_settings' => FALSE,
-      ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
-      'token' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
     'extra_fields' => array(
+      'display' => array(
+        'description' => array(
+          'default' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+          'sponsors_logo' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+        ),
+      ),
       'form' => array(
-        'path' => array(
-          'weight' => '4',
+        'description' => array(
+          'weight' => '2',
         ),
         'name' => array(
           'weight' => '0',
         ),
-        'description' => array(
-          'weight' => '2',
+        'path' => array(
+          'weight' => '4',
         ),
       ),
-      'display' => array(
-        'description' => array(
-          'default' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'sponsors_logo' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-        ),
+    ),
+    'view_modes' => array(
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'sponsors_logo' => array(
+        'custom_settings' => TRUE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
       ),
     ),
   );

@@ -18,9 +18,6 @@ require_once(__DIR__ . '/OklProvider.php');
  */
 class OklGenerator extends \RealisticFaker\Generator {
 
-    public static function get($identifier = null, $langcode = 'de_DE') {
-        return new OklGenerator($identifier, $langcode);
-    }
 
     public function __construct($identifier = null, $langcode = 'de_DE') {
 
@@ -28,7 +25,6 @@ class OklGenerator extends \RealisticFaker\Generator {
 
         //Zugriff auf erzeugte Namen.. 
         $this->oklUserName = sprintf('%s %s', $this->firstName, $this->lastName);
-      
         
         //OKLProvider für voneinenader unabhängige Random Data-Sets
         $this->addProvider(new OklProvider($this->faker));

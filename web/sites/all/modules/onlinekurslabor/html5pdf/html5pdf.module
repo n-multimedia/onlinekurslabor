@@ -132,7 +132,7 @@ function html5pdf_field_formatter_view($entity_type, $entity, $field, $instance,
             continue;
         }
         //preview in wysiwyg
-        if ($item['override']['wysiwyg']) {
+        if (!empty($item['override']['wysiwyg'])) {
             //achtung: bei WYSIWYG geht nur EIN <html-Element>. Bei mehreren verschluckt er sich - also auch kein <img>+<span>
             if($display['settings']['show_file_link'])
             {

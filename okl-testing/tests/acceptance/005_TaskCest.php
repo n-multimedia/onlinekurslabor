@@ -127,11 +127,11 @@ class TaskCest extends CestHelper {
 
         $node_data = $this->getNodeSample(NM_COURSE_GENERIC_TASK, 0);
         //title : sonderheit bei aufgaben.. siehe _section_courses_courses_generic_task_node_form_submit. Test schlägt sonst bei manchen Chars fehl
-        $return[] = ['title' => RealisticFaker\OklGenerator::getSafeText($node_data['title']), 'field_task_type' => 0, 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]], 'preparedanswer' => $rand_data->realText(200)];
+        $return[] = ['title' => RealisticFaker\OklGenerator::getSafeText($node_data['title']), 'field_task_type' => 0, 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(120)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(120)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(80)]]];
 
         $node_data = $this->getNodeSample(NM_COURSE_GENERIC_TASK, 1);
         //field_task_type=1: gruppenaufgabe
-        $return[] = ['title' => 'GROUP_' . RealisticFaker\OklGenerator::getSafeText($node_data['title']), 'field_task_type' => '1', 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]], 'preparedanswer' => $rand_data->realText(200)];
+        $return[] = ['title' => 'GROUP_' . RealisticFaker\OklGenerator::getSafeText($node_data['title']), 'field_task_type' => '1', 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(120)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(120)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(80)]]];
 
         return $return;
     }
@@ -156,7 +156,7 @@ class TaskCest extends CestHelper {
         foreach ($studentsandtasks['tasks'] as $task) {
             $I->click("Aufgaben");
             $I->click($task['title']);
-
+            //$I->comment("Ich bin ".$studentsandtasks['mail']. "in kg??".$student_is_in_kg." tasktyp is: ".$task["field_task_type"]." und vorbeantwortet?? ".isset($task["prefilled_by_colleague"]));
             //gruppenaufgabe
             if ($task["field_task_type"] == "1") {
 
@@ -173,6 +173,7 @@ class TaskCest extends CestHelper {
                     continue;
                 }
             }
+            
             //keine der obigen bedingungen hat gegriffen, dann muss ausfüllen möglich sein.
             $I->see(TaskAnswerPage::$answering_possible_tag);
 
@@ -195,11 +196,19 @@ class TaskCest extends CestHelper {
 
         $alltasks = (array) $this->TC001_AddTaskProvider();
         
+        //generiere random antwort
+        $rand_data = \RealisticFaker\OklFactory::create();
+        foreach($alltasks as $alltask_counter => $task_def)
+        {
+          //mit &$task_def zu arbeiten, führt im späteren verlauf dazu, 
+          //dass irgendwie alle studis den selben wert haben bei Gruppenaufgaben ¯\_(ツ)_/¯ 
+          $alltasks[$alltask_counter]['preparedanswer'] = $rand_data->realText(200);
+        }
+        
         //jedem studi werden die tasks zugewiesen
         foreach ($students as $counter => &$studi) {
-
-            $studi['tasks'] = $alltasks;
-
+             $studi['tasks'] = $alltasks;
+             
             //am anfang stehen die non-kg-members im array
             if ($counter < count($nonkgmembers)) {
                 $studi['kgmember'] = false;
@@ -249,7 +258,7 @@ class TaskCest extends CestHelper {
         $this->goToContextHome($I);
         $course_nid = $this->getCurrentContextNid();
         $course_object = _okl_testing_getDataObjectForCourse($course_nid);
-        //hier nehmen wir einfach die erste, damit die getesteten in der selben sind.
+        //hier nehmen wir einfach die erste, da die getesteten User alle in der selben sind.
         $course_group_for_user = $course_object->get('course_group', 0);
 
 

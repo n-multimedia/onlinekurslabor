@@ -31,12 +31,12 @@ function nm_section_courses_features_context_default_contexts() {
   );
   $context->reactions = array(
     'context_redirect' => array(
-      'redirect_path' => 'courses',
-      'enable_message' => 0,
-      'redirect_message' => '',
-      'qsa' => 1,
-      'redirect_type' => '302',
       'admin_key' => '',
+      'enable_message' => 0,
+      'qsa' => 1,
+      'redirect_message' => '',
+      'redirect_path' => 'courses',
+      'redirect_type' => '302',
     ),
   );
   $context->condition_mode = 1;
@@ -133,14 +133,14 @@ function nm_section_courses_features_context_default_contexts() {
     'block' => array(
       'blocks' => array(
         'section_courses-course_header_section' => array(
-          'module' => 'section_courses',
           'delta' => 'course_header_section',
+          'module' => 'section_courses',
           'region' => 'header',
           'weight' => '-10',
         ),
         'section_courses-course_top_navigation' => array(
-          'module' => 'section_courses',
           'delta' => 'course_top_navigation',
+          'module' => 'section_courses',
           'region' => 'header',
           'weight' => '-9',
         ),
@@ -174,12 +174,12 @@ function nm_section_courses_features_context_default_contexts() {
   );
   $context->reactions = array(
     'context_redirect' => array(
-      'redirect_path' => 'courses',
-      'enable_message' => 0,
-      'redirect_message' => '',
-      'qsa' => 1,
-      'redirect_type' => '302',
       'admin_key' => '',
+      'enable_message' => 0,
+      'qsa' => 1,
+      'redirect_message' => '',
+      'redirect_path' => 'courses',
+      'redirect_type' => '302',
     ),
   );
   $context->condition_mode = 1;

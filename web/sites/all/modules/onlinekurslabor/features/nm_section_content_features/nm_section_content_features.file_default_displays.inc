@@ -61,8 +61,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['audio__file_icon__file_image'] = $file_display;
@@ -73,8 +73,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['audio__file_icon__oembed'] = $file_display;
@@ -85,8 +85,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['audio__file_icon__oembed_image'] = $file_display;
@@ -97,8 +97,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['audio__file_icon__oembed_thumbnail'] = $file_display;
 
@@ -108,11 +108,11 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'controls' => 1,
     'autoplay' => 0,
+    'controls' => 1,
     'loop' => 0,
-    'preload' => '',
     'multiple_file_behavior' => 'tags',
+    'preload' => '',
   );
   $export['audio__filename__file_field_file_audio'] = $file_display;
 
@@ -166,8 +166,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['audio__filename__oembed'] = $file_display;
@@ -178,8 +178,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['audio__filename__oembed_thumbnail'] = $file_display;
 
@@ -189,11 +189,11 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'controls' => 1,
     'autoplay' => 0,
+    'controls' => 1,
     'loop' => 0,
-    'preload' => '',
     'multiple_file_behavior' => 'tags',
+    'preload' => '',
   );
   $export['audio__full__file_field_file_audio'] = $file_display;
 
@@ -247,8 +247,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['audio__full__oembed'] = $file_display;
@@ -259,8 +259,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['audio__full__oembed_thumbnail'] = $file_display;
 
@@ -280,15 +280,15 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
+    'autoplay' => 0,
     'controls' => 1,
     'controls_list' => array(
       'download' => 'download',
       'remote_playback' => 'remote_playback',
     ),
-    'autoplay' => 0,
     'loop' => 0,
-    'preload' => '',
     'multiple_file_behavior' => 'tags',
+    'preload' => '',
   );
   $export['audio__wysiwyg__file_field_file_audio'] = $file_display;
 
@@ -342,8 +342,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['audio__wysiwyg__oembed'] = $file_display;
@@ -354,8 +354,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['audio__wysiwyg__oembed_thumbnail'] = $file_display;
 
@@ -409,8 +409,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['document__file_icon__file_image'] = $file_display;
@@ -421,8 +421,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['document__file_icon__oembed'] = $file_display;
@@ -433,8 +433,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['document__file_icon__oembed_image'] = $file_display;
@@ -445,8 +445,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['document__file_icon__oembed_thumbnail'] = $file_display;
 
@@ -500,8 +500,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['document__preview__file_image'] = $file_display;
@@ -556,8 +556,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 50;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => '',
     'image_link' => '',
+    'image_style' => '',
   );
   $export['image__default__file_field_image'] = $file_display;
 
@@ -577,8 +577,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -46;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_4',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => 'media_4',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__default__file_image'] = $file_display;
@@ -600,8 +600,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -43;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['image__default__oembed'] = $file_display;
@@ -612,8 +612,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -45;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => 'large',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => 'large',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__default__oembed_image'] = $file_display;
@@ -624,8 +624,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -47;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['image__default__oembed_thumbnail'] = $file_display;
 
@@ -679,8 +679,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__file_icon__file_image'] = $file_display;
@@ -691,8 +691,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['image__file_icon__oembed'] = $file_display;
@@ -703,8 +703,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__file_icon__oembed_image'] = $file_display;
@@ -715,8 +715,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['image__file_icon__oembed_thumbnail'] = $file_display;
 
@@ -768,8 +768,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__filename__file_image'] = $file_display;
@@ -780,8 +780,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['image__filename__oembed'] = $file_display;
@@ -792,8 +792,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__filename__oembed_image'] = $file_display;
@@ -804,8 +804,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['image__filename__oembed_thumbnail'] = $file_display;
 
@@ -857,8 +857,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 5;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_9',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => 'media_9',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__full__file_image'] = $file_display;
@@ -869,8 +869,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['image__full__oembed'] = $file_display;
@@ -881,8 +881,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__full__oembed_image'] = $file_display;
@@ -893,8 +893,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['image__full__oembed_thumbnail'] = $file_display;
 
@@ -948,8 +948,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_12',
     'image_link' => '',
+    'image_style' => 'media_12',
   );
   $export['image__media_12__file_field_image'] = $file_display;
 
@@ -967,8 +967,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_12',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => 'media_12',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__media_12__file_image'] = $file_display;
@@ -979,8 +979,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['image__media_12__oembed'] = $file_display;
@@ -991,8 +991,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__media_12__oembed_image'] = $file_display;
@@ -1003,8 +1003,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['image__media_12__oembed_thumbnail'] = $file_display;
 
@@ -1058,8 +1058,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_3',
     'image_link' => '',
+    'image_style' => 'media_3',
   );
   $export['image__media_3__file_field_image'] = $file_display;
 
@@ -1077,8 +1077,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_3',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => 'media_3',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__media_3__file_image'] = $file_display;
@@ -1089,8 +1089,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['image__media_3__oembed'] = $file_display;
@@ -1101,8 +1101,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__media_3__oembed_image'] = $file_display;
@@ -1113,8 +1113,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['image__media_3__oembed_thumbnail'] = $file_display;
 
@@ -1168,8 +1168,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_4',
     'image_link' => '',
+    'image_style' => 'media_4',
   );
   $export['image__media_4__file_field_image'] = $file_display;
 
@@ -1189,8 +1189,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_4',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => 'media_4',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__media_4__file_image'] = $file_display;
@@ -1201,8 +1201,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['image__media_4__oembed'] = $file_display;
@@ -1213,8 +1213,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__media_4__oembed_image'] = $file_display;
@@ -1225,8 +1225,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['image__media_4__oembed_thumbnail'] = $file_display;
 
@@ -1236,8 +1236,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'controls' => 1,
     'autoplay' => 0,
+    'controls' => 1,
     'loop' => 0,
     'multiple_file_behavior' => 'tags',
   );
@@ -1283,12 +1283,12 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'controls' => 1,
     'autoplay' => 0,
-    'loop' => 0,
-    'width' => '',
+    'controls' => 1,
     'height' => '',
+    'loop' => 0,
     'multiple_file_behavior' => 'tags',
+    'width' => '',
   );
   $export['image__media_600px__file_field_file_video'] = $file_display;
 
@@ -1298,8 +1298,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_600px',
     'image_link' => '',
+    'image_style' => 'media_600px',
   );
   $export['image__media_600px__file_field_image'] = $file_display;
 
@@ -1319,8 +1319,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['image__media_600px__oembed'] = $file_display;
@@ -1331,8 +1331,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['image__media_600px__oembed_thumbnail'] = $file_display;
 
@@ -1386,8 +1386,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_6',
     'image_link' => '',
+    'image_style' => 'media_6',
   );
   $export['image__media_6__file_field_image'] = $file_display;
 
@@ -1405,8 +1405,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_6',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => 'media_6',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__media_6__file_image'] = $file_display;
@@ -1417,8 +1417,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['image__media_6__oembed'] = $file_display;
@@ -1429,8 +1429,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__media_6__oembed_image'] = $file_display;
@@ -1441,8 +1441,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['image__media_6__oembed_thumbnail'] = $file_display;
 
@@ -1496,8 +1496,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_9',
     'image_link' => '',
+    'image_style' => 'media_9',
   );
   $export['image__media_9__file_field_image'] = $file_display;
 
@@ -1515,8 +1515,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_9',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => 'media_9',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__media_9__file_image'] = $file_display;
@@ -1527,8 +1527,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['image__media_9__oembed'] = $file_display;
@@ -1539,8 +1539,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__media_9__oembed_image'] = $file_display;
@@ -1551,8 +1551,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['image__media_9__oembed_thumbnail'] = $file_display;
 
@@ -1606,8 +1606,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 50;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_thumbnail',
     'image_link' => '',
+    'image_style' => 'media_thumbnail',
   );
   $export['image__preview__file_field_image'] = $file_display;
 
@@ -1627,8 +1627,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -44;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_thumbnail',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => 'media_thumbnail',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__preview__file_image'] = $file_display;
@@ -1650,8 +1650,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['image__preview__oembed'] = $file_display;
@@ -1662,8 +1662,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_thumbnail',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => 'media_thumbnail',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['image__preview__oembed_image'] = $file_display;
@@ -1674,8 +1674,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['image__preview__oembed_thumbnail'] = $file_display;
 
@@ -1685,8 +1685,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 50;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'medium',
     'image_link' => 'content',
+    'image_style' => 'medium',
   );
   $export['image__teaser__file_field_image'] = $file_display;
 
@@ -1760,14 +1760,14 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'controls' => 1,
     'autoplay' => 0,
-    'loop' => 0,
-    'width' => '378',
-    'height' => '',
-    'multiple_file_behavior' => 'tags',
     'classes' => '',
+    'controls' => 1,
+    'height' => '',
+    'loop' => 0,
+    'multiple_file_behavior' => 'tags',
     'show_file_link' => 0,
+    'width' => '378',
   );
   $export['video__default__file_field_section_content_formatter_video'] = $file_display;
 
@@ -1777,8 +1777,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__default__file_image'] = $file_display;
@@ -1800,9 +1800,9 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
-    'height' => '340',
     'autoplay' => 0,
+    'height' => '340',
+    'width' => '560',
   );
   $export['video__default__media_flickr_video'] = $file_display;
 
@@ -1822,9 +1822,9 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
-    'height' => '340',
     'autoplay' => 0,
+    'height' => '340',
+    'width' => '560',
   );
   $export['video__default__media_vimeo_video'] = $file_display;
 
@@ -1844,21 +1844,21 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 1;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'width' => '640',
-    'height' => '390',
-    'theme' => 'dark',
-    'color' => 'red',
     'autohide' => '2',
     'autoplay' => 0,
-    'loop' => 0,
-    'showinfo' => 1,
-    'modestbranding' => 0,
-    'rel' => 1,
-    'nocookie' => 0,
-    'protocol_specify' => 0,
-    'protocol' => 'https:',
+    'color' => 'red',
     'enablejsapi' => 0,
+    'height' => '390',
+    'loop' => 0,
+    'modestbranding' => 0,
+    'nocookie' => 0,
     'origin' => '',
+    'protocol' => 'https:',
+    'protocol_specify' => 0,
+    'rel' => 1,
+    'showinfo' => 1,
+    'theme' => 'dark',
+    'width' => '640',
   );
   $export['video__default__media_youtube_video'] = $file_display;
 
@@ -1868,8 +1868,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'width' => '378',
     'height' => '',
+    'width' => '378',
     'wmode' => '',
   );
   $export['video__default__oembed'] = $file_display;
@@ -1880,8 +1880,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__default__oembed_image'] = $file_display;
@@ -1892,8 +1892,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['video__default__oembed_thumbnail'] = $file_display;
 
@@ -1947,8 +1947,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__file_icon__file_image'] = $file_display;
@@ -1959,8 +1959,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['video__file_icon__oembed'] = $file_display;
@@ -1971,8 +1971,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__file_icon__oembed_image'] = $file_display;
@@ -1983,8 +1983,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['video__file_icon__oembed_thumbnail'] = $file_display;
 
@@ -2038,8 +2038,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__filename__file_image'] = $file_display;
@@ -2050,8 +2050,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['video__filename__oembed'] = $file_display;
@@ -2062,8 +2062,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__filename__oembed_image'] = $file_display;
@@ -2074,8 +2074,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['video__filename__oembed_thumbnail'] = $file_display;
 
@@ -2127,8 +2127,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__full__file_image'] = $file_display;
@@ -2139,8 +2139,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['video__full__oembed'] = $file_display;
@@ -2151,8 +2151,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__full__oembed_image'] = $file_display;
@@ -2163,8 +2163,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['video__full__oembed_thumbnail'] = $file_display;
 
@@ -2218,20 +2218,20 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -46;
   $file_display->status = FALSE;
   $file_display->settings = array(
+    'autoplay' => 0,
     'controls' => 1,
     'controls_list' => array(
-      'fullscreen' => 'fullscreen',
       'download' => 'download',
+      'fullscreen' => 'fullscreen',
       'remote_playback' => 'remote_playback',
     ),
-    'autoplay' => 0,
-    'playsinline' => 0,
-    'loop' => 0,
-    'muted' => 0,
-    'width' => '100',
     'height' => '',
-    'preload' => '',
+    'loop' => 0,
     'multiple_file_behavior' => 'tags',
+    'muted' => 0,
+    'playsinline' => 0,
+    'preload' => '',
+    'width' => '100',
   );
   $export['video__media_12__file_field_file_video'] = $file_display;
 
@@ -2241,14 +2241,14 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -47;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'mode' => 'single',
     'autoplay' => '0',
-    'solution' => 'flash, html',
-    'preload' => 'metadata',
-    'volume' => '80',
-    'muted' => '0',
-    'repeat' => 'none',
     'backgroundColor' => '000000',
+    'mode' => 'single',
+    'muted' => '0',
+    'preload' => 'metadata',
+    'repeat' => 'none',
+    'solution' => 'flash, html',
+    'volume' => '80',
   );
   $export['video__media_12__file_field_jplayer_player'] = $file_display;
 
@@ -2268,14 +2268,14 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -47;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'controls' => 1,
     'autoplay' => 0,
-    'loop' => 0,
-    'width' => '756',
-    'height' => '',
-    'multiple_file_behavior' => 'tags',
     'classes' => '',
+    'controls' => 1,
+    'height' => '',
+    'loop' => 0,
+    'multiple_file_behavior' => 'tags',
     'show_file_link' => 0,
+    'width' => '756',
   );
   $export['video__media_12__file_field_section_content_formatter_video'] = $file_display;
 
@@ -2285,8 +2285,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__media_12__file_image'] = $file_display;
@@ -2297,8 +2297,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -48;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'width' => '756',
     'height' => '',
+    'width' => '756',
     'wmode' => '',
   );
   $export['video__media_12__oembed'] = $file_display;
@@ -2309,8 +2309,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__media_12__oembed_image'] = $file_display;
@@ -2321,8 +2321,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -45;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['video__media_12__oembed_thumbnail'] = $file_display;
 
@@ -2376,8 +2376,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__media_3__file_image'] = $file_display;
@@ -2388,8 +2388,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'width' => '189',
     'height' => '',
+    'width' => '189',
     'wmode' => 'window',
   );
   $export['video__media_3__oembed'] = $file_display;
@@ -2400,8 +2400,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__media_3__oembed_image'] = $file_display;
@@ -2412,8 +2412,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['video__media_3__oembed_thumbnail'] = $file_display;
 
@@ -2467,8 +2467,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__media_4__file_image'] = $file_display;
@@ -2479,8 +2479,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -46;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'width' => '252',
     'height' => '',
+    'width' => '252',
     'wmode' => '',
   );
   $export['video__media_4__oembed'] = $file_display;
@@ -2491,8 +2491,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__media_4__oembed_image'] = $file_display;
@@ -2503,8 +2503,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -44;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['video__media_4__oembed_thumbnail'] = $file_display;
 
@@ -2558,20 +2558,20 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
+    'autoplay' => 0,
     'controls' => 1,
     'controls_list' => array(
-      'fullscreen' => 'fullscreen',
       'download' => 'download',
+      'fullscreen' => 'fullscreen',
       'remote_playback' => 'remote_playback',
     ),
-    'autoplay' => 0,
-    'playsinline' => 0,
-    'loop' => 0,
-    'muted' => 0,
-    'width' => '',
     'height' => '',
-    'preload' => '',
+    'loop' => 0,
     'multiple_file_behavior' => 'tags',
+    'muted' => 0,
+    'playsinline' => 0,
+    'preload' => '',
+    'width' => '',
   );
   $export['video__media_6__file_field_file_video'] = $file_display;
 
@@ -2591,14 +2591,14 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'controls' => 1,
     'autoplay' => 0,
-    'loop' => 0,
-    'width' => '378',
-    'height' => '',
-    'multiple_file_behavior' => 'tags',
     'classes' => '',
+    'controls' => 1,
+    'height' => '',
+    'loop' => 0,
+    'multiple_file_behavior' => 'tags',
     'show_file_link' => 0,
+    'width' => '378',
   );
   $export['video__media_6__file_field_section_content_formatter_video'] = $file_display;
 
@@ -2608,8 +2608,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__media_6__file_image'] = $file_display;
@@ -2620,8 +2620,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'width' => '378',
     'height' => '',
+    'width' => '378',
     'wmode' => '',
   );
   $export['video__media_6__oembed'] = $file_display;
@@ -2632,8 +2632,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__media_6__oembed_image'] = $file_display;
@@ -2644,8 +2644,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['video__media_6__oembed_thumbnail'] = $file_display;
 
@@ -2699,20 +2699,20 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -40;
   $file_display->status = FALSE;
   $file_display->settings = array(
+    'autoplay' => 0,
     'controls' => 1,
     'controls_list' => array(
-      'fullscreen' => 'fullscreen',
       'download' => 'download',
+      'fullscreen' => 'fullscreen',
       'remote_playback' => 'remote_playback',
     ),
-    'autoplay' => 0,
-    'playsinline' => 0,
-    'loop' => 0,
-    'muted' => 0,
-    'width' => '',
     'height' => '',
-    'preload' => '',
+    'loop' => 0,
     'multiple_file_behavior' => 'tags',
+    'muted' => 0,
+    'playsinline' => 0,
+    'preload' => '',
+    'width' => '',
   );
   $export['video__media_9__file_field_file_video'] = $file_display;
 
@@ -2732,14 +2732,14 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -44;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'controls' => 1,
     'autoplay' => 0,
-    'loop' => 0,
-    'width' => '567',
-    'height' => '',
-    'multiple_file_behavior' => 'tags',
     'classes' => '',
+    'controls' => 1,
+    'height' => '',
+    'loop' => 0,
+    'multiple_file_behavior' => 'tags',
     'show_file_link' => 0,
+    'width' => '567',
   );
   $export['video__media_9__file_field_section_content_formatter_video'] = $file_display;
 
@@ -2749,8 +2749,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__media_9__file_image'] = $file_display;
@@ -2761,8 +2761,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -45;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'width' => '567',
     'height' => '350',
+    'width' => '567',
     'wmode' => '',
   );
   $export['video__media_9__oembed'] = $file_display;
@@ -2773,8 +2773,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => '',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => '',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__media_9__oembed_image'] = $file_display;
@@ -2785,8 +2785,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -46;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '180',
     'height' => '',
+    'width' => '180',
   );
   $export['video__media_9__oembed_thumbnail'] = $file_display;
 
@@ -2840,20 +2840,20 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -47;
   $file_display->status = FALSE;
   $file_display->settings = array(
+    'autoplay' => 0,
     'controls' => 1,
     'controls_list' => array(
-      'fullscreen' => 'fullscreen',
       'download' => 'download',
+      'fullscreen' => 'fullscreen',
       'remote_playback' => 'remote_playback',
     ),
-    'autoplay' => 0,
-    'playsinline' => 0,
-    'loop' => 0,
-    'muted' => 0,
-    'width' => '',
     'height' => '',
-    'preload' => '',
+    'loop' => 0,
     'multiple_file_behavior' => 'tags',
+    'muted' => 0,
+    'playsinline' => 0,
+    'preload' => '',
+    'width' => '',
   );
   $export['video__preview__file_field_file_video'] = $file_display;
 
@@ -2873,8 +2873,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -45;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'image_style' => 'medium',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => 'medium',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__preview__file_image'] = $file_display;
@@ -2896,9 +2896,9 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -44;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
-    'height' => '340',
     'autoplay' => 0,
+    'height' => '340',
+    'width' => '560',
   );
   $export['video__preview__media_flickr_video'] = $file_display;
 
@@ -2918,9 +2918,9 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -49;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
-    'height' => '340',
     'autoplay' => 0,
+    'height' => '340',
+    'width' => '560',
   );
   $export['video__preview__media_vimeo_video'] = $file_display;
 
@@ -2940,21 +2940,21 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -48;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '640',
-    'height' => '390',
-    'theme' => 'dark',
-    'color' => 'red',
     'autohide' => '2',
     'autoplay' => 0,
-    'loop' => 0,
-    'showinfo' => 1,
-    'modestbranding' => 0,
-    'rel' => 0,
-    'nocookie' => 0,
-    'protocol_specify' => 0,
-    'protocol' => 'https:',
+    'color' => 'red',
     'enablejsapi' => 0,
+    'height' => '390',
+    'loop' => 0,
+    'modestbranding' => 0,
+    'nocookie' => 0,
     'origin' => '',
+    'protocol' => 'https:',
+    'protocol_specify' => 0,
+    'rel' => 0,
+    'showinfo' => 1,
+    'theme' => 'dark',
+    'width' => '640',
   );
   $export['video__preview__media_youtube_video'] = $file_display;
 
@@ -2964,8 +2964,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -43;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '100',
     'height' => '100',
+    'width' => '100',
     'wmode' => '',
   );
   $export['video__preview__oembed'] = $file_display;
@@ -2976,8 +2976,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'image_style' => 'media_thumbnail',
     'alt' => '[file:field_file_image_alt_text]',
+    'image_style' => 'media_thumbnail',
     'title' => '[file:field_file_image_title_text]',
   );
   $export['video__preview__oembed_image'] = $file_display;
@@ -2988,8 +2988,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = -46;
   $file_display->status = TRUE;
   $file_display->settings = array(
-    'width' => '100',
     'height' => '100',
+    'width' => '100',
   );
   $export['video__preview__oembed_thumbnail'] = $file_display;
 
@@ -3033,12 +3033,12 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'controls' => 1,
     'autoplay' => 0,
-    'loop' => 0,
-    'width' => '',
+    'controls' => 1,
     'height' => '',
+    'loop' => 0,
     'multiple_file_behavior' => 'tags',
+    'width' => '',
   );
   $export['video__wysiwyg__file_field_file_video'] = $file_display;
 
@@ -3056,8 +3056,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '560',
     'height' => '340',
+    'width' => '560',
     'wmode' => '',
   );
   $export['video__wysiwyg__oembed'] = $file_display;
@@ -3068,8 +3068,8 @@ function nm_section_content_features_file_default_displays() {
   $file_display->weight = 0;
   $file_display->status = FALSE;
   $file_display->settings = array(
-    'width' => '',
     'height' => '',
+    'width' => '',
   );
   $export['video__wysiwyg__oembed_thumbnail'] = $file_display;
 

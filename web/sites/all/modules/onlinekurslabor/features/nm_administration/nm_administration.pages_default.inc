@@ -18,19 +18,19 @@ function nm_administration_default_page_manager_pages() {
   $page->admin_description = '';
   $page->path = 'administration/!section';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'bypass node access',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -56,43 +56,43 @@ function nm_administration_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Dashboard',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
-    'name' => 'panel',
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
-          'name' => 'string_length',
-          'settings' => array(
-            'operator' => '=',
-            'length' => '0',
-          ),
           'context' => 'argument_string_1',
+          'name' => 'string_length',
           'not' => FALSE,
+          'settings' => array(
+            'length' => '0',
+            'operator' => '=',
+          ),
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'name' => 'panel',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Dashboard',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span3span6span3';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
-      'picture_' => NULL,
-      'main_' => NULL,
-      'tabs_' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'left' => NULL,
+      'main_' => NULL,
+      'picture_' => NULL,
       'right' => NULL,
+      'tabs_' => NULL,
     ),
   );
   $display->cache = array();
@@ -149,8 +149,8 @@ function nm_administration_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -171,21 +171,21 @@ function nm_administration_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 0,
-    'nodes_per_page' => '15',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
     'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '15',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
-    'override_title_text' => 'Aktivität',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Aktivität',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -211,45 +211,45 @@ function nm_administration_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = 1;
   $handler->conf = array(
-    'title' => 'Inhalt',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
-    'name' => 'inhalt',
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_string_1',
           'name' => 'string_equal',
+          'not' => FALSE,
           'settings' => array(
+            'case' => 0,
             'operator' => '=',
             'value' => 'content',
-            'case' => 0,
           ),
-          'context' => 'argument_string_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'name' => 'inhalt',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Inhalt',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span3span9';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
-      'picture_' => NULL,
-      'main_' => NULL,
-      'tabs_' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'left' => NULL,
-      'right' => NULL,
+      'main_' => NULL,
       'navigation' => NULL,
+      'picture_' => NULL,
+      'right' => NULL,
+      'tabs_' => NULL,
     ),
   );
   $display->cache = array();
@@ -268,12 +268,12 @@ function nm_administration_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '',
     'format' => 'filtered_html',
-    'substitute' => TRUE,
     'name' => 'administration_fieldset_addnew',
+    'substitute' => TRUE,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -313,20 +313,20 @@ function nm_administration_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'parent' => 'menu-administration:0',
-    'title_link' => 0,
     'admin_title' => '',
-    'level' => '1',
-    'follow' => 0,
     'depth' => '1',
     'depth_relative' => 0,
     'expanded' => 0,
-    'sort' => 0,
+    'follow' => 0,
+    'level' => '1',
     'menu_name' => 'menu-administration',
-    'parent_mlid' => '0',
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'parent' => 'menu-administration:0',
+    'parent_mlid' => '0',
+    'sort' => 0,
+    'title_link' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -349,8 +349,8 @@ function nm_administration_default_page_manager_pages() {
   $pane->configuration = array(
     'inherit_path' => 1,
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -358,8 +358,8 @@ function nm_administration_default_page_manager_pages() {
     'style' => 'default',
   );
   $pane->css = array(
-    'css_id' => '',
     'css_class' => 'administration-exposed-filter',
+    'css_id' => '',
   );
   $pane->extras = array();
   $pane->position = 1;
@@ -380,45 +380,45 @@ function nm_administration_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = 2;
   $handler->conf = array(
-    'title' => 'Kurse',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
-    'name' => 'kurse',
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_string_1',
           'name' => 'string_equal',
+          'not' => FALSE,
           'settings' => array(
+            'case' => 0,
             'operator' => '=',
             'value' => 'courses',
-            'case' => 0,
           ),
-          'context' => 'argument_string_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'name' => 'kurse',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Kurse',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span3span9';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
-      'picture_' => NULL,
-      'main_' => NULL,
-      'tabs_' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'left' => NULL,
-      'right' => NULL,
+      'main_' => NULL,
       'navigation' => NULL,
+      'picture_' => NULL,
+      'right' => NULL,
+      'tabs_' => NULL,
     ),
   );
   $display->cache = array();
@@ -437,11 +437,11 @@ function nm_administration_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '',
     'format' => 'filtered_html',
     'substitute' => TRUE,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -481,20 +481,20 @@ function nm_administration_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'parent' => 'menu-administration:0',
-    'title_link' => 0,
     'admin_title' => '',
-    'level' => '1',
-    'follow' => 0,
     'depth' => '1',
     'depth_relative' => 0,
     'expanded' => 0,
-    'sort' => 0,
+    'follow' => 0,
+    'level' => '1',
     'menu_name' => 'menu-administration',
-    'parent_mlid' => '0',
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'parent' => 'menu-administration:0',
+    'parent_mlid' => '0',
+    'sort' => 0,
+    'title_link' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -517,16 +517,16 @@ function nm_administration_default_page_manager_pages() {
   $pane->configuration = array(
     'inherit_path' => 1,
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => '',
     'css_class' => 'administration-exposed-filter',
+    'css_id' => '',
   );
   $pane->extras = array();
   $pane->position = 1;
@@ -547,45 +547,45 @@ function nm_administration_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = 3;
   $handler->conf = array(
-    'title' => 'Semester',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
-    'name' => 'semester',
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_string_1',
           'name' => 'string_equal',
+          'not' => FALSE,
           'settings' => array(
+            'case' => 0,
             'operator' => '=',
             'value' => 'semester',
-            'case' => 0,
           ),
-          'context' => 'argument_string_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'name' => 'semester',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Semester',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span3span9';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
-      'picture_' => NULL,
-      'main_' => NULL,
-      'tabs_' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'left' => NULL,
-      'right' => NULL,
+      'main_' => NULL,
       'navigation' => NULL,
+      'picture_' => NULL,
+      'right' => NULL,
+      'tabs_' => NULL,
     ),
   );
   $display->cache = array();
@@ -604,11 +604,11 @@ function nm_administration_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '',
     'format' => 'filtered_html',
     'substitute' => TRUE,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -630,8 +630,6 @@ function nm_administration_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'Set current semester',
-    'title' => 'Aktuelles Semester festlegen',
-    'title_heading' => 'h2',
     'body' => '<?php
 /*rendert form, um  aktuelles semester festzulegen */
 $form_set_default_sem = drupal_get_form(\'section_courses_get_config_form_default_semester\');
@@ -639,6 +637,8 @@ print drupal_render($form_set_default_sem);
 ?>',
     'format' => 'php_code',
     'substitute' => 0,
+    'title' => 'Aktuelles Semester festlegen',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -660,8 +660,6 @@ print drupal_render($form_set_default_sem);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'form-semester-sort',
-    'title' => 'Semester-Reihenfolge ändern',
-    'title_heading' => 'h2',
     'body' => '<?php
 /*lädt die form von admin/structure/taxonomy/semester*/
 if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
@@ -673,6 +671,8 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => 'Semester-Reihenfolge ändern',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -693,20 +693,20 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'parent' => 'menu-administration:0',
-    'title_link' => 0,
     'admin_title' => '',
-    'level' => '1',
-    'follow' => 0,
     'depth' => '1',
     'depth_relative' => 0,
     'expanded' => 0,
-    'sort' => 0,
+    'follow' => 0,
+    'level' => '1',
     'menu_name' => 'menu-administration',
-    'parent_mlid' => '0',
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'parent' => 'menu-administration:0',
+    'parent_mlid' => '0',
+    'sort' => 0,
+    'title_link' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -732,45 +732,45 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   $handler->handler = 'panel_context';
   $handler->weight = 4;
   $handler->conf = array(
-    'title' => 'Benutzer',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
-    'name' => 'benutzer',
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_string_1',
           'name' => 'string_equal',
+          'not' => FALSE,
           'settings' => array(
+            'case' => 0,
             'operator' => '=',
             'value' => 'users',
-            'case' => 0,
           ),
-          'context' => 'argument_string_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'name' => 'benutzer',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Benutzer',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span3span9';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
-      'picture_' => NULL,
-      'main_' => NULL,
-      'tabs_' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'left' => NULL,
-      'right' => NULL,
+      'main_' => NULL,
       'navigation' => NULL,
+      'picture_' => NULL,
+      'right' => NULL,
+      'tabs_' => NULL,
     ),
   );
   $display->cache = array();
@@ -789,11 +789,11 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '',
     'format' => 'filtered_html',
     'substitute' => TRUE,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -833,20 +833,20 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'parent' => 'menu-administration:0',
-    'title_link' => 0,
     'admin_title' => '',
-    'level' => '1',
-    'follow' => 0,
     'depth' => '1',
     'depth_relative' => 0,
     'expanded' => 0,
-    'sort' => 0,
+    'follow' => 0,
+    'level' => '1',
     'menu_name' => 'menu-administration',
-    'parent_mlid' => '0',
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'parent' => 'menu-administration:0',
+    'parent_mlid' => '0',
+    'sort' => 0,
+    'title_link' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -869,16 +869,16 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   $pane->configuration = array(
     'inherit_path' => 1,
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => '',
     'css_class' => 'administration-exposed-filter',
+    'css_id' => '',
   );
   $pane->extras = array();
   $pane->position = 1;
@@ -899,45 +899,45 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   $handler->handler = 'panel_context';
   $handler->weight = 5;
   $handler->conf = array(
-    'title' => 'Dateien',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
-    'name' => 'dateien',
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_string_1',
           'name' => 'string_equal',
+          'not' => FALSE,
           'settings' => array(
+            'case' => 0,
             'operator' => '=',
             'value' => 'files',
-            'case' => 0,
           ),
-          'context' => 'argument_string_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'name' => 'dateien',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Dateien',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span3span9';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
-      'picture_' => NULL,
-      'main_' => NULL,
-      'tabs_' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'left' => NULL,
-      'right' => NULL,
+      'main_' => NULL,
       'navigation' => NULL,
+      'picture_' => NULL,
+      'right' => NULL,
+      'tabs_' => NULL,
     ),
   );
   $display->cache = array();
@@ -956,11 +956,11 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '',
     'format' => 'filtered_html',
     'substitute' => TRUE,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -983,8 +983,8 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   $pane->configuration = array(
     'items_per_page' => '50',
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1005,20 +1005,20 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'parent' => 'menu-administration:0',
-    'title_link' => 0,
     'admin_title' => '',
-    'level' => '1',
-    'follow' => 0,
     'depth' => '1',
     'depth_relative' => 0,
     'expanded' => 0,
-    'sort' => 0,
+    'follow' => 0,
+    'level' => '1',
     'menu_name' => 'menu-administration',
-    'parent_mlid' => '0',
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'parent' => 'menu-administration:0',
+    'parent_mlid' => '0',
+    'sort' => 0,
+    'title_link' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1041,16 +1041,16 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   $pane->configuration = array(
     'inherit_path' => 1,
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => '',
     'css_class' => 'administration-exposed-filter',
+    'css_id' => '',
   );
   $pane->extras = array();
   $pane->position = 1;
@@ -1071,45 +1071,45 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   $handler->handler = 'panel_context';
   $handler->weight = 6;
   $handler->conf = array(
-    'title' => 'Videosafe',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
-    'name' => 'videosafe',
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_string_1',
           'name' => 'string_equal',
+          'not' => FALSE,
           'settings' => array(
+            'case' => 0,
             'operator' => '=',
             'value' => 'videosafe',
-            'case' => 0,
           ),
-          'context' => 'argument_string_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'name' => 'videosafe',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Videosafe',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span3span6span3';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
-      'picture_' => NULL,
-      'main_' => NULL,
-      'tabs_' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'left' => NULL,
-      'right' => NULL,
+      'main_' => NULL,
       'navigation' => NULL,
+      'picture_' => NULL,
+      'right' => NULL,
+      'tabs_' => NULL,
     ),
   );
   $display->cache = array();
@@ -1128,11 +1128,11 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<h4><a href="/videosafe">Direkt zum Videosafe</a></h4><p>&nbsp;</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - oder -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p>&nbsp;</p>',
     'format' => 'filtered_html',
     'substitute' => 1,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -1172,20 +1172,20 @@ if ($vocabulary = taxonomy_vocabulary_machine_name_load(\'semester\')) {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'parent' => 'menu-administration:0',
-    'title_link' => 0,
     'admin_title' => '',
-    'level' => '1',
-    'follow' => 0,
     'depth' => '1',
     'depth_relative' => 0,
     'expanded' => 0,
-    'sort' => 0,
+    'follow' => 0,
+    'level' => '1',
     'menu_name' => 'menu-administration',
-    'parent_mlid' => '0',
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'parent' => 'menu-administration:0',
+    'parent_mlid' => '0',
+    'sort' => 0,
+    'title_link' => 0,
   );
   $pane->cache = array();
   $pane->style = array(

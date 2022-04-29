@@ -18,20 +18,23 @@ function annvid_features_default_page_manager_pages() {
   $page->admin_description = '';
   $page->path = 'domain/annvid/%1';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'role',
+        'not' => FALSE,
         'settings' => array(
           'rids' => array(
             0 => 30037204,
@@ -39,13 +42,10 @@ function annvid_features_default_page_manager_pages() {
             2 => 16675960,
           ),
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -69,44 +69,44 @@ function annvid_features_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'annvid' => 'annvid',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'name' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'onecol';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
-      'outline' => NULL,
-      'tools' => NULL,
+      'default' => NULL,
       'left' => NULL,
-      'right' => NULL,
       'middle' => NULL,
+      'outline' => NULL,
+      'right' => NULL,
+      'tools' => NULL,
     ),
   );
   $display->cache = array();
@@ -146,10 +146,10 @@ function annvid_features_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'view_mode' => 'full',
     'context' => 'argument_entity_id:node_1',
     'override_title' => 0,
     'override_title_text' => '',
+    'view_mode' => 'full',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -171,12 +171,12 @@ function annvid_features_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<?php 
 echo section_content_text_outline();
 ?>',
     'format' => 'php_code',
     'substitute' => 0,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -220,8 +220,8 @@ echo section_content_text_outline();
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -242,24 +242,24 @@ echo section_content_text_outline();
   $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '10',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'default',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '10',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -281,14 +281,14 @@ echo section_content_text_outline();
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'Render Stream V2',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<?php
 $container = node_load(%1:nid);
 return nm_stream_api_v2_render_stream($container );
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(

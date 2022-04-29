@@ -19,14 +19,14 @@ function nm_section_courses_features_ds_field_settings_info() {
   $ds_fieldsetting->view_mode = 'default';
   $ds_fieldsetting->settings = array(
     'statueses' => array(
-      'weight' => '3',
-      'label' => 'hidden',
       'format' => 'default',
+      'label' => 'hidden',
+      'weight' => '3',
     ),
     'user_courses' => array(
-      'weight' => '0',
-      'label' => 'hidden',
       'format' => 'default',
+      'label' => 'hidden',
+      'weight' => '0',
     ),
   );
   $export['profile2|student|default'] = $ds_fieldsetting;
@@ -87,11 +87,30 @@ function nm_section_courses_features_ds_layout_settings_info() {
   $ds_layout->view_mode = 'default';
   $ds_layout->layout = 'ds_3col';
   $ds_layout->settings = array(
+    'classes' => array(),
+    'fields' => array(
+      'field_about_me' => 'right',
+      'field_birthday' => 'right',
+      'field_gender' => 'right',
+      'field_photo' => 'left',
+      'group_user_personal_info' => 'right',
+      'group_user_stream' => 'middle',
+      'group_users_courses' => 'left',
+      'statueses' => 'middle',
+      'user_courses' => 'left',
+    ),
+    'layout_attributes' => '',
+    'layout_attributes_merge' => 1,
+    'layout_wrapper' => 'div',
     'regions' => array(
       'left' => array(
         0 => 'user_courses',
         1 => 'field_photo',
         2 => 'group_users_courses',
+      ),
+      'middle' => array(
+        5 => 'group_user_stream',
+        6 => 'statueses',
       ),
       'right' => array(
         3 => 'field_gender',
@@ -99,31 +118,12 @@ function nm_section_courses_features_ds_layout_settings_info() {
         7 => 'group_user_personal_info',
         8 => 'field_about_me',
       ),
-      'middle' => array(
-        5 => 'group_user_stream',
-        6 => 'statueses',
-      ),
     ),
-    'fields' => array(
-      'user_courses' => 'left',
-      'field_photo' => 'left',
-      'group_users_courses' => 'left',
-      'field_gender' => 'right',
-      'field_birthday' => 'right',
-      'group_user_stream' => 'middle',
-      'statueses' => 'middle',
-      'group_user_personal_info' => 'right',
-      'field_about_me' => 'right',
-    ),
-    'classes' => array(),
     'wrappers' => array(
       'left' => 'div',
       'middle' => 'div',
       'right' => 'div',
     ),
-    'layout_wrapper' => 'div',
-    'layout_attributes' => '',
-    'layout_attributes_merge' => 1,
   );
   $export['profile2|student|default'] = $ds_layout;
 

@@ -227,7 +227,7 @@ function _onlinekurslabor_delete_cascade_fix_og_group_ref_for_file($file_id, $de
  * @param type $file
  */
 function onlinekurslabor_delete_cascade_file_presave($file) {
-  if ($file->keeporiginaltimestamp && is_object($file->original) && $file->original->timestamp) {
+  if (!empty($file->keeporiginaltimestamp) && is_object($file->original) && $file->original->timestamp) {
     $file->timestamp = $file->original->timestamp;
   }
 }

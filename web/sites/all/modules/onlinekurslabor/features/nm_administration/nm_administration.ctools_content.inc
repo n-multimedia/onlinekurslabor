@@ -20,13 +20,13 @@ function nm_administration_default_ctools_custom_content() {
   $content->category = 'administration (Moderator)';
   $content->settings = array(
     'admin_title' => 'administration-fieldset-addnew',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<?php
 echo _section_administration_get_RenderedAddNewFieldset("%section:raw");
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $export['administration_fieldset_addnew'] = $content;
 

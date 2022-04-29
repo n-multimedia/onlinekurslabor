@@ -104,6 +104,11 @@ function nm_administration_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* Header: Global: Result summary */
+  $handler->display->display_options['header']['result']['id'] = 'result';
+  $handler->display->display_options['header']['result']['table'] = 'views';
+  $handler->display->display_options['header']['result']['field'] = 'result';
+  $handler->display->display_options['header']['result']['content'] = '@start - @end of @total';
   /* Field: Bulk operations: User */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_user';
@@ -401,6 +406,7 @@ function nm_administration_views_default_views() {
     t('‹ vorherige Seite'),
     t('nächste Seite ›'),
     t('last »'),
+    t('@start - @end of @total'),
     t('Benutzer'),
     t('- Choose an operation -'),
     t('Person sperren'),

@@ -31,12 +31,12 @@ function nm_section_content_features_context_default_contexts() {
   );
   $context->reactions = array(
     'context_redirect' => array(
-      'redirect_path' => 'domains',
-      'enable_message' => 0,
-      'redirect_message' => '',
-      'qsa' => 1,
-      'redirect_type' => '302',
       'admin_key' => '',
+      'enable_message' => 0,
+      'qsa' => 1,
+      'redirect_message' => '',
+      'redirect_path' => 'domains',
+      'redirect_type' => '302',
     ),
   );
   $context->condition_mode = 1;
@@ -80,11 +80,11 @@ function nm_section_content_features_context_default_contexts() {
       ),
     ),
     'context_og_condition_member_status' => array(
-      'values' => array(
-        1 => 1,
-      ),
       'options' => array(
         'node_form' => 1,
+      ),
+      'values' => array(
+        1 => 1,
       ),
     ),
     'user' => array(

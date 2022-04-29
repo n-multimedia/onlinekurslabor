@@ -1,8 +1,8 @@
 <?php
 
 /**
- * overwrites vendor/fzaninotto/faker/src/Faker/Provider/de_DE/Internet.php
- * using values from \vendor\fzaninotto\faker\src\Faker\Provider\Internet.php
+ * overwrites vendor/fakerphp/faker/src/Faker/Provider/de_DE/Internet.php
+ * using values from vendor/fakerphp/faker/src/Faker/Provider/Internet.php
  */
 
 namespace Faker\Provider\de_DE;

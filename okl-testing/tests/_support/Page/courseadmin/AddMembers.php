@@ -46,7 +46,7 @@ class AddMembers {
         $I->fillField(self::$userAddField, $name . " " . $mail);
         $I->click(self::$confirmButton);
         //angepasst an defaultavatar-timeout
-        $I->wait(12);
+        $I->wait(5);
 
         $I->see("Student " . $name . " wurde angelegt.");
         //schau auf TN-Seite

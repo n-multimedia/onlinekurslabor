@@ -1,0 +1,21 @@
+{
+    "require-dev": {
+        "codeception/module-webdriver": "1.0.7",
+        "codeception/codeception": "^4.0",
+        "fakerphp/faker": "1.12.1",
+        "null/newage-ipsum":"dev-master",
+        "null/realisticfaker":"dev-master"
+    },
+    
+    "config": {
+        "bin-dir": "vendor/bin",
+         "platform": {
+           "php": "7.3"
+        }
+    },
+   "minimum-stability": "dev",
+     "repositories": [{
+    "type": "path",
+    "url": "vendor_development/null/realisticfaker"
+    }]
+}
