@@ -1983,6 +1983,7 @@ function _section_courses_student_registration_import($strUserList, $strWelcomeT
     $success = array();
     $already_in = array();
     $missing_accounts = array();
+    $nomail_accounts = array();
 
     // Split input into rows representing users
     $rows = explode("\n", $strUserList);
@@ -2052,7 +2053,7 @@ function _section_courses_student_registration_import($strUserList, $strWelcomeT
         $user_state = _section_course_get_user_info_assign_course($userdata);
       }
 
-
+      
       switch ($user_state) {
         case 'NOMAIL':
           $nomail_accounts[] = $userdata['first_name'].' '. $userdata['last_name'];
