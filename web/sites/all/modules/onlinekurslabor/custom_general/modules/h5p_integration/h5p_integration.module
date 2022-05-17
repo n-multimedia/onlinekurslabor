@@ -347,8 +347,8 @@ function h5p_integration_h5p_filtered_params_alter(&$filtered) {
         }
         else
         {
-           //lösche variable, nicht content-by-reference
-           unset($url_object);
+           //leere variable, nicht content-by-reference
+           $url_object = null; 
         }
         
 
