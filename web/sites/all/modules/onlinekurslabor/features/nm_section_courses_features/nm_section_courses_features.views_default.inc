@@ -4115,7 +4115,7 @@ function nm_section_courses_features_views_default_views() {
   $handler->display->display_options['fields']['php_2']['label'] = 'Current Page';
   $handler->display->display_options['fields']['php_2']['exclude'] = TRUE;
   $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_2']['php_value'] = 'return $_GET[\'page\'];';
+  $handler->display->display_options['fields']['php_2']['php_value'] = 'return (!empty($_GET[\'page\']) ? $_GET[\'page\'] : null);';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
   /* Field: kurs-id */
