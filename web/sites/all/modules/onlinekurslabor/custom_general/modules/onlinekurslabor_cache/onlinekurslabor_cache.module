@@ -23,7 +23,7 @@ function _onlinekurslabor_cache_is_group_cache_valid($max_timespan, $identifier)
     $result = db_query('select created as last_group_added_timestamp from og_membership where etid = :userid AND  :now_timestamp - created < :timediff order by created DESC LIMIT 0,1', array(':userid' => $user->uid, ':now_timestamp' => $unix_timestamp, ':timediff' => $timediff))->fetchField();
     //_onlinekurslabor_cache_debugmessage($result);
     if ($result) {
-      _onlinekurslabor_cache_debugmessage("cache INVALID for $identifier, last written: " . !empty($_SESSION['okl_cache'][$identifier_written])? $_SESSION['okl_cache'][$identifier_written]:' --never-- ' . " timestamp for sql is: " . $unix_timestamp . " result: " . $result);
+      _onlinekurslabor_cache_debugmessage("cache INVALID for $identifier, last written: " . (!empty($_SESSION['okl_cache'][$identifier_written])? $_SESSION['okl_cache'][$identifier_written]:' --never-- ') . " timestamp for sql is: " . $unix_timestamp . " result: " . $result);
       $_SESSION['okl_cache'][$identifier_written] = $result;
       return false;
     }
