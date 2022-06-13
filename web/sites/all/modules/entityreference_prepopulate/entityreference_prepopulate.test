@@ -143,6 +143,13 @@ class EntityReferenceReferenceRemain extends DrupalWebTestCase {
     $this->drupalPost('node/add/' . $this->node1->type, $edit, t('Save'), $options);
     $this->assertText('Referenced node', 'The reference has been created');
 
+    // Verify identifier works.
+    $this->changeInstanceSettings(array('identifier' => 'friendly-ref'));
+    $options = array('query' => array('friendly-ref' => $this->node2->nid));
+
+    $this->drupalPost('node/add/' . $this->node1->type, $edit, t('Save'), $options);
+    $this->assertText('Referenced node', 'The reference has been created');
+
     // Disable the field.
     $this->changeInstanceSettings(array('action' => 'disable'));
 
