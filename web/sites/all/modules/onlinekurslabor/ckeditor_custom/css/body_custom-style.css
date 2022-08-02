@@ -1,0 +1,17 @@
+/*  Die in ckeditor_custom-editor-style definierten Stile müssen 
+    auch hier definiert werden, damit sie sich in der normalen Ansicht
+    auswirken
+*/  
+
+/**
+  css-style classic table
+**/
+table.classic-table
+{
+    border-spacing: revert-layer;
+    border-collapse: inherit;
+}
+table.classic-table td, table.classic-table th
+{
+    padding: 10px;
+}

@@ -1,0 +1,39 @@
+/*
+hier kann man eigene Stile definieren. Wie bspw. eingerückt fuer h5p
+Diese wirken sich dann nur innerhalb des Editors aus
+
+Sollen derartige styles auch im body auftauchen, muss das pendant dazu 
+in body_custom-style.css hinterlegt werden.
+*/
+.ckeditor_indent1 {
+    border-left:1px solid #ebebeb; 
+    background:#FDFEFE;
+    padding:1em;
+}
+
+/**
+durch bootstrap werden tables idR anders dargestellt.
+Dies soll auch im Editor berücksichtigt werden.
+**/
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+table td, table th {
+    padding: 0;
+}
+
+/**
+  Um "klassische" Tabellen zu bauen, gibts nun einen
+  css-style classic table
+**/
+table.classic-table
+{
+    border-spacing: revert-layer;
+    border-collapse: inherit;
+}
+table.classic-table td, table.classic-table th
+{
+    padding: 10px;
+
+}
