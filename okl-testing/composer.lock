@@ -1235,12 +1235,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "af2fba18e7cd31c11bfa30616095e08bcefa3c2b"
+                "reference": "c450db218429fa4ff4af01f034c3fb54ea5b2600"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/af2fba18e7cd31c11bfa30616095e08bcefa3c2b",
-                "reference": "af2fba18e7cd31c11bfa30616095e08bcefa3c2b",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/c450db218429fa4ff4af01f034c3fb54ea5b2600",
+                "reference": "c450db218429fa4ff4af01f034c3fb54ea5b2600",
                 "shasum": ""
             },
             "require": {
@@ -1304,7 +1304,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-07-29T05:35:40+00:00"
+            "time": "2022-08-03T06:19:15+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1553,12 +1553,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "8881eb27513e7a8e127fdee48b26faa5fdfa318e"
+                "reference": "1bf82ede494a131eeb341fd64eb06a2a655192de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/8881eb27513e7a8e127fdee48b26faa5fdfa318e",
-                "reference": "8881eb27513e7a8e127fdee48b26faa5fdfa318e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1bf82ede494a131eeb341fd64eb06a2a655192de",
+                "reference": "1bf82ede494a131eeb341fd64eb06a2a655192de",
                 "shasum": ""
             },
             "require": {
@@ -1647,7 +1647,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-07-29T09:26:43+00:00"
+            "time": "2022-08-03T06:20:13+00:00"
         },
         {
             "name": "psr/container",
@@ -4063,12 +4063,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "05d4ea560f3402c6c116afd99fdc66e60eda227e"
+                "reference": "7a3aa21ac8ab1a96cc6de5bbcab4bc9fc943b18c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/05d4ea560f3402c6c116afd99fdc66e60eda227e",
-                "reference": "05d4ea560f3402c6c116afd99fdc66e60eda227e",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/7a3aa21ac8ab1a96cc6de5bbcab4bc9fc943b18c",
+                "reference": "7a3aa21ac8ab1a96cc6de5bbcab4bc9fc943b18c",
                 "shasum": ""
             },
             "require": {
@@ -4130,7 +4130,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-27T16:58:25+00:00"
+            "time": "2022-08-02T15:52:22+00:00"
         },
         {
             "name": "theseer/tokenizer",
