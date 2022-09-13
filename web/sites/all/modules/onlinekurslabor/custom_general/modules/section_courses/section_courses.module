@@ -1953,7 +1953,7 @@ function _section_courses_student_registration_import($strUserList, $strWelcomeT
   $output = '';
 
   //code found online - removes "tab" "space" '"', ';',',' and so on... 
-  $strUserList = preg_replace('/[^\p{L}0-9\-.@\+\n\']/mu', " ", $strUserList);
+  $strUserList = preg_replace('/[^\p{L}0-9\-_.@\+\n\']/mu', " ", $strUserList);
   //[:blank:] ist besser als \s weil es keine new-lines schrottet - braucht man aber gar nimmer, oben schon weg.
   //$strUserList =  preg_replace('/[[:blank:]]/mu', " ", $strUserList);
 
