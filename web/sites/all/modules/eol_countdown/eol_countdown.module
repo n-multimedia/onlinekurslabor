@@ -1,15 +1,13 @@
 <?php
-//drupal EOL is 28.11.2022 23:59:59 US TIME
+//drupal EOL is 01.11.2023  23:59:59 US TIME
 $eol_cd_timezone_us = 'America/New_York';
-/**
- * EOL_ENDTIME: 28.11.2022 23:59:59 - (NY TIME)
- */
-define('EOL_ENDTIME', "28.11.2022 23:59:59");
+define('EOL_ENDTIME', "01.11.2023  23:59:59");
 $eol_cd_DateTimeUS =  DateTime::createFromFormat("d.m.Y H:i:s",EOL_ENDTIME, new DateTimeZone($eol_cd_timezone_us));
+
 /**
- * EOL_TIMESTAMP: Timestamp for 28.11.2022 23:59:59 in TZ US/NY
+ * EOL_TIMESTAMP: Timestamp for given EOL in TZ US/NY
  */
-define('EOL_TIMESTAMP', $eol_cd_DateTimeUS->getTimestamp()); #time() + 9; //enddate for timer
+define('EOL_TIMESTAMP', $eol_cd_DateTimeUS->getTimestamp()); //enddate for timer
  
 /**
  * Implements hook_block_info().
