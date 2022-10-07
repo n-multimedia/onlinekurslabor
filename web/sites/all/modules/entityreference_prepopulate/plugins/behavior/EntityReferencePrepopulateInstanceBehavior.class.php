@@ -58,6 +58,12 @@ class EntityReferencePrepopulateInstanceBehavior extends EntityReference_Behavio
       '#options' => $perms,
     );
 
+    $form['identifier'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Identifier'),
+      '#description' => t('Field identifier in the URL, defaults to the field name if left blank. i.e. @field_name', array('@field_name' => $field['field_name'])),
+    );
+
     $form['providers'] = array(
       '#type' => 'container',
       '#theme' => 'entityreference_prepopulate_providers_table',

@@ -333,7 +333,7 @@ function entityreference_prepopulate_get_values($field, $instance, $validate = T
  */
 function entityreference_prepopulate_get_values_from_cache($field, $instance) {
   // Try to get the form out of cache.
-  if (!$form_build_id = isset($_GET['form_build_id']) ? $_GET['form_build_id'] : isset($_POST['form_build_id']) ? $_POST['form_build_id'] : NULL) {
+  if (!$form_build_id = (isset($_GET['form_build_id']) ? $_GET['form_build_id'] : isset($_POST['form_build_id'])) ? $_POST['form_build_id'] : NULL) {
     return;
   }
 
@@ -358,9 +358,11 @@ function entityreference_prepopulate_get_values_from_cache($field, $instance) {
  *   entityreference_prepopulate_get_values()
  */
 function entityreference_prepopulate_get_values_from_url($field, $instance) {
-  $field_name = $field['field_name'];
-  if (!empty($_GET[$field_name]) && is_string($_GET[$field_name])) {
-    return explode(',', $_GET[$field_name]);
+  $settings = $instance['settings']['behaviors']['prepopulate'];
+  $field_identifier = empty($settings['identifier']) ? $field['field_name'] : $settings['identifier'];
+
+  if (!empty($_GET[$field_identifier]) && is_string($_GET[$field_identifier])) {
+    return explode(',', $_GET[$field_identifier]);
   }
 }
 

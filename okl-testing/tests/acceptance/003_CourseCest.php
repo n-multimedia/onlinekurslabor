@@ -279,54 +279,6 @@ class CourseCest  extends CestHelper{
         return $return;
     }
     
-    
-    
-    
-    /**
-     * Erstelle neue Aufgabe
-     * @UserStory null
-     * @param \AcceptanceTester $I
-     * @dataProvider C001_AddSingleTaskProvider
-     * todolater.. before skipNonApplicableExample
-     */
-    public function C001_08_AddSingleTask(\Step\Acceptance\Dozent $I, \Codeception\Example $example) {
-
-        $this->goToContextHome($I);
-
-        //annahme: ich bin im  Kurs
-        //doublecheck: menü geht
-        $I->useCourseMenu('Kursinhalte', 'Aufgabe hinzufügen');
-
-        $taskpage = new TaskCreatePage($I, $this->getCurrentContextNid());
-        $taskpage->create($example);
-
-        //dblcheck: aufgabe funktioniert ganz
-        $I->click("Aufgaben");
-        $I->click($example['title']);
-        $I->expect("Bearbeitungszeitraum aktiv gesetzt");
-        $I->see("Bearbeitungszeitraum aktiv");
-        $I->expect("Alle Felder sichtbar");
-        foreach ($example['elements'] as $elem) {
-            $I->see($elem['content']);
-        }
-    }
-
-    /**
-     *  SingleTaskProvider
-     * @return array
-     */
-    protected function C001_AddSingleTaskProvider() {
-        $return = array();
-        $node_data = $this->getNodeSample(NM_COURSE_GENERIC_TASK);
-        
-        $rand_data = \RealisticFaker\OklFactory::create();
-        //title : sonderheit bei aufgaben.. siehe _section_courses_courses_generic_task_node_form_submit. Test schlägt sonst bei manchen Chars fehl
-        $return[] = ['title' => \RealisticFaker\OklGenerator::getSafeText($node_data['title']), 'field_task_type' => 0, 'elements' => [['title' => 'Beschreibung', 'content' => $rand_data->realText(20)], ['title' => 'Aufgabenstellung', 'content' => $rand_data->realText(20)], ['title' => 'Studenten-Formular', 'content' => $rand_data->realText(20)]]];
-        return $return;
-    }
-    
-    
-     
 
     //##########################################################################
 

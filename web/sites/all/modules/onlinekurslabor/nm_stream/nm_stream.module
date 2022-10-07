@@ -2843,7 +2843,6 @@ function _nm_stream_api_v2_get_posts_query($filter = [], $stream_container_node 
 
   $request_from_dashboard = strstr($base_url . '/', $_SERVER['HTTP_REFERER']) ||
     strstr($_SERVER['HTTP_REFERER'], $base_url . '/' . variable_get('site_frontpage', 'node'));
-  $is_annvid = $stream_container_node->type == ANNVID_CONTENTTYPE;
 
   $environment = null;
   if (!empty($stream_container_node) && ($request_from_dashboard)) {

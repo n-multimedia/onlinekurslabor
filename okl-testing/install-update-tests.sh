@@ -29,11 +29,8 @@ else # ymls existieren, vendor-verzeichnis auch. Dann mach ich ein Update
 
 fi
 
+echo -e "\n\n"
 
+echo "Codeception and dependencies updated"
 
-echo -e "Making Symlinks..."
-
-rm vendor/bin/phantomjs
-#ln -s ../jakoch/phantomjs/bin/phantomjs vendor/bin/phantomjs
-
-echo "todo4you: grab a phantomjs-binary and copy it to  vendor/bin/phantomjs"
+echo "If needed, copy a phantomjs-binary to  vendor/bin/phantomjs"

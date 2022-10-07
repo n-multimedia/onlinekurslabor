@@ -15,6 +15,12 @@ drush fr  home_features annvid_features nm_section_content_features nm_section_c
 #import language
 drush language-import-translations de ../language/alpha19.po --replace --groups=default
 
+#diese wurden die letzten ACHT Jahre nicht aktualisiert - sind überholt und unsicher :-[ 
+rm sites/default/files/.htaccess
+rm ../files_private/.htaccess
+drush php-eval "file_ensure_htaccess();"
+echo "recreated files-.htaccess-file. Plz check directories."
+
 drush updatedb --yes
 
 drush cc all

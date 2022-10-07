@@ -6,6 +6,12 @@ msgstr "%count Kursinhalte wurden ebenfalls gelöscht."
 msgid "Deleted %count files"
 msgstr "%count Dateien gelöscht"
 
+msgid "Error in mailsystem, operation cancelled."
+msgstr "Fehler im Mailsystem, Aktion abgebrochen."
+
+msgid "Please contact the site administrator."
+msgstr "Bitte kontaktieren Sie den Support."
+
 msgid ""
 msgstr ""
 

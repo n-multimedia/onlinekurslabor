@@ -423,7 +423,7 @@ function section_content_url_outbound_alter(&$path, &$options, &$original_path) 
         $node = node_load($nid);
         if ($type == NM_CONTENT_DOMAIN) {
           //Vollzugriff auf CONTENT:
-          if (_custom_general_get_group_state_for_user(_custom_general_get_group($node)) == OG_STATE_ACTIVE || node_access('update', _custom_general_get_group($node))) {
+          if (_custom_general_get_group_state_for_user(_custom_general_get_group($node)) == OG_STATE_ACTIVE || node_access('update', $node)) {
             $path = NM_CONTENT_TEXT_PATH . DIRECTORY_SEPARATOR . $node->nid;
           }
           else { //keine Memberberechtigung => PReview

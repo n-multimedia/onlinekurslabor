@@ -21,7 +21,7 @@ function ckeditor_custom_wysiwyg_editor_settings_alter(&$settings, $context) {
         // file. In this case, we're going to add our own configuration file that will
         // Hold our stylesSet customizations... 
         $settings['customConfig'] = base_path() . drupal_get_path('module', 'ckeditor_custom') . '/js/ckeditor_config.js';
-        $settings['contentsCss'] = base_path() . drupal_get_path('module', 'ckeditor_custom') . '/css/ckeditor_textfield.css';
+        $settings['contentsCss'] = base_path() . drupal_get_path('module', 'ckeditor_custom') . '/css/ckeditor_custom-editor-style.css';
         // We are also going to specify a custom body id and class
         $settings['bodyId'] = 'ckeditor_custom_id';
         $settings['bodyClass'] = 'ckeditor_custom_class';
@@ -43,5 +43,15 @@ function ckeditor_custom_wysiwyg_plugin($editor, $version) {
     $path = drupal_get_path('module', 'ckeditor_custom');
     $url_default_image = file_create_url($path . '/images/picture-replace.png');
     drupal_add_js(array('ckeditor_custom' => array('default_image' => $url_default_image)), 'setting');
-    drupal_add_js(drupal_get_path('module', 'ckeditor_custom') . '/js/ckeditor_custom_paste_handler.js');
+    drupal_add_js(drupal_get_path('module', 'ckeditor_custom') . '/js/ckeditor_custom_behaviour_handler.js');
+}
+
+
+
+/**
+ * Implements hook_page_build
+ */
+function ckeditor_custom_page_build(&$page) {
+        // füge das pendant zu ckeditor_custom-editor-style.css (editor-interne styles) zum main-body hinzu
+        drupal_add_css(drupal_get_path('module', 'ckeditor_custom') . '/css/body_custom-style.css');
 }

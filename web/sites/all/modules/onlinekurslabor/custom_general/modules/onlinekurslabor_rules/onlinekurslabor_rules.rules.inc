@@ -114,9 +114,11 @@ function onlinekurslabor_rules_action_mail_to_user_roles_in_group(EntityDrupalWr
       //dpm('sending mail to');
       //dpm($account->mail);
     }
+    $user_allows_mails = _no_mail_user_has_mail_enabled($account);
     //Wenn ein Problem mitm Mailsystem besteht, breche ab.
-    if (!$message_result['result']) {
-      drupal_set_message(t("Error in mailsystem, operation cancelled.").t("Please contact the site administrator."), 'error');
+    //hat der Nutzer Mailempfang deaktiviert, so is das kein Fehler.
+    if (!$message_result['result'] && $user_allows_mails) {
+      drupal_set_message(t("Error in mailsystem, operation cancelled.")." ".t("Please contact the site administrator."), 'error');
       break;
     }
   }

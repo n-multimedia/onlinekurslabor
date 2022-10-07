@@ -50,7 +50,8 @@ if ($node->type == 'videosafe_video') {
     {
         $video_heading = $videospur['description'];
         $collapse_marker = $vidcounter == 0 ?'':'collapsed';
-        $rendered_videospur = render(file_view(file_load($videospur['fid']), 'media_6'));
+        $viewd_videospur = file_view(file_load($videospur['fid']), 'media_6');
+        $rendered_videospur = render($viewd_videospur);
         $video_markup .=
                 <<<EOF
                 [collapsible $collapse_marker]<h2>$video_heading</h2>

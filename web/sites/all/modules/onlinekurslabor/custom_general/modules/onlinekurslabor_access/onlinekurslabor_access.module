@@ -58,8 +58,8 @@ function onlinekurslabor_access_node_grants($account, $op) {
   if (!isset($grants)) {
     $cache = cache_get($cache_cid);
     $cache_valid = true;
-    //schritt1: prüfe cache_expire
-    if(REQUEST_TIME > $cache->expire)
+    //schritt1: prüfe cache validität und _expire
+    if(!is_object($cache) || (REQUEST_TIME > $cache->expire))
     {
         cache_clear_all($cache_cid, 'cache');
         $cache_valid = false;

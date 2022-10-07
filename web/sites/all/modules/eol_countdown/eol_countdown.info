@@ -1,11 +1,15 @@
-name = eol_countdown
-description = Provides a block to be placed on your site. It shows a themable counter until Nov28/2022, the EOL-Date of Drupal7. Based on dscountdown by Wayan Wirka, module by drupal.org/u/bernhard-strehl
-core = 7.x
-version = 7.x-1.0
-package = onlinekurslabor
-configure = admin/structure/block/manage/eol_countdown/eol_countdown/configure
+name = "eol_countdown"
+description = "Provides a block to be placed on your site. It shows a themable counter until the official EOL-Date of Drupal7. Based on dscountdown by Wayan Wirka, module by drupal.org/u/bernhard-strehl"
+package = "onlinekurslabor"
+configure = "admin/structure/block/manage/eol_countdown/eol_countdown/configure"
 ; Information added by Drupal.org packaging script on 2020-09-30
 version = "7.x-1.x-dev"
 core = "7.x"
 project = "eol_countdown"
-datestamp = "1601453876"
+datestamp = "1601454097"
+
+; Information added by Drupal.org packaging script on 2022-09-22
+version = "7.x-1.2"
+core = "7.x"
+project = "eol_countdown"
+datestamp = "1663844787"

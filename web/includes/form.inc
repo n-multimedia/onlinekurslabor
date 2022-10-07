@@ -1809,7 +1809,6 @@ function form_error(&$element, $message = '') {
  *   $_POST data.
  */
 function _drupal_form_hack_applied() {return true;}
-
 function form_builder($form_id, &$element, &$form_state) {
   /* before processing the callback, we have to be sure, the theme was loaded   */
   global $theme;
@@ -4335,10 +4334,14 @@ function theme_form_required_marker($variables) {
  * required. That is especially important for screenreader users to know
  * which field is required.
  *
+ * To associate the label with a different field, set the #label_for property
+ * to the ID of the desired field.
+ *
  * @param $variables
  *   An associative array containing:
  *   - element: An associative array containing the properties of the element.
- *     Properties used: #required, #title, #id, #value, #description.
+ *     Properties used: #required, #title, #id, #value, #description,
+ *     #label_for.
  *
  * @ingroup themeable
  */
@@ -4367,7 +4370,14 @@ function theme_form_element_label($variables) {
     $attributes['class'] = 'element-invisible';
   }
 
-  if (!empty($element['#id'])) {
+  // Use the element's ID as the default value of the "for" attribute (to
+  // associate the label with this form element), but allow this to be
+  // overridden in order to associate the label with a different form element
+  // instead.
+  if (!empty($element['#label_for'])) {
+    $attributes['for'] = $element['#label_for'];
+  }
+  elseif (!empty($element['#id'])) {
     $attributes['for'] = $element['#id'];
   }
 
