@@ -2007,7 +2007,7 @@ function _section_courses_student_registration_import($strUserList, $strWelcomeT
         // Decode HTML-safe data
         $row = ucfirst($row);
         // Email Pattern
-        preg_match('/[a-zäöüÄÖßÜA-Z]+[a-zA-ZäöüÄßÖÜ0-9+\.\-_]*[@]{1}[a-zA-Z0-9äößüÄÖÜ\.\-+_]*[\.]{1}[\.a-zäöüÄÖßÜA-Z0-9]*/', $row, $email_matches);
+        preg_match('/[a-zA-ZäöüÄßÖÜ0-9]+[a-zA-ZäöüÄßÖÜ0-9+\.\-_]*[@]{1}[a-zA-Z0-9äößüÄÖÜ\.\-+_]*[\.]{1}[\.a-zäöüÄÖßÜA-Z0-9]*/', $row, $email_matches);
         // Remove Email from Input, leaving only names
         $name_without_mail = str_replace($email_matches[0], "", $row);
         $names = trim($name_without_mail);
