@@ -151,6 +151,7 @@ function views_get_table_join($table, $base_table) {
  *                    control is provided.
  * - access arguments: An array of arguments for the access callback.
  */
+#[\AllowDynamicProperties]
 class views_handler extends views_object {
 
   /**
@@ -328,7 +329,7 @@ class views_handler extends views_object {
    *   Returns the safe value.
    */
   public function sanitize_value($value, $type = NULL) {
-    if (strlen($value) > 0) {
+    if (!is_null($value) && strlen($value) > 0) {
       switch ($type) {
         case 'xss':
           $value = filter_xss($value);
@@ -809,6 +810,7 @@ class views_handler extends views_object {
  * - numeric: If true, treat this field as numeric, using %d instead of %s in
  *            queries.
  */
+#[\AllowDynamicProperties]
 class views_many_to_one_helper {
 
   /**
@@ -1077,11 +1079,18 @@ class views_many_to_one_helper {
     // should be added via an db_or()/db_and() (TRUE).
     $add_condition = TRUE;
     if ($operator == 'or' && empty($options['reduce_duplicates'])) {
-      if (is_array($value)) {
+      if (is_array($value) && count($value) > 1) {
         $operator = 'IN';
       }
       else {
-        $operator = '=';
+        $value = is_array($value) ? array_pop($value) : $value;
+        if (is_array($value) && count($value) > 1) {
+          $operator = 'IN';
+        }
+	else {
+          $value = is_array($value) ? array_pop($value) : $value;
+          $operator = '=';
+        }
       }
       $add_condition = FALSE;
     }
@@ -1573,6 +1582,7 @@ function views_date_sql_extract($extract_type, $field, $field_type = 'int', $set
  *   - extra type: How all the extras will be combined. Either AND or OR.
  *     Defaults to AND.
  */
+#[\AllowDynamicProperties]
 class views_join {
   public $table = NULL;
   public $left_table = NULL;
@@ -1738,6 +1748,7 @@ class views_join {
  *   Same as views_join class above, except:
  *   - left_query: The subquery to use in the left side of the join clause.
  */
+#[\AllowDynamicProperties]
 class views_join_subquery extends views_join {
 
   /**
