@@ -21,7 +21,7 @@ function better_formats_permission() {
     ),
   );
   foreach ($entities as $type => $info) {
-    if ($info['fieldable']) {
+    if (isset($info['fieldable']) && !empty($info['fieldable'])) {
       $perms['show format selection for ' . $type] = array(
         'title' => t('Show format selection for @entitys', array('@entity' => $type)),
       );
@@ -57,7 +57,7 @@ function better_formats_menu() {
     'weight' => 2,
     'file' => 'better_formats.admin_defaults.inc',
   );
-  */
+   */
   return $items;
 }
 
@@ -69,6 +69,26 @@ function better_formats_element_info_alter(&$type) {
   $filter_process_format_location = array_search('filter_process_format', $type['text_format']['#process']);
   $replacement = array('filter_process_format', 'better_formats_filter_process_format');
   array_splice($type['text_format']['#process'], $filter_process_format_location, 1, $replacement);
+}
+/**
+ * This validation function checks if a user has permission to view the fomatter
+ * selection form, then if they do not have access, does not validate unless
+ * the selected format is the same as the default value.
+ */
+function better_formats_only_allow_defaults_if_limited_by_permission($element, &$form_state) {
+  if (isset($element['#entity_type'])) {
+    $user_access_to_formatter_selection = user_access('show format selection for ' . $element['#entity_type']);
+  }
+  // If a user doesn't have access to change filter formatters, the formatter
+  // value must be the same as the previously set value.
+  if ($user_access_to_formatter_selection == FALSE) {
+    if ($element['format']['format']['#value'] != $element['format']['format']['#default_value']) {
+      form_error($element, t('You many only use the "!formatter" option as the "!field_name" field formatter.', array(
+        '!formatter' => t( $element['format']['format']['#default_value']),
+        '!field_name' => t( $element['#title']),
+      )));
+    }
+  }
 }
 
 /**
@@ -89,14 +109,20 @@ function better_formats_filter_process_format($element) {
 
   // Now hide several parts of the element for cosmetic reasons (depending on
   // the permissions of the current user).
-  $show_selection = TRUE;
-  if (isset($element['#entity_type'])) {
+  $show_selection = isset($element['better_formats']['#show_selection']) ? $element['better_formats']['#show_selection'] : TRUE;
+  if (!isset($element['better_formats']['#show_selection']) && isset($element['#entity_type'])) {
     $show_selection  = user_access('show format selection for ' . $element['#entity_type']);
   }
-  $show_tips       = user_access('show format tips');
-  $show_tips_link  = user_access('show more format tips link');
+  $show_tips       = isset($element['better_formats']['#show_tips']) ? $element['better_formats']['#show_tips'] : user_access('show format tips');
+  $show_tips_link  = isset($element['better_formats']['#show_tips_link']) ? $element['better_formats']['#show_tips_link'] : user_access('show more format tips link');
   if (!$show_selection) {
-    $element['format']['format']['#access'] = FALSE;
+    if (count($element['format']['format']['#options']) >= 1 && variable_get('better_formats_per_field_core', 0)) {
+      $element['#element_validate'] = array('better_formats_only_allow_defaults_if_limited_by_permission');
+      $element['format']['format']['#type'] = 'hidden';
+    }
+    else {
+      $element['format']['format']['#access'] = FALSE;
+    }
   }
   if (!$show_tips) {
     $element['format']['guidelines']['#access'] = FALSE;
@@ -143,7 +169,7 @@ function better_formats_filter_process_format($element) {
       // If there is only one allowed format, deny access to the text format
       // selector for cosmetic reasons, just like filter_process_format() does.
       if (count($options) == 1) {
-        $element['format']['format']['#access'] = FALSE;
+        $element['format']['format']['#type'] = 'hidden';
         $show_selection = FALSE;
       }
 
@@ -177,7 +203,6 @@ function better_formats_filter_process_format($element) {
         // to see.
         else {
           $element['format']['format']['#required'] = TRUE;
-          $element['format']['format']['#default_value'] = NULL;
           // Force access to the format selector (it may have been denied
           // previously for cosmetic reasons).
           $element['format']['#access'] = TRUE;
@@ -316,7 +341,7 @@ function better_formats_field_settings_form($bf_form = array()) {
 
   foreach ($formats as $key => $format) {
     $default = isset($bf_form['default_order_wrapper']['formats'][$key]) ? $bf_form['default_order_wrapper']['formats'][$key] : NULL;
-    $rows[$key]['name'] = array('#markup' => $format->name);
+    $rows[$key]['name'] = array('#markup' => check_plain($format->name));
     $rows[$key]['weight'] = array(
       '#type' => 'weight',
       '#default_value' => isset($default['weight']) ? $default['weight'] : $format->weight,
@@ -410,4 +435,13 @@ function theme_better_formats_field_default_order(&$variables) {
   drupal_add_tabledrag('format-order', 'order', 'sibling', 'format-order-weight', NULL, NULL, TRUE);
 
   return $output;
+}
+
+/**
+ * Implements hook_field_info_alter().
+ */
+function better_formats_field_info_alter(&$info) {
+  $default = variable_get('better_formats_long_text_processing', 0);
+  $info['text_long']['instance_settings']['text_processing'] = $default;
+  $info['text_with_summary']['instance_settings']['text_processing'] = $default;
 }

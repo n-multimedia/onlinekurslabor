@@ -36,4 +36,382 @@ function better_formats_uninstall() {
 function better_formats_update_7000() {
 
 }
-*/
+ */
+
+/**
+ * Fix any fields which may have been broken by Better Formats. Step 1: Create
+ * the temporary table.
+ */
+function better_formats_update_7100() {
+  if (!module_exists('media_wysiwyg')) {
+    return t('The Media WSYIWYG module is not installed, so this update can be skipped.');
+  }
+
+  // The problem is that there are fields that contain a text field which then
+  // do not contain the appropriate "format" attribute for the field; this data
+  // corruption was created by the Better Formats module which used the wrong
+  // method to hide the 'format' field. When passed through media_wysiwyg, this
+  // resulted in the following messages:
+  //   Notice: Undefined index: format in _text_sanitize() (line 321 of
+  //   modules/field/modules/text/text.module).
+  // To fix the problem, search all text fields for strings matching:
+  //   [[{%[value]":"%}]]
+  // ("%" is a wildcard in SQL), then loop over each record and fix the embedded
+  // string.
+  // This is accomplished in four steps:
+  //  1. Create a temporary table for storing a list of the records to be
+  //     processed.
+  //  2. Create a list of all records in all text fields which have the string.
+  //  3. Process all items in the list.
+  //  4. Remove the temporary data.
+  // @see https://www.drupal.org/node/2832330
+
+  // Create the temporary table.
+  $table_name = 'temp_fix_better_formats';
+  if (!db_table_exists($table_name)) {
+    $spec = array(
+      'fields' => array(
+        'table_name' => array(
+          'type' => 'varchar',
+          'length' => 64,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'field_name' => array(
+          'type' => 'varchar',
+          'length' => 32,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'entity_type' => array(
+          'type' => 'varchar',
+          'length' => 32,
+          'not null' => TRUE,
+          'default' => '',
+        ),
+        'entity_id' => array(
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'default' => 0,
+          'description' => 'The entity id this data is attached to.',
+        ),
+        'revision_id' => array(
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'default' => 0,
+          'description' => 'The revision_id for the entity object this data is attached to.',
+        ),
+        'language' => array(
+          'type' => 'varchar',
+          'length' => 32,
+          'not null' => TRUE,
+          'default' => '',
+          'description' => 'The language of the tag.',
+        ),
+        'delta' => array(
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'default' => 0,
+          'description' => 'The revision_id for the entity object this data is attached to.',
+        ),
+        'fixed' => array(
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'default' => 0,
+          'description' => 'Track whether the record is fixed or not.',
+        ),
+      ),
+      'primary key' => array(
+        'table_name',
+        'field_name',
+        'entity_type',
+        'entity_id',
+        'revision_id',
+        'language',
+        'delta',
+      ),
+    );
+    db_create_table($table_name, $spec);
+  }
+}
+
+/**
+ * Fix any fields which may have been broken by Better Formats. Step 2: Create
+ * records indicating which fields to process.
+ */
+function better_formats_update_7101(&$sandbox) {
+  if (!module_exists('media_wysiwyg')) {
+    return t('The Media WSYIWYG module is not installed, so there is nothing to fix.');
+  }
+
+  // Initialize the sandbox.
+  if (empty($sandbox)) {
+    $sandbox = array();
+    $sandbox['max'] = 0;
+    $sandbox['progress'] = 0;
+    $sandbox['count'] = 0;
+
+    // Get a list of text formats that allow the media_wysiwyg filter.
+    $sandbox['formats'] = array();
+    foreach (filter_formats() as $format_name => $format) {
+      foreach (filter_list_format($format->format) as $filter_name => $filter) {
+        if ($filter_name == 'media_filter' && !empty($filter->status)) {
+          $sandbox['formats'][] = $format_name;
+        }
+      }
+    }
+    // If no text formats support the filter, there's nothing to do.
+    if (empty($sandbox['formats'])) {
+      return t('No text formats to fix.');
+    }
+
+    // Get a list of all text fields, all of them will be processed because any
+    // of them could exhibit the problem.
+    $params = array(
+      'module' => 'text',
+    );
+    $sandbox['fields'] = array_keys(field_read_fields($params));
+    if (empty($sandbox['fields'])) {
+      return t('No text fields need to be fixed.');
+    }
+    $sandbox['max'] = count($sandbox['fields']);
+  }
+
+  // Work out the field name.
+  $field_name = $sandbox['fields'][$sandbox['progress']];
+
+  // Look for media strings that include an embedded field that contains a
+  // value.
+  $string_like = '%' . db_like('[[{') . '%' . db_like('[value]":"') . '%' . db_like('}]]') . '%';
+
+  // Loop over each type of field table, the data and the revision table.
+  foreach (array('data', 'revision') as $table_type) {
+    $table_name = 'field_' . $table_type . '_' . $field_name;
+    $data_column = $field_name . '_value';
+    $format_column = $field_name . '_format';
+    $records = db_select($table_name, 't')
+      ->fields('t', array('entity_type', 'entity_id', 'revision_id', 'language', 'delta'))
+      ->condition($data_column, $string_like, 'LIKE')
+      ->condition($format_column, $sandbox['formats'], 'IN')
+      ->execute();
+    foreach ($records as $record) {
+      db_insert('temp_fix_better_formats')
+        ->fields(array(
+          'table_name' => $table_name,
+          'field_name' => $field_name,
+          'entity_type' => $record->entity_type,
+          'entity_id' => $record->entity_id,
+          'revision_id' => $record->revision_id,
+          'language' => $record->language,
+          'delta' => $record->delta,
+          'fixed' => 0,
+        ))
+        ->execute();
+      $sandbox['count']++;
+    }
+  }
+
+  $sandbox['progress']++;
+
+  // The end?
+  // In some cases the query yields results that cannot be fixed and we would
+  // run into an infinite loop. Stop immediately if we processed all records.
+  if ($sandbox['progress'] >= $sandbox['max']) {
+    $sandbox['#finished'] = TRUE;
+    return t('Prepped @count records for these fields: @fields', array('@count' => $sandbox['count'], '@fields' => implode(', ', $sandbox['fields'])));
+  }
+  else {
+    $sandbox['#finished'] = $sandbox['progress'] / $sandbox['max'];
+  }
+}
+
+/**
+ * Fix any fields which may have been broken by Better Formats. Step 3: Fix each
+ * record.
+ */
+function better_formats_update_7102(&$sandbox) {
+  if (!module_exists('media_wysiwyg')) {
+    return t('The Media WSYIWYG module is not installed, so this update can be skipped.');
+  }
+
+  if (empty($sandbox)) {
+    $sandbox['max'] = db_query("SELECT COUNT(*) FROM temp_fix_better_formats WHERE fixed = 0")->fetchField();
+    if (empty($sandbox['max'])) {
+      return t('No records to fix.');
+    }
+
+    // Keep track of how many records are processed.
+    $sandbox['progress'] = 0;
+    $sandbox['count'] = 0;
+  }
+
+  $limit = 100;
+
+  // Keep a list of all field names, it'll be needed later.
+  $params = array(
+    'module' => 'text',
+  );
+  $field_names = array_keys(field_read_fields($params));
+
+  // The default format available for the site.
+  $default_format = filter_default_format();
+
+  $results = db_query_range("SELECT * FROM temp_fix_better_formats WHERE fixed = 0", 0, $limit);
+
+  if ($results->rowCount() > 0) {
+    foreach ($results as $record) {
+      $text = db_select($record->table_name)
+        ->fields($record->table_name, array($record->field_name . '_value'))
+        ->condition('entity_type', $record->entity_type)
+        ->condition('entity_id', $record->entity_id)
+        ->condition('revision_id', $record->revision_id)
+        ->condition('language', $record->language)
+        ->condition('delta', $record->delta)
+        ->execute()
+        ->fetchField();
+
+      $replacements = array();
+      $patterns = array();
+      $matches = array();
+      $new_text = $text;
+
+      // Extract each Media token from the string.
+      preg_match_all(MEDIA_WYSIWYG_TOKEN_REGEX, $text, $matches);
+      if (!empty($matches[0])) {
+        foreach ($matches[0] as $original) {
+          // Trim off the string wrappers.
+          $match = str_replace("[[", "", $original);
+          $match = str_replace("]]", "", $match);
+
+          try {
+            if (!is_string($match)) {
+              throw new Exception('Unable to find matching tag.');
+            }
+
+            // Convert the JSON data to an array that can be processed.
+            $data = drupal_json_decode($match);
+
+            // Keep track of whether the data structure is modified.
+            $modified = FALSE;
+            if (!empty($data['fields'])) {
+              foreach ($data['fields'] as $key => $value) {
+                // Only deal with items that have a bracket, which will suggest
+                // something in the format 'field_name[langcode][delta][value]'.
+                $pos = strpos($key, '[');
+                if ($pos !== FALSE) {
+                  if (strpos($key, '[value]') !== FALSE) {
+                    $key_field = substr($key, 0, $pos);
+                    // Skip the two internal text fields.
+                    if ($key_field == 'field_file_image_alt_text' || $key_field == 'field_file_image_title_text') {
+                      continue;
+                    }
+                    // Loop over each of the fields to see which of them is a
+                    // text field that might be missing its 'format' value.
+                    foreach ($field_names as $field_name) {
+                      if ($key_field == $field_name) {
+                        $key_format = str_replace('[value]', '[format]', $key);
+                        if (!isset($data['fields'][$key_format])) {
+                          $data['fields'][$key_format] = $default_format;
+                          $modified = TRUE;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              // If something was changed, re-save the string.
+              if ($modified) {
+                $replacement = '[[' . drupal_json_encode($data) . ']]';
+                $new_text = str_replace($original, $replacement, $new_text);
+              }
+            }
+          }
+          catch (Exception $e) {
+            watchdog('cat_system', 'Unable to render media from %tag. Error: %error', array('%tag' => $tag, '%error' => $e->getMessage()));
+            return '';
+          }
+        }
+
+        // If the text changed, then update the database record.
+        if ($new_text != $text) {
+          // Update the table.
+          $column_name = $record->field_name . '_value';
+          db_update($record->table_name)
+            ->fields(array(
+              $column_name => $new_text,
+            ))
+            ->condition('entity_type', $record->entity_type)
+            ->condition('entity_id', $record->entity_id)
+            ->condition('revision_id', $record->revision_id)
+            ->condition('language', $record->language)
+            ->condition('delta', $record->delta)
+            ->execute();
+
+          // Log how many records are actually fixed.
+          $sandbox['count']++;
+        }
+      }
+
+      // Log that this record has been processed.
+      db_update('temp_fix_better_formats')
+        ->fields(array(
+          'fixed' => 1,
+        ))
+        ->condition('table_name', $record->table_name)
+        ->condition('field_name', $record->field_name)
+        ->condition('entity_type', $record->entity_type)
+        ->condition('entity_id', $record->entity_id)
+        ->condition('revision_id', $record->revision_id)
+        ->condition('language', $record->language)
+        ->condition('delta', $record->delta)
+        ->execute();
+
+      $sandbox['progress']++;
+    }
+  }
+
+  // The end?
+  // In some cases the query yields results that cannot be fixed and we would
+  // run into an infinite loop. Stop immediately if we processed all records.
+  if ($sandbox['progress'] >= $sandbox['max']) {
+    $sandbox['#finished'] = TRUE;
+    return t('Out of @total records that needed to be examined, @count needed to be fixed.', array('@count' => $sandbox['count'], '@total' => $sandbox['progress']));
+  }
+  else {
+    $sandbox['#finished'] = $sandbox['progress'] / $sandbox['max'];
+  }
+}
+
+/**
+ * Fix any fields which may have been broken by Better Formats. Step 4: Delete
+ * the temporary table.
+ */
+function better_formats_update_7103() {
+  if (!module_exists('media_wysiwyg')) {
+    return t('The Media WSYIWYG module is not installed, so this update can be skipped.');
+  }
+
+  db_drop_table('temp_fix_better_formats');
+}
+
+/**
+ * Delete error messages generated by the text bug above.
+ */
+function better_formats_update_7104() {
+  if (!module_exists('media_wysiwyg')) {
+    return t('The Media WSYIWYG module is not installed, so this update can be skipped.');
+  }
+
+  if (module_exists('dblog')) {
+    db_delete('watchdog')
+      ->condition('message', '%_text_sanitize%', 'LIKE')
+      ->execute();
+    db_delete('watchdog')
+      ->condition('variables', '%_text_sanitize%', 'LIKE')
+      ->execute();
+  }
+}

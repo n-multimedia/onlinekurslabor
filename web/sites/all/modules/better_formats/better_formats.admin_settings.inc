@@ -20,9 +20,16 @@ function better_formats_admin_settings_form($form, &$form_state) {
   $form['control']['better_formats_per_field_core'] = array(
     '#type'  => 'checkbox',
     '#title' => t('Use field default'),
-    '#description' => t('Use the core field module default value to set the default format. This will force the default format even when the default field value is empty. To set a default format you must re-edit a text field after saving it with the "Filtered text" option turned on.'),
+    '#description' => t('Use the core field module default value to set the default format. This will force the default format even when the default field value is empty. To set a default format you must re-edit a text field after saving it with the "Filtered text" option turned on or set the default option below to be "Filtered text".'),
     '#default_value' => variable_get('better_formats_per_field_core', 0),
   );
+  $form['control']['better_formats_long_text_processing'] = array(
+    '#type'  => 'checkbox',
+    '#title' => t('Set default processing option to "Filtered text" for long text fields'),
+    '#default_value' => variable_get('better_formats_long_text_processing', 0),
+    '#description' => t('This only applies to new "Long text" and "Long text and summary" fields. The standard behaviour is "Plain text".'),
+  );
+
   /*
   $form['control']['better_formats_per_node_type'] = array(
     '#type'  => 'checkbox',
@@ -32,5 +39,7 @@ function better_formats_admin_settings_form($form, &$form_state) {
   );
   */
 
-  return system_settings_form($form);
+  $form = system_settings_form($form);
+  $form['#submit'][] = 'field_cache_clear';
+  return $form;
 }

@@ -28,3 +28,21 @@ The only items currently implented in the D7 version of Better Formats are:
       "Default Value" area. Set the default format in the dropdown.
    7. Save the field. Default will now be used on all new content forms for that field.
 
+3. FAPI integration.
+   You are able to trigger Better Formats programatically on custom forms built
+   with the form API:
+
+      function my_example_form($form, &$form_state) {
+         $form = array();
+         $form['example_text_field'] = array(
+           '#title' => 'Contribution message ',
+           '#type' => 'text_format',
+           '#format' => 'teaser_text',
+         );
+         $form['example_text_field']['better_formats'] = array(
+           '#show_selection' => FALSE,
+           '#show_tips' => FALSE,
+           '#show_tips_link' => FALSE,
+         );
+         return $form;
+      }
