@@ -10,6 +10,8 @@
  */
 abstract class MediaWYSIWYGMacroTestHelper extends MediaWYSIWYGTestHelper {
 
+  protected $admin_user = NULL;
+
   /**
    * Common setup routines for rendered media macros.
    */
