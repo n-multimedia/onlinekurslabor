@@ -378,6 +378,7 @@ Derzeit verwendet, um Screenshots aus einem Video einem echten Video zuzuordnen.
         'label' => 'above',
         'module' => 'date',
         'settings' => array(
+          'custom_date_format' => '',
           'format_type' => 'short',
           'fromto' => 'both',
           'multiple_from' => '',
