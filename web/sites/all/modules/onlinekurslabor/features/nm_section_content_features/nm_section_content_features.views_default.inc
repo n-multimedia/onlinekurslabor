@@ -1257,8 +1257,8 @@ Oben <code>Neues Thema anlegen</code> drücken.
   $handler->display->display_options['display_description'] = 'for templating';
   $handler->display->display_options['defaults']['cache'] = FALSE;
   $handler->display->display_options['cache']['type'] = 'php';
-  $handler->display->display_options['cache']['php_cache_results'] = 'return _onlinekurslabor_cache_is_group_cache_valid(20,\'courses_user_domains__title_only\');';
-  $handler->display->display_options['cache']['php_cache_output'] = 'return _onlinekurslabor_cache_is_group_cache_valid(60,\'courses_user_domains__title_only\');';
+  $handler->display->display_options['cache']['php_cache_results'] = 'return _onlinekurslabor_cache_is_group_cache_valid(20,\'courses_user_domains__title_only-results\');';
+  $handler->display->display_options['cache']['php_cache_output'] = 'return _onlinekurslabor_cache_is_group_cache_valid(60,\'courses_user_domains__title_only-output\');';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
