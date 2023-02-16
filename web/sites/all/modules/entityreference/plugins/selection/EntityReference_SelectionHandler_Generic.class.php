@@ -8,6 +8,11 @@
  */
 class EntityReference_SelectionHandler_Generic implements EntityReference_SelectionHandler {
 
+  public $field;
+  public $instance;
+  public $entity_type;
+  public $entity;
+
   /**
    * Implements EntityReferenceHandler::getInstance().
    */
@@ -17,6 +22,8 @@ class EntityReference_SelectionHandler_Generic implements EntityReference_Select
     // Check if the entity type does exist and has a base table.
     $entity_info = entity_get_info($target_entity_type);
     if (empty($entity_info['base table'])) {
+      // Make sure the EntityReference_SelectionHandler_Broken class is available.
+      include_once(dirname(__FILE__) . '/abstract.inc');
       return EntityReference_SelectionHandler_Broken::getInstance($field, $instance);
     }
 
@@ -155,9 +162,15 @@ class EntityReference_SelectionHandler_Generic implements EntityReference_Select
   /**
    * Implements EntityReferenceHandler::getReferencableEntities().
    */
-  public function getReferencableEntities($match = NULL, $match_operator = 'CONTAINS', $limit = 0) {
+  public function getReferencableEntities($match = '', $match_operator = 'CONTAINS', $limit = 0) {
     $options = array();
     $entity_type = $this->field['settings']['target_type'];
+
+    if (is_null($match)) {
+      $match = '';
+    }
+    // Remove escape formatting.
+    $match = trim(str_replace('""', '"', $match));
 
     $query = $this->buildEntityFieldQuery($match, $match_operator);
     if ($limit > 0) {

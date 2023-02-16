@@ -58,6 +58,15 @@ function entityreference_field_views_data_views_data_alter(&$data, $field) {
     $target_entity_info = entity_get_info($field['settings']['target_type']);
     if (isset($target_entity_info['base table'])) {
       $entity_info = entity_get_info($entity_type);
+      if (empty($entity_info)) {
+        watchdog(
+          'entityreference',
+          'Field %field_name refers to nonexistent entity type %type. You might want to remove this broken field instance. <a href="https://www.drupal.org/docs/7/modules/views/data-fix-field-field-refers-to-nonexistent-entity-type-type">See documentation.</a>',
+          array('%field_name' => $field['field_name'], '%type' => $entity),
+          WATCHDOG_WARNING
+        );
+        continue;
+      }
       $entity = $entity_info['label'];
       if ($entity == t('Node')) {
         $entity = t('Content');
@@ -122,6 +131,8 @@ function entityreference_views_plugins() {
         'help' => 'Returns results as a PHP array of labels and rendered rows.',
         'handler' => 'entityreference_plugin_style',
         'theme' => 'views_view_unformatted',
+        'theme path' => drupal_get_path('module', 'views') . '/theme',
+        'theme file' => 'theme.inc',
         'uses row plugin' => TRUE,
         'uses fields' => TRUE,
         'uses options' => TRUE,
