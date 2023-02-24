@@ -5,6 +5,11 @@
  */
 class EntityReference_SelectionHandler_Views implements EntityReference_SelectionHandler {
 
+  public $field;
+  public $instance;
+  public $entity;
+  public $view;
+
   /**
    * Implements EntityReferenceHandler::getInstance().
    */
@@ -56,7 +61,7 @@ class EntityReference_SelectionHandler_Views implements EntityReference_Selectio
       $description = t('Provide a comma separated list of arguments to pass to the view.') . '<br />' . t('This field supports tokens.');
 
       if (!module_exists('token')) {
-        $description .= '<br>' . t('Install the <a href="@url">token module</a> to get more tokens and display available once.', array('@url' => 'http://drupal.org/project/token'));
+        $description .= '<br>' . t('Install the <a href="@url">token module</a> to get more tokens and display available ones.', array('@url' => 'http://drupal.org/project/token'));
       }
 
       $form['view']['args'] = array(
@@ -170,7 +175,38 @@ class EntityReference_SelectionHandler_Views implements EntityReference_Selectio
    * Implements EntityReferenceHandler::validateAutocompleteInput().
    */
   public function validateAutocompleteInput($input, &$element, &$form_state, $form) {
-    return NULL;
+    $bundled_entities = $this->getReferencableEntities($input, '=', 6);
+    $entities = array();
+    foreach ($bundled_entities as $entities_list) {
+      $entities += $entities_list;
+    }
+    if (empty($entities)) {
+      // Error if there are no entities available for a required field.
+      form_error($element, t('No items found for %label', array('%label' => $element['#title'])));
+    }
+    elseif (count($entities) > 5) {
+      // Error if there are more than 5 matching entities.
+      form_error($element, t('Too many items found for %label. Specify the one you want by appending the id in parentheses, like "@value (@id)"', array(
+        '%label' => $element['#title'],
+        '@value' => $input,
+        '@id' => key($entities),
+      )));
+    }
+    elseif (count($entities) > 1) {
+      // More helpful error if there are only a few matching entities.
+      $multiples = array();
+      foreach ($entities as $id => $name) {
+        $multiples[] = filter_xss($name, array()) . ' (' . (int) $id . ')';
+      }
+      form_error($element, t('Multiple items found for %label: !multiple', array(
+        '%label' => $element['#title'],
+        '!multiple' => theme('item_list', array('items' => $multiples)),
+      )));
+    }
+    else {
+      // Take the one and only matching entity.
+      return (int) key($entities);
+    }
   }
 
   /**

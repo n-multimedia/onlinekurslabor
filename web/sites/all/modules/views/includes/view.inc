@@ -14,6 +14,7 @@
  * Also includes the member functions to build the view query, execute the
  * query and render the output.
  */
+#[\AllowDynamicProperties]
 class view extends views_db_object {
 
   /**
@@ -1195,6 +1196,9 @@ class view extends views_db_object {
     if (!empty($this->live_preview)) {
       $cache = FALSE;
     }
+    elseif (views_view_has_form_elements($this) && isset($_POST['form_id']) && $_POST['form_id'] == views_form_id($this)) {
+      $cache = FALSE;
+    }
     else {
       $cache = $this->display_handler->get_plugin('cache');
     }
@@ -1261,6 +1265,9 @@ class view extends views_db_object {
 
     // Check for already-cached output.
     if (!empty($this->live_preview)) {
+      $cache = FALSE;
+    }
+    elseif (views_view_has_form_elements($this) && isset($_POST['form_id']) && $_POST['form_id'] == views_form_id($this)) {
       $cache = FALSE;
     }
     else {
@@ -2214,6 +2221,7 @@ class view extends views_db_object {
 /**
  * Base class for views' database objects.
  */
+#[\AllowDynamicProperties]
 class views_db_object {
 
   public $db_table;
@@ -2620,6 +2628,7 @@ class views_db_object {
  * This is just the database storage mechanism, and isn't terribly important
  * to the behavior of the display at all.
  */
+#[\AllowDynamicProperties]
 class views_display extends views_db_object {
 
   /**

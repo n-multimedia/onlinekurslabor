@@ -6,8 +6,13 @@
  * Wurde der aktuell eingeloggte Nutzer innerhalb der letzten $max_timespan Minuten einer Gruppe hinzugefügt,
  * liefert sie EINMALIG false. 
  * Dann entweder nach erneuter Eintragung oder nach $max_timespan Minuten
+ * --------------------------------------------
+ * Hinweis bei Kombination PHP Cache in Views:
+ * result cache: wenn es im Vergleich zum Cache neue Einträge in der DB gibt, wird neu gerendert und der Output-Cache neu gespeichert.
+ * Gibts keine neuen Einträge, wird das Rendering nicht neu angestoßen und der Output-Cache bleibt so lange bestehen, bis er invalidiert.
+ * Deswegen sollte der result cache idR kürzer validieren als er output-cache
  * @param int $max_timespan max cache duration in minutes, e.g. 60
- * @param string $identifier - internal identifier, in which context is the cache used. e.g. view-name
+ * @param string $identifier - unique identifier for this cache. Do not use this identifier multiple times!
  */
 function _onlinekurslabor_cache_is_group_cache_valid($max_timespan, $identifier) {
   #_onlinekurslabor_cache_debugmessage("_onlinekurslabor_cache_is_group_cache_valid caches disabled");
@@ -23,7 +28,7 @@ function _onlinekurslabor_cache_is_group_cache_valid($max_timespan, $identifier)
     $result = db_query('select created as last_group_added_timestamp from og_membership where etid = :userid AND  :now_timestamp - created < :timediff order by created DESC LIMIT 0,1', array(':userid' => $user->uid, ':now_timestamp' => $unix_timestamp, ':timediff' => $timediff))->fetchField();
     //_onlinekurslabor_cache_debugmessage($result);
     if ($result) {
-      _onlinekurslabor_cache_debugmessage("cache INVALID for $identifier, last written: " . (!empty($_SESSION['okl_cache'][$identifier_written])? $_SESSION['okl_cache'][$identifier_written]:' --never-- ') . " timestamp for sql is: " . $unix_timestamp . " result: " . $result);
+      _onlinekurslabor_cache_debugmessage("cache INVALID for $identifier, last written: " . (!empty($_SESSION['okl_cache'][$identifier_written])? $_SESSION['okl_cache'][$identifier_written]:' --never-- ') . " timestamp for sql is: " . $unix_timestamp . " result: " . $result.", max. timespan: ".$max_timespan." min");
       $_SESSION['okl_cache'][$identifier_written] = $result;
       return false;
     }
@@ -31,12 +36,12 @@ function _onlinekurslabor_cache_is_group_cache_valid($max_timespan, $identifier)
     else {
       //zeitspanne noch ok?
       if (isset($_SESSION['okl_cache'][$identifier_written]) && time() < $_SESSION['okl_cache'][$identifier_written] + $default_timediff) {
-        _onlinekurslabor_cache_debugmessage("cache valid, for $identifier , last store: @ " . $_SESSION['okl_cache'][$identifier_written] . ", current time: " . time() . " result: " . $result);
+        _onlinekurslabor_cache_debugmessage("cache valid, for $identifier , last store: @ " . $_SESSION['okl_cache'][$identifier_written] . ", current time: " . time() . " result: " . $result.", max. timespan: ".$max_timespan." min");
         return true;
       }
       else {
         //timeout hit
-        _onlinekurslabor_cache_debugmessage("cache INVALID  by time or empty for $identifier");
+        _onlinekurslabor_cache_debugmessage("cache INVALID  by time (max: ".$max_timespan." min) or empty for $identifier");
         $_SESSION['okl_cache'][$identifier_written] = time();
         return false;
       }

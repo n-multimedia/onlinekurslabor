@@ -26,8 +26,8 @@ function notification_features_views_default_views() {
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'php';
-  $handler->display->display_options['cache']['php_cache_results'] = 'return  _onlinekurslabor_cache_is_group_cache_valid(5,\'nm_activity_stream\')';
-  $handler->display->display_options['cache']['php_cache_output'] = 'return _onlinekurslabor_cache_is_group_cache_valid(60,\'nm_activity_stream\')';
+  $handler->display->display_options['cache']['php_cache_results'] = 'return  _onlinekurslabor_cache_is_group_cache_valid(5,\'nm_activity_stream-results\')';
+  $handler->display->display_options['cache']['php_cache_output'] = 'return _onlinekurslabor_cache_is_group_cache_valid(60,\'nm_activity_stream-output\')';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Anwenden';

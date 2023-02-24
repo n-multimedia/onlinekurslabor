@@ -265,6 +265,8 @@ function nm_general_features_views_default_views() {
     t('Profile'),
     t('(hidden) mid'),
     t('.'),
+    t('1'),
+    t('@count'),
     t('(hidden) Real name'),
     t('[realname]'),
     t('Alle'),
