@@ -147,17 +147,21 @@ abstract class CestHelper {
      */
     protected function skipNonApplicableExample(AcceptanceTester $I, Codeception\Scenario $scenario) {
         $I->comment("checking if in fallback-mode...");
+      
+
         //get current @dataprovider-sample
         $example = ($scenario->current('example'));
-            
+        $example_type = !empty($example['type'])?$example['type']:false;
+
         //hier: kontext wurde im Cest erstellt und möchte fallback ausführen: skip
-        if (Fixtures::exists('current_context_nid') && $example['type'] == 'fallback') {
+        if (Fixtures::exists('current_context_nid') && $example_type == 'fallback') {
             $scenario->skip($example['type'] . "-example since Fixtures::exists('current_context_nid')");
         }
         //hier: kein kontext erstellt, aber default ausführen: skip
-        elseif (!Fixtures::exists('current_context_nid') && $example['type'] == 'default') {
+        elseif (!Fixtures::exists('current_context_nid') && $example_type == 'default') {
             $scenario->skip($example['type'] . "-example since NO Fixtures::exists('current_context_nid')");
         }
+        //else: go on...
     }
     
     /**
