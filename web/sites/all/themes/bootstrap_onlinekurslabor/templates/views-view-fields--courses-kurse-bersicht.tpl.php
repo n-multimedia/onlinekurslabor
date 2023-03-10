@@ -57,7 +57,7 @@ foreach ($kurs_dozent_objects as $dozent_acc) {
       <div class="course-subtitle"><?php echo $fields['field_subtitle']->content; ?></div>
       <div class="course-dozenten"><small>
               <strong>Lehrende: </strong>
-                <?php echo implode($kurs_dozenten, ', ')?>
+                <?php echo implode(', ', $kurs_dozenten)?>
               </small>
       </div>
       <div class="course-time row">
