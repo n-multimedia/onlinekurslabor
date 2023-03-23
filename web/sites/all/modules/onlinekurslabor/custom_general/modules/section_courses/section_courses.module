@@ -1123,7 +1123,11 @@ function section_courses_field_formatter_view($entity_type, $entity, $field, $in
  */
 
 function section_courses_url_outbound_alter(&$path, &$options, &$original_path) {
-
+//manchmal ist $path leer
+  if(!$path)
+  {
+    return;
+  }
   $course = _section_courses_get_active_course();
 
   if ($course) {

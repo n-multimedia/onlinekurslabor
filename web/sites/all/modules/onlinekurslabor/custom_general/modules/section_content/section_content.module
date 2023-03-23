@@ -348,6 +348,11 @@ function section_content_preprocess_page(&$vars) {
 
 function section_content_url_outbound_alter(&$path, &$options, &$original_path) {
 
+  //manchmal ist $path leer
+  if(!$path)
+  {
+    return;
+  }
   $domain = _section_content_get_active_domain();
 
   if ($domain) {

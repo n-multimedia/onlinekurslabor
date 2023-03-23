@@ -91,7 +91,7 @@ function _section_profile_get_profile_data($user) {
     $to_remove = array('authenticated user');
     $roles = array_diff($roles, $to_remove);
     $roles_name = count($roles) > 1 ? 'Rollen' : 'Rolle';
-    $data['public'][$roles_name] = implode($roles, ', ');
+    $data['public'][$roles_name] = implode(', ', $roles);
 
     $profile = profile2_load_by_user($user, 'master');
 
@@ -120,11 +120,11 @@ function _section_profile_get_profile_data($user) {
     }
     $data['public']['Hochschule'] = implode(", ", $persons_hss);
 
-    $data['private']['Matrikelnummer'] = field_get_items('profile2', $profile_student, 'field_matrikelnummer_varchar')[0]['safe_value'];
-    $data['private']['Studienfach'] = field_get_items('profile2', $profile_student, 'field_studienfach')[0]['safe_value'];
+    $data['private']['Matrikelnummer'] = !empty(field_get_items('profile2', $profile_student, 'field_matrikelnummer_varchar'))?field_get_items('profile2', $profile_student, 'field_matrikelnummer_varchar')[0]['safe_value']:'';
+    $data['private']['Studienfach'] = !empty(field_get_items('profile2', $profile_student, 'field_studienfach'))?field_get_items('profile2', $profile_student, 'field_studienfach')[0]['safe_value']:'';
 
     //description
-    $data['public']['Über mich'] = nl2br(field_get_items('profile2', $profile, 'field_about_me', 'short')[0]['safe_value']);
+    $data['public']['Über mich'] = nl2br(!empty(field_get_items('profile2', $profile, 'field_about_me', 'short'))?field_get_items('profile2', $profile, 'field_about_me', 'short')[0]['safe_value']:'');
 
     #return $data;
     //entferne leere values

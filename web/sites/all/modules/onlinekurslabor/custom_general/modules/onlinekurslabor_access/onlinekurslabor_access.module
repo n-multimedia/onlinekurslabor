@@ -482,9 +482,12 @@ function onlinekurslabor_access_file_download($uri) {
   $usage_query->condition('fu.type', array('node',), 'IN');
 
   $fileusage_result = $usage_query->execute();
-
+  $mime = "";
   $info = image_get_info($uri);
-  $mime = $info['mime_type'];
+  if(!empty($info))
+  {  
+    $mime = $info['mime_type'];
+  }
   if (!$mime) {
     $mime = file_get_mimetype($uri);
   }
