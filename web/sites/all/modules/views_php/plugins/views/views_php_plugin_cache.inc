@@ -66,7 +66,8 @@ class views_php_plugin_cache extends views_plugin_cache {
         if ($fresh && !empty($this->options['php_cache_results'])) {
           $code = $this->options['php_cache_results'] . ';';
           $function = function ($view, $plugin, $cache) use ($code) {
-            eval($code);
+            //hacked! See https://www.drupal.org/project/views_php/issues/3217664
+            return eval($code);
           };
 
           ob_start();
@@ -94,7 +95,8 @@ class views_php_plugin_cache extends views_plugin_cache {
         if ($fresh && !empty($this->options['php_cache_output'])) {
           $code = $this->options['php_cache_output'] . ';';
           $function = function ($view, $plugin, $cache) use ($code) {
-            eval($code);
+            //hacked! See https://www.drupal.org/project/views_php/issues/3217664
+            return eval($code);
           };
 
           ob_start();
