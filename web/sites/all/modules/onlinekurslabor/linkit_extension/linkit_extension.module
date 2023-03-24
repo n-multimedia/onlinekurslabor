@@ -12,12 +12,11 @@
  */
 function linkit_extension_page_build() {
 
-    drupal_add_js(drupal_get_path('module', 'linkit') . '/better-autocomplete/jquery.better-autocomplete.js');
-    drupal_add_css(drupal_get_path('module', 'linkit') . '/better-autocomplete/better-autocomplete.css', array('type' => 'file'));
-    drupal_add_css(drupal_get_path('module', 'linkit_extension') . '/assets/css/linkit_xt.css', array('type' => 'file'));
-    drupal_add_js(drupal_get_path('module', 'linkit_extension') . '/assets/js/linkit_extension.js');
+  drupal_add_js(drupal_get_path('module', 'linkit') . '/better-autocomplete/jquery.better-autocomplete.js');
+  drupal_add_css(drupal_get_path('module', 'linkit') . '/better-autocomplete/better-autocomplete.css', array('type' => 'file'));
+  drupal_add_css(drupal_get_path('module', 'linkit_extension') . '/assets/css/linkit_xt.css', array('type' => 'file'));
+  drupal_add_js(drupal_get_path('module', 'linkit_extension') . '/assets/js/linkit_extension.js');
 }
-
 
 /**
  * Implements hook_linkit_plugin_entities_alter().
@@ -40,20 +39,21 @@ function linkit_extension_page_build() {
  */
 function linkit_extension_linkit_search_plugin_entities_alter(&$plugins) {
 
-    $path = drupal_get_path('module', 'h5p_integration') . '/plugins/linkit_search';
-    $okl_access_plugin = array();
+  $path = drupal_get_path('module', 'linkit_extension') . '/plugins/linkit_search';
+  $okl_access_plugin = array();
 
-    $handler = array(
-        'class' => 'OKLAccessSearchPlugin',
-        'file' => 'okl_access_search_plugin.class.php',
-            //path macht drupal paputt
-            //'path' => $path,
-    );
-    $okl_access_plugin['handler'] = $handler;
-    $okl_access_plugin['entity_type'] = 'node';
-    //name ist wichtig, sonst keine fkt
-    $okl_access_plugin['name'] = 'entity:okl_access';
-    $plugins['entity:okl_access'] = $okl_access_plugin;
+  $handler = array(
+    'class' => 'OKLAccessSearchPlugin',
+    'file' => 'okl_access_search_plugin.class.php',
+    'path' => $path
+  );
+  $okl_access_plugin['handler'] = $handler;
+  $okl_access_plugin['entity_type'] = 'node';
+  //name ist wichtig, sonst keine fkt
+  $okl_access_plugin['name'] = 'entity:okl_access';
+  $okl_access_plugin['module'] = 'linkit_extension';
 
-    return;
+  $plugins['entity:okl_access'] = $okl_access_plugin;
+
+  return;
 }
