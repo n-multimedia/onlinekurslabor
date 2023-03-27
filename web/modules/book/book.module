@@ -927,7 +927,17 @@ function book_node_presave($node) {
   }
   // Make sure a new node gets a new menu link.
   if (empty($node->nid)) {
-    $node->book['mlid'] = NULL;
+    //hacked for php8
+    if(is_array($node->book))
+    {
+      $node->book['mlid'] = NULL;
+    }
+    else
+    {
+      $arrbook = array("mlid" => NULL);
+      $node->book = $arrbook;
+    }
+    
   }
 }
 
