@@ -82,7 +82,7 @@ class InteractiveCreate extends DomainContentBase implements \Page\node\ContentC
             $I->click("Anwenden");
             $I->wait(5);
             $I->click($params['videoname']);
-            $I->wait(3);
+            $I->wait(5);
             $I->click("Dieses Video auswählen");
             $I->switchToIFrame(".".self::$h5pEditorIframe);
             $I->see("Beschreibung der Videoqualität");

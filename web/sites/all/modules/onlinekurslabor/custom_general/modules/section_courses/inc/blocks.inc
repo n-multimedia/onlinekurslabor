@@ -509,6 +509,7 @@ function _course_top_navigation_view() {
  */
 function _section_courses_top_navigation_label_to_link($nav_items_single, $course) {
   $links = [];
+  $unread_badge = '';
   foreach ($nav_items_single as $si) {
     $text_link = _section_courses_navtext_to_link($course, $si);
 
@@ -533,9 +534,9 @@ function _section_courses_top_navigation_label_to_link($nav_items_single, $cours
         $options['attributes']['class'][] = 'disabled';
       }
 
-      $unread_count = $options['data']['unread'];
-      $unread_badge = '';
-      if ($unread_count) {
+      if(!empty($options['data']['unread']))
+      {
+        $unread_count = $options['data']['unread'];
         $unread_badge = '<div class="unread_tiny_box"><div style="" class="arrow-down"></div>' . $unread_count . '</div>';
       }
 

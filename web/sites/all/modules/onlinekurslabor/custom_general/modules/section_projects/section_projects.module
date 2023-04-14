@@ -1402,7 +1402,11 @@ function section_projects_context() {
  */
 
 function section_projects_url_outbound_alter(&$path, &$options, &$original_path) {
-
+//manchmal ist $path leer
+  if(!$path)
+  {
+    return;
+  }
   $project = section_projects_get_active_project();
 
   if ($project || section_projects_context()) {

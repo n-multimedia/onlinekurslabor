@@ -5,11 +5,15 @@
 drush vset maintenance_mode 1
 
 
+
+drush cc all
+drush en eol_configuration_feature --yes
+
 #bug in drush - cc before FR!!
 drush cc all
 
 #revert single features
-drush fr  home_features annvid_features nm_section_content_features nm_section_courses_features nm_general_features notification_features --yes
+drush fr  home_features annvid_features nm_section_content_features nm_section_courses_features nm_general_features notification_features eol_configuration_feature --yes
 #drush fr annvid_features nm_section_content_features nm_section_courses_features nm_general_features section_projects_features nm_h5p_features section_courses_clone_features nm_administration nm_uuid_features --yes
 
 #import language

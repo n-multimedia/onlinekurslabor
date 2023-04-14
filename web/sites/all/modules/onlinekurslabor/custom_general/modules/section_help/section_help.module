@@ -58,7 +58,7 @@ function section_help_preprocess_page(&$variables) {
     $node = @$variables['node'];
 
     if (!empty($node)) {
-        if ($node->nid == $help_bid || @$variables[node]->book[bid] == $help_bid) {
+        if ($node->nid == $help_bid || @$variables["node"]->book["bid"] == $help_bid) {
             $help_book = node_load($help_bid);
             $fid = variable_get('okl_help_header_fid', NM_HELP_HEADER_FID);
             $header_file = file_load($fid);
