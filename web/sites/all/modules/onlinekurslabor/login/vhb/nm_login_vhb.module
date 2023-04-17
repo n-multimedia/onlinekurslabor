@@ -326,7 +326,12 @@ function nm_login_vhb_load_user_by_entity($entity_type, $entity1, $entity2 = nul
 
 
     $result = $profile_query->execute();
-
+  
+    //kein treffer
+    if(empty($result))
+    {
+      return null;
+    }
     //bei login_id darfs nur einen match geben, bei matrikelnummer ggf mehrere
     if ($entity_type == 'vhb_login_id' && @count($result['profile2']) > 1) {
         echo("Multiple entries for user id found!");
