@@ -12,6 +12,12 @@ msgstr "Fehler im Mailsystem, Aktion abgebrochen."
 msgid "Please contact the site administrator."
 msgstr "Bitte kontaktieren Sie den Support."
 
+msgid "Here the H5P-element %h5ptitle would be situated."
+msgstr "Hier befände sich das H5P-Element %h5ptitle."
+
+msgid "Download it."
+msgstr "Laden Sie es herunter."
+
 msgid ""
 msgstr ""
 

@@ -276,6 +276,84 @@ function h5p_integration_node_view($node, $view_mode, $langcode) {
 
 
 /**
+ * implements  hook_node_view_alter(&$build)
+ * An dieser Stelle kann man den view_mode noch anpassen und auch einen #post_render hook
+ * andotzen, der ggf das HTML verändern kann oder andere schöne Dinge machen.
+ * @param type $build
+ */
+function h5p_integration_node_view_alter(&$build) {
+
+  //element ist h5p
+  if (isset($build["h5p"])) {
+    $h5pnode = $build["#node"];
+
+    //lade container (lehrtext-anzeige)
+    $page_node = menu_get_object();
+    if (empty($page_node)) {
+      $page_node = node_load(arg(2));
+    }
+    //kein container? Dann ist das der print-view
+    if (empty($page_node)) {
+
+
+      $build["#view_mode"] = 'print';
+
+      $h5p_content_settings = h5p_get_content_settings(h5p_get_content($h5pnode));
+
+      $h5p_placeholder_text = '<div style="background: #CEDBE6; padding: 2em; margin:2em; width:40%">' .
+        t("Here the H5P-element %h5ptitle would be situated.", array("%h5ptitle" => $h5pnode->title)) .
+        "<br>" .
+        l(t('Download it.'), $h5p_content_settings["exportUrl"]);
+      '</div>';
+
+      $build['h5p_placeholder'] = array(
+        '#markup' => $h5p_placeholder_text,
+        '#weight' => 10,
+        #'#theme' => 'mymodule_my_additional_field',
+      );
+
+      /* to REPLACE the rendered HTML, use
+        $build['#post_render'][] = '_h5p_integration_print_h5p_placeholder';
+       * with a function containing
+       * return preg_replace('/<div class="h5p-content" data-content-id="\d+"><\/div>/i', "|||H5P-Placeholder|||", $content);
+       */
+    }
+  }
+}
+
+/**
+ * Entferne contextual links auf print-ansicht
+ * Da DS reinhaut, wird die hook-Reihenfolge noch nach hinten geschoben in
+ * h5p_integration_module_implements_alter
+ * implements hook_contextual_links_view
+ * @param type $element
+ * @param type $items
+ */
+function h5p_integration_contextual_links_view_alter(&$element, &$items) {
+
+  //hier greift der in h5p_integration_node_view_alter gesetzte view_mode
+  if ($element['#element']['#bundle'] == 'h5p_content' && $element['#element']['#view_mode'] == 'print') {
+    $element['#links'] = array();
+  }
+}
+
+/**
+ * implements hook_module_implements_alter
+ * reorder hooks sequence
+ * @param type $implementations
+ * @param type $hook
+ */
+function h5p_integration_module_implements_alter(&$implementations, $hook) {
+
+  //make this hook last
+  if ($hook == 'contextual_links_view_alter') {
+    $hook_in_this_module = $implementations['h5p_integration'];
+    unset($implementations['h5p_integration']);
+    $implementations['h5p_integration'] = $hook_in_this_module;
+  }
+}
+
+/**
  * implements hook_form_alter hook_form_form_id_alter
  * hook fuer das h5p-content-formular
  * entfernt aktuellen lehrtext aus "zusätzlicher-lehrtext-feld" wegen field-bug
