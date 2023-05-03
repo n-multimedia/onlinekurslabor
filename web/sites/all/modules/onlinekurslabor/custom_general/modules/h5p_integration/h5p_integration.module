@@ -282,7 +282,6 @@ function h5p_integration_node_view($node, $view_mode, $langcode) {
  * @param type $build
  */
 function h5p_integration_node_view_alter(&$build) {
-
   //element ist h5p
   if (isset($build["h5p"])) {
     $h5pnode = $build["#node"];
@@ -297,14 +296,23 @@ function h5p_integration_node_view_alter(&$build) {
 
 
       $build["#view_mode"] = 'print';
-
       $h5p_content_settings = h5p_get_content_settings(h5p_get_content($h5pnode));
+      $videos_in_h5p = _h5p_integration_get_videolist_from_h5p($h5pnode);
 
-      $h5p_placeholder_text = '<div style="background: #CEDBE6; padding: 2em; margin:2em; width:40%">' .
+      $missing_videos_warning = "";
+      if (!empty($videos_in_h5p)) {
+        $all_video_pathes = array_column($videos_in_h5p, "path");
+        $missing_videos_warning = "<br><br><b>" . t("Beware! The following files might be missing:") . "</b><ul><li>\r\n"
+          . implode("\r\n</li><li>\r\n", $all_video_pathes)
+          . "\r\n</li></ul>";
+      }
+      $h5p_placeholder_text = "\r\n" .
+        '<div style="background: #CEDBE6; padding: 2em; margin:2em; width:80%">' .
         t("Here the H5P-element %h5ptitle would be situated.", array("%h5ptitle" => $h5pnode->title)) .
         "<br>" .
-        l(t('Download it.'), $h5p_content_settings["exportUrl"]);
-      '</div>';
+        l(t('Download it.'), $h5p_content_settings["exportUrl"]) .
+        $missing_videos_warning .
+        '</div>';
 
       $build['h5p_placeholder'] = array(
         '#markup' => $h5p_placeholder_text,
@@ -467,6 +475,44 @@ function h5p_integration_h5p_filtered_params_alter(&$filtered) {
    
 }
 
+/**
+ * Versucht, für ein H5P-Object alle eingebetteten Videos zu finden.
+ * Gibt den Pfad zum Video zurück.
+ * @param StdClass $h5pnode object h5p-node
+ * @return array[] gibt Treffer als array in der Form {"path"=>...,"mime"=>...} zurück
+ */
+function _h5p_integration_get_videolist_from_h5p($h5pnode) {
+
+  $h5p_content_settings = h5p_get_content_settings(h5p_get_content($h5pnode));
+
+  $h5p_json = $h5p_content_settings['jsonContent'];
+  $h5p_json_decoded = json_decode($h5p_json, true);
+
+  $content_def = reset($h5p_json_decoded); //first element
+  if(empty($content_def))
+  {
+    return array();
+  }
+
+
+//hier wird das assoziative, multidimensionale array geflattet
+  $oRecIt = new RecursiveIteratorIterator(new RecursiveArrayIterator($content_def));
+  $all_values_without_keys = array();
+  foreach ($oRecIt as $asset_candidate) {
+
+
+    $all_values_without_keys[] = $asset_candidate;
+  }
+
+  //müsste man erweitern auf video/ogg etc - gerade video/mp4 hardcoded
+  $all_mimes_mp4 = array_keys($all_values_without_keys, "video/mp4", true); //array_keys mit optionalem "search"-filter
+  $all_videos = array();
+  foreach ($all_mimes_mp4 as $counter => $mime_key) {
+    $all_videos[$counter]["path"] = $all_values_without_keys[$mime_key - 1]; //in der Liste ist immer [path] ... , [mime] ... desewgen "-1"
+    $all_videos[$counter]["mime"] = "video/mp4";
+  }
+  return $all_videos;
+}
 
 /**
  * Helperfunktion für Updates. Setzt den embed-typ für InteractiveVideo auf DIV statt IFRAME,

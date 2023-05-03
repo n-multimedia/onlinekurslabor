@@ -18,6 +18,9 @@ msgstr "Hier befände sich das H5P-Element %h5ptitle."
 msgid "Download it."
 msgstr "Laden Sie es herunter."
 
+msgid "Beware! The following files might be missing:"
+msgstr "Achtung! Folgende Dateien könnten fehlen:"
+
 msgid ""
 msgstr ""
 
