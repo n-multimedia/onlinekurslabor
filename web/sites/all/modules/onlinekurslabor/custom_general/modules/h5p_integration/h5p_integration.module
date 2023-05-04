@@ -489,8 +489,7 @@ function _h5p_integration_get_videolist_from_h5p($h5pnode) {
   $h5p_json_decoded = json_decode($h5p_json, true);
 
   $content_def = reset($h5p_json_decoded); //first element
-  if(empty($content_def))
-  {
+  if (empty($content_def)) {
     return array();
   }
 
@@ -498,19 +497,26 @@ function _h5p_integration_get_videolist_from_h5p($h5pnode) {
 //hier wird das assoziative, multidimensionale array geflattet
   $oRecIt = new RecursiveIteratorIterator(new RecursiveArrayIterator($content_def));
   $all_values_without_keys = array();
-  foreach ($oRecIt as $asset_candidate) {
+  foreach ($oRecIt as $h5pvalue) {
 
 
-    $all_values_without_keys[] = $asset_candidate;
+    $all_values_without_keys[] = $h5pvalue;
   }
 
-  //müsste man erweitern auf video/ogg etc - gerade video/mp4 hardcoded
-  $all_mimes_mp4 = array_keys($all_values_without_keys, "video/mp4", true); //array_keys mit optionalem "search"-filter
+  /**
+   * diverse mime_types erhalten über
+   * SELECT  distinct SUBSTR(`json_content`, Locate('"mime":"video',`json_content`)+8 , 15)  FROM `h5p_nodes` WHERE `json_content` LIKE '%video/\%'  ESCAPE '/';
+   */
+  $possible_mimes = array("video/mp4", "video/unknown", "video/webm");
   $all_videos = array();
-  foreach ($all_mimes_mp4 as $counter => $mime_key) {
-    $all_videos[$counter]["path"] = $all_values_without_keys[$mime_key - 1]; //in der Liste ist immer [path] ... , [mime] ... desewgen "-1"
-    $all_videos[$counter]["mime"] = "video/mp4";
+  foreach ($possible_mimes as $mimetype) {
+    $h5p_mimetype_hit = array_keys($all_values_without_keys, $mimetype, true); //array_keys mit optionalem "search"-filter
+    foreach ($h5p_mimetype_hit as $counter => $h5p_mime_key) {
+      $all_videos[$counter]["path"] = $all_values_without_keys[$h5p_mime_key - 1]; //in der Liste ist immer [path] ... , [mime] ... desewgen "-1"
+      $all_videos[$counter]["mime"] = $mimetype;
+    }
   }
+
   return $all_videos;
 }
 
