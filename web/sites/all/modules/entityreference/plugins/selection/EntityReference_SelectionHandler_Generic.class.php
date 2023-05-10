@@ -381,6 +381,35 @@ class EntityReference_SelectionHandler_Generic_node extends EntityReference_Sele
       $query->condition("$base_table.status", NODE_PUBLISHED);
     }
   }
+
+  /**
+   * Implements EntityReferenceHandler::getReferencableEntities().
+   */
+  public function getReferencableEntities($match = NULL, $match_operator = 'CONTAINS', $limit = 0) {
+    $options = array();
+    $entity_type = $this->field['settings']['target_type'];
+
+    $query = $this->buildEntityFieldQuery($match, $match_operator);
+    $query->entityCondition('entity_type', 'node');
+    if ($limit > 0) {
+      $query->range(0, $limit);
+    }
+
+    $results = $query->execute();
+
+    // Use a database lookup instead of the more expensive entity_load() used by the parent function.
+    if (!empty($results[$entity_type])) {
+      $nids = array_keys($results[$entity_type]);
+      $results = db_query('SELECT nid, type, title FROM {node} WHERE nid IN (:nids)', array(':nids' => $nids))->fetchAllAssoc('nid');
+      foreach ($nids as $nid) {
+        if (!empty($results[$nid]->type)) {
+          $options[$results[$nid]->type][$nid] = check_plain($results[$nid]->title);
+        }
+      }
+    }
+
+    return $options;
+  }
 }
 
 /**
@@ -438,6 +467,34 @@ class EntityReference_SelectionHandler_Generic_user extends EntityReference_Sele
         }
       }
     }
+  }
+
+  /**
+   * Implements EntityReferenceHandler::getReferencableEntities().
+   */
+  public function getReferencableEntities($match = NULL, $match_operator = 'CONTAINS', $limit = 0) {
+    $options = array();
+    $entity_type = $this->field['settings']['target_type'];
+
+    $query = $this->buildEntityFieldQuery($match, $match_operator);
+    $query->entityCondition('entity_type', 'user');
+    if ($limit > 0) {
+      $query->range(0, $limit);
+    }
+    $results = $query->execute();
+
+    // Use a database lookup instead of the more expensive entity_load() used by the parent function.
+    if (!empty($results[$entity_type])) {
+      $uids = array_keys($results[$entity_type]);
+      $results = db_query('SELECT uid, name, status FROM {users} WHERE uid IN (:uids)', array(':uids' => $uids));
+      while ($entity = $results->fetchObject()) {
+        // Our partial entity is sufficient for the entity user access callback
+        // and getLabel.
+        $options['user'][$entity->uid] = check_plain($this->getLabel($entity));
+      }
+    }
+
+    return $options;
   }
 }
 

@@ -62,7 +62,7 @@ function entityreference_field_views_data_views_data_alter(&$data, $field) {
         watchdog(
           'entityreference',
           'Field %field_name refers to nonexistent entity type %type. You might want to remove this broken field instance. <a href="https://www.drupal.org/docs/7/modules/views/data-fix-field-field-refers-to-nonexistent-entity-type-type">See documentation.</a>',
-          array('%field_name' => $field['field_name'], '%type' => $entity),
+          array('%field_name' => $field['field_name'], '%type' => $entity_type),
           WATCHDOG_WARNING
         );
         continue;

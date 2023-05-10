@@ -56,34 +56,12 @@ function entityreference_feeds_processor_targets_alter(&$targets, $entity_type, 
 }
 
 /**
- * Entity reference callback for mapping.
- *
- * When the callback is invoked, $target contains the name of the field the
- * user has decided to map to and $value contains the value of the feed item
- * element the user has picked as a source.
- *
- * @param $source
- *   A FeedsSource object.
- * @param $entity
- *   The entity to map to.
- * @param $target
- *   The target key on $entity to map to.
- * @param $value
- *   The value to map. MUST be an array.
+ * Entity reference callback for hook_feeds_processor_targets().
  */
-function entityreference_feeds_set_target($source, $entity, $target, $value) {
-
+function entityreference_feeds_set_target(FeedsSource $source, $entity, $target, array $values, array $mapping) {
   // Don't do anything if we weren't given any data.
-  if (empty($value)) {
+  if (empty($values)) {
     return;
-  }
-
-  // Assume that the passed in value could really be any number of values.
-  if (is_array($value)) {
-    $values = $value;
-  }
-  else {
-    $values = array($value);
   }
 
   // Determine the field we are matching against.
@@ -116,13 +94,15 @@ function entityreference_feeds_set_target($source, $entity, $target, $value) {
           // Fetch the entity ID resulting from the mapping table look-up.
           $entity_id = db_select('feeds_item', 'fi')
             ->fields('fi', array('entity_id'))
-            ->condition($match_key, $value,'=')
+            ->condition($match_key, $value, '=')
             ->execute()
             ->fetchField();
           break;
+
         case 'etid':
           $entity_id = $value;
           break;
+
         case 'label':
           $options = $handler->getReferencableEntities($value, '=');
           if ($options) {
@@ -147,7 +127,7 @@ function entityreference_feeds_set_target($source, $entity, $target, $value) {
       if ($entity_id) {
 
         // Assign the target ID.
-        $field[$language][$iterator]['target_id']   = $entity_id;
+        $field[$language][$iterator]['target_id'] = $entity_id;
       }
       else /* there is no $entity_id, no mapping */ {
 

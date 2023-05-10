@@ -1,12 +1,13 @@
-name = "Entityreference - Feeds integration tests"
-description = "Support module for the Entityreference - Feeds integration tests."
+name = "Entityreference - Views integration tests"
+description = "Support module for the Entityreference - Views integration tests."
 package = Testing
 core = 7.x
 hidden = TRUE
 
-dependencies[] = feeds
-dependencies[] = feeds_ui
 dependencies[] = entityreference
+dependencies[] = node
+dependencies[] = taxonomy
+dependencies[] = views
 
 ; Information added by Drupal.org packaging script on 2023-04-14
 version = "7.x-1.9"
