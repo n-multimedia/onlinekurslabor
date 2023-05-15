@@ -433,8 +433,8 @@ function h5p_integration_h5p_filtered_params_alter(&$filtered) {
         }
         else
         {
-           //leere variable, nicht content-by-reference
-           $url_object = null; 
+          //mache mit dem nächsten eintrag weiter, nichts zu tun
+           continue;
         }
         
 
