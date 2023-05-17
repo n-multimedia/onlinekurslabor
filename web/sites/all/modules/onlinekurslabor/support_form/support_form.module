@@ -31,6 +31,7 @@ function _support_form_get_options() {
     'Stream',
     'Nachrichten',
     'Profil',
+    'Export dieses Lehrtexts anfordern',
     'Sonstiges'
   );
 
