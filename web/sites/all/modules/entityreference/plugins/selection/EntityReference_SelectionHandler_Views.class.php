@@ -140,11 +140,48 @@ class EntityReference_SelectionHandler_Views implements EntityReference_Selectio
     $return = array();
     if ($result) {
       $target_type = $this->field['settings']['target_type'];
-      $entities = entity_load($target_type, array_keys($result));
-      foreach($entities as $entity) {
+
+      // Do not load the entire entity for performance reasons.
+      $entity_info = entity_get_info($target_type);
+      $query = db_select($entity_info['base table'], 'e');
+      $query->fields('e');
+      $query->condition('e.' . $entity_info['entity keys']['id'], array_keys($result), 'IN');
+
+      foreach ($query->execute() as $entity) {
+        // When the bundle key is not on the 'base table', get it on the $entity
+        // through entity_load().
+        if (!empty($entity_info['entity keys']['bundle']) && empty($entity->{$entity_info['entity keys']['bundle']})) {
+          $loaded_entities = entity_load($target_type, array($entity->{$entity_info['entity keys']['id']}));
+          if (empty($loaded_entities)) {
+            continue;
+          }
+          $entity = reset($loaded_entities);
+        }
         list($id,, $bundle) = entity_extract_ids($target_type, $entity);
         $return[$bundle][$id] = $result[$id];
       }
+      // Options will be flattened, so we don't need the bundle really.
+      $var = $return[$bundle];
+      $countable = (is_array($var) || $var instanceof Countable) ? TRUE : FALSE;
+      if ($countable && count($return[$bundle]) > 1) {
+        $max_children = 0;
+        $temp_key = drupal_random_key(10);
+        $return[$temp_key] = array();
+        foreach ($return as $bundle => $items) {
+          if ($bundle == $temp_key) continue;
+          $num_children = count($items);
+          $return[$temp_key] += $items;
+          if ($num_children > $max_children) {
+            $max_children = $num_children;
+            $max_children_key = $bundle;
+          }
+          unset($return[$bundle]);
+        }
+        $return[$max_children_key] = $return[$temp_key];
+        unset($return[$temp_key]);
+        $bundle = $max_children_key;
+      }
+      $return[$bundle] = array_replace($result, $return[$bundle]);
     }
     return $return;
   }

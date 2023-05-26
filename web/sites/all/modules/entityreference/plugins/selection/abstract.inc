@@ -74,6 +74,8 @@ interface EntityReference_SelectionHandler {
  * A null implementation of EntityReference_SelectionHandler.
  */
 class EntityReference_SelectionHandler_Broken implements EntityReference_SelectionHandler {
+  public $field;
+  public $instance;
   public static function getInstance($field, $instance = NULL, $entity_type = NULL, $entity = NULL) {
     return new EntityReference_SelectionHandler_Broken($field, $instance, $entity_type, $entity);
   }

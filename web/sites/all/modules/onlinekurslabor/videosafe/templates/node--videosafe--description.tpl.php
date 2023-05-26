@@ -21,7 +21,7 @@ if ($node->type == 'videosafe_video') {
     /* errechnet den string, wo das video verwendet wird
      */
     $h5ps = _videosafe_get_usage($node);
-    $h5p_refs = array();
+    $h5p_refs = $h5p_ref_strings = $h5p_strings = array();
     foreach ($h5ps as $h5p) {
         $h5p_refs = array_merge($h5p_refs, _videosafe_h5p_get_refs($h5p));
     }
@@ -33,9 +33,9 @@ if ($node->type == 'videosafe_video') {
         $h5p_strings[] = l($h5p->title, 'node/' . $h5p->nid);
     }
     $video_referenced_in_string = ' - ohne - ';
-    if (count($h5p_ref_strings))
+    if (!empty($h5p_ref_strings))
         $video_referenced_in_string = ((count($h5p_strings)>1)?'den Texten: ':'dem Text: ') . implode(', ', $h5p_ref_strings);
-    if (count($h5p_strings))
+    if (!empty($h5p_strings))
         $video_referenced_in_string .= ((count($h5p_strings)>1)?'<br>in den interaktiven Inhalten: ':'<br>im interaktiven Inhalt: ') . implode(', ', $h5p_strings);
 
     $content['field_exclusive_access']['#title']='Sperrvermerk, einsehbar für';

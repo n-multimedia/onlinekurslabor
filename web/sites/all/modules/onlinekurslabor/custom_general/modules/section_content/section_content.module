@@ -296,14 +296,119 @@ function book_preprocess(&$variables, $hook) {
 }
 
 /**
- * Modify Book links
- *
- */
+ * implements  hook_node_view_alter(&$build)
+ * An dieser Stelle kann man den view_mode noch anpassen und auch einen #post_render hook
+ * andotzen, der ggf das HTML verändern kann oder andere schöne Dinge machen.
+ * @param type $build
+ */ 
 function section_content_node_view_alter(&$build) {
 //disable book links
   if (isset($build['links']['book'])) {
     unset($build['links']['book']);
   }
+
+  //lade container (lehrtext-anzeige)
+  $page_node = menu_get_object();
+  if (empty($page_node)) {
+    $page_node = node_load(arg(2));
+  }
+  //Es gibt einen Container, also nicht print-mode => abbruch
+  if (!empty($page_node)) {
+    return;
+  }
+  //hier drunter wird nur field_answer und field_qaa_answer behandelt
+  if (!isset($build["field_answer"]) && !isset($build["field_qaa_answer"])) {
+    return;
+  }
+  //ELSE
+  //
+  //
+
+  $css = '<style type="text/css">'
+    . 'article.node-content-multiple-choice  .answer_box , article.node-content-question-and-answer .answer_box'
+    . '{'
+    . ' margin-left:2em; '
+    . 'margin-top:1em;'
+    . 'margin-bottom: 1em;'
+    . 'padding-left: 1em; '
+    . 'border-left: 2px solid grey   '
+    . '}'
+    . 'article.node-content-multiple-choice  div.form-type-checkbox '
+    . '{'
+    . 'width:20px;'
+    . 'display:inline;'
+    . '}'
+    . 'article.node-content-multiple-choice  label'
+    . '{'
+    . 'display:inline;'
+    . '}'
+    . 'article.node-content-multiple-choice div.field-name-field-mc-task p'
+    . '{'
+    . 'font-weight:bold;'
+    . '}'
+    . '</style>';
+  $questionnode = $build["#node"];
+  $musterloesung = "<em>Musterlösung:</em>"
+    . (!empty($questionnode->field_mc_solution[LANGUAGE_NONE][0]["value"]) ? $questionnode->field_mc_solution[LANGUAGE_NONE][0]["value"] : '')
+    . (!empty($questionnode->field_qaa_answer[LANGUAGE_NONE][0]["value"]) ? $questionnode->field_qaa_answer[LANGUAGE_NONE][0]["value"] : '');
+
+  $answercontainer = '<div class="answer_box">';
+  $answercontainer_end = '</div>';
+
+  //Multiple-Choice-Fragen
+  if ($build["#bundle"] == NM_CONTENT_MULTIPLE_CHOICE) {
+
+
+
+    $build["#view_mode"] = 'print';
+
+    //sicherheitscheck
+    if (!empty($questionnode->field_answer[LANGUAGE_NONE])) {
+
+
+      $correct_answers = $answercontainer . ' <i>Korrekt sind: </i><ul>';
+      foreach ($questionnode->field_answer[LANGUAGE_NONE] as $key => $answer_possibility) {
+        if ($answer_possibility["first"]) {
+          $correct_answers .= "<li>" . $answer_possibility["second"] . "</li>";
+        }
+      }
+      $correct_answers .= "</ul><br>";
+      $correct_answers .= $musterloesung;
+      $correct_answers .= $answercontainer_end;
+
+
+      $build['qa_solution_holder'] = array(
+        '#markup' => $css . $correct_answers,
+        '#weight' => 10,
+        #'#theme' => 'mymodule_my_additional_field',
+      );
+    }
+    /*   REPLACE the rendered HTML */
+    $build['#post_render'][] = '_section_content_adjust_printview_of_qa';
+  }
+
+  //Frage-Antwort-Spiel
+  elseif ($build["#bundle"] == NM_CONTENT_QUESTION_AND_ANSWER) {
+
+    $build["#view_mode"] = 'print';
+    $build['qa_solution_holder'] = array(
+      '#markup' => $css . $answercontainer . $musterloesung . $answercontainer_end,
+      '#weight' => 10,
+      #'#theme' => 'mymodule_my_additional_field',
+    );
+    $build['#post_render'][] = '_section_content_adjust_printview_of_qa';
+  }
+}
+
+/**
+ * Kommt von section_content_node_view_alter
+ * @param type $content
+ * @return String $new_content
+ */
+function _section_content_adjust_printview_of_qa($content)
+{ $newcontent = preg_replace('/<button.*<\/button>/i', "", $content);
+  return $newcontent;
+      
 }
 
 /*
@@ -2043,4 +2148,46 @@ function section_content_field_formatter_settings_form($field, $instance, $view_
   }
 
   return $element;
+}
+
+
+
+/*********
+ * Weitere ANPASSUNGEN FÜR BOOKEXPORT
+ * 
+ * siehe section_content_node_view_alter
+ * 
+ ***********/
+
+
+/**
+ * Entferne contextual links auf print-ansicht
+ * Da DS reinhaut, wird die hook-Reihenfolge noch nach hinten geschoben in
+ * section_content_module_implements_alter
+ * implements hook_contextual_links_view
+ * @param type $element
+ * @param type $items
+ */
+function section_content_contextual_links_view_alter(&$element, &$items) {
+
+  //hier greift der in section_content_node_view_alter gesetzte view_mode
+  if (in_array($element['#element']['#bundle'], array(NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER) )&& $element['#element']['#view_mode'] == 'print') {
+    $element['#links'] = array();
+  }
+}
+
+/**
+ * implements hook_module_implements_alter
+ * reorder hooks sequence
+ * @param type $implementations
+ * @param type $hook
+*/
+function section_content_module_implements_alter(&$implementations, $hook) {
+
+  //make this hook last
+  if ($hook == 'contextual_links_view_alter') {
+    $hook_in_this_module = $implementations['section_content'];
+    unset($implementations['section_content']);
+    $implementations['section_content'] = $hook_in_this_module;
+  }
 }

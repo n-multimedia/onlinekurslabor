@@ -888,7 +888,10 @@ function entityreference_field_widget_form(&$form, &$form_state, $field, $instan
 
     foreach ($entities as $entity_id => $entity_item) {
       $label = $handler->getLabel($entity_item);
-      $key = $instance['widget']['settings']['hide_ids'] ? $label : "$label ($entity_id)";
+      $key = "$label ($entity_id)";
+      if (isset($instance['widget']['settings']['hide_ids'])) {
+        $key = $instance['widget']['settings']['hide_ids'] ? $label : "$label ($entity_id)";
+      }
       // Labels containing commas or quotes must be wrapped in quotes.
       if (strpos($key, ',') !== FALSE || strpos($key, '"') !== FALSE) {
         $key = '"' . str_replace('"', '""', $key) . '"';
@@ -1129,7 +1132,10 @@ function entityreference_autocomplete_callback_get_matches($type, $field, $insta
         if ($label == $denied_label) {
           continue;
         }
-        $key = $instance['widget']['settings']['hide_ids'] ? $label : "$label ($entity_id)";
+        $key = "$label ($entity_id)";
+        if (isset($instance['widget']['settings']['hide_ids'])) {
+          $key = $instance['widget']['settings']['hide_ids'] ? $label : "$label ($entity_id)";
+        }
         // Strip starting/trailing white spaces, line breaks and tags.
         $key = preg_replace('/\s\s+/', ' ', str_replace("\n", '', trim(decode_entities(strip_tags($key)))));
         // Names containing commas or quotes must be wrapped in quotes.

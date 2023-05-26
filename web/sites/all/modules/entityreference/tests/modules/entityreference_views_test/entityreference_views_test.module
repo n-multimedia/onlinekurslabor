@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Support module for Entity reference - Views integration.
+ */
+
+/**
+ * Implements hook_query_TAG_alter().
+ */
+function entityreference_views_test_query_taxonomy_term_access_alter(QueryAlterableInterface $query) {
+  // Prevent access to terms 1 and 3 when non-admin user.
+  if (!user_access('administer taxonomy')) {
+    $query->condition('tid', array(1, 3), 'NOT IN');
+  }
+}

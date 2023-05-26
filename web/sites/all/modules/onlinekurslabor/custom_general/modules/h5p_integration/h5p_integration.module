@@ -276,6 +276,92 @@ function h5p_integration_node_view($node, $view_mode, $langcode) {
 
 
 /**
+ * implements  hook_node_view_alter(&$build)
+ * An dieser Stelle kann man den view_mode noch anpassen und auch einen #post_render hook
+ * andotzen, der ggf das HTML verändern kann oder andere schöne Dinge machen.
+ * @param type $build
+ */
+function h5p_integration_node_view_alter(&$build) {
+  //element ist h5p
+  if (isset($build["h5p"])) {
+    $h5pnode = $build["#node"];
+
+    //lade container (lehrtext-anzeige)
+    $page_node = menu_get_object();
+    if (empty($page_node)) {
+      $page_node = node_load(arg(2));
+    }
+    //kein container? Dann ist das der print-view
+    if (empty($page_node)) {
+
+
+      $build["#view_mode"] = 'print';
+      $h5p_content_settings = h5p_get_content_settings(h5p_get_content($h5pnode));
+      $videos_in_h5p = _h5p_integration_get_videolist_from_h5p($h5pnode);
+
+      $missing_videos_warning = "";
+      if (!empty($videos_in_h5p)) {
+        $all_video_pathes = array_column($videos_in_h5p, "path");
+        $missing_videos_warning = "<br><br><b>" . t("Beware! The following files might be missing:") . "</b><ul><li>\r\n"
+          . implode("\r\n</li><li>\r\n", $all_video_pathes)
+          . "\r\n</li></ul>";
+      }
+      $h5p_placeholder_text = "\r\n" .
+        '<div style="background: #CEDBE6; padding: 2em; margin:2em; width:80%">' .
+        t("Here the H5P-element %h5ptitle would be situated.", array("%h5ptitle" => $h5pnode->title)) .
+        "<br>" .
+        l(t('Download it.'), $h5p_content_settings["exportUrl"]) .
+        $missing_videos_warning .
+        '</div>';
+
+      $build['h5p_placeholder'] = array(
+        '#markup' => $h5p_placeholder_text,
+        '#weight' => 10,
+        #'#theme' => 'mymodule_my_additional_field',
+      );
+
+      /* to REPLACE the rendered HTML, use
+        $build['#post_render'][] = '_h5p_integration_print_h5p_placeholder';
+       * with a function containing
+       * return preg_replace('/<div class="h5p-content" data-content-id="\d+"><\/div>/i', "|||H5P-Placeholder|||", $content);
+       */
+    }
+  }
+}
+
+/**
+ * Entferne contextual links auf print-ansicht
+ * Da DS reinhaut, wird die hook-Reihenfolge noch nach hinten geschoben in
+ * h5p_integration_module_implements_alter
+ * implements hook_contextual_links_view
+ * @param type $element
+ * @param type $items
+ */
+function h5p_integration_contextual_links_view_alter(&$element, &$items) {
+
+  //hier greift der in h5p_integration_node_view_alter gesetzte view_mode
+  if ($element['#element']['#bundle'] == 'h5p_content' && $element['#element']['#view_mode'] == 'print') {
+    $element['#links'] = array();
+  }
+}
+
+/**
+ * implements hook_module_implements_alter
+ * reorder hooks sequence
+ * @param type $implementations
+ * @param type $hook
+ */
+function h5p_integration_module_implements_alter(&$implementations, $hook) {
+
+  //make this hook last
+  if ($hook == 'contextual_links_view_alter') {
+    $hook_in_this_module = $implementations['h5p_integration'];
+    unset($implementations['h5p_integration']);
+    $implementations['h5p_integration'] = $hook_in_this_module;
+  }
+}
+
+/**
  * implements hook_form_alter hook_form_form_id_alter
  * hook fuer das h5p-content-formular
  * entfernt aktuellen lehrtext aus "zusätzlicher-lehrtext-feld" wegen field-bug
@@ -347,8 +433,8 @@ function h5p_integration_h5p_filtered_params_alter(&$filtered) {
         }
         else
         {
-           //leere variable, nicht content-by-reference
-           $url_object = null; 
+          //mache mit dem nächsten eintrag weiter, nichts zu tun
+           continue;
         }
         
 
@@ -389,6 +475,50 @@ function h5p_integration_h5p_filtered_params_alter(&$filtered) {
    
 }
 
+/**
+ * Versucht, für ein H5P-Object alle eingebetteten Videos zu finden.
+ * Gibt den Pfad zum Video zurück.
+ * @param StdClass $h5pnode object h5p-node
+ * @return array[] gibt Treffer als array in der Form {"path"=>...,"mime"=>...} zurück
+ */
+function _h5p_integration_get_videolist_from_h5p($h5pnode) {
+
+  $h5p_content_settings = h5p_get_content_settings(h5p_get_content($h5pnode));
+
+  $h5p_json = $h5p_content_settings['jsonContent'];
+  $h5p_json_decoded = json_decode($h5p_json, true);
+
+  $content_def = reset($h5p_json_decoded); //first element
+  if (empty($content_def)) {
+    return array();
+  }
+
+
+//hier wird das assoziative, multidimensionale array geflattet
+  $oRecIt = new RecursiveIteratorIterator(new RecursiveArrayIterator($content_def));
+  $all_values_without_keys = array();
+  foreach ($oRecIt as $h5pvalue) {
+
+
+    $all_values_without_keys[] = $h5pvalue;
+  }
+
+  /**
+   * diverse mime_types erhalten über
+   * SELECT  distinct SUBSTR(`json_content`, Locate('"mime":"video',`json_content`)+8 , 15)  FROM `h5p_nodes` WHERE `json_content` LIKE '%video/\%'  ESCAPE '/';
+   */
+  $possible_mimes = array("video/mp4", "video/unknown", "video/webm");
+  $all_videos = array();
+  foreach ($possible_mimes as $mimetype) {
+    $h5p_mimetype_hit = array_keys($all_values_without_keys, $mimetype, true); //array_keys mit optionalem "search"-filter
+    foreach ($h5p_mimetype_hit as $counter => $h5p_mime_key) {
+      $all_videos[$counter]["path"] = $all_values_without_keys[$h5p_mime_key - 1]; //in der Liste ist immer [path] ... , [mime] ... desewgen "-1"
+      $all_videos[$counter]["mime"] = $mimetype;
+    }
+  }
+
+  return $all_videos;
+}
 
 /**
  * Helperfunktion für Updates. Setzt den embed-typ für InteractiveVideo auf DIV statt IFRAME,
