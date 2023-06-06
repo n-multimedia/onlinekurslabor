@@ -330,7 +330,7 @@ function h5p_integration_node_view_alter(&$build) {
 }
 
 /**
- * Entferne contextual links auf print-ansicht
+ * Entferne contextual links (Bearbeiten etc) auf print-ansicht
  * Da DS reinhaut, wird die hook-Reihenfolge noch nach hinten geschoben in
  * h5p_integration_module_implements_alter
  * implements hook_contextual_links_view
@@ -338,7 +338,10 @@ function h5p_integration_node_view_alter(&$build) {
  * @param type $items
  */
 function h5p_integration_contextual_links_view_alter(&$element, &$items) {
-
+  #prüfe ob variablen vorhanden
+  if (empty($element['#element']['#bundle']) || empty($element['#element']['#view_mode'])) {
+    return;
+  }
   //hier greift der in h5p_integration_node_view_alter gesetzte view_mode
   if ($element['#element']['#bundle'] == 'h5p_content' && $element['#element']['#view_mode'] == 'print') {
     $element['#links'] = array();

@@ -2169,9 +2169,13 @@ function section_content_field_formatter_settings_form($field, $instance, $view_
  * @param type $items
  */
 function section_content_contextual_links_view_alter(&$element, &$items) {
+  #prüfe ob variablen vorhanden
+  if (empty($element['#element']['#bundle']) || empty($element['#element']['#view_mode'])) {
+    return;
+  }
 
   //hier greift der in section_content_node_view_alter gesetzte view_mode
-  if (in_array($element['#element']['#bundle'], array(NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER) )&& $element['#element']['#view_mode'] == 'print') {
+  if (in_array($element['#element']['#bundle'], array(NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER)) && $element['#element']['#view_mode'] == 'print') {
     $element['#links'] = array();
   }
 }
