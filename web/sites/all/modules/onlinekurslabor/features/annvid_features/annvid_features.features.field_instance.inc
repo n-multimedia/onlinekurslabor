@@ -23,7 +23,7 @@ function annvid_features_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 15,
+        'weight' => 3,
       ),
       'nm_stream' => array(
         'label' => 'above',
@@ -111,6 +111,7 @@ function annvid_features_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'entityreference',
         'settings' => array(
+          'hide_title' => FALSE,
           'links' => TRUE,
           'use_content_language' => TRUE,
           'view_mode' => 'default',
@@ -147,6 +148,7 @@ function annvid_features_field_default_field_instances() {
       'active' => 1,
       'module' => 'entityreference',
       'settings' => array(
+        'hide_ids' => FALSE,
         'match_operator' => 'CONTAINS',
         'path' => '',
         'size' => 60,
@@ -170,7 +172,7 @@ function annvid_features_field_default_field_instances() {
           'show_file_link' => FALSE,
         ),
         'type' => 'html5pdf_pdfviewer',
-        'weight' => 5,
+        'weight' => 2,
       ),
       'nm_stream' => array(
         'label' => 'above',
@@ -270,10 +272,9 @@ function annvid_features_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 17,
+        'type' => 'hidden',
+        'weight' => 5,
       ),
       'nm_stream' => array(
         'label' => 'above',
@@ -317,13 +318,9 @@ function annvid_features_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'bypass_access' => FALSE,
-          'link' => FALSE,
-        ),
-        'type' => 'entityreference_label',
-        'weight' => 16,
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
       ),
       'nm_stream' => array(
         'label' => 'above',

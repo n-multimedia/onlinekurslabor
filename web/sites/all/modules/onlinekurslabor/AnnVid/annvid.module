@@ -305,3 +305,35 @@ function AnnVid_node_view($node, $view_mode, $langcode) {
        }
     }
 }
+
+
+/**
+ * implements  hook_node_view_alter(&$build)
+ * An dieser Stelle kann man den view_mode noch anpassen und auch einen #post_render hook
+ * andotzen, der ggf das HTML verändern kann oder andere schöne Dinge machen.
+ * @param type $build
+ */
+function AnnVid_node_view_alter(&$build) {
+
+  //Druckansicht bei Annvid: füge Platzhalter ein
+  if ($build["#bundle"] == "annvid") { 
+
+    $page_node = menu_get_object();
+    if (empty($page_node)) { {
+        $page_node = node_load(arg(2)); 
+      }
+      //kein container? Dann ist das der print-view
+      if (empty($page_node)) {
+        $build["#view_mode"] = 'print';
+        $build['annvid_description'] = array(
+          '#markup' => "<h3>AnnVid-Element</h3>Mit folgenden Elementen:",
+          '#weight' => -10,
+        );
+        $build['annvid_summary'] = array(
+          '#markup' => "<em>AnnVid-Annotationen können nicht exportiert werden</em>",
+          '#weight' => 100,
+        );
+      }
+    }
+  }
+}

@@ -13,6 +13,7 @@ dpm($module_path);
  */
 ?>
 
+<?php if($view_mode != 'print'):?>
 <script src="<? echo $module_path ?>/assets/javascript/pdf.js"></script>
 <div id="<?php echo $identifier ?>-html5pdf"  class="<?php echo $css_wrapepr_class ?>">
     <div class=html5pdf_control id="<?php echo $identifier ?>_control">
@@ -25,13 +26,16 @@ dpm($module_path);
  
     <div  id="<?php echo $identifier ?>_pdfscrollcontainer" class="html5pdf_pdfscrollcontainer"><div><canvas id="<?php echo $identifier ?>_pdfcanvas"  class="pdf_canvas"></canvas></div></div>
 </div>
-<?php if($show_file_link):?>
+<?endif?>
+
+<?php if($show_file_link || $view_mode == 'print'):?>
 <?php
     $file_object = file_load($identifier);
     echo theme('file_link', array('file' => $file_object));
 ?>
 <?endif?>
 
+<?php if($view_mode != 'print'):?>
 <script type="text/javascript">
            
     var pdfjsLib = window['pdfjs-dist/build/pdf'];
@@ -50,3 +54,4 @@ dpm($module_path);
 
 
 </script>
+<?endif?>

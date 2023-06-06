@@ -124,35 +124,42 @@ function html5pdf_field_formatter_settings_form($field, $instance, $view_mode, $
  * (e.g. MYMODULE_formatter_MYMODULE_absolute_url).
  */
 function html5pdf_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-    $elements = array();
-    
-    foreach ($items as $delta => $item) {
-        if(pathinfo ( $item['filename'], PATHINFO_EXTENSION)!= 'pdf')
-        {
-            continue;
-        }
-        //preview in wysiwyg
-        if (!empty($item['override']['wysiwyg'])) {
-            //achtung: bei WYSIWYG geht nur EIN <html-Element>. Bei mehreren verschluckt er sich - also auch kein <img>+<span>
-            if($display['settings']['show_file_link'])
-            {
-                $elements[$delta] = array(
-                '#markup' => '<img src="'.base_path(). drupal_get_path('module', 'html5pdf').'/assets/images/placeholder1small_with_link.png" alt="'.t('Embedded PDF with link to file').'" />');
-            }
-            else
-            {
-                $elements[$delta] = array(
-                '#markup' => '<img src="'.base_path(). drupal_get_path('module', 'html5pdf').'/assets/images/placeholder1small_without_link.png" alt="'.t('Embedded PDF').'" />');
-            }
-            
-        } else {
-            //render file on page
-            $elements[$delta] = array(
-                '#markup' =>  theme('html5pdf_formatter_'. $display['type'], array('element' => $item, 'field' => $instance,'settings'=>$display['settings'])),
-            );
-        }
+  $elements = array();
+
+  foreach ($items as $delta => $item) {
+    if (pathinfo($item['filename'], PATHINFO_EXTENSION) != 'pdf') {
+      continue;
     }
-    return $elements;
+    //preview in wysiwyg
+    if (!empty($item['override']['wysiwyg'])) {
+      //achtung: bei WYSIWYG geht nur EIN <html-Element>. Bei mehreren verschluckt er sich - also auch kein <img>+<span>
+      if ($display['settings']['show_file_link']) {
+        $elements[$delta] = array(
+          '#markup' => '<img src="' . base_path() . drupal_get_path('module', 'html5pdf') . '/assets/images/placeholder1small_with_link.png" alt="' . t('Embedded PDF with link to file') . '" />');
+      }
+      else {
+        $elements[$delta] = array(
+          '#markup' => '<img src="' . base_path() . drupal_get_path('module', 'html5pdf') . '/assets/images/placeholder1small_without_link.png" alt="' . t('Embedded PDF') . '" />');
+      }
+    }
+    else {#var_dump($display);
+      $pdf_viewmode = '';
+      //lade container (lehrtext-anzeige)
+      $page_node = menu_get_object();
+      if (empty($page_node)) {
+        $page_node = node_load(arg(2));
+      }
+      //kein container? Und nicht File-Direktansicht? Dann ist das der print-view
+      if (empty($page_node) && arg(0) != "file") {
+        $pdf_viewmode = 'print';
+      }
+      //render file on page
+      $elements[$delta] = array(
+        '#markup' => theme('html5pdf_formatter_' . $display['type'], array('element' => $item, 'field' => $instance, 'settings' => $display['settings'] + array('view_mode' => $pdf_viewmode))),
+      );
+    }
+  }
+  return $elements;
 }
 
 #
@@ -168,7 +175,7 @@ function html5pdf_theme() {
       // Don't forget that all Drupal 7 theme functions have only one argument,
       // so you declare what variables get passed within that argument instead.
       // See http://drupal.org/node/224333#theme_changes
-      'arguments' => array('identifier' => NULL, 'pdf_file_url' => null, 'module_path'=> null, 'css_wrapepr_class'=>null, 'show_file_link' => false),
+      'arguments' => array('identifier' => NULL, 'pdf_file_url' => null, 'module_path'=> null, 'css_wrapepr_class'=>null, 'show_file_link' => false, 'view_mode' => null),
        'template' => 'templates/html5pdf',
     ),
   );
@@ -180,10 +187,10 @@ function html5pdf_theme() {
  * @param type $variables
  */
 function template_preprocess_html5pdf_formatter_html5pdf_pdfviewer(&$variables) {   
-
   $variables['identifier']  = $variables['element']['fid'];;
   $variables['pdf_file_url']  = file_create_url($variables['element']['uri']);
   $variables['module_path']  =  base_path().drupal_get_path('module', 'html5pdf');
+  $variables['view_mode'] = $variables['settings']['view_mode'];
   if(!empty($variables['field']))
   {
     $variables['css_wrapepr_class'] = $variables['field']['display']['default']['settings']['css_wrapper_class'];
@@ -192,7 +199,7 @@ function template_preprocess_html5pdf_formatter_html5pdf_pdfviewer(&$variables) 
   else
   {
     $variables['css_wrapepr_class'] = $variables['settings']['css_wrapper_class'];
-    $variables['show_file_link'] = $variables['settings']['show_file_link'];  
+    $variables['show_file_link'] = $variables['settings']['show_file_link'];
   }
  
 }
