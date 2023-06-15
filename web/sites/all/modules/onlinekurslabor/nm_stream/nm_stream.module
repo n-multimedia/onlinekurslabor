@@ -2754,7 +2754,7 @@ function nm_stream_api_v2_render_stream($container) {
  * get init data strukture for nm_stream
  * @param $nid
  */
-function nm_stream_api_v2_update_contexts_callback($offset = 0, $limit = NM_STREAM_API_INIT_POSTS_LIMIT, $token) {
+function nm_stream_api_v2_update_contexts_callback($offset = 0, $limit = NM_STREAM_API_INIT_POSTS_LIMIT, $token = null) {
   $data = [];
 
   // prevent csrf attacks
@@ -2784,7 +2784,7 @@ function nm_stream_api_v2_update_contexts_callback($offset = 0, $limit = NM_STRE
  * get init data strukture for nm_stream
  * @param $nid
  */
-function nm_stream_api_v2_poll_update_callback($stream_container_nid, $offset = 0, $limit = NM_STREAM_API_INIT_POSTS_LIMIT, $token) {
+function nm_stream_api_v2_poll_update_callback($stream_container_nid, $offset = 0, $limit = NM_STREAM_API_INIT_POSTS_LIMIT, $token = null) {
   $data = [];
 
   // prevent csrf attacks

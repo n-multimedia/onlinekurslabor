@@ -55,7 +55,7 @@ function onlinekurslabor_rules_rules_action_info() {
 /**
  * Action: Send mail to all users of a specific role group(s).
  */
-function onlinekurslabor_rules_action_mail_to_user_roles_in_group(EntityDrupalWrapper $group, $og_roles, $exlude_user, $subject, $message, $from = NULL, $settings, RulesState $state, RulesPlugin $element) {
+function onlinekurslabor_rules_action_mail_to_user_roles_in_group(EntityDrupalWrapper $group, $og_roles, $exlude_user, $subject, $message, $from, $settings, RulesState $state, RulesPlugin $element) {
   //get group members
   $res = custom_general_get_users_in_group($group->getIdentifier(), true);
   $recipient_counter = 0;
