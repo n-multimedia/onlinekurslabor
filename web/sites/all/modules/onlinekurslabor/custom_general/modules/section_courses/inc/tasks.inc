@@ -105,7 +105,9 @@ function _course_tasks_generic_tips_view() {
 
   return $output;
 }
-
+/*
+ * Liefert eine gerendete Form. Sinn: Lehrende können Lösungen von “bewertet” zu entwurf/eingereicht schieben
+ */
 function _course_tasks_generic_solution_workflow_form($node) {
 
     $output = "";
@@ -130,6 +132,10 @@ function _course_tasks_generic_solution_workflow_form($node) {
     //$output .= $markup;
     // If we are at the terminal state, then don't show the change form.
     $choices = workflow_field_choices($node);
+    if (!$choices) {
+    return $output;
+    }
+
     if (count($choices) == 1) {
         if ($current == key($choices)) {
             return $output;

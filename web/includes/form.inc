@@ -1682,7 +1682,10 @@ function form_clear_error() {
 }
 
 /**
- * Returns an associative array of all errors.
+ * Returns an associative array of all errors if any.
+ *
+ * @return array|null
+ *   The form errors if any, NULL otherwise.
  */
 function form_get_errors() {
   $form = form_set_error();
@@ -2314,8 +2317,8 @@ function form_state_values_clean(&$form_state) {
  *   A keyed array containing the current state of the form.
  *
  * @return
- *   The data that will appear in the $form_state['values'] collection
- *   for this element. Return nothing to use the default.
+ *   The data that will appear in $form_state['values'] for this element, or
+ *   nothing to use the default.
  */
 function form_type_image_button_value($form, $input, $form_state) {
   if ($input !== FALSE) {
@@ -2360,8 +2363,8 @@ function form_type_image_button_value($form, $input, $form_state) {
  *   the element's default value should be returned.
  *
  * @return
- *   The data that will appear in the $element_state['values'] collection
- *   for this element. Return nothing to use the default.
+ *   The data that will appear in $form_state['values'] for this element, or
+ *   nothing to use the default.
  */
 function form_type_checkbox_value($element, $input = FALSE) {
   if ($input === FALSE) {
@@ -2401,8 +2404,8 @@ function form_type_checkbox_value($element, $input = FALSE) {
  *   the element's default value should be returned.
  *
  * @return
- *   The data that will appear in the $element_state['values'] collection
- *   for this element. Return nothing to use the default.
+ *   The data that will appear in $form_state['values'] for this element, or
+ *   nothing to use the default.
  */
 function form_type_checkboxes_value($element, $input = FALSE) {
   if ($input === FALSE) {
@@ -2442,8 +2445,8 @@ function form_type_checkboxes_value($element, $input = FALSE) {
  *   the element's default value should be returned.
  *
  * @return
- *   The data that will appear in the $element_state['values'] collection
- *   for this element. Return nothing to use the default.
+ *   The data that will appear in $form_state['values'] for this element, or
+ *   nothing to use the default.
  */
 function form_type_tableselect_value($element, $input = FALSE) {
   // If $element['#multiple'] == FALSE, then radio buttons are displayed and
@@ -2478,8 +2481,8 @@ function form_type_tableselect_value($element, $input = FALSE) {
  *   element's default value is returned. Defaults to FALSE.
  *
  * @return
- *   The data that will appear in the $element_state['values'] collection for
- *   this element.
+ *   The data that will appear in $form_state['values'] for this element, or
+ *   nothing to use the default.
  */
 function form_type_radios_value(&$element, $input = FALSE) {
   if ($input !== FALSE) {
@@ -2517,8 +2520,8 @@ function form_type_radios_value(&$element, $input = FALSE) {
  *   the element's default value should be returned.
  *
  * @return
- *   The data that will appear in the $element_state['values'] collection
- *   for this element. Return nothing to use the default.
+ *   The data that will appear in $form_state['values'] for this element, or
+ *   nothing to use the default.
  */
 function form_type_password_confirm_value($element, $input = FALSE) {
   if ($input === FALSE) {
@@ -2548,8 +2551,8 @@ function form_type_password_confirm_value($element, $input = FALSE) {
  *   the element's default value should be returned.
  *
  * @return
- *   The data that will appear in the $element_state['values'] collection
- *   for this element. Return nothing to use the default.
+ *   The data that will appear in $form_state['values'] for this element, or
+ *   nothing to use the default.
  */
 function form_type_select_value($element, $input = FALSE) {
   if ($input !== FALSE) {
@@ -2585,12 +2588,12 @@ function form_type_select_value($element, $input = FALSE) {
  * @param array $element
  *   The form element whose value is being populated.
  * @param mixed $input
- *   The incoming input to populate the form element. If this is FALSE,
- *   the element's default value should be returned.
+ *   The incoming input to populate the form element. If this is FALSE, the
+ *   element's default value should be returned.
  *
  * @return string
- *   The data that will appear in the $element_state['values'] collection
- *   for this element. Return nothing to use the default.
+ *   The data that will appear in $form_state['values'] for this element, or
+ *   nothing to use the default.
  */
 function form_type_textarea_value($element, $input = FALSE) {
   if ($input !== FALSE && $input !== NULL) {
@@ -2610,8 +2613,8 @@ function form_type_textarea_value($element, $input = FALSE) {
  *   the element's default value should be returned.
  *
  * @return
- *   The data that will appear in the $element_state['values'] collection
- *   for this element. Return nothing to use the default.
+ *   The data that will appear in $form_state['values'] for this element, or
+ *   nothing to use the default.
  */
 function form_type_textfield_value($element, $input = FALSE) {
   if ($input !== FALSE && $input !== NULL) {
@@ -2634,8 +2637,8 @@ function form_type_textfield_value($element, $input = FALSE) {
  *   the element's default value should be returned.
  *
  * @return
- *   The data that will appear in the $element_state['values'] collection
- *   for this element. Return nothing to use the default.
+ *   The data that will appear in $form_state['values'] for this element, or
+ *   nothing to use the default.
  */
 function form_type_token_value($element, $input = FALSE) {
   if ($input !== FALSE) {
@@ -3381,6 +3384,30 @@ function form_process_checkboxes($element) {
  */
 function form_process_actions($element, &$form_state) {
   $element['#attributes']['class'][] = 'form-actions';
+  return $element;
+}
+
+/**
+ * Processes a form button element.
+ *
+ * @param $element
+ *   An associative array containing the properties and children of the
+ *   form button.
+ * @param $form_state
+ *   The $form_state array for the form this element belongs to.
+ *
+ * @return
+ *   The processed element.
+ */
+function form_process_button($element, &$form_state) {
+  // We normally want to add drupal.form-single-submit so that the double submit
+  // protection can be added to the site, however, with the addition of
+  // javascript_always_use_jquery, this would make most pages with a login
+  // block or a search form have jquery always added, changing what people who
+  // set the javascript_always_use_jquery variable to FALSE would have expected.
+  if (variable_get('javascript_always_use_jquery', TRUE) && variable_get('javascript_use_double_submit_protection', TRUE)) {
+    $element['#attached']['library'][] = array('system', 'drupal.form-single-submit');
+  }
   return $element;
 }
 
