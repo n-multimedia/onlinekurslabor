@@ -49,6 +49,7 @@ class CourseForumCest extends CestHelper {
     $I->click("Features");
     $I->checkOption("Forum");
     $I->click("Speichern");
+    $I->wait(3);
     $I->see("Courses - Kurs " . $current_course_object->title . " wurde aktualisiert.");
   }
 

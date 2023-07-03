@@ -183,6 +183,7 @@ class CourseCest  extends CestHelper{
     $I->expect('AK-2: Erscheint für alle Kurs-TN danach auf der Kurs-Startseite');
 
     $I->click( 'Speichern' );
+    $I->wait(2);
     $I->see( "Ankündigung " . $news['title'] . " wurde erstellt." );
 
     $I->click( 'Aktuelles' );

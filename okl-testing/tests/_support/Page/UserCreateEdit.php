@@ -75,7 +75,7 @@ abstract class UserCreateEdit {
 
         //im edit/create-modus ist die Ausgabe und Folgeoperationen unterschiedlich
         if (get_class($this) == "Page\UserCreate") {
-            $I->wait(1);
+            $I->wait(3);
             $I->see("Es wurde ein neues Benutzerkonto erstellt für ");
             //theoretisch müsste man den Acc nun einmal einloggen, damit die Nutzungsvb akzeptiert wird
         }
