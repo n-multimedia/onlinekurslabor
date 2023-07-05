@@ -2882,12 +2882,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "8ef62e11e2448561ba2558a26b62e30c81f9345f"
+                "reference": "59646f4b82d4841356899603eac922dc1e65d802"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/8ef62e11e2448561ba2558a26b62e30c81f9345f",
-                "reference": "8ef62e11e2448561ba2558a26b62e30c81f9345f",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/59646f4b82d4841356899603eac922dc1e65d802",
+                "reference": "59646f4b82d4841356899603eac922dc1e65d802",
                 "shasum": ""
             },
             "require": {
@@ -2959,7 +2959,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-06-27T09:59:06+00:00"
+            "time": "2023-07-05T08:39:35+00:00"
         },
         {
             "name": "symfony/event-dispatcher-contracts",
@@ -3607,12 +3607,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "e3c46cc5689c8782944274bb30702106ecbe3b64"
+                "reference": "86ca4c74afe24bc1889bc45a20adbd47c3131c08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/e3c46cc5689c8782944274bb30702106ecbe3b64",
-                "reference": "e3c46cc5689c8782944274bb30702106ecbe3b64",
+                "url": "https://api.github.com/repos/symfony/process/zipball/86ca4c74afe24bc1889bc45a20adbd47c3131c08",
+                "reference": "86ca4c74afe24bc1889bc45a20adbd47c3131c08",
                 "shasum": ""
             },
             "require": {
@@ -3661,7 +3661,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-17T11:26:05+00:00"
+            "time": "2023-07-03T12:14:50+00:00"
         },
         {
             "name": "symfony/service-contracts",
