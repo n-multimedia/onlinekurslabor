@@ -1,14 +1,19 @@
 <?php
-//drupal EOL is 01.11.2023  23:59:59 US TIME
+//drupal EOL is 04.01.2025  23:59:59 US TIME
 $eol_cd_timezone_us = 'America/New_York';
-define('EOL_ENDTIME', "01.11.2023  23:59:59");
-$eol_cd_DateTimeUS =  DateTime::createFromFormat("d.m.Y H:i:s",EOL_ENDTIME, new DateTimeZone($eol_cd_timezone_us));
+define('EOL_ENDTIME_DEFAULT' , "04.01.2025 23:59:59");
+$configured_eol_enddate = variable_get('eol_countdown_enddate', EOL_ENDTIME_DEFAULT);
+$eol_cd_DateTimeUS =  DateTime::createFromFormat("d.m.Y H:i:s", $configured_eol_enddate, new DateTimeZone($eol_cd_timezone_us));
+if (is_object($eol_cd_DateTimeUS)) {
+  /**
+   * EOL_TIMESTAMP: Timestamp for given EOL in TZ US/NY
+   */
+  define('EOL_TIMESTAMP', $eol_cd_DateTimeUS->getTimestamp()); //enddate for timer
+}
+else {
+  trigger_error('The given value ' . $configured_eol_enddate . ' for variable eol_countdown_enddate is INVALID', E_USER_ERROR);
+}
 
-/**
- * EOL_TIMESTAMP: Timestamp for given EOL in TZ US/NY
- */
-define('EOL_TIMESTAMP', $eol_cd_DateTimeUS->getTimestamp()); //enddate for timer
- 
 /**
  * Implements hook_block_info().
  */
@@ -35,10 +40,13 @@ function eol_countdown_block_configure($delta) {
       );
       $form['eol_countdown_enddate'] = array(
         '#type' => 'textfield',
-        '#attributes' => array('disabled' => 'disabled'),
         '#title' => t('End of support'),
-        '#default_value' => EOL_ENDTIME,
-        '#description' => t("On @endtime (Timezone US/NY) Drupal 7 will be EOL.", array("@endtime" => EOL_ENDTIME)),
+        '#date_format' => 'd.m.Y H:i:s',
+        '#date_timezone' => date_default_timezone_get(),
+        '#default_value' =>  variable_get('eol_countdown_enddate', EOL_ENDTIME_DEFAULT),#date('d.m.Y H:i:s', strtotime(variable_get('eol_countdown_enddate', EOL_ENDTIME_DEFAULT))),#date(variable_get('eol_countdown_enddate', EOL_ENDTIME_DEFAULT)),
+        '#required' => true,
+        '#description' => t("On this date (Timezone US/NY) Drupal 7 will be EOL. (Default: @default_endtime)", array("@default_endtime" => variable_get('eol_countdown_eoldate', EOL_ENDTIME_DEFAULT))),
+        '#element_validate' => array('_eol_countdown_validate_date')
       );
       $form['eol_countdown_before'] = array(
         '#type' => 'textfield',
@@ -100,6 +108,30 @@ function eol_countdown_block_configure($delta) {
   }
   return $form;
 }
+/**
+ * validate the timestamp
+ * @param type $form
+ * @param type $form_state
+ */
+function _eol_countdown_validate_date($element, &$form_state) {
+  $timeformat = "d.m.Y H:i:s";
+  $checksuccessful = false;
+  $comparisondate = false;
+  $value = $element['#value'];
+
+  $parseddate = DateTime::createFromFormat($timeformat, $value);
+  if (is_object($parseddate)) {
+    $comparisondate = $parseddate->format($timeformat);
+  }
+
+
+  if ($value != $comparisondate) {
+    form_error($element, t('%name is not a valid date in format %format', array(
+      '%name' => $element['#title'],
+      '%format' => $timeformat
+    )));
+  }
+}
 
 /**
  * Implements hook_block_save().
@@ -107,7 +139,7 @@ function eol_countdown_block_configure($delta) {
 function eol_countdown_block_save($delta = '', $edit = array()) {
   switch ($delta) {
     case 'eol_countdown':
-      foreach (array('eol_countdown_before', 'eol_countdown_after', 'eol_countdown_theme', 'eol_countdown_hide_days_secs', 'eol_countdown_whiteout', 'eol_countdown_whiteout_message') as $block_option_name) {
+      foreach (array('eol_countdown_enddate', 'eol_countdown_before', 'eol_countdown_after', 'eol_countdown_theme', 'eol_countdown_hide_days_secs', 'eol_countdown_whiteout', 'eol_countdown_whiteout_message') as $block_option_name) {
         variable_set($block_option_name, $edit[$block_option_name]);
       }
       break;

@@ -27,6 +27,8 @@ echo "recreated files-.htaccess-file. Plz check directories."
 
 drush updatedb --yes
 
+drush fr eol_configuration_feature --yes
+
 drush cc all
 
 drush vset maintenance_mode 0

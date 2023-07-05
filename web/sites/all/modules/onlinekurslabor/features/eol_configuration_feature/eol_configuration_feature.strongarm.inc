@@ -28,6 +28,13 @@ function eol_configuration_feature_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'eol_countdown_enddate';
+  $strongarm->value = '01.11.2023 23:59:59';
+  $export['eol_countdown_enddate'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'eol_countdown_hide_days_secs';
   $strongarm->value = 1;
   $export['eol_countdown_hide_days_secs'] = $strongarm;
