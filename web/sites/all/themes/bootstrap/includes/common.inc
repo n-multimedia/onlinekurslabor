@@ -83,7 +83,7 @@ function bootstrap_element_smart_description(array &$element, array &$target = N
     || !empty($target['#attributes']['data-toggle'])
 
     // Ignore if the target element is #disabled.
-    || isset($target['#disabled'])
+    || (isset($target['#disabled']) && $target['#disabled'] === TRUE)
 
     // Ignore if either the actual element or target element has an explicit
     // #smart_description property set to FALSE.

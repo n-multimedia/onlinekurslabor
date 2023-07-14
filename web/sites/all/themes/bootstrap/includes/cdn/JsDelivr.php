@@ -72,7 +72,7 @@ class JsDelivr extends ProviderBase {
   /**
    * {@inheritdoc}
    */
-  protected function discoverCdnAssets($version, $theme = 'bootstrap') {
+  public function discoverCdnAssets($version, $theme = 'bootstrap') {
     $themes = $this->getCdnThemes($version);
     return isset($themes[$theme]) ? $themes[$theme] : array();
   }

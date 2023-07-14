@@ -85,4 +85,34 @@ Drupal.ajax.prototype.beforeSend = function (xmlhttprequest, options) {
   }
 };
 
+/**
+ * Override Drupal's AJAX prototype success function.
+ */
+var success = Drupal.ajax.prototype.success;
+Drupal.ajax.prototype.success = function (response, status) {
+  // If element is a select type, then unwrap.
+  if ($(this.element).is('select')) {
+    $(this.element).siblings('span.input-group-addon').remove();
+    $(this.element).unwrap('div.input-group');
+  }
+
+  // Invoke the original success handler.
+  success.apply(this, arguments);
+};
+
+/**
+ * Override Drupal's AJAX prototype error function.
+ */
+var error = Drupal.ajax.prototype.error;
+Drupal.ajax.prototype.error = function (xmlhttprequest, uri, customMessage) {
+  // If element is a select type, then unwrap.
+  if ($(this.element).is('select')) {
+    $(this.element).siblings('span.input-group-addon').remove();
+    $(this.element).unwrap('div.input-group');
+  }
+
+  // Invoke the original error handler.
+  error.apply(this, arguments);
+};
+
 })(jQuery);
