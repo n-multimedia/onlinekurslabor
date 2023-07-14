@@ -105,6 +105,16 @@ sleep 3s
 sh ../scripts/update_master.sh
 drush en okl_dev --y
 
+#fast_dblog: log more than on live
+drush vset --exact fast_dblog_row_limit 10000
+drush vset --exact fast_dblog_buffered 1
+drush vset --exact fast_dblog_403_404 1
+#complex types
+php -r "print json_encode(array('0','1','2','3','4','5','6','7'));"  | drush vset --format=json fast_dblog_severity_levels_cron -
+php -r "print json_encode(array('0','1','2','3','4','5','6','7'));"  | drush vset --format=json fast_dblog_severity_levels_anonymous -
+php -r "print json_encode(array('0','1','2','3','4','5','6','7'));"  | drush vset --format=json fast_dblog_severity_levels_authenticated -
+
+
 sleep 5  # Waits 5 seconds.
 drush cc all
 drush en okl_testing  --yes

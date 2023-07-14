@@ -1,0 +1,363 @@
+<?php
+
+/**
+ * @file
+ * System monitoring and logging for administrators.
+ *
+ * The fast_dblog module monitors your site and keeps a list of
+ * recorded events containing usage and performance data, errors,
+ * warnings, and similar operational information.
+ *
+ * @see watchdog()
+ */
+
+/**
+ * Implements hook_help().
+ */
+function fast_dblog_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#fast_dblog':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The fast database logging module logs system events in the Drupal database. For more information, see the online handbook entry for the <a href="@dblog">Database logging module</a>.', array('@dblog' => 'http://drupal.org/documentation/modules/dblog')) . '</p>';
+      $output .= '<h3>' . t('Uses') . '</h3>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('Monitoring your site') . '</dt>';
+      $output .= '<dd>' . t('The Database logging module allows you to view an event log on the <a href="@fast_dblog">Recent log messages</a> page. The log is a chronological list of recorded events containing usage data, performance data, errors, warnings and operational information. Administrators should check the log on a regular basis to ensure their site is working properly.', array('@dblog' => url('admin/reports/fast-dblog'))) . '</dd>';
+      $output .= '<dt>' . t('Debugging site problems') . '</dt>';
+      $output .= '<dd>' . t('In case of errors or problems with the site, the <a href="@fast_dblog">Recent log messages</a> page can be useful for debugging, since it shows the sequence of events. The log messages include usage information, warnings, and errors.', array('@dblog' => url('admin/reports/fast-dblog'))) . '</dd>';
+      $output .= '</dl>';
+      return $output;
+
+    case 'admin/reports/fast-dblog':
+      return '<p>' . t('The fast database logging module monitors your website, capturing system events in a log (shown here) to be reviewed by an authorized individual at a later time. This log is a list of recorded events containing usage data, performance data, errors, warnings and operational information. It is vital to check the Recent log messages report on a regular basis, as it is often the only way to tell what is going on.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function fast_dblog_menu() {
+  $items['admin/reports/fast-dblog'] = array(
+    'title' => 'Recent log messages',
+    'description' => 'View events that have recently been logged.',
+    'page callback' => 'fast_dblog_overview',
+    'access arguments' => array('access site reports'),
+    'weight' => -1,
+    'file' => 'fast_dblog.admin.inc',
+  );
+  $items['admin/reports/fast-page-not-found'] = array(
+    'title' => "Top 'page not found' errors",
+    'description' => "View 'page not found' errors (404s).",
+    'page callback' => 'fast_dblog_top',
+    'page arguments' => array('page not found'),
+    'access arguments' => array('access site reports'),
+    'file' => 'fast_dblog.admin.inc',
+  );
+  $items['admin/reports/fast-access-denied'] = array(
+    'title' => "Top 'access denied' errors",
+    'description' => "View 'access denied' errors (403s).",
+    'page callback' => 'fast_dblog_top',
+    'page arguments' => array('access denied'),
+    'access arguments' => array('access site reports'),
+    'file' => 'fast_dblog.admin.inc',
+  );
+  $items['admin/reports/fast-event/%'] = array(
+    'title' => 'Details',
+    'page callback' => 'fast_dblog_event',
+    'page arguments' => array(3),
+    'access arguments' => array('access site reports'),
+    'file' => 'fast_dblog.admin.inc',
+  );
+
+  if (module_exists('search')) {
+    $items['admin/reports/fast-search'] = array(
+      'title' => 'Top search phrases',
+      'description' => 'View most popular search phrases.',
+      'page callback' => 'fast_dblog_top',
+      'page arguments' => array('search'),
+      'access arguments' => array('access site reports'),
+      'file' => 'fast_dblog.admin.inc',
+    );
+  }
+
+  return $items;
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * Remove expired log messages.
+ */
+function fast_dblog_cron() {
+  // Cleanup the fast_watchdog table.
+  $row_limit = variable_get('fast_dblog_row_limit', 1000);
+
+  // For row limit n, get the wid of the nth row in descending wid order.
+  // Counting the most recent n rows avoids issues with wid number sequences,
+  // e.g. auto_increment value > 1 or rows deleted directly from the table.
+  if ($row_limit > 0) {
+    $min_row = db_select('fast_watchdog', 'w')
+      ->fields('w', array('wid'))
+      ->orderBy('wid', 'DESC')
+      ->range($row_limit - 1, 1)
+      ->execute()->fetchField();
+
+    // Delete all table entries older than the nth row, if nth row was found.
+    if ($min_row) {
+      db_delete('fast_watchdog')
+        ->condition('wid', $min_row, '<')
+        ->execute();
+    }
+  }
+}
+
+/**
+ * Helper function to get a list of unique message types.
+ *
+ * @return array
+ *   A list of all log message types.
+ */
+function _fast_dblog_get_message_types() {
+  static $types = array();
+
+  if (!isset($types)) {
+    $types = array();
+    $result = db_query('SELECT DISTINCT(type) FROM {fast_watchdog} ORDER BY type');
+    foreach ($result as $object) {
+      $types[] = $object->type;
+    }
+  }
+
+  return $types;
+}
+
+/**
+ * Implements hook_watchdog().
+ *
+ * Note some values may be truncated for database column size restrictions.
+ */
+function fast_dblog_watchdog(array $log_entry) {
+  if (fast_dblog_watchdog_enabled($log_entry)) {
+    if (variable_get('fast_dblog_buffered', TRUE)) {
+      // Keep hold of the log message and write it later.
+      fast_dblog_watchdog_log($log_entry);
+    }
+    else {
+      // Write the message now.
+      Database::getConnection('default', 'default')->insert('fast_watchdog')
+        ->fields(array(
+          'uid' => $log_entry['uid'],
+          'type' => substr($log_entry['type'], 0, 64),
+          'message' => $log_entry['message'],
+          'variables' => serialize($log_entry['variables']),
+          'severity' => $log_entry['severity'],
+          'link' => substr($log_entry['link'], 0, 255),
+          'location' => $log_entry['request_uri'],
+          'referer' => $log_entry['referer'],
+          'hostname' => substr($log_entry['ip'], 0, 128),
+          'timestamp' => $log_entry['timestamp'],
+        ))
+        ->execute();
+    }
+  }
+}
+
+/**
+ * Stores a log message to be retrieved later. Or returns all stored messages.
+ *
+ * @param array $log_entry
+ *   The log entry to store or NULL to return all log entries.
+ */
+function fast_dblog_watchdog_log(array $log_entry = NULL) {
+  static $log_entries = array(), $registered = FALSE;
+  if (!isset($log_entry)) {
+    // We haven't been given a log entry, so return all existing entries
+    // instead.
+    return $log_entries;
+  }
+
+  if (!$registered) {
+    register_shutdown_function('fast_dblog_shutdown');
+    $registered = TRUE;
+  }
+
+  $log_entry['type'] = substr($log_entry['type'], 0, 64);
+  $log_entry['variables'] = serialize($log_entry['variables']);
+  $log_entry['link'] = substr($log_entry['link'], 0, 255);
+  $log_entry['hostname'] = substr($log_entry['ip'], 0, 128);
+  $log_entries[] = $log_entry;
+}
+
+/**
+ * Shutdown function which writes all log messages in bulk.
+ */
+function fast_dblog_shutdown() {
+  if ($log_entries = fast_dblog_watchdog_log()) {
+    $fields = array('uid', 'type', 'message', 'variables', 'severity', 'link', 'location', 'referer', 'hostname', 'timestamp');
+
+    $insert = Database::getConnection('default', 'default')
+      ->insert('fast_watchdog')
+      ->fields($fields);
+
+    foreach ($log_entries as $log_entry) {
+      $insert->values(array(
+        'uid' => $log_entry['uid'],
+        'type' => $log_entry['type'],
+        'message' => $log_entry['message'],
+        'variables' => $log_entry['variables'],
+        'severity' => $log_entry['severity'],
+        'link' => $log_entry['link'],
+        'location' => $log_entry['request_uri'],
+        'referer' => $log_entry['referer'],
+        'hostname' => $log_entry['hostname'],
+        'timestamp' => $log_entry['timestamp'],
+      ));
+    }
+
+    $insert->execute();
+  }
+}
+
+/**
+ * Helper function to determine if logging is enabled for this message.
+ *
+ * @param array $log_entry
+ *   The log entry to check against.
+ *
+ * @return bool
+ *   TRUE if the entry should be logged, FALSE otherwise.
+ */
+function fast_dblog_watchdog_enabled(array $log_entry) {
+  static $severity = array(), $is_cron;
+
+  if (drupal_bootstrap(NULL, FALSE) <= DRUPAL_BOOTSTRAP_VARIABLES) {
+    // Log all bootstrap errors, since we can't load the configuration yet.
+    return TRUE;
+  }
+
+  // 403/403 errors can be handled seperately.
+  if (variable_get('fast_dblog_403_404', FALSE) && $log_entry['severity'] == WATCHDOG_WARNING && ($log_entry['type'] == 'access denied' || $log_entry['type'] == 'page not found')) {
+    return TRUE;
+  }
+
+  if (!isset($is_cron)) {
+    // Are we running in cron? There doesn't seem to be a cleaner way to check.
+    $is_cron = ($_GET['q'] === 'admin/reports/status/run-cron' || substr(request_uri(), 0, 9) === '/cron.php');
+  }
+
+  // Check which user type we're running as.
+  if ($is_cron) {
+    $user_type = 'cron';
+  }
+  elseif ($log_entry['uid'] > 0) {
+    $user_type = 'authenticated';
+  }
+  else {
+    $user_type = 'anonymous';
+  }
+
+  if (!isset($severity[$user_type])) {
+    // Load the applicable logging settings. array_flip() is used so we can do
+    // a key lookup instead of having to search the array.
+    $severity[$user_type] = array_flip(variable_get("fast_dblog_severity_levels_{$user_type}", fast_dblog_default_severity_levels($user_type)));
+  }
+
+  // Is logging enabled for this user type/severity combination?
+  return isset($severity[$user_type][$log_entry['severity']]);
+}
+
+/**
+ * Helper function to keep track of default log levels for each user type.
+ *
+ * @param string $user_type
+ *   The type of user. Can be one of 'authenticated', 'anonymous' and 'cron'.
+ *
+ * @return array
+ *   An array of the default logging levels which should be accepted for the
+ *   given user type.
+ *
+ * @see watchdog_severity_levels()
+ */
+function fast_dblog_default_severity_levels($user_type) {
+  switch ($user_type) {
+    default:
+    case 'anonymous':
+      return array();
+
+    case 'authenticated':
+      return array(WATCHDOG_EMERGENCY, WATCHDOG_ALERT, WATCHDOG_CRITICAL, WATCHDOG_ERROR);
+
+    case 'cron':
+      return array(WATCHDOG_EMERGENCY, WATCHDOG_ALERT, WATCHDOG_CRITICAL, WATCHDOG_ERROR, WATCHDOG_WARNING, WATCHDOG_NOTICE, WATCHDOG_INFO, WATCHDOG_DEBUG);
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function fast_dblog_form_system_logging_settings_alter(&$form, $form_state) {
+  $form['fast_dblog_row_limit'] = array(
+    '#type' => 'select',
+    '#title' => t('Database log messages to keep'),
+    '#default_value' => variable_get('fast_dblog_row_limit', 1000),
+    '#options' => array(0 => t('All')) + drupal_map_assoc(array(100, 1000, 10000, 100000, 1000000)),
+    '#description' => t('The maximum number of messages to keep in the fast database log. Requires a <a href="@cron">cron maintenance task</a>.', array('@cron' => url('admin/reports/status')))
+  );
+  // Which log levels to accept for authenticated users.
+  $form['fast_dblog_severity_levels_authenticated'] = array(
+    '#type' => 'select',
+    '#title' => t('Message types to log for authenticated users'),
+    '#default_value' => variable_get('fast_dblog_severity_levels_authenticated', fast_dblog_default_severity_levels('authenticated')),
+    '#options' => watchdog_severity_levels(),
+    '#multiple' => TRUE,
+    '#description' => t('Which types of log entry to keep. Any unselected types will not be logged for authenticated users.'),
+  );
+  // Which log levels to accept for anonymous users.
+  $form['fast_dblog_severity_levels_anonymous'] = array(
+    '#type' => 'select',
+    '#title' => t('Message types to log for anonymous users'),
+    '#default_value' => variable_get('fast_dblog_severity_levels_anonymous', fast_dblog_default_severity_levels('anonymous')),
+    '#options' => watchdog_severity_levels(),
+    '#multiple' => TRUE,
+    '#description' => t('Which types of log entry to keep. Any unselected types will not be logged for anonymous users.'),
+  );
+  // Which log levels to accept for cron.
+  $form['fast_dblog_severity_levels_cron'] = array(
+    '#type' => 'select',
+    '#title' => t('Message types to log for cron'),
+    '#default_value' => variable_get('fast_dblog_severity_levels_cron', fast_dblog_default_severity_levels('cron')),
+    '#options' => watchdog_severity_levels(),
+    '#multiple' => TRUE,
+    '#description' => t('Which types of log entry to keep. Any unselected types will not be logged for anonymous users.'),
+  );
+  // This determines whether a shutdown function should be used to write all
+  // log entries at once, or whether entries should be written individually.
+  $form['fast_dblog_buffered'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Buffer log entries'),
+    '#default_value' => variable_get('fast_dblog_buffered', TRUE),
+    '#description' => t('Whether messages should be buffered and written at the end of the page request. A maximum of one database write per page will occur due to logging when this is enabled.'),
+  );
+  // This ensures all 403/404 errors are logged for use with the access denied
+  // and page not found error reports, regardless of other settings.
+  $form['fast_dblog_403_404'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Log all 403 & 404 messages'),
+    '#default_value' => variable_get('fast_dblog_403_404', FALSE),
+    '#description' => t("Whether 403 and 404 messages should always be logged. Enable this if you use the Top 'access denied' or Top 'not found' reports."),
+  );
+  $form['actions']['#weight'] = 1;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function fast_dblog_theme() {
+  return array(
+    'fast_dblog_message' => array(
+      'variables' => array('event' => NULL, 'link' => FALSE),
+      'file' => 'fast_dblog.admin.inc',
+    ),
+  );
+}

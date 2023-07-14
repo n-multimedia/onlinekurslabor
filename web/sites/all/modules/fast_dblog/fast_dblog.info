@@ -1,0 +1,12 @@
+name = Fast Database Logging
+description = A drop-in replacement for core database logging. Logs and records system events to the database.
+package = Performance and scalability
+configure = admin/config/development/logging
+core = 7.x
+
+; Information added by Drupal.org packaging script on 2014-05-21
+version = "7.x-1.1"
+core = "7.x"
+project = "fast_dblog"
+datestamp = "1400679228"
+
