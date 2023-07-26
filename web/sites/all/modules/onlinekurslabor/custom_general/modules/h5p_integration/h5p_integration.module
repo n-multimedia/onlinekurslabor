@@ -291,8 +291,8 @@ function h5p_integration_node_view_alter(&$build) {
     if (empty($page_node)) {
       $page_node = node_load(arg(2));
     }
-    //unter infos das nicht ausgeben, oder: kein container? Dann ist das der print-view
-    if (in_array(arg(0), array("informationen")) || empty($page_node)) {
+    //unter infos und im kurs keinen platzhalter ausgeben, oder: hat einen container? Dann ist das nicht der print-view
+    if (in_array(arg(0), array("informationen", "course")) || !empty($page_node)) {
       return;
     }
     //Prüfe: sind wir in der Hilfe?
