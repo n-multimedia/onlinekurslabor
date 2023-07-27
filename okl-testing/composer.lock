@@ -771,12 +771,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/null/realisticfaker.git",
-                "reference": "30dbf6040efac2622e8dbd04cfb488f18403d601"
+                "reference": "2c0eef736cb0fd6ec243466d643827f8fdb12980"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/null/realisticfaker/zipball/30dbf6040efac2622e8dbd04cfb488f18403d601",
-                "reference": "30dbf6040efac2622e8dbd04cfb488f18403d601",
+                "url": "https://api.github.com/repos/null/realisticfaker/zipball/2c0eef736cb0fd6ec243466d643827f8fdb12980",
+                "reference": "2c0eef736cb0fd6ec243466d643827f8fdb12980",
                 "shasum": ""
             },
             "require": {
@@ -816,7 +816,7 @@
                 "issues": "https://github.com/null/realisticfaker/issues",
                 "source": "https://github.com/null/realisticfaker/tree/main"
             },
-            "time": "2023-04-05T09:38:19+00:00"
+            "time": "2023-07-27T10:11:48+00:00"
         },
         {
             "name": "phar-io/manifest",
