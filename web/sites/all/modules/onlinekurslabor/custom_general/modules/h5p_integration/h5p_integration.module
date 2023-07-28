@@ -286,18 +286,8 @@ function h5p_integration_node_view_alter(&$build) {
   if (isset($build["h5p"])) {
     $h5pnode = $build["#node"];
 
-    //lade container (lehrtext-anzeige)
-    $page_node = menu_get_object();
-    if (empty($page_node)) {
-      $page_node = node_load(arg(2));
-    }
-    //unter infos und im kurs keinen platzhalter ausgeben, oder: hat einen container? Dann ist das nicht der print-view
-    if (in_array(arg(0), array("informationen", "course")) || !empty($page_node)) {
-      return;
-    }
-    //Prüfe: sind wir in der Hilfe?
-    $possible_help_object = node_load(arg(1));
-    if (!empty($possible_help_object->book['bid']) && $possible_help_object->book['bid'] == NM_HELP_BID) {
+    //detektiere print-view über url: book/export/html/XYZ
+    if (arg(0) != 'book' || arg(1) != 'export' || arg(2) != 'html') {
       return;
     }
 
