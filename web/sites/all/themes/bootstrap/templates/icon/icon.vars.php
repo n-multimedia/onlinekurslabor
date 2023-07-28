@@ -23,7 +23,7 @@
  */
 function bootstrap_preprocess_icon(array &$variables) {
   $bundle = &$variables['bundle'];
-  if ($bundle['provider'] === 'bootstrap') {
+  if (isset($bundle['provider']) && $bundle['provider'] === 'bootstrap') {
     $variables['attributes']['class'][] = 'glyphicon';
   }
 }

@@ -134,6 +134,9 @@ function annvid_features_strongarm() {
       'videosafe_description' => array(
         'custom_settings' => FALSE,
       ),
+      'view_mode_course' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
   );
   $export['field_bundle_settings_node__annvid'] = $strongarm;

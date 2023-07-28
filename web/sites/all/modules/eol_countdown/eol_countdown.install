@@ -16,4 +16,14 @@ function eol_countdown_uninstall() {
   variable_del('eol_countdown_hide_days_secs');
   variable_del('eol_countdown_whiteout');
   variable_del('eol_countdown_whiteout_message');
+  variable_del('eol_countdown_enddate');
+}
+
+/**
+ * Set new default EOL-date AND  
+ * make the EOL-Date configurable via admin - modules - configure
+ */
+function eol_countdown_update_1() {
+  //drupal EOL is 04.01.2025  23:59:59 US TIME
+  variable_set('eol_countdown_enddate', "04.01.2025 23:59:59");
 }

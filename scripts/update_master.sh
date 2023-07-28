@@ -24,8 +24,23 @@ rm sites/default/files/.htaccess
 rm ../files_private/.htaccess
 drush php-eval "file_ensure_htaccess();"
 echo "recreated files-.htaccess-file. Plz check directories."
+sleep 5 
+
+drush dis dblog --y
+drush en fast_dblog --y
+
+drush vset --exact fast_dblog_row_limit 10000
+drush vset --exact fast_dblog_buffered 1
+drush vset --exact fast_dblog_403_404 1
+#complex types
+php -r "print json_encode(array('0','1','2','3','4','5','6','7'));"  | drush vset --format=json fast_dblog_severity_levels_cron -
+php -r "print json_encode(array('0','1','2','3','4','5','6','7'));"  | drush vset --format=json fast_dblog_severity_levels_anonymous -
+php -r "print json_encode(array('0','1','2','3'));"  | drush vset --format=json fast_dblog_severity_levels_authenticated -
+
 
 drush updatedb --yes
+
+drush fr eol_configuration_feature --yes
 
 drush cc all
 

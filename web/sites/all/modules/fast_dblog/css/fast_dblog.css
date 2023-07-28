@@ -1,0 +1,46 @@
+.form-item-type,
+.form-item-severity {
+  float: left; /* LTR */
+  padding-right: .8em; /* LTR */
+  margin: 0.1em;
+  /**
+   * In Opera 9, DOM elements with the property of "overflow: auto"
+   * will partially hide its contents with unnecessary scrollbars when
+   * its immediate child is floated without an explicit width set.
+   */
+  width: 15em;
+}
+#fast-dblog-filter-form .form-type-select select {
+  width: 100%;
+}
+#fast-dblog-filter-form .form-actions {
+  float: left;
+  padding: 3ex 0 0 1em;
+}
+
+table#admin-fast-dblog tr.fast-dblog-user td.active {
+  background: #eed;
+}
+table#admin-fast-dblog tr.fast-dblog-content td.active {
+  background: #cce;
+}
+table#admin-fast-dblog tr.fast-dblog-page-not-found td.active,
+table#admin-fast-dblog tr.fast-dblog-access-denied td.active {
+  background: #cec;
+}
+table#admin-fast-dblog tr.fast-dblog-error td.active {
+  background: #eeb9b9;
+}
+table#admin-fast-dblog td.icon {
+  background: no-repeat center;
+  width: 16px;
+}
+table#admin-fast-dblog tr.fast-dblog-warning td.icon {
+  background-image: url(../images/message-16-warning.png);
+}
+table#admin-fast-dblog tr.fast-dblog-error td.icon,
+table#admin-fast-dblog tr.fast-dblog-critical td.icon,
+table#admin-fast-dblog tr.fast-dblog-alert td.icon,
+table#admin-fast-dblog tr.fast-dblog-emerg td.icon {
+  background-image: url(../images/message-16-error.png);
+}

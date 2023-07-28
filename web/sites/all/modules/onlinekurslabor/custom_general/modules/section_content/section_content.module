@@ -307,13 +307,8 @@ function section_content_node_view_alter(&$build) {
     unset($build['links']['book']);
   }
 
-  //lade container (lehrtext-anzeige)
-  $page_node = menu_get_object();
-  if (empty($page_node)) {
-    $page_node = node_load(arg(2));
-  }
-  //Es gibt einen Container, also nicht print-mode => abbruch
-  if (!empty($page_node)) {
+  //detektiere print-view über url: book/export/html/XYZ
+  if (arg(0) != 'book' || arg(1) != 'export' || arg(2) != 'html') {
     return;
   }
   //hier drunter wird nur field_answer und field_qaa_answer behandelt
@@ -2169,9 +2164,13 @@ function section_content_field_formatter_settings_form($field, $instance, $view_
  * @param type $items
  */
 function section_content_contextual_links_view_alter(&$element, &$items) {
+  #prüfe ob variablen vorhanden
+  if (empty($element['#element']['#bundle']) || empty($element['#element']['#view_mode'])) {
+    return;
+  }
 
   //hier greift der in section_content_node_view_alter gesetzte view_mode
-  if (in_array($element['#element']['#bundle'], array(NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER) )&& $element['#element']['#view_mode'] == 'print') {
+  if (in_array($element['#element']['#bundle'], array(NM_CONTENT_MULTIPLE_CHOICE, NM_CONTENT_QUESTION_AND_ANSWER)) && $element['#element']['#view_mode'] == 'print') {
     $element['#links'] = array();
   }
 }

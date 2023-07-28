@@ -60,6 +60,7 @@ class InteractiveCreate extends DomainContentBase implements \Page\node\ContentC
 
         //click: Veröffentlichen
         $I->click(self::$publishButton);
+        $I->wait(3);
         //check: wurde angelegt
         $I->see($params['title'] . ' wurde erstellt.');
     }

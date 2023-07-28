@@ -51,7 +51,7 @@ abstract class Node {
 
         //click: Veröffentlichen
         $I->click(self::$publishButton);
-        $I->wait(1);
+        $I->wait(4);
         //check: wurde angelegt
         $I->see($params['title'] . ' wurde erstellt.');
     }

@@ -38,7 +38,18 @@ function bootstrap_pager(array $variables) {
   $parameters = $variables['parameters'];
   $quantity = $variables['quantity'];
 
+  $quantity = empty($variables['quantity']) ? 0 : $variables['quantity'];
   global $pager_page_array, $pager_total;
+
+  // Nothing to do if there is no pager.
+  if (!isset($pager_page_array[$element]) || !isset($pager_total[$element])) {
+    return;
+  }
+
+  // Nothing to do if there is only one page.
+  if ($pager_total[$element] <= 1) {
+    return;
+  }
 
   // Calculate various markers within this pager piece:
   // Middle is used to "center" pages around the current page.
