@@ -144,13 +144,8 @@ function html5pdf_field_formatter_view($entity_type, $entity, $field, $instance,
     }
     else {#var_dump($display);
       $pdf_viewmode = '';
-      //lade container (lehrtext-anzeige)
-      $page_node = menu_get_object();
-      if (empty($page_node)) {
-        $page_node = node_load(arg(2));
-      }
-      //kein container? Und nicht File-Direktansicht? Dann ist das der print-view
-      if (empty($page_node) && arg(0) != "file") {
+      //detektiere print-view über url: book/export/html/XYZ
+      if (arg(0) === 'book' && arg(1) === 'export' && arg(2) === 'html') {
         $pdf_viewmode = 'print';
       }
       //render file on page
