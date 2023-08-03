@@ -49,11 +49,11 @@ function eol_countdown_block_configure($delta) {
         '#element_validate' => array('_eol_countdown_validate_date')
       );
       $form['eol_countdown_before'] = array(
-        '#type' => 'textfield',
+        '#type' => 'textarea',
         '#title' => t('HTML before counter'),
         '#default_value' => variable_get('eol_countdown_before', ''),
-        '#size' => 100,
-        '#maxlength' => 200,
+        '#size' => 200,
+        '#maxlength' => 500,
       );
       $form['eol_countdown_after'] = array(
         '#type' => 'textfield',
