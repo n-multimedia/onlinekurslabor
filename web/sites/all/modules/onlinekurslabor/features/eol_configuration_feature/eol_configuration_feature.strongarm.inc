@@ -22,14 +22,14 @@ function eol_configuration_feature_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'eol_countdown_before';
-  $strongarm->value = '<div class="okl-death-container" title="Mehr Informationen dazu..."><a  href="/node/56675"><span class="okl-death-link">Betriebsende der Plattform in: </span><br>';
+  $strongarm->value = '<div class="okl-death-container" title="Mehr Informationen dazu..."><a  href="/node/56675"><span class="okl-death-link">Betriebsende der Plattform in: </span><span class="label label-warning okl-death-update">Verlängert</span><br>';
   $export['eol_countdown_before'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'eol_countdown_enddate';
-  $strongarm->value = '01.11.2023 23:59:59';
+  $strongarm->value = '30.04.2024 17:59:59';
   $export['eol_countdown_enddate'] = $strongarm;
 
   $strongarm = new stdClass();
