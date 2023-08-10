@@ -16,7 +16,7 @@ function nm_section_content_features_default_page_manager_pages() {
   $page->task = 'page';
   $page->admin_title = 'content-domain-media';
   $page->admin_description = '';
-  $page->path = 'domain/media/%1/!fid';
+  $page->path = 'domain/media/%1/%fid';
   $page->access = array(
     'logic' => 'and',
     'plugins' => array(
