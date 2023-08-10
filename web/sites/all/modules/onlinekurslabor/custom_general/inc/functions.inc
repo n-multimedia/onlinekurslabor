@@ -48,6 +48,7 @@ function _section_domain_author_section_active($path = NULL) {
   $domain_text_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'text');
   $domain_preview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'preview');
   $domain_stats_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'stats');
+  $domain_stats_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'media');
   $domain_add_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'add');
   $domain_edit_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'edit');
   $domain_delete_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'delete');

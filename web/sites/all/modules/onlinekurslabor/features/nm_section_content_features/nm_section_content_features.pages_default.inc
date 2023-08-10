@@ -16,7 +16,7 @@ function nm_section_content_features_default_page_manager_pages() {
   $page->task = 'page';
   $page->admin_title = 'content-domain-media';
   $page->admin_description = '';
-  $page->path = 'domain/media/%1/%fid';
+  $page->path = 'domain/media/%1/!fid';
   $page->access = array(
     'logic' => 'and',
     'plugins' => array(
@@ -39,7 +39,7 @@ function nm_section_content_features_default_page_manager_pages() {
   $page->arguments = array(
     'fid' => array(
       'id' => 1,
-      'identifier' => 'Datei: FID',
+      'identifier' => 'Datei: ID',
       'name' => 'entity_id:file',
       'settings' => array(),
     ),
@@ -94,7 +94,7 @@ function nm_section_content_features_default_page_manager_pages() {
     'no_blocks' => 0,
     'pipeline' => 'standard',
     'relationships' => array(),
-    'title' => 'Overview',
+    'title' => 'Overview All Media',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
