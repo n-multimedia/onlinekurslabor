@@ -91,4 +91,3 @@ function footnotes_views_views_data() {
   return $data;
 }
 
-// vim: ts=2 sw=2 et syntax=php

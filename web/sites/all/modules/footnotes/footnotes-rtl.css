@@ -1,0 +1,12 @@
+ul.footnotes {
+  margin-right: 0;
+  padding-right: 0;
+}
+ul.footnotes li {
+  margin-left: auto;
+  margin-right: 2.5em;
+}
+.footnotes .footnote-label {
+  left: auto;
+  right: 0px;
+}

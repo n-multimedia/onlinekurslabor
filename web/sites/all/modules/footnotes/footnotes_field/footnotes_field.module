@@ -9,7 +9,8 @@
  * Implements hook_ctools_plugin_api().
  */
 function footnotes_field_ctools_plugin_api($module, $api) {
-  if (($module == 'ds' && $api == 'ds') || ($module == 'ds_extras' && $api == 'ds_extras')) {
+  $keys = array('ds', 'ds_extras');
+  if (in_array($module, $keys) && in_array($api, $keys) && $module === $api) {
     return array('version' => 1);
   }
 }
@@ -26,7 +27,6 @@ function footnotes_field_menu() {
     'access arguments' => array('administer footnotes fields'),
     'file' => 'includes/footnotes_field.admin.inc',
   );
-
   return $items;
 }
 
@@ -48,7 +48,6 @@ function footnotes_field_permission() {
 function footnotes_field_ds_fields_info($entity_type) {
   $fields = array();
   $settings = _footnotes_field_get_settings();
-
   if (!empty($settings['content_types'])) {
     $content_types = array_keys(array_filter($settings['content_types']));
     // Only expose this field if there is at least one content type selected.
@@ -57,7 +56,6 @@ function footnotes_field_ds_fields_info($entity_type) {
       foreach ($content_types as $content_type) {
         $ui_limit[] = $content_type . '|*';
       }
-
       $fields['footnotes_field'] = array(
         'title' => t('Footnotes (ds field)'),
         'field_type' => DS_FIELD_TYPE_FUNCTION,
@@ -66,7 +64,6 @@ function footnotes_field_ds_fields_info($entity_type) {
         'function' => '_footnotes_field_render',
         'properties' => array(),
       );
-
       return array('node' => $fields);
     }
   }
@@ -91,7 +88,6 @@ function footnotes_field_block_view($delta = '') {
     case 'footnotes':
       $node = menu_get_object('node');
       $settings = _footnotes_field_get_settings();
-
       if ($node && !empty($settings['expose_block'])) {
         $block['subject'] = t('Footnotes');
         $block['content'] = array(
