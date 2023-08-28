@@ -28,6 +28,7 @@ sleep 5
 
 drush dis dblog --y
 drush en fast_dblog --y
+drush en htmlpurifier_check --y
 
 drush vset --exact fast_dblog_row_limit 10000
 drush vset --exact fast_dblog_buffered 1

@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * überprüft, ob in die Datei sites\all\modules\htmlpurifier\config\filtered_html.php existiert.
+ * Wenn nicht, zeigt er einen Fehler an
+ * 
+ */
+
+/**
+ * In flush caches ausgelagert, da dies nicht oft ausgeführt wird aber ausreichend oft läuft.
+ */
+function htmlpurifier_check_flush_caches() {
+  $htmlpurifier_base_path = drupal_get_path('module', 'htmlpurifier');
+  $htmlpurifier_full_path = DRUPAL_ROOT . DIRECTORY_SEPARATOR . $htmlpurifier_base_path . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "filtered_html.php";
+
+
+  if (!file_exists($htmlpurifier_full_path)) {
+    drupal_set_message("File filtered_html.php missing! Did you delete it??? ", 'error');
+  }
+}
