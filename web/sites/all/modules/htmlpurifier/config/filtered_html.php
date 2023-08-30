@@ -25,15 +25,17 @@
 function htmlpurifier_config_filtered_html($config) {
   $config->set('HTML.DefinitionID', 'okl-definition');
   $config->set('HTML.DefinitionRev', 1);
-  $def = $config->getHTMLDefinition(true);
-  $def->addElement(
-    'fn', // name
-    'Inline', // content set
-    'Inline', // allowed children
-    'Common', // attribute collection
-    array(// attributes
-      'value' => 'jumpvalue'
-    )
-  );
-  $def->addAttribute('fn', 'value', 'CDATA'); //strange: Must set attribute "value" twice.
+  $config->set('Attr.EnableID',1); //wichtig fuer footnotes/biblio
+  if ($def = $config->maybeGetRawHTMLDefinition()) {
+    //erlaube footnotes
+    $def->addElement(
+      'fn', // name
+      'Inline', // content set
+      'Empty', // allowed children
+      'Common', // attribute collection
+      array(// attributes
+        'value' => 'CDATA'
+      )
+    );
+  }
 }
