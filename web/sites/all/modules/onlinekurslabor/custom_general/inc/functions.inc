@@ -296,7 +296,16 @@ function _section_courses_advanced_forum_get_num_unread($uid, $tid) {
   return $num_total;
 }
 
-function _custom_general_get_num_unread($uid = NULL, $nid) {
+/**
+ * check history entries for every entity found
+ * return unread
+ * @global type $user
+ * @staticvar array $result_cache
+ * @param type $uid - UID eines Users
+ * @param type $nid
+ * @return int
+ */
+function _custom_general_get_num_unread($uid, $nid) {
 
   static $result_cache = array();
   if (!$uid) {
