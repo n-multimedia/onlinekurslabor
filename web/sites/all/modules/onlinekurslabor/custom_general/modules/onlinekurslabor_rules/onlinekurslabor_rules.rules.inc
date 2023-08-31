@@ -54,10 +54,18 @@ function onlinekurslabor_rules_rules_action_info() {
 
 /**
  * Action: Send mail to all users of a specific role group(s).
+ * 
+ * 
+ * NOTICE ON GROUP DELETION THIS DOES NOT WORK
+ * - deletes group [course] and members
+ * => triggers "you were removed"
+ * => triggers => "inform everybody about removal"
+ * => no one is in anymore...
  */
 function onlinekurslabor_rules_action_mail_to_user_roles_in_group(EntityDrupalWrapper $group, $og_roles, $exlude_user, $subject, $message, $from, $settings, RulesState $state, RulesPlugin $element) {
   //get group members
-  $res = custom_general_get_users_in_group($group->getIdentifier(), true);
+  $all_group_members = custom_general_get_users_in_group($group->getIdentifier(), true);
+  $role_names_to_inform = array_intersect_key(_custom_general_get_og_group_roles(), $og_roles);
   $recipient_counter = 0;
 
   $from = !empty($from) ? str_replace(array("\r", "\n"), '', $from) : NULL;
@@ -67,7 +75,7 @@ function onlinekurslabor_rules_action_mail_to_user_roles_in_group(EntityDrupalWr
   $key = 'rules_action_mail_to_users_of_role_' . $name . '_' . $element->elementId();
 
 
-  foreach ($res as $member) {
+  foreach ($all_group_members as $member) {
     //exlude
     if (isset($exlude_user) && $exlude_user == $member->uid) {
       continue;
@@ -75,17 +83,15 @@ function onlinekurslabor_rules_action_mail_to_user_roles_in_group(EntityDrupalWr
 
     $account = user_load($member->uid);
 
-    $role_names = array_intersect_key(_custom_general_get_og_group_roles(), $og_roles);
-
     //falls keine Rollenbeschränkung erwünscht
-    if (!empty($role_names)) {
+    if (!empty($role_names_to_inform)) {
       //check og_role 
       //does the member have one of the selected roles?
 
       /**
        * ---------- CAUTION - no common check. Only works for courses! No general solution needed atm.
        */
-      if (!_section_courses_user_has_role_in_course($account, node_load($group->getIdentifier()), $role_names)) {
+      if (!_section_courses_user_has_role_in_course($account, node_load($group->getIdentifier()), $role_names_to_inform)) {
         continue;
       }
     }
@@ -118,9 +124,9 @@ function onlinekurslabor_rules_action_mail_to_user_roles_in_group(EntityDrupalWr
     //Wenn ein Problem mitm Mailsystem besteht, breche ab.
     //hat der Nutzer Mailempfang deaktiviert, so is das kein Fehler.
     if (!$message_result['result'] && $user_allows_mails) {
-      drupal_set_message(t("Error in mailsystem, operation cancelled.")." ".t("Please contact the site administrator."), 'error');
+      drupal_set_message(t("Error in mailsystem, operation cancelled.") . " " . t("Please contact the site administrator."), 'error');
       break;
     }
   }
-  watchdog('rules', '(Tried to) send email(s) to %count group members with role(s) %roles.', array("%count" => $recipient_counter, '%roles' => implode(', ', $role_names)));
+  watchdog('rules', '(Tried to) send email(s) to %count group members with role(s) %roles.', array("%count" => $recipient_counter, '%roles' => implode(', ', $role_names_to_inform)));
 }
