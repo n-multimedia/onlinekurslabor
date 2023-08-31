@@ -21,6 +21,9 @@ msgstr "Laden Sie es herunter."
 msgid "Beware! The following files might be missing:"
 msgstr "Achtung! Folgende Dateien könnten fehlen:"
 
+msgid "Close"
+msgstr "schließen"
+
 msgid ""
 msgstr ""
 

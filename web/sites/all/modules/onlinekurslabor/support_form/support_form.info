@@ -1,5 +1,5 @@
 name = Support Form
-description = Support Module that sends an email
+description = This module adds a block with a contact-button to ease the process of requesting support/help
 core = 7.x
-version = 7.x-1.0-alpha6
+version = 7.x-1.0-alpha19.9
 package = custom
