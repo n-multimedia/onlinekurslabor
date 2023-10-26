@@ -410,7 +410,7 @@ function image_gd_coloroverlay(stdClass $image, array $data) {
       }else{
         $final_b = 255 - (((255 - (2 * ($source['blue'] - 128))) * (255 - $RGB['blue']))/256);
       }
-      $final_colour = imagecolorallocatealpha($image->resource, $final_r, $final_g, $final_b, $source['alpha']);
+      $final_colour = imagecolorallocatealpha($image->resource, round($final_r), round($final_g), round($final_b), $source['alpha']);
       imagesetpixel($image->resource, $x, $y, $final_colour);
     }
   }
@@ -1192,7 +1192,7 @@ function image_gd_adjustlevels(stdClass $image, array $data) {
       $final_g = $lower_g + $factor_g * $source['green'];
       $final_b = $lower_b + $factor_b * $source['blue'];
 
-      $final_colour = imagecolorallocatealpha($image->resource, $final_r, $final_g, $final_b, $source['alpha']);
+      $final_colour = imagecolorallocatealpha($image->resource, round($final_r), round($final_g), round($final_b), $source['alpha']);
       imagesetpixel($image->resource, $x, $y, $final_colour);
     }
   }
