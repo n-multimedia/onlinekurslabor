@@ -72,6 +72,8 @@ function nm_section_content_features_wysiwyg_default_profiles() {
       'forcePasteAsPlainText' => 0,
       'pasteFromWordPromptCleanup' => 0,
       'pasteFromWordRemoveFontStyles' => 1,
+      'linkShowAdvancedTab' => 0,
+      'linkShowTargetTab' => 1,
     ),
     'preferences' => array(
       'default' => 1,
