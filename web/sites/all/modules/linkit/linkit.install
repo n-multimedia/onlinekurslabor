@@ -229,7 +229,21 @@ function linkit_update_7302() {
  * Fixed 7302. Set URL type to "Entity view page" to preserve current behavior.
  */
 function linkit_update_7303() {
+  // This update expects there to be a weight field present, but it would have
+  // been removed in update 7300.
+  if (!db_field_exists('linkit_profiles', 'weight')) {
+    $schema = array(
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+      'description' => 'The profile weight to set order of profile options.',
+    );
+
+    db_add_field('linkit_profiles', 'weight', $schema);
+  }
+
   require_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'linkit') . '/plugins/linkit_search/file.class.php';
+
   $profiles = linkit_profile_load_all();
   $show_notice = FALSE;
   foreach ($profiles as $profile) {
@@ -273,18 +287,42 @@ function linkit_update_7303() {
 function linkit_update_7304() {
   $schema = drupal_get_schema_unprocessed('linkit', 'linkit_profiles');
 
+  $admin_description = array(
+    'type' => 'text',
+    'not null' => FALSE,
+    'size' => 'medium',
+    'description' => 'Administrative description for this profile.',
+  );
+
+  $profile_type = array(
+    'type' => 'varchar',
+    'length' => 128,
+    'not null' => TRUE,
+    'description' => 'The profile type.',
+    'default' => 1,
+  );
+
   // Admin description should allow null values as field is not required.
-  db_change_field('linkit_profiles', 'admin_description', 'admin_description', $schema['fields']['admin_description']);
+  db_change_field('linkit_profiles', 'admin_description', 'admin_description', $admin_description);
 
   // Profile type should have a default value assigned, Editor.
-  db_change_field('linkit_profiles', 'profile_type', 'profile_type', $schema['fields']['profile_type']);
+  db_change_field('linkit_profiles', 'profile_type', 'profile_type', $profile_type);
 }
 
 /**
  * Add profile 'weight' column.
  */
 function linkit_update_7305() {
-  $schema = drupal_get_schema_unprocessed('linkit', 'linkit_profiles');
+  // Because of the changes to the series of update functions here, the weight
+  // field might or might not exist
+  if (!db_field_exists('linkit_profiles', 'weight')) {
+    $schema = array(
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+      'description' => 'The profile weight to set order of profile options.',
+    );
 
-  db_add_field('linkit_profiles', 'weight', $schema['fields']['weight']);
+    db_add_field('linkit_profiles', 'weight', $schema);
+  }
 }
