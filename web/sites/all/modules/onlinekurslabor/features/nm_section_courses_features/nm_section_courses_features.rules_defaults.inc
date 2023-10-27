@@ -80,18 +80,18 @@ function nm_section_courses_features_default_rules_configuration() {
             "PROVIDE" : { "entity_fetched" : { "entity_course" : "Fetched entity" } }
           }
         },
-        { "mail" : {
-            "to" : [ "account:mail" ],
-            "subject" : "[site:name] - Abmeldung von [entity-course:title]",
-            "message" : "Hallo [account:name],\\r\\nSie sind nun aus dem Kurs \\u0022[entity-course:title]\\u0022 abgemeldet.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
-            "language" : [ "account:language" ]
-          }
-        },
         { "mail_to_user_roles_in_group" : {
             "group" : [ "entity-course" ],
             "og_roles" : { "value" : { "kurs-dozent" : "kurs-dozent", "kurs-tutor" : "kurs-tutor" } },
             "subject" : "[entity-course:title] - Abmeldung - [account:name]",
             "message" : "\\r\\n[account:name] hat sich \\/ wurde von dem Kurs \\u0022[entity-course:title]\\u0022 abgemeldet.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]"
+          }
+        },
+        { "mail" : {
+            "to" : [ "account:mail" ],
+            "subject" : "[site:name] - Abmeldung von [entity-course:title]",
+            "message" : "Hallo [account:name],\\r\\nSie sind nun aus dem Kurs \\u0022[entity-course:title]\\u0022 abgemeldet.\\r\\n\\r\\nViele Gr\\u00fc\\u00dfe\\r\\nDas Team vom [site:name]",
+            "language" : [ "account:language" ]
           }
         }
       ]

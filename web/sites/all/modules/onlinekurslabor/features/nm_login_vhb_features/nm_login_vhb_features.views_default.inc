@@ -298,6 +298,8 @@ function nm_login_vhb_features_views_default_views() {
     t('In Nicht-VHB-User konvertieren'),
     t('uid field'),
     t('.'),
+    t('1'),
+    t('@count'),
     t('Name'),
     t('E-mail'),
     t('Matrikelnummer'),

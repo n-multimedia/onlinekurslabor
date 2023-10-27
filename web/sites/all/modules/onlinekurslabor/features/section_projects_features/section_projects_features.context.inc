@@ -50,8 +50,8 @@ function section_projects_features_context_default_contexts() {
     'block' => array(
       'blocks' => array(
         'section_projects-projects_header_and_navigation' => array(
-          'module' => 'section_projects',
           'delta' => 'projects_header_and_navigation',
+          'module' => 'section_projects',
           'region' => 'header',
           'weight' => '-10',
         ),

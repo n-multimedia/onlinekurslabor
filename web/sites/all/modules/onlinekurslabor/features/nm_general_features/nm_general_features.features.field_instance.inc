@@ -119,6 +119,7 @@ Derzeit verwendet, um Screenshots aus einem Video einem echten Video zuzuordnen.
       'active' => 1,
       'module' => 'entityreference',
       'settings' => array(
+        'hide_ids' => FALSE,
         'match_operator' => 'CONTAINS',
         'path' => '',
         'size' => 60,

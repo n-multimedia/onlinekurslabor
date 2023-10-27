@@ -337,7 +337,15 @@ function section_projects_features_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_ca_timespan',
-    'indexes' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+        1 => 'value2',
+      ),
+      'value2' => array(
+        0 => 'value2',
+      ),
+    ),
     'locked' => 0,
     'module' => 'date',
     'settings' => array(
@@ -474,8 +482,8 @@ function section_projects_features_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         0 => array(
-          'vocabulary' => 'operational_area',
           'parent' => 0,
+          'vocabulary' => 'operational_area',
         ),
       ),
       'profile2_private' => FALSE,
@@ -761,8 +769,8 @@ function section_projects_features_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         0 => array(
-          'vocabulary' => 'task_area',
           'parent' => 0,
+          'vocabulary' => 'task_area',
         ),
       ),
       'profile2_private' => FALSE,
@@ -826,8 +834,8 @@ function section_projects_features_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         0 => array(
-          'vocabulary' => 'task_area',
           'parent' => 0,
+          'vocabulary' => 'task_area',
         ),
       ),
       'profile2_private' => FALSE,

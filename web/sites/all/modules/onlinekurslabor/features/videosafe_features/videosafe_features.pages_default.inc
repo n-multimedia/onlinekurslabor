@@ -18,9 +18,12 @@ function videosafe_features_default_page_manager_pages() {
   $page->admin_description = 'Video Safe';
   $page->path = 'videosafe/%node';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
+        'context' => 'logged-in-user',
         'name' => 'role',
+        'not' => FALSE,
         'settings' => array(
           'rids' => array(
             0 => 30037204,
@@ -28,13 +31,10 @@ function videosafe_features_default_page_manager_pages() {
             2 => 16675960,
           ),
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -58,42 +58,42 @@ function videosafe_features_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = -30;
   $handler->conf = array(
-    'title' => 'Videosafe - Folder',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
-    'name' => 'panel-videosafe-folder',
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'videosafe_folder' => 'videosafe_folder',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'name' => 'panel-videosafe-folder',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Videosafe - Folder',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span6span6';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'left' => NULL,
       'news' => NULL,
       'tools' => NULL,
-      'left' => NULL,
     ),
   );
   $display->cache = array();
@@ -111,15 +111,15 @@ function videosafe_features_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'use_pager' => 0,
-    'pager_id' => '0',
-    'items_per_page' => '0',
-    'override_title' => 1,
-    'override_title_text' => '',
-    'override_title_heading' => 'h2',
     'arguments' => array(
       'field_parent_folder_target_id' => '%node:nid',
     ),
+    'items_per_page' => '0',
+    'override_title' => 1,
+    'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'pager_id' => '0',
+    'use_pager' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -140,15 +140,15 @@ function videosafe_features_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'use_pager' => 0,
-    'pager_id' => '0',
-    'items_per_page' => '0',
-    'override_title' => 1,
-    'override_title_text' => '',
-    'override_title_heading' => 'h2',
     'arguments' => array(
       'field_parent_folder_target_id' => '%node:nid',
     ),
+    'items_per_page' => '0',
+    'override_title' => 1,
+    'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'pager_id' => '0',
+    'use_pager' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -170,16 +170,16 @@ function videosafe_features_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => '',
     'css_class' => '',
+    'css_id' => '',
   );
   $pane->extras = array();
   $pane->position = 0;
@@ -195,15 +195,15 @@ function videosafe_features_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'nid' => '@0',
-    'links' => 0,
-    'leave_node_title' => 0,
-    'identifier' => 'videosafedescription',
     'build_mode' => 'videosafe_description',
+    'identifier' => 'videosafedescription',
+    'leave_node_title' => 0,
     'link_node_title' => 0,
+    'links' => 0,
+    'nid' => '@0',
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -226,12 +226,12 @@ function videosafe_features_default_page_manager_pages() {
     'plugins' => array(
       0 => array(
         'name' => 'php',
+        'not' => FALSE,
         'settings' => array(
           'description' => 'node_is_videosafe_root',
           'php' => '$arg = array_values($contexts);
 return $arg[0]->argument == _videosafe_get_root_directory()->nid;',
         ),
-        'not' => FALSE,
       ),
     ),
   );
@@ -260,42 +260,42 @@ return $arg[0]->argument == _videosafe_get_root_directory()->nid;',
   $handler->handler = 'panel_context';
   $handler->weight = -29;
   $handler->conf = array(
-    'title' => 'Videosafe - Video',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
-    'name' => 'panel',
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'videosafe_video' => 'videosafe_video',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'name' => 'panel',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Videosafe - Video',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span6span6';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'left' => NULL,
       'news' => NULL,
       'tools' => NULL,
-      'left' => NULL,
     ),
   );
   $display->cache = array();
@@ -313,15 +313,15 @@ return $arg[0]->argument == _videosafe_get_root_directory()->nid;',
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'use_pager' => 0,
-    'pager_id' => '0',
-    'items_per_page' => '0',
-    'override_title' => 1,
-    'override_title_text' => '',
-    'override_title_heading' => 'h2',
     'arguments' => array(
       'field_parent_folder_target_id' => '%node:field-parent-folder:nid',
     ),
+    'items_per_page' => '0',
+    'override_title' => 1,
+    'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'pager_id' => '0',
+    'use_pager' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -342,15 +342,15 @@ return $arg[0]->argument == _videosafe_get_root_directory()->nid;',
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'use_pager' => 0,
-    'pager_id' => '0',
-    'items_per_page' => '0',
-    'override_title' => 1,
-    'override_title_text' => '',
-    'override_title_heading' => 'h2',
     'arguments' => array(
       'field_parent_folder_target_id' => '%node:field-parent-folder:nid',
     ),
+    'items_per_page' => '0',
+    'override_title' => 1,
+    'override_title_heading' => 'h2',
+    'override_title_text' => '',
+    'pager_id' => '0',
+    'use_pager' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -372,8 +372,8 @@ return $arg[0]->argument == _videosafe_get_root_directory()->nid;',
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 0,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -394,15 +394,15 @@ return $arg[0]->argument == _videosafe_get_root_directory()->nid;',
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'nid' => '@0',
-    'links' => 0,
-    'leave_node_title' => 0,
-    'identifier' => '',
     'build_mode' => 'videosafe_description',
+    'identifier' => '',
+    'leave_node_title' => 0,
     'link_node_title' => 0,
+    'links' => 0,
+    'nid' => '@0',
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(

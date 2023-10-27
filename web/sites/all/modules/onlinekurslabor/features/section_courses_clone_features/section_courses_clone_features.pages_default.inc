@@ -19,31 +19,31 @@ function section_courses_clone_features_default_page_manager_pages() {
 Currently for courses only';
   $page->path = 'node/copy/%what';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       1 => array(
+        'context' => 'logged-in-user',
         'name' => 'perm',
+        'not' => FALSE,
         'settings' => array(
           'perm' => 'create courses_course content',
         ),
-        'context' => 'logged-in-user',
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array(
-    'type' => 'none',
-    'title' => 'testest',
     'name' => 'navigation',
-    'weight' => '0',
     'parent' => array(
-      'type' => 'none',
-      'title' => '',
       'name' => 'navigation',
+      'title' => '',
+      'type' => 'none',
       'weight' => '0',
     ),
+    'title' => 'testest',
+    'type' => 'none',
+    'weight' => '0',
   );
   $page->arguments = array(
     'what' => array(
@@ -66,31 +66,31 @@ Currently for courses only';
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Courses - course',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
-    'name' => 'panel',
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_node_add_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'courses_course' => 'courses_course',
             ),
           ),
-          'context' => 'argument_node_add_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'name' => 'panel',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Courses - course',
   );
   $display = new panels_display();
   $display->layout = 'onecol';

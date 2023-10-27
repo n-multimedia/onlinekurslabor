@@ -16,30 +16,30 @@ function notification_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_message__message_changed_node';
   $strongarm->value = array(
-    'view_modes' => array(
-      'full' => array(
-        'custom_settings' => TRUE,
-      ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
-      'token' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
     'extra_fields' => array(
-      'form' => array(),
       'display' => array(
         'message__message_text__0' => array(
           'default' => array(
-            'weight' => '1',
             'visible' => TRUE,
+            'weight' => '1',
           ),
           'full' => array(
-            'weight' => '1',
             'visible' => TRUE,
+            'weight' => '1',
           ),
         ),
+      ),
+      'form' => array(),
+    ),
+    'view_modes' => array(
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'full' => array(
+        'custom_settings' => TRUE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
       ),
     ),
   );
@@ -50,30 +50,30 @@ function notification_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_message__message_new_node';
   $strongarm->value = array(
-    'view_modes' => array(
-      'full' => array(
-        'custom_settings' => TRUE,
-      ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
-      'token' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
     'extra_fields' => array(
-      'form' => array(),
       'display' => array(
         'message__message_text__0' => array(
           'default' => array(
-            'weight' => '1',
             'visible' => TRUE,
+            'weight' => '1',
           ),
           'full' => array(
-            'weight' => '1',
             'visible' => TRUE,
+            'weight' => '1',
           ),
         ),
+      ),
+      'form' => array(),
+    ),
+    'view_modes' => array(
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'full' => array(
+        'custom_settings' => TRUE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
       ),
     ),
   );

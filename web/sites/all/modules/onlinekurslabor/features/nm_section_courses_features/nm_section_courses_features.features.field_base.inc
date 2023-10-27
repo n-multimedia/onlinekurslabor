@@ -313,8 +313,8 @@ function nm_section_courses_features_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         0 => array(
-          'vocabulary' => 'sponsors',
           'parent' => 0,
+          'vocabulary' => 'sponsors',
         ),
       ),
       'profile2_private' => FALSE,
@@ -497,8 +497,8 @@ function nm_section_courses_features_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         0 => array(
-          'vocabulary' => 'hochschulen',
           'parent' => 0,
+          'vocabulary' => 'hochschulen',
         ),
       ),
       'profile2_private' => 0,
@@ -546,8 +546,8 @@ function nm_section_courses_features_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         0 => array(
-          'vocabulary' => 'lehet_content',
           'parent' => 0,
+          'vocabulary' => 'lehet_content',
         ),
       ),
       'profile2_private' => FALSE,
@@ -573,8 +573,8 @@ function nm_section_courses_features_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         0 => array(
-          'vocabulary' => 'lehet_kompetenzbereich',
           'parent' => 0,
+          'vocabulary' => 'lehet_kompetenzbereich',
         ),
       ),
     ),
@@ -599,8 +599,8 @@ function nm_section_courses_features_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         0 => array(
-          'vocabulary' => 'lehet_material',
           'parent' => 0,
+          'vocabulary' => 'lehet_material',
         ),
       ),
       'profile2_private' => FALSE,
@@ -626,8 +626,8 @@ function nm_section_courses_features_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         0 => array(
-          'vocabulary' => 'lehet_schooltype',
           'parent' => 0,
+          'vocabulary' => 'lehet_schooltype',
         ),
       ),
       'profile2_private' => FALSE,
@@ -653,8 +653,8 @@ function nm_section_courses_features_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         0 => array(
-          'vocabulary' => 'lehet_subjects',
           'parent' => 0,
+          'vocabulary' => 'lehet_subjects',
         ),
       ),
       'profile2_private' => FALSE,
@@ -748,8 +748,8 @@ function nm_section_courses_features_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         0 => array(
-          'vocabulary' => 'semester',
           'parent' => 0,
+          'vocabulary' => 'semester',
         ),
       ),
       'profile2_private' => FALSE,
@@ -918,8 +918,8 @@ function nm_section_courses_features_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         0 => array(
-          'vocabulary' => 'tags',
           'parent' => 0,
+          'vocabulary' => 'tags',
         ),
       ),
     ),
@@ -1090,8 +1090,8 @@ function nm_section_courses_features_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         0 => array(
-          'vocabulary' => 'forums',
           'parent' => 0,
+          'vocabulary' => 'forums',
         ),
       ),
     ),

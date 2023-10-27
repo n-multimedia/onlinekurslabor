@@ -114,18 +114,18 @@ function videosafe_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__videosafe_folder';
   $strongarm->value = array(
-    'view_modes' => array(),
     'extra_fields' => array(
+      'display' => array(),
       'form' => array(
-        'title' => array(
-          'weight' => '-5',
-        ),
         'path' => array(
           'weight' => '30',
         ),
+        'title' => array(
+          'weight' => '-5',
+        ),
       ),
-      'display' => array(),
     ),
+    'view_modes' => array(),
   );
   $export['field_bundle_settings_node__videosafe_folder'] = $strongarm;
 
@@ -134,11 +134,31 @@ function videosafe_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__videosafe_video';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(
+        'path' => array(
+          'weight' => '1',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+      ),
+    ),
     'view_modes' => array(
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
       'full' => array(
         'custom_settings' => FALSE,
       ),
-      'teaser' => array(
+      'nm_stream' => array(
+        'custom_settings' => FALSE,
+      ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
         'custom_settings' => FALSE,
       ),
       'rss' => array(
@@ -150,35 +170,15 @@ function videosafe_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
+      'task' => array(
         'custom_settings' => FALSE,
       ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
-      'nm_stream' => array(
+      'teaser' => array(
         'custom_settings' => FALSE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
       ),
-      'task' => array(
-        'custom_settings' => FALSE,
-      ),
-      'revision' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '0',
-        ),
-        'path' => array(
-          'weight' => '1',
-        ),
-      ),
-      'display' => array(),
     ),
   );
   $export['field_bundle_settings_node__videosafe_video'] = $strongarm;

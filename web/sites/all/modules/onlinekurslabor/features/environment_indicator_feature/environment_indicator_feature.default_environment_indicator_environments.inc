@@ -19,10 +19,10 @@ function environment_indicator_feature_default_environment_indicator_environment
   $environment->regexurl = '(dev|dev-vince).*';
   $environment->settings = array(
     'color' => '#FEBC44',
+    'fixed' => 1,
+    'position' => 'top',
     'text_color' => '#ffffff',
     'weight' => '3',
-    'position' => 'top',
-    'fixed' => 1,
   );
   $export['dev_environment'] = $environment;
 
@@ -34,10 +34,10 @@ function environment_indicator_feature_default_environment_indicator_environment
   $environment->regexurl = '(?<!div\\.)online.*';
   $environment->settings = array(
     'color' => '#000000',
+    'fixed' => 1,
+    'position' => 'top',
     'text_color' => '#ffffff',
     'weight' => '2',
-    'position' => 'top',
-    'fixed' => 1,
   );
   $export['live_environment'] = $environment;
 
@@ -49,10 +49,10 @@ function environment_indicator_feature_default_environment_indicator_environment
   $environment->regexurl = '.*test.*';
   $environment->settings = array(
     'color' => '#A5073E',
+    'fixed' => 1,
+    'position' => 'top',
     'text_color' => '#ffffff',
     'weight' => '4',
-    'position' => 'top',
-    'fixed' => 1,
   );
   $export['test_environment'] = $environment;
 

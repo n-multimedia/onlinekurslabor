@@ -18,22 +18,22 @@ function nm_h5p_features_default_page_manager_pages() {
   $page->admin_description = '';
   $page->path = 'domain/h5p/%1';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -57,41 +57,41 @@ function nm_h5p_features_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'argument_entity_id:node_1',
           'name' => 'node_type',
+          'not' => FALSE,
           'settings' => array(
             'type' => array(
               'content_domain' => 'content_domain',
             ),
           ),
-          'context' => 'argument_entity_id:node_1',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
+      'navigation' => NULL,
       'outline' => NULL,
       'tools' => NULL,
-      'navigation' => NULL,
     ),
   );
   $display->cache = array();
@@ -110,10 +110,10 @@ function nm_h5p_features_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<h2>Interaktives</h2>',
     'format' => 'filtered_html',
     'substitute' => 1,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -134,24 +134,24 @@ function nm_h5p_features_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '25',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'default',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '25',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
-    'override_title_text' => 'H5P-Inhalte',
     'override_title_heading' => 'h3',
+    'override_title_text' => 'H5P-Inhalte',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -172,24 +172,24 @@ function nm_h5p_features_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '25',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'default',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '25',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 1,
-    'override_title_text' => 'AnnVid-Player',
     'override_title_heading' => 'h3',
+    'override_title_text' => 'AnnVid-Player',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -211,8 +211,8 @@ function nm_h5p_features_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => '',
     'override_title_heading' => 'h2',
+    'override_title_text' => '',
   );
   $pane->cache = array();
   $pane->style = array(

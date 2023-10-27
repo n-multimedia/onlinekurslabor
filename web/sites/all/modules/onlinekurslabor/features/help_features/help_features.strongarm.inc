@@ -79,14 +79,31 @@ function help_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__book';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(),
+      'form' => array(
+        'path' => array(
+          'weight' => '30',
+        ),
+        'title' => array(
+          'weight' => '-5',
+        ),
+      ),
+    ),
     'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'full' => array(
+        'custom_settings' => FALSE,
       ),
       'nm_stream' => array(
         'custom_settings' => TRUE,
       ),
-      'full' => array(
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
         'custom_settings' => FALSE,
       ),
       'rss' => array(
@@ -98,11 +115,11 @@ function help_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
+      'task' => array(
         'custom_settings' => FALSE,
       ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
+      'teaser' => array(
+        'custom_settings' => TRUE,
       ),
       'token' => array(
         'custom_settings' => FALSE,
@@ -110,23 +127,6 @@ function help_features_strongarm() {
       'videosafe_description' => array(
         'custom_settings' => FALSE,
       ),
-      'task' => array(
-        'custom_settings' => FALSE,
-      ),
-      'revision' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'title' => array(
-          'weight' => '-5',
-        ),
-        'path' => array(
-          'weight' => '30',
-        ),
-      ),
-      'display' => array(),
     ),
   );
   $export['field_bundle_settings_node__book'] = $strongarm;
