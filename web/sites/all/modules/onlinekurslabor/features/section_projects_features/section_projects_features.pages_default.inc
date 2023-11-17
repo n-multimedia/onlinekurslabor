@@ -18,8 +18,8 @@ function section_projects_features_default_page_manager_pages() {
   $page->admin_description = '';
   $page->path = 'projects/partners/%1/%2';
   $page->access = array(
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -49,27 +49,27 @@ function section_projects_features_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'no_blocks' => 0,
     'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
     'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:col_md_8col_md_3col_md_1';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
+      'center' => NULL,
+      'col_md_1' => NULL,
       'default' => NULL,
+      'left' => NULL,
       'news' => NULL,
       'tools' => NULL,
-      'center' => NULL,
-      'left' => NULL,
-      'col_md_1' => NULL,
     ),
   );
   $display->cache = array();
@@ -87,13 +87,13 @@ function section_projects_features_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'text_default',
+    'context' => 'argument_entity_id:node_3',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'text_default',
     'formatter_settings' => array(),
-    'context' => 'argument_entity_id:node_3',
+    'label' => 'title',
     'override_title' => 1,
     'override_title_text' => 'Kontakt',
   );
@@ -116,13 +116,13 @@ function section_projects_features_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'list_default',
+    'context' => 'argument_entity_id:node_3',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'list_default',
     'formatter_settings' => array(),
-    'context' => 'argument_entity_id:node_3',
+    'label' => 'title',
     'override_title' => 1,
     'override_title_text' => 'Mitarbeit',
   );
@@ -167,12 +167,12 @@ function section_projects_features_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'nid' => '%3',
-    'links' => 0,
-    'leave_node_title' => 0,
-    'identifier' => '',
     'build_mode' => 'full',
+    'identifier' => '',
+    'leave_node_title' => 0,
     'link_node_title' => 0,
+    'links' => 0,
+    'nid' => '%3',
     'override_title' => 0,
     'override_title_text' => '',
   );
@@ -195,13 +195,13 @@ function section_projects_features_default_page_manager_pages() {
   $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'text_default',
+    'context' => 'argument_entity_id:node_3',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'text_default',
     'formatter_settings' => array(),
-    'context' => 'argument_entity_id:node_3',
+    'label' => 'title',
     'override_title' => 1,
     'override_title_text' => 'Beschreibung',
   );
@@ -247,23 +247,23 @@ function section_projects_features_default_page_manager_pages() {
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 0,
-    'nodes_per_page' => '0',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'default',
-    'override_title' => 1,
-    'override_title_text' => 'Weitere Projektvorschläge',
     'context' => array(
       0 => 'argument_entity_id:node_2.nid',
     ),
+    'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '0',
+    'offset' => '0',
+    'override_pager_settings' => 0,
+    'override_title' => 1,
+    'override_title_text' => 'Weitere Projektvorschläge',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 0,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -291,22 +291,22 @@ function section_projects_features_default_page_manager_pages() {
   $page->admin_description = '';
   $page->path = 'projects/partners/%1/%2/cockpit/%3';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'view',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_4',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'view',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -342,15 +342,15 @@ function section_projects_features_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'no_blocks' => 0,
     'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
     'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span8span4';
@@ -385,8 +385,8 @@ function section_projects_features_default_page_manager_pages() {
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => '',
     'css_class' => 'pane-nm-stream',
+    'css_id' => '',
   );
   $pane->extras = array();
   $pane->position = 0;
@@ -431,9 +431,11 @@ function section_projects_features_default_page_manager_pages() {
   $page->admin_description = '';
   $page->path = 'projects/admin/add/%1';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
         'name' => 'php',
+        'not' => FALSE,
         'settings' => array(
           'description' => 'Node access',
           'php' => 'global $user;
@@ -444,12 +446,10 @@ $tmp_node = (object)array(\'nid\' =>0, \'type\'=>arg(3));
 //return og_node_access( $tmp_node, \'create\', $account ) == NODE_ACCESS_ALLOW ?  TRUE : FALSE ;
 return node_access(\'create\', $tmp_node);',
         ),
-        'not' => FALSE,
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -473,91 +473,91 @@ return node_access(\'create\', $tmp_node);',
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
+    'access' => array(
+      'logic' => 'and',
+      'plugins' => array(),
+    ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'no_blocks' => 0,
     'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
     'relationships' => array(),
-    'access' => array(
-      'plugins' => array(),
-      'logic' => 'and',
-    ),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span11span1_adminonly';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
           1 => 1,
         ),
+        'contains' => 'column',
         'parent' => NULL,
+        'type' => 'row',
+      ),
+      'center' => array(
+        'parent' => 'main-row',
+        'title' => 'Zentriert',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
       ),
       'main' => array(
-        'type' => 'column',
-        'width' => '67.94595703225146',
-        'width_type' => '%',
         'children' => array(
           0 => 'main-row',
         ),
-        'parent' => 'canvas',
         'class' => 'col-md-11',
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => '67.94595703225146',
+        'width_type' => '%',
       ),
       'main-row' => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'center',
         ),
+        'contains' => 'region',
         'parent' => 'main',
+        'type' => 'row',
       ),
-      'center' => array(
+      'tools' => array(
+        'class' => '',
+        'parent' => '2',
+        'title' => 'Tools',
         'type' => 'region',
-        'title' => 'Zentriert',
         'width' => 100,
         'width_type' => '%',
-        'parent' => 'main-row',
       ),
       1 => array(
-        'type' => 'column',
-        'width' => '32.05404296774855',
-        'width_type' => '%',
-        'parent' => 'canvas',
         'children' => array(
           0 => 2,
         ),
         'class' => 'col-md-1',
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => '32.05404296774855',
+        'width_type' => '%',
       ),
       2 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'tools',
         ),
+        'class' => '',
+        'contains' => 'region',
         'parent' => '1',
-        'class' => '',
-      ),
-      'tools' => array(
-        'type' => 'region',
-        'title' => 'Tools',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '2',
-        'class' => '',
+        'type' => 'row',
       ),
     ),
   );
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
       'tools' => NULL,
     ),
   );
@@ -606,22 +606,22 @@ return node_access(\'create\', $tmp_node);',
   $page->admin_description = '';
   $page->path = 'projects/admin/%1/edit';
   $page->access = array(
+    'logic' => 'and',
     'plugins' => array(
       0 => array(
-        'name' => 'node_access',
-        'settings' => array(
-          'type' => 'update',
-        ),
         'context' => array(
           0 => 'logged-in-user',
           1 => 'argument_entity_id:node_1',
         ),
+        'name' => 'node_access',
         'not' => FALSE,
+        'settings' => array(
+          'type' => 'update',
+        ),
       ),
     ),
-    'logic' => 'and',
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -645,27 +645,27 @@ return node_access(\'create\', $tmp_node);',
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
+    'access' => array(
+      'logic' => 'and',
+      'plugins' => array(),
+    ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'no_blocks' => 0,
     'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
     'relationships' => array(
       0 => array(
+        'context' => 'argument_entity_id:node_1',
+        'id' => 1,
         'identifier' => 'Node edit form from node',
         'keyword' => 'node_form',
         'name' => 'node_edit_form_from_node',
-        'context' => 'argument_entity_id:node_1',
-        'id' => 1,
       ),
     ),
-    'access' => array(
-      'plugins' => array(),
-      'logic' => 'and',
-    ),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span8span4';
@@ -693,13 +693,13 @@ return node_access(\'create\', $tmp_node);',
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'Node Tabs',
-    'title' => '',
     'body' => '<?php
 $node = node_load(arg(2));
 echo _section_projects_render_node_tabs($node);
 ?>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -750,8 +750,8 @@ echo _section_projects_render_node_tabs($node);
   $page->admin_description = '';
   $page->path = 'projects/partners';
   $page->access = array(
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array();
@@ -768,23 +768,23 @@ echo _section_projects_render_node_tabs($node);
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'no_blocks' => 0,
     'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
     'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span12';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
-      'default' => NULL,
       'center' => NULL,
+      'default' => NULL,
     ),
   );
   $display->cache = array();
@@ -803,7 +803,6 @@ echo _section_projects_render_node_tabs($node);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'Create Partnerorganisation Button',
-    'title' => '',
     'body' => '<?php
 if(user_access(\'create projects_organization content\'))
 echo \'<p><a class="btn btn-default" href="/node/add/projects-organization">Neue Partnerorganisation anlegen</a></p>\';
@@ -811,6 +810,7 @@ echo \'<p><a class="btn btn-default" href="/node/add/projects-organization">Neue
 ?>',
     'format' => 'php_code',
     'substitute' => TRUE,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -831,20 +831,20 @@ echo \'<p><a class="btn btn-default" href="/node/add/projects-organization">Neue
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '15',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
     'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '15',
+    'offset' => '0',
+    'override_pager_settings' => 0,
     'override_title' => 0,
     'override_title_text' => '',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 1,
   );
   $pane->cache = array();
   $pane->style = array(
@@ -872,8 +872,8 @@ echo \'<p><a class="btn btn-default" href="/node/add/projects-organization">Neue
   $page->admin_description = '';
   $page->path = 'projects/partners/%node';
   $page->access = array(
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array(
@@ -897,27 +897,27 @@ echo \'<p><a class="btn btn-default" href="/node/add/projects-organization">Neue
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'Panel',
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => '',
     'no_blocks' => 0,
     'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => '',
-    'css' => '',
-    'contexts' => array(),
     'relationships' => array(),
+    'title' => 'Panel',
   );
   $display = new panels_display();
   $display->layout = 'flexible:col_md_8col_md_3col_md_1';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
+      'center' => NULL,
+      'col_md_1' => NULL,
       'default' => NULL,
+      'left' => NULL,
       'news' => NULL,
       'tools' => NULL,
-      'center' => NULL,
-      'left' => NULL,
-      'col_md_1' => NULL,
     ),
   );
   $display->cache = array();
@@ -935,13 +935,13 @@ echo \'<p><a class="btn btn-default" href="/node/add/projects-organization">Neue
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'text_default',
+    'context' => 'argument_entity_id:node_1',
     'delta_limit' => 0,
     'delta_offset' => '0',
     'delta_reversed' => FALSE,
+    'formatter' => 'text_default',
     'formatter_settings' => array(),
-    'context' => 'argument_entity_id:node_1',
+    'label' => 'title',
     'override_title' => 0,
     'override_title_text' => '',
   );
@@ -964,16 +964,16 @@ echo \'<p><a class="btn btn-default" href="/node/add/projects-organization">Neue
   $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'og_list_default',
+    'context' => 'argument_entity_id:node_1',
     'delta_limit' => '0',
     'delta_offset' => '0',
     'delta_reversed' => 0,
+    'formatter' => 'og_list_default',
     'formatter_settings' => array(
-      'view_mode' => 'default',
       'links' => 1,
+      'view_mode' => 'default',
     ),
-    'context' => 'argument_entity_id:node_1',
+    'label' => 'title',
     'override_title' => 1,
     'override_title_text' => '',
   );
@@ -1018,13 +1018,13 @@ echo \'<p><a class="btn btn-default" href="/node/add/projects-organization">Neue
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'ds_taxonomy_separator',
+    'context' => 'argument_entity_id:node_1',
     'delta_limit' => '0',
     'delta_offset' => '0',
     'delta_reversed' => 0,
+    'formatter' => 'ds_taxonomy_separator',
     'formatter_settings' => array(),
-    'context' => 'argument_entity_id:node_1',
+    'label' => 'title',
     'override_title' => 0,
     'override_title_text' => '',
   );
@@ -1047,13 +1047,13 @@ echo \'<p><a class="btn btn-default" href="/node/add/projects-organization">Neue
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'label' => 'title',
-    'formatter' => 'ds_taxonomy_separator',
+    'context' => 'argument_entity_id:node_1',
     'delta_limit' => '0',
     'delta_offset' => '0',
     'delta_reversed' => 0,
+    'formatter' => 'ds_taxonomy_separator',
     'formatter_settings' => array(),
-    'context' => 'argument_entity_id:node_1',
+    'label' => 'title',
     'override_title' => 0,
     'override_title_text' => '',
   );
@@ -1099,23 +1099,23 @@ echo \'<p><a class="btn btn-default" href="/node/add/projects-organization">Neue
   $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 0,
-    'nodes_per_page' => '0',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
     'args' => '',
-    'url' => '',
-    'display' => 'default',
-    'override_title' => 1,
-    'override_title_text' => 'Projektvorschläge',
     'context' => array(
       0 => 'argument_entity_id:node_1.nid',
     ),
+    'display' => 'default',
+    'feed_icons' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'nodes_per_page' => '0',
+    'offset' => '0',
+    'override_pager_settings' => 0,
+    'override_title' => 1,
+    'override_title_text' => 'Projektvorschläge',
+    'pager_id' => '0',
+    'panel_args' => 0,
+    'url' => '',
+    'use_pager' => 0,
   );
   $pane->cache = array();
   $pane->style = array(

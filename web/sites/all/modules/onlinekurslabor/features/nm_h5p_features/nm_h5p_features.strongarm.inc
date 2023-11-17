@@ -93,14 +93,47 @@ function nm_h5p_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__h5p_content';
   $strongarm->value = array(
+    'extra_fields' => array(
+      'display' => array(
+        'h5p' => array(
+          'default' => array(
+            'visible' => TRUE,
+            'weight' => '0',
+          ),
+        ),
+      ),
+      'form' => array(
+        'h5p' => array(
+          'weight' => '1',
+        ),
+        'h5p_editor' => array(
+          'weight' => '4',
+        ),
+        'h5p_type' => array(
+          'weight' => '2',
+        ),
+        'path' => array(
+          'weight' => '6',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+      ),
+    ),
     'view_modes' => array(
-      'teaser' => array(
-        'custom_settings' => TRUE,
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'full' => array(
+        'custom_settings' => FALSE,
       ),
       'nm_stream' => array(
         'custom_settings' => TRUE,
       ),
-      'full' => array(
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
+      'revision' => array(
         'custom_settings' => FALSE,
       ),
       'rss' => array(
@@ -112,47 +145,14 @@ function nm_h5p_features_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
-      'print' => array(
-        'custom_settings' => FALSE,
-      ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
-      'token' => array(
-        'custom_settings' => FALSE,
-      ),
       'task' => array(
         'custom_settings' => FALSE,
       ),
-      'revision' => array(
+      'teaser' => array(
+        'custom_settings' => TRUE,
+      ),
+      'token' => array(
         'custom_settings' => FALSE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(
-        'h5p' => array(
-          'weight' => '1',
-        ),
-        'title' => array(
-          'weight' => '0',
-        ),
-        'path' => array(
-          'weight' => '6',
-        ),
-        'h5p_type' => array(
-          'weight' => '2',
-        ),
-        'h5p_editor' => array(
-          'weight' => '4',
-        ),
-      ),
-      'display' => array(
-        'h5p' => array(
-          'default' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-        ),
       ),
     ),
   );

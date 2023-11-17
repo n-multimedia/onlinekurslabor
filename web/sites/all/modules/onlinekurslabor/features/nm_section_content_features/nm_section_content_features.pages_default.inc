@@ -39,7 +39,7 @@ function nm_section_content_features_default_page_manager_pages() {
   $page->arguments = array(
     'fid' => array(
       'id' => 1,
-      'identifier' => 'Datei: FID',
+      'identifier' => 'Datei: ID',
       'name' => 'entity_id:file',
       'settings' => array(),
     ),
@@ -94,7 +94,7 @@ function nm_section_content_features_default_page_manager_pages() {
     'no_blocks' => 0,
     'pipeline' => 'standard',
     'relationships' => array(),
-    'title' => 'Overview',
+    'title' => 'Overview All Media',
   );
   $display = new panels_display();
   $display->layout = 'flexible:span4span8';
@@ -2425,7 +2425,7 @@ echo \'<p><a class="btn btn-default" href="/node/add/content-domain">Neuen Lehrt
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'body' => '<p>Sie können diesen Lehrtext auf einer einzelnen Seite ausgeben lassen und bspw. als PDF abspeichern.</p><p><em>Die Darstellung kann abweichen; interaktive Elemente wie Videos sowie andere Medien außer Bildern sind nicht enthalten</em></p><p><strong><a href="/book/export/html/%1:nid" target="_blank">Export starten</a></strong></p>',
+    'body' => '<p>[collapsible]</p><h2>Lehrtext selbst exportieren</h2><p>Sie können diesen Lehrtext auf einer einzelnen Seite ausgeben lassen und bspw. als PDF abspeichern.</p><p><em>Die Darstellung kann abweichen; interaktive Elemente wie Videos sowie andere Medien außer Bildern sind nicht enthalten</em></p><p><strong><a href="/book/export/html/%251:nid">Export starten</a></strong></p><p>[/collapsible]</p><p>[collapsible]</p><h2>Lehrtextexport anfordern</h2><p>Sie können außerdem einen Export Ihres Lehrtexts anfordern. Nach Bearbeitung (<em>diese kann bis zu vierzehn Werktage in Anspruch nehmen</em>) erhalten Sie Zugang zu einem verschlüsselten Download. Um diesen herunterzuladen, müssen Sie sich an der Universität Augsburg oder im VPN befinden.</p><p>Die Zip-Datei enthält:</p><ul><li>eine "Readme" mit Übersicht über Inhalte des Ordners</li><li>Ihren Lehrtext als Word- und HTML-Dokument</li><li>eingebettete Grafiken und die meisten anderen Medien</li><li>alle benutzten H5P-Elemente <em>ohne Videos.</em></li></ul><p>Auf Anfrage können u.U. auch die zugehörigen Videos exportiert werden</p><ul><li>hierbei wird eine Einzelfallprüfung vorgenommen</li><li>ergänzen Sie diesen Wunsch bei Ihrer Anfrage</li></ul><p>Um einen solchen Export anzufordern, klicken Sie jetzt rechts auf "<strong>Hilfe und Konktakt</strong>", wählen als Thema "<strong>Export dieses Lehrtexts anfordern</strong>", ergänzen die Anfrage und schicken diese ab.</p><p>[/collapsible]</p>',
     'format' => 'filtered_html',
     'substitute' => 1,
     'title' => 'Lehrtext exportieren',

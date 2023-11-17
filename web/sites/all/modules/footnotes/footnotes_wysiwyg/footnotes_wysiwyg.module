@@ -47,8 +47,8 @@ function footnotes_wysiwyg_ckeditor_plugin() {
         'footnotes' => array(
           'icon' => 'images/footnotes.png',
           'label' => 'Footnotes',
-        )
+        ),
       ),
-    )
+    ),
   );
 }

@@ -1,0 +1,5 @@
+name = htmlpurifier_check
+description = checks if a needed configuration in htmlpurifier-library exists. If not, throws error.
+core = 7.x
+version = 7.x-1.0-alpha19
+package = custom

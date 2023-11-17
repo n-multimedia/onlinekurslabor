@@ -55,6 +55,7 @@
 /**
  *
  */
+#[\AllowDynamicProperties]
 class panels_renderer_standard {
   /**
    * The fully-loaded Panels display object that is to be rendered. "Fully
@@ -166,6 +167,14 @@ class panels_renderer_standard {
    * @var bool
    */
   var $show_empty_layout = TRUE;
+
+
+  /**
+   * Cache stored by the wizard to cache the display.
+   *
+   * @var object
+   */
+  public $cache = NULL;
 
   /**
    * Receive and store the display object to be rendered.
@@ -443,8 +452,8 @@ class panels_renderer_standard {
     if (!$show) {
       return;
     }
-
-    $this->rendered['layout'] = theme($theme, array('css_id' => check_plain($this->display->css_id), 'content' => $this->rendered['regions'], 'settings' => $this->display->layout_settings, 'display' => $this->display, 'layout' => $this->plugins['layout'], 'renderer' => $this));
+    $css_id = check_plain((string) $this->display->css_id);
+    $this->rendered['layout'] = theme($theme, array('css_id' => $css_id, 'content' => $this->rendered['regions'], 'settings' => $this->display->layout_settings, 'display' => $this->display, 'layout' => $this->plugins['layout'], 'renderer' => $this));
     return $this->prefix . $this->rendered['layout'] . $this->suffix;
   }
 

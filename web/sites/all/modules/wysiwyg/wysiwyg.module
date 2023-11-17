@@ -1001,7 +1001,10 @@ function wysiwyg_ui_profile_cache_set(&$profile) {
  * Clear all Wysiwyg profile caches.
  */
 function wysiwyg_profile_cache_clear() {
-  entity_get_controller('wysiwyg_profile')->resetCache();
+  if (module_exists('wysiwyg')) {
+    // Skip this if the module is not enabled as entity_get_info() returns null.
+    entity_get_controller('wysiwyg_profile')->resetCache();
+  }
   drupal_static_reset('wysiwyg_profile_load_all');
   cache_clear_all('wysiwyg_profiles', 'cache');
 }
@@ -1486,6 +1489,9 @@ function _wysiwyg_process_include($module, $identifier, $path, $hook) {
 
 /**
  * Return an install note about deprecation.
+ *
+ * @param array $editor
+ *   The definition for a an editor plugin with a 'deprecation message' key.
  */
 function wysiwyg_deprecation_install_note($editor) {
   $output = '<p class="warning">' . $editor['deprecation message'] . '</p>';

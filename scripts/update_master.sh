@@ -13,7 +13,7 @@ drush en eol_configuration_feature --yes
 drush cc all
 
 #revert single features
-drush fr  home_features annvid_features nm_section_content_features nm_section_courses_features nm_general_features notification_features eol_configuration_feature --yes
+drush fr   annvid_features environment_indicator_feature help_features home_features nm_general_features nm_h5p_features nm_login_vhb_features nm_section_content_features nm_section_courses_features nm_stream_features notification_features section_courses_clone_features section_projects_features videosafe_features --yes
 #drush fr annvid_features nm_section_content_features nm_section_courses_features nm_general_features section_projects_features nm_h5p_features section_courses_clone_features nm_administration nm_uuid_features --yes
 
 #import language
@@ -28,6 +28,7 @@ sleep 5
 
 drush dis dblog --y
 drush en fast_dblog --y
+drush en htmlpurifier_check --y
 
 drush vset --exact fast_dblog_row_limit 10000
 drush vset --exact fast_dblog_buffered 1

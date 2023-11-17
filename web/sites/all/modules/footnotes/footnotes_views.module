@@ -11,9 +11,6 @@
 function footnotes_views_views_api() {
   $view = array(
     'api' => 2,
-    //'path' => drupal_get_path('module', 'footnotes_views'), -- this is the default
   );
   return $view;
 }
-
-// vim: ts=2 sw=2 et syntax=php

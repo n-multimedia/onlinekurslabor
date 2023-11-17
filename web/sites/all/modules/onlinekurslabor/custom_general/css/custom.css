@@ -1374,7 +1374,14 @@ div.view-courses-kurse-bersicht .nm-stream-node-container img.courseitem_coursel
 .okl-death-container .ds-element-title
 {
     text-transform: none !important;
-
+}
+.okl-death-container .okl-death-update
+{
+    transform: rotate(30deg);
+    position:absolute;
+    margin-top:25px;
+    margin-left:-40px;
+    z-index: 5;
 }
 
 /**

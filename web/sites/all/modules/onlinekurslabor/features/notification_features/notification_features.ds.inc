@@ -19,9 +19,9 @@ function notification_features_ds_field_settings_info() {
   $ds_fieldsetting->view_mode = 'default';
   $ds_fieldsetting->settings = array(
     'message_new' => array(
-      'weight' => '0',
-      'label' => 'hidden',
       'format' => 'default',
+      'label' => 'hidden',
+      'weight' => '0',
     ),
   );
   $export['message|message_changed_node|default'] = $ds_fieldsetting;
@@ -34,9 +34,9 @@ function notification_features_ds_field_settings_info() {
   $ds_fieldsetting->view_mode = 'full';
   $ds_fieldsetting->settings = array(
     'message_new' => array(
-      'weight' => '0',
-      'label' => 'hidden',
       'format' => 'default',
+      'label' => 'hidden',
+      'weight' => '0',
     ),
   );
   $export['message|message_changed_node|full'] = $ds_fieldsetting;
@@ -49,9 +49,9 @@ function notification_features_ds_field_settings_info() {
   $ds_fieldsetting->view_mode = 'default';
   $ds_fieldsetting->settings = array(
     'message_new' => array(
-      'weight' => '0',
-      'label' => 'hidden',
       'format' => 'default',
+      'label' => 'hidden',
+      'weight' => '0',
     ),
   );
   $export['message|message_new_node|default'] = $ds_fieldsetting;
@@ -64,9 +64,9 @@ function notification_features_ds_field_settings_info() {
   $ds_fieldsetting->view_mode = 'full';
   $ds_fieldsetting->settings = array(
     'message_new' => array(
-      'weight' => '0',
-      'label' => 'hidden',
       'format' => 'default',
+      'label' => 'hidden',
+      'weight' => '0',
     ),
   );
   $export['message|message_new_node|full'] = $ds_fieldsetting;
@@ -109,26 +109,26 @@ function notification_features_ds_layout_settings_info() {
   $ds_layout->view_mode = 'default';
   $ds_layout->layout = 'ds_1col';
   $ds_layout->settings = array(
+    'classes' => array(),
+    'fields' => array(
+      'message__message_text__0' => 'ds_content',
+      'message_new' => 'ds_content',
+    ),
+    'layout_attributes' => '',
+    'layout_attributes_merge' => 1,
+    'layout_disable_css' => FALSE,
+    'layout_link_attribute' => '',
+    'layout_link_custom' => '',
+    'layout_wrapper' => 'div',
     'regions' => array(
       'ds_content' => array(
         0 => 'message_new',
         1 => 'message__message_text__0',
       ),
     ),
-    'fields' => array(
-      'message_new' => 'ds_content',
-      'message__message_text__0' => 'ds_content',
-    ),
-    'classes' => array(),
     'wrappers' => array(
       'ds_content' => 'div',
     ),
-    'layout_wrapper' => 'div',
-    'layout_attributes' => '',
-    'layout_attributes_merge' => 1,
-    'layout_link_attribute' => '',
-    'layout_link_custom' => '',
-    'layout_disable_css' => FALSE,
   );
   $export['message|message_changed_node|default'] = $ds_layout;
 
@@ -140,26 +140,26 @@ function notification_features_ds_layout_settings_info() {
   $ds_layout->view_mode = 'full';
   $ds_layout->layout = 'ds_1col';
   $ds_layout->settings = array(
+    'classes' => array(),
+    'fields' => array(
+      'message__message_text__0' => 'ds_content',
+      'message_new' => 'ds_content',
+    ),
+    'layout_attributes' => '',
+    'layout_attributes_merge' => 1,
+    'layout_disable_css' => FALSE,
+    'layout_link_attribute' => '',
+    'layout_link_custom' => '',
+    'layout_wrapper' => 'div',
     'regions' => array(
       'ds_content' => array(
         0 => 'message_new',
         1 => 'message__message_text__0',
       ),
     ),
-    'fields' => array(
-      'message_new' => 'ds_content',
-      'message__message_text__0' => 'ds_content',
-    ),
-    'classes' => array(),
     'wrappers' => array(
       'ds_content' => 'div',
     ),
-    'layout_wrapper' => 'div',
-    'layout_attributes' => '',
-    'layout_attributes_merge' => 1,
-    'layout_link_attribute' => '',
-    'layout_link_custom' => '',
-    'layout_disable_css' => FALSE,
   );
   $export['message|message_changed_node|full'] = $ds_layout;
 
@@ -171,26 +171,26 @@ function notification_features_ds_layout_settings_info() {
   $ds_layout->view_mode = 'default';
   $ds_layout->layout = 'ds_1col';
   $ds_layout->settings = array(
+    'classes' => array(),
+    'fields' => array(
+      'message__message_text__0' => 'ds_content',
+      'message_new' => 'ds_content',
+    ),
+    'layout_attributes' => '',
+    'layout_attributes_merge' => 1,
+    'layout_disable_css' => FALSE,
+    'layout_link_attribute' => '',
+    'layout_link_custom' => '',
+    'layout_wrapper' => 'div',
     'regions' => array(
       'ds_content' => array(
         0 => 'message_new',
         1 => 'message__message_text__0',
       ),
     ),
-    'fields' => array(
-      'message_new' => 'ds_content',
-      'message__message_text__0' => 'ds_content',
-    ),
-    'classes' => array(),
     'wrappers' => array(
       'ds_content' => 'div',
     ),
-    'layout_wrapper' => 'div',
-    'layout_attributes' => '',
-    'layout_attributes_merge' => 1,
-    'layout_link_attribute' => '',
-    'layout_link_custom' => '',
-    'layout_disable_css' => FALSE,
   );
   $export['message|message_new_node|default'] = $ds_layout;
 
@@ -202,26 +202,26 @@ function notification_features_ds_layout_settings_info() {
   $ds_layout->view_mode = 'full';
   $ds_layout->layout = 'ds_1col';
   $ds_layout->settings = array(
+    'classes' => array(),
+    'fields' => array(
+      'message__message_text__0' => 'ds_content',
+      'message_new' => 'ds_content',
+    ),
+    'layout_attributes' => '',
+    'layout_attributes_merge' => 1,
+    'layout_disable_css' => FALSE,
+    'layout_link_attribute' => '',
+    'layout_link_custom' => '',
+    'layout_wrapper' => 'div',
     'regions' => array(
       'ds_content' => array(
         0 => 'message_new',
         1 => 'message__message_text__0',
       ),
     ),
-    'fields' => array(
-      'message_new' => 'ds_content',
-      'message__message_text__0' => 'ds_content',
-    ),
-    'classes' => array(),
     'wrappers' => array(
       'ds_content' => 'div',
     ),
-    'layout_wrapper' => 'div',
-    'layout_attributes' => '',
-    'layout_attributes_merge' => 1,
-    'layout_link_attribute' => '',
-    'layout_link_custom' => '',
-    'layout_disable_css' => FALSE,
   );
   $export['message|message_new_node|full'] = $ds_layout;
 

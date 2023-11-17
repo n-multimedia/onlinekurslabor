@@ -48,6 +48,7 @@ function _section_domain_author_section_active($path = NULL) {
   $domain_text_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'text');
   $domain_preview_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'preview');
   $domain_stats_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'stats');
+  $domain_media_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'media');
   $domain_add_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'add');
   $domain_edit_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'edit');
   $domain_delete_active = (arg(0, $path) == 'domain' && arg(1, $path) == 'delete');
@@ -60,6 +61,7 @@ function _section_domain_author_section_active($path = NULL) {
       $book_active ||
       $tasks_overview_active || $domain_text_active ||
       $domain_preview_active || $domain_stats_active ||
+      $domain_media_active ||
       $domain_add_active || $domain_edit_active ||
       $domain_delete_active || $h5p_overview_active || $ajax_linkit_tasks ||
       $ajax_linkit_h5p || $members_active;
@@ -294,7 +296,16 @@ function _section_courses_advanced_forum_get_num_unread($uid, $tid) {
   return $num_total;
 }
 
-function _custom_general_get_num_unread($uid = NULL, $nid) {
+/**
+ * check history entries for every entity found
+ * return unread
+ * @global type $user
+ * @staticvar array $result_cache
+ * @param type $uid - UID eines Users
+ * @param type $nid
+ * @return int
+ */
+function _custom_general_get_num_unread($uid, $nid) {
 
   static $result_cache = array();
   if (!$uid) {
@@ -641,7 +652,7 @@ function custom_general_get_users_in_group_by_role($gid, $roles) {
 function custom_general_get_users_in_group_by_role_real($gid, $role_name, $og_state = OG_STATE_ACTIVE) {
 
     $node_to_check = node_load($gid);
-    $uids = og_get_group_members_properties(entity_load_single('node', $gid), array(), 'members__' . $og_state, 'node');
+    $uids = og_get_group_members_properties($node_to_check, array(), 'members__' . $og_state, 'node');
     $real_uids = array();
     foreach ($uids as $uid) {
         //alle rollen holen und einen check auf aktiv machen, wenn wir nicht-geblockten Status haben

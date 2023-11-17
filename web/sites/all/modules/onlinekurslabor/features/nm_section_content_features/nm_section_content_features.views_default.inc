@@ -181,9 +181,6 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['relationships']['profile_1']['field'] = 'profile';
   $handler->display->display_options['relationships']['profile_1']['label'] = 'Profil_master';
   $handler->display->display_options['relationships']['profile_1']['required'] = TRUE;
-  $handler->display->display_options['relationships']['profile_1']['bundle_types'] = array(
-    'master' => 'master',
-  );
   /* Field: Bulk operations: User */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_user';
@@ -420,7 +417,6 @@ function nm_section_content_features_views_default_views() {
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['relationship'] = 'og_membership_rel';
   $handler->display->display_options['fields']['created']['label'] = 'Zeitpunkt der Anfrage';
-  $handler->display->display_options['fields']['created']['date_format'] = 'time span';
   /* Field: OG membership: Request message */
   $handler->display->display_options['fields']['og_membership_request']['id'] = 'og_membership_request';
   $handler->display->display_options['fields']['og_membership_request']['table'] = 'field_data_og_membership_request';

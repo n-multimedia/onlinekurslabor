@@ -77,6 +77,8 @@ function notification_features_views_default_views() {
     t('Rendered Nachricht'),
     t('.'),
     t(','),
+    t('1'),
+    t('@count'),
     t('Activity pane'),
     t('shows activity '),
     t('View panes'),

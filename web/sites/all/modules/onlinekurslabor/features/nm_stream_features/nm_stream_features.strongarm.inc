@@ -93,18 +93,18 @@ function nm_stream_features_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__nm_stream';
   $strongarm->value = array(
-    'view_modes' => array(),
     'extra_fields' => array(
+      'display' => array(),
       'form' => array(
-        'title' => array(
-          'weight' => '0',
-        ),
         'path' => array(
           'weight' => '4',
         ),
+        'title' => array(
+          'weight' => '0',
+        ),
       ),
-      'display' => array(),
     ),
+    'view_modes' => array(),
   );
   $export['field_bundle_settings_node__nm_stream'] = $strongarm;
 

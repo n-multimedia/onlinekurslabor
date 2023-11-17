@@ -228,21 +228,21 @@ function panels_flexible_convert_settings(&$settings, &$layout) {
 
       for ($col = 1; $col <= intval($old["row_$row"]['columns']); $col++) {
         // Create entry for the region:
-        $settings['items']["row_${row}_$col"] = array(
+        $settings['items']["row_{$row}_$col"] = array(
           'type' => 'region',
           'width' => $old["row_$row"]["width_$col"],
           'width_type' => '%',
           'parent' => "row_$row",
         );
         // Add entry for the region to the row's children:
-        $settings['items']["row_$row"]['children'][] = "row_${row}_$col";
+        $settings['items']["row_$row"]['children'][] = "row_{$row}_$col";
 
         // Apply the proper title to the region:
         if (!empty($old["row_$row"]['names'][$col - 1])) {
-          $settings['items']["row_${row}_$col"]['title'] = $old["row_$row"]['names'][$col - 1];
+          $settings['items']["row_{$row}_$col"]['title'] = $old["row_$row"]['names'][$col - 1];
         }
         else {
-          $settings['items']["row_${row}_$col"]['title'] = t("Row @row, Column @col", array('@row' => $row, '@col' => $col));
+          $settings['items']["row_{$row}_$col"]['title'] = t("Row @row, Column @col", array('@row' => $row, '@col' => $col));
         }
       }
     }
@@ -291,7 +291,10 @@ function panels_flexible_create_renderer($admin, $css_id, $content, $settings, &
   $renderer->settings = $settings;
   $renderer->content = $content;
   $renderer->css_id = $css_id;
-  $renderer->did = &$display->did;
+  $renderer->did = 0;
+  if ($display) {
+    $renderer->did = &$display->did;
+  }
   if ($admin) {
     // Always scale in admin mode.
     $renderer->scale_base = 99.0;
@@ -304,7 +307,7 @@ function panels_flexible_create_renderer($admin, $css_id, $content, $settings, &
   $renderer->handler = $handler;
 
   // Set up basic classes for all of our components.
-  $renderer->name                 = !empty($layout['layout']) ? $layout['layout']->name : $display->did;
+  $renderer->name                 = !empty($layout['layout']) ? $layout['layout']->name : $renderer->did;
   $renderer->base_class           = $renderer->name;
   $renderer->item_class['column'] = 'panels-flexible-column';
   $renderer->item_class['row']    = 'panels-flexible-row';
@@ -397,7 +400,9 @@ function theme_panels_flexible($vars) {
 
   // Also store the CSS on the display in case the live preview or something
   // needs it.
-  $display->add_css = $css;
+  if ($display) {
+    $display->add_css = $css;
+  }
 
   $output = "<div class=\"panel-flexible " . $renderer->base['canvas'] . " clearfix\" $renderer->id_str>\n";
   $output .= "<div class=\"panel-flexible-inside " . $renderer->base['canvas'] . "-inside\">\n";
@@ -1611,7 +1616,7 @@ function panels_ajax_flexible_edit_remove($handler, $id) {
   panels_flexible_convert_settings($settings, $handler->plugins['layout']);
 
   if (empty($settings['items'][$id])) {
-    ajax_render_error(t('Invalid item id.'));
+    ctools_ajax_render_error(t('Invalid item id.'));
   }
 
   $item = &$settings['items'][$id];

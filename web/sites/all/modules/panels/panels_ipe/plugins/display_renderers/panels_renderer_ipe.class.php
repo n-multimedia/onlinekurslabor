@@ -14,6 +14,11 @@ class panels_renderer_ipe extends panels_renderer_editor {
   // Whether or not the user has access.
   var $access = NULL;
 
+  /**
+   * @var string
+   */
+  public $clean_key;
+
   function invoke_panels_ipe_access() {
     if (user_access('bypass access in place editing')) {
       return TRUE;

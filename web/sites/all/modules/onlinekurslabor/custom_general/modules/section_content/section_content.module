@@ -1496,7 +1496,7 @@ function array_search_i($str, $array) {
  * rendert das Inhaltsverzeichnis im Lehrtext links
  * wird benutzt in _section_content_block_text_outline
  * kann eingesetzt werden durch: Add Block ->  content text outline
- * Course oder Domain muss aktiv gesetzt werden für Funktionalität.
+ * Course oder Domain muss aktiv gesetzt werden für Funktionalität (dies geht via _section_domain_author_section_active)
  *
  * @param int $domain_nid Die Domain-ID
  * @param bool $rendered_in_course Inhaltsvz wird im Kurs angezeigt

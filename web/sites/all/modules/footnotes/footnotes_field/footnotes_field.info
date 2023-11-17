@@ -5,8 +5,8 @@ dependencies[] = footnotes
 configure = admin/config/content/footnotes
 
 ; Information added by Drupal.org packaging script on 2018-02-21
-version = "7.x-2.6"
+version = "7.x-3.1"
 core = "7.x"
 project = "footnotes"
-datestamp = "1519214295"
+datestamp = "1519213999"
 

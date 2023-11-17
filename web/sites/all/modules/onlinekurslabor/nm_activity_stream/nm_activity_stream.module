@@ -25,12 +25,11 @@ function nm_activity_stream_preprocess_message(&$variables)
 {
 
     $message = $variables['elements']['#entity'];
-  
+
     if (isset($message) && in_array($message->type , array( 'message_new_node', 'message_changed_node')))
     {
         //get currently loggedin user
         $ref_current_user = $GLOBALS['user'];
-
         //create objects of the node and the user that created the node
         $ref_node_id = $message->field_message_node_ref[LANGUAGE_NONE][0]['target_id'];
         $ref_node = node_load($ref_node_id);
@@ -51,7 +50,7 @@ function nm_activity_stream_preprocess_message(&$variables)
         $vars['activity_path'] = 'node/' . $ref_node->nid;
         $vars['activity_type'] = $ref_node->type;
         $vars['activity_timestamp_create'] = $message->timestamp;
-        $vars['activity_unread'] = _custom_general_get_num_unread(NULL, $ref_node->nid) ? TRUE : FALSE;
+        $vars['activity_unread'] = _custom_general_get_num_unread($ref_current_user->uid, $ref_node->nid) ? TRUE : FALSE;
 
 
         $variables['message_new'] = theme('nm_activity_stream_theme_single_activity', $vars);

@@ -18,8 +18,8 @@ function home_features_default_page_manager_pages() {
   $page->admin_description = '';
   $page->path = 'start';
   $page->access = array(
-    'type' => 'none',
     'settings' => NULL,
+    'type' => 'none',
   );
   $page->menu = array();
   $page->arguments = array();
@@ -36,187 +36,187 @@ function home_features_default_page_manager_pages() {
   $handler->handler = 'panel_context';
   $handler->weight = -2;
   $handler->conf = array(
-    'title' => 'loggedout_okl',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => 'home_loggedout',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'logged-in-user',
           'name' => 'role',
+          'not' => TRUE,
           'settings' => array(
             'rids' => array(
               0 => 2,
             ),
           ),
-          'context' => 'logged-in-user',
-          'not' => TRUE,
         ),
         1 => array(
           'name' => 'php',
+          'not' => TRUE,
           'settings' => array(
             'description' => 'module schullabor active',
             'php' => 'return module_exists(\'schullabor\');',
           ),
-          'not' => TRUE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => 'home_loggedout',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'loggedout_okl',
   );
   $display = new panels_display();
   $display->layout = 'flexible';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
         ),
-        'parent' => NULL,
         'class' => 'home-layout-container',
         'column_class' => '',
-        'row_class' => '',
-        'region_class' => '',
-        'no_scale' => FALSE,
-        'fixed_width' => '',
         'column_separation' => '0.5em',
+        'contains' => 'column',
+        'fixed_width' => '',
+        'no_scale' => FALSE,
+        'parent' => NULL,
+        'region_class' => '',
         'region_separation' => '0.5em',
+        'row_class' => '',
         'row_separation' => '0.5em',
+        'type' => 'row',
+      ),
+      'lehrender' => array(
+        'class' => 'col-xs-12 col-md-4',
+        'parent' => 'main-row',
+        'title' => 'lehrender',
+        'type' => 'region',
+        'width' => '26.88529876382778',
+        'width_type' => '%',
       ),
       'main' => array(
-        'type' => 'column',
-        'width' => 100,
-        'width_type' => '%',
         'children' => array(
           0 => 1,
           1 => 'main-row',
           2 => 2,
         ),
         'parent' => 'canvas',
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
       ),
       'main-row' => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'student',
           1 => 'lehrender',
           2 => 'partner_',
         ),
-        'parent' => 'main',
         'class' => 'row column-region',
+        'contains' => 'region',
+        'parent' => 'main',
+        'type' => 'row',
+      ),
+      'okl-description' => array(
+        'class' => 'col-xs-12 col-md-6 col-lg-7',
+        'parent' => '1',
+        'title' => 'Titel_OKL',
+        'type' => 'region',
+        'width' => '64.94139740527254',
+        'width_type' => '%',
+      ),
+      'okl-video' => array(
+        'class' => 'col-xs-12 col-md-6 col-lg-5',
+        'parent' => '1',
+        'title' => 'Image-Video',
+        'type' => 'region',
+        'width' => 35.058602594728,
+        'width_type' => '%',
+      ),
+      'partner' => array(
+        'class' => 'home-container-partner',
+        'parent' => '2',
+        'title' => 'Förderer',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      'partner_' => array(
+        'class' => 'col-xs-12 col-md-4',
+        'parent' => 'main-row',
+        'title' => 'Partner',
+        'type' => 'region',
+        'width' => '26.893250953042525',
+        'width_type' => '%',
+      ),
+      'student' => array(
+        'class' => 'col-xs-12 col-md-4',
+        'parent' => 'main-row',
+        'title' => 'Student',
+        'type' => 'region',
+        'width' => '26.83567332159516',
+        'width_type' => '%',
       ),
       1 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'okl-description',
           1 => 'okl-video',
         ),
-        'parent' => 'main',
         'class' => 'row',
+        'contains' => 'region',
+        'parent' => 'main',
+        'type' => 'row',
       ),
       2 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'partner',
         ),
-        'parent' => 'main',
         'class' => 'row',
-      ),
-      'okl-description' => array(
-        'type' => 'region',
-        'title' => 'Titel_OKL',
-        'width' => '64.94139740527254',
-        'width_type' => '%',
-        'parent' => '1',
-        'class' => 'col-xs-12 col-md-6 col-lg-7',
-      ),
-      'partner' => array(
-        'type' => 'region',
-        'title' => 'Förderer',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '2',
-        'class' => 'home-container-partner',
-      ),
-      'lehrender' => array(
-        'type' => 'region',
-        'title' => 'lehrender',
-        'width' => '26.88529876382778',
-        'width_type' => '%',
-        'parent' => 'main-row',
-        'class' => 'col-xs-12 col-md-4',
-      ),
-      'partner_' => array(
-        'type' => 'region',
-        'title' => 'Partner',
-        'width' => '26.893250953042525',
-        'width_type' => '%',
-        'parent' => 'main-row',
-        'class' => 'col-xs-12 col-md-4',
-      ),
-      'student' => array(
-        'type' => 'region',
-        'title' => 'Student',
-        'width' => '26.83567332159516',
-        'width_type' => '%',
-        'parent' => 'main-row',
-        'class' => 'col-xs-12 col-md-4',
-      ),
-      'okl-video' => array(
-        'type' => 'region',
-        'title' => 'Image-Video',
-        'width' => 35.058602594728,
-        'width_type' => '%',
-        'parent' => '1',
-        'class' => 'col-xs-12 col-md-6 col-lg-5',
+        'contains' => 'region',
+        'parent' => 'main',
+        'type' => 'row',
       ),
     ),
   );
   $display->panel_settings = array(
-    'style_settings' => array(
-      'default' => NULL,
-      'media' => NULL,
-      'left' => NULL,
-      'col1' => NULL,
-      'col2' => NULL,
-      'col3' => NULL,
-      'center' => NULL,
-      'okl-description' => NULL,
-      'bilder' => NULL,
-      'partner' => NULL,
-      'bild_studierende' => NULL,
-      'bild_lehrende' => NULL,
-      'okl-video' => NULL,
-      'okl-video_' => NULL,
-      'okl-video__' => NULL,
-      'okl-video___' => NULL,
-      'partner_' => NULL,
-      'bild_partner' => NULL,
-      'studierende' => NULL,
-      'okl-description_' => NULL,
-      'right' => NULL,
-      'middle' => NULL,
-      'lehrender' => NULL,
-      'student' => NULL,
-      'image_video' => NULL,
+    'bild_partner' => array(
+      'style' => '-1',
     ),
     'media' => array(
       'style' => '-1',
     ),
-    'bild_partner' => array(
-      'style' => '-1',
-    ),
     'studierende' => array(
       'style' => '-1',
+    ),
+    'style_settings' => array(
+      'bild_lehrende' => NULL,
+      'bild_partner' => NULL,
+      'bild_studierende' => NULL,
+      'bilder' => NULL,
+      'center' => NULL,
+      'col1' => NULL,
+      'col2' => NULL,
+      'col3' => NULL,
+      'default' => NULL,
+      'image_video' => NULL,
+      'left' => NULL,
+      'lehrender' => NULL,
+      'media' => NULL,
+      'middle' => NULL,
+      'okl-description' => NULL,
+      'okl-description_' => NULL,
+      'okl-video' => NULL,
+      'okl-video_' => NULL,
+      'okl-video__' => NULL,
+      'okl-video___' => NULL,
+      'partner' => NULL,
+      'partner_' => NULL,
+      'right' => NULL,
+      'student' => NULL,
+      'studierende' => NULL,
     ),
   );
   $display->cache = array();
@@ -235,7 +235,6 @@ function home_features_default_page_manager_pages() {
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<?php
 $vars = array();
 $vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_lehrender.png" style="width:100%;"    />\';
@@ -247,14 +246,15 @@ return theme(\'nm_fancy_box\', $vars);
 ?>',
     'format' => 'php_code',
     'substitute' => TRUE,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => 'startpage-okl-description-dozent',
     'css_class' => '',
+    'css_id' => 'startpage-okl-description-dozent',
   );
   $pane->extras = array();
   $pane->position = 0;
@@ -271,10 +271,10 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'Einführungstext',
-    'title' => '',
     'body' => '<h2 style="color: #EB690B;">Onlinekurslabor</h2><p style="text-align: justify;">Das Onlinekurslabor ist eine digitale Lernplattform des Medienlabors für Studierende, Hochschullehrende und Partnerorganisationen. Zielgruppe des Angebots sind hauptsächlich Mitglieder der Universität Augsburg. </p><p style="text-align: justify;">Im Fokus liegen insbesondere erfahrungsorientiertes und forschendes Lernen in realen Projekten. Hier werden Ihnen virtuelle Werkzeuge zur Begleitung der Präsenzlehre, zur Erstellung von E-Learning-Kursen und zur Organisation von Projektseminaren bereitgestellt.</p><p>&nbsp;</p>',
     'format' => 'filtered_html',
     'substitute' => TRUE,
+    'title' => '',
     'title_heading' => 'h2',
   );
   $pane->cache = array();
@@ -282,8 +282,8 @@ return theme(\'nm_fancy_box\', $vars);
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => 'startpage-okl-description',
     'css_class' => 'col-md-12',
+    'css_id' => 'startpage-okl-description',
   );
   $pane->extras = array();
   $pane->position = 0;
@@ -300,19 +300,19 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'Video',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<?php echo _custom_general_get_rendered_html5_video_tag("https://onlinekurslabor.phil.uni-augsburg.de/sites/default/files/imagefilm_onlinekurslabor.mp4", "/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/fakevideo2.png"); ?>',
     'format' => 'php_code',
     'substitute' => TRUE,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => 'startpage-okl-video',
     'css_class' => '',
+    'css_id' => 'startpage-okl-video',
   );
   $pane->extras = array();
   $pane->position = 0;
@@ -329,7 +329,6 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<a href="http://www.bmas.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_BMAS.png" style="float:right" /></a>
 <a href="https://www.bmbf.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_BMBF.png" style="float:right" /></a>
 <a href="https://www.stiftung-mercator.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_mercator.png" style="float:right" /></a>
@@ -337,14 +336,15 @@ return theme(\'nm_fancy_box\', $vars);
 <a href="http://www.uni-augsburg.de/projekte/bildung-durch-verantwortung" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_bdv.png" style="float:right" /></a>',
     'format' => 'php_code',
     'substitute' => TRUE,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => 'startpage-okl-description-foerderer',
     'css_class' => 'col-md-12',
+    'css_id' => 'startpage-okl-description-foerderer',
   );
   $pane->extras = array();
   $pane->position = 0;
@@ -361,7 +361,6 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<?php
 $vars = array();
 $vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_partner.png" style="width:100%;"   />\';
@@ -373,6 +372,7 @@ return theme(\'nm_fancy_box\', $vars);
 ?>',
     'format' => 'php_code',
     'substitute' => TRUE,
+    'title' => '',
     'title_heading' => 'h2',
   );
   $pane->cache = array();
@@ -380,8 +380,8 @@ return theme(\'nm_fancy_box\', $vars);
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => 'startpage-okl-description-partner',
     'css_class' => '',
+    'css_id' => 'startpage-okl-description-partner',
   );
   $pane->extras = array();
   $pane->position = 0;
@@ -398,7 +398,6 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<?php
 $vars = array();
 $vars[\'image\'] = \'<img alt="" src="/sites/all/themes/bootstrap_onlinekurslabor/images/homepage/logo_student.png" style="width:100%;"    />\';
@@ -410,14 +409,15 @@ return theme(\'nm_fancy_box\', $vars);
 ?>',
     'format' => 'php_code',
     'substitute' => TRUE,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => 'startpage-okl-description-student',
     'css_class' => '',
+    'css_id' => 'startpage-okl-description-student',
   );
   $pane->extras = array();
   $pane->position = 0;
@@ -438,145 +438,145 @@ return theme(\'nm_fancy_box\', $vars);
   $handler->handler = 'panel_context';
   $handler->weight = -1;
   $handler->conf = array(
-    'title' => 'loggedout_osl',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => 'home_loggedout',
-    'css' => '',
-    'contexts' => array(),
-    'relationships' => array(),
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'logged-in-user',
           'name' => 'role',
+          'not' => TRUE,
           'settings' => array(
             'rids' => array(
               0 => 2,
             ),
           ),
-          'context' => 'logged-in-user',
-          'not' => TRUE,
         ),
         1 => array(
           'name' => 'php',
+          'not' => FALSE,
           'settings' => array(
             'description' => 'module schullabor active',
             'php' => 'return module_exists(\'schullabor\');',
           ),
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(),
+    'css' => '',
+    'css_id' => 'home_loggedout',
     'name' => 'loggedout_osl',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(),
+    'title' => 'loggedout_osl',
   );
   $display = new panels_display();
   $display->layout = 'flexible';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
         ),
-        'parent' => NULL,
         'class' => 'home-layout-container',
         'column_class' => '',
-        'row_class' => '',
-        'region_class' => '',
-        'no_scale' => FALSE,
-        'fixed_width' => '',
         'column_separation' => '0.5em',
+        'contains' => 'column',
+        'fixed_width' => '',
+        'no_scale' => FALSE,
+        'parent' => NULL,
+        'region_class' => '',
         'region_separation' => '0.5em',
+        'row_class' => '',
         'row_separation' => '0.5em',
+        'type' => 'row',
       ),
-      'main' => array(
-        'type' => 'column',
+      'info' => array(
+        'class' => '',
+        'hide_empty' => 0,
+        'parent' => '1',
+        'title' => 'info',
+        'type' => 'region',
         'width' => 100,
         'width_type' => '%',
+      ),
+      'main' => array(
         'children' => array(
           0 => 1,
           1 => 2,
         ),
         'parent' => 'canvas',
+        'type' => 'column',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      'partner' => array(
+        'class' => 'home-container-partner',
+        'parent' => '2',
+        'title' => 'Förderer',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
       ),
       1 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'info',
         ),
-        'parent' => 'main',
         'class' => 'row',
+        'contains' => 'region',
+        'parent' => 'main',
+        'type' => 'row',
       ),
       2 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'partner',
         ),
-        'parent' => 'main',
         'class' => 'row',
-      ),
-      'partner' => array(
-        'type' => 'region',
-        'title' => 'Förderer',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '2',
-        'class' => 'home-container-partner',
-      ),
-      'info' => array(
-        'type' => 'region',
-        'title' => 'info',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '1',
-        'class' => '',
-        'hide_empty' => 0,
+        'contains' => 'region',
+        'parent' => 'main',
+        'type' => 'row',
       ),
     ),
   );
   $display->panel_settings = array(
-    'style_settings' => array(
-      'default' => NULL,
-      'media' => NULL,
-      'left' => NULL,
-      'col1' => NULL,
-      'col2' => NULL,
-      'col3' => NULL,
-      'center' => NULL,
-      'okl-description' => NULL,
-      'bilder' => NULL,
-      'partner' => NULL,
-      'bild_studierende' => NULL,
-      'bild_lehrende' => NULL,
-      'okl-video' => NULL,
-      'okl-video_' => NULL,
-      'okl-video__' => NULL,
-      'okl-video___' => NULL,
-      'partner_' => NULL,
-      'bild_partner' => NULL,
-      'studierende' => NULL,
-      'okl-description_' => NULL,
-      'right' => NULL,
-      'middle' => NULL,
-      'lehrender' => NULL,
-      'student' => NULL,
-      'image_video' => NULL,
-      'info' => NULL,
+    'bild_partner' => array(
+      'style' => '-1',
     ),
     'media' => array(
       'style' => '-1',
     ),
-    'bild_partner' => array(
-      'style' => '-1',
-    ),
     'studierende' => array(
       'style' => '-1',
+    ),
+    'style_settings' => array(
+      'bild_lehrende' => NULL,
+      'bild_partner' => NULL,
+      'bild_studierende' => NULL,
+      'bilder' => NULL,
+      'center' => NULL,
+      'col1' => NULL,
+      'col2' => NULL,
+      'col3' => NULL,
+      'default' => NULL,
+      'image_video' => NULL,
+      'info' => NULL,
+      'left' => NULL,
+      'lehrender' => NULL,
+      'media' => NULL,
+      'middle' => NULL,
+      'okl-description' => NULL,
+      'okl-description_' => NULL,
+      'okl-video' => NULL,
+      'okl-video_' => NULL,
+      'okl-video__' => NULL,
+      'okl-video___' => NULL,
+      'partner' => NULL,
+      'partner_' => NULL,
+      'right' => NULL,
+      'student' => NULL,
+      'studierende' => NULL,
     ),
   );
   $display->cache = array();
@@ -595,11 +595,11 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'admin-info',
-    'title' => 'admin-info',
-    'title_heading' => 'h2',
     'body' => 'Das Modul SCHULLABOR muss aktiv sein, damit diese Seite angezeigt wird.',
     'format' => 'plain_text',
     'substitute' => TRUE,
+    'title' => 'admin-info',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -621,8 +621,6 @@ return theme(\'nm_fancy_box\', $vars);
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'osl-box-description',
-    'title' => '',
-    'title_heading' => 'h2',
     'body' => '<div class="front-wrapper-osl" >
 <div class="container" >
 <div class="text-container">
@@ -633,6 +631,8 @@ Das Onlineschullabor ist die digitale Lernplattform des Medienlabors der Univers
 </div>',
     'format' => 'full_html',
     'substitute' => TRUE,
+    'title' => '',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -654,7 +654,6 @@ Das Onlineschullabor ist die digitale Lernplattform des Medienlabors der Univers
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => '',
-    'title' => '',
     'body' => '<a href="http://www.bmas.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_BMAS.png" style="float:right" /></a>
 <a href="https://www.bmbf.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_BMBF.png" style="float:right" /></a>
 <a href="https://www.stiftung-mercator.de/" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_mercator.png" style="float:right" /></a>
@@ -662,14 +661,15 @@ Das Onlineschullabor ist die digitale Lernplattform des Medienlabors der Univers
 <a href="http://www.uni-augsburg.de/projekte/bildung-durch-verantwortung" target="_blank" ><img src="/sites/all/themes/bootstrap_onlinekurslabor/images/logos/logo_bdv.png" style="float:right" /></a>',
     'format' => 'php_code',
     'substitute' => TRUE,
+    'title' => '',
   );
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
   );
   $pane->css = array(
-    'css_id' => 'startpage-okl-description-foerderer',
     'css_class' => 'col-md-12',
+    'css_id' => 'startpage-okl-description-foerderer',
   );
   $pane->extras = array();
   $pane->position = 0;
@@ -690,227 +690,227 @@ Das Onlineschullabor ist die digitale Lernplattform des Medienlabors der Univers
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
-    'title' => 'loggedin',
-    'no_blocks' => 0,
-    'pipeline' => 'standard',
-    'body_classes_to_remove' => '',
-    'body_classes_to_add' => '',
-    'css_id' => 'home_loggedin',
-    'css' => '',
-    'contexts' => array(
-      0 => array(
-        'identifier' => 'Benutzer',
-        'keyword' => 'user',
-        'name' => 'user',
-        'type' => 'current',
-        'uid' => '',
-        'id' => 1,
-      ),
-    ),
-    'relationships' => array(
-      0 => array(
-        'identifier' => 'Profile2 from user',
-        'keyword' => 'profile2',
-        'name' => 'profile2',
-        'type' => 'master',
-        'context' => 'context_user_1',
-        'id' => 1,
-      ),
-    ),
-    'name' => 'loggedin',
     'access' => array(
+      'logic' => 'and',
       'plugins' => array(
         0 => array(
+          'context' => 'logged-in-user',
           'name' => 'role',
+          'not' => FALSE,
           'settings' => array(
             'rids' => array(
               0 => 2,
             ),
           ),
-          'context' => 'logged-in-user',
-          'not' => FALSE,
         ),
       ),
-      'logic' => 'and',
     ),
+    'body_classes_to_add' => '',
+    'body_classes_to_remove' => '',
+    'contexts' => array(
+      0 => array(
+        'id' => 1,
+        'identifier' => 'Benutzer',
+        'keyword' => 'user',
+        'name' => 'user',
+        'type' => 'current',
+        'uid' => '',
+      ),
+    ),
+    'css' => '',
+    'css_id' => 'home_loggedin',
+    'name' => 'loggedin',
+    'no_blocks' => 0,
+    'pipeline' => 'standard',
+    'relationships' => array(
+      0 => array(
+        'context' => 'context_user_1',
+        'id' => 1,
+        'identifier' => 'Profile2 from user',
+        'keyword' => 'profile2',
+        'name' => 'profile2',
+        'type' => 'master',
+      ),
+    ),
+    'title' => 'loggedin',
   );
   $display = new panels_display();
   $display->layout = 'flexible';
   $display->layout_settings = array(
     'items' => array(
       'canvas' => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 'main',
         ),
-        'parent' => NULL,
         'class' => 'row',
         'column_class' => '',
-        'row_class' => '',
-        'region_class' => '',
-        'no_scale' => FALSE,
-        'fixed_width' => '',
         'column_separation' => '0.5em',
+        'contains' => 'column',
+        'fixed_width' => '',
+        'no_scale' => FALSE,
+        'parent' => NULL,
+        'region_class' => '',
         'region_separation' => '0.5em',
+        'row_class' => '',
         'row_separation' => '0.5em',
+        'type' => 'row',
       ),
       'main' => array(
-        'type' => 'column',
-        'width' => 100.00000000000061,
-        'width_type' => '%',
         'children' => array(
           0 => 10,
           1 => 15,
           2 => 16,
         ),
-        'parent' => 'canvas',
         'class' => '',
         'hide_empty' => 0,
+        'parent' => 'canvas',
+        'type' => 'column',
+        'width' => 100.00000000000061,
+        'width_type' => '%',
+      ),
+      'main_' => array(
+        'class' => '',
+        'hide_empty' => 0,
+        'parent' => '14',
+        'title' => 'main',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      'picture_' => array(
+        'class' => '',
+        'hide_empty' => 0,
+        'parent' => '13',
+        'title' => 'space-left md2',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
+      ),
+      'tabs_' => array(
+        'class' => '',
+        'hide_empty' => 0,
+        'parent' => '15',
+        'title' => 'tabbed output',
+        'type' => 'region',
+        'width' => 100,
+        'width_type' => '%',
       ),
       10 => array(
-        'type' => 'row',
-        'contains' => 'column',
         'children' => array(
           0 => 11,
           1 => 12,
         ),
-        'parent' => 'main',
         'class' => 'top',
+        'contains' => 'column',
         'hide_empty' => 0,
+        'parent' => 'main',
+        'type' => 'row',
       ),
       11 => array(
-        'type' => 'column',
-        'width' => '17.92246792246792',
-        'width_type' => '%',
-        'parent' => '10',
         'children' => array(
           0 => 13,
         ),
         'class' => 'col-md-2',
         'hide_empty' => 0,
+        'parent' => '10',
+        'type' => 'column',
+        'width' => '17.92246792246792',
+        'width_type' => '%',
       ),
       12 => array(
-        'type' => 'column',
-        'width' => '82.07753207753208',
-        'width_type' => '%',
-        'parent' => '10',
         'children' => array(
           0 => 14,
         ),
         'class' => 'col-md-10',
         'hide_empty' => 0,
+        'parent' => '10',
+        'type' => 'column',
+        'width' => '82.07753207753208',
+        'width_type' => '%',
       ),
       13 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'picture_',
         ),
+        'class' => '',
+        'contains' => 'region',
+        'hide_empty' => 0,
         'parent' => '11',
-        'class' => '',
-        'hide_empty' => 0,
-      ),
-      'picture_' => array(
-        'type' => 'region',
-        'title' => 'space-left md2',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '13',
-        'class' => '',
-        'hide_empty' => 0,
+        'type' => 'row',
       ),
       14 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'main_',
         ),
+        'class' => '',
+        'contains' => 'region',
+        'hide_empty' => 0,
         'parent' => '12',
-        'class' => '',
-        'hide_empty' => 0,
-      ),
-      'main_' => array(
-        'type' => 'region',
-        'title' => 'main',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '14',
-        'class' => '',
-        'hide_empty' => 0,
+        'type' => 'row',
       ),
       15 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(
           0 => 'tabs_',
         ),
-        'parent' => 'main',
         'class' => 'row',
+        'contains' => 'region',
         'hide_empty' => 0,
-      ),
-      'tabs_' => array(
-        'type' => 'region',
-        'title' => 'tabbed output',
-        'width' => 100,
-        'width_type' => '%',
-        'parent' => '15',
-        'class' => '',
-        'hide_empty' => 0,
+        'parent' => 'main',
+        'type' => 'row',
       ),
       16 => array(
-        'type' => 'row',
-        'contains' => 'region',
         'children' => array(),
-        'parent' => 'main',
         'class' => 'row',
+        'contains' => 'region',
         'hide_empty' => 0,
+        'parent' => 'main',
+        'type' => 'row',
       ),
     ),
   );
   $display->panel_settings = array(
+    'bild_partner' => array(
+      'style' => '-1',
+    ),
+    'media' => array(
+      'style' => '-1',
+    ),
+    'studierende' => array(
+      'style' => '-1',
+    ),
     'style_settings' => array(
-      'default' => NULL,
-      'media' => NULL,
-      'left' => NULL,
+      'bild_lehrende' => NULL,
+      'bild_partner' => NULL,
+      'bild_studierende' => NULL,
+      'bilder' => NULL,
+      'center' => NULL,
       'col1' => NULL,
       'col2' => NULL,
       'col3' => NULL,
-      'center' => NULL,
+      'default' => NULL,
+      'image_video' => NULL,
+      'left' => NULL,
+      'lehrender' => NULL,
+      'main_' => NULL,
+      'media' => NULL,
+      'middle' => NULL,
       'okl-description' => NULL,
-      'bilder' => NULL,
-      'partner' => NULL,
-      'bild_studierende' => NULL,
-      'bild_lehrende' => NULL,
+      'okl-description_' => NULL,
       'okl-video' => NULL,
       'okl-video_' => NULL,
       'okl-video__' => NULL,
       'okl-video___' => NULL,
+      'partner' => NULL,
       'partner_' => NULL,
-      'bild_partner' => NULL,
-      'studierende' => NULL,
-      'okl-description_' => NULL,
-      'right' => NULL,
-      'middle' => NULL,
-      'lehrender' => NULL,
-      'student' => NULL,
-      'image_video' => NULL,
       'picture_' => NULL,
-      'main_' => NULL,
+      'right' => NULL,
+      'student' => NULL,
+      'studierende' => NULL,
       'tabs_' => array(
         'region_bootstraptabs' => array(
           'alignment' => 'left',
         ),
       ),
-    ),
-    'media' => array(
-      'style' => '-1',
-    ),
-    'bild_partner' => array(
-      'style' => '-1',
-    ),
-    'studierende' => array(
-      'style' => '-1',
     ),
     'tabs_' => array(
       'style' => 'bootstrap-tabs',
@@ -932,12 +932,12 @@ Das Onlineschullabor ist die digitale Lernplattform des Medienlabors der Univers
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'Aktivität',
-    'title' => 'Aktivität',
-    'title_heading' => 'h2',
     'body' => '<div class="col-md-4 col-md-push-8 col-xs-12"><?php echo _section_home_getRenderedActivity(); ?></div>
 <div class="col-md-8  col-md-pull-4 col-xs-12 pane-nm-stream"><?php echo _section_home_getRenderedStream(); ?></div>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => 'Aktivität',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -959,12 +959,12 @@ Das Onlineschullabor ist die digitale Lernplattform des Medienlabors der Univers
   $pane->access = array();
   $pane->configuration = array(
     'admin_title' => 'Events',
-    'title' => 'Meine Veranstaltungen',
-    'title_heading' => 'h2',
     'body' => '<div class="col-md-4 col-md-push-8 col-xs-12"> <?php echo _section_home_getRenderedDomains() ?></div>
 <div class="col-md-8 col-md-pull-4 col-xs-12" ><?php echo _section_home_getRenderedCourses() ?> </div>',
     'format' => 'php_code',
     'substitute' => 1,
+    'title' => 'Meine Veranstaltungen',
+    'title_heading' => 'h2',
   );
   $pane->cache = array();
   $pane->style = array(
@@ -986,8 +986,8 @@ Das Onlineschullabor ist die digitale Lernplattform des Medienlabors der Univers
   $pane->access = array();
   $pane->configuration = array(
     'override_title' => 1,
-    'override_title_text' => 'Neue Nachrichten',
     'override_title_heading' => 'h2',
+    'override_title_text' => 'Neue Nachrichten',
   );
   $pane->cache = array();
   $pane->style = array(

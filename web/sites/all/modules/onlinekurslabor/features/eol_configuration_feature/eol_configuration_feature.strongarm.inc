@@ -29,7 +29,7 @@ function eol_configuration_feature_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'eol_countdown_enddate';
-  $strongarm->value = '01.11.2023 23:59:59';
+  $strongarm->value = '30.04.2024 17:59:59';
   $export['eol_countdown_enddate'] = $strongarm;
 
   $strongarm = new stdClass();

@@ -636,6 +636,7 @@ function nm_section_courses_features_field_default_field_instances() {
       'active' => 1,
       'module' => 'entityreference',
       'settings' => array(
+        'hide_ids' => FALSE,
         'match_operator' => 'CONTAINS',
         'multiple_value_widget' => 'table',
         'path' => '',
@@ -693,6 +694,7 @@ function nm_section_courses_features_field_default_field_instances() {
       'active' => 1,
       'module' => 'entityreference',
       'settings' => array(
+        'hide_ids' => FALSE,
         'match_operator' => 'CONTAINS',
         'multiple_value_widget' => 'table',
         'path' => '',
