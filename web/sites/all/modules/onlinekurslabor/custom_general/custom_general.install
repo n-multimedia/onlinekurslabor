@@ -240,3 +240,44 @@ set uri = REPLACE(uri, 'private://courses/', 'public://courses_preview/')
 WHERE uri LIKE 'private://courses/%'");
   
 }
+
+
+/**
+ * convert omebed links from http to https
+ */
+function custom_general_update_9005() {
+
+  //string
+  $scheme = serialize('http://youtu.be/*
+https://youtu.be/*
+http://*.youtube.com/playlist*
+https://*.youtube.com/playlist*
+http://*.youtube.com/profile*
+https://*.youtube.com/profile*
+http://*.youtube.com/user/*
+https://*.youtube.com/user/*
+http://*.youtube.com/v/*
+https://*.youtube.com/v/*
+http://*.youtube.com/view_play_list*
+https://*.youtube.com/view_play_list*
+http://*youtube.com/watch*
+https://*youtube.com/watch*
+http://*.youtube.com/*#*/*
+https://*.youtube.com/*#*/*
+http://m.youtube.com/index*
+https://m.youtube.com/index*
+http://m.youtube.com/watch*
+https://m.youtube.com/watch*');
+
+  // Using db_query function
+  $result = db_query("INSERT INTO {oembed_provider} (pid, name, title, endpoint, scheme) 
+                      VALUES (:pid, :name, :title, :endpoint, :scheme)", array(
+                        ':pid' => 1,
+                        ':name' => 'youtube',
+                        ':title' => 'YouTube',
+                        ':endpoint' => 'https://www.youtube.com/oembed',
+                        ':scheme' => $scheme,
+                      ));
+  
+    db_query("UPDATE IGNORE {file_managed} SET uri = REPLACE(uri, '//http', '//https') WHERE uri LIKE 'oembed://http%3A//%'");
+  }
