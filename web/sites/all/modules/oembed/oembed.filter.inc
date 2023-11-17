@@ -5,7 +5,20 @@
  * Input filter that enhances oEmbed enabled URLs with extra content
  */
 
+define('OEMBED_AUTOEMBED', 1);
+define('OEMBED_AUTOEMBED_UNWRAP', 2);
+define('OEMBED_AUTOEMBED_DISABLED', 0);
 define('OEMBED_PATTERN_AUTOEMBED', '|^\s*(https?://[^\s"]+)\s*$|im');
+define('OEMBED_PATTERN_AUTOEMBED_UNWRAP', serialize(array(
+  OEMBED_PATTERN_AUTOEMBED,
+  '|<[a-z0-9]*[^>]*?>(https?://[^\s"]+?)</[a-z0-9]*>|i',
+  '|<span[^>]*?>(https?://[^\s"]+?)</span>|i',
+  '|<a[^>]*?>(https?://[^\s"]+?)</a>|i',
+  '|^(https?:\/\/[^\s"]+?)\s|i',
+  '|\s(https?:\/\/[^\s"]+?)$|i',
+  '|\s(https?:\/\/[^\s"]+?)\s|i',
+  '|^(https?:\/\/[^\s"]+?)$|i',
+)));
 define('OEMBED_PATTERN_EMBED_SHORTCODE', '/(.?)\[embed\b(.*?)\](.+?)\[\/embed\](.?)/s');
 define('OEMBED_PATTERN_EMBED_UNWRAP', '/<p>\s*+(\[embed\b.*?\].+?\[\/embed\])\s*+<\/p>/s');
 
@@ -13,6 +26,7 @@ define('OEMBED_PATTERN_EMBED_UNWRAP', '/<p>\s*+(\[embed\b.*?\].+?\[\/embed\])\s*
  * Implements hook_filter_info().
  */
 function oembed_filter_info() {
+  $filters = array();
   $filters['oembed'] = array(
     'title' => t('oEmbed filter'),
     'description' => t('Embeds content for oEmbed-enabled web addresses and turns the rest, and e-mail addresses, into clickable links.'),
@@ -22,10 +36,8 @@ function oembed_filter_info() {
     'tips callback' => 'oembed_filter_oembed_tips',
     'default settings' => array(
       'options' => '',
-      'view_mode' => 'full',
-      'autoembed' => TRUE,
+      'autoembed' => OEMBED_AUTOEMBED,
     ),
-    'cache' => FALSE,
   );
   $filters['oembed_legacy'] = array(
     'title' => t('oEmbed legacy filter'),
@@ -63,29 +75,6 @@ function oembed_filter_oembed_settings($form, &$form_state, $filter, $format, $d
   $filter->settings += $defaults;
   $settings = array();
 
-  if (module_exists('file_entity')) {
-    $options = array();
-    $entity_info = entity_get_info('file');
-    $view_modes = $entity_info['view modes'];
-    foreach ($view_modes as $view_mode_name => $view_mode_info) {
-      $options[$view_mode_name] = $view_mode_info['label'];
-    }
-    if (empty($options)) {
-      $options['full'] = t('Full');
-    }
-    $settings['view_mode'] = array(
-      '#type' => 'select',
-      '#options' => $options,
-      '#title' => t('File entity view mode'),
-      '#default_value' => $filter->settings['view_mode'],
-    );
-  }
-  else {
-    $settings['view_mode'] = array(
-      '#type' => 'value',
-      '#value' => $filter->settings['view_mode'],
-    );
-  }
   $settings['options'] = array(
     '#type' => 'textfield',
     '#title' => t('Default oEmbed request options'),
@@ -93,11 +82,16 @@ function oembed_filter_oembed_settings($form, &$form_state, $filter, $format, $d
     '#description' => t('A series of attribute value pairs for the default request options. For example, <em>maxwidth="500"</em>.'),
   );
   $settings['autoembed'] = array(
-    '#type' => 'checkbox',
+    '#type' => 'radios',
     '#title' => t('Automatically embed URLs'),
     '#default_value' => $filter->settings['autoembed'],
-    '#description' => t('When possible, embed the media content from a URL directly in the input.'),
-  );
+    '#options' => array(
+      OEMBED_AUTOEMBED => t('Embed URL that are on its own line.'),
+      OEMBED_AUTOEMBED_UNWRAP => t('Embed URL on its own line ignoring any &lt;p&gt; tags that may have been inserted by a WYSIWYG editor.'),
+      OEMBED_AUTOEMBED_DISABLED => t('Disabled'),
+    ),
+     '#description' => t('When possible, embed the media content from a URL directly in the input.'),
+   );
   return $settings;
 }
 
@@ -105,8 +99,11 @@ function oembed_filter_oembed_settings($form, &$form_state, $filter, $format, $d
  * Implements hook_filter_FILTER_process().
  */
 function oembed_filter_oembed_prepare($text, $filter, $format, $langcode, $cache, $cache_id) {
-  if ($filter->settings['autoembed']) {
+  if (OEMBED_AUTOEMBED == $filter->settings['autoembed']) {
     $text = preg_replace_callback(OEMBED_PATTERN_AUTOEMBED, 'oembed_preg_auto_replace', $text);
+  }
+  elseif (OEMBED_AUTOEMBED_UNWRAP == $filter->settings['autoembed']) {
+    $text = preg_replace_callback(unserialize(OEMBED_PATTERN_AUTOEMBED_UNWRAP), 'oembed_preg_auto_replace', $text);
   }
   return $text;
 }
@@ -118,10 +115,9 @@ function oembed_filter_oembed_process($text, $filter, $format, $langcode, $cache
   global $_oembed_filter_settings;
 
   $_oembed_filter_settings = !empty($filter->settings['options']) ? oembed_parse_attr($filter->settings['options']) : array();
-  $_oembed_filter_settings['view_mode'] = $filter->settings['view_mode'];
 
   // Undo auto paragraph around oEmbed shortcodes.
-  $text = preg_replace(OEMBED_PATTERN_EMBED_UNWRAP, '$1', $text);
+  $text = preg_replace(OEMBED_PATTERN_EMBED_UNWRAP, '$1 ', $text);
 
   $text = preg_replace_callback(OEMBED_PATTERN_EMBED_SHORTCODE, 'oembed_preg_tag_replace', $text);
 
@@ -149,53 +145,53 @@ function oembed_preg_tag_replace($match) {
   global $_oembed_filter_settings;
 
   // allow [[oembed]] syntax for escaping a tag
-  if ($match[1] == '[' && $match[4] == ']') {
+  if ($match[1] === '[' && $match[4] === ']') {
     return substr($match[0], 1, -1);
   }
 
   $url = $match[3];
 
-  $view_mode = $_oembed_filter_settings['view_mode'];
-
   $shortcode_options = !empty($match[2]) ? oembed_parse_attr($match[2]) : array();
   $options = array_merge($_oembed_filter_settings, $shortcode_options);
 
-  if (isset($options['view_mode'])) {
-    $view_mode = $options['view_mode'];
-    unset($options['view_mode']);
+  $callback = variable_get('oembed_resolve_link_callback', 'oembed_resolve_link');
+  if (!function_exists($callback)) {
+    $callback = 'oembed_resolve_link';
   }
 
-  return $match[1] . oembed_resolve_link($url, $view_mode, $options) . $match[4];
+  return $match[1] . $callback($url, $options) . $match[4];
 }
 
 /**
  * PREG replace callback finds URLs
  */
 function oembed_preg_auto_replace($match) {
-  return '[embed]'. $match[1] ."[/embed]\n";
+  return '[embed]'. $match[1] ."[/embed] ";
 }
 
 /**
  * PREG replace callback finds [embed] shortcodes, URLs and request options.
  *
+ * Override in Drupal system variable `oembed_resolve_link_callback`
+ *
  * @see MediaInternetOEmbedHandler::preSave().
+ *
+ * @param string $url
+ *   URL to embed.
+ * @param array $options
+ *   oEmbed request options.
+ *
+ * @return string
+ *   Rendered oEmbed response.
  */
-function oembed_resolve_link($url, $view_mode = 'full', $options = array()) {
+function oembed_resolve_link($url, $options = array()) {
 
   $url = decode_entities($url);
 
   $element = array();
   $matches = array();
 
-  // If file_entity module is enabled, treat the URL as an uploaded file.
-  if (module_exists('file_entity')) {
-    $file = oembed_url_to_file($url);
-    $file->override = $options;
-    if (isset($file->fid)) {
-      $element = file_view($file, $view_mode);
-    }
-  }
-  else if ($provider = oembed_get_provider($url, $matches)) {
+  if ($provider = oembed_get_provider($url, $matches)) {
     $embed = oembed_get_data($url);
     if ($embed) {
       $element = oembed_render_element('oembed', $url, $options);
@@ -286,8 +282,11 @@ function _oembed_field_extract_urls($entity_type, $entity) {
                 $text = $item[$column];
 
                 // copied from oembed_filter_oembed_prepare().
-                if ($filter_settings[$item['format']]['autoembed']) {
+                if (OEMBED_AUTOEMBED == $filter_settings[$item['format']]['autoembed']) {
                   $text = preg_replace_callback(OEMBED_PATTERN_AUTOEMBED, 'oembed_preg_auto_replace', $text);
+                }
+                elseif (OEMBED_AUTOEMBED_UNWRAP == $filter_settings[$item['format']]['autoembed']) {
+                  $text = preg_replace_callback(unserialize(OEMBED_PATTERN_AUTOEMBED_UNWRAP), 'oembed_preg_auto_replace', $text);
                 }
 
                 // copied from oembed_filter_oembed_process().
@@ -344,33 +343,3 @@ function oembed_field_attach_validate($entity_type, $entity, array &$errors) {
     }
   }
 }
-
-/**
- * Implements hook_entity_insert().
- */
-function oembed_entity_insert($entity, $entity_type) {
-  if (module_exists('file_entity')) {
-    list($id, , ) = entity_extract_ids($entity_type, $entity);
-    $uris = array();
-    foreach (_oembed_field_extract_urls($entity_type, $entity) as $items) {
-      foreach ($items as $item) {
-        foreach ($item as $urls) {
-          foreach ($urls as $url) {
-            $uris[$url] = isset($uris[$url]) ? $uris[$url] + 1 : 1;
-          }
-        }
-      }
-    }
-
-    foreach ($uris as $url => $count) {
-      $file = oembed_url_to_file($url, TRUE);
-      file_usage_delete($file, 'oembed', $entity_type, $id, 0);
-      file_usage_add($file, 'oembed', $entity_type, $id, $count);
-    }
-  }
-}
-
-function oembed_entity_update($entity, $entity_type) {
-  oembed_entity_insert($entity, $entity_type);
-}
-

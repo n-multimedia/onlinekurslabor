@@ -42,7 +42,7 @@ class oembed_provider_ui extends ctools_export_ui {
   function edit_form_submit(&$form, &$form_state) {
     // Clear the oEmbed provider cache.
     oembed_providers_reset();
-    return parent::edit_form_submit($form, $form_state);
+    parent::edit_form_submit($form, $form_state);
   }
 
   /**
@@ -51,7 +51,7 @@ class oembed_provider_ui extends ctools_export_ui {
   function edit_form_import_submit($form, &$form_state) {
     // Clear the oEmbed provider cache.
     oembed_providers_reset();
-    return parent::edit_form_import_submit($form, $form_state);
+    parent::edit_form_import_submit($form, $form_state);
   }
 
   /**
@@ -60,7 +60,7 @@ class oembed_provider_ui extends ctools_export_ui {
   function delete_form_submit(&$form_state) {
     // Clear the oEmbed provider cache.
     oembed_providers_reset();
-    return parent::delete_form_submit($form_state);
+    parent::delete_form_submit($form_state);
   }
 
   /**

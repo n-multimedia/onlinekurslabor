@@ -241,28 +241,3 @@ class OembedFileEntityTestCase extends OembedTestHelper {
     }
   }
 }
-
-class MediaOembedTestCase extends OembedTestHelper {
-
-  function setUp() {
-    parent::setUp(array('media', 'oembed'));
-  }
-
-  public static function getInfo() {
-    return array(
-      'name' => 'Media oEmbed',
-      'description' => 'Tests oEmbed + Media WYSIWYG integration.',
-      'group' => 'oEmbed',
-    );
-  }
-
-  /**
-   * Tests the oembed render element types.
-   */
-  function testOembedFileFormatters() {
-    foreach ($this->urls as $url => $info) {
-      $element = oembed_render_element('oembed_wysiwyg', $url);
-      $this->assertRenderedElement($element, '//img');
-    }
-  }
-}

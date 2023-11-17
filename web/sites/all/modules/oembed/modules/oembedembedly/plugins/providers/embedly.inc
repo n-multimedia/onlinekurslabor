@@ -46,8 +46,10 @@ function oembedembedly_provider_get_child($plugin, $parent, $child) {
 
 function oembedembedly_provider_callback($plugin, $url, $matches, $parameters) {
   $parameters['key'] = variable_get('oembedembedly_api_key', NULL);
+
+  // This guarantees that the plugin's file is loaded.
   $function = ctools_plugin_load_function('oembed', 'providers', 'default', 'callback');
-  $response = call_user_func($function, $plugin, $url, $matches, $parameters);
+  $response = oembed_default_callback($plugin, $url, $matches, $parameters);
 
   $providers = oembedembedly_providers();
   if (is_array($providers)) {
