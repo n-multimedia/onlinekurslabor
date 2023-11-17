@@ -32,8 +32,6 @@ function oembed_settings() {
  * oEmbed sandbox callback.
  */
 function oembed_test($form, &$form_state) {
-  $form = array();
-
   $form['url'] = array(
     '#type' => 'textfield',
     '#title' => t('URL'),

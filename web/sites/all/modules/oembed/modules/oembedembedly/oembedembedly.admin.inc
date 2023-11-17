@@ -6,14 +6,14 @@
 function oembedembedly_admin() {
   $providers = oembedembedly_providers();
   $selections = oembedembedly_default_selected();
+  $types = array();
+  $form = array();
   $form['oembedembedly_providers'] = array(
     '#type' => 'fieldset',
     '#title' => 'Providers',
     '#weight' => 1,
     '#description' => t('Embedly directly integrates with <a href="@providers">@count content providers</a>. You can control which Embedly providers are supported on your site by enabling or disabling them individually.', array('@count' => count($providers), '@providers' => 'http://embed.ly/providers')),
   );
-
-  $image = array('width' => 16, 'height' => 16);
 
   foreach ($providers as $provider) {
     $variables = array(

@@ -1,22 +1,20 @@
 <?php
 
 /**
- * Implementation of hook_schema().
+ * @file
+ * Install, update and uninstall functions for the oEmbed module.
+ */
+
+/**
+ * Implements hook_schema().
  */
 function oembed_schema() {
-  $schema['oembed_provider'] = _oembed_provider_schema_1();
-  $schema['cache_oembed'] = drupal_get_schema_unprocessed('system', 'cache');
-  $schema['cache_oembed']['description'] = 'Cache table for the oEmbed module.';
-  return $schema;
-}
-
-function _oembed_provider_schema_1() {
-  return array(
+  $schema['oembed_provider'] = array(
     'export' => array(
-      'identifier'      => 'provider',
-      'primary key'     => 'pid',
-      'bulk export'     => TRUE,
-      'default hook'    => 'default_oembed_provider',
+      'identifier' => 'provider',
+      'primary key' => 'pid',
+      'bulk export' => TRUE,
+      'default hook' => 'default_oembed_provider',
       'api' => array(
         'owner' => 'oembed',
         'api' => 'oembed_provider',
@@ -26,38 +24,38 @@ function _oembed_provider_schema_1() {
     ),
     'fields' => array(
       'pid' => array(
-        'type'        => 'serial',
+        'type' => 'serial',
         'description' => 'Primary ID field for the table. Not used for anything except internal lookups.',
-        'not null'    => TRUE,
-        'no export'   => TRUE,
+        'not null' => TRUE,
+        'no export' => TRUE,
       ),
       'name' => array(
-        'type'        => 'varchar',
-        'length'      => 255,
+        'type' => 'varchar',
+        'length' => 255,
         'description' => 'Unique ID for this subtask. Used to identify it programmatically.',
-        'not null'    => TRUE,
-        'default'     => '',
+        'not null' => TRUE,
+        'default' => '',
       ),
       'title' => array(
         'description' => 'The human-readable title of the provider.',
-        'type'        => 'varchar',
-        'length'      => 255,
-        'not null'    => TRUE,
-        'default'     => '',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
       ),
       'endpoint' => array(
-        'type'        => 'varchar',
-        'length'      => 255,
+        'type' => 'varchar',
+        'length' => 255,
         'description' => 'The endpoint for this provider.',
-        'not null'    => TRUE,
-        'default'     => '',
+        'not null' => TRUE,
+        'default' => '',
       ),
       'scheme' => array(
-        'type'           => 'text',
-        'size'           => 'big',
-        'description'    => 'Line separated scheme definition.',
-        'not null'       => TRUE,
-        'serialize'      => TRUE,
+        'type' => 'text',
+        'size' => 'big',
+        'description' => 'Line separated scheme definition.',
+        'not null' => TRUE,
+        'serialize' => TRUE,
         'object default' => '',
       ),
     ),
@@ -66,6 +64,9 @@ function _oembed_provider_schema_1() {
       'name' => array('name'),
     ),
   );
+  $schema['cache_oembed'] = drupal_get_schema_unprocessed('system', 'cache');
+  $schema['cache_oembed']['description'] = 'Cache table for the oEmbed module.';
+  return $schema;
 }
 
 /**
@@ -84,4 +85,11 @@ function oembed_update_7000(&$sandbox) {
 function oembed_update_7001() {
   module_disable(array('oembedcore'));
   drupal_uninstall_modules(array('oembedcore'));
+}
+
+/**
+ * Rebuild the code registry in order to accommodate moved submodules.
+ */
+function oembed_update_7002() {
+  registry_rebuild();
 }
