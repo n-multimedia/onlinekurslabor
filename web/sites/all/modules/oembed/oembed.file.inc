@@ -95,9 +95,16 @@ function oembed_file_load($files) {
       // Retrieve any missing images dimensions.
       oembed_metadata_fetch_image_dimensions($file);
 
+
       foreach (array('oembed', 'width', 'height') as $name) {
         if (!empty($file->metadata[$name])) {
           $value = $file->metadata[$name];
+          //2023-11-26 - PATCH
+          //prevent integrity constraint primary key violation error
+          //no need to insert metadata.
+          //its done by file_entity_file_insert
+          //inserting before file_entity_file_insert causes sql error
+          /*
           db_merge('file_metadata')
             ->fields(array(
               'value' => serialize($value),
@@ -107,6 +114,7 @@ function oembed_file_load($files) {
               'name' => $name,
             ))
             ->execute();
+          */
         }
       }
     }
