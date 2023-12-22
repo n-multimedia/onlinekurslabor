@@ -114,7 +114,7 @@ function custom_general_update_3006() {
 }
 
 /**
- * migrates db-entries from public filesystem 
+ * migrates db-entries from public filesystem
  * to private filesystem and get rid of old domain
  */
 function custom_general_update_3007() {
@@ -177,11 +177,11 @@ function custom_general_update_9002() {
     $legal_conditions = array(
         array('tc_id' => '1', 'version' => '1', 'revision' => '1', 'language' => 'de', 'conditions' => '<h2>1. Datenschutzerklärung</h2><p><strong>Allgemeines:</strong></p><p>Auf der Plattform des Onlinekurslabors (nachfolgend als OKL bezeichnet) werden personenbezogene Daten verarbeitet. Dies betrifft vor allem die Authentifizierung (in der Regel mit der OKL-Kennung und Passwort). Die für die Vergabe und Verwaltung der persönlichen OKL-Kennung erforderlichen Daten werden durch das Medienlabor der Universität erhoben und dort zentral gespeichert. Daten werden grundsätzlich nicht an Dritte weitergegeben. Lediglich für nachweislich plattformbezogene Aufgaben können Daten, in einer für die Erledigung dieser Aufgaben erforderlichen Qualität, an berechtigte Personen innerhalb des Medienlabors weitergegeben werden. Eine Weitergabe an Personen außerhalb des Medienlabors ist ausgeschlossen. Die weiter unten angegebenen Aufbewahrungsfristen werden dadurch erreicht, dass die Daten nach Ablauf automatisch überschrieben werden, es sei denn ein Missbrauch der Dienste hat stattgefunden und eine disziplinar-, zivil- oder strafrechtliche Verfolgung ist erforderlich. Bei begründetem Verdacht auf Missbrauch der Dienste können die in verschiedenen Logquellen vorhandenen Daten auch in ihrem zeitlichen Zusammenhang ausgewertet werden, um beispielsweise Erkenntnisse über den gesamten Vorgang oder den Verursacher zu ermitteln. Die gespeicherten Daten werden ausschließlich zu technischen oder statistischen Zwecken ausgewertet, z.B. um Fehler rechtzeitig entdecken und beheben zu können sowie die Funktionalität der Plattform zu optimieren. Plattform-Dienste und -Zugänge: Bei der Nutzung der OKL-Plattform über die Infrastruktur des Medienlabor Servers werden zusätzliche relevante Daten gespeichert, insbesondere:</p><ul><li>Datum, Uhrzeit und Status der Kommunikation</li><li>IP- und/oder MAC-Adressen der Plattformnutzenden</li><li>genutzte Ressource</li><li>bei authentifiziertem Zugriff die genutzte Kennung bzw. Mailadresse</li></ul><p>Im Anschluss einer selbstbestimmten Nutzungsdauer der einzelnen Plattform-User werden alle erfassten Daten mit dem Überschreiben der Sicherungssätze entfernt.<br>Dies geschieht spätestens einen Monat nach der Löschung einer Person.</p><p>Die OKL-Plattform nutzt aus technischen Gründen Cookies, etwa zur Authentifizierung und Sitzungsverfolgung oder zur Sicherstellung notwendiger Funktionen des OKL. Es werden hierbei allerdings weder Personeninformationen hinterlegt noch werden Cookies weitergegeben.</p><p><strong>Teilnehmende der Virtuelle Hochschule Bayern (VHB)</strong><br><br>Sofern Sie das Onlinekurslabor über die VHB nutzen, finden zudem die Datenschutzinformationen (§11 in der Benutzungsordnung unter http://www.vhb.org/vhb/downloads/rechtliches/) der VHB Anwendung.&nbsp;</p><p><strong>Web-Analytics</strong></p><p>Um die Inhaltsstrukturen und Navigationsmechanismen des OKL besser an die Bedürfnisse der Nutzenden anpassen zu können, werden die OKL-Aufrufe protokolliert und analysiert. Dazu wird die Software AWStats&nbsp;(<a href="http://www.awstats.org/" target="_blank">http://www.awstats.org/</a>) verwendet.<br>Die Daten werden ausschließlich auf dem Server des Medienlabors erhoben und gespeichert.</p><p>Bitte beachten Sie, dass diese Datenschutzerklärung nicht für Unterseiten von Fakultäten, Instituten, Lehrstühlen, Zentralen Einrichtungen etc. der Universität Augsburg zutrifft. Bitte informieren Sie sich gegebenenfalls auf diesen Seiten über die jeweiligen Datenschutzerklärungen.</p><p>&nbsp;</p><h2>2. Urheberrecht</h2><p>Durch meine Registrierung im Onlinekurslabor (OKL) sowie die Nutzung dieser Plattform und ihres Angebots erkenne ich an, dass es sich bei den zur Verfügung gestellten Materialien (in Form von Texten, Präsentationen, Audiodateien sowie [Bewegt-]Bildern) um datenschutz- und urheberrechtlich geschützte Inhalte handelt. Ich erkläre mich damit einverstanden, diese Inhalte ausschließlich plattformintern und im Zusammenhang mit Lehrerbildung zu nutzen. Darin eingeschlossen sind:</p><ul><li>Der Verzicht auf eine Weitergabe der persönlichen OKL-Kennungen oder Passwörter an Dritte.</li><li>Das Treffen von Vorkehrungen, damit Daten, die im Rahmen der Plattformtätigkeit erhoben, verarbeitet oder genutzt werden, unbefugten Dritten weder auf den benutzten noch fremden Rechnern oder sonstigen DV-Systemen zugänglich gemacht werden.</li><li>Der Verzicht auf den Download bzw. das Speichern von OKL-Materialien auf stationäre Systeme (unabhängig davon, ob privat oder institutionell).</li></ul><p>Ich bin mir der Tatsache bewusst, dass ich die volle Verantwortung für alle Aktionen, die unter meiner Kennung vorgenommen werden, trage, und zwar auch dann, wenn diese Aktionen durch Dritte vorgenommen werden, denen ich zumindest fahrlässig den Zugang ermöglicht habe.</p><p><u>Achtung</u>: Angesichts von Veränderungen im Urheberschutz und entsprechenden Ansprüchen der VG Wort dürfen keine urheberrechtsgeschützten Texte mehr in den Lehrtexten oder Kursdokumenten der OKL-Plattform hinterlegt und für Teilnehmende zugänglich gemacht werden. Das betrifft Buchauszüge, längere Textpassagen, kurz, alles, was irgendwo mit Copyright erschienen ist – dazu zählen auch eigene Texte, sofern deren Rechte an einen Verlag abgetreten wurden. Weiterhin eingestellt werden dürfen eigene, unveröffentlichte Vorlesungs-/Seminarskripte und Präsentationen (PowerPoint, Keynote, etc.), sofern das nicht die vorangehende Situation betrifft. Nach jetzigem Stand ist die Verwendung einzelner Zitate in Texten/Präsentationen unproblematisch.</p><p>&nbsp;</p><h2>3. Datennetz</h2><p>Im übrigen gelten die Benutzungsrichtlinien des Rechenzentrums für das Netz der Universität Augsburg:<br><a href="https://www.rz.uni-augsburg.de/info/richtlinien/benutzungsrichtlinien/index.html" target="_blank">https://www.rz.uni-augsburg.de/info/richtlinien/benutzungsrichtlinien/index.html</a></p><p>&nbsp;</p>', 'date' => '1523868253', 'extras' => 'a:10:{s:8:"extras-1";s:0:"";s:8:"extras-2";s:0:"";s:8:"extras-3";s:0:"";s:8:"extras-4";s:0:"";s:8:"extras-5";s:0:"";s:8:"extras-6";s:0:"";s:8:"extras-7";s:0:"";s:8:"extras-8";s:0:"";s:8:"extras-9";s:0:"";s:9:"extras-10";s:0:"";}', 'changes' => '', 'format' => 'filtered_html')
     );
-    
-   
+
+
     //phpmyadmin gbit array(array()) aus..
     $legal_conditions = $legal_conditions[0];
-    
+
     db_insert('legal_conditions')
             ->fields(array(
                 'version' => $legal_conditions['version'],
@@ -223,7 +223,7 @@ function custom_general_update_9003() {
  * - course: preview-image
  */
 function custom_general_update_9004() {
-  
+
   db_query("
 update file_managed
 set uri = REPLACE(uri, 'private://profile/', 'public://profile/')
@@ -233,12 +233,12 @@ WHERE uri LIKE 'private://profile/%'
 update file_managed
 set uri = REPLACE(uri, 'private://avatar_', 'public://profile/avatar_')
 WHERE uri LIKE 'private://avatar_%'");
-  
+
   db_query("
 update file_managed
 set uri = REPLACE(uri, 'private://courses/', 'public://courses_preview/')
 WHERE uri LIKE 'private://courses/%'");
-  
+
 }
 
 
@@ -270,7 +270,7 @@ http://m.youtube.com/watch*
 https://m.youtube.com/watch*');
 
   // Using db_query function
-  $result = db_query("INSERT INTO {oembed_provider} (pid, name, title, endpoint, scheme) 
+  $result = db_query("INSERT INTO {oembed_provider} (pid, name, title, endpoint, scheme)
                       VALUES (:pid, :name, :title, :endpoint, :scheme)", array(
                         ':pid' => 1,
                         ':name' => 'youtube',
@@ -278,6 +278,6 @@ https://m.youtube.com/watch*');
                         ':endpoint' => 'https://www.youtube.com/oembed',
                         ':scheme' => $scheme,
                       ));
-  
-    db_query("UPDATE IGNORE {file_managed} SET uri = REPLACE(uri, '//http', '//https') WHERE uri LIKE 'oembed://http%3A//%'");
+
+    db_query("UPDATE IGNORE {file_managed} SET uri = REPLACE(uri, '//http', '//https') WHERE uri LIKE 'oembed://http|%3A//%' ESCAPE '|'");
   }
