@@ -487,7 +487,7 @@ function _h5p_integration_get_videolist_from_h5p($h5pnode) {
   $h5p_json_decoded = json_decode($h5p_json, true);
 
   $content_def = reset($h5p_json_decoded); //first element
-  if (empty($content_def)) {
+  if (empty($content_def) || ! is_array($content_def)) {
     return array();
   }
 
