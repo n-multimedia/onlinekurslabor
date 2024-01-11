@@ -410,6 +410,7 @@ class H5PDrupal implements H5PFrameworkInterface {
         'has_icon' => $libraryData['hasIcon'] ? 1 : 0,
         'metadata_settings' => $libraryData['metadataSettings'],
         'add_to' => isset($libraryData['addTo']) ? json_encode($libraryData['addTo']) : NULL,
+        'patch_version_in_folder_name' => 1,
       ))
       ->execute();
       $libraryData['libraryId'] = $libraryId;
@@ -434,6 +435,7 @@ class H5PDrupal implements H5PFrameworkInterface {
         'has_icon' => $libraryData['hasIcon'] ? 1 : 0,
         'metadata_settings' => $libraryData['metadataSettings'],
         'add_to' => isset($libraryData['addTo']) ? json_encode($libraryData['addTo']) : NULL,
+        'patch_version_in_folder_name' => 1,
       ))
       ->condition('library_id', $libraryData['libraryId'])
       ->execute();
@@ -728,8 +730,16 @@ class H5PDrupal implements H5PFrameworkInterface {
   public function loadAddons() {
     // Load addons
     $db_stmt = db_query(
-      "SELECT l1.machine_name, l1.major_version, l1.minor_version, l1.patch_version,
-              l1.library_id, l1.add_to, l1.preloaded_js, l1.preloaded_css
+      "SELECT 
+        l1.machine_name, 
+        l1.major_version,
+        l1.minor_version,
+        l1.patch_version,
+        l1.library_id,
+        l1.add_to,
+        l1.preloaded_js,
+        l1.preloaded_css,
+        l1.patch_version_in_folder_name
        FROM {h5p_libraries} AS l1
        LEFT JOIN {h5p_libraries} AS l2
        ON l1.machine_name = l2.machine_name AND
@@ -776,7 +786,8 @@ class H5PDrupal implements H5PFrameworkInterface {
                 runnable,
                 semantics,
                 tutorial_url,
-                has_icon
+                has_icon,
+                patch_version_in_folder_name
           FROM {h5p_libraries}
           WHERE machine_name = :machine_name
           AND major_version = :major_version
@@ -938,6 +949,7 @@ class H5PDrupal implements H5PFrameworkInterface {
                 hl.patch_version,
                 hl.preloaded_css,
                 hl.preloaded_js,
+                hl.patch_version_in_folder_name,
                 hnl.drop_css,
                 hnl.dependency_type
           FROM {h5p_nodes_libraries} hnl

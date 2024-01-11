@@ -33,8 +33,16 @@ class H5PEditorDrupalAjax implements H5PEditorAjaxInterface {
 
     // Find latest patch version among the rows with latest major and minor version
     $local_libraries = db_query("
-      SELECT hl4.library_id as id, hl4.machine_name, hl4.title, hl4.major_version,
-        hl4.minor_version, hl4.patch_version, hl4.has_icon, hl4.restricted
+      SELECT 
+        hl4.library_id as id,
+        hl4.machine_name,
+        hl4.title,
+        hl4.major_version,
+        hl4.minor_version,
+        hl4.patch_version,
+        hl4.has_icon,
+        hl4.restricted,
+        hl4.patch_version_in_folder_name
       FROM {h5p_libraries} hl4
       JOIN ({$max_minor_version}) hl3
       ON hl4.machine_name = hl3.machine_name

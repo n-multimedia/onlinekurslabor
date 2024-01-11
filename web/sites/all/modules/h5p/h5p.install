@@ -91,6 +91,7 @@ function h5p_uninstall() {
   variable_del('h5p_content_type_cache_updated_at');
   variable_del('h5p_allow_communication_with_h5p_org');
   variable_del('h5p_send_usage_statistics');
+  variable_del('h5p_search_content_hub');
 
   // Intentionally not deleting variable h5p_site_uuid. If h5p module is uninstalled/installed,
   // the uuid should be the same
@@ -1907,6 +1908,22 @@ function h5p_update_7123() {
       'type' => 'varchar',
       'length' => 255,
       'not null' => false,
+    ));
+  }
+}
+
+/**
+ * Add patch_version_in_folder_name to h5p_libraries
+ */
+function h5p_update_7124() {
+  if (!db_field_exists('h5p_libraries', 'patch_version_in_folder_name')) {
+    db_add_field('h5p_libraries', 'patch_version_in_folder_name', array(
+      'description' => 'Is patch version part of folder name',
+      'type'        => 'int',
+      'size'        => 'tiny',
+      'unsigned'    => true,
+      'not null'    => true,
+      'default'     => 0,
     ));
   }
 }

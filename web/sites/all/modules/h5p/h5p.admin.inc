@@ -148,9 +148,19 @@ function h5p_admin_settings($form, &$form_state) {
     '#type' => 'checkbox',
     '#title' => t('Use H5P Hub'),
     '#default_value' => variable_get('h5p_hub_is_enabled', TRUE),
-    '#attributes' => array('class' => array('h5p-settings-disable-hub-checkbox')),
+    '#attributes' => array('class' => array('h5p-settings-disable-hub-checkbox'), 'name' => 'h5p_hub_is_enabled'),
     '#description' => t("It's strongly encouraged to keep this option <strong>enabled</strong>. The H5P Hub provides an easy interface for getting new content types and keeping existing content types up to date. In the future, it will also make it easier to share and reuse content. If this option is disabled you'll have to install and update content types through file upload forms."),
   );
+
+  $form['h5p_search_content_hub'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Enable shared content in H5P Hub'),
+    '#default_value' => variable_get('h5p_search_content_hub', true),
+    '#description' => t('Find and download shared content from H5P Hub. Requires that the setting \'Use H5P Hub\' is enabled.'),
+    '#states' => [
+      'disabled' => [':input[name="h5p_hub_is_enabled"]' => ['checked' => false]],
+    ],
+  ];
 
   // TODO: Be able to change site key
 //  $site_key = variable_get('h5p_site_key', variable_get('h5p_site_uuid', ''));
@@ -234,8 +244,8 @@ function h5p_admin_settings($form, &$form_state) {
           <img src="' . $accountInfo->logo . '" style="max-width: 5em; display: inline-block; vertical-align: top" />
           <div style="display: inline-block">' .
             $markup .
-            '<div style="margin-top: 1em">' . 
-              t('Change account settings <a href="@url">here</a>', array('@url' => url('/admin/config/system/h5p/register'))) . 
+            '<div style="margin-top: 1em">' .
+              t('Change account settings <a href="@url">here</a>', array('@url' => url('/admin/config/system/h5p/register'))) .
             '</div>
           </div>
         </div>'

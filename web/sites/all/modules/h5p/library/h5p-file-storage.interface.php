@@ -18,6 +18,13 @@ interface H5PFileStorage {
   public function saveLibrary($library);
 
   /**
+   * Delete library folder
+   *
+   * @param array $library
+   */
+  public function deleteLibrary($library);
+
+  /**
    * Store the content folder.
    *
    * @param string $source
@@ -201,14 +208,12 @@ interface H5PFileStorage {
   public function hasPresave($libraryName, $developmentPath = null);
 
   /**
-   * Check if upgrades script exist for library.
+   * Provide path to upgrades script (if it exists for library)
    *
-   * @param string $machineName
-   * @param int $majorVersion
-   * @param int $minorVersion
+   * @param string $libraryFolderName
    * @return string Relative path
    */
-  public function getUpgradeScript($machineName, $majorVersion, $minorVersion);
+  public function getUpgradeScript($libraryFolderName);
 
   /**
    * Store the given stream into the given file.
