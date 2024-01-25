@@ -187,7 +187,7 @@ function _drush_devel_print_function($file, $start_line, $end_line) {
     $line = fgets($fp);
     ++$line_num;
 
-    if (substr($line,0,3) == '/**') {
+    if (substr($line, 0, 3) == '/**') {
       $doxygen = $line;
     }
     elseif (isset($doxygen)) {

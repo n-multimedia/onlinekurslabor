@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the D7Security Client module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function d7security_client_uninstall() {
+  // Cleanup variables.
+  variable_del('d7security_client_supported_projects_url');
+  variable_del('d7security_client_project_status_base_url');
+  variable_del('d7security_client_check_missing_project_info');
+}

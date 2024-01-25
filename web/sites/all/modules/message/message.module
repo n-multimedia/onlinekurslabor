@@ -202,12 +202,14 @@ function message_entity_info() {
     'bundle of' => 'message',
     'module' => 'message',
     'access callback' => 'message_type_access',
+    'label callback' => 'entity_class_label',
     'entity cache' => module_exists('entitycache'),
     // Enable the entity API's admin UI.
     'admin ui' => array(
       'path' => 'admin/structure/messages',
       'file' => 'includes/message.admin.inc',
       'controller class' => 'MessageTypeUIController',
+      'menu wildcard' => '%message_type',
     ),
   );
 
@@ -460,7 +462,7 @@ function _message_get_referenced_fields($entity_type, $entity) {
       }
       // Check if the field references specific bundles. If so, check if the
       // field references the deleted entity's bundle.
-      if ($field['settings']['handler_settings']['target_bundles'] && !in_array($bundle, $field['settings']['handler_settings']['target_bundles'])) {
+      if (!empty($field['settings']['handler_settings']['target_bundles']) && !in_array($bundle, $field['settings']['handler_settings']['target_bundles'])) {
         continue;
       }
     }

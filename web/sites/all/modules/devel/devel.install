@@ -44,6 +44,7 @@ function devel_uninstall() {
   variable_del('devel_switch_user_show_form');
   variable_del('devel_krumo_skin');
   variable_del('devel_page_alter');
+  variable_del('devel_query_random_range');
   variable_del('devel_query_sort');
   variable_del('devel_rebuild_theme_registry');
   variable_del('devel_use_uncompressed_jquery');

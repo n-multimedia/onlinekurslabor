@@ -22,7 +22,7 @@ function _taxonomy_devel_generate($object, $field, $instance, $bundle) {
               ->fields('t', array('tid'))
               ->condition('t.vid', $vocabulary->vid, '=')
               ->condition('t.tid', $candidate, '>=')
-              ->range(0,1)
+              ->range(0, 1)
               ->execute()
               ->fetchField();
     // If there are no terms for the taxonomy, the query will fail, in which

@@ -35,9 +35,7 @@ features[variable][] = field_bundle_settings_message__example_user_register
 features[views_view][] = message_example
 mtime = 1421303198
 
-; Information added by Drupal.org packaging script on 2016-07-12
-version = "7.x-1.12"
-core = "7.x"
-project = "message"
-datestamp = "1468304058"
-
+; Information added by D7Security packaging script on 2024-01-19
+version = '7.x-1.13'
+project = 'message'
+datestamp = 1705660020

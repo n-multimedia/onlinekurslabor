@@ -1080,8 +1080,8 @@ This is a list of all the values from the <code><b><?php echo realpath($ini_file
         <span class="krumo-callback"> |
           (<em class="krumo-type">Callback</em>)
           <strong class="krumo-string"><?php
-            echo htmlSpecialChars($_[0]);?>::<?php
-            echo htmlSpecialChars($_[1]);?>();</strong></span>
+            echo (!is_object($_[0])) ? htmlSpecialChars($_[0]) : get_class($_[0]);?>::<?php
+            echo (!is_object($_[1])) ? htmlSpecialChars($_[1]) : get_class($_[1]);?>();</strong></span>
         <?php
         }
       ?>
@@ -1118,6 +1118,11 @@ This is a list of all the values from the <code><b><?php echo realpath($ini_file
   </div>
 
   <?php {
+    // Skip closures.
+    $closure_prototype = function (){};
+    if ($data instanceof $closure_prototype) {
+      return;
+    }
     krumo::_vars($data);
     } ?>
 </li>

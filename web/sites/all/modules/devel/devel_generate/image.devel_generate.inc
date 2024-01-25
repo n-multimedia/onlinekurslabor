@@ -93,7 +93,7 @@ function devel_generate_image($extension = 'png', $min_resolution, $max_resoluti
     $smaller_dimension = ($smaller_dimension % 2) ? $smaller_dimension : $smaller_dimension;
     imageellipse($im, $width/2, $height/2, $smaller_dimension, $smaller_dimension, $color);
 
-    $save_function = 'image'. ($extension == 'jpg' ? 'jpeg' : $extension);
+    $save_function = 'image' . ($extension == 'jpg' ? 'jpeg' : $extension);
     $save_function($im, drupal_realpath($destination));
   }
   return $destination;

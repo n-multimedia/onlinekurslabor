@@ -33,7 +33,7 @@ class DevelMailTest extends DrupalWebTestCase {
    * Test mail logging functionality.
    */
   function testMail() {
-    require_once ('devel.mail.inc');
+    require_once('devel.mail.inc');
     $message = array();
     $message['to'] = 'drupal@example.com';
     $message['subject'] = 'Test mail';

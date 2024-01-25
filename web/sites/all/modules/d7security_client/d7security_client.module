@@ -1,0 +1,122 @@
+<?php
+
+/**
+ * @file
+ * D7Security module hooks.
+ */
+
+/**
+ * Implements hook_update_projects_alter().
+ *
+ * This hook will swap out the update XML URL for projects now supported at
+ * D7Security.
+ */
+function d7security_client_update_projects_alter(array &$projects) {
+  // Fetch the list of supported D7 projects from Gitlab.
+  $supported_projects_url = variable_get('d7security_client_supported_projects_url', 'https://gitlab.com/d7security/d7security/-/raw/main/supported_projects.txt');
+  $d7sec_supported = drupal_http_request($supported_projects_url);
+  if ($d7sec_supported->code == 200) {
+    $supported_projects = explode("\n", $d7sec_supported->data);
+    $project_status_base_url = variable_get('d7security_client_project_status_base_url', 'https://gitlab.com/d7security/d7security/-/raw/main');
+    foreach ($supported_projects as $supported_project) {
+      $supported_project = trim($supported_project);
+      if (isset($projects[$supported_project])) {
+        // Replace the project update XML URL with our own, pointing to Gitlab.
+        $projects[$supported_project]['info']['project status url'] = $project_status_base_url;
+      }
+    }
+  }
+  else {
+    watchdog('d7security_client', 'Could not fetch supported projects list from Gitlab: <pre>@error</pre>', [
+      '@error' => print_r($d7sec_supported, TRUE),
+    ], WATCHDOG_ERROR);
+  }
+}
+
+/**
+ * Implements hook_system_info_alter().
+ *
+ * Checks for modules that are missing project information and have the same
+ * name as a published contributed module. They should be updated to a
+ * well-known versioned state.
+ */
+function d7security_client_system_info_alter(array &$info, \stdClass $file, string $type) {
+  if (variable_get('d7security_client_check_missing_project_info', FALSE)) {
+    // Ignore projects that have project package information set.
+    if (!empty($info['project'])
+      || !empty($info['hidden'])
+      || empty($file->name)
+      // Ignore projects that have a version set, then the project was removed
+      // on purpose.
+      || !empty($info['version'])
+    ) {
+      return;
+    }
+    $contrib_projects = d7security_client_get_project_names();
+    if (in_array($file->name, $contrib_projects)) {
+      $info['project'] = $file->name;
+    }
+  }
+}
+
+/**
+ * Helper function that downloads all project names from drupal.org.
+ *
+ * This function is only meant to be run as module maintainer to refresh the TXT
+ * file list of known contrib modules that ships with d7security_client.
+ *
+ * Can be executed with
+ * `drush php-eval "d7security_client_write_project_names();"`.
+ */
+function d7security_client_collect_project_names(): array {
+  $project_names = [];
+  foreach (['module', 'theme', 'distribution'] as $type) {
+    $page = 0;
+    $index_url = "https://www.drupal.org/project/project_$type/index";
+    do {
+      $response = drupal_http_request($index_url . '?page=' . $page);
+      if ($response->code == 200) {
+        $doc = new DOMDocument();
+        // We don't care about HTML errors.
+        @$doc->loadHTML($response->data);
+        $xpath = new DOMXPath($doc);
+        $project_urls = $xpath->query('//span[@class="field-content"]/a/@href');
+        // Stop if there is nothing on the page anymore.
+        if ($project_urls->length == 0) {
+          break;
+        }
+        foreach ($project_urls as $project_url) {
+          // Skip any sandbox projects that are in the full project list by
+          // accident.
+          if (strpos($project_url->nodeValue, '/sandbox/') !== FALSE) {
+            continue;
+          }
+          $project_names[] = strtolower(str_replace('/project/', '', $project_url->nodeValue));
+        }
+      }
+      $page++;
+    } while ($response->code == 200);
+  }
+  sort($project_names);
+  return array_unique(array_filter($project_names));
+}
+
+/**
+ * Helper function that generates the project names shipped with this module.
+ */
+function d7security_client_write_project_names() {
+  $project_names = d7security_client_collect_project_names();
+  file_put_contents(__DIR__ . '/project_names.txt', implode("\n", $project_names));
+}
+
+/**
+ * Returns the list of known drupal.org project names.
+ */
+function d7security_client_get_project_names(): array {
+  $project_names = drupal_static(__FUNCTION__, []);
+  if (empty($project_names)) {
+    $list = file_get_contents(__DIR__ . '/project_names.txt');
+    $project_names = explode("\n", $list);
+  }
+  return $project_names;
+}
