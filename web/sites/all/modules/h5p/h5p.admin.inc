@@ -878,29 +878,31 @@ function h5p_content_upgrade_progress($library_id) {
  * @param int $minor
  */
 function h5p_content_upgrade_library($name, $major, $minor) {
-  $library = (object) array(
-    'name' => $name,
-    'version' => (object) array(
-      'major' => $major,
-      'minor' => $minor
-    )
-  );
-
   $core = _h5p_get_instance('core');
-  $library->semantics = $core->loadLibrarySemantics($library->name, $library->version->major, $library->version->minor);
+  $library = $core->loadLibrary($name, $major, $minor);
 
   if ($core->development_mode & H5PDevelopment::MODE_LIBRARY) {
-    $dev_lib = $core->h5pD->getLibrary($library->name, $library->version->major, $library->version->minor);
+    $dev_lib = $core->h5pD->getLibrary($library['name'], $library['majorVersion'], $library['minorVersion']);
   }
 
-  $upgrades_script = _h5p_get_h5p_path() . (isset($dev_lib) ? '/'. $dev_lib['path'] : '/libraries/' . $library->name . '-' . $library->version->major . '.' . $library->version->minor) . '/upgrades.js';
+  $library_folder = H5PCore::libraryToFolderName($library);
+  $upgrades_script = _h5p_get_h5p_path() . (isset($dev_lib) ? "/{$dev_lib['path']}" : "/libraries/{$library_folder}/upgrades.js");
   if (file_exists($upgrades_script)) {
-    $library->upgradesScript = base_path() . $upgrades_script;
+    $library['upgradesScript'] = base_path() . $upgrades_script;
   }
 
   drupal_add_http_header('Cache-Control', 'no-cache');
   drupal_add_http_header('Content-type', 'application/json');
-  print json_encode($library);
+  print json_encode([
+    'name' => $name,
+    'version' => [
+      'major' => $major,
+      'minor' => $minor
+    ],
+    // Load semantics once more, so that we let alterLibrarySemantics being run
+    'semantics' => $core->loadLibrarySemantics($name, $major, $minor),
+    'upgradesScript' => $library['upgradesScript'] ?? null
+  ]);
 }
 
 function h5p_restrict_library_callback($library_id) {

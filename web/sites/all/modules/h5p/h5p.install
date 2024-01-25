@@ -317,6 +317,14 @@ function h5p_schema() {
         'description' => 'Metadata settings',
         'type' => 'text'
       ),
+      'patch_version_in_folder_name' => array(
+        'description' => 'Is patch version part of folder name',
+        'type' => 'int',
+        'size' => 'tiny',
+        'unsigned' => true,
+        'not null' => true,
+        'default' => 0,
+      ),
     ),
     'primary key' => array('library_id'),
     'indexes' => array(
