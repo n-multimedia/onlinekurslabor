@@ -42,7 +42,7 @@
  *  - $theme_url: The absolute url to the Email theme directory.
  */
   $template_name = basename(__FILE__);
-  $current_path = realpath(NULL);
+  $current_path = __DIR__;
   $current_len = strlen($current_path);
   $template_path = realpath(dirname(__FILE__));
   if (!strncmp($template_path, $current_path, $current_len)) {
@@ -101,7 +101,7 @@ endif; ?><p>
   </p></li><li><p>
     If you think your customizations would be of use to others,
     please contribute your file as a feature request in the
-    <a href="http://drupal.org/node/add/project-issue/htmlmail">issue queue</a>.
+    <a href="https://www.drupal.org/node/add/project-issue/htmlmail">issue queue</a>.
   </p></li></ol></dd><dt><p>
     The user module sets the <u><code>$params</code></u> variable.
     For this message,

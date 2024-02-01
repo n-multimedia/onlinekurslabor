@@ -1,5 +1,5 @@
 When formatting an email message with a given `$module` and `$key`,
-[HTML Mail](http://drupal.org/project/htmlmail)
+[HTML Mail](https://www.drupal.org/project/htmlmail)
 will use the first template file it finds from the following list:
 
 1.  `htmlmail--$module--$key.tpl.php`
@@ -7,7 +7,7 @@ will use the first template file it finds from the following list:
 3.  `htmlmail.tpl.php`
 
 For each filename,
-[HTML Mail](http://drupal.org/project/htmlmail)
+[HTML Mail](https://www.drupal.org/project/htmlmail)
 looks first in the chosen *Email theme* directory, then in its own
 module directory, before proceeding to the next filename.
 
@@ -32,12 +32,12 @@ The following variables available in this template:
 
 **`$module`**
 :   The first argument to
-    [`drupal_mail()`](http://api.drupal.org/api/drupal/includes--mail.inc/function/drupal_mail/7),
+    [`drupal_mail()`](https://api.drupal.org/api/drupal/includes%21mail.inc/function/drupal_mail/7.x),
     which is, by convention, the machine-readable name of the sending module.
 
 **`$key`**
 :   The second argument to
-    [`drupal_mail()`](http://api.drupal.org/api/drupal/includes--mail.inc/function/drupal_mail/7),
+    [`drupal_mail()`](https://api.drupal.org/api/drupal/includes%21mail.inc/function/drupal_mail/7.x),
     which should give some indication of why this email is being sent.
 
 **`$message_id`**
@@ -75,7 +75,7 @@ The following variables available in this template:
 
 **`$theme`**
 :   The name of the *Email theme* used to hold template files. If the
-    [Echo](http://drupal.org/project/echo) module is enabled this theme will
+    [Echo](https://www.drupal.org/project/echo) module is enabled this theme will
     also be used to transform the message body into a fully-themed webpage.
 
 **`$theme_path`**
@@ -89,4 +89,4 @@ The following variables available in this template:
 
 Other modules may also add or modify theme variables by implementing a
 `MODULENAME_preprocess_htmlmail(&$variables)`
-[hook function](http://api.drupal.org/api/drupal/modules--system--theme.api.php/function/hook_preprocess_HOOK/7).
+[hook function](https://api.drupal.org/api/drupal/modules%21system%21theme.api.php/function/hook_preprocess_HOOK/7.x).

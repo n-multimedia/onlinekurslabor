@@ -5,7 +5,7 @@
  * Sample template for HTML Mail test messages.
  */
 ?>
-<h1><a href="http://drupal.org/project/htmlmail">HTML Mail</a> test message</h1>
+<h1><a href="https://www.drupal.org/project/htmlmail">HTML Mail</a> test message</h1>
 <div class="htmlmail-body">
 <?php echo $body; ?>
 </div>
@@ -22,7 +22,7 @@
     to enable your selected <u><?php echo ucfirst($theme); ?></u> theme.
   </p></dt><dd><ol><li><p><?php endif; ?>
     Copy the
-    <a href="http://drupalcode.org/project/htmlmail.git/blob_plain/refs/heads/7.x-2.x:/htmlmail--htmlmail.tpl.php"><code>htmlmail--htmlmail.tpl.php</code></a>
+    <a href="https://git.drupalcode.org/project/htmlmail/raw/7.x-2.x/htmlmail--htmlmail.tpl.php"><code>htmlmail--htmlmail.tpl.php</code></a>
     file to your <u><?php echo ucfirst($theme); ?></u> theme directory
     <u><code><?php echo $theme_path; ?></code></u>.
   </p></li><li><p>

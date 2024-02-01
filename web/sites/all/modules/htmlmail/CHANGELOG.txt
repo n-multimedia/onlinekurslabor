@@ -64,44 +64,44 @@
 
 References
 
-   1. http://drupalcode.org/project/htmlmail.git/log/refs/heads/7.x-2.x
-   2. http://drupalcode.org/project/htmlmail.git/commit/64a69aff375ffe42d311963d748866085281896e
-   3. http://drupal.org/user/1171
-   4. http://drupal.org/node/524718
+   1. https://git.drupalcode.org/project/htmlmail/commits/7.x-2.x
+   2. https://git.drupalcode.org/project/htmlmail/commit/64a69aff375ffe42d311963d748866085281896e
+   3. https://www.drupal.org/user/1171
+   4. https://www.drupal.org/node/524718
    5. http://www.dwheeler.com/sloccount/
-   6. http://api.drupal.org/api/drupal/includes--common.inc/function/drupal_mail/5
-   7. http://drupal.org/node/726398
+   6. https://api.drupal.org/api/drupal/includes%21common.inc/function/drupal_mail/5.x
+   7. https://www.drupal.org/node/726398
    8. http://www.dwheeler.com/sloccount/
-   9. http://drupal.org/project/usage/726398
-  10. http://drupal.org/node/1012246
-  11. http://drupal.org/node/355250
-  12. http://drupal.org/user/36148
-  13. http://drupalcode.org/project/mailsystem.git/commit/5cc8201c5e48b56efecc139c9a51dd49775aebaf
-  14. http://drupal.org/user/36148
-  15. http://drupal.org/node/1088882
+   9. https://www.drupal.org/project/usage/726398
+  10. https://www.drupal.org/node/1012246
+  11. https://www.drupal.org/node/355250
+  12. https://www.drupal.org/user/36148
+  13. https://git.drupalcode.org/project/mailsystem/commit/5cc8201c5e48b56efecc139c9a51dd49775aebaf
+  14. https://www.drupal.org/user/36148
+  15. https://www.drupal.org/node/1088882
   16. http://www.dwheeler.com/sloccount/
-  17. http://drupalcode.org/project/htmlmail.git/commit/a0083eea7b575a702d3aecdd0578378277c7c8d4
-  18. http://drupal.org/project/emogrifier
-  19. http://drupalcode.org/project/htmlmail.git/commit/6c0463849493f8b528be8d4099ab0c6fbc976fe2
-  20. http://drupalcode.org/project/htmlmail.git/commit/a4b36c6de5f241ceccd0aeea4599d35de066fa9c
-  21. http://drupalcode.org/project/htmlmail.git/commit/f481fc8997a1345e9490e80043c616a5805d6e44
-  22. http://drupal.org/project/echo
-  23. http://drupalcode.org/project/htmlmail.git/commit/0ebec6e83e688b6d51e35554618727dc3133c970
-  24. http://drupalcode.org/project/htmlmail.git/commit/104e8916c9ba92486a227786b6781cac38e60905
+  17. https://git.drupalcode.org/project/htmlmail/commit/a0083eea7b575a702d3aecdd0578378277c7c8d4
+  18. https://www.drupal.org/project/emogrifier
+  19. https://git.drupalcode.org/project/htmlmail/commit/6c0463849493f8b528be8d4099ab0c6fbc976fe2
+  20. https://git.drupalcode.org/project/htmlmail/commit/a4b36c6de5f241ceccd0aeea4599d35de066fa9c
+  21. https://git.drupalcode.org/project/htmlmail/commit/f481fc8997a1345e9490e80043c616a5805d6e44
+  22. https://www.drupal.org/project/echo
+  23. https://git.drupalcode.org/project/htmlmail/commit/0ebec6e83e688b6d51e35554618727dc3133c970
+  24. https://git.drupalcode.org/project/htmlmail/commit/104e8916c9ba92486a227786b6781cac38e60905
   25. http://pear.php.net/
   26. http://pear.php.net/manual/en/package.mail.mail-mimepart.mail-mimepart.php
   27. http://pear.php.net/manual/en/package.mail.mail-mimedecode.php
-  28. http://drupalcode.org/project/htmlmail.git/commit/a17e7996d0d119012205cf47195064848e59d937
-  29. http://drupal.org/project/mailmime
-  30. http://drupalcode.org/project/htmlmail.git/commit/f419fb3cf18276cca9f0d3dbc2c80e6e6a6bbda9
-  31. http://drupal.org/node/1118032
+  28. https://git.drupalcode.org/project/htmlmail/commit/a17e7996d0d119012205cf47195064848e59d937
+  29. https://www.drupal.org/project/mailmime
+  30. https://git.drupalcode.org/project/htmlmail/commit/f419fb3cf18276cca9f0d3dbc2c80e6e6a6bbda9
+  31. https://www.drupal.org/node/1118032
   32. http://www.dwheeler.com/sloccount
-  33. http://drupal.org/node/1118034
+  33. https://www.drupal.org/node/1118034
   34. http://www.dwheeler.com/sloccount
-  35. http://drupal.org/project/htmlmail
-  36. http://drupalcode.org/project/htmlmail.git/shortlog/refs/heads/6.x-1.x
-  37. http://drupalcode.org/project/htmlmail.git/shortlog/refs/heads/7.x-1.x
-  38. http://drupal.org/project/echo
-  39. http://drupal.org/project/mailmime
-  40. http://drupalcode.org/project/htmlmail.git/commit/20abfd24ad0006c9312fd8f0a5edcdaed8e5920b
-  41. http://drupalcode.org/project/htmlmail.git/commit/dd53d4f28cdbe893bb32e31a03ceba34c5240402
+  35. https://www.drupal.org/project/htmlmail
+  36. https://git.drupalcode.org/project/htmlmail/commits/6.x-1.x
+  37. https://git.drupalcode.org/project/htmlmail/commits/7.x-1.x
+  38. https://www.drupal.org/project/echo
+  39. https://www.drupal.org/project/mailmime
+  40. https://git.drupalcode.org/project/htmlmail/commit/20abfd24ad0006c9312fd8f0a5edcdaed8e5920b
+  41. https://git.drupalcode.org/project/htmlmail/commit/dd53d4f28cdbe893bb32e31a03ceba34c5240402

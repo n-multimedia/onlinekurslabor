@@ -132,28 +132,28 @@
   Related Modules
 
    Echo
-          http://drupal.org/project/echo
+          https://www.drupal.org/project/echo
 
    Emogrifier
-          http://drupal.org/project/emogrifier
+          https://www.drupal.org/project/emogrifier
 
    HTML Purifier
-          http://drupal.org/project/htmlpurifier
+          https://www.drupal.org/project/htmlpurifier
 
    htmLawed
-          http://drupal.org/project/htmlawed
+          https://www.drupal.org/project/htmlawed
 
    Mail MIME
-          http://drupal.org/project/mailmime
+          https://www.drupal.org/project/mailmime
 
    Mail System
-          http://drupal.org/project/mailsystem
+          https://www.drupal.org/project/mailsystem
 
    Pathologic
-          http://drupal.org/project/pathologic
+          https://www.drupal.org/project/pathologic
 
    Transliteration
-          http://drupal.org/project/transliteration
+          https://www.drupal.org/project/transliteration
 
   [46]Documentation
 
@@ -178,58 +178,58 @@
 
 References
 
-   1. http://drupal.org/project/htmlmail
+   1. https://www.drupal.org/project/htmlmail
    2. http://www.dict.org/bin/Dict?Form=Dict2&Database=*&Query=requirement
-   3. http://drupal.org/project/mailsystem
-   4. http://drupal.org/documentation/install/modules-themes/modules-7
-   5. http://drupal.org/project/echo
-   6. http://drupal.org/project/emogrifier
-   7. http://drupal.org/project/mailmime
-   8. http://drupal.org/project/pathologic
-   9. http://drupal.org/project/filter_transliteration
-  10. http://drupal.org/node/1095278#comment-4219530
-  11. http://drupal.org/node/250790
-  12. http://drupal.org/node/1106064
-  13. http://drupal.org/node/1119548
-  14. http://drupal.org/node/355250
-  15. http://drupal.org/node/329828
-  16. http://drupal.org/project/htmlmail
-  17. http://drupal.org/project/mailsystem
-  18. http://drupal.org/project/echo
-  19. http://drupal.org/project/modules/?filters=type%3Aproject_project%20tid%3A63%20hash%3A1hbejm%20-bs_project_sandbox%3A1%20bs_project_has_releases%3A1
-  20. http://drupal.org/node/778976
-  21. http://api.drupal.org/api/drupal/modules--filter--filter.module/function/_filter_autop/7
-  22. http://api.drupal.org/api/drupal/modules--filter--filter.module/function/_filter_url/7
-  23. http://drupal.org/project/rel_to_abs
+   3. https://www.drupal.org/project/mailsystem
+   4. https://www.drupal.org/documentation/install/modules-themes/modules-7
+   5. https://www.drupal.org/project/echo
+   6. https://www.drupal.org/project/emogrifier
+   7. https://www.drupal.org/project/mailmime
+   8. https://www.drupal.org/project/pathologic
+   9. https://www.drupal.org/project/filter_transliteration
+  10. https://www.drupal.org/node/1095278#comment-4219530
+  11. https://www.drupal.org/node/250790
+  12. https://www.drupal.org/node/1106064
+  13. https://www.drupal.org/node/1119548
+  14. https://www.drupal.org/node/355250
+  15. https://www.drupal.org/node/329828
+  16. https://www.drupal.org/project/htmlmail
+  17. https://www.drupal.org/project/mailsystem
+  18. https://www.drupal.org/project/echo
+  19. https://www.drupal.org/project/modules/?filters=type%3Aproject_project%20tid%3A63%20hash%3A1hbejm%20-bs_project_sandbox%3A1%20bs_project_has_releases%3A1
+  20. https://www.drupal.org/node/778976
+  21. https://api.drupal.org/api/drupal/modules%21filter%21filter.module/function/_filter_autop/7.x
+  22. https://api.drupal.org/api/drupal/modules%21filter%21filter.module/function/_filter_url/7.x
+  23. https://www.drupal.org/project/rel_to_abs
   24. http://www.pelagodesign.com/sidecar/emogrifier/
-  25. http://drupal.org/project/token
-  26. http://drupal.org/project/mailmime
-  27. http://drupal.org/files/images/htmlmail_settings_2.thumbnail.png
-  28. http://drupal.org/project/mailsystem
-  29. http://drupal.org/project/htmlmail
-  30. http://api.drupal.org/api/drupal/modules--system--system.mail.inc/class/DefaultMailSystem/7
-  31. http://api.drupal.org/api/drupal/includes--mail.inc/function/drupal_mail_system/7
-  32. http://drupal.org/project/htmlmail
-  33. http://drupal.org/documentation/theme
-  34. http://drupal.org/project/echo
-  35. http://drupal.org/project/themes
-  36. http://drupal.org/documentation/theme
-  37. http://drupal.org/node/778976
-  38. http://drupal.org/project/modules/?filters=type%3Aproject_project%20tid%3A63%20hash%3A1hbejm%20-bs_project_sandbox%3A1%20bs_project_has_releases%3A1
-  39. http://drupal.org/project/emogrifier
-  40. http://drupal.org/project/filter_transliteration
-  41. http://drupal.org/project/pathologic
-  42. http://drupal.org/project/mailsystem
-  43. http://drupal.org/project/htmlmail
-  44. http://drupal.org/node/1130960
-  45. http://drupal.org/project/issues/htmlmail
-  46. http://drupal.org/project/documentation
-  47. http://api.drupal.org/api/drupal/modules--filter--filter.module/6
-  48. http://api.drupal.org/api/drupal/modules--filter--filter.module/7
-  49. http://api.drupal.org/api/drupal/modules--filter--filter.module/group/standard_filters/7
-  50. http://drupal.org/documentation/install/modules-themes/modules-7
-  51. http://drupal.org/documentation/install/modules-themes/modules-7
-  52. http://drupal.org/documentation/theme
-  53. http://drupal.org/documentation/theme
-  54. http://drupal.org/user/1171
-  55. http://drupal.org/user/36148
+  25. https://www.drupal.org/project/token
+  26. https://www.drupal.org/project/mailmime
+  27. https://www.drupal.org/files/images/htmlmail_settings_2.thumbnail.png
+  28. https://www.drupal.org/project/mailsystem
+  29. https://www.drupal.org/project/htmlmail
+  30. https://api.drupal.org/api/drupal/modules%21system%21system.mail.inc/class/DefaultMailSystem/7.x
+  31. https://api.drupal.org/api/drupal/includes%21mail.inc/function/drupal_mail_system/7.x
+  32. https://www.drupal.org/project/htmlmail
+  33. https://www.drupal.org/documentation/theme
+  34. https://www.drupal.org/project/echo
+  35. https://www.drupal.org/project/themes
+  36. https://www.drupal.org/documentation/theme
+  37. https://www.drupal.org/node/778976
+  38. https://www.drupal.org/project/modules/?filters=type%3Aproject_project%20tid%3A63%20hash%3A1hbejm%20-bs_project_sandbox%3A1%20bs_project_has_releases%3A1
+  39. https://www.drupal.org/project/emogrifier
+  40. https://www.drupal.org/project/filter_transliteration
+  41. https://www.drupal.org/project/pathologic
+  42. https://www.drupal.org/project/mailsystem
+  43. https://www.drupal.org/project/htmlmail
+  44. https://www.drupal.org/node/1130960
+  45. https://www.drupal.org/project/issues/htmlmail
+  46. https://www.drupal.org/project/documentation
+  47. https://api.drupal.org/api/drupal/modules%21filter%21filter.module/6.x
+  48. https://api.drupal.org/api/drupal/modules%21filter%21filter.module/7.x
+  49. https://api.drupal.org/api/drupal/modules%21filter%21filter.module/group/standard_filters/7.x
+  50. https://www.drupal.org/documentation/install/modules-themes/modules-7
+  51. https://www.drupal.org/documentation/install/modules-themes/modules-7
+  52. https://www.drupal.org/documentation/theme
+  53. https://www.drupal.org/documentation/theme
+  54. https://www.drupal.org/user/1171
+  55. https://www.drupal.org/user/36148
