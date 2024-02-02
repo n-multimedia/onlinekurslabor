@@ -199,7 +199,7 @@ function support_formular_submit(&$form, &$form_state) {
   $params['@body'] = wordwrap("Art der Anfrage: "
     . $options[$form_state['values']['category']] . "\n" . "<hr>\n Nachricht:\n\n<p>" .
     $form_state['values']['problem'] . "</p><hr>\nDebuginfos: \n" . $form_state['values']['data'], 70);
-  $params['@headers'] = $headers . "From: " . $user->mail;
+ # $params['@headers'] = $headers . "From: " . $user->mail;
   $params['@from'] = $user->mail;
   $mailsuccess = drupal_mail($module, $key, $params['@to'], $language, $params, $params['@from']);
 
@@ -213,6 +213,30 @@ function support_formular_submit(&$form, &$form_state) {
   else {
     drupal_set_message("Fehler beim versenden Ihrer Anfrage. Bitte versuchen Sie es später erneut.", "error");
   }
+}
+
+
+
+
+/**
+ * implements hook_mail
+ * needed for function support_formular_submit
+ * Builds Email-msg from given parameters for sending it
+ *
+ * @param $key      the given key
+ * @param $message  array containing message information
+ * @param $params   array containing form information
+ */
+function support_form_mail($key, &$message, $params) {
+
+
+  $message['subject'] = $params['@subject'];
+  $message['body'] = drupal_html_to_text($params['@body']);
+  $message['slogan'] = "Support-Anfrage";
+
+  $from = $params['@from'];
+  $message['from'] = $from;
+  $message['headers']['From'] = $from;
 }
 
 /**

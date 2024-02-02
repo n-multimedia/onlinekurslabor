@@ -4,19 +4,24 @@
  * Implements hook_file_formatter_info().
  */
 function oembed_file_formatter_info() {
+  $formatters = array();
   $formatters['oembed'] = array(
     'label' => t('oEmbed'),
+    'file types' => array('audio, document, image, video'),
     'default settings' => array('width' => '560', 'height' => '340', 'wmode' => ''),
     'view callback' => 'oembed_file_formatter_view',
     'settings callback' => 'oembed_file_formatter_oembed_settings',
     'description' => t('All-purpose oEmbed formatter.'),
+    'mime types' => array('audio/oembed', 'image/oembed', 'text/oembed', 'video/oembed'),
   );
   $formatters['oembed_thumbnail'] = array(
     'label' => t('oEmbed thumbnail'),
+    'file types' => array('audio, document, image, video'),
     'default settings' => array('width' => '180', 'height' => ''),
     'view callback' => 'oembed_file_formatter_view',
     'settings callback' => 'oembed_file_formatter_oembed_thumbnail_settings',
     'description' => t('oEmbed thumbnail media.'),
+    'mime types' => array('audio/oembed', 'image/oembed', 'text/oembed', 'video/oembed'),
   );
   return $formatters;
 }
@@ -30,6 +35,8 @@ function oembed_file_formatter_info_alter(&$info) {
       'label' => t('oEmbed image'),
       'view callback' => 'oembed_remote_file_formatter_view',
       'description' => t('oEmbed photo or thumbnail is saved to local filesystem and transformed by image styles.'),
+      'hidden' => FALSE,
+      'mime types' => array('audio/oembed', 'image/oembed', 'text/oembed', 'video/oembed'),
     ) + $info['file_image'];
   }
 }
@@ -60,14 +67,16 @@ function oembed_file_operation_info() {
 /**
  * Implements hook_file_presave().
  */
-function oembed_file_presave(stdClass $file) {
-
+function oembed_file_presave($file) {
   // For new oEmbed files, set the filename to the oEmbed response's title or calculated
   // alt attribute.
-  if (empty($file->fid) && isset($file->oembed)) {
-    $embed = $file->oembed;
+  if (empty($file->fid) && isset($file->metadata['oembed'])) {
+    $embed = $file->metadata['oembed'];
     $file->filename = truncate_utf8(empty($embed['title']) ? oembed_alt_attr($embed) : $embed['title'], 255);
   }
+
+  // Fetch image dimensions.
+  oembed_metadata_fetch_image_dimensions($file);
 }
 
 /**
@@ -76,33 +85,46 @@ function oembed_file_presave(stdClass $file) {
 function oembed_file_load($files) {
   foreach ($files as $file) {
     $scheme = file_uri_scheme($file->uri);
-    if ($scheme == 'oembed') {
+    if ($scheme == 'oembed' && !isset($file->metadata['oembed'])) {
 
       // Load plain oEmbed response onto file entity.
+      /** @var \DrupalStreamWrapperInterface $wrapper */
       $wrapper = file_stream_wrapper_get_instance_by_uri($file->uri);
-      $file->oembed = oembed_get_data($wrapper->getExternalUrl());
+      $file->metadata['oembed'] = oembed_get_data($wrapper->getExternalUrl());
 
       // Retrieve any missing images dimensions.
-      oembed_image_dimensions($file);
+      oembed_metadata_fetch_image_dimensions($file);
+
+
+      foreach (array('oembed', 'width', 'height') as $name) {
+        if (!empty($file->metadata[$name])) {
+          $value = $file->metadata[$name];
+          //2023-11-26 - PATCH
+          //prevent integrity constraint primary key violation error
+          //no need to insert metadata.
+          //its done by file_entity_file_insert
+          //inserting before file_entity_file_insert causes sql error
+          /*
+          db_merge('file_metadata')
+            ->fields(array(
+              'value' => serialize($value),
+            ))
+            ->key(array(
+              'fid' => $file->fid,
+              'name' => $name,
+            ))
+            ->execute();
+          */
+        }
+      }
     }
   }
 }
 
 /**
- * Implements hook_file_insert().
+ * Fetch the dimensions of an image and store them in the file metadata array.
  */
-function oembed_file_insert($file) {
-  oembed_image_dimensions($file, TRUE);
-}
-
-/**
- * Implements hook_file_insert().
- */
-function oembed_file_update($file) {
-  oembed_image_dimensions($file, TRUE);
-}
-
-function oembed_image_dimensions($file, $force = FALSE) {
+function oembed_metadata_fetch_image_dimensions($file) {
 
   $scheme = file_uri_scheme($file->uri);
   if ($scheme != 'oembed') {
@@ -110,35 +132,28 @@ function oembed_image_dimensions($file, $force = FALSE) {
   }
 
   // Do not bother proceeding if this file does not have an image mime type.
-  if (strpos($file->filemime, 'image/') !== 0) {
+  if (file_entity_file_get_mimetype_type($file) != 'image') {
     return;
   }
 
-  // Return the existing $file->image_dimensions unless a reload is forced.
-  if (!$force && isset($file->image_dimensions)) {
-    return $file->image_dimensions;
-  }
-
   // We have a non-empty image file.
-  $embed = $file->oembed;
+  $embed = $file->metadata['oembed'];
   if ($embed && $embed['type'] == 'photo' && !empty($embed['width']) && !empty($embed['height'])) {
-    $file->image_dimensions = array(
-      'width' => $embed['width'],
-      'height' => $embed['height'],
-    );
-    db_merge('image_dimensions')
-      ->key(array('fid' => $file->fid))
-      ->fields(array(
-        'width' => $file->image_dimensions['width'],
-        'height' => $file->image_dimensions['height'],
-      ))
-      ->execute();
+    $file->metadata['width'] = $embed['width'];
+    $file->metadata['height'] = $embed['height'];
   }
   else {
     // Fallback to NULL values.
-    $file->image_dimensions = array(
-      'width' => NULL,
-      'height' => NULL,
-    );
+    $file->metadata['width'] = NULL;
+    $file->metadata['height'] = NULL;
   }
+}
+
+/**
+ * Implements hook_file_metadata_info().
+ */
+function oembed_file_metadata_info() {
+  $info = array();
+  $info['oembed'] = array('label' => t('oEmbed'), 'type' => 'array');
+  return $info;
 }

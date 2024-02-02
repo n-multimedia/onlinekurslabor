@@ -141,3 +141,7 @@ div#content div#block-devel-switch-user #edit-submit,
 div#footer div#block-devel-switch-user #edit-submit {
   margin-top: 5px;
 }
+
+#devel-execute-form textarea {
+  font-family: monospace;
+}

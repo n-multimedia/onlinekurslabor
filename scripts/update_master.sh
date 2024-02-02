@@ -8,6 +8,7 @@ drush vset maintenance_mode 1
 
 drush cc all
 drush en eol_configuration_feature --yes
+drush en d7security_client  --yes
 
 #bug in drush - cc before FR!!
 drush cc all

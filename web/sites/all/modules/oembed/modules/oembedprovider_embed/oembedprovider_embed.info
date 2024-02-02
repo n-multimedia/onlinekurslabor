@@ -1,0 +1,14 @@
+name = oEmbed Provider Libraries
+dependencies[] = oembed
+description = "Developer sandbox for integration with other oEmbed libraries."
+core = 7.x
+package = oEmbed
+dependencies[] = classloader
+dependencies[] = oembed
+hidden = TRUE
+
+; Information added by Drupal.org packaging script on 2020-03-22
+version = "7.x-1.0-rc2+42-dev"
+core = "7.x"
+project = "oembed"
+datestamp = "1584883677"

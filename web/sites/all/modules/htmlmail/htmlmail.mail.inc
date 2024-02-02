@@ -4,9 +4,9 @@
  * @file
  * Formats and sends mail using the MailMIME class.
  *
- * @see http://drupal.org/node/900794
- * @see http://api.drupal.org/api/drupal/includes--mail.inc/interface/MailSystemInterface/7
- * @see http://drupal.org/project/mailmime
+ * @see https://www.drupal.org/node/900794
+ * @see https://api.drupal.org/api/drupal/includes%21mail.inc/interface/MailSystemInterface/7.x
+ * @see https://www.drupal.org/project/mailmime
  */
 
 /**
@@ -69,7 +69,7 @@ class HTMLMailSystem implements MailSystemInterface {
           'The %convert function did not return any text. Please report this error to the %mailsystem issue queue.',
           array('%convert' => 'mailsystem_html_to_text()', '%mailsystem' => 'Mail system'),
           WATCHDOG_WARNING,
-          'http://drupal.org/node/add/project-issue/mailsystem'
+          'https://www.drupal.org/node/add/project-issue/mailsystem'
         );
       }
     }
@@ -122,7 +122,7 @@ class HTMLMailSystem implements MailSystemInterface {
             'The %toemail function did not return any text. Please report this error to the %mailmime issue queue.',
             array('%toemail' => 'MailMIME::toEmail()', '%mailmime' => 'Mail MIME'),
             WATCHDOG_WARNING,
-            'http://drupal.org/node/add/project-issue/mailmime'
+            'https://www.drupal.org/node/add/project-issue/mailmime'
           );
         }
       }
@@ -163,7 +163,7 @@ class HTMLMailSystem implements MailSystemInterface {
             'The %toemail function did not return any text. Please report this error to the %mailmime issue queue.',
             array('%toemail' => 'MailMIME::toEmail()', '%mailmime' => 'Mail MIME'),
             WATCHDOG_WARNING,
-            'http://drupal.org/node/add/project-issue/mailmime'
+            'https://www.drupal.org/node/add/project-issue/mailmime'
           );
         }
       }
@@ -178,7 +178,7 @@ class HTMLMailSystem implements MailSystemInterface {
   /**
    * Use the MailMime class to format the message body.
    *
-   * @see http://drupal.org/project/mailmime
+   * @see https://www.drupal.org/project/mailmime
    */
   public function formatMailMIME(array &$message) {
     $eol = variable_get('mail_line_endings', MAIL_LINE_ENDINGS);
@@ -226,16 +226,16 @@ class HTMLMailSystem implements MailSystemInterface {
   /**
    * Send an email message.
    *
-   * @param array $message
+   * @param array $raw_message
    *   An associative array containing at least:
    *   - headers: An associative array of (name => value) email headers.
    *   - body: The text/plain or text/html message body.
    *   - MailMIME: The message, parsed into a MailMIME object.
    */
-  public function mail(array $message) {
+  public function mail(array $raw_message) {
     $eol = variable_get('mail_line_endings', MAIL_LINE_ENDINGS);
     // Ensure that subject is non-null.
-    $message += array('subject' => t('(No subject)'));
+    $message = $raw_message + array('subject' => t('(No subject)'));
     // Check for empty recipient.
     if (empty($message['to'])) {
       if (empty($message['headers']['To'])) {
@@ -281,7 +281,7 @@ class HTMLMailSystem implements MailSystemInterface {
     }
     if (isset($message['headers']['Return-Path'])) {
       // A return-path was set.
-      if (isset($_SERVER['WINDIR']) || strpos($_SERVER['SERVER_SOFTWARE'], 'Win32') !== FALSE) {
+      if (isset($_SERVER['WINDIR']) || isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'], 'Win32') !== FALSE) {
         // On Windows, PHP will use the value of sendmail_from for the
         // Return-Path header.
         $old_from = ini_get('sendmail_from');
@@ -289,6 +289,7 @@ class HTMLMailSystem implements MailSystemInterface {
         $result = @mail($to, $subject, $body, $txt_headers);
         ini_set('sendmail_from', $old_from);
       }
+      // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.safe_modeDeprecatedRemoved
       elseif (ini_get('safe_mode')) {
         // If safe mode is in effect, passing the fifth parameter to @mail
         // will cause it to return FALSE and generate a PHP warning, even
@@ -314,16 +315,7 @@ class HTMLMailSystem implements MailSystemInterface {
       foreach ($params as $i => $value) {
         $params[$i] = var_export($value, 1);
       }
-      if (defined('DEBUG_BACKTRACE_IGNORE_ARGS')) {
-        $trace = print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), 1);
-      }
-      else {
-        $trace = debug_backtrace(0);
-        for ($i = count($trace) - 1; $i >= 0; $i--) {
-          unset($trace[$i]['args']);
-        }
-        $trace = print_r($trace);
-      }
+      $trace = print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), 1);
       watchdog('htmlmail', 'Mail sending failed because:<br /><pre>@call</pre><br />returned FALSE.<br /><pre>@trace</pre>', array('@call' => $call, '@trace' => $trace));
     }
     return $result;

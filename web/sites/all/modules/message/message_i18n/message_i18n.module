@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * @file
+ * Message i18n integration module via entity API i18n support.
+ *
+ * @see EntityDefaultI18nController
+ */
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function message_i18n_entity_info_alter(&$info) {
+  // Enable i18n support via the entity API.
+  $info['message_type']['i18n controller class'] = 'EntityDefaultI18nStringController';
+}
+
+/**
+ * Implements hook_entity_property_info_alter().
+ */
+function message_i18n_entity_property_info_alter(&$info) {
+  // Mark some properties as translatable, but also denote that translation
+  // works with i18n_string.
+  foreach (array('description') as $name) {
+    $info['message_type']['properties'][$name]['translatable'] = TRUE;
+    $info['message_type']['properties'][$name]['i18n string'] = TRUE;
+  }
+}
+
+/**
+ * Implements hook_message_type_insert().
+ */
+function message_i18n_message_type_insert($message_type) {
+  i18n_string_object_update('message_type', $message_type);
+}
+
+/**
+ * Implements hook_message_type_update().
+ */
+function message_i18n_message_type_update($message_type) {
+  // Account for name changes.
+  if ($message_type->original->name != $message_type->name) {
+    i18n_string_update_context("message:message_type:{$message_type->original->name}:*", "message:message_type:{$message_type->name}:*");
+  }
+  i18n_string_object_update('message_type', $message_type);
+}
+
+/**
+ * Implements hook_message_type_delete().
+ */
+function message_i18n_message_type_delete($message_type) {
+  i18n_string_object_remove('message_type', $message_type);
+}

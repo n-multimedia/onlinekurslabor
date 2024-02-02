@@ -234,5 +234,5 @@ function drush_generate_is_number($number) {
 // Include devel_generate.inc.
 function drush_generate_include_devel() {
   $path = drupal_get_path('module', 'devel_generate');
-  require_once($path .'/devel_generate.inc');
+  require_once($path . '/devel_generate.inc');
 }

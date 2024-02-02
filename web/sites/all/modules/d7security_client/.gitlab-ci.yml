@@ -1,0 +1,2 @@
+include:
+  - component: gitlab.com/d7security/d7security_gitlab_components/d7_gitlab_release@main

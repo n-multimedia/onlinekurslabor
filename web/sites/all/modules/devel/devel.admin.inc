@@ -53,6 +53,14 @@ function devel_admin_settings() {
     '#maxlength' => 4,
     '#description' => t('Enter an integer in milliseconds. Any query which takes longer than this many milliseconds will be highlighted in the query log. This indicates a possibly inefficient query, or a candidate for caching.'),
   );
+  $form['queries']['settings']['devel_query_random_range'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Query log clear range'),
+    '#default_value' => variable_get('devel_query_random_range', 1000),
+    '#size' => 4,
+    '#maxlength' => 4,
+    '#description' => t('You may want to decrease this value if you suffer from querylog files accumulation. Given N, the querylog directory will be cleaned for every Nth request, on average.'),
+  );
 
   $form['devel_api_url'] = array('#type' => 'textfield',
     '#title' => t('API Site'),
@@ -146,7 +154,7 @@ function _devel_display_block_help_message() {
     $variables = array(
       '!admin_menu_url' => url('https://drupal.org/project/admin_menu', array('external' => TRUE)),
       '!admin_menu_name' => 'Administration Menu',
-      '!admin_menu_config_url' => url('admin/config/administration/admin_menu'),
+      '!admin_menu_config_url' => url('admin/config/administration/admin-menu'),
       '!icon_menu' => t('Icon menu'),
     );
     if (!module_exists('admin_menu')) {

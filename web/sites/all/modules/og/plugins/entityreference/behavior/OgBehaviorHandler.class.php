@@ -78,7 +78,8 @@ class OgBehaviorHandler extends EntityReference_BehaviorHandler_Abstract {
     if (!empty($entity->delete_og_membership)) {
       // Delete all OG memberships related to this entity.
       $og_memberships = array();
-      foreach (og_get_entity_groups($entity_type, $entity) as $group_type => $ids) {
+      $groups = og_get_entity_groups($entity_type, $entity, [OG_STATE_ACTIVE, OG_STATE_PENDING, OG_STATE_BLOCKED]);
+      foreach ($groups as $group_type => $ids) {
         $og_memberships = array_merge($og_memberships, array_keys($ids));
       }
       if ($og_memberships) {
@@ -152,7 +153,7 @@ class OgBehaviorHandler extends EntityReference_BehaviorHandler_Abstract {
    *   Array with all the differences, or an empty array if none found.
    */
   public function groupAudiencegetDiff($entity_type, $entity, $field, $instance, $langcode, $items) {
-    $return = FALSE;
+    $return = array();
 
     $field_name = $field['field_name'];
     $wrapper = entity_metadata_wrapper($entity_type, $entity);

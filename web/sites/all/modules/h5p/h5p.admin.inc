@@ -148,9 +148,19 @@ function h5p_admin_settings($form, &$form_state) {
     '#type' => 'checkbox',
     '#title' => t('Use H5P Hub'),
     '#default_value' => variable_get('h5p_hub_is_enabled', TRUE),
-    '#attributes' => array('class' => array('h5p-settings-disable-hub-checkbox')),
+    '#attributes' => array('class' => array('h5p-settings-disable-hub-checkbox'), 'name' => 'h5p_hub_is_enabled'),
     '#description' => t("It's strongly encouraged to keep this option <strong>enabled</strong>. The H5P Hub provides an easy interface for getting new content types and keeping existing content types up to date. In the future, it will also make it easier to share and reuse content. If this option is disabled you'll have to install and update content types through file upload forms."),
   );
+
+  $form['h5p_search_content_hub'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Enable shared content in H5P Hub'),
+    '#default_value' => variable_get('h5p_search_content_hub', true),
+    '#description' => t('Find and download shared content from H5P Hub. Requires that the setting \'Use H5P Hub\' is enabled.'),
+    '#states' => [
+      'disabled' => [':input[name="h5p_hub_is_enabled"]' => ['checked' => false]],
+    ],
+  ];
 
   // TODO: Be able to change site key
 //  $site_key = variable_get('h5p_site_key', variable_get('h5p_site_uuid', ''));
@@ -234,8 +244,8 @@ function h5p_admin_settings($form, &$form_state) {
           <img src="' . $accountInfo->logo . '" style="max-width: 5em; display: inline-block; vertical-align: top" />
           <div style="display: inline-block">' .
             $markup .
-            '<div style="margin-top: 1em">' . 
-              t('Change account settings <a href="@url">here</a>', array('@url' => url('/admin/config/system/h5p/register'))) . 
+            '<div style="margin-top: 1em">' .
+              t('Change account settings <a href="@url">here</a>', array('@url' => url('/admin/config/system/h5p/register'))) .
             '</div>
           </div>
         </div>'
@@ -868,29 +878,31 @@ function h5p_content_upgrade_progress($library_id) {
  * @param int $minor
  */
 function h5p_content_upgrade_library($name, $major, $minor) {
-  $library = (object) array(
-    'name' => $name,
-    'version' => (object) array(
-      'major' => $major,
-      'minor' => $minor
-    )
-  );
-
   $core = _h5p_get_instance('core');
-  $library->semantics = $core->loadLibrarySemantics($library->name, $library->version->major, $library->version->minor);
+  $library = $core->loadLibrary($name, $major, $minor);
 
   if ($core->development_mode & H5PDevelopment::MODE_LIBRARY) {
-    $dev_lib = $core->h5pD->getLibrary($library->name, $library->version->major, $library->version->minor);
+    $dev_lib = $core->h5pD->getLibrary($library['name'], $library['majorVersion'], $library['minorVersion']);
   }
 
-  $upgrades_script = _h5p_get_h5p_path() . (isset($dev_lib) ? '/'. $dev_lib['path'] : '/libraries/' . $library->name . '-' . $library->version->major . '.' . $library->version->minor) . '/upgrades.js';
+  $library_folder = H5PCore::libraryToFolderName($library);
+  $upgrades_script = _h5p_get_h5p_path() . (isset($dev_lib) ? "/{$dev_lib['path']}" : "/libraries/{$library_folder}/upgrades.js");
   if (file_exists($upgrades_script)) {
-    $library->upgradesScript = base_path() . $upgrades_script;
+    $library['upgradesScript'] = base_path() . $upgrades_script;
   }
 
   drupal_add_http_header('Cache-Control', 'no-cache');
   drupal_add_http_header('Content-type', 'application/json');
-  print json_encode($library);
+  print json_encode([
+    'name' => $name,
+    'version' => [
+      'major' => $major,
+      'minor' => $minor
+    ],
+    // Load semantics once more, so that we let alterLibrarySemantics being run
+    'semantics' => $core->loadLibrarySemantics($name, $major, $minor),
+    'upgradesScript' => $library['upgradesScript'] ?? null
+  ]);
 }
 
 function h5p_restrict_library_callback($library_id) {

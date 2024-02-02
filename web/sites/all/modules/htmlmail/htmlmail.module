@@ -12,7 +12,7 @@
  */
 function htmlmail_permission() {
   $args = array(
-    '!htmlmail' => url('http://drupal.org/project/htmlmail'),
+    '!htmlmail' => url('https://www.drupal.org/project/htmlmail'),
     '%htmlmail' => 'HTML Mail',
   );
 
@@ -37,7 +37,7 @@ function htmlmail_help($path, $arg) {
     case 'admin/help#htmlmail':
       return '<p>'
         . t('<a href="!htmlmail">HTML Mail</a> lets you theme your messages the same way you theme the rest of your website.',
-          array('!htmlmail' => 'http://drupal.org/project/htmlmail')
+          array('!htmlmail' => 'https://www.drupal.org/project/htmlmail')
         ) . '</p>';
 
     default:

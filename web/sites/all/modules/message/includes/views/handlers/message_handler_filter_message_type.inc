@@ -9,7 +9,7 @@ class message_handler_filter_message_type extends views_handler_filter_in_operat
       $this->value_title = t('Message type');
       $options = array();
       foreach (message_type_load() as $name => $message_type) {
-        $options[$name] = check_plain($message_type->description);
+        $options[$name] = check_plain($message_type->label());
       }
       asort($options);
       $this->value_options = $options;

@@ -225,10 +225,7 @@ function h5peditor_h5p_content_node_form_after_build($form) {
   // TODO: If we're going to preprocess the assets one day, remember to skip ckeditor.
 
   $content_validator = _h5p_get_instance('contentvalidator');
-  $h5pF = _h5p_get_instance('interface');
-  $siteUuid = $h5pF->getOption('site_uuid', null);
-  $secret   = $h5pF->getOption('hub_secret', null);
-  $enableContentHub = !empty($siteUuid) && !empty($secret);
+  $enableContentHub = (variable_get('h5p_hub_is_enabled', 1) ? variable_get('h5p_search_content_hub', 1) : 0) === 1;
   $file_path = file_stream_wrapper_get_instance_by_uri('public://')->getDirectoryPath();
   $content_id = h5p_get_content_id($node);
   $settings = array(

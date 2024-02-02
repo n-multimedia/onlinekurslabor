@@ -68,7 +68,7 @@ function og_ui_admin_settings($form_state) {
   $form['og_features_ignore_og_fields'] = array(
     '#type' => 'checkbox',
     '#title' => t('Prevent "Features" export piping'),
-    '#description' => t('When exporting using Features module a content-type, this will prevent from OG related fields to be exported.'),
+    '#description' => t('When exporting a content-type using the Features module, this prevents OG related fields from being exported.'),
     '#default_value' => variable_get('og_features_ignore_og_fields', FALSE),
     '#access' => module_exists('features'),
   );
@@ -333,7 +333,7 @@ function og_ui_edit_membership($form, &$form_state, $group_type, $gid, $og_membe
   if (!isset($group->uid) || $group->uid != $account->uid) {
     $form['actions']['delete'] = array(
       '#type' => 'markup',
-      '#markup' => l(t('Remove'), 'group/node/' . $gid . '/admin/people/delete-membership/' . $og_membership->id),
+      '#markup' => l(t('Remove'), 'group/' . $group_type . '/' . $gid . '/admin/people/delete-membership/' . $og_membership->id),
     );
   }
 
@@ -720,6 +720,7 @@ function og_ui_admin_permissions($form, $form_state, $group_type = '', $gid = 0,
 
   if ($gid) {
     og_set_breadcrumb($group_type, $gid, array(l(t('Group'), "$group_type/$gid/group")));
+    list(, , $bundle) = entity_extract_ids($group_type, entity_load_single($group_type, $gid));
   }
 
   $form['group_type'] = array('#type' => 'value', '#value' => $group_type);

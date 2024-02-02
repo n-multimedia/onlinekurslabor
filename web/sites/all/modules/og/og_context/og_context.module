@@ -74,7 +74,7 @@ function og_context_entity_property_info() {
  *   $group = $wrapper->og_context__node->value();
  * @endcode
  */
-function og_context_get_properties($data = array(), array $options, $name, $type) {
+function og_context_get_properties($data, array $options, $name, $type) {
   // Get the entity type form the property name.
   $group_type = str_replace('og_context__', '', $name);
   if ($context = og_context($group_type)) {
@@ -424,7 +424,7 @@ function og_context_determine_context($group_type, $item = NULL, $check_access =
     $invoke = FALSE;
     if (!empty($provider['menu path'])) {
       foreach ($provider['menu path'] as $path) {
-        if (strpos($item['path'], $path) === 0) {
+        if ($item && strpos($item['path'], $path) === 0) {
           $invoke = TRUE;
           // Path matches, so we can break.
           break;
@@ -471,7 +471,7 @@ function og_context_handler_url() {
     return;
   }
   $item = menu_get_item();
-  if (strpos($item['path'], 'node/add/') !== 0) {
+  if (!$item || strpos($item['path'], 'node/add/') !== 0) {
     return;
   }
   if (empty($item['map'][2])) {
@@ -595,6 +595,12 @@ function og_context_handler_user_edit() {
  */
 function og_context_handler_comment() {
   $item = menu_get_item();
+
+  // User has no access to the menu item.
+  if (!$item) {
+    return;
+  }
+
   // Check if we are in comment/reply/%nid. No need to load the comment.
   if (isset($item['original_map'][2]) && is_numeric($item['original_map'][2])) {
     $node = node_load($item['original_map'][2]);

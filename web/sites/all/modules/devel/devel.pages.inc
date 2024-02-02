@@ -41,7 +41,7 @@ function devel_cache_clear() {
 
   drupal_flush_all_caches();
 
-  drupal_set_message('Cache cleared.');
+  drupal_set_message(t('Cache cleared.'));
 
   drupal_goto();
 }
@@ -251,7 +251,7 @@ function devel_variable_form() {
     }
     else {
       if (drupal_strlen($row->value) > 70) {
-        $value = check_plain(drupal_substr($row->value, 0, 65)) .'...';
+        $value = check_plain(drupal_substr($row->value, 0, 65)) . '...';
       }
       else {
         $value = check_plain($row->value);
@@ -368,7 +368,7 @@ function devel_session() {
  */
 function devel_load_object($type, $object, $name = NULL) {
   $name = isset($name) ? $name : $type;
-  return kdevel_print_object($object, '$'. $name .'->');
+  return kdevel_print_object($object, '$' . $name . '->');
 }
 
 /**

@@ -776,7 +776,7 @@ function backtrace_error_handler($error_level, $message, $filename, $line, $cont
     }
 
     $watchdog = 'watchdog';
-    $watchdog('php', $msg, array(), $type[1]);
+    $watchdog('php', $msg, NULL, $type[1]);
   }
 }
 
@@ -1280,7 +1280,9 @@ function devel_query_put_contents($queries) {
   file_prepare_directory($path, FILE_CREATE_DIRECTORY);
 
   // Occassionally wipe the querylog dir so that files don't accumulate.
-  if (mt_rand(1, 1000) == 401) {
+  $range = variable_get('devel_query_random_range', 1000);
+
+  if (mt_rand(1, $range) == 1) {
     devel_empty_dir($path);
   }
 
@@ -1434,12 +1436,16 @@ function devel_execute_form() {
     '#description' => t('Enter some code. Do not use <code>&lt;?php ?&gt;</code> tags.'),
     '#default_value' => (isset($_SESSION['devel_execute_code']) ? $_SESSION['devel_execute_code'] : ''),
     '#rows' => 20,
+    '#attributes' => array(
+      'spellcheck' => 'false',
+    ),
   );
   $form['execute']['actions'] = array('#type' => 'actions');
   $form['execute']['actions']['op'] = array(
     '#type' => 'submit',
     '#value' => t('Execute'),
   );
+  $form['#attached']['css'][] = drupal_get_path('module', 'devel') . '/devel.css';
   $form['#redirect'] = FALSE;
   if (isset($_SESSION['devel_execute_code'])) {
     unset($_SESSION['devel_execute_code']);

@@ -24,6 +24,9 @@ msgstr "Achtung! Folgende Dateien könnten fehlen:"
 msgid "Close"
 msgstr "schließen"
 
+msgid "Cache cleared."
+msgstr "Cache geleert."
+
 msgid ""
 msgstr ""
 
